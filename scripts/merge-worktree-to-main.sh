@@ -57,14 +57,22 @@ log "main worktree: $MAIN_DIR"
 log "integrating branch: $BRANCH → $DEFAULT_BRANCH"
 
 # --- Default the verify list to the branch's changed files ---
+# Deletions go in their own list: for a removed path the correct assertion is
+# ABSENT-on-origin, not present. Lumping them in made any pure-deletion merge
+# report "push reported success but work is missing" while the deletion had in
+# fact landed (observed 2026-08-01 removing scripts/verify-we-backfill.test.mjs),
+# which trains the operator to ignore the one alarm that exists to catch #619/#668.
+DELETED_FILES=()
 if [ ${#VERIFY_FILES[@]} -eq 0 ]; then
   MB=$(g merge-base "$DEFAULT_BRANCH" "$BRANCH" 2>/dev/null)
   if [ -n "$MB" ]; then
     while IFS= read -r f; do [ -n "$f" ] && VERIFY_FILES+=("$f"); done \
-      < <(g diff --name-only "$MB" "$BRANCH" 2>/dev/null)
+      < <(g diff --name-only --diff-filter=d "$MB" "$BRANCH" 2>/dev/null)
+    while IFS= read -r f; do [ -n "$f" ] && DELETED_FILES+=("$f"); done \
+      < <(g diff --name-only --diff-filter=D "$MB" "$BRANCH" 2>/dev/null)
   fi
 fi
-log "will verify ${#VERIFY_FILES[@]} file(s) on origin after push"
+log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} deleted on origin after push"
 
 # ── Local push mutex (task #556) ─────────────────────────────────────────────
 # The whole flow below — stash, checkout main, fetch+merge origin, merge the
@@ -200,7 +208,7 @@ fi
 restore_stash
 
 # --- VERIFY the files actually landed on origin (the step the incident skipped) ---
-if [ "${DRY_RUN:-0}" != "1" ] && [ ${#VERIFY_FILES[@]} -gt 0 ]; then
+if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]} )) -gt 0 ]; then
   FETCHED=0
   for _fa in 1 2 3; do
     if g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null; then FETCHED=1; break; fi
@@ -227,6 +235,13 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ ${#VERIFY_FILES[@]} -gt 0 ]; then
       echo "  ✓ $f"
     else
       echo "  ✗ MISSING: $f"; MISSING=1
+    fi
+  done
+  for f in "${DELETED_FILES[@]}"; do
+    if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then
+      echo "  ✗ STILL PRESENT (deletion did not land): $f"; MISSING=1
+    else
+      echo "  ✓ deleted: $f"
     fi
   done
   [ "$MISSING" = 0 ] || die "some files did NOT land on origin — push reported success but work is missing"
