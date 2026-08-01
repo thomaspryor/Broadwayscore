@@ -34,6 +34,7 @@ const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
+const { preflightAuth } = require('./lib/claude-cli.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
 
@@ -515,6 +516,28 @@ function runClaude(prompt, card, opts = {}) {
   const logFile = path.join(LOG_DIR, `action-dispatcher-${cardSlug(card.id)}.log`);
   log(`Spawning Claude for "${card.name}" (${card.action}${opts.resumeSessionId ? ', resume' : ''}). Log: ${logFile}`);
 
+  // Auth preflight (task #713 — generalized fix from opening-night-monitor-launch.js
+  // ported to scripts/lib/claude-cli.js): a launchd-parented `claude` can't reach the
+  // macOS Keychain, so a bare inherited env dies "Not logged in" — but the CLI exits 0
+  // with a VALID envelope, so the code below (which only distinguishes failure by
+  // exit code) would have silently treated a login prompt as a completed Fix. Probe
+  // BEFORE spawning or provisioning a worktree, so a doomed pass never consumes an
+  // attempt or churns disk for nothing.
+  const auth = preflightAuth({ log });
+  if (!auth.ok) {
+    const errMsg = `Claude auth preflight failed: ${auth.detail}`;
+    log(errMsg);
+    fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
+    return {
+      result: `[Automated session error] ${errMsg}`,
+      memoryUpdate: null,
+      sessionId: opts.resumeSessionId || null,
+      runDir: opts.reuseRunDir || REPO_DIR,
+      failed: true,
+      get keptWorktree() { return false; },
+    };
+  }
+
   // Isolate the automated session in its own worktree (falls back to REPO_DIR).
   let wt = null;
   let runDir;
@@ -533,6 +556,18 @@ function runClaude(prompt, card, opts = {}) {
     // targets the claude process directly so the timeout actually stops it.
     const args = ['--print', '--output-format', 'json', '--dangerously-skip-permissions'];
     if (opts.resumeSessionId) args.push('--resume', opts.resumeSessionId);
+    // Env shape matches whichever mode the preflight actually proved works —
+    // 'oauth' clears ANTHROPIC_API_KEY so the pass uses the same stored-login
+    // path just verified (never a mix of both), 'api-key' keeps it.
+    const runEnv = {
+      ...process.env,
+      HOME: require('os').homedir(),
+      PATH: process.env.PATH,
+    };
+    // Empty string, not `delete` — matches the exact env shape preflightAuth
+    // just proved works (authPing probes with `ANTHROPIC_API_KEY: ''`), so
+    // the real spawn never diverges from the probed shape.
+    if (auth.mode === 'oauth') runEnv.ANTHROPIC_API_KEY = '';
     const raw = require('child_process').execFileSync('claude', args, {
       cwd: runDir,
       input: prompt,
@@ -540,11 +575,7 @@ function runClaude(prompt, card, opts = {}) {
       killSignal: 'SIGKILL',
       maxBuffer: 10 * 1024 * 1024, // 10 MB
       encoding: 'utf8',
-      env: {
-        ...process.env,
-        HOME: require('os').homedir(),
-        PATH: process.env.PATH,
-      },
+      env: runEnv,
     });
 
     // Write full output to log (append on resume so the card's history accumulates)
@@ -564,9 +595,29 @@ function runClaude(prompt, card, opts = {}) {
     // Extract result and memory update between markers (single pass)
     const resultMatch = text.match(/===ACTION_RESULT_START===([\s\S]*?)===ACTION_RESULT_END===/);
     const memoryMatch = text.match(/===MEMORY_UPDATE_START===([\s\S]*?)===MEMORY_UPDATE_END===/);
+    const resultText = resultMatch ? resultMatch[1].trim() : text.slice(-3000).trim();
+
+    // Exit 0 + parseable JSON is NOT success (claude-cli.js STAGES.EMPTY class):
+    // an auth-expired or otherwise silently-refusing CLI can still return a
+    // valid envelope with empty/near-empty result text. The preflight above
+    // catches the known auth case before spawning; this catches anything else
+    // that slips through the same shape, rather than reporting a card "done".
+    if (!resultText) {
+      const errMsg = 'Claude session returned an empty result (valid envelope, no output) — treating as failed rather than reporting the card done.';
+      log(errMsg);
+      fs.appendFileSync(logFile, `\n\nERROR: ${errMsg}`);
+      return {
+        result: `[Automated session error] ${errMsg}`,
+        memoryUpdate: null,
+        sessionId,
+        runDir,
+        failed: true,
+        get keptWorktree() { return keptWorktree; },
+      };
+    }
 
     return {
-      result: resultMatch ? resultMatch[1].trim() : text.slice(-3000),
+      result: resultText,
       memoryUpdate: memoryMatch ? memoryMatch[1].trim() : null,
       sessionId,
       runDir,
