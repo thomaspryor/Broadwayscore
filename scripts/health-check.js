@@ -1980,6 +1980,22 @@ function feedbackBacklogResults(feedbackSummary, now = new Date()) {
   }];
 }
 
+// Never-run workflow coverage (data/audit/workflow-run-coverage.json, written
+// by audit-workflow-hygiene.js's advisory rule (f) — task #737). Surfaces
+// registered workflows with a lifetime run count of zero (checkout/secrets/
+// npm/script path never once exercised — the #657/#688 class) next to the
+// repeat-failure rows above. Pure (no IO) — mirrors repeatFailureResults().
+function neverRunWorkflowResults(report) {
+  if (!report || !Array.isArray(report.offenders) || report.offenders.length === 0) return [];
+  const list = report.offenders.join(', ');
+  return [{
+    name: 'Workflow coverage: never-run',
+    status: 'warn',
+    message: `${report.offenders.length} workflow(s) registered on GitHub Actions with ZERO lifetime runs (>${report.minAgeDays}d old): ${list}`,
+    hint: 'checkout/secrets/npm/script path never exercised — give each a dry_run smoke lane (see add-requested-show.yml) and dispatch once.',
+  }];
+}
+
 // OB closing-date detector candidates (data/audit/ob-closing-candidates.json,
 // committed weekly by detect-ob-closings.yml). The detector is alert-only by
 // design; without a digest line its report is a JSON file nobody reads — the
@@ -2986,6 +3002,11 @@ async function main() {
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     try {
+      const neverRunReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/workflow-run-coverage.json'), 'utf8'));
+      allResults.push(...neverRunWorkflowResults(neverRunReport));
+    } catch { /* report absent (lint-workflows hasn't run with a token yet) — nothing to surface */ }
+
+    try {
       const gapReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/t1-silent-gaps.json'), 'utf8'));
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
@@ -3108,4 +3129,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
