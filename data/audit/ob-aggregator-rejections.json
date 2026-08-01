@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-31T14:57:42.003Z",
+  "generatedAt": "2026-08-01T14:32:34.446Z",
   "counts": {
     "accepted": 0,
-    "rejected": 9,
+    "rejected": 10,
     "byReason": {
       "low-confidence-existing-match": 5,
-      "bot-shell": 2,
+      "bot-shell": 3,
       "placeholder-venue-no-theater": 2
     }
   },
@@ -49,6 +49,12 @@
     {
       "url": "https://playbill.com/article/were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "slug": "were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
+      "source": "playbill-verdict",
+      "reason": "bot-shell"
+    },
+    {
+      "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+      "slug": "reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "source": "playbill-verdict",
       "reason": "bot-shell"
     },
