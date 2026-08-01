@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -160,6 +160,26 @@ test('obClosingBacklogResults: candidates warn with count and first show', () =>
   assert.equal(results[0].status, 'warn');
   assert.match(results[0].message, /1 open Off-Broadway show/);
   assert.match(results[0].message, /clara-2026 → 2026-05-10 \[medium\]/);
+});
+
+// --- neverRunWorkflowResults (task #737: workflows with zero lifetime runs) ---
+
+test('neverRunWorkflowResults: empty or absent report yields nothing', () => {
+  assert.deepEqual(neverRunWorkflowResults(null), []);
+  assert.deepEqual(neverRunWorkflowResults({ offenders: [] }), []);
+});
+
+test('neverRunWorkflowResults: offenders warn with count and file list', () => {
+  const results = neverRunWorkflowResults({
+    generatedAt: '2026-08-01T00:00:00.000Z',
+    minAgeDays: 30,
+    totalChecked: 217,
+    offenders: ['ingest-urls.yml', 'btc-results-preview.yml'],
+  });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.match(results[0].message, /2 workflow\(s\)/);
+  assert.match(results[0].message, /ingest-urls\.yml, btc-results-preview\.yml/);
 });
 
 // --- cardVerifiabilityBacklogResults (task #646: undispatchable backlog cards) ---
