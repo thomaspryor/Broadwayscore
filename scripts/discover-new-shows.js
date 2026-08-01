@@ -842,6 +842,14 @@ const VENUE_LISTING_PAGES = [
   // Show links are absolute single-segment slugs (https://theotherpalace.co.uk/<slug>/);
   // the lookahead excludes the site's utility pages, two-segment URLs self-exclude.
   { name: 'The Other Palace', url: 'https://theotherpalace.co.uk/whats-on/', linkPattern: /^https:\/\/theotherpalace\.co\.uk\/(?!(?:about|access|basket|blog|careers|comments|contact|events|faq|feed|find-us|food-and-drink|get-involved|jobs|legal-privacy|my-account|news|press|shop|site-map|tickets|top-archive|venue-hire|whats-on|your-visit)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
+  // Added 2026-07-31 (venue what's-on vs catalog audit after the Space Dogs miss):
+  // Orange Tree was missing ALL 4 current productions (Love's Labour's Lost,
+  // Much Ado, a small and quiet light, Murder in the Cathedral) and Park Theatre
+  // 5 of 8 — neither venue's shows reliably reach TodayTix/OLT/londontheatre.
+  // Non-production listings (seminars, youth programmes, screenings) are handled
+  // by VENUE_PAGE_EXCLUDE_PATTERNS phrases, corpus-audited for title collisions.
+  { name: 'Orange Tree Theatre', url: 'https://www.orangetreetheatre.co.uk/whats-on/', linkPattern: /^https:\/\/(?:www\.)?orangetreetheatre\.co\.uk\/whats-on\/(?!(?:archive|page)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Park Theatre', url: 'https://parktheatre.co.uk/whats-on/', linkPattern: /^https:\/\/(?:www\.)?parktheatre\.co\.uk\/events\/(?!(?:archive|page)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
 
   // ── Off-Broadway non-profit subscription houses ──
   // Live OB venue extraction lives in scripts/lib/venue-listing-discover.js
@@ -868,6 +876,11 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   // Other Palace Studio one-night tribute concerts ("Big Finish: A Celebration of
   // Shaiman & Wittman", "Songs from the Musicals") — concerts, not productions.
   'celebration of', 'songs from the musicals',
+  // Orange Tree non-production listings (seminars, youth programmes, cinema
+  // screenings, concerts). Corpus-audited 2026-07-31: zero title collisions.
+  'saturday seminar', 'holiday club', 'young company', 'young creatives',
+  'directing lab', 'friday company', 'coffee concert', 'on screen',
+  'youth theatre', 'writing lab',
 ];
 
 async function fetchShowsFromVenueListings(category) {

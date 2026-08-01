@@ -241,9 +241,9 @@
   },
   "didtheylikeit.com": {
     "scrapingdog": {
-      "skip": true,
-      "reason": "SD tier unverified for this domain — pending live parity test (Scraping v2 Sprint 1 T10)",
-      "addedAt": "2026-07-30"
+      "skip": false,
+      "reason": "Live parity test passed 2026-07-31 (Scraping v2 Sprint 1 T10): 2/3 sample pages fetched cleanly via dynamic=false with content matching the stored BD/SB-extracted text; 1/3 (a-strange-loop) returned SD 400/500 even with stealth_mode=true (not charged) — comparable to normal single-URL failure rates on other tiers, not a domain-wide block.",
+      "addedAt": "2026-07-31"
     }
   },
   "dramaqueennyc.com": {
@@ -681,9 +681,9 @@
   },
   "theatre.reviews": {
     "scrapingdog": {
-      "skip": true,
-      "reason": "SD tier unverified for this domain — pending live parity test (Scraping v2 Sprint 1 T10)",
-      "addedAt": "2026-07-30"
+      "skip": false,
+      "reason": "Live parity test passed 2026-07-31 (Scraping v2 Sprint 1 T10): sample page fetched cleanly via dynamic=false with content matching the stored BD/SB-extracted text.",
+      "addedAt": "2026-07-31"
     }
   },
   "theatreartsdaily.com": {
