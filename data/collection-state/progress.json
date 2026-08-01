@@ -1,20 +1,74 @@
 {
-  "processed": [],
+  "processed": [
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  ],
   "failed": [
-    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json"
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-08-01T11:53:16.704Z",
-  "lastProcessed": "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
-  "log": []
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-01T12:20:35.867Z",
+      "event": "bb-session",
+      "session": "4fca7eb0",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T12:20:36.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T12:20:52.960Z",
+      "event": "bb-session",
+      "session": "933bb768",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T12:20:53.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T12:21:50.309Z",
+      "event": "bb-session",
+      "session": "be35e816",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T12:21:51.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
