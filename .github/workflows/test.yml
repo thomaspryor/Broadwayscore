@@ -22,6 +22,16 @@ on:
       - 'scripts/lib/creative-team-verify.test.mjs'
       - 'scripts/audit-creative-team-serp.js'
       - 'scripts/auto-fix-show-data.js'
+      # BWW Review Roundup byline parser: a photo credit's photographer surname
+      # ("Photo credit: Mark Senior") was absorbed as the next critic's first
+      # name, minting a phantom URL-less duplicate that same-URL dedup could not
+      # collapse (the-comedy-about-spies-west-end-2026, 2026-08-01). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed (with its
+      # real-article fixture) so a solo edit triggers CI.
+      - 'scripts/lib/bww-roundup-parser.js'
+      - 'scripts/lib/bww-roundup-parser.test.mjs'
+      - 'tests/fixtures/bww-roundups/**'
+      - 'scripts/fix-photo-credit-byline-phantoms.js'
       # Systematic-fix detection: guards the feedback remediation pipeline
       # against value-generalization (the 2026-07-31 close-all-147-open-shows
       # proposal). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs

@@ -2644,7 +2644,20 @@ function isIncludableForRebuild(data, show, filePath) {
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
-    if (!isJsonLdStarNotAReview) return false;
+    // Excerpt-sourced fallback: 'not_a_review' fires when the FULLTEXT fetch itself was
+    // garbage (paywall bounce page, archive snapshot of a "your subscription has lapsed"
+    // notice) — a fetch-quality failure, not evidence the review doesn't exist. When the
+    // file also carries an aggregator excerpt (BWW/DTLI/Show-Score/...) with a real star
+    // rating, that content is independent of the bad fullText and is scoreable via the
+    // excerpt path (mirrors the #501/#502 fullText:null+bwwExcerpt fix for the case where
+    // fullText is present but junk instead of absent). Confirmed live 2026-08-01:
+    // times-uk--clive-davis.json on the-comedy-about-spies-west-end-2026 — fullText was a
+    // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
+    // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
+    // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
+    const hasIndependentExcerptScore = data.rejectionReason === 'not_a_review' &&
+      hasAggregatorExcerpt(data) && data.aggregatorStars != null;
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore) return false;
   }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
@@ -2675,7 +2688,12 @@ function isIncludableForRebuild(data, show, filePath) {
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview) return false;
+    // Exception 4: matches the rejectionReason exception above (line ~2650) — an
+    // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
+    // the same reason: the rejection was about the fullText fetch, not this content.
+    const hasIndependentExcerptScore = data.rejectionReason === 'not_a_review' &&
+      hasAggregatorExcerpt(data) && data.aggregatorStars != null;
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore) return false;
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
