@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T08:15:21.965Z",
+  "timestamp": "2026-08-01T08:54:07.577Z",
   "stats": {
     "totalReviews": 41082,
-    "alreadyFlagged": 17934,
+    "alreadyFlagged": 17938,
     "dateGuardCatches": 81,
     "directorMismatch": 936,
-    "tvFilmSignals": 1122,
+    "tvFilmSignals": 1123,
     "londonSignals": 777,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3399
+    "noPublishDate": 3394
   },
   "findings": [
     {
@@ -26490,6 +26490,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2026-07-26",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
