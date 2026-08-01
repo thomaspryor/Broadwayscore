@@ -125,6 +125,11 @@ on:
       - 'scripts/lib/plan-ready.js'
       - 'scripts/notion-action-poll.js'
       - 'tests/unit/plan-ready.test.mjs'
+      # --card single-card scope flag (task #725): pure filter predicate,
+      # colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/notion-action-poll-card-scope.js'
+      - 'scripts/lib/notion-action-poll-card-scope.test.mjs'
       # CI-side delayed re-verification for push-with-retry.sh pushes (task #677,
       # the CI counterpart to #668's verify-merge-landed.js). Colocated
       # *.test.mjs runs in the tests/unit batch; path-listed so a solo edit
