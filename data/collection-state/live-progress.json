@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-01T20:09:58.697Z",
-  "processed": 53,
-  "failed": 488,
+  "updatedAt": "2026-08-01T20:10:27.459Z",
+  "processed": 54,
+  "failed": 497,
   "successRate": "9.8%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 6,
     "scrapingbee": 0,
     "brightdata": 10,
     "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-01T19:40:44.776Z",
@@ -37,6 +37,12 @@
       "t": "2026-08-01T20:04:57.865Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T20:10:14.421Z",
+      "event": "bb-session",
+      "session": "d5931181",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
     }
   ]
 }
