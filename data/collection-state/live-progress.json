@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-01T19:42:00.385Z",
+  "updatedAt": "2026-08-01T20:06:45.271Z",
   "processed": 52,
-  "failed": 249,
-  "successRate": "17.3%",
+  "failed": 399,
+  "successRate": "11.5%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 6,
     "scrapingbee": 0,
     "brightdata": 10,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-01T19:40:44.776Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "8d8454da",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-01T20:04:57.423Z",
+      "event": "bb-session",
+      "session": "3466e24e",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-08-01T20:04:57.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
