@@ -31,8 +31,6 @@ const cheerio = require('cheerio');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
 
-// ScrapingBee for Google searches
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // Stats
@@ -49,7 +47,7 @@ const stats = {
   errors: [],
 };
 
-const https = require('https');
+const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -68,44 +66,22 @@ function sleep(ms) {
 }
 
 // ---------------------------------------------------------------------------
-// HTTP helper — fetch a page via ScrapingBee (no JS rendering needed for Playbill)
+// HTTP helper — fetch a page via the shared BD→SB→Playwright fallback chain
 // ---------------------------------------------------------------------------
-
-async function fetchHtmlSingle(url) {
-  if (!SCRAPINGBEE_KEY) {
-    throw new Error('SCRAPINGBEE_API_KEY required');
-  }
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
-
-  return new Promise((resolve, reject) => {
-    const req = https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
-  });
-}
 
 async function fetchHtml(url, maxRetries = 2) {
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await fetchHtmlSingle(url);
+      const result = await fetchPage(url);
+      if (result && result.content) return result.content;
+      lastError = new Error('fetchPage returned no content');
     } catch (e) {
       lastError = e;
-      if (attempt < maxRetries) {
-        const delay = 3000 * (attempt + 1);
-        await sleep(delay);
-      }
+    }
+    if (attempt < maxRetries) {
+      const delay = 3000 * (attempt + 1);
+      await sleep(delay);
     }
   }
   throw lastError;
