@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tao-of-glass-west-end-2026",
   "openingDate": "2026-07-30",
-  "detectedAt": "2026-08-01T13:35:28.494Z",
+  "detectedAt": "2026-08-01T13:56:55.699Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -32,24 +32,10 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "criticName": "Unknown",
-      "url": "https://www.timeout.com/london/theatre/tao-of-glass-review",
-      "fullTextLen": 5174,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-01T13:35:28.494Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
