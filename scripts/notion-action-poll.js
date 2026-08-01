@@ -54,7 +54,7 @@ const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
-const { preflightAuth } = require('./lib/claude-cli.js');
+const { preflightAuth, resolveAuthEnv } = require('./lib/claude-cli.js');
 const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
 
 const USAGE = `notion-action-poll.js — Notion Action Queue Poller.
@@ -584,6 +584,12 @@ function runClaude(prompt, card, opts = {}) {
     // path just verified (never a mix of both), 'api-key' keeps it.
     const runEnv = {
       ...process.env,
+      // Task #713: under launchd process.env carries only the plist's
+      // EnvironmentVariables block, so ANTHROPIC_API_KEY/CLAUDE_CODE_OAUTH_TOKEN
+      // are absent and this spawn ran logged out. resolveAuthEnv() tops up ONLY
+      // those two keys from .env and never writes to process.env — it must sit
+      // above the spread because an inherited empty value would shadow it.
+      ...resolveAuthEnv(),
       HOME: require('os').homedir(),
       PATH: process.env.PATH,
     };

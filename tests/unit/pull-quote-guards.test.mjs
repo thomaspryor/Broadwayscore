@@ -516,3 +516,71 @@ describe('pickExcerptCandidate', () => {
     assert.strictEqual(pickExcerptCandidate({}), null);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Fixes from the 2026-08-01 Codex adversarial review.
+// ---------------------------------------------------------------------------
+
+describe('stripListingPrelude — prelude must itself look like a listing', () => {
+  test('leaves critic prose that happens to use the boilerplate phrase', () => {
+    // Codex scenario: the phrase appears inside a real opening sentence.
+    const prose =
+      "The programme's listing details and ticket info are more lucid than the " +
+      'production itself, which spends three hours mistaking volume for feeling ' +
+      'and never once trusts its audience to sit with a silence.';
+    assert.strictEqual(stripListingPrelude(prose), prose);
+  });
+  test('still strips when run dates precede the terminator', () => {
+    const out = stripListingPrelude(BTG_PRELUDE);
+    assert.ok(out.startsWith('Tao of Glass finally makes it to London'));
+  });
+  test('still strips a punctuation-free credits run', () => {
+    const credits =
+      'Some Producer and Another Producer @sohoplace theatre Listing details and ticket info... ' +
+      'The evening opens on a bare stage and never really recovers from the emptiness it starts ' +
+      'with, which is a shame given how much talent is standing on it.';
+    assert.ok(stripListingPrelude(credits).startsWith('The evening opens'));
+  });
+});
+
+describe('pickExcerptCandidate — fragments must not beat a clean body sentence', () => {
+  test('a lowercase fragment loses to an accepted fullText slice', () => {
+    // Codex scenario: "and the score is sublime." reads broken on the card.
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: { rank: EXCERPT_SOURCE_RANK.fullText, excerpt: 'A clean evaluative body sentence.' },
+      deferred: [{ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: 'and the score is sublime.', reason: 'lowercase-fragment' }],
+    }), 'A clean evaluative body sentence.');
+  });
+  test('a hedge deferral still beats an accepted fullText slice', () => {
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: { rank: EXCERPT_SOURCE_RANK.fullText, excerpt: 'Raw page scrape.' },
+      deferred: [{ rank: EXCERPT_SOURCE_RANK.llmPullQuote, excerpt: 'But it is undeniably electric.', reason: 'hedge' }],
+    }), 'But it is undeniably electric.');
+  });
+  test('a lowercase fragment still wins when nothing was accepted', () => {
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: null,
+      deferred: [{ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: 'and the score is sublime.', reason: 'lowercase-fragment' }],
+    }), 'and the score is sublime.');
+  });
+});
+
+describe('isMidWordTruncation — normalized-source cache', () => {
+  test('repeated calls on the same array agree with the uncached result', () => {
+    const sources = [STANDARD_COMPLETE, 'Some other unrelated source text here.'];
+    assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, sources), true);
+    // Second call hits the cache — must not change the verdict.
+    assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, sources), true);
+    assert.strictEqual(isMidWordTruncation(STANDARD_COMPLETE, sources), false);
+  });
+  test('cache key is non-enumerable (array still serializes normally)', () => {
+    const sources = [STANDARD_COMPLETE];
+    isMidWordTruncation(STANDARD_TRUNCATED, sources);
+    assert.strictEqual(sources.length, 1);
+    assert.strictEqual(JSON.parse(JSON.stringify(sources)).length, 1);
+  });
+  test('tolerates a frozen sources array', () => {
+    const frozen = Object.freeze([STANDARD_COMPLETE]);
+    assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, frozen), true);
+  });
+});
