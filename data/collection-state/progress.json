@@ -70,7 +70,17 @@
     "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
     "the-gin-game-2026/northjerseycom--robert-feldberg.json",
     "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
-    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json"
+    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -103,12 +113,15 @@
       "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-01T01:01:28.303Z",
-  "lastProcessed": "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+  "lastProcessed": "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-08-01T01:03:59.674Z",
@@ -229,6 +242,39 @@
     },
     {
       "t": "2026-08-01T02:28:29.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T02:31:39.592Z",
+      "event": "bb-session",
+      "session": "aac78530",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T02:31:39.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T02:31:55.566Z",
+      "event": "bb-session",
+      "session": "2df5cfbb",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T02:31:55.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T02:32:45.969Z",
+      "event": "bb-session",
+      "session": "992d16c2",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T02:32:46.410Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
