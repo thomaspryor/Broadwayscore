@@ -1,29 +1,44 @@
 {
-  "generatedAt": "2026-08-01T14:18:55.841Z",
+  "generatedAt": "2026-08-01T15:01:05.891Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 146,
-  "clean": 145,
-  "defective": 1,
+  "clean": 144,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "openingDate": "2026-07-30",
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "title": "The Importance of Being Oscar",
+      "openingDate": "2026-07-29",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.06 vs local 81.45 (Δ0.39)"
+          "detail": "deployed cs 72.22 vs local 71.2 (Δ1.02)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15
+      "localCount": 9,
+      "deployedCount": 10
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "openingDate": "2026-04-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.32 vs local 85.85 (Δ0.47)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 31,
+      "deployedCount": 32
     }
   ]
 }
