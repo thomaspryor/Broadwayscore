@@ -21,13 +21,29 @@ on:
         required: false
         type: boolean
         default: false
+      dry_run:
+        # Smoke-test lane (task #737): this workflow shipped and sat
+        # dispatched ZERO times (checkout/core-data/review-texts/npm/scraper
+        # path entirely unproven — same class as #657/#688). dry_run=true
+        # passes --dry-run to ingest-urls.js, which runs the full
+        # resolve/(optionally fetch)/write path and returns before writing
+        # any review-text file, so nothing lands in data/review-texts and
+        # there is nothing for the commit step to push. Combine with
+        # no_fetch=true for a smoke run that doesn't touch the scraper stack.
+        description: 'Resolve + (optionally fetch) only — skip writing review files and the commit/push (CI smoke test)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: ingest-urls-${{ inputs.show_id }}
+  # dry_run gets its OWN lane per show (add-requested-show.yml precedent,
+  # task #722) so an operator smoke test can never queue behind — and
+  # silently cancel — a real in-flight ingestion for the same show.
+  group: ingest-urls-${{ inputs.show_id }}${{ inputs.dry_run == true && '-dry-run' || '' }}
   cancel-in-progress: false
 
 jobs:
@@ -82,6 +98,9 @@ jobs:
           if [ "${{ inputs.no_rebuild }}" = "true" ]; then
             FLAGS="$FLAGS --no-rebuild"
           fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
 
           node scripts/ingest-urls.js \
             --show="${{ inputs.show_id }}" \
@@ -90,6 +109,10 @@ jobs:
             $FLAGS
 
       - name: Commit new review files
+        # Skipped on dry_run: --dry-run never writes a review-text file, so
+        # there is nothing to commit — and skipping keeps the smoke test
+        # provably incapable of pushing even if a future edit changed that.
+        if: always() && inputs.dry_run != true
         run: |
           cd data/review-texts
           if git diff --quiet && git diff --cached --quiet; then

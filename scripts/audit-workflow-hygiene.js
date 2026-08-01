@@ -50,6 +50,21 @@
  *     the ~215 workflows here. Left as a known gap rather than a rule that
  *     drowns real hits in noise.
  *
+ * (f) NEVER-RUN COVERAGE (advisory, task #737): a workflow registered on
+ *     GitHub Actions with a LIFETIME run count of zero means its checkout /
+ *     secrets / npm / script path has never once been exercised — the same
+ *     class as #657 and #688. Detector is the pure `findNeverRunWorkflows`
+ *     in scripts/lib/workflow-run-coverage.js (unit-tested in
+ *     tests/unit/workflow-run-coverage.test.mjs); this file owns the GitHub
+ *     API call and never fails the gate on what it finds — it's a warning
+ *     row, printed here and written to data/audit/workflow-run-coverage.json
+ *     for health-check.js's daily digest to surface next to the repeat-
+ *     failure rows. Requires GH_TOKEN/GITHUB_TOKEN — silently skipped
+ *     without one (e.g. this job's default CI environment). Also skipped on
+ *     ordinary push-triggered runs to keep the blocking lint-workflows job
+ *     fast; it runs for real on the daily schedule tick or any manual/local
+ *     invocation (`node scripts/audit-workflow-hygiene.js`).
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -62,8 +77,14 @@
  */
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
+const { findNeverRunWorkflows } = require('./lib/workflow-run-coverage');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
+const REPO = 'thomaspryor/Broadwayscore';
+const NEVER_RUN_MIN_AGE_DAYS = 30;
+const NEVER_RUN_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'workflow-run-coverage.json');
+const NEVER_RUN_CONCURRENCY = 8;
 
 // Triggers that make a workflow user-visible enough to require failure notifications.
 const NOTIFICATION_TRIGGERS = ['schedule:', 'push:', 'workflow_dispatch:', 'workflow_run:', 'pull_request:'];
@@ -302,7 +323,115 @@ function findPipefailDeadExitCodeEcho(raw) {
   return violations;
 }
 
-function main() {
+/**
+ * Minimal GitHub REST GET with a single retry on secondary rate limit.
+ * Mirrors the shape of audit-workflow-activity.js's apiGet but kept local —
+ * this file is a standalone CI gate and shouldn't import a sibling script.
+ */
+function apiGet(url, token) {
+  return new Promise((resolve, reject) => {
+    const opts = {
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'bwsc-audit-workflow-hygiene',
+      },
+    };
+    https
+      .get(url, opts, (res) => {
+        let body = '';
+        res.on('data', (d) => (body += d));
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            try {
+              resolve(JSON.parse(body));
+            } catch (err) {
+              reject(err);
+            }
+          } else {
+            reject(new Error(`GitHub API ${res.statusCode} for ${url}: ${body.slice(0, 200)}`));
+          }
+        });
+      })
+      .on('error', reject);
+  });
+}
+
+/** Bounded-concurrency map, matching the pool style in audit-workflow-activity.js. */
+async function mapWithConcurrency(items, concurrency, fn) {
+  const results = new Array(items.length);
+  const queue = items.map((item, i) => [item, i]);
+  const workers = Array.from({ length: Math.min(concurrency, queue.length) }, async () => {
+    while (queue.length) {
+      const [item, i] = queue.shift();
+      results[i] = await fn(item);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+/**
+ * Fetches every registered workflow's { file, createdAt } plus a lifetime
+ * run count, then applies the pure detector. Returns { skipped: true,
+ * reason } when there's no token or this is an ordinary push-triggered CI
+ * run (kept fast); otherwise { skipped: false, offenders, totalChecked }.
+ * Never throws — a network/API failure degrades to skipped, since this
+ * check must never be able to fail the CI gate.
+ */
+async function checkNeverRunWorkflowCoverage(files) {
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token) {
+    return { skipped: true, reason: 'no GH_TOKEN/GITHUB_TOKEN in env' };
+  }
+  const eventName = process.env.GITHUB_EVENT_NAME;
+  if (eventName === 'push' || eventName === 'pull_request') {
+    return {
+      skipped: true,
+      reason: `live scan skipped on '${eventName}' trigger to keep lint-workflows fast (runs on schedule + manual)`,
+    };
+  }
+
+  try {
+    const workflows = [];
+    let page = 1;
+    for (;;) {
+      const data = await apiGet(
+        `https://api.github.com/repos/${REPO}/actions/workflows?per_page=100&page=${page}`,
+        token,
+      );
+      const batch = data.workflows || [];
+      for (const wf of batch) {
+        const file = path.basename(wf.path);
+        if (files.includes(file)) workflows.push({ file, createdAt: wf.created_at });
+      }
+      if (batch.length < 100) break;
+      page++;
+    }
+
+    const runCountEntries = await mapWithConcurrency(workflows, NEVER_RUN_CONCURRENCY, async (wf) => {
+      const data = await apiGet(
+        `https://api.github.com/repos/${REPO}/actions/workflows/${encodeURIComponent(wf.file)}/runs?per_page=1`,
+        token,
+      );
+      return [wf.file, data.total_count ?? 0];
+    });
+    const runCountsByFile = Object.fromEntries(runCountEntries);
+
+    const offenders = findNeverRunWorkflows({
+      workflows,
+      runCountsByFile,
+      now: Date.now(),
+      minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
+    });
+
+    return { skipped: false, offenders, totalChecked: workflows.length };
+  } catch (err) {
+    return { skipped: true, reason: `API error: ${err.message}` };
+  }
+}
+
+async function main() {
   const files = fs
     .readdirSync(WORKFLOW_DIR)
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
@@ -362,6 +491,37 @@ function main() {
       if (hits.length > 0) {
         violations.echoExitcode.push({ file, hits });
       }
+    }
+  }
+
+  // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
+  const neverRun = await checkNeverRunWorkflowCoverage(files);
+  if (neverRun.skipped) {
+    console.log(`ℹ️  Never-run workflow coverage check skipped (${neverRun.reason}).`);
+  } else {
+    console.log(
+      `ℹ️  Never-run workflow coverage: ${neverRun.offenders.length} offender(s) among ${neverRun.totalChecked} checked (>${NEVER_RUN_MIN_AGE_DAYS}d old, 0 lifetime runs).`,
+    );
+    if (neverRun.offenders.length > 0) {
+      for (const f of neverRun.offenders) console.log(`   • ${f}`);
+    }
+    try {
+      fs.mkdirSync(path.dirname(NEVER_RUN_SNAPSHOT_PATH), { recursive: true });
+      fs.writeFileSync(
+        NEVER_RUN_SNAPSHOT_PATH,
+        JSON.stringify(
+          {
+            generatedAt: new Date().toISOString(),
+            minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
+            totalChecked: neverRun.totalChecked,
+            offenders: neverRun.offenders,
+          },
+          null,
+          2,
+        ) + '\n',
+      );
+    } catch (err) {
+      console.log(`   (could not write snapshot: ${err.message})`);
     }
   }
 
@@ -459,4 +619,7 @@ function main() {
   process.exit(1);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

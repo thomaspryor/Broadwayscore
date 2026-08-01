@@ -27,6 +27,8 @@ const SAMPLE_HTML_OUT = path.join(ROOT, 'data/beat-the-critics-sample-email.html
 
 const CEREMONY_YEAR = 2026;
 
+const DRY_RUN = process.argv.includes('--dry-run');
+
 // ─── Loaders ───────────────────────────────────────────────────────────────
 
 function loadJson(p, label) {
@@ -44,6 +46,10 @@ function loadJson(p, label) {
 
 function loadSubmissions() {
   if (!fs.existsSync(SUBMISSIONS_PATH)) {
+    if (DRY_RUN) {
+      console.log(`(dry run) No submissions file at ${SUBMISSIONS_PATH} — scoring with an empty submission set.`);
+      return [];
+    }
     console.error(`No submissions file at ${SUBMISSIONS_PATH}`);
     process.exit(1);
   }
@@ -345,17 +351,29 @@ function main() {
 
   console.log(`\nTop score: ${topScore}/${Object.keys(winners).length} (${topScorers.length} tied)`);
 
-  // Write preview markdown
-  const markdown = buildMarkdown({ submissions, scored, winners, criticScores, topScore, topScorers, distribution });
-  fs.writeFileSync(PREVIEW_OUT, markdown, 'utf8');
-  console.log(`\nPreview written to: ${PREVIEW_OUT}`);
-
   // Build sample email using the top scorer's data (or a synthetic submission if no scores yet)
   const sampleSubmission = topScorers[0] ?? {
     email: 'winner@example.com',
     picks: Object.fromEntries(Object.entries(winners).map(([cat, win]) => [cat, win])),
   };
   const sampleScore = sampleSubmission.score ?? scoreSubmission(sampleSubmission.picks, winners);
+
+  if (DRY_RUN) {
+    // Smoke-test lane (task #737): proves the load -> score -> render path
+    // runs end-to-end without writing the real preview files or triggering
+    // a commit/email downstream. Exercises buildMarkdown/buildSampleHtml so
+    // a template regression still surfaces here, just never touches disk.
+    buildMarkdown({ submissions, scored, winners, criticScores, topScore, topScorers, distribution });
+    buildSampleHtml({ submission: sampleSubmission, score: sampleScore, criticScores, winners });
+    console.log(`\n(dry run) Preview generation succeeded — skipped writing ${PREVIEW_OUT} and ${SAMPLE_HTML_OUT}.`);
+    return;
+  }
+
+  // Write preview markdown
+  const markdown = buildMarkdown({ submissions, scored, winners, criticScores, topScore, topScorers, distribution });
+  fs.writeFileSync(PREVIEW_OUT, markdown, 'utf8');
+  console.log(`\nPreview written to: ${PREVIEW_OUT}`);
+
   const sampleHtml = buildSampleHtml({
     submission: sampleSubmission,
     score: sampleScore,

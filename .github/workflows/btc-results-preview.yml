@@ -18,12 +18,28 @@ name: Beat the Critics — Results Preview
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        # Smoke-test lane (task #737): this workflow shipped and sat
+        # dispatched ZERO times (checkout/core-data/npm path entirely
+        # unproven — same class as #657/#688). dry_run=true runs the real
+        # load -> score -> render path (preview-btc-results.js --dry-run)
+        # and stops before writing the preview files, so it proves the CI
+        # wiring end-to-end without touching data/audit or sending email.
+        description: 'Generate + score only — skip writing preview files, committing, and the approval email (CI smoke test)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
 concurrency:
-  group: btc-results-preview
+  # dry_run gets its OWN lane (add-requested-show.yml precedent, task #722):
+  # sharing the real lane would let an operator smoke test silently cancel
+  # a real post-Tonys results run queued behind it (GHA only keeps ONE
+  # queued run per group with cancel-in-progress: false).
+  group: btc-results-preview${{ inputs.dry_run == true && '-dry-run' || '' }}
   cancel-in-progress: false
 
 jobs:
@@ -51,9 +67,21 @@ jobs:
         run: npm ci
 
       - name: Generate results preview
-        run: node scripts/preview-btc-results.js
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/preview-btc-results.js --dry-run
+          else
+            node scripts/preview-btc-results.js
+          fi
 
       - name: Commit preview files
+        # Skipped on dry_run: --dry-run never writes the preview/sample-email
+        # files, so there is nothing to commit — and skipping keeps the
+        # smoke test provably incapable of touching data/ even if a future
+        # edit made the script write before its dry-run return.
+        if: always() && inputs.dry_run != true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -66,6 +94,8 @@ jobs:
           fi
 
       - name: Read preview for email body
+        # Skipped on dry_run: the preview file was never written above.
+        if: inputs.dry_run != true
         id: preview
         run: |
           PREVIEW=$(cat data/beat-the-critics-results-preview.md)
@@ -78,6 +108,8 @@ jobs:
           echo "top_score=$TOP_SCORE" >> "$GITHUB_OUTPUT"
 
       - name: Send approval email to owner
+        # Skipped on dry_run: a smoke test must never send a real email.
+        if: inputs.dry_run != true
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
