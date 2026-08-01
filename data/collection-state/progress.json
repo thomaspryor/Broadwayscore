@@ -1,25 +1,74 @@
 {
-  "processed": [],
+  "processed": [
+    "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
+    "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
+    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
+    "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json"
+  ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
     "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
-    "death-note-the-musical-west-end-2026/thestage--unknown.json"
+    "death-note-the-musical-west-end-2026/thestage--unknown.json",
+    "space-dogs-off-west-end-2026/thestage--the-stage.json",
+    "death-note-the-musical-west-end-2026/barbican--unknown.json",
+    "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
+    "death-note-the-musical-west-end-2026/thestage--unknown.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
+    "tao-of-glass-west-end-2026/thestage--the-stage.json",
+    "tao-of-glass-west-end-2026/tribune--unknown.json",
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
+    "the-importance-of-being-oscar-off-west-end-2026/express-uk--stefan-kyriazis.json",
+    "the-importance-of-being-oscar-off-west-end-2026/financialtimes--sarah-hemming.json",
+    "the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json",
+    "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
+      "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
+      "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
+      "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json",
-      "data/review-texts/death-note-the-musical-west-end-2026/telegraph-uk--unknown.json"
+      "data/review-texts/death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json",
+      "data/review-texts/death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-01T20:45:48.345Z",
-  "lastProcessed": "death-note-the-musical-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
+  "log": [
+    {
+      "t": "2026-08-01T21:59:32.777Z",
+      "event": "bb-session",
+      "session": "01578c6e",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-01T21:59:49.905Z",
+      "event": "bb-session",
+      "session": "510cd6e5",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    }
+  ]
 }
