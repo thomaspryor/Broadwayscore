@@ -254,7 +254,18 @@ function composeDigestEmail({
     const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
     const exp = Math.floor(Date.now() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
     const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
-    console.log(`[digest] Fix-this buttons attached to ${attached} health error row(s)`);
+    // Says ROWS, not "error rows", and says how many the email actually
+    // RENDERS. The old wording ("attached to N health error row(s)") is the
+    // exact line a 2026-08-01 session accepted as proof the digest was fine
+    // while the delivered email had 1 tappable row and 13 dead ones. A log
+    // line is never the acceptance evidence for this email — read the render
+    // (data/audit/morning-digest-preview.html) — but it must at least not lie.
+    const { selectHealthRows } = require('./lib/autonomous-email-render.js');
+    const shown = selectHealthRows({
+      errors: sections.health && sections.health.errors,
+      warns: sections.health && (sections.health.warns || sections.health.warnings),
+    }).rows.filter(r => r && r.name).length;
+    console.log(`[digest] Fix-this buttons: ${attached} row(s) signed, ${shown} rendered in the email (NOT proof the email reads well — open the preview)`);
   }
 
   const subject = buildSubject({ health: sections.health, now });

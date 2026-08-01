@@ -115,11 +115,22 @@ function selectOpenDispatchCard(candidates) {
  * cost the owner the whole email.
  */
 function attachHealthFixUrls({ health, exp, secret, baseUrl }) {
-  if (!health || !Array.isArray(health.errors)) return 0;
+  if (!health) return 0;
   if (!secret || !baseUrl) return 0;
   let attached = 0;
-  for (const e of health.errors) {
+  // Owner escalation 2026-08-01: WARNINGS get buttons too. Errors-only meant
+  // the 2026-08-01 digest carried 1 tappable row and 13 dead ones — "a bunch
+  // of other shit with no actions to take". A warning the owner can't act on
+  // is either noise (and should not be in the email) or work (and needs a
+  // button); there is no third category, so every named row gets one.
+  const named = [
+    ...(Array.isArray(health.errors) ? health.errors : []),
+    ...(Array.isArray(health.warnings) ? health.warnings : []),
+    ...(Array.isArray(health.warns) ? health.warns : []),
+  ];
+  for (const e of named) {
     if (!e || !e.name) continue;
+    if (e.fixUrl) continue; // health.warnings/health.warns may alias one array
     e.fixUrl = buildDispatchUrl({
       conditionKey: `health-check:${e.name}`,
       title: `BSC Daily: ${e.name}`,

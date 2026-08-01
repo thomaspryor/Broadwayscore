@@ -210,6 +210,31 @@ function renderRecheckBlock(recheck) {
 // now writes its results to data/audit/health-digest-snapshot.json instead of
 // sending mail; autonomous-email.js reads that snapshot and folds it in here
 // so there is exactly one scheduled morning email, not two.
+// Which health rows the email actually renders, and how many warnings that
+// leaves in the "+N more" tail. Extracted as a PURE function (CLAUDE.md §15)
+// because digest-content-invariants.js must assert "every rendered row has a
+// working button" against the SAME budget the renderer uses — a second copy
+// of this arithmetic in the checker is the "must match X" antipattern that
+// lets the two drift and the assertion go quietly false.
+//
+// Owner escalation 2026-08-01 ("this had ONE fix it button. And a bunch of
+// other shit with no actions to take."): warnings used to render name-only,
+// no message, no button — the exact "reports but cannot act" shape. Every
+// row now carries its message and its Fix-this button, so the budget squeezes
+// the LIST, never the actionability of what is shown.
+const HEALTH_ROW_BUDGET = 8;
+function selectHealthRows({ errors = [], warns = [] } = {}) {
+  const errs = Array.isArray(errors) ? errors : [];
+  const warnings = Array.isArray(warns) ? warns : [];
+  // Errors are never squeezed: a flat slice would demote the Nth error into
+  // an un-tappable "+N more" exactly on the mornings with the most to fix.
+  const shownWarns = warnings.slice(0, Math.max(0, HEALTH_ROW_BUDGET - errs.length));
+  return {
+    rows: [...errs.map(e => ({ ...e, kind: 'error' })), ...shownWarns.map(w => ({ ...w, kind: 'warn' }))],
+    hiddenWarns: warnings.length - shownWarns.length,
+  };
+}
+
 function renderHealthDigestBlock(health) {
   if (!health) return '';
   const errors = Array.isArray(health.errors) ? health.errors : [];
@@ -274,15 +299,14 @@ function renderHealthDigestBlock(health) {
   // error into an un-tappable "+N more", i.e. "every error gets a button" was
   // false in the inbox exactly on the days with the most to fix). The email
   // grows only on a genuinely bad morning, which is when you want it to.
-  const shownWarns = warns.slice(0, Math.max(0, 8 - errors.length));
-  const rows = [...errors.map(e => ({ ...e, kind: 'error' })), ...shownWarns.map(w => ({ ...w, kind: 'warn' }))]
-    .map(r => `<div style="margin:0 0 ${r.kind === 'error' ? 6 : 3}px;">
+  const { rows: shownRows, hiddenWarns } = selectHealthRows({ errors, warns });
+  const rows = shownRows
+    .map(r => `<div style="margin:0 0 6px;">
       <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
       <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
-      ${r.kind === 'error' && r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
-      ${r.kind === 'error' ? fixThisHtml(r.fixUrl) : ''}
+      ${r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
+      ${fixThisHtml(r.fixUrl)}
     </div>`).join('');
-  const hiddenWarns = warns.length - shownWarns.length;
   const more = hiddenWarns > 0 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${hiddenWarns} more</div>` : '';
   const escalation = health.consecutiveErrorDays > 1
     ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
@@ -608,7 +632,7 @@ function renderEmail(data) {
 module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
-  renderHealthDigestBlock, healthIssueCount,
+  renderHealthDigestBlock, healthIssueCount, selectHealthRows, HEALTH_ROW_BUDGET,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };
