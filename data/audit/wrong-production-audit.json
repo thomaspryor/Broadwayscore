@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T09:47:28.352Z",
+  "timestamp": "2026-08-01T10:30:17.546Z",
   "stats": {
-    "totalReviews": 41149,
-    "alreadyFlagged": 17947,
-    "dateGuardCatches": 81,
+    "totalReviews": 41173,
+    "alreadyFlagged": 17956,
+    "dateGuardCatches": 85,
     "directorMismatch": 938,
-    "tvFilmSignals": 1123,
+    "tvFilmSignals": 1124,
     "londonSignals": 777,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3451
+    "noPublishDate": 3455
   },
   "findings": [
     {
@@ -23888,6 +23888,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "british-theatre--robert-tanitch.json",
+      "score": 79,
+      "publishDate": "2025-05-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 440d before show (2025-05-18 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
       "score": 87,
       "publishDate": "2025-05-13",
@@ -23962,10 +23976,57 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": 88,
+      "publishDate": "2025-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 80,
       "publishDate": "2025-05-14",
       "url": "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatrecat--libby-purves.json",
+      "score": 93,
+      "publishDate": "2025-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thereviewshub--christine-stanton.json",
+      "score": 90,
+      "publishDate": "2025-05-14",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -42675,7 +42736,7 @@
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "file": "artsdesk--gary-naylor.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "April 3rd, 2025",
       "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
       "findings": [
         {
