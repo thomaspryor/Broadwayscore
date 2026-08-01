@@ -22,5 +22,13 @@
     "severity": "warning",
     "url": null,
     "queuedAt": "2026-08-01T19:17:20.189Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30715317140",
+    "queuedAt": "2026-08-01T19:57:34.627Z"
   }
 ]
