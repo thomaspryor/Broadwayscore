@@ -73,11 +73,20 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   // button. Counting nameless entries here would flag correct fail-soft
   // behavior as a violation (ship-check adversarial finding, codex
   // 2026-07-30).
-  const namedErrors = health && Array.isArray(health.errors) ? health.errors.filter((e) => e && e.name) : [];
-  if (namedErrors.length > 0) {
+  // Widened 2026-08-01 (owner: "ONE fix it button and a bunch of other shit
+  // with no actions"): the bar is now every RENDERED row, warnings included.
+  // selectHealthRows is imported from the renderer rather than reimplemented
+  // so the row budget can never drift between what is drawn and what is
+  // asserted — a second copy here would let this check go quietly false.
+  const { selectHealthRows } = require('./autonomous-email-render.js');
+  const namedRows = health
+    ? selectHealthRows({ errors: health.errors, warns: health.warns || health.warnings })
+        .rows.filter((r) => r && r.name)
+    : [];
+  if (namedRows.length > 0) {
     const fixCount = countFixThisButtons(html);
-    if (fixCount !== namedErrors.length) {
-      violations.push(`expected ${namedErrors.length} "Fix this" button(s) for ${namedErrors.length} named health error(s), found ${fixCount}`);
+    if (fixCount !== namedRows.length) {
+      violations.push(`expected ${namedRows.length} "Fix this" button(s) for ${namedRows.length} rendered health row(s), found ${fixCount}`);
     }
   }
 
