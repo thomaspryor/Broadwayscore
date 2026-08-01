@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T04:18:50.900Z",
+  "generatedAt": "2026-08-01T05:08:57.760Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -166,17 +166,17 @@
       "status": "open",
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
-      "siteScore": 81.33,
+      "siteScore": 81.18,
       "liveScore": 81,
-      "scoreDrift": -0.3299999999999983,
+      "scoreDrift": -0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 2,
       "t2": 8,
-      "t3": 3,
-      "positive": 10,
+      "t3": 4,
+      "positive": 11,
       "mixed": 3,
       "negative": 0,
       "readiness": {
@@ -230,6 +230,10 @@
         },
         {
           "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -318,6 +322,18 @@
           "t2": 8,
           "t3": 3,
           "p": 10,
+          "m": 3,
+          "n": 0,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-08-01T05:08:57.760Z",
+          "rc": 14,
+          "s": 81.18,
+          "t1": 2,
+          "t2": 8,
+          "t3": 4,
+          "p": 11,
           "m": 3,
           "n": 0,
           "bc": "overdue"
@@ -914,28 +930,26 @@
       "status": "open",
       "slug": "the-importance-of-being-oscar-off-west-end",
       "thumbnail": "/images/shows/the-importance-of-being-oscar-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 81.3,
-      "liveScore": 81,
-      "scoreDrift": -0.29999999999999716,
+      "siteScore": 77.14,
+      "liveScore": 77,
+      "scoreDrift": -0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 1,
-      "t2": 3,
-      "t3": 1,
-      "positive": 4,
-      "mixed": 1,
+      "t2": 4,
+      "t3": 3,
+      "positive": 6,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1017,6 +1031,18 @@
           "t3": 1,
           "p": 4,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-01T05:08:57.760Z",
+          "rc": 8,
+          "s": 77.14,
+          "t1": 1,
+          "t2": 4,
+          "t3": 3,
+          "p": 6,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
