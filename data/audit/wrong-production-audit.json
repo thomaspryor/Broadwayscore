@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T05:08:51.943Z",
+  "timestamp": "2026-08-01T06:10:33.705Z",
   "stats": {
     "totalReviews": 41074,
     "alreadyFlagged": 17930,
-    "dateGuardCatches": 79,
+    "dateGuardCatches": 81,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 776,
+    "londonSignals": 777,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3404
+    "noPublishDate": 3402
   },
   "findings": [
     {
@@ -23860,7 +23860,29 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "broadwayworld--franco-milazzo.json",
+      "score": 87,
+      "publishDate": "2025-05-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 96,
+      "publishDate": "2025-05-14",
+      "url": "https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -23872,6 +23894,9 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
+      "score": 81,
+      "publishDate": "2025-05-14",
+      "url": "https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqawIAzRPLCe5BipyMyYjw8DiIaqX0NUVtdid3ax7rY3-CHJtvH",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -23886,6 +23911,19 @@
       "score": 89,
       "publishDate": "2025-05-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2025-05-13",
+      "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -23924,6 +23962,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 66,
       "findings": [
         {
           "type": "DATE_GUARD",
