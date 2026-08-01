@@ -47,8 +47,10 @@ test('a genuine touring-production review of THIS show is still flagged (no fals
   assert.equal(result.isTourReview, true);
 });
 
-test('other-show mention far from the tour signal, in a sentence about the current show, still flags', () => {
-  const excerpt = "Fans of Noises Off will find plenty to enjoy here. The touring production of "
+test('other-show mention well outside the proximity window does not suppress a genuine signal', () => {
+  const excerpt = "Fans of Noises Off, a very different sort of farce entirely, will find plenty else to enjoy "
+    + "in London this season, from small fringe houses to the big commercial West End transfers everyone "
+    + "keeps talking about at length in every publication. Meanwhile, this touring production of "
     + "The Comedy About Spies is currently on tour around regional theatres.";
   const result = isTourReviewExcerpt(excerpt, CURRENT);
   assert.equal(result.isTourReview, true);

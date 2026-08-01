@@ -522,7 +522,14 @@ function selectBestExcerpt(data, showTitle) {
     if (cleaned && cleaned.length > 20) {
       // isPromoTeaser also guards this fast-path: a teaser here would come
       // from a bulk import writing pullQuote, not a human editor's choice.
-      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)) {
+      // Same reasoning extends the listing-chrome and tag-cloud guards here
+      // (2026-08-01 Codex review): a bulk import that wrote a British Theatre
+      // Guide listing block or a Reviews Hub tag list into `pullQuote` would
+      // otherwise sail past every new guard and ship, with the corpus audit
+      // reporting it only after the fact. Mid-word truncation is deliberately
+      // NOT applied — a human editor may legitimately quote a prefix.
+      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)
+          && !hasListingChrome(cleaned) && !isTagCloudExcerpt(cleaned)) {
         return cleaned;
       }
     }
