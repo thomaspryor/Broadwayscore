@@ -64,8 +64,18 @@ export interface TicketLinkData {
  *   Only used by TicketButtonsAB on show pages. Other callers omit this param.
  */
 export function sortTicketLinks(links: TicketLinkData[], overrideFirstPlatform?: string): TicketLinkData[] {
-  return [...links]
-    .filter(l => !HIDDEN_PLATFORMS.has(l.platform))
+  const visible = [...links].filter(l => !HIDDEN_PLATFORMS.has(l.platform));
+  // Never leave a show buttonless: the HIDDEN_PLATFORMS rationale above is
+  // explicitly conditioned on "no official buy path is lost" (every hidden
+  // link had a TodayTix/Official sibling). When hiding would remove a show's
+  // ONLY link (e.g. Les Mis Arena Concert at Radio City — Ticketmaster is the
+  // sole seller), the affiliate-consolidation logic doesn't apply and the
+  // best hidden link renders instead. StubHub stays hidden even here —
+  // resale-only is worse than no button.
+  const pool = visible.length > 0
+    ? visible
+    : [...links].filter(l => l.platform !== 'StubHub');
+  return pool
     .sort((a, b) => {
       if (overrideFirstPlatform) {
         if (a.platform === overrideFirstPlatform && b.platform !== overrideFirstPlatform) return -1;
