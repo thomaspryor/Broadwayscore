@@ -1,0 +1,87 @@
+name: Add Requested Show
+
+# Dispatched by process-feedback.yml's content-request routing (task #722)
+# for a `missing-show` action — a user asked for a show that isn't in the
+# catalog. Only promotes regional feeder-venue shows off their BWW/Playbill
+# Verdict review roundup page (CLAUDE.md §3 auto-promotion path — "the
+# roundup IS the validation"). Off-Broadway/Broadway titles are NOT handled
+# here: they need the operator-run promote-ob-venue-candidates.js path with
+# Playbill-OB/Lortel cross-validation, and scripts/add-requested-show.js
+# refuses (non-zero exit, no write) rather than guessing.
+#
+# NEVER stubs shows.json from memory — a rejection here just means the show
+# stays unrouted for manual follow-up; it is never fabricated.
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Show title as the user typed it'
+        required: true
+        type: string
+      venue_hint:
+        description: 'Optional venue hint extracted from the submission ("at X")'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: add-requested-show
+  cancel-in-progress: false
+
+jobs:
+  add-show:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve roundup + stage + promote
+        id: add
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          node scripts/add-requested-show.js --title="${{ inputs.title }}" --venue_hint="${{ inputs.venue_hint }}"
+
+      - name: Validate data (push-refusal gate on failure)
+        if: always()
+        run: node scripts/validate-data.js
+
+      - name: Push core data
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: add requested show '${{ inputs.title }}' via feedback-pipeline routing"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Add Requested Show Failed'
+          severity: 'warning'

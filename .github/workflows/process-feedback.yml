@@ -105,14 +105,26 @@ jobs:
                 // Content-addition requests (missing show/reviews) deliberately
                 // skip diagnosis — they're data work, not code bugs.
                 const isContentRequest = item.contentRequest === true;
+                // contentActions is the planner's output (scripts/lib/content-request-routing.js):
+                // an array of {kind, workflow?, inputs?, reason?}. Dispatchable
+                // actions carry a `workflow` — unroutable ones don't and still
+                // park below exactly as before task #722.
+                const contentActions = Array.isArray(item.contentActions) ? item.contentActions : [];
+                const dispatchable = contentActions.filter((a) => a && a.workflow);
+                const willAutoDispatch = isContentRequest && dispatchable.length > 0;
+
                 const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: isContentRequest
+                  title: willAutoDispatch
+                    ? `Content request auto-dispatched: ${(item.summary || 'no summary').substring(0, 60)}`
+                    : isContentRequest
                     ? `Content request needs review: ${(item.summary || 'no summary').substring(0, 60)}`
                     : `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
                   body: [
-                    isContentRequest
+                    willAutoDispatch
+                      ? `Content-addition request from user feedback — routed to ${dispatchable.length} workflow dispatch(es) below (task #722). No manual action needed unless a dispatch fails.`
+                      : isContentRequest
                       ? `Content-addition request from user feedback — needs data work (add show/reviews), not a code fix.`
                       : `Auto-diagnosis failed for this feedback submission — review manually.`,
                     '',
@@ -120,10 +132,50 @@ jobs:
                     '',
                     `**Original message:**`,
                     `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
+                    ...(contentActions.length
+                      ? ['', '**Routing:**', ...contentActions.map((a) =>
+                          a.workflow
+                            ? `- \`${a.kind}\` → \`${a.workflow}\` (${JSON.stringify(a.inputs || {})})`
+                            : `- \`${a.kind}\` — unroutable: ${a.reason || 'no reason given'}`
+                        )]
+                      : []),
                   ].join('\n'),
-                  labels: ['feedback-digest', 'needs-review'],
+                  labels: willAutoDispatch ? ['feedback-digest', 'auto-dispatched'] : ['feedback-digest', 'needs-review'],
                 });
-                console.log(`Created needs-review issue #${issue.data.number} for undiagnosed report`);
+                console.log(
+                  willAutoDispatch
+                    ? `Created auto-dispatched issue #${issue.data.number}`
+                    : `Created needs-review issue #${issue.data.number} for undiagnosed report`
+                );
+
+                // Dispatch each routable action. One failed dispatch must not
+                // sink the others or the issue itself — the issue (with its
+                // routing table) is the audit trail either way.
+                for (const action of dispatchable) {
+                  try {
+                    await github.rest.actions.createWorkflowDispatch({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      workflow_id: action.workflow,
+                      ref: 'main',
+                      inputs: action.inputs || {},
+                    });
+                    console.log(`  Dispatched ${action.workflow} for #${issue.data.number} (${action.kind})`);
+                  } catch (err) {
+                    console.log(`  Failed to dispatch ${action.workflow} for #${issue.data.number}: ${err.message}`);
+                    try {
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issue.data.number,
+                        body: `Dispatch of \`${action.workflow}\` failed: ${err.message}. Needs a manual \`gh workflow run\` or investigation.`,
+                      });
+                    } catch (_) { /* comment is best-effort; the console log above is the record of truth */ }
+                  }
+                  // 10s spacing between dispatches — same rationale as the
+                  // bug-diagnosis auto-fix dispatch loop below.
+                  await new Promise((r) => setTimeout(r, 10000));
+                }
               } catch (err) {
                 console.log(`Failed to create needs-review issue for undiagnosed report: ${err.message}`);
                 failedUndiagnosed.push(entry);

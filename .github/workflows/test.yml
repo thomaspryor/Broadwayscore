@@ -253,7 +253,7 @@ on:
       - 'scripts/lib/pending-diagnoses.js'
       - 'scripts/process-feedback.js'
       # Feedback categorization prompt + parser (2026-07-26, Elephant Shoes
-      # mis-scope). Test lives in tests/unit/feedback-categorize.test.mjs;
+      # mis-scope). Test lives in tests/unit/feedback-categorize.test.mjs tests/unit/content-request-routing.test.mjs;
       # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/feedback-categorize.js'
       - 'tests/unit/feedback-categorize.test.mjs'
@@ -263,6 +263,11 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/resolve-show.js'
       - 'scripts/lib/resolve-show.test.mjs'
+      # Content-request → workflow routing (2026-08-01, GH #505 "3 Summers of
+      # Lincoln"): content requests parked at a needs-review issue no workflow
+      # consumed. Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/content-request-routing.js'
+      - 'tests/unit/content-request-routing.test.mjs'
       - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'
