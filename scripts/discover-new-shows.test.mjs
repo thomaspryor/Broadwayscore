@@ -81,3 +81,38 @@ test('The Other Palace venue listing config extracts show slugs, not utility pag
     assert.ok(!venue.linkPattern.test(href), `${href} must NOT match linkPattern`);
   }
 });
+
+test('Orange Tree + Park Theatre linkPatterns admit shows, reject utility/pagination links', () => {
+  const cases = [
+    { name: 'Orange Tree Theatre',
+      admit: [
+        'https://orangetreetheatre.co.uk/whats-on/loves-labours-lost/',
+        'https://www.orangetreetheatre.co.uk/whats-on/much-ado-about-nothing/',
+      ],
+      reject: [
+        'https://orangetreetheatre.co.uk/whats-on/',
+        'https://orangetreetheatre.co.uk/whats-on/archive/',
+        'https://orangetreetheatre.co.uk/whats-on/page/',
+        'https://orangetreetheatre.co.uk/about/',
+        '/whats-on/loves-labours-lost/',
+      ] },
+    { name: 'Park Theatre',
+      admit: [
+        'https://parktheatre.co.uk/events/bull/',
+        'https://www.parktheatre.co.uk/events/the-revlon-girl/',
+      ],
+      reject: [
+        'https://parktheatre.co.uk/events/page/',
+        'https://parktheatre.co.uk/events/archive/',
+        'https://parktheatre.co.uk/whats-on/archive/',
+        'https://parktheatre.co.uk/about-us/',
+        '/events/bull/',
+      ] },
+  ];
+  for (const { name, admit, reject } of cases) {
+    const venue = VENUE_LISTING_PAGES.find(v => v.name === name);
+    assert.ok(venue, `${name} must be in VENUE_LISTING_PAGES`);
+    for (const href of admit) assert.ok(venue.linkPattern.test(href), `${name} should admit: ${href}`);
+    for (const href of reject) assert.ok(!venue.linkPattern.test(href), `${name} should reject: ${href}`);
+  }
+});
