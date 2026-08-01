@@ -49,15 +49,14 @@ describe('placeholder image detection', () => {
     const scriptPath = path.join(__dirname, '../../scripts/fetch-show-images-auto.js');
     if (!fs.existsSync(scriptPath)) return;
     const content = fs.readFileSync(scriptPath, 'utf8');
+    // Anchored on the destructure itself — a regex that only checks the two
+    // substrings appear ANYWHERE in the file passes even if the import is
+    // dropped, because the call sites (PLACEHOLDER_FILE_HASHES.has(...)) still
+    // mention the name. This is the exact ReferenceError this test guards.
     assert.match(
       content,
-      /require\(['"]\.\/lib\/show-images['"]\)/,
-      'fetch-show-images-auto.js must import from ./lib/show-images, not redefine PLACEHOLDER_FILE_HASHES locally'
-    );
-    assert.match(
-      content,
-      /PLACEHOLDER_FILE_HASHES/,
-      'fetch-show-images-auto.js must destructure PLACEHOLDER_FILE_HASHES from the lib import'
+      /const\s*\{[^}]*\bPLACEHOLDER_FILE_HASHES\b[^}]*\}\s*=\s*require\(['"]\.\/lib\/show-images['"]\)/,
+      'fetch-show-images-auto.js must destructure PLACEHOLDER_FILE_HASHES from require("./lib/show-images"), not redefine it locally or leave it unimported'
     );
   });
 });
