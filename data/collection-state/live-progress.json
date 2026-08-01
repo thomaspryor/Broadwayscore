@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-01T20:08:27.929Z",
-  "processed": 52,
-  "failed": 449,
-  "successRate": "10.4%",
+  "updatedAt": "2026-08-01T20:13:00.806Z",
+  "processed": 57,
+  "failed": 544,
+  "successRate": "9.5%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 10,
     "directCookies": 6,
     "scrapingbee": 0,
     "brightdata": 10,
     "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-01T19:40:44.776Z",
@@ -37,6 +37,24 @@
       "t": "2026-08-01T20:04:57.865Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T20:10:14.421Z",
+      "event": "bb-session",
+      "session": "d5931181",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-01T20:10:40.400Z",
+      "event": "bb-session",
+      "session": "2efd6293",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-08-01T20:11:10.931Z",
+      "event": "bb-session",
+      "session": "eddc8480",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }

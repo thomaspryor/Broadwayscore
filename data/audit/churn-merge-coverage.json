@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 19,
-    "exemptCount": 17,
+    "exemptCount": 16,
     "coveredCount": 38,
-    "highChurnTracked": 74
+    "highChurnTracked": 73
   },
   "flagged": [
     {
@@ -24,15 +24,15 @@
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 169
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 116
+      "churn": 168
     },
     {
       "path": "data/audit/processed-feedback.json",
       "churn": 116
+    },
+    {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 114
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
@@ -153,8 +153,8 @@
       "churn": 34
     },
     {
-      "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 32
+      "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
+      "churn": 33
     },
     {
       "path": "public/data/shows/cat-cohen-broad-strokes-off-broadway-2026.json",
@@ -279,7 +279,7 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 55,
+      "churn": 54,
       "mergeAttr": "ours"
     },
     {
