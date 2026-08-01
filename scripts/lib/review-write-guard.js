@@ -799,6 +799,12 @@ function wouldFormDuplicateCycle(thisBasename, colliderData) {
   return !!(colliderData && colliderData.duplicateOf === thisBasename);
 }
 
+// Body-length thresholds shared by the collision-decision helpers below.
+// SUBSTANTIVE: long enough to claim canonical status / be LLM-scoreable.
+// NEAR_EMPTY: short enough to hold nothing unique (stub / nulled-by-correction).
+const SUBSTANTIVE_BODY_CHARS = 500;
+const NEAR_EMPTY_BODY_CHARS = 200;
+
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // A prior cleanup pass explicitly reviewed this URL collision and cleared it
   // as a false positive (_duplicateOfCleared breadcrumb — e.g. two distinct
@@ -814,7 +820,7 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   const colLen = String((colliderData && colliderData.fullText) || '').trim().length;
   // New file has a real body AND the collider is (near-)empty → new file is the
   // canonical; do not mark it duplicate.
-  if (newLen >= 500 && colLen < 200) return false;
+  if (newLen >= SUBSTANTIVE_BODY_CHARS && colLen < NEAR_EMPTY_BODY_CHARS) return false;
   return true;
 }
 
@@ -836,15 +842,16 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
  * transient state).
  *
  * Pure (no I/O) for tests/unit/url-collision-canonical.test.mjs.
- * @param {{fullText?:string,_duplicateOfCleared?:any}|null} newData
- * @param {{fullText?:string}|null} colliderData
+ * @param {{fullText?:string,_duplicateOfCleared?:any,assignedScore?:number,aggregatorStars?:string}|null} newData
+ * @param {{fullText?:string,assignedScore?:number,aggregatorStars?:string}|null} colliderData
  * @returns {boolean} true → mark corrected file duplicateOf the collider
  */
 function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
-  if (newData && newData._duplicateOfCleared) return false;
+  if (!newData) return false;
+  if (newData._duplicateOfCleared) return false;
   if (!colliderData) return false;
-  const newLen = String((newData && newData.fullText) || '').trim().length;
-  if (newLen >= 200) return false;
+  const newLen = String(newData.fullText || '').trim().length;
+  if (newLen >= NEAR_EMPTY_BODY_CHARS) return false;
   // Sole-score guard: a bodyless file can still be the pair's only scored copy
   // (paywalled-star-outlet stubs score via aggregatorStars-fallback — corpus
   // probe found ap--mark-kennedy score 65 vs a scoreless same-URL sibling).
@@ -853,7 +860,7 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
   const newHasScore = newData.assignedScore != null || newData.aggregatorStars != null;
   const colCanScore = colliderData.assignedScore != null
     || colliderData.aggregatorStars != null
-    || String(colliderData.fullText || '').trim().length >= 500;
+    || String(colliderData.fullText || '').trim().length >= SUBSTANTIVE_BODY_CHARS;
   if (newHasScore && !colCanScore) return false;
   return true;
 }

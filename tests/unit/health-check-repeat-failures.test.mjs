@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -36,33 +36,48 @@ test('repeatFailureResults: count>=3 is error, exactly 2 is warn', () => {
   assert.match(lottery.message, /failed 4 times/);
 });
 
-test('repeatFailureResults: latestRunGreen downgrades error→warn and notes self-heal', () => {
+test('repeatFailureResults: selfHealed downgrades error→warn and notes self-heal', () => {
   // The Aug 1 Test Suite streak ended 05:10 UTC but the digest fired a
   // "likely broken" Fix-this card ~6.5h later — a wasted tap on an
   // already-resolved condition.
   const results = repeatFailureResults({
     skipped: false,
     repeatFailures: [
-      { name: 'test.yml', count: 10, latestUrl: 'https://x/10', latestRunGreen: true },
-      { name: 'weekly-grosses.yml', count: 2, latestUrl: 'https://x/2', latestRunGreen: true },
+      { name: 'test.yml', count: 10, latestUrl: 'https://x/10', selfHealed: true },
+      { name: 'weekly-grosses.yml', count: 2, latestUrl: 'https://x/2', selfHealed: true },
     ],
   });
   const testSuite = results.find(r => r.name === 'Workflow repeat-failure: test.yml');
   assert.equal(testSuite.status, 'warn');
   assert.match(testSuite.message, /failed 10 times/);
-  assert.match(testSuite.message, /latest run is green; likely self-healed/);
+  assert.match(testSuite.message, /likely self-healed/);
   const grosses = results.find(r => r.name === 'Workflow repeat-failure: weekly-grosses.yml');
   assert.equal(grosses.status, 'warn');
   assert.match(grosses.message, /likely self-healed/);
 });
 
-test('repeatFailureResults: without latestRunGreen the streak still escalates as before', () => {
+test('repeatFailureResults: without selfHealed the streak still escalates as before', () => {
   const results = repeatFailureResults({
     skipped: false,
-    repeatFailures: [{ name: 'test.yml', count: 10, latestUrl: 'https://x/10', latestRunGreen: false }],
+    repeatFailures: [{ name: 'test.yml', count: 10, latestUrl: 'https://x/10', selfHealed: false }],
   });
   assert.equal(results[0].status, 'error');
   assert.match(results[0].message, /likely broken, not transient/);
+});
+
+test('isRepeatFailureSelfHealed: requires 2+ consecutive trailing greens, not just a green latest run', () => {
+  // Streak genuinely over: greens since the last failure.
+  assert.equal(isRepeatFailureSelfHealed(['success', 'success', 'failure', 'failure']), true);
+  assert.equal(isRepeatFailureSelfHealed(['success', 'success', 'success', 'failure']), true);
+  // Flapping workflow (the 2026-06-13 blindness: 11/19 failures but latest
+  // run green most mornings) must NOT count as self-healed.
+  assert.equal(isRepeatFailureSelfHealed(['success', 'failure', 'success', 'failure']), false);
+  // Latest run red → obviously not healed.
+  assert.equal(isRepeatFailureSelfHealed(['failure', 'success', 'success']), false);
+  // Degenerate inputs.
+  assert.equal(isRepeatFailureSelfHealed(['success']), false);
+  assert.equal(isRepeatFailureSelfHealed([]), false);
+  assert.equal(isRepeatFailureSelfHealed(null), false);
 });
 
 test('playbook routes repeat-failure checks to fix-now (actionable, not low)', () => {
