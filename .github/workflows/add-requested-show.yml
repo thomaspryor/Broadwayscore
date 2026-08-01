@@ -61,7 +61,13 @@ concurrency:
   # only ever touches its own staged candidate — see promote-ob-venue-
   # candidates.js) plus push-core-data's existing rebase+retry handling for
   # any residual shows.json conflict.
-  group: add-requested-show
+  #
+  # dry_run gets its OWN lane. Sharing it would reintroduce exactly the
+  # silent-drop this comment describes, one layer up: an operator smoke test
+  # sitting in the lane means a real user-request dispatch has to queue, and
+  # a third run queuing behind it would silently cancel that real request.
+  # A smoke test must never be able to drop a real user's content request.
+  group: add-requested-show${{ inputs.dry_run == true && '-dry-run' || '' }}
   cancel-in-progress: false
 
 jobs:
