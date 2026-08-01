@@ -17,7 +17,7 @@ function healthWith(errors, warns = []) {
   return { generatedAt: NOW.toISOString(), errors, warns, queued: [] };
 }
 
-test('real assembly path: N health errors -> N Fix-this buttons, all invariants pass', () => {
+test('real assembly path: every rendered health row (errors AND warnings) gets a Fix-this button', () => {
   const health = healthWith([
     { name: 'Test Suite red', message: 'unit tests failing on main' },
     { name: 'Deploy stuck', message: 'vercel-deploy.yml has not run in 12h' },
@@ -33,10 +33,13 @@ test('real assembly path: N health errors -> N Fix-this buttons, all invariants 
   const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
   assert.equal(result.ok, true);
-  assert.equal(countFixThisButtons(html), 2);
+  // 2 errors + 1 warning = 3 rendered rows = 3 buttons. Warnings carry
+  // buttons since the 2026-08-01 owner escalation ("a bunch of other shit
+  // with no actions to take") — a row with no action does not belong here.
+  assert.equal(countFixThisButtons(html), 3);
 });
 
-test('real assembly path: zero errors -> zero Fix-this buttons, still passes', () => {
+test('real assembly path: zero errors, one warning -> the warning still gets its own button', () => {
   const health = healthWith([], [{ name: 'SEO: LCP elevated' }]);
   const { subject, html } = composeDigestEmail({
     sections: { health },
@@ -46,7 +49,7 @@ test('real assembly path: zero errors -> zero Fix-this buttons, still passes', (
   });
   const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
-  assert.equal(countFixThisButtons(html), 0);
+  assert.equal(countFixThisButtons(html), 1);
 });
 
 test('real assembly path: no dispatch secret -> no buttons attached, but errors still render (fail-soft, not fail-invisible)', () => {
