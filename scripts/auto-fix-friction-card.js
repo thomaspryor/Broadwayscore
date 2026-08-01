@@ -16,8 +16,9 @@
  *   GITHUB_TOKEN        - For gh pr create (must have pull-requests: write)
  *
  * Usage:
- *   node scripts/auto-fix-friction-card.js           # live run (up to 3 cards)
- *   node scripts/auto-fix-friction-card.js --dry-run # print proposed patches, no git/PR/Notion writes
+ *   node scripts/auto-fix-friction-card.js                  # live run (up to 3 cards)
+ *   node scripts/auto-fix-friction-card.js --dry-run         # print proposed patches, no git/PR/Notion writes
+ *   node scripts/auto-fix-friction-card.js --card-id=<id>    # scope to one card (still real writes unless --dry-run)
  */
 
 const fs = require('fs');
@@ -43,7 +44,13 @@ if (fs.existsSync(envPath)) {
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_VALIDATION = process.argv.includes('--skip-validation');
-const CARD_ID_ARG = process.argv.find(a => a.startsWith('--card-id='))?.slice('--card-id='.length) || null;
+// A malformed --card-id (e.g. '--card-id=' with an empty value) must NOT
+// silently fall through to the full pending-cards sweep — that's the exact
+// bug class caught in notion-action-poll.js's --card flag (task #725):
+// CARD_ID_ARG_RAW tracks flag presence separately from the parsed value so
+// main() can fail closed instead of scoping wider than the operator intended.
+const CARD_ID_ARG_RAW = process.argv.find(a => a.startsWith('--card-id='));
+const CARD_ID_ARG = CARD_ID_ARG_RAW ? CARD_ID_ARG_RAW.slice('--card-id='.length) || null : null;
 const CARDS_PER_RUN_CAP = 3;
 const { BRAIN_DATABASE_ID: NOTION_DATABASE_ID } = require('./lib/notion-constants');
 const ROOT = path.join(__dirname, '..');
@@ -291,6 +298,10 @@ async function main() {
   }
   if (!DRY_RUN && !process.env.GITHUB_TOKEN) {
     console.error('Missing GITHUB_TOKEN — required for PR creation');
+    process.exit(1);
+  }
+  if (CARD_ID_ARG_RAW && !CARD_ID_ARG) {
+    console.error('--card-id requires a value, e.g. --card-id=3af637c5-416f-8199-810c-e68f50c33b8d');
     process.exit(1);
   }
 
