@@ -1,42 +1,10 @@
 [
   {
-    "conditionKey": "ux-walkthrough:high-priority",
-    "title": "UX walkthrough: high-priority finding(s) filed",
-    "description": "- [2/3] An impossible action is offered: the 'Not Yet Booked' watchlist item for 'The Outsiders' displays an empty star rating control, implying the user can rate a show they have not yet seen.",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30638313741",
-    "queuedAt": "2026-07-31T14:30:57.106Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30659864244",
-    "queuedAt": "2026-07-31T20:01:17.444Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 81.8% (455/556)\noff-broadway: 48.7% (147/302)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (211h)\n1536 — independent (211h)\nA Midsummer Night's Dream - Globe — financialtimes (211h)\nA Midsummer Night's Dream - Globe — telegraph (211h)\nA Midsummer Night's Dream — financialtimes (211h)\n… 202 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "queuedAt": "2026-07-31T23:10:03.888Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "2/143 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nSpace Dogs: score-drift\nGiulia: The Poison Queen of Palermo: score-drift",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: browserbase $9.7 > $4 (97 sessions); brightdata $10.38 > $2.5 (3267 serp + 3651 unlocker reqs); scrapingdog 93110 credits > 45000",
+    "description": "Day 2026-07-31. 2026-07-31 · Browserbase: $9.7 (97 sessions) · 2026-07-31 · Bright Data: $10.38 (3267 serp / 3651 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 93110 credits (529106 this cycle). Verification streak reset to 0.",
     "severity": "error",
     "url": null,
-    "queuedAt": "2026-08-01T00:19:08.689Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "4 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "queuedAt": "2026-08-01T07:46:50.321Z"
+    "queuedAt": "2026-08-01T07:38:45.314Z"
   }
 ]
