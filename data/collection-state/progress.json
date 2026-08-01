@@ -98,7 +98,17 @@
     "trainspotting-the-musical-west-end-2026/london-unattached--jeanne-horak.json",
     "trainspotting-the-musical-west-end-2026/london-unattached--unknown.json",
     "trainspotting-the-musical-west-end-2026/telegraph--craig-mclean.json",
-    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json"
+    "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -140,7 +150,10 @@
       "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json",
@@ -148,7 +161,7 @@
     ]
   },
   "startTime": "2026-08-01T10:11:22.808Z",
-  "lastProcessed": "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
+  "lastProcessed": "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-08-01T12:20:35.867Z",
@@ -191,6 +204,39 @@
     },
     {
       "t": "2026-08-01T12:24:28.959Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T13:17:54.320Z",
+      "event": "bb-session",
+      "session": "99646f7a",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T13:17:54.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T13:18:10.288Z",
+      "event": "bb-session",
+      "session": "6b347cab",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T13:18:10.594Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T13:18:43.884Z",
+      "event": "bb-session",
+      "session": "e05db1ff",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T13:18:44.232Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
