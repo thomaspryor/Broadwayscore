@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-01T19:22:51.574Z",
+    "generatedAt": "2026-08-01T19:32:05.478Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,18 +9,18 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 19,
-    "exemptCount": 15,
+    "exemptCount": 16,
     "coveredCount": 38,
-    "highChurnTracked": 72
+    "highChurnTracked": 73
   },
   "flagged": [
     {
       "path": "data/audit/recent-pushes.jsonl",
-      "churn": 1889
+      "churn": 1899
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 315
+      "churn": 316
     },
     {
       "path": "data/audit/alert-ledger.json",
@@ -28,11 +28,11 @@
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 114
+      "churn": 115
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 110
+      "churn": 111
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
@@ -52,7 +52,7 @@
     },
     {
       "path": "data/audit/t1-coverage-stats.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": ".github/workflows/test.yml",
@@ -60,11 +60,11 @@
     },
     {
       "path": "data/audit/deployed-coverage-diff.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "data/audit/t1-outlet-breaker.json",
-      "churn": 61
+      "churn": 62
     },
     {
       "path": "data/audit/url-collision-report.json",
@@ -110,7 +110,7 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 116
+      "churn": 115
     },
     {
       "path": "public/opening-night-status.json",
@@ -122,11 +122,11 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 68
+      "churn": 67
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 51
+      "churn": 50
     },
     {
       "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
@@ -146,27 +146,31 @@
     },
     {
       "path": "public/data/shows/space-dogs-off-west-end-2026.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
       "churn": 31
+    },
+    {
+      "path": "public/data/shows/cat-cohen-broad-strokes-off-broadway-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1381,
+      "churn": 1377,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1339,
+      "churn": 1335,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 767,
+      "churn": 768,
       "mergeAttr": "ours"
     },
     {
@@ -176,17 +180,17 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 315,
+      "churn": 316,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 315,
+      "churn": 316,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 239,
+      "churn": 240,
       "mergeAttr": "ours"
     },
     {
@@ -201,7 +205,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-tao-of-glass-west-end-2026.json",
-      "churn": 148,
+      "churn": 149,
       "mergeAttr": "ours"
     },
     {
@@ -326,7 +330,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-the-comedy-about-spies-west-end-2026.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
