@@ -20,6 +20,7 @@
 
 const axios = require('axios');
 const { fetchLiveBrowserbaseSessionsToday } = require('./browserbase-live-usage');
+const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 const { createTtlCache } = require('./ttl-cache');
 
 // Per-run anchor memo (Scraping v2 Sprint 1 T5): the SAME reviews.php / market
@@ -263,7 +264,10 @@ async function _fetchReviewsPageAnchorsUncached() {
   // meant nothing actually stopped it. Enforce the SAME account-wide daily
   // ceiling collect-review-texts.js uses, checked against the live API so it
   // reflects real total spend regardless of which script is calling.
-  const maxPerDay = parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '250', 10);
+  // Resolved from THE shared constant, not a second hard-coded 250 — the
+  // "same ceiling as collect-review-texts.js" invariant this comment used to
+  // only assert is now mechanical (Scraping v2 T13, see browserbase-caps.js).
+  const maxPerDay = resolveMaxSessionsPerDay();
   const liveSessionsToday = await fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
   if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
     throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — BWW RR discovery skipped`);

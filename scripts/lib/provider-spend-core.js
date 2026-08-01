@@ -12,6 +12,11 @@
  */
 'use strict';
 
+// Pure lib -> pure lib. Reading THE shared ceiling (rather than re-deriving a
+// number here) is what keeps the digest's cap-exhausted line honest after the
+// T13 step-down moves the cap.
+const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
+
 const BB_COST_PER_SESSION = 0.10;
 
 /** "YYYY-MM-DD" for the UTC day before `now`. The reconciliation target is
@@ -141,12 +146,28 @@ function computeStreak(records, thresholds) {
  * scripts/backlog-drain.js for the same wrapping). Spend AND yield on one
  * line each: a $0 day with a dead pipeline must not read as green.
  */
-function renderSnapshot({ record, streak, breaches, generatedAt }) {
+function renderSnapshot({ record, streak, breaches, generatedAt, maxSessionsPerDay = resolveMaxSessionsPerDay() }) {
   const p = record.providers;
   const items = [];
   const fmt = (e, money, extra) => (e.status === 'ok' ? `${money}${extra || ''}` : e.status);
 
   items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions)`)}` });
+
+  // Cap-exhausted line (Scraping v2 T13). Spend alone can't answer "did the
+  // ceiling actually BITE?" — and that is the question the step-down
+  // (250 -> 100 -> 60) is gated on. A day that lands under budget because the
+  // cap clipped it is NOT a healthy day: work was dropped. Derived from the
+  // session count already in the ledger, so there's no new writer to keep
+  // in sync. See memory/browserbase-cap-stepdown-runbook.md.
+  if (p.browserbase?.status === 'ok' && typeof p.browserbase.sessions === 'number') {
+    const used = p.browserbase.sessions;
+    if (used >= maxSessionsPerDay) {
+      items.push({ title: `⚠️ Browserbase CAP EXHAUSTED: ${used}/${maxSessionsPerDay} sessions — work was dropped, this day does NOT count toward the step-down streak` });
+    } else if (used >= maxSessionsPerDay * 0.9) {
+      items.push({ title: `Browserbase near cap: ${used}/${maxSessionsPerDay} sessions (${Math.round((used / maxSessionsPerDay) * 100)}%)` });
+    }
+  }
+
   items.push({ title: `${record.day} · Bright Data: ${fmt(p.brightdata, `$${p.brightdata.cost ?? '?'}`, ` (${p.brightdata.serpReqs} serp / ${p.brightdata.unlockerReqs} unlocker)`)}` });
   for (const key of ['scrapingbee', 'scrapingdog']) {
     const e = p[key];

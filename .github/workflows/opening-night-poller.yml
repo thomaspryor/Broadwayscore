@@ -398,6 +398,15 @@ jobs:
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BROWSERBASE_ENABLED: 'true'
           BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          # Account-wide daily ceiling, injected so this job's bww-rr-discover
+          # path enforces the SAME number as collect-review-texts.js. Sourced
+          # from a repo VARIABLE (like BROWSERBASE_KILL_SWITCH above) so the
+          # Scraping v2 T13 step-down (250 -> 100 -> 60) is a one-line variable
+          # change with no deploy — and so it can be reverted in seconds if
+          # yield drops. Unset/empty resolves to the 250 default in
+          # lib/browserbase-caps.js. Do NOT lower it without the gate check in
+          # memory/browserbase-cap-stepdown-runbook.md.
+          BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}

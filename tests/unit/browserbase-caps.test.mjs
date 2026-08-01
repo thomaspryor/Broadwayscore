@@ -151,3 +151,51 @@ test('one paywalled outlet trying to consume 15 sessions is blocked at 10', () =
   assert.equal(r.allowed, false);
   assert.equal(r.reason, 'domain');
 });
+
+// --- Single shared daily ceiling (Scraping v2 T13) ---
+// collect-review-texts.js (local usage file) and lib/bww-rr-discover.js (live
+// API count) cap the SAME Browserbase account. They used to each hard-code
+// 250, with bww-rr-discover.js only asserting the invariant in a comment. The
+// T13 step-down edits this ceiling, so a drift here means half the spend stays
+// uncapped while the cap reads as lowered.
+
+const { resolveMaxSessionsPerDay, DEFAULT_MAX_SESSIONS_PER_DAY } = require('../../scripts/lib/browserbase-caps.js');
+
+test('daily ceiling defaults to 250 when the env var is unset', () => {
+  assert.equal(DEFAULT_MAX_SESSIONS_PER_DAY, 250);
+  assert.equal(resolveMaxSessionsPerDay({}), 250);
+});
+
+test('daily ceiling honours the env var — this is how T13 steps 250 -> 100 -> 60', () => {
+  assert.equal(resolveMaxSessionsPerDay({ BROWSERBASE_MAX_SESSIONS_PER_DAY: '100' }), 100);
+  assert.equal(resolveMaxSessionsPerDay({ BROWSERBASE_MAX_SESSIONS_PER_DAY: '60' }), 60);
+});
+
+test('unset/garbage/zero/negative fall back to the default, never to 0', () => {
+  // The poller injects `${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}`, which is
+  // an EMPTY STRING when the repo variable does not exist. parseInt('') is NaN,
+  // and a 0 ceiling would block every session account-wide.
+  for (const bad of ['', '   ', 'abc', '0', '-5']) {
+    assert.equal(
+      resolveMaxSessionsPerDay({ BROWSERBASE_MAX_SESSIONS_PER_DAY: bad }),
+      DEFAULT_MAX_SESSIONS_PER_DAY,
+      `expected fallback for ${JSON.stringify(bad)}`,
+    );
+  }
+});
+
+test('both enforcement points resolve the SAME ceiling from one env read', () => {
+  // Mirrors how collect-review-texts.js and bww-rr-discover.js each call it.
+  const env = { BROWSERBASE_MAX_SESSIONS_PER_DAY: '60' };
+  assert.equal(resolveMaxSessionsPerDay(env), resolveMaxSessionsPerDay(env));
+  // ...and the resolved value is what actually gates a request.
+  const r = checkBrowserbaseCaps({
+    sessionsToday: 60,
+    sessionsThisRun: 0,
+    sessionsPerDomain: {},
+    config: { maxPerDay: resolveMaxSessionsPerDay(env), maxPerRun: 30, maxPerDomain: 10 },
+  });
+  assert.equal(r.allowed, false);
+  assert.equal(r.reason, 'day');
+  assert.equal(r.limit, 60);
+});
