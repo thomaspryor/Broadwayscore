@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-30T07:41:01.834Z",
-  "subject": "BSC Daily: 1 known issue (unchanged, day 2)",
-  "bannerText": "1 error, 14 warnings",
-  "consecutiveErrorDays": 2,
+  "generatedAt": "2026-08-01T07:38:40.580Z",
+  "subject": "BSC Daily: ACTION NEEDED — Workflow repeat-failure: Test Suite",
+  "bannerText": "1 error, 15 warnings",
+  "consecutiveErrorDays": 3,
   "errors": [
     {
-      "name": "Sync: cast coverage",
-      "message": "29 empty cast: The Lost Boys, The Rocky Horror Show, Schmigadoon!"
+      "name": "Workflow repeat-failure: Test Suite",
+      "message": "Test Suite failed 10 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -16,15 +16,15 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19223 vs baseline 19236"
+      "message": "Reviews dropped: 19301 vs baseline 19312"
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: the-imaginary-invalid Theater Life 4.5/5 stars→90 vs LLM 41, gap 49)"
+      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: the-imaginary-invalid Theater Life 4.5/5 stars→90 vs LLM 41, gap 49)"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "7 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "10 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Credits: ScrapingBee",
@@ -32,19 +32,23 @@
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "644k credits left (64%) · 51k/day burn · renews in 23d · exhausts in ~13d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
-    },
-    {
-      "name": "Credits: Bright Data",
-      "message": "balance $42.44 · pending invoice $272.17 · month-to-date $268.77 (serp+unlocker)"
+      "message": "471k credits left (47%) · 59k/day burn · renews in 21d · exhausts in ~8d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (5d); push-with-retry.sh PUSH_DEADLINE_SEC=240 too tight for large (4d); UX audit #326: watchlist-grid delete icon color fix blocked  (3d)"
+      "message": "8 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (7d); UX audit #326: watchlist-grid delete icon color fix blocked  (5d); Scraping v2: T4 was a yield regression — reviews.php is not  (1d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "36 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Kill ScrapingBee premium_proxy direct calls (cost more than  (7d); Rebuild same-URL dedup: prefer a real criticName over 'Unkno (7d); Trainspotting: only 4 reviews on site + email said 7 (invest (7d)"
+      "message": "22 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (9d); Trainspotting: only 4 reviews on site + email said 7 (invest (9d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (8d)"
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Feedback: needs-manual-review backlog",
+      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 0d). Newest: #504 Bug Diagnosis: User reports that Gotta Dance (Off-Broadway) has an inc"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -52,28 +56,46 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: loves-labours-lost-globe-west-end-2026 — times-uk (empty-body)"
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
-      "name": "Data: reviewed shows missing from shows.json",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. First: \"LES MISERABLES: THE ARENA CONCERT SPECTACULAR\" (bww-roundup)"
+      "name": "Data: undispatchable backlog cards",
+      "message": "31 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Pull design and UX inspo from TodayTix predictions site"
     }
   ],
   "queued": [
     {
+      "title": "T1 Coverage — new gaps past 24h",
+      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "UX walkthrough: high-priority finding(s) filed",
+      "description": "- [2/3] An impossible action is offered: the 'Not Yet Booked' watchlist item for 'The Outsiders' displays an empty star rating control, implying the user can rate a show they have not yet seen.",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30638313741"
+    },
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30659864244"
+    },
+    {
       "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 78.4% (451/575)\noff-broadway: 47.8% (143/299)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (170h)\n1536 — independent (170h)\nA Midsummer Night's Dream - Globe — financialtimes (170h)\nA Midsummer Night's Dream - Globe — telegraph (170h)\nA Midsummer Night's Dream — financialtimes (170h)\n… 201 more open gap(s)",
+      "description": "broadway: 81.8% (455/556)\noff-broadway: 48.7% (147/302)\nwest-end: 69.8% (382/547)\n\nOldest gaps:\n1536 — guardian (211h)\n1536 — independent (211h)\nA Midsummer Night's Dream - Globe — financialtimes (211h)\nA Midsummer Night's Dream - Globe — telegraph (211h)\nA Midsummer Night's Dream — financialtimes (211h)\n… 202 more open gap(s)",
       "severity": "warning",
       "url": null
     },
     {
       "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/237 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nLove's Labour's Lost - Globe: score-drift",
+      "description": "2/143 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nSpace Dogs: score-drift\nGiulia: The Poison Queen of Palermo: score-drift",
       "severity": "error",
       "url": null
     }
   ],
   "autoFixedCount": 2,
-  "passedCount": 46,
-  "totalCount": 64
+  "passedCount": 52,
+  "totalCount": 71
 }
