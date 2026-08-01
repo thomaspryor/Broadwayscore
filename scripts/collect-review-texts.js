@@ -128,7 +128,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
-const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
+const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
@@ -324,7 +324,9 @@ const CONFIG = {
   // same pattern as the SB SERP exhaustion breaker (#201). Checked first in
   // canUseBrowserbase(), ahead of every other gate.
   browserbaseKillSwitch: process.env.BROWSERBASE_KILL_SWITCH === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '250'), // $25/day ceiling = $750/mo MAX; normal $5-9/day
+  // Shared with lib/bww-rr-discover.js via the one constant in
+  // lib/browserbase-caps.js — both cap the SAME account (Scraping v2 T13).
+  browserbaseMaxSessionsPerDay: resolveMaxSessionsPerDay(), // $25/day ceiling = $750/mo MAX; normal $5-9/day
   browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '30'), // Per workflow run; matches typical opening-night batch
   browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '10'), // Prevent one paywalled outlet monopolizing
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
