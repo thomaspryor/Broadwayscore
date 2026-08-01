@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-08-01T09:14:07.948Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-08-01T09:15:19.130Z",
+  "processed": 22,
+  "failed": 88,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-01T09:09:13.916Z",
+      "event": "bb-session",
+      "session": "9b128d5c",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-08-01T09:14:44.941Z",
+      "event": "bb-session",
+      "session": "40664802",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    }
+  ]
 }
