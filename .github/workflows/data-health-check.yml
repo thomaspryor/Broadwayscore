@@ -128,6 +128,14 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # MUST match what the collectors enforce, or the digest's
+          # cap-exhausted line goes silent exactly when it matters: after the
+          # T13 step-down sets this repo variable to 100, enforcement clips at
+          # 100 while an un-injected renderSnapshot would still compare against
+          # the 250 default — so a fully-clipped day renders no warning, reads
+          # as healthy, and counts toward the step-down streak. That is the
+          # inverse of the gate's purpose (ship-check finding, task #684).
+          BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
         run: node scripts/check-provider-spend.js
 
       # Acceptance recheck (task #695): the only host for
