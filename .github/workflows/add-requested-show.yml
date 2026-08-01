@@ -29,13 +29,20 @@ permissions:
   contents: write
 
 concurrency:
-  # Shares the nightly regional-promotion job's lane (scrape-new-aggregators
-  # writes shows.json via the same --regional-only promoter). Both a feedback
-  # dispatch and the weekly cron can independently promote a staged regional
-  # candidate; a separate lane let them race on the same push-core-data merge
-  # (ship-check adversarial review, task #722) — serializing behind the cron
-  # is a bounded wait (feedback dispatches are low-frequency), not a hazard.
-  group: scrape-new-aggregators
+  # A dedicated lane, NOT shared with scrape-new-aggregators (reverted —
+  # ship-check second-opinion review, task #722): GitHub Actions only keeps
+  # ONE run queued per concurrency group with cancel-in-progress: false: a
+  # second run doesn't wait behind the first, it's silently CANCELLED and
+  # replaced by whichever run queues next. Sharing the nightly's group meant
+  # a feedback dispatch queued behind a scrape-new-aggregators run (up to 5
+  # jobs x 60min timeout each) could be silently dropped by a THIRD run
+  # queuing in before it's ever dequeued — the opposite of the "bounded
+  # wait" this was meant to be. The actual write race this was trying to
+  # prevent is already closed by --only-hash (this dispatch's promoter run
+  # only ever touches its own staged candidate — see promote-ob-venue-
+  # candidates.js) plus push-core-data's existing rebase+retry handling for
+  # any residual shows.json conflict.
+  group: add-requested-show
   cancel-in-progress: false
 
 jobs:
@@ -94,15 +101,32 @@ jobs:
         # syncs shows.json et al (CORE_FILES). Without this commit those
         # writes are discarded at job end and the staged candidate never
         # actually leaves the queue, so nightly re-stages/re-promotes it.
+        #
+        # Gated on the ABSENCE of validate-data.js's push-refusal sentinel
+        # (ship-check second-opinion review, task #722): an unconditional
+        # `if: always()` here committed the staging-removal even when
+        # validate-data.js had just refused the shows.json write — the
+        # candidate would vanish from the queue while its show entry never
+        # reached shows.json, permanently losing it instead of just
+        # delaying it to the next nightly run (it's no longer staged
+        # either at that point).
         if: always()
+        env:
+          SHOW_TITLE: ${{ inputs.title }}
         run: |
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          if [ -f "$SENTINEL" ]; then
+            echo "validate-data.js refused the push (sentinel present) — leaving staging untouched so this candidate can be retried."
+            cat "$SENTINEL"
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/ob-venue-candidates.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No staging/audit changes to commit"
           else
-            git commit -m "data: add-requested-show staging + audit trail for '${{ inputs.title }}'"
+            git commit -m "data: add-requested-show staging + audit trail for '$SHOW_TITLE'"
             bash scripts/lib/push-with-retry.sh
           fi
 

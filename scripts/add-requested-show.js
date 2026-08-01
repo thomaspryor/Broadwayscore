@@ -32,7 +32,7 @@ const { execFileSync } = require('child_process');
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { classifyCandidate, classifyTitleDelta } = require('./lib/aggregator-candidate-extract');
-const { writeStagingCandidates, candidateHash } = require('./lib/venue-listing-discover');
+const { writeStagingCandidates, candidateHash, loadStaging } = require('./lib/venue-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `add-requested-show.js — Stage + promote a user-requested show via its BWW Review Roundup.
@@ -182,6 +182,24 @@ async function main() {
       cwd: path.join(__dirname, '..'),
     }
   );
+
+  // The promoter exits 0 whether it promoted our candidate, promoted nothing,
+  // or (bug) silently no-op'd on a hash mismatch — a green run here does NOT
+  // mean the show was added (ship-check second-opinion review, task #722).
+  // Regional candidates auto-confirm deterministically (CLAUDE.md §3 — "the
+  // roundup IS the validation"), so the ONLY legitimate outcome for a
+  // regional candidate is promoted-and-removed-from-staging. If our hash is
+  // still in the staging file after the promoter ran, nothing was actually
+  // added — fail loudly instead of reporting success.
+  const stillStaged = loadStaging().some((c) => c.candidateHash === hash);
+  if (stillStaged) {
+    console.log(
+      `Promotion did not remove candidate hash=${hash} from staging — the show was NOT added despite the promoter exiting 0. ` +
+      `Check the promoter's log above for the real reason.`
+    );
+    process.exit(1);
+  }
+  console.log('Confirmed: candidate left staging (promoted or already-present dedupe).');
 }
 
 main().catch((err) => {
