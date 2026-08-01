@@ -5561,9 +5561,10 @@ function findReviewsToProcess() {
         // duplicateOf via the url-change invariant (it's URL-derived) and
         // resurrects the duplicate until the next write re-tombstones it
         // (the-enormous-crocodile london-theatre--unknown weekly oscillation,
-        // 2026-08-01). Explicit --review targeting bypasses, for manual
-        // recovery of a wrongly tombstoned file.
-        if (data.duplicateOf && !CONFIG.reviewFilter.has(file)) {
+        // 2026-08-01). Explicit --review or --show targeting bypasses (same
+        // pattern as the permanentlyFailed skip above), so manual recovery of
+        // a wrongly tombstoned file still works.
+        if (data.duplicateOf && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
           logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedDuplicateOf', details: { url: data.url, duplicateOf: data.duplicateOf } });
           continue;
         }
