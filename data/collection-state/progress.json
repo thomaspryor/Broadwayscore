@@ -2,7 +2,9 @@
   "processed": [
     "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    "shifters-off-broadway-2026/nytg--gillian-russo.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
@@ -22,14 +24,24 @@
     "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
-    "shifters-off-broadway-2026/times-uk--donald-hutera.json"
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-gin-game-2026/wsj--charles-isherwood.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json",
+    "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json",
+    "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
+    "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "shifters-off-broadway-2026/nytg--gillian-russo.json"
+      "shifters-off-broadway-2026/nytg--gillian-russo.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -40,12 +52,13 @@
       "data/review-texts/the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/the-gin-game-2026/wsj--charles-isherwood.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-01T03:31:27.816Z",
-  "lastProcessed": "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+  "lastProcessed": "sukkot-off-broadway-2026/theater-pizzazz--alix-cohen.json",
   "log": [
     {
       "t": "2026-08-01T03:37:02.911Z",
@@ -77,6 +90,17 @@
     },
     {
       "t": "2026-08-01T03:38:16.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T03:41:06.349Z",
+      "event": "bb-session",
+      "session": "1070ce80",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-01T03:41:06.751Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
