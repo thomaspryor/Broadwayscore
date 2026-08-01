@@ -841,6 +841,9 @@ const VENUE_LISTING_PAGES = [
   // reach TodayTix/OLT/londontheatre, so the venue's own page is the only listing.
   // Show links are absolute single-segment slugs (https://theotherpalace.co.uk/<slug>/);
   // the lookahead excludes the site's utility pages, two-segment URLs self-exclude.
+  // NOTE: these three entries use fully-anchored absolute-URL regexes (unlike the
+  // unanchored substring patterns above) because their show links are root-level or
+  // shallow slugs that substring patterns would confuse with booking-widget/nav URLs.
   { name: 'The Other Palace', url: 'https://theotherpalace.co.uk/whats-on/', linkPattern: /^https:\/\/theotherpalace\.co\.uk\/(?!(?:about|access|basket|blog|careers|comments|contact|events|faq|feed|find-us|food-and-drink|get-involved|jobs|legal-privacy|my-account|news|press|shop|site-map|tickets|top-archive|venue-hire|whats-on|your-visit)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
   // Added 2026-07-31 (venue what's-on vs catalog audit after the Space Dogs miss):
   // Orange Tree was missing ALL 4 current productions (Love's Labour's Lost,

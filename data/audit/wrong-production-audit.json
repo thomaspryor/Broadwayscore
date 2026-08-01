@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T01:20:03.578Z",
+  "timestamp": "2026-08-01T03:28:52.750Z",
   "stats": {
-    "totalReviews": 41060,
-    "alreadyFlagged": 17920,
+    "totalReviews": 41061,
+    "alreadyFlagged": 17924,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
-    "tvFilmSignals": 1124,
-    "londonSignals": 775,
+    "tvFilmSignals": 1122,
+    "londonSignals": 774,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3413
+    "noPublishDate": 3407
   },
   "findings": [
     {
@@ -11225,37 +11225,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "file": "london-box-office--isabella-james.json",
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-4",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "file": "london-box-office--nicole-acquah.json",
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-barmy-4",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
