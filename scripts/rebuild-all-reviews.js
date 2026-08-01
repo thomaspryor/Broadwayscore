@@ -38,7 +38,11 @@ const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser } = require('./lib/pull-quote-guards');
+const {
+  shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
+  hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
+  EXCERPT_SOURCE_RANK, pickExcerptCandidate,
+} = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -252,7 +256,14 @@ function extractExcerptFromFullText(fullText, showTitle) {
   // stripLeadingChrome bails (returns null) if it would skip >70% of text;
   // in that case keep the original.
   const chromeStripped = stripLeadingChrome(fullText, { maxLen: fullText.length });
-  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(chromeStripped || fullText)));
+  // Then drop a one-line listing/credits prelude, which the line-based strip
+  // above cannot see. British Theatre Guide leads every review with
+  // "<credits> @<venue> <run dates> Listing details and ticket info..." on a
+  // single line; it shipped as the Tao of Glass pull quote (owner report
+  // 2026-08-01). No-op when the boilerplate terminator is absent.
+  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(
+    stripListingPrelude(chromeStripped || fullText)
+  )));
 
   // Strip control characters (U+0080–U+009F range)
   text = text.replace(/[\u0080-\u009F]/g, '');
@@ -517,12 +528,50 @@ function selectBestExcerpt(data, showTitle) {
     }
   }
 
+  // Soft-rejected candidates (hedge/fragment guards), kept as fallbacks so a
+  // review is never left with a raw-fullText slice or no quote at all when a
+  // curated candidate existed. See pull-quote-guards.pickExcerptCandidate.
+  const deferred = [];
+
+  // Texts a candidate can be checked against for mid-word truncation. Any
+  // string here that CONTAINS a candidate as a prefix-with-letter-following
+  // proves the candidate was cut mid-word.
+  const sourceTexts = [
+    data.fullText,
+    ...(data.llmScore?.keyPhrases || []).map(p => p && p.quote).filter(Boolean),
+    data.llmScore?.keyQuote,
+    data.showScoreExcerpt,
+    data.bwwExcerpt,
+    data.nycTheatreExcerpt,
+    data.stagedoorExcerpt,
+    data.dtliExcerpt,
+  ].filter(t => typeof t === 'string' && t);
+
+  /**
+   * Resolve the final excerpt once a candidate has been accepted (or every
+   * source has been exhausted). Applies the accepted-vs-deferred ranking so a
+   * soft-rejected curated quote beats a raw-fullText slice.
+   */
+  function finish(accepted) {
+    const picked = pickExcerptCandidate({ accepted, deferred });
+    if (picked && (!accepted || picked !== accepted.excerpt)) {
+      stats.deferredExcerptsUsed = (stats.deferredExcerptsUsed || 0) + 1;
+    }
+    return picked;
+  }
+
   /**
    * Validate an excerpt candidate against cross-show and tour guards.
    * Returns the excerpt if valid, null if suppressed.
+   *
+   * `rank` is the source's position in the priority cascade
+   * (pull-quote-guards.EXCERPT_SOURCE_RANK). Soft rejects are recorded at that
+   * rank in `deferred`; hard rejects drop the candidate entirely.
    */
-  function validateExcerpt(excerpt, source) {
+  function validateExcerpt(excerpt, source, rank) {
     if (!excerpt) return null;
+    if (rank == null) rank = EXCERPT_SOURCE_RANK[source];
+    if (rank == null) rank = EXCERPT_SOURCE_RANK.fullText;
 
     // Layer 0: Fragment guard. Fallback sources (LLM keyPhrases, aggregator
     // excerpts) can surface mid-sentence fragments that the dedicated
@@ -537,8 +586,15 @@ function selectBestExcerpt(data, showTitle) {
     // downstream), so a Show Score excerpt like '"disappointing: poorly directed…'
     // or '"a mysterious and deeply moving dance-musical"' would slip past a bare
     // /^[a-z]/ test. (Re-applied 2026-06-15 after a parallel-session merge reverted it.)
+    // 2026-08-01: this is now a SOFT reject. Cititour on Les Misérables Arena
+    // had exactly one usable quote and it started lowercase, so the review
+    // shipped with no pull quote at all (owner report). Deferring keeps the
+    // "prefer a cleaner source" behaviour while guaranteeing a fallback.
     excerpt = trimToCompleteSentence(excerpt);
-    if (/^[\s"'“‘«(\[]*[a-z]/.test(excerpt)) return null;
+    if (/^[\s"'“‘«(\[]*[a-z]/.test(excerpt)) {
+      deferred.push({ rank, excerpt, reason: 'lowercase-fragment', source });
+      return null;
+    }
 
     // Layer 1: Internal-note guard — reject editorial notes that leaked into excerpt fields.
     if (isInternalNote(excerpt)) {
@@ -564,6 +620,40 @@ function selectBestExcerpt(data, showTitle) {
       if (!stats.promoTeaserRejected) stats.promoTeaserRejected = [];
       stats.promoTeaserRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
       console.log(`  🚫 [promo-teaser] ${showId}: "${source}" rejected as promo teaser`);
+      return null;
+    }
+
+    // Layer 2d: Listing/credits chrome — production credits + venue + run dates
+    // + "Listing details and ticket info" (British Theatre Guide house style).
+    // The prelude strip in extractExcerptFromFullText removes it upstream; this
+    // catches the same block arriving via llmPullQuote or an aggregator field.
+    // Tao of Glass 2026-08-01 (owner report).
+    if (hasListingChrome(excerpt)) {
+      if (!stats.listingChromeRejected) stats.listingChromeRejected = [];
+      stats.listingChromeRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [listing-chrome] ${showId}: "${source}" rejected as listing/credits block`);
+      return null;
+    }
+
+    // Layer 2e: Tag-cloud guard — a run of capitalised tag names with no
+    // sentence punctuation. The Reviews Hub renders its per-review tag list
+    // beside the headline and the LLM swallowed the whole run on A Midsummer
+    // Night's Dream (WE 2026).
+    if (isTagCloudExcerpt(excerpt)) {
+      if (!stats.tagCloudRejected) stats.tagCloudRejected = [];
+      stats.tagCloudRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [tag-cloud] ${showId}: "${source}" rejected as tag list`);
+      return null;
+    }
+
+    // Layer 2f: Mid-word truncation — the candidate is a prefix of a longer run
+    // in the source text and the next source character is a letter, i.e. the
+    // quote was cut mid-word. Evening Standard on Teeth 'n' Smiles shipped
+    // "...one of the few sa" while the sibling keyPhrase held the full sentence.
+    if (isMidWordTruncation(excerpt, sourceTexts)) {
+      if (!stats.midWordTruncationRejected) stats.midWordTruncationRejected = [];
+      stats.midWordTruncationRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [mid-word-truncation] ${showId}: "${source}" rejected as cut mid-word`);
       return null;
     }
 
@@ -608,10 +698,15 @@ function selectBestExcerpt(data, showTitle) {
     // ("But the book still needs work") rather than the critic's actual verdict.
     // shouldRejectAsReservation returns false when score is null (safe for aggregator-only reviews).
     const reviewScore = data.llmScore?.score ?? null;
+    // 2026-08-01: SOFT reject. Hard-rejecting here starved two shipped reviews:
+    // Body Count / Theater Scene fell through to a raw fullText slice cut
+    // mid-word, and Les Misérables Arena / Cititour got no quote at all. A
+    // hedged critic quote still beats page scrapings.
     if (shouldRejectAsReservation(excerpt, reviewScore)) {
       if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
       stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
-      console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" rejected as reservation (score ${reviewScore})`);
+      console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" deferred as reservation (score ${reviewScore})`);
+      deferred.push({ rank, excerpt, reason: 'hedge', source });
       return null;
     }
 
@@ -625,7 +720,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(trimmed);
     if (cleaned && !isJunkExcerpt(cleaned) && !isGenericQuote(cleaned)) {
       const validated = validateExcerpt(cleaned, 'llmPullQuote');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.llmPullQuote, excerpt: validated });
     }
   }
 
@@ -637,7 +732,7 @@ function selectBestExcerpt(data, showTitle) {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
           const validated = validateExcerpt(cleaned, 'keyPhrase');
-          if (validated) return validated;
+          if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: validated });
         }
       }
     }
@@ -647,7 +742,7 @@ function selectBestExcerpt(data, showTitle) {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
           const validated = validateExcerpt(cleaned, 'keyPhrase');
-          if (validated) return validated;
+          if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: validated });
         }
       }
     }
@@ -658,7 +753,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.llmScore.keyQuote);
     if (cleaned && !isJunkExcerpt(cleaned)) {
       const validated = validateExcerpt(cleaned, 'keyQuote');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.keyQuote, excerpt: validated });
     }
   }
 
@@ -667,7 +762,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.showScoreExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'showScoreExcerpt');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.showScoreExcerpt, excerpt: validated });
     }
   }
 
@@ -676,7 +771,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.bwwExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'bwwExcerpt');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.bwwExcerpt, excerpt: validated });
     }
   }
 
@@ -685,7 +780,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.nycTheatreExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'nycTheatreExcerpt');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.nycTheatreExcerpt, excerpt: validated });
     }
   }
 
@@ -694,7 +789,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.stagedoorExcerpt);
     if (cleaned && cleaned.length > 20) {
       const validated = validateExcerpt(cleaned, 'stagedoorExcerpt');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.stagedoorExcerpt, excerpt: validated });
     }
   }
 
@@ -703,7 +798,7 @@ function selectBestExcerpt(data, showTitle) {
     const cleaned = cleanExcerpt(data.dtliExcerpt);
     if (cleaned && cleaned.length > 40) {
       const validated = validateExcerpt(cleaned, 'dtliExcerpt');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.dtliExcerpt, excerpt: validated });
     }
   }
 
@@ -713,7 +808,7 @@ function selectBestExcerpt(data, showTitle) {
     const extracted = extractExcerptFromFullText(data.fullText, data.showId);
     if (extracted && extracted.length > 50) {
       const validated = validateExcerpt(extracted, 'fullText');
-      if (validated) return validated;
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.fullText, excerpt: validated });
     }
   }
 
@@ -731,12 +826,14 @@ function selectBestExcerpt(data, showTitle) {
       const cleaned = cleanExcerpt(stripped);
       if (cleaned && cleaned.length > 50 && !isJunkExcerpt(cleaned)) {
         const validated = validateExcerpt(cleaned, 'fullText-chrome-skip');
-        if (validated) return validated;
+        if (validated) return finish({ rank: EXCERPT_SOURCE_RANK['fullText-chrome-skip'], excerpt: validated });
       }
     }
   }
 
-  return null;
+  // Nothing passed every guard — fall back to the best soft-rejected candidate
+  // rather than shipping a review with no pull quote.
+  return finish(null);
 }
 
 // normalizeQuoteWrapping — imported from ./lib/rebuild-helpers
@@ -829,6 +926,28 @@ function getBestScore(data) {
 }
 
 // scoreToBucket, scoreToThumb — imported from ./lib/rebuild-helpers
+
+// ---------------------------------------------------------------------------
+// Require-as-a-library escape hatch (2026-08-01).
+//
+// Everything above this line is imports and pure functions; everything below is
+// the rebuild pipeline as top-level module code (it reads shows.json, walks
+// review-texts and WRITES reviews.json — see the --help warning above and
+// memory/feedback_local_rebuild_stale_clone_hazard.md).
+//
+// Without this, excerpt selection could not be exercised outside a full
+// production rebuild, so the pull-quote guards had no way to be tested against
+// the real cascade (CLAUDE.md §15 — never copy logic into a test file). A
+// top-level `return` is legal in CommonJS (Node wraps modules in a function),
+// so requiring this file yields the pure helpers and runs NOTHING.
+//
+// Running the script normally (`node scripts/rebuild-all-reviews.js`) leaves
+// require.main === module, so the pipeline below executes exactly as before.
+module.exports = {
+  selectBestExcerpt,
+  extractExcerptFromFullText,
+};
+if (require.main !== module) return;
 
 // Main execution
 console.log('=== REBUILDING ALL REVIEWS ===\n');

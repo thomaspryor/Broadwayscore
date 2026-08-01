@@ -124,6 +124,192 @@ function isPromoTeaser(excerpt) {
   return PROMO_TEASER_PATTERNS.some(re => re.test(excerpt));
 }
 
+// ---------------------------------------------------------------------------
+// Listing / credits chrome (2026-08-01, owner report on Tao of Glass).
+//
+// British Theatre Guide (and several other UK outlets) lead every review page
+// with a one-line production-credits + venue + run-dates block terminated by
+// "Listing details and ticket info". Because it carries NO newline, the
+// line-based stripLeadingChrome below cannot see it, and the block is
+// sentence-shaped enough to survive extractExcerptFromFullText's filters. It
+// shipped as the displayed quote:
+//   "Philip Glass and Phelim McDermott Factory International, Improbable and
+//    Nica Burns @sohoplace theatre 24 July–12 September 2026. Listing details
+//    and ticket info... Tao of Glass finally makes it to London after..."
+//
+// Two mechanisms, both needed:
+//   stripListingPrelude() — removes the block from raw text before extraction
+//   hasListingChrome()    — rejects any candidate that still carries it
+// ---------------------------------------------------------------------------
+
+const MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December';
+
+// The BTG-style boilerplate terminator. Deliberately literal: this exact
+// phrase is site furniture, never critic prose.
+const LISTING_TERMINATOR_RE = /\blisting details and ticket info\b\.{0,3}/i;
+
+// A venue-and-run-dates block: "@sohoplace theatre 24 July–12 September 2026",
+// "at the Duke of York's Theatre, 3 March – 12 June 2026". Requires BOTH a
+// day-number + month AND a second month + year, so a critic writing "opened in
+// March" or "runs to September" is untouched.
+const RUN_DATES_RE = new RegExp(
+  `\\b\\d{1,2}\\s+(?:${MONTHS})\\s*[–—-]\\s*\\d{1,2}\\s+(?:${MONTHS})\\s+20\\d\\d`,
+  'i'
+);
+
+const LISTING_CHROME_PATTERNS = [
+  LISTING_TERMINATOR_RE,
+  RUN_DATES_RE,
+  // "Tickets from £45. Booking until 12 September 2026."
+  /\bbooking (?:until|to|through)\s+\d{1,2}\s+\w+\s+20\d\d/i,
+  // Runtime furniture: "Running time: 1 hour 40 minutes, no interval"
+  /\brunning time:?\s*\d+\s*(?:hour|hr|minute|min)/i,
+];
+
+function hasListingChrome(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  return LISTING_CHROME_PATTERNS.some(re => re.test(excerpt));
+}
+
+/**
+ * Remove a leading listing/credits prelude from raw review text.
+ *
+ * Only strips when the boilerplate terminator appears near the START of the
+ * text (within `maxPreludeChars`) — a critic quoting listing language 3,000
+ * chars in is left alone. Returns the input unchanged when no prelude is found,
+ * so it is safe to call unconditionally.
+ *
+ * @param {string} text
+ * @param {object} [opts]
+ * @param {number} [opts.maxPreludeChars=500] How far in the terminator may sit
+ * @returns {string}
+ */
+function stripListingPrelude(text, opts = {}) {
+  if (!text || typeof text !== 'string') return text;
+  const maxPreludeChars = opts.maxPreludeChars != null ? opts.maxPreludeChars : 500;
+
+  const m = LISTING_TERMINATOR_RE.exec(text);
+  if (!m) return text;
+  const end = m.index + m[0].length;
+  if (m.index > maxPreludeChars) return text;
+
+  const remainder = text.slice(end).replace(/^[\s.…]+/, '');
+  // Never strip everything — if the prelude is (almost) the whole text, the
+  // caller is better off with the original than with a two-word husk.
+  if (remainder.length < 100) return text;
+  return remainder;
+}
+
+// ---------------------------------------------------------------------------
+// Tag-cloud excerpts (2026-08-01). The Reviews Hub renders its per-review tag
+// list adjacent to the headline, and the LLM pull-quote extractor swallowed the
+// whole run on A Midsummer Night's Dream (WE 2026):
+//   "Funny but unmagical A Midsummer Night's Dream Atri Banerjee Issam Al
+//    Ghussain Jenny Rainford London Mary Malone Nadeem Islam Naomi Dawson
+//    Olivier Huband Regent's Park Open Air Theatre Review Terique Jarrett
+//    Theatre Tomás Palmer William Shakespeare"
+//
+// Signature: no sentence punctuation anywhere, and a long unbroken run of
+// capitalised tokens. Both conditions are required — headline-style pull quotes
+// ("Full-blooded production of an undernourished play") have no sentence
+// punctuation either, but no capitalised run.
+// ---------------------------------------------------------------------------
+
+// Thresholds calibrated against the full 19,309-quote corpus. The first pass
+// (10 words / run 5 / ratio 0.5) produced two false positives on legitimate
+// short quotes that happen to be title- and name-heavy:
+//   ew / Betrayal 2019:      'B+ "Tom Hiddleston, Charlie Cox, and Zawe Ashton command a smart, stripped down 'Betrayal'"'
+//   musical-theatre-review:  "The Royal Shakespeare Company's My Neighbour Totoro is actual magic"
+// A real tag list is far longer and its capitalised run is unbroken: the
+// Reviews Hub case is 36 words with a 33-token run. At 20 words / run 10 the
+// two false positives clear and the real tag list still fires — verified by
+// `node scripts/audit-pull-quotes.js` over the whole corpus.
+const TAG_CLOUD_MIN_WORDS = 20;
+const TAG_CLOUD_MIN_CAP_RUN = 10;
+const TAG_CLOUD_MIN_CAP_RATIO = 0.6;
+
+function isTagCloudExcerpt(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  const trimmed = excerpt.trim();
+  // Any sentence punctuation means it is prose, not a tag list.
+  if (/[.!?;:]/.test(trimmed)) return false;
+
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  if (words.length < TAG_CLOUD_MIN_WORDS) return false;
+
+  let capped = 0;
+  let run = 0;
+  let longestRun = 0;
+  for (const w of words) {
+    // Strip wrapping punctuation/quotes before testing the first letter.
+    const core = w.replace(/^[^\p{L}]+/u, '');
+    if (/^\p{Lu}/u.test(core)) {
+      capped++;
+      run++;
+      if (run > longestRun) longestRun = run;
+    } else {
+      run = 0;
+    }
+  }
+  if (longestRun < TAG_CLOUD_MIN_CAP_RUN) return false;
+  return capped / words.length >= TAG_CLOUD_MIN_CAP_RATIO;
+}
+
+// ---------------------------------------------------------------------------
+// Mid-word truncation (2026-08-01). The LLM pull-quote extractor sometimes
+// emits a quote cut mid-word — Evening Standard on Teeth 'n' Smiles shipped
+// "...with Phil Daniels one of the few sa" while the sibling keyPhrase held the
+// complete sentence ("...one of the few saving graces as the casually
+// exploitative manager Saraffian.").
+//
+// Detected by evidence, not by dictionary: the candidate is a prefix of some
+// source text (fullText, a keyPhrase quote, an aggregator excerpt) and the very
+// next character in that source is a letter. A legitimately short headline
+// standfirst is never a mid-word prefix of its own source, so this has no
+// false-positive surface by construction.
+// ---------------------------------------------------------------------------
+
+// Fold the punctuation that differs between an LLM's re-typing of a quote and
+// the scraped source (curly vs straight quotes, en/em dashes, NBSP runs).
+function normalizeForSourceMatch(s) {
+  return String(s)
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[‐-―]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Is `excerpt` a mid-word truncation of any of `sourceTexts`?
+ *
+ * @param {string} excerpt
+ * @param {string[]} sourceTexts  fullText / keyPhrase quotes / aggregator excerpts
+ * @returns {boolean}
+ */
+function isMidWordTruncation(excerpt, sourceTexts) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  if (!Array.isArray(sourceTexts) || sourceTexts.length === 0) return false;
+
+  // Strip wrapping quotes the LLM may have added, then drop a trailing ellipsis
+  // (an explicit ellipsis is a deliberate elision, not an accidental cut).
+  const cleaned = normalizeForSourceMatch(excerpt).replace(/^["']+|["']+$/g, '');
+  if (/(\.\.\.|…)$/.test(cleaned)) return false;
+  if (cleaned.length < 40) return false;
+  // Ends in sentence punctuation → complete by construction.
+  if (/[.!?]["']?$/.test(cleaned)) return false;
+
+  for (const src of sourceTexts) {
+    if (!src || typeof src !== 'string') continue;
+    const hay = normalizeForSourceMatch(src);
+    const at = hay.indexOf(cleaned);
+    if (at === -1) continue;
+    const next = hay[at + cleaned.length];
+    if (next && /\p{L}/u.test(next)) return true;
+  }
+  return false;
+}
+
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
 // NO theater-domain words AND NO show-title keywords. False positives (blocking
 // a real review) are worse than letting a bad excerpt through.
@@ -265,6 +451,71 @@ function stripLeadingChrome(fullText, opts = {}) {
   return stripped.slice(0, maxLen);
 }
 
+// ---------------------------------------------------------------------------
+// Candidate ranking (2026-08-01).
+//
+// The hedge-opener / mid-sentence-pivot guard and the lowercase-fragment guard
+// were HARD rejects, which produced two bad outcomes on score>=70 reviews whose
+// only good quote happens to be hedged:
+//
+//   - Body Count / Theater Scene: the (good) llmPullQuote "Body Count may not
+//     function as a comprehensive treatise..., but it is undeniably electric as
+//     a performance vehicle." was killed by the ", but" pivot, so selection fell
+//     all the way through to a raw fullText slice that ended mid-word.
+//   - Les Misérables Arena / Cititour: every candidate was soft-rejected, so the
+//     review shipped with NO pull quote at all (owner report).
+//
+// Both guards are now SOFT: the candidate is deferred rather than dropped. A
+// deferred candidate is used when the only alternative is a raw-fullText slice
+// (rank >= rawSourceRank) or nothing at all. Hard rejects (internal notes,
+// copyright/listing chrome, promo teasers, tag clouds, mid-word truncation,
+// cross-show mentions) still drop the candidate outright.
+//
+// Source ranks — lower is better; must match the try-order in
+// rebuild-all-reviews.js selectBestExcerpt().
+const EXCERPT_SOURCE_RANK = {
+  llmPullQuote: 0,
+  keyPhrase: 1,
+  keyQuote: 2,
+  showScoreExcerpt: 3,
+  bwwExcerpt: 4,
+  nycTheatreExcerpt: 5,
+  stagedoorExcerpt: 6,
+  dtliExcerpt: 7,
+  fullText: 8,
+  'fullText-chrome-skip': 9,
+};
+
+// The first rank that is a raw scrape of the article body rather than a curated
+// or LLM-selected quote. At or beyond this, a deferred higher-priority
+// candidate is the better display choice.
+const RAW_SOURCE_RANK = EXCERPT_SOURCE_RANK.fullText;
+
+/**
+ * Choose the excerpt to display from the accepted and deferred candidates.
+ *
+ * @param {object} args
+ * @param {{rank:number, excerpt:string}|null} [args.accepted] First candidate that passed every guard
+ * @param {Array<{rank:number, excerpt:string}>} [args.deferred] Soft-rejected candidates, any order
+ * @param {number} [args.rawSourceRank=RAW_SOURCE_RANK]
+ * @returns {string|null}
+ */
+function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = RAW_SOURCE_RANK } = {}) {
+  const soft = (deferred || [])
+    .filter(d => d && typeof d.excerpt === 'string' && d.excerpt)
+    .slice()
+    .sort((a, b) => a.rank - b.rank);
+  const bestSoftAboveRaw = soft.find(d => d.rank < rawSourceRank) || null;
+
+  if (accepted && accepted.excerpt) {
+    if (accepted.rank < rawSourceRank) return accepted.excerpt;
+    // Accepted candidate is a raw-body slice: prefer a curated/LLM candidate
+    // that was only soft-rejected.
+    return bestSoftAboveRaw ? bestSoftAboveRaw.excerpt : accepted.excerpt;
+  }
+  return soft.length ? soft[0].excerpt : null;
+}
+
 module.exports = {
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
@@ -283,4 +534,19 @@ module.exports = {
   isChromeLine,
   isNarrativeLine,
   stripLeadingChrome,
+  // Listing / credits chrome
+  LISTING_CHROME_PATTERNS,
+  LISTING_TERMINATOR_RE,
+  RUN_DATES_RE,
+  hasListingChrome,
+  stripListingPrelude,
+  // Tag clouds
+  isTagCloudExcerpt,
+  // Mid-word truncation
+  isMidWordTruncation,
+  normalizeForSourceMatch,
+  // Candidate ranking
+  EXCERPT_SOURCE_RANK,
+  RAW_SOURCE_RANK,
+  pickExcerptCandidate,
 };

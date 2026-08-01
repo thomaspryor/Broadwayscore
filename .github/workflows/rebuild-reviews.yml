@@ -217,6 +217,20 @@ jobs:
         continue-on-error: true
         timeout-minutes: 12
 
+      - name: Audit pull quotes for chrome / tag clouds / truncation
+        # Post-rebuild quality gate for the class the owner reported 2026-08-01
+        # (British Theatre Guide listing block shipped as the Tao of Glass pull
+        # quote). Re-runs every SHIPPED pullQuote through the hard guards in
+        # scripts/lib/pull-quote-guards.js, so a new outlet layout that defeats
+        # the in-pipeline guards surfaces here instead of on the live site.
+        #
+        # Advisory (continue-on-error) on purpose: a bad pull quote is a display
+        # defect, never a reason to block reviews.json from publishing. The
+        # count lands in the step log + the JSON report artifact.
+        run: |
+          node scripts/audit-pull-quotes.js --json=data/audit/pull-quotes-$(date -u +%F).json
+        continue-on-error: true
+
       - name: Analyze review drops and route alert
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

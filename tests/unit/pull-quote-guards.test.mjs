@@ -353,3 +353,161 @@ describe('isPromoTeaser', () => {
     assert.strictEqual(isPromoTeaser(null), false);
   });
 });
+
+// ---------------------------------------------------------------------------
+// 2026-08-01 guards — owner report: bad + missing pull quotes on new Broadway
+// and West End shows. Every fixture below is REAL text that shipped to
+// production, copied from data/reviews.json and the matching review-texts file.
+// ---------------------------------------------------------------------------
+
+const {
+  hasListingChrome,
+  stripListingPrelude,
+  isTagCloudExcerpt,
+  isMidWordTruncation,
+  pickExcerptCandidate,
+  EXCERPT_SOURCE_RANK,
+} = require('../../scripts/lib/pull-quote-guards.js');
+
+// tao-of-glass-west-end-2026 / british-theatre (the owner's screenshot)
+const BTG_PRELUDE =
+  'Philip Glass and Phelim McDermott Factory International, Improbable and Nica Burns ' +
+  '@sohoplace theatre 24 July–12 September 2026 Listing details and ticket info... ' +
+  'Tao of Glass finally makes it to London after opening at the Manchester International ' +
+  'Festival in 2019 and subsequently touring globally. It is worth the wait. Phelim ' +
+  'McDermott of Improbable theatre is well known for his imagination and creativity, but ' +
+  'do we know of his decades-long passion for Philip Glass?';
+
+// a-midsummer-nights-dream-west-end-2026 / thereviewshub — page tag list
+const REVIEWS_HUB_TAGS =
+  'Funny but unmagical A Midsummer Night’s Dream Atri Banerjee Issam Al Ghussain Jenny ' +
+  'Rainford London Mary Malone Nadeem Islam Naomi Dawson Olivier Huband Regent’s Park ' +
+  'Open Air Theatre Review Terique Jarrett Theatre Tomás Palmer William Shakespeare';
+
+// teeth-n-smiles-west-end-2026 / standard — llmPullQuote vs its own keyPhrase
+const STANDARD_TRUNCATED =
+  'Today, it looks coarse and lumpen in Daniel Raggett’s unmodulated production, with ' +
+  'Phil Daniels one of the few sa';
+const STANDARD_COMPLETE =
+  "Today, it looks coarse and lumpen in Daniel Raggett's unmodulated production, with " +
+  'Phil Daniels one of the few saving graces as the casually exploitative manager Saraffian.';
+
+// Legitimate quotes that must survive every new guard. The short ones are The
+// Stage / Times headline standfirsts, which carry no terminal punctuation.
+const GOOD_QUOTES = [
+  'Full-blooded production of an undernourished play',
+  'Rollicking mystery with an erratic Holmes',
+  'Spirited feel-good musical relates a bittersweet true story of 1980s political activism',
+  'Lyrical, sometimes surreal and charged equally with rage and joy, this relentlessly imaginative verse-drama',
+  'It feels close to miraculous that a piece this experimental, this gentle and this patient can exist on a West End stage.',
+  'Fortunately, for the most part, it also happens to be bloody marvellous.',
+  // Prose naming many people — must not read as a tag cloud
+  'Nicole Scherzinger, Tom Francis and Grace Hodgett Young are the reason to see Jamie Lloyd’s Sunset Boulevard.',
+  // Prose mentioning months — must not read as listing chrome
+  'When the show opened in March, nobody expected it to run through September.',
+  // Corpus false positives from the first tag-cloud threshold pass (2026-08-01):
+  // title- and name-heavy quotes with no sentence punctuation.
+  'B+ "Tom Hiddleston, Charlie Cox, and Zawe Ashton command a smart, stripped down \'Betrayal\'"',
+  "The Royal Shakespeare Company's My Neighbour Totoro is actual magic",
+];
+
+describe('hasListingChrome', () => {
+  test('flags the British Theatre Guide listing block', () => {
+    assert.strictEqual(hasListingChrome(BTG_PRELUDE), true);
+  });
+  test('flags a bare venue + run-dates range', () => {
+    assert.strictEqual(hasListingChrome('At @sohoplace theatre 24 July–12 September 2026'), true);
+  });
+  test('leaves real critic prose alone', () => {
+    for (const q of GOOD_QUOTES) {
+      assert.strictEqual(hasListingChrome(q), false, `false positive on: ${q.slice(0, 60)}`);
+    }
+  });
+});
+
+describe('stripListingPrelude', () => {
+  test('starts the text at the review body', () => {
+    const out = stripListingPrelude(BTG_PRELUDE);
+    assert.ok(out.startsWith('Tao of Glass finally makes it to London'), `got: ${out.slice(0, 80)}`);
+    assert.strictEqual(hasListingChrome(out), false);
+  });
+  test('is a no-op with no boilerplate terminator', () => {
+    const body = GOOD_QUOTES[4].repeat(3);
+    assert.strictEqual(stripListingPrelude(body), body);
+  });
+  test('bails rather than reducing the text to a husk', () => {
+    const husk = 'Some Venue 1 May–2 June 2026 Listing details and ticket info... Short tail.';
+    assert.strictEqual(stripListingPrelude(husk), husk);
+  });
+  test('ignores a terminator buried deep in the body', () => {
+    const deep = 'A'.repeat(600) + ' Listing details and ticket info... ' + 'B'.repeat(200);
+    assert.strictEqual(stripListingPrelude(deep), deep);
+  });
+});
+
+describe('isTagCloudExcerpt', () => {
+  test('flags the Reviews Hub tag list', () => {
+    assert.strictEqual(isTagCloudExcerpt(REVIEWS_HUB_TAGS), true);
+  });
+  test('leaves headlines and prose alone', () => {
+    for (const q of GOOD_QUOTES) {
+      assert.strictEqual(isTagCloudExcerpt(q), false, `false positive on: ${q.slice(0, 60)}`);
+    }
+  });
+});
+
+describe('isMidWordTruncation', () => {
+  test('catches the Evening Standard cut against its own keyPhrase', () => {
+    assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, [STANDARD_COMPLETE]), true);
+  });
+  test('clears the complete sentence itself', () => {
+    assert.strictEqual(isMidWordTruncation(STANDARD_COMPLETE, [STANDARD_COMPLETE]), false);
+  });
+  test('clears a quote ending at a word boundary', () => {
+    const src = 'The show is a delight. It runs three hours and never sags.';
+    assert.strictEqual(isMidWordTruncation('The show is a delight. It runs three hours', [src]), false);
+  });
+  test('ignores a deliberate trailing ellipsis', () => {
+    const src = 'A dazzling, ultimately moving show that never stops surprising you.';
+    assert.strictEqual(isMidWordTruncation('A dazzling, ultimately moving show that never sto...', [src]), false);
+  });
+  test('needs a source — no evidence, no verdict', () => {
+    assert.strictEqual(isMidWordTruncation(STANDARD_TRUNCATED, []), false);
+  });
+});
+
+describe('pickExcerptCandidate', () => {
+  test('returns an accepted curated candidate as-is', () => {
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: { rank: EXCERPT_SOURCE_RANK.llmPullQuote, excerpt: 'good quote' },
+      deferred: [{ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: 'hedged quote' }],
+    }), 'good quote');
+  });
+  test('prefers a deferred curated quote over a raw fullText slice', () => {
+    // Body Count / Theater Scene: a hedged llmPullQuote lost to a page scrape.
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: { rank: EXCERPT_SOURCE_RANK.fullText, excerpt: 'raw page scrape' },
+      deferred: [{ rank: EXCERPT_SOURCE_RANK.llmPullQuote, excerpt: 'hedged but real critic quote' }],
+    }), 'hedged but real critic quote');
+  });
+  test('keeps the fullText slice when nothing was deferred', () => {
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: { rank: EXCERPT_SOURCE_RANK.fullText, excerpt: 'raw page scrape' },
+      deferred: [],
+    }), 'raw page scrape');
+  });
+  test('returns the best deferred candidate when nothing was accepted', () => {
+    // Les Misérables Arena / Cititour: every candidate soft-rejected → no quote.
+    assert.strictEqual(pickExcerptCandidate({
+      accepted: null,
+      deferred: [
+        { rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: 'second best' },
+        { rank: EXCERPT_SOURCE_RANK.llmPullQuote, excerpt: 'best available' },
+      ],
+    }), 'best available');
+  });
+  test('returns null when there is genuinely nothing', () => {
+    assert.strictEqual(pickExcerptCandidate({ accepted: null, deferred: [] }), null);
+    assert.strictEqual(pickExcerptCandidate({}), null);
+  });
+});
