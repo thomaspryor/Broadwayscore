@@ -130,7 +130,11 @@
     "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
     "a-christmas-carol-west-end-2026/standard--nick-curtis.json",
     "a-christmas-carol-west-end-2026/telegraph--claire-allfree.json",
-    "a-christmas-carol-west-end-2026/telegraph--dominic-cavendish.json"
+    "a-christmas-carol-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json",
+    "the-snowman-west-end-2026/manchester-evening-news--emma-gill.json",
+    "the-snowman-west-end-2026/timeout-london--rachel-halliburton.json",
+    "the-snowman-west-end-2026/express-uk--neil-norman.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -1635,7 +1639,13 @@
     "a-christmas-carol-west-end-2026/thestage--holly-o.json",
     "a-christmas-carol-west-end-2026/thestage--tom-wicker.json",
     "a-christmas-carol-west-end-2026/times-uk--clive-davis.json",
-    "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json"
+    "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-christmas-carol-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-christmas-carol-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "the-jungle-book-west-end-2026/chicago-sun-times--unknown.json",
+    "the-jungle-book-west-end-2026/chicagotribune--unknown.json",
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1717,7 +1727,10 @@
       "a-christmas-carol-west-end-2026/timeout--anya-ryan.json",
       "a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json",
       "a-christmas-carol-west-end-2026/london-box-office--stuart-king.json",
-      "a-christmas-carol-west-end-2026/standard--nick-curtis.json"
+      "a-christmas-carol-west-end-2026/standard--nick-curtis.json",
+      "a-christmas-carol-west-end-2026/nytg--tulis-mccall.json",
+      "the-snowman-west-end-2026/manchester-evening-news--emma-gill.json",
+      "the-snowman-west-end-2026/timeout-london--rachel-halliburton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1732,7 +1745,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
-      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json"
+      "miss-saigon-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-snowman-west-end-2026/express-uk--neil-norman.json",
+      "the-snowman-west-end-2026/express-uk--neil-norman.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -1790,7 +1805,8 @@
       "data/review-texts/harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "data/review-texts/the-mousetrap-west-end-2021/thestage--dave-fargnoli.json",
       "data/review-texts/a-christmas-carol-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/a-christmas-carol-west-end-2026/thestage--tom-wicker.json"
+      "data/review-texts/a-christmas-carol-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/a-christmas-carol-west-end-2026/times-uk--rachel-halliburton.json"
     ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/daily-mail--patrick-marmion.json",
@@ -1819,7 +1835,7 @@
     ]
   },
   "startTime": "2026-08-01T04:31:57.323Z",
-  "lastProcessed": "a-christmas-carol-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
   "log": [
     {
       "t": "2026-08-01T04:36:35.506Z",
@@ -1946,6 +1962,12 @@
       "event": "bb-session",
       "session": "86e84971",
       "url": "https://www.hollywoodreporter.com/news/general-news/miss-saigon-theater-review-9"
+    },
+    {
+      "t": "2026-08-01T08:58:36.519Z",
+      "event": "bb-session",
+      "session": "ddc96c89",
+      "url": "https://www.express.co.uk/entertainment/theatre/363110/Dance-review-The-Snowman-"
     }
   ]
 }
