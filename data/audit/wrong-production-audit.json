@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-31T22:17:31.830Z",
+  "timestamp": "2026-08-01T00:19:42.665Z",
   "stats": {
-    "totalReviews": 41053,
+    "totalReviews": 41054,
     "alreadyFlagged": 17919,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
-    "tvFilmSignals": 1122,
-    "londonSignals": 773,
-    "offBroadwaySignals": 465,
+    "tvFilmSignals": 1124,
+    "londonSignals": 775,
+    "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3412
+    "noPublishDate": 3411
   },
   "findings": [
     {
@@ -11225,6 +11225,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "london-box-office--isabella-james.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-4",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "london-box-office--nicole-acquah.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-barmy-4",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -36359,6 +36390,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "linda-vista-2019",
+      "file": "slantmagazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.slantmagazine.com/theater/review-tracy-lettss-linda-vista-doesnt-make-enough-space-for-its-women/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
