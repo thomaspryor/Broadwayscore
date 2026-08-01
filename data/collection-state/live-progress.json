@@ -1,63 +1,53 @@
 {
-  "updatedAt": "2026-08-01T00:57:10.495Z",
-  "processed": 8,
-  "failed": 53,
-  "successRate": "13.1%",
+  "updatedAt": "2026-08-01T01:12:00.201Z",
+  "processed": 4,
+  "failed": 13,
+  "successRate": "23.5%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 8,
+    "brightdata": 2,
+    "archiveToday": 5,
     "archive": 0
   },
   "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-08-01T00:52:15.817Z",
+      "t": "2026-08-01T01:03:59.674Z",
       "event": "bb-session",
-      "session": "f7689a3e",
+      "session": "e5aaa226",
+      "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-08-01T01:04:16.453Z",
+      "event": "bb-session",
+      "session": "e2ccc504",
+      "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-08-01T01:10:24.420Z",
+      "event": "bb-session",
+      "session": "8df49d6b",
       "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
     },
     {
-      "t": "2026-08-01T00:52:16.529Z",
+      "t": "2026-08-01T01:10:24.949Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-01T00:52:32.378Z",
+      "t": "2026-08-01T01:10:40.686Z",
       "event": "bb-session",
-      "session": "57d35753",
+      "session": "da8ff830",
       "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
     },
     {
-      "t": "2026-08-01T00:52:33.004Z",
+      "t": "2026-08-01T01:10:41.191Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-01T00:53:02.231Z",
-      "event": "bb-session",
-      "session": "d1ed5d69",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-01T00:53:02.949Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-01T00:54:34.205Z",
-      "event": "bb-session",
-      "session": "ddb2de71",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-01T00:54:34.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
