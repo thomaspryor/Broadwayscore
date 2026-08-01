@@ -2,7 +2,8 @@
   "processed": [
     "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
     "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
-    "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
@@ -11,12 +12,19 @@
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
     "tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
     "tao-of-glass-west-end-2026/thestage--the-stage.json",
-    "tao-of-glass-west-end-2026/tribune--unknown.json"
+    "tao-of-glass-west-end-2026/tribune--unknown.json",
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
+    "the-enormous-crocodile-west-end-2026/london-theatre--unknown.json",
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "tao-of-glass-west-end-2026/guardian-uk--unknown.json"
+      "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -36,7 +44,7 @@
     "archive": []
   },
   "startTime": "2026-08-01T01:01:28.303Z",
-  "lastProcessed": "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+  "lastProcessed": "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
   "log": [
     {
       "t": "2026-08-01T01:03:59.674Z",
@@ -49,6 +57,28 @@
       "event": "bb-session",
       "session": "e2ccc504",
       "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-08-01T01:10:24.420Z",
+      "event": "bb-session",
+      "session": "8df49d6b",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T01:10:24.949Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T01:10:40.686Z",
+      "event": "bb-session",
+      "session": "da8ff830",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T01:10:41.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
