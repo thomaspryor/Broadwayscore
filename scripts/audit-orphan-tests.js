@@ -36,16 +36,28 @@ const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 // Each entry MUST have a Notion card so the exemption can be unwound. Audit will
 // list these in --json output as `exemptKnownBroken` so the existence is visible
 // but doesn't fail CI.
-const EXEMPT_KNOWN_BROKEN = {
-  // NOT broken — a deferred-effect acceptance probe (task #695, card
-  // 3ae637c5-416f-81bb): asserts a 7-day provider-spend streak, EXPECTED to
-  // fail until the ledger accumulates history. Run by
-  // autonomous-acceptance-recheck.js at its RECHECK-AFTER date, never by CI.
+// Deliberately never run by CI, and NOT expected to stay failing — so the
+// decayed-exemption gate must never evaluate these. A deferred-effect
+// acceptance probe passes the day its condition finally comes true; flagging
+// that as "decay" would turn a success into a red main. Keep this map tiny and
+// only for tests whose correct home is a scheduled recheck, not the test suite.
+const EXEMPT_NEVER_CI = {
+  // Deferred-effect acceptance probe (task #695, card 3ae637c5-416f-81bb):
+  // asserts a 7-day provider-spend streak, EXPECTED to fail until the ledger
+  // accumulates history. Run by autonomous-acceptance-recheck.js at its
+  // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
   'verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
-  // 1/5 tests fails on assertion: 'ok' !== 'warning' — behavior drift in the
-  // underlying bww-rr check. Either the test expectation is stale or the check
-  // regressed. 4/5 pass.
-  'opening-night-checks-bww-rr.test.mjs': '363637c5-416f-814f',
+};
+
+const EXEMPT_KNOWN_BROKEN = {
+  // (opening-night-checks-bww-rr.test.mjs removed 2026-08-01 — it was never
+  // "behavior drift". Its no-bwwRoundupUrl case asserted the branch the check
+  // takes when Browserbase is UNCONFIGURED, then inherited the ambient env: it
+  // passed in CI's secret-less lint job and failed on any machine with a .env.
+  // The test now scrubs BROWSERBASE_* itself and is registered in test.yml.
+  // Surfaced when this gate ran for the first time ever — see the note on the
+  // decayed-exemption step in test.yml.)
+  //
   // 1/2 tests fails because the CLI prints "Fetching: ..." to stdout in --json
   // mode, breaking JSON.parse. Either CLI should silence stdout in --json mode,
   // or test should parse last line / strip preamble.
@@ -91,20 +103,43 @@ function collectReferencedTests() {
 }
 
 function main() {
-  // --list-exempt prints exempt file names one per line, for use by the
-  // decayed-exemption check in CI (`for f in $(...); run; if pass: fail`).
+  // --list-exempt prints REPO-RELATIVE PATHS of decay candidates, one per line,
+  // for the decayed-exemption check in CI (`for f in $(...); run; if pass: fail`).
+  //
+  // Paths, not bare names: CI used to prepend `tests/unit/`, so any exempt test
+  // living in scripts/ resolved to a nonexistent file, `node --test` exited 1,
+  // and the gate scored it "still failing" forever — it could never detect that
+  // one had decayed. Resolving through listTestFiles() means the gate always
+  // runs the file that actually exists.
+  //
+  // EXEMPT_NEVER_CI is excluded by construction: those are expected to start
+  // passing, and their passing is not decay.
   if (process.argv.includes('--list-exempt')) {
-    for (const f of Object.keys(EXEMPT_KNOWN_BROKEN)) console.log(f);
+    const byName = new Map(listTestFiles().map(f => [f.name, f.rel]));
+    for (const name of Object.keys(EXEMPT_KNOWN_BROKEN)) {
+      const rel = byName.get(name);
+      // A missing file means the exemption outlived the test — surface it
+      // rather than silently emitting a path that can't run.
+      if (!rel) {
+        console.error(`::warning::EXEMPT_KNOWN_BROKEN lists ${name} but no such test file exists — stale entry`);
+        continue;
+      }
+      console.log(rel);
+    }
     process.exit(0);
   }
   const json = process.argv.includes('--json');
   const files = listTestFiles();
   const referenced = collectReferencedTests();
   const rawOrphans = files.filter(f => !referenced.has(f.name));
-  const orphans = rawOrphans.filter(f => !(f.name in EXEMPT_KNOWN_BROKEN));
+  const isExempt = f => (f.name in EXEMPT_KNOWN_BROKEN) || (f.name in EXEMPT_NEVER_CI);
+  const orphans = rawOrphans.filter(f => !isExempt(f));
   const exemptKnownBroken = rawOrphans
     .filter(f => f.name in EXEMPT_KNOWN_BROKEN)
     .map(f => ({ file: f.rel, notion: EXEMPT_KNOWN_BROKEN[f.name] }));
+  const exemptNeverCi = rawOrphans
+    .filter(f => f.name in EXEMPT_NEVER_CI)
+    .map(f => ({ file: f.rel, notion: EXEMPT_NEVER_CI[f.name] }));
 
   if (json) {
     console.log(JSON.stringify({
@@ -112,6 +147,7 @@ function main() {
       registered: files.length - rawOrphans.length,
       orphans: orphans.map(f => f.rel),
       exemptKnownBroken,
+      exemptNeverCi,
     }, null, 2));
   } else if (orphans.length > 0) {
     console.error(`❌ ${orphans.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
@@ -121,7 +157,7 @@ function main() {
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Notion card.');
     console.error('Opt-out (intentional): rename to `_skip-${name}.test.mjs`.');
   } else {
-    console.log(`✅ All ${files.length} unit test files registered in CI (${exemptKnownBroken.length} known-broken exempt)`);
+    console.log(`✅ All ${files.length} unit test files registered in CI (${exemptKnownBroken.length} known-broken exempt, ${exemptNeverCi.length} never-CI exempt)`);
   }
   process.exit(orphans.length > 0 ? 1 : 0);
 }
