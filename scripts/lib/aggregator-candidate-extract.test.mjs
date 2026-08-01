@@ -194,6 +194,19 @@ test('"Critics Sound Off On CITY\'s SHOW" headline strips the editorial lead-in 
   assert.equal(f.venue, 'La Jolla Playhouse');
 });
 
+test('meta-description venue fallback bails on ambiguity — two distinct venues named (ship-check P1, task #722)', () => {
+  // e.g. an actor bio aside ("fresh off her run at the Booth Theatre") next
+  // to the real venue clause — picking the FIRST match would silently trust
+  // the wrong one. A null venue here is safe (candidate falls through to
+  // rejection); a wrong venue is not.
+  const f = extractArticleFields(
+    '<html><head><title>x</title>' +
+    '<meta name="description" content="Fresh off her run at the Booth Theatre, the star headlines this new play now playing at La Jolla Playhouse.">' +
+    '</head><body><p>Broadway + NYC</p><h1>Critics Sound Off On 3 SUMMERS OF LINCOLN</h1></body></html>'
+  );
+  assert.equal(f.venue, null);
+});
+
 test('referenceTitle + slugCollidesWith pre-fetch guard (ship-check P0)', () => {
   // PV ships a title; BWW derives from slug.
   assert.equal(referenceTitle('playbill-verdict', { title: 'Broken Snow' }), 'Broken Snow');
