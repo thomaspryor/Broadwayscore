@@ -1,118 +1,69 @@
 {
-  "runDate": "2026-08-01T22:09:10.751Z",
+  "runDate": "2026-08-01T23:46:20.013Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "dog-man-the-musical-west-end-2026,tao-of-glass-west-end-2026,death-note-the-musical-west-end-2026,the-vessel-off-broadway-2026,the-importance-of-being-oscar-off-west-end-2026,space-dogs-off-west-end-2026",
+    "showFilter": "dog-man-the-musical-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 14,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "30.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 2,
+    "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 8,
+    "brightdata": 0,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 4,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 9,
-    "tier3Success": 4,
-    "tier3_6Attempts": 8,
-    "tier3_6Success": 8,
-    "tier4Attempts": 8,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 14,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 8,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
-    "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
-    "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
-    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
-    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
-    "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json"
-  ],
+  "processed": [],
   "failed": [
-    "space-dogs-off-west-end-2026/thestage--the-stage.json",
-    "death-note-the-musical-west-end-2026/barbican--unknown.json",
-    "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
-    "death-note-the-musical-west-end-2026/thestage--unknown.json",
-    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
-    "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-    "tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
-    "tao-of-glass-west-end-2026/thestage--the-stage.json",
-    "tao-of-glass-west-end-2026/tribune--unknown.json",
-    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
-    "the-importance-of-being-oscar-off-west-end-2026/express-uk--stefan-kyriazis.json",
-    "the-importance-of-being-oscar-off-west-end-2026/financialtimes--sarah-hemming.json",
-    "the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json"
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
-      "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
-      "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
-      "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
-    ],
-    "archiveToday": [
-      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
-      "data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json",
-      "data/review-texts/death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
-      "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json"
-    ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs"
-    },
-    {
-      "reviewId": "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs"
-    }
-  ]
+  "urlDiscoveries": []
 }
