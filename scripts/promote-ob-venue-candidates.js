@@ -66,6 +66,13 @@ const emailAlerts = args.includes('--email');
 const adminForceArgs = args
   .filter(a => a.startsWith('--admin-force='))
   .map(a => a.split('=').slice(1).join('=').toLowerCase());
+// --only-hash=<candidateHash>: scope this run to ONE staged candidate.
+// add-requested-show.js (task #722) stages exactly one candidate per
+// dispatch and must promote only that one — without this, a single
+// feedback-driven request would sweep and promote every OTHER already-staged
+// regional candidate too (ship-check adversarial review caught this: the
+// default --regional-only loop below iterates the whole staging file).
+const onlyHash = args.find(a => a.startsWith('--only-hash='))?.split('=')[1] || null;
 
 function logEntry(entry) {
   try {
@@ -272,6 +279,13 @@ async function main() {
   const remainingStaged = [];
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
+
+    // --only-hash: everything except the targeted candidate is untouched
+    // (stays staged for its normal path — nightly cron or a later dispatch).
+    if (onlyHash && c.candidateHash !== onlyHash) {
+      remainingStaged.push(c);
+      continue;
+    }
 
     // --regional-only: non-regional candidates are untouched (stay staged for
     // the operator-run OB promotion path). Keeps the daily CI blast radius to

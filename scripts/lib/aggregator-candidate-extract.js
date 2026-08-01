@@ -308,6 +308,24 @@ function extractVenueFromBody(doc) {
     doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
     doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
     '';
+  if (!meta) return null;
+
+  // Meta description is a single unstructured sentence, unlike the article
+  // body — a stray "fresh off her run at [OTHER VENUE]" aside is more likely
+  // to land here than in a review's opening paragraph. If the description
+  // names more than one distinct venue, which one is "the" venue is
+  // genuinely ambiguous — bail rather than silently trusting whichever the
+  // regex happened to match first (ship-check adversarial review P1, task
+  // #722). A null venue just means this candidate falls through to
+  // rejection, never a wrong write.
+  const re = new RegExp(HEADLINE_VENUE_RE.source, 'ig');
+  const distinctVenues = new Set();
+  let m;
+  while ((m = re.exec(meta)) !== null) {
+    distinctVenues.add(cleanVenue(m[1]));
+  }
+  if (distinctVenues.size > 1) return null;
+
   const mv = findVenueMatch(meta, /* preferLast */ false);
   return mv ? mv.venue : null;
 }
