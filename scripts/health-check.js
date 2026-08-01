@@ -1861,20 +1861,22 @@ async function getWorkflowRunSummary() {
       .filter(entry => entry.count >= 2)
       .sort((a, b) => b.count - a.count);
 
-    // Self-heal annotation: a repeat-failure whose workflow's LATEST completed
-    // run is green has likely already been fixed — the trailing-24h window
-    // just hasn't aged the failures out yet. The Aug 1 Test Suite streak ended
-    // 05:10 UTC but the digest fired a "likely broken" Fix-this card ~6.5h
-    // later, burning a session on an already-resolved condition. Annotate here
-    // (repeatFailureResults downgrades + notes it) so taps on self-healed
-    // conditions can be skipped.
+    // Self-heal annotation: a repeat-failure whose streak has demonstrably
+    // ENDED (2+ consecutive green completed runs since the last failure) has
+    // likely already been fixed — the trailing-24h window just hasn't aged the
+    // failures out yet. The Aug 1 Test Suite streak ended 05:10 UTC but the
+    // digest fired a "likely broken" Fix-this card ~6.5h later, burning a
+    // session on an already-resolved condition. Deliberately NOT a bare
+    // latest-run-green check: a flapping workflow (11/19 failures, 2026-06-13)
+    // has a green latest run most mornings, and last-successful-run heuristics
+    // are the exact blindness repeatFailureResults was built to fix
+    // (second-opinion review, 2026-08-01).
     for (const entry of repeatFailures) {
-      let latest = null;
-      for (const run of completed) {
-        if (run.name !== entry.name) continue;
-        if (!latest || run.created_at > latest.created_at) latest = run;
-      }
-      entry.latestRunGreen = !!latest && latest.conclusion === 'success';
+      const conclusions = completed
+        .filter(r => r.name === entry.name)
+        .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+        .map(r => r.conclusion);
+      entry.selfHealed = isRepeatFailureSelfHealed(conclusions);
     }
 
     return {
@@ -1904,18 +1906,32 @@ async function getWorkflowRunSummary() {
 // still be a flaky double). Returns [] when there's nothing to surface — clean
 // window, or summary skipped (no GH token / API error). Pure (no IO) — unit-
 // tested in tests/unit/health-check-repeat-failures.test.mjs.
+// Pure (no I/O): a repeat-failure streak counts as self-healed only when the
+// 2+ most recent completed runs are ALL green — i.e. the streak provably
+// ended. A single trailing green (flappy workflow) is not enough.
+// @param {string[]} conclusionsNewestFirst - run conclusions, newest first
+function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
+  if (!Array.isArray(conclusionsNewestFirst) || conclusionsNewestFirst.length < 2) return false;
+  let leadingGreens = 0;
+  for (const c of conclusionsNewestFirst) {
+    if (c !== 'success') break;
+    leadingGreens++;
+  }
+  return leadingGreens >= 2;
+}
+
 function repeatFailureResults(workflowSummary) {
   if (!workflowSummary || workflowSummary.skipped) return [];
   const repeats = workflowSummary.repeatFailures || [];
   return repeats.map(r => ({
     name: `Workflow repeat-failure: ${r.name}`,
-    // A green latest run means the streak already ended — downgrade to warn so
-    // an already-self-healed condition doesn't drive ACTION NEEDED subjects or
-    // invite a Fix-this tap on a resolved streak.
-    status: r.latestRunGreen ? 'warn' : (r.count >= 3 ? 'error' : 'warn'),
+    // A provably-ended streak (2+ consecutive trailing greens) downgrades to
+    // warn so an already-self-healed condition doesn't drive ACTION NEEDED
+    // subjects or invite a Fix-this tap on a resolved streak.
+    status: r.selfHealed ? 'warn' : (r.count >= 3 ? 'error' : 'warn'),
     message: `${r.name} failed ${r.count} times in the last 24h`
-      + (r.latestRunGreen
-        ? ' — latest run is green; likely self-healed, failures will age out of the window.'
+      + (r.selfHealed
+        ? ' — 2+ consecutive green runs since; likely self-healed, failures will age out of the window.'
         : ' — likely broken, not transient.'),
     hint: 'Open the latest run from the Repeat Workflow Failures section of the digest and fix the root cause.',
   }));
@@ -2642,10 +2658,10 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       ? `
         <h3 style="color:#e74c3c;margin:24px 0 8px;">⚠️ Repeat Workflow Failures (24h)</h3>
         <p style="color:#ccc;margin:4px 0;">
-          These workflows failed 2+ times in the last 24 hours. Likely broken, not transient.
+          These workflows failed 2+ times in the last 24 hours. Entries without a self-healed note are likely broken, not transient.
         </p>
         <ul style="padding-left:20px;margin:4px 0;">
-          ${repeats.map(r => `<li style="color:#e74c3c;margin-bottom:4px;"><strong>${r.name}</strong> — ${r.count} failures — <a href="${r.latestUrl}" style="color:#e74c3c;">latest run</a></li>`).join('')}
+          ${repeats.map(r => `<li style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};margin-bottom:4px;"><strong>${r.name}</strong> — ${r.count} failures${r.selfHealed ? ' — likely self-healed (2+ green runs since)' : ''} — <a href="${r.latestUrl}" style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};">latest run</a></li>`).join('')}
         </ul>
       `
       : '';
@@ -3092,4 +3108,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };

@@ -90,6 +90,10 @@ test('post-correction: unreadable collider declines to mark (conservative, unlik
   assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: '' }, null), false);
 });
 
+test('post-correction: null newData declines without throwing', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate(null, { fullText: body(3000) }), false);
+});
+
 test('post-correction: body at the 200-char floor stays primary; just under it defers', () => {
   assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: body(200) }, { fullText: body(3000) }), false);
   assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: body(199) }, { fullText: body(3000) }), true);
