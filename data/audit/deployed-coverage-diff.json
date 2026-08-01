@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-01T13:08:44.886Z",
+  "generatedAt": "2026-08-01T14:18:55.841Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 146,
-  "clean": 146,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 145,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.06 vs local 81.45 (Δ0.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15
+    }
+  ]
 }
