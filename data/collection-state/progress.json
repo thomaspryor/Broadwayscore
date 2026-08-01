@@ -6,7 +6,14 @@
     "shifters-off-broadway-2026/nytg--gillian-russo.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
-    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "birthright-off-broadway-2026/the-recs--unknown.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -21,7 +28,10 @@
     "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
     "shifters-off-broadway-2026/thestage--tom-wicker.json",
     "shifters-off-broadway-2026/times-uk--donald-hutera.json",
-    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json"
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -30,10 +40,19 @@
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "shifters-off-broadway-2026/nytg--gillian-russo.json",
       "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json"
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "birthright-off-broadway-2026/the-recs--unknown.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -44,6 +63,13 @@
     "archive": []
   },
   "startTime": "2026-08-01T10:11:22.808Z",
-  "lastProcessed": "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-  "log": []
+  "lastProcessed": "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+  "log": [
+    {
+      "t": "2026-08-01T10:15:35.873Z",
+      "event": "bb-session",
+      "session": "c98d8026",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    }
+  ]
 }
