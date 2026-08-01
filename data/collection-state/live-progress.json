@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-01T06:16:51.120Z",
-  "processed": 42,
-  "failed": 192,
-  "successRate": "17.9%",
+  "updatedAt": "2026-08-01T06:22:06.472Z",
+  "processed": 48,
+  "failed": 236,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 34,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 4,
     "scrapingbee": 0,
-    "brightdata": 6,
-    "archiveToday": 15,
+    "brightdata": 7,
+    "archiveToday": 16,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-01T04:36:35.506Z",
@@ -82,6 +82,28 @@
       "event": "bb-session",
       "session": "db4c6f29",
       "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+    },
+    {
+      "t": "2026-08-01T06:19:07.201Z",
+      "event": "bb-session",
+      "session": "916747e1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649295"
+    },
+    {
+      "t": "2026-08-01T06:19:08.115Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-01T06:19:24.078Z",
+      "event": "bb-session",
+      "session": "d4758c52",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649295"
+    },
+    {
+      "t": "2026-08-01T06:19:24.806Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
