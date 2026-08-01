@@ -19,6 +19,7 @@ const { buildFeedbackThankYouEmail, postJSON } = require('./lib/email-templates.
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
+const { planContentRequestActions } = require('./lib/content-request-routing.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -417,6 +418,28 @@ async function main() {
     const bugDiagnoses = [];
     let diagnosisAttempts = 0;
 
+    // Catalog + on-disk image evidence for content-request routing. Loaded
+    // lazily and defensively: shows.json is core data (checked out by the
+    // workflow's checkout-core-data step) and public/images/shows is tracked,
+    // but a missing/unreadable either way must degrade to "park for review",
+    // never crash the run and strand the whole batch.
+    let shows = [];
+    let showIdsMissingImages = null;
+    if (categorized.some((c) => c.contentRequest)) {
+      try {
+        const showsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+        shows = showsRaw.shows || showsRaw;
+      } catch (err) {
+        console.error(`Could not load shows.json for content routing: ${err.message}`);
+      }
+      try {
+        const dirs = new Set(fs.readdirSync(path.join(__dirname, '../public/images/shows')));
+        showIdsMissingImages = new Set(shows.filter((s) => s && s.id && !dirs.has(s.id)).map((s) => s.id));
+      } catch (err) {
+        console.error(`Could not read image dirs for content routing: ${err.message}`);
+      }
+    }
+
     for (const item of categorized) {
       if (item.category !== 'Bug' && item.category !== 'Content Error') continue;
 
@@ -425,11 +448,40 @@ async function main() {
 
       if (item.contentRequest) {
         // Content-addition requests aren't code bugs — diagnoseBug would
-        // hallucinate file-level diagnoses. A null diagnosis routes them to
-        // the workflow's needs-review issue path so the request still reaches
-        // the maintainer without burning an LLM call or an auto-fix dispatch.
-        console.log(`Content request (no diagnosis): ${item.summary}`);
-        bugDiagnoses.push({ item, submission: sub, diagnosis: null });
+        // hallucinate file-level diagnoses, so they still carry a null
+        // diagnosis and skip auto-fix.
+        //
+        // What changed 2026-08-01 (GH #505 + its resubmitted twin): a null
+        // diagnosis used to mean "park as needs-review and stop". Nothing
+        // consumed that label and the repo un-watches itself, so the request
+        // died there. Now we also compute a concrete ACTION PLAN — which real
+        // workflow, with which inputs — and hand it to the workflow step to
+        // dispatch. Planning is pure and deterministic
+        // (scripts/lib/content-request-routing.js), so the dispatch target is
+        // auditable rather than re-derived by a model each run.
+        //
+        // Unroutable asks still fall through to the needs-review issue: the
+        // plan always returns at least one action, so nothing goes silent.
+        let contentActions = [];
+        try {
+          contentActions = planContentRequestActions({
+            message: sub.message,
+            show: sub.show,
+            shows,
+            showIdsMissingImages,
+          });
+        } catch (err) {
+          // A planner crash must never eat the user's report.
+          console.error(`  Routing failed, parking instead: ${err.message}`);
+          contentActions = [{ kind: 'unroutable', reason: `router error: ${err.message}` }];
+        }
+        const dispatchable = contentActions.filter((a) => a.workflow);
+        console.log(
+          `Content request (no diagnosis): ${item.summary}\n` +
+          `  actions: ${contentActions.map((a) => a.kind).join(', ') || 'none'}` +
+          (dispatchable.length ? ` → dispatching ${dispatchable.length}` : ' → parking for review')
+        );
+        bugDiagnoses.push({ item, submission: sub, diagnosis: null, contentActions });
         continue;
       }
 
