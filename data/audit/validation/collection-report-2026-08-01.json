@@ -1,0 +1,104 @@
+{
+  "runDate": "2026-08-01T01:12:14.189Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "dog-man-the-musical-west-end-2026,the-enormous-crocodile-west-end-2026,tao-of-glass-west-end-2026,death-note-the-musical-west-end-2026,the-vessel-off-broadway-2026,les-miserables-arena-concert-spectacular-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 4,
+    "failed": 13,
+    "skipped": 0,
+    "successRate": "23.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archiveToday": 5,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 7,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 8,
+    "tier3Success": 4,
+    "tier3_6Attempts": 5,
+    "tier3_6Success": 5,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 13,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 2.2,
+    "urlDiscoveryAttempts": 8,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
+    "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  ],
+  "failed": [
+    "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
+    "death-note-the-musical-west-end-2026/thestage--unknown.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+    "tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
+    "tao-of-glass-west-end-2026/thestage--the-stage.json",
+    "tao-of-glass-west-end-2026/tribune--unknown.json",
+    "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
+    "the-enormous-crocodile-west-end-2026/london-theatre--unknown.json",
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
+      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
+      "newUrl": "https://www.broadwayworld.com/translate/es/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
+    }
+  ]
+}
