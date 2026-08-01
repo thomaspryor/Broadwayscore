@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-01T02:28:14.154Z",
+  "updatedAt": "2026-08-01T02:29:33.188Z",
   "processed": 8,
-  "failed": 47,
-  "successRate": "14.5%",
+  "failed": 57,
+  "successRate": "12.3%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 12,
+    "archiveToday": 13,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-01T01:03:59.674Z",
-      "event": "bb-session",
-      "session": "e5aaa226",
-      "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
-    },
-    {
-      "t": "2026-08-01T01:04:16.453Z",
-      "event": "bb-session",
-      "session": "e2ccc504",
-      "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
-    },
     {
       "t": "2026-08-01T01:10:24.420Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-08-01T02:26:20.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T02:28:28.713Z",
+      "event": "bb-session",
+      "session": "b38db26a",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-01T02:28:29.408Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
