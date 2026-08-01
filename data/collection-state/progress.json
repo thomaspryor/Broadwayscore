@@ -412,7 +412,17 @@
     "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "pride-west-end-2026/nyt-theater--unknown.json"
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "pride-west-end-2026/wsj--brian-p-kelly.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json",
+    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
+    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -476,7 +486,9 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/telegraph--marianka-swain.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/pride-west-end-2026/wsj--brian-p-kelly.json"
+    ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json",
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -486,7 +498,7 @@
     ]
   },
   "startTime": "2026-08-01T16:38:36.346Z",
-  "lastProcessed": "pride-west-end-2026/nyt-theater--unknown.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-08-01T19:40:44.776Z",
@@ -499,6 +511,17 @@
       "event": "bb-session",
       "session": "8d8454da",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-01T20:04:57.423Z",
+      "event": "bb-session",
+      "session": "3466e24e",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-08-01T20:04:57.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
