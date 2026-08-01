@@ -561839,17 +561839,23 @@
     ]
   },
   {
-    "startedAt": "2026-08-01T16:43:23.435Z",
-    "completedAt": "2026-08-01T16:43:29.334Z",
-    "totalReviews": 14,
-    "processed": 1,
-    "skipped": 13,
-    "errors": 0,
+    "startedAt": "2026-08-01T16:52:09.376Z",
+    "completedAt": "2026-08-01T16:52:09.585Z",
+    "totalReviews": 34,
+    "processed": 0,
+    "skipped": 33,
+    "errors": 1,
     "tokensUsed": {
-      "input": 5258,
-      "output": 302,
-      "total": 13733
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "tao-of-glass-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
