@@ -151,7 +151,17 @@
     "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json"
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,12 +200,15 @@
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
     ],
     "archiveToday": [
-      "data/review-texts/disruption-off-broadway-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-01T10:11:22.808Z",
-  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
   "log": [
     {
       "t": "2026-08-01T10:15:35.873Z",
@@ -208,6 +221,39 @@
       "event": "bb-session",
       "session": "21ebd905",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-08-01T10:27:03.682Z",
+      "event": "bb-session",
+      "session": "a5b29f5d",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T10:27:04.608Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T10:27:20.514Z",
+      "event": "bb-session",
+      "session": "e5b26beb",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T10:27:21.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T10:28:04.355Z",
+      "event": "bb-session",
+      "session": "9565da28",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T10:28:05.353Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
