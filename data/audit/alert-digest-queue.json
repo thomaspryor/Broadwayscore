@@ -30,5 +30,13 @@
     "severity": "warning",
     "url": null,
     "queuedAt": "2026-07-31T23:10:03.888Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "2/143 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nSpace Dogs: score-drift\nGiulia: The Poison Queen of Palermo: score-drift",
+    "severity": "error",
+    "url": null,
+    "queuedAt": "2026-08-01T00:19:08.689Z"
   }
 ]
