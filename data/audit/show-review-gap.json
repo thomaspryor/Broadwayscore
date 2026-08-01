@@ -1,14 +1,1408 @@
 {
-  "generatedAt": "2026-08-01T15:00:57.264Z",
+  "generatedAt": "2026-08-01T16:13:30.270Z",
   "windowDays": 1095,
-  "targets": 0,
+  "targets": 10,
   "counts": {
-    "withGap": 0,
-    "totalMissing": 0,
-    "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 0,
+    "withGap": 7,
+    "totalMissing": 27,
+    "totalCitedNoUrl": 1,
+    "totalFlaggedMisses": 12,
     "totalRecoverable": 0,
-    "totalRecovered": 0
+    "totalRecovered": 1
   },
-  "results": []
+  "results": [
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "title": "The Importance of Being Oscar",
+      "openingDate": "2026-07-29",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
+        "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
+        "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
+        "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
+        "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
+        "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
+        "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
+        "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
+        "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
+        "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
+      ],
+      "dirFiles": 23,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreandartreviews.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "hamhigh.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "shinylife.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "daily-mail--patrick-marmion.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        },
+        {
+          "url": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
+          "host": "ft.com",
+          "knownOutletId": "financialtimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "financialtimes--sarah-hemming.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "express-uk--stefan-kyriazis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--clive-davis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs"
+            },
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews",
+          "priorRun": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 19,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 11,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 8,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 8,
+        "corroborated": 1,
+        "perSource": {
+          "theatre-reviews": {
+            "cited": 4,
+            "corroborated": 1
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "weIngestBlocked": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-review-b1250584.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/oct/01/the-importance-of-being-earnest-review-stephen-fry-noel-coward-theatre",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "recoveryResults": [
+        {
+          "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
+          "host": "bachtrack.com",
+          "file": "bachtrack--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch returned no usable HTML (got 175 chars)",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+          "host": "playstosee.com",
+          "file": "plays-to-see--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 0,
+            "emptyParse": true,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 1,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+          "host": "doubleclick.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64545/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64545/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64545/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
+          "host": "doubleclick.net",
+          "outletId": "doubleclick",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64545/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64545/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "the-saviors-off-broadway-2026",
+      "title": "The Saviors",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
+        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+        "https://thefrontrowcenter.com/2026/07/the-saviors/",
+        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
+        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
+        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
+        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
+        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
+        "https://www.talkinbroadway.com/page/ob/07_27_26.html"
+      ],
+      "dirFiles": 23,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
+        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/"
+      ],
+      "dirFiles": 16,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
+        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
+        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
+        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
+        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
+        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
+      ],
+      "dirFiles": 14,
+      "dirClean": 10,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+          "host": "1minutecritic.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "nydailynews.com",
+          "count": 1
+        },
+        {
+          "host": "nypost.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 4,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+          "host": "1minutecritic.substack.com",
+          "outletId": "1minutecritic",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+        "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
+        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+        "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/"
+      ],
+      "dirFiles": 8,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+          "host": "threads.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
+          "host": "mybaba.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--west-end-theatre.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--anya-ryan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Enormous Crocodile\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Enormous Crocodile\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Enormous Crocodile\" review lyric",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 4,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
+          "host": "threads.com",
+          "outletId": "threads",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64555/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://www.mybaba.com/event/roald-dahls-the-enormous-crocodile-the-musical-returns-to-london/",
+          "host": "mybaba.com",
+          "outletId": "mybaba",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64555/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "dog-man-the-musical-west-end-2026",
+      "title": "Dog Man - The Musical",
+      "openingDate": "2026-07-29",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+        "https://www.timeout.com/london/theatre/the-truth-review",
+        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
+      ],
+      "dirFiles": 2,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 2,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-truth-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "citedNoUrl": [
+        {
+          "outletId": "telegraph",
+          "outletName": "The Telegraph",
+          "stars": 4,
+          "source": "theatre-reviews",
+          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
+          "priorRun": false,
+          "hasExcludedFiles": false
+        }
+      ],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 0,
+        "perSource": {
+          "theatre-reviews": {
+            "cited": 1,
+            "corroborated": 0
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Dog Man - The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Dog Man - The Musical\" West End review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Dog Man - The Musical\" review queen",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 0,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64561/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "space-dogs-off-west-end-2026",
+      "title": "Space Dogs",
+      "openingDate": "2026-07-31",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs"
+      ],
+      "aggregatorListedUrls": [
+        "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+        "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+        "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+        "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+        "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+        "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+        "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+        "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+        "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+        "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+        "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+        "https://www.threads.com/@broadwayworlduk/post/Dbb_qswCeAj/review-space-dogs-the-other-palace",
+        "https://www.operationlivetheatre.com/post/space-dogs-the-musical",
+        "https://www.threads.com/@theatre_weekly/post/DbdHJOdoL_N/review-space-dogs-the-musical-at-the-other-palace-studio-it-is-unusual/"
+      ],
+      "dirFiles": 13,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+          "host": "onin.london",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.threads.com/@broadwayworlduk/post/Dbb_qswCeAj/review-space-dogs-the-other-palace",
+          "host": "threads.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.threads.com/@theatre_weekly/post/DbdHJOdoL_N/review-space-dogs-the-musical-at-the-other-palace-studio-it-is-unusual/",
+          "host": "threads.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "readaboutstuff--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--the-stage.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Space Dogs\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Space Dogs\" West End review 2026",
+            "ok": true,
+            "results": 9,
+            "error": null
+          },
+          {
+            "query": "\"Space Dogs\" review other",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 12,
+        "error": null
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs",
+          "publishDate": "2022-02-14"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+          "host": "onin.london",
+          "outletId": "onin",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.threads.com/@broadwayworlduk/post/Dbb_qswCeAj/review-space-dogs-the-other-palace",
+          "host": "threads.com",
+          "outletId": "threads",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64564/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        },
+        {
+          "url": "https://www.threads.com/@theatre_weekly/post/DbdHJOdoL_N/review-space-dogs-the-musical-at-the-other-palace-studio-it-is-unusual/",
+          "host": "threads.com",
+          "outletId": "threads",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~64564/day) projects exhaustion in ~6d, before the 21d-out renewal — still usi"
+        }
+      ],
+      "ingestSkippedByCap": []
+    }
+  ]
 }
