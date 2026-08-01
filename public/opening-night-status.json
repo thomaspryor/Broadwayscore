@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T19:22:07.664Z",
+  "generatedAt": "2026-08-01T19:28:11.067Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -634,10 +634,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1005,23 +1001,23 @@
       "status": "open",
       "slug": "the-importance-of-being-oscar-off-west-end",
       "thumbnail": "/images/shows/the-importance-of-being-oscar-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 71.2,
-      "liveScore": 71,
-      "scoreDrift": -0.20000000000000284,
+      "siteScore": 76,
+      "liveScore": 76,
+      "scoreDrift": 0,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 0,
+      "total": 10,
+      "t1": 1,
       "t2": 4,
       "t3": 5,
-      "positive": 5,
+      "positive": 6,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3",
+          "T1:1/3",
           "T2:1/2",
           "hi-conf:4/6"
         ],
@@ -1052,10 +1048,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1170,6 +1162,18 @@
           "t2": 4,
           "t3": 5,
           "p": 5,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-01T19:28:11.067Z",
+          "rc": 10,
+          "s": 76,
+          "t1": 1,
+          "t2": 4,
+          "t3": 5,
+          "p": 6,
           "m": 3,
           "n": 1,
           "bc": "waiting"
