@@ -622,10 +622,15 @@ function safeWriteReview(filePath, newData, options = {}) {
 
   // Pattern Card #4: URL collision detection — warn before writing a file whose URL
   // already exists in another file in the same show directory.
-  // Skip if the URL is currently mid-correction (urlCorrectedFrom set) — the
-  // post-correction state may differ from the URL we're comparing against, and
-  // we don't want to lock in a duplicate flag based on transient state.
-  if (!force && newData.url && !newData.urlCorrectedFrom) {
+  // Files mid-correction (urlCorrectedFrom set) get the CONSERVATIVE decision
+  // path (shouldMarkPostCorrectionDuplicate) instead of being skipped entirely:
+  // the URL-upgrade path is exactly where same-URL duplicates are born
+  // (maybeUpgradeUrl adopting an aggregator-cited URL a named sibling already
+  // owns), and the old blanket skip meant those could never be tombstoned —
+  // plus urlCorrectedFrom persists forever, permanently exempting the file
+  // (the-enormous-crocodile london-theatre--unknown weekly oscillation,
+  // 2026-08-01).
+  if (!force && newData.url) {
     const collider = checkUrlCollision(filePath, newData);
     if (collider) {
       let colliderData = null;
@@ -645,7 +650,9 @@ function safeWriteReview(filePath, newData, options = {}) {
           newData.duplicateOf = null;
           newData.duplicateReason = null;
         }
-      } else if (shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
+      } else if (newData.urlCorrectedFrom
+          ? shouldMarkPostCorrectionDuplicate(newData, colliderData)
+          : shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
         newData.duplicateOf = collider;
         newData.duplicateReason = 'url-collision-detected-at-write';
@@ -657,11 +664,14 @@ function safeWriteReview(filePath, newData, options = {}) {
       } else if (newData._duplicateOfCleared) {
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but carries a _duplicateOfCleared breadcrumb — honoring the prior clear, not re-marking`);
       } else {
-        // newData carries the real review body and the collider is a thin/empty
-        // same-URL stub. Marking newData duplicate here BURIES the real review
-        // under the stub and re-forms a byline-explosion cluster on every write
-        // (much-ado Sarah Crompton → alun-hood, 2026-07-05). Keep it primary.
-        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but has the substantive body — keeping primary`);
+        // Normal path: newData carries the real review body and the collider is
+        // a thin/empty same-URL stub. Marking newData duplicate here BURIES the
+        // real review under the stub and re-forms a byline-explosion cluster on
+        // every write (much-ado Sarah Crompton → alun-hood, 2026-07-05).
+        // Post-correction path: newData has a substantive body (possibly a
+        // legitimate multi-critic review sharing the URL) or the collider is
+        // unreadable — too uncertain to tombstone. Keep primary either way.
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — keeping primary (${newData.urlCorrectedFrom ? 'post-URL-correction, not provably duplicate' : 'has the substantive body'})`);
       }
     }
   }
@@ -805,6 +815,46 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // New file has a real body AND the collider is (near-)empty → new file is the
   // canonical; do not mark it duplicate.
   if (newLen >= 500 && colLen < 200) return false;
+  return true;
+}
+
+/**
+ * Collision decision for a file whose URL was just corrected (urlCorrectedFrom
+ * set) — the branch the blanket `!newData.urlCorrectedFrom` skip used to
+ * swallow. Same-URL identity is NOT transient (that was only ever true of the
+ * body, which maybeUpgradeUrl nulls), so a corrected file adopting a URL a
+ * sibling already owns is by definition the newcomer to that URL.
+ *
+ * Mark duplicateOf ONLY when this file's body is near-empty: it holds nothing
+ * unique, so deferring to the same-URL sibling loses nothing (the
+ * enormous-crocodile london-theatre--unknown case — maybeUpgradeUrl always
+ * leaves the corrected file bodyless). A substantive body means a
+ * possibly-legitimate multi-critic review sharing the sibling's URL (88 such
+ * corpus files, review probe 2026-08-01) — those are NEVER buried here; the
+ * dedicated dedup passes own that call. Unreadable collider → decline (the
+ * normal branch's mark-on-unproven default is too aggressive for a file in a
+ * transient state).
+ *
+ * Pure (no I/O) for tests/unit/url-collision-canonical.test.mjs.
+ * @param {{fullText?:string,_duplicateOfCleared?:any}|null} newData
+ * @param {{fullText?:string}|null} colliderData
+ * @returns {boolean} true → mark corrected file duplicateOf the collider
+ */
+function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
+  if (newData && newData._duplicateOfCleared) return false;
+  if (!colliderData) return false;
+  const newLen = String((newData && newData.fullText) || '').trim().length;
+  if (newLen >= 200) return false;
+  // Sole-score guard: a bodyless file can still be the pair's only scored copy
+  // (paywalled-star-outlet stubs score via aggregatorStars-fallback — corpus
+  // probe found ap--mark-kennedy score 65 vs a scoreless same-URL sibling).
+  // Never bury the only score-bearing copy; a sibling with a score, stars, or
+  // a scoreable body can stand in, so deferring to it loses nothing.
+  const newHasScore = newData.assignedScore != null || newData.aggregatorStars != null;
+  const colCanScore = colliderData.assignedScore != null
+    || colliderData.aggregatorStars != null
+    || String(colliderData.fullText || '').trim().length >= 500;
+  if (newHasScore && !colCanScore) return false;
   return true;
 }
 
@@ -1295,4 +1345,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
