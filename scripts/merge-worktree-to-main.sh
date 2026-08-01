@@ -68,8 +68,13 @@ if [ ${#VERIFY_FILES[@]} -eq 0 ]; then
   if [ -n "$MB" ]; then
     while IFS= read -r f; do [ -n "$f" ] && VERIFY_FILES+=("$f"); done \
       < <(g diff --name-only --diff-filter=d "$MB" "$BRANCH" 2>/dev/null)
+    # --no-renames on the DELETED side only. With rename detection on (the
+    # default), `git mv a b` reports a single R entry naming only `b`, so the
+    # vanished path `a` lands in NEITHER list and a rename whose delete-half
+    # failed to push would verify green. --no-renames decomposes it into
+    # add(b) + delete(a), putting `a` back under -D where it belongs.
     while IFS= read -r f; do [ -n "$f" ] && DELETED_FILES+=("$f"); done \
-      < <(g diff --name-only --diff-filter=D "$MB" "$BRANCH" 2>/dev/null)
+      < <(g diff --name-only --no-renames --diff-filter=D "$MB" "$BRANCH" 2>/dev/null)
   fi
 fi
 log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} deleted on origin after push"
@@ -228,23 +233,32 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]
   g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null \
     || die "HEAD is not an ancestor of origin/$DEFAULT_BRANCH — origin's tip moved (concurrent session?) since our push; per-file verify would be unreliable"
 
-  MISSING=0
+  # `${arr[@]+"${arr[@]}"}` — NOT a bare `"${arr[@]}"`. Under `set -u` (line 24)
+  # bash 3.2, the stock /usr/bin/bash on macOS, treats an empty array expansion
+  # as an unbound variable and aborts. Since the guard above admits this block
+  # when EITHER list is non-empty, the other one is routinely empty: a
+  # pure-deletion merge leaves VERIFY_FILES empty, and an explicit
+  # `-- file...` caller list leaves DELETED_FILES empty. Aborting here would be
+  # worse than the false alarm this all replaced — it happens AFTER a successful
+  # push, so the delayed #668 re-verify below never gets scheduled. Same idiom
+  # and same reason as scripts/lib/push-with-retry.sh:737 and scripts/hooks/pre-push:53.
+  VERIFY_FAIL=0
   echo "── verifying on origin/$DEFAULT_BRANCH ──"
-  for f in "${VERIFY_FILES[@]}"; do
+  for f in ${VERIFY_FILES[@]+"${VERIFY_FILES[@]}"}; do
     if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then
       echo "  ✓ $f"
     else
-      echo "  ✗ MISSING: $f"; MISSING=1
+      echo "  ✗ MISSING: $f"; VERIFY_FAIL=1
     fi
   done
-  for f in "${DELETED_FILES[@]}"; do
+  for f in ${DELETED_FILES[@]+"${DELETED_FILES[@]}"}; do
     if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then
-      echo "  ✗ STILL PRESENT (deletion did not land): $f"; MISSING=1
+      echo "  ✗ STILL PRESENT (deletion did not land): $f"; VERIFY_FAIL=1
     else
       echo "  ✓ deleted: $f"
     fi
   done
-  [ "$MISSING" = 0 ] || die "some files did NOT land on origin — push reported success but work is missing"
+  [ "$VERIFY_FAIL" = 0 ] || die "origin/$DEFAULT_BRANCH does not match what we pushed — a file we added is absent, or a file we deleted is still there"
 fi
 
 # --- Schedule a delayed re-verify (task #668) ────────────────────────────────
