@@ -323,10 +323,15 @@ function findPipefailDeadExitCodeEcho(raw) {
   return violations;
 }
 
+const API_TIMEOUT_MS = 10_000;
+
 /**
- * Minimal GitHub REST GET with a single retry on secondary rate limit.
- * Mirrors the shape of audit-workflow-activity.js's apiGet but kept local —
- * this file is a standalone CI gate and shouldn't import a sibling script.
+ * Minimal GitHub REST GET with a hard request timeout. Mirrors the shape of
+ * audit-workflow-activity.js's apiGet but kept local — this file is a
+ * standalone CI gate and shouldn't import a sibling script. A stalled
+ * socket must not be able to hold this job open indefinitely (ship-check
+ * finding, task #737): without a timeout, one hung connection burns the
+ * entire lint-workflows job budget.
  */
 function apiGet(url, token) {
   return new Promise((resolve, reject) => {
@@ -336,8 +341,9 @@ function apiGet(url, token) {
         Accept: 'application/vnd.github.v3+json',
         'User-Agent': 'bwsc-audit-workflow-hygiene',
       },
+      timeout: API_TIMEOUT_MS,
     };
-    https
+    const req = https
       .get(url, opts, (res) => {
         let body = '';
         res.on('data', (d) => (body += d));
@@ -354,6 +360,9 @@ function apiGet(url, token) {
         });
       })
       .on('error', reject);
+    req.on('timeout', () => {
+      req.destroy(new Error(`GitHub API request timed out after ${API_TIMEOUT_MS}ms: ${url}`));
+    });
   });
 }
 
@@ -409,23 +418,42 @@ async function checkNeverRunWorkflowCoverage(files) {
       page++;
     }
 
+    // Per-workflow failures (403/429/timeout/malformed body) resolve to
+    // `null` here rather than throwing — one flaky run-count request must
+    // never collapse the entire scan to "skipped" (ship-check finding,
+    // task #737). A `null` count means "unknown", not "zero"; those
+    // workflows are excluded from offender consideration below rather than
+    // risking a false positive.
     const runCountEntries = await mapWithConcurrency(workflows, NEVER_RUN_CONCURRENCY, async (wf) => {
-      const data = await apiGet(
-        `https://api.github.com/repos/${REPO}/actions/workflows/${encodeURIComponent(wf.file)}/runs?per_page=1`,
-        token,
-      );
-      return [wf.file, data.total_count ?? 0];
+      try {
+        const data = await apiGet(
+          `https://api.github.com/repos/${REPO}/actions/workflows/${encodeURIComponent(wf.file)}/runs?per_page=1`,
+          token,
+        );
+        return [wf.file, typeof data.total_count === 'number' ? data.total_count : null];
+      } catch {
+        return [wf.file, null];
+      }
     });
-    const runCountsByFile = Object.fromEntries(runCountEntries);
+    const unknownCountFiles = runCountEntries.filter(([, count]) => count === null).map(([file]) => file);
+    const runCountsByFile = Object.fromEntries(
+      runCountEntries.filter(([, count]) => count !== null),
+    );
+    const knownWorkflows = workflows.filter((wf) => !unknownCountFiles.includes(wf.file));
 
     const offenders = findNeverRunWorkflows({
-      workflows,
+      workflows: knownWorkflows,
       runCountsByFile,
       now: Date.now(),
       minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
     });
 
-    return { skipped: false, offenders, totalChecked: workflows.length };
+    return {
+      skipped: false,
+      offenders,
+      totalChecked: knownWorkflows.length,
+      unknownCount: unknownCountFiles.length,
+    };
   } catch (err) {
     return { skipped: true, reason: `API error: ${err.message}` };
   }
@@ -495,33 +523,24 @@ async function main() {
   }
 
   // ── Rule (f): never-run workflow coverage (advisory — never counts toward `total`) ─
+  // Console-only here — this CLI entry point has no commit step (lint-workflows
+  // just checks out code), so a snapshot written here would never leave the
+  // ephemeral runner (ship-check finding, task #737). The persisted,
+  // digest-visible source of truth is health-check.js, which reuses this same
+  // checkNeverRunWorkflowCoverage() (exported below) and writes
+  // NEVER_RUN_SNAPSHOT_PATH from within data-health-check.yml — a job that
+  // already commits data/audit/* daily.
   const neverRun = await checkNeverRunWorkflowCoverage(files);
   if (neverRun.skipped) {
     console.log(`ℹ️  Never-run workflow coverage check skipped (${neverRun.reason}).`);
   } else {
     console.log(
-      `ℹ️  Never-run workflow coverage: ${neverRun.offenders.length} offender(s) among ${neverRun.totalChecked} checked (>${NEVER_RUN_MIN_AGE_DAYS}d old, 0 lifetime runs).`,
+      `ℹ️  Never-run workflow coverage: ${neverRun.offenders.length} offender(s) among ${neverRun.totalChecked} checked (>${NEVER_RUN_MIN_AGE_DAYS}d old, 0 lifetime runs)` +
+        (neverRun.unknownCount ? `, ${neverRun.unknownCount} unknown (API errors, excluded)` : '') +
+        '.',
     );
     if (neverRun.offenders.length > 0) {
       for (const f of neverRun.offenders) console.log(`   • ${f}`);
-    }
-    try {
-      fs.mkdirSync(path.dirname(NEVER_RUN_SNAPSHOT_PATH), { recursive: true });
-      fs.writeFileSync(
-        NEVER_RUN_SNAPSHOT_PATH,
-        JSON.stringify(
-          {
-            generatedAt: new Date().toISOString(),
-            minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
-            totalChecked: neverRun.totalChecked,
-            offenders: neverRun.offenders,
-          },
-          null,
-          2,
-        ) + '\n',
-      );
-    } catch (err) {
-      console.log(`   (could not write snapshot: ${err.message})`);
     }
   }
 
@@ -619,7 +638,11 @@ async function main() {
   process.exit(1);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+module.exports = { checkNeverRunWorkflowCoverage, NEVER_RUN_MIN_AGE_DAYS, NEVER_RUN_SNAPSHOT_PATH };
+
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

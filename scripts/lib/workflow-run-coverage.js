@@ -49,8 +49,11 @@ function findNeverRunWorkflows({ workflows, runCountsByFile, now, minAgeDays = 3
 }
 
 function toMs(value) {
-  if (value instanceof Date) return value.getTime();
-  if (typeof value === 'number') return value;
+  if (value instanceof Date) {
+    const ms = value.getTime();
+    return Number.isNaN(ms) ? null : ms;
+  }
+  if (typeof value === 'number') return Number.isNaN(value) ? null : value;
   if (typeof value === 'string') {
     const ms = new Date(value).getTime();
     return Number.isNaN(ms) ? null : ms;

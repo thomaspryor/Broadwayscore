@@ -40,10 +40,16 @@ permissions:
   actions: write
 
 concurrency:
-  # dry_run gets its OWN lane per show (add-requested-show.yml precedent,
-  # task #722) so an operator smoke test can never queue behind — and
-  # silently cancel — a real in-flight ingestion for the same show.
-  group: ingest-urls-${{ inputs.show_id }}${{ inputs.dry_run == true && '-dry-run' || '' }}
+  # dry_run gets its OWN fixed lane (add-requested-show.yml precedent, task
+  # #722), not a per-show suffix — ship-check finding (task #737): a suffix
+  # pattern (`ingest-urls-${show_id}-dry-run`) collides whenever one
+  # dispatch's real show_id equals another's `${show_id}-dry-run`, e.g. a
+  # dry run for show "foo" shares a group with a real run for show
+  # "foo-dry-run". A single fixed string can only collide with a real show
+  # literally titled "dry-run", which push-with-retry's dedicated group
+  # naming elsewhere in this repo already accepts as an acceptable residual
+  # risk for operator-only, manually-dispatched workflows.
+  group: ${{ inputs.dry_run == true && 'ingest-urls-dry-run' || format('ingest-urls-{0}', inputs.show_id) }}
   cancel-in-progress: false
 
 jobs:

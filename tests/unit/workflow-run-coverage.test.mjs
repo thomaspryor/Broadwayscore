@@ -95,6 +95,16 @@ describe('findNeverRunWorkflows', () => {
     assert.deepStrictEqual(offenders, ['no-created-at.yml', 'bad-created-at.yml']);
   });
 
+  test('an invalid Date instance is treated the same as an unparseable string (not NaN-silenced)', () => {
+    const offenders = findNeverRunWorkflows({
+      workflows: [{ file: 'invalid-date-object.yml', createdAt: new Date('not-a-real-date') }],
+      runCountsByFile: {},
+      now: NOW,
+      minAgeDays: 30,
+    });
+    assert.deepStrictEqual(offenders, ['invalid-date-object.yml']);
+  });
+
   test('multiple workflows: only 0-run + old ones are returned, order preserved', () => {
     const offenders = findNeverRunWorkflows({
       workflows: [
