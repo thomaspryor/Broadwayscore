@@ -13,6 +13,17 @@ test.describe('Visual Regression', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(SHOW_URL);
     await page.waitForSelector('[data-testid="show-header-card"]');
+    // TicketButtonsAB renders nothing until PostHog A/B flags load (5s
+    // fallback), leaving the header card 6px shorter until the ticket CTA
+    // appears. Wait for the CTA so screenshots always capture the settled
+    // state. catch() keeps this from failing if the show has no ticket links —
+    // note it also masks selector breakage (e.g. CTA copy change), which would
+    // silently degrade back to the original flake rather than error here.
+    await page
+      .locator('[data-testid="show-header-card"]')
+      .getByText('Get Tickets')
+      .waitFor({ timeout: 8000 })
+      .catch(() => {});
   });
 
   test('show header card layout', async ({ page }) => {
