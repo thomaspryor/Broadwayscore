@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-01T02:30:05.055Z",
+  "updatedAt": "2026-08-01T02:36:28.385Z",
   "processed": 8,
-  "failed": 61,
-  "successRate": "11.6%",
+  "failed": 85,
+  "successRate": "8.6%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
@@ -10,55 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 13,
+    "archiveToday": 17,
     "archive": 0
   },
   "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-01T01:10:24.420Z",
-      "event": "bb-session",
-      "session": "8df49d6b",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-01T01:10:24.949Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-01T01:10:40.686Z",
-      "event": "bb-session",
-      "session": "da8ff830",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-01T01:10:41.191Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-01T01:31:09.962Z",
-      "event": "bb-session",
-      "session": "504a314b",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-01T01:31:10.968Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-01T01:31:26.919Z",
-      "event": "bb-session",
-      "session": "77a1f404",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-01T01:31:27.821Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-01T01:32:15.477Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-08-01T02:28:29.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T02:31:39.592Z",
+      "event": "bb-session",
+      "session": "aac78530",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T02:31:39.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T02:31:55.566Z",
+      "event": "bb-session",
+      "session": "2df5cfbb",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T02:31:55.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T02:32:45.969Z",
+      "event": "bb-session",
+      "session": "992d16c2",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T02:32:46.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T02:34:54.935Z",
+      "event": "bb-session",
+      "session": "00127a29",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-01T02:34:55.335Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
