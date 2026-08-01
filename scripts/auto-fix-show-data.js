@@ -67,23 +67,16 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-// Fetch via ScrapingBee
-function fetchUrl(url) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('No SCRAPINGBEE_API_KEY'));
-      return;
-    }
-
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_API_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=2000`;
-
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-      res.on('error', reject);
-    }).on('error', reject);
-  });
+// Fetch via the shared BD→SB→Playwright fallback chain (todaytix.com is a
+// PLAYWRIGHT_FIRST_DOMAIN in scraper.js, so this now costs $0 for the common case
+// instead of always paying for a render_js=true ScrapingBee call).
+async function fetchUrl(url) {
+  const { fetchPage } = require('./lib/scraper');
+  const result = await fetchPage(url, { renderJs: true });
+  if (!result || !result.content) {
+    throw new Error('fetchPage returned no content');
+  }
+  return result.content;
 }
 
 // isValidSynopsis is imported from ./lib/synopsis-validation
