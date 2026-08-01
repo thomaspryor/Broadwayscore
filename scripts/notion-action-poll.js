@@ -596,7 +596,7 @@ function runClaude(prompt, card, opts = {}) {
     // Empty string, not `delete` — matches the exact env shape preflightAuth
     // just proved works (authPing probes with `ANTHROPIC_API_KEY: ''`), so
     // the real spawn never diverges from the probed shape.
-    if (auth.mode === 'oauth') runEnv.ANTHROPIC_API_KEY = '';
+    Object.assign(runEnv, auth.envForMode || (auth.mode === 'oauth' ? { ANTHROPIC_API_KEY: '' } : {}));
     const raw = require('child_process').execFileSync('claude', args, {
       cwd: runDir,
       input: prompt,
