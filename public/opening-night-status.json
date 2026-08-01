@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T12:23:16.959Z",
+  "generatedAt": "2026-08-01T14:54:51.377Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -189,26 +189,26 @@
       "status": "open",
       "slug": "tao-of-glass-west-end",
       "thumbnail": "/images/shows/tao-of-glass-west-end-2026/thumbnail.webp",
-      "siteScore": 81.18,
+      "siteScore": 81.45,
       "liveScore": 81,
-      "scoreDrift": -0.18000000000000682,
+      "scoreDrift": -0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 2,
+      "total": 15,
+      "t1": 3,
       "t2": 8,
       "t3": 4,
-      "positive": 11,
+      "positive": 12,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -357,6 +357,18 @@
           "t2": 8,
           "t3": 4,
           "p": 11,
+          "m": 3,
+          "n": 0,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-08-01T14:54:51.377Z",
+          "rc": 15,
+          "s": 81.45,
+          "t1": 3,
+          "t2": 8,
+          "t3": 4,
+          "p": 12,
           "m": 3,
           "n": 0,
           "bc": "overdue"
@@ -584,6 +596,10 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -953,17 +969,17 @@
       "status": "open",
       "slug": "the-importance-of-being-oscar-off-west-end",
       "thumbnail": "/images/shows/the-importance-of-being-oscar-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 72.22,
-      "liveScore": 72,
-      "scoreDrift": -0.21999999999999886,
+      "siteScore": 71.2,
+      "liveScore": 71,
+      "scoreDrift": -0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 9,
       "t1": 0,
-      "t2": 5,
+      "t2": 4,
       "t3": 5,
-      "positive": 6,
+      "positive": 5,
       "mixed": 3,
       "negative": 1,
       "readiness": {
@@ -971,9 +987,9 @@
         "reasons": [
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:5/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 5,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1106,6 +1122,18 @@
           "t2": 5,
           "t3": 5,
           "p": 6,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-01T14:54:51.377Z",
+          "rc": 9,
+          "s": 71.2,
+          "t1": 0,
+          "t2": 4,
+          "t3": 5,
+          "p": 5,
           "m": 3,
           "n": 1,
           "bc": "waiting"

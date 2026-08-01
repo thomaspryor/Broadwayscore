@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T12:23:11.202Z",
+  "timestamp": "2026-08-01T14:54:45.619Z",
   "stats": {
     "totalReviews": 41190,
-    "alreadyFlagged": 17959,
+    "alreadyFlagged": 17962,
     "dateGuardCatches": 85,
     "directorMismatch": 938,
     "tvFilmSignals": 1124,
-    "londonSignals": 778,
+    "londonSignals": 777,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3465
+    "noPublishDate": 3462
   },
   "findings": [
     {
@@ -42742,20 +42742,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "file": "artsdesk--gary-naylor.json",
-      "score": 79,
-      "publishDate": "April 3rd, 2025",
-      "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
