@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-01T19:42:00.385Z",
-  "processed": 52,
-  "failed": 249,
-  "successRate": "17.3%",
+  "updatedAt": "2026-08-01T20:10:27.459Z",
+  "processed": 54,
+  "failed": 497,
+  "successRate": "9.8%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 31,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 6,
     "scrapingbee": 0,
     "brightdata": 10,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 5
   },
   "browserbaseSessions": 2,
@@ -26,6 +26,23 @@
       "event": "bb-session",
       "session": "8d8454da",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-01T20:04:57.423Z",
+      "event": "bb-session",
+      "session": "3466e24e",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-08-01T20:04:57.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-01T20:10:14.421Z",
+      "event": "bb-session",
+      "session": "d5931181",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
     }
   ]
 }
