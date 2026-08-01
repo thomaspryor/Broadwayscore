@@ -68,7 +68,10 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -615,7 +618,14 @@
     "every-brilliant-thing-2026/standard--nick-curtis.json",
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
     "every-brilliant-thing-2026/times-uk--alice-jones.json",
-    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json"
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -663,7 +673,8 @@
       "the-oresteia-west-end-2026/timeout-london--unknown.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -672,7 +683,11 @@
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
-      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -726,7 +741,7 @@
     ]
   },
   "startTime": "2026-08-01T04:31:57.323Z",
-  "lastProcessed": "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "oh-mary-west-end-2025/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-08-01T04:36:35.506Z",
@@ -835,6 +850,18 @@
       "event": "bb-session",
       "session": "3e664912",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-01T07:08:11.214Z",
+      "event": "bb-session",
+      "session": "d487b67d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-01T07:08:42.744Z",
+      "event": "bb-session",
+      "session": "40428f24",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
     }
   ]
 }
