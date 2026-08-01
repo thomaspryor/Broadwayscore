@@ -24,6 +24,25 @@ on:
         required: false
         type: string
         default: ''
+      dry_run:
+        # Smoke-test lane. This workflow is dispatched only by
+        # process-feedback.yml on a real user request, so between shipping
+        # (task #722) and 2026-08-01 it had executed ZERO times — the
+        # checkout/core-data/npm/secrets path was entirely unproven, the
+        # same shape as tasks #657 and #688 where a workflow sat dead or
+        # silently degraded for days because nothing ever exercised it.
+        # There was no way to prove it without attempting a real
+        # shows.json write, so verifying it was strictly riskier than
+        # leaving it unverified — which is why nobody did.
+        #
+        # dry_run=true runs the whole live path (SERP -> fetchPage ->
+        # classifyCandidate -> title-delta + regional guards) and stops
+        # immediately before writeStagingCandidates(), so it proves the
+        # CI wiring end-to-end and cannot write, commit, or push.
+        description: 'Resolve + classify only — skip staging, promotion, and every push (CI smoke test)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -86,8 +105,14 @@ jobs:
           # bash never re-parses it.
           SHOW_TITLE: ${{ inputs.title }}
           VENUE_HINT: ${{ inputs.venue_hint }}
+          # Same reason as the two above: never interpolated into the shell.
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT"
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT" --dry-run
+          else
+            node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT"
+          fi
 
       - name: Validate data (push-refusal gate on failure)
         if: always()
@@ -110,7 +135,11 @@ jobs:
         # reached shows.json, permanently losing it instead of just
         # delaying it to the next nightly run (it's no longer staged
         # either at that point).
-        if: always()
+        #
+        # Skipped entirely on dry_run: the script returns before
+        # writeStagingCandidates(), so there is nothing staged to commit and
+        # nothing to push.
+        if: always() && inputs.dry_run != true
         env:
           SHOW_TITLE: ${{ inputs.title }}
         run: |
@@ -131,7 +160,11 @@ jobs:
           fi
 
       - name: Push core data
-        if: always()
+        # dry_run never writes shows.json, so there is nothing to push — and
+        # skipping keeps the smoke test provably incapable of touching core
+        # data even if a future edit made the script write before its
+        # dry-run return.
+        if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
