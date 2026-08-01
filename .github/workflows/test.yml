@@ -653,6 +653,14 @@ on:
       - 'scripts/lib/wrong-production-corroboration.test.mjs'
       - 'scripts/flag-wrong-production-by-date.js'
       - 'scripts/rebuild-all-reviews.js'
+      # Pull-quote guards decide the excerpt shown on every review card. The
+      # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
+      # truncation / hedge-guard starvation) added hard + soft guards here and
+      # a corpus auditor; neither file was path-listed, so a solo edit to
+      # either got ZERO CI. Colocated coverage is
+      # tests/unit/pull-quote-guards.test.mjs (tests/** trigger).
+      - 'scripts/lib/pull-quote-guards.js'
+      - 'scripts/audit-pull-quotes.js'
       # extractDateFromUrl (URL-date fallback for rebuild + backfill-review-dates.js)
       # lives here; covered by tests/unit/rebuild-helpers.test.mjs (tests/** trigger)
       # and the colocated scripts/lib/*.test.mjs glob — but rebuild-helpers.js itself
