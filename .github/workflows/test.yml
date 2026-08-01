@@ -1407,6 +1407,15 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '20'
+          cache: 'npm'
+      # This job previously ran with NO node_modules, so every audit here had to
+      # be dependency-free. audit-help-flag-safety.js now tokenizes with acorn to
+      # tell string CONTENT from a real call; with no deps it FAILS OPEN (source
+      # returned unchanged), which resurfaces the USAGE-string false positive and
+      # left Lint Workflows red on main after the first fix (task #684). Cached,
+      # so this costs seconds after the first run.
+      - name: Install dependencies (audits below use acorn)
+        run: npm ci --no-audit --no-fund
       - name: Audit — no orphan unit tests
         # Notion 362637c5-416f-81f4 — every tests/unit/*.test.{mjs,ts,js} must be
         # wired into a workflow runner, or it silently doesn't run. Discovered
