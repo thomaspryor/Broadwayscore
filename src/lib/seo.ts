@@ -4,7 +4,7 @@ import { ComputedShow } from './engine';
 import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
 import { isOperaShow } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
-import { isPlatformHidden } from './ticket-utils';
+import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS } from '@/config/branding';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -179,7 +179,7 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
 
   // Add ticket offers (excluding hidden platforms — stale/non-converting affiliates)
   if (show.ticketLinks && show.ticketLinks.length > 0) {
-    const visibleLinks = show.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+    const visibleLinks = getVisibleTicketLinks(show.ticketLinks);
     // We don't track on-sale dates; by previews start tickets are certainly on
     // sale, so previewsStartDate is the latest-safe validFrom (GSC warns
     // per-offer without it). Only claim it once the date has PASSED at build
@@ -442,7 +442,7 @@ export function generateItemListSchema(items: {
       // Ticket offers (excluding hidden platforms)
       if (item.ticketLinks && item.ticketLinks.length > 0) {
         const itemCurrency = getMarketCurrency(item.category);
-        const visibleLinks = item.ticketLinks.filter(l => !isPlatformHidden(l.platform));
+        const visibleLinks = getVisibleTicketLinks(item.ticketLinks);
         if (visibleLinks.length > 0) {
           event.offers = visibleLinks.map(link => ({
             '@type': 'Offer',
