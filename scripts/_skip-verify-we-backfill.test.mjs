@@ -18,6 +18,19 @@ test('Space Dogs (Other Palace Studio) is in the catalog', () => {
   assert.ok(shows.some((s) => s.id === 'space-dogs-off-west-end-2026'));
 });
 
+test('Orange Tree + Park Theatre venue sources feed the catalog', () => {
+  // Productions live on both venues' what's-on pages 2026-07-31, all absent
+  // from the catalog until the venue sources ran through the discovery cron.
+  const venueShows = [
+    'loves labours lost', 'much ado about nothing', 'a small and quiet light',
+    'bull', 'the revlon girl', 'goblin', 'the silence and the noise', 'florence',
+  ].filter((t) => titles.has(t));
+  assert.ok(
+    venueShows.length >= 5,
+    `only ${venueShows.length}/8 venue-page titles present: ${venueShows.join(', ')}`
+  );
+});
+
 test('solo-performer-filter removal recovered the suppressed WE shows', () => {
   // The 9 titles confirmed missing on 2026-07-31 purely because the removed
   // filter dropped them from TodayTix/londontheatre discovery. Sources churn,
