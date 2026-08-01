@@ -778,15 +778,20 @@ test('renderEmail: no redditDigest field renders nothing (backward compatible)',
 // (send-morning-digest.js) printed "Fix needed: …" rows with nothing to tap.
 // These lock the shared helper both senders now call.
 
-test('attachHealthFixUrls: every error row gets a verifiable signed URL', () => {
+test('attachHealthFixUrls: every named row — warnings included — gets a verifiable signed URL', () => {
   const health = {
     errors: [{ name: 'Sync: cast coverage', message: 'stale 3d' }, { name: 'SEO: health', message: '' }],
     warns: [{ name: 'a warning' }],
   };
   const exp = 1893456000;
   const n = attachHealthFixUrls({ health, exp, secret: 's3cret', baseUrl: 'https://broadwayscorecard.com' });
-  assert.equal(n, 2);
-  for (const e of health.errors) {
+  // 3, not 2: warnings get buttons too (owner escalation 2026-08-01 — the
+  // errors-only version shipped a digest with 1 tappable row and 13 dead
+  // ones). A warning is either noise, and does not belong in the email, or
+  // work, and needs a button — there is no third category. dispatch-link.js's
+  // attachHealthFixUrls comment is the contract this asserts.
+  assert.equal(n, 3);
+  for (const e of [...health.errors, ...health.warns]) {
     assert.ok(e.fixUrl, `${e.name} got a fixUrl`);
     const u = new URL(e.fixUrl);
     assert.equal(u.searchParams.get('action'), 'dispatch');
@@ -800,7 +805,6 @@ test('attachHealthFixUrls: every error row gets a verifiable signed URL', () => 
       exp, secret: 's3cret', sig: u.searchParams.get('sig'),
     }), `${e.name} signature verifies`);
   }
-  assert.ok(!health.warns[0].fixUrl, 'warnings get no button — errors are the actionable rows');
 });
 
 test('attachHealthFixUrls: no secret attaches nothing and does not throw (digest still sends)', () => {

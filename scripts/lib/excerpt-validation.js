@@ -203,13 +203,64 @@ function hasOnlyForwardTenseTourMention(excerpt) {
   return !hasPast;
 }
 
+// How close a DIFFERENT show's title must sit before a tour-pattern match to
+// count as "this tour signal is about that show, not the one being reviewed."
+// Deliberately tight (not sentence-scoped): a full-sentence window let short
+// or generic titles (a show literally named "Caroline", matching "Sweet
+// Caroline" in an unrelated clause; "The Story", matching "as the story
+// opens") swallow real self-descriptions anywhere in the same sentence.
+// Corpus parity check (all 41,455 review-text files) found the sentence-wide
+// version flipped 8 files; only 1 was the intended fix. A tight character
+// window keeps the real bug fixed ("Noises Off is on tour on its umpteenth
+// revival" — title sits ~14 chars before the match) without that surface.
+const TOUR_OTHER_SHOW_WINDOW_CHARS = 70;
+
+/**
+ * True when a DIFFERENT, known show's title sits immediately before a
+ * tour-pattern match (within TOUR_OTHER_SHOW_WINDOW_CHARS) — not the current
+ * one. Critics routinely open a review with a comparison lede ("Noises Off is
+ * on tour on its umpteenth revival; Fawlty Towers is back in London soon
+ * before going on tour...") before getting to the show actually being
+ * reviewed. isTourReviewExcerpt had no other-show awareness, so that
+ * comparison tripped the same "on tour" pattern a genuine touring-production
+ * review would. Confirmed live 2026-08-01: times-uk--dominic-maxwell.json on
+ * the-comedy-about-spies-west-end-2026 was excluded (skippedTourContamination)
+ * over its own lede mentioning Noises Off and Fawlty Towers touring — not
+ * itself.
+ *
+ * @param {string} excerpt
+ * @param {number} matchIndex - index of the tour-pattern match within excerpt
+ * @param {string} currentShowId
+ * @param {string} currentShowTitle
+ * @returns {{ title: string, showId: string }|null}
+ */
+function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, currentShowTitle) {
+  if (!currentShowId) return null;
+  const windowStart = Math.max(0, matchIndex - TOUR_OTHER_SHOW_WINDOW_CHARS);
+  const window = excerpt.slice(windowStart, matchIndex);
+
+  const titleForMatch = currentShowTitle ? currentShowTitle.replace(/[^\w]+$/, '') : null;
+  const currentEscaped = titleForMatch ? titleForMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : null;
+  const currentRegex = currentEscaped ? new RegExp(`\\b${currentEscaped}\\b`, 'i') : null;
+  if (currentRegex && currentRegex.test(window)) return null;
+
+  for (const [showId, { title, regex }] of getMatchableTitles()) {
+    if (showId === currentShowId) continue;
+    if (regex.test(window)) return { title, showId };
+  }
+  return null;
+}
+
 /**
  * Check if an excerpt appears to be from a touring production review.
  *
  * @param {string} excerpt - The excerpt text
- * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean }}
+ * @param {{currentShowId?: string, currentShowTitle?: string}} [context] - when
+ *   provided, a tour-pattern match immediately preceded by a DIFFERENT known
+ *   show's title is treated as a comparison lede, not tour contamination.
+ * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean }}
  */
-function isTourReviewExcerpt(excerpt) {
+function isTourReviewExcerpt(excerpt, context) {
   if (!excerpt) return { isTourReview: false };
 
   // Venue patterns are unambiguous — check first (forward-tense carve-out does NOT apply)
@@ -219,13 +270,28 @@ function isTourReviewExcerpt(excerpt) {
     }
   }
 
-  // Tour keyword patterns — skip when only forward-tense context is present
-  const matched = TOUR_EXCERPT_PATTERNS.find(p => p.test(excerpt));
-  if (matched) {
+  // Tour keyword patterns — skip when only forward-tense context is present.
+  // Checks the FIRST match per pattern only (mirrors the pre-existing
+  // .find()-based behavior): a comparison lede that opens the excerpt is by
+  // far the common case this excerpt corpus produces, and scanning every
+  // subsequent match against the (necessarily incomplete) known-show-title
+  // catalog trades a real fix — the-comedy-about-spies-west-end-2026's lede
+  // also names "Fawlty Towers", which is not itself a cataloged show — for a
+  // narrower theoretical gain (a genuine self-description coexisting with an
+  // unrelated comparison later in the same excerpt).
+  for (const pattern of TOUR_EXCERPT_PATTERNS) {
+    const m = pattern.exec(excerpt);
+    if (!m) continue;
     if (hasOnlyForwardTenseTourMention(excerpt)) {
-      return { isTourReview: false, forwardTenseOnly: true, signal: matched.source };
+      return { isTourReview: false, forwardTenseOnly: true, signal: pattern.source };
     }
-    return { isTourReview: true, signal: matched.source };
+    if (context) {
+      const other = tourMatchIsAboutDifferentShow(excerpt, m.index, context.currentShowId, context.currentShowTitle);
+      if (other) {
+        return { isTourReview: false, otherShowComparison: true, signal: pattern.source, mentionedTitle: other.title };
+      }
+    }
+    return { isTourReview: true, signal: pattern.source };
   }
 
   return { isTourReview: false };

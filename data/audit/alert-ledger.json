@@ -97,11 +97,11 @@
       "disposition": "human",
       "title": "Opening Night SLA P0 — 4 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "lastSeen": "2026-08-01T18:38:03.151Z",
+      "lastSeen": "2026-08-01T19:43:32.538Z",
       "lastNotifiedAt": "2026-07-26T17:39:13.740Z",
       "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 125
+      "silentRefires": 126
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -125,17 +125,15 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-01T05:11:09.428Z",
-      "lastNotifiedAt": "2026-07-31T20:01:17.444Z",
-      "notifyCount": 6,
-      "cardId": null,
-      "silentRefires": 6,
-      "resolvedAt": "2026-08-01T05:21:59.909Z"
+      "lastSeen": "2026-08-01T19:57:34.627Z",
+      "lastNotifiedAt": "2026-08-01T19:57:34.627Z",
+      "notifyCount": 7,
+      "cardId": null
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
