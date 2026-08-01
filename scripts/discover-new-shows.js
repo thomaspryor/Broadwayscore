@@ -848,8 +848,8 @@ const VENUE_LISTING_PAGES = [
   // 5 of 8 — neither venue's shows reliably reach TodayTix/OLT/londontheatre.
   // Non-production listings (seminars, youth programmes, screenings) are handled
   // by VENUE_PAGE_EXCLUDE_PATTERNS phrases, corpus-audited for title collisions.
-  { name: 'Orange Tree Theatre', url: 'https://www.orangetreetheatre.co.uk/whats-on/', linkPattern: /^https:\/\/(?:www\.)?orangetreetheatre\.co\.uk\/whats-on\/(?!archive\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
-  { name: 'Park Theatre', url: 'https://parktheatre.co.uk/whats-on/', linkPattern: /^https:\/\/parktheatre\.co\.uk\/events\/[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Orange Tree Theatre', url: 'https://www.orangetreetheatre.co.uk/whats-on/', linkPattern: /^https:\/\/(?:www\.)?orangetreetheatre\.co\.uk\/whats-on\/(?!(?:archive|page)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Park Theatre', url: 'https://parktheatre.co.uk/whats-on/', linkPattern: /^https:\/\/(?:www\.)?parktheatre\.co\.uk\/events\/(?!(?:archive|page)\/?$)[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
 
   // ── Off-Broadway non-profit subscription houses ──
   // Live OB venue extraction lives in scripts/lib/venue-listing-discover.js
