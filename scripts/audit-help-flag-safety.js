@@ -214,21 +214,111 @@ function stripCommentsAndStrings(src) {
  * are real evaluated expressions, so `${execSync('x')}` is a genuine
  * unconditional call and must stay visible to the scan.
  *
- * NEWLINE-SCOPED for '/" (not for `): this scanner has no regex-literal
- * awareness, so a quote character inside a regex — `.replace(/&quot;/g, '"')`
- * in adjudicate-seat-research.js — opens a phantom string. Unbounded, that
- * phantom swallowed 4,800 chars of real code and hid a genuine
- * `await fetchPage(url, {})` call, silently downgrading 5 scripts out of the
- * Rule B set (caught by before/after parity on this corpus, task #684).
- * Per the language, a '/"-quoted string cannot contain a raw newline, so
- * bounding those at end-of-line makes any such desync self-healing: it can
- * corrupt at most the rest of ONE line instead of the rest of the file.
- * Template literals legitimately span lines, so ` keeps scanning.
+ * REGEX-LITERAL AWARE, and additionally NEWLINE-SCOPED for '/". A quote
+ * character inside a regex — `.replace(/&quot;/g, '"')` in
+ * adjudicate-seat-research.js — would otherwise open a phantom string.
+ * Unbounded, that phantom swallowed 4,800 chars of real code and hid a genuine
+ * `await fetchPage(url, {})` call (caught by before/after parity, task #684).
+ *
+ * A false NEGATIVE here is far worse than a false positive: this guard exists
+ * to stop DESTRUCTIVE scripts from running real work under `--help`, so hiding
+ * a real execSync is the failure mode that matters. Newline-scoping alone did
+ * NOT close it — backticks legitimately span lines, so a BACKTICK inside a
+ * regex character class (`.replace(/[;&|\`$()]/g, '')` — a shell-arg sanitizer,
+ * exactly the shape that then calls execSync) opened a phantom template
+ * literal that ran to EOF. Live instances: execute-approved-fix.js,
+ * fetch-show-images-auto.js (one of the very scripts this guard was built for,
+ * task #477). So regex literals are consumed as units FIRST; the newline scope
+ * on '/" stays as defence-in-depth for any residual desync.
  */
+
+/**
+ * Exact implementation, via acorn's tokenizer. Hand-rolled string scanning was
+ * tried twice and desynced twice (regex literal containing a quote; regex
+ * character class containing a BACKTICK), each time BLANKING REAL CODE — the
+ * false-negative direction, which is the dangerous one for this guard. A real
+ * lexer knows regex-vs-division from parser context, so the whole desync class
+ * disappears instead of being patched case by case.
+ *
+ * FAILS OPEN: if acorn is unavailable or the file does not tokenize, return the
+ * source UNCHANGED. That resurfaces the string-text false positive (loud, and
+ * fixable with the documented `hygiene-help-flag-ok` exemption) rather than
+ * silently hiding a real execSync.
+ */
+function blankStringContentsViaAcorn(src) {
+  let acorn;
+  try { acorn = require('acorn'); } catch { return null; }
+
+  const out = src.split('');
+  const blank = (from, to) => {
+    for (let k = from; k < to && k < out.length; k++) {
+      if (out[k] !== '\n') out[k] = ' '; // keep newlines so line numbers survive
+    }
+  };
+
+  try {
+    // Tokenize the RAW source, and blank comments here too rather than relying
+    // on stripCommentsAndStrings' naive `//` scan — that scan treats the `//`
+    // inside a regex like /https?:\/\// as a line comment and erases the rest
+    // of the line, which left 53 of 800 files unparseable (they then fell open
+    // and never got the false-positive fix).
+    const onComment = (block, text, start, end) => blank(start, end);
+    const tokenizer = acorn.tokenizer(src, {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      allowHashBang: true,
+      allowAwaitOutsideFunction: true,
+      allowReturnOutsideFunction: true,
+      allowSuperOutsideMethod: true,
+      onComment,
+    });
+    for (const tok of tokenizer) {
+      const label = tok.type.label;
+      if (label === 'string' || label === 'regexp') {
+        blank(tok.start + 1, tok.end - 1); // keep the delimiters
+      } else if (label === 'template' || label === 'invalidTemplate') {
+        // Only the literal chunks are `template` tokens; `${ ... }` expression
+        // tokens are separate and are deliberately left visible — they are
+        // evaluated code, so `${execSync('x')}` must stay scannable.
+        blank(tok.start, tok.end);
+      }
+    }
+  } catch {
+    return null; // unparseable → fail open
+  }
+  return out.join('');
+}
+
 function blankStringContents(src) {
+  const exact = blankStringContentsViaAcorn(src);
+  if (exact !== null) return exact;
+  return src; // fail open — never silently blank real code
   let out = '';
   for (let i = 0; i < src.length; i++) {
     const ch = src[i];
+
+    // Consume regex literals as opaque units so a quote/backtick inside one
+    // can never open a phantom string. Blank the body (it is never a call).
+    if (ch === '/' && src[i + 1] !== '/' && src[i + 1] !== '*' && isRegexStart(src, i)) {
+      let j = i + 1;
+      let inClass = false;
+      let closed = false;
+      for (; j < src.length; j++) {
+        const c = src[j];
+        if (c === '\\') { j++; continue; }
+        if (c === '\n') break;            // unterminated — bail, treat as division
+        if (c === '[') inClass = true;
+        else if (c === ']') inClass = false;
+        else if (c === '/' && !inClass) { closed = true; break; }
+      }
+      if (closed) {
+        out += '/' + ' '.repeat(j - i - 1) + '/';
+        i = j;
+        continue;
+      }
+      // Not a well-formed regex on one line — fall through as an ordinary char.
+    }
+
     if (ch !== '`' && ch !== '"' && ch !== "'") { out += ch; continue; }
 
     const quote = ch;
@@ -431,8 +521,10 @@ function checkFile(file, src) {
   // `// hygiene-help-flag-ok: <reason>` exemption if one ever appears.
   // Risky-call scans read a SECOND view with string content blanked too — a
   // USAGE/log string that merely NAMES a risky function is not a call
-  // (task #684; see blankStringContents).
-  const riskySrc = blankStringContents(cleanSrc);
+  // (task #684; see blankStringContents). Built from the RAW source so acorn
+  // sees real syntax; only if that fails do we fall back to the heuristic
+  // scanner over cleanSrc.
+  const riskySrc = blankStringContentsViaAcorn(src) ?? blankStringContents(cleanSrc);
 
   RISKY_CALL_RE.lastIndex = 0; // defensive: /g state must not leak in either direction
   const hasRiskyOp = RISKY_CALL_RE.test(riskySrc);
@@ -530,5 +622,6 @@ module.exports = {
   checkOrdering,
   stripCommentsAndStrings,
   blankStringContents,
+  blankStringContentsViaAcorn,
   RISKY_CALL_RE,
 };

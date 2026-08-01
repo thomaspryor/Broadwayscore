@@ -48,6 +48,36 @@ test('a quote inside a regex literal cannot hide a real call on a LATER line', (
   assert.equal(riskyHits(blankStringContents(src)), 1);
 });
 
+// Regression: the FIRST fix for the string false-positive newline-scoped '/"
+// but left BACKTICKS multi-line, so a backtick inside a regex CHARACTER CLASS
+// (a shell-arg sanitizer — precisely the shape that then calls execSync) opened
+// a phantom template literal that ran to EOF and hid every later risky call.
+// Caught by ship-check corpus parity: 8 genuine calls vanished, including in
+// fetch-show-images-auto.js, one of the scripts this guard was built for (#477).
+// A false negative here is far worse than a false positive, so this must stay green.
+test('a backtick inside a regex character class cannot hide a later real call', () => {
+  const src = [
+    `const args = (process.argv[2] || '').replace(/[;&|\`$()]/g, '');`,
+    `const { execSync } = require('child_process');`,
+    `execSync('rm -rf /tmp/x', { stdio: 'inherit' });`,
+  ].join('\n');
+  assert.equal(riskyHits(blankStringContents(src)), 1);
+});
+
+test('a regex containing // is not mistaken for a comment', () => {
+  const src = [
+    `const isHttp = /^https?:\\/\\//.test(url);`,
+    `execSync('date');`,
+  ].join('\n');
+  assert.equal(riskyHits(blankStringContents(src)), 1);
+});
+
+test('unparseable source fails OPEN — never silently blanks real code', () => {
+  const broken = `function ( { this is not valid javascript >>> ; execSync('rm -rf /');`;
+  // Must not hide the call: either returned unchanged, or at minimum still visible.
+  assert.ok(riskyHits(blankStringContents(broken)) >= 1);
+});
+
 test("a '/\"-string never runs past its own line", () => {
   const blanked = blankStringContents(`const bad = 'unterminated\nexecSync('x');`);
   assert.equal(riskyHits(blanked), 1);

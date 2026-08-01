@@ -990,6 +990,11 @@ on:
       - 'scripts/audit-help-flag-safety.js'
       - 'scripts/audit-help-flag-safety.test.mjs'
       - 'scripts/.help-flag-safety-baseline.json'
+      # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
+      # names it as THE single edit site for the 250->100->60 step-down, so a
+      # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/browserbase-caps.js'
+      - 'tests/unit/browserbase-caps.test.mjs'
       # Alert-sender CI gate (card 3a9637c5, #475/#514 lineage) — same
       # reason: solo edits to the gate, its baseline, or its colocated test
       # must trigger CI (feedback_test_yml_push_path_allowlist). The test is
