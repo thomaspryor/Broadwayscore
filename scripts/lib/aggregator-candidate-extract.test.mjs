@@ -63,6 +63,12 @@ test('BWW slug parsing: placeholder vs venue tails', () => {
   // the venue tail is the LAST "at <theater>", not the first.
   const dinner = parseBwwSlugTitle('Review-Roundup-DINNER-AT-EIGHT-At-St-Lukes-Theatre-20260101');
   assert.equal(dinner.title, 'Dinner At Eight');
+
+  // task #722: colon-less "Critics Sound Off On CITY's SHOW" slug must parse
+  // to the same title extractArticleFields derives from the body, or the
+  // slug-vs-body typo guard false-rejects a correctly-scraped regional show.
+  const lincoln = parseBwwSlugTitle('Review-Roundup-Critics-Sound-Off-On-La-Jollas-3-SUMMERS-OF-LINCOLN-20250304');
+  assert.equal(lincoln.title, '3 Summers Of Lincoln');
 });
 
 test('classifyTitleDelta: match / typo / mismatch', () => {
@@ -163,6 +169,29 @@ test('leading-type venue "Stage 42" is extracted (ship-check P2)', () => {
   );
   assert.equal(f.venue, 'Stage 42');
   assert.match(f.title, /^Little Shop Of Horrors$/i);
+});
+
+test('venue falls back to meta description when no <article>/<p> carries it (task #722, "3 Summers of Lincoln")', () => {
+  // Reproduces the real BWW regional-roundup template: the headline has no
+  // "at VENUE" clause and the first <p> in DOM order is nav chrome, not
+  // review content — only the meta description states the venue.
+  const f = extractArticleFields(
+    '<html><head><title>x</title>' +
+    '<meta name="description" content="3 Summers of Lincoln is now playing at La Jolla Playhouse through March 23, 2025.">' +
+    '</head><body><p>Broadway + NYC</p><h1>Critics Sound Off On 3 SUMMERS OF LINCOLN</h1></body></html>'
+  );
+  assert.equal(f.venue, 'La Jolla Playhouse');
+});
+
+test('"Critics Sound Off On CITY\'s SHOW" headline strips the editorial lead-in and city possessive (task #722)', () => {
+  const f = extractArticleFields(
+    '<html><head><title>x</title>' +
+    '<meta name="description" content="3 Summers of Lincoln is now playing at La Jolla Playhouse through March 23, 2025.">' +
+    '</head><body><p>Broadway + NYC</p>' +
+    "<h1>Review Roundup: Critics Sound Off On La Jolla's 3 SUMMERS OF LINCOLN</h1></body></html>"
+  );
+  assert.equal(f.title, '3 Summers Of Lincoln');
+  assert.equal(f.venue, 'La Jolla Playhouse');
 });
 
 test('referenceTitle + slugCollidesWith pre-fetch guard (ship-check P0)', () => {
