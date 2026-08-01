@@ -87,6 +87,27 @@ test('trailing photo credit terminates the last quote (case-insensitive)', () =>
   assert.ok(!/[Pp]hoto/.test(parsed[0].quote), `photo credit leaked into quote: ${parsed[0].quote}`);
 });
 
+test('THREE-word bylines are not truncated by the 2-word lookahead', () => {
+  // NAME_LOOKAHEAD is deliberately 2 words, so the preceding quote stops one
+  // word late and the next match starts MID-NAME. Before entry-boundary
+  // anchoring this yielded "Rose Bernardo" on chess-2025, chess-1988 and
+  // real-women-have-curves-2025 — a wrong critic name AND a wrong filename slug.
+  const body = "Let's see what the critics had to say Jane Doe, First Outlet: Some quote about Mother Russia.     Melissa Rose Bernardo ,  New York Stage Review: If you like chess.";
+  const parsed = parseArticleBodyReviews(body);
+  const names = parsed.map(r => r.criticName);
+  assert.ok(names.includes('Melissa Rose Bernardo'), `got ${JSON.stringify(names)}`);
+  assert.ok(!names.includes('Rose Bernardo'), 'truncated name must not appear');
+});
+
+test('an intra-name double space is preserved, not treated as an entry boundary', () => {
+  // the-addams-family-2010 writes "Peter  Marks, The  Washington Post:".
+  // The remainder after that run ("Marks") is not a whole name, so the original
+  // capture is kept and only its whitespace is collapsed.
+  const body = "Let's see what the critics had to say something ended.     Peter  Marks, The  Washington Post: A verdict.";
+  const parsed = parseArticleBodyReviews(body);
+  assert.equal(parsed[0].criticName, 'Peter Marks');
+});
+
 test('leading-initial bylines still parse (J. Kelly Nestruck regression)', () => {
   const body = "Let's see what the critics had to say J. Kelly Nestruck, The Globe and Mail: A triumph.";
   const parsed = parseArticleBodyReviews(body);

@@ -29,36 +29,70 @@ const LEADING_INITIAL = "(?:(?<![A-Z.])[A-Z]\\. )?";
 const WORD_SEP = "\\s+";
 const MIDDLE_INITIAL = `(?:${WORD_SEP}[A-Z]\\.?)?`;
 const NAME_CAPTURE = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}${WORD_SEP}${NAME_WORD}(?:${WORD_SEP}${NAME_WORD})?`;
+// Same shape as NAME_CAPTURE but anchored — "is this string, entire, a byline?"
+const WHOLE_NAME_RE = new RegExp(`^${NAME_CAPTURE}$`);
+
+// A byline always begins at an ENTRY boundary. BWW's articleBody separates
+// entries with a RUN of 2+ whitespace, so that run — not the regex's own match
+// start — is the authoritative anchor for where a critic's name begins.
+const BLOCK_SEPARATOR = /\s{2,}/g;
 
 /**
- * Drop a block-boundary prefix from a captured byline.
+ * Re-anchor a captured byline to its entry boundary.
  *
- * BWW's articleBody separates entries with a RUN of whitespace (4-5 spaces),
- * and the name pattern's `\s+` word separator spans it happily — so the last
- * word of the PRECEDING sentence gets absorbed as the next critic's first name.
- * Confirmed live 2026-08-01 against Review-Roundup-THE-COMEDY-ABOUT-SPIES-2026,
- * whose body reads "...Photo credit: Mark Senior     Franco Milazzo,
- * BroadwayWorld: ..." — the PHOTOGRAPHER's surname became the byline's first
- * word, and the pipeline persisted a phantom second BroadwayWorld critic
- * ("Senior     Franco Milazzo") on the-comedy-about-spies-west-end-2026. It
- * carried no URL, so same-URL dedup could not collapse it and the review was
- * double-counted. An archive sweep found 18 more: "Zimmerman  Jesse Green",
- * "Glikas  Jesse Green", "Murray  Alexander Cohen", "Brenner  Cindy Marcolina"
- * — all photo-credit surnames.
+ * Two independent failures both come from trusting the regex's match start:
  *
- * Discriminator: a block boundary separates junk from a COMPLETE name, so the
- * tail after the run is itself >=2 words. A merely cosmetic double space inside
- * a real byline ("Peter  Marks", "Elisabeth  Vincentelli" in
- * the-addams-family-2010) leaves a 1-word tail — those must be kept intact.
- * Trimming on run-length alone silently deleted those three real critics, which
- * the archive parity run caught.
+ *  1. OVER-CAPTURE — `\s+` between name words spans the entry separator, so the
+ *     last word of the PRECEDING sentence is absorbed as the critic's first
+ *     name. Confirmed live 2026-08-01 on Review-Roundup-THE-COMEDY-ABOUT-SPIES-2026:
+ *     "...Photo credit: Mark Senior     Franco Milazzo, BroadwayWorld: ..." made
+ *     the PHOTOGRAPHER's surname the byline's first word, minting a phantom
+ *     second BroadwayWorld critic ("Senior     Franco Milazzo") with no URL —
+ *     so same-URL dedup could not collapse it and the review double-counted.
+ *     An archive sweep found 18 more ("Zimmerman  Jesse Green", "Glikas  Jesse
+ *     Green", "Murray  Alexander Cohen"), all photo-credit surnames.
+ *
+ *  2. UNDER-CAPTURE — NAME_LOOKAHEAD is deliberately 2 words (see its comment),
+ *     so for a THREE-word byline the preceding quote stops one word late and the
+ *     next match starts mid-name. "Melissa Rose Bernardo, New York Stage Review"
+ *     parsed as "Rose Bernardo" on chess-2025, chess-1988 and
+ *     real-women-have-curves-2025 — a wrong critic name, and a wrong filename
+ *     slug on any file written from it.
+ *
+ * Anchoring on the separator fixes both: take the text from the end of the last
+ * 2+ whitespace run before the comma, and use it when it is itself a complete
+ * name. A merely cosmetic double space INSIDE a real byline ("Peter  Marks",
+ * "Elisabeth  Vincentelli" in the-addams-family-2010) leaves a 1-word remainder,
+ * which fails the whole-name test, so the original capture is kept and
+ * normalizeBylineCapture collapses its whitespace.
+ *
+ * @param {string} text - the body being scanned
+ * @param {number} nameStart - index where the regex began its name capture
+ * @param {string} captured - the raw capture group
+ * @returns {string} the entry-anchored name, or `captured` when no boundary applies
  */
-function stripBlockBoundaryPrefix(raw) {
-  if (!raw || !/\s{2,}/.test(raw)) return raw;
-  const tail = raw.split(/\s{2,}/).pop();
-  // Only treat the run as a block boundary when what follows still reads as a
-  // full personal name (2+ words). Otherwise the run is intra-name whitespace.
-  return /^\S+(\s+\S+)+$/.test(tail) ? tail : raw;
+function anchorNameToEntryBoundary(text, nameStart, captured) {
+  if (!captured) return captured;
+  const nameEnd = nameStart + captured.length;
+  // Look BACK past the capture start, not just inside it. The separator sits
+  // before the capture in the under-capture case (the 2-word lookahead started
+  // the match mid-name) and inside it in the over-capture case. LOOKBACK_CHARS
+  // bounds the scan: a byline is at most 3 words, so a separator farther back
+  // than this could only yield a candidate that WHOLE_NAME_RE rejects anyway.
+  const LOOKBACK_CHARS = 100;
+  const windowStart = Math.max(0, nameStart - LOOKBACK_CHARS);
+  const segment = text.slice(windowStart, nameEnd);
+  BLOCK_SEPARATOR.lastIndex = 0;
+  let lastSepEnd = -1;
+  let m;
+  while ((m = BLOCK_SEPARATOR.exec(segment)) !== null) {
+    lastSepEnd = m.index + m[0].length;
+  }
+  if (lastSepEnd === -1) return captured;
+  const candidate = segment.slice(lastSepEnd).trim();
+  // Only re-anchor when what follows the separator is a complete name on its
+  // own. Otherwise the run was intra-name whitespace, not an entry boundary.
+  return WHOLE_NAME_RE.test(candidate) ? candidate : captured;
 }
 // Lookahead is intentionally less greedy than the capture: it requires only
 // the minimum 2-word name shape so the [^]+? quote ends at the EARLIEST plausible
@@ -107,7 +141,9 @@ function parseArticleBodyReviews(articleBody) {
     // strips page-chrome tokens, title-cases ALL-CAPS bylines) so this parser
     // can never be the origin of a raw-capture criticName. Previously the
     // roundup path was the ONE byline writer that bypassed it.
-    const criticName = normalizeBylineCapture(stripBlockBoundaryPrefix(match[1].trim()));
+    const criticName = normalizeBylineCapture(
+      anchorNameToEntryBoundary(text, match.index, match[1])
+    );
     const outletRaw = match[2].trim();
     const quote = match[3].trim();
 
