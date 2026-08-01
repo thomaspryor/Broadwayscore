@@ -4,20 +4,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
 const SHOWS_DIR = path.join(__dirname, '../../public/images/shows');
 
-// Known "Coming Soon" placeholder file hashes (MD5)
-// Keep in sync with PLACEHOLDER_FILE_HASHES in fetch-show-images-auto.js
-const PLACEHOLDER_FILE_HASHES = new Set([
-  'b4d7d1bdb443e0a94e69ac8a5abd6f40', // poster.webp (19,118 bytes) — variant 1
-  'ac3ea27f64c633474ad93fd826f614e7', // thumbnail.webp (11,664 bytes) — variant 1
-  '4aed489bb69c5c49be3315e3f85b342f', // hero.webp (28,998 bytes) — variant 1 (round-rect glow)
-  '52968e9f240e2db8d7523ac053d019fb', // hero.webp (28,808 bytes) — variant 2 (oval glow)
-  'da0408f33ffaff9c63baf108b53b1128', // hero.webp (25,372 bytes) — variant 3 (1440x580 landscape)
-  '9d1b34a4045d176b1856ab38a852d47b', // thumbnail.webp (32,372 bytes) — variant 2 (square format)
-]);
+// Real source of truth — do not hardcode a second copy here, it drifts.
+const { PLACEHOLDER_FILE_HASHES } = require('../../scripts/lib/show-images.js');
 
 describe('placeholder image detection', () => {
   test('no show images on disk match known placeholder hashes', () => {
@@ -51,25 +45,19 @@ describe('placeholder image detection', () => {
     );
   });
 
-  test('PLACEHOLDER_FILE_HASHES stays in sync with fetch-show-images-auto.js', () => {
+  test('fetch-show-images-auto.js imports PLACEHOLDER_FILE_HASHES from the shared lib (not a stale local copy)', () => {
     const scriptPath = path.join(__dirname, '../../scripts/fetch-show-images-auto.js');
     if (!fs.existsSync(scriptPath)) return;
-
     const content = fs.readFileSync(scriptPath, 'utf8');
-    // Extract hashes from the script
-    const match = content.match(/PLACEHOLDER_FILE_HASHES\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
-    assert.ok(match, 'Could not find PLACEHOLDER_FILE_HASHES in fetch-show-images-auto.js');
-
-    const scriptHashes = new Set(
-      [...match[1].matchAll(/'([a-f0-9]{32})'/g)].map(m => m[1])
+    assert.match(
+      content,
+      /require\(['"]\.\/lib\/show-images['"]\)/,
+      'fetch-show-images-auto.js must import from ./lib/show-images, not redefine PLACEHOLDER_FILE_HASHES locally'
     );
-
-    // Check both directions
-    for (const h of PLACEHOLDER_FILE_HASHES) {
-      assert.ok(scriptHashes.has(h), `Test has hash ${h} not found in script`);
-    }
-    for (const h of scriptHashes) {
-      assert.ok(PLACEHOLDER_FILE_HASHES.has(h), `Script has hash ${h} not found in test — update the test!`);
-    }
+    assert.match(
+      content,
+      /PLACEHOLDER_FILE_HASHES/,
+      'fetch-show-images-auto.js must destructure PLACEHOLDER_FILE_HASHES from the lib import'
+    );
   });
 });
