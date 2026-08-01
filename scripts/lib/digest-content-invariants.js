@@ -79,8 +79,13 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   // so the row budget can never drift between what is drawn and what is
   // asserted — a second copy here would let this check go quietly false.
   const { selectHealthRows } = require('./autonomous-email-render.js');
+  // `health.warns` ONLY — no `|| health.warnings` fallback. The renderer reads
+  // health.warns (autonomous-email-render.js: `const warns = ... health.warns`),
+  // so counting health.warnings here would assert buttons for rows that are
+  // never drawn and report a violation on a correct email (ship-check finding,
+  // codex 2026-08-01). The checker must mirror the renderer, not guess at it.
   const namedRows = health
-    ? selectHealthRows({ errors: health.errors, warns: health.warns || health.warnings })
+    ? selectHealthRows({ errors: health.errors, warns: health.warns })
         .rows.filter((r) => r && r.name)
     : [];
   if (namedRows.length > 0) {

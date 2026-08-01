@@ -143,7 +143,15 @@ function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
 function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
   // Probe 1: the real pass shape — API key cleared, stored login only.
   const stored = authPing({ ANTHROPIC_API_KEY: '' });
-  if (stored.ok) return { ok: true, mode: 'oauth' };
+  // envForMode is the env override the caller MUST spread into the real spawn
+  // so it reproduces the shape that was actually proven. Task #713 made this
+  // load-bearing: before the fix a launchd pass had no API key at all, so
+  // "oauth proven" and "oauth used" coincided by accident. Now that .env can
+  // supply ANTHROPIC_API_KEY, strippedEnv() would restore it and a pass proven
+  // on the subscription would silently bill pay-per-token instead (ship-check
+  // finding, codex 2026-08-01). Empty string, not delete — that is the exact
+  // shape authPing probed with.
+  if (stored.ok) return { ok: true, mode: 'oauth', envForMode: { ANTHROPIC_API_KEY: '' } };
   // Must consult the SAME resolution the spawn uses, not process.env alone:
   // under launchd the key lives only in .env, and reading process.env here
   // reported "no ANTHROPIC_API_KEY in env" and failed the preflight closed
@@ -155,9 +163,9 @@ function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
   const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
   if (decision.mode === 'api-key') {
     log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
-    return { ok: true, mode: 'api-key', storedDetail: stored.detail };
+    return { ok: true, mode: 'api-key', envForMode: {}, storedDetail: stored.detail };
   }
-  return { ok: false, mode: 'fail', detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
+  return { ok: false, mode: 'fail', envForMode: {}, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
 function parseEnvelope(raw) {
