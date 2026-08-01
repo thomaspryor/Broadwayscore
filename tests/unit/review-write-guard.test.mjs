@@ -275,21 +275,45 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
-  test('skips collision check when urlCorrectedFrom is set (transient state)', () => {
+  test('urlCorrectedFrom + bodyless + sibling-owned URL → tombstoned (post-correction branch)', () => {
+    // The blanket urlCorrectedFrom skip was replaced 2026-08-01 (enormous-
+    // crocodile oscillation): a corrected file adopting a URL a substantive
+    // sibling already owns is by definition the newcomer — when it's bodyless
+    // it holds nothing unique, so it gets duplicateOf at the write site.
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mid-correction-'));
     try {
-      // Sibling has the URL we used to point at.
       fs.writeFileSync(path.join(dir, 'nysr--bernardo.json'), JSON.stringify({
         url: 'https://nystagereview.com/old-url/',
+        fullText: 'x'.repeat(2000),
       }, null, 2));
 
-      // We're mid-correction: urlCorrectedFrom records the old (colliding) URL,
-      // but url is the new one. The collision check must NOT fire on the new URL
-      // matching, and must NOT compare against urlCorrectedFrom.
       const ourPath = path.join(dir, 'nysr--sommers.json');
       safeWriteReview(ourPath, {
         url: 'https://nystagereview.com/old-url/',
         urlCorrectedFrom: 'https://nystagereview.com/different-url/',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, 'nysr--bernardo.json');
+      assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('urlCorrectedFrom + substantive body → NOT tombstoned (multi-critic protection)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mid-correction-sub-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'nysr--bernardo.json'), JSON.stringify({
+        url: 'https://nystagereview.com/old-url/',
+        fullText: 'x'.repeat(2000),
+      }, null, 2));
+
+      const ourPath = path.join(dir, 'nysr--sommers.json');
+      safeWriteReview(ourPath, {
+        url: 'https://nystagereview.com/old-url/',
+        urlCorrectedFrom: 'https://nystagereview.com/different-url/',
+        fullText: 'y'.repeat(2000),
       });
 
       const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
