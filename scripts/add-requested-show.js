@@ -31,8 +31,8 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
-const { classifyCandidate } = require('./lib/aggregator-candidate-extract');
-const { writeStagingCandidates } = require('./lib/venue-listing-discover');
+const { classifyCandidate, classifyTitleDelta } = require('./lib/aggregator-candidate-extract');
+const { writeStagingCandidates, candidateHash } = require('./lib/venue-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `add-requested-show.js — Stage + promote a user-requested show via its BWW Review Roundup.
@@ -137,6 +137,22 @@ async function main() {
   const { candidate } = classification;
   console.log(`Accepted candidate: title="${candidate.title}" venue="${candidate.venue}" category="${candidate.category}" date=${candidate.articlePublishedAt}`);
 
+  // The SERP query is a best-effort search, not proof — it can return a
+  // same-title-collision or an unrelated roundup that merely mentions the
+  // request's keywords. classifyCandidate() only checked the page against
+  // ITS OWN slug, never against what the user actually asked for. Verify
+  // the extracted title against `title` (the original request) before
+  // trusting this page enough to promote off it (ship-check adversarial
+  // review, task #722).
+  const requestDelta = classifyTitleDelta(title, candidate.title);
+  if (requestDelta === 'mismatch') {
+    console.log(
+      `Rejected: extracted title "${candidate.title}" does not match the requested title "${title}" ` +
+      `(delta=${requestDelta}) — likely a same-query SERP collision, not the requested show.`
+    );
+    process.exit(1);
+  }
+
   if (candidate.category !== 'regional') {
     console.log(
       `Candidate classifies as "${candidate.category}", not "regional" — this script only promotes the ` +
@@ -152,11 +168,20 @@ async function main() {
   }
 
   writeStagingCandidates([candidate]);
-  console.log('Staged. Promoting via promote-ob-venue-candidates.js --regional-only...');
-  execFileSync('node', [path.join(__dirname, 'promote-ob-venue-candidates.js'), '--regional-only'], {
-    stdio: 'inherit',
-    cwd: path.join(__dirname, '..'),
-  });
+  // Scope the promoter run to exactly this candidate — without --only-hash
+  // it would promote EVERY staged regional candidate, including ones staged
+  // by the unrelated nightly crawl in the window between this staging write
+  // and the promoter running (ship-check adversarial review, task #722).
+  const hash = candidateHash({ title: candidate.title, venue: candidate.venue });
+  console.log(`Staged (hash=${hash}). Promoting via promote-ob-venue-candidates.js --regional-only --only-hash=${hash}...`);
+  execFileSync(
+    'node',
+    [path.join(__dirname, 'promote-ob-venue-candidates.js'), '--regional-only', `--only-hash=${hash}`],
+    {
+      stdio: 'inherit',
+      cwd: path.join(__dirname, '..'),
+    }
+  );
 }
 
 main().catch((err) => {

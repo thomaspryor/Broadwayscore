@@ -29,7 +29,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: add-requested-show
+  # Shares the nightly regional-promotion job's lane (scrape-new-aggregators
+  # writes shows.json via the same --regional-only promoter). Both a feedback
+  # dispatch and the weekly cron can independently promote a staged regional
+  # candidate; a separate lane let them race on the same push-core-data merge
+  # (ship-check adversarial review, task #722) — serializing behind the cron
+  # is a bounded wait (feedback dispatches are low-frequency), not a hazard.
+  group: scrape-new-aggregators
   cancel-in-progress: false
 
 jobs:
@@ -65,12 +71,40 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          # Passed as env vars, NOT interpolated into the run: script — user
+          # feedback text reaches this workflow unsanitized (it's the raw
+          # form `show` field), and `${{ inputs.title }}` inside a shell
+          # command is a script-injection vector (ship-check adversarial
+          # review, task #722). Node's argv receives the value verbatim;
+          # bash never re-parses it.
+          SHOW_TITLE: ${{ inputs.title }}
+          VENUE_HINT: ${{ inputs.venue_hint }}
         run: |
-          node scripts/add-requested-show.js --title="${{ inputs.title }}" --venue_hint="${{ inputs.venue_hint }}"
+          node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT"
 
       - name: Validate data (push-refusal gate on failure)
         if: always()
         run: node scripts/validate-data.js
+
+      - name: Commit staging + audit trail (public repo)
+        # Runs BEFORE push-core-data (task #722 ship-check P1): the promoter
+        # writes data/audit/ob-venue-candidates.json (staging removal),
+        # last-promotion-ids.json, and ob-promotion-log.jsonl to THIS
+        # checkout, not the private core-data repo — push-core-data only
+        # syncs shows.json et al (CORE_FILES). Without this commit those
+        # writes are discarded at job end and the staged candidate never
+        # actually leaves the queue, so nightly re-stages/re-promotes it.
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/ob-venue-candidates.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No staging/audit changes to commit"
+          else
+            git commit -m "data: add-requested-show staging + audit trail for '${{ inputs.title }}'"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Push core data
         if: always()
