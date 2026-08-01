@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T08:15:21.965Z",
+  "timestamp": "2026-08-01T09:28:36.069Z",
   "stats": {
-    "totalReviews": 41082,
-    "alreadyFlagged": 17934,
+    "totalReviews": 41145,
+    "alreadyFlagged": 17945,
     "dateGuardCatches": 81,
-    "directorMismatch": 936,
-    "tvFilmSignals": 1122,
+    "directorMismatch": 938,
+    "tvFilmSignals": 1123,
     "londonSignals": 777,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3399
+    "noPublishDate": 3452
   },
   "findings": [
     {
@@ -13757,6 +13757,34 @@
       ]
     },
     {
+      "showId": "king-lear-2004",
+      "file": "stagezine--david-nounou.json",
+      "score": 34,
+      "publishDate": null,
+      "url": "http://www.stagezine.com/pretentious-madness-of-king-lear/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from king-lear-2019"
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-2004",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 42,
+      "publishDate": null,
+      "url": "http://www.theaterscene.net/plays/broadway-plays/king-lear/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from king-lear-2019"
+        }
+      ]
+    },
+    {
       "showId": "kinky-boots-2013",
       "file": "ap--mark-kennedy.json",
       "score": 78,
@@ -26490,6 +26518,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 96,
+      "publishDate": "2026-07-26",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
