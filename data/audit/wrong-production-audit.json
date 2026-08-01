@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-01T03:39:47.287Z",
+  "timestamp": "2026-08-01T04:18:44.851Z",
   "stats": {
-    "totalReviews": 41061,
-    "alreadyFlagged": 17924,
+    "totalReviews": 41074,
+    "alreadyFlagged": 17928,
     "dateGuardCatches": 79,
     "directorMismatch": 936,
     "tvFilmSignals": 1122,
-    "londonSignals": 774,
+    "londonSignals": 776,
     "offBroadwaySignals": 466,
     "yearMismatch": 86,
-    "noPublishDate": 3407
+    "noPublishDate": 3409
   },
   "findings": [
     {
@@ -42585,6 +42585,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "file": "westendtheatre--west-end-theatre.json",
+      "publishDate": "2026-07-01",
+      "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
