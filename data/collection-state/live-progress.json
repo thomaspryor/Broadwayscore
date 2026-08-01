@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-08-01T15:59:49.025Z",
-  "processed": 46,
-  "failed": 245,
-  "successRate": "15.8%",
+  "updatedAt": "2026-08-01T16:01:36.368Z",
+  "processed": 50,
+  "failed": 251,
+  "successRate": "16.6%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 4,
     "scrapingbee": 0,
     "brightdata": 13,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-01T15:59:51.193Z",
+      "event": "bb-session",
+      "session": "944d1334",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-08-01T16:00:23.506Z",
+      "event": "bb-session",
+      "session": "9292cdab",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    }
+  ]
 }

@@ -45,7 +45,11 @@
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "dog-man-the-musical-west-end-2026/daily-echo--lorelei-reddin.json",
@@ -292,7 +296,13 @@
     "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
     "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
-    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -319,10 +329,16 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "the-rocky-horror-show-2026/playbill--unknown.json"
+      "the-rocky-horror-show-2026/playbill--unknown.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -353,10 +369,24 @@
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-08-01T14:56:33.847Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
-  "log": []
+  "lastProcessed": "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+  "log": [
+    {
+      "t": "2026-08-01T15:59:51.193Z",
+      "event": "bb-session",
+      "session": "944d1334",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-08-01T16:00:23.506Z",
+      "event": "bb-session",
+      "session": "9292cdab",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    }
+  ]
 }
