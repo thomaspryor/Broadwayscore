@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T00:19:01.713Z",
+  "generatedAt": "2026-08-01T01:20:07.583Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,26 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 203.12367083333334,
+      "fileAgeHours": 204.1419688888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 162.4266047222222
-    },
-    {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
-      "file": "nytg--kyle-turner.json",
-      "outletId": "nytg",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "url": "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=rosie-odonnell-common-knowledge-off-broadway-2026 --url=https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell --outlet=nytg --critic=\"Kyle Turner\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-07-27T06:50:13.943Z",
-      "fileAgeHours": 113.47993361111111,
-      "gapSeenAt": "2026-08-01T00:19:01.713Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 163.44490194444444
     }
   ],
   "contradictions": []
