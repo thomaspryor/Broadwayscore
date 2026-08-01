@@ -3,7 +3,9 @@
     "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
     "tao-of-glass-west-end-2026/broadwayworld--franco-milazzo.json",
     "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
-    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "shifters-off-broadway-2026/nytg--gillian-russo.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/telegraph-uk--unknown.json",
@@ -18,13 +20,23 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
     "the-enormous-crocodile-west-end-2026/everything-theatre--mary-pollard.json",
     "the-enormous-crocodile-west-end-2026/london-theatre--unknown.json",
-    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json"
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "tao-of-glass-west-end-2026/guardian-uk--unknown.json",
-      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "shifters-off-broadway-2026/nytg--gillian-russo.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -39,12 +51,15 @@
       "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
       "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/tao-of-glass-west-end-2026/telegraph-uk--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json"
+      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-01T01:01:28.303Z",
-  "lastProcessed": "the-enormous-crocodile-west-end-2026/west-end-best-friend--chris-abbott.json",
+  "lastProcessed": "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
   "log": [
     {
       "t": "2026-08-01T01:03:59.674Z",
@@ -79,6 +94,39 @@
       "t": "2026-08-01T01:10:41.191Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T01:31:09.962Z",
+      "event": "bb-session",
+      "session": "504a314b",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T01:31:10.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T01:31:26.919Z",
+      "event": "bb-session",
+      "session": "77a1f404",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-01T01:31:27.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-01T01:32:15.477Z",
+      "event": "bb-session",
+      "session": "4e6119ca",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-01T01:32:16.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
