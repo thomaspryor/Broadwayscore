@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01T09:41:34.582Z",
+  "generatedAt": "2026-08-01T10:24:42.652Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,23 +7,31 @@
   "clean": 145,
   "defective": 1,
   "byType": {
+    "missing-from-prod": 1,
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "title": "Showstopper! The Improvised Musical",
-      "openingDate": "2015-09-01",
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "title": "The Importance of Being Oscar",
+      "openingDate": "2026-07-29",
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: londontheatre1, whatsonstage"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 85.1 vs local 85.52 (Δ0.42)"
+          "detail": "deployed cs 70.53 vs local 72.22 (Δ1.69)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4
+      "missingFromProd": [
+        "londontheatre1",
+        "whatsonstage"
+      ],
+      "localCount": 10,
+      "deployedCount": 8
     }
   ]
 }
