@@ -35,6 +35,20 @@ function normalizeBylineCapture(raw) {
   // chrome that wasn't matched by the trailing-chrome regex above.
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
 
+  // Strip leading job-title tokens some outlets prefix onto a byline capture
+  // ("Senior Editor Jane Doe", "Contributing Critic John Smith"). Loops so
+  // multi-word titles ("Senior Contributing Editor Jane Doe") fully strip, not
+  // just the first word. Requires a 2+ word remainder after each strip so a
+  // critic whose actual surname IS one of these words ("Chief" as a surname)
+  // isn't mangled down to nothing — defense-in-depth alongside the
+  // bww-roundup-parser entry-boundary fix (task #734, 2026-08-01), which is
+  // the actual fix for the whitespace-run photo-credit class of phantom byline.
+  const jobTitleWord = /^(?:Senior|Contributing|Contributor|Editor|Chief|Associate|Staff|Critic|Theatre|Theater)\s+(\S+(?:\s+\S+)+)$/i;
+  let prefixMatch;
+  while ((prefixMatch = cleaned.match(jobTitleWord))) {
+    cleaned = prefixMatch[1];
+  }
+
   // Title-case ALL-CAPS names. A name written entirely in upper case (no
   // lowercase letters) is almost always a stylesheet artifact, not the
   // critic's preferred capitalization. Mixed-case (McDonald, O'Brien) names

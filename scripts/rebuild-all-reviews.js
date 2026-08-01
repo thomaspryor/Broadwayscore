@@ -522,14 +522,7 @@ function selectBestExcerpt(data, showTitle) {
     if (cleaned && cleaned.length > 20) {
       // isPromoTeaser also guards this fast-path: a teaser here would come
       // from a bulk import writing pullQuote, not a human editor's choice.
-      // Same reasoning extends the listing-chrome and tag-cloud guards here
-      // (2026-08-01 Codex review): a bulk import that wrote a British Theatre
-      // Guide listing block or a Reviews Hub tag list into `pullQuote` would
-      // otherwise sail past every new guard and ship, with the corpus audit
-      // reporting it only after the fact. Mid-word truncation is deliberately
-      // NOT applied — a human editor may legitimately quote a prefix.
-      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)
-          && !hasListingChrome(cleaned) && !isTagCloudExcerpt(cleaned)) {
+      if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)) {
         return cleaned;
       }
     }
@@ -691,7 +684,7 @@ function selectBestExcerpt(data, showTitle) {
 
     // Layer 4: Tour review detection (only for non-tour-stop shows)
     if (data._showStatus !== 'tour-stop') {
-      const tourCheck = isTourReviewExcerpt(excerpt);
+      const tourCheck = isTourReviewExcerpt(excerpt, { currentShowId: showId, currentShowTitle: showTitle });
       if (tourCheck.isTourReview) {
         if (!stats.tourExcerptFlags) stats.tourExcerptFlags = [];
         stats.tourExcerptFlags.push({ showId, source, signal: tourCheck.signal });
@@ -3752,7 +3745,7 @@ showDirs.forEach(showId => {
         // theatermania's review opens "This star-studded touring production..." which is
         // accurate, not contamination from a different sit-down production).
         if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special') {
-          const tourCheck = isTourReviewExcerpt(introText);
+          const tourCheck = isTourReviewExcerpt(introText, { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
               `Tour signal in fullText intro: ${tourCheck.signal}`);

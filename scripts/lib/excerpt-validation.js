@@ -204,12 +204,57 @@ function hasOnlyForwardTenseTourMention(excerpt) {
 }
 
 /**
+ * True when the SENTENCE containing a tour-pattern match is about a DIFFERENT,
+ * known show — not the current one. Critics routinely open a review with a
+ * comparison lede ("Noises Off is on tour on its umpteenth revival; Fawlty
+ * Towers is back in London soon before going on tour...") before getting to
+ * the show actually being reviewed. isTourReviewExcerpt has no other-show
+ * awareness, so that comparison sentence trips the same "on tour" pattern a
+ * genuine touring-production review would. Confirmed live 2026-08-01:
+ * times-uk--dominic-maxwell.json on the-comedy-about-spies-west-end-2026 was
+ * excluded (skippedTourContamination) over its own lede mentioning Noises Off
+ * and Fawlty Towers touring — not itself.
+ *
+ * Scoped to the sentence (not the whole excerpt, unlike excerptMentionsWrongShow
+ * above) because a tour signal that shares a sentence with another show's name
+ * is almost certainly about THAT show; one later in the same excerpt describing
+ * the current show is not exempted by an early, unrelated comparison.
+ *
+ * @param {string} excerpt
+ * @param {number} matchIndex - index of the tour-pattern match within excerpt
+ * @param {string} currentShowId
+ * @param {string} currentShowTitle
+ * @returns {{ title: string, showId: string }|null}
+ */
+function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, currentShowTitle) {
+  if (!currentShowId) return null;
+  const sentenceStart = Math.max(0, excerpt.lastIndexOf('.', matchIndex) + 1);
+  let sentenceEnd = excerpt.indexOf('.', matchIndex);
+  if (sentenceEnd === -1) sentenceEnd = excerpt.length;
+  const sentence = excerpt.slice(sentenceStart, sentenceEnd + 1);
+
+  const titleForMatch = currentShowTitle ? currentShowTitle.replace(/[^\w]+$/, '') : null;
+  const currentEscaped = titleForMatch ? titleForMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : null;
+  const currentRegex = currentEscaped ? new RegExp(`\\b${currentEscaped}\\b`, 'i') : null;
+  if (currentRegex && currentRegex.test(sentence)) return null;
+
+  for (const [showId, { title, regex }] of getMatchableTitles()) {
+    if (showId === currentShowId) continue;
+    if (regex.test(sentence)) return { title, showId };
+  }
+  return null;
+}
+
+/**
  * Check if an excerpt appears to be from a touring production review.
  *
  * @param {string} excerpt - The excerpt text
- * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean }}
+ * @param {{currentShowId?: string, currentShowTitle?: string}} [context] - when
+ *   provided, a tour-pattern match sharing a sentence with a DIFFERENT known
+ *   show's title is treated as a comparison lede, not tour contamination.
+ * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean }}
  */
-function isTourReviewExcerpt(excerpt) {
+function isTourReviewExcerpt(excerpt, context) {
   if (!excerpt) return { isTourReview: false };
 
   // Venue patterns are unambiguous — check first (forward-tense carve-out does NOT apply)
@@ -220,12 +265,19 @@ function isTourReviewExcerpt(excerpt) {
   }
 
   // Tour keyword patterns — skip when only forward-tense context is present
-  const matched = TOUR_EXCERPT_PATTERNS.find(p => p.test(excerpt));
-  if (matched) {
+  for (const pattern of TOUR_EXCERPT_PATTERNS) {
+    const m = pattern.exec(excerpt);
+    if (!m) continue;
     if (hasOnlyForwardTenseTourMention(excerpt)) {
-      return { isTourReview: false, forwardTenseOnly: true, signal: matched.source };
+      return { isTourReview: false, forwardTenseOnly: true, signal: pattern.source };
     }
-    return { isTourReview: true, signal: matched.source };
+    if (context) {
+      const other = tourMatchIsAboutDifferentShow(excerpt, m.index, context.currentShowId, context.currentShowTitle);
+      if (other) {
+        return { isTourReview: false, otherShowComparison: true, signal: pattern.source, mentionedTitle: other.title };
+      }
+    }
+    return { isTourReview: true, signal: pattern.source };
   }
 
   return { isTourReview: false };
