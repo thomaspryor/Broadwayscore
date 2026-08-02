@@ -26,6 +26,8 @@ const {
   hasArchivedShowImages,
   listShowIdsWithImages,
   pruneEmptyShowImageDir,
+  snapshotShowImageDir,
+  discardFailedFetchArtifacts,
   dirHasImageFiles,
 } = require('./show-image-coverage.js');
 
@@ -164,4 +166,71 @@ test('dirHasImageFiles is case-insensitive on the extension', () => {
   const root = makeRoot();
   const dir = seed(root, 'shouty', ['POSTER.WEBP']);
   assert.equal(dirHasImageFiles(dir), true);
+});
+
+// ---------------------------------------------------------------------------
+// Second adversarial review (Codex, 2026-08-02) found the empty-dir prune was
+// blind to the WORSE shape of the same bug: several fetch paths write
+// thumbnail.jpg to disk BEFORE Gemini verifies it, so a rejected candidate
+// leaves a real file. That file satisfies every file-based coverage check while
+// shows.json still records no image — so the page renders "Images coming soon"
+// on a show the system believes is covered.
+// ---------------------------------------------------------------------------
+
+test('a rejected candidate written pre-verification is discarded, dir pruned', () => {
+  const root = makeRoot();
+  const dir = path.join(root, 'rejected-show');
+  fs.mkdirSync(dir, { recursive: true });
+  const before = snapshotShowImageDir(dir);          // taken pre-fetch: empty
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), 'x'); // written, then rejected
+
+  assert.equal(hasArchivedShowImages(root, 'rejected-show'), true, 'precondition: it DOES read as coverage');
+  const { removed, prunedDir } = discardFailedFetchArtifacts(dir, before);
+  assert.deepEqual(removed, ['thumbnail.jpg']);
+  assert.equal(prunedDir, true);
+  assert.equal(hasArchivedShowImages(root, 'rejected-show'), false);
+});
+
+test('pre-existing archived art SURVIVES a failed refetch', () => {
+  // The failure path must never be able to destroy a previously good poster.
+  const root = makeRoot();
+  const dir = seed(root, 'has-good-art', ['poster.webp', 'thumbnail.webp']);
+  const before = snapshotShowImageDir(dir);
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), 'x'); // this run's reject
+
+  const { removed, prunedDir } = discardFailedFetchArtifacts(dir, before);
+  assert.deepEqual(removed, ['thumbnail.jpg'], 'only this run’s file removed');
+  assert.equal(prunedDir, false, 'dir kept — it still holds real art');
+  assert.deepEqual(fs.readdirSync(dir).sort(), ['poster.webp', 'thumbnail.webp']);
+  assert.equal(hasArchivedShowImages(root, 'has-good-art'), true);
+});
+
+test('discard never recurses into a nested archive directory', () => {
+  const root = makeRoot();
+  const dir = path.join(root, 'nested');
+  fs.mkdirSync(path.join(dir, 'originals'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'originals', 'poster.webp'), 'x');
+  const before = snapshotShowImageDir(dir); // contains 'originals'
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), 'x');
+
+  const { removed } = discardFailedFetchArtifacts(dir, before);
+  assert.deepEqual(removed, ['thumbnail.jpg']);
+  assert.equal(fs.existsSync(path.join(dir, 'originals', 'poster.webp')), true);
+});
+
+test('a NEW nested dir is not deleted either (only files are)', () => {
+  const root = makeRoot();
+  const dir = path.join(root, 'newnested');
+  fs.mkdirSync(dir, { recursive: true });
+  const before = snapshotShowImageDir(dir);
+  fs.mkdirSync(path.join(dir, 'tmp'), { recursive: true });
+  const { removed, prunedDir } = discardFailedFetchArtifacts(dir, before);
+  assert.deepEqual(removed, []);
+  assert.equal(prunedDir, false, 'rmdir refuses: something is inside');
+  assert.equal(fs.existsSync(path.join(dir, 'tmp')), true);
+});
+
+test('discard on a missing dir is a no-op, not a throw', () => {
+  const r = discardFailedFetchArtifacts(path.join(makeRoot(), 'nope'), new Set());
+  assert.deepEqual(r, { removed: [], prunedDir: false });
 });

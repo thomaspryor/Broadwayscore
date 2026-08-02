@@ -113,9 +113,72 @@ function pruneEmptyShowImageDir(showDir) {
   }
 }
 
+/**
+ * Snapshot the entry names in a show's image directory.
+ *
+ * Taken BEFORE a fetch so the failure path can tell "art that was already
+ * archived" (must survive) from "a candidate this run wrote and then had
+ * rejected" (must not survive as fake coverage).
+ *
+ * @param {string} showDir
+ * @returns {Set<string>} entry names; empty when the directory does not exist
+ */
+function snapshotShowImageDir(showDir) {
+  try {
+    return new Set(fs.readdirSync(showDir));
+  } catch {
+    return new Set();
+  }
+}
+
+/**
+ * Undo the files a FAILED fetch left behind, then drop the directory if that
+ * empties it.
+ *
+ * WHY (2026-08-02, second adversarial review):
+ * Several source paths write thumbnail.jpg/poster.jpg to disk BEFORE Gemini
+ * verifies the candidate (fetch-show-images-auto.js writes at ~1753, verifies
+ * at ~1888). When verification then rejects, the fetch returns null and no URL
+ * is recorded in shows.json — but the written file stays. Pruning only EMPTY
+ * directories therefore missed this case entirely: the show has a real file on
+ * disk (so every coverage reader says "has art") and no shows.json entry (so
+ * the page still renders "Images coming soon"). That is the same live symptom
+ * this module exists to prevent, reached by a different route.
+ *
+ * Only entries absent from `before` are removed, so pre-existing archived art
+ * is never touched — the failure path must not be able to destroy a previously
+ * good poster. Directories are left alone (we only ever write flat files).
+ *
+ * @param {string} showDir
+ * @param {Set<string>} before result of snapshotShowImageDir taken pre-fetch
+ * @returns {{removed: string[], prunedDir: boolean}}
+ */
+function discardFailedFetchArtifacts(showDir, before) {
+  const removed = [];
+  let entries;
+  try {
+    entries = fs.readdirSync(showDir, { withFileTypes: true });
+  } catch {
+    return { removed, prunedDir: false };
+  }
+  for (const e of entries) {
+    if (!e.isFile()) continue;      // never recurse into a nested archive
+    if (before.has(e.name)) continue; // pre-existing — not ours to delete
+    try {
+      fs.unlinkSync(path.join(showDir, e.name));
+      removed.push(e.name);
+    } catch {
+      // Another process may have moved it; leaving it is the safe direction.
+    }
+  }
+  return { removed, prunedDir: pruneEmptyShowImageDir(showDir) };
+}
+
 module.exports = {
   hasArchivedShowImages,
   listShowIdsWithImages,
   pruneEmptyShowImageDir,
+  snapshotShowImageDir,
+  discardFailedFetchArtifacts,
   dirHasImageFiles,
 };
