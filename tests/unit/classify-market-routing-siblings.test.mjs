@@ -271,3 +271,120 @@ test('7. cross-market Tier 1 reroute still fires (hadestown WE-2024 review of 20
   assert.doesNotMatch(decision.reason || '', /same-title-sibling/);
   assert.match(decision.reason || '', /publishDate/);
 });
+
+test('9. hyphenated GENERIC_VENUE_SLUGS entries ("circle-in-the-square") must still deny their component words (task #787)', () => {
+  // GENERIC_VENUE_SLUGS stores whole hyphenated slugs, but this signal
+  // whitespace-tokenizes the venue name — "circle-in-the-square" can never
+  // equal a single token, so pre-#787 the individual words "circle"/"square"
+  // slipped through the denylist as overmatching single-word signals. Sibling
+  // venue "Circle in the Square Theatre", URL contains "circle" outside any
+  // /YYYY/ pattern, publishDate outside the window. If the fix holds, no
+  // venue-substring signal fires → plain accept (not an ambiguous flag).
+  const shows = [
+    {
+      id: 'samename2-2026',
+      title: 'Samename2',
+      openingDate: '2026-05-01',
+      category: 'broadway',
+      venue: 'Hayes Theater',
+    },
+    {
+      id: 'samename2-2010',
+      title: 'Samename2',
+      openingDate: '2010-03-01',
+      closingDate: '2010-09-01',
+      category: 'broadway',
+      venue: 'Circle in the Square Theatre',
+    },
+  ];
+  const idx = buildSiblingIndex(shows);
+  const decision = classifyMarketRouting({
+    showId: 'samename2-2026',
+    url: 'https://example.com/reviews/broadway/samename2-circle-back-revival/',
+    outletId: 'example',
+    publishDate: '2024-01-01',
+    category: 'broadway',
+    siblingIndex: idx,
+  });
+  assert.equal(decision.action, 'accept', `expected plain accept, got ${JSON.stringify(decision)}`);
+  assert.equal(decision.flag, undefined, '"circle" (from circle-in-the-square) must be denylisted');
+});
+
+test('10. "Apollo Victoria Theatre" keeps "victoria" as a signal — distinct venue from generic "Victoria Palace" (task #787)', () => {
+  // Regression guard for a naive fix that flattens GENERIC_VENUE_SLUGS'
+  // hyphenated entries ("victoria-palace") into standalone denylisted words
+  // ("victoria", "palace") globally: that would ALSO suppress "victoria" for
+  // "Apollo Victoria Theatre", a real, distinct West End venue
+  // (wicked-west-end-2021) whose own canonical slug ("apollo-victoria") is
+  // not itself a GENERIC_VENUE_SLUGS entry. "apollo" is already denylisted
+  // standalone, so "victoria" must survive as the one usable token — the URL
+  // below only matches via "victoria", not "apollo".
+  const shows = [
+    {
+      id: 'samename3-2026',
+      title: 'Samename3',
+      openingDate: '2026-05-01',
+      category: 'west-end',
+      venue: 'Trafalgar Theatre',
+    },
+    {
+      id: 'samename3-2010',
+      title: 'Samename3',
+      openingDate: '2010-03-01',
+      closingDate: '2010-09-01',
+      category: 'west-end',
+      venue: 'Apollo Victoria Theatre',
+    },
+  ];
+  const idx = buildSiblingIndex(shows);
+  const decision = classifyMarketRouting({
+    showId: 'samename3-2026',
+    url: 'https://example.com/reviews/samename3-victoria-revival/',
+    outletId: 'example',
+    publishDate: '2024-01-01',
+    category: 'west-end',
+    siblingIndex: idx,
+  });
+  assert.equal(decision.action, 'accept', `expected accept, got ${JSON.stringify(decision)}`);
+  assert.equal(decision.flag, 'wrongProduction', '"victoria" must still fire — Apollo Victoria is not the generic Victoria Palace');
+  assert.equal(decision.reason, 'ambiguous-production');
+});
+
+test('11. leading "The " and apostrophe variants of hyphenated GENERIC_VENUE_SLUGS entries still collapse to fully generic (task #787 ship-check catch)', () => {
+  // Adversarial ship-check round 2 caught that the whole-venue canonicalSlug
+  // check didn't strip a leading "The " or apostrophes, so "The Circle in
+  // the Square Theatre" and "Duke of York's Theatre" wouldn't collapse onto
+  // their GENERIC_VENUE_SLUGS entries ("circle-in-the-square",
+  // "duke-of-yorks") even though they denote the same generic venue. Both
+  // must still fully suppress the venue-substring signal.
+  for (const venue of ['The Circle in the Square Theatre', "Duke of York's Theatre", 'The Victoria Palace Theatre']) {
+    const shows = [
+      {
+        id: 'samename4-2026',
+        title: 'Samename4',
+        openingDate: '2026-05-01',
+        category: 'broadway',
+        venue: 'Hayes Theater',
+      },
+      {
+        id: 'samename4-2010',
+        title: 'Samename4',
+        openingDate: '2010-03-01',
+        closingDate: '2010-09-01',
+        category: 'broadway',
+        venue,
+      },
+    ];
+    const idx = buildSiblingIndex(shows);
+    const decision = classifyMarketRouting({
+      showId: 'samename4-2026',
+      url: 'https://example.com/reviews/broadway/samename4-circle-victoria-yorks-square-revival/',
+      outletId: 'example',
+      publishDate: '2024-01-01',
+      category: 'broadway',
+      siblingIndex: idx,
+    });
+    assert.equal(decision.action, 'accept', `${venue}: expected plain accept, got ${JSON.stringify(decision)}`);
+    assert.equal(decision.flag, undefined, `${venue}: must still be fully denylisted as generic`);
+  }
+});

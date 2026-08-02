@@ -12,6 +12,7 @@
  */
 
 const path = require('path');
+const { foldDiacritics } = require('./title-match');
 const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
 const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
 
@@ -200,4 +201,33 @@ const GENERIC_VENUE_SLUGS = new Set([
   'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
 ]);
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS };
+/**
+ * Canonical venue slug builder — single source shared by audit-cross-production.js,
+ * audit-review-url-clusters.js, and (via the matching fold in
+ * cross-production-guards.js's contentMatchesFiledUnderVenue) the review-body
+ * haystack those two scripts pass it against. Previously duplicated in the two
+ * audit scripts, neither folding diacritics before the ASCII strip, while the
+ * guard's haystack fold had to match byte-for-byte (task #783 — folding only
+ * one side would desync the pairing and break today's accented-venue matches,
+ * so all three call sites had to move together).
+ *
+ * Strips "theatre"/"theater" and folds to a lowercase hyphen-slug; returns null
+ * for empty/short inputs (<5 chars) or generic words that would over-match
+ * arbitrary review URLs (e.g. "Broadway Theatre" → "broadway").
+ *
+ * @param {string|null|undefined} venue
+ * @returns {string|null}
+ */
+function venueSlug(venue) {
+  if (!venue || typeof venue !== 'string') return null;
+  const cleaned = foldDiacritics(venue)
+    .toLowerCase()
+    .replace(/\btheatre\b|\btheater\b/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  if (!cleaned || cleaned.length < 5) return null;
+  if (GENERIC_VENUE_SLUGS.has(cleaned)) return null;
+  return cleaned;
+}
+
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

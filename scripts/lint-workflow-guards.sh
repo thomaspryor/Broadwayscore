@@ -354,6 +354,34 @@ check_alert_ledger_commit() {
   fi
 }
 
+check_dry_run_flag_setter() {
+  # Task #653 ship-check finding: scripts/flag-wrong-production-by-date.js is
+  # DRY_RUN unless --apply (flag-wrong-production-by-date.js:43). rebuild-fast.yml
+  # invoked it WITHOUT --apply from the day its opening-night contamination guard
+  # shipped, so that guard wrote zero flags and the "rebuild-fast runs the sweeps,
+  # review-refresh doesn't" asymmetry was never real — nothing but the daily
+  # rebuild-reviews.yml ever re-applied a cleared wrongProduction flag. A dry-run
+  # flag-setter in a persistence workflow is silent, not loud: the step is green.
+  local VIOLATIONS=""
+  for f in .github/workflows/*.yml; do
+    while IFS= read -r line; do
+      case "$line" in
+        *"flag-wrong-production-by-date.js --apply"*) ;;
+        *"flag-wrong-production-by-date.js"*)
+          VIOLATIONS="$VIOLATIONS$(basename "$f"): $(echo "$line" | sed 's/^[[:space:]]*//')"$'\n' ;;
+      esac
+    # Only executable run: lines — comments mentioning the script are fine.
+    done < <(grep -E '^[[:space:]]*(run:|[[:space:]]+)?[^#]*node[[:space:]]+scripts/flag-wrong-production-by-date\.js' "$f" 2>/dev/null)
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::flag-wrong-production-by-date.js invoked without --apply (DRY RUN — writes nothing, step still passes):"
+    echo "$VIOLATIONS"
+    FAILED=1
+  else
+    echo "flag-wrong-production-by-date.js always invoked with --apply"
+  fi
+}
+
 check_reset_soft_partial_commit() {
   # Flags the "phantom-staged-revert" bug class (card #687, generalized from
   # task #677's ship-check finding, fixed in record-push-ledger.js commit
@@ -405,16 +433,17 @@ run_check() {
     snapshot-overwrite) check_snapshot_overwrite ;;
     alert-ledger-commit) check_alert_ledger_commit ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
+    dry-run-flag-setter) check_dry_run_flag_setter ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
-      check_snapshot_overwrite; check_alert_ledger_commit ;;
+      check_snapshot_overwrite; check_alert_ledger_commit; check_dry_run_flag_setter ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit
-      check_reset_soft_partial_commit ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|workflows|all>[,...]" >&2; exit 2 ;;
+      check_reset_soft_partial_commit; check_dry_run_flag_setter ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|dry-run-flag-setter|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 
