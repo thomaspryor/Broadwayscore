@@ -20,6 +20,8 @@
  * after the title-token match.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 const NOOP_LOGGER = { log: () => {} };
 
 const STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'is']);
@@ -35,7 +37,10 @@ function stripSubtitle(title) {
 }
 
 function tokensFromTitle(title) {
-  return (title || '')
+  // foldDiacritics BEFORE the [^a-z0-9\s] filter — otherwise "Misérables"
+  // splits into "mis"/"rables", neither of which matches the ASCII DTLI slug
+  // token "miserables", so accented-title shows never resolve. Task #648.
+  return foldDiacritics(title || '')
     .toLowerCase()
     // Drop apostrophes BEFORE space-substitution so "Turner's" → "turners",
     // not "turner s" (the trailing 's' would never match the slug's "turners").

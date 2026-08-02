@@ -25,6 +25,11 @@
  */
 
 const { fetchJSON } = require('./scraper');
+// titleMatchesShow is THIS module's only title matcher (safeSubtitlePrefix below
+// only counts words, it never matches). Its diacritic folding therefore lives in
+// rss-discovery.js — inside titleMatchesShow's local normalize() — not here
+// (task #648). Don't hand-roll a second matcher in this file; that drift is
+// exactly what created the #648 class.
 const { titleMatchesShow } = require('./rss-discovery');
 
 // Try the full title; if it fails, fall back to "primary title" extracted by

@@ -16,6 +16,8 @@
  * in the path, which title-matching would otherwise reject).
  */
 
+const { foldDiacritics } = require('./title-match');
+
 const SS_HOSTS = /(^|\.)show-score\.com$/i;
 
 /**
@@ -28,7 +30,10 @@ function showScoreUrlForShow(show, urlMap) {
     return urlMap[show.id];
   }
   if (!show.title) return null;
-  const slug = String(show.title)
+  // foldDiacritics FIRST: without it "Les Misérables" slugs to
+  // "les-mis-rables" (the é is a non-[a-z0-9] char and becomes a separator),
+  // which 404s. Show Score's own slugs are ASCII-folded. Task #648.
+  const slug = foldDiacritics(show.title)
     .toLowerCase()
     .replace(/['’.]/g, '')
     .replace(/[^a-z0-9]+/g, '-')

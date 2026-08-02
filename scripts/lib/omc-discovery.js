@@ -19,6 +19,7 @@
  */
 
 const { fetchPage } = require('./scraper');
+const { foldDiacritics } = require('./title-match');
 
 const OMC_FEED_URL = 'https://1minutecritic.com/feed/';
 const OUTLET_ID = 'one-minute-critic';
@@ -128,7 +129,10 @@ function parseRssItems(xml) {
 // the curly pair) that misses headlines with &#8217;. Our decodeEntities
 // already folds curly→ASCII so a word-boundary match is safe.
 function normalize(t) {
-  return t
+  // foldDiacritics BEFORE the [^a-z0-9' ] filter — otherwise "Misérables"
+  // becomes "mis rables" (accented char replaced by a space) and every
+  // significant show word after the accent fails the 80% threshold. Task #648.
+  return foldDiacritics(t)
     .toLowerCase()
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
