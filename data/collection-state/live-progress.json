@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-08-02T02:52:42.600Z",
-  "processed": 103,
-  "failed": 310,
-  "successRate": "24.9%",
+  "updatedAt": "2026-08-02T02:55:54.028Z",
+  "processed": 109,
+  "failed": 241,
+  "successRate": "31.1%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 81,
     "amp": 0,
     "browserbase": 1,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 17,
-    "archiveToday": 13,
-    "archive": 8
+    "brightdata": 18,
+    "archiveToday": 17,
+    "archive": 9
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-08-02T00:04:17.692Z",
+      "event": "bb-session",
+      "session": "5a8ce9d6",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T00:04:18.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-08-02T00:04:34.097Z",
       "event": "bb-session",
@@ -82,48 +93,16 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-02T02:49:02.616Z",
+      "t": "2026-08-02T02:47:59.344Z",
       "event": "bb-session",
-      "session": "c2e51d53",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+      "session": "b70037ee",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     },
     {
-      "t": "2026-08-02T02:49:03.097Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T02:49:18.824Z",
+      "t": "2026-08-02T02:48:16.559Z",
       "event": "bb-session",
-      "session": "be8b1741",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T02:49:19.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T02:49:40.759Z",
-      "event": "bb-session",
-      "session": "44d07c5f",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-02T02:49:41.133Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-02T02:51:43.965Z",
-      "event": "bb-session",
-      "session": "23f10e9e",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-02T02:51:44.318Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "1eec9dcd",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }
