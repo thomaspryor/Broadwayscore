@@ -38,5 +38,13 @@
   "scripts/lib/provider-billing.js": {
     "reason": "the one reader of provider billing APIs (Scraping v2 Sprint 0) — its Browserbase call is a read-only session-count-for-day GET, not a session create",
     "addedAt": "2026-08-02"
+  },
+  "scripts/health-check.js": {
+    "reason": "daily health check's Browserbase call is GET /v1/projects/{id}/usage — a credit/usage read, the same capability the detector intentionally exempts for BD/SB/SD billing endpoints; creates no session and spends nothing",
+    "addedAt": "2026-08-02"
+  },
+  "scripts/newspapers-browserbase-login.js": {
+    "reason": "interactive one-time newspapers.com login tool; its session CREATE now routes through createBbSession() (task #752), and its remaining raw /v1 calls are context create + session debug/release — per-session operations with no chokepoint equivalent",
+    "addedAt": "2026-08-02"
   }
 }

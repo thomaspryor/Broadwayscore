@@ -60,6 +60,48 @@ test('flags a direct Browserbase session-create call (api. or www. host)', () =>
   assert.ok(hits.every(h => h.provider === 'browserbase'));
 });
 
+test('flags a Browserbase /v1 API base held in a constant (split-URL session create)', () => {
+  // Regression: newspapers-browserbase-login.js escaped the gate entirely because
+  // it built the create URL as `${API}${endpoint}` — the /v1/sessions-only regex
+  // never saw a contiguous "/v1/sessions" literal, so a file that really does
+  // POST /sessions scored zero hits.
+  const src = [
+    `const API = 'https://api.browserbase.com/v1';`,
+    `const session = await bb('POST', '/sessions', { projectId });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'browserbase');
+  assert.equal(hits[0].line, 1);
+});
+
+test('flags an api.browserbase.com HOST constant split above /v1', () => {
+  // The split-URL hole one level up from the /v1 case: fixing only `/v1` would
+  // still miss a caller that keeps the bare host in a constant.
+  const src = [
+    `const HOST = 'https://api.browserbase.com';`,
+    `await fetch(HOST + '/v1/sessions', { method: 'POST' });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'browserbase');
+  assert.equal(hits[0].line, 1);
+});
+
+test('does not flag the www.browserbase.com human dashboard link', () => {
+  // test-paywalled-access.js console.logs this debug URL while creating its
+  // session correctly via createBbSession(). Host-only matching on www would
+  // flag that correct file — and allowlisting it would blind the gate to a
+  // future real direct call in the same file.
+  const src = `console.log(\`Debug URL: https://www.browserbase.com/sessions/\${bbSessionId}\`);`;
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
+test('does not flag the Browserbase CDP connect URL (different host, no /v1)', () => {
+  const src = `const browser = await chromium.connectOverCDP('wss://connect.browserbase.com?apiKey=' + key);`;
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
 test('flags Browserbase session-list reads too — the file-level allowlist, not the regex, carves those out', () => {
   const src = `axios.get(BROWSERBASE_SESSIONS_URL, { params: { projectId } });`;
   // BROWSERBASE_SESSIONS_URL isn't a literal in this line, so nothing matches —
