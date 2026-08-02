@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T21:52:03.994Z",
+  "timestamp": "2026-08-02T22:17:00.247Z",
   "stats": {
     "totalReviews": 41307,
-    "alreadyFlagged": 18086,
+    "alreadyFlagged": 18087,
     "dateGuardCatches": 90,
     "directorMismatch": 944,
-    "tvFilmSignals": 1136,
+    "tvFilmSignals": 1135,
     "londonSignals": 786,
     "offBroadwaySignals": 479,
-    "yearMismatch": 87,
-    "noPublishDate": 3391
+    "yearMismatch": 86,
+    "noPublishDate": 3390
   },
   "findings": [
     {
@@ -25401,25 +25401,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"wilford leach\" from the-mystery-of-edwin-drood-1985"
-        }
-      ]
-    },
-    {
-      "showId": "the-mystery-of-edwin-drood-2012",
-      "file": "wsj--terry-teachout.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://online.wsj.com/article/SB10001424127887324556304578116812583424922.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2012 (1x). 2026 matches production: the-mystery-of-edwin-drood-amt-theater-off-broadway-2026"
         }
       ]
     },
