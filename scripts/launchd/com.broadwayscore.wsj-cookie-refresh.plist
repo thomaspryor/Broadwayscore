@@ -25,6 +25,15 @@
          script's own env — launchd does NOT inherit shell env, so this
          sources .env explicitly in the command line below.
 
+         --push (task #845): also pushes the fresh cookies to the
+         WSJ_COOKIES GitHub secret via `gh secret set`, so the CI workflows
+         that actually run WSJ scraping (they run on ubuntu-latest, never
+         on this Mac) stop authenticating with whatever cookies were last
+         pushed pre-Tahoe. Without this flag the local refresh is
+         invisible to production. Requires `gh` authenticated as this user
+         (already true on this machine — same auth push-with-retry.sh
+         relies on).
+
          Install:  cp scripts/launchd/com.broadwayscore.wsj-cookie-refresh.plist ~/Library/LaunchAgents/
                    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.wsj-cookie-refresh.plist
          Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.wsj-cookie-refresh
@@ -36,7 +45,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/wsj-otp-login.js</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/wsj-otp-login.js --push</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>
