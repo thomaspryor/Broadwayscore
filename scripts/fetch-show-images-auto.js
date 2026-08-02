@@ -30,6 +30,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const { resolveMarketSlug } = require('./lib/verify-image');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -285,7 +286,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
           const { verifyImage: verifyRegionalImage } = require('./lib/verify-image');
           const v = await verifyRegionalImage(buffer, show.title, {
             year: show.openingDate ? String(new Date(show.openingDate).getFullYear()) : undefined,
-            market: show.category || show.market,
+            market: resolveMarketSlug(show.category, show.market),
             venue: show.venue,
           });
           if (v && v.match === false) {
@@ -1854,7 +1855,7 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   const result = await verifyImage(imageInput, show.title, {
     year,
     openingDate: show.openingDate,
-    market: show.category || show.market,
+    market: resolveMarketSlug(show.category, show.market),
     venue: show.venue,
     rateLimiter: verifyCtx.rateLimiter,
   });
@@ -1973,7 +1974,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
             const result = await verifyTodayTixImage(buffer, show.title, {
               year: show.openingDate ? show.openingDate.substring(0, 4) : null,
               openingDate: show.openingDate,
-              market: show.category || show.market,
+              market: resolveMarketSlug(show.category, show.market),
               venue: show.venue,
               rateLimiter: verifyCtx.rateLimiter,
             });
@@ -2587,7 +2588,7 @@ async function main() {
       const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
       const result = await verifyImage(imageBuffer, show.title, {
         year,
-        market: show.category || show.market,
+        market: resolveMarketSlug(show.category, show.market),
         venue: show.venue,
         rateLimiter,
       });

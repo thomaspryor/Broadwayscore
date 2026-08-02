@@ -112,6 +112,25 @@ function getMarketProfile(market) {
   return key === '' ? MARKET_PROFILES.broadway : MARKET_PROFILES.unknown;
 }
 
+/**
+ * Pick the most specific RECOGNISED slug from a show's (category, market) pair.
+ * `category` is preferred because it is the finer vocabulary (it carries
+ * off-broadway / off-west-end, which `market` does not), but only when it is a
+ * slug we actually have rules for — otherwise a typo in `category` would throw
+ * away a perfectly good `market` and disable venue checking entirely.
+ *
+ * @param {string|null|undefined} category shows.json `category`
+ * @param {string|null|undefined} market shows.json `market`
+ * @returns {string|undefined} the slug to hand to buildVerificationPrompt/verifyImage
+ */
+function resolveMarketSlug(category, market) {
+  const cat = String(category ?? '').trim().toLowerCase();
+  if (MARKET_PROFILES[cat] && cat !== 'unknown') return cat;
+  const mkt = String(market ?? '').trim().toLowerCase();
+  if (MARKET_PROFILES[mkt] && mkt !== 'unknown') return mkt;
+  return category || market || undefined;
+}
+
 // ============================================================
 // PRODUCTION-YEAR-AWARE VERIFICATION PROMPT
 // ============================================================
@@ -491,6 +510,7 @@ module.exports = {
   createRateLimiter,
   classifyImageUrl,
   buildVerificationPrompt,
+  resolveMarketSlug,
   getMarketProfile,
   MARKET_PROFILES,
 };

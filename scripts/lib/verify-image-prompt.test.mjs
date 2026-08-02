@@ -20,7 +20,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildVerificationPrompt, getMarketProfile, MARKET_PROFILES } = require('./verify-image.js');
+const { buildVerificationPrompt, getMarketProfile, resolveMarketSlug, MARKET_PROFILES } = require('./verify-image.js');
 
 const MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
 
@@ -112,9 +112,13 @@ test('absent market keeps the Broadway default; an UNRECOGNISED slug does not', 
   );
 });
 
-test('"Live" is NOT treated as a generic same-show suffix', () => {
-  // "Cats Live" is a concert/tour variant, not Cats. Allowing "Live" as a
-  // harmless suffix would let a tour card pass for the Broadway production.
+// Re-introduction guard, not a regression test for the market fix: "Live" was
+// briefly added to the generic-suffix list to accommodate "Brainiac Live" and
+// removed after adversarial review. "Cats Live" is a concert/tour variant, not
+// Cats, and the tour rule only fires when tour branding is PRIMARY — so a
+// touring card could have passed for the Broadway production. This fails if
+// anyone adds it back.
+test('"Live" is not listed as a generic same-show suffix (re-introduction guard)', () => {
   for (const market of MARKETS) {
     const prompt = buildVerificationPrompt({ market });
     assert.ok(
@@ -122,6 +126,32 @@ test('"Live" is NOT treated as a generic same-show suffix', () => {
       `${market}: "Live" is listed as a generic same-show phrase`,
     );
   }
+});
+
+test('the prompt actually DIFFERS by market (not one static prompt for all)', () => {
+  // Guards the whole point of the change: if buildVerificationPrompt ever
+  // collapses back to a single Broadway prompt, every other market assertion
+  // above could still pass on shared boilerplate. This cannot.
+  const prompts = new Map(MARKETS.map(m => [m, buildVerificationPrompt({ market: m })]));
+  assert.equal(new Set(prompts.values()).size, MARKETS.length, 'two markets produced an identical prompt');
+  for (const [m, p] of prompts) {
+    if (m === 'broadway') continue;
+    assert.ok(
+      !p.includes(MARKET_PROFILES.broadway.mismatch),
+      `${m} prompt carries Broadway's cross-market mismatch rule verbatim`,
+    );
+  }
+});
+
+test('resolveMarketSlug prefers a recognised category but never discards a good market', () => {
+  assert.equal(resolveMarketSlug('off-broadway', 'broadway'), 'off-broadway'); // finer vocabulary wins
+  assert.equal(resolveMarketSlug('west-end', 'west-end'), 'west-end');
+  // A typo in `category` must NOT disable venue checking when `market` is sound.
+  assert.equal(resolveMarketSlug('off-brodway', 'broadway'), 'broadway');
+  assert.equal(resolveMarketSlug(null, 'west-end'), 'west-end');
+  assert.equal(resolveMarketSlug(undefined, undefined), undefined);
+  // Nothing recognisable anywhere still yields the venue-agnostic profile.
+  assert.equal(getMarketProfile(resolveMarketSlug('dublin-fringe', 'dublin-fringe')), MARKET_PROFILES.unknown);
 });
 
 test('broadway prompt keeps the concrete cross-market counterexamples', () => {

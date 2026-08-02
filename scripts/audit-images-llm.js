@@ -52,7 +52,7 @@ const RETRY_BASE_MS = 2000;    // Exponential backoff base
 // share ONE set of venue rules. This file used to carry a second Broadway-only
 // copy; a divergent copy is how the fetcher ended up rejecting correct West End
 // / Off-Broadway key art for months (2026-08-02).
-const { buildVerificationPrompt } = require('./lib/verify-image');
+const { buildVerificationPrompt, resolveMarketSlug } = require('./lib/verify-image');
 const { getMarketLabel } = require('./lib/market-label');
 
 
@@ -151,7 +151,7 @@ class ImageVerifier {
   async verifyImage(showTitle, imageData, mimeType, showContext = {}) {
     await this.rateLimiter.wait();
 
-    const market = showContext.category || showContext.market;
+    const market = resolveMarketSlug(showContext.category, showContext.market);
     const marketLabel = getMarketLabel(market);
     const systemPrompt = buildVerificationPrompt({ market, venue: showContext.venue });
     const userPrompt = `The ${marketLabel} show is: "${showTitle}"${showContext.venue ? ` at ${showContext.venue}` : ''}\n\nIs this image a correct thumbnail for this show?`;
@@ -544,11 +544,16 @@ async function runFullAudit(verifier, shows, singleShow = null) {
       && verification.imageType === 'production_still'
       && (verification.issues || []).every(i => i === 'production_photo' || i === 'production_still');
     if (productionStillOnly) {
-      verification = { ...verification, match: true };
-      reason = 'production_still (kept — art-type, not wrong image)';
+      // NOT 'keep': Gemini may have stopped at "this is a production still" and
+      // never evaluated whether the still is even from the right production.
+      // Forcing match:true would bury that. needs_review keeps the image on the
+      // site (no destructive delete) while surfacing it for a human/queue.
+      action = 'needs_review';
+      reason = 'production_still (art-type, not a confirmed wrong image — not auto-deleted)';
+      verification = { ...verification, match: null };
     }
 
-    if (verification.match === null) {
+    if (!productionStillOnly && verification.match === null) {
       action = 'needs_review';
       reason = 'api_error';
     } else if (verification.match === false && verification.confidence === 'high') {
