@@ -82,6 +82,30 @@ const DEFAULTS = {
    * module exists to stop.
    */
   maxObservationAgeDays: 3,
+  /**
+   * Default ceiling on an arm's learned threshold, however long it has
+   * historically gone quiet. Overridable per arm via `maxQuietDays` in
+   * arm-registry.js, and fleet-wide via `--max-threshold-days`.
+   *
+   * Three review rounds each bolted another branch onto this heuristic to stop
+   * a sparse arm false-alarming — fixed window, then widen for sparse, then
+   * reach back one more yield — and the third let an arm import an unboundedly
+   * old gap. Measured: an arm dead 200 days scored threshold 301 and reported
+   * HEALTHY, i.e. the detector failing at the exact job it exists to do.
+   *
+   * A ceiling is the bound those branches were missing. The most a long,
+   * irregular history can buy is this many days of silence; past that, silence
+   * is reported no matter how erratic the arm used to be. It is deliberately a
+   * BOUND rather than a fourth special case — it cannot be defeated by a
+   * history shape nobody has thought of yet.
+   *
+   * 45 is set above every gap measured in the real corpus (worst: nypost, 34
+   * quiet days over a 189-day span; p95 across all outlet arms <= 8), so it
+   * binds only on histories far more erratic than anything observed. It is a
+   * backstop, not the working threshold — an arm with a usable history is
+   * judged against its OWN cadence, which is almost always much tighter.
+   */
+  maxThresholdDays: 45,
 
   // ── Collapse rule (cadence:'steady' arms only) ────────────────────────────
   /** Trailing window whose volume is compared against the arm's demonstrated peak. */
@@ -313,7 +337,14 @@ function computeArmState(dailyCounts, opts = {}) {
   }
 
   const windowItems = inWindow.reduce((sum, d) => sum + (map.get(d) || 0), 0);
-  const threshold = Math.max(cfg.minStreakDays, longestPriorGap + 1 + cfg.gapSafetyDays);
+  const learned = longestPriorGap + 1 + cfg.gapSafetyDays;
+  // minStreakDays is OUTSIDE the cap, deliberately. It is the operator's
+  // explicit floor (`--min-streak-days`, check-arm-yield.js), and a ceiling
+  // that silently overrode a number the operator typed would be a dead
+  // control: raising the floor to quiet a noisy arm would appear to work and
+  // do nothing. Order is: learn from history, bound it, then honour the floor.
+  const threshold = Math.max(cfg.minStreakDays, Math.min(cfg.maxThresholdDays, learned));
+  const thresholdCapped = learned > cfg.maxThresholdDays && threshold === cfg.maxThresholdDays;
 
   const state = {
     verdict: 'healthy',
@@ -321,6 +352,7 @@ function computeArmState(dailyCounts, opts = {}) {
     lastYieldDate,
     daysSinceLastYield,
     threshold,
+    thresholdCapped,
     longestPriorGap,
     productiveDays: inWindow.length,
     windowItems,
@@ -339,10 +371,18 @@ function computeArmState(dailyCounts, opts = {}) {
   }
 
   if (daysSinceLastYield >= threshold) {
+    // The reason has to survive being read next to the numbers it cites. When
+    // the cap binds, `threshold = longestPriorGap + 2` is arithmetic the reader
+    // can check and find false, and the alert built on it claims the arm has
+    // never been quiet this long while alerting at LESS than its longest gap.
+    // A justification that refutes its own alert is worse than none.
+    const derivation = thresholdCapped
+      ? `threshold ${threshold}d = the ${cfg.maxThresholdDays}d ceiling (its own history would allow ${learned}d, which is longer than any arm is given)`
+      : `threshold ${threshold}d = longest quiet gap ${longestPriorGap}d + ${1 + cfg.gapSafetyDays}, floor ${cfg.minStreakDays}d`;
     return {
       ...state,
       verdict: 'dead',
-      reason: `nothing produced for ${daysSinceLastYield}d (last yield ${lastYieldDate}); threshold ${threshold}d = longest quiet gap ${longestPriorGap}d + ${1 + cfg.gapSafetyDays}, floor ${cfg.minStreakDays}d`,
+      reason: `nothing produced for ${daysSinceLastYield}d (last yield ${lastYieldDate}); ${derivation}`,
     };
   }
 
@@ -444,7 +484,17 @@ function detectDeadArms(entries, arms, opts = {}) {
   const byArm = indexLedger(entries);
   const states = (arms || []).map((arm) => {
     const days = byArm.get(arm.id) || new Map();
-    const state = computeArmState(days, opts);
+    // An arm may DECLARE how long its silence stays normal. The ceiling is a
+    // property of what the arm is — a scheduled cron quiet 45 days is dead no
+    // matter its history, while a demand-driven outlet waits on opening nights
+    // — so it belongs in the registry next to the arm, not in one global
+    // constant that has to be right for both. An explicit `--max-threshold-days`
+    // still wins, so an operator can override the whole fleet at once.
+    const perArm =
+      opts.maxThresholdDays === undefined && arm.maxQuietDays
+        ? { ...opts, maxThresholdDays: arm.maxQuietDays }
+        : opts;
+    const state = computeArmState(days, perArm);
     const collapse =
       arm.cadence === 'steady' && state.verdict !== 'unobserved'
         ? computeCollapseState(days, opts)

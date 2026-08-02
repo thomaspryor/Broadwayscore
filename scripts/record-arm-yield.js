@@ -330,7 +330,18 @@ function main() {
     return outletScanFailed ? 1 : 0;
   }
   if (!fresh.length) {
-    console.log('Nothing observable to record.');
+    // Deliberately 0, matching check-arm-yield.js. An unusable corpus IS
+    // reported — but through the ledger, not the exit code: no row is written,
+    // so every affected arm goes `unobserved` after maxObservationAgeDays and
+    // raises its own owner-visible alert naming the recorder as the suspect.
+    //
+    // Exiting 1 here defeats that. The judging step is a separate workflow step,
+    // so a red recorder SKIPS it — one bad review-texts checkout would silence
+    // all 18 arms, including the very alert that reports the blindness. Worse,
+    // check-cron-health tracks this workflow by last SUCCESSFUL run, so a
+    // persistent red would mark the detector stale and redispatch it in a loop.
+    // A detector must not be able to take itself off the air by failing.
+    console.log('Nothing observable to record — arms will go `unobserved` and alert.');
     return 0;
   }
 

@@ -78,7 +78,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/record-arm-yield.js --backfill-days=${{ inputs.backfill_days || '1' }}
 
+      # always(): judging must not be hostage to recording. The recorder writes
+      # the ledger; the judge is what actually alerts — including the
+      # `unobserved` verdict that reports a dead RECORDER. If a recorder crash
+      # skipped this step, one bad review-texts checkout would silence all 18
+      # arms and the alert about the silence, which is the exact blindness this
+      # workflow exists to end. Yesterday's ledger still supports a verdict.
       - name: Judge arms against their own cadence
+        if: always()
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
