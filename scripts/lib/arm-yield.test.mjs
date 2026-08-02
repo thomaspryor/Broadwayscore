@@ -108,8 +108,18 @@ test('a LOW-FREQUENCY arm is still judged — the baseline widens past 30 days',
   assert.equal(dead.verdict, 'dead', `monthly arm dead 90d must alert, got ${dead.verdict}`);
   assert.ok(dead.threshold >= 30, `threshold should reflect a ~30d cadence, got ${dead.threshold}`);
 
-  // ...and the SAME arm 20 days after a yield is still healthy: widening the
-  // lookback must not make a sparse arm trigger-happy.
+  // ...and an IRREGULAR arm — two old yields, then a recent cluster — must not
+  // be judged off the cluster alone. Reproduced before the fix: verdict 'dead',
+  // threshold 3, longestPriorGap 0, on a perfectly healthy arm.
+  const irregular = new Map();
+  for (const i of [200, 150, 10, 9, 8]) irregular.set(new Date(end - i * DAY).toISOString().slice(0, 10), 2);
+  for (let i = 7; i >= 0; i -= 1) irregular.set(new Date(end - i * DAY).toISOString().slice(0, 10), 0);
+  const irr = computeArmState(irregular, { asOf: '2026-08-02' });
+  assert.equal(irr.verdict, 'healthy', `irregular-but-healthy arm must not alert, got ${irr.verdict}`);
+  assert.ok(irr.longestPriorGap >= 100, `the long approach gap must survive into the sample, got ${irr.longestPriorGap}`);
+
+  // ...and the SAME monthly arm 20 days after a yield is still healthy: widening
+  // the lookback must not make a sparse arm trigger-happy.
   const healthy = new Map();
   for (let i = 200; i >= 20; i -= 30) healthy.set(new Date(end - i * DAY).toISOString().slice(0, 10), 2);
   for (let i = 19; i >= 0; i -= 1) healthy.set(new Date(end - i * DAY).toISOString().slice(0, 10), 0);
