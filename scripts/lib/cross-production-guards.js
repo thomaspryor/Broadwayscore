@@ -9,6 +9,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * Evergreen / listing / tickets pages are NOT dated critic reviews — their
  * publishDate is a re-scrape/listing timestamp, so the date-proximity heuristic
@@ -48,19 +50,17 @@ function isEvergreenListingUrl(url) {
  * don't). The test suite asserts this body-only contract.
  *
  * @param {object} review - parsed review-text JSON (uses fullText only)
- * @param {string|null} ownVenueSlug - venueSlug(prod.venue)
+ * @param {string|null} ownVenueSlug - venue-classification.js's venueSlug(prod.venue)
  * @returns {boolean}
  */
-// NOT diacritic-folded on purpose: `hay` must stay byte-for-byte paired with
-// how `ownVenueSlug` was built by the caller's own (unfolded) venueSlug()
-// (scripts/audit-cross-production.js / scripts/audit-review-url-clusters.js —
-// both outside scripts/lib, so out of this class's scope). Folding only this
-// side would desync the two encodings and turn today's coincidentally-working
-// accented-venue matches into misses. Fix requires updating all three files
-// together — tracked separately, not part of task #760.
+// foldDiacritics BEFORE the ASCII strip — `hay` must stay byte-for-byte paired
+// with the encoding venue-classification.js's venueSlug() now produces (task
+// #783: previously two separately-duplicated, UNFOLDED copies of venueSlug()
+// lived in scripts/audit-cross-production.js and scripts/audit-review-url-
+// clusters.js; both now import the single folded helper this fold matches).
 function contentMatchesFiledUnderVenue(review, ownVenueSlug) {
   if (!ownVenueSlug) return false;
-  const hay = String((review && review.fullText) || '')
+  const hay = foldDiacritics(String((review && review.fullText) || ''))
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-');
   return hay.includes(ownVenueSlug);

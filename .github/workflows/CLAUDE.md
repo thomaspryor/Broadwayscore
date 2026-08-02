@@ -260,8 +260,9 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Runs:** Weekly on Mondays at 9 AM UTC
 - **Does:** Checks all open shows for new reviews, extracts from aggregator archives, **rebuilds reviews.json**, triggers collection if needed
 - **Script:** `scripts/check-show-freshness.js`
-- **Key steps:** Extract reviews → Rebuild reviews.json → Commit → Trigger collection for shows with gaps
+- **Key steps:** Extract reviews → **flag-wrong-production-by-date** → Rebuild reviews.json → Commit → Trigger collection for shows with gaps
 - **Note:** Now automatically rebuilds `reviews.json` after extraction (fixed Jan 2026)
+- **Pre-rebuild flagger (task #653, 2026-08-02):** the rebuild used to run BARE here while every other entry point ran the temporal flagger first. Combined with `extract-dtli-reviews.js` blind-overwriting already-flagged files, that published ~155 excluded historical DTLI excerpts to `reviews.json`, which `push-review-texts`' PROTECTED_FIELDS restore then re-excluded — the ±150/day exact-revert corpus flap. Keep this step immediately before the rebuild.
 
 ## `fetch-aggregator-pages.yml`
 - **Runs:** Manual trigger only
