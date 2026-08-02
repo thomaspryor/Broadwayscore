@@ -20,6 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { foldDiacritics } = require('./lib/title-match');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
@@ -321,8 +322,8 @@ function checkCriticMismatch(fullText, expectedCritic, relPath) {
     const match = fullText.match(pattern);
     if (match) {
       const foundCritic = match[1].trim();
-      const expectedNorm = expectedCritic.toLowerCase().replace(/[^a-z ]/g, '');
-      const foundNorm = foundCritic.toLowerCase().replace(/[^a-z ]/g, '');
+      const expectedNorm = foldDiacritics(expectedCritic).toLowerCase().replace(/[^a-z ]/g, '');
+      const foundNorm = foldDiacritics(foundCritic).toLowerCase().replace(/[^a-z ]/g, '');
 
       // Check if names are different
       if (foundNorm !== expectedNorm &&

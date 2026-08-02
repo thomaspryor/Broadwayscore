@@ -17,6 +17,7 @@
 'use strict';
 
 const { canonicalReviewUrl } = require('./review-url-clusters');
+const { foldDiacritics } = require('./title-match');
 
 // Tokens that appear inside a mis-extracted byline but are never a real critic
 // name: outlet/section words, byline chrome ("Reviewed by"), and CMS date
@@ -42,7 +43,7 @@ const NOISE_TOKENS = new Set([
  */
 function isPlausiblePersonName(name) {
   if (!name || typeof name !== 'string') return false;
-  const s = name.trim();
+  const s = foldDiacritics(name).trim();
   if (!s || s.toLowerCase() === 'unknown') return false;
   const tokens = s.split(/\s+/);
   if (tokens.length < 2 || tokens.length > 4) return false; // real names split
@@ -115,8 +116,8 @@ function recoverBylineForEntry(entry, siblings) {
  */
 function nameCorroboratedBy(name, text) {
   if (!name || !text || typeof text !== 'string') return false;
-  const hay = text.toLowerCase();
-  const tokens = name.split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
+  const hay = foldDiacritics(text).toLowerCase();
+  const tokens = foldDiacritics(name).split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
   if (!tokens.length) return false; // nothing substantive to match on
   return tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay));
 }
@@ -159,11 +160,14 @@ function nameCorroboratedBy(name, text) {
 function recoverBylinesForShow(records) {
   const list = Array.isArray(records) ? records : [];
 
-  // name(lowercased) -> set of outletIds that carry it as a plausible byline.
+  // name(folded+lowercased) -> set of outletIds that carry it as a plausible
+  // byline. Folded so "José Solís" (outlet A) and "Jose Solis" (outlet B) are
+  // recognized as the same critic for the contamination gate below — without
+  // this an accented/unaccented spelling split across outlets would dodge it.
   const nameOutlets = new Map();
   for (const r of list) {
     if (!isPlausiblePersonName(r.criticName)) continue;
-    const key = r.criticName.trim().toLowerCase();
+    const key = foldDiacritics(r.criticName).trim().toLowerCase();
     if (!nameOutlets.has(key)) nameOutlets.set(key, new Set());
     nameOutlets.get(key).add(r.outletId);
   }
@@ -193,7 +197,7 @@ function recoverBylinesForShow(records) {
     const name = pickRecoveredName(cleanNamed.map((r) => r.criticName || ''));
     if (!name) continue;
     // Gate 3: cross-outlet contamination guard.
-    const outlets = nameOutlets.get(name.toLowerCase());
+    const outlets = nameOutlets.get(foldDiacritics(name).trim().toLowerCase());
     if (outlets && outlets.size > 1) continue;
     // Gate 4: body corroboration in the Unknown's OR a sibling's fullText.
     const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText));
