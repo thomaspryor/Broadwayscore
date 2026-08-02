@@ -61,6 +61,18 @@ test('planAutofix: an expired acknowledgment still files a normal needs-card row
   assert.equal(plan[0].state, 'needs-card');
 });
 
+test('planAutofix: the ack check runs against the FULL message, not the 400-char-truncated one', () => {
+  // A long reason text pushes '[expires ...]' past the 400-char storage bound.
+  // The ack check must still see it — checking the pre-truncation text is what
+  // makes that true (what-else follow-up on the ship-check P2 finding).
+  const longReason = 'X'.repeat(420);
+  const message = `still exhausted — acknowledged: ${longReason} [expires 2026-08-05]`;
+  assert.ok(message.length > 400, 'fixture message must exceed the truncation bound');
+  assert.ok(!message.slice(0, 400).includes('[expires'), 'fixture must actually sever the ack marker when truncated');
+  const plan = planAutofix({ health: { warns: [{ name: 'Credits: ScrapingBee', message }] }, tasks: [], today: '2026-08-02' });
+  assert.equal(plan[0].state, 'acknowledged');
+});
+
 test('isRowAcknowledged: matches the REAL ScrapingDog acknowledged-branch message from evaluateScrapingdogCredits', () => {
   // Chosen so remaining>5%, projected exhaustion (5d) is inside the 10d-to-renewal
   // window and >=3d out — the exact shape evaluateScrapingdogCredits downgrades
