@@ -115,8 +115,12 @@ function main() {
     console.log(
       `⚠️  Only ${samples.length} watermark sample(s) in the last ${opts.sinceHours}h — not enough history to judge determinism.`,
     );
-    console.log('   (Expected on a fresh clone or a shallow checkout: this reads local git history.)');
-    return 0;
+    console.log('   A shallow checkout (actions/checkout defaults to fetch-depth: 1) produces this.');
+    console.log('   Fix: run with fetch-depth: 0, or run this locally where full history exists.');
+    // Under --gate this must NOT read as a pass. An acceptance recheck that green-lights
+    // on "no data" is exactly the confident-unresolved pattern this card exists to kill.
+    // Exit 2 = insufficient data (distinct from 1 = gate failed, 0 = pass).
+    return opts.gate ? 2 : 0;
   }
 
   const report = buildReport(samples, { minDelta: opts.minDelta, tolerance: opts.tolerance });

@@ -294,8 +294,16 @@ if (errors > 0) {
   process.exit(1);
 } else {
   // Update watermark on success — next deploy will check against these counts.
+  // Task #653: same CI gate as rebuild-all-reviews.js. This is the SECOND writer of
+  // the shared baseline; a local `node scripts/pre-deploy-check.js` run against this
+  // machine's core-data clone would otherwise stamp a count the published corpus
+  // never had (observed 19626 vs the real 19368 on 2026-08-02T17:54Z).
+  const { shouldWriteDeployWatermark } = require('./lib/corpus-determinism.js');
+  const watermarkGate = shouldWriteDeployWatermark(process.env);
   const newWatermark = { showCount, reviewCount, updatedAt: new Date().toISOString() };
-  try {
+  if (!watermarkGate.write) {
+    console.log(`📌 Deploy watermark NOT written — ${watermarkGate.reason}`);
+  } else try {
     const dir = path.dirname(WATERMARK_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(WATERMARK_PATH, JSON.stringify(newWatermark, null, 2) + '\n');

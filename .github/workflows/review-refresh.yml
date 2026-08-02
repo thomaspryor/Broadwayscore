@@ -382,7 +382,7 @@ jobs:
       # manual-clear, and its flags persist via "Push review-texts" below.
       - name: Flag wrong-production by date (pre-rebuild parity with rebuild-fast)
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
-        run: node scripts/flag-wrong-production-by-date.js
+        run: node scripts/flag-wrong-production-by-date.js --apply
 
       - name: Rebuild reviews.json from review-texts
         id: rebuild

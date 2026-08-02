@@ -122,6 +122,35 @@ test('re-extraction still refreshes DTLI-owned fields on a clean review', () => 
   });
 });
 
+// Ship-check finding: safeWriteReview preserves PROTECTED_FIELDS, but a canonical
+// URL change first runs applyUrlChangeInvariant, which clears wrongProduction,
+// contentTier AND publishDate as "old-URL-derived". With publishDate gone,
+// flag-wrong-production-by-date can never re-derive the Date guard, so the review
+// re-enters reviews.json permanently. DTLI's link is the aggregator's, not
+// necessarily the article's current URL — keep the flagged file's own.
+test('DTLI supplying a different URL does not strip a flagged review of its exclusion', () => {
+  withTempCorpus((dir) => {
+    const showDir = path.join(dir, SHOW_ID);
+    fs.mkdirSync(showDir, { recursive: true });
+    const filePath = path.join(showDir, 'ap--unknown.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+
+    const moved = freshFromDtliPage();
+    moved.url = 'https://www.canadaeast.com/entertainment/article/597632-syndicated-copy';
+    saveReview(moved, false, dir);
+
+    const after = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    assert.equal(after.wrongProduction, true, 'url-change invariant stripped the exclusion flag');
+    assert.equal(after.contentTier, 'invalid');
+    assert.ok(after.publishDate, 'publishDate must survive — the Date guard needs it to re-derive');
+    assert.equal(
+      after.url,
+      flaggedOnDisk().url,
+      "the flagged file's own URL wins over the aggregator's link",
+    );
+  });
+});
+
 test('a brand-new DTLI review still gets written', () => {
   withTempCorpus((dir) => {
     const written = saveReview(freshFromDtliPage(), false, dir);

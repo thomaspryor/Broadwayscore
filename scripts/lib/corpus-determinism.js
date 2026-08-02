@@ -142,7 +142,9 @@ function evaluateGate(report, { maxMaterialDecreases = 10, maxExcursions = 0 } =
  */
 function shouldWriteDeployWatermark(env = process.env) {
   if (env.ALLOW_LOCAL_WATERMARK === '1') return { write: true, reason: 'ALLOW_LOCAL_WATERMARK=1' };
-  if (env.CI) return { write: true, reason: 'CI' };
+  // Compare against real values, not truthiness — some local tooling exports CI='false',
+  // which a bare `if (env.CI)` would treat as CI and let the write through.
+  if (env.CI === 'true' || env.CI === '1') return { write: true, reason: 'CI' };
   return {
     write: false,
     reason: 'local run — a non-canonical review-texts clone must not stamp the shared deploy baseline',

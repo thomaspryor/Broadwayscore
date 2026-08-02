@@ -74,7 +74,13 @@ jobs:
       # pure-local (no API/secrets), respects priorRuns + manual-clear, and its flags are
       # persisted by the "Push review-texts" step below.
       - name: Flag wrong-production by date
-        run: node scripts/flag-wrong-production-by-date.js
+        # --apply is REQUIRED: the script is DRY_RUN by default
+        # (flag-wrong-production-by-date.js:43). Without it this step printed
+        # "Run with --apply to write flags" and wrote nothing, so the
+        # opening-night contamination guard above was a no-op from the day it
+        # shipped (found by ship-check on task #653). Enforced by
+        # lint-workflow-guards.sh.
+        run: node scripts/flag-wrong-production-by-date.js --apply
 
       # Auto-heal sweeps — run on the 4-hourly fast cadence too, not just the
       # daily rebuild-reviews.yml. These integrity gates fire in test.yml on

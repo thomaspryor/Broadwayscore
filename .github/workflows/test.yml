@@ -494,6 +494,8 @@ on:
       - 'scripts/lib/corpus-determinism.js'
       - 'scripts/audit-corpus-determinism.js'
       - 'tests/unit/corpus-determinism.test.mjs'
+      # Second writer of the shared deploy watermark (#653) — same CI gate.
+      - 'scripts/pre-deploy-check.js'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/lib/transfer-detection.js'
       - 'scripts/detect-regional-transfers.js'

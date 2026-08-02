@@ -279,6 +279,25 @@ function saveReview(review, overwrite = false, dir = outputDir) {
     } catch { /* corrupt file — fall through and let normal logic handle */ }
   }
 
+  // Task #653 follow-up (ship-check): keep the file's OWN url when we are about to
+  // write over an existing file that findExistingReviewFile refused to hand back as
+  // a merge target (i.e. it carries wrongProduction/duplicateOf). safeWriteReview
+  // preserves PROTECTED_FIELDS, but a canonical URL change first triggers
+  // applyUrlChangeInvariant, which deliberately clears wrongProduction,
+  // wrongProductionNote, contentTier AND publishDate as "old-URL-derived" — and with
+  // publishDate gone, flag-wrong-production-by-date can no longer re-derive the date
+  // guard, so the review re-enters reviews.json permanently. DTLI's link is the
+  // aggregator's, not necessarily the article's current URL; the existing merge
+  // branch below already prefers `existing.url`, so do the same on this path.
+  if (!overwrite && fs.existsSync(filepath)) {
+    try {
+      const onDisk = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+      if (onDisk && onDisk.url && (onDisk.wrongProduction || onDisk.wrongShow)) {
+        review = { ...review, url: onDisk.url };
+      }
+    } catch { /* corrupt file — fall through */ }
+  }
+
   // Check for existing file under any outlet ID variant (canonical or legacy)
   const existingFile = !overwrite ? findExistingReviewFile(showDir, review.outletId, review.criticName) : null;
   if (existingFile && existingFile.data) {
