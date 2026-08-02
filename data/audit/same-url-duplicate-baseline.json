@@ -1,0 +1,23 @@
+{
+  "_comment": "Pre-existing same-URL duplicate reviews as of 2026-08-02. Each is a real double-counted review (byline typos, scraper junk, misattribution) awaiting cleanup in task #241/#137. The gate in validate-data.js FAILS on any pair NOT in this list, so the class cannot grow while the backlog drains. Removing entries here as they are fixed is the intended workflow — never add to this file to silence a new duplicate.",
+  "generatedAt": "2026-08-02",
+  "pairs": [
+    "broken-glass-west-end-2026|guardian|https://www.theguardian.com/stage/2026/mar/04/broken-glass-review-theatre-young-vic-london",
+    "broken-glass-west-end-2026|telegraph|https://www.telegraph.co.uk/theatre/what-to-see/broken-glass-young-vic-anti-semitism",
+    "death-of-a-salesman-2022|ew|https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce",
+    "eureka-day-2024|variety|https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236250966",
+    "glengarry-glen-ross-west-end-2026|times-uk|https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+    "glengarry-glen-ross-west-end-2026|times-uk|https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+    "glengarry-glen-ross-west-end-2026|times-uk|https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+    "good-night-oscar-2023|theater-life|https://theaterlife.com/goodnight-oscar",
+    "gypsy-2024|usatoday|https://www.usatoday.com/story/entertainment/music/2024/12/20/gypsy-review-audra-mcdonald/77016921007",
+    "harmony-2023|vulture|https://www.vulture.com/2023/11/theater-review-harmony-broadway-barry-manilow.html",
+    "marvins-room-2017|theater-life|https://theaterlife.com/marvins-room-2",
+    "mj-2022|hollywood-reporter|https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage-1235085086",
+    "the-cottage-2023|theater-life|https://theaterlife.com/the-cottage-1-2-2",
+    "the-devil-wears-prada-west-end-2024|whatsonstage|https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396",
+    "the-lion-king-west-end-2021|timeout-london|https://www.timeout.com/london/theatre/the-lion-king",
+    "the-outsiders-2024|variety|https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796",
+    "the-prom-2018|theater-life|https://theaterlife.com/the-prom-1-2"
+  ]
+}

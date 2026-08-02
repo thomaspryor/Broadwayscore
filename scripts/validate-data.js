@@ -29,6 +29,9 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+// Same critic-identity function the rebuild's manual-entry merge uses — a gate
+// that normalizes differently from the writer cannot catch the writer's dupes.
+const { criticKey } = require('./lib/manual-entry-merge');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
@@ -1627,15 +1630,20 @@ function validateReviewsJson() {
     }
   }
 
-  // Check for duplicate outlet+critic per show
+  // Check for duplicate outlet+critic per show.
+  // criticKey() is the SAME identity function the rebuild's manual-entry merge
+  // uses. Sharing it is the point: this gate previously did a bare
+  // toLowerCase().trim(), so "R. Scott Reedy" and "R Scott Reedy" were distinct
+  // keys and it reported "no duplicates" while a real double-counted
+  // BroadwayWorld review was live on wonder-regional-2026 (2026-08-02). A
+  // writer and its gate that normalize differently cannot catch each other.
   const byShow = {};
   const duplicates = [];
 
   for (const r of reviews) {
     const showId = r.showId || 'unknown';
     const outletKey = (r.outlet || 'unknown').toLowerCase().trim();
-    const criticKey = (r.criticName || 'unknown').toLowerCase().trim();
-    const key = `${outletKey}|${criticKey}`;
+    const key = `${outletKey}|${criticKey(r.criticName)}`;
 
     if (!byShow[showId]) {
       byShow[showId] = new Set();
@@ -1659,6 +1667,7 @@ function validateReviewsJson() {
   } else {
     ok('No duplicate outlet+critic combos in reviews.json');
   }
+
 
   // Check for outletId inconsistencies (same display name → different outletIds)
   const outletIdByName = {};
@@ -1745,18 +1754,46 @@ function validateReviewsJson() {
     if (!r.url) continue;
     const key = `${r.showId}|${(r.outletId || r.outlet || '').toLowerCase()}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
     if (seenUrls[key]) {
-      urlDuplicates.push({ showId: r.showId, outlet: r.outlet, url: r.url, critics: [seenUrls[key], r.criticName] });
+      urlDuplicates.push({ key, showId: r.showId, outlet: r.outlet, url: r.url, critics: [seenUrls[key], r.criticName] });
     } else {
       seenUrls[key] = r.criticName;
     }
   }
-  if (urlDuplicates.length > 0) {
-    warn(`Found ${urlDuplicates.length} duplicate URLs within same show+outlet in reviews.json:`);
-    urlDuplicates.slice(0, 10).forEach(d => {
-      warn(`  ${d.showId}: ${d.outlet} | ${d.url} (${d.critics.join(', ')})`);
+  // One article at one outlet for one show is exactly one review, so a same-URL
+  // pair is always a double-counted score, never a judgement call. This detector
+  // already existed as a warn() — it correctly found the wonder-regional-2026 and
+  // iceboy-regional-2026 duplicates and CI stayed green anyway. A detector nothing
+  // fails on is not a gate (2026-08-02).
+  //
+  // Baselined rather than bare-error: 17 real pre-existing double-counts (byline
+  // typos, scraper junk, misattribution) are awaiting cleanup in tasks #241/#137,
+  // and failing on those would just park main red. NEW pairs fail immediately, so
+  // the class cannot grow while the backlog drains.
+  let urlDupeBaseline = new Set();
+  const urlDupeBaselinePath = path.join(__dirname, '..', 'data', 'audit', 'same-url-duplicate-baseline.json');
+  try {
+    if (fs.existsSync(urlDupeBaselinePath)) {
+      urlDupeBaseline = new Set(JSON.parse(fs.readFileSync(urlDupeBaselinePath, 'utf8')).pairs || []);
+    }
+  } catch (e) {
+    warn(`Could not read same-URL duplicate baseline: ${e.message}`);
+  }
+
+  const newUrlDuplicates = urlDuplicates.filter(d => !urlDupeBaseline.has(d.key));
+  const baselinedCount = urlDuplicates.length - newUrlDuplicates.length;
+
+  if (newUrlDuplicates.length > 0) {
+    error(`Found ${newUrlDuplicates.length} NEW duplicate URL(s) within same show+outlet in reviews.json:`);
+    newUrlDuplicates.slice(0, 10).forEach(d => {
+      error(`  ${d.showId}: ${d.outlet} | ${d.url} (${d.critics.join(', ')})`);
     });
+    if (newUrlDuplicates.length > 10) {
+      error(`  ...and ${newUrlDuplicates.length - 10} more`);
+    }
+    error('  One URL per outlet per show = one review. Fix the byline/attribution;');
+    error('  do NOT add the pair to data/audit/same-url-duplicate-baseline.json.');
   } else {
-    ok('No duplicate URLs within same show+outlet in reviews.json');
+    ok(`No new duplicate URLs within same show+outlet in reviews.json${baselinedCount ? ` (${baselinedCount} known pre-existing, tracked in tasks #241/#137)` : ''}`);
   }
 
   // Schema validation: assignedScore must be null or a finite number.
