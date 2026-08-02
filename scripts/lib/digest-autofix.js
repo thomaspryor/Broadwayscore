@@ -82,9 +82,14 @@ function planAutofix({ health, extraIssues = [], tasks = [], today } = {}) {
   ].filter(r => r && r.name);
   return rows.map(r => {
     const existing = matchOpenTask(tasks, r.name);
-    const message = String(r.message || '').slice(0, 400);
+    // Check the ack marker against the FULL text first — 400-char truncation
+    // could otherwise sever a long reason's trailing "[expires ...]" token
+    // and silently revert an acknowledged row to needs-card (ship-check P2).
+    const rawMessage = String(r.message || '');
+    const acknowledged = !existing && isRowAcknowledged(rawMessage, today);
+    const message = rawMessage.slice(0, 400);
     const title = `BSC Daily: ${r.name}`;
-    if (!existing && isRowAcknowledged(message, today)) {
+    if (acknowledged) {
       return { name: r.name, message, title, state: 'acknowledged', taskId: null };
     }
     return {
