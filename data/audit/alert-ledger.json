@@ -99,12 +99,13 @@
     "opening-night-sla:pages-stuck": {
       "status": "open",
       "disposition": "human",
-      "title": "Opening Night SLA P0 — 7 review(s) stuck ≥60 min",
+      "title": "Opening Night SLA P0 — 4 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "lastSeen": "2026-08-02T17:39:55.475Z",
-      "lastNotifiedAt": "2026-08-02T17:39:55.475Z",
-      "notifyCount": 3,
-      "cardId": null
+      "lastSeen": "2026-08-02T15:41:38.318Z",
+      "lastNotifiedAt": "2026-07-26T17:39:13.740Z",
+      "notifyCount": 2,
+      "cardId": null,
+      "silentRefires": 144
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -232,22 +233,22 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-02T17:04:36.953Z",
+      "lastSeen": "2026-08-02T16:17:05.475Z",
       "lastNotifiedAt": "2026-08-02T15:20:29.605Z",
       "notifyCount": 5,
       "cardId": null,
-      "silentRefires": 5
+      "silentRefires": 3
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-02T17:04:36.840Z",
+      "lastSeen": "2026-08-02T16:17:05.331Z",
       "lastNotifiedAt": "2026-08-02T12:20:25.846Z",
       "notifyCount": 3,
       "cardId": null,
-      "silentRefires": 3
+      "silentRefires": 2
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
@@ -290,16 +291,25 @@
       "notifyCount": 1,
       "cardId": "3b0637c5-416f-810a-9f20-fbcaf610d121"
     },
-    "opening-night-sla:warnings-delayed": {
-      "status": "resolved",
-      "disposition": "digest",
-      "title": "Opening Night SLA Warning — 4 review(s) delayed",
-      "firstSeen": "2026-08-02T16:37:28.428Z",
-      "lastSeen": "2026-08-02T16:37:28.428Z",
-      "lastNotifiedAt": "2026-08-02T16:37:28.428Z",
+    "on-monitor-launch-failed-2026-07-31": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "monitor pass FAILED for tao-of-glass-west-end-2026",
+      "firstSeen": "2026-08-02T17:58:39.075Z",
+      "lastSeen": "2026-08-02T17:58:39.075Z",
+      "lastNotifiedAt": "2026-08-02T17:58:39.075Z",
       "notifyCount": 1,
-      "cardId": null,
-      "resolvedAt": "2026-08-02T17:39:55.474Z"
+      "cardId": "fake-card-id"
+    },
+    "test:unwritable-ledger": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Test alert",
+      "firstSeen": "2026-08-02T17:58:39.085Z",
+      "lastSeen": "2026-08-02T17:58:39.085Z",
+      "lastNotifiedAt": "2026-08-02T17:58:39.085Z",
+      "notifyCount": 1,
+      "cardId": "fake-card-id"
     }
   }
 }

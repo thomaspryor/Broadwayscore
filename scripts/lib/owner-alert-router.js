@@ -24,7 +24,7 @@
  *               back the disposition it asked for having been honored in
  *               spirit (the owner IS told), just not by immediate email.
  *
- * Ledger (data/audit/alert-ledger.json) keys on conditionKey: a condition
+ * Ledger keys on conditionKey: a condition
  * notifies ONCE per open incident. Re-fires while the incident is still open
  * are silent (only lastSeen/notifyCount move) until either `cooldownHours`
  * elapses (default 7 days — matches the plan's "known-accepted condition"
@@ -33,8 +33,26 @@
  * condition that reoccurs is treated as a NEW incident and notifies again
  * immediately, regardless of cooldown.
  *
- * Known limitation (accepted for Sprint 1): the ledger is a git-committed
- * JSON file, not a distributed lock. Two CI runs that both call routeAlert()
+ * Where the ledger lives depends on WHO is running (card #693). In CI the
+ * ledger is the git-tracked data/audit/alert-ledger.json, committed by the
+ * same job (enforced by alert-ledger-commit-check.js). Locally — launchd
+ * senders (opening-night-monitor-launch.js, autonomous-run.js), interactive
+ * sessions, anything not on a runner — it is a machine-local file OUTSIDE
+ * every git checkout (~/.broadwayscore-state/alert-ledger.json). A local
+ * writer's uncommitted edit to a tracked file does not survive: any parallel
+ * session's `git checkout` / `git reset --hard` / rebase in the shared
+ * ~/Broadwayscore working tree wipes it, so the cooldown state a local sender
+ * just wrote is gone by its next tick and every re-fire looks brand new. That
+ * is exactly how the same "monitor pass FAILED for tao-of-glass" email went
+ * out twice 21 minutes apart through a cooldownHours: 3 window on 2026-07-31,
+ * with the ledger showing no record of either send. It also keeps launchd
+ * senders from dirtying data/audit/ on every tick (task #732: a dirty
+ * data/audit/ defeats the ff-only pull that keeps scheduled jobs on fresh
+ * code). Override explicitly with ALERT_LEDGER_PATH when a caller needs its
+ * own ledger (tests do).
+ *
+ * Known limitation (accepted for Sprint 1): the ledger is a plain JSON file,
+ * not a distributed lock. Two CI runs that both call routeAlert()
  * for the SAME conditionKey from a fresh checkout at nearly the same moment
  * can both read "no open incident" and both dispatch — the loser's commit
  * then gets overwritten by push-with-retry.sh's last-writer-wins conflict
@@ -45,13 +63,31 @@
  */
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { sendAlert } = require('./discord-notify');
 const { isPageWorthy } = require('./page-worthy-alerts');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
-const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-ledger.json');
+// Git-tracked ledger — CI only. Every job that routes an alert stages and
+// commits this file in the SAME job (lint: alert-ledger-commit-check.js).
+const TRACKED_LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-ledger.json');
+// Machine-local ledger — everything not on a runner. Deliberately outside any
+// git checkout (NOT data/… under the repo, and not a worktree-relative path):
+// it must survive concurrent git operations in the shared working tree, and a
+// launchd sender and an interactive session in a worktree must share ONE
+// cooldown record rather than one per checkout. See the header comment.
+const LOCAL_LEDGER_PATH = path.join(os.homedir(), '.broadwayscore-state', 'alert-ledger.json');
+
+// Resolved once at require time (tests re-require with a fresh module cache
+// after setting ALERT_LEDGER_PATH). GITHUB_ACTIONS/CI are set by every GitHub
+// Actions runner and by nothing on this Mac.
+function isCIExecution() {
+  return !!(process.env.GITHUB_ACTIONS || process.env.CI);
+}
+const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
+  || (isCIExecution() ? TRACKED_LEDGER_PATH : LOCAL_LEDGER_PATH);
 const DIGEST_QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
@@ -68,11 +104,25 @@ const ATTEMPTS_LOG_RETENTION_DAYS = 30;
 const DISPOSITIONS = ['auto', 'digest', 'human'];
 const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
 
-function loadLedger() {
+function readLedgerFile(p) {
   try {
-    const parsed = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+    const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
     if (parsed && typeof parsed === 'object' && parsed.conditions) return parsed;
-  } catch { /* missing/corrupt — start fresh */ }
+  } catch { /* missing/corrupt — treat as absent */ }
+  return null;
+}
+
+function loadLedger() {
+  const own = readLedgerFile(LEDGER_PATH);
+  if (own) return own;
+  // First run after the local ledger was introduced (or after someone deleted
+  // it): seed from the committed CI ledger so conditions CI already notified
+  // stay inside their cooldown instead of all re-firing at once. Read-only —
+  // saveLedger() always writes LEDGER_PATH, never the tracked one.
+  if (LEDGER_PATH !== TRACKED_LEDGER_PATH) {
+    const tracked = readLedgerFile(TRACKED_LEDGER_PATH);
+    if (tracked) return tracked;
+  }
   return { conditions: {} };
 }
 
@@ -83,6 +133,22 @@ function saveLedger(ledger) {
   const tmp = `${LEDGER_PATH}.tmp.${process.pid}`;
   fs.writeFileSync(tmp, JSON.stringify(ledger, null, 2) + '\n');
   fs.renameSync(tmp, LEDGER_PATH);
+}
+
+// The ledger is bookkeeping, not the alert itself: by the time it is written
+// the card/email has already gone out. A write failure (unwritable HOME under
+// a launchd agent, full disk, permissions) must therefore NOT propagate and
+// take down the caller's whole check — it degrades to "this condition may
+// re-notify next run", which is exactly the pre-fix behaviour. Loud on
+// purpose: silent non-persistence is the bug this card exists for.
+function persistLedger(ledger) {
+  try {
+    saveLedger(ledger);
+    return true;
+  } catch (err) {
+    console.error(`[alert-router] FAILED to persist the ledger at ${LEDGER_PATH}: ${err.message} — cooldowns will NOT hold until this is fixed (card #693)`);
+    return false;
+  }
 }
 
 function hoursSince(iso) {
@@ -282,7 +348,7 @@ async function routeAlert(opts) {
   if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours) {
     existing.lastSeen = now;
     existing.silentRefires = (existing.silentRefires || 0) + 1;
-    saveLedger(ledger);
+    persistLedger(ledger);
     return { action: 'silent', conditionKey, cardId: existing.cardId || null };
   }
 
@@ -339,7 +405,7 @@ async function routeAlert(opts) {
     notifyCount: (existing?.notifyCount || 0) + 1,
     cardId: result.cardId !== undefined ? result.cardId : (existing?.cardId || null),
   };
-  saveLedger(ledger);
+  persistLedger(ledger);
   return result;
 }
 
@@ -352,7 +418,7 @@ function resolveCondition(conditionKey) {
   if (!existing || existing.status !== 'open') return false;
   existing.status = 'resolved';
   existing.resolvedAt = new Date().toISOString();
-  saveLedger(ledger);
+  persistLedger(ledger);
   return true;
 }
 
@@ -365,7 +431,7 @@ function deleteCondition(conditionKey) {
   const ledger = loadLedger();
   if (!(conditionKey in ledger.conditions)) return false;
   delete ledger.conditions[conditionKey];
-  saveLedger(ledger);
+  persistLedger(ledger);
   return true;
 }
 
@@ -402,8 +468,15 @@ module.exports = {
   readDispatchAttempts,
   DEFAULT_COOLDOWN_HOURS,
   DISPOSITIONS,
+  // Where THIS process's cooldown state lives (tracked ledger in CI,
+  // machine-local file otherwise). Exported so callers/diagnostics can print
+  // the resolved path instead of assuming data/audit/alert-ledger.json.
+  ledgerPath: () => LEDGER_PATH,
+  isLocalLedger: () => LEDGER_PATH !== TRACKED_LEDGER_PATH,
   // exported for tests only
   _LEDGER_PATH: LEDGER_PATH,
+  _TRACKED_LEDGER_PATH: TRACKED_LEDGER_PATH,
+  _LOCAL_LEDGER_PATH: LOCAL_LEDGER_PATH,
   _DIGEST_QUEUE_PATH: DIGEST_QUEUE_PATH,
   _ATTEMPTS_LOG_PATH: ATTEMPTS_LOG_PATH,
 };
