@@ -68,10 +68,28 @@ test('a state file written before staleStreak existed does not over-escalate', (
   assert.equal(r.staleStreak.A.days, 1);
 });
 
-test('a pre-day-keying numeric streak is carried forward, not reset', () => {
+test('a pre-day-keying numeric streak is adopted as-is, not incremented', () => {
+  // Legacy state carries no date, so we cannot tell whether it was already
+  // counted today; incrementing could escalate 24h early on migration day.
+  // Adopt and stamp — err late, never early (Codex ship-check finding).
   const r = updateStaleStreaks({ staleStreak: { A: 4 } }, ['A'], { today: '2026-08-02' });
-  assert.equal(r.staleStreak.A.days, 5);
+  assert.equal(r.staleStreak.A.days, 4);
+  assert.equal(r.staleStreak.A.lastCounted, '2026-08-02');
   assert.deepEqual(r.escalate, ['A']);
+});
+
+test('one missed daily check still counts as consecutive; a longer gap restarts', () => {
+  const missedOne = updateStaleStreaks({ staleStreak: { A: at(2, '2026-08-01') } }, ['A'], { today: '2026-08-03' });
+  assert.equal(missedOne.staleStreak.A.days, 3, 'a single skipped check must not break the streak');
+
+  const longGap = updateStaleStreaks({ staleStreak: { A: at(2, '2026-08-01') } }, ['A'], { today: '2026-08-09' });
+  assert.equal(longGap.staleStreak.A.days, 1, '8 days apart is not "3 consecutive days"');
+  assert.deepEqual(longGap.escalate, []);
+});
+
+test('a clock that moves backwards does not inflate the streak', () => {
+  const r = updateStaleStreaks({ staleStreak: { A: at(2, '2026-08-05') } }, ['A'], { today: '2026-08-04' });
+  assert.equal(r.staleStreak.A.days, 2);
 });
 
 test('empty / duplicate / whitespace names are normalised away', () => {

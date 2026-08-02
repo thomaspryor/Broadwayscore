@@ -263,13 +263,25 @@ function main() {
   );
 
   const fresh = [];
+  let outletScanFailed = false;
   const outletArms = arms.filter((a) => a.kind === 'outlet');
   if (outletArms.length) {
     // Skipping (not zero-filling) keeps a missing OR PARTIAL private-repo
     // checkout from manufacturing a corpus-wide "every outlet is dead" alert.
     const outletScan = collectOutletYield(args.reviewTexts, days);
     if (!outletScan) {
-      console.warn(`  ! review-texts unusable at ${args.reviewTexts} — skipping ${outletArms.length} outlet arm(s)`);
+      // Skipping stops fabricated zeroes, but silence here is its own blind
+      // spot: a REAL corpus collapse also lands in this branch, and would
+      // suppress every outlet's dead-arm alert exactly when it matters most
+      // (Codex ship-check finding). So record nothing AND fail the run — a red
+      // workflow with notify-failure attached is the visible signal that the
+      // detector cannot see, which is never something to swallow.
+      console.error(
+        `::error::review-texts unusable at ${args.reviewTexts} — recorded NO outlet rows. ` +
+          `Either the checkout is broken or the corpus has collapsed; both need a human, and ` +
+          `neither may be reported as "these outlets produced nothing".`
+      );
+      outletScanFailed = true;
     } else {
       const byOutlet = outletScan.byOutlet;
       for (const arm of outletArms) {
@@ -315,7 +327,7 @@ function main() {
 
   if (args.dryRun) {
     console.log(`[dry-run] ${fresh.length} row(s) not written`);
-    return 0;
+    return outletScanFailed ? 1 : 0;
   }
   if (!fresh.length) {
     console.log('Nothing observable to record.');
@@ -335,7 +347,9 @@ function main() {
   console.log(
     `Wrote ${retained.length} row(s) to ${path.relative(REPO_ROOT, args.ledger)} (${merged.length - retained.length} pruned older than ${RETENTION_DAYS}d)`
   );
-  return 0;
+  // Workflow-arm rows are still written above; the non-zero exit reports that
+  // the OUTLET half of this run is unobserved, so the run must not read green.
+  return outletScanFailed ? 1 : 0;
 }
 
 if (require.main === module) process.exit(main());

@@ -275,14 +275,40 @@ function computeArmState(dailyCounts, opts = {}) {
   // still learned from the arm itself; only the lookback stretches.
   // (Codex ship-check finding, 2026-08-02 — verified: a monthly arm dead 90d
   // reported 'insufficient-history' and would never have alerted.)
+  //
+  // Take minProductiveDays + 1 yields, NOT minProductiveDays. The extra one is
+  // load-bearing: N yields give only N-1 gaps, all of them INSIDE the recent
+  // cluster, so an arm that yields rarely and then bunches (say -200, -150,
+  // then -10/-9/-8) would have its 140-day approach gap discarded and get the
+  // 3-day floor — reported dead on its next ordinary lull. Reaching one yield
+  // further back keeps that gap in the sample. (Codex ship-check finding on the
+  // first fix, 2026-08-02 — reproduced: that arm was verdict 'dead',
+  // threshold 3, longestPriorGap 0.)
   if (inWindow.length < cfg.minProductiveDays && productive.length >= cfg.minProductiveDays) {
-    inWindow = productive.slice(-cfg.minProductiveDays);
+    inWindow = productive.slice(-(cfg.minProductiveDays + 1));
     windowFrom = inWindow[0];
   }
 
+  // Gaps are measured over the in-window yields PLUS, when that sample is thin,
+  // the one productive day immediately before the window. Without it, an arm
+  // whose yields bunch at the end of the window has every gap measured inside
+  // the bunch — the long quiet stretch leading INTO it is cut off at the window
+  // edge, giving a 3-day threshold to an arm that routinely goes quiet for
+  // months. (Codex ship-check finding; reproduced on an arm yielding at -200,
+  // -150 then -10/-9/-8: verdict 'dead', threshold 3, longestPriorGap 0.)
+  //
+  // Only when thin: a dense arm has plenty of in-window gaps to characterise
+  // itself, and reaching further back there would just import an old outage and
+  // desensitise it.
+  const gapSample = inWindow.slice();
+  if (inWindow.length < cfg.minProductiveDays * 2) {
+    const before = productive.filter((d) => d < gapSample[0]).pop();
+    if (before) gapSample.unshift(before);
+  }
+
   let longestPriorGap = 0;
-  for (let i = 1; i < inWindow.length; i += 1) {
-    const gap = daysBetween(inWindow[i - 1], inWindow[i]) - 1;
+  for (let i = 1; i < gapSample.length; i += 1) {
+    const gap = daysBetween(gapSample[i - 1], gapSample[i]) - 1;
     if (gap > longestPriorGap) longestPriorGap = gap;
   }
 
