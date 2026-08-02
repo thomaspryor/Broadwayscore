@@ -31,7 +31,15 @@ const PROVIDER_ENDPOINT_PATTERNS = [
   // provider-billing.js) and the canonical chokepoint itself
   // (browserbase-session.js) are carved out via the file-level allowlist
   // instead (task #752).
-  { provider: 'browserbase', regex: /https?:\/\/(?:api|www)\.browserbase\.com\/v1\/sessions\b/gi },
+  //
+  // Matches the /v1 API BASE, not just /v1/sessions: newspapers-browserbase-login.js
+  // built its session-create URL as `${API}${endpoint}` off a
+  // `const API = 'https://api.browserbase.com/v1'`, so a /v1/sessions-only regex
+  // scored ZERO hits on a file that really does POST /sessions — the gate's
+  // "a new session-create call site fails CI" guarantee was vacuous for any
+  // caller that split the URL. Every legitimate Browserbase API caller is
+  // allowlisted by file, so matching the base costs nothing and closes the split-URL hole.
+  { provider: 'browserbase', regex: /https?:\/\/(?:api|www)\.browserbase\.com\/v1\b/gi },
 ];
 
 /**
