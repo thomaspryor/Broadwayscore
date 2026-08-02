@@ -74,11 +74,19 @@ git fetch origin main || echo "[nightly] WARN git fetch failed"
 # but NOT this checkout's working tree — autonomous-email.js reads
 # data/audit/health-digest-snapshot.json (committed by data-health-check.yml,
 # a DIFFERENT machine — GitHub Actions) straight off this tree, so without a
-# fast-forward here it would silently read yesterday's file, or none. --ff-only
-# is a no-op success if this checkout has no local commits ahead of origin/main
-# (the normal case — the executor does its work in separate worktrees), and
-# harmlessly fails (never fatal) if it ever does diverge.
-git merge --ff-only origin/main || echo "[nightly] WARN could not fast-forward to origin/main (local checkout diverged? investigate) — health digest / other CI-committed files may read stale tonight"
+# fast-forward here it would silently read yesterday's file, or none.
+#
+# Task #732: a degraded run elsewhere (this job or a sibling launchd job)
+# can leave a truncated data/audit/*.json snapshot dirty, which blocks the
+# ff-only merge every night after until something clears it — 269 commits
+# of drift accumulated this way. scripts/lib/sync-audit-checkout.sh resets
+# regenerable data/audit/ snapshots (never *.jsonl ledgers) and retries
+# before giving up, so most nights self-heal here instead of compounding.
+# Still non-fatal to the rest of the night by design — triage/executor work
+# in separate worktrees and don't depend on this checkout being current —
+# but a real failure now logs a loud ::error:: instead of a WARN that reads
+# like routine noise.
+SYNC_TAG=nightly bash "$REPO/scripts/lib/sync-audit-checkout.sh" "$REPO" || echo "[nightly] WARN sync-audit-checkout could not fast-forward to origin/main — health digest / other CI-committed files may read stale tonight"
 
 echo "--- triage ---"
 node scripts/autonomous-triage.js --limit 30 || echo "[nightly] WARN triage failed (executor will use yesterday's queue only if <12h old)"
