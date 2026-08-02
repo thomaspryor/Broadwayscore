@@ -3501,9 +3501,7 @@ function validateReviewTextQuality(shows) {
   // Show lookup + date helpers for the prior-production-by-date backstop (CHECK 0).
   const showById = {};
   for (const show of shows) if (show && show.id) showById[show.id] = show;
-  const { earliestShowDate } = require('./lib/date-guard');
-  const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
-  const { parseDate: parseReviewDate } = require('./lib/date-utils');
+  const { evaluateDatePlausibility } = require('./lib/date-plausibility');
   for (const show of shows) {
     showCreativeTeam[show.id] = new Set();
     showCast[show.id] = new Set();
@@ -3564,17 +3562,12 @@ function validateReviewTextQuality(shows) {
       // hide these from every guard, so this check deliberately ignores them.
       // Escape hatch: declare a priorRun, or it's a genuine operator entry.
       const wfShow = showById[showDir];
-      if (wfShow && data.publishDate && !data.humanReviewScore) {
-        const pub = parseReviewDate(data.publishDate);
-        const earliestStr = earliestShowDate(wfShow);
-        const earliestD = earliestStr ? parseReviewDate(earliestStr) : null;
-        if (pub && earliestD && !isNaN(pub.getTime()) && !isNaN(earliestD.getTime())) {
-          const daysBefore = (earliestD.getTime() - pub.getTime()) / 86400000;
-          if (daysBefore > 180 && !isWithinPriorRun(pub, wfShow.priorRuns)) {
-            error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${Math.round(daysBefore)}d before the show's earliest date ${earliestStr} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);
-            issues++;
-            continue;
-          }
+      if (wfShow) {
+        const verdict = evaluateDatePlausibility({ review: data, show: wfShow });
+        if (verdict.implausible) {
+          error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);
+          issues++;
+          continue;
         }
       }
 

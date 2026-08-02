@@ -599,6 +599,12 @@ on:
       - 'scripts/audit-orphan-tests.js'
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
+      # Date-plausibility ingest quarantine (card #832). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; the .js source
+      # needs explicit listing (no scripts/lib/** broad glob) — path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/lib/date-plausibility.js'
+      - 'scripts/lib/date-plausibility.test.mjs'
       - 'scripts/lib/shows-write-guard.js'
       - 'scripts/lib/atomic-shows-write.js'
       - 'scripts/lib/json-write-guard.js'

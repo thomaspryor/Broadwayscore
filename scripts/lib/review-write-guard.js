@@ -40,6 +40,27 @@ const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
 const { validateTemporalAttribution } = require('./temporal-byline-guard');
 
+// Lazy-loaded, memoized once per process — safeWriteReview is called
+// thousands of times per rebuild run and shows.json rarely changes mid-run.
+let _showsByIdCache = null;
+function _getShowById(showId) {
+  if (!_showsByIdCache) {
+    _showsByIdCache = new Map();
+    try {
+      const repoRoot = path.resolve(__dirname, '..', '..');
+      const parsed = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'shows.json'), 'utf-8'));
+      const shows = Array.isArray(parsed) ? parsed : (parsed.shows || []);
+      for (const s of shows) { if (s && s.id) _showsByIdCache.set(s.id, s); }
+    } catch { /* leave cache empty — guard below just no-ops */ }
+  }
+  return _showsByIdCache.get(showId) || null;
+}
+
+// Test-only: seed the shows cache directly so date-plausibility.test.mjs can
+// exercise safeWriteReview's quarantine routing without depending on the real
+// data/shows.json corpus.
+function _setShowsCacheForTest(map) { _showsByIdCache = map; }
+
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
@@ -434,6 +455,64 @@ function safeWriteReview(filePath, newData, options = {}) {
       // Downgrade attribution to Unknown so the review still lands but doesn't
       // pollute the dead/retired critic's page. Log so a human can fix later.
       newData = { ...newData, criticName: 'Unknown', _temporalGuardBlocked: tcheck.reason };
+    }
+  }
+
+  // Date-plausibility quarantine (card #832, Notion 3b0637c5): a review file
+  // whose publishDate lands implausibly before the show's earliest date is
+  // almost always a different production of the same title leaking onto this
+  // entry — 5 incidents of this class (sylvia #499, crocodile #730/#832,
+  // oscar #738, cyrano #832), each only caught post-commit by validate-data.js
+  // CHECK 0 after it had already turned main red. Gate the write here so the
+  // bad publishDate never lands in the show dir at all.
+  //
+  // Fires when publishDate is arriving for the FIRST time: either a
+  // brand-new file, or an existing dateless file (e.g. a stub written by
+  // saveAggregatorStub()/registration passes with no publishDate yet) whose
+  // incoming write finally supplies one. That covers the ship-check-flagged
+  // gap where discovery writes a placeholder first and a later fetch pass
+  // fills in the real (possibly implausible) date — a plain isNewFile check
+  // would have let that second write sail through untouched. Does NOT
+  // re-fire on every subsequent edit to an already-dated file (that would
+  // re-litigate settled/flagged files and disrupt the 100+ other
+  // safeWriteReview callers that merge updates), and does not fire once the
+  // file carries any protected/scored field (a human-vetted or scored review
+  // getting a corrected date is a deliberate fixup, not new ingest).
+  {
+    const parentDirName = path.basename(path.dirname(filePath));
+    const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
+    let priorPublishDate = null;
+    let hadProtectedContent = false;
+    const fileExists = fs.existsSync(filePath);
+    if (fileExists) {
+      try {
+        const onDiskForDateCheck = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        priorPublishDate = onDiskForDateCheck.publishDate || null;
+        hadProtectedContent = getEffectiveProtectedFields(onDiskForDateCheck)
+          .some(k => onDiskForDateCheck[k] !== undefined && onDiskForDateCheck[k] !== null && onDiskForDateCheck[k] !== '');
+      } catch { /* unreadable existing file — treat as dateless, still gate below */ }
+    }
+    const isDateFirstArriving = (!fileExists || !priorPublishDate) && !hadProtectedContent;
+    if (isDateFirstArriving && grandparentDirName !== '_pending' && parentDirName
+      && !parentDirName.startsWith('_') && !parentDirName.startsWith('.')) {
+      const show = _getShowById(parentDirName);
+      if (show) {
+        const { evaluateDatePlausibility } = require('./date-plausibility');
+        const verdict = evaluateDatePlausibility({ review: newData, show });
+        if (verdict.implausible) {
+          const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+          fs.mkdirSync(pendingDir, { recursive: true });
+          const pendingPath = path.join(pendingDir, path.basename(filePath));
+          const quarantined = {
+            ...newData,
+            pendingReason: 'date_implausible',
+            _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
+          };
+          fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+          console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
+          return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
+        }
+      }
     }
   }
 
@@ -1451,4 +1530,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, _setShowsCacheForTest };
