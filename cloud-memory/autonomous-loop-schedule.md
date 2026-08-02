@@ -1,5 +1,15 @@
 # Autonomous Loop — Cron Map & Schedule Pick
 
+> **2026-08-02 Option A (owner decision):** shadow mode ALSO retired —
+> `com.broadwayscore.autonomous-shadow` booted out, plist renamed
+> `.disabled-2026-08-02` (4 nights of shadow runs all produced 0 would-attempt;
+> provably inert). The ONLY surviving autonomous backlog machinery is the
+> **minimal backlog drain**: `com.broadwayscore.backlog-drain` (10:00/14:00/18:00
+> local → scripts/backlog-drain.js, headless dispatch of oldest eligible pending
+> card). It had been silently `launchctl disable`d — if it vanishes from
+> `launchctl list` again, check `launchctl print-disabled gui/$UID` first.
+> Auto-close of tabs is 🤖-only (see feedback_never_close_unmarked_cmux_workspaces).
+
 > **⛔ LOOP RETIRED 2026-07-27 (owner decision — do not re-enable).** Both
 > launchd jobs (`com.broadwayscore.autonomous-nightly`, `.autonomous-deadman`)
 > unloaded AND their plists deleted from `~/Library/LaunchAgents/`; templates

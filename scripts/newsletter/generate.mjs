@@ -1921,6 +1921,30 @@ let _londonHasGoldOpening = false;
 // When a West End show opens to Critical Gold (≥85), it earns the full
 // `showRow` treatment (poster + score badge + venue) and the section floats
 // up next to the NYC opening cards. Non-gold shows keep the compact layout.
+// The week's biggest WE opening STORY — single source of truth shared by the
+// subject/lede candidate input (weGoldOpenings, assembly block) and the card
+// order in londonSection. Most-reviewed first: marquee openings draw more
+// critics, so review count is the "biggest event" signal — sorting by score
+// alone let a 3-review dance revival outrank an 18-review marquee premiere
+// (owner, 2026-08-02). Raw score breaks count ties. The US edition keeps its
+// >=75 subject-eligibility gate. Before this helper, the subject pick among
+// equal-weight WE openings fell to shows.json insertion order — an accident.
+// NEWSLETTER_WE_LEAD=<showId> is a manual editor override (mirrors
+// NEWSLETTER_OB_LEAD): floats that show to story #1 regardless of count.
+function weOpeningStories() {
+  const ranked = shows
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate))
+    .map(s => ({ s, agg: aggregateScore(s.id) }))
+    .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
+    .sort((a, b) => ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+  const weLead = (process.env.NEWSLETTER_WE_LEAD || '').trim();
+  if (weLead) {
+    const i = ranked.findIndex(x => x.s.id === weLead);
+    if (i > 0) ranked.unshift(ranked.splice(i, 1)[0]);
+  }
+  return ranked;
+}
+
 function londonSection() {
   const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate));
   if (!list.length) return null;
@@ -1938,6 +1962,15 @@ function londonSection() {
     if (Math.round(ar) === Math.round(br)) return (b.agg.count ?? 0) - (a.agg.count ?? 0);
     return br - ar;
   });
+  // The subject/lede names weOpeningStories()[0] — that show must also be the
+  // FIRST card, or the email contradicts its own subject line (owner,
+  // 2026-08-02: subject said Tao of Glass, cards led with Brainiac Live).
+  // Float it to the front; the rest keep the gold-first/score-desc order.
+  const ledeStory = weOpeningStories()[0];
+  if (ledeStory) {
+    const li = withScore.findIndex(x => x.s.id === ledeStory.s.id);
+    if (li > 0) withScore.unshift(withScore.splice(li, 1)[0]);
+  }
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
   markOpening('london-openings', withScore.map(x => x.s));
   // Every opening is a full feature card — same large size for all opening
@@ -2220,10 +2253,11 @@ const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
 // (75, Palladium, 19 reviews) is genuinely the week's biggest story and the
 // reader should see it (user, 2026-07-12). The scorer phrases by score, so a
 // 75 reads "strong reviews", a 90 "near-universal praise".
-const weGoldEvents = shows
-  .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate))
-  .filter(s => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category) && (IS_WE || a.avg >= 75); })
-  .map(s => ({ show: s }));
+// Ordering matters: candidates tie on weight within an edition, so the FIRST
+// entry here is the one the subject/lede names. weOpeningStories() ranks
+// most-reviewed-first and londonSection floats the same show to the top card,
+// so subject, lede, and card stack always agree.
+const weGoldEvents = weOpeningStories().map(x => ({ show: x.s }));
 
 const newsworthyInputs = {
   edition: EDITION,  // West End openings are primary in the WE edition, secondary in the US edition
