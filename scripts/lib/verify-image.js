@@ -52,7 +52,7 @@ const RETRY_BASE_MS = 2000;
 const MARKET_PROFILES = {
   broadway: {
     expected: 'Broadway theatres in New York City (Music Box, Lyceum, Shubert, Eugene O\'Neill, Broadhurst, Booth, Majestic, Nederlander, etc.)',
-    mismatch: 'a London/West End theatre, a US regional playhouse (Berkeley Rep, Goodman Theatre, Arena Stage, Seattle Rep, CenterREP), or an Off-Broadway house',
+    mismatch: 'a London/West End theatre, "BAM", "State Theatre New Jersey", a US regional playhouse (Berkeley Rep, Goodman Theatre, Arena Stage, Seattle Rep, CenterREP), an Off-Broadway house, or any regional, community, or touring company branding (e.g. "Gallery Players")',
     acceptCompanies: 'Manhattan Theatre Club (MTC), Lincoln Center Theater (LCT), Roundabout Theatre Company, Second Stage Theater, The New Group — these ARE Broadway producers and their logos do NOT mean a non-Broadway production',
     tourRule: true,
   },
@@ -74,6 +74,17 @@ const MARKET_PROFILES = {
     acceptCompanies: 'any London producing house or fringe company — London venue and company branding is EXPECTED here, never a reason to reject',
     tourRule: true,
   },
+  // Unknown/absent slug. Never assert venue expectations we cannot justify:
+  // the old fallback handed Broadway reject rules to a show the prompt had just
+  // described as e.g. "(dublin-fringe)", which is exactly the mislabel this
+  // whole module exists to stop. Venue checking is simply disabled here; the
+  // wrong-show / placeholder / production-still rules still apply.
+  unknown: {
+    expected: 'whatever venue or producing company this production actually plays — no venue expectation is asserted for this market',
+    mismatch: 'NOTHING — do not reject on venue or company branding at all for this production; judge only by whether the artwork is for this show',
+    acceptCompanies: 'any venue or company branding — venue text is not evidence of a mismatch for this production',
+    tourRule: false,
+  },
   regional: {
     expected: 'the production\'s own US regional theater and resident company (La Jolla Playhouse, Two River Theater, Arena Stage, Goodman Theatre, Berkeley Rep, Old Globe, A.R.T., Alliance Theatre, Paper Mill Playhouse, Center Theatre Group, etc.)',
     mismatch: 'a Broadway theatre marquee or a London/West End theatre',
@@ -84,15 +95,21 @@ const MARKET_PROFILES = {
 
 /**
  * Resolve the venue-rule profile for a show's market/category slug.
- * Unknown slugs fall back to Broadway's profile (the historical behaviour)
- * rather than throwing, but callers should pass a real slug.
+ * An ABSENT slug keeps the historical Broadway behaviour; a PRESENT but
+ * unrecognised slug gets the venue-agnostic `unknown` profile rather than
+ * silently inheriting Broadway's reject rules.
  *
  * @param {string|null|undefined} market shows.json `category` (preferred) or `market`
  * @returns {object} profile from MARKET_PROFILES
  */
 function getMarketProfile(market) {
   const key = String(market ?? '').trim().toLowerCase();
-  return MARKET_PROFILES[key] || MARKET_PROFILES.broadway;
+  if (MARKET_PROFILES[key]) return MARKET_PROFILES[key];
+  // Absent slug = the historical Broadway default (every legacy caller was a
+  // Broadway show). A PRESENT but unrecognised slug is a different situation:
+  // silently applying Broadway venue rules to it is the mislabel bug, so it
+  // gets the venue-agnostic profile.
+  return key === '' ? MARKET_PROFILES.broadway : MARKET_PROFILES.unknown;
 }
 
 // ============================================================
@@ -125,7 +142,7 @@ Your task: Look for EVIDENCE that this image is WRONG. Only reject when you see 
 REJECT (match=false) only when you see POSITIVE EVIDENCE of these problems:
 - The image shows a DIFFERENT SHOW's title (e.g., image says "Hell's Kitchen" but the show is "Illinoise"). This is the most important check.
 - The image shows the show's name but with EXTRA WORDS forming a MEANINGFULLY DIFFERENT title (e.g., "Cats: The Jellicle Ball" is NOT "Cats" — it's a completely different show). However, these additions are NOT different titles and must be ACCEPTED:
-  * Generic show-type phrases: "The Musical", "A New Musical", "The Broadway Musical", "A Musical Comedy", "A Musical Fable", "A New Play", "A Memory Play", "Live"
+  * Generic show-type phrases: "The Musical", "A New Musical", "The Broadway Musical", "A Musical Comedy", "A Musical Fable", "A New Play", "A Memory Play"
   * Biographical/descriptive subtitles about the show's subject: "The Tina Turner Musical", "The Donna Summer Musical", "The Carole King Musical", "The Cher Show" — these describe WHO the show is about, not a different show
   * Playwright/author credits: "Noel Coward's [Show]", "Edward Albee's [Show]", "August Wilson's [Show]", "Dr. Seuss' [Show]", "A New Play by [Author]"
   * Star names in marketing: "[Star] in [Show]"

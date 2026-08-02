@@ -95,8 +95,41 @@ test('shared rules survive in every market prompt', () => {
   }
 });
 
-test('unknown or missing market falls back to the Broadway profile without throwing', () => {
+test('absent market keeps the Broadway default; an UNRECOGNISED slug does not', () => {
+  // Legacy callers passed no market and were all Broadway shows.
   assert.equal(getMarketProfile(undefined), MARKET_PROFILES.broadway);
-  assert.equal(getMarketProfile('dublin-fringe'), MARKET_PROFILES.broadway);
-  assert.ok(buildVerificationPrompt().length > 500);
+  assert.equal(getMarketProfile(''), MARKET_PROFILES.broadway);
+  // A present-but-unknown slug used to inherit Broadway's reject rules while
+  // the prompt label said "(dublin-fringe)" — the exact mislabel this module
+  // exists to stop. It gets venue-agnostic rules instead.
+  assert.equal(getMarketProfile('dublin-fringe'), MARKET_PROFILES.unknown);
+  const prompt = buildVerificationPrompt({ market: 'dublin-fringe' });
+  assert.ok(prompt.length > 500);
+  assert.match(prompt, /do not reject on venue or company branding at all/);
+  assert.ok(
+    !/Berkeley Rep|Music Box/.test(prompt),
+    'unknown market still leaks Broadway venue expectations',
+  );
+});
+
+test('"Live" is NOT treated as a generic same-show suffix', () => {
+  // "Cats Live" is a concert/tour variant, not Cats. Allowing "Live" as a
+  // harmless suffix would let a tour card pass for the Broadway production.
+  for (const market of MARKETS) {
+    const prompt = buildVerificationPrompt({ market });
+    assert.ok(
+      !/"A Memory Play", "Live"/.test(prompt),
+      `${market}: "Live" is listed as a generic same-show phrase`,
+    );
+  }
+});
+
+test('broadway prompt keeps the concrete cross-market counterexamples', () => {
+  // Named examples are deterministic reject criteria; "belongs to a different
+  // market" alone leaves the call entirely to model inference.
+  const prompt = buildVerificationPrompt({ market: 'broadway' });
+  for (const name of ['BAM', 'State Theatre New Jersey', 'Gallery Players', 'CenterREP']) {
+    assert.ok(prompt.includes(name), `broadway prompt dropped counterexample "${name}"`);
+  }
+  assert.match(prompt, /community, or touring company branding/);
 });

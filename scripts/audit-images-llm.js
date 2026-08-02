@@ -233,6 +233,7 @@ class ImageVerifier {
         confidence: parsed.confidence || 'low',
         description: parsed.description || '',
         issues: Array.isArray(parsed.issues) ? parsed.issues : [],
+        imageType: parsed.imageType || 'other',
       };
     } catch {
       // Try to extract key fields from malformed JSON
@@ -246,6 +247,7 @@ class ImageVerifier {
           confidence: confResult?.[1] || 'low',
           description: descResult?.[1] || 'Could not fully parse response',
           issues: [],
+          imageType: 'other',
         };
       }
 
@@ -254,6 +256,7 @@ class ImageVerifier {
         confidence: 'error',
         description: `Unparseable response: ${cleaned.substring(0, 200)}`,
         issues: ['parse_error'],
+        imageType: 'other',
       };
     }
   }
@@ -531,6 +534,19 @@ async function runFullAudit(verifier, shows, singleShow = null) {
     // Determine action
     let action = 'keep';
     let reason = '';
+
+    // Production-still-only rejections are NOT wrong images. The shared prompt
+    // rejects them so fetch-show-images-auto.js can prefer poster art; this
+    // auditor deletes on match:false, so an unguarded adoption would wipe every
+    // legitimate production-still thumbnail already on the site. Art-type
+    // upgrades belong to the fetcher, not to this destructive sweep.
+    const productionStillOnly = verification.match === false
+      && verification.imageType === 'production_still'
+      && (verification.issues || []).every(i => i === 'production_photo' || i === 'production_still');
+    if (productionStillOnly) {
+      verification = { ...verification, match: true };
+      reason = 'production_still (kept — art-type, not wrong image)';
+    }
 
     if (verification.match === null) {
       action = 'needs_review';
