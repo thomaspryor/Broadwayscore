@@ -40,7 +40,31 @@ CMUX_CLOSE_OK=1 remains reserved for user-approved real closes.
 
 2026-07-15 follow-up (3 incidents that day): wrap-up Phase 7's self-close killed
 a tab mid-typing, and bsc-next's dispatch-time pruneDone() sweep closed another.
-BOTH are removed — sessions only ✅-mark; the ONLY closer is owner-run bsc-prune
-(bsc-conductor runs it --dry-run only). Never reintroduce automatic closing.
+BOTH were removed at the time.
+
+2026-08-02 OWNER REVERSAL (escalation: "I'm a babysitter... hideous"): automatic
+closing IS back, deliberately, with the safety conditions the July incidents
+lacked. Architecture:
+- Trigger: workspace-mark-done.sh (Stop hook) runs `node scripts/bsc-prune.js`
+  SYNCHRONOUSLY, throttled to 1/4min machine-wide via
+  ~/.claude/state/bsc-autoprune-last-run. Synchronous is load-bearing: an
+  orphaned (nohup/launchd-parented) process is REJECTED by cmux's socket
+  ancestry ACL ("only processes started inside cmux can connect") — verified
+  live 2026-08-02.
+- What closes: ✅ tabs with no claude process, and ✅+🤖 auto-dispatched tabs
+  idle at the prompt (#709). NEVER: unmarked tabs, non-🤖 ✅ tabs with a live
+  claude, mid-turn tabs, or the currently SELECTED tab (re-checked immediately
+  before each close — TOCTOU guard). bsc-prune has a single-writer run lock;
+  pruneClosedEntry dedupes terminal ledger breadcrumbs per launch.
+- Backstop: launchd job com.broadwayscore.bsc-autoprune (every 5 min) is armed
+  but DEAD until the next cmux app restart — ~/.config/cmux/cmux.json now sets
+  automation.socketControlMode="password" (+CMUX_SOCKET_PASSWORD in the plist),
+  which the running cmux instance has NOT picked up (ACL doesn't hot-reload;
+  `cmux capabilities` still says cmuxOnly). After the next cmux restart, verify
+  the launchd log (~/Library/Logs/bsc-autoprune.log) shows real sweeps AND that
+  in-cmux cmux-CLI calls still work; revert config from
+  ~/.config/cmux/cmux.json.bak-* if anything breaks.
+Do NOT remove the Stop-hook trigger or "re-simplify" bsc-prune's guards — each
+one maps to a real incident (2026-07-14/15/21).
 
 Related: [[feedback_absorb_gate_ceremony]]

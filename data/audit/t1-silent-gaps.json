@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T21:19:05.270Z",
+  "generatedAt": "2026-08-02T22:09:31.478Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 248.1217386111111,
+      "fileAgeHours": 248.96527,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 207.4275927777778
+      "nonTerminalAgeHours": 208.2682061111111
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 9.8656125
+      "nonTerminalAgeHours": 10.706225833333333
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -46,17 +46,13 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=brainiac-live-west-end-2026 --url=https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/ --outlet=theatre-weekly   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-02T18:53:45.331Z",
-      "fileAgeHours": 2.422205,
+      "fileAgeHours": 3.262818333333333,
       "gapSeenAt": "2026-08-02T20:22:17.063Z",
-      "nonTerminalAgeHours": 0.9467241666666667
+      "nonTerminalAgeHours": 1.7873375
     }
   ],
   "contradictions": []

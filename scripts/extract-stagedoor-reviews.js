@@ -23,6 +23,7 @@ const {
   generateReviewFilename,
 } = require('./lib/review-normalization');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/stagedoor');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -98,6 +99,17 @@ function saveReview(review, dir = outputDir) {
 module.exports = { saveReview };
 
 if (require.main !== module) return;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`Usage: node scripts/extract-stagedoor-reviews.js [--show=<showId>] [--dry-run]
+
+Extracts reviews from Stagedoor critic archives (data/aggregator-archive/stagedoor/)
+into review-text files (data/review-texts/{show-id}/{outletId}--{critic-slug}.json).
+
+  --show=<showId>  Only process this show's archive
+  --dry-run        Report what would be written without writing`);
+  return;
+}
 
 // Main
 if (!fs.existsSync(archiveDir)) {
