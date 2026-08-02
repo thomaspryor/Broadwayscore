@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-02T01:45:21.563Z",
+  "updatedAt": "2026-08-02T01:46:38.940Z",
   "processed": 103,
-  "failed": 136,
-  "successRate": "43.1%",
+  "failed": 146,
+  "successRate": "41.4%",
   "tierBreakdown": {
     "playwright": 78,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 17,
-    "archiveToday": 16,
+    "archiveToday": 17,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-02T00:53:53.375Z",
-      "event": "bb-session",
-      "session": "e55cc6fe",
-      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
-    },
-    {
-      "t": "2026-08-02T00:53:54.374Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-02T00:54:10.257Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-08-02T01:43:26.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-02T01:45:33.343Z",
+      "event": "bb-session",
+      "session": "8ce9f856",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-02T01:45:33.754Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
