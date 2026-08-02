@@ -29,9 +29,17 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 
 if (hasHelpFlag(process.argv)) {
-  const header = fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 27).join('\n');
-  console.log(header.replace(/^ \* ?/gm, ''));
+  const lines = fs.readFileSync(__filename, 'utf8').split('\n');
+  const end = lines.findIndex((l) => /^\s*\*\//.test(l));
+  console.log(lines.slice(2, end).join('\n').replace(/^ \* ?/gm, ''));
   process.exit(0);
+}
+
+const KNOWN_FLAGS = new Set(['--apply', '--prefer-slug']);
+const unknown = process.argv.slice(2).filter((a) => a.startsWith('-') && !KNOWN_FLAGS.has(a));
+if (unknown.length > 0) {
+  console.error(`Unknown flag(s): ${unknown.join(', ')} — valid: --apply, --prefer-slug, --help`);
+  process.exit(2);
 }
 
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');

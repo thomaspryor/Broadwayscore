@@ -175,6 +175,25 @@ test('a claude that registers after the verify window is adopted, not declared d
   assert.equal(shouldAdoptLateStart({ ok: true, ref: 'workspace:46' }, true), false); // already verified
 });
 
+test('a slow-boot launch is journaled unverified but NOT dead (card #705)', () => {
+  const args = { taskId: 705, subject: 'slow boot', workspaceRef: 'workspace:230', failureReason: 'slow-boot-timeout' };
+
+  // Confirmed-dead (injection never ran): the breadcrumb the pruner and the
+  // 2-death guard need.
+  const dead = failedLaunchEntries({ ...args, deadConfirmed: true });
+  assert.deepEqual(dead.map(e => e.event), ['dead', 'launch']);
+
+  // Still booting: its wrapper process is alive, so calling it dead would mark
+  // a LIVE session as a corpse and burn one of the task's two allowed deaths.
+  const booting = failedLaunchEntries({ ...args, deadConfirmed: false });
+  assert.deepEqual(booting.map(e => e.event), ['launch']);
+  assert.equal(booting[0].unverified, true, 'the attempt must still be tracked');
+  assert.equal(deadBreadcrumbs([], booting).length, 0);
+
+  // Default stays dead-confirmed — every pre-#705 caller keeps its behavior.
+  assert.deepEqual(failedLaunchEntries(args).map(e => e.event), ['dead', 'launch']);
+});
+
 test('a failed launch never attributes attempt 1\'s closed workspace to attempt 2', () => {
   const raw = fs.readFileSync(new URL('./cmux-launch.js', import.meta.url), 'utf8');
   // Strip comments before asserting — the fix's own comment quotes the removed

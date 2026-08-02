@@ -297,6 +297,18 @@ jobs:
             node scripts/reconcile-recoupment-claims.js
           fi
 
+      - name: Self-heal resurrected duplicate key pairs
+        # A clobber-resurrection (task #268 class) reintroduces ID-keyed
+        # entries whose slug sibling still exists. Deleting a CONTAINED pair
+        # (ID entry holds nothing the slug entry lacks) is deterministic and
+        # lossless, so heal it here instead of going red every Saturday until
+        # a human runs the CLI. Conflicting pairs are NOT healed — the script
+        # exits 1 and the strict gate below stays red with the named error.
+        # Ordering matters: this runs before the strict gate AND before the
+        # flagless audit + --write-history steps, so weekly metrics and the
+        # drift series are computed on the deduped file.
+        run: node scripts/dedupe-commercial-id-keys.js --apply
+
       - name: Commercial data strict gate (required)
         # S1-T5: hard gate — recouped:true entries with no citation, or
         # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
