@@ -25,6 +25,13 @@
 #      instead of letting the caller fall through to stale code. Callers
 #      that chain with `&&` (the launchd inline pattern) get this for free.
 #
+# Concurrency: this repo runs many launchd jobs and worktree sessions that
+# touch the SAME checkout, and merge-worktree-to-main.sh already established
+# the convention of serializing mutating git ops here via push-mutex.sh
+# (task #556, incidents #208/#543/#546). The reset+merge sequence below is
+# mutating (git checkout on data/audit/ paths), so it acquires the same
+# mutex — fail-open on timeout, same as every other caller.
+#
 # Usage: bash scripts/lib/sync-audit-checkout.sh [repo-dir]
 # Exits 0 (already fresh, or recovered) or 1 (blocked — investigate).
 set -uo pipefail
@@ -33,6 +40,12 @@ REPO_DIR="${1:-$(pwd)}"
 TAG="${SYNC_TAG:-sync-audit-checkout}"
 
 cd "$REPO_DIR" || { echo "::error::[$TAG] cannot cd to $REPO_DIR"; exit 1; }
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/push-mutex.sh
+source "$SCRIPT_DIR/push-mutex.sh"
+push_mutex_acquire
+trap 'push_mutex_release' EXIT
 
 if ! git fetch origin main --quiet; then
   echo "::error::[$TAG] git fetch origin main failed"
@@ -51,8 +64,12 @@ DIRTY_AUDIT_FILES=$( (git diff --name-only -- data/audit/; git diff --cached --n
 if [ -n "$DIRTY_AUDIT_FILES" ]; then
   echo "[$TAG] resetting regenerable snapshot(s):"
   echo "$DIRTY_AUDIT_FILES" | sed "s/^/[$TAG]   /"
-  # shellcheck disable=SC2086
-  echo "$DIRTY_AUDIT_FILES" | xargs -I{} git checkout -- "{}"
+  # `checkout HEAD --` (not bare `checkout --`) so this clears BOTH the
+  # index and the working tree — a degraded run that crashed after `git add`
+  # but before `git commit` leaves the file staged, and a bare `checkout --`
+  # only resets working-tree-vs-index, silently no-op'ing against a staged
+  # diff and leaving the merge blocked (caught in review, task #732).
+  echo "$DIRTY_AUDIT_FILES" | xargs -I{} git checkout HEAD -- "{}"
 fi
 
 if git merge --ff-only origin/main --quiet 2>/dev/null; then
