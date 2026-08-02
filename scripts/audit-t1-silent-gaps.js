@@ -52,7 +52,6 @@ const {
 } = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { sendAlert } = require('./lib/discord-notify');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -483,45 +482,50 @@ async function main() {
         return !Number.isNaN(t) && Math.abs(now2 - t) <= URGENT_OPENING_DAYS * 24 * 60 * 60 * 1000;
       };
       const urgent = dueDeduped.filter(isUrgent);
-      const emailBatch = urgent.slice(0, 15);
-      // Record what actually paged so the >24h backstop won't re-page it.
-      for (const g of emailBatch) pagedGapOutletKeys.add(`${g.showId}/${g.outletId}`);
-      const fields = emailBatch.map((g) => ({
-        name: `${g.title} — ${g.outletId} (T${g.tier}, ${g.type})`,
-        value: `${g.url || 'no url'}\nFix: ${g.fix}`,
-      }));
-      // Direct sendAlert, not routeAlert — this already has its own cooldown:
-      // shouldAlertGap() gates on state[`${showId}/${file}`] (REALERT_DAYS
-      // window), stamped only inside the `if (delivered)` block below, so a
-      // due gap that fails to deliver correctly retries next run instead of
-      // going silently marked-handled.
-      const delivered = urgent.length > 0
-        ? await sendAlert({
-          title: `T1/T2 review silent gap: ${urgent.length} review(s) missing on near-opening show(s)`,
-          description: `Discovered review files that will not reach the composite score and are not legitimately excluded. Each needs the listed fix command. (${dueDeduped.length - urgent.length} additional back-catalogue gap(s) routed to the daily digest.)`,
+      // 2026-08-02 (owner's 10th+ email-noise escalation): urgent gaps no
+      // longer email AT ALL. Every gap carries its own exact fix command
+      // (fixCommand()) — a machine-runnable condition, exactly like the >24h
+      // backstop below, which already routes disposition:'auto' so the
+      // Mac-resident notion-action-poll.js dispatcher RUNS the fix (it has
+      // the cookie jar the email used to tell the owner to go use). The
+      // emailed version also chased unfixable ghosts: The Car Man's "gap"
+      // was a ticket-page URL from the public submit-review form with no
+      // published review behind it — an owner email could never fix that.
+      const toDispatch = urgent.slice(0, 5);
+      // Record what actually dispatched so the >24h backstop won't re-file it.
+      for (const g of toDispatch) pagedGapOutletKeys.add(`${g.showId}/${g.outletId}`);
+      const dispatchedOutletKeys = new Set();
+      for (const g of toDispatch) {
+        const result = await routeAlert({
+          conditionKey: `gap:${g.showId}/${g.file}`,
+          title: `T1/T2 silent gap on near-opening show: ${g.title || g.showId} — ${g.outletId}`,
+          description: `Review file ${g.file} (T${g.tier}, ${g.type}) will not reach the composite score and is not legitimately excluded. URL on file: ${g.url || 'none'}. If the fix command keeps failing, check whether the URL is actually a review page (show/ticket hub URLs can never recover) and whether the outlet has published a review at all.`,
+          hint: g.fix,
           severity: 'error',
-          email: true,
-          fields,
-        })
-        // No urgent gaps: nothing pages. Backlog gaps are marked below so
-        // they stop re-evaluating as due, and the daily digest carries them.
-        : true;
-      if (delivered) {
-        // Mark: (a) urgent gaps that actually made the emailed fields — an
-        // urgent gap past the 15-cap stays unmarked so it emails next run
-        // (ship-check finding 2026-07-18); (b) ALL non-urgent backlog gaps —
-        // they route to the daily digest (health-check silentGapBacklogResults
-        // reads the report file), so marking stops the hourly re-evaluation
-        // without losing visibility.
-        const handledKeys = new Set([
-          ...emailBatch.map((g) => `${g.showId}/${g.outletId}`),
-          ...dueDeduped.filter((g) => !isUrgent(g)).map((g) => `${g.showId}/${g.outletId}`),
-        ]);
-        for (const g of due) {
-          if (handledKeys.has(`${g.showId}/${g.outletId}`)) state[`${g.showId}/${g.file}`] = now.toISOString();
+          disposition: 'auto',
+        });
+        if (result.action === 'silent' || result.dispatchOk === true) {
+          dispatchedOutletKeys.add(`${g.showId}/${g.outletId}`);
+        } else {
+          console.error(`[gap] dispatch failed for ${g.showId}/${g.file}, will retry next run: ${result.dispatchError || 'unknown error'}`);
         }
-        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
       }
+      if (urgent.length > toDispatch.length) {
+        console.log(`${urgent.length - toDispatch.length} additional urgent gap(s) deferred to next run (5/run dispatch cap).`);
+      }
+      // Mark handled: (a) urgent gaps whose card actually dispatched — one
+      // past the cap or with a failed dispatch stays unmarked so it retries
+      // next run; (b) ALL non-urgent backlog gaps — they route to the daily
+      // digest (health-check silentGapBacklogResults reads the report file),
+      // so marking stops the hourly re-evaluation without losing visibility.
+      const handledKeys = new Set([
+        ...dispatchedOutletKeys,
+        ...dueDeduped.filter((g) => !isUrgent(g)).map((g) => `${g.showId}/${g.outletId}`),
+      ]);
+      for (const g of due) {
+        if (handledKeys.has(`${g.showId}/${g.outletId}`)) state[`${g.showId}/${g.file}`] = now.toISOString();
+      }
+      fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
     } else {
       console.log('No gaps due to email (already alerted, self-heal dispatch pending, or auto-recovery retries remaining).');
     }
@@ -536,29 +540,32 @@ async function main() {
     const dueC = contradictions.filter((c) =>
       shouldAlertContradiction(state[`contradiction:${c.showId}/${c.file}`], now));
     if (dueC.length > 0) {
-      const fields = dueC.slice(0, 15).map((c) => ({
-        name: `${c.title || c.showId} — ${c.outletId} (T${c.tier}, stale ${c.flag})`,
-        value: `Newer CV (${c.verifiedAt}) contradicts the flag set ${c.flaggedAt}.\nFix: ${c.fix}`,
-      }));
-      // Direct sendAlert, not routeAlert — this already has its own cooldown:
-      // shouldAlertContradiction() gates on state[`contradiction:${showId}/${file}`]
-      // (7-day CONTRADICTION_REALERT_DAYS window), stamped only inside the
-      // `if (delivered)` block below, so a due contradiction that fails to
-      // deliver correctly retries next run instead of going silently
-      // marked-handled.
-      const delivered = await sendAlert({
-        title: `Stale exclusion flag contradicted by newer CV: ${dueC.length} suppressed review(s)`,
-        description: 'A file-level wrongProduction/wrongShow flag is contradicted by a NEWER contentVerification verdict — the review is being suppressed from the score by a stale flag. Each needs the listed clear command (run locally). Escalate-only: nothing is auto-cleared.',
-        severity: 'error',
-        email: true,
-        fields,
-      });
-      if (delivered) {
-        for (const c of dueC.slice(0, 15)) {
-          state[`contradiction:${c.showId}/${c.file}`] = now.toISOString();
+      // 2026-08-02: no longer emails. Same shape as the gap/backstop paths —
+      // each contradiction names its own one-command clear, so it routes
+      // disposition:'auto' and the Mac-resident dispatcher runs the clear
+      // (which needs local write access anyway). Escalate-only semantics are
+      // preserved: the card's command clears ONE stale flag; nothing here
+      // auto-clears in bulk.
+      for (const c of dueC.slice(0, 5)) {
+        const conditionKey = `contradiction:${c.showId}/${c.file}`;
+        const result = await routeAlert({
+          conditionKey,
+          title: `Stale exclusion flag vs newer CV: ${c.title || c.showId} — ${c.outletId}`,
+          description: `File-level ${c.flag} flag (set ${c.flaggedAt}) is contradicted by a NEWER contentVerification verdict (${c.verifiedAt}, T${c.tier}) — the review is suppressed from the score by a stale flag. Run the clear command locally; verify with verify-review-recovery.js afterwards.`,
+          hint: c.fix,
+          severity: 'error',
+          disposition: 'auto',
+        });
+        if (result.action === 'silent' || result.dispatchOk === true) {
+          state[conditionKey] = now.toISOString();
+        } else {
+          console.error(`[contradiction] dispatch failed for ${conditionKey}, will retry next run: ${result.dispatchError || 'unknown error'}`);
         }
-        fs.mkdirSync(AUDIT_DIR, { recursive: true });
-        fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      }
+      fs.mkdirSync(AUDIT_DIR, { recursive: true });
+      fs.writeFileSync(ALERT_STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+      if (dueC.length > 5) {
+        console.log(`${dueC.length - 5} additional contradiction(s) deferred to next run (5/run dispatch cap).`);
       }
     } else {
       console.log('No stale-flag contradictions due to alert (already alerted within the window).');

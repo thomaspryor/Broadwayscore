@@ -53,7 +53,11 @@ jobs:
           if [ -n "${{ inputs.show_id }}" ]; then
             SHOW_ARG="--show=${{ inputs.show_id }}"
           fi
-          node scripts/opening-night-checklist.js --json $SHOW_ARG > /tmp/checklist.json 2>&1 || true
+          # --out writes the JSON to its own file: BOTH stdout (scraper '[SB
+          # Call]' telemetry from the remediation step) and stderr used to
+          # merge into checklist.json, making it unparseable — which silently
+          # un-scoped the SLA dispatcher on every real run since it shipped.
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json $SHOW_ARG 2>&1 || true
           if [ -s /tmp/checklist.json ]; then
             echo "Checklist output written ($(wc -c < /tmp/checklist.json) bytes)"
           else

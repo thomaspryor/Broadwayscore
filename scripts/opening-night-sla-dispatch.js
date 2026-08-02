@@ -59,22 +59,28 @@ async function main() {
   // shepherding. This is the guard against the 2026-07-24 false-page storm:
   // without a scope, the SLA counted CI test fixtures + historical backfills
   // (which never emit a per-review deploy stamp) as "stuck", growing 15→29.
-  // checklist present (even empty) → precise scope; checklist unreadable →
-  // null → the lib falls back to excluding obvious test fixtures.
-  let activeShowIds = null;
+  //
+  // FAIL CLOSED on any scoping failure. The old fallback (null → lib excludes
+  // only test-fixture prefixes) meant "checklist unparseable" silently became
+  // "page on the entire corpus": a stray stderr line merged into checklist.json
+  // made JSON.parse throw on EVERY real CI run from the day the scope shipped,
+  // so the 2026-08-02 P0 paged the owner about shows opening in March/May/
+  // September. For paging purposes an unreadable checklist is the same as an
+  // empty night — a missed page on a genuinely live opening night is recovered
+  // by the next hourly run once the checklist heals, whereas an unscoped page
+  // is guaranteed false noise. Warnings still go to the run log.
+  let activeShowIds = [];
   if (checklistData && Array.isArray(checklistData.shows)) {
     const ids = checklistData.shows
       .map(s => (s.show && (s.show.id || s.show.showId)) || s.showId || s.id)
       .filter(Boolean);
     if (checklistData.shows.length > 0 && ids.length === 0) {
-      // Shows present but ZERO extractable IDs → checklist schema drift, not an
-      // empty night. Scoping to [] would silently blind the SLA; fall back to
-      // the fixture-exclusion path (null) and warn loudly instead (ship-check #6).
-      process.stderr.write(`[sla-dispatch] WARNING: checklist has ${checklistData.shows.length} show(s) but 0 extractable IDs — scope extraction may be broken; falling back to fixture-exclusion\n`);
-      activeShowIds = null;
+      process.stderr.write(`[sla-dispatch] WARNING: checklist has ${checklistData.shows.length} show(s) but 0 extractable IDs — schema drift; failing CLOSED (no SLA scope tonight)\n`);
     } else {
       activeShowIds = ids;
     }
+  } else {
+    process.stderr.write('[sla-dispatch] WARNING: checklist JSON missing/unparseable — failing CLOSED (no SLA scope tonight). Fix the checklist output before expecting SLA pages.\n');
   }
 
   let slaResult = { warnings: [], pages: [] };

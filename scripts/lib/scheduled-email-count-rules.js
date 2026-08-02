@@ -151,10 +151,20 @@ function decideDayViolation(dayBucket, dayKey = null) {
     const def = SCHEDULED_SENDERS.find((s) => s.key === k);
     return !(def && (def.expected || def.allowed));
   });
+  // Duplicate detection (2026-08-02: the Sun morning digest was delivered
+  // TWICE — 07:30 launchd + a 15:12 live test send — and this monitor read
+  // the day as "No violations" because it only ever asked whether a key
+  // fired at all, never how many times). Any scheduled sender delivering
+  // more than once in one ET day is a violation: "exactly 1" means 1.
+  const duplicateKeys = senderKeys.filter((k) => {
+    const bucket = dayBucket.senders.get(k);
+    return bucket && Array.isArray(bucket.subjects) && bucket.subjects.length > 1;
+  });
   return {
-    violation: unexpected.length > 0,
+    violation: unexpected.length > 0 || duplicateKeys.length > 0,
     senderCount: senderKeys.length,
     unexpectedKeys: unexpected,
+    duplicateKeys,
     senders: senderKeys.map((k) => ({ key: k, ...dayBucket.senders.get(k) })),
   };
 }
