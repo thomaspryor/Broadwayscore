@@ -1,0 +1,115 @@
+name: Check Arm Yield
+
+# Cross-run "this arm produced nothing for N days" detector (card #647).
+#
+# The 2026-07-30 pipeline health audit found three arms completely dead — for
+# 11 days, 16 days and 5 months — and NONE of them raised an alarm:
+#   1. opening-night-orchestrator: killed at its 360min cap on every scheduled
+#      run since 2026-07-19. conclusion=cancelled is not failure, and
+#      `if: always()` does not fire on cancellation, so its own alerting never
+#      ran at all.
+#   2. sweep-we-aggregators: 8 consecutive failures from 2026-07-17 notified at
+#      severity:low / email:false — 16 days, no owner-visible signal.
+#   3. scoring-audit: 5/5 failures since 2026-03-01 on a MONTHLY cron.
+#
+# Every zero-data guard in this repo before it was PER-RUN ("this run fetched
+# zero items → exit 1"), and no per-run guard can see any of those three: a
+# cancelled run runs no guard, a failed run dies before its guard, and a monthly
+# cron gives a guard five chances in five months. The signal only exists across
+# runs, in the absence itself — which is what this workflow records and judges.
+#
+# Two steps, deliberately separate:
+#   record → appends today's per-arm yield to data/audit/arm-yield-ledger.jsonl
+#   check  → judges each arm against a threshold learned from its OWN cadence
+#            and routes at most one digest alert per arm per open incident
+#
+# The check step always exits 0 when it ran successfully, even with dead arms.
+# Alerts are the output channel, not the exit status: a red run here for as
+# long as an arm stays broken would make check-cron-health flag THIS detector
+# as stale and redispatch it in a loop.
+
+on:
+  schedule:
+    - cron: '25 12 * * *'  # 12:25 UTC daily, just after check-cron-health's noon slot
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Judge and print, but route no alerts'
+        required: false
+        type: boolean
+        default: false
+      backfill_days:
+        description: 'Days of history to (re)record — 1 for a normal daily run'
+        required: false
+        type: string
+        default: '1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-arm-yield
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      # Outlet arms count review-text files by their textFetchedAt day. Without
+      # this checkout record-arm-yield.js SKIPS every outlet arm rather than
+      # writing zeroes — a missing private repo must never manufacture a
+      # corpus-wide "every outlet is dead" alert.
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: '1'
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Record today's per-arm yield
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/record-arm-yield.js --backfill-days=${{ inputs.backfill_days || '1' }}
+
+      - name: Judge arms against their own cadence
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: node scripts/check-arm-yield.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      # alert-ledger.json carries routeAlert()'s per-condition cooldown and
+      # alert-digest-queue.json the queued digest lines. Both MUST be committed
+      # in the same job or the dedup is dead in CI and every dead arm re-alerts
+      # daily (card #394's class, re-litigated in #618's lint guard).
+      - name: Commit ledger + alert state
+        if: ${{ always() && !inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/arm-yield-ledger.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: arm-yield ledger + alert state [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      # A failure here means the DETECTOR broke, which is the one thing that
+      # must never be silent — that is the whole lesson of the three dead arms.
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Arm Yield Failed (the dead-arm detector itself is broken)'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

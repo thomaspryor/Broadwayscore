@@ -1095,6 +1095,20 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/alert-ledger-commit-check.js'
       - 'scripts/lib/alert-ledger-commit-check.test.mjs'
+      # Cross-run dead-arm detector (card #647) — the class behind all three
+      # arms the 2026-07-30 pipeline audit found dead with zero alarms.
+      # Colocated *.test.mjs run via the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/arm-yield.js'
+      - 'scripts/lib/arm-yield.test.mjs'
+      - 'scripts/lib/arm-registry.js'
+      - 'scripts/record-arm-yield.js'
+      - 'scripts/check-arm-yield.js'
+      # cron-health multi-day stale escalation (card #647, root cause (b)).
+      - 'scripts/lib/cron-stale-streak.js'
+      - 'scripts/lib/cron-stale-streak.test.mjs'
+      - 'scripts/update-cron-health-state.js'
       # Lint guard: reset --soft + scoped-add + commit phantom-staged-revert
       # pattern (card #687). Colocated *.test.mjs runs via the lib-test glob;
       # path-listed so a solo edit triggers CI.
