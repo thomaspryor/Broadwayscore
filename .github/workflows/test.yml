@@ -1287,6 +1287,15 @@ on:
       - 'scripts/lib/commercial-model-drift.js'
       - 'scripts/lib/commercial-model-drift.test.mjs'
       - 'scripts/audit-commercial-data.js'
+      # ID-vs-slug duplicate-key-pair predicate behind audit-commercial-data.js's
+      # duplicate-key-pair strict-gate error (2026-08-01 model-drift class: 13
+      # resurrected ID-keyed entries double-counted shows for 13 days). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a solo
+      # edit triggers CI. dedupe-commercial-id-keys.js is the fix command the
+      # audit error names.
+      - 'scripts/lib/commercial-key-duplicates.js'
+      - 'scripts/lib/commercial-key-duplicates.test.mjs'
+      - 'scripts/dedupe-commercial-id-keys.js'
       - 'scripts/health-check.js'
       # Playwright count()-without-assertion silent-no-op detector. Runs in
       # lint-workflows against tests/e2e/*.spec.ts directly (no colocated

@@ -111,6 +111,13 @@ for (const show of shows) {
 const commercialEntries = Object.entries(commercial.shows);
 const commercialKeys = new Set(Object.keys(commercial.shows));
 
+// ID-keyed entries that duplicate a slug-keyed sibling (double-counted
+// pairs — the 2026-08-01 model-drift class). shows.json-backed predicate;
+// never a "-YYYY suffix" heuristic (mamma-mia-2001 is a legit slug).
+const { findDuplicateKeyPairs } = require('./lib/commercial-key-duplicates');
+const duplicateKeyPairs = findDuplicateKeyPairs(commercial.shows, showBySlug, showById);
+const duplicatePairByIdKey = new Map(duplicateKeyPairs.map((p) => [p.idKey, p]));
+
 // ============================================
 // Shared predicates (canonical definitions -- reused by
 // --list-unsourced-recouped, --list-chatgpt-sources, and --strict)
@@ -218,6 +225,15 @@ if (cliArgs.includes('--strict')) {
     }
   }
 
+  // Duplicate key pairs fail hard: 13 of these sat flagged-but-invisible for
+  // 13 days as medium id-mismatch issues after a clobber resurrected them
+  // (2026-08-01 model-drift alert). A resurrection must be a red weekly run
+  // with a named error, not a one-week count-drift warning that self-silences.
+  for (const { idKey, slugKey } of duplicateKeyPairs) {
+    console.error(`${idKey}: duplicate-key-pair — slug-keyed sibling "${slugKey}" also present (double-counted show). Fix: node scripts/dedupe-commercial-id-keys.js --apply`);
+    violationCount++;
+  }
+
   if (violationCount > 0) {
     console.error(`\n--strict FAILED: ${violationCount} violation(s) found.`);
     process.exit(1);
@@ -263,12 +279,25 @@ function checkShowIdMismatches() {
     } else if (byId) {
       // Key matches show ID but not slug - this is the CLAUDE.md "slug matching pitfall"
       idMatchCount++;
-      addIssue(
-        'id-mismatch',
-        'medium',
-        key,
-        `Commercial key "${key}" matches show ID but not slug. Show slug is "${byId.slug}". Consider renaming the key to match the slug.`
-      );
+      const pair = duplicatePairByIdKey.get(key);
+      if (pair) {
+        // The show's slug is ALSO a commercial key: the show is double-counted
+        // in every metric that iterates commercial.shows. High severity + a
+        // named type so the --strict gate and humans can't miss it.
+        addIssue(
+          'duplicate-key-pair',
+          'high',
+          key,
+          `Commercial key "${key}" duplicates slug-keyed entry "${pair.slugKey}" (same show counted twice). Fix: node scripts/dedupe-commercial-id-keys.js --apply`
+        );
+      } else {
+        addIssue(
+          'id-mismatch',
+          'medium',
+          key,
+          `Commercial key "${key}" matches show ID but not slug. Show slug is "${byId.slug}". Consider renaming the key to match the slug.`
+        );
+      }
     } else {
       orphanCount++;
       addIssue(
