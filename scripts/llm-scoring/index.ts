@@ -80,6 +80,14 @@ const { EXCERPT_FIELDS, hasExcerpt: hasAnyExcerptField } = require('../lib/excer
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
 const { selectScorableText } = require('../lib/scorable-text');
+// Same predicates the cascade gate counts with — one source, so the gate can
+// never again believe there is work the scorer will not take (task #652).
+const {
+  isActionableUnscored,
+  isActionableRescore,
+  isActionableStale,
+  isActionableEmergencyRetry,
+} = require('../lib/scoring-queue-counts');
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -980,6 +988,13 @@ async function main(): Promise<void> {
     return title ? { title } : undefined;
   };
 
+  // Context object the shared queue predicates need (scripts/lib/scoring-queue-counts.js).
+  const queueCtx = (f: { path: string; data: any }) => ({
+    show: showFor(f.data),
+    showTitle: f.data.showId ? showTitles.get(f.data.showId) : undefined,
+    filePath: f.path,
+  });
+
   // Filter based on mode
   let filesToProcess: typeof allFiles;
   if (options.needsRescore) {
@@ -987,7 +1002,6 @@ async function main(): Promise<void> {
     let blockedSkipped = 0;
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).needsRescore !== true) return false;
-      if (!isScoreable(f.data as any, showFor(f.data as any), f.path)) return false;
       // Head-of-line blocking fix (Notion 3ad637c5-416f-8169): a file that
       // already failed a deterministic text-gate check (body_too_short etc.)
       // with the SAME fullText will fail identically again. Skip it so the
@@ -999,6 +1013,9 @@ async function main(): Promise<void> {
         blockedSkipped++;
         return false;
       }
+      // Shared with the cascade gate's counter (task #652) so "is this queued
+      // work the scorer can actually take?" has exactly one answer.
+      if (!isActionableRescore(f.data as any, queueCtx(f))) return false;
       // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
       if (options.rescoreReason) {
         const reason = (f.data as any).rescoreReason || '';
@@ -1026,17 +1043,9 @@ async function main(): Promise<void> {
     });
     console.log(`Filtering to reviews with ensembleSource="${options.ensembleSource}": ${filesToProcess.length} reviews\n`);
   } else if (options.staleScores) {
-    // Filter to reviews with fullText + old score that was likely based on excerpt
-    filesToProcess = allFiles.filter(f => {
-      const d = f.data as any;
-      if (!d.fullText || d.fullText.length < 1000) return false;
-      if (!d.llmScore?.score) return false;
-      if (d.needsRescore || d.ensembleData || d.rescoreCompletedAt) return false;
-      // Modern scores with textSource provenance: only rescore if scored on excerpt
-      if (d.llmMetadata?.textSource?.type === 'fullText') return false;
-      // Old scores without provenance: require excerpt field as indicator
-      return hasAnyExcerptField(d);
-    });
+    // Filter to reviews with fullText + old score that was likely based on
+    // excerpt. Predicate shared with the cascade gate's counter (task #652).
+    filesToProcess = allFiles.filter(f => isActionableStale(f.data as any, queueCtx(f)));
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
   } else if (options.upgradeEnsemble) {
     // Filter to reviews with old single-model llmScore but no ensemble scoring
@@ -1054,14 +1063,8 @@ async function main(): Promise<void> {
     // back up now, the retry produces a 2-of-N+ ensemble and the flag clears naturally.
     // If still single-model after retry, retryCount=1 sticks and the predicate excludes it
     // from future auto-retries (human review takes over).
-    filesToProcess = allFiles.filter(f => {
-      const d = f.data as any;
-      const ed = d.ensembleData;
-      if (!ed || !ed.singleModelEmergency) return false;
-      if ((ed.singleModelEmergencyRetryCount || 0) >= 1) return false;
-      if (!isScoreable(d, showFor(d), f.path)) return false;
-      return true;
-    });
+    // Predicate shared with the cascade gate's counter (task #652).
+    filesToProcess = allFiles.filter(f => isActionableEmergencyRetry(f.data as any, queueCtx(f)));
     console.log(`Filtering to stuck-emergency reviews for one-shot retry: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews.
@@ -1079,7 +1082,10 @@ async function main(): Promise<void> {
         unscoredBlockedSkipped++;
         return false;
       }
-      return true;
+      // Shared with the cascade gate's counter (task #652). Keeping the count
+      // and the selection on one predicate is the whole point of the fix — a
+      // looser counter is what starved phases 2-4 for months.
+      return isActionableUnscored(f.data as any, queueCtx(f));
     });
     if (unscoredBlockedSkipped > 0) {
       console.log(`Skipping ${unscoredBlockedSkipped} unscored reviews blocked by a prior terminal text-gate failure (fullText unchanged since)\n`);

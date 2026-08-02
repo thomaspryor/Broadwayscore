@@ -25,6 +25,8 @@ const USAGE = `count-scoring-queue.js — depth of each LLM scoring-cascade phas
   --github-output   emit unscored=/rescore=/stale=/emergency= lines for $GITHUB_OUTPUT
   --dir=PATH        review-texts root (default data/review-texts)
   --shows=PATH      shows.json used for titles (default data/shows.json)
+  --min-scanned=N   exit 1 if fewer than N review files were scanned
+  --require-shows   exit 1 if shows.json can't be read (default: warn)
   -h, --help        this message
 
 Counts are the CANONICAL, actionable depth — files the scorer can never consume
@@ -52,12 +54,38 @@ try {
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const list = Array.isArray(raw) ? raw : raw.shows || [];
   for (const s of list) if (s && s.id && s.title) showTitles.set(s.id, s.title);
-} catch {
-  // Titles only sharpen content-quality's show-mention check; absence must not
-  // break the gate (a throw here would fail the whole scoring run closed).
+} catch (err) {
+  // Titles feed content-quality's show-mention check, so a missing shows.json
+  // shifts the counts rather than merely blurring them. Loud by default, and
+  // hard-fail under --require-shows (which CI passes) so a broken core-data
+  // checkout can never masquerade as a drained queue.
+  const msg = `count-scoring-queue: could not read ${showsPath} (${err.message}) — counts may shift without show titles`;
+  if (args.includes('--require-shows')) {
+    console.error(`ERROR: ${msg}`);
+    process.exit(1);
+  }
+  console.error(`WARNING: ${msg}`);
 }
 
-const counts = countScoringQueues(reviewTextsDir, { showTitles });
+let counts;
+try {
+  counts = countScoringQueues(reviewTextsDir, { showTitles });
+} catch (err) {
+  console.error(`ERROR: could not scan ${reviewTextsDir}: ${err.message}`);
+  process.exit(1);
+}
+
+// Scan-collapse guard. A half-checked-out or empty review-texts tree would
+// otherwise report a drained queue and silently stop the scorer forever with
+// a green run (Codex adversarial review, task #652 ship-check).
+const minScanned = Number(argVal('min-scanned', '0'));
+if (minScanned > 0 && counts.scanned < minScanned) {
+  console.error(
+    `ERROR: scanned only ${counts.scanned} review files in ${reviewTextsDir} (expected >= ${minScanned}). ` +
+    'Refusing to report queue depth from a partial corpus — check the review-texts checkout.'
+  );
+  process.exit(1);
+}
 
 const githubOutput = args.includes('--github-output');
 

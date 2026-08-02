@@ -37,6 +37,7 @@ const { isScoreable } = require('./is-scoreable');
 const { isBlockedFromRescore } = require('./rescore-lifecycle');
 const { selectScorableText } = require('./scorable-text');
 const { hasExcerpt } = require('./excerpt-fields');
+const { isInFallbackCooldown } = require('./manual-clear-fallback-cooldown');
 
 /**
  * Why a file that looks unscored is not actionable work. Returned instead of a
@@ -49,7 +50,40 @@ const UNSCORED_SKIP = {
   TERMINAL_TEXT_GATE: 'terminal_text_gate_block',
   NO_SCORABLE_TEXT: 'no_scorable_text',
   STAR_RATING_AUTHORITATIVE: 'star_rating_authoritative',
+  FALLBACK_COOLDOWN: 'manual_clear_fallback_cooldown',
 };
+
+/**
+ * The filters index.ts applies to EVERY mode after its per-phase branch —
+ * the manual-clear Haiku-fallback cooldown, isScoreable(), and "is there any
+ * text the LLM could actually be handed". A phase predicate that skips these
+ * over-counts exactly the way the old inline counters did.
+ *
+ * `starRatingApplies` mirrors index.ts: the manual_extracted_star_rating skip
+ * is suppressed for --needs-rescore and --outdated runs.
+ *
+ * @returns {string|null} a UNSCORED_SKIP reason, or null when selectable
+ */
+function commonSelectionSkipReason(data, ctx, options) {
+  const c = ctx || {};
+  const opts = options || {};
+  // index.ts skips these BEFORE the phase filter's survivors reach scoring —
+  // a file in fallback cooldown is queued-but-not-selectable, which pins any
+  // counter that ignores it (Codex adversarial review, task #652 ship-check).
+  if (isInFallbackCooldown(data)) return UNSCORED_SKIP.FALLBACK_COOLDOWN;
+  if (
+    opts.starRatingApplies !== false &&
+    data.assignedScore != null &&
+    data.scoreSource === 'manual_extracted_star_rating'
+  ) {
+    return UNSCORED_SKIP.STAR_RATING_AUTHORITATIVE;
+  }
+  if (!isScoreable(data, c.show, c.filePath)) return UNSCORED_SKIP.NOT_SCOREABLE;
+  if (!selectScorableText(data, { showTitle: c.showTitle, minTextLength: opts.minTextLength })) {
+    return UNSCORED_SKIP.NO_SCORABLE_TEXT;
+  }
+  return null;
+}
 
 /**
  * @param {Object} data - review-text record
@@ -60,19 +94,18 @@ const UNSCORED_SKIP = {
  * @returns {string|null} a UNSCORED_SKIP reason, or null when this IS actionable work
  */
 function unscoredSkipReason(data, ctx) {
-  const c = ctx || {};
-  if (data.assignedScore != null || data.llmScore || data.humanReviewScore) {
-    return UNSCORED_SKIP.ALREADY_SCORED;
-  }
-  if (!isScoreable(data, c.show, c.filePath)) return UNSCORED_SKIP.NOT_SCOREABLE;
+  // Deliberately `llmScore` only, matching index.ts's unscoredOnly filter
+  // exactly. The old inline counter also excluded assignedScore and
+  // humanReviewScore, which UNDER-counted: a file carrying a non-star
+  // assignedScore but no llmScore is still selected and scored by the
+  // pipeline (Codex adversarial review, task #652 ship-check). The
+  // authoritative-star case is handled in commonSelectionSkipReason.
+  if (data.llmScore) return UNSCORED_SKIP.ALREADY_SCORED;
   // A deterministic text-gate rejection (body_too_short / nav_chrome_majority)
   // reproduces identically until the text itself changes. Counting it forever
   // is exactly what pinned this cascade. See rescore-lifecycle.js.
   if (isBlockedFromRescore(data)) return UNSCORED_SKIP.TERMINAL_TEXT_GATE;
-  if (!selectScorableText(data, { showTitle: c.showTitle })) {
-    return UNSCORED_SKIP.NO_SCORABLE_TEXT;
-  }
-  return null;
+  return commonSelectionSkipReason(data, ctx, {});
 }
 
 /** True when this unscored review is work the scorer can actually pick up. */
@@ -91,34 +124,29 @@ function isActionableUnscored(data, ctx) {
  * them up; the counter must agree, or the gate under-reports the queue.
  */
 function isActionableRescore(data, ctx) {
-  const c = ctx || {};
   if (data.needsRescore !== true) return false;
-  if (!isScoreable(data, c.show, c.filePath)) return false;
   if (isBlockedFromRescore(data)) return false;
-  return true;
+  // starRatingApplies:false — index.ts suppresses the star skip on rescore runs.
+  return commonSelectionSkipReason(data, ctx, { starRatingApplies: false }) === null;
 }
 
 /** Phase 3 (--stale-scores). Mirrors index.ts's staleScores filter. */
 function isActionableStale(data, ctx) {
-  const c = ctx || {};
   if (!data.fullText || data.fullText.length < 1000) return false;
   if (!data.llmScore || !data.llmScore.score) return false;
   if (data.needsRescore || data.ensembleData || data.rescoreCompletedAt) return false;
   const textSource = data.llmMetadata && data.llmMetadata.textSource;
   if (textSource && textSource.type === 'fullText') return false;
   if (!hasExcerpt(data)) return false;
-  if (!isScoreable(data, c.show, c.filePath)) return false;
-  return true;
+  return commonSelectionSkipReason(data, ctx, {}) === null;
 }
 
 /** Phase 4 (--retry-emergency). Mirrors index.ts's retryEmergency filter. */
 function isActionableEmergencyRetry(data, ctx) {
-  const c = ctx || {};
   const ed = data.ensembleData;
   if (!ed || !ed.singleModelEmergency) return false;
   if ((ed.singleModelEmergencyRetryCount || 0) >= 1) return false;
-  if (!isScoreable(data, c.show, c.filePath)) return false;
-  return true;
+  return commonSelectionSkipReason(data, ctx, {}) === null;
 }
 
 /**
@@ -128,8 +156,10 @@ function isActionableEmergencyRetry(data, ctx) {
  * @param {Object} [options]
  * @param {Map<string,string>} [options.showTitles] - showId -> title
  * @returns {{unscored:number, rescore:number, stale:number, emergency:number,
- *            scanned:number, unscoredResidue:Object<string,number>,
- *            unrecoverableSamples:string[]}}
+ *            scanned:number, malformed:number, unreadableDirs:number,
+ *            unscoredResidue:Object<string,number>, unrecoverableSamples:string[]}}
+ * @throws if baseDir cannot be read — the gate must fail closed, never report
+ *         an empty queue because the checkout is missing.
  */
 function countScoringQueues(baseDir, options) {
   const opts = options || {};
@@ -140,30 +170,42 @@ function countScoringQueues(baseDir, options) {
     stale: 0,
     emergency: 0,
     scanned: 0,
+    malformed: 0,
+    unreadableDirs: 0,
     unscoredResidue: {},
     unrecoverableSamples: [],
   };
 
-  let dirs = [];
-  try {
-    dirs = fs.readdirSync(baseDir).filter(d => {
-      try { return fs.statSync(path.join(baseDir, d)).isDirectory(); } catch { return false; }
-    });
-  } catch {
-    return counts;
-  }
+  // FAIL CLOSED. The four `node -e` blocks this replaces let readdirSync throw,
+  // which failed the workflow step under `bash -e`. Swallowing the error here
+  // would turn a missing/failed review-texts checkout into "four zeroes, exit
+  // 0, skip=true" — the scorer would silently stop running entirely and the
+  // run would still be green (Codex adversarial review, task #652 ship-check).
+  const dirs = fs.readdirSync(baseDir).filter(d => {
+    try { return fs.statSync(path.join(baseDir, d)).isDirectory(); } catch { return false; }
+  });
 
   for (const dir of dirs) {
     let files = [];
     try {
       files = fs.readdirSync(path.join(baseDir, dir))
         .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
-    } catch { continue; }
+    } catch {
+      counts.unreadableDirs++;
+      continue;
+    }
 
     for (const file of files) {
       const filePath = path.join(baseDir, dir, file);
       let data;
-      try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+      try {
+        data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      } catch {
+        // Counted, not hidden: a spike in malformed files means the scan is
+        // under-reporting real work and the operator needs to see it.
+        counts.malformed++;
+        continue;
+      }
       counts.scanned++;
 
       const title = data.showId ? showTitles.get(data.showId) : undefined;

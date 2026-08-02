@@ -60,10 +60,8 @@ describe('unscoredSkipReason — what the cascade gate may and may not count', (
     assert.equal(isActionableUnscored(f, {}), true);
   });
 
-  test('already-scored reviews are not counted', () => {
+  test('an llmScore means already-scored — matching index.ts unscoredOnly exactly', () => {
     assert.equal(unscoredSkipReason(scoreableFile({ llmScore: { score: 80 } }), {}), UNSCORED_SKIP.ALREADY_SCORED);
-    assert.equal(unscoredSkipReason(scoreableFile({ assignedScore: 80 }), {}), UNSCORED_SKIP.ALREADY_SCORED);
-    assert.equal(unscoredSkipReason(scoreableFile({ humanReviewScore: 80 }), {}), UNSCORED_SKIP.ALREADY_SCORED);
   });
 
   test('non-scoreable reviews are excluded (the 97-file class)', () => {
@@ -101,6 +99,68 @@ describe('unscoredSkipReason — what the cascade gate may and may not count', (
     const f = scoreableFile({ fullText: 'short' });
     assert.equal(selectScorableText(f, {}), null);
     assert.equal(unscoredSkipReason(f, {}), UNSCORED_SKIP.NO_SCORABLE_TEXT);
+  });
+
+  // ── Codex adversarial-review findings, task #652 ship-check ──────────────
+  // Each of these was a way the "canonical" counter still disagreed with the
+  // scorer's real selection — i.e. the exact bug being fixed, one layer down.
+
+  test('a file held in manual-clear Haiku-fallback cooldown is NOT counted', () => {
+    // index.ts skips these before scoring. A counter that ignores the cooldown
+    // reports UNSCORED>0, Phase 1 runs, processes zero, and 2-4 stay starved.
+    const f = scoreableFile({
+      manualClearFallbackFailedAt: new Date().toISOString(),
+      manualClearFallbackAttempts: 1,
+    });
+    assert.equal(unscoredSkipReason(f, {}), UNSCORED_SKIP.FALLBACK_COOLDOWN);
+
+    const abandoned = scoreableFile({
+      manualClearFallbackFailedAt: '2020-01-01T00:00:00.000Z',
+      manualClearFallbackAbandoned: true,
+    });
+    assert.equal(unscoredSkipReason(abandoned, {}), UNSCORED_SKIP.FALLBACK_COOLDOWN);
+  });
+
+  test('an expired fallback cooldown is countable again', () => {
+    const f = scoreableFile({
+      manualClearFallbackFailedAt: '2020-01-01T00:00:00.000Z',
+      manualClearFallbackAttempts: 1,
+    });
+    assert.equal(unscoredSkipReason(f, {}), null);
+  });
+
+  test('a page-published star rating is authoritative and not counted as unscored', () => {
+    const f = scoreableFile({ assignedScore: 80, scoreSource: 'manual_extracted_star_rating' });
+    assert.equal(unscoredSkipReason(f, {}), UNSCORED_SKIP.STAR_RATING_AUTHORITATIVE);
+  });
+
+  test('assignedScore from a NON-star source still counts — the scorer would take it', () => {
+    // The old inline counter excluded any assignedScore/humanReviewScore, which
+    // UNDER-counted: index.ts's unscoredOnly filter keys on llmScore alone.
+    // Under-counting can advance the cascade past real Phase 1 work.
+    assert.equal(unscoredSkipReason(scoreableFile({ assignedScore: 80 }), {}), null);
+    assert.equal(unscoredSkipReason(scoreableFile({ humanReviewScore: 80 }), {}), null);
+  });
+
+  test('rescore ignores the star-rating skip, matching index.ts', () => {
+    // index.ts suppresses the manual_extracted_star_rating skip on
+    // --needs-rescore / --outdated runs; the counter must do the same.
+    const f = scoreableFile({
+      needsRescore: true,
+      assignedScore: 80,
+      scoreSource: 'manual_extracted_star_rating',
+    });
+    assert.equal(isActionableRescore(f, {}), true);
+    assert.equal(unscoredSkipReason(f, {}), UNSCORED_SKIP.STAR_RATING_AUTHORITATIVE);
+  });
+
+  test('emergency retry excludes files with no scoreable text', () => {
+    const f = scoreableFile({
+      fullText: 'short',
+      llmScore: { score: 60 },
+      ensembleData: { singleModelEmergency: true },
+    });
+    assert.equal(isActionableEmergencyRetry(f, {}), false);
   });
 
   test('an excerpt-only review IS actionable — excerpts bypass the body-length gate', () => {
@@ -212,11 +272,17 @@ describe('countScoringQueues — the cascade reaches Phase 4', () => {
     assert.equal(counts.unscored, 1);
   });
 
-  test('a missing review-texts directory returns zeros rather than throwing', () => {
-    const counts = countScoringQueues(path.join(tmpDir, 'does-not-exist'));
-    assert.deepEqual(
-      { unscored: counts.unscored, rescore: counts.rescore, stale: counts.stale, emergency: counts.emergency },
-      { unscored: 0, rescore: 0, stale: 0, emergency: 0 }
-    );
+  test('a missing review-texts directory THROWS — the gate must fail closed', () => {
+    // Returning zeros here would turn a failed checkout into "queue drained,
+    // skip=true" on a green run, silently stopping the scorer forever.
+    assert.throws(() => countScoringQueues(path.join(tmpDir, 'does-not-exist')));
+  });
+
+  test('malformed files are counted, not silently swallowed', () => {
+    fs.writeFileSync(path.join(showDir, 'broken.json'), '{not json');
+    seed('nyt--a.json', scoreableFile());
+    const counts = countScoringQueues(tmpDir);
+    assert.equal(counts.malformed, 1);
+    assert.equal(counts.scanned, 1);
   });
 });
