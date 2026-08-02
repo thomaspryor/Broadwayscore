@@ -1,15 +1,30 @@
 {
-  "generatedAt": "2026-08-02T20:22:23.677Z",
+  "generatedAt": "2026-08-02T21:19:13.600Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 145,
-  "clean": 143,
-  "defective": 2,
+  "clean": 135,
+  "defective": 10,
   "byType": {
-    "score-drift": 2
+    "score-drift": 10
   },
   "shows": [
+    {
+      "showId": "space-dogs-off-west-end-2026",
+      "title": "Space Dogs",
+      "openingDate": "2026-07-31",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.57 vs local 74.07 (Δ2.5)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 11
+    },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "title": "The Importance of Being Oscar",
@@ -18,12 +33,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.75 vs local 76.54 (Δ1.79)"
+          "detail": "deployed cs 77.03 vs local 74.75 (Δ2.28)"
         }
       ],
       "missingFromProd": [],
       "localCount": 9,
       "deployedCount": 9
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "title": "Brainiac Live",
+      "openingDate": "2026-07-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.44 vs local 89.53 (Δ2.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5
     },
     {
       "showId": "the-car-man-west-end-2026",
@@ -39,6 +69,96 @@
       "missingFromProd": [],
       "localCount": 3,
       "deployedCount": 3
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "title": "Love's Labour's Lost - Globe",
+      "openingDate": "2026-07-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.43 vs local 70.9 (Δ2.47)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 11
+    },
+    {
+      "showId": "the-gin-game-2026",
+      "title": "The Gin Game",
+      "openingDate": "2026-07-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 59.77 vs local 63.55 (Δ3.78)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4
+    },
+    {
+      "showId": "hit-machine-off-west-end-2026",
+      "title": "Hit Machine",
+      "openingDate": "2026-07-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.53 vs local 69.39 (Δ0.86)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-07-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.66 vs local 74.85 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "title": "The Traitors: Live Experience",
+      "openingDate": "2025-08-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.63 vs local 80.24 (Δ0.39)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5
+    },
+    {
+      "showId": "wicked-2003",
+      "title": "Wicked",
+      "openingDate": "2003-10-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.64 vs local 63.22 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 22
     }
   ]
 }
