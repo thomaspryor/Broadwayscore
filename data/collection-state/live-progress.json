@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-02T00:10:29.487Z",
-  "processed": 7,
-  "failed": 26,
-  "successRate": "21.2%",
+  "updatedAt": "2026-08-02T00:56:54.405Z",
+  "processed": 36,
+  "failed": 47,
+  "successRate": "43.4%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 28,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 6,
+    "brightdata": 8,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -58,6 +58,28 @@
       "t": "2026-08-02T00:08:06.859Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-02T00:53:53.375Z",
+      "event": "bb-session",
+      "session": "e55cc6fe",
+      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
+    },
+    {
+      "t": "2026-08-02T00:53:54.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T00:54:10.257Z",
+      "event": "bb-session",
+      "session": "b8e23c3f",
+      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
+    },
+    {
+      "t": "2026-08-02T00:54:11.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
