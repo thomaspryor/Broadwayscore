@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T07:50:30.282Z",
+  "generatedAt": "2026-08-02T08:35:27.102Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,30 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 234.64433166666666,
+      "fileAgeHours": 235.39738972222221,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 193.95120722222222
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "title": "The Importance of Being Oscar",
-      "openingDate": "2026-07-29",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-importance-of-being-oscar-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-01T04:48:38.902Z",
-      "fileAgeHours": 27.030934722222224,
-      "gapSeenAt": "2026-08-02T07:50:30.282Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 194.7003238888889
     }
   ],
   "contradictions": []
