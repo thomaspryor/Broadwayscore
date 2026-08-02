@@ -2271,13 +2271,20 @@ jobs:
         run: |
           # node --test with zero file args does NOT fail - it silently falls back
           # to its own default discovery glob (can exit 0 having run almost nothing,
-          # or hang scanning the whole tree). Fail fast if a manifest is empty/missing
-          # rather than let CI go green while testing nothing (task #763).
-          test -s tests/unit-test-manifest.txt || { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
-          node --test $(cat tests/unit-test-manifest.txt)
+          # or hang scanning the whole tree). A `test -s` size check alone would
+          # pass on a whitespace-only manifest that then word-splits to zero
+          # `node --test` args - the exact silent-discovery failure this guards
+          # against. Read into an array and check its length instead (same
+          # pattern already used below for scripts/lib/*.test.mjs), which also
+          # avoids $(cat ...)'s unquoted word-splitting/glob-expansion on the
+          # manifest entries themselves (task #763 ship-check finding).
+          mapfile -t node_tests < tests/unit-test-manifest.txt
+          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest.txt is empty or missing"; exit 1; }
+          node --test "${node_tests[@]}"
 
-          test -s tests/unit-test-manifest-tsx.txt || { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
-          npx tsx --test $(cat tests/unit-test-manifest-tsx.txt)
+          mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
+          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
+          npx tsx --test "${tsx_tests[@]}"
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and
