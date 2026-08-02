@@ -62,22 +62,47 @@ test('renderParkedCardsBlock: empty/absent input renders nothing', () => {
   assert.equal(renderParkedCardsBlock([]), '');
 });
 
-test('renderParkedCardsBlock: names each task id + workspace ref, "Parked by you: N card(s)"', () => {
+test('renderParkedCardsBlock: names each task id + subject + workspace ref, "Parked by you: N card(s)"', () => {
   const html = renderParkedCardsBlock([
     { taskId: 601, subject: 'Fix the thing', workspaceRef: 'workspace:12' },
     { taskId: 602, subject: 'Fix the other thing', workspaceRef: 'workspace:13' },
   ]);
   assert.match(html, /Parked by you: 2 cards/);
   assert.match(html, /#601/);
+  assert.match(html, /Fix the thing/);
   assert.match(html, /workspace:12/);
   assert.match(html, /#602/);
+  assert.match(html, /Fix the other thing/);
   assert.match(html, /workspace:13/);
 });
 
-test('renderParkedCardsBlock: singular "card" for exactly one, and escapes subject/ref', () => {
-  const html = renderParkedCardsBlock([{ taskId: 1, subject: '<script>', workspaceRef: 'workspace:9' }]);
+test('renderParkedCardsBlock: singular "card" for exactly one, and escapes subject + workspaceRef (the fields it actually renders)', () => {
+  const html = renderParkedCardsBlock([{ taskId: 1, subject: '<script>alert(1)</script>', workspaceRef: '<img src=x>' }]);
   assert.match(html, /Parked by you: 1 card —/);
   assert.doesNotMatch(html, /<script>/);
+  assert.doesNotMatch(html, /<img /);
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /&lt;img /);
+});
+
+test('selectParkedCardsForDigest: caps at maxShown, newest-parked-first, reports moreCount (ship-check finding — Codex)', () => {
+  const parked = dispatchLedger.parkedTasks([
+    { event: 'vanished', taskId: 1, subject: 'oldest', workspaceRef: 'workspace:1', ts: '2026-08-01T00:00:00.000Z' },
+    { event: 'vanished', taskId: 2, subject: 'middle', workspaceRef: 'workspace:2', ts: '2026-08-01T01:00:00.000Z' },
+    { event: 'vanished', taskId: 3, subject: 'newest', workspaceRef: 'workspace:3', ts: '2026-08-01T02:00:00.000Z' },
+  ]);
+  const { shown, moreCount } = dispatchLedger.selectParkedCardsForDigest(parked, 2);
+  assert.deepEqual(shown.map(s => s.taskId), [3, 2], 'newest-ts entries shown first');
+  assert.equal(moreCount, 1);
+});
+
+test('renderParkedCardsBlock: an unbounded historical replay is capped — moreCount shows in the total and as "+N more" (ship-check finding)', () => {
+  const html = renderParkedCardsBlock(
+    [{ taskId: 601, subject: 'shown one', workspaceRef: 'workspace:1' }],
+    3,
+  );
+  assert.match(html, /Parked by you: 4 cards/, 'total = shown + moreCount, not just the capped page');
+  assert.match(html, /\+3 more/);
 });
 
 test('formatParkedCardsLines: empty Map produces no lines', () => {

@@ -425,12 +425,14 @@ function renderRedditDigestBlock(snapshot) {
 // same write-only-signal class as #689/#690/#641/#692. `parkedCards` is the
 // array shape autonomous-email.js builds from dispatchLedger.parkedTasks():
 // [{taskId, subject, workspaceRef}].
-function renderParkedCardsBlock(parkedCards) {
+function renderParkedCardsBlock(parkedCards, moreCount = 0) {
   if (!Array.isArray(parkedCards) || !parkedCards.length) return '';
+  const total = parkedCards.length + (Number(moreCount) || 0);
   const names = parkedCards
-    .map(p => `#${esc(p.taskId)}${p.workspaceRef ? ` (${esc(p.workspaceRef)})` : ''}`)
+    .map(p => `#${esc(p.taskId)}${p.subject ? ` "${esc(p.subject)}"` : ''}${p.workspaceRef ? ` (${esc(p.workspaceRef)})` : ''}`)
     .join(', ');
-  return `<p style="font-size:12px;color:#666;margin:0 0 10px;">Parked by you: ${parkedCards.length} card${parkedCards.length > 1 ? 's' : ''} — ${names}. Resume with <code>bsc-next.js --id &lt;id&gt; --force</code>.</p>`;
+  const more = moreCount > 0 ? ` +${moreCount} more` : '';
+  return `<p style="font-size:12px;color:#666;margin:0 0 10px;">Parked by you: ${total} card${total > 1 ? 's' : ''} — ${names}${more}. Resume with <code>bsc-next.js --id &lt;id&gt; --force</code>.</p>`;
 }
 
 function renderItem(item) {
@@ -679,7 +681,7 @@ function renderEmail(data) {
 
   // Parked cards (card #777) — see renderParkedCardsBlock.
   if (Array.isArray(data.parkedCards) && data.parkedCards.length) {
-    tail.push(renderParkedCardsBlock(data.parkedCards));
+    tail.push(renderParkedCardsBlock(data.parkedCards, data.parkedCardsMoreCount));
   }
 
   const footerBits = [];
