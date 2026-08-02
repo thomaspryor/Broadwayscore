@@ -165,51 +165,18 @@ if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   exit 0
 fi
 
-# Unbounded git fetch on a shallow-checkout path (task #420). This gate lives
-# here as well as in test.yml's lint-workflows job because of a real coverage
-# hole: test.yml's `push:` trigger carries an explicit `paths:` ALLOW-LIST with
-# no `scripts/**` glob, so adding a BRAND-NEW scripts/foo.js containing an
-# unbounded fetch does not trigger the Test Suite at all — the blocking CI gate
-# never runs (feedback_test_yml_push_path_allowlist). `pull_request:` has no
-# paths filter, so PR merges ARE gated; direct pushes to main (which is how
-# nearly every bot commit lands here) were not. Found by the Codex adversarial
-# pass on the card that added the guard.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$"; then
-  run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js"
-fi
-
-# Range-scoped: only run the audit when its target paths changed.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
-  run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"
-  run_audit "orphan-tests" "scripts/audit-orphan-tests.js"
-fi
-
-if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^scripts/audit-playwright-evaluate-click\.js$"; then
-  run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js"
-fi
-
-# Write-routing lints (same script CI runs in test.yml's Lint Workflows job).
-# Runs whenever the push touches any scripts/*.js, the allowlists, or the lint
-# itself — the exact class that reddened main for hours on 2026-07-12 (24
-# consecutive Test Suite failures from one script that bypassed safeWriteReview).
-# Pure grep over scripts/*.js, ~1s.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
-  # -f not -x: invoked via bash, so the exec bit is irrelevant — a checkout
-  # that drops it must not silently skip the gate while CI still enforces it.
-  if [ -f scripts/lint-write-routing.sh ]; then
-    ROUTING_OUT="/tmp/pre-push-routing.$$.out"
-    if ! bash scripts/lint-write-routing.sh all >"$ROUTING_OUT" 2>&1; then
-      echo ""
-      echo "=== PRE-PUSH BLOCKED: write-routing lint failed (CI would go red) ==="
-      echo ""
-      cat "$ROUTING_OUT"
-      echo ""
-      echo "(Bypass for emergencies: git push --no-verify)"
-      rm -f "$ROUTING_OUT"
-      exit 1
-    fi
-    rm -f "$ROUTING_OUT"
-  fi
+# Range-scoped audits (unbounded-fetch, tests-vs-derived-data, orphan-tests,
+# playwright-evaluate-click, write-routing lint) — shared with
+# scripts/merge-worktree-to-main.sh via scripts/lib/run-push-audits.sh (card
+# #835). Previously duplicated inline here; the merge script ran NONE of
+# them, so a worktree branch could merge onto local main unaudited and the
+# violation only surfaced later when an unrelated session's `git push` hit
+# this hook and ate someone else's failure. Extracting to a shared runner
+# keeps both call sites from drifting apart on gate list or scoping.
+if ! echo "$ALL_CHANGED_FILES" | "$REPO_ROOT/scripts/lib/run-push-audits.sh"; then
+  echo ""
+  echo "(Bypass for emergencies: git push --no-verify)"
+  exit 1
 fi
 
 # Workflow-guard lints + workflow audits (same scripts CI runs in test.yml's
