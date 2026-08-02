@@ -343,23 +343,14 @@ async function main() {
     showResults.push({ show, results, summary });
   }
 
-  if (jsonMode) {
-    console.log(JSON.stringify({
-      generatedAt: now.toISOString(),
-      stage: stageArg,
-      shows: showResults.map(({ show, results, summary }) => ({
-        show: { id: show.id, title: show.title, openingDate: show.openingDate, compositeScore: show.compositeScore, reviewCount: show.reviewCount },
-        results,
-        summary,
-      })),
-    }, null, 2));
-  } else {
-    printHumanReadable(showResults);
-  }
-
   // Aggregator remediation — create stubs for reviews we're missing from BWW RR / DTLI.
-  // Runs AFTER checks produce missingReviews in their details, BEFORE we append history
-  // so the history captures the remediation outcome too.
+  // Runs AFTER checks produce missingReviews in their details, BEFORE we print/append
+  // history so both capture the remediation outcome. MUST run before the JSON print:
+  // it used to dump a SECOND JSON object on stderr, and the checklist workflow's
+  // `> /tmp/checklist.json 2>&1` merged it into the file — JSON.parse in
+  // opening-night-sla-dispatch.js then threw on every real run, so activeShowIds
+  // never scoped anything and the SLA paged on shows months away from opening
+  // (2026-08-02 false P0 storm). Stats now ride inside the ONE JSON object.
   let remediationStats = null;
   try {
     remediationStats = remediateMissingReviews(showResults, now);
@@ -367,14 +358,36 @@ async function main() {
     console.error('[remediation] fatal (non-blocking):', err.message);
   }
 
+  if (jsonMode) {
+    const payload = JSON.stringify({
+      generatedAt: now.toISOString(),
+      stage: stageArg,
+      shows: showResults.map(({ show, results, summary }) => ({
+        show: { id: show.id, title: show.title, openingDate: show.openingDate, compositeScore: show.compositeScore, reviewCount: show.reviewCount },
+        results,
+        summary,
+      })),
+      ...(remediationStats ? { remediation: remediationStats } : {}),
+    }, null, 2);
+    // --out=<file>: write the JSON to its own file so it can NEVER be
+    // corrupted by log lines. The remediation step's scraper stack logs to
+    // STDOUT (e.g. '[SB Call] {...}'), so even a clean stderr redirect left
+    // /tmp/checklist.json unparseable — which silently un-scoped the SLA
+    // dispatcher for its entire life (2026-08-02 false P0 storm).
+    const outArg = args.find((a) => a.startsWith('--out='));
+    if (outArg) {
+      const outPath = outArg.slice('--out='.length);
+      fs.writeFileSync(outPath, payload + '\n');
+      console.log(`[checklist] JSON written to ${outPath} (${payload.length} bytes)`);
+    } else {
+      console.log(payload);
+    }
+  } else {
+    printHumanReadable(showResults);
+  }
+
   // Append to history
   try { appendToHistory(showResults, now); } catch (_) {}
-
-  // Surface remediation stats in JSON output too
-  if (jsonMode && remediationStats) {
-    // Appended to previous JSON; easier: dump on stderr so stdout stays clean single-JSON
-    process.stderr.write(JSON.stringify({ remediation: remediationStats }) + '\n');
-  }
 
   const hasErrors = showResults.some(({ summary }) => summary.errors > 0);
   process.exit(hasErrors ? 1 : 0);

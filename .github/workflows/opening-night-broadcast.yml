@@ -755,22 +755,38 @@ jobs:
               return true;
             }).map(id => {
               const s = shows.find(x => x.id === id);
-              return s ? s.title : id;
+              // Diagnosis in the alert itself: the WHY already exists on disk
+              // (orphan-unscored gate snapshot). The old email said only 'the
+              // pipeline may be stuck' while the exact stuck outlet/file sat
+              // unread in data/audit/ — Tao of Glass was blocked 3 days by one
+              // guardian-uk file and the owner was never told which.
+              let why = '';
+              try {
+                const orphan = JSON.parse(fs.readFileSync('data/audit/orphan-unscored-' + id + '.json', 'utf8'));
+                if (orphan && orphan.blockBroadcast && Array.isArray(orphan.orphans) && orphan.orphans.length) {
+                  why = ' — blocked by unscored: ' + orphan.orphans.map(o => (o.outletId || o.file) + (o.rescoreBlockedReason ? ' (' + o.rescoreBlockedReason + ')' : '')).join(', ');
+                }
+              } catch { /* no orphan snapshot — generic message stands */ }
+              return { id, line: (s ? s.title : id) + why };
             });
 
-            // Mark alerted shows so we don't spam
+            // Mark alerted shows so we don't spam. ONLY the ids that are
+            // actually overdue this run: stamping every pending id started a
+            // 24h cooldown for shows that had not yet had their first
+            // legitimate overdue moment, delaying their first real alert by
+            // up to a day (2026-08-02 email-noise session finding).
             if (overdue.length > 0) {
               const sentData = { shows: sent };
               try { Object.assign(sentData, JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8'))); } catch {}
               if (!sentData.shows) sentData.shows = {};
-              for (const id of ids) {
-                const alertKey = 'overdue-alert:' + id;
+              for (const o of overdue) {
+                const alertKey = 'overdue-alert:' + o.id;
                 sentData.shows[alertKey] = { sentAt: new Date().toISOString() };
               }
               fs.writeFileSync('data/opening-night-sent.json', JSON.stringify(sentData, null, 2));
             }
 
-            if (overdue.length) console.log(overdue.join(', '));
+            if (overdue.length) console.log(overdue.map(o => o.line).join(' | '));
           ")
 
           if [ -n "$OVERDUE" ]; then

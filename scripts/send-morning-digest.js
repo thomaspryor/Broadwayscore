@@ -34,6 +34,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const https = require('https');
 
@@ -89,6 +90,7 @@ Usage:
   node scripts/send-morning-digest.js --send-to <address>   send (rule 17: one explicit recipient)
   node scripts/send-morning-digest.js --send-to-owner       send to OWNER_EMAIL (from .env)
   node scripts/send-morning-digest.js --dry-run             write HTML preview, no send
+  --force      bypass the send-once-per-ET-day guard (deliberate re-send only)
   --help, -h   show this message, do nothing else`;
 
 function parseArgs(argv) {
@@ -401,6 +403,29 @@ async function main() {
     return;
   }
 
+  // Send-once-per-ET-day guard. 2026-08-02: a worktree session live-testing the
+  // Digest v3 autofix lane re-sent the owner's already-delivered morning digest
+  // at 3pm — the launchd 07:30 send and the test send were both "legitimate"
+  // callers, so the only durable fix is idempotency in the sender itself.
+  // State lives OUTSIDE every git checkout (~/.broadwayscore-state) for the
+  // same reason as the alert ledger (card #693): a tracked file is clobbered by
+  // concurrent git ops in the shared working tree. Keyed per recipient so a
+  // test send to a throwaway address never blocks (or is blocked by) the real
+  // owner send. --force is the deliberate-re-send escape hatch.
+  const { dayKeyET } = require('./lib/scheduled-email-count-rules');
+  const SENT_STATE = path.join(os.homedir(), '.broadwayscore-state', 'morning-digest-last-sent.json');
+  // dayKeyET expects a Resend-style string (its toDate does string surgery);
+  // a bare Date object mangles to Invalid Date. Pass ISO.
+  const todayET = dayKeyET(new Date().toISOString());
+  if (!args.force) {
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(SENT_STATE, 'utf8')); } catch { /* no state yet */ }
+    if (prev && prev.dayET === todayET && prev.to === sendTo) {
+      console.error(`[digest] already sent to ${sendTo} today (ET ${todayET}, Resend id ${prev.id || '?'}) — refusing duplicate send. Use --dry-run to preview, or --force for a deliberate re-send.`);
+      process.exit(1);
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
   const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
@@ -417,6 +442,12 @@ async function main() {
     process.exit(1);
   }
   console.log(`[digest] sent to ${sendTo} (subject: ${subject} · id ${res.json?.id || '?'})`);
+  try {
+    fs.mkdirSync(path.dirname(SENT_STATE), { recursive: true });
+    fs.writeFileSync(SENT_STATE, JSON.stringify({ dayET: todayET, to: sendTo, id: res.json?.id || null, at: new Date().toISOString() }, null, 2) + '\n');
+  } catch (e) {
+    console.error(`[digest] warn: could not persist sent-state (${e.message}) — the once-per-day guard will not hold until this is fixed`);
+  }
 }
 
 if (require.main === module) {
