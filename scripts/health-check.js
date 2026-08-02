@@ -2096,8 +2096,18 @@ function progressWatchResults(report) {
   // returned beyond the tracked value itself (e.g. check-progress-stalls.js's
   // raw/notScoreable/blocked breakdown, task #751) — surfaced generically
   // here rather than as named fields so this function stays metric-agnostic
-  // as new monitors attach their own context shapes (task #761).
-  const context = report.lastSummary ? ` Context: ${JSON.stringify(report.lastSummary)}` : '';
+  // as new monitors attach their own context shapes (task #761). Guarded:
+  // lastSummary is producer-supplied and unvalidated, so a JSON.stringify
+  // failure (circular ref, BigInt) must not take down the whole alert — the
+  // caller's try/catch would otherwise swallow value/cycles/hint too, silently
+  // disabling the file's one liveness check (adversarial review, task #761).
+  let context = '';
+  if (report.lastSummary) {
+    try {
+      const serialized = JSON.stringify(report.lastSummary);
+      context = ` Context: ${serialized.length > 500 ? `${serialized.slice(0, 500)}…` : serialized}`;
+    } catch { /* unserializable lastSummary — omit context, don't drop the alert */ }
+  }
   return stalled.map((s) => ({
     name: `Progress watch: ${s.label} stalled`,
     status: 'warn',
