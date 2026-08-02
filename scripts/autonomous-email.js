@@ -469,10 +469,13 @@ async function main() {
   // nothing surfaced it — a card could sit parked indefinitely with no
   // signal (same write-only-signal class as #689/#690/#641/#692).
   let parkedCards = null;
+  let parkedCardsMoreCount = 0;
   try {
     const parked = dispatchLedger.parkedTasks(dispatchLedger.readEntries());
     if (parked.size) {
-      parkedCards = [...parked.values()].map(e => ({ taskId: e.taskId, subject: e.subject, workspaceRef: e.workspaceRef }));
+      const { shown, moreCount } = dispatchLedger.selectParkedCardsForDigest(parked);
+      parkedCards = shown;
+      parkedCardsMoreCount = moreCount;
     }
   } catch (err) {
     console.error(`[email] WARN could not read parked cards: ${String(err.message).slice(0, 120)}`);
@@ -547,6 +550,7 @@ async function main() {
     recheck,
     prunedCount,
     parkedCards,
+    parkedCardsMoreCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,
