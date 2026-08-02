@@ -157,7 +157,11 @@ function mainLocked({ dryRun, deps }) {
     console.log('No ✅-marked workspaces to close.');
   }
   if (skipped.length) {
-    console.log(`Skipped ${skipped.length} ✅ workspace(s) with a live claude (running or waiting at the prompt):`);
+    // Owner rule 2026-08-02: skipped now mixes two hands-off classes — live
+    // (mid-turn/selected) tabs AND owner-opened non-🤖 ✅ tabs (even fully
+    // dead). Don't claim liveness for all of them; that misled the owner
+    // about which tabs were safe to hand-close.
+    console.log(`Skipped ${skipped.length} ✅ workspace(s) (mid-turn, selected, or owner-opened — hands-off by design; close by hand if done):`);
     skipped.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
   // Card #564 follow-up: a non-empty disagreements list is direct evidence of
