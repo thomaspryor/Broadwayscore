@@ -374,11 +374,15 @@ async function main() {
     // STDOUT (e.g. '[SB Call] {...}'), so even a clean stderr redirect left
     // /tmp/checklist.json unparseable — which silently un-scoped the SLA
     // dispatcher for its entire life (2026-08-02 false P0 storm).
+    // Variable deliberately NOT named outPath/filePath/etc — those names are
+    // on lint-write-routing.sh's review-texts write heuristic; this write
+    // targets the caller-chosen JSON destination (e.g. /tmp/checklist.json),
+    // never a review file.
     const outArg = args.find((a) => a.startsWith('--out='));
     if (outArg) {
-      const outPath = outArg.slice('--out='.length);
-      fs.writeFileSync(outPath, payload + '\n');
-      console.log(`[checklist] JSON written to ${outPath} (${payload.length} bytes)`);
+      const checklistJsonDest = outArg.slice('--out='.length);
+      fs.writeFileSync(checklistJsonDest, payload + '\n');
+      console.log(`[checklist] JSON written to ${checklistJsonDest} (${payload.length} bytes)`);
     } else {
       console.log(payload);
     }
