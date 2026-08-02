@@ -909,3 +909,42 @@ describe('isRoundupUrl — WestEndTheatre.com /news/{slug}-reviews/ shape (audit
     );
   });
 });
+
+describe('isRoundupUrl — Playbill read-the-reviews-of slug (audit 2026-08-02)', () => {
+  // Playbill's third roundup slug shape, alongside "what-do-the-critics-think-of"
+  // and "what-are-the-reviews-for". Found by sweeping every corpus URL on the
+  // roundup hosts for roundup-shaped URLs the matcher did NOT catch.
+  test('/article/read-the-reviews-of-{slug} → roundup', () => {
+    const r = isRoundupUrl('https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('/news/article/updated-read-more-reviews-of-{slug} → roundup', () => {
+    const r = isRoundupUrl('https://www.playbill.com/news/article/updated-read-more-reviews-of-broadway-bound-musical-an-american-in-paris');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('Playbill individual review article → NOT roundup', () => {
+    const r = isRoundupUrl('https://playbill.com/article/review-the-outsiders-opens-on-broadway');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('Playbill news article that merely mentions reviews → NOT roundup', () => {
+    const r = isRoundupUrl('https://playbill.com/article/gypsy-extends-its-broadway-run');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('page-as-review: Playbill roundup URL + playbill outletId → true', () => {
+    assert.strictEqual(
+      isRoundupPageAsReview({ url: 'https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin', outletId: 'playbill' }),
+      true
+    );
+  });
+
+  test('same URL with a THIRD-PARTY outletId → false (sourced-from-roundup)', () => {
+    assert.strictEqual(
+      isRoundupPageAsReview({ url: 'https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin', outletId: 'nytimes' }),
+      false
+    );
+  });
+});
