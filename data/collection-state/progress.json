@@ -49,7 +49,14 @@
     "head-over-heels-2018/playbill--unknown.json",
     "escape-to-margaritaville-2018/culturesauce--unknown.json",
     "escape-to-margaritaville-2018/playbill--unknown.json",
-    "charlie-and-the-chocolate-factory-2017/cbsnews--shania-russell.json"
+    "charlie-and-the-chocolate-factory-2017/cbsnews--shania-russell.json",
+    "fences-2010/metrmag--unknown.json",
+    "la-cage-aux-folles-2010/nytg--unknown.json",
+    "la-cage-aux-folles-2010/musical-theatre-review--unknown.json",
+    "la-cage-aux-folles-2010/theatermania--unknown.json",
+    "la-cage-aux-folles-2010/metrmag--unknown.json",
+    "la-cage-aux-folles-2010/theater-mirror--unknown.json",
+    "race-2009/ew--unknown.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -134,7 +141,10 @@
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
     "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
     "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
-    "fences-2010/bloomberg--unknown.json"
+    "fences-2010/bloomberg--unknown.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "race-2009/whatsonstage--unknown.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -174,7 +184,14 @@
       "head-over-heels-2018/playbill--unknown.json",
       "escape-to-margaritaville-2018/culturesauce--unknown.json",
       "escape-to-margaritaville-2018/playbill--unknown.json",
-      "charlie-and-the-chocolate-factory-2017/cbsnews--shania-russell.json"
+      "charlie-and-the-chocolate-factory-2017/cbsnews--shania-russell.json",
+      "fences-2010/metrmag--unknown.json",
+      "la-cage-aux-folles-2010/nytg--unknown.json",
+      "la-cage-aux-folles-2010/musical-theatre-review--unknown.json",
+      "la-cage-aux-folles-2010/theatermania--unknown.json",
+      "la-cage-aux-folles-2010/metrmag--unknown.json",
+      "la-cage-aux-folles-2010/theater-mirror--unknown.json",
+      "race-2009/ew--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -210,7 +227,7 @@
     ]
   },
   "startTime": "2026-08-01T23:45:40.770Z",
-  "lastProcessed": "fences-2010/bloomberg--unknown.json",
+  "lastProcessed": "ragtime-2009/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -277,50 +294,6 @@
       "t": "2026-08-02T00:54:11.147Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T00:57:50.516Z",
-      "event": "bb-session",
-      "session": "f7a871a4",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T00:57:51.463Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T00:58:07.374Z",
-      "event": "bb-session",
-      "session": "54f3bcfa",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T00:58:08.307Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T00:58:50.413Z",
-      "event": "bb-session",
-      "session": "95c7035b",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-02T00:58:51.489Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-02T01:00:43.290Z",
-      "event": "bb-session",
-      "session": "59853dfe",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-02T01:00:44.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
