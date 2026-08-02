@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, DISPATCH_CAP } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 
@@ -23,6 +23,54 @@ test('planAutofix: dedups against open tasks, maps states', () => {
   assert.deepEqual(plan.map(r => r.state), ['in-progress', 'queued', 'needs-card']);
   assert.equal(plan[0].taskId, 7);
   assert.equal(plan[1].taskId, 8);
+});
+
+// ── acknowledged rows: no fresh card while the ack is still live ───────────
+
+test('isRowAcknowledged: true only while the stamped expiry is in the future', () => {
+  const msg = '0k credits left (0%) — acknowledged: known issue [expires 2026-08-05]';
+  assert.equal(isRowAcknowledged(msg, '2026-08-02'), true);
+  assert.equal(isRowAcknowledged(msg, '2026-08-05'), false); // expiry day itself is no longer "future"
+  assert.equal(isRowAcknowledged(msg, '2026-08-06'), false);
+  assert.equal(isRowAcknowledged('no ack marker here', '2026-08-02'), false);
+});
+
+test('planAutofix: a live-acknowledged row with no open task gets "acknowledged", not "needs-card"', () => {
+  const health = {
+    warns: [{
+      name: 'Credits: ScrapingBee',
+      message: '0k credits left (0%) · EXHAUSTED · renews Aug 5 — acknowledged: tracked in card #224 [expires 2026-08-05]',
+    }],
+  };
+  const plan = planAutofix({ health, tasks: [], today: '2026-08-02' });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].state, 'acknowledged');
+  assert.equal(plan[0].taskId, null);
+});
+
+test('planAutofix: an expired acknowledgment still files a normal needs-card row', () => {
+  const health = {
+    warns: [{
+      name: 'Credits: ScrapingBee',
+      message: 'still exhausted — acknowledged: was tracked [expires 2026-08-05]',
+    }],
+  };
+  const plan = planAutofix({ health, tasks: [], today: '2026-08-06' });
+  assert.equal(plan[0].state, 'needs-card');
+});
+
+test('planAutofix: an already-open task wins over the acknowledged skip (no duplicate bookkeeping)', () => {
+  const health = { warns: [{ name: 'Credits: ScrapingBee', message: 'x — acknowledged: y [expires 2026-08-05]' }] };
+  const tasks = [{ id: 804, status: 'in_progress', subject: 'BSC Daily: Credits: ScrapingBee' }];
+  const plan = planAutofix({ health, tasks, today: '2026-08-02' });
+  assert.equal(plan[0].state, 'in-progress');
+  assert.equal(plan[0].taskId, 804);
+});
+
+test('runAutofix: an "acknowledged" row is left untouched (no card filed, no dispatch)', () => {
+  const plan = [{ name: 'Credits: ScrapingBee', message: 'x', title: 'BSC Daily: Credits: ScrapingBee', state: 'acknowledged', taskId: null }];
+  const out = runAutofix({ plan, dryRun: true });
+  assert.equal(out[0].state, 'acknowledged');
 });
 
 test('matchOpenTask ignores completed tasks', () => {

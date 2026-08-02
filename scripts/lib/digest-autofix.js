@@ -49,14 +49,32 @@ function matchOpenTask(tasks, name) {
     && String(t.subject || '').includes(needle)) || null;
 }
 
+// Some health rows self-document that they're already tracked, owner-accepted,
+// and expected to clear on their own by a known date — the shared suffix shape
+// emitted by scripts/lib/scrapingbee-ack.js / scrapingdog-ack.js:
+// " — acknowledged: <reason> [expires YYYY-MM-DD]". Those rows stay 'warn'
+// (by design — see task #367/#353) until the stamped date, so a P1 "fix this"
+// card filed against them can never mechanically resolve before then; it's
+// pure noise on top of the acknowledgment that already exists (task #804
+// duplicated the already-closed #224 this exact way; #803 is the ScrapingDog
+// cousin). Skip card-filing for these while the ack is still live.
+const ACKNOWLEDGED_ROW_RE = /acknowledged:.*\[expires\s+(\d{4}-\d{2}-\d{2})\]/i;
+
+function isRowAcknowledged(message, today) {
+  const m = ACKNOWLEDGED_ROW_RE.exec(String(message || ''));
+  if (!m) return false;
+  const todayDate = today || new Date().toISOString().slice(0, 10);
+  return m[1] > todayDate;
+}
+
 /**
  * Pure planner (CLAUDE.md §15): health rows + extra issues + current tasks →
  * per-issue action plan. No I/O so the digest tests can exercise the real
  * decision table.
  * @returns {Array<{name, message, title, state, taskId}>}
- *   state: 'in-progress' | 'queued' | 'needs-card'
+ *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged'
  */
-function planAutofix({ health, extraIssues = [], tasks = [] } = {}) {
+function planAutofix({ health, extraIssues = [], tasks = [], today } = {}) {
   const rows = [
     ...(Array.isArray(health?.errors) ? health.errors : []),
     ...(Array.isArray(health?.warns) ? health.warns : []),
@@ -64,10 +82,15 @@ function planAutofix({ health, extraIssues = [], tasks = [] } = {}) {
   ].filter(r => r && r.name);
   return rows.map(r => {
     const existing = matchOpenTask(tasks, r.name);
+    const message = String(r.message || '').slice(0, 400);
+    const title = `BSC Daily: ${r.name}`;
+    if (!existing && isRowAcknowledged(message, today)) {
+      return { name: r.name, message, title, state: 'acknowledged', taskId: null };
+    }
     return {
       name: r.name,
-      message: String(r.message || '').slice(0, 400),
-      title: `BSC Daily: ${r.name}`,
+      message,
+      title,
       state: existing ? (existing.status === 'in_progress' ? 'in-progress' : 'queued') : 'needs-card',
       taskId: existing ? existing.id : null,
     };
@@ -149,6 +172,7 @@ function dispatchDetached(taskId, log, delaySec = 0) {
  * File missing cards, refresh the task list, dispatch up to `cap`.
  * Mutates each plan row's state to one of:
  *   'in-progress' | 'dispatched' | 'queued' | 'card-filed' | 'card-failed'
+ *   | 'acknowledged' (left untouched — no card, no dispatch)
  * and returns the same array (annotated) for the email renderer.
  */
 function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, loadTasksFn = null } = {}) {
@@ -213,7 +237,7 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   } catch { /* dispatch skipped below */ }
   let budget = cap;
   for (const row of plan) {
-    if (row.state === 'in-progress' || row.state === 'card-failed') continue;
+    if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged') continue;
     if (!row.taskId) {
       const t = matchOpenTask(tasks, row.name);
       if (t) row.taskId = t.id;
@@ -232,4 +256,4 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   return plan;
 }
 
-module.exports = { planAutofix, runAutofix, matchOpenTask, buildCardNotes, DISPATCH_CAP };
+module.exports = { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP };
