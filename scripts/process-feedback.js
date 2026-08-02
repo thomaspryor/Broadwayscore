@@ -20,6 +20,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
 const { planContentRequestActions } = require('./lib/content-request-routing.js');
+const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -440,10 +441,20 @@ async function main() {
         );
       }
       try {
-        const dirs = new Set(fs.readdirSync(path.join(__dirname, '../public/images/shows')));
-        showIdsMissingImages = new Set(shows.filter((s) => s && s.id && !dirs.has(s.id)).map((s) => s.id));
+        // Files, not directory names: the fetcher creates <id>/ before it knows
+        // whether any candidate will verify, so a failed show leaves an EMPTY
+        // directory. Counting that as coverage hides the show from this router —
+        // the same blind spot that let Brainiac Live reach the live homepage
+        // with "Images coming soon". See scripts/lib/show-image-coverage.js.
+        const covered = listShowIdsWithImages(path.join(__dirname, '../public/images/shows'));
+        showIdsMissingImages = new Set(shows.filter((s) => s && s.id && !covered.has(s.id)).map((s) => s.id));
       } catch (err) {
-        console.error(`Could not read image dirs for content routing: ${err.message}`);
+        // Leaves showIdsMissingImages null = "unknown", which the router turns
+        // into imageAbsenceVerified:null. listShowIdsWithImages THROWS rather
+        // than returning {} on an unreadable root precisely so this stays
+        // unknown — degrading to an empty covered-set would declare every show
+        // in the catalogue imageless.
+        console.error(`Could not read image dirs for content routing: ${err.message} — image absence stays UNVERIFIED for this run.`);
       }
     }
 

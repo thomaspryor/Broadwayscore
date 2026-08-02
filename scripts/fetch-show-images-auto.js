@@ -31,6 +31,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
+const { pruneEmptyShowImageDir } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -2286,6 +2287,30 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
   // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback
   const images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
+
+  // Several source paths mkdir <outputBase>/<id>/ BEFORE they know whether any
+  // candidate will verify (fetchFromGoogleImages, the regional-venue path, …),
+  // so a show whose candidates are ALL rejected is left with an EMPTY directory.
+  // Coverage readers that keyed off directory existence then counted the show as
+  // having art and dropped it from the imageless cohort — that is how a show
+  // reaches the live homepage showing "Images coming soon" (Brainiac Live; The
+  // Gin Game before it).
+  //
+  // Pruned HERE, the single point every caller funnels through, rather than at
+  // end-of-run: a --show=<id> run and the concurrent-batch run take different
+  // paths, and an end-of-run sweep is also skipped by early returns,
+  // process.exit, and timeouts — the exact failure cases it exists for.
+  // Scoped to THIS show (never a sweep of all ~2,800 dirs, which would race a
+  // concurrent fetch mid-write), and pruneEmptyShowImageDir uses rmdir, which
+  // refuses the instant anything is inside — so even a lost race can only
+  // remove a directory holding nothing.
+  if (!images) {
+    const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+    if (pruneEmptyShowImageDir(path.join(outputBase, show.id))) {
+      console.log(`   🧹 removed empty image dir for ${show.id} (would otherwise read as coverage)`);
+    }
+  }
+
   return { show, images, apiSourced: !!apiData };
 }
 
