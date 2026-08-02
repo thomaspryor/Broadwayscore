@@ -129,7 +129,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -138,7 +138,8 @@
       "lastNotifiedAt": "2026-08-01T19:57:34.627Z",
       "notifyCount": 7,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-02T15:22:35.021Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -200,11 +201,10 @@
       "disposition": "auto",
       "title": "Unexpected scheduled digest sender fired on 2026-07-26: autonomous-email",
       "firstSeen": "2026-07-27T15:55:14.211Z",
-      "lastSeen": "2026-08-01T15:24:18.623Z",
-      "lastNotifiedAt": "2026-07-31T15:43:37.447Z",
-      "notifyCount": 2,
-      "cardId": "3ae637c5-416f-81b6-a247-ddfca7adf728",
-      "silentRefires": 1
+      "lastSeen": "2026-08-02T15:24:42.432Z",
+      "lastNotifiedAt": "2026-08-02T15:24:42.432Z",
+      "notifyCount": 3,
+      "cardId": "3b0637c5-416f-81b8-9058-fd8bd01a42c1"
     },
     "health-check:Workflow repeat-failure: Check Corpus Drift": {
       "status": "open",
@@ -223,9 +223,9 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-01T08:48:28.632Z",
-      "lastNotifiedAt": "2026-08-01T08:48:28.632Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-02T15:20:31.992Z",
+      "lastNotifiedAt": "2026-08-02T15:20:31.992Z",
+      "notifyCount": 5,
       "cardId": null
     },
     "t1-coverage:scoreboard": {
@@ -233,21 +233,22 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-02T14:29:54.761Z",
-      "lastNotifiedAt": "2026-08-01T19:17:20.189Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-08-02T15:20:32.056Z",
+      "lastNotifiedAt": "2026-08-02T15:20:29.605Z",
+      "notifyCount": 5,
       "cardId": null,
-      "silentRefires": 27
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-02T12:20:25.846Z",
+      "lastSeen": "2026-08-02T15:20:31.917Z",
       "lastNotifiedAt": "2026-08-02T12:20:25.846Z",
       "notifyCount": 3,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "ux-walkthrough:high-priority": {
       "status": "open",
