@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-02T01:34:45.532Z",
+  "updatedAt": "2026-08-02T01:36:04.435Z",
   "processed": 103,
-  "failed": 114,
-  "successRate": "47.5%",
+  "failed": 124,
+  "successRate": "45.4%",
   "tierBreakdown": {
     "playwright": 78,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 17,
-    "archiveToday": 12,
+    "archiveToday": 13,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-08-02T00:04:17.692Z",
-      "event": "bb-session",
-      "session": "5a8ce9d6",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T00:04:18.348Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-08-02T00:04:34.097Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-08-02T01:33:26.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-02T01:34:59.596Z",
+      "event": "bb-session",
+      "session": "6ea1792f",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-02T01:35:00.133Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
