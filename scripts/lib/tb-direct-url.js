@@ -19,8 +19,10 @@ const ROMAN_NUMERAL_RE = /^(?:I{1,3}|IV|VI{0,3}|IX|XI{0,3}|XIV|XV|XVI{0,3}|XIX|X
 const TB_HOST = 'https://www.talkinbroadway.com';
 const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are >3KB
 
+const { foldDiacritics } = require('./title-match');
+
 function toCamelSlug(title) {
-  return title
+  return foldDiacritics(title)
     .replace(/[^a-zA-Z0-9\s]/g, '')
     .split(/\s+/)
     .filter(Boolean)
@@ -34,7 +36,7 @@ function toCamelSlug(title) {
 }
 
 function toLowerSlug(title) {
-  return title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return foldDiacritics(title).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 function buildTbCandidateUrls(title, year) {

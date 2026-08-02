@@ -26,5 +26,25 @@
   "scripts/check-cookie-health.js": {
     "reason": "diagnostic tool validating cookie freshness PER PROVIDER — needs the raw per-provider response, not fetchPage()'s abstracted fallback/verification chain",
     "addedAt": "2026-07-31"
+  },
+  "scripts/lib/browserbase-session.js": {
+    "reason": "canonical Browserbase session-create chokepoint (task #752) — the thing every caller routes through for attribution + userMetadata",
+    "addedAt": "2026-08-02"
+  },
+  "scripts/lib/browserbase-live-usage.js": {
+    "reason": "read-only GET against /v1/sessions (live session-count check) — same endpoint as session-create but a different HTTP method/capability; not a content fetch",
+    "addedAt": "2026-08-02"
+  },
+  "scripts/lib/provider-billing.js": {
+    "reason": "the one reader of provider billing APIs (Scraping v2 Sprint 0) — its Browserbase call is a read-only session-count-for-day GET, not a session create",
+    "addedAt": "2026-08-02"
+  },
+  "scripts/health-check.js": {
+    "reason": "daily health check's Browserbase call is GET /v1/projects/{id}/usage — a credit/usage read, the same capability the detector intentionally exempts for BD/SB/SD billing endpoints; creates no session and spends nothing",
+    "addedAt": "2026-08-02"
+  },
+  "scripts/newspapers-browserbase-login.js": {
+    "reason": "interactive one-time newspapers.com login tool; its session CREATE now routes through createBbSession() (task #752), and its remaining raw /v1 calls are context create + session debug/release — per-session operations with no chokepoint equivalent",
+    "addedAt": "2026-08-02"
   }
 }

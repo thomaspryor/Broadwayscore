@@ -192,6 +192,27 @@ function deadDispatchGuard(task, ledgerEntries, opts) {
     `handling — see task #289). Re-run with --force to dispatch anyway.`;
 }
 
+// Owner-close park (task #578). The duplicate-dispatch guard only fires while
+// a matching workspace is STILL LISTED, so closing a tab used to hand the card
+// straight back to the dispatcher — 17 launches in one day, 187 launch refs
+// against 26 live workspaces (owner report 2026-08-02). bsc-prune records a
+// 'vanished' breadcrumb for a tab that left the listing; this refuses to
+// reopen it. Same signature/shape as deadDispatchGuard above: pure, returns a
+// refusal string or null, and main() owns the exit.
+//
+// --force IS the unpark (its launch entry clears the park — see
+// dispatchLedger.parkedTasks), so this can never become a state whose only
+// escape is a flag nobody remembers.
+function parkedGuard(task, ledgerEntries, opts) {
+  if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
+  const parked = dispatchLedger.parkedTasks(ledgerEntries).get(String(task.id));
+  if (!parked) return null;
+  return `[bsc-next] task #${task.id} is parked: its workspace (${parked.workspaceRef}) was closed on ` +
+    `${String(parked.ts || '').slice(0, 10)} without being marked done. Closing a tab means "stop working ` +
+    `this card", so nothing re-dispatches it on its own.\n` +
+    `  To resume it: node scripts/bsc-next.js --id ${task.id} --force`;
+}
+
 // Pure composition of the self-heal + refusal check (no I/O — main() does the
 // actual ledger append and process.exit). Split out so the burst scenario
 // that motivated task #334 is directly unit-testable: waiting for a 'dead'
@@ -573,6 +594,17 @@ function main(argv = process.argv.slice(2), deps = {}) {
       } catch (e) { console.error(`[bsc-next] dead-dispatch check failed (continuing): ${e.message}`); }
     }
 
+    // Owner-close park (task #578). The duplicate-dispatch guard below only
+    // fires while a matching workspace is STILL LISTED, so closing a tab used
+    // to hand the card straight back to the dispatcher. bsc-prune records a
+    // 'vanished' breadcrumb for a closed tab; this refuses to reopen it.
+    // --force IS the unpark: the launch entry clears the park (see
+    // dispatch-ledger.parkedTasks), so the state is self-healing.
+    try {
+      const refusal = parkedGuard(task, readLedgerEntriesFn(), args);
+      if (refusal) { console.error(refusal); process.exit(1); }
+    } catch (e) { console.error(`[bsc-next] park check failed (continuing): ${e.message}`); }
+
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
@@ -654,4 +686,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };

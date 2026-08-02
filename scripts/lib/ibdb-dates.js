@@ -65,6 +65,8 @@ async function searchIBDB(title, options = {}) {
  * Extract year from IBDB production URL
  * IBDB URLs end with a numeric ID, not a year, but sometimes the title has a year
  */
+const { foldDiacritics } = require('./title-match');
+
 function extractYearFromUrl(url) {
   // IBDB production URLs: /broadway-production/title-slug-123456
   // The number is an internal ID, not a year
@@ -448,7 +450,7 @@ function extractTitleFromIBDBUrl(url) {
  * Strips articles, punctuation, possessives, and SERP suffixes.
  */
 function normalizeForTitleMatch(title) {
-  return title
+  return foldDiacritics(title)
     .toLowerCase()
     .replace(/\s*\|.*$/, '')           // Remove "| IBDB" SERP suffix
     .replace(/\s*[-–]\s*broadway\s+production\b/i, '') // Remove "- Broadway Production"

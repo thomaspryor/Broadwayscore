@@ -50,6 +50,97 @@ test('flags a direct Scrapingdog /scrape call, not /account', () => {
   assert.equal(hits[0].line, 1);
 });
 
+test('flags a direct Browserbase session-create call (api. or www. host)', () => {
+  const src = [
+    `https.request('https://api.browserbase.com/v1/sessions', opts);`,
+    `https.request('https://www.browserbase.com/v1/sessions', opts);`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 2);
+  assert.ok(hits.every(h => h.provider === 'browserbase'));
+});
+
+test('flags a Browserbase /v1 API base held in a constant (split-URL session create)', () => {
+  // Regression: newspapers-browserbase-login.js escaped the gate entirely because
+  // it built the create URL as `${API}${endpoint}` — the /v1/sessions-only regex
+  // never saw a contiguous "/v1/sessions" literal, so a file that really does
+  // POST /sessions scored zero hits.
+  const src = [
+    `const API = 'https://api.browserbase.com/v1';`,
+    `const session = await bb('POST', '/sessions', { projectId });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'browserbase');
+  assert.equal(hits[0].line, 1);
+});
+
+test('flags an api.browserbase.com HOST constant split above /v1', () => {
+  // The split-URL hole one level up from the /v1 case: fixing only `/v1` would
+  // still miss a caller that keeps the bare host in a constant.
+  const src = [
+    `const HOST = 'https://api.browserbase.com';`,
+    `await fetch(HOST + '/v1/sessions', { method: 'POST' });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'browserbase');
+  assert.equal(hits[0].line, 1);
+});
+
+test('does not flag the www.browserbase.com human dashboard link', () => {
+  // test-paywalled-access.js console.logs this debug URL while creating its
+  // session correctly via createBbSession(). Host-only matching on www would
+  // flag that correct file — and allowlisting it would blind the gate to a
+  // future real direct call in the same file.
+  const src = `console.log(\`Debug URL: https://www.browserbase.com/sessions/\${bbSessionId}\`);`;
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
+test('does not flag the Browserbase CDP connect URL (different host, no /v1)', () => {
+  const src = `const browser = await chromium.connectOverCDP('wss://connect.browserbase.com?apiKey=' + key);`;
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
+test('flags Browserbase session-list reads too — the file-level allowlist, not the regex, carves those out', () => {
+  const src = `axios.get(BROWSERBASE_SESSIONS_URL, { params: { projectId } });`;
+  // BROWSERBASE_SESSIONS_URL isn't a literal in this line, so nothing matches —
+  // confirms the detector only sees literal URL text, same as the other providers.
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
+test('flags a bare-host constant for scrapingbee/brightdata/scrapingdog (same split defeat)', () => {
+  // The /v1 fix was Browserbase-only; the identical technique defeated the other
+  // three, whose patterns are path-aware precisely so they can exempt the
+  // billing/SERP siblings. Verified escaping 2026-08-02 before this was added.
+  const cases = [
+    [`const SB = 'https://app.scrapingbee.com';\nfetch(SB + '/api/v1/?url=' + u);`, 'scrapingbee'],
+    [`const BD = 'https://api.brightdata.com';\nhttps.request(BD + '/request', o);`, 'brightdata'],
+    [`const SD = 'https://api.scrapingdog.com';\nfetch(SD + '/scrape?api_key=' + k);`, 'scrapingdog'],
+    [`const BB = 'https://www.browserbase.com';\nfetch(BB + '/v1/sessions');`, 'browserbase'],
+  ];
+  for (const [src, provider] of cases) {
+    const hits = scanSourceForDirectProviderCalls(src);
+    assert.equal(hits.length, 1, `${provider} bare-host constant should be flagged`);
+    assert.equal(hits[0].provider, provider);
+  }
+});
+
+test('bare-host patterns do NOT re-flag the intentionally-exempt billing/SERP endpoints', () => {
+  // These are excluded by path on purpose; a literal carrying any path must not
+  // match the bare-host patterns, or the billing exemptions silently die.
+  const exempt = [
+    `httpsGet('https://app.scrapingbee.com/api/v1/usage?api_key=' + k);`,
+    `const u = 'https://app.scrapingbee.com/api/v1/store/google?search=' + q;`,
+    `const c = 'https://api.brightdata.com/zone/cost?zone=x';`,
+    `httpsGet('https://api.scrapingdog.com/account?api_key=' + k);`,
+    `console.log('https://www.browserbase.com/sessions/' + id);`,
+  ];
+  for (const src of exempt) {
+    assert.equal(scanSourceForDirectProviderCalls(src).length, 0, `should stay exempt: ${src}`);
+  }
+});
+
 test('reports correct line numbers for multiple hits across lines', () => {
   const src = [
     '// comment',

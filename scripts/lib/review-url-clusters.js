@@ -17,6 +17,8 @@
  */
 
 /** Strip query/hash/trailing slash so scrape-variant URLs collapse. */
+const { foldDiacritics } = require('./title-match');
+
 function canonicalReviewUrl(url) {
   if (!url || typeof url !== 'string') return '';
   return url.split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
@@ -34,7 +36,7 @@ function canonicalReviewUrl(url) {
 function outletOf(r) {
   const f = r && r.file;
   let raw = (typeof f === 'string' && f.includes('--')) ? f.split('--')[0] : ((r && r.outlet) || '');
-  return String(raw).toLowerCase().replace(/[^a-z0-9]/g, '');
+  return foldDiacritics(String(raw)).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 /**

@@ -111,6 +111,30 @@ jobs:
           # Do NOT commit them to the public repo — they contain copyrighted content.
           echo "Aggregator archives will be pushed to private repo only"
 
+      # This script creates Browserbase sessions via scripts/lib/browserbase-session.js
+      # (task #752), which writes attribution rows to data/audit/scraper-spend-ledger.jsonl
+      # on the runner's local disk. Without this step those rows never reach the public
+      # repo and are lost when the runner is torn down — attributedPct silently reads low
+      # for this workflow's traffic even though every session WAS attributed at the source.
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.dry_run != true
+        env:
+          # Task #784: concurrent shows/runs can each append to this ledger.
+          # `git rebase -X theirs` resolves a conflicting hunk in favour of the
+          # replayed local commit WITHOUT reporting a conflict (#420/#698
+          # class), so a losing run's appended row(s) can be silently dropped
+          # instead of unioned. Opts into the same post-rebase reconcile pass
+          # #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git add data/audit/scraper-spend-ledger.jsonl || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (scrape-thestage-roundups)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Push review-texts to private repo
         if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-review-texts

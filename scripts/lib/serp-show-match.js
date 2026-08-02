@@ -17,8 +17,15 @@
  * @param {string} showTitle    canonical show title from shows.json
  * @returns {boolean}
  */
+const { foldDiacritics } = require('./title-match');
+
 function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
-  const title = (resultTitle || '').toLowerCase();
+  // Fold both sides: resultTitle is an external SERP headline that may spell
+  // an accented show correctly ("Les Misérables") while our shows.json title
+  // is often ASCII, or vice versa — ship-check (task #760) caught that only
+  // the URL-slug branch below was folded, leaving the primary headline match
+  // (the function's dominant signal) broken for accented titles.
+  const title = foldDiacritics(resultTitle || '').toLowerCase();
   const url = (resultUrl || '').toLowerCase();
 
   // Build list of title variants to check
@@ -50,14 +57,15 @@ function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
 
   // Check title with word boundaries
   for (const v of variants) {
-    const escaped = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const folded = foldDiacritics(v);
+    const escaped = folded.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     if (new RegExp(`\\b${escaped}\\b`, 'i').test(title)) return true;
   }
 
   // Check URL slug with boundary matching (delimiters: / and -)
   // Prevents "bug" matching "debugging", "six" matching "sixth"
   for (const v of variants) {
-    const slug = v.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const slug = foldDiacritics(v).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     if (slug.length >= 3) {
       const slugEscaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       if (new RegExp(`(?:^|[/\\-])${slugEscaped}(?:$|[/\\-])`, 'i').test(url)) return true;

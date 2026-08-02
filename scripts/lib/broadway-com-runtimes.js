@@ -18,6 +18,7 @@
 
 const { fetchPage, cleanup } = require('./scraper');
 const { matchTitleToShow, loadShows } = require('./show-matching');
+const { foldDiacritics } = require('./title-match');
 
 const RUNTIMES_URL = 'https://www.broadway.com/broadway-guide/54/broadway-run-times/';
 
@@ -402,7 +403,7 @@ async function scrapeShowRuntime(showTitle, broadwayComUrl) {
 
   // If no URL provided, construct a likely one from the title
   if (!url) {
-    const slug = showTitle
+    const slug = foldDiacritics(showTitle)
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')

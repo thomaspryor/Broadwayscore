@@ -803,19 +803,14 @@ async function sweepTheatreReviews(show) {
     await sleep(2000);
     console.log(`    [TR] Trying BrowserBase for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     try {
-      const https = require('https');
       const { chromium } = require('playwright');
-      const BB_API_KEY = process.env.BROWSERBASE_API_KEY;
-      const BB_PROJECT_ID = process.env.BROWSERBASE_PROJECT_ID;
-      const session = await new Promise((resolve, reject) => {
-        const req = https.request('https://www.browserbase.com/v1/sessions', {
-          method: 'POST',
-          headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
-        }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
-        req.on('error', reject);
-        req.end(JSON.stringify({ projectId: BB_PROJECT_ID, browserSettings: { solveCaptchas: true } }));
+      const { createBbSession } = require('./lib/browserbase-session');
+      const session = await createBbSession({
+        caller: 'sweep-we-aggregators.js:theatre-reviews',
+        purpose: 'Theatre Reviews (TR) CleanTalk bypass, one-shot',
+        body: { browserSettings: { solveCaptchas: true } },
       });
-      const browser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`);
+      const browser = await chromium.connectOverCDP(session.connectUrl);
       const ctx = browser.contexts()[0] || await browser.newContext();
       const page = ctx.pages()[0] || await ctx.newPage();
       await page.goto(indexUrl, { waitUntil: 'networkidle', timeout: 30000 });
@@ -1030,22 +1025,19 @@ async function getStagePageViaBrowserBase(url) {
   const BB_PROJECT_ID = process.env.BROWSERBASE_PROJECT_ID;
   if (!BB_API_KEY || !BB_PROJECT_ID) return null;
 
-  const https = require('https');
   const { chromium } = require('playwright');
+  const { createBbSession } = require('./lib/browserbase-session');
 
   // Lazy-init: create session + login once, reuse for all shows
   if (!_bbPage) {
     console.log('    [BB] Creating BrowserBase session...');
-    const session = await new Promise((resolve, reject) => {
-      const req = https.request('https://www.browserbase.com/v1/sessions', {
-        method: 'POST',
-        headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
-      }, (res) => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
-      req.on('error', reject);
-      req.end(JSON.stringify({ projectId: BB_PROJECT_ID, keepAlive: true, timeout: 1800, browserSettings: { solveCaptchas: true } }));
+    const session = await createBbSession({
+      caller: 'sweep-we-aggregators.js:the-stage',
+      purpose: 'The Stage cookie-auth session (reused across shows)',
+      body: { keepAlive: true, timeout: 1800, browserSettings: { solveCaptchas: true } },
     });
 
-    _bbBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`);
+    _bbBrowser = await chromium.connectOverCDP(session.connectUrl);
     const ctx = _bbBrowser.contexts()[0] || await _bbBrowser.newContext();
     _bbPage = ctx.pages()[0] || await ctx.newPage();
 

@@ -871,8 +871,23 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'The Stage review-round-ups page' };
   }
 
-  // WestEndTheatre.com reviews pages (aggregator roundups, not individual reviews)
-  if (/westendtheatre\.com\/.*\/reviews\//i.test(url)) {
+  // WestEndTheatre.com reviews pages (aggregator roundups, not individual reviews).
+  // WET publishes NO first-party criticism — every rating on the site is a relay
+  // of some other outlet's star (audit 2026-08-02: all 37 articles in its
+  // /category/news/reviews/ index are multi-outlet roundups; the bylines
+  // — Ghenet Pinderhughes Randall, Paul Raven, Julianna Barnaby — are the
+  // compilers, and each row inside carries the QUOTED critic's name + outlet).
+  //
+  // Two URL shapes, both roundups:
+  //   /{id}/news/reviews/{slug}-reviews/  — the /reviews/ section path
+  //   /{id}/news/{slug}-reviews/          — posted straight under /news/
+  // Only the first was matched, so the-oresteia (4/5) and jesus-christ-superstar
+  // roundups were ingested as first-party WET reviews carrying the roundup's
+  // headline star. They are live-suppressed today only by an unrelated
+  // wrongProduction flag; clearing that flag would ship the aggregate as a
+  // critic review.
+  if (/westendtheatre\.com\/.*\/reviews\//i.test(url)
+      || /westendtheatre\.com\/(?:\d+\/)?news\/(?:[^/?#]+\/)*[^/?#]*-reviews?(?:-round-?up)?\/?(?:[?#]|$)/i.test(url)) {
     return { isRoundup: true, reason: 'WestEndTheatre.com aggregator roundup page' };
   }
 
@@ -896,6 +911,19 @@ function isRoundupUrl(url) {
   // alert as a missing first-party review (2026-07-19).
   if (/playbill\.com\/article\/what-are-the-reviews-for-/i.test(url)) {
     return { isRoundup: true, reason: 'Playbill what-are-the-reviews roundup' };
+  }
+
+  // Playbill's THIRD roundup slug shape: "Read the Reviews of ..." /
+  // "Updated: Read More Reviews of ...", on both /article/ and the older
+  // /news/article/ path. Same multi-outlet quote compilation as the two
+  // patterns above — found by sweeping every corpus URL on the roundup hosts
+  // for roundup-shaped URLs isRoundupUrl did NOT match (audit 2026-08-02,
+  // the WET /news/{slug}-reviews/ bug class). Two corpus files sit here
+  // (an-american-in-paris-2015, glengarry-glen-ross-2025), both outletId
+  // 'playbill' so they are page-as-review; neither is live today, so this is
+  // preventive.
+  if (/playbill\.com\/(?:news\/)?article\/(?:updated-)?read-(?:the-|more-)?reviews?-of-/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill read-the-reviews-of roundup' };
   }
 
   // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One

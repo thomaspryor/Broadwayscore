@@ -218,3 +218,120 @@ test('bsc-next dispatches with the long verify window + late-adopt grace, and jo
   assert.match(src, /verifyTimeoutSec:\s*90,\s*lateAdoptSec:\s*60/);
   assert.match(src, /failedLaunchEntries/);
 });
+
+// ── Owner-closed workspaces (task #578) ────────────────────────────────────
+const {
+  vanishedBreadcrumbs, vanishEpoch, vanishEpochEntry, pruneClosedEntry,
+  parkedTasks, unparkEntry, isWorkspaceRef,
+} = require('./dispatch-ledger.js');
+
+const EPOCH = '2026-08-01T00:00:00.000Z';
+const AFTER = '2026-08-02T12:00:00.000Z';
+const BEFORE = '2026-07-20T12:00:00.000Z';
+const launch = (o) => ({ event: 'launch', taskId: '1', subject: 's', ...o });
+
+test('vanishedBreadcrumbs: absent workspace after the epoch parks its task', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:2']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER, notionId: 'abc' })],
+    { epochTs: EPOCH });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'vanished');
+  assert.equal(out[0].workspaceRef, 'workspace:1');
+  assert.equal(out[0].notionId, 'abc');
+});
+
+test('vanishedBreadcrumbs: a workspace still listed never parks', () => {
+  assert.deepEqual(vanishedBreadcrumbs(
+    new Set(['workspace:1']),
+    [launch({ workspaceRef: 'workspace:1', ts: AFTER })],
+    { epochTs: EPOCH }), []);
+});
+
+test('vanishedBreadcrumbs: pre-epoch launches are history, not parks', () => {
+  assert.deepEqual(vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: BEFORE })],
+    { epochTs: EPOCH }), []);
+});
+
+test('vanishedBreadcrumbs: fails closed with no epoch and on an empty cmux listing', () => {
+  const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: null }), [],
+    'no epoch recorded must never park');
+  assert.deepEqual(vanishedBreadcrumbs(new Set(), entries, { epochTs: EPOCH }), [],
+    'empty listing = cmux restarted/crashed, not 200 closed tabs');
+  assert.throws(() => vanishedBreadcrumbs(['workspace:9'], entries, { epochTs: EPOCH }), /Set/);
+});
+
+test('vanishedBreadcrumbs: headless and ref-less launches are never workspace-shaped', () => {
+  assert.equal(isWorkspaceRef('headless:761'), false);
+  assert.equal(isWorkspaceRef(undefined), false);
+  assert.equal(isWorkspaceRef('workspace:12'), true);
+  assert.deepEqual(vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'headless:1', ts: AFTER }), launch({ taskId: '2', ts: AFTER })],
+    { epochTs: EPOCH }), [], 'headless dispatches are never in a cmux listing — parking them is the #578 bug');
+});
+
+test('vanishedBreadcrumbs: a terminal entry after the launch means already reconciled', () => {
+  for (const ev of ['dead', 'vanished', 'prune-closed']) {
+    assert.deepEqual(vanishedBreadcrumbs(
+      new Set(['workspace:9']),
+      [launch({ workspaceRef: 'workspace:1', ts: AFTER }),
+        { event: ev, taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T13:00:00.000Z' }],
+      { epochTs: EPOCH }), [], `${ev} should terminate the launch`);
+  }
+});
+
+test('vanishedBreadcrumbs: a ref relaunched after its close parks again (cmux ref reuse)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z' }),
+      { event: 'prune-closed', taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T11:00:00.000Z' },
+      launch({ taskId: '77', workspaceRef: 'workspace:1', ts: '2026-08-02T12:00:00.000Z' })],
+    { epochTs: EPOCH });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].taskId, '77', 'the LATEST launch owns the ref, not the first');
+});
+
+test('vanishedBreadcrumbs is idempotent: its own output terminates the next sweep', () => {
+  const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  const first = vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH });
+  assert.equal(first.length, 1);
+  const replayed = entries.concat(first.map(e => ({ ...e, ts: '2026-08-02T14:00:00.000Z' })));
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH }), []);
+});
+
+test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () => {
+  assert.equal(vanishEpoch([]), null);
+  assert.equal(vanishEpoch([{ event: 'vanish-epoch', ts: EPOCH }]), EPOCH);
+  const p = tmpLedger();
+  const written = appendEntry(vanishEpochEntry(), p);
+  assert.ok(written.ts, 'must satisfy appendEntry validation (event + taskId)');
+  assert.equal(vanishEpoch(readEntries(p)), written.ts);
+});
+
+test('pruneClosedEntry only journals workspaces bsc-next actually launched', () => {
+  const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  const e = pruneClosedEntry({ ref: 'workspace:1', title: '✅ done' }, entries);
+  assert.equal(e.event, 'prune-closed');
+  assert.equal(e.taskId, '1');
+  assert.equal(pruneClosedEntry({ ref: 'workspace:44', title: 'hand-opened tab' }, entries), null);
+});
+
+test('parkedTasks: vanished parks, unpark and a later launch both clear it', () => {
+  const v = { event: 'vanished', taskId: '1', workspaceRef: 'workspace:1', ts: AFTER };
+  assert.equal(parkedTasks([v]).has('1'), true);
+  assert.equal(parkedTasks([v, unparkEntry({ taskId: 1 })]).has('1'), false);
+  assert.equal(parkedTasks([v, launch({ workspaceRef: 'workspace:5' })]).has('1'), false,
+    '--force dispatching anyway IS the unpark — the park must never be a trap');
+  assert.equal(parkedTasks([v]).get('1').workspaceRef, 'workspace:1');
+});
+
+test('parkedTasks: a vanished task does NOT count toward the dead-attempt limit', () => {
+  const entries = [{ event: 'vanished', taskId: '1', workspaceRef: 'workspace:1', ts: AFTER },
+    { event: 'vanished', taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }];
+  assert.equal(deadAttemptsForTask('1', entries).length, 0,
+    'closing a tab twice must not burn the 2-death budget — it parks instead');
+});

@@ -320,28 +320,14 @@ async function main() {
 
   if (BB_API_KEY && BB_PROJECT_ID) {
     console.log('   Using BrowserBase (Cloudflare bypass)...');
-    const sessionBody = JSON.stringify({
-      projectId: BB_PROJECT_ID,
-      keepAlive: true,
-      timeout: 900,
-      browserSettings: { solveCaptchas: true },
+    const { createBbSession } = require('./lib/browserbase-session');
+    const session = await createBbSession({
+      caller: 'scrape-stagedoor-critics.js',
+      purpose: 'Stagedoor critic-reviews Cloudflare bypass',
+      body: { keepAlive: true, timeout: 900, browserSettings: { solveCaptchas: true } },
     });
-    const session = await new Promise((resolve, reject) => {
-      const req = https.request('https://www.browserbase.com/v1/sessions', {
-        method: 'POST',
-        headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
-      }, (res) => {
-        let data = '';
-        res.on('data', c => data += c);
-        res.on('end', () => res.statusCode < 300 ? resolve(JSON.parse(data)) : reject(new Error(`BB ${res.statusCode}: ${data}`)));
-      });
-      req.on('error', reject);
-      req.end(sessionBody);
-    });
-
-    const connectUrl = `wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`;
     console.log(`   Session: ${session.id.substring(0, 8)}...`);
-    browser = await chromium.connectOverCDP(connectUrl);
+    browser = await chromium.connectOverCDP(session.connectUrl);
     const contexts = browser.contexts();
     context = contexts[0] || await browser.newContext();
     page = await context.newPage();

@@ -146,7 +146,9 @@ function computeStreak(records, thresholds) {
  * scripts/backlog-drain.js for the same wrapping). Spend AND yield on one
  * line each: a $0 day with a dead pipeline must not read as green.
  */
-function renderSnapshot({ record, streak, breaches, generatedAt, maxSessionsPerDay = resolveMaxSessionsPerDay() }) {
+function renderSnapshot({
+  record, streak, breaches, generatedAt, maxSessionsPerDay = resolveMaxSessionsPerDay(), attribution,
+}) {
   const p = record.providers;
   const items = [];
   const fmt = (e, money, extra) => (e.status === 'ok' ? `${money}${extra || ''}` : e.status);
@@ -175,6 +177,20 @@ function renderSnapshot({ record, streak, breaches, generatedAt, maxSessionsPerD
     if (e.status === 'ok' && e.dayCredits != null) items.push({ title: `${label}: ${e.dayCredits} credits (${e.cycleUsed} this cycle)` });
     else if (e.status === 'baseline') items.push({ title: `${label}: baseline day (cycle ${e.cycleUsed}) — day figure starts tomorrow` });
     else items.push({ title: `${label}: unknown — billing API unreachable` });
+  }
+
+  // attributedPct (task #752): "did the ledger capture ALL of this provider's
+  // spend?" answered as a number instead of an assumption. null means the
+  // billing side was unmeasurable that day — reported as "n/a", never as a
+  // false 0% or 100%.
+  if (attribution) {
+    for (const [provider, label] of [['browserbase', 'Browserbase'], ['brightdata', 'Bright Data'], ['scrapingbee', 'ScrapingBee'], ['scrapingdog', 'ScrapingDog']]) {
+      const a = attribution[provider];
+      if (!a || a.pct == null) continue;
+      const pctText = `${Math.round(a.pct * 100)}% attributed`;
+      const topText = a.top && a.top.length ? ` — top: ${a.top.map((t) => `${t.script} ${t.count}`).join(', ')}` : '';
+      items.push({ title: `${label} attribution: ${pctText}${topText}` });
+    }
   }
 
   let bannerText;

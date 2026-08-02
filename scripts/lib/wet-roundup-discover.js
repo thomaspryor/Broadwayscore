@@ -33,6 +33,8 @@
 const cheerio = require('cheerio');
 const { cleanSearchTitle } = require('./title-normalization');
 
+const { foldDiacritics } = require('./title-match');
+
 async function discoverWetRoundupRows(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
@@ -64,7 +66,7 @@ async function discoverWetRoundupRows(show, opts = {}) {
   for (const post of posts.slice(0, 3)) {
     // Validate post title matches our show (WP search can return wrong shows)
     const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '–').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-    const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+    const normalizeForMatch = (t) => foldDiacritics(t).toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
     const wpNorm = normalizeForMatch(wpTitle);
     const showNorm = normalizeForMatch(searchTitle);
     const showWords = showNorm.split(' ').filter(w => w.length > 2);

@@ -175,3 +175,89 @@ test('node scripts/bsc-prune.js --help prints usage and exits 0 (real process)',
   assert.doesNotMatch(out, /cmux CLI not found/);
   assert.doesNotMatch(out, /Closed \d/);
 });
+
+// ── Owner-close park sweep (task #578) ─────────────────────────────────────
+const { sweepVanished } = require('./bsc-prune.js');
+
+function harness(entries, { dryRun = false } = {}) {
+  const appended = [], parked = [];
+  const deps = {
+    readLedgerEntriesFn: () => entries,
+    appendLedgerEntryFn: (e) => { const w = { ts: '2026-08-02T15:00:00.000Z', ...e }; appended.push(w); return w; },
+    parkCardFn: (v) => parked.push(v),
+    dryRun,
+  };
+  return { appended, parked, deps };
+}
+const ws = (n) => ({ ref: `workspace:${n}`, title: `t${n}` });
+const EPOCH_ENTRY = { event: 'vanish-epoch', taskId: 'epoch', ts: '2026-08-01T00:00:00.000Z' };
+const LAUNCHED = { event: 'launch', taskId: '5', subject: 'card', workspaceRef: 'workspace:1', notionId: 'nid', ts: '2026-08-02T10:00:00.000Z' };
+
+test('sweepVanished: first run records the epoch and parks nothing', () => {
+  const { appended, parked, deps } = harness([LAUNCHED]);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanish-epoch');
+  assert.equal(parked.length, 0, 'the pre-epoch backlog of closed tabs must never mass-park');
+});
+
+test('sweepVanished: a closed tab parks the ledger AND the Notion card', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanished');
+  assert.equal(appended[0].taskId, '5');
+  assert.deepEqual(parked.map(p => p.notionId), ['nid']);
+});
+
+test('sweepVanished: the ledger park holds even when Notion is unreachable', () => {
+  const { appended, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  deps.parkCardFn = () => { throw new Error('notion 503'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.equal(appended[0].event, 'vanished', 'ledger is written before Notion, so the park survives');
+});
+
+test('sweepVanished: --dry-run writes nothing and parks nothing', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED], { dryRun: true });
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.deepEqual(appended, []);
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: an empty cmux listing parks nothing (restart/crash guard)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  sweepVanished({ all: [], ...deps });
+  assert.deepEqual(appended, []);
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: re-validates before appending — a task re-dispatched mid-sweep is NOT parked', () => {
+  // ship-check P0 (Codex): the candidate list is a snapshot. If bsc-next
+  // dispatches this task between the scan and the append, our stale 'vanished'
+  // lands AFTER its 'launch' and parkedTasks() (file order) parks a LIVE tab.
+  const entries = [EPOCH_ENTRY, LAUNCHED];
+  const { appended, parked, deps } = harness(entries);
+  let reads = 0;
+  deps.readLedgerEntriesFn = () => {
+    reads++;
+    // First read = the scan. Second read = the pre-append re-validate, by which
+    // time bsc-next has relaunched the same workspace ref.
+    return reads === 1 ? entries : entries.concat([
+      { event: 'launch', taskId: '5', subject: 'card', workspaceRef: 'workspace:1', ts: '2026-08-02T16:00:00.000Z' },
+      { event: 'prune-closed', taskId: '5', workspaceRef: 'workspace:1', ts: '2026-08-02T16:00:01.000Z' },
+    ]);
+  };
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.deepEqual(appended, [], 'must not park a task reconciled since the scan');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: a failed re-validate read fails closed (no park)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  let reads = 0;
+  const first = [EPOCH_ENTRY, LAUNCHED];
+  deps.readLedgerEntriesFn = () => { if (++reads === 1) return first; throw new Error('EIO'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.deepEqual(appended, [], 'a stale/failed read must never park');
+  assert.deepEqual(parked, []);
+});
