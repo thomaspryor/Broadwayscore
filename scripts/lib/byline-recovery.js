@@ -43,7 +43,7 @@ const NOISE_TOKENS = new Set([
  */
 function isPlausiblePersonName(name) {
   if (!name || typeof name !== 'string') return false;
-  const s = name.trim();
+  const s = foldDiacritics(name).trim();
   if (!s || s.toLowerCase() === 'unknown') return false;
   const tokens = s.split(/\s+/);
   if (tokens.length < 2 || tokens.length > 4) return false; // real names split
