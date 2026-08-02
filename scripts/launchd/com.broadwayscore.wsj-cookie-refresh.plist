@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Monthly WSJ cookie refresh (task #779).
+
+         macOS Tahoe no longer persists httpOnly cookies to Safari's
+         Cookies.binarycookies, so extract-safari-cookies.py can never
+         recover WSJ auth cookies again. This runs scripts/wsj-otp-login.js
+         instead: it requests an email one-time-passcode, reads the code via
+         the shared ~/.claude/bin/gmail helper, and writes fresh cookies to
+         data/cookies/wsj.json — no Safari involved, no human action needed.
+
+         Needs a real Chrome window (headless Chromium gets served a
+         stripped/blocked page even with valid cookies — see
+         scripts/recover-wsj-browser.js header) so this MUST run in the
+         gui/$(id -u) domain on a machine where the owner is logged in, not
+         a headless/background-only agent.
+
+         Cookies are good for weeks per the paywall-subscriptions memory
+         (djcs_session historically ~30d TTL); monthly refresh gives margin
+         before expiry without needlessly burning OTP requests.
+
+         Secrets (WSJ_USER/WSJ_EMAIL) come from the repo's .env via the
+         script's own env — launchd does NOT inherit shell env, so this
+         sources .env explicitly in the command line below.
+
+         Install:  cp scripts/launchd/com.broadwayscore.wsj-cookie-refresh.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.wsj-cookie-refresh.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.wsj-cookie-refresh
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.wsj-cookie-refresh
+         Manual health check: node scripts/recover-wsj-browser.js --auth-only -->
+    <key>Label</key>
+    <string>com.broadwayscore.wsj-cookie-refresh</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/wsj-otp-login.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Day</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/wsj-cookie-refresh.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/wsj-cookie-refresh.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

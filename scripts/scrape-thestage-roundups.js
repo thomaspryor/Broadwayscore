@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -269,8 +270,8 @@ const { extractReviews } = require('./lib/thestage-extract');
 /**
  * Create or update review files from extracted reviews
  */
-function writeReviewFiles(reviews, showId) {
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
+  const showDir = path.join(reviewTextsDir, showId);
   if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
 
   let created = 0, updated = 0;
@@ -301,7 +302,16 @@ function writeReviewFiles(reviews, showId) {
     }
 
     if (!DRY_RUN) {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      // Task #653/#816: findExistingReviewFile() above deliberately skips
+      // wrongProduction/duplicateOf files, so `existingMatch` can be null even
+      // though a flagged file already lives at this exact canonical path —
+      // `data` starts from {} in that case, so a raw write would clobber the
+      // flagged file with a near-empty object. safeWriteReview's merge restores
+      // every field the flagged file carries (not just PROTECTED_FIELDS);
+      // preserveFlaggedFields keeps its own url so the write doesn't trip
+      // applyUrlChangeInvariant and strip publishDate along with it.
+      data = preserveFlaggedFields(filePath, data);
+      safeWriteReview(filePath, data);
       if (existingMatch) { updated++; } else { created++; }
     }
   }
@@ -384,7 +394,7 @@ async function main() {
   }
 }
 
-module.exports = { extractReviews };
+module.exports = { extractReviews, writeReviewFiles };
 
 if (require.main === module) {
   main().catch(err => {
