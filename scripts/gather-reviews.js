@@ -97,6 +97,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
@@ -4534,6 +4535,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     }
   }
 
+  // Outlets that already have a scored/kept review FILE on disk from a prior run —
+  // not just this run's in-memory foundReviews — so a second/third sweep on a show
+  // with existing reviews doesn't re-query site-search/SERP for outlets it already
+  // has real files for (#785). Shared between STEP 1c and STEP 2 below.
+  const diskFoundOutletIds = getFoundOutletIds(showId, { show, market: isWestEnd ? 'west-end' : 'broadway' });
+
   // STEP 1c: Direct Site Search (Telegraph, Variety, The Stage, Independent, Parterre, etc.)
   // Outlet-native search answers instantly (no Google indexing lag) and costs nothing for
   // SSR endpoints. This was previously wired only into opening-night-poller.js — the
@@ -4543,7 +4550,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     console.log(`\n[1c/4] SKIPPED Site Search (--aggregators-only mode)`);
   } else {
     const market = isWestEnd ? 'west-end' : 'broadway';
-    const alreadyFoundIds = new Set(foundReviews.map(r => (r.outletId || '').toLowerCase()));
+    const alreadyFoundIds = new Set([
+      ...diskFoundOutletIds,
+      ...foundReviews.map(r => (r.outletId || '').toLowerCase()),
+    ]);
     const knownUrlsSoFar = new Set(foundReviews.map(r => r.url).filter(Boolean));
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
 
@@ -4631,8 +4641,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Aggregators sometimes misattribute URLs (e.g. labeling a NYSR URL as "WSJ"), and trusting
       // that misattribution suppresses SERP re-discovery of the real outlet's review.
       const outletDomainMap = new Map(outlets.map(o => [o.id.toLowerCase(), (o.domain || '').toLowerCase()]));
-      const foundOutletIds = new Set(
-        foundReviews
+      const foundOutletIds = new Set([
+        // Outlets already on disk from a prior run (#785) — these were already
+        // vetted (wrongProduction/wrongShow/not_a_review excluded) by getFoundOutletIds.
+        ...diskFoundOutletIds,
+        ...foundReviews
           .filter(r => {
             const oid = (r.outletId || '').toLowerCase();
             const expectedDomain = outletDomainMap.get(oid);
@@ -4647,8 +4660,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               return matches;
             } catch { return true; }
           })
-          .map(r => (r.outletId || '').toLowerCase())
-      );
+          .map(r => (r.outletId || '').toLowerCase()),
+      ]);
 
       // Tier 1 first, then Tier 2, then Tier 3 — filtered by market
       const domainMarketMap = getDomainMarketMap();
