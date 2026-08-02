@@ -1368,6 +1368,13 @@ async function main(argv = process.argv.slice(2)) {
       checkpoint[s.id] = {
         at: new Date().toISOString(),
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
+        // uncollected: reviews we literally do not have on disk (aggregator
+        // lists a URL we never fetched, or cites an outlet with no URL).
+        // Consumed by the newsletter pre-send gate (task #823), which must NOT
+        // block on flaggedMisses — those are collected-but-excluded files and
+        // include permanent, correct exclusions (non-reviews, roundups) that
+        // would fail every issue forever.
+        uncollected: r.missing.length + r.citedNoUrl.length,
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         // Cooldown stamps ONLY on a fully-successful census (every query

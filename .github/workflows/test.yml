@@ -999,6 +999,11 @@ on:
       # in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/lede-body-invariant.js'
       - 'scripts/lib/lede-body-invariant.test.mjs'
+      # Pre-send image + review-completeness gates (task #823) — pure predicates
+      # live outside scripts/newsletter/** so they need their own path entries;
+      # colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/newsletter-preflight.js'
+      - 'scripts/lib/newsletter-preflight.test.mjs'
       # Sunday pre-owner-look content review launchd job (card #507) —
       # "already ran today" lock decision lives outside scripts/newsletter/**
       # so it needs its own path entry; colocated test runs in the

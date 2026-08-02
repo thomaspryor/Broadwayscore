@@ -106,6 +106,21 @@ const _announcedShowIds = [];
 const notFeatured = (id) => !featuredShowIds.has(id);
 const markFeatured = (...ids) => { for (const id of ids) if (id) featuredShowIds.add(id); };
 
+// Score-verdict openings this issue renders (opening hero cards + catch-up
+// rows), tagged with their section so the meta write can keep only the
+// sections the current edition actually assembles. pre-send-check.mjs reads
+// meta.openingShows to hard-gate on a missing image (a 🎭-placeholder hero
+// reached the 2026-08-02 WE draft) and on review-completeness (a featured
+// show with uncollected aggregator-cited reviews presents an unsettled
+// score). Side-effect collected like markFeatured; filtered + deduped at the
+// meta write.
+const _openingShowRefs = [];
+const markOpening = (section, showList) => {
+  for (const s of showList || []) {
+    if (s && s.id) _openingShowRefs.push({ section, id: s.id, slug: s.slug, title: s.title, category: s.category || null, image: getImage(s) });
+  }
+};
+
 function inWeek(dateStr) { if (!dateStr) return false; return dateStr >= weekStartStr && dateStr <= weekEndStr; }
 function inWeekDateOnly(d) { if (!d) return false; const s = (typeof d === 'string') ? d.slice(0, 10) : new Date(d).toISOString().slice(0, 10); return s >= weekStartStr && s <= weekEndStr; }
 function fmt(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/New_York' }); }
@@ -631,6 +646,7 @@ function broadwayOpenings() {
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
+  markOpening('broadway-openings', list);
   const hasOpen = events.some(e => !e.isReopening);
   const hasReopen = events.some(e => e.isReopening);
   const title = hasOpen && hasReopen ? 'Opened on Broadway'
@@ -671,6 +687,7 @@ function offBroadwayOpenings() {
   if (!withScore.length) return { html: null, list: [] };
   const list = withScore.slice(0, 8).map(x => x.s); // cap the recent-openings list
   markFeatured(...list.map(s => s.id));
+  markOpening('offbroadway-openings', list);
   const body = list.map(s => showRow(s, {})).join('');
   return { html: sectionWrap(sectionHeading('Opened Off-Broadway'), body), list };
 }
@@ -1424,6 +1441,7 @@ function catchupOpeningsSection() {
     .slice(0, 6);
   if (!list.length) return null;
   list.forEach(x => markFeatured(x.s.id));
+  markOpening('also-opened-recently', list.map(x => x.s));
   const rows = list.map(({ s, a }, i, arr) => {
     const isLast = i === arr.length - 1;
     const border = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
@@ -1914,6 +1932,7 @@ function londonSection() {
     return br - ar;
   });
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
+  markOpening('london-openings', withScore.map(x => x.s));
   // Every opening is a full feature card — same large size for all opening
   // shows (user 2026-07-11). The old gold-hero / non-gold-compact split (which
   // rendered e.g. Allegra as a small row next to a big Jesus Christ Superstar
@@ -1936,6 +1955,7 @@ function operaOpeningsSection() {
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
   if (!withScore.length) return null;
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
+  markOpening('opera-openings', withScore.map(x => x.s));
   // All opening cards are the same large feature size (user 2026-07-11) —
   // mirrors London Openings. showRow renders the OPERA + market pills.
   const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
@@ -2572,6 +2592,19 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   // takes only 3, so a subject-only 4th show exists that ledeShowRefs alone
   // would miss (what-else finding, 2026-07-26).
   ledeShows: dedupeShowRefs([...ledeShowRefs, ..._subjectResult.showRefs]),
+  // Score-verdict openings actually assembled in THIS edition, {id, slug,
+  // title, category, image} each. pre-send-check.mjs hard-fails when one has
+  // no image (🎭-placeholder hero, 2026-08-02 WE draft) or when the review-gap
+  // audit shows uncollected reviews behind its displayed score (task #823).
+  // Sections run for both editions as side effects (the Cyrano bug class), so
+  // filter to the current edition's section set + honor NEWSLETTER_DROP_SECTIONS.
+  openingShows: dedupeShowRefs(_openingShowRefs
+    .filter(r => (IS_WE
+      ? ['london-openings', 'also-opened-recently']
+      : ['broadway-openings', 'offbroadway-openings', 'london-openings', 'opera-openings', 'also-opened-recently']
+    ).includes(r.section))
+    .filter(r => !_dropSet.has(r.section)))
+    .map(({ section, ...rest }) => rest),
 });
 sections.printSummary();
 console.log(`Wrote ${outDir}/${slug}.html (${sectionOrder.length} sections, headerCounts="${headerCounts}")`);
