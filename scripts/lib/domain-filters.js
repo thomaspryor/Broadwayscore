@@ -21,6 +21,12 @@ const TICKET_DOMAINS = new Set([
   'seatgeek.com', 'stubhub.com', 'vividseats.com', 'broadwaybox.com',
   'goldstar.com', 'headout.com', 'rush.app', 'bwayrush.com',
   'luckyseat.com', 'broadwayroulette.com',
+  // UK/WE ticketing + listing platforms (2026-08-02: gather saved a
+  // bookitplease.com booking page as a Dog Man "review" stub under a
+  // misattributed outlet).
+  'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
+  'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
+  'london-theatreland.co.uk', 'ticketek.co.uk', 'seetickets.com',
 ]);
 
 // Aggregator/listing sites — not direct review sources

@@ -436,8 +436,20 @@ function safeWriteReview(filePath, newData, options = {}) {
         // even when incoming has a real value. The lock means the human or
         // ingest pipeline declared the file canonical; nothing downstream
         // should mutate scored/collected fields without force=true.
+        //
+        // Intentional-clear exception (2026-08-02): a write that DELETES a
+        // flag while carrying its registered clear breadcrumb (e.g. deletes
+        // wrongProduction with wrongProductionOverride/ManualClear set) is a
+        // deliberate recovery, not data loss — the same isIntentionalClear()
+        // contract the rebase-time restore already honors. Without this, a
+        // clearWrongProductionFlags() + safeWriteReview() pipeline silently
+        // resurrects the flag it just cleared (observed live: Traitors/Space
+        // Dogs FP recovery, session 2026-08-02). A lock still wins: clearing
+        // flags on a _locked file requires force=true.
         if (existingIsReal && (incomingIsEmpty || lockedOverride)) {
-          if (newData[field] !== existingVal) {
+          const intentionalClear = !lockedOverride && incomingIsEmpty
+            && isIntentionalClear(field, newData, existing);
+          if (!intentionalClear && newData[field] !== existingVal) {
             newData[field] = existingVal;
             preserved.push(field);
             if (lockedOverride && !incomingIsEmpty) lockedSkipped = true;
@@ -445,10 +457,17 @@ function safeWriteReview(filePath, newData, options = {}) {
         }
       }
 
-      // If merge mode, also keep any existing fields not in newData
+      // If merge mode, also keep any existing fields not in newData.
+      // Intentional-clear exception (2026-08-02): same contract as the
+      // preserve loop above — a field deleted WITH its registered clear
+      // breadcrumb must not be merged back from disk, or the merge pass
+      // silently undoes the clear the preserve loop just honored. Locked
+      // files still merge everything back (lock requires force to clear).
+      const mergeLockedOverride = existing._locked === true && !force;
       if (merge) {
         for (const [key, val] of Object.entries(existing)) {
           if (newData[key] === undefined) {
+            if (!mergeLockedOverride && isIntentionalClear(key, newData, existing)) continue;
             newData[key] = val;
           }
         }

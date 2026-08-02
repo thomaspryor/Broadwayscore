@@ -851,3 +851,64 @@ describe('showId backstop', () => {
     assert.equal(fs.existsSync(srcPath), false);
   });
 });
+
+describe('safeWriteReview intentional-clear breadcrumbs (2026-08-02 FP-recovery incident)', () => {
+  const flaggedOnDisk = () => ({
+    showId: 'test-show',
+    outlet: 'blog',
+    url: 'https://example.com/review',
+    fullText: 'A real review of this production...',
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+  });
+
+  test('deleted wrongProduction with override breadcrumb stays cleared', () => {
+    const filePath = path.join(tmpDir, 'cleared-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    delete cleared.wrongProductionReason;
+    cleared.wrongProductionOverride = true;
+    cleared.wrongProductionOverrideReason = 'verified real review of this production';
+    const result = safeWriteReview(filePath, cleared);
+    assert.equal(result.wrote, true);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, undefined);
+    assert.equal(result.preserved.includes('wrongProduction'), false);
+  });
+
+  test('deleted wrongProduction with manualClear breadcrumb stays cleared', () => {
+    const filePath = path.join(tmpDir, 'manual-cleared-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    delete cleared.wrongProductionReason;
+    cleared.wrongProductionManualClear = true;
+    safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, undefined);
+  });
+
+  test('deleted wrongProduction WITHOUT breadcrumb is restored (data-loss protection intact)', () => {
+    const filePath = path.join(tmpDir, 'no-breadcrumb-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    const result = safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+    assert.equal(result.preserved.includes('wrongProduction'), true);
+  });
+
+  test('lock beats breadcrumb: clearing a flag on a _locked file still preserves it', () => {
+    const filePath = path.join(tmpDir, 'locked-review.json');
+    const locked = { ...flaggedOnDisk(), _locked: true };
+    fs.writeFileSync(filePath, JSON.stringify(locked, null, 2));
+    const cleared = { ...flaggedOnDisk(), _locked: true };
+    delete cleared.wrongProduction;
+    cleared.wrongProductionOverride = true;
+    safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+  });
+});
