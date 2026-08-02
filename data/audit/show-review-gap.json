@@ -1,2408 +1,75 @@
 {
-  "generatedAt": "2026-08-02T15:20:24.453Z",
+  "generatedAt": "2026-08-02T17:02:28.472Z",
   "windowDays": 1095,
-  "targets": 25,
+  "targets": 2,
   "counts": {
-    "withGap": 15,
-    "totalMissing": 44,
-    "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 71,
+    "withGap": 2,
+    "totalMissing": 15,
+    "totalCitedNoUrl": 0,
+    "totalFlaggedMisses": 4,
     "totalRecoverable": 0,
-    "totalRecovered": 1
+    "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": true,
-            "rows": 0,
-            "emptyParse": true,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "the-vessel-off-broadway-2026",
-      "title": "The Vessel",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://dalyklerwhmui.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 1,
-      "dirClean": 1,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://dalyklerwhmui.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
-          "host": "doubleclick.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      },
-      "ingestResults": [
-        {
-          "url": "https://dalyklerwhmui.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67635/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67653/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67656/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202607300101/gpt",
-          "host": "doubleclick.net",
-          "outletId": "doubleclick",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67669/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Fetch returned no usable HTML (got 442 chars)"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup"
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "the-saviors-off-broadway-2026",
-      "title": "The Saviors",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
-        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
-        "https://thefrontrowcenter.com/2026/07/the-saviors/",
-        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
-        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
-        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
-        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
-        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
-        "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-      ],
-      "dirFiles": 24,
-      "dirClean": 14,
-      "inReviewsJson": 14,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--howard-miller.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
-        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
-        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/"
-      ],
-      "dirFiles": 17,
-      "dirClean": 11,
-      "inReviewsJson": 11,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      },
-      "recoveryResults": [
-        {
-          "url": "https://nypost.com/2026/07/28/entertainment/broad-strokes-review-a-scary-stroke-at-30-becomes-a-hilarious-off-broadway-show/",
-          "host": "nypost.com",
-          "file": "nypost--johnny-oleksinski.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
-        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
-        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review"
-      ],
-      "dirFiles": 14,
-      "dirClean": 10,
-      "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "nydailynews.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-          "host": "1minutecritic.substack.com",
-          "outletId": "1minutecritic",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
-        "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-        "https://chiswickcalendar.co.uk/event/the-enormous-crocodile-lyric-theatre/2026-08-03/",
-        "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/"
-      ],
-      "dirFiles": 9,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--west-end-theatre.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--anya-ryan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://chiswickcalendar.co.uk/event/the-enormous-crocodile-lyric-theatre/2026-08-03/",
-          "host": "chiswickcalendar.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chiswickcalendar--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://chiswickcalendar.co.uk/event/the-enormous-crocodile-lyric-theatre/2026-08-03/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Enormous Crocodile\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Enormous Crocodile\" West End review 2026",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Enormous Crocodile\" review lyric",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 4,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.threads.com/@fairypowered_productions/post/DbDOlKnCOuo/news-roald-dahls-the-enormous-crocodile-the-musical-returns-to-london-this/",
-          "host": "threads.com",
-          "outletId": "threads",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67715/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "dog-man-the-musical-west-end-2026",
-      "title": "Dog Man - The Musical",
-      "openingDate": "2026-07-29",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-        "https://www.timeout.com/london/theatre/the-truth-review",
-        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
-      ],
-      "dirFiles": 2,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "theatre-reviews"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/london/theatre/the-truth-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--andrzej-lukowski.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "theatre-reviews"
-        }
-      ],
-      "citedNoUrl": [
-        {
-          "outletId": "telegraph",
-          "outletName": "The Telegraph",
-          "stars": 4,
-          "source": "theatre-reviews",
-          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
-          "priorRun": false,
-          "hasExcludedFiles": false
-        }
-      ],
-      "weReference": {
-        "rowCount": 6,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": true,
-            "rows": 6,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 6,
-        "corroborated": 0,
-        "perSource": {
-          "theatre-reviews": {
-            "cited": 1,
-            "corroborated": 0
-          }
-        }
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dog Man - The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "query": "\"Dog Man - The Musical\" West End review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"Dog Man - The Musical\" review queen",
-            "ok": true,
-            "results": 10,
-            "error": null
-          }
-        ],
-        "queriesOk": 2,
-        "resultCount": 0,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67741/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "left-on-tenth-2024",
-      "title": "Left on Tenth",
-      "openingDate": "2024-10-23",
+      "showId": "lempicka-2024",
+      "title": "Lempicka",
+      "openingDate": "2024-04-14",
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-broadways-left-on-tenth",
-        "https://www.broadwayworld.com/article/Review-Roundup-LEFT-ON-TENTH-Starring-Julianna-Margulies-and-Peter-Gallagher-Opens-On-Broadway-20241023"
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-lempicka-on-broadway",
+        "https://playbill.com/article/read-reviews-for-lempicka-musical-starring-carmen-cusack-and-eden-espinosa",
+        "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-Live-20240414",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-Pre-Broadway-LEMPICKA-at-La-Jolla-Playhouse-20220630",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-LEMPICKA-Starring-Carmen-Cusack-and-Eden-Espinosa-at-the-Williamstown-Theatre-Festival-20180730"
       ],
       "aggregatorListedUrls": [
-        "https://www.chicagotribune.com/2024/10/23/review-left-on-tenth-on-broadway-is-a-simple-story-about-late-in-life-romance/",
-        "https://cititour.com/NYC_Broadway/Left-on-Tenth/1259",
-        "https://culturesauce.com/2024/10/23/left-on-tenth-broadway-review-julianna-margulies-delia-ephron/",
-        "https://www.thedailybeast.com/broadway-review-julianna-margulies-faces-love-and-cancer-in-left-on-tenth/",
-        "https://deadline.com/2024/10/left-on-tenth-broadway-review-julianna-margulies-1236121975/",
-        "https://www.nydailynews.com/2024/10/23/broadway-review-delia-ephron-drama-left-on-tenth-is-deeply-personal-memoir-as-play/",
-        "https://nypost.com/2024/10/23/entertainment/left-on-tenth-review-julianna-margulies-broadway-show-is-a-sappy-slog/",
-        "https://nystagereview.com/2024/10/23/left-on-tenth-delia-ephrons-memoir-gets-lost-in-translation/",
-        "https://nystagereview.com/2024/10/23/left-on-tenth-romantic-comedy-takes-a-wrong-turn/",
-        "https://www.newyorktheatreguide.com/reviews/left-on-tenth-broadway-review-julianna-margulies-peter-gallagher",
-        "https://newyorktheater.me/2024/10/23/left-on-tenth-broadway-review/",
-        "https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
-        "https://www.timeout.com/newyork/theater/left-on-tenth-review-broadway-delia-ephron-juliana-margulies",
-        "https://www.usatoday.com/story/entertainment/music/2024/10/23/left-on-tenth-broadway-review/75775737007/",
-        "https://www.thewrap.com/left-on-tenth-broadway-review-julianna-margulies/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF",
-        "https://www.theaterscene.net/plays/broadway-plays/left-on-tenth/victor-gluck/",
-        "https://theaterpizzazz.com/left-on-tenth/"
+        "https://www.chicagotribune.com/2024/04/14/review-lempicka-struggles-to-make-a-painters-life-work-as-a-broadway-musical/",
+        "https://cititour.com/NYC_Broadway/Lempicka/1221",
+        "https://nystagereview.com/2024/04/14/lempicka-admired-artist-tamara-de-lempicka-musicalized-with-limited-artistry/",
+        "https://nystagereview.com/2024/04/14/lempicka-a-paint-by-numbers-old-school-musical/",
+        "https://newyorktheater.me/2024/04/14/lempicka-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/lempicka-broadway-review",
+        "https://www.nytimes.com/2024/04/14/theater/lempicka-review-chavkin-espinosa.html",
+        "https://www.queerty.com/madonnas-muse-lempicka-steps-into-the-spotlight-20240414",
+        "https://www.slantmagazine.com/theater/lempicka-broadway-review/",
+        "https://www.theatermania.com/news/review-lempicka-on-broadway-pays-tribute-to-a-great-but-unknown-artist_1737182/",
+        "http://www.theatrely.com/post/lempicka-is-bold-but-frustratingly-generic----review",
+        "https://www.timeout.com/newyork/theater/lempicka-broadway-musical-review",
+        "https://www.washingtonpost.com/entertainment/theater/2024/04/14/lempicka-broadway-review/",
+        "https://www.thewrap.com/lempicka-broadway-review-lesbians-get-their-big-musical-moment-finally/",
+        "https://www.nytimes.com/2018/07/26/theater/lempicka-review-williamstown.html",
+        "https://www.timesunion.com/7day-arts/article/Review-Lempicka-Williamstown-Theatre-Festival-13103260.php",
+        "https://theberkshireedge.com/theatre-review-lempicka-at-wtf-features-robust-singing-unmemorable-score/",
+        "https://variety.com/2024/legit/reviews/lempicka-review-broadway-musical-1235971035/",
+        "https://www.theatrely.com/post/lempicka-is-bold-but-frustratingly-generic----review",
+        "https://nypost.com/2024/04/14/entertainment/lempicka-broadway-review-painter-musical-is-an-epic-wreck/",
+        "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-06-27/review-la-jolla-playhouses-lempicka-an-eye-popping-study-of-enigmatic-baroness-with-a-brush",
+        "https://timesofsandiego.com/arts/2022/06/28/the-whirlwind-life-of-a-subversive-art-deco-icon-in-lempicka-at-la-jolla-playhouse/",
+        "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca"
       ],
-      "dirFiles": 34,
-      "dirClean": 26,
-      "inReviewsJson": 24,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.wordpress.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "washingtonpost.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "sunset-boulevard-2024",
-      "title": "Sunset Boulevard",
-      "openingDate": "2024-10-20",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-read-what-critics-think-of-jamie-lloyds-minimalist-west-end-sunset-boulevard",
-        "https://playbill.com/article/reviews-what-did-critics-think-of-sunset-boulevard-at-the-kennedy-center",
-        "https://playbill.com/article/reviews-do-critics-think-australias-sarah-brightman-led-sunset-boulevard-is-ready-for-its-close-up",
-        "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Opens-On-Broadway-Updating-Live-20241020",
-        "https://www.broadwayworld.com/article/Review-Roundup-Nicole-Schezinger-Stars-In-SUNSET-BOULEVARD-20231012",
-        "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Starring-Stephanie-J-Block-Derek-Klena-and-Aulii-Cravalho-Opens-At-The-Kennedy-Center-20230203",
-        "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Led-By-Sarah-Brightman-in-Australia-20240530",
-        "https://www.broadwayworld.com/article/Review-Roundup-Glenn-Close-Returns-to-SUNSET-BOULEVARD--Updating-Live-20170209"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
-        "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
-        "https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/",
-        "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
-        "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html",
-        "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html",
-        "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review",
-        "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre",
-        "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
-        "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f",
-        "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
-        "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
-        "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
-        "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
-        "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
-        "https://www.timeout.com/london/theatre/sunset-boulevard-1-review",
-        "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
-        "https://www.washingtonpost.com/theater-dance/2023/02/03/sunset-boulevard-webber-kennedy-center/",
-        "https://www.theguardian.com/stage/article/2024/may/30/sunset-boulevard-review-sarah-brightman-disappoints-in-andrew-lloyd-webbers-mawkish-musical",
-        "https://www.jwire.com.au/sunset-boulevard/",
-        "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
-        "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
-        "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
-        "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html",
-        "https://variety.com/2024/legit/reviews/sunset-boulevard-review-nicole-scherzinger-broadway-1236181291/",
-        "https://www.usatoday.com/story/entertainment/music/2024/10/20/sunset-boulevard-broadway-review/75554784007/",
-        "https://nypost.com/2024/10/20/entertainment/sunset-boulevard-review-nicole-scherzinger-stuns-in-scorching-brilliant-broadway-revival/",
-        "https://ew.com/sunset-boulevard-review-nicole-scherzinger-leads-stunning-2024-revival-8731170",
-        "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/",
-        "https://www.timeout.com/newyork/theater/sunset-boulevard-broadway-review-revival-nicole-scherzinger-andrew-lloyd-webber",
-        "https://www.amny.com/entertainment/broadway/sunset-boulevard-revival-nicole-scherzinger-review/",
-        "https://www.newyorktheatreguide.com/reviews/sunset-boulevard-broadway-review-nicole-scherzinger",
-        "https://culturesauce.com/2024/10/20/sunset-boulevard-broadway-review-nicole-scherzinger-jamie-lloyd/",
-        "https://cititour.com/NYC_Broadway/Sunset-Boulevard/1258",
-        "https://www.washingtonpost.com/entertainment/theater/2023/11/30/sunset-boulevard-scherzinger-jamie-lloyd/",
-        "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
-        "https://artsreview.com.au/sunset-boulevard/",
-        "https://www.nytimes.com/2017/02/09/theater/sunset-boulevard-review.html",
-        "http://variety.com/2017/legit/reviews/sunset-boulevard-review-glenn-close-broadway-1201983033/",
-        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
-        "http://www.amny.com/entertainment/sunset-boulevard-review-glenn-close-shines-in-revival-1.13097437",
-        "http://www.hollywoodreporter.com/review/sunset-boulevard-theater-974020",
-        "http://deadline.com/2017/02/review-glenn-close-in-sunset-boulevard-1201907285/",
-        "http://deadline.com/tag/sunset-boulevard/",
-        "https://www.wsj.com/articles/sunset-boulevard-review-the-picture-got-small-1486690200",
-        "http://www.thewrap.com/sunset-boulevard-broadway-review-glenn-close-leads-awkward-comeback/",
-        "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
-        "http://www.nydailynews.com/entertainment/theater-arts/glenn-close-commands-sunset-boulevard-return-theater-review-article-1.2968626",
-        "http://ew.com/theater/2017/02/09/sunset-boulevard-ew-stage-review/",
-        "https://www.timeout.com/newyork/blog/broadway-review-glenn-close-returns-in-demented-triumph-to-sunset-boulevard-020917",
-        "http://www.vulture.com/2017/02/glenn-closes-new-sunset-boulevard-is-facedown-in-the-pool.html",
-        "https://www.thestage.co.uk/reviews/2017/sunset-boulevard-review/",
-        "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
-        "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmond-75514e1c",
-        "https://www.hollywoodreporter.com/lifestyle/arts/sunset-blvd-broadway-review-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd-1236038232/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/how-sunset-boulevard-blends-film-and-theatre-on-broadway"
-      ],
-      "dirFiles": 71,
-      "dirClean": 36,
-      "inReviewsJson": 33,
-      "missing": [
-        {
-          "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
-          "host": "bnn.network",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.jwire.com.au/sunset-boulevard/",
-          "host": "jwire.com.au",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
-          "host": "noise11.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
-          "host": "scenestr.com.au",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
-          "host": "gaytimes.co.uk",
-          "knownOutletId": "gay-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://artsreview.com.au/sunset-boulevard/",
-          "host": "artsreview.com.au",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
-          "host": "digitaljournal.com",
-          "count": 1
-        },
-        {
-          "host": "hollywoodsoapbox.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "nystagereview.com",
-          "count": 2
-        },
-        {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "slantmagazine.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 3
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--brian-gallagher.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-13982111/Nicole-Scherzinger-Sunset-Boulevard-6-minute-standing-ovation-Broadway.html"
-            },
-            {
-              "file": "daily-mail--luke-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "express-uk--neil-norman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--adrian-horton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/article/2024/may/30/sunset-boulevard-review-sarah-brightman-disappoints-in-andrew-lloyd-webbers-mawkish-musical"
-            },
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre"
-            },
-            {
-              "file": "guardian--susannah-clapp.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/oct/15/the-week-in-theatre-death-of-england-closing-time-sunset-boulevard-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--alice-saville.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f",
-          "host": "huffingtonpost.co.uk",
-          "knownOutletId": "huffpost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "huffpost--contributor.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "i-paper--fiona-mountford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/article/2024/may/30/sunset-boulevard-review-sarah-brightman-disappoints-in-andrew-lloyd-webbers-mawkish-musical",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--adrian-horton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/article/2024/may/30/sunset-boulevard-review-sarah-brightman-disappoints-in-andrew-lloyd-webbers-mawkish-musical"
-            },
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre"
-            },
-            {
-              "file": "guardian--susannah-clapp.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/oct/15/the-week-in-theatre-death-of-england-closing-time-sunset-boulevard-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2017/02/09/theater/sunset-boulevard-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/sunset-boulevard-review-the-picture-got-small-1486690200",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "wsj--charles-isherwood.json",
-              "flag": "clean",
-              "urlInDir": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmond-75514e1c"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/glenn-close-commands-sunset-boulevard-return-theater-review-article-1.2968626",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/10/20/broadway-review-nicole-scherzinger-sizzles-in-red-hot-revival-of-sunset-boulevard/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2017/sunset-boulevard-review/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmond-75514e1c",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "wsj--charles-isherwood.json",
-              "flag": "clean",
-              "urlInDir": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmond-75514e1c"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-read-what-critics-think-of-jamie-lloyds-minimalist-west-end-sunset-boulevard",
-          "publishDate": "2023-10-13"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-sunset-boulevard-at-the-kennedy-center",
-          "publishDate": "2023-02-04"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-do-critics-think-australias-sarah-brightman-led-sunset-boulevard-is-ready-for-its-close-up",
-          "publishDate": "2024-05-30"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Nicole-Schezinger-Stars-In-SUNSET-BOULEVARD-20231012",
-          "publishDate": "2023-10-12"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Starring-Stephanie-J-Block-Derek-Klena-and-Aulii-Cravalho-Opens-At-The-Kennedy-Center-20230203",
-          "publishDate": "2023-02-03"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Led-By-Sarah-Brightman-in-Australia-20240530",
-          "publishDate": "2024-05-30"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Glenn-Close-Returns-to-SUNSET-BOULEVARD--Updating-Live-20170209",
-          "publishDate": "2017-02-09"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
-          "host": "theartsdesk.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
-          "host": "bnn.network",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
-          "host": "theatreweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.jwire.com.au/sunset-boulevard/",
-          "host": "jwire.com.au",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
-          "host": "limelight-arts.com.au",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
-          "host": "noise11.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
-          "host": "scenestr.com.au",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
-          "host": "gaytimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://artsreview.com.au/sunset-boulevard/",
-          "host": "artsreview.com.au",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
-          "host": "nbcnewyork.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "our-town-2024",
-      "title": "Our Town",
-      "openingDate": "2024-10-10",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Jim-Parsons-More-Star-In-OUR-TOWN-On-Broadway-20241010"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html",
-        "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989",
-        "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilders-our-town-is-moving-emotionally-stirring-production/",
-        "https://www.timeout.com/newyork/theater/our-town-broadway-review-thornton-wilder-jim-parsons",
-        "https://www.washingtonpost.com/entertainment/theater/2024/10/10/our-town-broadway-katie-holmes-jim-parsons/",
-        "https://ew.com/our-town-review-jim-parsons-broadway-8726106",
-        "https://variety.com/2024/legit/reviews/our-town-review-broadway-1236171471/",
-        "https://deadline.com/2024/10/our-town-broadway-review-1236109200/",
-        "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/",
-        "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim-parsons-and-katie-holmes-doesnt-hit-home/",
-        "https://nystagereview.com/2024/10/10/our-town-thornton-wilders-classic-in-functional-but-less-than-gripping-revival/",
-        "https://nystagereview.com/2024/10/10/our-town-kenny-leon-smartly-repopulates-thornton-wilder-for-2024/",
-        "https://www.theatrely.com/post/a-haunting-jim-parsons-leads-our-town-review",
-        "https://www.slantmagazine.com/theater/the-hills-of-california-our-town-review/",
-        "https://www.newyorktheatreguide.com/reviews/our-town-broadway-review-jim-parsons-zoey-deutch-katie-holmes"
-      ],
-      "dirFiles": 41,
-      "dirClean": 31,
-      "inReviewsJson": 31,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "newyorker.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "usatoday.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "yellow-face-2024",
-      "title": "Yellow Face",
-      "openingDate": "2024-10-01",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-david-henry-hwangs-yellow-face-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Daniel-Dae-Kim-More-Star-In-YELLOW-FACE-on-Broadway-20241001"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.chicagotribune.com/2024/10/01/review-in-yellow-face-on-broadway-david-henry-hwang-has-some-fun-with-a-thorny-question/",
-        "https://cititour.com/NYC_Broadway/Yellow-Face/1254",
-        "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
-        "https://deadline.com/2024/10/yellow-face-broadway-review-daniel-dae-kim-1236103847/",
-        "https://exeuntnyc.com/reviews/review-yellow-face-at-todd-haimes-theatre/",
-        "https://www.nydailynews.com/2024/10/01/broadway-review-yellow-face-is-enjoyable-comedy-about-racial-identity-in-the-arts/",
-        "https://nystagereview.com/2024/10/01/yellow-face-laugh-reflect-repeat/",
-        "https://nystagereview.com/2024/10/01/yellow-face-playwright-david-henry-hwang-has-fun-unmasking-himself/",
-        "https://newyorktheater.me/2024/10/01/yellow-face-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/yellow-face-broadway-review-daniel-dae-kim",
-        "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
-        "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
-        "https://www.theatrely.com/post/yellow-face-finally-makes-it-to-broadway-review",
-        "https://www.timeout.com/newyork/theater/yellow-face-broadway-review-david-henry-hwang-daniel-dae-kim-asian-american",
-        "https://variety.com/2024/legit/reviews/yellow-face-play-review-daniel-dae-kim-broadway-1236160159/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/",
-        "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
-        "https://www.talkinbroadway.com/page/world/YellowFace.html",
-        "https://www.theaterscene.net/plays/broadway-plays/yellow-face/joel-benjamin/",
-        "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/"
-      ],
-      "dirFiles": 40,
-      "dirClean": 26,
-      "inReviewsJson": 22,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "latimes.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
-          "host": "theaterscene.org",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--charles-isherwood.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/broadway/reviews/yellow-face-david-henry-hwang_98234.html"
-            },
-            {
-              "file": "theatermania--kenji-fujishima.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "clean",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
-            },
-            {
-              "file": "washpost--peter-marks.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--joseph-verlezza.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "mcneal-2024",
-      "title": "McNeal",
-      "openingDate": "2024-09-30",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-mcneal-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Robert-Downey-Jr-More-Star-In-MCNEAL-on-Broadway-20240930"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.latimes.com/entertainment-arts/story/2024-09-30/review-theater-robert-downey-broadway-debut-ayad-akhtar-mcneal-artificial-intelligence",
-        "https://www.amny.com/entertainment/theater/artificial-intelligence-creates-mcneal-robert-downey-jr/",
-        "https://www.chicagotribune.com/2024/09/30/review-mcneal-on-broadway-stars-robert-downey-jr-in-a-story-stuck-in-digitaland/",
-        "https://cititour.com/NYC_Broadway/McNeal/1252",
-        "https://culturesauce.com/2024/09/30/robert-downey-jr-charms-in-muddled-mcneal-broadway-review/",
-        "https://www.thedailybeast.com/broadway-review-in-mcneal-the-future-belongs-to-robert-downey-jr",
-        "https://deadline.com/2024/09/mcneal-broadway-review-robert-downey-jr-1236102977/",
-        "https://www.digitaljournal.com/entertainment/review-robert-downey-jr-tackles-ai-in-broadway-show-mcneal-at-lincoln-center/article",
-        "https://ew.com/mcneal-review-robert-downey-jr-makes-broadway-debut-8720305",
-        "https://thefrontrowcenter.com/2024/09/mcneal/",
-        "https://nypost.com/2024/09/30/entertainment/mcneal-review-robert-downey-jr-s-broadway-play-is-a-total-wipeout/",
-        "https://nystagereview.com/2024/09/30/mcneal-robert-downey-jr-stars-in-riveting-new-play/",
-        "https://nystagereview.com/2024/09/30/mcneal-robert-downey-jr-brings-real-star-power-to-a-sometimes-artificial-feeling-play/",
-        "https://newyorktheater.me/2024/09/30/mcneal-review-robert-downey-jr-unravels-while-ai-ascends/",
-        "https://www.newyorktheatreguide.com/reviews/mcneal-broadway-review-robert-downey-jr",
-        "https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html",
-        "https://www.slantmagazine.com/theater/mcneal-review-robert-downey-jr/",
-        "https://www.thestage.co.uk/reviews/mcneal-review-at-vivian-beaumont-theater-new-york-starring-robert-downey-jr-by-ayad-akhtar-and-bartlett-sher",
-        "https://www.theatermania.com/news/we-asked-chatgpt-to-review-robert-downey-jr-s-broadway-debut-in-the-ai-drama-mcneal_1751655/",
-        "https://www.theatrely.com/post/mcneal-fights-ai-audience-loses-review",
-        "https://www.timeout.com/newyork/theater/mcneal-broadway-review-robert-downey-jr",
-        "https://www.usatoday.com/story/entertainment/music/2024/09/30/robert-downey-jr-mcneal-review/75339158007/",
-        "https://variety.com/2024/legit/reviews/mcneal-review-robert-downey-jr-broadway-1236160088/",
-        "https://www.wsj.com/articles/mcneal-review-robert-downey-jr-broadway-debut-lincoln-center-ayad-akhtar-d320d8da",
-        "https://www.washingtonpost.com/entertainment/theater/2024/09/30/mcneal-robert-downey-jr-review-broadway/",
-        "https://www.thewrap.com/mcneal-broadway-review-robert-downey-jr-play/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJAPJ",
-        "https://www.theaterscene.net/plays/broadway-plays/mcneal/victor-gluck/"
-      ],
-      "dirFiles": 47,
-      "dirClean": 37,
-      "inReviewsJson": 36,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "4columns.org",
-          "count": 1
-        },
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
-          "host": "theaterscene.org",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/we-asked-chatgpt-to-review-robert-downey-jr-s-broadway-debut-in-the-ai-drama-mcneal_1751655/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--david-gordon.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/we-asked-chatgpt-to-review-robert-downey-jr-s-broadway-debut-in-the-ai-drama-mcneal_1751655/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJAPJ",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJAPJ"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "recoveryResults": [
-        {
-          "url": "https://www.newyorker.com/magazine/2024/10/07/mcneal-theatre-review",
-          "host": "newyorker.com",
-          "file": "newyorker--naomi-fry.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~67753/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ]
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "title": "The Hills of California",
-      "openingDate": "2024-09-29",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-jez-butterworths-new-play-the-hills-of-california",
-        "https://playbill.com/article/read-the-reviews-for-the-hills-of-california-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Jez-Butterworths-THE-HILLS-OF-CALIFORNIA-Opens-on-Broadway-Updating-Live-20240929",
-        "https://www.broadwayworld.com/article/Review-Roundup-Jez-Butterworths-THE-HILLS-OF-CALIFORNIA-20240209"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-review-Jez-Butterworth-Laura-Donnelly",
-        "https://www.theguardian.com/stage/2024/feb/08/the-hills-of-california-review-jerusalem-jez-butterworth-harold-pinter-theatre-london",
-        "https://inews.co.uk/culture/arts/hills-of-california-review-harold-pinter-theatre-2896068",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-hills-of-california-review-theatre-b2492218.html",
-        "https://www.londontheatre.co.uk/reviews/the-hills-of-california-review-harold-pinter-theatre",
-        "https://www.nytimes.com/2024/02/09/theater/hills-of-california-review-jez-butterworth.html",
-        "https://www.radiotimes.com/going-out/going-out-reviews/the-hills-of-california-review/",
-        "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold-pinter-theatre-london-from-jez-butterworth-directed-by-sam-mendes",
-        "https://www.standard.co.uk/culture/theatre/the-hills-of-california-harold-pinter-theatre-review-jez-butterworth-sam-mendes-b1137646.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-hills-of-california-harold-pinter-theatre-review/",
-        "https://www.timeout.com/london/theatre/the-hills-of-california-review",
-        "https://www.whatsonstage.com/news/the-hills-of-california-review-four-sisters-soar-in-new-jez-butterworth-play_1570271/",
-        "https://cititour.com/NYC_Broadway/The-Hills-of-California/1251",
-        "https://www.amny.com/news/the-hills-of-california-sam-mendes/",
-        "https://www.broadwaynews.com/the-broadway-review-the-hills-of-california-is-an-excellent-if-overburdened-new-play/",
-        "https://www.chicagotribune.com/2024/09/29/review-in-the-hills-of-california-on-broadway-grown-sisters-reckon-with-their-dreams/",
-        "https://culturesauce.com/2024/09/29/hills-of-california-butterworth-broadway-review/",
-        "https://www.thedailybeast.com/broadway-review-the-hills-of-california-gets-lost-in-timeand-loses-us-too",
-        "https://deadline.com/2024/09/hills-of-california-broadway-review-1236100364/",
-        "https://www.digitaljournal.com/entertainment/review-laura-donnelly-takes-us-over-the-hills-of-california-in-new-broadway-show/article",
-        "https://ew.com/the-hills-of-california-review-broadway-8720070",
-        "https://nypost.com/2024/09/29/entertainment/hills-of-california-review-a-cutthroat-new-stage-mother-on-broadway/",
-        "https://nystagereview.com/2024/09/29/the-hills-of-california-le-jez-hot/",
-        "https://nystagereview.com/2024/09/29/the-hills-of-california-jez-butterworths-piercing-gaze-on-four-sisters/",
-        "https://newyorktheater.me/2024/09/29/the-hills-of-california-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-hills-of-california-broadway-review",
-        "https://www.nytimes.com/2024/09/29/theater/the-hills-of-california-review.html",
-        "https://observer.com/2024/09/review-long-bumpy-ride-to-sisterly-reconciliation-over-the-hills-of-california/",
-        "https://www.theatermania.com/news/review-four-sisters-and-the-secret-that-destroyed-a-family-in-the-hills-of-california_1751568/",
-        "https://www.theatrely.com/post/the-hills-of-california-chart-a-familys-act-review",
-        "https://www.timeout.com/newyork/theater/the-hills-of-california-broadway-review-jez-butterworth-laura-donnelly",
-        "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-sam-mendes-jez-butterworth-1236159482/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/09/29/hills-of-california-broadway-review/",
-        "https://www.thewrap.com/the-hills-of-california-broadway-review-jez-butterworth-sam-mendes/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=BIAUZ4",
-        "https://www.theaterscene.net/plays/broadway-plays/the-hills-of-california/joseph-pisano/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/the-hills-of-california-and-gypsy-are-sister-shows-in-more-ways-than-one",
-        "https://www.theatermania.com/news/watch-an-exclusive-clip-from-broadways-the-hills-of-california_1754785/",
-        "https://variety.com/2024/legit/news/sam-mendes-jez-butterworth-the-hills-of-california-broadway-the-franchise-1236161422/"
-      ],
-      "dirFiles": 57,
-      "dirClean": 34,
+      "dirFiles": 37,
+      "dirClean": 32,
       "inReviewsJson": 30,
       "missing": [
         {
-          "url": "https://www.digitaljournal.com/entertainment/review-laura-donnelly-takes-us-over-the-hills-of-california-in-new-broadway-show/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal"
+          "url": "https://www.timesunion.com/7day-arts/article/Review-Lempicka-Williamstown-Theatre-Festival-13103260.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
         {
-          "host": "thefrontrowcenter.com",
+          "host": "broadwayandme.blogspot.com",
           "count": 1
         },
         {
-          "host": "newyorker.com",
+          "host": "broadwaynews.com",
           "count": 1
         },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://inews.co.uk/culture/arts/hills-of-california-review-harold-pinter-theatre-2896068",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "i-paper--fiona-mountford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://inews.co.uk/culture/arts/hills-of-california-review-harold-pinter-theatre-2896068"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-hills-of-california-review-theatre-b2492218.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--alice-saville.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-hills-of-california-review-theatre-b2492218.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold-pinter-theatre-london-from-jez-butterworth-directed-by-sam-mendes",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold-pinter-theatre-london-from-jez-butterworth-directed-by-sam-mendes"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-hills-of-california-harold-pinter-theatre-review-jez-butterworth-sam-mendes-b1137646.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-hills-of-california-harold-pinter-theatre-review-jez-butterworth-sam-mendes-b1137646.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-hills-of-california-harold-pinter-theatre-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/the-hills-of-california-harold-pinter-theatre-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-hills-of-california-review-four-sisters-soar-in-new-jez-butterworth-play_1570271/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/the-hills-of-california-review-four-sisters-soar-in-new-jez-butterworth-play_1570271/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/09/29/the-hills-of-california-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "clean",
-              "urlInDir": "https://newyorktheater.me/2024/09/29/the-hills-of-california-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2024/09/review-long-bumpy-ride-to-sisterly-reconciliation-over-the-hills-of-california/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/09/review-long-bumpy-ride-to-sisterly-reconciliation-over-the-hills-of-california/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BIAUZ4",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BIAUZ4"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-jez-butterworths-new-play-the-hills-of-california",
-          "publishDate": "2024-02-09"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Jez-Butterworths-THE-HILLS-OF-CALIFORNIA-20240209",
-          "publishDate": "2024-02-09"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-laura-donnelly-takes-us-over-the-hills-of-california-in-new-broadway-show/article",
-          "host": "digitaljournal.com",
-          "outletId": "digital-journal",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67758/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-roommate-2024",
-      "title": "The Roommate",
-      "openingDate": "2024-09-12",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-roommate-on-broadway-starring-mia-farrow-and-patti-lupone",
-        "https://www.broadwayworld.com/article/Review-Roundup-Patti-LuPone-and-Mia-Farrow-Star-In-THE-ROOMMATE-On-Broadway-20240912"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.broadwaynews.com/the-broadway-review-jen-silvermans-the-roommate-is-bolstered-by-its-stars/",
-        "https://www.chicagotribune.com/2024/09/12/review-the-roommate-on-broadway-has-stars-much-bigger-than-this-story/",
-        "https://cititour.com/NYC_Broadway/The-Roommate/1248",
-        "https://www.thedailybeast.com/the-roommate-on-broadway-patti-lupone-and-mia-farrow-do-the-dark-side",
-        "https://deadline.com/2024/09/the-roommate-broadway-review-mia-farrow-patti-lupone-1236084953/",
-        "https://www.digitaljournal.com/entertainment/review-patti-lupone-and-mia-farrow-star-in-the-roommate-on-broadway/article",
-        "https://exeuntnyc.com/reviews/review-the-roommate-at-the-booth-theatre/",
-        "https://www.theguardian.com/stage/2024/sep/12/the-roommate-review-patti-lupone-mia-farrow-play",
-        "https://www.nydailynews.com/2024/09/12/broadway-farrow-lupone-outshine-an-imperfect-script-in-the-roommate/",
-        "https://nystagereview.com/2024/09/12/the-roommate-bronx-bad-girl-meet-midwestern-nervous-nellie/",
-        "https://nystagereview.com/2024/09/12/the-roommate-boulevard-comedy-sitcom-style/",
-        "https://newyorktheater.me/2024/09/12/the-roommate-broadway-review-mia-farrow-and-patti-lupone-as-an-odd-couple/",
-        "https://www.newyorktheatreguide.com/reviews/the-roommate-broadway-review-mia-farrow-patti-lupone",
-        "https://www.nytimes.com/2024/09/12/theater/the-roommate-review-lupone-farrow.html",
-        "https://www.slantmagazine.com/theater/the-roommate-review-mia-farrow-patti-lupone/",
-        "https://www.thestage.co.uk/reviews/the-roommate-review-booth-theatre-new-york-mia-farrow-patti-lupone-jen-silverman-jack-obrien",
-        "https://www.theatermania.com/news/review-patti-lupone-and-mia-farrow-cohabit-in-the-roommate-on-broadway_1749815/",
-        "https://theaterpizzazz.com/the-roommate/",
-        "https://www.timeout.com/newyork/theater/the-roommate-broadway-review-mia-farrow-patti-lupone",
-        "https://www.usatoday.com/story/entertainment/music/2024/09/12/the-roommate-broadway-review/75142375007/",
-        "https://variety.com/2024/legit/reviews/the-roommate-review-mia-farrow-patti-lupone-broadway-1236142188/",
-        "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-iowa-3b5631c0",
-        "https://www.washingtonpost.com/entertainment/theater/2024/09/12/roommate-review-mia-farrow-patti-lupone/",
-        "https://www.thewrap.com/the-roommate-broadway-review-mia-farrow-patti-lupone/",
-        "https://www.villagevoice.com/review-the-roommate-relies-on-star-power-to-transform-bad-into-good/",
-        "https://observer.com/2024/09/theater-review-mia-farrow-patti-lupone-the-roommate/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=F1SC8X",
-        "https://www.newyorktheatreguide.com/theatre-news/news/see-photos-of-mia-farrow-patti-lupone-in-the-roommate-on-broadway",
-        "https://www.newyorktheatreguide.com/theatre-news/news/our-favorite-patti-lupone-theatre-roles",
-        "https://www.newyorktheatreguide.com/theatre-news/news/all-the-times-mia-farrow-did-theatre"
-      ],
-      "dirFiles": 46,
-      "dirClean": 36,
-      "inReviewsJson": 36,
-      "missing": [],
-      "dirOnly": [
         {
           "host": "culturesauce.com",
           "count": 1
@@ -2412,6 +79,10 @@
           "count": 1
         },
         {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
           "host": "thefrontrowcenter.com",
           "count": 1
         },
@@ -2424,11 +95,261 @@
           "count": 1
         },
         {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
           "host": "theaterlife.com",
           "count": 1
         },
         {
-          "host": "theaterscene.org",
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://theberkshireedge.com/theatre-review-lempicka-at-wtf-features-robust-singing-unmemorable-score/",
+          "host": "theberkshireedge.com",
+          "knownOutletId": "berkshire-edge",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "berkshire-edge--j-peter-bergman.json",
+              "flag": "clean",
+              "urlInDir": "https://theberkshireedge.com/theatre-review-lempicka-at-wtf-features-robust-singing-unmemorable-score/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-lempicka-musical-starring-carmen-cusack-and-eden-espinosa",
+          "publishDate": "2018-07-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-Pre-Broadway-LEMPICKA-at-La-Jolla-Playhouse-20220630",
+          "publishDate": "2022-06-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-LEMPICKA-Starring-Carmen-Cusack-and-Eden-Espinosa-at-the-Williamstown-Theatre-Festival-20180730",
+          "publishDate": "2018-07-30"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.timesunion.com/7day-arts/article/Review-Lempicka-Williamstown-Theatre-Festival-13103260.php",
+          "host": "timesunion.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "title": "Water for Elephants",
+      "openingDate": "2024-03-21",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-broadways-water-for-elephants",
+        "https://playbill.com/article/reviews-read-what-critics-are-saying-about-the-world-premiere-water-for-elephants-musical",
+        "https://www.broadwayworld.com/article/Review-Roundup-WATER-FOR-ELEPHANTS-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20240321",
+        "https://www.broadwayworld.com/article/Review-Roundup-WATER-FOR-ELEPHANTS-North-American-Tour-20251008",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-WATER-FOR-ELEPHANTS-World-Premiere-at-Alliance-Theatre-20230622"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/2024/03/21/water-for-elephants-review-broadway/",
+        "https://cititour.com/NYC_Broadway/Water-for-Elephants/1217",
+        "https://deadline.com/2024/03/water-for-elephants-broadway-review-1235863179/",
+        "https://www.digitaljournal.com/entertainment/review-grant-gustin-and-isabelle-mccalla-star-in-water-for-elephants-on-broadway/article",
+        "https://ew.com/water-for-elephants-review-broadway-grant-gustin-8612582",
+        "https://www.themarysue.com/water-for-elephants-review/",
+        "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/",
+        "https://nystagereview.com/2024/03/21/water-for-elephants-a-thrilling-throwback-to-the-heyday-of-the-big-top/",
+        "https://nystagereview.com/2024/03/21/water-for-elephants-heavy-lifting-for-a-musical/",
+        "https://newyorktheater.me/2024/03/21/water-for-elephants-broadway-review/",
+        "https://www.nytimes.com/2024/03/21/theater/water-for-elephants-review-broadway.html",
+        "https://www.newyorktheatreguide.com/reviews/water-for-elephants-broadway-review",
+        "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadway-show-ever/",
+        "https://www.theatermania.com/news/review-water-for-elephants-is-broadways-first-fully-integrated-circus-musical_1735237/",
+        "https://www.theatrely.com/post/water-for-elephants-flies-to-broadway-review",
+        "https://www.timeout.com/newyork/theater/water-for-elephants-broadway-musical-review-circus",
+        "https://www.usatoday.com/story/entertainment/music/2024/03/21/water-for-elephants-musical-review/73012972007/",
+        "https://www.wsj.com/articles/water-for-elephants-review-broadway-musical-pigpen-jessica-stone-sara-gruen-5eaefa7c",
+        "https://www.washingtonpost.com/entertainment/theater/2024/03/21/water-for-elephants-broadway-review/",
+        "https://www.thewrap.com/water-for-elephants-broadway-review-grant-gustin/",
+        "https://original.newsbreak.com/@malika-bowling-1587528/3066224787148-alliance-theatre-s-water-for-elephants-review",
+        "https://www.nydailynews.com/2024/03/21/broadway-review-circus-themed-musical-water-for-elephants-boasts-remarkable-ensemble/",
+        "https://variety.com/2024/legit/reviews/water-for-elephants-review-broadway-musical-1235948534/",
+        "https://splashmags.com/index.php/2024/03/21/review-broadways-water-for-elephants-says-come-to-the-circus/",
+        "https://www.thestage.co.uk/reviews/water-for-elephants-review-at-imperial-theatre-new-york-from-sara-gruen",
+        "https://mdtheatreguide.com/2025/10/theatre-review-water-for-elephants-the-broadway-musical-at-the-hippodrome-theatre/",
+        "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
+        "https://www.sun-sentinel.com/2025/11/13/review-how-broadway-tour-of-water-for-elephants-at-broward-center-sticks-its-landing/",
+        "https://www.nwaonline.com/news/2026/feb/25/memory-and-metaphor-water-for-elephants-cast/",
+        "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/water-for-elephants-soars-at-the-orpheum/",
+        "https://www.cleveland.com/entertainment/2026/03/water-for-elephants-review-an-imaginative-big-top-spectacle-at-playhouse-square.html",
+        "https://www.clevescene.com/arts/arts-stories-and-interviews/water-for-elephants-at-playhouse-square-is-a-circus-spectacle/",
+        "https://www.news-herald.com/2026/03/12/water-for-elephants-at-playhouse-square-review-circus-chic/",
+        "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
+        "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
+        "https://chicago.suntimes.com/theater/2026/06/27/review-water-for-elephants-national-tour-nederlander-theatre-broadway-in-chicago",
+        "https://splashmags.com/2026/06/water-for-elephants-at-the-nederlander-theatre-is-an-astounding-wonderment/",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/water-for-elephants-broadway-in-chicago/",
+        "https://www.newcitystage.com/2026/06/26/water-for-elephants-refreshingly-quenches-the-urge-to-run-off-to-the-circus/",
+        "https://thirdcoastreview.com/stages/2026/06/25/review-water-for-elephants-nederlander-theatre",
+        "https://www.chicagotribune.com/2026/06/25/review-water-elephants-chicago/",
+        "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/"
+      ],
+      "dirFiles": 41,
+      "dirClean": 34,
+      "inReviewsJson": 32,
+      "missing": [
+        {
+          "url": "https://original.newsbreak.com/@malika-bowling-1587528/3066224787148-alliance-theatre-s-water-for-elephants-review",
+          "host": "newsbreak.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2025/10/theatre-review-water-for-elephants-the-broadway-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
+          "host": "revuewm.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nwaonline.com/news/2026/feb/25/memory-and-metaphor-water-for-elephants-cast/",
+          "host": "nwaonline.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2026/03/water-for-elephants-review-an-imaginative-big-top-spectacle-at-playhouse-square.html",
+          "host": "cleveland.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.clevescene.com/arts/arts-stories-and-interviews/water-for-elephants-at-playhouse-square-is-a-circus-spectacle/",
+          "host": "clevescene.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.news-herald.com/2026/03/12/water-for-elephants-at-playhouse-square-review-circus-chic/",
+          "host": "news-herald.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
+          "host": "courant.com",
+          "knownOutletId": "hartford-courant",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2026/06/27/review-water-for-elephants-national-tour-nederlander-theatre-broadway-in-chicago",
+          "host": "suntimes.com",
+          "knownOutletId": "suntimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/water-for-elephants-broadway-in-chicago/",
+          "host": "chicagoreader.com",
+          "knownOutletId": "chicago-reader",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newcitystage.com/2026/06/26/water-for-elephants-refreshingly-quenches-the-urge-to-run-off-to-the-circus/",
+          "host": "newcitystage.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thirdcoastreview.com/stages/2026/06/25/review-water-for-elephants-nederlander-theatre",
+          "host": "thirdcoastreview.com",
+          "knownOutletId": "third-coast-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/",
+          "host": "ludwig-van.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
           "count": 1
         },
         {
@@ -2440,17 +361,13 @@
           "count": 1
         },
         {
-          "host": "twi-ny.com",
-          "count": 1
-        },
-        {
           "host": "vulture.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://observer.com/2024/09/theater-review-mia-farrow-patti-lupone-the-roommate/",
+          "url": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadway-show-ever/",
           "host": "observer.com",
           "knownOutletId": "observer",
           "recoverable": false,
@@ -2462,14 +379,14 @@
             {
               "file": "observer--rex-reed.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/09/theater-review-mia-farrow-patti-lupone-the-roommate/"
+              "urlInDir": "https://observer.com/2024/03/water-for-elephants-theater-review-the-worst-broadway-show-ever/"
             }
           ]
         },
         {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=F1SC8X",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
+          "url": "https://www.nydailynews.com/2024/03/21/broadway-review-circus-themed-musical-water-for-elephants-boasts-remarkable-ensemble/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2477,229 +394,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=F1SC8X"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "recoveryResults": [
-        {
-          "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-roommate-booth-theater_96847.html",
-          "host": "theatermania.com",
-          "file": "theatermania--jesse-green.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~67769/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ]
-    },
-    {
-      "showId": "once-upon-a-mattress-2024",
-      "title": "Once Upon a Mattress",
-      "openingDate": "2024-08-12",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-about-the-new-york-city-center-encores-once-upon-a-mattress",
-        "https://playbill.com/article/reviews-are-critics-in-love-with-the-once-upon-a-mattress-broadway-revival",
-        "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Returns-To-Broadway-20240812",
-        "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Opens-at-New-York-City-Center-Encores-20240125",
-        "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Starring-Jackie-Hoffman-Opens-Off-Broadway-20151214"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.vulture.com/2024/01/theater-review-encores-once-upon-mattress-city-center.html",
-        "https://nystagereview.com/2024/01/25/once-upon-a-mattress-a-royal-success-at-encores/",
-        "https://nystagereview.com/2024/01/25/once-upon-a-mattress-sutton-foster-distinguishes-a-so-so-revival/",
-        "https://newyorktheater.me/2024/01/25/once-upon-a-mattress-encores-review/",
-        "https://www.nytimes.com/2024/01/25/theater/once-upon-mattress-review-sutton-foster.html",
-        "https://observer.com/2024/01/review-dont-sleep-on-splendiferous-sutton-foster-in-once-upon-a-mattress/",
-        "https://www.theatermania.com/news/review-sutton-foster-and-michael-urie-in-an-exuberant-once-upon-a-mattress_1727109/",
-        "https://www.theaterpizzazz.com/once-upon-a-mattress-2/",
-        "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/",
-        "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
-        "https://www.thedailybeast.com/broadway-review-sutton-foster-sizzles-in-limp-once-upon-a-mattress",
-        "https://deadline.com/2024/08/once-upon-a-mattress-broadway-review-1236035735/",
-        "https://ew.com/once-upon-a-mattress-review-sutton-foster-shines-broadway-revival-8694003",
-        "https://exeuntnyc.com/reviews/review-once-upon-a-mattress-at-the-hudson-theatre/",
-        "https://www.nydailynews.com/2024/08/12/broadway-review-sutton-foster-shines-in-family-friendly-once-upon-a-mattress/",
-        "https://nypost.com/2024/08/12/entertainment/once-upon-a-mattress-review-sutton-foster-is-a-perfect-princess-on-broadway/",
-        "https://nystagereview.com/2024/08/12/once-upon-a-mattress-medieval-hellzapoppin-with-laughs-for-days/",
-        "https://nystagereview.com/2024/08/12/once-upon-a-mattress-sutton-foster-of-the-swamps-reigns-triumphant/",
-        "https://newyorktheater.me/2024/08/12/once-upon-a-mattress-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/once-upon-a-mattress-broadway-review-sutton-foster",
-        "https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html",
-        "https://www.slantmagazine.com/theater/once-upon-a-mattress-review-broadway/",
-        "https://www.theatermania.com/news/review-sutton-foster-and-once-upon-a-mattress-hit-broadway-with-its-raucous-charms-intact_1747268/",
-        "https://www.theatrely.com/post/once-upon-a-mattress-joyfully-heads-back-to-broadway-review",
-        "https://variety.com/2024/legit/reviews/once-upon-a-mattress-review-sutton-foster-broadway-1236104236/",
-        "https://www.showbiz411.com/2024/08/12/broadway-sutton-foster-channels-carol-burnett-in-totally-silly-very-funny-once-upon-a-mattress",
-        "http://www.nytimes.com/2015/12/14/theater/review-in-once-upon-a-mattress-jackie-hoffman-as-paradoxical-charmer.html",
-        "http://www.hollywoodreporter.com/review/once-a-mattress-theater-review-848312",
-        "http://www.timeout.com/newyork/theater/once-upon-a-mattress-1",
-        "http://www.amny.com/entertainment/once-upon-a-mattress-review-jackie-hoffman-rules-in-revival-1.11223966",
-        "http://www.villagevoice.com/arts/once-upon-a-mattress-receives-a-21st-century-reboot-8035377",
-        "https://www.wsj.com/articles/once-upon-a-mattress-review-sutton-fosters-princess-with-panache-c0349687"
-      ],
-      "dirFiles": 39,
-      "dirClean": 25,
-      "inReviewsJson": 27,
-      "missing": [
-        {
-          "url": "https://www.theaterpizzazz.com/once-upon-a-mattress-2/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/once-a-mattress-theater-review-848312",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.villagevoice.com/arts/once-upon-a-mattress-receives-a-21st-century-reboot-8035377",
-          "host": "villagevoice.com",
-          "knownOutletId": "village-voice",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.vulture.com/2024/01/theater-review-encores-once-upon-mattress-city-center.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--christopher-bonanos.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/article/review-once-upon-a-mattress-sutton-foster-theater-encores.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/01/25/once-upon-a-mattress-encores-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2024/08/12/once-upon-a-mattress-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2024/01/review-dont-sleep-on-splendiferous-sutton-foster-in-once-upon-a-mattress/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/01/review-dont-sleep-on-splendiferous-sutton-foster-in-once-upon-a-mattress/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/"
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2024/03/21/broadway-review-circus-themed-musical-water-for-elephants-boasts-remarkable-ensemble/"
             }
           ]
         },
         {
-          "url": "https://newyorktheater.me/2024/08/12/once-upon-a-mattress-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
+          "url": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/water-for-elephants-soars-at-the-orpheum/",
+          "host": "minnesotamonthly.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -2707,45 +411,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nyt-theater--jonathan-mandell.json",
+              "file": "minnesotamonthly--jerrod-sumner.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2024/08/12/once-upon-a-mattress-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/once-upon-a-mattress-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/newyork/theater/cuddle-up-with-the-cast-of-broadways-once-upon-a-mattress"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/once-upon-a-mattress-review-jackie-hoffman-rules-in-revival-1.11223966",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/theater/sleepover-success-in-once-upon-a-mattress/"
+              "urlInDir": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/water-for-elephants-soars-at-the-orpheum/"
             }
           ],
           "priorRun": true,
@@ -2760,885 +428,105 @@
       },
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-about-the-new-york-city-center-encores-once-upon-a-mattress",
-          "publishDate": "2024-01-25"
+          "url": "https://playbill.com/article/reviews-read-what-critics-are-saying-about-the-world-premiere-water-for-elephants-musical",
+          "publishDate": "2023-06-22"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Opens-at-New-York-City-Center-Encores-20240125",
-          "publishDate": "2024-01-25"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-WATER-FOR-ELEPHANTS-North-American-Tour-20251008",
+          "publishDate": "2025-10-08"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-ONCE-UPON-A-MATTRESS-Starring-Jackie-Hoffman-Opens-Off-Broadway-20151214",
-          "publishDate": "2015-12-14"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-WATER-FOR-ELEPHANTS-World-Premiere-at-Alliance-Theatre-20230622",
+          "publishDate": "2023-06-22"
         }
       ],
       "weIngestBlocked": [
         {
-          "url": "https://www.theaterpizzazz.com/once-upon-a-mattress-2/",
-          "host": "theaterpizzazz.com",
+          "url": "https://original.newsbreak.com/@malika-bowling-1587528/3066224787148-alliance-theatre-s-water-for-elephants-review",
+          "host": "newsbreak.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://www.hollywoodreporter.com/review/once-a-mattress-theater-review-848312",
-          "host": "hollywoodreporter.com",
+          "url": "https://mdtheatreguide.com/2025/10/theatre-review-water-for-elephants-the-broadway-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://www.villagevoice.com/arts/once-upon-a-mattress-receives-a-21st-century-reboot-8035377",
-          "host": "villagevoice.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67784/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "job-2024",
-      "title": "JOB",
-      "openingDate": "2024-07-30",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-job-on-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/broadway/review-job-vacancy/",
-        "https://cititour.com/NYC_News/Review-Jobs-Stars-Get-the-Job-Done/8561",
-        "https://www.digitaljournal.com/entertainment/review-sydney-lemmon-and-peter-friedman-take-viewers-on-a-psychological-journey-in-job-on-broadway/article",
-        "https://thefrontrowcenter.com/2024/08/job-3/",
-        "https://www.theguardian.com/stage/article/2024/jul/30/job-broadway-review",
-        "https://www.nydailynews.com/2024/07/30/broadway-review-job-is-a-stimulating-psychological-thriller-on-toll-tech-takes/",
-        "https://nystagereview.com/2024/07/30/job-therapy-can-be-dangerous/",
-        "https://nystagereview.com/2024/07/30/job-an-unfiltered-drama-for-the-social-media-age/",
-        "https://newyorktheater.me/2024/07/30/job-broadway-review/",
-        "https://www.nytimes.com/2024/07/30/theater/job-review-broadway.html",
-        "https://observer.com/2024/07/review-that-internet-can-drive-a-person-crazy-in-the-gimmicky-job/",
-        "https://www.slantmagazine.com/theater/job-review-max-wolf-friedlich/",
-        "https://www.talkinbroadway.com/page/world/Job.html",
-        "https://www.theatermania.com/news/review-on-broadway-downtown-hit-job-has-emperors-new-clothes-syndrome_1746201/",
-        "https://www.theatrely.com/post/a-rattling-job-on-broadway-review",
-        "https://variety.com/2024/legit/reviews/job-review-broadway-play-1236090498/",
-        "https://www.thewrap.com/job-broadway-review-max-wolf-friedlich/",
-        "https://www.newyorktheatreguide.com/reviews/job-broadway-review-sydney-lemmon-peter-friedman",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SAMN1P"
-      ],
-      "dirFiles": 42,
-      "dirClean": 28,
-      "inReviewsJson": 29,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.wordpress.com",
-          "count": 1
-        },
-        {
-          "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://observer.com/2024/07/review-that-internet-can-drive-a-person-crazy-in-the-gimmicky-job/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/07/review-that-internet-can-drive-a-person-crazy-in-the-gimmicky-job/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SAMN1P",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SAMN1P"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "home-2024",
-      "title": "Home",
-      "openingDate": "2024-06-05",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-see-what-critics-think-of-broadways-home",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-broadways-pictures-from-home",
-        "https://playbill.com/article/reviews-did-critics-feel-at-home-on-avenue-q-in-londons-west-end",
-        "https://playbill.com/article/read-reviews-for-edward-albees-at-home-at-the-zoo-starring-katie-finneran-and-robert-sean-leonard",
-        "https://playbill.com/article/read-reviews-for-home-im-darling-at-the-national-theatre",
-        "https://www.broadwayworld.com/article/Review-Roundup-PICTURES-FROM-HOME-Opes-On-Broadway-Starring-Nathan-Lane-Danny-Burstein-Zo-Wanamaker-20230209"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.chicagotribune.com/2024/06/05/review-home-on-broadway-is-the-moving-understated-story-of-a-man-searching-for-his-past/",
-        "https://cititour.com/NYC_Broadway/Home/1238",
-        "https://deadline.com/2024/06/home-broadway-review-1235958976/",
-        "https://www.theguardian.com/stage/article/2024/jun/05/home-broadway-todd-haimes",
-        "https://nystagereview.com/2024/06/05/home-not-always-easy-to-go-back/",
-        "https://nystagereview.com/2024/06/05/home-is-where-the-art-is-at-roundabout/",
-        "https://newyorktheater.me/2024/06/05/home-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/home-broadway-review",
-        "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html",
-        "https://observer.com/2024/06/review-at-the-roundabout-a-luminous-revival-of-samm-art-williams-home/",
-        "https://www.slantmagazine.com/theater/home-what-becomes-of-us-review/",
-        "https://stageandcinema.com/2024/06/05/broadway-review-home-home-todd-haimes/",
-        "https://www.talkinbroadway.com/page/world/Home.html",
-        "https://www.theatermania.com/news/review-a-mans-odyssey-begins-while-gods-on-vacation-in-home_1742162/",
-        "http://www.theatrely.com/post/finding-north-and-south-at-home-review",
-        "https://www.timeout.com/newyork/theater/home-play-broadway-revival-review",
-        "https://www.wsj.com/articles/home-review-kenny-leon-samm-art-williams-broadway-d4bc8645",
-        "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/",
-        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-pictures-from-home-nathan-lane-review-20230210-yhh4xwlesnbqdlveo77aihkanq-story.html",
-        "https://cititour.com/NYC_Broadway/Pictures-from-Home/1126",
-        "https://deadline.com/2023/02/pictures-from-home-broadway-review-nathan-lane-1235253772/",
-        "https://www.thedailybeast.com/nathan-lane-and-zoe-wanamaker-bring-life-to-fading-pictures-from-home",
-        "https://nypost.com/2023/02/09/pictures-from-home-review-nathan-lane-gets-laughs-in-lifeless-play/",
-        "https://nystagereview.com/2023/02/09/pictures-from-home-family-drama-not-fully-developed/",
-        "https://nystagereview.com/2023/02/09/pictures-from-home-a-fuzzy-photograph-themed-memory-play/",
-        "https://newyorktheater.me/2023/02/09/pictures-from-home-review-nathan-lane-and-zoe-wanamaker-as-danny-bursteins-dad-mom-and-subjects/",
-        "https://www.nytimes.com/2023/02/09/theater/pictures-from-home-review.html",
-        "https://www.thestage.co.uk/reviews/pictures-from-home-review-at-studio-54-broadway-starring-nathan-lane-and-zoe-wanamaker",
-        "https://observer.com/2023/02/pictures-from-home-review-unfocused-and-underexposed/",
-        "https://www.slantmagazine.com/theater/pictures-from-home-review-broadway-nathan-lane/",
-        "https://www.theaterpizzazz.com/pictures-from-home/",
-        "https://www.theatermania.com/broadway/reviews/review-pictures-from-home-lane-burstein-wanamaker_94855.html",
-        "https://www.theatrely.com/post/pictures-from-home-captures-the-essence-of-family-review",
-        "https://www.timeout.com/newyork/theater/pictures-from-home-broadway-review-nathan-lane-larry-sultan",
-        "https://www.vulture.com/2023/02/theater-review-pictures-from-home-sultan-lane-burstein-broadway.html",
-        "https://www.queerty.com/nathan-lane-brings-daddy-issues-to-broadway-in-pictures-from-home-20230209",
-        "https://www.wsj.com/articles/pictures-from-home-review-family-out-of-focus-e21271dd",
-        "https://www.thewrap.com/pictures-from-home-broadway-review-nathan-lane/",
-        "https://www.washingtonpost.com/theater-dance/2023/02/09/lane-wanamaker-burstein-pictures-home/",
-        "http://www.thedailybeast.com/edward-albee-takes-us-to-the-edge-review-of-at-home-at-the-zoo",
-        "http://www.hollywoodreporter.com/review/edward-albees-at-home-at-zoo-theater-review-1086583",
-        "http://www.vulture.com/2018/02/theater-review-edward-albees-at-home-at-the-zoo-again.html",
-        "http://www.newsday.com/entertainment/theater/at-home-at-the-zoo-review-1.16885337",
-        "http://www.nydailynews.com/entertainment/theater-arts/home-zoo-review-edward-albee-marriage-mayhem-article-1.3834222",
-        "http://www.nytimes.com/2018/02/21/theater/at-home-at-the-zoo-review-homelife-zoo-story-edward-albee.html",
-        "http://www.timeout.com/newyork/theater/at-home-at-the-zoo-homelife-the-zoo-story",
-        "http://www.dailymail.co.uk/tvshowbiz/article-6013249/QUENTIN-LETTS-reviews-Home-Im-Darling.html",
-        "https://www.standard.co.uk/go/london/theatre/home-im-darling-review-feminism-and-the-fifties-inspire-a-welcome-return-from-laura-wade-a3901081.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/home-im-darling-national-theatre-review-katherine-parkinson-it-crowd-a8472526.html",
-        "https://londonist.com/london/on-stage/home-i-m-darling",
-        "https://www.londontheatre.co.uk/reviews/review-home-im-darling-at-the-national-theatre",
-        "https://www.timeout.com/london/theatre/home-im-darling-review",
-        "https://www.whatsonstage.com/london-theatre/reviews/home-im-darling-national-wade-katherine-parkinson_47251.html",
-        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-pictures-from-home-nathan-lane-20230210-guvxj7gpgzcwbdozwkj3fposu4-story.html",
-        "https://chelseacommunitynews.com/2023/02/09/review-pictures-from-home-takes-a-snapshot-of-dysfunctional-family-life/",
-        "https://www.newyorktheatreguide.com/reviews/pictures-from-home-broadway-review-nathan-lane-danny-burstein-zoe-wanamaker",
-        "https://www.newyorker.com/magazine/2024/06/17/samm-art-williams-home-shayan-lotfi-what-became-of-us-theatre-review-broadway",
-        "https://www.nydailynews.com/2024/06/05/broadway-review-home-by-samm-art-williams-is-richly-poetic-play-about-quest-for-inner-peace/"
-      ],
-      "dirFiles": 40,
-      "dirClean": 26,
-      "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/pictures-from-home-review-at-studio-54-broadway-starring-nathan-lane-and-zoe-wanamaker",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/pictures-from-home/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/edward-albees-at-home-at-zoo-theater-review-1086583",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-6013249/QUENTIN-LETTS-reviews-Home-Im-Darling.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/home-im-darling-review-feminism-and-the-fifties-inspire-a-welcome-return-from-laura-wade-a3901081.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/home-im-darling-national-theatre-review-katherine-parkinson-it-crowd-a8472526.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://londonist.com/london/on-stage/home-i-m-darling",
-          "host": "londonist.com",
-          "knownOutletId": "londonist",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-home-im-darling-at-the-national-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/home-im-darling-national-wade-katherine-parkinson_47251.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chelseacommunitynews.com/2023/02/09/review-pictures-from-home-takes-a-snapshot-of-dysfunctional-family-life/",
-          "host": "chelseacommunitynews.com",
-          "knownOutletId": "chelsea-community-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayandme.blogspot.com",
-          "count": 1
-        },
-        {
-          "host": "dctheaterarts.org",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "northjersey.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.wordpress.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2024/06/review-at-the-roundabout-a-luminous-revival-of-samm-art-williams-home/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/06/review-at-the-roundabout-a-luminous-revival-of-samm-art-williams-home/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-a-mans-odyssey-begins-while-gods-on-vacation-in-home_1742162/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--pete-hempstead.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-a-mans-odyssey-begins-while-gods-on-vacation-in-home_1742162/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "clean",
-              "urlInDir": "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2023/02/09/theater/pictures-from-home-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2023/02/pictures-from-home-review-unfocused-and-underexposed/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/06/review-at-the-roundabout-a-luminous-revival-of-samm-art-williams-home/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/broadway/reviews/review-pictures-from-home-lane-burstein-wanamaker_94855.html",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--pete-hempstead.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-a-mans-odyssey-begins-while-gods-on-vacation-in-home_1742162/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2023/02/theater-review-pictures-from-home-sultan-lane-burstein-broadway.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--amelia-merrill.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html"
-            },
-            {
-              "file": "vulture--jackson-mchenry.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/pictures-from-home-broadway-review-nathan-lane/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "clean",
-              "urlInDir": "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2023/02/09/lane-wanamaker-burstein-pictures-home/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "washpost--peter-marks.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/theater-dance/2023/02/09/lane-wanamaker-burstein-pictures-home/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2018/02/theater-review-edward-albees-at-home-at-the-zoo-again.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--amelia-merrill.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html"
-            },
-            {
-              "file": "vulture--jackson-mchenry.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.vulture.com/article/theater-reviews-home-breaking-the-story-what-became-of-us.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/at-home-at-the-zoo-review-1.16885337",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--unknown.json",
-              "flag": "clean",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/at-home-at-the-zoo-review-1.16885337"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/home-zoo-review-edward-albee-marriage-mayhem-article-1.3834222",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/06/05/broadway-review-home-by-samm-art-williams-is-richly-poetic-play-about-quest-for-inner-peace/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2018/02/21/theater/at-home-at-the-zoo-review-homelife-zoo-story-edward-albee.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/06/05/theater/home-review-roundabout-theater.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-pictures-from-home-nathan-lane-20230210-guvxj7gpgzcwbdozwkj3fposu4-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/06/05/broadway-review-home-by-samm-art-williams-is-richly-poetic-play-about-quest-for-inner-peace/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/06/05/broadway-review-home-by-samm-art-williams-is-richly-poetic-play-about-quest-for-inner-peace/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/06/05/broadway-review-home-by-samm-art-williams-is-richly-poetic-play-about-quest-for-inner-peace/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-broadways-pictures-from-home",
-          "publishDate": "2023-02-09"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-did-critics-feel-at-home-on-avenue-q-in-londons-west-end",
-          "publishDate": "2026-04-28"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-edward-albees-at-home-at-the-zoo-starring-katie-finneran-and-robert-sean-leonard",
-          "publishDate": "2018-02-22"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-home-im-darling-at-the-national-theatre",
-          "publishDate": "2018-08-01"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-PICTURES-FROM-HOME-Opes-On-Broadway-Starring-Nathan-Lane-Danny-Burstein-Zo-Wanamaker-20230209",
-          "publishDate": "2023-02-09"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/pictures-from-home-review-at-studio-54-broadway-starring-nathan-lane-and-zoe-wanamaker",
-          "host": "thestage.co.uk",
+          "url": "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
+          "host": "revuewm.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.theaterpizzazz.com/pictures-from-home/",
-          "host": "theaterpizzazz.com",
+          "url": "https://www.nwaonline.com/news/2026/feb/25/memory-and-metaphor-water-for-elephants-cast/",
+          "host": "nwaonline.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://www.hollywoodreporter.com/review/edward-albees-at-home-at-zoo-theater-review-1086583",
-          "host": "hollywoodreporter.com",
+          "url": "https://www.cleveland.com/entertainment/2026/03/water-for-elephants-review-an-imaginative-big-top-spectacle-at-playhouse-square.html",
+          "host": "cleveland.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-6013249/QUENTIN-LETTS-reviews-Home-Im-Darling.html",
-          "host": "dailymail.co.uk",
+          "url": "https://www.clevescene.com/arts/arts-stories-and-interviews/water-for-elephants-at-playhouse-square-is-a-circus-spectacle/",
+          "host": "clevescene.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.standard.co.uk/go/london/theatre/home-im-darling-review-feminism-and-the-fifties-inspire-a-welcome-return-from-laura-wade-a3901081.html",
-          "host": "standard.co.uk",
+          "url": "https://www.news-herald.com/2026/03/12/water-for-elephants-at-playhouse-square-review-circus-chic/",
+          "host": "news-herald.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/home-im-darling-national-theatre-review-katherine-parkinson-it-crowd-a8472526.html",
-          "host": "independent.co.uk",
+          "url": "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
+          "host": "timesunion.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://londonist.com/london/on-stage/home-i-m-darling",
-          "host": "londonist.com",
+          "url": "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
+          "host": "courant.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/review-home-im-darling-at-the-national-theatre",
-          "host": "londontheatre.co.uk",
+          "url": "https://chicago.suntimes.com/theater/2026/06/27/review-water-for-elephants-national-tour-nederlander-theatre-broadway-in-chicago",
+          "host": "suntimes.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/home-im-darling-national-wade-katherine-parkinson_47251.html",
-          "host": "whatsonstage.com",
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/water-for-elephants-broadway-in-chicago/",
+          "host": "chicagoreader.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://chelseacommunitynews.com/2023/02/09/review-pictures-from-home-takes-a-snapshot-of-dysfunctional-family-life/",
-          "host": "chelseacommunitynews.com",
+          "url": "https://www.newcitystage.com/2026/06/26/water-for-elephants-refreshingly-quenches-the-urge-to-run-off-to-the-circus/",
+          "host": "newcitystage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thirdcoastreview.com/stages/2026/06/25/review-water-for-elephants-nederlander-theatre",
+          "host": "thirdcoastreview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/",
+          "host": "ludwig-van.com",
           "priorRun": true,
           "reason": "prior-run"
         }
       ],
       "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-family-album-regional-2026",
-      "title": "The Family Album",
-      "openingDate": "2026-07-24",
-      "status": "open",
-      "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance/",
-        "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
-        "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-8-26-8pm/7860273/",
-        "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t",
-        "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
-        "https://www.sandiegoreader.com/events/2026/jul/25/the-family-album/"
-      ],
-      "dirFiles": 6,
-      "dirClean": 2,
-      "inReviewsJson": 2,
-      "missing": [
-        {
-          "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
-          "host": "musicconnection.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
-          "host": "sandiegoreader.com",
-          "knownOutletId": "san-diego-reader",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sandiegoreader.com/events/2026/jul/25/the-family-album/",
-          "host": "sandiegoreader.com",
-          "knownOutletId": "san-diego-reader",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-8-26-8pm/7860273/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t",
-          "host": "eventticketscenter.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "eventticketscenter--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Family Album\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "query": "\"The Family Album\" Broadway review 2026",
-            "ok": true,
-            "results": 9,
-            "error": null
-          },
-          {
-            "query": "\"The Family Album\" review sheila",
-            "ok": true,
-            "results": 10,
-            "error": null
-          },
-          {
-            "query": "\"The Family Album\" McLeod review",
-            "ok": true,
-            "results": 9,
-            "error": null
-          }
-        ],
-        "queriesOk": 3,
-        "resultCount": 7,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
-          "host": "musicconnection.com",
-          "outletId": "musicconnection",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67810/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
-          "host": "sandiegoreader.com",
-          "outletId": "san-diego-reader",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67812/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        },
-        {
-          "url": "https://www.sandiegoreader.com/events/2026/jul/25/the-family-album/",
-          "host": "sandiegoreader.com",
-          "outletId": "san-diego-reader",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~67812/day) projects exhaustion in ~5d, before the 20d-out renewal — still usi"
-        }
-      ],
       "ingestSkippedByCap": []
     }
   ]
