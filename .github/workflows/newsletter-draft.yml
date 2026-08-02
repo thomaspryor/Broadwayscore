@@ -42,6 +42,10 @@ on:
         description: 'Optional subject-line override (overrides auto-generated subject).'
         required: false
         default: ''
+      allowGaps:
+        description: 'Set to 1 to waive the review-completeness HARD gate for this run (task #823) — gaps land in the draft banner instead of failing.'
+        required: false
+        default: ''
       obLead:
         description: 'Optional show id to float to the top of the Opened Off-Broadway section (editorial lead override).'
         required: false
@@ -172,9 +176,14 @@ jobs:
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 
-      - name: Pre-send check (HTML invariants, UTMs, subject, lede)
+      - name: Pre-send check (HTML invariants, UTMs, subject, lede, images, completeness)
         env:
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          # Owner escape hatch for the review-completeness HARD gate (task #823):
+          # set repo variable NEWSLETTER_ALLOW_GAPS=1 (Settings → Variables) or
+          # pass the allowGaps dispatch input to downgrade gap failures to the
+          # draft banner without a code change. Unset both to re-arm.
+          NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || vars.NEWSLETTER_ALLOW_GAPS || '' }}
         run: |
           node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
 

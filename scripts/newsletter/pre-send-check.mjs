@@ -162,8 +162,13 @@ if (!Array.isArray(meta.openingShows)) {
   try {
     const audit = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/show-review-gap.json'), 'utf8'));
     for (const r of audit.results || []) {
-      if (r.showId && Array.isArray(r.missing) && r.missing.length) {
-        missingHostsById[r.showId] = r.missing.map(m => m.host || m.outletId || m.url || String(m)).filter(Boolean);
+      if (!r.showId || !Array.isArray(r.missing)) continue;
+      // priorRun rows are prior-production URLs the audit keeps report-only
+      // (TKAM class) — they're excluded from checkpoint.uncollected, so they
+      // must not be named in the failure message either.
+      const current = r.missing.filter(m => !m.priorRun);
+      if (current.length) {
+        missingHostsById[r.showId] = current.map(m => m.host || m.outletId || m.url || String(m)).filter(Boolean);
       }
     }
   } catch { /* hosts are enrichment only */ }

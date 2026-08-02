@@ -37,16 +37,22 @@ function localPathForImageUrl(url) {
 
 // Featured shows whose image metadata points at a file that doesn't exist (or
 // is empty) in public/ — the "phantom path" class (Gin Game, task #714):
-// shows.json says there's art, the deployed site 404s. fileOk is injected:
-// (repoRelativePath) => boolean.
+// shows.json says there's art, the deployed site 404s. Checks BOTH the
+// thumbnail (`image`) and the poster: opening cards render the poster when
+// images.poster is declared (posterOrThumb in generate.mjs), so a phantom
+// poster path breaks the hero card even with a healthy thumbnail. fileOk is
+// injected: (repoRelativePath) => boolean.
 function phantomImageViolations(openingShows, fileOk) {
   const out = [];
   for (const s of openingShows || []) {
-    if (!s || !s.image) continue;
-    const rel = localPathForImageUrl(s.image);
-    if (!rel) continue;
-    if (!fileOk(rel)) {
-      out.push(`Featured opening "${s.title}" (${s.id}) image points at ${rel} which is missing/empty on disk (phantom path) — the email will show a broken image.`);
+    if (!s) continue;
+    for (const [kind, url] of [['image', s.image], ['poster', s.poster]]) {
+      if (!url) continue;
+      const rel = localPathForImageUrl(url);
+      if (!rel) continue;
+      if (!fileOk(rel)) {
+        out.push(`Featured opening "${s.title}" (${s.id}) ${kind} points at ${rel} which is missing/empty on disk (phantom path) — the email will show a broken image.`);
+      }
     }
   }
   return out;
@@ -80,9 +86,15 @@ function extractSiteImageUrls(html) {
 // every single issue. Entries written before the audit stamped `uncollected`
 // classify as no-data (soft/unverified) rather than false-blocking.
 function classifyGapEntry(entry, nowMs, { freshHours = 48 } = {}) {
-  if (!entry || typeof entry.uncollected !== 'number') return 'no-data';
+  // Schema safety: only a non-negative integer uncollected count is a usable
+  // verdict — a corrupt value (-1, NaN, string) must read as unverified, not
+  // silently bless or block. Same for the timestamp: a FUTURE `at` (clock
+  // skew, corrupt write) would otherwise stay "fresh" forever; allow 1h of
+  // benign skew, beyond that treat the entry as no-data.
+  if (!entry || !Number.isInteger(entry.uncollected) || entry.uncollected < 0) return 'no-data';
   const at = Date.parse(entry.at || '');
   if (!Number.isFinite(at)) return 'no-data';
+  if (at - nowMs > 3600 * 1000) return 'no-data';
   if (nowMs - at > freshHours * 3600 * 1000) return 'stale';
   return entry.uncollected > 0 ? 'gap' : 'ok';
 }
