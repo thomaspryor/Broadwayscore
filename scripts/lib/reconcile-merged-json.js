@@ -44,14 +44,16 @@
  * reconciliation problem must never block a push that would otherwise
  * succeed.
  *
- * JSONL FILES (task #698, #784)
- * ------------------------------
- * MANAGED entries with `format: 'jsonl'` (the BWW roundup miss-ledger and the
- * scraper-spend ledger) are read/written as one JSON value PER LINE instead
- * of a single JSON.parse'd document — same reconciliation pass, different
- * serialization. Their merge function takes/returns an ARRAY of parsed line
- * entries (see merge-bww-roundup-ledger.js / merge-scraper-spend-ledger.js),
- * not the whole-document ours/remote shape the JSON mergers use.
+ * JSONL FILES (task #698, #784, #809)
+ * ------------------------------------
+ * MANAGED entries with `format: 'jsonl'` (the BWW roundup miss-ledger, the
+ * scraper-spend ledger, and the owner-email send log) are read/written as
+ * one JSON value PER LINE instead of a single JSON.parse'd document — same
+ * reconciliation pass, different serialization. Their merge function
+ * takes/returns an ARRAY of parsed line entries (see
+ * merge-bww-roundup-ledger.js / merge-scraper-spend-ledger.js /
+ * merge-owner-email-log.js), not the whole-document ours/remote shape the
+ * JSON mergers use.
  *
  * CWD-INDEPENDENCE (task #698, ship-check finding)
  * -------------------------------------------------
@@ -82,6 +84,7 @@ const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
+const { mergeOwnerEmailLog } = require('./merge-owner-email-log');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -94,6 +97,7 @@ const MANAGED = [
   { file: 'data/social-post-history.json', merge: mergeSocialPostHistory, newline: true },
   { file: 'data/audit/bww-roundup-miss-ledger.jsonl', merge: mergeBwwRoundupLedger, format: 'jsonl' },
   { file: 'data/audit/scraper-spend-ledger.jsonl', merge: mergeScraperSpendLedger, format: 'jsonl' },
+  { file: 'data/audit/owner-email-log.jsonl', merge: mergeOwnerEmailLog, format: 'jsonl' },
 ];
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
