@@ -219,3 +219,103 @@ describe('detectCWVAnomalies — field-LCP acknowledgment (#368)', () => {
     assert.strictEqual(ack, null, 'acknowledgment is scoped to the exact metric, not the whole url');
   });
 });
+
+/**
+ * Origin-fallback field data (card #419).
+ *
+ * Background: the card fired as "1 critical SEO anomalies: Lighthouse score below 70
+ * on /west-end: 69/100 + field LCP 2512ms over 2500ms". PSI serves the ORIGIN's CrUX
+ * data under the same field names whenever a URL is below the sampling floor, and
+ * check-seo-health.js could not tell the two apart. Consequences: one site-wide number
+ * escalated every audited page to `error` (N CRITICAL cards for one root cause), the
+ * page-specific message sent readers hunting a page-specific fix, and a page crossing
+ * the sampling floor produced a phantom several-hundred-ms LCP "regression".
+ *
+ * Fixtures are real snapshots from data/audit/seo-performance-history.json.
+ */
+describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
+  const originWeek = [
+    { url: `${HOST}/`, performanceScore: 95, lcp: 3000, inp: 112, cls: 0 },
+    { url: `${HOST}/show/hamilton`, performanceScore: 69, lcp: 3000, inp: 112, cls: 0 },
+    { url: `${HOST}/off-broadway`, performanceScore: 68, lcp: 3000, inp: 112, cls: 0 },
+  ];
+
+  test('one origin-level LCP breach produces ONE error, not one per page', () => {
+    const issues = detectCWVAnomalies(originWeek, []);
+    const errors = issues.filter(i => i.severity === 'error');
+    assert.strictEqual(errors.length, 1, `one origin measurement must yield one error, got ${errors.length}`);
+    assert.strictEqual(errors[0].type, 'cwv_lcp_absolute');
+    assert.strictEqual(errors[0].scope, 'origin');
+    assert.match(errors[0].message, /origin-wide/);
+  });
+
+  test('the per-page LCP threshold anomaly is not repeated for every origin-scoped page', () => {
+    const issues = detectCWVAnomalies(originWeek, []);
+    const lcpAbs = issues.filter(i => i.type === 'cwv_lcp_absolute');
+    assert.strictEqual(lcpAbs.length, 1, 'three pages sharing one measurement must not emit three anomalies');
+  });
+
+  test('a low lab score with an origin-level field breach stays a warning and says so', () => {
+    const issues = detectCWVAnomalies(originWeek, []);
+    const hamilton = issues.find(i => i.type === 'cwv_lighthouse_low' && i.message.includes('/show/hamilton'));
+    assert.ok(hamilton);
+    assert.strictEqual(hamilton.severity, 'warning', 'an origin number cannot escalate an individual page');
+    assert.match(hamilton.message, /origin-level, not \/show\/hamilton's/);
+  });
+
+  test('a genuine page-level field breach still escalates to error', () => {
+    // /west-end's own 2512ms alongside four pages sharing the 1455ms origin value.
+    const mixed = [
+      { url: `${HOST}/`, performanceScore: 71, lcp: 1455, inp: 111, cls: 0 },
+      { url: `${HOST}/show/hamilton`, performanceScore: 68, lcp: 1455, inp: 111, cls: 0 },
+      { url: `${HOST}/off-broadway`, performanceScore: 72, lcp: 1455, inp: 111, cls: 0 },
+      { url: `${HOST}/some-page`, performanceScore: 60, lcp: 4200, inp: null, cls: 0 },
+    ];
+    const issues = detectCWVAnomalies(mixed, []);
+    const lh = issues.find(i => i.type === 'cwv_lighthouse_low' && i.message.includes('/some-page'));
+    assert.strictEqual(lh.severity, 'error', 'page-level breach + low lab score is a real page problem');
+    assert.match(lh.message, /\+ field LCP 4200ms over 2500ms/);
+  });
+
+  test('crossing the CrUX sampling floor does not invent an LCP regression', () => {
+    // Prior week: /west-end page-level at 1400ms. This week: it fell back to the
+    // 2400ms origin value. A +1000ms delta with nothing about the page changed.
+    const prior = {
+      coreWebVitals: [
+        { url: `${HOST}/`, lcp: 900, inp: 110, cls: 0, performanceScore: 90 },
+        { url: `${HOST}/show/hamilton`, lcp: 900, inp: 110, cls: 0, performanceScore: 90 },
+        { url: `${HOST}/west-end`, lcp: 1400, inp: null, cls: 0, performanceScore: 90 },
+      ],
+    };
+    const current = [
+      { url: `${HOST}/`, lcp: 2400, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/show/hamilton`, lcp: 2400, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/west-end`, lcp: 2400, inp: 112, cls: 0, performanceScore: 90 },
+    ];
+    const issues = detectCWVAnomalies(current, [prior, prior]);
+    const westEndRegression = issues.find(
+      i => i.type === 'cwv_lcp_regression' && i.message.includes('/west-end')
+    );
+    assert.strictEqual(westEndRegression, undefined, 'a measurement swap is not a regression');
+
+    // The pages that stayed origin-scoped are still compared normally.
+    const homeRegression = issues.find(i => i.type === 'cwv_lcp_regression' && / on \/:/.test(i.message));
+    assert.ok(homeRegression, 'same-scope pages must still report a real 900ms → 2400ms regression');
+  });
+
+  test('a real regression within page-level data still fires', () => {
+    const prior = {
+      coreWebVitals: [
+        { url: `${HOST}/a`, lcp: 1000, inp: 100, cls: 0, performanceScore: 90 },
+        { url: `${HOST}/b`, lcp: 1500, inp: null, cls: 0, performanceScore: 90 },
+      ],
+    };
+    const current = [
+      { url: `${HOST}/a`, lcp: 1000, inp: 100, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/b`, lcp: 2200, inp: null, cls: 0, performanceScore: 90 },
+    ];
+    const issues = detectCWVAnomalies(current, [prior, prior]);
+    const reg = issues.find(i => i.type === 'cwv_lcp_regression' && i.message.includes('/b'));
+    assert.ok(reg, '/b stayed page-level and genuinely regressed 1500ms → 2200ms');
+  });
+});
