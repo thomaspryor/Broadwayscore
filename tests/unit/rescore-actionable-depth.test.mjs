@@ -19,6 +19,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { computeRescoreQueueDepth } = require('../../scripts/lib/rescore-queue-depth.js');
 const { recordProgress, isStalled } = require('../../scripts/lib/progress-watch.js');
+const { decideProgress, SURFACES } = require('../../scripts/check-progress-stalls.js');
 
 let tmpDir;
 let showDir;
@@ -135,5 +136,36 @@ describe('rescore actionable depth vs raw depth (task #751)', () => {
     const actionableVerdict = isStalled(actionableHistory, { cycles: 3, direction: 'down' });
     assert.equal(actionableVerdict.stalled, false, 'actionable-based monitor must not false-alarm while the queue is draining');
     assert.equal(actionableVerdict.reason, 'moving');
+  });
+
+  // The two tests above prove the primitives compose correctly in isolation.
+  // Neither calls check-progress-stalls.js's own decideProgress/SURFACES, so
+  // a rename of the `needsRescoreUnblocked` key anywhere in that wiring would
+  // pass both while breaking the real monitor (adversarial review finding,
+  // task #751). This test drives decideProgress directly, the same function
+  // main() and the unit-tested CLI path both call.
+  test('decideProgress (the real check-progress-stalls.js wiring) tracks the actionable surface, not a raw one', () => {
+    assert.equal(SURFACES.length, 1);
+    assert.equal(SURFACES[0].key, 'needsRescoreUnblocked');
+    assert.equal(SURFACES[0].direction, 'down');
+
+    let state = {};
+    const unblockedSeries = [3, 2, 1];
+    for (let i = 0; i < unblockedSeries.length; i++) {
+      // loadData()'s real return shape: only needsRescoreUnblocked is a
+      // registered surface key; needsRescoreRaw/Blocked/NotScoreable ride
+      // along for display but must NOT affect decideProgress's verdict.
+      const data = {
+        needsRescoreUnblocked: unblockedSeries[i],
+        needsRescoreRaw: 5,
+        needsRescoreBlocked: 5 - unblockedSeries[i],
+        needsRescoreNotScoreable: 0,
+      };
+      state = decideProgress(data, state, i).state;
+    }
+    const surface = state.surfaces.needsRescoreUnblocked;
+    assert.equal(surface.stalled, false, 'real wiring must read the falling actionable count as moving');
+    assert.equal(surface.reason, 'moving');
+    assert.equal(surface.value, 1);
   });
 });
