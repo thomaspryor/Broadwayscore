@@ -606,7 +606,10 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
         run: |
-          node scripts/opening-night-checklist.js --json > /tmp/checklist.json 2>&1 || true
+          # --out keeps the JSON free of stdout/stderr log noise — a merged
+          # redirect made checklist.json unparseable and silently un-scoped
+          # the SLA dispatcher (2026-08-02 false P0 storm).
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json 2>&1 || true
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json
 
       - name: Notify on failure
