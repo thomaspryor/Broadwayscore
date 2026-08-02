@@ -1721,11 +1721,15 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
           </span>
         </div>
         )}
-        {/* Trash button to remove — hidden on mobile, visible on hover on desktop */}
+        {/* Trash button to remove — hidden on mobile, visible on hover on desktop.
+            Rest-state tint is score-skip (red), not neutral gray, so the
+            destructive action reads as distinct from the calendar/star icons
+            on this same card, not just on its own hover (owner UX audit,
+            2026-08-02 — same score-skip convention as RatingEditor's delete). */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-0 group-hover/wl:opacity-100'} transition-opacity`}
           aria-label="Remove from watchlist"
         >
           {confirmRemove ? 'Remove?' : (
