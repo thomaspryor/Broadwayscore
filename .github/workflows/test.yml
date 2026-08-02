@@ -1232,7 +1232,11 @@ on:
       - 'scripts/lib/telegraph-reviews-index.js'
       - 'scripts/telegraph-reviews-index.test.mjs'
       - 'tests/fixtures/telegraph-theatre-reviews-index.html'
+      # #767: gather-reviews.js now calls selectApplicableSiteSearchOutlets() too
+      # (previously opening-night-poller.js-only). Colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/site-search-discovery.js'
+      - 'scripts/lib/site-search-discovery.test.mjs'
       - 'scripts/lib/url-discovery.js'
       - 'scripts/lib/domain-filters.js'
       # T1/T2 silent-gap sweep (2026-07-18 Times/Oresteia + NYT/Potluck class):
