@@ -175,3 +175,58 @@ test('node scripts/bsc-prune.js --help prints usage and exits 0 (real process)',
   assert.doesNotMatch(out, /cmux CLI not found/);
   assert.doesNotMatch(out, /Closed \d/);
 });
+
+// ── Owner-close park sweep (task #578) ─────────────────────────────────────
+const { sweepVanished } = require('./bsc-prune.js');
+
+function harness(entries, { dryRun = false } = {}) {
+  const appended = [], parked = [];
+  const deps = {
+    readLedgerEntriesFn: () => entries,
+    appendLedgerEntryFn: (e) => { const w = { ts: '2026-08-02T15:00:00.000Z', ...e }; appended.push(w); return w; },
+    parkCardFn: (v) => parked.push(v),
+    dryRun,
+  };
+  return { appended, parked, deps };
+}
+const ws = (n) => ({ ref: `workspace:${n}`, title: `t${n}` });
+const EPOCH_ENTRY = { event: 'vanish-epoch', taskId: 'epoch', ts: '2026-08-01T00:00:00.000Z' };
+const LAUNCHED = { event: 'launch', taskId: '5', subject: 'card', workspaceRef: 'workspace:1', notionId: 'nid', ts: '2026-08-02T10:00:00.000Z' };
+
+test('sweepVanished: first run records the epoch and parks nothing', () => {
+  const { appended, parked, deps } = harness([LAUNCHED]);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanish-epoch');
+  assert.equal(parked.length, 0, 'the pre-epoch backlog of closed tabs must never mass-park');
+});
+
+test('sweepVanished: a closed tab parks the ledger AND the Notion card', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanished');
+  assert.equal(appended[0].taskId, '5');
+  assert.deepEqual(parked.map(p => p.notionId), ['nid']);
+});
+
+test('sweepVanished: the ledger park holds even when Notion is unreachable', () => {
+  const { appended, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  deps.parkCardFn = () => { throw new Error('notion 503'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.equal(appended[0].event, 'vanished', 'ledger is written before Notion, so the park survives');
+});
+
+test('sweepVanished: --dry-run writes nothing and parks nothing', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED], { dryRun: true });
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.deepEqual(appended, []);
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: an empty cmux listing parks nothing (restart/crash guard)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  sweepVanished({ all: [], ...deps });
+  assert.deepEqual(appended, []);
+  assert.deepEqual(parked, []);
+});

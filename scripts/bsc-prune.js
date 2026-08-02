@@ -53,6 +53,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     terminalSurfaceAliveIn: surfaceAliveInFn = terminalSurfaceAliveIn,
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    parkCard: parkCardFn = parkCard,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -64,6 +65,27 @@ function main(argv = process.argv.slice(2), deps = {}) {
   }
 
   const all = listWorkspacesFn();
+
+  // Task #578: journal a per-ref terminal entry for every ✅-marked workspace
+  // BEFORE pruneDone closes it. The aggregate {event:'prune', taskId:'sweep'}
+  // line below records only a COUNT, so a closed-because-finished workspace
+  // was indistinguishable from one the owner closed by hand — and the
+  // vanished sweep would have parked its card. Ordering matches
+  // failedLaunchEntries' doctrine: terminal first, so a concurrent sweep
+  // landing between this write and the close still sees a reconciled ref.
+  // Entries are written for ✅ workspaces pruneDone may go on to SKIP (live
+  // claude); that is the safe direction — a ✅ workspace must never park.
+  let entriesBeforePrune;
+  try { entriesBeforePrune = readLedgerEntriesFn(); } catch { entriesBeforePrune = []; }
+  if (!dryRun) {
+    for (const w of all.filter(w => isDoneTitleFn(w.title))) {
+      const entry = dispatchLedger.pruneClosedEntry(w, entriesBeforePrune);
+      if (!entry) continue;
+      try { appendLedgerEntryFn(entry); }
+      catch (e) { console.error(`[bsc-prune] WARN prune-closed write failed for ${w.ref} (non-fatal): ${e.message}`); }
+    }
+  }
+
   const { closed, skipped, disagreements = [] } = pruneDoneFn({ dryRun });
   if (closed.length) {
     console.log(`${dryRun ? '[dry-run] would close' : 'Closed'} ${closed.length} ✅ workspace(s):`);
@@ -134,8 +156,72 @@ function main(argv = process.argv.slice(2), deps = {}) {
       breadcrumbs.forEach(b => console.log(`  ${b.workspaceRef}  task #${b.taskId} "${b.subject}"`));
     }
   }
+
+  sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn });
+}
+
+// Task #578: reconcile launches whose workspace the owner CLOSED. Split out
+// of main() so the epoch/park rules are testable without a live cmux.
+function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn }) {
+  let entries;
+  try { entries = readLedgerEntriesFn(); } catch { entries = []; }
+
+  // First run on a machine records the epoch and parks nothing: every launch
+  // already in the ledger predates it. Without this the first sweep would
+  // park ~150 historical cards, most of which closed because they finished.
+  let epochTs = dispatchLedger.vanishEpoch(entries);
+  if (!epochTs) {
+    if (dryRun) {
+      console.log('\n[vanished] no epoch recorded yet — first non-dry-run sweep will set it and park nothing.');
+      return;
+    }
+    try {
+      const stamped = appendLedgerEntryFn(dispatchLedger.vanishEpochEntry());
+      epochTs = stamped && stamped.ts;
+      console.log(`\n[vanished] recorded tab-close epoch ${epochTs} — only launches after this can park.`);
+    } catch (e) {
+      console.error(`[bsc-prune] WARN vanish-epoch write failed (non-fatal): ${e.message}`);
+      return;
+    }
+    entries = entries.concat([{ event: 'vanish-epoch', ts: epochTs, taskId: 'epoch' }]);
+  }
+
+  const liveRefs = new Set(all.map(w => w.ref));
+  const vanished = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs });
+  if (!vanished.length) return;
+
+  console.log(`\nClosed by you — parking ${vanished.length} card(s) so nothing re-dispatches them:`);
+  vanished.forEach(v => console.log(`  ${v.workspaceRef}  task #${v.taskId} "${v.subject}"`));
+  if (dryRun) { console.log('  [dry-run] no ledger write, no Notion update'); return; }
+
+  for (const v of vanished) {
+    // Ledger first: the park must hold even if Notion is unreachable. The
+    // ledger is what bsc-next actually gates on; the Notion status is the
+    // owner-visible mirror of it.
+    try { appendLedgerEntryFn(v); }
+    catch (e) { console.error(`[bsc-prune] WARN vanished write failed for ${v.workspaceRef}: ${e.message}`); continue; }
+    if (!v.notionId) continue;
+    try { parkCardFn(v); }
+    catch (e) { console.error(`[bsc-prune] WARN Notion park failed for #${v.taskId} (ledger park still holds): ${e.message}`); }
+  }
+  console.log(`\nTo resume any of them: node scripts/bsc-next.js --id <task#> --force`);
+}
+
+// Notion side-effect lives HERE, in the caller, never in the ledger lib —
+// every other decision in this subsystem is a pure function with its I/O in
+// bsc-prune/bsc-next (checkDeadDispatch returns breadcrumbs, main() appends).
+// --outcome PREPENDS (notion-brain.js:691); --notes would overwrite the whole
+// card body, and --note is silently dropped.
+function parkCard(vanished) {
+  const { spawnSync } = require('child_process');
+  const res = spawnSync('node', [
+    `${__dirname}/notion-brain.js`, 'update', vanished.notionId,
+    '--status', 'Paused',
+    '--outcome', `## Parked ${new Date().toISOString().slice(0, 10)}\nOwner closed its workspace (${vanished.workspaceRef}) without marking it done, so the dispatcher stopped re-opening it. Resume with \`node scripts/bsc-next.js --id ${vanished.taskId} --force\`.`,
+  ], { encoding: 'utf8', timeout: 60_000 });
+  if (res.status !== 0) throw new Error((res.stderr || res.stdout || 'notion-brain update failed').trim().split('\n').slice(-1)[0]);
 }
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE };
+module.exports = { main, USAGE, sweepVanished, parkCard };
