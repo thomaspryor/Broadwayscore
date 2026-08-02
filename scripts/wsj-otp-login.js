@@ -21,11 +21,17 @@
  *
  * Usage:
  *   node scripts/wsj-otp-login.js
+ *   node scripts/wsj-otp-login.js --push   # also push cookies to the
+ *                                           # WSJ_COOKIES GitHub secret so
+ *                                           # CI workflows pick them up
+ *                                           # (task #845 — the local file
+ *                                           # never reaches CI otherwise)
  *
  * Requires: WSJ_USER (or WSJ_EMAIL) in the shell env, and
  * ~/.claude/bin/gmail on PATH (read-only IMAP helper) to fetch the code.
  * Local only — do not run in CI (WSJ blocks CI IPs; this also needs a
- * live inbox to poll).
+ * live inbox to poll). --push requires `gh` CLI authenticated against
+ * thomaspryor/Broadwayscore.
  */
 
 const fs = require('fs');
@@ -34,7 +40,7 @@ const { execSync } = require('child_process');
 
 const args = process.argv.slice(2);
 if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
-  console.log('Usage: node scripts/wsj-otp-login.js');
+  console.log('Usage: node scripts/wsj-otp-login.js [--push]');
   console.log('');
   console.log('Logs into WSJ via email one-time-passcode (bypasses the Dow Jones SSO');
   console.log('anti-bot check that fake-rejects passwords from automated browsers) and');
@@ -42,8 +48,14 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
   console.log('');
   console.log('Requires WSJ_USER or WSJ_EMAIL in the environment, and a working');
   console.log('~/.claude/bin/gmail (read-only IMAP) to retrieve the passcode email.');
+  console.log('');
+  console.log('--push   Also push the fresh cookies to the WSJ_COOKIES GitHub secret');
+  console.log('         (requires authenticated `gh` CLI) so CI workflows that read');
+  console.log('         cookies via cookie-loader.js pick up the fresh session.');
   process.exit(0);
 }
+
+const shouldPush = args.includes('--push');
 
 const PROJECT_ROOT = path.join(__dirname, '..');
 const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
@@ -188,8 +200,32 @@ async function main() {
     fs.writeFileSync(META_PATH, JSON.stringify(meta, null, 2) + '\n');
 
     console.log(`Wrote ${wsjCookies.length} cookies to ${COOKIE_PATH}`);
+
+    if (shouldPush) {
+      pushCookiesToGitHubSecret(wsjCookies);
+    }
   } finally {
     await context.close();
+  }
+}
+
+// Mirrors extract-safari-cookies.py's --push pattern (base64-encoded JSON
+// piped into `gh secret set`) but for the single WSJ_COOKIES secret that
+// cookie-loader.js's tier-2 individual-env-var fallback already reads —
+// bundling WSJ into a COOKIES_BUNDLE_* slot isn't a fit here since those
+// bundles are rebuilt from ALL outlets at once by extract-safari-cookies.py,
+// not incrementally by a single-outlet script.
+function pushCookiesToGitHubSecret(cookies) {
+  console.log('Pushing cookies to GitHub secret WSJ_COOKIES...');
+  const base64Val = Buffer.from(JSON.stringify(cookies)).toString('base64');
+  try {
+    execSync('gh secret set WSJ_COOKIES --repo thomaspryor/Broadwayscore', {
+      input: base64Val,
+      stdio: ['pipe', 'inherit', 'inherit'],
+    });
+    console.log('Pushed WSJ_COOKIES to GitHub secrets.');
+  } catch (err) {
+    throw new Error(`Failed to push WSJ_COOKIES secret: ${err.message}`);
   }
 }
 
