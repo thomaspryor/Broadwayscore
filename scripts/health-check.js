@@ -2092,10 +2092,16 @@ function progressWatchResults(report) {
   if (!report || !report.surfaces) return [];
   const stalled = Object.values(report.surfaces).filter((s) => s.stalled);
   if (stalled.length === 0) return [];
+  // report.lastSummary carries whatever extra context a surface's loadData()
+  // returned beyond the tracked value itself (e.g. check-progress-stalls.js's
+  // raw/notScoreable/blocked breakdown, task #751) — surfaced generically
+  // here rather than as named fields so this function stays metric-agnostic
+  // as new monitors attach their own context shapes (task #761).
+  const context = report.lastSummary ? ` Context: ${JSON.stringify(report.lastSummary)}` : '';
   return stalled.map((s) => ({
     name: `Progress watch: ${s.label} stalled`,
     status: 'warn',
-    message: `${s.label} is at ${s.value} and hasn't moved in ${s.cycles} consecutive check(s).`,
+    message: `${s.label} is at ${s.value} and hasn't moved in ${s.cycles} consecutive check(s).${context}`,
     hint: s.hint || 'Investigate whether the producer/consumer for this surface is actually running.',
   }));
 }
