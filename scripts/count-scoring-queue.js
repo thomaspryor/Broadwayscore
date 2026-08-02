@@ -98,6 +98,10 @@ function report(write) {
   write(`  RESCORE   (phase 2): ${counts.rescore}`);
   write(`  STALE     (phase 3): ${counts.stale}`);
   write(`  EMERGENCY (phase 4): ${counts.emergency}`);
+  // Surfaced, not hidden: a spike here means the scan under-reported real work.
+  if (counts.malformed || counts.unreadableDirs) {
+    write(`  (unparseable files: ${counts.malformed}, unreadable dirs: ${counts.unreadableDirs})`);
+  }
   const residue = Object.entries(counts.unscoredResidue);
   if (residue.length) {
     write('');

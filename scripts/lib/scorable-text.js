@@ -24,8 +24,14 @@
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { assessTextQuality } = require('./content-quality');
 
-/** Default floor used by the scorer's `--min-text-length` option. */
-const DEFAULT_MIN_TEXT_LENGTH = 100;
+/**
+ * Excerpt-bundle floor. MUST equal the `minTextLength` the scorer runs with
+ * (scripts/llm-scoring/index.ts sets 50). A higher default here silently
+ * excludes 50-99 char excerpt bundles the scorer WOULD score — the counter
+ * would hide them and advance the cascade past real work, which is the exact
+ * bug this module exists to prevent (Codex verification pass, task #652).
+ */
+const DEFAULT_MIN_TEXT_LENGTH = 50;
 
 /**
  * Pick the text the LLM would be handed for this review, mirroring the scorer.

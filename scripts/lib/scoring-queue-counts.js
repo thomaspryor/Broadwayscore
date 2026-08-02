@@ -182,7 +182,12 @@ function countScoringQueues(baseDir, options) {
   // 0, skip=true" — the scorer would silently stop running entirely and the
   // run would still be green (Codex adversarial review, task #652 ship-check).
   const dirs = fs.readdirSync(baseDir).filter(d => {
-    try { return fs.statSync(path.join(baseDir, d)).isDirectory(); } catch { return false; }
+    try {
+      return fs.statSync(path.join(baseDir, d)).isDirectory();
+    } catch {
+      counts.unreadableDirs++;
+      return false;
+    }
   });
 
   for (const dir of dirs) {

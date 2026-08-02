@@ -76,7 +76,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
-const { EXCERPT_FIELDS, hasExcerpt: hasAnyExcerptField } = require('../lib/excerpt-fields');
+const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
 const { selectScorableText } = require('../lib/scorable-text');

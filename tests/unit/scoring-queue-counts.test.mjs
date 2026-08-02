@@ -24,8 +24,16 @@ const {
   isActionableEmergencyRetry,
   countScoringQueues,
 } = require('../../scripts/lib/scoring-queue-counts.js');
-const { selectScorableText } = require('../../scripts/lib/scorable-text.js');
+const { selectScorableText, DEFAULT_MIN_TEXT_LENGTH } = require('../../scripts/lib/scorable-text.js');
 const { stampTerminalScoringFailure } = require('../../scripts/lib/rescore-lifecycle.js');
+
+// Read the scorer's own floor out of index.ts rather than restating it, so the
+// two can never drift apart silently (the whole point of task #652).
+const SCORER_MIN_TEXT_LENGTH = Number(
+  /minTextLength:\s*(\d+)/.exec(
+    fs.readFileSync(new URL('../../scripts/llm-scoring/index.ts', import.meta.url), 'utf8')
+  )[1]
+);
 
 // A believable review body: long enough to clear the scorer's 1000-char
 // body_too_short gate and prose-like enough not to trip content-quality.
@@ -161,6 +169,18 @@ describe('unscoredSkipReason — what the cascade gate may and may not count', (
       ensembleData: { singleModelEmergency: true },
     });
     assert.equal(isActionableEmergencyRetry(f, {}), false);
+  });
+
+  test('the excerpt floor matches the scorer, so 50-99 char bundles still count', () => {
+    // Codex verification pass: the shared default was 100 while
+    // llm-scoring/index.ts runs with minTextLength 50. That silently excluded
+    // 50-99 char excerpt bundles from BOTH the counter and the selector —
+    // scoreable work abandoned, cascade advanced past it. Pin the floor.
+    assert.equal(DEFAULT_MIN_TEXT_LENGTH, SCORER_MIN_TEXT_LENGTH);
+    const sixtyChars = 'A sharp, unsentimental revival that earns its final hush.....'; // 61
+    assert.ok(sixtyChars.length >= 50 && sixtyChars.length < 100);
+    const f = scoreableFile({ fullText: null, bwwExcerpt: sixtyChars });
+    assert.equal(unscoredSkipReason(f, {}), null);
   });
 
   test('an excerpt-only review IS actionable — excerpts bypass the body-length gate', () => {

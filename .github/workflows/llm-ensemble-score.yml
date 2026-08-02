@@ -212,22 +212,28 @@ jobs:
           # scorer forever on a green run).
           node scripts/count-scoring-queue.js --github-output --require-shows --min-scanned=10000 \
             > /tmp/scoring-queue-counts.txt
-          cat /tmp/scoring-queue-counts.txt >> $GITHUB_OUTPUT
-          UNSCORED=$(grep '^unscored=' /tmp/scoring-queue-counts.txt | cut -d= -f2)
-          RESCORE=$(grep '^rescore=' /tmp/scoring-queue-counts.txt | cut -d= -f2)
-          STALE=$(grep '^stale=' /tmp/scoring-queue-counts.txt | cut -d= -f2)
-          EMERGENCY=$(grep '^emergency=' /tmp/scoring-queue-counts.txt | cut -d= -f2)
+          # Match the WHOLE line, not a prefix: `grep '^unscored=' | cut -f2` would
+          # accept `unscored=1=bad` as the number 1 and then append that raw line
+          # to $GITHUB_OUTPUT. Anchoring on ^key=<digits>$ and re-emitting the
+          # validated value is the only form that can't smuggle garbage through.
           # Without this, a malformed/short CLI output leaves the vars empty;
           # `[ "" -ge 1 ]` returns 2, every branch below falls through, and the
           # run silently reports skip=true. Fail loudly instead.
-          for pair in "UNSCORED:$UNSCORED" "RESCORE:$RESCORE" "STALE:$STALE" "EMERGENCY:$EMERGENCY"; do
+          read_count() {
+            grep -E "^$1=[0-9]+$" /tmp/scoring-queue-counts.txt | head -1 | cut -d= -f2
+          }
+          UNSCORED=$(read_count unscored)
+          RESCORE=$(read_count rescore)
+          STALE=$(read_count stale)
+          EMERGENCY=$(read_count emergency)
+          for pair in "unscored:$UNSCORED" "rescore:$RESCORE" "stale:$STALE" "emergency:$EMERGENCY"; do
             name="${pair%%:*}"; value="${pair#*:}"
-            case "$value" in
-              ''|*[!0-9]*)
-                echo "::error::count-scoring-queue.js produced a non-numeric $name ('$value') — refusing to gate the cascade on it."
-                exit 1
-                ;;
-            esac
+            if [ -z "$value" ]; then
+              echo "::error::count-scoring-queue.js did not emit a numeric '$name' — refusing to gate the cascade on it."
+              cat /tmp/scoring-queue-counts.txt
+              exit 1
+            fi
+            echo "$name=$value" >> $GITHUB_OUTPUT
           done
           echo "Unscored reviews: $UNSCORED"
           # Lowered from 5 to 1 on 2026-04-11. The 5-review threshold meant
