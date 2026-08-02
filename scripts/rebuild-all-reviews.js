@@ -4664,6 +4664,16 @@ try {
 // causes every subsequent deploy to fail until someone manually fixes the watermark.
 {
   const watermarkPath = path.join(__dirname, '..', 'data', 'audit', 'deploy-watermark.json');
+  // Task #653: only a CI rebuild may stamp the SHARED baseline. A local rebuild
+  // reads this machine's review-texts clone (documented as having drifted 1430
+  // commits behind canonical) — on 2026-08-02T17:54Z a local session committed a
+  // watermark of 19626 while every core-data reviews.json around it held 19368.
+  // That poisons pre-deploy-check.js's regression baseline and the corpus-
+  // determinism series. Override locally with ALLOW_LOCAL_WATERMARK=1.
+  const watermarkGate = require('./lib/corpus-determinism.js').shouldWriteDeployWatermark(process.env);
+  if (!watermarkGate.write) {
+    console.log(`\n📌 Deploy watermark NOT written — ${watermarkGate.reason}`);
+  } else {
   try {
     const showsForWatermark = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
     const showCount = (showsForWatermark.shows || []).length;
@@ -4674,6 +4684,7 @@ try {
     console.log(`\n📌 Deploy watermark synced: ${showCount} shows, ${allReviews.length} reviews`);
   } catch (e) {
     console.log(`\n⚠️  Could not sync deploy watermark: ${e.message}`);
+  }
   }
 }
 
