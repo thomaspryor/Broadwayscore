@@ -15,11 +15,10 @@
       "disposition": "auto",
       "title": "BSC Daily: SEO: health",
       "firstSeen": "2026-07-24T07:50:32.738Z",
-      "lastSeen": "2026-07-25T16:22:15.649Z",
-      "lastNotifiedAt": "2026-07-24T07:50:32.738Z",
-      "notifyCount": 1,
-      "cardId": "3a7637c5-416f-81fd-b943-e699070a2818",
-      "silentRefires": 1
+      "lastSeen": "2026-08-02T21:53:33.705Z",
+      "lastNotifiedAt": "2026-08-02T21:53:33.705Z",
+      "notifyCount": 2,
+      "cardId": "3b0637c5-416f-8107-886e-fdf635520d94"
     },
     "health-check:Secrets: health": {
       "status": "open",
@@ -36,21 +35,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-08-02T07:40:20.965Z",
+      "lastSeen": "2026-08-02T21:53:34.132Z",
       "lastNotifiedAt": "2026-08-01T07:38:40.053Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-8180-9f61-fe6c0edcb36a",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Test Suite",
       "firstSeen": "2026-07-24T07:50:34.248Z",
-      "lastSeen": "2026-08-01T07:38:36.675Z",
+      "lastSeen": "2026-08-02T21:53:33.271Z",
       "lastNotifiedAt": "2026-08-01T07:38:36.675Z",
       "notifyCount": 2,
-      "cardId": "3af637c5-416f-81ab-bfd5-ebf3fee39510"
+      "cardId": "3af637c5-416f-81ab-bfd5-ebf3fee39510",
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Commercial RSS Poll": {
       "status": "open",
@@ -68,11 +68,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-08-02T07:40:20.963Z",
+      "lastSeen": "2026-08-02T21:53:33.704Z",
       "lastNotifiedAt": "2026-08-01T07:38:37.181Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-81a2-9ad2-d23efac9d949",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
@@ -90,11 +90,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-02T07:40:20.964Z",
+      "lastSeen": "2026-08-02T21:53:33.705Z",
       "lastNotifiedAt": "2026-08-01T07:38:39.572Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-810e-99ef-ff2b8ca792bc",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -157,11 +157,11 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingBee",
       "firstSeen": "2026-07-27T08:00:25.454Z",
-      "lastSeen": "2026-08-02T07:40:20.965Z",
+      "lastSeen": "2026-08-02T21:53:34.132Z",
       "lastNotifiedAt": "2026-07-27T08:00:25.454Z",
       "notifyCount": 1,
       "cardId": "3aa637c5-416f-81f1-985a-ce121eb8a558",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Credits: Bright Data": {
       "status": "open",
@@ -265,10 +265,11 @@
       "disposition": "digest",
       "title": "Scraping spend over budget: browserbase $11.5 > $4 (115 sessions); brightdata $6.16 > $2.5 (1358 serp + 2746 unlocker reqs); scrapingdog 104074 credits > 45000",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-02T07:40:26.544Z",
+      "lastSeen": "2026-08-02T21:53:38.053Z",
       "lastNotifiedAt": "2026-08-02T07:40:26.544Z",
       "notifyCount": 2,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -290,6 +291,16 @@
       "lastNotifiedAt": "2026-08-02T11:27:10.140Z",
       "notifyCount": 1,
       "cardId": "3b0637c5-416f-810a-9f20-fbcaf610d121"
+    },
+    "health-check:Workflow repeat-failure: Rebuild Reviews Data": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
+      "firstSeen": "2026-08-02T21:53:33.271Z",
+      "lastSeen": "2026-08-02T21:53:33.271Z",
+      "lastNotifiedAt": "2026-08-02T21:53:33.271Z",
+      "notifyCount": 1,
+      "cardId": "3b0637c5-416f-8159-a5c9-d106e8586882"
     }
   }
 }
