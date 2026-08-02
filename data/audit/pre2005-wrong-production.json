@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-02T02:48:35.955Z",
+    "generatedAt": "2026-08-02T02:14:57.889Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 89,
-    "highConfidence": 4,
-    "mediumConfidence": 85,
+    "totalFlagged": 92,
+    "highConfidence": 5,
+    "mediumConfidence": 87,
     "lowConfidence": 0,
-    "reassignable": 39
+    "reassignable": 42
   },
   "results": [
     {
@@ -999,6 +999,56 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "metrmag--unknown.json",
+      "outlet": "Metrmag",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Lear deBessonet, director: Lear deBessonet",
+        "year 2023 in text matches revival into-the-woods-2022",
+        "year 2022 in text matches revival into-the-woods-2022"
+      ],
+      "textSnippet": "(Cover Photo: Gavin Creel in Stephen Sondheim and James Lapine's musical \"INTO THE WOODS\" playing at the Emerson Colonial Theatre through April 2, 2023. Photo Credit: Matthew Murphy and Evan Zimmerman"
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "musical-theatre-review--unknown.json",
+      "outlet": "Musical Theatre Review",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "into-the-woods-2002",
+      "signals": [
+        "year 2002 in text matches revival into-the-woods-2002"
+      ],
+      "textSnippet": "Ben Steinfeld, Jennifer Mudge and Jessie Austrian in the Fiasco Theater production of Into the Woods at Roundabout Theatre Company’s Laura Pels Theatre, New York. Picture: Joan Marcus\n\nInto the Woods "
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "showTitle": "Into the Woods",
+      "showYear": 1987,
+      "file": "time--unknown.json",
+      "outlet": "Time",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "into-the-woods-2002",
+      "signals": [
+        "revival text signals: revival, revived",
+        "year 2002 in text matches revival into-the-woods-2002",
+        "year 1998 in text matches revival into-the-woods-1997",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "What took Hollywood so long to make a movie of Stephen Sondheim and James Lapine’s 1987 Broadway musical Into the Woods? In the early ’90s, director Penny Marshall staged a reading (and singing) of a "
     },
     {
       "showId": "macbeth-1981",
