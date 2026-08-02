@@ -205,8 +205,16 @@ const UNFOLDED_BASELINE = new Set([
   'venue-listing-discover.js', 'wet-roundup-discover.js',
 ]);
 
-const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z0-9/;
-const FOLDS = /normalize\('NFK?D'\)|foldDiacritics/;
+// The shred signature: an ASCII-only character-class filter applied to text.
+// Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
+// still destroys accented letters, so the class is not narrower than /[^a-z0-9.
+const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
+// Every fold spelling in the codebase counts: foldDiacritics (the canonical
+// helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
+// and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.
+// Missing a real spelling here fails CLOSED (the file looks unfolded and, if
+// unbaselined, reddens CI) — noisy but never silent.
+const FOLDS = /foldDiacritics|normalize\((['"])NFK?D\1\)|\\p\{(Diacritic|M)\}/;
 
 describe('structural guard: no NEW unfolded title matcher', () => {
   const unfolded = fs.readdirSync(LIB)
@@ -227,7 +235,7 @@ describe('structural guard: no NEW unfolded title matcher', () => {
     );
   });
 
-  it('the nine libs fixed by task #648 stay out of the baseline', () => {
+  it('title-match plus the nine libs it now feeds stay out of the baseline', () => {
     const fixed = [
       'title-match.js', 'rss-discovery.js', 'omc-discovery.js', 'theatermania-discovery.js',
       'show-score-discover.js', 'dtli-homepage-scan.js', 'venue-aliases.js',
