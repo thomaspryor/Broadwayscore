@@ -56,6 +56,25 @@ const PROVIDER_ENDPOINT_PATTERNS = [
   // flagging it would fire on all 9 legitimate callers.
   { provider: 'browserbase', regex: /https?:\/\/api\.browserbase\.com/gi },
   { provider: 'browserbase', regex: /https?:\/\/www\.browserbase\.com\/v1\b/gi },
+
+  // BARE-HOST CONSTANTS — the same split-URL defeat, generalized to the other
+  // three providers (task #752 follow-up). The patterns above are path-aware on
+  // purpose: they must NOT match the billing/SERP siblings (/api/v1/usage,
+  // /api/v1/store/google, /zone/cost, /account). But that path-awareness is
+  // exactly what a caller defeats by keeping the host in its own constant:
+  //
+  //   const SB = 'https://app.scrapingbee.com';
+  //   fetch(SB + '/api/v1/?api_key=' + k + '&url=' + u);   // 0 hits before this
+  //
+  // Verified 2026-08-02: this escaped for scrapingbee, brightdata AND scrapingdog.
+  // Matching only a COMPLETE quoted string that ends at the host catches the
+  // split form without touching the path-based exclusions — a literal with any
+  // path (including the exempt billing ones) simply doesn't match these.
+  // Zero files in scripts/ or src/ trip these today, so this is prospective.
+  { provider: 'scrapingbee', regex: /['"`]https?:\/\/app\.scrapingbee\.com['"`]/gi },
+  { provider: 'brightdata', regex: /['"`]https?:\/\/api\.brightdata\.com['"`]/gi },
+  { provider: 'scrapingdog', regex: /['"`]https?:\/\/api\.scrapingdog\.com['"`]/gi },
+  { provider: 'browserbase', regex: /['"`]https?:\/\/www\.browserbase\.com['"`]/gi },
 ];
 
 /**
