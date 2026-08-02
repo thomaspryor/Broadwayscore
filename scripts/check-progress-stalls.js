@@ -79,8 +79,22 @@ function loadShowTitles() {
 
 async function loadData() {
   const titleById = loadShowTitles();
-  const { unblocked } = computeRescoreQueueDepth(path.join(ROOT, 'data', 'review-texts'), titleById);
-  return { needsRescoreUnblocked: unblocked };
+  const { totalFlagged, notScoreable, blocked, unblocked } = computeRescoreQueueDepth(
+    path.join(ROOT, 'data', 'review-texts'),
+    titleById
+  );
+  // needsRescoreRaw/NotScoreable/Blocked are NOT registered as SURFACES — they
+  // aren't fed to assertProgress and never drive a stall alert. They ride
+  // along in state.lastSummary (set by weekly-monitor-runner.js from this
+  // return value) purely so a human reading the state file or CI log can see
+  // the raw-vs-actionable gap without cross-referencing
+  // audit-stuck-rescore-flags.js separately (task #751).
+  return {
+    needsRescoreUnblocked: unblocked,
+    needsRescoreRaw: totalFlagged,
+    needsRescoreNotScoreable: notScoreable,
+    needsRescoreBlocked: blocked,
+  };
 }
 
 /**
@@ -134,6 +148,13 @@ async function main() {
     const icon = s.stalled ? '⚠️' : '✅';
     console.log(`${icon} ${s.label}: ${s.value} (${s.reason})`);
     if (s.stalled) anyStalled = true;
+  }
+  if (state.lastSummary && state.lastSummary.needsRescoreRaw != null) {
+    const ls = state.lastSummary;
+    console.log(
+      `   needsRescore breakdown: raw=${ls.needsRescoreRaw}, unblocked(actionable)=${ls.needsRescoreUnblocked}, ` +
+      `blocked=${ls.needsRescoreBlocked}, notScoreable=${ls.needsRescoreNotScoreable}`
+    );
   }
   if (anyStalled) {
     console.log('[progress-watch] one or more surfaces stalled — see data/audit/progress-watch-state.json; health-check.js surfaces this in the daily digest.');
