@@ -424,3 +424,18 @@ test('parkedGuard: a later launch clears the park (force IS the unpark)', () => 
   const entries = [PARK, { event: 'launch', taskId: '42', workspaceRef: 'workspace:9', ts: '2026-08-02T11:00:00.000Z' }];
   assert.equal(parkedGuard({ id: '42' }, entries, {}), null);
 });
+
+// ── Card #854: archive/ union in loadTasks ──────────────────────────────────
+const os = require('os');
+const path = require('path');
+const { loadTasks } = require('./bsc-next.js');
+
+test('loadTasks: merges archive/ so an archived --id lookup still resolves', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-next-loadtasks-'));
+  fs.writeFileSync(path.join(dir, '5.json'), JSON.stringify({ id: '5', subject: 'live pending', status: 'pending' }));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '2.json'), JSON.stringify({ id: '2', subject: 'old finished work', status: 'completed' }));
+  const tasks = loadTasks(dir);
+  assert.deepEqual(tasks.map((t) => t.id), ['2', '5']);
+  assert.equal(pickTask(tasks, { id: '2' }).subject, 'old finished work');
+});

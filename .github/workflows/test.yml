@@ -1133,6 +1133,13 @@ on:
       - 'scripts/notion-tasks-sync.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
+      # Card #854: task-store archiver — moves completed tasks >48h old to
+      # archive/ so the harness's injected task-list reminder stops scaling
+      # with all-time task count. Colocated test runs in the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/archive-completed-tasks.js'
+      - 'scripts/lib/task-store-archive.js'
+      - 'scripts/lib/task-store-archive.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
