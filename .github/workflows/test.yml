@@ -29,8 +29,14 @@ on:
       - 'scripts/lib/verify-image-prompt.test.mjs'
       - 'scripts/lib/image-audit-action.js'
       - 'scripts/lib/image-audit-action.test.mjs'
+      # Coverage is decided from FILES, not directory existence: the fetcher
+      # mkdir's <id>/ before verification, so a failed fetch leaves an empty dir
+      # that existence-based readers counted as art (2026-08-02).
+      - 'scripts/lib/show-image-coverage.js'
+      - 'scripts/lib/show-image-coverage.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
+      - 'scripts/process-feedback.js'
       # Diacritic folding across every show-title matcher (task #648). A matcher
       # that strips non-ASCII without folding first shreds "Les Misérables" into
       # ["les","mis","rables"] and matches nothing — confirmed live suppression.
