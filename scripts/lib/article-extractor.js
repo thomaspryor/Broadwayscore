@@ -191,6 +191,19 @@ function extractLsaByline(text) {
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
 const PATTERNS = [
+  // Telegraph — never had an extractor pattern (task #720 added it to WE
+  // discovery but extraction was never built), so every telegraph.co.uk
+  // review silently saved as a stub even though the free cookie-plain fetch
+  // returns full HTML with the full review text (verified live 2026-08-02:
+  // plain fetchPage() returns 250K+ char pages, no paywall gate — the
+  // subscription cancellation on 2026-07-21 did not break access to review
+  // text, only the extraction pattern was missing). Stop at the literal
+  // "Join the conversation" comments-section marker; any trailing
+  // "Recommended…" promo-module chrome that leaks through is caught by
+  // stripTrailingJunk() in the downstream collection/recovery pipeline,
+  // same as every other outlet pattern below.
+  ['telegraph.co.uk', /<div[^>]+class="[^"]*article-body-text[^"]*"[^>]*>([\s\S]*?)Join the conversation/i, 500],
+
   // NYT — section[name="articleBody"] is the primary
   ['nytimes.com', /<section[^>]+name="articleBody"[^>]*>([\s\S]*?)<\/section>/, 500],
   ['nytimes.com', /<div[^>]+itemprop="articleBody"[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/, 500],
