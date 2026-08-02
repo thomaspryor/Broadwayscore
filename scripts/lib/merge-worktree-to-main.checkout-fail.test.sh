@@ -139,11 +139,18 @@ else
     echo "FAIL[2]: script exited 0 with an unresolved UU conflict in the working tree. Output:"
     echo "$out2" | tail -20 | sed 's/^/    /'
     fail=1
+  elif ! echo "$out2" | grep -q "could not checkout main"; then
+    # Non-zero alone isn't enough — an earlier, unrelated failure (mutex,
+    # branch resolution, git incompatibility) would also exit non-zero and
+    # falsely pass this case without ever exercising the checkout-fail path.
+    echo "FAIL[2]: exited non-zero but NOT via the checkout-fail message — this case didn't exercise what it claims to. Output:"
+    echo "$out2" | tail -20 | sed 's/^/    /'
+    fail=1
   elif [ "$pre_stash2" != "$post_stash2" ]; then
     echo "FAIL[2]: a new stash entry was created/left behind during the UU-conflict run."
     fail=1
   else
-    echo "PASS[2]: UU-conflict simulation — script exits non-zero (got $code2), no new stash entry"
+    echo "PASS[2]: UU-conflict simulation — script exits non-zero via 'could not checkout main' (got $code2), no new stash entry"
   fi
 fi
 
