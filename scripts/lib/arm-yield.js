@@ -260,8 +260,25 @@ function computeArmState(dailyCounts, opts = {}) {
   // five months (scoring-audit), a window anchored on today contains nothing
   // but the outage and would conclude "no history, can't judge" — which is how
   // the longest-dead arm would be the one that alerts least.
-  const windowFrom = toDayKey(dayToMs(lastYieldDate) - (cfg.windowDays - 1) * MS_PER_DAY);
-  const inWindow = productive.filter((d) => d >= windowFrom && d <= lastYieldDate);
+  const fixedWindowFrom = toDayKey(dayToMs(lastYieldDate) - (cfg.windowDays - 1) * MS_PER_DAY);
+  let inWindow = productive.filter((d) => d >= fixedWindowFrom && d <= lastYieldDate);
+  let windowFrom = fixedWindowFrom;
+
+  // A LOW-FREQUENCY arm has fewer than minProductiveDays productive days in any
+  // 30-day window by definition — a monthly cron yields once a month. Stopping
+  // at the fixed window would park every such arm on 'insufficient-history'
+  // permanently, which is EXACTLY the scoring-audit failure (5/5 monthly runs
+  // failed since 2026-03-01, nobody told): it would only ever be caught by the
+  // dead-beyond-ledger branch above, i.e. after the outage outlives 190 days of
+  // retention. So when the fixed window is too thin, widen it to span the arm's
+  // last minProductiveDays yields however far back they are. The cadence is
+  // still learned from the arm itself; only the lookback stretches.
+  // (Codex ship-check finding, 2026-08-02 — verified: a monthly arm dead 90d
+  // reported 'insufficient-history' and would never have alerted.)
+  if (inWindow.length < cfg.minProductiveDays && productive.length >= cfg.minProductiveDays) {
+    inWindow = productive.slice(-cfg.minProductiveDays);
+    windowFrom = inWindow[0];
+  }
 
   let longestPriorGap = 0;
   for (let i = 1; i < inWindow.length; i += 1) {
@@ -286,10 +303,12 @@ function computeArmState(dailyCounts, opts = {}) {
   };
 
   if (inWindow.length < cfg.minProductiveDays) {
+    // Only reachable when the arm has never yielded minProductiveDays times at
+    // all — a genuinely new arm, with no cadence to compare anything against.
     return {
       ...state,
       verdict: 'insufficient-history',
-      reason: `only ${inWindow.length} productive day(s) in the ${cfg.windowDays}d baseline (need ${cfg.minProductiveDays}) — no reliable cadence to judge against`,
+      reason: `only ${inWindow.length} productive day(s) on record (need ${cfg.minProductiveDays}) — too new to have a cadence to judge against`,
     };
   }
 

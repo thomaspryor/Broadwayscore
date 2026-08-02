@@ -103,15 +103,26 @@ function readLedger(file) {
 }
 
 /**
+ * The review-texts corpus holds ~2,800 show directories. A scan that sees a
+ * tiny fraction of that is a broken/partial checkout, not a real corpus — and
+ * zero-filling from it would tell the owner that ELEVEN outlets died on the
+ * same day. Skipping is the honest response (Codex ship-check finding).
+ */
+const MIN_PLAUSIBLE_SHOW_DIRS = 500;
+
+/**
  * outlet arms: count review-text files whose fetch/classify stamp lands on each
  * requested day. One filesystem pass covers every outlet arm and every day.
  *
- * @returns {Map<string, Map<string, number>>} outletId → day → count
+ * Returns `null` when the corpus is missing or implausibly small, so the caller
+ * SKIPS every outlet arm rather than recording fabricated zeroes.
+ *
+ * @returns {{byOutlet: Map<string, Map<string, number>>, showDirCount: number}|null}
  */
 function collectOutletYield(reviewTextsDir, days) {
   const wantedDays = new Set(days);
   const byOutlet = new Map();
-  if (!fs.existsSync(reviewTextsDir)) return byOutlet;
+  if (!fs.existsSync(reviewTextsDir)) return null;
 
   const showDirs = listShowDirs(reviewTextsDir).filter((name) => {
     if (name.startsWith('_') || name.startsWith('.')) return false;
@@ -121,6 +132,13 @@ function collectOutletYield(reviewTextsDir, days) {
       return false;
     }
   });
+
+  if (showDirs.length < MIN_PLAUSIBLE_SHOW_DIRS) {
+    console.warn(
+      `  ! review-texts holds only ${showDirs.length} show dir(s) (expected >=${MIN_PLAUSIBLE_SHOW_DIRS}) — partial checkout, not a dead corpus`
+    );
+    return null;
+  }
 
   for (const showDir of showDirs) {
     const showPath = path.join(reviewTextsDir, showDir);
@@ -150,7 +168,7 @@ function collectOutletYield(reviewTextsDir, days) {
       dayMap.set(day, (dayMap.get(day) || 0) + 1);
     }
   }
-  return byOutlet;
+  return { byOutlet, showDirCount: showDirs.length };
 }
 
 /**
@@ -212,6 +230,15 @@ function collectWorkflowYield(workflowFile, days) {
     }
   }
 
+  // Runs came back but not one had a parseable createdAt: we cannot place ANY
+  // of them on a day, so we cannot claim to have observed any day. Skipping
+  // beats recording a range of zeroes we did not actually verify (Codex
+  // ship-check finding — the old expression fell through to days[0] here).
+  if (runs.length > 0 && oldestSeen === null) {
+    console.warn(`  ! ${workflowFile}: ${runs.length} run(s) returned with no parseable createdAt — skipped`);
+    return null;
+  }
+
   // A short page proves history back to the beginning; a full page only proves
   // history back to its oldest run.
   const observableFrom = runs.length >= limit && oldestSeen ? oldestSeen : days[0];
@@ -238,12 +265,13 @@ function main() {
   const fresh = [];
   const outletArms = arms.filter((a) => a.kind === 'outlet');
   if (outletArms.length) {
-    if (!fs.existsSync(args.reviewTexts)) {
-      // Skipping (not zero-filling) keeps a missing private-repo checkout from
-      // manufacturing a corpus-wide "every outlet is dead" alert.
-      console.warn(`  ! review-texts missing at ${args.reviewTexts} — skipping ${outletArms.length} outlet arm(s)`);
+    // Skipping (not zero-filling) keeps a missing OR PARTIAL private-repo
+    // checkout from manufacturing a corpus-wide "every outlet is dead" alert.
+    const outletScan = collectOutletYield(args.reviewTexts, days);
+    if (!outletScan) {
+      console.warn(`  ! review-texts unusable at ${args.reviewTexts} — skipping ${outletArms.length} outlet arm(s)`);
     } else {
-      const byOutlet = collectOutletYield(args.reviewTexts, days);
+      const byOutlet = outletScan.byOutlet;
       for (const arm of outletArms) {
         for (const day of days) {
           const itemsFound = (arm.outletIds || []).reduce(
