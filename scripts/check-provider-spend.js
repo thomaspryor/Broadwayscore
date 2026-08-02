@@ -29,6 +29,9 @@ const {
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday,
 } = require('./lib/provider-spend-core');
+const {
+  countCallsByProvider, topCallers, computeAttributedPct, LEDGER_PATH: CALL_LEDGER_PATH,
+} = require('./lib/provider-telemetry');
 
 const REPO = path.join(__dirname, '..');
 const LEDGER = path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl');
@@ -58,6 +61,21 @@ function readLedger() {
     catch { /* a corrupt line loses one day, never the run */ }
   }
   return records.sort((a, b) => (a.day < b.day ? -1 : 1));
+}
+
+// The per-call attribution ledger (scripts/lib/provider-telemetry.js, task
+// #752) — separate file from the billing ledger above. Same
+// corrupt-line-tolerant read; a bad row loses one call record, never the run.
+function readCallLedger() {
+  let lines;
+  try { lines = fs.readFileSync(CALL_LEDGER_PATH, 'utf8').split('\n').filter(Boolean); }
+  catch { return []; }
+  const records = [];
+  for (const line of lines) {
+    try { records.push(JSON.parse(line)); }
+    catch { /* skip corrupt line */ }
+  }
+  return records;
 }
 
 async function main() {
@@ -90,10 +108,26 @@ async function main() {
     prev,
   });
 
+  // attributedPct (task #752): compare the call-level ledger against the
+  // billing-API totals just fetched. This is what converts "we believe we
+  // capture all scraping spend" into a number that fails loudly when it's
+  // wrong — the exact gap that let the Aug 1 Browserbase rebound go unnamed.
+  const callLedger = readCallLedger();
+  const ledgerCounts = countCallsByProvider(callLedger, DAY);
+  const attributedPct = computeAttributedPct(ledgerCounts, record.providers);
+  record.attributedPct = attributedPct;
+  const attribution = {};
+  for (const provider of Object.keys(attributedPct)) {
+    if (attributedPct[provider] == null) continue;
+    attribution[provider] = { pct: attributedPct[provider], top: topCallers(callLedger, DAY, provider, 5) };
+  }
+
   const breaches = budgetBreaches(record, thresholds);
   const series = [...ledger.filter((r) => r.day !== DAY), record];
   const streak = computeStreak(series, thresholds);
-  const snapshot = renderSnapshot({ record, streak, breaches, generatedAt: new Date().toISOString() });
+  const snapshot = renderSnapshot({
+    record, streak, breaches, generatedAt: new Date().toISOString(), attribution,
+  });
 
   console.log(`[provider-spend] ${DAY}: ${snapshot.bannerText}`);
   for (const item of snapshot.items) console.log(`  ${item.title}`);

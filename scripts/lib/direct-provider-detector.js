@@ -25,6 +25,13 @@ const PROVIDER_ENDPOINT_PATTERNS = [
   { provider: 'brightdata', regex: /https?:\/\/api\.brightdata\.com\/request\b/gi },
   // Scrapingdog page-fetch: /scrape. Distinct from /account (credit check).
   { provider: 'scrapingdog', regex: /https?:\/\/api\.scrapingdog\.com\/scrape\b/gi },
+  // Browserbase session create/list share the SAME path (/v1/sessions) —
+  // unlike the other 3 providers, there is no distinct billing subpath to
+  // exclude via regex. The read-only session-list callers (browserbase-live-usage.js,
+  // provider-billing.js) and the canonical chokepoint itself
+  // (browserbase-session.js) are carved out via the file-level allowlist
+  // instead (task #752).
+  { provider: 'browserbase', regex: /https?:\/\/(?:api|www)\.browserbase\.com\/v1\/sessions\b/gi },
 ];
 
 /**

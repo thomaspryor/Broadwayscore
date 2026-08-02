@@ -914,13 +914,13 @@ async function main() {
     const projectId = process.env.BROWSERBASE_PROJECT_ID;
     if (!apiKey || !projectId) throw new Error('BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
     console.log(`\nCreating Browserbase session on persistent context ${contextId}...`);
-    const resp = await fetch('https://api.browserbase.com/v1/sessions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': apiKey },
-      body: JSON.stringify({ projectId, proxies: true, browserSettings: { context: { id: contextId, persist: false }, solveCaptchas: true } }),
+    const { createBbSession } = require('./lib/browserbase-session');
+    const session = await createBbSession({
+      apiKey, projectId,
+      caller: 'newspapers-com-extract.js',
+      purpose: 'newspapers.com Cloudflare Turnstile bypass, persistent login context',
+      body: { proxies: true, browserSettings: { context: { id: contextId, persist: false }, solveCaptchas: true } },
     });
-    if (!resp.ok) throw new Error(`Browserbase session create failed: ${resp.status} ${await resp.text()}`);
-    const session = await resp.json();
     console.log(`  session ${session.id} → connecting...`);
     browser = await chromium.connectOverCDP(session.connectUrl);
     context = browser.contexts()[0] || await browser.newContext();

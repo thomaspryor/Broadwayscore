@@ -4351,16 +4351,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           if (tsUrl) {
             // BB session with cookie injection (no login — avoids session limit)
             const { chromium } = require('playwright');
-            const tsSession = await new Promise((resolve, reject) => {
-              const req = require('https').request('https://www.browserbase.com/v1/sessions', {
-                method: 'POST',
-                headers: { 'x-bb-api-key': bbApiKey, 'Content-Type': 'application/json' },
-              }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))); });
-              req.on('error', reject);
-              req.end(JSON.stringify({ projectId: bbProjectId, keepAlive: true, timeout: 300, browserSettings: { solveCaptchas: true } }));
+            const { createBbSession } = require('./lib/browserbase-session');
+            const tsSession = await createBbSession({
+              apiKey: bbApiKey,
+              projectId: bbProjectId,
+              caller: 'gather-reviews.js:the-stage',
+              purpose: 'The Stage cookie-auth live fetch',
+              body: { keepAlive: true, timeout: 300, browserSettings: { solveCaptchas: true } },
             });
 
-            const tsBrowser = await chromium.connectOverCDP(`wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${tsSession.id}`);
+            const tsBrowser = await chromium.connectOverCDP(tsSession.connectUrl);
             try {
               const tsCtx = tsBrowser.contexts()[0] || await tsBrowser.newContext();
               const tsPage = tsCtx.pages()[0] || await tsCtx.newPage();
