@@ -75,6 +75,28 @@ test('flags a Browserbase /v1 API base held in a constant (split-URL session cre
   assert.equal(hits[0].line, 1);
 });
 
+test('flags an api.browserbase.com HOST constant split above /v1', () => {
+  // The split-URL hole one level up from the /v1 case: fixing only `/v1` would
+  // still miss a caller that keeps the bare host in a constant.
+  const src = [
+    `const HOST = 'https://api.browserbase.com';`,
+    `await fetch(HOST + '/v1/sessions', { method: 'POST' });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'browserbase');
+  assert.equal(hits[0].line, 1);
+});
+
+test('does not flag the www.browserbase.com human dashboard link', () => {
+  // test-paywalled-access.js console.logs this debug URL while creating its
+  // session correctly via createBbSession(). Host-only matching on www would
+  // flag that correct file — and allowlisting it would blind the gate to a
+  // future real direct call in the same file.
+  const src = `console.log(\`Debug URL: https://www.browserbase.com/sessions/\${bbSessionId}\`);`;
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
 test('does not flag the Browserbase CDP connect URL (different host, no /v1)', () => {
   const src = `const browser = await chromium.connectOverCDP('wss://connect.browserbase.com?apiKey=' + key);`;
   assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
