@@ -79,7 +79,7 @@ const MARKET_PROFILES = {
   // described as e.g. "(dublin-fringe)", which is exactly the mislabel this
   // whole module exists to stop. Venue checking is simply disabled here; the
   // wrong-show / placeholder / production-still rules still apply.
-  unknown: {
+  __venue_agnostic__: {
     expected: 'whatever venue or producing company this production actually plays — no venue expectation is asserted for this market',
     mismatch: 'NOTHING — do not reject on venue or company branding at all for this production; judge only by whether the artwork is for this show',
     acceptCompanies: 'any venue or company branding — venue text is not evidence of a mismatch for this production',
@@ -109,7 +109,7 @@ function getMarketProfile(market) {
   // Broadway show). A PRESENT but unrecognised slug is a different situation:
   // silently applying Broadway venue rules to it is the mislabel bug, so it
   // gets the venue-agnostic profile.
-  return key === '' ? MARKET_PROFILES.broadway : MARKET_PROFILES.unknown;
+  return key === '' ? MARKET_PROFILES.broadway : MARKET_PROFILES.__venue_agnostic__;
 }
 
 /**
@@ -125,9 +125,9 @@ function getMarketProfile(market) {
  */
 function resolveMarketSlug(category, market) {
   const cat = String(category ?? '').trim().toLowerCase();
-  if (MARKET_PROFILES[cat] && cat !== 'unknown') return cat;
+  if (MARKET_PROFILES[cat]) return cat;
   const mkt = String(market ?? '').trim().toLowerCase();
-  if (MARKET_PROFILES[mkt] && mkt !== 'unknown') return mkt;
+  if (MARKET_PROFILES[mkt]) return mkt;
   return category || market || undefined;
 }
 

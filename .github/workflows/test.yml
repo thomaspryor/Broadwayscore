@@ -27,6 +27,8 @@ on:
       # to the prompt or either consumer triggers CI.
       - 'scripts/lib/verify-image.js'
       - 'scripts/lib/verify-image-prompt.test.mjs'
+      - 'scripts/lib/image-audit-action.js'
+      - 'scripts/lib/image-audit-action.test.mjs'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       # Diacritic folding across every show-title matcher (task #648). A matcher

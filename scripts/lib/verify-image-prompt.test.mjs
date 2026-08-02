@@ -24,6 +24,11 @@ const { buildVerificationPrompt, getMarketProfile, resolveMarketSlug, MARKET_PRO
 
 const MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
 
+// The venue-agnostic profile is an INTERNAL key, deliberately un-typeable as a
+// shows.json value (previously 'unknown', which a real category could collide
+// with and thereby re-enable Broadway venue rules for a non-Broadway show).
+const INTERNAL_PROFILE_KEY = '__venue_agnostic__';
+
 test('every shows.json market/category slug has its own venue profile', () => {
   for (const m of MARKETS) {
     assert.ok(
@@ -102,7 +107,7 @@ test('absent market keeps the Broadway default; an UNRECOGNISED slug does not', 
   // A present-but-unknown slug used to inherit Broadway's reject rules while
   // the prompt label said "(dublin-fringe)" — the exact mislabel this module
   // exists to stop. It gets venue-agnostic rules instead.
-  assert.equal(getMarketProfile('dublin-fringe'), MARKET_PROFILES.unknown);
+  assert.equal(getMarketProfile('dublin-fringe'), MARKET_PROFILES.__venue_agnostic__);
   const prompt = buildVerificationPrompt({ market: 'dublin-fringe' });
   assert.ok(prompt.length > 500);
   assert.match(prompt, /do not reject on venue or company branding at all/);
@@ -151,7 +156,7 @@ test('resolveMarketSlug prefers a recognised category but never discards a good 
   assert.equal(resolveMarketSlug(null, 'west-end'), 'west-end');
   assert.equal(resolveMarketSlug(undefined, undefined), undefined);
   // Nothing recognisable anywhere still yields the venue-agnostic profile.
-  assert.equal(getMarketProfile(resolveMarketSlug('dublin-fringe', 'dublin-fringe')), MARKET_PROFILES.unknown);
+  assert.equal(getMarketProfile(resolveMarketSlug('dublin-fringe', 'dublin-fringe')), MARKET_PROFILES.__venue_agnostic__);
 });
 
 test('broadway prompt keeps the concrete cross-market counterexamples', () => {
@@ -162,4 +167,15 @@ test('broadway prompt keeps the concrete cross-market counterexamples', () => {
     assert.ok(prompt.includes(name), `broadway prompt dropped counterexample "${name}"`);
   }
   assert.match(prompt, /community, or touring company branding/);
+});
+
+test('the venue-agnostic profile key cannot collide with a real shows.json value', () => {
+  assert.ok(MARKET_PROFILES[INTERNAL_PROFILE_KEY], 'internal profile key missing');
+  assert.ok(
+    !MARKET_PROFILES.unknown,
+    "'unknown' is back as a profile key — a category of that value would silently pick it up",
+  );
+  // A real slug always wins over the internal key, from either field.
+  assert.equal(resolveMarketSlug(INTERNAL_PROFILE_KEY, 'west-end'), INTERNAL_PROFILE_KEY);
+  assert.equal(resolveMarketSlug('nonsense', 'regional'), 'regional');
 });

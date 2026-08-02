@@ -53,6 +53,7 @@ const RETRY_BASE_MS = 2000;    // Exponential backoff base
 // copy; a divergent copy is how the fetcher ended up rejecting correct West End
 // / Off-Broadway key art for months (2026-08-02).
 const { buildVerificationPrompt, resolveMarketSlug } = require('./lib/verify-image');
+const { decideImageAuditAction } = require('./lib/image-audit-action');
 const { getMarketLabel } = require('./lib/market-label');
 
 
@@ -531,51 +532,12 @@ async function runFullAudit(verifier, shows, singleShow = null) {
       verification = await verifier.verifyImage(show.title, imageData, mimeType, show);
     }
 
-    // Determine action
-    let action = 'keep';
-    let reason = '';
-
-    // Production-still-only rejections are NOT wrong images. The shared prompt
-    // rejects them so fetch-show-images-auto.js can prefer poster art; this
-    // auditor deletes on match:false, so an unguarded adoption would wipe every
-    // legitimate production-still thumbnail already on the site. Art-type
-    // upgrades belong to the fetcher, not to this destructive sweep.
-    const productionStillOnly = verification.match === false
-      && verification.imageType === 'production_still'
-      && (verification.issues || []).every(i => i === 'production_photo' || i === 'production_still');
-    if (productionStillOnly) {
-      // NOT 'keep': Gemini may have stopped at "this is a production still" and
-      // never evaluated whether the still is even from the right production.
-      // Forcing match:true would bury that. needs_review keeps the image on the
-      // site (no destructive delete) while surfacing it for a human/queue.
-      action = 'needs_review';
-      reason = 'production_still (art-type, not a confirmed wrong image — not auto-deleted)';
-      verification = { ...verification, match: null };
-    }
-
-    if (!productionStillOnly && verification.match === null) {
-      action = 'needs_review';
-      reason = 'api_error';
-    } else if (verification.match === false && verification.confidence === 'high') {
-      action = 'delete';
-      reason = verification.issues.join(', ') || 'wrong_image';
-    } else if (verification.match === false && verification.confidence === 'medium') {
-      action = 'needs_review';
-      reason = verification.issues.join(', ') || 'possibly_wrong';
-    } else if (verification.match === false) {
-      action = 'needs_review';
-      reason = 'low_confidence_mismatch';
-    }
-
-    // Cross-contaminated images get special handling
-    if (crossContamGroup && verification.match === false) {
-      action = 'delete';
-      reason = `cross_contaminated: shared with ${crossContamGroup.sharedWith.join(', ')}`;
-    } else if (crossContamGroup && verification.match === true) {
-      // Image matches THIS show - it's the owner. The other shows in the group
-      // will be flagged when they're processed.
-      reason = `owner (shared hash with ${crossContamGroup.sharedWith.join(', ')})`;
-    }
+    // Decision ladder lives in scripts/lib/image-audit-action.js so it can be
+    // tested directly — this branch can DELETE a live thumbnail (CLAUDE.md §15).
+    const decision = decideImageAuditAction(verification, crossContamGroup);
+    const action = decision.action;
+    const reason = decision.reason;
+    verification = decision.verification;
 
     const statusIcon = action === 'keep' ? 'OK' : action === 'delete' ? 'DELETE' : 'REVIEW';
     console.log(`${statusIcon} - ${verification.description}`);
