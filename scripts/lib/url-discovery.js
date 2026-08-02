@@ -21,6 +21,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
+const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
@@ -975,6 +976,20 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
     const urlLower = url.toLowerCase();
     try { if (new URL(url).pathname === '/') continue; } catch (e) {}
+
+    // Canonical blocked-host/path guard (social, ticket, aggregator, reference).
+    // This loop used to have NO host guard at all, and for an outlet with no
+    // registry `domain` (14 of the 103 West End SERP outlets, e.g. the ghost
+    // `telegraph-uk` entry) targetDomain is '' — so the domain check below never
+    // fires and ANY host is accepted under that outlet's id. That is how
+    // tao-of-glass-west-end-2026 ended up with a facebook.com/thestage post
+    // stored as a "Telegraph Uk" review (task #720). Shared with the rest of the
+    // pipeline via lib/domain-filters so the block-list stays single-source.
+    if (isBlockedReviewUrl(url)) {
+      log(`    ✗ Blocked non-review host/path: ${url.substring(0, 80)}`);
+      continue;
+    }
+
     if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
     if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
     // TheaterMania /shows/ pages are listing pages, not reviews
