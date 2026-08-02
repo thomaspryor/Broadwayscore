@@ -173,6 +173,8 @@ function processRecoveredText(candidate, rawText) {
   return { ok: true, newLen: cleanedText.length };
 }
 
+const PUSH_WITH_RETRY = path.join(__dirname, 'lib', 'push-with-retry.sh');
+
 function checkpoint(stats) {
   if (dryRun) return;
   const reviewTextsRepo = CONFIG.reviewTextsDir;
@@ -184,20 +186,14 @@ function checkpoint(stats) {
     } catch {} // non-zero = there ARE staged changes
     const msg = `feat: WSJ browser recovery - ${stats.recovered} reviews recovered (task #779)`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: reviewTextsRepo });
-    for (let i = 0; i < 5; i++) {
-      try {
-        execSync('git pull --rebase origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        execSync('git push origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
-        return;
-      } catch {
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: reviewTextsRepo }); } catch {}
-        const delay = 3000 + Math.random() * 5000;
-        const start = Date.now();
-        while (Date.now() - start < delay) {}
-      }
-    }
-    console.log('  [Checkpoint] WARNING: could not push after 5 attempts');
+    // Use the repo's sanctioned push helper (hang guards, delayed
+    // re-verification, conflict-marker corruption check) rather than a
+    // hand-rolled pull+push loop — task #420 flagged exactly this
+    // anti-pattern in 3 other scripts; this is the same review-texts repo
+    // push-with-retry.sh already special-cases (see its
+    // *broadway-review-texts* branch).
+    execSync(`bash "${PUSH_WITH_RETRY}"`, { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 300000 });
+    console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
   } catch (e) {
     console.log(`  [Checkpoint] Error: ${e.message}`);
   }
