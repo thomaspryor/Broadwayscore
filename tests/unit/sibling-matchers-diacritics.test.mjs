@@ -35,6 +35,7 @@ import { fileURLToPath } from 'url';
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const LIB = path.join(REPO, 'scripts/lib');
+const SCRIPTS_ROOT = path.join(REPO, 'scripts');
 
 const { foldDiacritics } = require('../../scripts/lib/title-match.js');
 
@@ -203,22 +204,106 @@ const UNFOLDED_BASELINE = new Set([
   // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
   // ASCII by construction, not a show title. See inline comment at the call site.
   'autonomous-ui-capture.js',
-  // hay (review fullText) is compared against ownVenueSlug, which is built by
-  // an UNFOLDED venueSlug() in two files OUTSIDE scripts/lib (audit-cross-
-  // production.js, audit-review-url-clusters.js). Folding only this side would
-  // desync the pairing and break today's coincidentally-working accented-venue
-  // matches. Needs a coordinated fix across all three files — tracked
-  // separately, not part of task #760. See inline comment at the call site.
-  'cross-production-guards.js',
+  // cross-production-guards.js FIXED under task #783: hay now folds via
+  // foldDiacritics before the ASCII strip, matched against venue-
+  // classification.js's shared venueSlug() (also folded) — the two audit
+  // scripts that used to duplicate an unfolded venueSlug() now import it too.
   // response is an LLM's YES/NO answer text, not a show title. See inline
   // comment at the call site.
   'page-validator.js',
 ]);
 
+// Task #781: the structural guard above only ever globbed scripts/lib — the
+// same shred signature exists at scripts/ root scale (audit-*, backfill-*,
+// discover-*, etc.) completely unscanned. This freezes that root-level debt
+// as of #781 so CI stays green while still failing closed on any NEW root
+// script that strips non-ASCII without folding first. Not a fix-it list —
+// shrinking it (per-file, #760-style) is separate follow-up work. Two of
+// these (audit-cross-production.js, audit-review-url-clusters.js) have a
+// coordinated venueSlug() fix tracked in task #783.
+const UNFOLDED_BASELINE_ROOT = new Set([
+  'adjudicate-review-queue.js',
+  'analyze-reviews.js',
+  'audit-closing-dates.js',
+  'audit-critic-coverage-bucket.js',
+  'audit-critic-outlets.js',
+  'audit-cross-production.js',
+  'audit-data-integrity.js',
+  'audit-duplicate-shows.js',
+  'audit-reroute-backlog.js',
+  'audit-review-content.js',
+  'audit-review-duplicates.js',
+  'audit-review-url-clusters.js',
+  'audit-show-director-consensus.js',
+  'audit-touring-contamination.js',
+  'audit-url-validation.js',
+  'audit-we-reviews.js',
+  'auto-fix-show-data.js',
+  'autonomous-run.js',
+  'backfill-html-override-rename.js',
+  'backfill-original-scores.js',
+  'backfill-theaterlife-bylines.js',
+  'batch-correct-reviews.js',
+  'build-master-review-list.js',
+  'check-opening-night-readiness.js',
+  'cleanup-data-integrity.js',
+  'collect-all-reviews.js',
+  'collect-review-texts.js',
+  'dedupe-same-url-bylines.js',
+  'delete-misroute-orphans.js',
+  'detect-cross-outlet-duplicates.js',
+  'detect-syndicated-duplicates.js',
+  'discover-dtli-slugs.js',
+  'discover-new-shows.js',
+  'discover-outlet-reviews-serp.js',
+  'enrich-official-urls.js',
+  'enrich-stubhub-links.js',
+  'enrich-todaytix-data.js',
+  'enrich-west-end-dates.js',
+  'enrich-west-end-shows.js',
+  'fetch-square-images.js',
+  'fetch-synopses-wikipedia.js',
+  'fix-contaminated-images.js',
+  'fix-duplicates-and-zeros.js',
+  'fix-unknown-critics.js',
+  'gather-reviews.js',
+  'health-check.js',
+  'merge-theater-research.js',
+  'migrate-reroute-backlog.js',
+  'newspapers-com-extract.js',
+  'opening-night-poller.js',
+  'paywall-browser-extract.js',
+  'probe-wrong-show-staleness.js',
+  'process-commercial-tip.js',
+  'promote-ob-historical.js',
+  'promote-ob-venue-candidates.js',
+  'rebuild-all-reviews.js',
+  'research-theater-scores.js',
+  'reset-adjudication.js',
+  'scrape-broadway-com-audience.js',
+  'scrape-bww-reviews.js',
+  'scrape-dtli.js',
+  'scrape-wp-theater-blogs.js',
+  'sweep-we-aggregators.js',
+  'sync-review-texts.js',
+  'test-discovery-flow.js',
+  'update-commercial-data.js',
+  'update-show-status.js',
+  'validate-data.js',
+  'validate-show-venue.js',
+  'validate-stubhub-urls.js',
+  'watch-aggregator-urls.js',
+]);
+
 // The shred signature: an ASCII-only character-class filter applied to text.
 // Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
 // still destroys accented letters, so the class is not narrower than /[^a-z0-9.
-const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
+// Task #790: a trailing 0-9 requirement here left NAME matchers (critic/cast
+// bylines never contain digits, e.g. [^a-z ] or [^a-z\s]) completely invisible
+// to this guard even though they shred accented names identically to a slug
+// builder. The signature now stops at the a-z(A-Z)? prefix — any ASCII-only
+// character class anchored there counts, digit or no digit.
+const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?/;
 // Every fold spelling in the codebase counts: foldDiacritics (the canonical
 // helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
 // and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.
@@ -226,13 +311,18 @@ const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
 // unbaselined, reddens CI) — noisy but never silent.
 const FOLDS = /foldDiacritics|normalize\((['"])NFK?D\1\)|\\p\{(Diacritic|M)\}/;
 
-describe('structural guard: no NEW unfolded title matcher', () => {
-  const unfolded = fs.readdirSync(LIB)
+function scanUnfolded(dir) {
+  return fs.readdirSync(dir)
     .filter(f => f.endsWith('.js'))
+    .filter(f => fs.statSync(path.join(dir, f)).isFile())
     .filter(f => {
-      const src = fs.readFileSync(path.join(LIB, f), 'utf8');
+      const src = fs.readFileSync(path.join(dir, f), 'utf8');
       return SHRED_SIGNATURE.test(src) && !FOLDS.test(src);
     });
+}
+
+describe('structural guard: no NEW unfolded title matcher', () => {
+  const unfolded = scanUnfolded(LIB);
 
   it('every file with the shred signature and no fold is in the frozen baseline', () => {
     const novel = unfolded.filter(f => !UNFOLDED_BASELINE.has(f));
@@ -250,10 +340,36 @@ describe('structural guard: no NEW unfolded title matcher', () => {
       'title-match.js', 'rss-discovery.js', 'omc-discovery.js', 'theatermania-discovery.js',
       'show-score-discover.js', 'dtli-homepage-scan.js', 'venue-aliases.js',
       'creative-team-verify.js', 'precursor-wikipedia.js', 'deduplication.js',
+      // task #783
+      'cross-production-guards.js', 'venue-classification.js',
     ];
     for (const f of fixed) {
       assert.ok(!unfolded.includes(f), `${f} regressed: it lost its diacritic fold`);
       assert.ok(!UNFOLDED_BASELINE.has(f), `${f} must not be baselined — it is fixed`);
+    }
+  });
+});
+
+describe('structural guard: no NEW unfolded title matcher at scripts/ root (task #781)', () => {
+  const unfolded = scanUnfolded(SCRIPTS_ROOT);
+
+  it('every scripts/ root file with the shred signature and no fold is in the frozen baseline', () => {
+    const novel = unfolded.filter(f => !UNFOLDED_BASELINE_ROOT.has(f));
+    assert.deepStrictEqual(
+      novel, [],
+      `New scripts/ root matcher(s) strip non-ASCII without folding diacritics first:\n` +
+      novel.map(f => `  scripts/${f}`).join('\n') +
+      `\nFix: import { foldDiacritics } from './lib/title-match' and fold BEFORE the ` +
+      `[^a-z0-9…] replace. See task #648 / #781 / this file's header.`
+    );
+  });
+
+  it('a file fixed and removed from the root baseline must not regress', () => {
+    for (const f of UNFOLDED_BASELINE_ROOT) {
+      assert.ok(
+        fs.existsSync(path.join(SCRIPTS_ROOT, f)),
+        `${f} is baselined but no longer exists at scripts/ root — remove it from UNFOLDED_BASELINE_ROOT`
+      );
     }
   });
 });

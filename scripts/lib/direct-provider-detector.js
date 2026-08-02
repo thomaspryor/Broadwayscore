@@ -31,7 +31,50 @@ const PROVIDER_ENDPOINT_PATTERNS = [
   // provider-billing.js) and the canonical chokepoint itself
   // (browserbase-session.js) are carved out via the file-level allowlist
   // instead (task #752).
-  { provider: 'browserbase', regex: /https?:\/\/(?:api|www)\.browserbase\.com\/v1\/sessions\b/gi },
+  //
+  // Two Browserbase patterns, because the host and the path carry different signal.
+  //
+  // newspapers-browserbase-login.js built its session-create URL as
+  // `${API}${endpoint}` off a `const API = 'https://api.browserbase.com/v1'`, so
+  // the original /v1/sessions-only regex scored ZERO hits on a file that really
+  // does POST /sessions — the gate's "a new session-create call site fails CI"
+  // guarantee was vacuous for any caller that split the URL. Matching only up to
+  // `/v1` would still miss the next split one level up
+  // (`const HOST = 'https://api.browserbase.com'` + `${HOST}/v1/sessions`).
+  //
+  // So: api.browserbase.com matches on the HOST alone — that host is API-only, so
+  // naming it at all must be justified in the allowlist, at any split point.
+  // www.browserbase.com requires the /v1 path, because www also serves the human
+  // dashboard: test-paywalled-access.js console.logs
+  // `https://www.browserbase.com/sessions/${id}` as a debug link while correctly
+  // creating its session through createBbSession(). Host-only matching on www
+  // would flag that correct file, and allowlisting it would blind the gate to a
+  // future REAL direct call in the same file.
+  //
+  // connect.browserbase.com (the CDP websocket every migrated caller dials AFTER
+  // createBbSession returns) is matched by neither — it creates no session, and
+  // flagging it would fire on all 9 legitimate callers.
+  { provider: 'browserbase', regex: /https?:\/\/api\.browserbase\.com/gi },
+  { provider: 'browserbase', regex: /https?:\/\/www\.browserbase\.com\/v1\b/gi },
+
+  // BARE-HOST CONSTANTS — the same split-URL defeat, generalized to the other
+  // three providers (task #752 follow-up). The patterns above are path-aware on
+  // purpose: they must NOT match the billing/SERP siblings (/api/v1/usage,
+  // /api/v1/store/google, /zone/cost, /account). But that path-awareness is
+  // exactly what a caller defeats by keeping the host in its own constant:
+  //
+  //   const SB = 'https://app.scrapingbee.com';
+  //   fetch(SB + '/api/v1/?api_key=' + k + '&url=' + u);   // 0 hits before this
+  //
+  // Verified 2026-08-02: this escaped for scrapingbee, brightdata AND scrapingdog.
+  // Matching only a COMPLETE quoted string that ends at the host catches the
+  // split form without touching the path-based exclusions — a literal with any
+  // path (including the exempt billing ones) simply doesn't match these.
+  // Zero files in scripts/ or src/ trip these today, so this is prospective.
+  { provider: 'scrapingbee', regex: /['"`]https?:\/\/app\.scrapingbee\.com['"`]/gi },
+  { provider: 'brightdata', regex: /['"`]https?:\/\/api\.brightdata\.com['"`]/gi },
+  { provider: 'scrapingdog', regex: /['"`]https?:\/\/api\.scrapingdog\.com['"`]/gi },
+  { provider: 'browserbase', regex: /['"`]https?:\/\/www\.browserbase\.com['"`]/gi },
 ];
 
 /**

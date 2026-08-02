@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { urlYearFromPath } = require('./lib/review-guards');
-const { GENERIC_VENUE_SLUGS } = require('./lib/venue-classification');
+const { venueSlug } = require('./lib/venue-classification');
 
 // ── CLI flags ────────────────────────────────────────────────────────────────
 // --dry-run: additionally emit data/audit/same-title-confusion.json (the
@@ -42,32 +42,6 @@ const multiProd = Object.entries(byTitle)
     return { title, shows: withDirs };
   })
   .filter(m => m.shows.length > 1);
-
-/**
- * Convert a venue name to a URL-friendly slug fragment for substring matching.
- * Strips the trailing "Theatre"/"Theater" so we match the distinctive part of
- * the venue (e.g. "Ethel Barrymore Theatre" → "ethel-barrymore"). Returns null
- * for empty/short inputs (<4 chars) or for generic words that would over-match
- * arbitrary review URLs (e.g. "Broadway Theatre" → "broadway", which matches
- * every Broadway-related URL).
- *
- * @param {string|null|undefined} venue
- * @returns {string|null}
- */
-// GENERIC_VENUE_SLUGS imported from ./lib/venue-classification — single source
-// of truth shared with market-routing.js's same-title disambig branch. To add a
-// new generic-overmatching venue, update venue-classification.js only.
-function venueSlug(venue) {
-  if (!venue || typeof venue !== 'string') return null;
-  const cleaned = venue
-    .toLowerCase()
-    .replace(/\btheatre\b|\btheater\b/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  if (!cleaned || cleaned.length < 5) return null;
-  if (GENERIC_VENUE_SLUGS.has(cleaned)) return null;
-  return cleaned;
-}
 
 /**
  * Year extracted from an opening-date string ("YYYY-MM-DD" → YYYY as number).

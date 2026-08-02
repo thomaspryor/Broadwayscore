@@ -5070,6 +5070,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   } else {
     console.log(`  SERP: skipped`);
   }
+  if (!health.siteSearch.skipped) {
+    console.log(`  Site-search: ${health.siteSearch.hits}/${health.siteSearch.searched} hits`);
+  } else {
+    console.log(`  Site-search: skipped`);
+  }
   const rej = health.rejections;
   const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow + rej.domainMismatch + rej.aggregatorUrlMismatch;
   if (totalRej > 0) {
@@ -5264,6 +5269,13 @@ async function main() {
     const totalSerpHits = healthResults.reduce((s, r) => s + r.health.serp.hits, 0);
     if (totalSerpCalls > 0) {
       console.log(`\n  SERP totals: ${totalSerpHits}/${totalSerpCalls} hits (${Math.round(100 * totalSerpHits / totalSerpCalls)}%)`);
+    }
+
+    // Total site-search stats
+    const totalSiteSearchCalls = healthResults.reduce((s, r) => s + (r.health.siteSearch ? r.health.siteSearch.searched : 0), 0);
+    const totalSiteSearchHits = healthResults.reduce((s, r) => s + (r.health.siteSearch ? r.health.siteSearch.hits : 0), 0);
+    if (totalSiteSearchCalls > 0) {
+      console.log(`  Site-search totals: ${totalSiteSearchHits}/${totalSiteSearchCalls} hits (${Math.round(100 * totalSiteSearchHits / totalSiteSearchCalls)}%)`);
     }
 
     // Total rejection stats

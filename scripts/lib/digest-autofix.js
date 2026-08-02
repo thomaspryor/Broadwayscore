@@ -74,17 +74,75 @@ function planAutofix({ health, extraIssues = [], tasks = [] } = {}) {
   });
 }
 
+// Row text comes from health-check output (semi-trusted: workflow names and
+// scraped strings can leak in). extractVerifyCmd treats the FIRST
+// "## Acceptance criteria" section / any "VERIFY:" line / backticked span in
+// the notes as the card's executable proof, so hostile row text could inject
+// its own safe-but-unrelated command (Codex finding, 2026-08-02). Neutralize
+// the three carriers before interpolating.
+function sanitizeRowText(s) {
+  return String(s || '')
+    .replace(/`/g, "'")
+    .replace(/^#+\s/gm, '')
+    .replace(/VERIFY\s*:/gi, 'VERIFY -');
+}
+
+// The b64url token must fit SAFE_CHECK_FORMS' 200-char cap AND decode back to
+// exactly what check-health-row-absent.js compares — so BOTH sides slice the
+// row name to the same bound (120 chars ≈ ≤160 b64 chars even for multi-byte).
+const ROW_NAME_MATCH_LIMIT = 120;
+
+// Card notes must pass notion-brain's card-quality gate for "Not started"
+// cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
+// and >=300 chars (the gate rejected the first live send's shorter format).
+function buildCardNotes(row) {
+  const name = sanitizeRowText(row.name);
+  const message = sanitizeRowText(row.message);
+  return [
+    '## Problem',
+    `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
+    '',
+    '## Evidence',
+    `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
+    '',
+    '## Suggested approach',
+    `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+    '',
+    '## Acceptance criteria',
+    // The backticked command is the machine-checkable proof bsc-next's verify
+    // gate arms and the nightly acceptance recheck re-runs. base64url keeps
+    // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
+    // Encode the RAW name (the checker compares against raw snapshot names);
+    // only prose gets sanitized. Slice matches the checker's own bound.
+    `\`node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(row.name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+  ].join('\n');
+}
+
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
-function dispatchDetached(taskId, log) {
+function dispatchDetached(taskId, log, delaySec = 0) {
+  // Validate BEFORE opening the log fd — throwing after openSync leaked a
+  // file descriptor per rejected dispatch (Codex review, 2026-08-02).
+  const idNumEarly = Number(taskId);
+  if (!Number.isSafeInteger(idNumEarly) || idNumEarly <= 0) throw new Error(`invalid taskId for dispatch: ${String(taskId).slice(0, 40)}`);
   fs.mkdirSync(LOG_DIR, { recursive: true });
   const logPath = path.join(LOG_DIR, `${taskId}-${Date.now()}.log`);
   const logFd = fs.openSync(logPath, 'a');
-  const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId), '--headless'],
+  // Staggered start: simultaneous detached spawns race on the main repo's
+  // `git worktree add` lock and all but one die 'worktree-error' (live-run
+  // finding 2026-08-02: 3 same-instant dispatches → 2 failed). taskId is
+  // numeric and delaySec is internal, so the sh -c line is injection-safe.
+  // Codex hardening (2026-08-02): validate the id as a real integer (parseInt
+  // silently truncates junk), and pass the script path as a positional shell
+  // arg instead of interpolating it (JSON.stringify is NOT shell quoting —
+  // $() would survive inside double quotes).
+  const id = String(idNumEarly);
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless`;
+  const child = spawn('sh', ['-c', cmd, 'sh', path.join(REPO, 'scripts', 'bsc-next.js')],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
   fs.closeSync(logFd);
-  log(`[digest-autofix] dispatch attempted for #${taskId} (headless, detached; log: ${logPath})`);
+  log(`[digest-autofix] dispatch attempted for #${id} (headless, detached, +${delaySec}s stagger; log: ${logPath})`);
 }
 
 /**
@@ -112,9 +170,14 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
     try {
+      // P1, not P2: notion-tasks-sync pull mirrors ONLY P0/P1 cards into the
+      // shared task list — a P2 card never gets a task number, so it can
+      // never dispatch and gets re-filed as a duplicate every morning
+      // (live-run finding 2026-08-02). P1 also matches the owner rule that
+      // P0/P1 auto-dispatch at creation.
       execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', row.title,
-        '--priority', 'P2', '--status', 'Not started',
-        '--notes', `${row.message}\n\nAuto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). Fix the underlying issue, then prove it.\n\nVERIFY: node scripts/health-check.js\n\n## Acceptance criteria\n\`node scripts/health-check.js\` no longer lists "${row.name}" among errors or warnings.`,
+        '--priority', 'P1', '--status', 'Not started',
+        '--notes', buildCardNotes(row),
       ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
       row.state = 'card-filed';
       filedAny = true;
@@ -138,7 +201,16 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   // 3. Re-resolve task ids and dispatch the first `cap` queued rows. Rows
   //    whose card just got filed pick up their fresh task id here.
   let tasks = [];
-  try { tasks = loadTasksFn ? loadTasksFn() : require('../bsc-next.js').loadTasks(); } catch { /* dispatch skipped below */ }
+  try {
+    if (loadTasksFn) tasks = loadTasksFn();
+    else {
+      // loadTasks REQUIRES the shared task directory — calling it bare returns
+      // [] silently (readdirSync(undefined) is swallowed), which killed both
+      // dedup and dispatch on the first live run (Codex finding, 2026-08-02).
+      const bn = require('../bsc-next.js');
+      tasks = bn.loadTasks(bn.TASKS_DIR);
+    }
+  } catch { /* dispatch skipped below */ }
   let budget = cap;
   for (const row of plan) {
     if (row.state === 'in-progress' || row.state === 'card-failed') continue;
@@ -149,7 +221,7 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
     if (!row.taskId) continue; // sync lag — the drain picks it up on its next tick
     if (budget <= 0) { row.state = 'queued'; continue; }
     try {
-      dispatchDetached(row.taskId, log);
+      dispatchDetached(row.taskId, log, (cap - budget) * 45);
       row.state = 'dispatched';
       budget--;
     } catch (err) {
@@ -160,4 +232,4 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   return plan;
 }
 
-module.exports = { planAutofix, runAutofix, matchOpenTask, DISPATCH_CAP };
+module.exports = { planAutofix, runAutofix, matchOpenTask, buildCardNotes, DISPATCH_CAP };

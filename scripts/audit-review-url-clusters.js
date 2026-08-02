@@ -34,7 +34,7 @@ const { findUrlClusters } = require('./lib/review-url-clusters');
 const { decideClusterAction } = require('./lib/cluster-canonical');
 const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
-const { GENERIC_VENUE_SLUGS } = require('./lib/venue-classification');
+const { venueSlug } = require('./lib/venue-classification');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 let isIncludableForRebuild = () => false;
 try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
@@ -73,17 +73,6 @@ const NEUTRALIZE_CRITIC = {
 };
 
 const STAMP = process.env.FIX_STAMP || 'byline-cluster-cleanup';
-
-function venueSlug(venue) {
-  if (!venue || typeof venue !== 'string') return null;
-  const cleaned = venue.toLowerCase()
-    .replace(/\btheatre\b|\btheater\b/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  if (!cleaned || cleaned.length < 5) return null;
-  if (GENERIC_VENUE_SLUGS.has(cleaned)) return null;
-  return cleaned;
-}
 
 function loadShows() {
   try {

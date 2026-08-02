@@ -173,6 +173,13 @@ function runVerify(cwd, cmd) {
       execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
       return { status: 'pass', detail: attempt > 1 ? 'passed on retry (first run flaked)' : null };
     } catch (err) {
+      // Exit 3 is the repo convention for "cannot verify" (infrastructure
+      // missing/stale — e.g. check-health-row-absent.js with a stale
+      // snapshot). Reporting it as FAIL would claim finished work broke when
+      // the evidence merely wasn't available (Codex finding, 2026-08-02).
+      if (err.status === 3) {
+        return { status: 'unverifiable', detail: `check exited 3 (cannot verify — evidence unavailable): ${String(err.stderr || err.stdout || '').slice(0, 200)}` };
+      }
       last = String(err.stderr || err.stdout || err.message).slice(0, 400);
     }
   }
