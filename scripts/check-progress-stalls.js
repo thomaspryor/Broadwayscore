@@ -79,8 +79,22 @@ function loadShowTitles() {
 
 async function loadData() {
   const titleById = loadShowTitles();
-  const { unblocked } = computeRescoreQueueDepth(path.join(ROOT, 'data', 'review-texts'), titleById);
-  return { needsRescoreUnblocked: unblocked };
+  const { totalFlagged, notScoreable, blocked, unblocked } = computeRescoreQueueDepth(
+    path.join(ROOT, 'data', 'review-texts'),
+    titleById
+  );
+  // needsRescoreRaw/NotScoreable/Blocked are NOT registered as SURFACES — they
+  // aren't fed to assertProgress and never drive a stall alert. They ride
+  // along in state.lastSummary (set by weekly-monitor-runner.js from this
+  // return value) purely so a human reading the state file or CI log can see
+  // the raw-vs-actionable gap without cross-referencing
+  // audit-stuck-rescore-flags.js separately (task #751).
+  return {
+    needsRescoreUnblocked: unblocked,
+    needsRescoreRaw: totalFlagged,
+    needsRescoreNotScoreable: notScoreable,
+    needsRescoreBlocked: blocked,
+  };
 }
 
 /**
@@ -117,16 +131,22 @@ async function main() {
   const stateArg = argv.find((a) => a.startsWith('--state='));
   const statePath = stateArg ? stateArg.split('=')[1] : STATE_PATH_DEFAULT;
 
+  // Computed once and reused below (both for the runner and the breakdown
+  // print) — calling loadData() a second time for the dry-run branch used to
+  // print a STALE breakdown sourced from the prior on-disk state.lastSummary
+  // instead of this run's values (adversarial review, task #751).
+  const data = await loadData();
+
   await runWeeklyMonitor({
-    loadData,
+    loadData: async () => data,
     decideFn: decideProgress,
     statePath,
     dryRun,
-    logData: (data) => console.log('[progress-watch] current values:', JSON.stringify(data)),
+    logData: (d) => console.log('[progress-watch] current values:', JSON.stringify(d)),
   });
 
   const state = dryRun
-    ? decideProgress(await loadData(), (() => { try { return JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { return {}; } })(), Date.now()).state
+    ? decideProgress(data, (() => { try { return JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { return {}; } })(), Date.now()).state
     : JSON.parse(fs.readFileSync(statePath, 'utf8'));
 
   let anyStalled = false;
@@ -134,6 +154,12 @@ async function main() {
     const icon = s.stalled ? '⚠️' : '✅';
     console.log(`${icon} ${s.label}: ${s.value} (${s.reason})`);
     if (s.stalled) anyStalled = true;
+  }
+  if (data.needsRescoreRaw != null) {
+    console.log(
+      `   needsRescore breakdown: raw=${data.needsRescoreRaw}, unblocked(actionable)=${data.needsRescoreUnblocked}, ` +
+      `blocked=${data.needsRescoreBlocked}, notScoreable=${data.needsRescoreNotScoreable}`
+    );
   }
   if (anyStalled) {
     console.log('[progress-watch] one or more surfaces stalled — see data/audit/progress-watch-state.json; health-check.js surfaces this in the daily digest.');

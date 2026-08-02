@@ -11,6 +11,8 @@
  * Pure functions only — no network. Callers run serpQuery and pass results in.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 // Canonical role label written into show.creativeTeam. src/lib/data-creative.ts
 // ROLE_TO_CATEGORIES is exact-case — writing "playwright" or "Book writer"
 // (lowercase from LLM) silently drops the entry from /playwrights pages.
@@ -78,7 +80,10 @@ function roleVerbVariants(role) {
  * See memory/feedback_word_boundary_punct_titles.md for the general rule.
  */
 function normalizeForMatch(s) {
-  return String(s || '')
+  // foldDiacritics: SERP snippets spell names and titles with their real
+  // accents ("Édouard Louis", "Thérèse Raquin") while shows.json is mixed, so
+  // an unfolded compare drops the confirmation entirely. Task #648.
+  return foldDiacritics(s || '')
     .toLowerCase()
     .replace(/[‘’ʼ]/g, "'")
     .replace(/[“”]/g, '"')

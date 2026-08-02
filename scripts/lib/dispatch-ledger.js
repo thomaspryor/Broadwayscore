@@ -126,13 +126,17 @@ function deadBreadcrumbs(idleWorkspaces, entries) {
 // and skips it as already-recorded. No lock needed.
 //
 // Returns [] when cmux left no workspace behind (nothing to attribute).
-function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null }) {
+function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, verifyCmd = null, verifyReason = null, notionId = null, failureReason = null, deadConfirmed = true }) {
   if (!workspaceRef) return [];
   const base = { taskId: String(taskId), subject, workspaceRef, failureReason };
-  return [
-    { event: 'dead', ...base, title: null },
-    { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true },
-  ];
+  const launch = { event: 'launch', ...base, model, verifyCmd, verifyReason, notionId, unverified: true };
+  // deadConfirmed=false is the card #705 slow-boot case: verification gave up
+  // while this launch's wrapper process was STILL RUNNING, so the workspace is
+  // very likely booting a real session. Recording a 'dead' breadcrumb for it
+  // would be a lie with teeth — it feeds the 2-death dispatch guard and marks
+  // a LIVE shell as a corpse for the pruner. The unverified launch entry still
+  // lands, so the attempt is tracked and attributable.
+  return deadConfirmed ? [{ event: 'dead', ...base, title: null }, launch] : [launch];
 }
 
 // ── Headless-job events (Autopilot v5, task #459) ──────────────────────────

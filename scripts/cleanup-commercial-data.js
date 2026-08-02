@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { conflictingFields } = require('./lib/commercial-key-duplicates');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -59,7 +60,18 @@ for (const { oldKey, newKey, title } of keysToRename) {
     delete shows[oldKey];
     changes.renamed.push(`${oldKey} -> ${newKey} (${title})`);
   } else {
-    console.warn(`  SKIP rename ${oldKey} -> ${newKey}: target key already exists`);
+    // Duplicate key pair: the slug entry already exists. If the ID entry
+    // holds nothing the slug entry lacks (shared conflictingFields predicate,
+    // model-stamped fields ignored), deleting it is lossless — the exact
+    // resurrection case behind the 2026-08-01 model-drift alert, which this
+    // script previously just SKIPped and left double-counted forever.
+    const conflicts = conflictingFields(shows[oldKey], shows[newKey]);
+    if (conflicts.length === 0) {
+      delete shows[oldKey];
+      changes.renamed.push(`${oldKey} deleted (duplicate of existing ${newKey}, no unique data) (${title})`);
+    } else {
+      console.warn(`  SKIP rename ${oldKey} -> ${newKey}: target exists AND ID entry has unique fields (${conflicts.join(', ')}) — resolve with node scripts/dedupe-commercial-id-keys.js`);
+    }
   }
 }
 
