@@ -26,7 +26,6 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
@@ -54,24 +53,13 @@ const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpda
 async function launchBrowser() {
   if (BB_API_KEY && BB_PROJECT_ID) {
     console.log('  Using BrowserBase...');
-    const sessionBody = JSON.stringify({
-      projectId: BB_PROJECT_ID,
-      browserSettings: { solveCaptchas: true },
+    const { createBbSession } = require('./lib/browserbase-session');
+    const session = await createBbSession({
+      caller: 'scrape-thestage-roundups.js',
+      purpose: 'The Stage review round-up login + fetch',
+      body: { browserSettings: { solveCaptchas: true } },
     });
-    const session = await new Promise((resolve, reject) => {
-      const req = https.request('https://www.browserbase.com/v1/sessions', {
-        method: 'POST',
-        headers: { 'x-bb-api-key': BB_API_KEY, 'Content-Type': 'application/json' },
-      }, (res) => {
-        let d = '';
-        res.on('data', c => d += c);
-        res.on('end', () => resolve(JSON.parse(d)));
-      });
-      req.on('error', reject);
-      req.end(sessionBody);
-    });
-    const connectUrl = `wss://connect.browserbase.com?apiKey=${BB_API_KEY}&sessionId=${session.id}`;
-    const browser = await chromium.connectOverCDP(connectUrl);
+    const browser = await chromium.connectOverCDP(session.connectUrl);
     const context = browser.contexts()[0] || await browser.newContext();
     const page = context.pages()[0] || await context.newPage();
     return { browser, context, page, isBB: true };

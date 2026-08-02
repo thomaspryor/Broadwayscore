@@ -342,7 +342,7 @@ jobs:
           # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
           # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
           # data/data/audit/... path and silently no-op the reconciliation it's here for.
-          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ]; then
+          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
@@ -365,6 +365,13 @@ jobs:
           # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
           # this commit every run starts from an empty ledger and the cooldown never fires.
           { [ -f data/audit/bww-roundup-miss-ledger.jsonl ] && git add data/audit/bww-roundup-miss-ledger.jsonl; } || true
+          # Task #752: Browserbase/BD/SB/SD call-attribution ledger. This workflow is the
+          # heaviest caller (BWW RR discovery + Stage cookie fetch via bww-rr-discover.js /
+          # opening-night-poller.js's own BB session) — without this line every session it
+          # creates is attributed at the source but the row never leaves the ephemeral
+          # runner, so attributedPct reads artificially low for exactly the traffic #752
+          # exists to name.
+          { [ -f data/audit/scraper-spend-ledger.jsonl ] && git add data/audit/scraper-spend-ledger.jsonl; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"

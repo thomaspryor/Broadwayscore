@@ -2135,12 +2135,15 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
   try {
     // Browserbase SDK approach - use their connect endpoint
     const { chromium: bbChromium } = require('playwright');
+    const { createBbSession } = require('./lib/browserbase-session');
 
     // Create session via Browserbase API
-    const sessionResponse = await axios.post(
-      'https://www.browserbase.com/v1/sessions',
-      {
-        projectId: CONFIG.browserbaseProjectId,
+    const bbSession = await createBbSession({
+      apiKey: CONFIG.browserbaseApiKey,
+      projectId: CONFIG.browserbaseProjectId,
+      caller: 'collect-review-texts.js',
+      purpose: urlDomain ? `paywalled review fetch: ${urlDomain}` : 'paywalled review fetch',
+      body: {
         browserSettings: {
           // Enable stealth and CAPTCHA solving
           solveCaptchas: true,
@@ -2151,17 +2154,10 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
           },
         },
       },
-      {
-        headers: {
-          'x-bb-api-key': CONFIG.browserbaseApiKey,
-          'Content-Type': 'application/json',
-        },
-        timeout: 30000,
-      }
-    );
+    });
 
-    const sessionId = sessionResponse.data.id;
-    const connectUrl = `wss://connect.browserbase.com?apiKey=${CONFIG.browserbaseApiKey}&sessionId=${sessionId}`;
+    const sessionId = bbSession.id;
+    const connectUrl = bbSession.connectUrl;
 
     console.log(`    → Browserbase session created: ${sessionId.substring(0, 8)}...`);
     state.log.push({ t: new Date().toISOString(), event: 'bb-session', session: sessionId.substring(0, 8), url: url.substring(0, 80) });

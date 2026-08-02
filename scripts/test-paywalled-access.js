@@ -783,7 +783,7 @@ async function main() {
 
   if (useBrowserbase) {
     // Connect via Browserbase cloud browser
-    const axios = require('axios');
+    const { createBbSession } = require('./lib/browserbase-session');
     const apiKey = process.env.BROWSERBASE_API_KEY;
     const projectId = process.env.BROWSERBASE_PROJECT_ID;
 
@@ -793,24 +793,18 @@ async function main() {
     }
 
     console.log('Creating Browserbase session...');
-    const sessionResponse = await axios.post(
-      'https://www.browserbase.com/v1/sessions',
-      {
-        projectId,
-        browserSettings: {
-          solveCaptchas: true,
-          fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] }
-        }
-      },
-      { headers: { 'x-bb-api-key': apiKey, 'Content-Type': 'application/json' } }
-    );
+    const bbSession = await createBbSession({
+      apiKey, projectId,
+      caller: 'test-paywalled-access.js',
+      purpose: 'manual paywalled-access diagnostic',
+      body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
+    });
 
-    bbSessionId = sessionResponse.data.id;
+    bbSessionId = bbSession.id;
     console.log(`Browserbase session: ${bbSessionId}`);
     console.log(`Debug URL: https://www.browserbase.com/sessions/${bbSessionId}\n`);
 
-    const connectUrl = `wss://connect.browserbase.com?apiKey=${apiKey}&sessionId=${bbSessionId}`;
-    browser = await chromium.connectOverCDP(connectUrl);
+    browser = await chromium.connectOverCDP(bbSession.connectUrl);
   } else {
     // Launch local browser
     browser = await chromium.launch({
