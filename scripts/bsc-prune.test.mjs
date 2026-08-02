@@ -137,12 +137,30 @@ test('idle workspace already recorded dead in the ledger: no duplicate breadcrum
   const origLog = console.log;
   console.log = () => {};
   try { main([], deps); } finally { console.log = origLog; }
-  // No DEAD breadcrumb — that is what this test is about. A live (non-dry-run)
-  // sweep also journals one 'prune' entry with the counts (S4-T3, the morning
-  // email's "Closed N finished tabs" line); it is a different event and does
-  // not make the breadcrumb a duplicate.
+  // No DEAD breadcrumb — that is what this test is about. Since the scheduled
+  // auto-prune tick (owner escalation 2026-08-02) a NO-OP sweep (nothing
+  // closed or skipped) also journals no 'prune' entry — a 5-min cadence would
+  // otherwise write ~288 empty lines/day for zero digest value.
   assert.deepEqual(appended.filter(e => e.event === 'dead'), []);
-  assert.deepEqual(appended.filter(e => e.event === 'prune'), [{ event: 'prune', taskId: 'sweep', closed: 0, skipped: 0 }]);
+  assert.deepEqual(appended.filter(e => e.event === 'prune'), []);
+});
+
+test('a sweep with activity still journals the prune counts entry (S4-T3 morning-email line)', () => {
+  const appended = [];
+  const deps = {
+    cmuxAvailable: () => true,
+    listWorkspaces: () => [],
+    pruneDone: () => ({ closed: [{ ref: 'workspace:5', title: '\u2705 \ud83e\udd16 done tab' }], skipped: [] }),
+    isDoneTitle: () => false,
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+    readLedgerEntries: () => [],
+    appendLedgerEntry: (e) => appended.push(e),
+  };
+  const origLog = console.log;
+  console.log = () => {};
+  try { main([], deps); } finally { console.log = origLog; }
+  assert.deepEqual(appended.filter(e => e.event === 'prune'), [{ event: 'prune', taskId: 'sweep', closed: 1, skipped: 0 }]);
 });
 
 test('a dry-run sweep journals nothing at all', () => {
