@@ -28,15 +28,15 @@ test('isCloseable: ✅🤖 + mid-turn (live claude, running) => skip', () => {
   }), false);
 });
 
-// Owner escalation #2 (2026-08-02): the non-🤖 exemption is removed — a ✅
-// owner-opened tab idle at the prompt closes too. Focused/mid-turn/unmarked
-// protection lives in pruneDone, not this flag.
-test('isCloseable: ✅ non-🤖 + idle claude => close (owner escalation 2026-08-02)', () => {
+// Owner rule #3 (2026-08-02, supersedes same-day escalation #2): auto-close
+// is limited to 🤖 auto-dispatched tabs — owner-opened ✅ tabs never close
+// autonomously, even with a fully dead claude.
+test('isCloseable: ✅ non-🤖 + idle claude => skip (owner rule 2026-08-02: 🤖-only)', () => {
   assert.equal(isCloseable({
     hasLiveClaude: true,
     isAutoDispatched: false,
     isRunning: false,
-  }), true);
+  }), false);
 });
 
 test('isCloseable: ✅ non-🤖 + mid-turn => skip', () => {
@@ -47,12 +47,15 @@ test('isCloseable: ✅ non-🤖 + mid-turn => skip', () => {
   }), false);
 });
 
-test('isCloseable: ✅ + no claude at all => close, regardless of marker', () => {
+test('isCloseable: ✅ non-🤖 + no claude at all => still skip (owner-opened tabs are hands-off)', () => {
   assert.equal(isCloseable({
     hasLiveClaude: false,
     isAutoDispatched: false,
     isRunning: true, // must be ignored when hasLiveClaude is false
-  }), true);
+  }), false);
+});
+
+test('isCloseable: ✅🤖 + no claude at all => close', () => {
   assert.equal(isCloseable({
     hasLiveClaude: false,
     isAutoDispatched: true,
