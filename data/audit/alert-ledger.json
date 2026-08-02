@@ -134,10 +134,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-02T19:53:26.779Z",
+      "lastSeen": "2026-08-02T20:12:36.619Z",
       "lastNotifiedAt": "2026-08-02T19:53:26.779Z",
       "notifyCount": 9,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -288,26 +289,6 @@
       "lastNotifiedAt": "2026-08-02T11:27:10.140Z",
       "notifyCount": 1,
       "cardId": "3b0637c5-416f-810a-9f20-fbcaf610d121"
-    },
-    "on-monitor-launch-failed-2026-07-31": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "monitor pass FAILED for tao-of-glass-west-end-2026",
-      "firstSeen": "2026-08-02T17:58:39.075Z",
-      "lastSeen": "2026-08-02T17:58:39.075Z",
-      "lastNotifiedAt": "2026-08-02T17:58:39.075Z",
-      "notifyCount": 1,
-      "cardId": "fake-card-id"
-    },
-    "test:unwritable-ledger": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "Test alert",
-      "firstSeen": "2026-08-02T17:58:39.085Z",
-      "lastSeen": "2026-08-02T17:58:39.085Z",
-      "lastNotifiedAt": "2026-08-02T17:58:39.085Z",
-      "notifyCount": 1,
-      "cardId": "fake-card-id"
     }
   }
 }
