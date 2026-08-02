@@ -3410,8 +3410,9 @@ function validateStrandedScoredReviews(shows) {
   warn(
     `${stranded.length} review-text file(s) on recent shows are scored AND includable but their outlet is ` +
     `absent from reviews.json. Common causes: outlet missing from outlet-registry.json (register it in BOTH ` +
-    `repos), rebuild hasn't run since the file changed, or a rebuild-side guard is excluding it. ` +
-    `Each one is a collected review invisible on the site.`
+    `repos), rebuild hasn't run since the file changed, a rebuild-side guard is excluding it, or the file is a ` +
+    `garbage stub that should be flagged/deleted. Each one is either a collected review invisible on the site ` +
+    `or junk needing triage.`
   );
 }
 

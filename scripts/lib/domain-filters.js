@@ -24,9 +24,12 @@ const TICKET_DOMAINS = new Set([
   // UK/WE ticketing + listing platforms (2026-08-02: gather saved a
   // bookitplease.com booking page as a Dog Man "review" stub under a
   // misattributed outlet).
+  // NOTE: london-theatreland.co.uk deliberately NOT here — it publishes
+  // original editorial reviews at /reviews/our/<show> (adversarial review
+  // 2026-08-02); its listing pages are caught by the path-based checks.
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
-  'london-theatreland.co.uk', 'ticketek.co.uk', 'seetickets.com',
+  'ticketek.co.uk', 'seetickets.com',
 ]);
 
 // Aggregator/listing sites — not direct review sources

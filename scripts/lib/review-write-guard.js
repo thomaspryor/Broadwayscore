@@ -417,6 +417,25 @@ function safeWriteReview(filePath, newData, options = {}) {
       // strip-stale-single-model-scores --force-strip-locked, etc.).
       const lockedOverride = existing._locked === true && !force;
 
+      // Intentional-clear decisions are FROZEN against a snapshot of the
+      // caller's original payload BEFORE the preserve loop mutates newData.
+      // Without the snapshot, restoring a breadcrumb field (e.g.
+      // wrongProductionOverride) from `existing` into `newData` mid-loop
+      // makes every later breadcrumb-keyed field look intentionally cleared
+      // even though the incoming write carried no breadcrumb at all
+      // (adversarial review, 2026-08-02).
+      //
+      // Additionally, a clear is only honored when the incoming write is the
+      // one PERFORMING it: if `existing` ALREADY satisfies the same clear
+      // breadcrumb, the flag on disk was re-set deliberately over a prior
+      // clear (or the caller is replaying a stale read) — preserving wins.
+      // Re-clearing such a file goes through the canonical clear scripts
+      // (direct write) or force=true.
+      const incomingSnapshot = { ...newData };
+      const clearHonored = (field) =>
+        isIntentionalClear(field, incomingSnapshot, existing)
+        && !isIntentionalClear(field, existing, existing);
+
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {
         const existingVal = existing[field];
@@ -448,8 +467,10 @@ function safeWriteReview(filePath, newData, options = {}) {
         // flags on a _locked file requires force=true.
         if (existingIsReal && (incomingIsEmpty || lockedOverride)) {
           const intentionalClear = !lockedOverride && incomingIsEmpty
-            && isIntentionalClear(field, newData, existing);
-          if (!intentionalClear && newData[field] !== existingVal) {
+            && clearHonored(field);
+          if (intentionalClear) {
+            console.log(`[review-write-guard] ${path.basename(filePath)}: honoring intentional clear of "${field}" (breadcrumb present on incoming write)`);
+          } else if (newData[field] !== existingVal) {
             newData[field] = existingVal;
             preserved.push(field);
             if (lockedOverride && !incomingIsEmpty) lockedSkipped = true;
@@ -467,7 +488,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       if (merge) {
         for (const [key, val] of Object.entries(existing)) {
           if (newData[key] === undefined) {
-            if (!mergeLockedOverride && isIntentionalClear(key, newData, existing)) continue;
+            if (!mergeLockedOverride && clearHonored(key)) continue;
             newData[key] = val;
           }
         }
