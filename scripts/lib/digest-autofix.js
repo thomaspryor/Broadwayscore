@@ -114,7 +114,7 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
     try {
       execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', row.title,
         '--priority', 'P2', '--status', 'Not started',
-        '--notes', `${row.message}\n\nAuto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). Fix the underlying issue, then prove it.\nVERIFY: node scripts/health-check.js`,
+        '--notes', `${row.message}\n\nAuto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). Fix the underlying issue, then prove it.\n\nVERIFY: node scripts/health-check.js\n\n## Acceptance criteria\n\`node scripts/health-check.js\` no longer lists "${row.name}" among errors or warnings.`,
       ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
       row.state = 'card-filed';
       filedAny = true;
