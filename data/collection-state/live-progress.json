@@ -1,96 +1,63 @@
 {
-  "updatedAt": "2026-08-02T09:52:48.699Z",
-  "processed": 131,
-  "failed": 1092,
-  "successRate": "10.7%",
+  "updatedAt": "2026-08-02T10:23:56.178Z",
+  "processed": 26,
+  "failed": 152,
+  "successRate": "14.6%",
   "tierBreakdown": {
-    "playwright": 95,
+    "playwright": 19,
     "amp": 0,
-    "browserbase": 1,
-    "directCookies": 0,
+    "browserbase": 0,
+    "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 25,
-    "archiveToday": 15,
-    "archive": 11
+    "brightdata": 1,
+    "archiveToday": 4,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-08-02T00:04:17.692Z",
+      "t": "2026-08-02T10:19:37.048Z",
       "event": "bb-session",
-      "session": "5a8ce9d6",
+      "session": "2a7e5b4d",
       "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
     },
     {
-      "t": "2026-08-02T00:04:18.348Z",
+      "t": "2026-08-02T10:19:37.459Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-02T00:04:34.097Z",
+      "t": "2026-08-02T10:19:52.999Z",
       "event": "bb-session",
-      "session": "45d346a5",
+      "session": "e9b2e349",
       "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
     },
     {
-      "t": "2026-08-02T00:04:34.645Z",
+      "t": "2026-08-02T10:19:53.348Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-02T00:05:29.302Z",
+      "t": "2026-08-02T10:20:58.179Z",
       "event": "bb-session",
-      "session": "64cf5225",
+      "session": "ca764675",
       "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
     },
     {
-      "t": "2026-08-02T00:05:29.960Z",
+      "t": "2026-08-02T10:20:58.686Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-02T00:08:06.264Z",
+      "t": "2026-08-02T10:23:14.209Z",
       "event": "bb-session",
-      "session": "3d97b94d",
+      "session": "f8452fbc",
       "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
     },
     {
-      "t": "2026-08-02T00:08:06.859Z",
+      "t": "2026-08-02T10:23:14.601Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-02T00:53:53.375Z",
-      "event": "bb-session",
-      "session": "e55cc6fe",
-      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
-    },
-    {
-      "t": "2026-08-02T00:53:54.374Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T00:54:10.257Z",
-      "event": "bb-session",
-      "session": "b8e23c3f",
-      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
-    },
-    {
-      "t": "2026-08-02T00:54:11.147Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T01:12:09.638Z",
-      "event": "bb-session",
-      "session": "375faa2c",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9C0CE0DB1130F931A35752C1"
-    },
-    {
-      "t": "2026-08-02T01:12:10.551Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
