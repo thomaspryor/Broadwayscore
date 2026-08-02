@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-02T06:09:36.993Z",
+    "generatedAt": "2026-08-02T06:19:39.283Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 89,
+    "totalFlagged": 80,
     "highConfidence": 4,
-    "mediumConfidence": 85,
+    "mediumConfidence": 76,
     "lowConfidence": 0,
-    "reassignable": 39
+    "reassignable": 32
   },
   "results": [
     {
@@ -1004,22 +1004,6 @@
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
-      "file": "amny--john-carucci.json",
-      "outlet": "amNewYork",
-      "criticName": "John Carucci",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "macbeth-2022",
-      "signals": [
-        "year 2021 in text matches revival macbeth-2022",
-        "modern references: pandemic, covid"
-      ],
-      "textSnippet": "As the title character in the new Broadway production of “Macbeth,” Daniel Craig has a very unusual response when the witches first prophesize that he will be king. Craig, looking embarrassed, puts hi"
-    },
-    {
-      "showId": "macbeth-1981",
-      "showTitle": "Macbeth",
-      "showYear": 1981,
       "file": "nytimes--frank-rich.json",
       "outlet": "The New York Times",
       "criticName": "Frank Rich",
@@ -1046,57 +1030,6 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1978,
-      "file": "nytg--unknown.json",
-      "outlet": "New York Theatre Guide",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "hello-dolly-2017",
-      "signals": [
-        "revival text signals: revival, revived, this production",
-        "year 2018 in text matches revival hello-dolly-2017",
-        "year 1975 in text matches revival hello-dolly-1975",
-        "year 1994 in text matches revival hello-dolly-1995",
-        "year 2017 in text matches revival hello-dolly-2017",
-        "year 1995 in text matches revival hello-dolly-1995",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "The oldest and first dedicated online New York Theater Guide Read news on over 150 Broadway and Off-Broadway shows\n\nBernadette Peters, Victor Garber and more debut in Hello, Dolly! on BroadwayThe Tony"
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1978,
-      "file": "playbill--unknown.json",
-      "outlet": "Playbill",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: vaccination"
-      ],
-      "textSnippet": "* The NY Sheet Music Society came to relative order over the weekend, and the auditorium of Local 801 Musician's Hall on West 48th Street was filled to capacity with tales from the Harmonia Gardens, b"
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "showTitle": "Hello, Dolly!",
-      "showYear": 1978,
-      "file": "village-voice--michael-feingold.json",
-      "outlet": "Village Voice",
-      "criticName": "Michael Feingold",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "hello-dolly-2017",
-      "signals": [
-        "year 2017 in text matches revival hello-dolly-2017"
-      ],
-      "textSnippet": "With Hello, Dolly!, Bette Midler Brings Back the Show That’ll Never Go Away\n\nNora Returns With Heavy Baggage in \"A Doll's House, Part 2\"\n\nOr sign in with a social account:\n\nDon't have an account yet?\n"
     },
     {
       "showId": "democracy-2004",
@@ -1235,56 +1168,6 @@
       "textSnippet": "THE most animated presence in the prim, pretty new production of ''Fiddler on the Roof,'' which opened last night at the Minskoff Theater, may well be its title character. No, not the fiddler. The roo"
     },
     {
-      "showId": "king-lear-2004",
-      "showTitle": "King Lear",
-      "showYear": 2004,
-      "file": "theater-scene--victor-gluck.json",
-      "outlet": "Theater Scene",
-      "criticName": "Victor Gluck",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "king-lear-2019",
-      "signals": [
-        "revival text signals: revival, this production",
-        "year 2019 in text matches revival king-lear-2019",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Posted on May 7, 2019 by Victor Gluck, Editor-in-Chief in Broadway, Plays, Still Open\n\nJohn Douglas Thompson, Glenda Jackson and the cast of “King Lear” at the Cort Theatre (Photo credit: Brigitte Lac"
-    },
-    {
-      "showId": "king-lear-2004",
-      "showTitle": "King Lear",
-      "showYear": 2004,
-      "file": "theatermania--david-gordon.json",
-      "outlet": "TheaterMania",
-      "criticName": "David Gordon",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: new production, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "A reminder about Shakespeare's King Lear, now running at the Cort Theatre: It's long. Coffee up, use the bathroom, and get comfortable, because intermission is two hours away in Sam Gold's erratic new"
-    },
-    {
-      "showId": "king-lear-2004",
-      "showTitle": "King Lear",
-      "showYear": 2004,
-      "file": "towleroad--naveen-kumar.json",
-      "outlet": "Towleroad",
-      "criticName": "Naveen Kumar",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "king-lear-2019",
-      "signals": [
-        "revival text signals: new production, this production",
-        "year 2019 in text matches revival king-lear-2019",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "April 5, 2019 by Naveen Kumar Leave a Comment\n\nIt’s possible to build a whole production around a single performance, as was clearly the case with King Lear and Glenda Jackson. One is an epic tragedy "
-    },
-    {
       "showId": "a-raisin-in-the-sun-2004",
       "showTitle": "A Raisin in the Sun",
       "showYear": 2004,
@@ -1335,25 +1218,6 @@
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
     },
     {
-      "showId": "glengarry-glen-ross-1984",
-      "showTitle": "Glengarry Glen Ross",
-      "showYear": 1984,
-      "file": "playbill--unknown.json",
-      "outlet": "Playbill",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "glengarry-glen-ross-2025",
-      "signals": [
-        "year 2025 in text matches revival glengarry-glen-ross-2025",
-        "year 2025 in text matches revival glengarry-glen-ross-west-end-2026",
-        "year 2005 in text matches revival glengarry-glen-ross-2005",
-        "year 2012 in text matches revival glengarry-glen-ross-2012",
-        "modern references: streaming"
-      ],
-      "textSnippet": "Bill Burr and Bob Odenkirk stars in the David Mamet play, which opened March 31 at the Palace Theatre.\n\nDavid Mamet's Glengarry Glen Ross opened a new Broadway revival at the Palace Theatre March 31 ("
-    },
-    {
       "showId": "sunday-in-the-park-with-george-1984",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1984,
@@ -1384,23 +1248,6 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES \n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZ"
-    },
-    {
-      "showId": "on-the-town-1971",
-      "showTitle": "On the Town",
-      "showYear": 1971,
-      "file": "newsday--linda-winer.json",
-      "outlet": "Newsday",
-      "criticName": "Linda Winer",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "on-the-town-2014",
-      "signals": [
-        "revival text signals: revival, this production",
-        "year 2015 in text matches revival on-the-town-2014",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "Updated August 27, 2015 9:00 PM\n By LINDA WINER linda.winer@newsday.com\n\nIvy Smith, the winner of the subway's monthly Miss Turnstyle contest in \"On the Town,\" is a smart and modest -- if not exactly "
     }
   ]
 }
