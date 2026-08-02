@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-02T11:27:18.739Z",
+  "generatedAt": "2026-08-02T12:20:25.842Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 145,
-  "clean": 145,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 144,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-car-man-west-end-2026",
+      "title": "The Car Man",
+      "openingDate": "2022-06-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 86.38)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 3
+    }
+  ]
 }
