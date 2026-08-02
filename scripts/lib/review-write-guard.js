@@ -371,6 +371,15 @@ function preserveFlaggedFields(filePath, review) {
   try {
     const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     if (!onDisk || !(onDisk.wrongProduction || onDisk.wrongShow || onDisk.duplicateOf)) return review;
+    // An incoming write that is itself an intentional clear (carries a
+    // CLEAR_BREADCRUMBS breadcrumb — e.g. wrongProductionManualClear) must
+    // reach safeWriteReview's isIntentionalClear/incomingSnapshot machinery
+    // untouched. Every breadcrumb field lives in PROTECTED_FIELDS, so
+    // stripping it here (as this function does below) would silently
+    // resurrect a flag the caller deliberately cleared.
+    for (const field of Object.keys(CLEAR_BREADCRUMBS)) {
+      if (isIntentionalClear(field, review)) return review;
+    }
     const adjusted = { ...review };
     delete adjusted.url;
     delete adjusted.publishDate;
