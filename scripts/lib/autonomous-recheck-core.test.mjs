@@ -157,6 +157,23 @@ test('a Paused card with no RECHECK-AFTER stamp is never window-eligible', () =>
   assert.equal(doneWithinWindow(paused, 24, NOW), false);
 });
 
+test('a stamp written into OUTCOME only still arms the recheck (the 3-of-5-cards gap)', () => {
+  const card = { status: 'Paused', notes: 'acceptance prose only', outcome: 'RECHECK-AFTER: 2026-08-08\nolder text' };
+  assert.equal(doneWithinWindow(card, 24, Date.parse('2026-08-07T23:00:00Z')), false, 'not due yet');
+  assert.equal(doneWithinWindow(card, 24, Date.parse('2026-08-08T00:00:00Z')), true, 'due off the outcome stamp');
+});
+
+test('when notes and outcome both carry a stamp, notes wins', () => {
+  const card = { status: 'Paused', notes: 'RECHECK-AFTER: 2026-08-10', outcome: 'RECHECK-AFTER: 2026-08-01' };
+  assert.equal(doneWithinWindow(card, 24, Date.parse('2026-08-05T00:00:00Z')), false, 'outcome stamp alone must not make it due');
+  assert.equal(doneWithinWindow(card, 24, Date.parse('2026-08-10T00:00:00Z')), true);
+});
+
+test('null/missing outcome is safe', () => {
+  assert.equal(doneWithinWindow({ status: 'Paused', notes: 'no stamp', outcome: null }, 24, NOW), false);
+  assert.equal(doneWithinWindow({ status: 'Paused', notes: 'no stamp' }, 24, NOW), false);
+});
+
 test('selectRecheckTargets: Done cards with a RECHECK-AFTER stamp and no dispatch record still surface via the card notes fallback', () => {
   const card = {
     id: 'card-2', name: 'Scraping spend within thresholds', status: 'Paused',

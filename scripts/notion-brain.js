@@ -1016,8 +1016,10 @@ async function listCards(args) {
   // list-based caller silently sees notes: undefined and the stamp can never
   // be detected (ship-check adversarial finding: this was the exact gap that
   // made the whole widening a no-op end-to-end despite passing unit tests
-  // that inject notes directly). Opt-in because notes can be large and most
-  // callers of `list` don't need them.
+  // that inject notes directly). Also emits `outcome` (task 3b06): sessions
+  // naturally write RECHECK-AFTER stamps into Outcome at wrap-up, and 3 of 5
+  // live stamped cards carried theirs ONLY there — invisible to the recheck.
+  // Opt-in because these fields can be large and most callers don't need them.
   const includeNotes = !!args['include-notes'];
   const table = results.map(c => ({
     name: c.name,
@@ -1029,7 +1031,7 @@ async function listCards(args) {
     lastEditedAt: c.lastEditedAt ?? null,
     tags: c.tags.join(', '),
     id: c.id,
-    ...(includeNotes ? { notes: c.notes } : {}),
+    ...(includeNotes ? { notes: c.notes, outcome: c.outcome } : {}),
   }));
 
   console.log(JSON.stringify(table, null, 2));

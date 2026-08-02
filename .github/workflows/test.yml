@@ -1184,6 +1184,11 @@ on:
       - 'scripts/lib/autonomous-verify-cmd.test.mjs'
       - 'scripts/lib/autonomous-recheck-core.js'
       - 'scripts/lib/autonomous-recheck-core.test.mjs'
+      # RECHECK-AFTER stamp parser leaf (2026-08-02), shared by the recheck
+      # and the stuck-work digest check. Colocated test runs in the lib-test
+      # glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/recheck-stamp.js'
+      - 'scripts/lib/recheck-stamp.test.mjs'
       - 'scripts/autonomous-acceptance-recheck.js'
       - 'scripts/autonomous-acceptance-recheck.test.mjs'
       - 'scripts/bsc-prune.js'
