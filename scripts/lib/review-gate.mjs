@@ -124,11 +124,87 @@ export function resolveBase(repoRoot) {
   return null;
 }
 
+// How many commits to walk back from `ref` (across trailing non-merge
+// commits) looking for the merge that scopes this push. Bounded so a repo
+// with an unusually long non-merge tail (or no merge at all) fails open
+// quickly instead of walking deep history on every push.
+const OWN_MERGE_WALK_LIMIT = 50;
+
+// Find the merge commit that scopes THIS push's own contribution, walking
+// back from `ref` across any trailing non-merge commits, and return its
+// first parent (the tip of the target branch immediately before that
+// merge); otherwise null.
+//
+// task #828: with ~20 parallel worktree sessions sharing one local `main`
+// checkout (only one worktree can have `main` checked out at a time), the
+// documented merge pattern `checkout main && pull && merge <branch> && push`
+// serializes on that shared checkout — a session's own `git merge` can land
+// on top of OTHER sessions' merges that are already on local main but not
+// yet pushed to origin, and non-merge commits (e.g. the session-stop
+// "chore: sync cloud-memory" auto-commit) routinely land on top of that. A
+// plain `origin/main...HEAD` diff then includes every one of those unrelated,
+// already-reviewed merges, not just this session's own — reported as
+// "unreviewed" lines in files the session never touched. `M^1..ref` (where M
+// is the nearest merge ancestor) isolates exactly what THIS merge — plus any
+// of the session's own trailing commits on top of it — introduced (git's own
+// definition of "what did this merge bring in"), independent of how much
+// unrelated history already sat on `M^1`. Bonus: when the merge was clean
+// (no conflicting edits to the same lines), this range's diff text is
+// byte-identical to the pre-merge branch diff that /ship-check already
+// reviewed, so the exact-hash-match path below recognizes it directly
+// instead of falling through to the ledger's fuzzier "nearest verdict" scan
+// (which was misattributing a DIFFERENT session's verdict as "stale").
+//
+// Pull-merge guard: `git pull origin main` (used to resolve a rejected push)
+// is ALSO a 2-parent merge — parent1 is the session's own prior HEAD
+// (carrying its real unpushed work), parent2 is origin's freshly-fetched
+// tip. Scoping to parent1..ref there would diff AWAY the session's own
+// commits (already common with parent1) and keep only origin's incoming
+// delta — exactly backwards. Detected by: parent2 is (or is an ancestor of)
+// `base` — that's origin/main content, not genuine new work — so such merges
+// are skipped rather than used as the scope anchor.
+function ownMergeParent(repoRoot, ref, base) {
+  if (ref === 'WORKTREE') return null;
+  let cursor = ref;
+  for (let i = 0; i < OWN_MERGE_WALK_LIMIT; i++) {
+    if (cursor === base) return null; // walked all the way back to origin/main — nothing to scope
+    let out;
+    try {
+      out = git(repoRoot, ['rev-list', '--parents', '-n', '1', cursor]).trim();
+    } catch {
+      return null;
+    }
+    const tokens = out.split(/\s+/).filter(Boolean);
+    if (tokens.length === 2) {
+      // Ordinary single-parent commit (e.g. a trailing auto-commit) — keep
+      // walking back to find the merge that actually scopes this push.
+      cursor = tokens[1];
+      continue;
+    }
+    if (tokens.length !== 3) return null; // root commit or octopus merge — bail, fail open
+    const [, parent1, parent2] = tokens;
+    if (parent2 === base || isAncestor(repoRoot, parent2, base)) {
+      // Pull/catch-up merge (parent2 is origin/main content) — not a scope
+      // anchor. Nothing further back can be "my own" beyond this either,
+      // since everything before a pull is already reflected in parent1,
+      // which we're about to inspect next — so stop here rather than walk
+      // past it (would risk re-descending into unrelated history).
+      return null;
+    }
+    return parent1;
+  }
+  return null;
+}
+
 // Diff args for base vs ref. ref === 'WORKTREE' means "the working tree as it
 // stands" — used when the gated command is a compound `git commit … && git
 // push` / `git merge … && git push`, where the pushed state doesn't exist as a
 // commit yet at hook time (ship-check round 3 P0-1: the mandated
 // merge-then-push flow was evaluated pre-merge and always passed).
+//
+// `twoDot` ranges are used only for drift calc (verdict.head..ref), which
+// must stay anchored to the verdict's own recorded head — own-merge scoping
+// does not apply there.
 function diffRangeArgs(repoRoot, base, ref, twoDot) {
   if (ref === 'WORKTREE') {
     // Working tree vs merge-base(base, HEAD) — the three-dot equivalent.
@@ -136,7 +212,8 @@ function diffRangeArgs(repoRoot, base, ref, twoDot) {
     try { mb = git(repoRoot, ['merge-base', base, 'HEAD']).trim() || base; } catch { /* keep base */ }
     return [twoDot ? base : mb];
   }
-  return [twoDot ? `${base}..${ref}` : `${base}...${ref}`];
+  const effectiveBase = twoDot ? base : (ownMergeParent(repoRoot, ref, base) || base);
+  return [twoDot ? `${effectiveBase}..${ref}` : `${effectiveBase}...${ref}`];
 }
 
 // Force prefixes/no-ext-diff: user git config (diff.noprefix, external diff)
