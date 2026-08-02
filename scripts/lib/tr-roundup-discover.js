@@ -29,6 +29,8 @@
 const { verifyAggregatorUrl } = require('./show-match-verifier');
 const { cleanSearchTitle } = require('./title-normalization');
 
+const { foldDiacritics } = require('./title-match');
+
 async function discoverTrRoundupHtml(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
@@ -38,7 +40,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   const stats = opts.stats || {};
   stats.fetchErrors = 0;
 
-  const titleSlug = show.title.toLowerCase()
+  const titleSlug = foldDiacritics(show.title).toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
@@ -48,7 +50,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   ];
   // Also try with venue suffix if we have venue info
   if (show.venue) {
-    const venueSlug = show.venue.toLowerCase()
+    const venueSlug = foldDiacritics(show.venue).toLowerCase()
       .replace(/\s*theatre\s*/gi, '').replace(/\s*theater\s*/gi, '')
       .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     if (venueSlug) {

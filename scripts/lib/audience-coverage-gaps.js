@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * Audience source coverage-gap detection (shared, unit-tested).
  *
@@ -50,7 +52,7 @@ function nonMatchKey(source, sourceName, ourShowId) {
   // Lowercase source — health-check.js passes 'Theatr'/'Mezzanine' (capitalized)
   // while some callers pass lowercase; normalize so the key matches either way.
   const src = String(source || '').toLowerCase();
-  const norm = String(sourceName || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const norm = foldDiacritics(String(sourceName || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   return `${src}|${norm}|${ourShowId}`;
 }
 

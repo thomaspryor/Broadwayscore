@@ -24,6 +24,8 @@
 
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 function canonicalVenue(show) {
   return (show.venue || '')
     .toLowerCase()
@@ -47,7 +49,7 @@ function datesOverlap(a, b) {
 
 function rawTitleTokens(show) {
   return new Set(
-    (show.title || '')
+    foldDiacritics(show.title || '')
       .toLowerCase()
       .replace(/[^a-z0-9 ]/g, ' ')
       .split(/\s+/)

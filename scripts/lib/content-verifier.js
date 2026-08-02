@@ -16,6 +16,7 @@
 const https = require('https');
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
+const { foldDiacritics } = require('./title-match');
 const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
@@ -670,8 +671,13 @@ function heuristicVerify({ scrapedText, excerpt, showTitle }) {
     };
   }
 
-  const text = scrapedText.toLowerCase();
-  const showLower = (showTitle || '').toLowerCase();
+  // Fold diacritics on both sides — shows.json titles are largely ASCII
+  // ("Les Miserables") while outlets spell them correctly with accents
+  // ("Les Misérables"); without folding both the haystack and the needle,
+  // an accented body never matches an unaccented title or vice versa
+  // (task #648/#760 class — see title-match.js:foldDiacritics).
+  const text = foldDiacritics(scrapedText).toLowerCase();
+  const showLower = foldDiacritics(showTitle || '').toLowerCase();
 
   // Check if show title appears in text
   const showMentioned = showLower && (

@@ -10,6 +10,8 @@
  * @param {string} url
  * @returns {string|null} domain or null if URL is invalid
  */
+const { foldDiacritics } = require('./title-match');
+
 function getDomain(url) {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -45,7 +47,7 @@ function normalizeUrl(url) {
  * @returns {string}
  */
 function normalizeShowName(name) {
-  return name.toLowerCase()
+  return foldDiacritics(name).toLowerCase()
     .replace(/['']/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
