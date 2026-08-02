@@ -2287,6 +2287,30 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
   // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback
   const images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
+
+  // Several source paths mkdir <outputBase>/<id>/ BEFORE they know whether any
+  // candidate will verify (fetchFromGoogleImages, the regional-venue path, …),
+  // so a show whose candidates are ALL rejected is left with an EMPTY directory.
+  // Coverage readers that keyed off directory existence then counted the show as
+  // having art and dropped it from the imageless cohort — that is how a show
+  // reaches the live homepage showing "Images coming soon" (Brainiac Live; The
+  // Gin Game before it).
+  //
+  // Pruned HERE, the single point every caller funnels through, rather than at
+  // end-of-run: a --show=<id> run and the concurrent-batch run take different
+  // paths, and an end-of-run sweep is also skipped by early returns,
+  // process.exit, and timeouts — the exact failure cases it exists for.
+  // Scoped to THIS show (never a sweep of all ~2,800 dirs, which would race a
+  // concurrent fetch mid-write), and pruneEmptyShowImageDir uses rmdir, which
+  // refuses the instant anything is inside — so even a lost race can only
+  // remove a directory holding nothing.
+  if (!images) {
+    const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+    if (pruneEmptyShowImageDir(path.join(outputBase, show.id))) {
+      console.log(`   🧹 removed empty image dir for ${show.id} (would otherwise read as coverage)`);
+    }
+  }
+
   return { show, images, apiSourced: !!apiData };
 }
 
@@ -2837,31 +2861,6 @@ async function main() {
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
     console.log(`\nDry-run report: ${reportPath}`);
     generateComparisonPage(dryRunResults);
-  }
-
-  // Several fetch paths mkdir public/images/shows/<id>/ BEFORE they know whether
-  // any candidate will verify, so a show whose candidates are all rejected is
-  // left with an EMPTY directory. Every downstream "has this show got art?"
-  // reader used directory existence, so those empty dirs made imageless shows
-  // read as covered and vanish from the missing cohort — that is how a show
-  // reaches the live homepage showing "Images coming soon". Sweep them here so
-  // the cleanup covers every failure path, present and future, rather than
-  // being threaded through each mkdir site individually.
-  const prunedDirs = [];
-  for (const root of [IMAGES_DIR, DRY_RUN_DIR]) {
-    let names;
-    try {
-      names = fs.readdirSync(root, { withFileTypes: true });
-    } catch {
-      continue;
-    }
-    for (const d of names) {
-      if (!d.isDirectory()) continue;
-      if (pruneEmptyShowImageDir(path.join(root, d.name))) prunedDirs.push(d.name);
-    }
-  }
-  if (prunedDirs.length > 0) {
-    console.log(`\n🧹 Removed ${prunedDirs.length} empty image dir(s) left by failed fetches (they would have read as coverage): ${prunedDirs.join(', ')}`);
   }
 
   // Summary

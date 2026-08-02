@@ -86,8 +86,20 @@ test('listShowIdsWithImages excludes empty dirs — the process-feedback.js fix'
   assert.equal(covered.has('junk-only'), false);
 });
 
-test('listShowIdsWithImages on a missing root returns empty, not a throw', () => {
-  assert.equal(listShowIdsWithImages(path.join(makeRoot(), 'nope')).size, 0);
+test('listShowIdsWithImages THROWS on an unreadable root — never a confident empty set', () => {
+  // Returning an empty Set here would make process-feedback.js declare EVERY
+  // show in the catalogue imageless. Its caller keeps showIdsMissingImages null
+  // ("unknown") only because this throws.
+  assert.throws(() => listShowIdsWithImages(path.join(makeRoot(), 'does-not-exist')));
+});
+
+test('one unreadable show dir does not poison the whole listing', () => {
+  const root = makeRoot();
+  seed(root, 'has-art', ['poster.webp']);
+  seed(root, 'empty', []);
+  const covered = listShowIdsWithImages(root);
+  assert.equal(covered.has('has-art'), true);
+  assert.equal(covered.has('empty'), false);
 });
 
 test('pruneEmptyShowImageDir removes an empty dir', () => {
@@ -105,15 +117,47 @@ test('pruneEmptyShowImageDir NEVER deletes real key art', () => {
   assert.deepEqual(fs.readdirSync(dir).sort(), ['hero.webp', 'poster.webp', 'thumbnail.webp']);
 });
 
-test('pruneEmptyShowImageDir clears a junk-only dir (it is not coverage either)', () => {
+test('pruneEmptyShowImageDir leaves a NESTED image folder alone', () => {
+  // Codex P0: a recursive delete would have destroyed originals/ archives.
+  // rmdir refuses a non-empty directory, so nesting is safe by construction.
   const root = makeRoot();
-  const dir = seed(root, 'junk', ['.DS_Store']);
-  assert.equal(pruneEmptyShowImageDir(dir), true);
-  assert.equal(fs.existsSync(dir), false);
+  const dir = path.join(root, 'nested');
+  fs.mkdirSync(path.join(dir, 'originals'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'originals', 'poster.webp'), 'x');
+  assert.equal(pruneEmptyShowImageDir(dir), false);
+  assert.equal(fs.existsSync(path.join(dir, 'originals', 'poster.webp')), true);
+});
+
+test('pruneEmptyShowImageDir leaves an in-flight partial download alone', () => {
+  // A concurrent writer mid-download has a .tmp/partial file in the dir. Even
+  // though that is not coverage, deleting it would corrupt another run.
+  const root = makeRoot();
+  const dir = seed(root, 'downloading', ['poster.webp.tmp']);
+  assert.equal(pruneEmptyShowImageDir(dir), false);
+  assert.equal(fs.existsSync(path.join(dir, 'poster.webp.tmp')), true);
+});
+
+test('a junk-only dir is NOT coverage but is also NOT deleted', () => {
+  // Two separate properties. Coverage must be false (that is the bug fix);
+  // deletion must be false (we do not destroy files we did not write).
+  const root = makeRoot();
+  const dir = seed(root, 'junk', ['.DS_Store', 'attempt.json']);
+  assert.equal(hasArchivedShowImages(root, 'junk'), false);
+  assert.equal(pruneEmptyShowImageDir(dir), false);
+  assert.equal(fs.existsSync(dir), true);
 });
 
 test('pruneEmptyShowImageDir on a nonexistent path is a no-op, not a throw', () => {
   assert.equal(pruneEmptyShowImageDir(path.join(makeRoot(), 'nope')), false);
+});
+
+test('a DIRECTORY named poster.webp is not key art', () => {
+  // Guards the isFile() check: a non-regular entry with an image extension must
+  // not fake coverage (and must not shield a junk dir from cleanup).
+  const root = makeRoot();
+  fs.mkdirSync(path.join(root, 'weird', 'poster.webp'), { recursive: true });
+  assert.equal(hasArchivedShowImages(root, 'weird'), false);
+  assert.equal(listShowIdsWithImages(root).has('weird'), false);
 });
 
 test('dirHasImageFiles is case-insensitive on the extension', () => {

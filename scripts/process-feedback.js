@@ -449,7 +449,12 @@ async function main() {
         const covered = listShowIdsWithImages(path.join(__dirname, '../public/images/shows'));
         showIdsMissingImages = new Set(shows.filter((s) => s && s.id && !covered.has(s.id)).map((s) => s.id));
       } catch (err) {
-        console.error(`Could not read image dirs for content routing: ${err.message}`);
+        // Leaves showIdsMissingImages null = "unknown", which the router turns
+        // into imageAbsenceVerified:null. listShowIdsWithImages THROWS rather
+        // than returning {} on an unreadable root precisely so this stays
+        // unknown — degrading to an empty covered-set would declare every show
+        // in the catalogue imageless.
+        console.error(`Could not read image dirs for content routing: ${err.message} — image absence stays UNVERIFIED for this run.`);
       }
     }
 
