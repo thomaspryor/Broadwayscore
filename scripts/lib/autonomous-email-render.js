@@ -210,111 +210,159 @@ function renderRecheckBlock(recheck) {
 // now writes its results to data/audit/health-digest-snapshot.json instead of
 // sending mail; autonomous-email.js reads that snapshot and folds it in here
 // so there is exactly one scheduled morning email, not two.
-// Which health rows the email actually renders, and how many warnings that
-// leaves in the "+N more" tail. Extracted as a PURE function (CLAUDE.md §15)
-// because digest-content-invariants.js must assert "every rendered row has a
-// working button" against the SAME budget the renderer uses — a second copy
-// of this arithmetic in the checker is the "must match X" antipattern that
-// lets the two drift and the assertion go quietly false.
-//
-// Owner escalation 2026-08-01 ("this had ONE fix it button. And a bunch of
-// other shit with no actions to take."): warnings used to render name-only,
-// no message, no button — the exact "reports but cannot act" shape. Every
-// row now carries its message and its Fix-this button, so the budget squeezes
-// the LIST, never the actionability of what is shown.
-const HEALTH_ROW_BUDGET = 8;
+// Plain-English translations for recurring health checks (owner mandate
+// 2026-08-02: "I can't even tell from any of the descriptions what they are or
+// mean"). Keyed by name prefix; unmapped names fall back to the raw name.
+const PLAIN_HEALTH = [
+  [/^Workflow repeat-failure: (.+)/, (m) => `The automated "${m[1]}" job keeps failing`],
+  [/^Audience coverage/, () => 'Some shows have audience ratings that never linked up'],
+  [/^Sync: baseline drift/, () => 'The site is showing fewer shows/reviews than yesterday'],
+  [/^Sync: cast coverage/, () => 'Some shows are missing cast lists'],
+  [/^Quality: star-vs-score mismatch/, () => 'A few review scores contradict the critic\u2019s own star rating'],
+  [/^Quality: corpus drift/, () => 'Some data-quality checks are drifting from their baselines'],
+  [/^Commercial model drift/, () => 'The commercial (recoupment) model\u2019s estimates shifted'],
+  [/^Credits: (.+)/, (m) => `${m[1]} scraping credits are running low`],
+  [/^Stuck work/, () => 'Some high-priority fix cards have sat paused too long'],
+  [/^SEO/, () => 'Google page-speed/search health degraded'],
+  [/^Secrets/, () => 'An API key or login may be expiring'],
+  [/^Data freshness/, () => 'Some open shows are missing a poster, synopsis, or ticket link'],
+  [/^Stuck pipeline/, () => 'A data pipeline looks stalled'],
+];
+function plainHealthLine(name) {
+  for (const [re2, fn] of PLAIN_HEALTH) { const m = String(name).match(re2); if (m) return fn(m); }
+  return String(name);
+}
+
+// Which health rows the email reports on. Kept pure + exported (CLAUDE.md §15)
+// so digest-content-invariants asserts against the SAME selection the renderer
+// uses. Since Digest v3 there is no row budget: every issue is listed because
+// every issue is being auto-fixed — the list IS the fix report, not a to-do.
 function selectHealthRows({ errors = [], warns = [] } = {}) {
   const errs = Array.isArray(errors) ? errors : [];
   const warnings = Array.isArray(warns) ? warns : [];
-  // Errors are never squeezed: a flat slice would demote the Nth error into
-  // an un-tappable "+N more" exactly on the mornings with the most to fix.
-  const shownWarns = warnings.slice(0, Math.max(0, HEALTH_ROW_BUDGET - errs.length));
   return {
-    rows: [...errs.map(e => ({ ...e, kind: 'error' })), ...shownWarns.map(w => ({ ...w, kind: 'warn' }))],
-    hiddenWarns: warnings.length - shownWarns.length,
+    rows: [...errs.map(e => ({ ...e, kind: 'error' })), ...warnings.map(w => ({ ...w, kind: 'warn' }))],
+    hiddenWarns: 0,
   };
 }
 
-function renderHealthDigestBlock(health) {
+// Scoreboard table — the owner's "original format" (his Jul 22 email): one row
+// per category, icon + pass state, zero prose. Categories derive from the
+// check-name prefix before ":" ("Quality: corpus drift" → Quality).
+function renderHealthScoreboard(health) {
+  const { rows } = selectHealthRows({ errors: health.errors, warns: health.warns });
+  const byCat = new Map();
+  for (const r of rows) {
+    if (!r || !r.name) continue;
+    const cat = String(r.name).split(':')[0].trim() || 'Other';
+    const cur = byCat.get(cat) || { errors: 0, warns: 0 };
+    cur[r.kind === 'error' ? 'errors' : 'warns']++;
+    byCat.set(cat, cur);
+  }
+  const tr = (icon, label, right, color) => `<tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;color:#333;">${icon} ${esc(label)}</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:right;color:${color};font-weight:700;">${esc(right)}</td>
+  </tr>`;
+  const rowsHtml = [...byCat.entries()].map(([cat, c]) =>
+    c.errors ? tr('\u274c', cat, `${c.errors + c.warns} issue${c.errors + c.warns === 1 ? '' : 's'}`, '#dc2626')
+             : tr('\u26a0\ufe0f', cat, `${c.warns} issue${c.warns === 1 ? '' : 's'}`, '#b45309')).join('');
+  const passed = Number(health.passedCount);
+  const passedRow = Number.isFinite(passed) && passed > 0
+    ? tr('\u2705', 'Everything else', `${passed} checks passed`, '#16a34a') : '';
+  return `<div style="border:1px solid #e5e5e5;border-radius:10px;overflow:hidden;margin:0 0 14px;">
+    <table style="border-collapse:collapse;width:100%;">
+      <tr><td style="padding:6px 10px;font-size:11px;color:#999;text-transform:uppercase;">Category</td><td style="padding:6px 10px;font-size:11px;color:#999;text-transform:uppercase;text-align:right;">Status</td></tr>
+      ${rowsHtml}${passedRow}
+    </table>
+  </div>`;
+}
+
+// "Being fixed automatically" — one line per issue with its auto-fix status.
+// NO buttons, NO asks (owner, 2026-08-02: "Just have a Claude session fix
+// them"). rows come from digest-autofix's annotated plan; health rows the plan
+// didn't cover (shouldn't happen) degrade to a bare plain-English line.
+const AUTOFIX_STATE_LABEL = {
+  'dispatched': ['\u{1f527}', 'a fix session is working on it now'],
+  'in-progress': ['\u{1f527}', 'a fix session is already working on it'],
+  'queued': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
+  'card-filed': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
+  'card-failed': ['\u26a0\ufe0f', 'could not be queued automatically \u2014 will retry tomorrow'],
+};
+function renderAutofixBlock(autofixRows) {
+  let rows = (autofixRows || []).filter(r => r && r.name);
+  if (!rows.length) return '';
+  // Two checks can share a plain-English translation (e.g. two "Stuck work:"
+  // variants) — collapse them so the owner never reads the same sentence twice.
+  const seen = new Map();
+  for (const r of rows) {
+    const key = plainHealthLine(r.name);
+    if (seen.has(key)) seen.get(key).dupCount = (seen.get(key).dupCount || 1) + 1;
+    else seen.set(key, r);
+  }
+  rows = [...seen.values()];
+  const lines = rows.map(r => {
+    const [icon, label] = AUTOFIX_STATE_LABEL[r.state] || ['\u23f3', 'queued'];
+    const ref = r.taskId ? ` <span style="color:#bbb;">(#${esc(String(r.taskId))})</span>` : '';
+    return `<div style="margin:0 0 6px;">
+      <div style="font-size:13px;color:#333;">${icon} ${esc(plainHealthLine(r.name))}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">${esc(label)}</div>
+    </div>`;
+  }).join('');
+  return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Being fixed automatically \u2014 nothing for you to do</div>
+    ${lines}
+  </div>`;
+}
+
+// Queued owner-router lines that are pure internal telemetry never belong in
+// the owner email (mandate 2026-08-02) — everything else renders as a
+// "Needs your attention" card.
+const QUEUED_TELEMETRY_BLOCKLIST = [/^T1 Coverage/i, /^Deployed coverage/i];
+
+function renderHealthDigestBlock(health, autofixRows = null) {
   if (!health) return '';
   const errors = Array.isArray(health.errors) ? health.errors : [];
   const warns = Array.isArray(health.warns) ? health.warns : [];
   const queued = Array.isArray(health.queued) ? health.queued : [];
-  const urgent = /URGENT/.test(health.subject || '');
+  const urgent = errors.length > 0;
   const autoFixedNote = health.autoFixedCount > 0
-    ? `<div style="font-size:11px;color:#16a34a;margin-top:6px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
-  // Ship-check finding (card #364): a cancelled/late health-check.js run can
-  // leave a snapshot up to ~36h old (see HEALTH_DIGEST_MAX_AGE_H) — stamp it
-  // so a stale read never masquerades as this morning's status.
-  const asOf = health.generatedAt && !Number.isNaN(new Date(health.generatedAt).getTime())
+    ? `<div style="font-size:12px;color:#16a34a;margin-top:8px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
+  const asOf = health.generatedAt
     ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
-  // owner-alert-router's disposition='digest' queue — routed conditions that
-  // would otherwise vanish silently the moment health-check.js drains the
-  // queue (card #475's original bug, reintroduced then fixed in #364).
-  // .filter(Boolean): a corrupted/partial write to alert-digest-queue.json
-  // (drainDigestQueue does no per-item validation on read) must not crash the
-  // whole email render — that would be strictly worse than the silent-drop
-  // bug this block exists to fix (ship-check follow-up finding).
-  // q.url renders as a trailing link when present. routeAlert() has always
-  // accepted a url and queueDigestLine() has always persisted it, but this
-  // renderer dropped it — so digest-routed conditions whose whole point is
-  // "go look at this page" (e.g. a regional show going live) arrived with no
-  // way to click through. http(s) only: a queued javascript:/data: url would
-  // otherwise become a live link in the owner's inbox.
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
-  // Owner reformat 2026-07-30 ("so hard to read"): queued router lines were
-  // arriving as full paragraphs — clip; the alert ledger keeps the full text.
-  const clip = (s, n) => { const t = String(s); return t.length > n ? `${t.slice(0, n - 1)}…` : t; };
-  const validQueued = queued.filter(Boolean);
+  const clip = (s2, n) => { const t = String(s2); return t.length > n ? `${t.slice(0, n - 1)}\u2026` : t; };
+  const validQueued = queued.filter(Boolean)
+    .filter(q => !QUEUED_TELEMETRY_BLOCKLIST.some(re2 => re2.test(String(q.title || ''))));
+  // Owner mandate 2026-08-02 (second half, stated twice): anything that still
+  // needs the human MUST carry a one-click action — "If something TRULY needs
+  // approval, give me a link to click Approve so I can move on with my life."
+  // composeDigestEmail attaches q.actionUrl (signed dispatch link, same HMAC
+  // machinery as the API's approve/dispatch flow); prose-only cards are a
+  // regression the content invariant now catches.
   const queuedHtml = validQueued.length
-    ? `<div style="margin-top:8px;">${validQueued.map(q => {
-        const href = safeUrl(q.url);
-        return `<div style="font-size:12px;color:#555;margin:0 0 3px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` — ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
-      }).join('')}</div>`
+    ? `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
+        ${validQueued.map(q => {
+          const href = safeUrl(q.url);
+          const action = safeUrl(q.actionUrl);
+          return `<div style="margin:0 0 10px;">
+            <div style="font-size:12px;color:#555;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>
+            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:3px 12px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+          </div>`;
+        }).join('')}</div>`
     : '';
+
+  const header = `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:15px;font-weight:700;${urgent ? 'color:#dc2626;' : ''}">${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${health.consecutiveErrorDays > 1 ? ` <span style="color:#999;font-weight:400;font-size:12px;">(day ${health.consecutiveErrorDays} of consecutive errors)</span>` : ''}</div>
+    ${autoFixedNote}${asOf}
+  </div>`;
 
   if (!errors.length && !warns.length) {
-    return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-      <div style="font-size:13px;font-weight:700;">Site health: all ${health.passedCount ?? ''} checks passed</div>
-      ${queuedHtml}${autoFixedNote}${asOf}
-    </div>`;
+    return `${header}${queuedHtml}`;
   }
-
-  // Owner reformat 2026-07-30 ("wall of text, unactionable"): errors keep a
-  // (clipped) detail line — they're the actionable rows; warnings render as
-  // one name-only line each. The name is enough to recognize a known watch
-  // item, and the health snapshot keeps the full text for digging in.
-  // Fix-this button (card #634 — owner ask 2026-07-30): each ERROR row gets a
-  // signed link straight to a session dispatch, no laptop required. The
-  // caller (autonomous-email.js) attaches r.fixUrl per item; this renderer
-  // stays pure (no HMAC/network here) and just draws whatever it's given.
-  // http(s) only, same safeUrl guard as the queued-router links above — a
-  // caller bug must never leak a javascript:/data: URL into the inbox.
-  const fixThisHtml = (url) => safeUrl(url)
-    ? `<div style="margin:4px 0 0 2px;"><a href="${esc(safeUrl(url))}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:2px 10px;border-radius:8px;">Fix this →</a></div>`
-    : '';
-  // Errors are the ACTIONABLE rows — they carry the Fix-this button — so the
-  // 8-row budget squeezes warnings only, never errors (ship-check adversarial
-  // finding, codex 2026-07-30: a flat slice(0,8) silently demoted the 9th+
-  // error into an un-tappable "+N more", i.e. "every error gets a button" was
-  // false in the inbox exactly on the days with the most to fix). The email
-  // grows only on a genuinely bad morning, which is when you want it to.
-  const { rows: shownRows, hiddenWarns } = selectHealthRows({ errors, warns });
-  const rows = shownRows
-    .map(r => `<div style="margin:0 0 6px;">
-      <span style="display:inline-block;background:${r.kind === 'error' ? '#dc2626' : '#b45309'};color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;vertical-align:middle;text-transform:uppercase;">${r.kind}</span>
-      <span style="font-size:13px;color:#333;margin-left:6px;">${esc(r.name)}</span>
-      ${r.message ? `<div style="font-size:11px;color:#999;margin:2px 0 0 2px;">${esc(clip(r.message, 200))}</div>` : ''}
-      ${fixThisHtml(r.fixUrl)}
-    </div>`).join('');
-  const more = hiddenWarns > 0 ? `<div style="font-size:11px;color:#999;margin-top:4px;">+${hiddenWarns} more</div>` : '';
-  const escalation = health.consecutiveErrorDays > 1
-    ? ` <span style="color:#999;font-weight:400;">(day ${health.consecutiveErrorDays})</span>` : '';
-
-  return `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:8px;${urgent ? 'color:#dc2626;' : ''}">Site health: ${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${escalation}</div>
-    ${rows}${more}${queuedHtml}${autoFixedNote}${asOf}
-  </div>`;
+  const { rows } = selectHealthRows({ errors, warns });
+  const plan = autofixRows || rows.map(r => ({ name: r.name, state: 'queued', taskId: null }));
+  return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan)}${queuedHtml}`;
 }
 
 // Count of health-digest errors+warnings — folded into renderSummaryLine's
@@ -632,7 +680,8 @@ function renderEmail(data) {
 module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
-  renderHealthDigestBlock, healthIssueCount, selectHealthRows, HEALTH_ROW_BUDGET,
+  renderHealthDigestBlock, healthIssueCount, selectHealthRows,
+  renderHealthScoreboard, renderAutofixBlock, plainHealthLine,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
 };

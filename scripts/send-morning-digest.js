@@ -61,7 +61,6 @@ const {
   renderRedditDigestBlock,
   renderNamedDigestBlock,
 } = require('./lib/autonomous-email-render.js');
-const { attachHealthFixUrls } = require('./lib/dispatch-link.js');
 
 // Fix-this buttons (card #634 — owner ask 2026-07-30: "tap a button in the
 // digest, get a session dispatched on the issue, no laptop required").
@@ -150,7 +149,7 @@ function buildSubject({ health = null, now = new Date() } = {}) {
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -175,19 +174,18 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // urgentDays (14) escalate the top verdict — same "count is the escalation
   // signal, items/moreCount hold everything else" contract as freshnessCount.
   const closingSoonCount = sections.closingSoon?.count || 0;
-  if (errs || stuckCount || freshnessCount || closingSoonCount) {
-    const bits = [];
-    if (errs) bits.push(`Fix needed: ${errNames.slice(0, 3).join('; ') || `${errs} site error${errs === 1 ? '' : 's'}`}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`);
-    if (freshnessCount) bits.push(`${freshnessCount} open show${freshnessCount === 1 ? '' : 's'} missing tickets/poster/synopsis (see Data freshness below)`);
-    if (closingSoonCount) bits.push(`${closingSoonCount} show${closingSoonCount === 1 ? '' : 's'} closing within 2 weeks (see Closing soon below)`);
-    if (stuckCount) bits.push(`${stuckCount} pipeline item${stuckCount === 1 ? '' : 's'} flagged "possibly stuck" below`);
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(bits.join(' · '))}</p>`);
-    if (warns) parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
-  } else if (warns) {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing urgent this morning.</p>`);
-    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${warns} routine warning${warns === 1 ? '' : 's'} below — being watched, no action needed unless new.</p>`);
+  // Digest v3 summary: everything auto-fixable is BEING fixed — say that,
+  // never point at sections that no longer exist (Closing soon / Data
+  // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
+  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + (freshnessCount ? 1 : 0) + (stuckCount ? 1 : 0)); // closingSoon intentionally absent — lives in the opening digest
+  const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
+  if (errs) {
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   } else {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 12px;">Nothing needs your attention this morning.</p>`);
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing needs your attention this morning.</p>`);
+  }
+  if (fixing) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
@@ -197,28 +195,25 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // changed, then scores/Reddit. The opening-night radar left this email
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
-  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health));
+  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health, autofixRows));
   // Data freshness (task #689) — high-severity data gaps (missing poster,
   // missing tickets on open shows) that used to be computed daily and thrown
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
   // backlogDrain/providerSpend below, so it reuses renderNamedDigestBlock.
-  if (sections.freshness) blocks.push(renderNamedDigestBlock('Data freshness', sections.freshness));
   // Closing soon (task #690) — report.closingSoon is a sibling field of the
   // same freshness-report.json, same {generatedAt, bannerText, items,
   // moreCount} shape, so it reuses renderNamedDigestBlock with no new
   // render code.
-  if (sections.closingSoon) blocks.push(renderNamedDigestBlock('Closing soon', sections.closingSoon));
-  if (changesHtml) blocks.push(changesHtml);
-  if (sections.dailyDigest) blocks.push(renderDailyDigestBlock(sections.dailyDigest));
-  if (sections.redditDigest) blocks.push(renderRedditDigestBlock(sections.redditDigest));
   // Backlog drain metric (task #654) — scripts/backlog-drain.js writes
   // {generatedAt, bannerText, items, moreCount}, the same shape every other
   // named digest uses, so it reuses renderNamedDigestBlock with no new
   // render code.
-  if (sections.backlogDrain) blocks.push(renderNamedDigestBlock('Backlog drain', sections.backlogDrain));
   // Scraping spend vs budget (check-provider-spend.js, Scraping Cost System
   // v2) — same {generatedAt, bannerText, items} shape, no new render code.
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
+  // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
+  // commit messages, slugs, counters — is gone. One plain sentence remains.
+  if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
 
   if (blocks.length) {
     parts.push(blocks.join('\n'));
@@ -234,42 +229,44 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // Composes the subject+html the SAME way the real send does: attach Fix-this
 // links, then build subject/html — pulled out of main() (CLAUDE.md §15) so
 // digest-content-invariants.test.mjs exercises this real caller-to-renderer
-// wire, including the attachHealthFixUrls call. Its ABSENCE was card #634's
+// wire. (v2's attachHealthFixUrls call lived here; Digest v3 removed all
 // root cause — a test that reconstructs this logic instead of calling it
 // would not have caught that, which is exactly what happened (renderer unit
-// tests fully covered attachHealthFixUrls's OUTPUT, never its caller).
+// buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
-}) {
-  // Card #634: sign a dispatch link per health ERROR so the owner can act
-  // from the phone. Fail-soft on purpose — a missing secret costs the
-  // buttons, never the email (rule: the digest must always send).
-  if (!dispatchSecret) {
-    console.error('[digest] WARN APPROVAL_HMAC_SECRET not set — sending without Fix-this buttons');
-  } else {
-    const cfg = (() => {
-      try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; }
-    })();
-    const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
-    const exp = Math.floor(Date.now() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
-    const attached = attachHealthFixUrls({ health: sections.health, exp, secret: dispatchSecret, baseUrl });
-    // Says ROWS, not "error rows", and says how many the email actually
-    // RENDERS. The old wording ("attached to N health error row(s)") is the
-    // exact line a 2026-08-01 session accepted as proof the digest was fine
-    // while the delivered email had 1 tappable row and 13 dead ones. A log
-    // line is never the acceptance evidence for this email — read the render
-    // (data/audit/morning-digest-preview.html) — but it must at least not lie.
-    const { selectHealthRows } = require('./lib/autonomous-email-render.js');
-    const shown = selectHealthRows({
-      errors: sections.health && sections.health.errors,
-      warns: sections.health && (sections.health.warns || sections.health.warnings),
-    }).rows.filter(r => r && r.name).length;
-    console.log(`[digest] Fix-this buttons: ${attached} row(s) signed, ${shown} rendered in the email (NOT proof the email reads well — open the preview)`);
+} = {}) {
+  // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
+  // buttons, ever — "Why do I need to hit 'Fix this'. I'm obvi going to hit it
+  // for everything here. Just have a Claude session fix them." Auto-dispatch
+  // happens in main() via lib/digest-autofix.js BEFORE compose; this function
+  // only renders the resulting statuses.
+  // Owner mandate 2026-08-02: every Needs-your-attention card carries a
+  // one-click signed dispatch link (never prose-only). Same fail-soft rule
+  // as everything else: no secret -> no button, email still sends.
+  if (dispatchSecret && sections.health && Array.isArray(sections.health.queued)) {
+    try {
+      const { buildDispatchUrl } = require('./lib/dispatch-link.js');
+      const cfg = (() => { try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; } })();
+      const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
+      const exp = Math.floor(now.getTime() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
+      for (const q of sections.health.queued) {
+        if (!q || !q.title || q.actionUrl) continue;
+        q.actionUrl = buildDispatchUrl({
+          conditionKey: `digest-needs-you:${q.title}`,
+          title: `Fix: ${String(q.title).slice(0, 130)}`,
+          description: q.description || '',
+          exp, secret: dispatchSecret, baseUrl,
+        });
+      }
+    } catch (err) {
+      console.error(`[digest] WARN needs-you action links failed (cards render link-less): ${String(err.message).slice(0, 120)}`);
+    }
   }
 
   const subject = buildSubject({ health: sections.health, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
   return { subject, html };
 }
 
@@ -343,8 +340,45 @@ async function main() {
     console.error(`[digest] WARN overnight-changes gathering failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  // Digest v3 auto-fix (owner mandate 2026-08-02): every named health issue
+  // plus the freshness/stuck rollups gets its card filed and the oldest few
+  // dispatched as headless fix sessions — the email then REPORTS, never asks.
+  // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
+  let autofixRows = null;
+  try {
+    const { planAutofix, runAutofix } = require('./lib/digest-autofix.js');
+    const extraIssues = [];
+    if (sections.freshness?.count > 0) {
+      extraIssues.push({ name: 'Data freshness: shows missing poster/synopsis/tickets',
+        message: `${sections.freshness.count} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.` });
+    }
+    if (stuckCount > 0) {
+      extraIssues.push({ name: 'Stuck pipeline items',
+        message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.` });
+    }
+    let tasks = [];
+    try { tasks = require('./bsc-next.js').loadTasks(); } catch { /* plan degrades to needs-card */ }
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks }), dryRun, log: (m) => console.log(m) });
+    const d = autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length;
+    console.log(`[digest] autofix: ${autofixRows.length} issue(s) — ${d} being worked, ${autofixRows.length - d} queued`);
+  } catch (err) {
+    console.error(`[digest] WARN autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
+  }
+
+  // One plain sentence of overnight activity (replaces the old commit-list block).
+  let overnightLine = null;
+  try {
+    const c = require('./lib/overnight-digest.js').gatherDigest({ repo: REPO })?.counts;
+    if (c) {
+      const bits = [];
+      if (c.newShows) bits.push(`${c.newShows} new show${c.newShows > 1 ? 's' : ''} added`);
+      if (c.scoringRuns) bits.push(`${c.scoringRuns} review-scoring run${c.scoringRuns > 1 ? 's' : ''} completed`);
+      if (bits.length) overnightLine = `Overnight: ${bits.join(', ')}.`;
+    }
+  } catch { /* optional */ }
+
   const now = new Date();
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
 
   // Card #670: fail-soft pre-send content check — never blocks the send (the
   // digest must always send), but a violation here means the CI test on
