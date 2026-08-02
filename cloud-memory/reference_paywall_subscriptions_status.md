@@ -16,6 +16,7 @@ Owner's paywall subscription status (as of 2026-07-21):
 - newspapers.com — cancelled earlier; access ends 2026-08-27. Was never automatable (viewer blocks all tiers).
 
 **Active + verified working (functional body-length test 2026-07-19/20):**
+- WSJ UPDATE 2026-08-02: subscription ACTIVE (auto-renews 2026-08-08 at $20/4wk, 50% discount locked for 13 payments per Jul 18 renewal email). But the Safari LOGIN session lapsed after the 2026-07-20 export — fresh Safari cookies return HTTP 401. Fix = owner signs in at wsj.com in Safari once, then run `python3 scripts/extract-safari-cookies.py --push`. NEVER confuse a lapsed login with a cancelled subscription (a session on 2026-08-02 wrongly told the owner WSJ was cancelled by reading only this file's index description).
 NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard, Independent — cookies refreshed from owner Safari 2026-07-20, pushed to COOKIES_BUNDLE_1-4 secrets.
 
 **No subscription exists (never prompt for login):**
