@@ -415,6 +415,13 @@ on:
       - 'scripts/lib/push-content-survival.js'
       - 'scripts/lib/push-content-survival.test.mjs'
       - 'scripts/lib/push-with-retry.content-drop.test.sh'
+      # Task #819: merge-worktree-to-main.sh checkout-fail regression guard —
+      # proves die() actually terminates the process (non-zero exit, no
+      # leaked stash) on both the "stash succeeded, checkout still blocked"
+      # and "genuine UU merge conflict" shapes. Path-listed so a solo edit
+      # to either file triggers CI.
+      - 'scripts/merge-worktree-to-main.sh'
+      - 'scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
       # node --test batch). Path-listed so a solo lib edit triggers CI
@@ -2398,6 +2405,20 @@ jobs:
         # scripts/lib/push-content-survival.test.mjs run above.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.content-drop.test.sh
+
+      - name: Run merge-worktree-to-main checkout-fail regression test (task #819)
+        # Notion card 3b0637c5416f819fb6f8d4565acc7760: "merge-worktree-to-main.sh
+        # exits 0 after 'could not checkout main' (stash-then-abort, silent
+        # failure)". Investigation found the current die() path already exits
+        # non-zero correctly (bash -x traced on both bash 3.2 and 5.3 — the EXIT
+        # trap's push_mutex_release doesn't override an explicit `exit 1`); this
+        # test locks that in as a permanent regression guard so a future edit to
+        # die() (e.g. `exit`→`return`, a very plausible slip given restore_stash()
+        # uses `return 0` right next to it) can't silently reintroduce the class.
+        # Fault-injecting that exact swap and re-running this test confirms it
+        # catches it (script proceeds past the abort and prints a bogus ✅).
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
