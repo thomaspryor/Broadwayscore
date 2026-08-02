@@ -254,15 +254,15 @@ describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () =
 });
 
 describe('shouldSkipReviewsPhp — fail-open category gating (T4)', () => {
-  it('skips only on affirmative off-broadway category', () => {
+  it('skips on affirmative off-broadway/west-end/off-west-end category', () => {
     assert.strictEqual(shouldSkipReviewsPhp({ category: 'off-broadway' }), true);
     assert.strictEqual(shouldSkipReviewsPhp({ category: 'Off-Broadway' }), true, 'case-insensitive');
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'west-end' }), true, 'reviews.php is a Broadway listing page — WE has its own /westend/ section page');
+    assert.strictEqual(shouldSkipReviewsPhp({ category: 'off-west-end' }), true);
   });
 
   it('probes (does not skip) for every other category', () => {
     assert.strictEqual(shouldSkipReviewsPhp({ category: 'broadway' }), false);
-    assert.strictEqual(shouldSkipReviewsPhp({ category: 'west-end' }), false);
-    assert.strictEqual(shouldSkipReviewsPhp({ category: 'off-west-end' }), false);
     assert.strictEqual(shouldSkipReviewsPhp({ category: 'regional' }), false);
   });
 
