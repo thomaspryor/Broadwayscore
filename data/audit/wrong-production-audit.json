@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T07:56:29.844Z",
+  "timestamp": "2026-08-02T09:04:11.125Z",
   "stats": {
-    "totalReviews": 41207,
-    "alreadyFlagged": 18040,
+    "totalReviews": 41244,
+    "alreadyFlagged": 18039,
     "dateGuardCatches": 85,
     "directorMismatch": 941,
-    "tvFilmSignals": 1127,
+    "tvFilmSignals": 1128,
     "londonSignals": 784,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 3372
+    "noPublishDate": 3414
   },
   "findings": [
     {
@@ -458,6 +458,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-soldiers-play-2020",
+      "file": "washpost--peter-marks.json",
+      "score": 74,
+      "publishDate": "January 24th, 2020",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/tried-and-true-formulas-work-in-a-soldiers-play-and-grand-horizons/2020/01/23/3675c154-3de2-11ea-baca-eb7ace0a3455_story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
