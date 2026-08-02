@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-08-02T10:33:23.943Z",
+  "timestamp": "2026-08-02T11:01:23.212Z",
   "stats": {
-    "totalReviews": 41287,
+    "totalReviews": 41290,
     "alreadyFlagged": 18083,
     "dateGuardCatches": 87,
     "directorMismatch": 941,
-    "tvFilmSignals": 1130,
+    "tvFilmSignals": 1133,
     "londonSignals": 785,
     "offBroadwaySignals": 469,
     "yearMismatch": 87,
@@ -26728,6 +26728,48 @@
       "score": 96,
       "publishDate": "2026-07-26",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 71,
+      "publishDate": "2025-08-05",
+      "url": "https://www.cityam.com/i-played-the-traitors-live-experience-heres-my-honest-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "guardian--alexi-duggins.json",
+      "score": 74,
+      "publishDate": "2025-08-02",
+      "url": "https://www.theguardian.com/tv-and-radio/2025/aug/02/you-killed-her-my-100-faithful-attempt-at-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "sunday-telegraph--liam-kelly.json",
+      "score": 77,
+      "publishDate": "2025-08-04",
+      "url": "https://www.telegraph.co.uk/tv/2025/08/04/traitors-live-experience-bbc/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
