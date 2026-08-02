@@ -193,6 +193,7 @@ tests/unit/maybe-upgrade-url-cross-show.test.mjs
 tests/unit/merge-bww-roundup-ledger.test.mjs
 tests/unit/merge-commercial-data.test.mjs
 tests/unit/merge-diary-shows.test.mjs
+tests/unit/merge-owner-email-log.test.mjs
 tests/unit/merge-review-fields.test.mjs
 tests/unit/merge-social-post-history.test.mjs
 tests/unit/mezzanine-search-classify.test.mjs
@@ -230,6 +231,7 @@ tests/unit/outlet-logos-generated.test.mjs
 tests/unit/outlet-recency-monitor.test.mjs
 tests/unit/outlet-registry-domain-collisions.test.mjs
 tests/unit/page-validator.test.mjs
+tests/unit/park-visibility.test.mjs
 tests/unit/parse-bww-grosses-row.test.mjs
 tests/unit/paywall-detector.test.mjs
 tests/unit/pending-diagnoses.test.mjs
@@ -253,6 +255,7 @@ tests/unit/protected-fields-sync.test.mjs
 tests/unit/protected-fields-three-way-sync.test.mjs
 tests/unit/provider-telemetry.test.mjs
 tests/unit/pull-quote-guards.test.mjs
+tests/unit/push-ledger-store.test.mjs
 tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs

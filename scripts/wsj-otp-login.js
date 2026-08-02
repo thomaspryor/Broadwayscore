@@ -1,0 +1,203 @@
+#!/usr/bin/env node
+
+/**
+ * WSJ scripted login via email one-time-passcode.
+ *
+ * Root cause chain (task #779): macOS Tahoe no longer persists httpOnly
+ * cookies to Safari's Cookies.binarycookies, so extract-safari-cookies.py
+ * can never recover djcs_session/djcs_auto for WSJ. Fully scripted
+ * password-based login (local Playwright AND Browserbase with
+ * solveCaptchas) is separately blocked: Dow Jones SSO's anti-bot layer
+ * either stalls at a DataDome challenge page or accepts the CAPTCHA and
+ * then fake-rejects the correct password with "login details incorrect"
+ * (reproduced live 2026-08-02, matches the documented note in
+ * collect-review-texts.js knownBlockedSites). The email-OTP flow has no
+ * password-based check to fake-reject — request a code, read it from
+ * Gmail, submit it. Verified working end-to-end 2026-08-02.
+ *
+ * Writes data/cookies/wsj.json in the same schema extract-safari-cookies.py
+ * produces, so every downstream consumer (cookie-loader.js,
+ * recover-wsj-subscriber.js, check-cookie-health.js) needs no changes.
+ *
+ * Usage:
+ *   node scripts/wsj-otp-login.js
+ *
+ * Requires: WSJ_USER (or WSJ_EMAIL) in the shell env, and
+ * ~/.claude/bin/gmail on PATH (read-only IMAP helper) to fetch the code.
+ * Local only — do not run in CI (WSJ blocks CI IPs; this also needs a
+ * live inbox to poll).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+const args = process.argv.slice(2);
+if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
+  console.log('Usage: node scripts/wsj-otp-login.js');
+  console.log('');
+  console.log('Logs into WSJ via email one-time-passcode (bypasses the Dow Jones SSO');
+  console.log('anti-bot check that fake-rejects passwords from automated browsers) and');
+  console.log('writes fresh cookies to data/cookies/wsj.json.');
+  console.log('');
+  console.log('Requires WSJ_USER or WSJ_EMAIL in the environment, and a working');
+  console.log('~/.claude/bin/gmail (read-only IMAP) to retrieve the passcode email.');
+  process.exit(0);
+}
+
+const PROJECT_ROOT = path.join(__dirname, '..');
+const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
+const COOKIE_PATH = path.join(COOKIE_DIR, 'wsj.json');
+const META_PATH = path.join(COOKIE_DIR, '_extracted-at.json');
+
+const PROFILE_DIR = '/tmp/wsj-otp-browser-profile';
+
+// Reuses the shared ~/.claude/bin/gmail helper (read-only IMAP wrapper around
+// the email worker's GMAIL_ADDRESS/GMAIL_APP_PASSWORD in
+// ~/.claude-email-worker/.env) rather than hand-rolling IMAP — same infra
+// every other session uses to read the owner's inbox.
+//
+// `after:<epochSeconds>` is a real Gmail search operator (X-GM-RAW), applied
+// server-side by Gmail itself — not a client-side filter — so a stale email
+// from an earlier login attempt can never be returned. Without this, a
+// request that reuses WSJ's own OTP (observed live 2026-08-02: a second
+// login shortly after a manual one got back the IDENTICAL 8-digit code —
+// some OTP backends resend rather than reissue within the validity window)
+// would be indistinguishable from a genuinely fresh unread one, and the
+// script would falsely "succeed" without proving the read-the-email step
+// actually works end to end.
+function getOtpCode(sinceEpochSeconds) {
+  const searchOut = execSync(
+    `${process.env.HOME}/.claude/bin/gmail search "from:(dowjones.com) after:${sinceEpochSeconds}" --days 1 --limit 3 --folder INBOX`,
+    { encoding: 'utf8' }
+  );
+  const uidMatch = searchOut.match(/uid=(\d+)/);
+  if (!uidMatch) return null;
+
+  const body = execSync(`${process.env.HOME}/.claude/bin/gmail read ${uidMatch[1]}`, { encoding: 'utf8' });
+  const codeMatch = body.match(/>\s*(\d{6,8})\s*<\/h2>/) || body.match(/passcode is:[\s\S]{0,100}?(\d{6,8})/i);
+  return codeMatch ? codeMatch[1] : null;
+}
+
+async function main() {
+  const email = process.env.WSJ_USER || process.env.WSJ_EMAIL;
+  if (!email) {
+    console.error('ERROR: WSJ_USER or WSJ_EMAIL not set in environment.');
+    process.exit(1);
+  }
+
+  console.log(`Logging into WSJ as ${email} via one-time passcode...`);
+
+  const { chromium } = require('playwright');
+  const launchOpts = {
+    headless: false,
+    viewport: { width: 1280, height: 900 },
+    args: ['--disable-blink-features=AutomationControlled'],
+    ignoreDefaultArgs: ['--enable-automation'],
+    locale: 'en-US',
+    timezoneId: 'America/New_York',
+  };
+
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchOpts, channel: 'chrome' });
+    console.log('  -> using installed Google Chrome (channel: chrome)');
+  } catch (err) {
+    console.log(`  -> real Chrome unavailable (${err.message.split('\n')[0]}); falling back to bundled chromium`);
+    context = await chromium.launchPersistentContext(PROFILE_DIR, launchOpts);
+  }
+
+  const page = context.pages()[0] || (await context.newPage());
+
+  try {
+    console.log('Navigating to WSJ login...');
+    await page.goto('https://accounts.wsj.com/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(2000);
+
+    const emailField = await page.getByRole('textbox', { name: /email or username/i });
+    await emailField.fill(email);
+
+    const otpButton = page.getByRole('button', { name: /send one-time passcode/i });
+    if (!(await otpButton.count())) {
+      throw new Error('Send One-Time Passcode button not found — WSJ login page layout may have changed, or a CAPTCHA is blocking the form');
+    }
+    // Cutoff captured BEFORE the click — every downstream Gmail search is
+    // anchored to this instant, so it is structurally impossible to pick up
+    // an email that predates this specific OTP request.
+    const requestedAtEpochSec = Math.floor(Date.now() / 1000) - 30; // small backdate to absorb clock skew, never enough to reach a prior code's email
+    await otpButton.click();
+
+    console.log(`OTP requested at epoch ${requestedAtEpochSec}. Polling Gmail for a NEWER code (up to 90s)...`);
+    let code = null;
+    for (let attempt = 0; attempt < 18 && !code; attempt++) {
+      await page.waitForTimeout(5000);
+      try {
+        code = getOtpCode(requestedAtEpochSec);
+      } catch (e) {
+        // gmail helper transient error (e.g. pool saturated) — keep polling
+      }
+      if (!code) console.log(`  ...no code yet (attempt ${attempt + 1}/18)`);
+    }
+    if (!code) throw new Error('Could not retrieve a fresh WSJ OTP code from Gmail after 90s');
+    console.log(`Got OTP code: ${code}`);
+
+    const otpField = page.getByRole('textbox', { name: /one time passcode/i });
+    await otpField.fill(code);
+
+    const submitButton = page.getByRole('button', { name: /submit/i });
+    if (await submitButton.count()) {
+      await submitButton.click();
+    } else {
+      await otpField.press('Enter');
+    }
+
+    await page.waitForFunction(
+      () => !window.location.hostname.includes('dowjones.com'),
+      { timeout: 20000 }
+    );
+    console.log(`Login complete. Landed on: ${page.url()}`);
+
+    const allCookies = await context.cookies();
+    const wsjCookies = allCookies.filter(
+      c => c.domain.includes('wsj.com') || c.domain.includes('dowjones.com')
+    );
+
+    if (wsjCookies.length === 0) {
+      throw new Error('No wsj.com/dowjones.com cookies found after login — something went wrong');
+    }
+
+    const httpOnlyCount = wsjCookies.filter(c => c.httpOnly).length;
+    console.log(`Captured ${wsjCookies.length} cookies (${httpOnlyCount} httpOnly).`);
+    if (httpOnlyCount === 0) {
+      console.log('WARNING: zero httpOnly cookies captured — login likely did not fully complete.');
+    }
+
+    fs.mkdirSync(COOKIE_DIR, { recursive: true });
+    fs.writeFileSync(COOKIE_PATH, JSON.stringify(wsjCookies, null, 2) + '\n');
+
+    const nowIso = new Date().toISOString();
+    let meta = {};
+    try {
+      meta = JSON.parse(fs.readFileSync(META_PATH, 'utf8'));
+    } catch {}
+    meta.wsj = {
+      extractedAt: nowIso,
+      extractedAtUnix: Math.floor(Date.now() / 1000),
+      method: 'otp-login',
+    };
+    fs.writeFileSync(META_PATH, JSON.stringify(meta, null, 2) + '\n');
+
+    console.log(`Wrote ${wsjCookies.length} cookies to ${COOKIE_PATH}`);
+  } finally {
+    await context.close();
+  }
+}
+
+main()
+  .then(() => {
+    console.log('Done.');
+  })
+  .catch(err => {
+    console.error('FATAL:', err.message);
+    process.exit(1);
+  });

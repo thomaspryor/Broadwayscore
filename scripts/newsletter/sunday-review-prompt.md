@@ -91,6 +91,16 @@ For each edition that has a draft, read the generated HTML file and check:
   Trending/Movers or vice versa (market field check).
 - **Mobile render**: `overflow-check.mjs` (run as part of refresh-drafts.sh)
   already gates this at 375px — if it passed, don't re-derive it by hand.
+- **Featured-image + review-completeness hard gates** (task #823, born
+  2026-08-02 when the owner caught both by hand): pre-send-check now hard-fails
+  when a featured opening has no image (🎭 placeholder) or when the gap audit
+  shows uncollected aggregator-cited reviews behind its score. If
+  refresh-drafts.sh dies on one of these, that failure IS your work item:
+  fix the image / collect the missing reviews (the failure message prints the
+  exact commands), re-run refresh-drafts.sh, and only then continue. Do NOT
+  reach for NEWSLETTER_ALLOW_GAPS=1 yourself — that waiver is the owner's
+  call; if you genuinely can't collect a cited review, say which outlets are
+  missing in your summary email so the owner decides.
 
 ## 4. Apply fixes through sanctioned lanes only
 
