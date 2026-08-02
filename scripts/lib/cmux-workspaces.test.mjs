@@ -288,6 +288,49 @@ test('pruneDone: never closes the selected workspace, even a closeable ✅🤖 i
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
+// TOCTOU guard (adversarial review 2026-08-02): the top-of-sweep selected
+// flag is a snapshot; pruneDone must re-list immediately before the
+// destructive close and skip a workspace the owner has since clicked into.
+test('pruneDone: re-checks selection just before close — a workspace selected mid-sweep is not closed', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalls = 0;
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => {
+      listCalls++;
+      // First listing (sweep start): not selected. Later listings (pre-close
+      // re-check): the owner has clicked into it.
+      return [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·tab', selected: listCalls > 1 }];
+    },
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: pre-close re-list error = uncertainty = skip, never close', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalls = 0;
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => {
+      listCalls++;
+      if (listCalls > 1) throw new Error('socket busy');
+      return [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·tab', selected: false }];
+    },
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
 test('pruneDone: skips ✅🤖 tab that is mid-turn (running)', () => {
   const cw = require('./cmux-workspaces.js');
   const calls = [];

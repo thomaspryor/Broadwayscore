@@ -26,6 +26,8 @@
 const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, terminalSurfaceAliveIn, checkLiveness, pruneDone,
 } = require('./lib/cmux-workspaces.js');
+const fs = require('fs');
+const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 
@@ -54,6 +56,8 @@ function main(argv = process.argv.slice(2), deps = {}) {
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     parkCard: parkCardFn = parkCard,
+    acquireRunLock: acquireRunLockFn = acquireRunLock,
+    releaseRunLock: releaseRunLockFn = releaseRunLock,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -63,6 +67,55 @@ function main(argv = process.argv.slice(2), deps = {}) {
     console.error('[bsc-prune] cmux CLI not found — is cmux.app installed?');
     process.exit(1);
   }
+
+  // Single-writer lock for REAL sweeps (adversarial review, 2026-08-02): the
+  // scheduled 5-min tick can now overlap an owner-run sweep, and two
+  // concurrent read-decide-append passes duplicate ledger breadcrumbs and
+  // Notion parks. Dry-run sweeps (bsc-conductor orientation) never take the
+  // lock — they close nothing and their only write (dead breadcrumbs) is
+  // idempotent per ref. Fail-open on lock I/O errors: a broken lock dir must
+  // not permanently disable pruning.
+  let lockHeld = false;
+  if (!dryRun) {
+    const acquired = acquireRunLockFn();
+    if (acquired === false) { console.log('[bsc-prune] another real sweep is running — skipping this tick.'); return; }
+    lockHeld = acquired === true;
+  }
+  try {
+    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn } });
+  } finally {
+    if (lockHeld) releaseRunLockFn();
+  }
+}
+
+const LOCK_DIR = path.join(__dirname, '..', 'data', 'audit', 'bsc-prune.lock');
+const LOCK_STALE_MS = 4 * 60 * 1000; // < the 5-min tick, so a crashed run self-heals by the next one
+
+// Returns true (acquired), false (fresh lock held elsewhere), or 'error'
+// (lock machinery broken — proceed unlocked rather than never pruning).
+function acquireRunLock(lockDir = LOCK_DIR, staleMs = LOCK_STALE_MS) {
+  try {
+    fs.mkdirSync(lockDir);
+    fs.writeFileSync(path.join(lockDir, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() }));
+    return true;
+  } catch (e) {
+    if (e.code !== 'EEXIST') return 'error';
+    try {
+      const meta = JSON.parse(fs.readFileSync(path.join(lockDir, 'meta.json'), 'utf8'));
+      if (Date.now() - meta.ts < staleMs) return false;
+      // Stale: previous run crashed without releasing. Take over.
+      fs.writeFileSync(path.join(lockDir, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() }));
+      return true;
+    } catch { return 'error'; }
+  }
+}
+
+function releaseRunLock(lockDir = LOCK_DIR) {
+  try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* next run's staleness check recovers */ }
+}
+
+function mainLocked({ dryRun, deps }) {
+  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn } = deps;
 
   const all = listWorkspacesFn();
 
@@ -262,4 +315,4 @@ function parkCard(vanished) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard };
+module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock };
