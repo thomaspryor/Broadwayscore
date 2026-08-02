@@ -100,6 +100,8 @@ async function main() {
 
   console.log(`Logging into WSJ as ${email} via one-time passcode...`);
 
+  let pushFailed = false;
+
   const { chromium } = require('playwright');
   const launchOpts = {
     headless: false,
@@ -201,12 +203,20 @@ async function main() {
 
     console.log(`Wrote ${wsjCookies.length} cookies to ${COOKIE_PATH}`);
 
-    if (shouldPush) {
-      pushCookiesToGitHubSecret(wsjCookies);
+    if (shouldPush && !pushCookiesToGitHubSecret(wsjCookies)) {
+      // Login + local write already succeeded above — a push failure here
+      // is a distinct, secondary problem (network/gh-auth), not a login
+      // failure. Don't throw: that would make main()'s catch print "FATAL"
+      // and exit 1, masking a successful cookie refresh behind what reads
+      // as a total failure (the on-call/launchd-log confusion extract-
+      // safari-cookies.py avoids by catching per-secret push errors too).
+      pushFailed = true;
     }
   } finally {
     await context.close();
   }
+
+  return pushFailed;
 }
 
 // Mirrors extract-safari-cookies.py's --push pattern (base64-encoded JSON
@@ -214,7 +224,8 @@ async function main() {
 // cookie-loader.js's tier-2 individual-env-var fallback already reads —
 // bundling WSJ into a COOKIES_BUNDLE_* slot isn't a fit here since those
 // bundles are rebuilt from ALL outlets at once by extract-safari-cookies.py,
-// not incrementally by a single-outlet script.
+// not incrementally by a single-outlet script. Returns false (not throw) on
+// failure so a push hiccup can't masquerade as a login failure — see caller.
 function pushCookiesToGitHubSecret(cookies) {
   console.log('Pushing cookies to GitHub secret WSJ_COOKIES...');
   const base64Val = Buffer.from(JSON.stringify(cookies)).toString('base64');
@@ -224,14 +235,18 @@ function pushCookiesToGitHubSecret(cookies) {
       stdio: ['pipe', 'inherit', 'inherit'],
     });
     console.log('Pushed WSJ_COOKIES to GitHub secrets.');
+    return true;
   } catch (err) {
-    throw new Error(`Failed to push WSJ_COOKIES secret: ${err.message}`);
+    console.error(`WARNING: failed to push WSJ_COOKIES secret: ${err.message}`);
+    console.error('WARNING: local cookie refresh succeeded but CI will keep using the previous secret until this is retried.');
+    return false;
   }
 }
 
 main()
-  .then(() => {
+  .then(pushFailed => {
     console.log('Done.');
+    if (pushFailed) process.exit(2); // login+local write OK, secret push failed — distinct from FATAL
   })
   .catch(err => {
     console.error('FATAL:', err.message);

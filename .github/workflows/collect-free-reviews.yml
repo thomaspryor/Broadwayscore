@@ -254,6 +254,7 @@ jobs:
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           SHOW_FILTER: ${{ matrix.shows }}
           EXCLUDE_DOMAINS: ${{ env.PAYWALL_DOMAINS }}
           BATCH_SIZE: '10'

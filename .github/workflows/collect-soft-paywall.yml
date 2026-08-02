@@ -167,6 +167,7 @@ jobs:
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           DOMAIN_FILTER: ${{ inputs.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
@@ -482,6 +483,7 @@ jobs:
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}
