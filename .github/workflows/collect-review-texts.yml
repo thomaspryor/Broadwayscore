@@ -693,6 +693,11 @@ jobs:
         if: always()
         run: |
           # review-texts now pushed via push-review-texts composite action
+          # Task #752: this matrix path never staged data/audit/ broadly (only the
+          # URL-collision-report add above) — Browserbase/BD/SB/SD attribution rows
+          # written by scripts/lib/provider-telemetry.js during collect-review-texts.js
+          # were silently dropped on every parallel bulk-backfill run.
+          git add data/audit/ data/collection-state/ || true
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else

@@ -18,7 +18,6 @@
  * existing SERP search remains as a final fallback.
  */
 
-const axios = require('axios');
 const { fetchLiveBrowserbaseSessionsToday } = require('./browserbase-live-usage');
 const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 const { createTtlCache } = require('./ttl-cache');
@@ -59,9 +58,7 @@ const REVIEWS_PAGE_CANONICAL_URL = 'https://www.broadwayworld.com/reviews/';
 // BroadwayWorld and "review"). The live page carries dozens; a challenge page
 // carries ~0. Deliberately low so a genuinely sparse listing still counts.
 const MIN_ARTICLE_LINKS_FOR_REAL_LISTING = 5;
-const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
 const NAV_TIMEOUT_MS = 30000;
-const SESSION_TIMEOUT_MS = 30000;
 // BWW's reviews.php redirects through a Cloudflare "Just a moment..." interstitial.
 // `domcontentloaded` fires on the challenge page — we must actively wait for a
 // Review-Roundup anchor to appear before reading the DOM. Env-tunable in case
@@ -276,25 +273,17 @@ async function _fetchReviewsPageAnchorsUncached() {
   let browser = null;
   let sessionId = null;
   try {
-    const resp = await axios.post(
-      BROWSERBASE_API,
-      {
-        projectId,
-        browserSettings: {
-          solveCaptchas: true,
-          fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] },
-        },
-      },
-      {
-        headers: { 'x-bb-api-key': apiKey, 'Content-Type': 'application/json' },
-        timeout: SESSION_TIMEOUT_MS,
-      }
-    );
-    sessionId = resp.data.id;
+    const { createBbSession } = require('./browserbase-session');
+    const bbSession = await createBbSession({
+      apiKey, projectId,
+      caller: 'bww-rr-discover.js',
+      purpose: 'BWW reviews.php Cloudflare bypass',
+      body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
+    });
+    sessionId = bbSession.id;
 
     const { chromium } = require('playwright');
-    const connectUrl = `wss://connect.browserbase.com?apiKey=${apiKey}&sessionId=${sessionId}`;
-    browser = await chromium.connectOverCDP(connectUrl);
+    browser = await chromium.connectOverCDP(bbSession.connectUrl);
     const ctx = browser.contexts()[0] || await browser.newContext();
     const page = await ctx.newPage();
     await page.goto(REVIEWS_PAGE_URL, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS });

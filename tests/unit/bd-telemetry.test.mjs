@@ -12,6 +12,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import os from 'node:os';
+import path from 'node:path';
+
+// Redirect the durable ledger (provider-telemetry.js, task #752) to a scratch
+// path — without this, every test run appended real rows to the committed
+// data/audit/scraper-spend-ledger.jsonl.
+process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(os.tmpdir(), `bd-telemetry-test-ledger-${process.pid}.jsonl`);
 
 const require = createRequire(import.meta.url);
 const { recordBdCall } = require('../../scripts/lib/bd-telemetry.js');
