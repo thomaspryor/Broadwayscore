@@ -27,10 +27,7 @@ test('flags the real pre-fix prompt text, verbatim from the fixture', () => {
   assert.ok(violations.length >= 3, `expected >=3 violations, got ${violations.length}`);
   assert.ok(matched.some((m) => m.includes('open a pr')), 'should flag "open a PR"');
   assert.ok(matched.some((m) => m.includes('leave the pr open')), 'should flag "leave the PR open"');
-  assert.ok(
-    matched.some((m) => m.includes('do not merge to main yourself')),
-    'should flag "do not merge to main yourself"'
-  );
+  assert.ok(matched.some((m) => m.includes('do not merge')), 'should flag "Do not merge ..."');
 });
 
 // The first version of this guard matched only ~6 literal phrasings. A future
@@ -46,12 +43,38 @@ test('catches semantically equivalent handoff phrasings, not just the original w
     'Leave the branch open for the owner.',
     'Park the PR open until Monday.',
     'Hand the fix off to the owner.',
-    'The fix is ready for review.',
+    'The fix is ready for your review.',
     'Wait for owner approval before merging.',
     'Run gh pr create with the summary.',
+    'Email the owner and ask them to merge the branch.',
+    'Ask Tom to review the diff before landing.',
+    'Request a review from the owner.',
+    'The change needs owner sign-off before it lands.',
+    'Do not merge to main. Tell the owner the branch name.',
+    'Stop before merging and report the branch name in the email.',
+    'Let the user approve the change first.',
   ];
   const missed = equivalents.filter((s) => findOwnerHandoffViolations(s).length === 0);
   assert.deepEqual(missed, [], `these handoff phrasings slipped through:\n${missed.join('\n')}`);
+});
+
+// The flip side: over-broad patterns push prompt authors to fence legitimate
+// prose, and a fence is the one thing that can blind the scanner. Every string
+// here is plausible in this prompt family and must NOT trip the guard.
+test('does not flag legitimate editorial prose', () => {
+  const legitimate = [
+    'If the owner reviews the newsletter early, skip the run.',
+    'Check whether the owner approves the lede wording.',
+    'Ask the owner which show the lede should name.',
+    'The critic score is ready for review by the LLM ensemble.',
+    'Do not merge if the tests fail.',
+    'Land it: scripts/merge-worktree-to-main.sh.',
+  ];
+  const falsePositives = legitimate
+    .map((s) => [s, findOwnerHandoffViolations(s)])
+    .filter(([, v]) => v.length)
+    .map(([s, v]) => `${s} -> ${v.map((x) => x.match).join('|')}`);
+  assert.deepEqual(falsePositives, [], `false positives on legitimate prose:\n${falsePositives.join('\n')}`);
 });
 
 test('example fences are exempt so a prompt can quote the phrasing it bans', () => {

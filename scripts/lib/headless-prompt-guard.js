@@ -48,9 +48,13 @@ const path = require('path');
 // Globbed, not hand-listed: opening-night-monitor.sh builds `phase${N}.md`
 // from an argument, so a future phase4.md is consumed automatically and a
 // hand-maintained include list would silently miss it (blocker D2).
+// scripts/newsletter matches ANY .md, not just *-prompt.md: a sibling prompt
+// added as e.g. `monday-review.md` would otherwise ship unscanned (verified
+// blind spot, ship-check 2026-08-02). Over-scanning a stray .md here is
+// harmless — it just has to not contain owner-handoff instructions.
 const PROMPT_GLOBS = [
   { dir: 'scripts/opening-night-prompts', match: (f) => f.endsWith('.md') },
-  { dir: 'scripts/newsletter', match: (f) => /-prompt\.md$/.test(f) },
+  { dir: 'scripts/newsletter', match: (f) => f.endsWith('.md') },
 ];
 
 // Launcher sources that build a prompt inline (heredoc/template) rather than
@@ -77,15 +81,26 @@ const BANNED = [
     why: 'leaves unmerged work sitting for the owner',
   },
   {
-    pattern: /\bowner\s+(can\s+|will\s+|should\s+|to\s+)?(merge|merges|review|reviews|approve|approves)\b/i,
-    why: 'defers the merge/review to the owner',
+    // Scoped to a CODE object. A bare /owner\s+reviews/ also matched
+    // "if the owner reviews the newsletter early" and "the owner approves the
+    // lede wording" — both legitimate editorial prose in this very prompt
+    // family, and flagging them would push authors to fence real instructions
+    // (ship-check 2026-08-02).
+    pattern: /\bowner\s+(can\s+|will\s+|should\s+|to\s+)?(merge|merges|review|reviews|approve|approves|lands?)\b[^.\n]{0,30}\b(PR|pull request|branch|diff|fix|change|code|commit|merge)\b/i,
+    why: 'defers the merge/review of code to the owner',
+  },
+  {
+    pattern: /\b(merge|land|review|approve)\b[^.\n]{0,20}\bwhen\s+(the\s+)?owner\b/i,
+    why: 'gates landing the fix on the owner',
   },
   {
     pattern: /\bfor\s+(the\s+owner|you|your|his|her|their)\s+to\s+(review|merge|approve|look at)\b/i,
     why: 'defers review/merge to the owner',
   },
   {
-    pattern: /\bready\s+for\s+(your|owner|his|her|their|)\s*review\b/i,
+    // Requires a human reviewer. Bare /ready for review/ also matched
+    // "ready for review by the LLM ensemble" (ship-check 2026-08-02).
+    pattern: /\bready\s+for\s+(your|the\s+owner'?s?|owner|his|her|their)\s+review\b|\bready\s+for\s+review\s+by\s+(you|the\s+owner|Tom|Thomas)\b/i,
     why: 'asks the owner to review code',
   },
   {
@@ -97,8 +112,34 @@ const BANNED = [
     why: 'hands the work to the owner',
   },
   {
-    pattern: /\bdo\s+not\s+merge\s+to\s+main\s+yourself\b/i,
+    pattern: /\bdo(es)?\s+not\s+merge\b(?![^.\n]*\b(if|unless|when|until)\b)/i,
     why: 'forbids the run from landing its own fix',
+  },
+  {
+    // "…and ask THEM to merge" is as common as naming the owner outright, so
+    // the pronoun forms have to match too (ship-check 2026-08-02).
+    pattern: /\bask(ing|s)?\s+(the\s+)?(owner|user|Tom|Thomas|them|him|her|you)\b[^.\n]{0,40}\b(to\s+)?(merge|review|approve|land|look)\b/i,
+    why: 'asks the owner to merge/review/approve',
+  },
+  {
+    pattern: /\brequest\s+(a\s+)?(review|approval|sign-?off)\b/i,
+    why: 'requests a review/approval instead of landing the fix',
+  },
+  {
+    pattern: /\b(owner|user)\s+(sign-?off|approval)\b/i,
+    why: 'gates the fix on owner sign-off',
+  },
+  {
+    pattern: /\b(let|have)\s+(the\s+)?(owner|user|Tom|Thomas)\s+(merge|review|approve|land)\b/i,
+    why: 'defers merge/review to the owner',
+  },
+  {
+    pattern: /\breport\s+the\s+branch\s+name\b|\btell\s+the\s+owner\s+the\s+branch\b/i,
+    why: 'hands the owner a branch instead of landing it',
+  },
+  {
+    pattern: /\bstop\s+(short\s+)?before\s+merging\b/i,
+    why: 'stops short of landing the fix',
   },
 ];
 
@@ -197,6 +238,13 @@ function promptPathsReferencedByLaunchers(repoRoot) {
         for (const m of src.matchAll(/PROMPT_(?:FILE|DIR)="?([^"'\s]+)"?/g)) {
           refs.add(m[1]);
         }
+        // Launchers that inline the prompt — `claude -p "$(cat /path/x.md)"`
+        // or `... -p "$(cat "$SOME_VAR")"` — carry no PROMPT_FILE= var, so the
+        // loop above misses them entirely (verified blind spot, ship-check
+        // 2026-08-02). Catch any .md path fed through a cat/read substitution.
+        for (const m of src.matchAll(/\$\(\s*(?:cat|<)\s*"?([^"')\s]+\.md)"?\s*\)/g)) {
+          refs.add(m[1]);
+        }
       }
     }
   };
@@ -207,7 +255,11 @@ function promptPathsReferencedByLaunchers(repoRoot) {
 function main(argv) {
   const repoRoot = path.resolve(__dirname, '..', '..');
   const args = argv.slice(2);
-  if (args.includes('--help') || args.includes('-h')) {
+  // hasHelpFlag is the repo convention (scripts/lib/cli-help.js) — it also
+  // catches `--help=1`, which a bare includes() would let fall through to a
+  // real scan (ship-check 2026-08-02).
+  const { hasHelpFlag } = require('./cli-help.js');
+  if (hasHelpFlag(args)) {
     console.log('Usage: node scripts/lib/headless-prompt-guard.js [--all | <file>...]');
     console.log('Scans headless-run prompt files for owner-handoff phrasing. Exit 1 if any found.');
     return 0;

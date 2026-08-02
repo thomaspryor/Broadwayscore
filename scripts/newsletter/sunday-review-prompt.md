@@ -118,16 +118,32 @@ For each edition that has a draft, read the generated HTML file and check:
      --noEmit`, the new test, and the end-to-end command that reproduces the
      original symptom (for a draft bug: re-run `refresh-drafts.sh <weekStart>`
      and grep the regenerated HTML for the symptom).
-  4. Land it: `scripts/merge-worktree-to-main.sh` (it merges origin, merges the
+  4. **Commit the fix AND its test on the worktree branch** before going near
+     the merge script. This is not optional bookkeeping: the script derives the
+     file list it verifies on origin from `merge-base..BRANCH`, so an
+     uncommitted fix means an EMPTY verify set, and it will print
+     "✅ integrated and verified" having shipped nothing. Confirm with
+     `git log --oneline -1` and `git status --short` (clean) first.
+  5. Land it: `scripts/merge-worktree-to-main.sh` (it merges origin, merges the
      branch, pushes with retry, and verifies the files exist on origin/main —
      never hand-roll `git pull --rebase`, it drops merge commits).
-  5. If the merge script exits non-zero, the fix did NOT land. Retry it once.
-     If it still fails, FIRST clean up after it — a failed merge can leave a
-     half-merged state in the SHARED main checkout that other sessions will
-     trip over: `git -C /Users/tompryor/Broadwayscore merge --abort ||
-     git -C /Users/tompryor/Broadwayscore reset --hard origin/main`. Then that
-     specific blocker is the one thing that goes in the email — with what
-     failed, not a request to merge anything. The branch stays on disk; say so.
+  6. If the merge script exits non-zero, the fix did NOT land. Retry it once.
+     If it still fails, clean up ONLY a genuinely half-finished merge, and
+     nothing else:
+     ```
+     M=/Users/tompryor/Broadwayscore
+     test -f "$M/.git/MERGE_HEAD" && git -C "$M" merge --abort
+     ```
+     **Never `reset --hard` that checkout.** `main` there is SHARED and
+     routinely carries commits from other sessions that have merged but not yet
+     pushed; a reset silently destroys them (the 2026-07-26 incident in global
+     CLAUDE.md). `merge --abort` also exits non-zero when no merge is in
+     progress — which is the COMMON failure mode here, since the script usually
+     dies at the push, not the merge — so never chain a reset behind `||`.
+     A merge that succeeded locally but failed to push is fine: it stays in
+     local `main` and the next session's push carries it.
+     Then that specific blocker is the one thing that goes in the email — with
+     what failed, not a request to merge anything. Say the branch is on disk.
   If a fix is genuinely too large to land safely inside this run's wall clock,
   do not park it on a branch: card it via `node scripts/notion-brain.js create
   ...` at P1 and dispatch it per CLAUDE.md §6, then say in the email that it's
