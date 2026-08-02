@@ -65,6 +65,12 @@ on:
       - 'scripts/lib/systematic-fix-detection.js'
       - 'scripts/lib/systematic-fix-detection.test.mjs'
       - 'scripts/generate-remediation-plan.js'
+      # Plan-refusal auto-dispatch (task #755): what generate-remediation-plan.js
+      # does when the LLM planner refuses — files a P1 card instead of a dead-end
+      # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/plan-refusal-escalation.js'
+      - 'scripts/lib/plan-refusal-escalation.test.mjs'
       - 'scripts/execute-approved-fix.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
