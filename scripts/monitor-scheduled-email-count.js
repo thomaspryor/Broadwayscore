@@ -202,8 +202,11 @@ async function main() {
     const subjectLines = decision.senders.map((s) => `- ${s.label}: ${s.subjects.join('; ')}`).join('\n');
     const result = await routeAlert({
       conditionKey: `scheduled-email-count:${dayKey}`,
-      title: `Unexpected scheduled digest sender fired on ${dayKey}: ${(decision.unexpectedKeys || []).join(', ')}`,
-      description: `A scheduled sender outside the expected daily set (morning-digest + opening-digest, cards #364/#497 + owner restore 2026-07-30) fired on ${dayKey}:\n${subjectLines}`,
+      title: [
+        (decision.unexpectedKeys || []).length ? `Unexpected scheduled digest sender fired on ${dayKey}: ${decision.unexpectedKeys.join(', ')}` : null,
+        (decision.duplicateKeys || []).length ? `Scheduled sender delivered MORE THAN ONCE on ${dayKey}: ${decision.duplicateKeys.join(', ')}` : null,
+      ].filter(Boolean).join(' · '),
+      description: `Scheduled-email policy violation on ${dayKey} (expected: each daily sender exactly once — morning-digest + opening-digest, cards #364/#497 + owner restore 2026-07-30):\n${subjectLines}${(decision.duplicateKeys || []).length ? `\nDuplicate sender(s): ${decision.duplicateKeys.join(', ')} — check for a manual/test send bypassing the send-once-per-day guard in send-morning-digest.js.` : ''}`,
       hint: 'Fold the extra sender(s) onto the autonomous-email.js snapshot pattern (see cards #364/#497/#511 for the established fix shape).',
       severity: 'warning',
       disposition: 'auto',
