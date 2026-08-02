@@ -333,6 +333,56 @@ function _urlChangeCleared(field, localData, committedData) {
 }
 
 /**
+ * Task #653/#816 — protect a file findExistingReviewFile() refused to hand
+ * back as a merge target (it carries wrongProduction/wrongShow) from two
+ * distinct ways a "fresh discovery/extraction" write can clobber it:
+ *
+ * 1. url: safeWriteReview() preserves PROTECTED_FIELDS, but a canonical URL
+ *    change first runs applyUrlChangeInvariant, which deliberately clears
+ *    wrongProduction/wrongProductionNote/contentTier AND publishDate as
+ *    "old-URL-derived" — and with publishDate gone, flag-wrong-production-by-date
+ *    can never re-derive the Date guard, so the review re-enters reviews.json
+ *    permanently. The re-discovered/re-scraped URL is rarely the article's
+ *    actual URL in this scenario (aggregator link, SERP guess, etc.); the
+ *    file's own URL already won this fight once.
+ * 2. Any other PROTECTED field (contentTier, fullText, assignedScore, …):
+ *    several callers unconditionally stamp a fresh value on every write
+ *    (fresh contentTier, freshly-scraped fullText, …). safeWriteReview only
+ *    restores a PROTECTED field when the incoming write OMITS it — an
+ *    explicit non-empty overwrite passes straight through unprotected — so a
+ *    flagged file's tier/text/score would be silently replaced by content
+ *    the extractor pulled for the WRONG production. Deleting every
+ *    PROTECTED_FIELDS key the caller set lets safeWriteReview's
+ *    merge-from-existing pass restore the on-disk values instead. A
+ *    deliberate correction of a flagged file's content belongs to a
+ *    dedicated flag-clearing script (force=true / manual clear), not an
+ *    ordinary re-extraction blind to the flag.
+ *
+ * Mirrors the inline guard in extract-dtli-reviews.js saveReview() (Notion
+ * 383637c5-416f-8107), generalized to the PROTECTED_FIELDS clobber found in
+ * ship-check on the sibling scripts.
+ *
+ * @param {string} filePath - Absolute path the caller is about to write
+ * @param {object} review - The review payload about to be written
+ * @returns {object} `review`, or a shallow copy adjusted to defer to the on-disk flagged file
+ */
+function preserveFlaggedFields(filePath, review) {
+  if (!review || !fs.existsSync(filePath)) return review;
+  try {
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    if (!onDisk || !(onDisk.wrongProduction || onDisk.wrongShow || onDisk.duplicateOf)) return review;
+    const adjusted = { ...review };
+    delete adjusted.url;
+    delete adjusted.publishDate;
+    for (const field of PROTECTED_FIELDS) {
+      if (field in adjusted) delete adjusted[field];
+    }
+    return adjusted;
+  } catch { /* corrupt file — fall through */ }
+  return review;
+}
+
+/**
  * Safely write a review JSON file, preserving any existing scored/collected data.
  *
  * @param {string} filePath - Absolute path to the review JSON file
@@ -1392,4 +1442,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };

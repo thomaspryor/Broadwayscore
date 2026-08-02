@@ -24,6 +24,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { setExtractedScore } = require('./lib/score-routing');
+const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -252,8 +253,8 @@ function isWrongProduction(reviewDate, openingDate) {
 // File operations
 // ---------------------------------------------------------------------------
 
-function saveReviewFile(showId, criticSlug, reviewData) {
-  const showDir = path.join(reviewTextsDir, showId);
+function saveReviewFile(showId, criticSlug, reviewData, dir = reviewTextsDir) {
+  const showDir = path.join(dir, showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
   }
@@ -302,7 +303,7 @@ function saveReviewFile(showId, criticSlug, reviewData) {
     existing.sources = Array.from(sources).filter(Boolean);
 
     if (updated) {
-      fs.writeFileSync(filepath, JSON.stringify(existing, null, 2) + '\n');
+      safeWriteReview(filepath, existing);
       stats.updatedReviews++;
       return 'updated';
     }
@@ -310,8 +311,14 @@ function saveReviewFile(showId, criticSlug, reviewData) {
     return 'skipped';
   }
 
-  // Create new review file
-  fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2) + '\n');
+  // Task #653/#816: findExistingReviewFile() above deliberately skips
+  // wrongProduction/duplicateOf files, so a flagged file can already live at
+  // this exact canonical path even though existingFile came back null — a
+  // raw write here would clobber it. safeWriteReview preserves
+  // PROTECTED_FIELDS; preserveFlaggedFields keeps the flagged file's own url so
+  // the write doesn't trip applyUrlChangeInvariant and strip publishDate too.
+  reviewData = preserveFlaggedFields(filepath, reviewData);
+  safeWriteReview(filepath, reviewData);
   stats.newReviews++;
   return 'new';
 }
@@ -500,8 +507,12 @@ async function scrapeNYSRReviews() {
   return stats;
 }
 
-// Run
-scrapeNYSRReviews().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+module.exports = { saveReviewFile };
+
+if (require.main === module) {
+  // Run
+  scrapeNYSRReviews().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
