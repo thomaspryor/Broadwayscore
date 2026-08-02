@@ -1,63 +1,18 @@
 {
-  "updatedAt": "2026-08-02T11:26:35.055Z",
+  "updatedAt": "2026-08-02T11:27:19.190Z",
   "processed": 18,
-  "failed": 182,
-  "successRate": "9.0%",
+  "failed": 192,
+  "successRate": "8.6%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 10,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 4,
     "scrapingbee": 0,
-    "brightdata": 4,
-    "archiveToday": 5,
+    "brightdata": 3,
+    "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 4,
-  "recentActivity": [
-    {
-      "t": "2026-08-02T11:14:36.055Z",
-      "event": "bb-session",
-      "session": "265b3167",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T11:14:36.432Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T11:14:52.001Z",
-      "event": "bb-session",
-      "session": "dd7c6b0b",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
-    },
-    {
-      "t": "2026-08-02T11:14:52.463Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T11:15:49.866Z",
-      "event": "bb-session",
-      "session": "4ab149fb",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-02T11:15:50.235Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-02T11:18:22.251Z",
-      "event": "bb-session",
-      "session": "46ec28f8",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-02T11:18:22.623Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
