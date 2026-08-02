@@ -3656,7 +3656,14 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // Immutable creation clock, stamped before the write (shared with the writer lib).
   stampFirstSeen(review);
-  fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
+  // Task #816 P1 (adversarial-review follow-up): the STALE-FLAG COLLISION GUARD
+  // above only blocks when the incoming URL differs from the flagged file's URL
+  // (or is missing entirely, in which case it isn't checked at all). A same-URL
+  // re-ingestion of a flagged outlet+critic file — or one with no URL — reaches
+  // this raw write untouched and clobbers wrongProduction/wrongShow/duplicateOf
+  // and the scored fields alongside it. Route through the same guard as the
+  // other 6 write sites fixed for #816.
+  safeWriteReview(filepath, preserveFlaggedFields(filepath, review));
 
   // Register in global URL index so subsequent calls see it
   if (review.url && _globalUrlIndex) {
