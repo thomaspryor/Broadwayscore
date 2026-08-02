@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-02T19:33:48.199Z",
+    "generatedAt": "2026-08-02T19:44:04.963Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,18 +9,18 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 19,
-    "exemptCount": 20,
+    "exemptCount": 17,
     "coveredCount": 35,
-    "highChurnTracked": 74
+    "highChurnTracked": 71
   },
   "flagged": [
     {
       "path": "data/audit/recent-pushes.jsonl",
-      "churn": 3186
+      "churn": 3192
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 356
+      "churn": 355
     },
     {
       "path": "data/audit/alert-ledger.json",
@@ -67,12 +67,12 @@
       "churn": 75
     },
     {
-      "path": "data/audit/we-gate-proving.json",
-      "churn": 66
+      "path": ".github/workflows/test.yml",
+      "churn": 73
     },
     {
-      "path": ".github/workflows/test.yml",
-      "churn": 65
+      "path": "data/audit/we-gate-proving.json",
+      "churn": 66
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -94,15 +94,15 @@
   "exempt": [
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 219
+      "churn": 218
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 218
+      "churn": 217
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 218
+      "churn": 217
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -110,7 +110,7 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 147
+      "churn": 146
     },
     {
       "path": "public/opening-night-status.json",
@@ -121,20 +121,20 @@
       "churn": 76
     },
     {
+      "path": "data/commercial-rss-state.json",
+      "churn": 68
+    },
+    {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
       "churn": 68
     },
     {
-      "path": "data/commercial-rss-state.json",
-      "churn": 67
-    },
-    {
       "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 62
+      "churn": 63
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 52
+      "churn": 53
     },
     {
       "path": "public/data/shows/tao-of-glass-west-end-2026.json",
@@ -157,18 +157,6 @@
       "churn": 34
     },
     {
-      "path": "public/data/shows/les-miserables-arena-concert-spectacular-off-broadway-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/rosie-odonnell-common-knowledge-off-broadway-2026.json",
-      "churn": 31
-    },
-    {
       "path": "public/data/shows/disruption-off-broadway-2026.json",
       "churn": 30
     }
@@ -176,37 +164,37 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1359,
+      "churn": 1354,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1322,
+      "churn": 1317,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 820,
+      "churn": 818,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 771,
+      "churn": 769,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 356,
+      "churn": 355,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 356,
+      "churn": 355,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 308,
+      "churn": 307,
       "mergeAttr": "ours"
     },
     {
@@ -216,12 +204,12 @@
     },
     {
       "path": "data/audit/orphan-unscored-tao-of-glass-west-end-2026.json",
-      "churn": 235,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 235,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
@@ -236,7 +224,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-the-vessel-off-broadway-2026.json",
-      "churn": 101,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
