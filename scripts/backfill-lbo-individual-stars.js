@@ -22,15 +22,34 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isRoundupUrl } = require('./lib/review-guards');
+const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `backfill-lbo-individual-stars.js — backfill aggregatorStars on lbo-individual review files.
+
+Usage:
+  node scripts/backfill-lbo-individual-stars.js [--dry-run] [--limit N]
+  node scripts/backfill-lbo-individual-stars.js --help, -h    print this usage and exit
+`;
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : Infinity;
 
+// `private: true` marks the source-of-truth repo — see selectCandidate().
 const REVIEW_TEXTS_DIRS = [
-  '/Users/tompryor/Broadwayscore/data/review-texts',
-  '/Users/tompryor/broadway-review-texts',
+  { dir: '/Users/tompryor/Broadwayscore/data/review-texts', private: false },
+  { dir: '/Users/tompryor/broadway-review-texts', private: true },
 ];
+
+// Pure predicate so the private-repo-wins rule is unit-testable without fs.
+// The private repo is authoritative (see file header); a candidate found
+// there must win over one found earlier in main-repo scan order.
+function selectCandidate(existing, incoming) {
+  if (!existing) return incoming;
+  if (incoming.private && !existing.private) return incoming;
+  return existing;
+}
 
 function fetchHtml(url) {
   return new Promise((resolve, reject) => {
@@ -54,10 +73,14 @@ function extractStars(html) {
 }
 
 async function main() {
-  // Dedupe candidates by showId+filename across both dirs (private repo is
-  // source of truth; main repo's data/review-texts is a synced copy).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  // Dedupe candidates by showId+filename across both dirs. Both dirs are
+  // scanned (main repo copy may lag the private repo's most current URL),
+  // but selectCandidate() always prefers the private-repo entry regardless
+  // of scan order — the private repo is source of truth.
   const candidates = new Map();
-  for (const baseDir of REVIEW_TEXTS_DIRS) {
+  for (const { dir: baseDir, private: isPrivate } of REVIEW_TEXTS_DIRS) {
     if (!fs.existsSync(baseDir)) continue;
     for (const showDir of fs.readdirSync(baseDir)) {
       const fullDir = path.join(baseDir, showDir);
@@ -85,7 +108,7 @@ async function main() {
         if (isRoundupUrl(d.url).isRoundup) continue;
         if (d.aggregatorStars) continue;
         const key = `${showDir}/${f}`;
-        if (!candidates.has(key)) candidates.set(key, { showDir, file: f, url: d.url });
+        candidates.set(key, selectCandidate(candidates.get(key), { showDir, file: f, url: d.url, private: isPrivate }));
       }
     }
   }
@@ -104,15 +127,23 @@ async function main() {
     if (stars === null) { console.log('no bstarsN class'); noStars++; continue; }
 
     // Update both dirs (main repo + private repo)
-    for (const baseDir of REVIEW_TEXTS_DIRS) {
+    for (const { dir: baseDir } of REVIEW_TEXTS_DIRS) {
       const fp = path.join(baseDir, showDir, file);
       if (!fs.existsSync(fp)) continue;
       const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
       d.aggregatorStars = `${stars}/5`;
       d.scoreSource = 'lbo-css-stars';
+      // aggregatorStars is the canonical field rebuild-helpers.js's
+      // getBestScore() reads for aggregator scoreSource (never
+      // originalScoreNormalized) — see effectiveOriginalScore. If the file
+      // already carries a legacy non-null originalScore, safeWriteReview's
+      // own aggregator-contamination guard nulls originalScoreNormalized
+      // back out after this write (originalScore is a PROTECTED_FIELD, so
+      // clearing it here would just get restored by the merge); that's the
+      // guard's documented, corpus-wide invariant and does not affect scoring.
       d.originalScoreNormalized = Math.round((stars / 5) * 100);
       d._notes = (d._notes || '') + `[2026-04-26 backfilled aggregatorStars=${stars}/5 from LBO page (extractor previously hardcoded null)] `;
-      if (!DRY_RUN) fs.writeFileSync(fp, JSON.stringify(d, null, 2) + '\n');
+      if (!DRY_RUN) safeWriteReview(fp, d, { merge: true });
     }
     console.log(`${stars}/5`);
     updated++;
@@ -126,4 +157,8 @@ async function main() {
   if (DRY_RUN) console.log('(dry run — no files written)');
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+}
+
+module.exports = { selectCandidate, main };
