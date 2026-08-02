@@ -29,7 +29,9 @@
     "arcadia-west-end-2026/theatreandtonic--emmie-newitt.json",
     "arcadia-west-end-2026/whatsonstage--alex-wood.json",
     "marjorie-prime-2025/culturesauce--unknown.json",
-    "gypsy-2024/tennessean--unknown.json"
+    "gypsy-2024/tennessean--unknown.json",
+    "job-2024/broadwayworld--unknown.json",
+    "job-2024/playbill--unknown.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -64,7 +66,15 @@
     "the-authenticator-west-end-2026/theatrecat--unknown.json",
     "the-authenticator-west-end-2026/theupcoming--unknown.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
-    "arcadia-west-end-2026/the-jewish-chronicle--john-nathan.json"
+    "arcadia-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "job-2024/nytimes--unknown.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -93,7 +103,8 @@
       "arcadia-west-end-2026/theatreandtonic--emmie-newitt.json",
       "arcadia-west-end-2026/whatsonstage--alex-wood.json",
       "marjorie-prime-2025/culturesauce--unknown.json",
-      "gypsy-2024/tennessean--unknown.json"
+      "gypsy-2024/tennessean--unknown.json",
+      "job-2024/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -104,7 +115,8 @@
       "brainiac-live-west-end-2026/london-theatre-reviews--unknown.json",
       "twelfth-night-off-west-end-2026/thereviewshub--unknown.json",
       "end-of-the-rainbow-west-end-2026/westendtheatre--unknown.json",
-      "no-singing-in-the-navy-off-broadway-2026/broadwayworld--unknown.json"
+      "no-singing-in-the-navy-off-broadway-2026/broadwayworld--unknown.json",
+      "job-2024/broadwayworld--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -118,7 +130,7 @@
     "archive": []
   },
   "startTime": "2026-08-01T23:45:40.770Z",
-  "lastProcessed": "gypsy-2024/tennessean--unknown.json",
+  "lastProcessed": "the-wiz-2024/indiewire--sarah-shachat.json",
   "log": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -165,48 +177,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-02T00:49:26.491Z",
+      "t": "2026-08-02T00:53:53.375Z",
       "event": "bb-session",
-      "session": "a0573f55",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+      "session": "e55cc6fe",
+      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
     },
     {
-      "t": "2026-08-02T00:49:27.034Z",
+      "t": "2026-08-02T00:53:54.374Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-02T00:49:42.789Z",
+      "t": "2026-08-02T00:54:10.257Z",
       "event": "bb-session",
-      "session": "f94f22e3",
-      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+      "session": "b8e23c3f",
+      "url": "https://www.nytimes.com/2024/08/15/theater/sydney-lemmon-job-broadway.html"
     },
     {
-      "t": "2026-08-02T00:49:43.298Z",
+      "t": "2026-08-02T00:54:11.147Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-02T00:50:21.541Z",
-      "event": "bb-session",
-      "session": "a0577c22",
-      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
-    },
-    {
-      "t": "2026-08-02T00:50:22.038Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-02T00:52:22.425Z",
-      "event": "bb-session",
-      "session": "985c41d8",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
-    },
-    {
-      "t": "2026-08-02T00:52:22.953Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
