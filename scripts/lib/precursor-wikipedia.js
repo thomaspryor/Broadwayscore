@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { foldDiacritics } = require('./title-match');
 
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
 const RATE_LIMIT_MS = 600;
@@ -148,7 +149,10 @@ function extractItalicTitles(rowText) {
 /** Normalize titles for comparison/dedup. Mirrors the matcher in
  *  scripts/lib/title-match.js — lowercased, punctuation collapsed. */
 function normalizeForCompare(title) {
-  return String(title || '')
+  // foldDiacritics keeps the "mirrors title-match.js" promise honest — that
+  // matcher has folded since 1987-era precursor titles ("Les Misérables")
+  // needed to reach our unaccented shows.json rows. Task #648.
+  return foldDiacritics(title || '')
     .toLowerCase()
     .replace(/[‘’`]/g, "'")
     .replace(/[“”]/g, '"')

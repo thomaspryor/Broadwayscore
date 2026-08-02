@@ -19,6 +19,8 @@
  * that produce actual review-text mismatches belong here.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * Each entry: canonical current name → { aliases: [...prior names...], note: "...context...", region }
  * Aliases are ALSO canonical-name-searchable (see findCanonical).
@@ -229,7 +231,9 @@ function buildVenueContext(venue, market) {
 }
 
 function _normalize(s) {
-  return String(s).toLowerCase()
+  // foldDiacritics so an accented rendering of a venue ("Théâtre Royal") still
+  // resolves to its ASCII canonical/alias entry. Task #648.
+  return foldDiacritics(s).toLowerCase()
     .replace(/['‘’]/g, "'")
     .replace(/\s+/g, ' ')
     .trim();

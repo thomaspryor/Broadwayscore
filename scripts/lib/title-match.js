@@ -39,6 +39,29 @@ const ABBREV_EXPANSIONS = [
   [/\bblvd\.?\b/gi, 'boulevard'],
 ];
 
+/**
+ * Canonical diacritic fold: NFD-decompose, then drop combining marks.
+ * "Les Misérables" → "Les Miserables", "Último" → "Ultimo", "Dvořák" → "Dvorak".
+ *
+ * Why this is a shared export rather than a one-liner each caller re-types:
+ * every title-matcher in scripts/lib/ compares our (largely ASCII) shows.json
+ * titles and showId slugs against source text that spells shows correctly with
+ * accents. A matcher that lacks the fold silently drops those shows — confirmed
+ * live on 2026-08-01 when NY Sun's "Les Misérables" review (12 body mentions)
+ * was suppressed as url_content_mismatch because content-quality.js was the one
+ * matcher not folding. Eight siblings had the same latent hole (task #648).
+ *
+ * NOTE: NFD only handles composable diacritics. Non-decomposing letters (ø, ł,
+ * æ, ß, đ) pass through unchanged — no show title in the corpus uses one, and
+ * transliterating them would be a real behavior change rather than a fold.
+ *
+ * @param {string} s
+ * @returns {string}
+ */
+function foldDiacritics(s) {
+  return String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
 function normalizeTitle(s) {
   if (!s) return '';
   let pre = s;
@@ -47,7 +70,7 @@ function normalizeTitle(s) {
   // using accented characters match shows.json titles that drop them. Hit
   // when extending precursor scrape back to 1987 (DD 1987 Best Musical was
   // "Les Misérables"; our shows.json has "Les Miserables" without accent).
-  pre = pre.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  pre = foldDiacritics(pre);
   return pre.toLowerCase()
     // & → "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
     .replace(/&/g, ' and ')
@@ -238,6 +261,7 @@ function canonicalVenue(venue) {
 }
 
 module.exports = {
+  foldDiacritics,
   normalizeTitle,
   titleTokens,
   jaccard,
