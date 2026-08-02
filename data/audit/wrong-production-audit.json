@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-01T23:54:17.841Z",
+  "timestamp": "2026-08-02T00:18:48.013Z",
   "stats": {
-    "totalReviews": 41207,
+    "totalReviews": 41209,
     "alreadyFlagged": 17962,
     "dateGuardCatches": 85,
     "directorMismatch": 938,
     "tvFilmSignals": 1124,
     "londonSignals": 777,
-    "offBroadwaySignals": 466,
+    "offBroadwaySignals": 467,
     "yearMismatch": 86,
     "noPublishDate": 3471
   },
@@ -44072,6 +44072,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-saviors-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 74,
+      "publishDate": "2026-08-01",
+      "url": "https://newyorktheater.me/2026/08/01/the-saviors/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
