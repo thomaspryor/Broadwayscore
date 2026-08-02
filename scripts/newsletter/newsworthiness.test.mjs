@@ -53,9 +53,14 @@ test('showRefs only cover the candidates that survived trimming', () => {
     c('closing', 'Beta'),
     c('recoupment', 'Gamma'),
   ]);
-  // showRefs feeds the lede-⊆-body pre-send gate (card #482): a show named in
-  // showRefs but absent from the subject would be a phantom reference.
+  // showRefs feeds the lede-⊆-body pre-send gate (card #482). NOTE: this
+  // "every ref is named in the subject" property holds only when no truncation
+  // happened — these titles are short enough that candidates are dropped whole
+  // rather than trimmed. It is NOT a general invariant: a trimmed subject can
+  // stop naming a show that showRefs still lists, which is safe because the
+  // gate tests refs against the body, not the subject.
   assert.ok(showRefs.length >= 1);
+  assert.ok(!subject.endsWith('…'), `expected no truncation in this fixture: ${subject}`);
   for (const r of showRefs) assert.ok(subject.includes(r.title), `${r.title} missing from: ${subject}`);
 });
 

@@ -275,6 +275,15 @@ export function buildSubjectFromCandidates(candidates) {
   // if the owner hits Send without spotting it (caught in the Sunday review
   // pass, 2026-08-02). Trim at a word boundary so the cap always holds.
   if (subject.length > 80) subject = trimToWordBoundary(subject, 80);
+  // showRefs is derived from `parts` (pre-truncation), so after a trim the
+  // subject may no longer NAME a show that showRefs still lists. That is safe
+  // and deliberate: generate.mjs folds these into meta.ledeShows
+  // (generate.mjs:2574) and pre-send-check tests them against the BODY, never
+  // against the subject text. An extra ref can therefore only make the
+  // lede-⊆-body gate stricter, never weaker — and every ref comes from the
+  // same newsworthy-candidate pool the body sections render from. Do not
+  // "fix" this by filtering showRefs to what survived truncation: that would
+  // weaken the gate, which is the opposite of what card #482 wanted.
   const showRefs = parts.map(c => c.show).filter(Boolean).map(s => ({ id: s.id, slug: s.slug, title: s.title }));
   return { subject, showRefs };
 }
