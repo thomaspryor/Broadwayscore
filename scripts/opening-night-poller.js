@@ -68,6 +68,7 @@ const {
   checkSerpSessionAllowed,
 } = require('./lib/serp-session-cap');
 const { sendAlert } = require('./lib/discord-notify');
+const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -406,21 +407,6 @@ function preWipePreOpeningFiles(showId, openingDate) {
   return marked;
 }
 
-// S1-T5: discovery-unblock window. A file only stops suppressing rediscovery
-// via the canonical isRejectedNonReview path when its show is within ±45d of
-// previews/opening AND the outlet is T1/T2 — this bounds the SERP-volume blast
-// radius (dry-run measured 1 newly-unblocked cell corpus-wide). Outside the
-// window / for T3+ outlets, the historical skip conditions apply unchanged.
-const DISCOVERY_UNBLOCK_WINDOW_DAYS = 45;
-function isInDiscoveryUnblockWindow(show, nowMs = Date.now()) {
-  if (!show) return false;
-  const anchor = show.previewsStartDate || show.openingDate;
-  if (!anchor) return true; // dateless active show — poller only runs on live shows
-  const ms = new Date(anchor).getTime();
-  if (isNaN(ms)) return true;
-  return Math.abs(nowMs - ms) <= DISCOVERY_UNBLOCK_WINDOW_DAYS * 86400000;
-}
-
 /**
  * Get all known URLs for a show (from existing review-text files on disk).
  * @param {string} showId
@@ -468,46 +454,6 @@ function getKnownUrls(showId, ctx) {
     } catch {}
   }
   return urls;
-}
-
-/**
- * Get found outlet IDs for a show (from existing review-text files).
- * @param {string} showId
- * @param {{show?: object, market?: string}} [ctx] - see getKnownUrls (S1-T5).
- */
-function getFoundOutletIds(showId, ctx) {
-  const outletIds = new Set();
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  if (!fs.existsSync(showDir)) return outletIds;
-
-  const scoped = !!(ctx && ctx.show && isInDiscoveryUnblockWindow(ctx.show));
-  let isRejectedNonReview, getTier, showCategory;
-  if (scoped) {
-    ({ isRejectedNonReview } = require('./lib/review-guards'));
-    ({ getTier } = require('./lib/outlet-tiers'));
-    showCategory = isLondonMarket(ctx.market) ? 'west-end' : 'broadway';
-  }
-
-  for (const file of fs.readdirSync(showDir)) {
-    if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
-    try {
-      const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
-      // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery
-      // Skip confirmed non-reviews (interviews, news, previews) — same reason
-      if (data.wrongProduction || data.wrongShow || data.rejectionReason === 'not_a_review') continue;
-      // S1-T5: in-window T1/T2 — reopen discovery for a rejected non-review
-      // (garbage / invalid tier / CV interview-feature-preview-news) so its
-      // outlet slot doesn't read as "found". !isScored preserves the scored-
-      // wrongProd carve-out (isRejectedNonReview excludes wrongProduction).
-      if (scoped && data.outletId) {
-        const isScored = (data.llmScore && data.llmScore.score != null) || data.humanReviewScore != null;
-        if (!isScored && getTier(data.outletId.toLowerCase(), { showCategory }) <= 2
-            && isRejectedNonReview(data)) continue;
-      }
-      if (data.outletId) outletIds.add(data.outletId.toLowerCase());
-    } catch {}
-  }
-  return outletIds;
 }
 
 /**
