@@ -107,6 +107,23 @@ function liveSessionIds(psOutput) {
   return ids;
 }
 
+// Parked cards (task #777): bsc-prune's tab-close park (#776) writes a
+// 'vanished' ledger entry and pauses the Notion card. A parked task's
+// workspace is CLOSED by definition, so it never shows up in the open-
+// workspace listing above — this is the only place bsc-status can surface
+// it. Extracted as a pure formatter (Map -> string[]) so it's testable
+// without executing bsc-status's console.log side effects (CLAUDE.md §15).
+function formatParkedCardsLines(parked) {
+  if (!parked || !parked.size) return [];
+  const lines = ['', `Parked by you (${parked.size}) — closed before ✅, will not re-dispatch:`, ''];
+  for (const [taskId, e] of parked) {
+    lines.push(`  #${taskId}  ${e.subject || ''}  (closed ${e.workspaceRef || 'unknown workspace'})`);
+  }
+  lines.push('');
+  lines.push('Resume with: node scripts/bsc-next.js --id <id> --force');
+  return lines;
+}
+
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const hoursArg = argv.find(a => a.startsWith('--hours='));
@@ -200,8 +217,16 @@ function main(argv = process.argv.slice(2)) {
   } catch (e) {
     console.log(`\n(headless jobs section unavailable: ${e.message})`);
   }
+
+  // ── Parked cards (task #777) ──────────────────────────────────────────
+  try {
+    const parked = dispatchLedger.parkedTasks(dispatchLedger.readEntries());
+    for (const line of formatParkedCardsLines(parked)) console.log(line);
+  } catch (e) {
+    console.log(`\n(parked cards section unavailable: ${e.message})`);
+  }
 }
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE };
+module.exports = { main, USAGE, formatParkedCardsLines };
