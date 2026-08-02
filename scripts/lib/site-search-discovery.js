@@ -409,10 +409,46 @@ const SITE_SEARCH_ENDPOINTS = {
   },
   'telegraph': {
     name: 'The Telegraph',
+    domain: 'telegraph.co.uk',
+    requiresJs: false,
+    // skipUrlFilter: the Telegraph uses EDITORIAL slugs ("this-love-letter-to-
+    // philip-glass" for Tao of Glass) that the dispatcher's urlLooksLikeReview()
+    // title-matcher rejects outright. Title validation happens inside the parser
+    // against the card's headline + standfirst instead — see
+    // lib/telegraph-reviews-index.js for the full rationale (task #720).
+    skipUrlFilter: true,
+    // Section page /theatre/reviews/ is plain SSR (1 ScrapingDog credit) and
+    // carries theatre reviews filed under /music/ too, which the old
+    // /search/?q= + href="…/theatre/…" config could never reach.
+    //
+    // COVERAGE NOTE: this index is a rolling window of ~30-40 recent reviews, so
+    // it does NOT cover older reviews the way the search endpoint did. The
+    // 'telegraph-search' entry below keeps that path alive for backfill.
+    // showId → showInfo is needed by the one-word-title disambiguator gate; the
+    // dispatcher passes showId as the 4th fetchAndParse arg.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const { discoverTelegraphReviewUrls } = require('./telegraph-reviews-index');
+      let showInfo = null;
+      if (showId) {
+        try { showInfo = require('./url-discovery').getShowInfo(showId); } catch (_e) { /* gate fails closed */ }
+      }
+      return discoverTelegraphReviewUrls(showTitle, fetchSSR, (msg) => console.warn(msg), showInfo);
+    },
+  },
+  // Telegraph site search — the pre-#720 config, kept so the rolling section
+  // index above doesn't silently narrow coverage to "recent reviews only"
+  // (ship-check finding). requiresJs keeps it in the poller's JS tier, which
+  // only fires for outlets still missing after the free SSR pass, so it costs a
+  // ScrapingBee render ONLY when the section page didn't already find the
+  // review. outletIdOverride routes results back to the canonical 'telegraph'
+  // outlet id (same pattern as vulture-opera).
+  'telegraph-search': {
+    name: 'The Telegraph',
     url: 'https://www.telegraph.co.uk/search/?q={TITLE}+review+theatre',
     domain: 'telegraph.co.uk',
     linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
     requiresJs: true,
+    outletIdOverride: 'telegraph',
   },
 
   // ── Opera outlets (applies only when show.type === 'opera') ──────────────────
@@ -1149,7 +1185,16 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         const url = match[1];
         if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
           seen.add(url);
-          results.push({ url, outletId, outlet: config.name, source: 'site-search' });
+          // outletIdOverride honoured here too — it used to apply only on the
+          // fetchAndParse path, so a linkPattern sibling entry (e.g.
+          // 'telegraph-search') would have leaked its own id downstream as a
+          // stranger outlet. Same rationale as the fetchAndParse branch above.
+          results.push({
+            url,
+            outletId: config.outletIdOverride || outletId,
+            outlet: config.name,
+            source: 'site-search',
+          });
         }
       }
     }
