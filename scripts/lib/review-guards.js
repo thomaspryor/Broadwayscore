@@ -2508,8 +2508,19 @@ function buildMultiProdYearGuard(shows) {
  *   - showNotMentioned: rebuild has complex auto-clear logic (text scan + LLM CV)
  *   - cross-market guard: needs show category + outlet registry
  *   - pre-opening date guard: needs show's earliest date
- *   - runtime syndication dedup: needs allJsonFiles for the show
  *   - LLM reasoning keywords: needs llmScore.reasoning string evaluation
+ *   - aggregatorStars-only inclusion: this predicate treats any truthy
+ *     data.aggregatorStars as a valid signal (coarse heuristic). Real rebuild
+ *     (getBestScore() in rebuild-helpers.js, P5.7) only trusts aggregatorStars
+ *     when the outlet is a KNOWN_STAR_OUTLET or LBO-first-party — an aggregator
+ *     relaying a rating for a non-authoritative outlet gets no score and
+ *     rebuild silently drops it via skippedNoScore (no logExclusion call,
+ *     task #838 — e.g. to-kill-a-mockingbird-west-end-2026 theupcoming--
+ *     unknown.json, StageDoor-relayed "5/5 stars" for an outlet with no own
+ *     star-rating extractor). Replicating getBestScore's full ~300-line
+ *     resolution chain here would violate this function's own scope; the
+ *     scoreStatus==='TO_BE_CALCULATED' check below closes the cheap, common
+ *     case (an explicit not-yet-scored placeholder) without attempting that.
  * These cause countLocalIncluded to over-count by ~3-5 per show on average.
  *
  * Intentionally NOT excluded: duplicateTextOf — rebuild keeps those when the
@@ -2647,6 +2658,71 @@ function isIncludableForRebuild(data, show, filePath) {
   if (data.fabricatedEntry === true) return false;
   if (data.isSyndicatedDuplicate === true) return false;
   if (data.crossOutletDuplicate === true) return false;
+  // Runtime known-syndication dedup: same critic publishes simultaneously at a
+  // primary outlet and one or more secondary outlets (wire service / content-
+  // sharing agreement). rebuild-all-reviews.js skips the secondary copy even
+  // without an isSyndicatedDuplicate flag on file, when an unflagged primary
+  // file exists in the same show directory (KNOWN_SYNDICATION_PAIRS, mirrors
+  // rebuild-all-reviews.js ~lines 2870-2896). Task #838: les-miserables-arena-
+  // concert-spectacular-off-broadway-2026 nydailynews--chris-jones.json —
+  // Chris Jones's chicagotribune review is primary, nydailynews is secondary.
+  // Needs filePath (like duplicateOf above) to scan sibling files — opt-in,
+  // skipped when filePath is undefined.
+  if (filePath && data.criticName) {
+    const syndConfig = require('./syndication-pairs').KNOWN_SYNDICATION_PAIRS[data.criticName.toLowerCase().trim()];
+    if (syndConfig) {
+      const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
+      if (syndConfig.secondary.includes(outletSynd)) {
+        const pathMod = require('path');
+        const fsMod = require('fs');
+        const showDir = pathMod.dirname(filePath);
+        const primaryPrefix = `${syndConfig.primary}--`;
+        const criticSlug = data.criticName.toLowerCase().trim().replace(/\s+/g, '-');
+        let hasPrimary = false;
+        try {
+          hasPrimary = fsMod.readdirSync(showDir).some(f => {
+            if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
+            try {
+              const pData = JSON.parse(fsMod.readFileSync(pathMod.join(showDir, f), 'utf8'));
+              return !pData.wrongProduction && !pData.wrongShow;
+            } catch { return false; }
+          });
+        } catch { /* show dir unreadable — fall through, don't exclude */ }
+        if (hasPrimary) return false;
+      }
+    }
+  }
+  // CONTAMINATION SAFETY NET: tour/film signals in the fullText intro, for
+  // reviews that haven't been through the LLM ensemble's Step 0 rejection
+  // check. Mirrors rebuild-all-reviews.js ~lines 3737-3778 — only checks text
+  // fetched after the corpus audit cutoff and not already ensemble-rejected;
+  // catches excerpt-only/pre-v5.2/unscored reviews the ensemble never saw.
+  // Task #838: catch-of-the-day-off-broadway-2026 off-off-online--edward-
+  // karam.json + talkinbroadway--unknown.json, heathers-the-musical-off-west-
+  // end-2026 london-box-office--shehrazade-zafar-arif.json.
+  if (
+    data.fullText && data.textFetchedAt && typeof data.textFetchedAt === 'string' &&
+    data.textFetchedAt > (process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z') &&
+    !data.rejectedBy
+  ) {
+    const { isTourReviewExcerpt, isFilmTvReview } = require('./excerpt-validation');
+    const introText = data.fullText.slice(0, 600);
+    if (!data.allowTourSignal && show?.status !== 'tour-stop' && show?.type !== 'special') {
+      const tourCheck = isTourReviewExcerpt(introText, { currentShowId: show?.id, currentShowTitle: show?.title });
+      if (tourCheck.isTourReview) return false;
+    }
+    if (!data.allowFilmSignal) {
+      const filmCheck = isFilmTvReview(introText);
+      if (filmCheck.isFilmTv) return false;
+    }
+  }
+  // scoreStatus explicitly marked TO_BE_CALCULATED: getBestScore() (rebuild-
+  // helpers.js) returns null immediately for these — a discovery-stage
+  // placeholder (e.g. a StageDoor citation awaiting real-URL resolution, still
+  // serpRetry-polling) that rebuild drops via skippedNoScore without ever
+  // calling logExclusion (task #838's "unlogged stub" gap — a genuine
+  // rebuild-all-reviews.js silent-exclusion path, not just a mirror miss).
+  if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
   // BWW aggregator ambiguity: review was extracted from BWW's /reviews/ page for a show
   // that has title-token-overlap siblings (e.g. "Cats" reviews landing on a
   // "CATS: The Jellicle Ball" page) with no date or URL-year to disambiguate.
