@@ -370,6 +370,20 @@ jobs:
       - name: Cleanup phantom outlet duplicates
         run: node scripts/cleanup-phantom-outlets.js --apply
 
+      # Task #653 — corpus determinism. Every other rebuild entry point that
+      # matters (rebuild-fast.yml, rebuild-reviews.yml) runs the temporal
+      # wrong-production flagger BEFORE its rebuild; this workflow ran the
+      # rebuild bare, so any exclusion flag an upstream ingest step dropped made
+      # it straight into the published reviews.json. push-review-texts' restore
+      # then put the flag back in review-texts, so the very next rebuild anywhere
+      # dropped those reviews again — the ±150/day exact-revert flap. Running the
+      # flagger here means reviews.json is derived from the same flag state that
+      # gets pushed. Pure-local (no API/secrets, no cost), respects priorRuns +
+      # manual-clear, and its flags persist via "Push review-texts" below.
+      - name: Flag wrong-production by date (pre-rebuild parity with rebuild-fast)
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        run: node scripts/flag-wrong-production-by-date.js --apply
+
       - name: Rebuild reviews.json from review-texts
         id: rebuild
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'

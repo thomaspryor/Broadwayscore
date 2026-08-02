@@ -248,6 +248,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # meant ~150 bot commits/3d EACH that clobbered human merges to main.
 /data/audit/critic-outlet-affinity.json
 /data/audit/rebuild-consistency.json
+# Task #653: audit-corpus-determinism.js output. Same class — a pure report
+# recomputed from git history on every run, read by nothing. Tracking it would
+# add a commit per acceptance recheck.
+/data/audit/corpus-determinism.json
 /data/audit/touring-contamination-report.json
 /data/audit/touring-contamination-report.*.json
 /data/audit/.touring-contamination-checkpoint.json
