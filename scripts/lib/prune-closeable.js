@@ -39,15 +39,23 @@ function hasAutoDispatchMarker(title) {
 // isRunning: whether the live claude is mid-turn (true) vs idle-at-prompt
 // (false) — irrelevant when hasLiveClaude is false, so callers may pass
 // anything (or omit it) in that case.
-// 2026-08-02 owner escalation #2 ("this tab has not been swept away — I'm
-// skeptical it's actually working"): the non-🤖 exemption is REMOVED. A ✅
-// mark now means closeable for ANY tab once its claude is idle at the
-// prompt — owner-opened tabs included. The protections that made the July
-// incidents possible are gone regardless of this flag: pruneDone never
-// closes the SELECTED tab (re-checked immediately before close), never a
-// mid-turn tab, never an unmarked tab. isAutoDispatched is kept in the
-// signature for observability/back-compat but no longer gates closing.
+// ACCEPTED LIMITATION: "auto-dispatched" is inferred from the 🤖 title glyph,
+// not from interaction history — cmux exposes no "has the owner typed here"
+// signal. If the owner reclaims a 🤖 tab and works in it, the marker still
+// makes it closeable once idle/dead. Mitigations: the SELECTED tab is never
+// closed (covers actively-in-use), and owners can rename the tab to drop 🤖.
+//
+// 2026-08-02 owner rule #3 (supersedes same-day escalation #2): auto-close
+// is limited to 🤖 auto-dispatched tabs, full stop — "closing sessions that
+// were automatically spun up by other sessions... not sessions that I am
+// actively typing in myself or have been." A ✅ tab the owner opened stays
+// open even when its claude process is fully dead; pruneDone reports it as
+// skipped and the owner closes it by hand. Within the 🤖 class the #709
+// rule stands: dead or idle-at-prompt closes, mid-turn never. pruneDone's
+// outer protections (never the SELECTED tab — re-checked immediately before
+// close — never mid-turn, never unmarked) are unchanged.
 function isCloseable({ hasLiveClaude, isAutoDispatched, isRunning }) {
+  if (!isAutoDispatched) return false;
   if (!hasLiveClaude) return true;
   return !isRunning;
 }

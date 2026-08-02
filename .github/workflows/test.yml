@@ -725,6 +725,11 @@ on:
       - 'scripts/enrich-todaytix-runtimes.js'
       - 'scripts/scrape-show-score-audience.js'
       - 'scripts/check-cookie-health.js'
+      # WSJ OTP-refresh freshness check (task #830) — colocated *.test.mjs
+      # runs in the scripts/lib/*.test.mjs glob; the .js source needs explicit
+      # listing (no scripts/lib/** broad glob) so a solo edit triggers CI.
+      - 'scripts/lib/wsj-otp-freshness.js'
+      - 'scripts/lib/wsj-otp-freshness.test.mjs'
       - 'scripts/recollect-for-scores.js'
       - 'scripts/lib/ibdb-dates.js'
       - 'scripts/lib/ibdb-cast.js'
@@ -921,6 +926,7 @@ on:
       # solo edit triggers ZERO CI (allow-list gate).
       - 'scripts/lib/review-gate.mjs'
       - 'tests/unit/review-gate.test.mjs'
+      - 'tests/unit/review-gate-scope.test.mjs'
       # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
       # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
       - 'scripts/audit-workflow-hygiene.js'

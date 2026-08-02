@@ -130,16 +130,17 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-02T22:10:01.992Z",
+      "lastSeen": "2026-08-02T23:12:45.706Z",
       "lastNotifiedAt": "2026-08-02T19:45:46.950Z",
       "notifyCount": 9,
       "cardId": null,
-      "silentRefires": 10
+      "silentRefires": 11,
+      "resolvedAt": "2026-08-02T23:27:21.426Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -233,11 +234,11 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-02T22:09:41.088Z",
+      "lastSeen": "2026-08-02T23:06:45.389Z",
       "lastNotifiedAt": "2026-08-02T15:20:29.605Z",
       "notifyCount": 5,
       "cardId": null,
-      "silentRefires": 13
+      "silentRefires": 15
     },
     "deployed-coverage:stale": {
       "status": "open",

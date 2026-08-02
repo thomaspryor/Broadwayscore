@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 53acbb0e-e0c9-444c-9fdd-991f191cdf00
+  modified: 2026-08-02T23:15:40.389Z
 ---
 
 On 2026-07-14 I closed 11 "idle" cmux workspaces (no running claude process, associated
@@ -51,11 +52,19 @@ lacked. Architecture:
   orphaned (nohup/launchd-parented) process is REJECTED by cmux's socket
   ancestry ACL ("only processes started inside cmux can connect") — verified
   live 2026-08-02.
-- What closes: ✅ tabs with no claude process, and ✅+🤖 auto-dispatched tabs
-  idle at the prompt (#709). NEVER: unmarked tabs, non-🤖 ✅ tabs with a live
-  claude, mid-turn tabs, or the currently SELECTED tab (re-checked immediately
-  before each close — TOCTOU guard). bsc-prune has a single-writer run lock;
-  pruneClosedEntry dedupes terminal ledger breadcrumbs per launch.
+- What closes (FINAL, owner chose Option A 2026-08-02 evening, settling a
+  same-day conflict where two sessions got opposite instructions): ONLY
+  ✅+🤖 auto-dispatched tabs — dead or idle-at-prompt. NEVER: any tab the
+  owner opened/typed in (even ✅ and fully dead — pruneDone reports it
+  skipped, the owner closes it by hand), unmarked tabs, mid-turn tabs, or
+  the SELECTED tab (re-checked immediately before each close — TOCTOU
+  guard). Commit b79173bbc71 (verified landed on origin/main 2026-08-02
+  ~23:20 UTC; f0911c58953 is an orphaned rebase-duplicate of the same
+  change, not on origin) is the authoritative predicate; an
+  escalation-#2 commit briefly widened this and was deliberately superseded
+  — do NOT re-widen without a fresh explicit owner instruction. bsc-prune
+  has a single-writer run lock; pruneClosedEntry dedupes terminal ledger
+  breadcrumbs per launch.
 - Backstop: launchd job com.broadwayscore.bsc-autoprune (every 5 min) is armed
   but DEAD until the next cmux app restart — ~/.config/cmux/cmux.json now sets
   automation.socketControlMode="password" (+CMUX_SOCKET_PASSWORD in the plist),
@@ -66,5 +75,13 @@ lacked. Architecture:
   ~/.config/cmux/cmux.json.bak-* if anything breaks.
 Do NOT remove the Stop-hook trigger or "re-simplify" bsc-prune's guards — each
 one maps to a real incident (2026-07-14/15/21).
+
+2026-08-02 owner carve-out (duplicate tabs): when TWO live 🤖 auto-dispatched
+workspaces are confirmed running the SAME task (same task id, verified via
+dispatch-ledger + live process check), closing the redundant copy is LOW-STAKES —
+owner said "why did I need to make a call?" after being asked. Recommend-and-act:
+state which copy is being closed and why (keep the one further along / the one
+the owner opened), prefix `CMUX_CLOSE_OK=1`, and report it. Do NOT extend this
+to unmarked non-duplicate tabs — those still always go to the owner.
 
 Related: [[feedback_absorb_gate_ceremony]]
