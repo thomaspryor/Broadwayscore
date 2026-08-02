@@ -17,6 +17,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { foldDiacritics } = require('./title-match');
 
 const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 

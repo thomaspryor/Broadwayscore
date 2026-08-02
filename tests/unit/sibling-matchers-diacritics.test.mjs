@@ -191,18 +191,28 @@ describe('deduplication.normalizeTitle', () => {
  * url-utils.normalizeShowName all take show titles). Shrinking it is good;
  * growing it needs the justification above.
  */
+// Task #760 shrank this from 34 to 3. Every removed entry was fixed by adding
+// a foldDiacritics() call and parity-tested against the real corpus (2874
+// shows, 29 with diacritics): foldDiacritics is the identity on all non-
+// diacritic titles (proved above), so those 2845 decisions are provably
+// unchanged; the 29 diacritic-bearing titles were spot-checked per function
+// family (slug builders, token-set comparisons, and the 3 dual-sided haystack
+// matches in content-verifier/score-input-validator/serp-slug-discovery) with
+// zero matches lost. See task #760 commit message for the per-file summary.
 const UNFOLDED_BASELINE = new Set([
-  'audience-coverage-gaps.js', 'autonomous-ui-capture.js', 'broadway-com-runtimes.js',
-  'bww-roundup-validator.js', 'cast-extraction-guards.js', 'content-verifier.js',
-  'critic-canonicalization.js', 'cross-production-guards.js', 'cross-show-url.js',
-  'dtli-slug-discover.js', 'feedback-dedup.js', 'ibdb-dates.js', 'llm-extractor.js',
-  'loureviews-match.js', 'market-routing.js', 'multi-critic-serp.js',
-  'outlet-canonicalize.js', 'page-validator.js', 'production-match-gate.js',
-  'review-url-clusters.js', 'score-input-validator.js', 'serp-candidate-validator.js',
-  'serp-review-census.js', 'serp-show-match.js', 'serp-slug-discovery.js',
-  'show-date-integrity.js', 'show-duplicate-detection.js', 'show-match-verifier.js',
-  'tb-direct-url.js', 'tr-roundup-discover.js', 'url-discovery.js', 'url-utils.js',
-  'venue-listing-discover.js', 'wet-roundup-discover.js',
+  // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
+  // ASCII by construction, not a show title. See inline comment at the call site.
+  'autonomous-ui-capture.js',
+  // hay (review fullText) is compared against ownVenueSlug, which is built by
+  // an UNFOLDED venueSlug() in two files OUTSIDE scripts/lib (audit-cross-
+  // production.js, audit-review-url-clusters.js). Folding only this side would
+  // desync the pairing and break today's coincidentally-working accented-venue
+  // matches. Needs a coordinated fix across all three files — tracked
+  // separately, not part of task #760. See inline comment at the call site.
+  'cross-production-guards.js',
+  // response is an LLM's YES/NO answer text, not a show title. See inline
+  // comment at the call site.
+  'page-validator.js',
 ]);
 
 // The shred signature: an ASCII-only character-class filter applied to text.

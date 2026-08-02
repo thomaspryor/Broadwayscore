@@ -34,6 +34,8 @@ const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
 // Also builds domainAliases map for domain matching (e.g., 1minutecritic.com → oneminutecritic.com)
+const { foldDiacritics } = require('./title-match');
+
 function buildOutletDomains() {
   const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
@@ -119,7 +121,7 @@ function buildSiteClause(domain, aliasOverride) {
 // Pure + exported for unit testing.
 function isGenericShowTitle(title) {
   if (!title || typeof title !== 'string') return false;
-  const stripped = title.toLowerCase()
+  const stripped = foldDiacritics(title).toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')      // drop punctuation (e.g. "CARE!" -> "care")
     .replace(/^\s*(the|a|an)\s+/, '')  // drop leading article
     .replace(/\s+/g, ' ')
@@ -137,7 +139,7 @@ function hasDisambiguator(haystack, showInfo) {
   if (!h) return false;
   // Venue tokens (significant words from the venue name). Common venue words are
   // excluded so "...at the theatre" can't pass.
-  const venueTokens = (showInfo.venue || '').toLowerCase()
+  const venueTokens = foldDiacritics(showInfo.venue || '').toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
     .filter(w => w.length > 3 && !['theatre', 'theater', 'royal', 'open', 'house', 'main', 'park'].includes(w));
   if (venueTokens.some(t => h.includes(t))) return true;

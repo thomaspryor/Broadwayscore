@@ -29,9 +29,11 @@
  * multiple bylines, the fix is at the outlet-registry.json level.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 function normalizeCriticKey(name) {
   if (!name || typeof name !== 'string') return '';
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
+  return foldDiacritics(name).toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
 }
 
 // Cite the incident, the evidence URL, and the canonical truth for every entry.
