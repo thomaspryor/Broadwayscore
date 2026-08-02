@@ -160,11 +160,14 @@ function nameCorroboratedBy(name, text) {
 function recoverBylinesForShow(records) {
   const list = Array.isArray(records) ? records : [];
 
-  // name(lowercased) -> set of outletIds that carry it as a plausible byline.
+  // name(folded+lowercased) -> set of outletIds that carry it as a plausible
+  // byline. Folded so "José Solís" (outlet A) and "Jose Solis" (outlet B) are
+  // recognized as the same critic for the contamination gate below — without
+  // this an accented/unaccented spelling split across outlets would dodge it.
   const nameOutlets = new Map();
   for (const r of list) {
     if (!isPlausiblePersonName(r.criticName)) continue;
-    const key = r.criticName.trim().toLowerCase();
+    const key = foldDiacritics(r.criticName).trim().toLowerCase();
     if (!nameOutlets.has(key)) nameOutlets.set(key, new Set());
     nameOutlets.get(key).add(r.outletId);
   }
@@ -194,7 +197,7 @@ function recoverBylinesForShow(records) {
     const name = pickRecoveredName(cleanNamed.map((r) => r.criticName || ''));
     if (!name) continue;
     // Gate 3: cross-outlet contamination guard.
-    const outlets = nameOutlets.get(name.toLowerCase());
+    const outlets = nameOutlets.get(foldDiacritics(name).trim().toLowerCase());
     if (outlets && outlets.size > 1) continue;
     // Gate 4: body corroboration in the Unknown's OR a sibling's fullText.
     const corroborated = group.some((r) => nameCorroboratedBy(name, r.fullText));
