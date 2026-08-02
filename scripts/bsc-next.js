@@ -315,6 +315,12 @@ function launchCmux(task, seed, commandOverride, model = 'sonnet', project = nul
     // the same task. Same window + late-adopt grace the opening-night
     // monitor launcher has used since its own 2026-07-24 false CRITICAL.
     verifyTimeoutSec: 90, lateAdoptSec: 60,
+    // Card #705: 90s is the window for the TYPED COMMAND to start, not for
+    // claude to be up. Once this launch's wrapper process exists, the session
+    // is booting and gets 6 minutes — the 2026-07-31 repro measured 4-5 min
+    // under load, and relaunching into that boot is what produced three
+    // identical crowned sessions in half an hour.
+    slowBootCapSec: 360,
   });
 }
 
@@ -604,7 +610,14 @@ function main(argv = process.argv.slice(2), deps = {}) {
     try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, adoptedLate: res.adoptedLate || null }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
-    console.error(`[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);
+    // Card #705: report WHICH failure this is. "LAUNCH NOT VERIFIED" for a
+    // session that is merely booting slowly is what taught the owner (and
+    // every session reading these logs) that "cmux is dead at least once a
+    // day" — and what made callers relaunch onto a live workspace.
+    const stillBooting = res.deadConfirmed === false;
+    console.error(stillBooting
+      ? `[bsc-next] LAUNCH UNCONFIRMED — STILL BOOTING (${res.reason}). Do NOT re-dispatch #${task.id}: its command is running.`
+      : `[bsc-next] LAUNCH NOT VERIFIED (${res.reason}).`);
     // Journal the failed attempt (task #503) — see failedLaunchEntries' header
     // for why writing nothing here disarmed BOTH the dead-shell breadcrumb and
     // the dead-attempt guard.
@@ -612,17 +625,28 @@ function main(argv = process.argv.slice(2), deps = {}) {
       taskId: task.id, subject: task.subject, workspaceRef: res.workspaceRef, model,
       verifyCmd: verifyGate.cmd, verifyReason: verifyGate.reason, notionId: pid || null,
       failureReason: res.reason,
+      // Card #705: a slow-boot timeout leaves a RUNNING wrapper process — the
+      // workspace is booting, not dead. deadConfirmed=false suppresses the
+      // 'dead' breadcrumb so a live session is neither counted toward the
+      // 2-death dispatch guard nor treated as a corpse by the pruner.
+      deadConfirmed: res.deadConfirmed !== false,
     });
     if (failedEntries.length) {
       try {
         failedEntries.forEach(e => appendLedgerEntryFn(e));
-        console.error(`  journaled dead dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
+        console.error(`  journaled ${stillBooting ? 'unverified (not dead)' : 'dead'} dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
       } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
     }
-    if (res.workspaceRef) console.error(`  dead workspace: ${res.workspaceRef} (left open for inspection)`);
-    console.error(`  command that should have run:`);
-    console.error(`  ${res.command}`);
-    console.error(`  Run it yourself in a workspace, or retry: claude "$(cat ${res.seedFile})"`);
+    if (res.workspaceRef) {
+      console.error(stillBooting
+        ? `  ${res.workspaceRef}: wrapper process STILL RUNNING — check the tab in a minute before doing anything to it`
+        : `  dead workspace: ${res.workspaceRef} (left open for inspection)`);
+    }
+    if (!stillBooting) {
+      console.error(`  command that should have run:`);
+      console.error(`  ${res.command}`);
+      console.error(`  Run it yourself in a workspace, or retry: claude "$(cat ${res.seedFile})"`);
+    }
     process.exit(1);
   }
 }

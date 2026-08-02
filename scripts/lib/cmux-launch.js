@@ -3,9 +3,17 @@
  * primitive. Extracted from bsc-next.js launchCmux() (2026-07-24) so non-task
  * callers (opening-night monitor launcher) get the same verified launch
  * mechanics without fabricating a fake task object: seed/cmd wrapper files
- * (shell-init race, 2026-07-12), two launch attempts, a 30s claudeAliveIn
- * verification window (a mangled command never starts claude and nothing else
- * would notice), and the Blue auto-dispatch tab color.
+ * (shell-init race, 2026-07-12), up to two launch attempts, a wrapper-process
+ * -aware verification wait (a mangled command never starts claude and nothing
+ * else would notice), and the Blue auto-dispatch tab color.
+ *
+ * Verification is a state machine, not a timeout (card #705, 2026-07-31): the
+ * wait/retry decision lives in cmux-launch-state.js and turns on whether THIS
+ * launch's bash wrapper is in the OS process table. Wrapper alive + no claude
+ * means booting-under-load (measured 4-5 min on a 30-workspace host) and must
+ * keep waiting; only a wrapper that never appeared, or appeared and died, is a
+ * real death that earns a second attempt. The old fixed window retried into a
+ * live boot and produced three identical crowned sessions in one night.
  *
  * bsc-next.js composes its task-derived title/seedKey and delegates here with
  * seedKey = task.id, so the seed-file path and typed command are
@@ -21,8 +29,20 @@ const path = require('path');
 const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
+const { decideLaunchWait, isSlowBootFailure, STATES,
+  DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
+
+// Launch attempts per call. A second attempt is only ever reached when the
+// first left NOTHING running (see cmux-launch-state.js) — relaunching over a
+// live boot is what produced duplicate sessions.
+const MAX_ATTEMPTS = 2;
+
+// Seconds between verification probes. Each poll costs one `ps -e` (plus one
+// cmux call only when the wrapper is up), so a 6-minute slow-boot wait is
+// ~120 probes — cheap, and coarse enough not to spin.
+const PROBE_INTERVAL_SEC = 3;
 
 function sleepSec(s) { spawnSync('sleep', [String(s)]); }
 
@@ -113,6 +133,46 @@ function verifiedAlive(ws, marker) {
   return !!(ws && cmuxws.claudeAliveIn(ws.ref) && osProcessAliveForSeed(marker));
 }
 
+// Drive the wait/retry state machine (cmux-launch-state.js) against live
+// probes until it says something other than "wait". Two probes per poll, and
+// the cmux tag check is skipped entirely when no wrapper process exists (it
+// cannot be a verified launch without one, and skipping saves a cmux round
+// trip on every poll of a dead attempt).
+//
+// wrapperEverSeen is per-ATTEMPT state and lives here rather than in the pure
+// decision: "the wrapper ran and then died" is only distinguishable from
+// "the wrapper never ran" by remembering earlier polls.
+function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, probes = {} }) {
+  const wrapperProbe = probes.wrapperAlive || osProcessAliveForSeed;
+  const tagProbe = probes.claudeTagAlive || (ref => cmuxws.claudeAliveIn(ref));
+  const napSec = probes.intervalSec ?? PROBE_INTERVAL_SEC; // ?? not ||: a test seam of 0 must mean "don't sleep"
+  const now = probes.now || (() => Date.now());
+
+  const startedAt = now();
+  let wrapperEverSeen = false;
+  let announced = null;
+  for (;;) {
+    const wrapperAlive = wrapperProbe(marker);
+    if (wrapperAlive) wrapperEverSeen = true;
+    // verifiedAlive's both-signals rule (card #548) restated in terms of the
+    // probes already taken: cmux's tag alone has a known false-positive mode.
+    const claudeRegistered = !!(wrapperAlive && ws && tagProbe(ws.ref));
+    const elapsedSec = (now() - startedAt) / 1000;
+    const d = decideLaunchWait({
+      claudeRegistered, wrapperAlive, wrapperEverSeen, elapsedSec,
+      attempt, maxAttempts, injectionGraceSec, slowBootCapSec,
+    });
+    if (d.action !== 'wait') return { ...d, wrapperAlive, elapsedSec: Math.round(elapsedSec) };
+    if (d.state !== announced) {
+      announced = d.state;
+      if (d.state === STATES.LAUNCHING_SLOW) {
+        console.error(`[cmux-launch] ${ws ? ws.ref : 'workspace'}: command is RUNNING (wrapper process alive) but claude has not registered yet — waiting up to ${slowBootCapSec}s, will NOT relaunch (card #705)`);
+      }
+    }
+    sleepSec(napSec);
+  }
+}
+
 // A launch result is adoptable when it FAILED verification but left a real
 // workspace behind that is now demonstrably alive — i.e. claude registered
 // after the verify window, not never.
@@ -138,14 +198,24 @@ function shouldAdoptLateStart(result, isAlive) {
  * @param {boolean} [opts.autoColor] color the tab Blue as auto-dispatched
  * @param {string}  [opts.settingsPath] optional --settings deny-list file
  * @param {string}  [opts.commandOverride] test seam — never set in real use
- * @param {number}  [opts.verifyTimeoutSec] seconds to wait for a live claude
- *                                 process before declaring the launch dead.
+ * @param {number}  [opts.verifyTimeoutSec] seconds to wait for the TYPED COMMAND
+ *                                 to start (this launch's wrapper process
+ *                                 appearing in the process table) before
+ *                                 concluding the injection never ran. It is no
+ *                                 longer the whole verification budget: once
+ *                                 the wrapper is up, slowBootCapSec governs.
  *                                 Default 30 (sonnet cold start). Fable +
  *                                 heavy session-start hooks need ~60-90s —
  *                                 the first live monitor launch (2026-07-24)
  *                                 came alive AFTER the 30s window, got its
  *                                 workspace close-and-retried, and left an
  *                                 untracked live session behind.
+ * @param {number}  [opts.slowBootCapSec] seconds a STARTED launch may spend
+ *                                 booting claude before the call gives up.
+ *                                 Never triggers a relaunch — a live wrapper
+ *                                 means a live boot (card #705). Default 360.
+ * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
+ *                                 intervalSec, now} — never set in real use.
  * @param {number}  [opts.lateAdoptSec] seconds to keep watching a FAILED
  *                                 launch's leftover workspace before calling
  *                                 it dead. A claude that registers here is
@@ -154,9 +224,9 @@ function shouldAdoptLateStart(result, isAlive) {
  *                                 reporting a false failure the caller then
  *                                 "fixes" by dispatching a duplicate.
  *                                 0 = off (legacy behavior).
- * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reason?: string, workspaceRef?: string|null, seedFile: string, command: string}}
+ * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string, command: string}}
  */
-function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0 }) {
+function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, probes = {} }) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
@@ -197,7 +267,8 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // unresolvable workspace must report null (honest "we don't know") rather
   // than a confidently wrong, already-closed ref.
   let survivingWs = null;
-  for (let attempt = 1; attempt <= 2; attempt++) {
+  let outcome = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     survivingWs = null;
     const before = new Set(cmuxws.listWorkspaces().map(w => w.ref));
     const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)],
@@ -217,34 +288,45 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     // Progress output: a failed dispatch now costs up to ~4 minutes (two 90s
     // verify windows plus a 60s adoption grace). Silence for that long reads
     // as a hung CLI, so say what is being waited on.
-    if (ws) console.error(`[cmux-launch] ${ws.ref} created — waiting up to ${verifyTimeoutSec}s for claude to register (attempt ${attempt}/2)`);
+    if (ws) console.error(`[cmux-launch] ${ws.ref} created — waiting up to ${verifyTimeoutSec}s for the command to start, then up to ${slowBootCapSec}s for claude to register (attempt ${attempt}/${MAX_ATTEMPTS})`);
     // VERIFY the launch (scope add 3): a workspace whose command was mangled
     // never starts claude and never self-marks ✅, so nothing would notice.
-    // Poll for a LIVE claude_code process (any status — a fast launch can
-    // reach waiting-at-prompt inside the window, and the Running-only check
-    // would kill that healthy session as a corpse; ship-check 2026-07-21).
-    // Window: shell init (direnv) + claude cold start can exceed 15s
-    // post-reboot, and a false timeout kills a healthy launch (2026-07-12).
-    if (ws && pollUntil(() => verifiedAlive(ws, cmdMarker), verifyTimeoutSec)) {
+    // The verdict is the state machine's, not a stopwatch's (card #705) — see
+    // waitForLaunchOutcome. verifyTimeoutSec is the window for the typed
+    // command to START (wrapper process appears); slowBootCapSec is how long a
+    // started-but-unregistered claude is allowed to boot.
+    outcome = waitForLaunchOutcome({
+      ws, marker: cmdMarker, attempt, maxAttempts: MAX_ATTEMPTS,
+      injectionGraceSec: verifyTimeoutSec, slowBootCapSec, probes,
+    });
+    if (outcome.action === 'ok') {
       if (autoColor) setAutoColor(ws.ref);
-      return { ok: true, ref: ws.ref, seedFile, command };
+      return { ok: true, ref: ws.ref, state: outcome.state, seedFile, command };
     }
-    if (attempt === 1) {
-      // Verify-before-close: one last check after a beat, so a claude that
-      // registered at the buzzer isn't killed as a corpse.
-      sleepSec(2);
-      if (verifiedAlive(ws, cmdMarker)) {
-        if (autoColor) setAutoColor(ws.ref);
-        return { ok: true, ref: ws.ref, seedFile, command };
-      }
+    if (outcome.action === 'retry') {
+      // Only reachable when NOTHING of this attempt is running (injection
+      // never ran, or the wrapper died) — the machine never returns 'retry'
+      // while the wrapper lives, which is what stops the duplicate factory.
+      console.error(`[cmux-launch] attempt ${attempt} dead (${outcome.state}) — closing ${ws ? ws.ref : 'nothing'} and retrying`);
       if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
       survivingWs = null; // closed above — must never be adopted or journaled
       sleepSec(2);
+      continue;
     }
+    break; // 'fail' — keep survivingWs for the caller (and the late-adopt watch)
   }
+  const slowBoot = isSlowBootFailure(outcome && outcome.state);
   const failed = {
     ok: false,
-    reason: `no running claude in ${survivingWs ? survivingWs.ref : 'the new workspace'} after 2 attempts`,
+    state: (outcome && outcome.state) || STATES.INJECTION_NEVER_RAN,
+    // Distinct reasons, so callers and logs stop reporting every slow launch
+    // as "cmux is dead" (card #705: that conflation is what made the owner
+    // see "cmux breaks at least once a day").
+    reason: `${(outcome && outcome.reason) || 'launch not verified'} in ${survivingWs ? survivingWs.ref : 'the new workspace'}`,
+    // The wrapper is still running for a slow-boot failure: the workspace is
+    // NOT a corpse, must not be closed, and must not be journaled as a death.
+    wrapperAlive: !!(outcome && outcome.wrapperAlive),
+    deadConfirmed: !slowBoot,
     workspaceRef: survivingWs ? survivingWs.ref : null,
     seedFile, command,
   };
@@ -254,9 +336,12 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
   // that registers a few seconds past the verify window keeps running while
   // the caller is told the launch died. Every such false failure produced an
   // untracked, unjournaled live shell AND a duplicate dispatch onto the same
-  // task (10 of them on 2026-07-26). Watch the survivor here instead.
+  // task (10 of them on 2026-07-26). Watch the survivor here instead. Card
+  // #705's slow-boot wait absorbs most of this, but the grace still buys a
+  // claude that registers moments after the cap — and costs nothing when the
+  // launch really is dead.
   if (lateAdoptSec > 0 && failed.workspaceRef) {
-    console.error(`[cmux-launch] verify window expired — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before calling it dead`);
+    console.error(`[cmux-launch] ${failed.state} — watching ${failed.workspaceRef} for a further ${lateAdoptSec}s before returning it unverified`);
     const live = pollUntil(() => strictlyAliveWorkspace(failed.workspaceRef, cmdMarker), lateAdoptSec);
     if (shouldAdoptLateStart(failed, live)) {
       if (autoColor) setAutoColor(failed.workspaceRef);
@@ -268,6 +353,7 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
 
 module.exports = {
   launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor,
-  strictlyAliveWorkspace, shouldAdoptLateStart,
+  strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
+  MAX_ATTEMPTS, PROBE_INTERVAL_SEC,
 };
