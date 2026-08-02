@@ -1,6 +1,6 @@
 ## Memory Index
 
-> Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Always-on index only — 450+ files on disk are recalled on demand. **At cap: add ⇒ remove/merge one.** Last compacted 2026-07-05.
+> Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Always-on index only — 450+ files on disk are recalled on demand. **At cap: add ⇒ remove/merge one.**
 
 ## 🌐 External APIs & services
 - [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
@@ -9,8 +9,8 @@
 
 ## 👤 User profile & session discipline
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — Stop-hook auto-prune (owner 8/2); unmarked/selected never close
-- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof; ADHD shaping in global CLAUDE.md ([[feedback_no_human_day_estimates.md]])
-- [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email only
+- [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
+- [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Deliverable venue rules](feedback_session_handoff_and_deliverable_format.md) — design asks: confirm venue first; 2 rejections = stop & ask; verify before pointing owner
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/approvals myself, report outcomes not process; bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
@@ -18,7 +18,7 @@
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — 5-20 file probe first; save findings to memory ([[feedback_save_research_findings.md]])
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — never skip; enforced for scripts/lib/ + workflows
 - [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
-- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots ([[feedback_two_model_ui_review.md]])
+- [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini on screenshots
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh
@@ -30,7 +30,7 @@
 ## 🌳 Worktrees & git
 - [Headless resume is cwd-scoped](feedback_headless_resume_cwd_scoped.md) — claude -p --resume fails outside original cwd; deterministic paths fix it
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
-- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]], [[feedback_regenerate_derived_file_on_merge_conflict.md]])
+- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
@@ -57,12 +57,13 @@
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
 - [CI E2E runs vs production](feedback_e2e_runs_against_production.md) — UI fix stays red until deploy lands; push-triggered run is deploy-lag false-neg; rerun after deploy
-- [Prod curl trips Vercel checkpoint](feedback_prod_curl_vercel_checkpoint.md) — verify via public JSONs / check-prod-deploy.js, not curl loops
+- [Prod curl trips Vercel checkpoint](feedback_prod_curl_vercel_checkpoint.md) — verify via public JSONs, not curl loops
 - [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list
 
 ## 📋 Open work
-- [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards must point at claude-outputs/repo paths, session scratchpad dies; reconstruct from plan-card Outcome + prior merge commit
-- [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET + CI zero-send floor; cron map still valid
+- [Session-system v2 overhaul](project_session_system_v2_overhaul.md) — APPROVED 2026-08-02; plan in claude-outputs; tasks #853-857/#867-869; don't re-ask
+- [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards point at claude-outputs/repo paths; scratchpad dies
+- [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET; cron map valid
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
