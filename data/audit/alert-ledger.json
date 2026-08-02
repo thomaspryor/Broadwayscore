@@ -97,7 +97,7 @@
       "silentRefires": 1
     },
     "opening-night-sla:pages-stuck": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "human",
       "title": "Opening Night SLA P0 — 7 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
@@ -105,7 +105,8 @@
       "lastNotifiedAt": "2026-08-02T18:38:33.513Z",
       "notifyCount": 3,
       "cardId": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-08-02T21:37:13.680Z"
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",

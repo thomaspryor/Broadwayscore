@@ -88,6 +88,25 @@ const {
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
 const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
+const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+
+/**
+ * Write a BWW/LBO aggregator-excerpt stub to disk.
+ *
+ * Task #653/#816: the caller's findExistingReviewFile() lookup deliberately
+ * skips wrongProduction/duplicateOf files, so a flagged file can already live
+ * at this exact canonical path even though that lookup (plus the caller's
+ * fs.existsSync guard) came back "no existing file" — a raw writeFileSync
+ * would clobber it, dropping the exclusion flags and re-admitting
+ * contamination on the next rebuild. safeWriteReview preserves
+ * PROTECTED_FIELDS; preserveFlaggedFields also strips the stub's own
+ * contentTier ('excerpt') so a flagged file's 'invalid' tier isn't clobbered
+ * by this explicit overwrite (safeWriteReview only restores a PROTECTED
+ * field when the incoming write omits it).
+ */
+function saveAggregatorStub(filePath, stub) {
+  safeWriteReview(filePath, preserveFlaggedFields(filePath, stub));
+}
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
@@ -4972,10 +4991,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             sources: ['bww-roundup']
           };
 
-          // Atomic write: .tmp then rename
-          const tmpPath = filePath + '.tmp';
-          fs.writeFileSync(tmpPath, JSON.stringify(stub, null, 2) + '\n');
-          fs.renameSync(tmpPath, filePath);
+          // Task #653/#816: findExistingReviewFile() above deliberately skips
+          // wrongProduction/duplicateOf files, so route through saveAggregatorStub
+          // instead of the raw atomic write — a flagged file living at this
+          // exact canonical path (missed by the fs.existsSync guard above,
+          // e.g. under a legacy outlet-id variant) must not be clobbered.
+          saveAggregatorStub(filePath, stub);
           console.log(`    [BWW stub] ${filename}`);
           stubsCreated++;
         }
@@ -5050,9 +5071,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             source: 'lbo-roundup',
             sources: ['lbo-roundup']
           };
-          const tmpPath = filePath + '.tmp';
-          fs.writeFileSync(tmpPath, JSON.stringify(stub, null, 2) + '\n');
-          fs.renameSync(tmpPath, filePath);
+          // Task #653/#816: same findExistingReviewFile skip-shape as the BWW
+          // stub path above — route through saveAggregatorStub so a flagged
+          // file at this canonical path is never silently clobbered.
+          saveAggregatorStub(filePath, stub);
           console.log(`    [LBO stub] ${filename}`);
           lboStubs++;
         }
@@ -5338,6 +5360,7 @@ module.exports = {
   validateBWWRoundupGeography,
   createReviewFile,
   gatherReviewsForShow,
+  saveAggregatorStub,
   loadShowData,
   getGlobalUrlIndex,
   shouldValidateUrl,

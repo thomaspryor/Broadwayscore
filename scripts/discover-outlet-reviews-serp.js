@@ -32,6 +32,7 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingRe
 const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { validateUrlDomain } = require('./lib/url-discovery');
+const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -89,6 +90,22 @@ const OUTLET_CONFIGS = {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Write a newly-discovered SERP review stub to disk.
+ *
+ * Task #653/#816: the caller's findExistingReviewFile() lookup deliberately
+ * skips wrongProduction/duplicateOf files, so a flagged file can already live
+ * at this exact canonical path even though that lookup came back null — a raw
+ * writeFileSync would clobber it, dropping the exclusion flags and
+ * re-admitting contamination on the next rebuild. safeWriteReview preserves
+ * PROTECTED_FIELDS; preserveFlaggedFields keeps the flagged file's own url so
+ * the write doesn't trip applyUrlChangeInvariant and strip publishDate too.
+ */
+function saveDiscoveredReviewStub(filePath, reviewData) {
+  const preserved = preserveFlaggedFields(filePath, reviewData);
+  safeWriteReview(filePath, preserved);
 }
 
 // SERP via ScrapingBee Google Search API (same endpoint as url-discovery.js)
@@ -293,7 +310,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
 
       // Create review stub file
       if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
-      const reviewData = {
+      let reviewData = {
         showId,
         outletId: normOutlet,
         outlet: config.outletName,
@@ -306,7 +323,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
       };
 
       const filePath = path.join(showDir, filename);
-      fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2) + '\n');
+      saveDiscoveredReviewStub(filePath, reviewData);
       stats.newFiles++;
     }
 
@@ -352,7 +369,11 @@ async function main() {
   console.log(`  Already existing: ${totalStats.existing}`);
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+module.exports = { saveDiscoveredReviewStub };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
