@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-02T00:56:54.405Z",
-  "processed": 36,
-  "failed": 47,
-  "successRate": "43.4%",
+  "updatedAt": "2026-08-02T01:03:29.797Z",
+  "processed": 50,
+  "failed": 83,
+  "successRate": "37.6%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 36,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 8,
-    "archiveToday": 7,
-    "archive": 0
+    "brightdata": 10,
+    "archiveToday": 8,
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -80,6 +80,50 @@
       "t": "2026-08-02T00:54:11.147Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T00:57:50.516Z",
+      "event": "bb-session",
+      "session": "f7a871a4",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T00:57:51.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T00:58:07.374Z",
+      "event": "bb-session",
+      "session": "54f3bcfa",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T00:58:08.307Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T00:58:50.413Z",
+      "event": "bb-session",
+      "session": "95c7035b",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-02T00:58:51.489Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-02T01:00:43.290Z",
+      "event": "bb-session",
+      "session": "59853dfe",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards"
+    },
+    {
+      "t": "2026-08-02T01:00:44.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
