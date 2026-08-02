@@ -298,7 +298,12 @@ const UNFOLDED_BASELINE_ROOT = new Set([
 // The shred signature: an ASCII-only character-class filter applied to text.
 // Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
 // still destroys accented letters, so the class is not narrower than /[^a-z0-9.
-const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
+// Task #790: a trailing 0-9 requirement here left NAME matchers (critic/cast
+// bylines never contain digits, e.g. [^a-z ] or [^a-z\s]) completely invisible
+// to this guard even though they shred accented names identically to a slug
+// builder. The signature now stops at the a-z(A-Z)? prefix — any ASCII-only
+// character class anchored there counts, digit or no digit.
+const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?/;
 // Every fold spelling in the codebase counts: foldDiacritics (the canonical
 // helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
 // and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.

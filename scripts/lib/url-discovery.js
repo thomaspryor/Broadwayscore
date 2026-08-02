@@ -1314,14 +1314,26 @@ function buildDateTbs(dateRange) {
  * Returns true if the URL is valid for the outlet (or if no domain is registered).
  * Used by aggregator scrapers that create review files directly (bypassing gather-reviews.js).
  *
+ * For domainless registry outlets (domain: null — the same ~360-outlet set that made
+ * isOutletEligibleForSerpDiscovery's read-side guard vacuous, task #766), there is no
+ * host to check against, so this still passes the URL through — but callers MUST treat
+ * `unvalidated: true` as a visibility signal (log/flag), not silently swallow it, or a
+ * wrong-host URL for a domainless outlet goes through with zero validation and zero trace.
+ *
  * @param {string} url - The review URL
  * @param {string} outletId - Normalized outlet ID
- * @returns {{ valid: boolean, reason?: string }}
+ * @returns {{ valid: boolean, reason?: string, unvalidated?: boolean }}
  */
 function validateUrlDomain(url, outletId) {
   if (!url || !outletId) return { valid: true };
-  const expectedDomain = OUTLET_DOMAINS[outletId];
-  if (!expectedDomain) return { valid: true }; // No registered domain — can't validate
+  // Lowercase lookup, matching isOutletEligibleForSerpDiscovery (line ~81) — a
+  // mixed-case outletId (e.g. "Telegraph") would otherwise miss its registered
+  // domain and get wrongly stamped unvalidated:true, poisoning the exact
+  // backfill signal this guard exists to produce.
+  const expectedDomain = OUTLET_DOMAINS[String(outletId).toLowerCase()];
+  if (!expectedDomain) {
+    return { valid: true, unvalidated: true, reason: `no registered domain for outlet "${outletId}" — URL host not checked` };
+  }
   try {
     const urlDomain = new URL(url).hostname.replace(/^www\./, '');
     if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
