@@ -37,8 +37,12 @@ const LEDGER_FILE = 'alert-ledger.json';
 const DIGEST_QUEUE_FILE = 'alert-digest-queue.json';
 
 // Matches a bash `for VAR in <list>; do` on one line. A separate check below
-// handles the `for VAR in <list>` / `do` split-across-two-lines form.
-const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*$/;
+// handles the `for VAR in <list>` / `do` split-across-two-lines form. Tolerates
+// a trailing `# comment` after `do` (valid bash) — task #763's
+// `# workflow-line-length-ok:` exemption marker lives exactly there on
+// audit-aggregator-gap.yml's for-loop line, and an anchored `do\s*$` silently
+// stopped recognizing the loop the moment that marker was appended.
+const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*(?:#.*)?$/;
 const FOR_LOOP_HEADER_RE = /^\s*for\s+(\w+)\s+in\s+(.+?)\s*$/;
 const BARE_DO_RE = /^\s*do\s*$/;
 const DONE_RE = /^\s*done\s*$/;

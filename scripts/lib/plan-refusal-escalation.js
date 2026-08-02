@@ -55,6 +55,7 @@ function buildEscalationCard({ diagnosis = {}, planReason = '', issueNumber, iss
     '',
     '## Acceptance criteria',
     `\`gh issue view ${issueNumber} --repo thomaspryor/Broadwayscore\` shows the issue closed with a comment describing what was fixed.`,
+    'VERIFY: owner-judgment (the fix itself varies per-issue and has no single re-runnable command; a fresh session judges "closed with a real fix" against the issue thread).',
   ].join('\n');
 
   return { title, priority: 'P1', status: 'Not started', action: 'Investigate', notes };

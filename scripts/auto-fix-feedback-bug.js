@@ -26,6 +26,7 @@ const showsWriteGuard = _require('./lib/shows-write-guard.js');
 const commercialWriteGuard = _require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = _require('./lib/cli-help.js');
+const { foldDiacritics } = _require('./lib/title-match.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -239,7 +240,7 @@ async function main() {
     }
 
     // Near-duplicate name check: prevent committing misspelled duplicates
-    const normalize = n => n.toLowerCase().replace(/[^a-z]/g, '');
+    const normalize = n => foldDiacritics(n).toLowerCase().replace(/[^a-z]/g, '');
     const alreadyPresent = currentWinners.some(n => normalize(n) === normalize(missingPerson));
     if (alreadyPresent) {
       const comment = currentWinners.includes(missingPerson)
