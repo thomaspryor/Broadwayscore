@@ -31,6 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { foldDiacritics } = require('./lib/title-match');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -791,7 +792,7 @@ ${truncated}`;
 function diffCast(baseline, scraped, showId, sourceUrl) {
   const events = [];
 
-  const normalName = n => n.toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+  const normalName = n => foldDiacritics(n).toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
 
   const baselineNames = new Set(baseline.map(c => normalName(c.name)));
   const scrapedNames = new Set(scraped.map(c => normalName(c.name)));
@@ -999,7 +1000,7 @@ function extractPlaybillCurrentCast(html) {
  */
 function diffCastPlaybill(baseline, scraped, showId, sourceUrl) {
   const events = [];
-  const normalName = n => n.toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+  const normalName = n => foldDiacritics(n).toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
 
   const baselineNames = new Set(baseline.map(c => normalName(c.name)));
   const scrapedNames = new Set(scraped.map(c => normalName(c.name)));

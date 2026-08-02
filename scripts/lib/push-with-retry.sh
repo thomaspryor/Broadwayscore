@@ -165,7 +165,7 @@ assert_no_conflict_markers() {
 
   if ! node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
     echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
-    restore_head_if_moved "conflict-markers"
+    restore_head_if_moved "conflict-markers" 1  # force: the descendant IS the corruption (task #769 exception)
     exit 1
   fi
 }
@@ -191,7 +191,7 @@ assert_no_orphan_commit() {
 
   if ! node "$SCRIPT_DIR/../check-orphan-commits.js" --range="origin/$PULL_BRANCH..HEAD"; then
     echo "::error::Refusing to push: an outgoing commit has NO parent (a second repo root). See task #209 — a shallow checkout feeding a rebase/merge/reset path produced a rootless full-tree commit. Do NOT push this; investigate how HEAD became unborn."
-    restore_head_if_moved "orphan-commit"
+    restore_head_if_moved "orphan-commit" 1  # force: the descendant IS the corruption (task #769 exception)
     exit 1
   fi
 }
@@ -287,10 +287,36 @@ fi
 # local refs, never a silent partial rewrite.
 restore_head_if_moved() {
   local reason="${1:-unknown}"
+  local force="${2:-}"
   [ -n "$SCRIPT_ENTRY_HEAD" ] || return 0
   local current_head
   current_head="$(git rev-parse HEAD 2>/dev/null || true)"
   [ -n "$current_head" ] && [ "$current_head" != "$SCRIPT_ENTRY_HEAD" ] || return 0
+
+  # Task #769: if the entry HEAD is an ANCESTOR of the current HEAD, nothing
+  # was lost — HEAD only ADVANCED (a parallel session committing to this
+  # shared local branch mid-run, or this script's own merge fallback folding
+  # origin in ON TOP of our commits). `reset --hard` back to the entry HEAD
+  # would DROP those newer commits — the exact silent-loss failure this
+  # guard exists to prevent, self-inflicted by the guard. The #543 invariant
+  # this function actually protects is "the entry commits stay reachable",
+  # and in the descendant case they already are; so preserve the newer
+  # commits and leave HEAD alone. Only a rewritten/shortened history (entry
+  # HEAD no longer reachable) still triggers the forced restore below.
+  #
+  # EXCEPTION (ship-check adversarial finding): the CORRUPTION aborts —
+  # conflict-markers / orphan-commit — fire precisely BECAUSE a descendant
+  # commit is poisoned (this script's own merge fallback committed markers
+  # or a parentless root). Preserving that descendant wedges the checkout:
+  # the same assert re-fires on every future run, and the poisoned commit
+  # becomes publishable by any other push path. Those call sites pass
+  # force=1 to restore unconditionally; the discarded SHAs stay recoverable
+  # via reflog and are logged loudly below either way.
+  if [ "$force" != "1" ] && git merge-base --is-ancestor "$SCRIPT_ENTRY_HEAD" "$current_head" 2>/dev/null; then
+    echo "::warning::push-with-retry: local HEAD advanced from $SCRIPT_ENTRY_HEAD to $current_head during this run (abort reason: $reason) — entry commits are intact ancestors; preserving the commits made during the run instead of resetting (task #769)."
+    git log --oneline "$SCRIPT_ENTRY_HEAD".."$current_head" 2>/dev/null | sed 's/^/    preserved: /' || true
+    return 0
+  fi
 
   echo "::error::push-with-retry: local HEAD moved from $SCRIPT_ENTRY_HEAD to $current_head during this run (abort reason: $reason)."
   echo "::error::  Commit(s) unique to the current (about-to-be-discarded) HEAD:"
@@ -647,6 +673,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "::error::push-with-retry: push on attempt $i reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — a prior iteration's conflict resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
       record_push_failure "commit-dropped-post-push" "$i"
+      # Task #769 residual: this reset restores the payload tree for the
+      # retry (skipping it would re-push the content-dropped tree forever),
+      # but any commits made DURING the run get discarded with it. Make that
+      # discard LOUD instead of silent — the SHAs stay recoverable via reflog.
+      git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
       git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
     fi
   fi
@@ -1092,6 +1123,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     else
       echo "::error::push-with-retry: push after conflict resolution (path: ${RESOLUTION_PATH:-unknown}, attempt $i) reported success but our own commit's content is NOT what's on origin/$PULL_BRANCH afterward (task #619) — this iteration's resolution silently discarded it. Resetting local HEAD back to our original commit and retrying instead of reporting false success."
       record_push_failure "commit-dropped-post-push(${RESOLUTION_PATH:-unknown})" "$i"
+      # Task #769 residual: this reset restores the payload tree for the
+      # retry (skipping it would re-push the content-dropped tree forever),
+      # but any commits made DURING the run get discarded with it. Make that
+      # discard LOUD instead of silent — the SHAs stay recoverable via reflog.
+      git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding (recover via reflog if foreign): /' || true
       git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null || true
     fi
   fi
@@ -1151,6 +1187,7 @@ if [ "$pushed" != "true" ] && [ "${PUSH_VIA_API_FALLBACK:-}" = "1" ] \
   # stale bundle — not just our own edits — onto the live tip. Resetting
   # here guarantees the diff handed to the fallback is exactly our original
   # commit(s), nothing an intermediate rebase attempt picked up along the way.
+  git log --oneline "$SCRIPT_ENTRY_HEAD"..HEAD 2>/dev/null | sed 's/^/    discarding before API-fallback diff (recover via reflog if foreign): /' || true
   if ! git reset --hard "$SCRIPT_ENTRY_HEAD" 2>/dev/null; then
     echo "::warning::push-with-retry: could not reset HEAD to $SCRIPT_ENTRY_HEAD before the Git Data API fallback — skipping fallback rather than diffing a possibly-polluted HEAD"
     _api_fallback_ok=false
@@ -1237,6 +1274,9 @@ fi
 if [ "${PUSH_SKIP_LEDGER:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../record-push-ledger.js" ]; then
   _ledger_sha="$(git rev-parse HEAD 2>/dev/null || true)"
   if [ -n "$_ledger_sha" ]; then
-    node "$SCRIPT_DIR/../record-push-ledger.js" --sha="$_ledger_sha" --branch="$PULL_BRANCH" || true
+    # 60s hard cap: the recorder's own worst case on a degraded remote is
+    # ~2.5 min of git timeouts across 4 CAS attempts — never let best-effort
+    # telemetry add that to ~130 callers' runtime (ship-check finding).
+    _timeout 60 node "$SCRIPT_DIR/../record-push-ledger.js" --sha="$_ledger_sha" --branch="$PULL_BRANCH" || true
   fi
 fi
