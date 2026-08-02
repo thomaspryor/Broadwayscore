@@ -55,7 +55,20 @@ function isExcludedReview(r) {
     r.duplicateOf ||
     r.duplicateTextOf ||
     r.isRoundupArticle ||
-    r.rejectionReason === 'not_a_review'
+    r.rejectionReason === 'not_a_review' ||
+    // Same class as wrongAttribution/suspectedMisattribution above, just a
+    // different flag name — getBestTextForScoring() (text-quality.js) already
+    // discards fullText for these, so an originalScore extracted from that
+    // same untrustworthy content shouldn't alert against the (correctly
+    // computed) llm/assigned score either. Missing here let the-imaginary-invalid's
+    // Theater Life file (misattributedFullText:true) fire a "NEW" mismatch
+    // (card #806, 2026-08-02) despite already being a known-bad record.
+    r.misattributedFullText ||
+    // "Content verified NOT to be about this show" — same untrustworthy-source
+    // reasoning: whatever star rating was scraped off that mismatched page
+    // can't be trusted either (Telegraph/Midsummer Night's Dream, card #806).
+    r.incompleteReason === 'url_content_mismatch' ||
+    r.incompleteReason === 'wrong_content'
   );
 }
 
