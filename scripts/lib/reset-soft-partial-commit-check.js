@@ -17,7 +17,9 @@
  * to the stale pre-reset tree. Same class as this repo's own push-core-data
  * stale-copy-back incidents (#51/#52). The fix is `--mixed` (resets the
  * index to match the new HEAD, leaving the working tree untouched) — see
- * fastForwardHeadToOrigin() in scripts/record-push-ledger.js.
+ * fastForwardHeadToOrigin() in scripts/record-push-ledger.js at commit
+ * 613c6bd8eeb (that script has since moved to index-free plumbing via
+ * scripts/lib/push-ledger-store.js, so the pattern lives only in history).
  *
  * Deliberately text/regex-based (no AST/parser dependency), matching the
  * style of scripts/lib/alert-ledger-commit-check.js. Comments are stripped
@@ -29,9 +31,10 @@
  *
  * A --soft reset used only to rewind HEAD after a failed attempt, with no
  * scoped-add+commit following it before the next full resync, is NOT
- * flagged — see unwindAttempt() in scripts/record-push-ledger.js's current
- * (fixed) version: a --soft reset immediately followed by an unstage +
- * working-tree restore, never a scoped add+commit.
+ * flagged — see unwindAttempt() in scripts/record-push-ledger.js's fixed
+ * pre-rewrite version (commit 613c6bd8eeb..the 2026-08-02 store rewrite): a
+ * --soft reset immediately followed by an unstage + working-tree restore,
+ * never a scoped add+commit.
  *
  * KNOWN LIMITATION: this is a flat, file-order text scan, not real
  * call-graph analysis. It only catches the bug if the --soft reset's

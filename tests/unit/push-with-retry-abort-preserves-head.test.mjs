@@ -215,6 +215,114 @@ test('an uncontrolled set -e crash right after a successful rebase still restore
   }
 });
 
+// A `git` wrapper that (a) fails every `push` and (b) on the FIRST push,
+// first creates a commit in the invoking repo — simulating a parallel
+// session committing to the shared local branch while push-with-retry.sh is
+// mid-run (the task #769 incident shape). Subcommand detection skips `-c
+// key=val` pairs because git_push invokes `git -c http.lowSpeedLimit=...
+// push ...`, so `$1` is never literally "push".
+function makePushFailingGitDir(tmp) {
+  const dir = path.join(tmp, 'fake-git-pushfail-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+sub=""
+args=("$@")
+i=0
+while [ $i -lt \${#args[@]} ]; do
+  a="\${args[$i]}"
+  case "$a" in
+    -c|-C) i=$((i+2)); continue;;
+    -*) i=$((i+1)); continue;;
+    *) sub="$a"; break;;
+  esac
+done
+if [ "$sub" = "push" ]; then
+  if [ -n "\${PARALLEL_COMMIT_MARKER:-}" ] && [ ! -f "$PARALLEL_COMMIT_MARKER" ]; then
+    touch "$PARALLEL_COMMIT_MARKER"
+    echo 'const parallel = 1;' > parallel-session.js
+    "${realGit}" add parallel-session.js
+    "${realGit}" -c user.email=p@p.p -c user.name=p commit -q -m "parallel session commit"
+  fi
+  exit 1
+fi
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
+test('#769: abort-restore preserves commits made DURING the run when HEAD only advanced', () => {
+  // Incident class (task #769): push-with-retry.sh captures SCRIPT_ENTRY_HEAD
+  // at start; every abort path force-restores it. When a PARALLEL session
+  // commits to the same shared local branch mid-run, HEAD becomes a
+  // DESCENDANT of the entry head — nothing was lost — yet the old restore
+  // did `reset --hard` back to the entry head, silently DROPPING the
+  // parallel session's commit. The fix: a merge-base --is-ancestor guard
+  // preserves descendant HEADs and only force-restores rewritten/shortened
+  // histories.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-769-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    // The payload commit this run is trying to push (= SCRIPT_ENTRY_HEAD).
+    fs.writeFileSync(path.join(runnerDir, 'payload.js'), 'const payload = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "payload commit"', runnerDir);
+    const entryHead = sh('git rev-parse HEAD', runnerDir).trim();
+
+    const fakeGitDir = makePushFailingGitDir(tmp);
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${SCRIPT}" 1 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          PARALLEL_COMMIT_MARKER: path.join(tmp, 'parallel-committed.marker'),
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    const postRunLog = sh('git log --oneline', runnerDir).trim();
+    assert.notEqual(code, 0, `expected non-zero exit (every push fails); got 0. Output:\n${stdout}`);
+    assert.equal(fs.existsSync(path.join(tmp, 'parallel-committed.marker')), true,
+      'fixture failed to inject the mid-run parallel commit');
+    assert.match(postRunLog, /parallel session commit/,
+      `the commit made DURING the run was dropped by the abort-restore (task #769 regression). Log:\n${postRunLog}\nOutput:\n${stdout}`);
+    assert.match(postRunLog, /payload commit/, `the entry payload commit vanished. Log:\n${postRunLog}`);
+    assert.equal(sh(`git merge-base --is-ancestor ${entryHead} HEAD && echo yes`, runnerDir).trim(), 'yes',
+      'entry HEAD must remain an ancestor of the preserved HEAD');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('reset+cherry-pick fallback replays ALL outgoing commits, not just the tip', () => {
   // The actual root cause (confirmed by a parallel investigation on the
   // Notion card, 2026-07-26): when rebase and merge both fail and the script
