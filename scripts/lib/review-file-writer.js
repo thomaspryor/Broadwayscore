@@ -343,6 +343,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (!domainCheck.valid) {
     return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
   }
+  // Domainless registry outlet (task #782, cousin of #766's read-path fix): the guard
+  // above passed with nothing actually checked. Stamp + log so this stays visible for
+  // outlet-registry backfill instead of vanishing into a silent valid:true, same as any
+  // real WE ghost outlet (guardian-uk/telegraph-uk class) would otherwise do on write.
+  if (domainCheck.unvalidated) {
+    fields.domainUnvalidated = true;
+    fields.domainUnvalidatedReason = domainCheck.reason;
+    console.warn(`  ⚠️  Unvalidated domain for ${showId}/${outletId}: ${domainCheck.reason}`);
+  }
 
   // --- Guard A: Cross-market sibling reroute (+ Guard H URL rejection) ---
   // Delegated to scripts/lib/market-routing.js so gather-reviews.js and this
