@@ -117,15 +117,20 @@ test('buildHtml never renders loop language; empty day reads calm, not broken', 
   }
 });
 
-test('buildHtml: top verdict NAMES the failing check; warnings demote to a routine line', () => {
+// Digest v3 (2026-08-02 owner mandate) replaced the "Fix needed: X" / "N
+// routine warnings below" verdict line with a plain error-count + name
+// headline, plus a single "N issues detected — queued for automated fix
+// sessions" line (errors+warns+freshness+stuck folded together) — the system
+// fixes, the email reports.
+test('buildHtml: top verdict NAMES the failing check; issue count folds errors+warnings (Digest v3)', () => {
   const html = buildHtml({
     sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: [{ name: 'Sync: cast coverage', message: '29 empty casts' }], warns: ['w1', 'w2'], checks: [] } },
     problemsNote: "didn't update overnight: Reddit engagement (no data)",
     changesHtml: null,
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(html, /Fix needed: Sync: cast coverage/);
-  assert.match(html, /2 routine warnings below/);
+  assert.match(html, /1 site error: Sync: cast coverage/);
+  assert.match(html, /3 issues detected/);
   assert.match(html, /didn't update overnight: Reddit engagement/);
   assert.doesNotMatch(html, /Nothing needs your attention/);
 });
@@ -243,23 +248,27 @@ test('summarizeFreshnessHighSeverity: malformed hasIssues entries degrade gracef
   assert.match(summary.items[0].detail, /real-show-2026/);
 });
 
-// second-opinion design blocker: high-severity freshness gaps (missing
-// tickets/poster — revenue-impacting) must escalate the top "2-second
-// verdict", not sit demoted in the context box below where the whole point
-// of this fix (task #689) is that they'd stay easy to miss.
-test('buildHtml: freshness high-severity count escalates the top verdict, not just the section below', () => {
+// Task #689's original acceptance criterion (freshness gaps escalate the top
+// verdict, named by show ID in the email) was superseded by Digest v3
+// (2026-08-02, fifth owner escalation): "the system fixes, the email
+// reports" — freshness gaps now roll into the aggregate "N issues detected —
+// queued for automated fix sessions" line (see digest-autofix.js/.test.mjs
+// for the per-show auto-fix pipeline) rather than a named top-verdict banner.
+// This test covers the CURRENT contract: the count folds into that line, and
+// the calm/urgent headline is still driven solely by sections.health.errors.
+test('buildHtml: freshness count folds into the auto-fix issue counter, does not itself escalate the calm headline (Digest v3)', () => {
   const html = buildHtml({
     sections: { freshness: { count: 2, bannerText: '2 open shows missing critical data', items: [], moreCount: 0 } },
     now: new Date('2026-07-30T12:00:00Z'),
   });
-  assert.match(html, /2 open shows missing tickets\/poster\/synopsis/);
-  assert.doesNotMatch(html, /Nothing needs your attention/);
+  assert.match(html, /1 issue detected/);
+  assert.match(html, /Nothing needs your attention/);
 });
 
-// Acceptance criterion 2 (task #689): a deliberately blanked ticketLinks on
-// one open show must appear in the next digest run, named by show ID — not
-// just a count.
-test('acceptance: a blanked-tickets open show appears in the rendered digest by show ID, not just a count', () => {
+// summarizeFreshnessHighSeverity itself still names show IDs (verified above)
+// — that per-show detail now reaches the owner via the auto-filed "BSC
+// Daily:" card (digest-autofix.js), not the email body itself.
+test('acceptance: a blanked-tickets open show summary still names its show ID (feeds the auto-fix card, not the email body)', () => {
   const report = {
     generatedAt: '2026-07-30T06:54:26.128Z',
     dataQuality: {
@@ -270,9 +279,11 @@ test('acceptance: a blanked-tickets open show appears in the rendered digest by 
     },
   };
   const summary = summarizeFreshnessHighSeverity(report);
+  assert.match(summary.items[0].detail, /les-mis-arena-concert-2026/);
+  assert.match(summary.items[0].detail, /tickets/);
+  // buildHtml folds the count into the aggregate line, no per-show detail.
   const html = buildHtml({ sections: { freshness: summary }, now: new Date('2026-07-30T12:00:00Z') });
-  assert.match(html, /les-mis-arena-concert-2026/);
-  assert.match(html, /tickets/);
+  assert.match(html, /1 issue detected/);
 });
 
 test('summarizeClosingSoon: names show IDs/titles, sorted by daysLeft, urgentCount only counts <=14 days', () => {
@@ -336,41 +347,39 @@ test('summarizeClosingSoon: maxItems truncation keeps the soonest-closing rows, 
   assert.match(summary.items[1].detail, /c-2026/);
 });
 
-// Acceptance criterion 3 (task #690): real closing-soon shows must render in
-// the digest HTML named by show ID, not just a count, same contract as
-// summarizeFreshnessHighSeverity's acceptance test above.
-test('acceptance: a closing-soon show appears in the rendered digest by show ID', () => {
+// Task #690's original acceptance criterion (closing-soon shows render in the
+// morning digest by show ID) was superseded 2026-07-30 ("Restore standalone
+// Opening Digest email" — card #633): closing-soon moved OUT of this email
+// entirely into send-opening-digest.js, so sections.closingSoon is now a
+// no-op here by design (buildHtml's closingSoonCount is computed but
+// deliberately unused — see the comment at its call site).
+test('buildHtml: closingSoon section is a no-op here — closing-soon lives in the standalone opening digest (card #633)', () => {
   const report = {
     generatedAt: '2026-07-30T06:54:26.128Z',
     closingSoon: [{ id: 'les-mis-arena-concert-2026', title: 'Les Mis Arena Concert Spectacular', closingDate: '2026-08-02', daysLeft: 3 }],
   };
   const summary = summarizeClosingSoon(report);
-  const html = buildHtml({ sections: { closingSoon: summary }, now: new Date('2026-07-30T12:00:00Z') });
-  assert.match(html, /les-mis-arena-concert-2026/);
-  assert.match(html, /Closing soon/);
+  const withClosingSoon = buildHtml({ sections: { closingSoon: summary }, now: new Date('2026-07-30T12:00:00Z') });
+  const withoutClosingSoon = buildHtml({ sections: {}, now: new Date('2026-07-30T12:00:00Z') });
+  assert.equal(withClosingSoon, withoutClosingSoon);
 });
 
-test('buildHtml: closingSoon urgent count (<=14 days) escalates the top verdict', () => {
-  const html = buildHtml({
-    sections: { closingSoon: { count: 2, bannerText: '2 open shows closing within 60 days (2 within 14 days)', items: [], moreCount: 0 } },
-    now: new Date('2026-07-30T12:00:00Z'),
-  });
-  assert.match(html, /2 shows closing within 2 weeks/);
-  assert.doesNotMatch(html, /Nothing needs your attention/);
-});
-
-test('buildHtml: warnings-only day reads calm ("Nothing urgent"), stuck signals escalate the verdict', () => {
+test('buildHtml: warnings-only day reads calm ("Nothing needs your attention"), issue counter still reflects the warning (Digest v3)', () => {
   const warnsOnly = buildHtml({
     sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: [], warns: ['w1'], checks: [] } },
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(warnsOnly, /Nothing urgent this morning/);
-  assert.match(warnsOnly, /1 routine warning below/);
+  assert.match(warnsOnly, /Nothing needs your attention this morning/);
+  assert.match(warnsOnly, /1 issue detected/);
 
+  // stuckCount folds into the same aggregate issue counter as errors/warns/
+  // freshness (Digest v3) rather than its own named "N pipeline items
+  // flagged possibly stuck" line.
   const stuck = buildHtml({
     sections: {},
     stuckCount: 2,
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(stuck, /2 pipeline items flagged &quot;possibly stuck&quot; below/);
+  assert.match(stuck, /1 issue detected/);
+  assert.match(stuck, /Nothing needs your attention/);
 });
