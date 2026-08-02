@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T18:22:52.558Z",
+  "timestamp": "2026-08-02T19:23:25.990Z",
   "stats": {
-    "totalReviews": 41307,
+    "totalReviews": 41309,
     "alreadyFlagged": 18094,
     "dateGuardCatches": 85,
     "directorMismatch": 941,
-    "tvFilmSignals": 1133,
+    "tvFilmSignals": 1135,
     "londonSignals": 785,
     "offBroadwaySignals": 469,
     "yearMismatch": 87,
-    "noPublishDate": 3397
+    "noPublishDate": 3395
   },
   "findings": [
     {
@@ -2857,6 +2857,20 @@
       "score": 79,
       "publishDate": "2025-04-14",
       "url": "https://thecontending.com/boop-the-musical-betty-comes-to-spectacular-technicolor-life-in-dazzling-new-production/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "fairypoweredproductions--fairypoweredproductions.json",
+      "score": 78,
+      "publishDate": "2026-07-29",
+      "url": "https://fairypoweredproductions.com/brainiac-live-review-2/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15076,21 +15090,7 @@
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 84,
-      "publishDate": "2024-06-24",
-      "url": "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
-        }
-      ]
-    },
-    {
-      "showId": "little-bear-ridge-road-regional-2024",
-      "file": "suntimes--steven-oxman.json",
+      "file": "chicago-sun-times--steven-oxman.json",
       "score": 82,
       "publishDate": "2024-06-24",
       "url": "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
@@ -15104,6 +15104,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 84,
+      "publishDate": "2024-06-24",
+      "url": "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
         }
       ]
     },
@@ -26714,6 +26728,20 @@
       "score": 96,
       "publishDate": "2026-07-26",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "amomentwithfranca--amomentwithfranca.json",
+      "score": 88,
+      "publishDate": "2025-10-25",
+      "url": "https://www.amomentwithfranca.com/the-traitors-live-experience-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
