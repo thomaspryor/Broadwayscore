@@ -17,6 +17,7 @@
 'use strict';
 
 const { canonicalReviewUrl } = require('./review-url-clusters');
+const { foldDiacritics } = require('./title-match');
 
 // Tokens that appear inside a mis-extracted byline but are never a real critic
 // name: outlet/section words, byline chrome ("Reviewed by"), and CMS date
@@ -115,8 +116,8 @@ function recoverBylineForEntry(entry, siblings) {
  */
 function nameCorroboratedBy(name, text) {
   if (!name || !text || typeof text !== 'string') return false;
-  const hay = text.toLowerCase();
-  const tokens = name.split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
+  const hay = foldDiacritics(text).toLowerCase();
+  const tokens = foldDiacritics(name).split(/\s+/).map((t) => t.replace(/[^a-z]/gi, '')).filter((t) => t.length >= 3);
   if (!tokens.length) return false; // nothing substantive to match on
   return tokens.every((t) => new RegExp(`\\b${t.toLowerCase()}\\b`).test(hay));
 }
