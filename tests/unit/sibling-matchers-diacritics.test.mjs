@@ -1,0 +1,249 @@
+/**
+ * Every show-title matcher must fold diacritics BEFORE it strips
+ * non-alphanumerics. Sibling of tests/unit/title-tokens-diacritics.test.mjs,
+ * which locks the same invariant for audit-show-review-gap.js::titleTokens.
+ *
+ * The class (task #648): our shows.json titles and showId slugs are largely
+ * ASCII ("les-miserables-...") while outlets and aggregators spell shows
+ * correctly with accents ("Les Misérables"). A matcher that lowercases and
+ * then runs `.replace(/[^a-z0-9…]/g, …)` turns every accented letter into a
+ * space or drops it, shredding one word into fragments that can match nothing:
+ *
+ *   "Les Misérables"  ->  ["les", "mis", "rables"]   (should be ["les","miserables"])
+ *
+ * Confirmed live: NY Sun's Les Misérables review (12 body mentions) was
+ * dropped as url_content_mismatch on 2026-07-30 because content-quality.js
+ * lacked the fold. Eight siblings carried the same latent hole; this file
+ * locks all of them plus the canonical helper they now share.
+ *
+ * Two layers:
+ *   1. Behavioral — each patched lib actually folds, on real corpus titles.
+ *   2. Structural — a frozen baseline of scripts/lib files that still combine
+ *      an ASCII char-class filter with NO fold. A NEW unfolded matcher fails
+ *      this test, which is the only thing that stops the class recurring.
+ *
+ * Run: node --test tests/unit/sibling-matchers-diacritics.test.mjs
+ */
+
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const LIB = path.join(REPO, 'scripts/lib');
+
+const { foldDiacritics } = require('../../scripts/lib/title-match.js');
+
+describe('foldDiacritics (canonical helper)', () => {
+  it('folds composable diacritics to their ASCII base letter', () => {
+    assert.strictEqual(foldDiacritics('Les Misérables'), 'Les Miserables');
+    assert.strictEqual(foldDiacritics('El Último Sueño'), 'El Ultimo Sueno');
+    assert.strictEqual(foldDiacritics('Dvořák'), 'Dvorak');
+    assert.strictEqual(foldDiacritics('Jenůfa'), 'Jenufa');
+    assert.strictEqual(foldDiacritics('Bad Kreyòl'), 'Bad Kreyol');
+  });
+
+  it('is the identity on ASCII — folding can never change an unaccented decision', () => {
+    for (const s of ['Hamilton', "Joe Turner's Come and Gone", 'Oh, Mary!', 'Grown-Ups', '']) {
+      assert.strictEqual(foldDiacritics(s), s);
+    }
+  });
+
+  it('tolerates null/undefined instead of throwing', () => {
+    assert.strictEqual(foldDiacritics(null), '');
+    assert.strictEqual(foldDiacritics(undefined), '');
+  });
+});
+
+describe('rss-discovery.titleMatchesShow (backs theatermania-discovery)', () => {
+  const { titleMatchesShow } = require('../../scripts/lib/rss-discovery.js');
+
+  it('matches an accented headline against our unaccented shows.json title', () => {
+    assert.ok(titleMatchesShow('Review: Les Misérables at the Sondheim', 'Les Miserables'));
+  });
+
+  it('matches an unaccented headline against an accented shows.json title', () => {
+    assert.ok(titleMatchesShow('Review: Les Miserables opens', 'Les Misérables'));
+  });
+
+  it('still refuses an unrelated show (folding must not loosen the 80% rule)', () => {
+    assert.ok(!titleMatchesShow('Review: Les Misérables at the Sondheim', 'Hamilton'));
+    assert.ok(!titleMatchesShow('Review: La Bohème at the Met', 'La Bête'));
+  });
+});
+
+describe('omc-discovery.titleMatches', () => {
+  const { titleMatches } = require('../../scripts/lib/omc-discovery.js');
+
+  it('matches across the accent boundary in both directions', () => {
+    assert.ok(titleMatches('Les Misérables review', 'Les Miserables'));
+    assert.ok(titleMatches('Les Miserables review', 'Les Misérables'));
+  });
+
+  it('does not match a different show that merely shares an accented prefix', () => {
+    assert.ok(!titleMatches('La Bohème at the Met', 'La Bête'));
+  });
+});
+
+describe('show-score-discover.showScoreUrlForShow', () => {
+  const { showScoreUrlForShow } = require('../../scripts/lib/show-score-discover.js');
+
+  it('builds an ASCII-folded slug, not one shredded at the accent', () => {
+    const url = showScoreUrlForShow({ id: 'x', title: 'Les Misérables', category: 'broadway' }, null);
+    assert.strictEqual(url, 'https://www.show-score.com/broadway-shows/les-miserables');
+    assert.ok(!url.includes('mis-rables'), 'accent must not become a slug separator');
+  });
+
+  it('folds off-Broadway opera titles too', () => {
+    const url = showScoreUrlForShow({ id: 'x', title: 'La Bohème', category: 'off-broadway' }, null);
+    assert.strictEqual(url, 'https://www.show-score.com/off-broadway-shows/la-boheme');
+  });
+});
+
+describe('dtli-homepage-scan.tokensFromTitle', () => {
+  const { tokensFromTitle, scoreSlugAgainstShow } = require('../../scripts/lib/dtli-homepage-scan.js');
+
+  it('keeps an accented word whole instead of shredding it', () => {
+    assert.deepStrictEqual(tokensFromTitle('Les Misérables'), ['les', 'miserables']);
+    assert.deepStrictEqual(tokensFromTitle('La Bohème'), ['la', 'boheme']);
+    for (const phantom of ['mis', 'rables', 'boh']) {
+      assert.ok(!tokensFromTitle('Les Misérables: La Bohème').includes(phantom));
+    }
+  });
+
+  it('scores the real DTLI slug for an accented show instead of rejecting it', () => {
+    const show = { id: 'la-boheme-2002', title: 'La Bohème' };
+    const score = scoreSlugAgainstShow('la-boheme-2002', show);
+    assert.ok(score > -Infinity, `accented show must be able to match its own slug (got ${score})`);
+  });
+});
+
+describe('venue-aliases._normalize (via findCanonical)', () => {
+  const { findCanonical } = require('../../scripts/lib/venue-aliases.js');
+
+  it('canonicalizes an ASCII rendering of an accented table venue', () => {
+    // "Noël Coward Theatre" is a canonical VENUE_ALIASES entry. Reviews and
+    // listings routinely write it ASCII; before the fold findCanonical returned
+    // the input verbatim — a silent non-canonicalization, not an error.
+    assert.strictEqual(findCanonical('Noel Coward Theatre'), 'Noël Coward Theatre');
+  });
+
+  it('still canonicalizes the accented spelling', () => {
+    assert.strictEqual(findCanonical('Noël Coward Theatre'), 'Noël Coward Theatre');
+  });
+});
+
+describe('creative-team-verify.normalizeForMatch', () => {
+  const { normalizeForMatch } = require('../../scripts/lib/creative-team-verify.js');
+
+  it('folds accented creative-team names so SERP snippets can confirm them', () => {
+    assert.strictEqual(normalizeForMatch('Claude-Michel Schönberg'), 'claude-michel schonberg');
+    assert.strictEqual(normalizeForMatch('Moisés Kaufman'), 'moises kaufman');
+    assert.strictEqual(normalizeForMatch('Anaïs Mitchell'), 'anais mitchell');
+  });
+
+  it('still normalizes curly punctuation (the pre-existing contract)', () => {
+    assert.strictEqual(normalizeForMatch('I’m Sorry, Prime Minister'), "i'm sorry, prime minister");
+  });
+});
+
+describe('precursor-wikipedia.normalizeForCompare', () => {
+  const { normalizeForCompare } = require('../../scripts/lib/precursor-wikipedia.js');
+
+  it('folds so a Wikipedia ceremony row reaches our unaccented shows.json row', () => {
+    assert.strictEqual(normalizeForCompare('Les Misérables'), 'les miserables');
+    assert.strictEqual(normalizeForCompare('Phèdre'), 'phedre');
+  });
+});
+
+describe('deduplication.normalizeTitle', () => {
+  const { normalizeTitle } = require('../../scripts/lib/deduplication.js');
+
+  it('gives accented and unaccented spellings the SAME dedup key', () => {
+    assert.strictEqual(normalizeTitle('Les Misérables'), normalizeTitle('Les Miserables'));
+    assert.strictEqual(normalizeTitle('La Bohème'), normalizeTitle('La Boheme'));
+  });
+
+  it('still keeps genuinely different titles apart', () => {
+    assert.notStrictEqual(normalizeTitle('La Bohème'), normalizeTitle('La Bête'));
+  });
+});
+
+/**
+ * Structural guard. `.replace(/[^a-z0-9…]/…)` on lowercased text is the shred
+ * signature: applied to a show title without a preceding fold, it destroys
+ * every accented letter. The baseline below freezes the files that still carry
+ * that combination as of task #648 — a NEW file with the signature and no fold
+ * fails here.
+ *
+ * Two ways to satisfy this test when adding a matcher, in preference order:
+ *   1. Call foldDiacritics() from scripts/lib/title-match.js (correct).
+ *   2. If the input is provably ASCII already (a URL path, a slug we built),
+ *      add the file to the baseline WITH a comment saying why.
+ *
+ * The baseline is a known-unfixed list, not an approved list — these are the
+ * remaining candidates in the #648 class (several confirmed real: e.g.
+ * loureviews-match.normalizeTitle, production-match-gate.titleSlugTokens,
+ * url-utils.normalizeShowName all take show titles). Shrinking it is good;
+ * growing it needs the justification above.
+ */
+const UNFOLDED_BASELINE = new Set([
+  'audience-coverage-gaps.js', 'autonomous-ui-capture.js', 'broadway-com-runtimes.js',
+  'bww-roundup-validator.js', 'cast-extraction-guards.js', 'content-verifier.js',
+  'critic-canonicalization.js', 'cross-production-guards.js', 'cross-show-url.js',
+  'dtli-slug-discover.js', 'feedback-dedup.js', 'ibdb-dates.js', 'llm-extractor.js',
+  'loureviews-match.js', 'market-routing.js', 'multi-critic-serp.js',
+  'outlet-canonicalize.js', 'page-validator.js', 'production-match-gate.js',
+  'review-url-clusters.js', 'score-input-validator.js', 'serp-candidate-validator.js',
+  'serp-review-census.js', 'serp-show-match.js', 'serp-slug-discovery.js',
+  'show-date-integrity.js', 'show-duplicate-detection.js', 'show-match-verifier.js',
+  'tb-direct-url.js', 'tr-roundup-discover.js', 'url-discovery.js', 'url-utils.js',
+  'venue-listing-discover.js', 'wet-roundup-discover.js',
+]);
+
+// The shred signature: an ASCII-only character-class filter applied to text.
+// Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
+// still destroys accented letters, so the class is not narrower than /[^a-z0-9.
+const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
+// Every fold spelling in the codebase counts: foldDiacritics (the canonical
+// helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
+// and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.
+// Missing a real spelling here fails CLOSED (the file looks unfolded and, if
+// unbaselined, reddens CI) — noisy but never silent.
+const FOLDS = /foldDiacritics|normalize\((['"])NFK?D\1\)|\\p\{(Diacritic|M)\}/;
+
+describe('structural guard: no NEW unfolded title matcher', () => {
+  const unfolded = fs.readdirSync(LIB)
+    .filter(f => f.endsWith('.js'))
+    .filter(f => {
+      const src = fs.readFileSync(path.join(LIB, f), 'utf8');
+      return SHRED_SIGNATURE.test(src) && !FOLDS.test(src);
+    });
+
+  it('every file with the shred signature and no fold is in the frozen baseline', () => {
+    const novel = unfolded.filter(f => !UNFOLDED_BASELINE.has(f));
+    assert.deepStrictEqual(
+      novel, [],
+      `New scripts/lib matcher(s) strip non-ASCII without folding diacritics first:\n` +
+      novel.map(f => `  scripts/lib/${f}`).join('\n') +
+      `\nFix: import { foldDiacritics } from './title-match' and fold BEFORE the ` +
+      `[^a-z0-9…] replace. See task #648 / this file's header.`
+    );
+  });
+
+  it('title-match plus the nine libs it now feeds stay out of the baseline', () => {
+    const fixed = [
+      'title-match.js', 'rss-discovery.js', 'omc-discovery.js', 'theatermania-discovery.js',
+      'show-score-discover.js', 'dtli-homepage-scan.js', 'venue-aliases.js',
+      'creative-team-verify.js', 'precursor-wikipedia.js', 'deduplication.js',
+    ];
+    for (const f of fixed) {
+      assert.ok(!unfolded.includes(f), `${f} regressed: it lost its diacritic fold`);
+      assert.ok(!UNFOLDED_BASELINE.has(f), `${f} must not be baselined — it is fixed`);
+    }
+  });
+});

@@ -14,8 +14,15 @@ const require = createRequire(import.meta.url);
 // throwaway module cache entry pointed at a fake execFileSync/sendAlert, and
 // isolate the ledger/digest-queue files to a temp dir so runs don't touch
 // data/audit/ or leave test residue for the real project.
-function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
+// `ledgerEnvPath` pins the ledger to a real on-disk file via ALERT_LEDGER_PATH
+// instead of the fs remap below — used by the git-checkout-wipe tests, which
+// need the ledger and the (fake) git-tracked ledger to be genuinely different
+// files so one can be wiped without touching the other.
+function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } = {}) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-test-'));
+  const priorLedgerEnv = process.env.ALERT_LEDGER_PATH;
+  if (ledgerEnvPath) process.env.ALERT_LEDGER_PATH = ledgerEnvPath;
+  else delete process.env.ALERT_LEDGER_PATH;
   const modulePath = require.resolve('./owner-alert-router.js');
   const discordNotifyPath = require.resolve('./discord-notify.js');
   const childProcessPath = require.resolve('node:child_process');
@@ -65,9 +72,14 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
 
   function remap(p) {
     if (typeof p !== 'string') return p;
-    if (p === router._LEDGER_PATH || p.startsWith(`${router._LEDGER_PATH}.tmp`)) {
+    if (!ledgerEnvPath && (p === router._LEDGER_PATH || p.startsWith(`${router._LEDGER_PATH}.tmp`))) {
       return p.replace(router._LEDGER_PATH, ledgerPath);
     }
+    // loadLedger() seeds a local ledger from the git-tracked one on its first
+    // run (card #693). Redirect the tracked path into the temp dir too, or a
+    // local test run would read the repo's REAL alert-ledger.json while a CI
+    // run (LEDGER_PATH === tracked path) would not — same test, two answers.
+    if (p === router._TRACKED_LEDGER_PATH) return path.join(tmpDir, 'tracked-alert-ledger.json');
     if (p === router._DIGEST_QUEUE_PATH) return digestPath;
     // dispatchCard() logs every disposition='auto' attempt here — must be
     // redirected too, or every test run touching disposition='auto' writes
@@ -89,10 +101,12 @@ function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl } = {}) {
     realChildProcess.execFileSync = originalExecFileSync;
     delete require.cache[discordNotifyPath];
     delete require.cache[modulePath];
+    if (priorLedgerEnv === undefined) delete process.env.ALERT_LEDGER_PATH;
+    else process.env.ALERT_LEDGER_PATH = priorLedgerEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
-  return { router, calls, restore, attemptsPath };
+  return { router, calls, restore, attemptsPath, tmpDir, trackedLedgerPath: path.join(tmpDir, 'tracked-alert-ledger.json') };
 }
 
 test('routeAlert: new incident with disposition=auto dispatches exactly one card', async () => {
@@ -545,5 +559,177 @@ test('readDispatchAttempts: sorts by ts even when the file is out of chronologic
     assert.equal(sorted[sorted.length - 1].error, 'newest');
   } finally {
     restore();
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Card #693: cooldown state written by a LOCAL sender must survive a
+// concurrent `git checkout` / `git reset --hard` in the shared working tree.
+// Live failure: the launcher's on-monitor-launch-failed-<night> alert
+// (cooldownHours: 3) emailed twice 21 minutes apart on 2026-07-31 and the
+// tracked ledger recorded neither send.
+// ---------------------------------------------------------------------------
+
+// Restores the git-tracked ledger to its HEAD content, discarding whatever an
+// uncommitted local write had put there — what `git checkout -- data/audit`
+// (or a rebase, or `reset --hard`) does to a launchd sender's ledger write.
+function simulateGitCheckoutWipe(trackedLedgerPath, headContent = { conditions: {} }) {
+  fs.mkdirSync(path.dirname(trackedLedgerPath), { recursive: true });
+  fs.writeFileSync(trackedLedgerPath, JSON.stringify(headContent, null, 2) + '\n');
+}
+
+test('local ledger: cooldown holds across a git checkout that wipes the tracked ledger', async () => {
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-local-state-'));
+  const localLedger = path.join(stateDir, 'alert-ledger.json');
+  const { router, calls, restore, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: localLedger });
+  try {
+    const opts = {
+      conditionKey: 'on-monitor-launch-failed-2026-07-31',
+      title: 'monitor pass FAILED for tao-of-glass-west-end-2026',
+      description: 'launch attempt failed',
+      disposition: 'auto',
+      cooldownHours: 3,
+    };
+    const first = await router.routeAlert(opts);
+    assert.equal(first.action, 'auto');
+
+    // The write landed on the local ledger, and NOT on the git-tracked one —
+    // nothing the launcher writes should be sitting uncommitted in data/audit.
+    assert.ok(fs.existsSync(localLedger), 'local ledger file was written');
+    assert.equal(fs.existsSync(trackedLedgerPath), false, 'tracked ledger untouched by a local sender');
+
+    simulateGitCheckoutWipe(trackedLedgerPath);
+
+    const second = await router.routeAlert(opts);
+    assert.equal(second.action, 'silent', 'second call inside the 3h cooldown is suppressed');
+    assert.equal(calls.execFileSync.length, 1, 'exactly one dispatch, not two');
+    assert.equal(router.loadLedger().conditions[opts.conditionKey].silentRefires, 1);
+  } finally {
+    restore();
+    fs.rmSync(stateDir, { recursive: true, force: true });
+  }
+});
+
+// Falsification control: with the ledger left on the git-tracked path (what CI
+// uses, and what every local sender used before this fix), the same wipe DOES
+// re-fire. Without this, the test above could pass for the wrong reason.
+test('tracked ledger: the same git checkout wipe re-fires the alert (the bug being fixed)', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  const wipedLedger = path.join(tmpDir, 'alert-ledger.json'); // where remap() sends _LEDGER_PATH
+  try {
+    const opts = {
+      conditionKey: 'on-monitor-launch-failed-2026-07-31',
+      title: 'monitor pass FAILED for tao-of-glass-west-end-2026',
+      description: 'launch attempt failed',
+      disposition: 'auto',
+      cooldownHours: 3,
+    };
+    await router.routeAlert(opts);
+    assert.ok(fs.existsSync(wipedLedger));
+
+    simulateGitCheckoutWipe(wipedLedger);
+
+    const second = await router.routeAlert(opts);
+    assert.equal(second.action, 'auto', 'cooldown record is gone, so it notifies again');
+    assert.equal(calls.execFileSync.length, 2, 'the observed double-send');
+  } finally {
+    restore();
+  }
+});
+
+test('ledger path resolution: CI uses the tracked ledger, local execution does not', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    // The unit-test process itself is the local case unless CI is set; either
+    // way the resolved path must be one of the two known ledgers, never a
+    // worktree-relative or cwd-relative file.
+    const resolved = router.ledgerPath();
+    assert.ok(
+      resolved === router._TRACKED_LEDGER_PATH || resolved === router._LOCAL_LEDGER_PATH,
+      `unexpected ledger path: ${resolved}`
+    );
+    assert.equal(router.isLocalLedger(), resolved === router._LOCAL_LEDGER_PATH);
+    // The local ledger must live outside every git checkout — a path under the
+    // repo (or a worktree) is exactly what concurrent git ops clobber.
+    assert.equal(router._LOCAL_LEDGER_PATH.startsWith(os.homedir()), true);
+    assert.equal(router._LOCAL_LEDGER_PATH.includes('/Broadwayscore/'), false);
+    // And the two are genuinely different files — a same-path "fix" would make
+    // every assertion above vacuous.
+    assert.notEqual(router._LOCAL_LEDGER_PATH, router._TRACKED_LEDGER_PATH);
+  } finally {
+    restore();
+  }
+});
+
+test('local ledger seeds from the committed CI ledger on first use (no cooldown reset storm)', async () => {
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-seed-'));
+  const localLedger = path.join(stateDir, 'alert-ledger.json');
+  const { router, calls, restore, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: localLedger });
+  try {
+    // The local ledger does not exist yet; the committed one already records
+    // this condition as notified 10 minutes ago.
+    const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    simulateGitCheckoutWipe(trackedLedgerPath, {
+      conditions: {
+        'ci-condition': {
+          status: 'open',
+          disposition: 'digest',
+          title: 'already notified by CI',
+          firstSeen: tenMinAgo,
+          lastSeen: tenMinAgo,
+          lastNotifiedAt: tenMinAgo,
+          notifyCount: 1,
+        },
+      },
+    });
+    assert.equal(fs.existsSync(localLedger), false, 'local ledger absent before the first call');
+    assert.equal(router.loadLedger().conditions['ci-condition'].notifyCount, 1,
+      'the committed ledger seeds the local one on first read');
+
+    const result = await router.routeAlert({
+      conditionKey: 'ci-condition',
+      title: 'already notified by CI',
+      description: 'desc',
+      disposition: 'auto',
+      cooldownHours: 3,
+    });
+    assert.equal(result.action, 'silent', 'CI already notified this inside the cooldown');
+    assert.equal(calls.execFileSync.length, 0, 'no duplicate dispatch on the local sender');
+    // The seeded copy is now persisted locally; the tracked file is never written.
+    assert.ok(fs.existsSync(localLedger));
+  } finally {
+    restore();
+    fs.rmSync(stateDir, { recursive: true, force: true });
+  }
+});
+
+// The ledger is written AFTER the card/email has gone out. An unwritable
+// ledger path (no HOME under a launchd agent, full disk, permissions) must
+// therefore degrade to "logged loudly, may re-notify next run" — never take
+// down the caller's whole check, which for health-check.js would mean losing
+// every remaining condition in that run.
+test('an unwritable ledger path does not throw — the alert still dispatches, loudly', async () => {
+  const unwritable = path.join(os.tmpdir(), 'alert-router-unwritable', 'not-a-dir', 'alert-ledger.json');
+  fs.mkdirSync(path.dirname(path.dirname(unwritable)), { recursive: true });
+  fs.writeFileSync(path.dirname(unwritable), 'this is a FILE, so mkdir of the ledger dir must fail\n');
+  const { router, calls, restore } = loadRouterWithFakes({ ledgerEnvPath: unwritable });
+  const errors = [];
+  const realConsoleError = console.error;
+  console.error = (...args) => errors.push(args.join(' '));
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:unwritable-ledger',
+      title: 'Test alert',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'auto', 'the card was still dispatched');
+    assert.equal(calls.execFileSync.length, 1);
+    assert.ok(errors.some(e => e.includes('FAILED to persist the ledger')),
+      'a ledger that cannot be written must be reported, not swallowed');
+  } finally {
+    console.error = realConsoleError;
+    restore();
+    fs.rmSync(path.dirname(path.dirname(unwritable)), { recursive: true, force: true });
   }
 });

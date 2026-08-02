@@ -230,7 +230,7 @@ if (cliArgs.includes('--strict')) {
   // (2026-08-01 model-drift alert). A resurrection must be a red weekly run
   // with a named error, not a one-week count-drift warning that self-silences.
   for (const { idKey, slugKey } of duplicateKeyPairs) {
-    console.error(`${idKey}: duplicate-key-pair — slug-keyed sibling "${slugKey}" also present (double-counted show). Fix: node scripts/dedupe-commercial-id-keys.js --apply`);
+    console.error(`${idKey}: duplicate-key-pair — slug-keyed sibling "${slugKey}" also present (double-counted show). Fix: node scripts/dedupe-commercial-id-keys.js (dry-run), then --apply, or --apply --prefer-slug for conflicting pairs per its output`);
     violationCount++;
   }
 
@@ -288,7 +288,7 @@ function checkShowIdMismatches() {
           'duplicate-key-pair',
           'high',
           key,
-          `Commercial key "${key}" duplicates slug-keyed entry "${pair.slugKey}" (same show counted twice). Fix: node scripts/dedupe-commercial-id-keys.js --apply`
+          `Commercial key "${key}" duplicates slug-keyed entry "${pair.slugKey}" (same show counted twice). Fix: node scripts/dedupe-commercial-id-keys.js (dry-run first; --apply, or --apply --prefer-slug for conflicting pairs)`
         );
       } else {
         addIssue(

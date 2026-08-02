@@ -129,17 +129,16 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-02T04:37:28.646Z",
-      "lastNotifiedAt": "2026-08-01T19:57:34.627Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-08-02T18:34:46.118Z",
+      "lastNotifiedAt": "2026-08-02T18:23:07.485Z",
+      "notifyCount": 8,
       "cardId": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-02T15:22:35.021Z"
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -233,22 +232,22 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-02T16:17:05.475Z",
+      "lastSeen": "2026-08-02T18:16:20.152Z",
       "lastNotifiedAt": "2026-08-02T15:20:29.605Z",
       "notifyCount": 5,
       "cardId": null,
-      "silentRefires": 3
+      "silentRefires": 7
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-02T16:17:05.331Z",
+      "lastSeen": "2026-08-02T18:16:20.009Z",
       "lastNotifiedAt": "2026-08-02T12:20:25.846Z",
       "notifyCount": 3,
       "cardId": null,
-      "silentRefires": 2
+      "silentRefires": 4
     },
     "ux-walkthrough:high-priority": {
       "status": "open",

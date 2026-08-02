@@ -15,6 +15,7 @@
  * Add entries here when new edge cases are discovered.
  */
 const { normalizeVenueName, getMarketPool } = require('./venue-classification');
+const { foldDiacritics } = require('./title-match');
 const { VENUE_ALIASES } = require('./title-match');
 
 /**
@@ -134,7 +135,11 @@ function slugify(title) {
  * covered "Disney's" / "Roald Dahl's" — see memory/feedback_possessive_prefix_dedup.md.
  */
 function normalizeTitle(title) {
-  return title
+  // foldDiacritics for the same reason slugify() (above) folds: source-listing
+  // titles arrive correctly accented while shows.json is inconsistent, so
+  // "La Bohème" vs "La Boheme" read as two different shows to the dup scan.
+  // Task #648.
+  return foldDiacritics(title)
     .toLowerCase()
     // Remove common subtitles/suffixes
     .replace(/:\s*.+$/, '')           // Remove everything after colon

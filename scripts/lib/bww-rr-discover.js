@@ -333,9 +333,10 @@ async function _fetchReviewsPageAnchorsUncached() {
 
 /**
  * Default policy for whether to skip the paid reviews.php (Browserbase) path.
- * Fail-open: only an AFFIRMATIVE off-Broadway category skips it. Null/missing/
- * unknown category always probes — a misclassified Broadway show must never
- * lose its fast (and free, non-Browserbase) discovery path.
+ * Fail-open: only an AFFIRMATIVE off-Broadway/West End/off-West End category
+ * skips it. Null/missing/unknown category always probes — a misclassified
+ * Broadway show must never lose its fast (and free, non-Browserbase)
+ * discovery path.
  *
  * SCOPE (corrected 2026-07-31): this gates ONLY the paid Browserbase fallback.
  * The cheap fetchPage() reviews.php scan runs for every show regardless.
@@ -356,12 +357,19 @@ async function _fetchReviewsPageAnchorsUncached() {
  * a weak cost heuristic for whether a $0.10 session is worth spending when the
  * cheap tier has already come back empty.
  *
+ * West End/off-West End are included in the skip set (#756 audit, 2026-08-02):
+ * reviews.php is a BROADWAY listing page — the one confirmed WE match
+ * (midnight-at-the-never-get) came back from the CHEAP tier, which this
+ * function never gates. A London show's own section page (/westend/) is the
+ * real discovery path; paying $0.10 for a Broadway-page long-shot after that
+ * page and the cheap scan both miss isn't worth it, same logic as OB.
+ *
  * @param {object} show - shows.json record; reads show.category
  * @returns {boolean}
  */
 function shouldSkipReviewsPhp(show) {
   const category = String((show && show.category) || '').toLowerCase();
-  return category === 'off-broadway';
+  return category === 'off-broadway' || category === 'west-end' || category === 'off-west-end';
 }
 
 /**
