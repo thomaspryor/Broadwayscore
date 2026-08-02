@@ -31,7 +31,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir } = require('./lib/show-image-coverage');
+const { pruneEmptyShowImageDir, snapshotShowImageDir, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -2285,28 +2285,36 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     }
   }
 
+  // Snapshot BEFORE fetching: several source paths write thumbnail.jpg/poster.jpg
+  // to disk before Gemini verifies the candidate, so the failure path has to be
+  // able to tell "art that was already archived" from "a candidate this run
+  // wrote and then had rejected". Only the latter may be removed.
+  const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+  const showImageDir = path.join(outputBase, show.id);
+  const dirBefore = snapshotShowImageDir(showImageDir);
+
   // Fetch images: API data → page scrape → IBDB → Google Images → Playbill fallback
   const images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
 
-  // Several source paths mkdir <outputBase>/<id>/ BEFORE they know whether any
-  // candidate will verify (fetchFromGoogleImages, the regional-venue path, …),
-  // so a show whose candidates are ALL rejected is left with an EMPTY directory.
-  // Coverage readers that keyed off directory existence then counted the show as
-  // having art and dropped it from the imageless cohort — that is how a show
-  // reaches the live homepage showing "Images coming soon" (Brainiac Live; The
-  // Gin Game before it).
-  //
-  // Pruned HERE, the single point every caller funnels through, rather than at
-  // end-of-run: a --show=<id> run and the concurrent-batch run take different
-  // paths, and an end-of-run sweep is also skipped by early returns,
-  // process.exit, and timeouts — the exact failure cases it exists for.
-  // Scoped to THIS show (never a sweep of all ~2,800 dirs, which would race a
-  // concurrent fetch mid-write), and pruneEmptyShowImageDir uses rmdir, which
-  // refuses the instant anything is inside — so even a lost race can only
-  // remove a directory holding nothing.
+  // A failed fetch must leave NOTHING that reads as coverage. Two shapes:
+  //   (a) an EMPTY directory, because several paths mkdir before they know any
+  //       candidate will verify;
+  //   (b) a REAL FILE written before verification and then rejected — which is
+  //       worse, because it satisfies every file-based coverage check while
+  //       shows.json still has no image, so the page renders "Images coming
+  //       soon" (Brainiac Live; The Gin Game before it).
+  // Both are undone here — the single point every caller funnels through. An
+  // end-of-run sweep is skipped by early returns (--audit-existing), by
+  // process.exit (--fill-heroes), by throws and by timeouts; a batch-loop hook
+  // missed --show=<id> entirely (verified live: the empty dir survived until
+  // this moved here). Scoped to THIS show, and only to entries that appeared
+  // during this run, so previously archived art can never be destroyed.
   if (!images) {
-    const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
-    if (pruneEmptyShowImageDir(path.join(outputBase, show.id))) {
+    const { removed, prunedDir } = discardFailedFetchArtifacts(showImageDir, dirBefore);
+    if (removed.length > 0) {
+      console.log(`   🧹 discarded ${removed.length} rejected candidate file(s) for ${show.id} (${removed.join(', ')}) — they would have read as coverage`);
+    }
+    if (prunedDir) {
       console.log(`   🧹 removed empty image dir for ${show.id} (would otherwise read as coverage)`);
     }
   }
