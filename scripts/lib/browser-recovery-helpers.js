@@ -37,7 +37,16 @@ const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '.
  * corpus-wide to rely on directly).
  */
 function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
-  const dirs = fs.readdirSync(REVIEW_TEXTS_DIR);
+  let dirs;
+  try {
+    dirs = fs.readdirSync(REVIEW_TEXTS_DIR);
+  } catch (e) {
+    throw new Error(
+      `Cannot read review-texts dir at ${REVIEW_TEXTS_DIR} (${e.code || e.message}). ` +
+      `Worktree sessions have no private review-texts clone of their own — set ` +
+      `REVIEW_TEXTS_DIR to the main checkout's path, e.g. REVIEW_TEXTS_DIR=/path/to/Broadwayscore/data/review-texts.`
+    );
+  }
   const candidates = [];
   for (const dir of dirs) {
     if (showsAllowlist && !showsAllowlist.has(dir)) continue;

@@ -136,7 +136,13 @@ async function main() {
     return;
   }
 
-  const candidates = loadCandidates({ filePrefix: 'newyorker', showsAllowlist, maxUrls: CONFIG.maxUrls });
+  let candidates;
+  try {
+    candidates = loadCandidates({ filePrefix: 'newyorker', showsAllowlist, maxUrls: CONFIG.maxUrls });
+  } catch (e) {
+    await context.close();
+    throw e;
+  }
   console.log(`\n${candidates.length} candidates to process.\n`);
   if (candidates.length === 0) {
     await context.close();
