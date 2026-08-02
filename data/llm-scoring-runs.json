@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-07-30T15:10:48.583Z",
-    "completedAt": "2026-07-30T15:10:48.752Z",
-    "totalReviews": 6,
-    "processed": 0,
-    "skipped": 5,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "tao-of-glass-west-end-2026",
-        "outletId": "bachtrack",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-07-30T15:41:11.039Z",
     "completedAt": "2026-07-30T15:41:11.263Z",
     "totalReviews": 6,
@@ -386238,6 +386218,26 @@
       {
         "showId": "tao-of-glass-west-end-2026",
         "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-02T13:40:51.131Z",
+    "completedAt": "2026-08-02T13:40:51.300Z",
+    "totalReviews": 1,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "the-vessel-off-broadway-2026",
+        "outletId": "broadwayworld",
         "error": "input_validation_failed:body_too_short"
       }
     ]
