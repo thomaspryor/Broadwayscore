@@ -20,6 +20,17 @@ on:
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/creative-team-verify.js'
       - 'scripts/lib/creative-team-verify.test.mjs'
+      # Show-image verification prompt: was hardcoded Broadway, so correct West
+      # End / Off-Broadway / regional key art was rejected [non_broadway] and 26
+      # open/upcoming shows shipped imageless (2026-08-02). Colocated *.test.mjs
+      # runs in the scripts/lib/*.test.mjs glob; path-listed so a solo edit
+      # to the prompt or either consumer triggers CI.
+      - 'scripts/lib/verify-image.js'
+      - 'scripts/lib/verify-image-prompt.test.mjs'
+      - 'scripts/lib/image-audit-action.js'
+      - 'scripts/lib/image-audit-action.test.mjs'
+      - 'scripts/fetch-show-images-auto.js'
+      - 'scripts/audit-images-llm.js'
       # Diacritic folding across every show-title matcher (task #648). A matcher
       # that strips non-ASCII without folding first shreds "Les Misérables" into
       # ["les","mis","rables"] and matches nothing — confirmed live suppression.
