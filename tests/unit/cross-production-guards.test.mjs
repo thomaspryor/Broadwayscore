@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { isEvergreenListingUrl, contentMatchesFiledUnderVenue } =
   require('../../scripts/lib/cross-production-guards.js');
+const { venueSlug } = require('../../scripts/lib/venue-classification.js');
 
 // ── isEvergreenListingUrl ─────────────────────────────────────────────────────
 test('evergreen: tickets/listing pages are detected (date heuristic must skip them)', () => {
@@ -45,4 +46,17 @@ test('venue-match: null slug or empty review never matches', () => {
   assert.equal(contentMatchesFiledUnderVenue({ fullText: 'anything' }, null), false);
   assert.equal(contentMatchesFiledUnderVenue({}, 'criterion'), false);
   assert.equal(contentMatchesFiledUnderVenue(null, 'criterion'), false);
+});
+
+// ── task #783: venueSlug(prod.venue) pairing must survive diacritics ──────────
+test('venue-match: an accented venue slug matches a body that spells the venue with its accent', () => {
+  const slug = venueSlug('Noël Coward Theatre');
+  const review = { fullText: 'The revival storms into the Noël Coward Theatre this spring.' };
+  assert.equal(contentMatchesFiledUnderVenue(review, slug), true);
+});
+
+test('venue-match: an accented venue slug ALSO matches a body that spells the venue in plain ASCII', () => {
+  const slug = venueSlug('Noël Coward Theatre');
+  const review = { fullText: 'Written entirely in ASCII: Noel Coward Theatre welcomes the cast.' };
+  assert.equal(contentMatchesFiledUnderVenue(review, slug), true);
 });

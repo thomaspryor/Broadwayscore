@@ -3321,6 +3321,154 @@ function validateUnscoredReviewTexts() {
   }
 }
 
+/**
+ * Stranded SCORED reviews on recent shows: a review-text file that is
+ * includable (passes every rebuild skip filter) AND has a valid score, but
+ * whose outlet has no entry in reviews.json for that show — i.e. it was
+ * collected, scored, recovered... and still isn't live. Sibling of
+ * validateUnscoredReviewTexts (which covers the no-score half).
+ *
+ * Incident (2026-08-02): amomentwithfranca (score 88) and readaboutstuff
+ * (score 79) sat scored+includable on Traitors Live Experience / Space Dogs
+ * while the site showed neither — nothing audited "scored but not live".
+ * Scoped to shows whose openingDate is within the last 60 days (or up to 7
+ * days ahead) to keep the historical backlog out and the signal actionable.
+ */
+function validateStrandedScoredReviews(shows) {
+  info('Checking for stranded scored reviews on recent shows (collected+scored but not live)...');
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  const reviewsPath = path.join(DATA_DIR, 'reviews.json');
+  if (!fs.existsSync(reviewTextsDir) || !fs.existsSync(reviewsPath)) {
+    info('review-texts or reviews.json missing, skipping');
+    return;
+  }
+
+  const WINDOW_PAST_DAYS = 60;
+  const WINDOW_FUTURE_DAYS = 7;
+  const now = Date.now();
+  const recentShows = shows.filter((s) => {
+    if (!s.openingDate) return false;
+    const t = new Date(s.openingDate).getTime();
+    if (!Number.isFinite(t)) return false;
+    const deltaDays = (now - t) / 86400000;
+    return deltaDays >= -WINDOW_FUTURE_DAYS && deltaDays <= WINDOW_PAST_DAYS;
+  });
+  if (recentShows.length === 0) {
+    ok('No shows in the recent-opening window');
+    return;
+  }
+
+  let reviewsArr;
+  try {
+    const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
+    reviewsArr = Array.isArray(raw) ? raw : (raw.reviews || []);
+  } catch {
+    info('reviews.json unreadable, skipping');
+    return;
+  }
+  const liveOutletsByShow = {};
+  for (const r of reviewsArr) {
+    if (!r || !r.showId || !r.outletId) continue;
+    (liveOutletsByShow[r.showId] = liveOutletsByShow[r.showId] || new Set()).add(String(r.outletId).toLowerCase());
+  }
+
+  const showById = {};
+  for (const s of shows) if (s && s.id) showById[s.id] = s;
+
+  const stranded = [];
+  for (const show of recentShows) {
+    const dirPath = path.join(reviewTextsDir, show.id);
+    if (!fs.existsSync(dirPath)) continue;
+    let files;
+    try {
+      files = fs.readdirSync(dirPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    } catch { continue; }
+    const live = liveOutletsByShow[show.id] || new Set();
+    for (const file of files) {
+      let r;
+      try {
+        r = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
+      } catch { continue; }
+      if (!isIncludableForRebuild(r, showById[show.id], path.join(dirPath, file)) || !hasValidScore(r)) continue;
+      // Duplicates fold into their canonical sibling's outlet slot — same
+      // outletId live counts as covered.
+      const outletKey = String(r.outletId || r.outlet || file.split('--')[0] || '').toLowerCase();
+      if (!outletKey || live.has(outletKey)) continue;
+      stranded.push({ showId: show.id, file, outlet: outletKey, score: (r.llmScore && r.llmScore.score) ?? r.assignedScore });
+    }
+  }
+
+  if (stranded.length === 0) {
+    ok(`No stranded scored reviews across ${recentShows.length} recent shows`);
+    return;
+  }
+  console.log('');
+  console.log('  Stranded scored reviews (first 15):');
+  for (const s of stranded.slice(0, 15)) {
+    console.log(`    ${s.showId}/${s.file} | outlet=${s.outlet} score=${s.score}`);
+  }
+  warn(
+    `${stranded.length} review-text file(s) on recent shows are scored AND includable but their outlet is ` +
+    `absent from reviews.json. Common causes: outlet missing from outlet-registry.json (register it in BOTH ` +
+    `repos), rebuild hasn't run since the file changed, a rebuild-side guard is excluding it, or the file is a ` +
+    `garbage stub that should be flagged/deleted. Each one is either a collected review invisible on the site ` +
+    `or junk needing triage.`
+  );
+}
+
+/**
+ * Press-night gap heuristic: an open show whose openingDate equals its
+ * previewsStartDate and has ZERO live reviews days after "opening" almost
+ * certainly has a first-performance date recorded as the opening date —
+ * the real press night is later, and until it's fixed the site (and the
+ * review-count census) expects reviews that cannot exist yet.
+ *
+ * Incident (2026-08-02): Death Note Barbican showed "0 reviews (expected
+ * ~11)" for 3 days because openingDate=previews start (Jul 30); the real
+ * press night was Aug 11. Same class previously hit Off-Broadway shows
+ * (memory/feedback_off_broadway_opening_date_gap).
+ */
+function validatePressNightGaps(shows) {
+  info('Checking for probable press-night date gaps (openingDate == previews start, 0 reviews)...');
+  const reviewsPath = path.join(DATA_DIR, 'reviews.json');
+  let liveShowIds = new Set();
+  try {
+    const raw = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
+    const arr = Array.isArray(raw) ? raw : (raw.reviews || []);
+    liveShowIds = new Set(arr.map((r) => r && r.showId).filter(Boolean));
+  } catch {
+    info('reviews.json unreadable, skipping');
+    return;
+  }
+
+  const MIN_DAYS = 3;
+  const MAX_DAYS = 45;
+  const now = Date.now();
+  const suspects = [];
+  for (const s of shows) {
+    if (s.status !== 'open') continue;
+    if (!s.openingDate || !s.previewsStartDate || s.openingDate !== s.previewsStartDate) continue;
+    const t = new Date(s.openingDate).getTime();
+    if (!Number.isFinite(t)) continue;
+    const daysSince = (now - t) / 86400000;
+    if (daysSince < MIN_DAYS || daysSince > MAX_DAYS) continue;
+    if (liveShowIds.has(s.id)) continue;
+    suspects.push({ id: s.id, openingDate: s.openingDate, daysSince: Math.round(daysSince) });
+  }
+
+  if (suspects.length === 0) {
+    ok('No probable press-night date gaps');
+    return;
+  }
+  for (const s of suspects) {
+    warn(
+      `${s.id}: open ${s.daysSince}d with 0 reviews and openingDate == previewsStartDate (${s.openingDate}). ` +
+      `The recorded opening date is probably the first PERFORMANCE, not press night — verify the real press ` +
+      `night (Playbill/official site) and set openingDate to it (keep previewsStartDate as the first performance).`
+    );
+  }
+}
+
 function validateReviewTextQuality(shows) {
   info('Checking review text quality (garbage detection)...');
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -4655,6 +4803,10 @@ function runValidation() {
   validateReviewTextDuplicates(shows);
   console.log('');
   validateUnscoredReviewTexts();
+  console.log('');
+  validateStrandedScoredReviews(shows);
+  console.log('');
+  validatePressNightGaps(shows);
   console.log('');
   validateNoHardcodedOutletLists();
   console.log('');

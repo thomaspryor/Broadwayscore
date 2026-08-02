@@ -16,6 +16,7 @@ import json
 import base64
 import datetime
 import pathlib
+import subprocess
 
 # Mac epoch: Jan 1, 2001 00:00:00 UTC
 # Unix epoch: Jan 1, 1970 00:00:00 UTC
@@ -582,7 +583,6 @@ def main():
     dry_run = "--dry-run" in sys.argv
 
     if auto_push or dry_run:
-        import subprocess
         import tempfile
 
         # ---- Build bundles (bin-pack outlets into ≤48KB chunks) ----

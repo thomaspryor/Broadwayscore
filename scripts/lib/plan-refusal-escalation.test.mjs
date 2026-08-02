@@ -4,6 +4,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { buildEscalationCard } = require('./plan-refusal-escalation.js');
+const { evaluateVerifiability } = require('./verify-gate.js');
 
 test('buildEscalationCard requires an issue number', () => {
   assert.throws(() => buildEscalationCard({}), /issueNumber/);
@@ -43,4 +44,18 @@ test('buildEscalationCard truncates very long fields instead of blowing up the c
   const card = buildEscalationCard({ diagnosis: {}, planReason: longReason, issueNumber: 7 });
   assert.ok(card.notes.length < longReason.length + 500);
   assert.match(card.notes, /…/);
+});
+
+// Regression: bsc-next.js refuses to dispatch a 'Not started' backlog card
+// unless evaluateVerifiability() reports armed:true (real command OR
+// VERIFY: owner-judgment). An unarmed card silently reproduces the exact
+// "files something, nothing ever picks it up" dead end this feature exists
+// to close — ship-check finding (2026-08-02): the original notes cited
+// `gh issue view N` as the acceptance criteria, which isn't a SAFE_CHECK_FORMS
+// command, so the card would have been filed but never auto-dispatched.
+test('buildEscalationCard notes are armed for bsc-next dispatch', () => {
+  const card = buildEscalationCard({ diagnosis: {}, planReason: 'x', issueNumber: 1 });
+  const verdict = evaluateVerifiability(card.notes);
+  assert.equal(verdict.armed, true);
+  assert.equal(verdict.ownerJudgment, true);
 });

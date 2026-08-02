@@ -204,13 +204,10 @@ const UNFOLDED_BASELINE = new Set([
   // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
   // ASCII by construction, not a show title. See inline comment at the call site.
   'autonomous-ui-capture.js',
-  // hay (review fullText) is compared against ownVenueSlug, which is built by
-  // an UNFOLDED venueSlug() in two files OUTSIDE scripts/lib (audit-cross-
-  // production.js, audit-review-url-clusters.js). Folding only this side would
-  // desync the pairing and break today's coincidentally-working accented-venue
-  // matches. Needs a coordinated fix across all three files — tracked
-  // separately, not part of task #760. See inline comment at the call site.
-  'cross-production-guards.js',
+  // cross-production-guards.js FIXED under task #783: hay now folds via
+  // foldDiacritics before the ASCII strip, matched against venue-
+  // classification.js's shared venueSlug() (also folded) — the two audit
+  // scripts that used to duplicate an unfolded venueSlug() now import it too.
   // response is an LLM's YES/NO answer text, not a show title. See inline
   // comment at the call site.
   'page-validator.js',
@@ -338,6 +335,8 @@ describe('structural guard: no NEW unfolded title matcher', () => {
       'title-match.js', 'rss-discovery.js', 'omc-discovery.js', 'theatermania-discovery.js',
       'show-score-discover.js', 'dtli-homepage-scan.js', 'venue-aliases.js',
       'creative-team-verify.js', 'precursor-wikipedia.js', 'deduplication.js',
+      // task #783
+      'cross-production-guards.js', 'venue-classification.js',
     ];
     for (const f of fixed) {
       assert.ok(!unfolded.includes(f), `${f} regressed: it lost its diacritic fold`);
