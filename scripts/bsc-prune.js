@@ -120,7 +120,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // tabs" — the owner sees the workspace count drop overnight and otherwise
   // has no record of who closed what. Never fatal: a ledger write failure must
   // not fail a sweep that already did its real work.
-  if (!dryRun) {
+  // Skip the write when the sweep was a NO-OP (nothing closed or skipped):
+  // the scheduled auto-prune tick (owner escalation 2026-08-02) runs every
+  // 5 min, and an unconditional write would add ~288 empty lines/day to the
+  // ledger for zero digest value (autonomous-email sums `closed`, so no-op
+  // entries contribute nothing).
+  if (!dryRun && (closed.length || skipped.length)) {
     try { appendLedgerEntryFn({ event: 'prune', taskId: 'sweep', closed: closed.length, skipped: skipped.length }); }
     catch (e) { console.error(`[bsc-prune] WARN dispatch-ledger prune write failed (non-fatal): ${e.message}`); }
   }
