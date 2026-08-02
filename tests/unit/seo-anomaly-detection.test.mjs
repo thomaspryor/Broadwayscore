@@ -16,7 +16,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { detectAnomalies, detectCWVAnomalies } = require('../../scripts/check-seo-health.js');
-const { findCWVFieldAcknowledgment } = require('../../scripts/lib/seo-cwv-ack.js');
+const { findCWVFieldAcknowledgment, ACKNOWLEDGED_CWV_FIELD_REGRESSIONS } = require('../../scripts/lib/seo-cwv-ack.js');
 const HOST = 'https://broadwayscorecard.com';
 
 // recent4 = last 4 entries before the new snapshot is pushed
@@ -246,7 +246,7 @@ describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
     assert.strictEqual(errors.length, 1, `one origin measurement must yield one error, got ${errors.length}`);
     assert.strictEqual(errors[0].type, 'cwv_lcp_absolute');
     assert.strictEqual(errors[0].scope, 'origin');
-    assert.match(errors[0].message, /origin-wide/);
+    assert.match(errors[0].message, /^SITE-WIDE:/);
   });
 
   test('the per-page LCP threshold anomaly is not repeated for every origin-scoped page', () => {
@@ -260,7 +260,7 @@ describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
     const hamilton = issues.find(i => i.type === 'cwv_lighthouse_low' && i.message.includes('/show/hamilton'));
     assert.ok(hamilton);
     assert.strictEqual(hamilton.severity, 'warning', 'an origin number cannot escalate an individual page');
-    assert.match(hamilton.message, /origin-level, not \/show\/hamilton's/);
+    assert.match(hamilton.message, /site-wide slowdown is reported separately/);
   });
 
   test('a genuine page-level field breach still escalates to error', () => {
@@ -274,7 +274,7 @@ describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
     const issues = detectCWVAnomalies(mixed, []);
     const lh = issues.find(i => i.type === 'cwv_lighthouse_low' && i.message.includes('/some-page'));
     assert.strictEqual(lh.severity, 'error', 'page-level breach + low lab score is a real page problem');
-    assert.match(lh.message, /\+ field LCP 4200ms over 2500ms/);
+    assert.match(lh.message, /AND real visitors' LCP is 4200ms over the 2500ms target/);
   });
 
   test('crossing the CrUX sampling floor does not invent an LCP regression', () => {
@@ -298,9 +298,13 @@ describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
     );
     assert.strictEqual(westEndRegression, undefined, 'a measurement swap is not a regression');
 
-    // The pages that stayed origin-scoped are still compared normally.
-    const homeRegression = issues.find(i => i.type === 'cwv_lcp_regression' && / on \/:/.test(i.message));
-    assert.ok(homeRegression, 'same-scope pages must still report a real 900ms → 2400ms regression');
+    // The real 900ms → 2400ms move on the origin cohort is still reported — once,
+    // at origin scope, rather than repeated for each page that shares the number.
+    const originRegression = issues.find(i => i.type === 'cwv_lcp_regression' && i.scope === 'origin');
+    assert.ok(originRegression, 'the real origin-level regression must still be reported');
+    assert.match(originRegression.message, /2400ms \(was 900ms\)/);
+    assert.strictEqual(issues.filter(i => i.type === 'cwv_lcp_regression').length, 1,
+      'and exactly once — not once per page sharing the measurement');
   });
 
   test('a real regression within page-level data still fires', () => {
@@ -317,5 +321,89 @@ describe('detectCWVAnomalies — origin-fallback field data (#419)', () => {
     const issues = detectCWVAnomalies(current, [prior, prior]);
     const reg = issues.find(i => i.type === 'cwv_lcp_regression' && i.message.includes('/b'));
     assert.ok(reg, '/b stayed page-level and genuinely regressed 1500ms → 2200ms');
+  });
+});
+
+/**
+ * Gaps the /ship-check reviewers found in the first cut of the #419 fix.
+ * Each test pins a specific under-alert or duplicate-alert they demonstrated.
+ */
+describe('detectCWVAnomalies — reviewer-found gaps (#419 round 2)', () => {
+  test('a null-LCP origin record cannot swallow a real breach reported by its sibling', () => {
+    // PSI's origin_fallback marker bypasses triple-grouping, so origin-scoped records
+    // can disagree. Reading metrics off originScoped[0] alone silenced all three checks.
+    const cwv = [
+      { url: `${HOST}/a`, originFallback: true, lcp: null, inp: null, cls: null, performanceScore: 60 },
+      { url: `${HOST}/b`, originFallback: true, lcp: 3000, inp: 600, cls: 0.3, performanceScore: 60 },
+    ];
+    const issues = detectCWVAnomalies(cwv, []);
+    assert.ok(issues.find(i => i.type === 'cwv_lcp_absolute'), 'a 3000ms origin LCP must still be reported');
+    assert.ok(issues.find(i => i.type === 'cwv_inp_absolute'), 'a 600ms origin INP must still be reported');
+    assert.ok(issues.find(i => i.type === 'cwv_cls_absolute'), 'a 0.3 origin CLS must still be reported');
+    assert.ok(issues.some(i => i.severity === 'error'), 'lab-low + breached origin field is still a real error');
+  });
+
+  test('origin INP and CLS breaches each emit exactly one anomaly, not one per page', () => {
+    const cwv = [
+      { url: `${HOST}/`, lcp: 1000, inp: 600, cls: 0.3, performanceScore: 90 },
+      { url: `${HOST}/a`, lcp: 1000, inp: 600, cls: 0.3, performanceScore: 90 },
+      { url: `${HOST}/b`, lcp: 1000, inp: 600, cls: 0.3, performanceScore: 90 },
+    ];
+    const issues = detectCWVAnomalies(cwv, []);
+    assert.strictEqual(issues.filter(i => i.type === 'cwv_inp_absolute').length, 1);
+    assert.strictEqual(issues.filter(i => i.type === 'cwv_cls_absolute').length, 1);
+  });
+
+  test('a site-wide LCP regression is one digest line, not one per origin-scoped page', () => {
+    const week = (lcp) => [
+      { url: `${HOST}/`, lcp, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/a`, lcp, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/b`, lcp, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/c`, lcp, inp: 112, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/d`, lcp, inp: 112, cls: 0, performanceScore: 90 },
+    ];
+    const prior = { coreWebVitals: week(1467) };
+    const issues = detectCWVAnomalies(week(2200), [prior, prior]);
+    const regressions = issues.filter(i => i.type === 'cwv_lcp_regression');
+    assert.strictEqual(regressions.length, 1, `one shared measurement → one line, got ${regressions.length}`);
+    assert.strictEqual(regressions[0].scope, 'origin');
+    assert.match(regressions[0].message, /^SITE-WIDE:/);
+  });
+
+  test('an origin-scoped page never carries a url-scoped acknowledgment in its message', () => {
+    // /west-end has a live ack (#368). Once its data is origin-scoped the number is
+    // not /west-end's, so quoting the ack there contradicts the same sentence.
+    const cwv = [
+      { url: `${HOST}/`, lcp: 3000, inp: 112, cls: 0, performanceScore: 60 },
+      { url: `${HOST}/west-end`, lcp: 3000, inp: 112, cls: 0, performanceScore: 60 },
+      { url: `${HOST}/off-broadway`, lcp: 3000, inp: 112, cls: 0, performanceScore: 60 },
+    ];
+    const issues = detectCWVAnomalies(cwv, []);
+    const we = issues.find(i => i.type === 'cwv_lighthouse_low' && i.message.includes('/west-end'));
+    assert.ok(we);
+    assert.doesNotMatch(we.message, /acknowledged/, 'a page-scoped ack must not annotate an origin-scoped number');
+  });
+
+  test('an origin-scoped acknowledgment downgrades the site-wide error when one is registered', () => {
+    // Proves the origin branch of the ack lookup is reachable, not dead code.
+    const withAck = ACKNOWLEDGED_CWV_FIELD_REGRESSIONS.some(a => a.url === HOST && a.metric === 'lcp');
+    assert.strictEqual(
+      findCWVFieldAcknowledgment(HOST, 'lcp') != null,
+      withAck,
+      'origin-scope lookup must resolve against a bare-origin registry key'
+    );
+  });
+
+  test('KNOWN LIMIT: a lone page below the CrUX floor is not detectable by inference', () => {
+    // Only PSI's origin_fallback marker can catch this — one page's origin value is
+    // a unique triple. Pinned so the limitation is asserted, not discovered later.
+    const cwv = [
+      { url: `${HOST}/a`, lcp: 1000, inp: 100, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/b`, lcp: 1200, inp: 110, cls: 0, performanceScore: 90 },
+      { url: `${HOST}/c`, lcp: 1467, inp: 112, cls: 0, performanceScore: 90 },
+    ];
+    const issues = detectCWVAnomalies(cwv, []);
+    assert.strictEqual(issues.filter(i => i.scope === 'origin').length, 0,
+      'no repeated triple → nothing is classified origin; behaviour matches pre-fix');
   });
 });

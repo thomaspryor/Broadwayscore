@@ -70,6 +70,14 @@ on:
       # re-excluded by the next rebuild — the +/-150/day exact-revert flap. Tests
       # live in tests/unit-test-manifest.txt; these are path-listed so a solo edit
       # to the writer, the detector, or the watermark gate triggers CI.
+      # SEO health alerting (task #419): check-seo-health.js turns PageSpeed results
+      # into anomalies, and an 'error' severity auto-creates a CRITICAL Notion card.
+      # Its scope/severity logic is covered by tests/unit/seo-*.test.mjs, but without
+      # these path entries a solo edit to the script or its lib gets ZERO CI — the
+      # allow-list failure mode in memory/feedback_test_yml_push_path_allowlist.md.
+      - 'scripts/check-seo-health.js'
+      - 'scripts/lib/seo-cwv-field-scope.js'
+      - 'scripts/lib/seo-cwv-ack.js'
       - 'scripts/extract-dtli-reviews.js'
       - 'scripts/lib/corpus-determinism.js'
       - 'scripts/audit-corpus-determinism.js'

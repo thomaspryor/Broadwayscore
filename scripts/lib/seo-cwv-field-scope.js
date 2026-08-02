@@ -20,25 +20,69 @@
  *      URL, so a single site-wide number escalates N pages to `error` (N CRITICAL
  *      cards) for one root cause.
  *
- * Detection: within one run we fetch several URLs. Origin-fallback records are
- * byte-identical by construction — same lcp, same inp, same cls — because they
- * are literally the same origin measurement. Two genuinely distinct pages do not
- * produce identical CrUX percentiles across all three metrics. So a field triple
- * shared by 2+ URLs in the same run is the origin's; a unique triple is the
- * page's own. PSI's `origin_fallback` boolean is honoured when present, but the
- * inference does not depend on it — it is derived from data we already store,
- * which is why it can be validated against the existing history file.
+ * HOW SCOPE IS DECIDED, strongest signal first:
  *
- * A single-URL run cannot be disambiguated; those return 'unknown', which every
- * caller must treat exactly as it treated un-annotated data before.
+ *   1. PSI's own `origin_fallback` boolean, when the fetch layer captured it.
+ *      This is evidence, not inference, and always wins.
+ *   2. Otherwise, inference from the run's own shape. Origin-fallback records are
+ *      byte-identical by construction — same lcp, same inp, same cls — because
+ *      they are literally the same origin measurement. So the ONE most common
+ *      field triple in a run is the origin's, and everything else is page-level.
+ *
+ * The inference is a heuristic and is deliberately conservative, because a false
+ * 'origin' is not harmless: it makes a later real page regression look like a
+ * scope switch, which check-seo-health.js then skips. Three guards bound that:
+ *
+ *   - Strict plurality, one winner. Only the single most common triple can be the
+ *     origin. Two distinct repeated triples cannot both be "the origin" — a tie
+ *     means we cannot tell, so nobody is origin. (The old rule marked every
+ *     repeated triple as origin, which let a run carry two contradictory
+ *     "origin" values and picked whichever came first.)
+ *   - Minimum cohort. Under MIN_COHORT records the run is too small to read a
+ *     plurality from, so everything stays 'unknown'. This also covers the
+ *     partial-result case: check-seo-health.js omits URLs whose PSI call failed
+ *     and breaks the whole loop on a 429, so `records` is not guaranteed to be
+ *     the full audited set.
+ *   - Per-origin grouping. Triples are only compared between URLs on the same
+ *     host. Today CWV_PAGES is single-host, but adding a www/preview/second
+ *     property would otherwise make equal values across hosts read as one origin.
+ *
+ * Known residual risk: two same-host pages whose page-level percentiles coincide
+ * exactly on all three metrics AND outnumber the real origin group would be
+ * misread. Validated against every week in data/audit/seo-performance-history.json
+ * that has CWV data — in each, exactly one triple repeats and it is a 3-of-5 or
+ * better plurality, so no historical week is misclassified.
+ *
+ * 'unknown' means "cannot tell", and every caller must treat it exactly as it
+ * treated un-annotated data before this file existed.
  */
 
 'use strict';
 
-/** Key a record by its full field triple — the thing origin fallback duplicates. */
+// Below this many records in a run, a plurality is not meaningful — a 1-of-2
+// "most common" triple says nothing. Real runs audit 5 URLs.
+const MIN_COHORT = 3;
+
+/**
+ * Key a record by its field metrics — the thing origin fallback duplicates.
+ * Uses whatever field metrics are present rather than requiring LCP: PSI can
+ * return CLS/INP without LCP, and treating that as "no field data" made the
+ * record 'unknown' and leaked per-page CLS/INP warnings for an origin number.
+ */
 function fieldTripleKey(record) {
-  if (!record || record.lcp == null) return null;
-  return `${record.lcp}|${record.inp ?? 'n'}|${record.cls ?? 'n'}`;
+  if (!record) return null;
+  const { lcp, inp, cls } = record;
+  if (lcp == null && inp == null && cls == null) return null;
+  return `${lcp ?? 'n'}|${inp ?? 'n'}|${cls ?? 'n'}`;
+}
+
+/** Origin (scheme + host) of a record's URL; null if unparseable. */
+function urlOrigin(record) {
+  try {
+    return new URL(record.url).origin;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -51,10 +95,29 @@ function fieldTripleKey(record) {
 function annotateFieldScope(records) {
   if (!Array.isArray(records) || records.length === 0) return [];
 
-  const counts = new Map();
+  // Count triples per host, so equal values on different properties are never
+  // read as one shared origin measurement.
+  const countsByOrigin = new Map();
   for (const r of records) {
     const key = fieldTripleKey(r);
-    if (key) counts.set(key, (counts.get(key) || 0) + 1);
+    const origin = urlOrigin(r);
+    if (!key || !origin) continue;
+    if (!countsByOrigin.has(origin)) countsByOrigin.set(origin, new Map());
+    const counts = countsByOrigin.get(origin);
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+
+  // Per host, the single most common triple — only if it is a strict plurality
+  // over a large enough cohort. Ties resolve to "cannot tell", not to a guess.
+  const originKeyByHost = new Map();
+  for (const [origin, counts] of countsByOrigin) {
+    const cohort = [...counts.values()].reduce((a, b) => a + b, 0);
+    if (cohort < MIN_COHORT) continue;
+    const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+    const [topKey, topCount] = ranked[0];
+    if (topCount < 2) continue;
+    if (ranked.length > 1 && ranked[1][1] === topCount) continue; // tie → undecidable
+    originKeyByHost.set(origin, topKey);
   }
 
   return records.map((r) => {
@@ -63,10 +126,10 @@ function annotateFieldScope(records) {
       return { ...r, fieldScope: r.originFallback ? 'origin' : 'url' };
     }
     const key = fieldTripleKey(r);
-    if (!key) return { ...r, fieldScope: 'unknown' };
-    // One URL in the run tells us nothing: a lone triple is unique either way.
-    if (records.length < 2) return { ...r, fieldScope: 'unknown' };
-    return { ...r, fieldScope: counts.get(key) > 1 ? 'origin' : 'url' };
+    const origin = urlOrigin(r);
+    if (!key || !origin) return { ...r, fieldScope: 'unknown' };
+    if (!originKeyByHost.has(origin)) return { ...r, fieldScope: 'unknown' };
+    return { ...r, fieldScope: originKeyByHost.get(origin) === key ? 'origin' : 'url' };
   });
 }
 
@@ -90,4 +153,4 @@ function scopeChanged(scopeA, scopeB) {
   return scopeA !== scopeB;
 }
 
-module.exports = { annotateFieldScope, fieldScopeFor, scopeChanged, fieldTripleKey };
+module.exports = { annotateFieldScope, fieldScopeFor, scopeChanged, fieldTripleKey, MIN_COHORT };
