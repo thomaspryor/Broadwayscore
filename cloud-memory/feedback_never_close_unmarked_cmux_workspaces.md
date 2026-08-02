@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 53acbb0e-e0c9-444c-9fdd-991f191cdf00
+  modified: 2026-08-02T23:09:54.605Z
 ---
 
 On 2026-07-14 I closed 11 "idle" cmux workspaces (no running claude process, associated
@@ -66,5 +67,13 @@ lacked. Architecture:
   ~/.config/cmux/cmux.json.bak-* if anything breaks.
 Do NOT remove the Stop-hook trigger or "re-simplify" bsc-prune's guards — each
 one maps to a real incident (2026-07-14/15/21).
+
+2026-08-02 owner carve-out (duplicate tabs): when TWO live 🤖 auto-dispatched
+workspaces are confirmed running the SAME task (same task id, verified via
+dispatch-ledger + live process check), closing the redundant copy is LOW-STAKES —
+owner said "why did I need to make a call?" after being asked. Recommend-and-act:
+state which copy is being closed and why (keep the one further along / the one
+the owner opened), prefix `CMUX_CLOSE_OK=1`, and report it. Do NOT extend this
+to unmarked non-duplicate tabs — those still always go to the owner.
 
 Related: [[feedback_absorb_gate_ceremony]]

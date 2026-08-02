@@ -301,12 +301,19 @@ async function main() {
     }
 
     if (result.error || !result.text) {
-      console.log(`  ✗ ${result.error || 'no text extracted'}`);
+      const reason = result.error || 'no text extracted';
+      console.log(`  ✗ ${reason}`);
       stats.dead++;
-      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
+      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
       if (!dryRun) {
         const data = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
-        data.incompleteReason = `wsj-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})`;
+        // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
+        // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
+        // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
+        // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
+        // real enum value instead, with our diagnostic in incompleteDetail.
+        data.incompleteReason = reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content';
+        data.incompleteDetail = `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`;
         fs.writeFileSync(c.filePath, JSON.stringify(data, null, 2) + '\n');
       }
       continue;

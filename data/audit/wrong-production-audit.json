@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T22:35:15.495Z",
+  "timestamp": "2026-08-02T23:03:29.587Z",
   "stats": {
     "totalReviews": 41307,
     "alreadyFlagged": 18087,
-    "dateGuardCatches": 90,
+    "dateGuardCatches": 91,
     "directorMismatch": 944,
     "tvFilmSignals": 1135,
-    "londonSignals": 786,
+    "londonSignals": 787,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3390
+    "noPublishDate": 3387
   },
   "findings": [
     {
@@ -12529,6 +12529,7 @@
     {
       "showId": "into-the-woods-2022",
       "file": "wsj--charles-isherwood.json",
+      "score": 92,
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
@@ -24061,6 +24062,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2025-05-13",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-no%C3%ABl-coward-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
