@@ -295,6 +295,15 @@ function pruneDone(opts = {}) {
     }
     if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning })) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
+    // TOCTOU guard (adversarial review, 2026-08-02): the selected flag above
+    // is a snapshot from the top-of-sweep listing — the liveness probes take
+    // seconds per workspace, and the owner can click INTO this tab in that
+    // window. Re-list immediately before the destructive close and skip if
+    // it is selected NOW. Any error re-listing = uncertainty = don't close.
+    try {
+      const fresh = listFn().find(x => x.ref === w.ref);
+      if (!fresh || fresh.selected) { skipped.push(w); continue; }
+    } catch { skipped.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
   }

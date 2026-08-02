@@ -128,6 +128,7 @@ tests/unit/detect-venue-transfers.test.mjs
 tests/unit/digest-escalation.test.mjs
 tests/unit/discover-historical-shows-category.test.mjs
 tests/unit/discover-new-shows-gates.test.mjs
+tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
 tests/unit/display-field-artifacts.test.mjs
 tests/unit/dl-distinguished-performance-chip.test.mjs
@@ -140,6 +141,7 @@ tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/exclusion-logger.test.mjs
 tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
+tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs
@@ -149,6 +151,7 @@ tests/unit/flagged-recovery.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
 tests/unit/gather-reviews-collision.test.mjs
+tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/gemini-thinking-budget-guard.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
@@ -301,6 +304,9 @@ tests/unit/score-input-validator.test.mjs
 tests/unit/score-reviews-llm-skip.test.mjs
 tests/unit/score-routing.test.mjs
 tests/unit/scoring-model-not-eol.test.mjs
+tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
+tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
+tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs

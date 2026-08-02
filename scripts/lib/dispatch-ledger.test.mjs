@@ -320,6 +320,18 @@ test('pruneClosedEntry only journals workspaces bsc-next actually launched', () 
   assert.equal(pruneClosedEntry({ ref: 'workspace:44', title: 'hand-opened tab' }, entries), null);
 });
 
+// Scheduled-tick idempotence (adversarial review 2026-08-02): a ✅ workspace
+// bsc-prune skips every sweep must journal at most ONE terminal breadcrumb
+// per launch, not one per 5-min tick.
+test('pruneClosedEntry: already-terminal ref journals nothing; a re-dispatch after the terminal journals again', () => {
+  const base = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  const first = pruneClosedEntry({ ref: 'workspace:1', title: '✅ done' }, base);
+  assert.equal(first.event, 'prune-closed');
+  // Same launch, terminal already recorded → dedup to null
+  const withTerminal = base.concat([{ ...first, ts: new Date(Date.parse(AFTER) + 1000).toISOString() }]);
+  assert.equal(pruneClosedEntry({ ref: 'workspace:1', title: '✅ done' }, withTerminal), null);
+});
+
 test('parkedTasks: vanished parks, unpark and a later launch both clear it', () => {
   const v = { event: 'vanished', taskId: '1', workspaceRef: 'workspace:1', ts: AFTER };
   assert.equal(parkedTasks([v]).has('1'), true);

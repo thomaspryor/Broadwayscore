@@ -133,6 +133,7 @@ test('idle workspace already recorded dead in the ledger: no duplicate breadcrum
       { event: 'dead', taskId: '297', workspaceRef: 'workspace:227' },
     ],
     appendLedgerEntry: (e) => appended.push(e),
+    acquireRunLock: () => true, releaseRunLock: () => {},
   };
   const origLog = console.log;
   console.log = () => {};
@@ -156,6 +157,7 @@ test('a sweep with activity still journals the prune counts entry (S4-T3 morning
     terminalSurfaceAliveIn: () => false,
     readLedgerEntries: () => [],
     appendLedgerEntry: (e) => appended.push(e),
+    acquireRunLock: () => true, releaseRunLock: () => {},
   };
   const origLog = console.log;
   console.log = () => {};
@@ -278,4 +280,27 @@ test('sweepVanished: a failed re-validate read fails closed (no park)', () => {
   assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
   assert.deepEqual(appended, [], 'a stale/failed read must never park');
   assert.deepEqual(parked, []);
+});
+
+// Scheduled-tick concurrency (adversarial review 2026-08-02): only one REAL
+// sweep at a time; a crashed holder self-heals via staleness.
+test('acquireRunLock: second acquire is refused while fresh, stale lock is taken over, release frees it', async () => {
+  const { acquireRunLock, releaseRunLock } = require('./bsc-prune.js');
+  const { mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { tmpdir } = await import('node:os');
+  const base = mkdtempSync(join(tmpdir(), 'bsc-prune-lock-'));
+  const lockDir = join(base, 'lock');
+  try {
+    assert.equal(acquireRunLock(lockDir, 60_000), true);
+    assert.equal(acquireRunLock(lockDir, 60_000), false); // fresh → refused
+    // stale meta → takeover
+    writeFileSync(join(lockDir, 'meta.json'), JSON.stringify({ pid: 1, ts: Date.now() - 120_000 }));
+    assert.equal(acquireRunLock(lockDir, 60_000), true);
+    releaseRunLock(lockDir);
+    assert.equal(acquireRunLock(lockDir, 60_000), true); // released → free
+    // corrupt meta → 'error' (proceed unlocked, never permanently disabled)
+    writeFileSync(join(lockDir, 'meta.json'), 'not json');
+    assert.equal(acquireRunLock(lockDir, 60_000), 'error');
+  } finally { rmSync(base, { recursive: true, force: true }); }
 });
