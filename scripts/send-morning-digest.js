@@ -357,7 +357,10 @@ async function main() {
         message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.` });
     }
     let tasks = [];
-    try { tasks = require('./bsc-next.js').loadTasks(); } catch { /* plan degrades to needs-card */ }
+    // loadTasks REQUIRES the shared task directory — a bare call silently
+    // returns [] (readdirSync(undefined) swallowed), which disabled dedup on
+    // the first live run (Codex finding, 2026-08-02).
+    try { const bn = require('./bsc-next.js'); tasks = bn.loadTasks(bn.TASKS_DIR); } catch { /* plan degrades to needs-card */ }
     autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks }), dryRun, log: (m) => console.log(m) });
     const d = autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length;
     console.log(`[digest] autofix: ${autofixRows.length} issue(s) — ${d} being worked, ${autofixRows.length - d} queued`);

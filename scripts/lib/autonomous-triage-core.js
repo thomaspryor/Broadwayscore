@@ -36,6 +36,12 @@ const SAFE_CHECK_FORMS = [
   { re: /^npx tsc --noEmit$/ },
   { re: /^npx next lint$/ },
   { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/', 'src/', 'scripts/'] },
+  // Digest-autofix cards (owner mandate 2026-08-02): read-only row-absence
+  // probe against the daily health snapshot. The row name is a single
+  // base64url token — no spaces or shell metachars can appear, which both
+  // satisfies this injection gate and survives cardCheckArgv's quote-free
+  // whitespace split (scripts/lib/autonomous-checks.js).
+  { re: /^node scripts\/check-health-row-absent\.js --row-b64 ([A-Za-z0-9_-]{1,200})$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -65,7 +71,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests|src|scripts path>`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, or `node scripts/check-health-row-absent.js --row-b64 <base64url row name>` (health-digest rows only)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
