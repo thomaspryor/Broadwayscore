@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-01T07:38:33.696Z",
+  "lastChecked": "2026-08-02T07:40:18.115Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "8 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (7d); UX audit #326: watchlist-grid delete icon color fix blocked  (5d); Scraping v2: T4 was a yield regression — reviews.php is not  (1d)"
+      "message": "9 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Health-digest warning triage: 3 real breakages fixed (JSON-L (8d); UX audit #326: watchlist-grid delete icon color fix blocked  (6d); Scraping v2: T4 was a yield regression — reviews.php is not  (2d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "22 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (9d); Trainspotting: only 4 reviews on site + email said 7 (invest (9d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (8d)"
+      "message": "33 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (10d); Trainspotting: only 4 reviews on site + email said 7 (invest (10d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (9d)"
     }
   ]
 }
