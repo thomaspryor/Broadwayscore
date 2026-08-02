@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T09:25:21.361Z",
+  "timestamp": "2026-08-02T10:16:19.694Z",
   "stats": {
-    "totalReviews": 41265,
-    "alreadyFlagged": 18038,
+    "totalReviews": 41287,
+    "alreadyFlagged": 18082,
     "dateGuardCatches": 87,
     "directorMismatch": 941,
-    "tvFilmSignals": 1128,
-    "londonSignals": 784,
-    "offBroadwaySignals": 467,
+    "tvFilmSignals": 1130,
+    "londonSignals": 785,
+    "offBroadwaySignals": 469,
     "yearMismatch": 87,
-    "noPublishDate": 3434
+    "noPublishDate": 3395
   },
   "findings": [
     {
@@ -2876,6 +2876,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "westendtheatre--west-end-theatre.json",
+      "publishDate": null,
+      "url": "https://www.westendtheatre.com/64763/shows/brainiac-live/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -26719,6 +26737,20 @@
       ]
     },
     {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 79,
+      "publishDate": "2026-06-22",
+      "url": "https://www.timeout.com/london/theatre/the-traitors-live-experience-1-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 78,
@@ -31339,6 +31371,20 @@
       ]
     },
     {
+      "showId": "birthday-candles-2022",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 62,
+      "publishDate": "2022-04-16",
+      "url": "http://www.theaterscene.net/plays/broadway-plays/birthday-candles/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "black-swan-regional-2026",
       "file": "playbill--gabby.json",
       "publishDate": "2026-06-16",
@@ -31586,6 +31632,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "2009-10-25",
+      "url": "https://www.talkinbroadway.com/world/BrightonBeachMemoirs.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
         }
       ]
     },
