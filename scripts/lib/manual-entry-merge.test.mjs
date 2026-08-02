@@ -72,6 +72,44 @@ test('LIVE CASE iceboy-regional-2026: byline disagreement falls back to URL', ()
   assert.equal(res.matchedByUrl, 1, 'reported as a URL-matched merge, not a silent append');
 });
 
+test('LIVE CASE iceboy Sun-Times: URL match works even when outletId drifts', () => {
+  // The canonical registry entry lists suntimes.com; the article lives on
+  // chicago.suntimes.com, so provisionalOutletIdFromHost minted a second
+  // outlet. The human's 65 was meant to replace the pipeline's 75 — with an
+  // outlet-scoped URL fallback both survived and the review double-counted.
+  const url = 'https://chicago.suntimes.com/theater/2026/06/30/iceboy-review-megan-mullally';
+  const reviews = [
+    { showId: 'iceboy-regional-2026', outletId: 'suntimes', criticName: 'Steven Oxman',
+      assignedScore: 75, scoreSource: 'originalScore-priority0', url },
+  ];
+  const manual = [
+    { showId: 'iceboy-regional-2026', outletId: 'chicago-sun-times', criticName: 'Steven Oxman',
+      assignedScore: 65, scoreSource: 'human-review', manualEntry: true, url },
+  ];
+
+  const res = mergeManualEntries(reviews, manual, normalizeUrl);
+
+  assert.equal(reviews.length, 1, 'one article = one review even across outletId drift');
+  assert.equal(reviews[0].assignedScore, 65, "the human's correction wins");
+  assert.equal(res.matchedCrossOutlet, 1, 'reported as a cross-outlet URL merge');
+  assert.equal(res.appended, 0);
+});
+
+test('cross-outlet URL match does not fire across DIFFERENT shows', () => {
+  const url = 'https://example.com/shared';
+  const reviews = [
+    { showId: 'show-a', outletId: 'x', criticName: 'Someone', assignedScore: 70, url },
+  ];
+  const manual = [
+    { showId: 'show-b', outletId: 'y', criticName: 'Other', assignedScore: 90,
+      manualEntry: true, url },
+  ];
+
+  mergeManualEntries(reviews, manual, normalizeUrl);
+
+  assert.equal(reviews.length, 2, 'a different show is a different review — must append');
+});
+
 test('a genuinely pipeline-less manual review is still appended', () => {
   const reviews = [
     { showId: 's', outletId: 'a', criticName: 'A Critic', assignedScore: 50, url: 'https://a.com/1' },

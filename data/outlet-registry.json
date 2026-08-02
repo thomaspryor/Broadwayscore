@@ -3003,11 +3003,16 @@
       "aliases": [
         "chicago-sun-times",
         "chicago sun-times",
-        "chicagosuntimes"
+        "chicagosuntimes",
+        "suntimes"
       ],
       "domain": "suntimes.com",
       "region": "chicago",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "domains": [
+        "suntimes.com",
+        "chicago.suntimes.com"
+      ]
     },
     "edge-media-network": {
       "displayName": "Edge Media Network",
@@ -9886,14 +9891,6 @@
       ],
       "domain": "stagedoorjoe.co.uk"
     },
-    "suntimes": {
-      "displayName": "Suntimes",
-      "tier": 3,
-      "aliases": [
-        "suntimes"
-      ],
-      "domain": "chicago.suntimes.com"
-    },
     "seeing-dance": {
       "displayName": "Seeing Dance",
       "tier": 3,
@@ -10916,6 +10913,7 @@
     "jewish voice and opinion": "the-jewish-voice-and-opinion",
     "jewish voice & opinion": "the-jewish-voice-and-opinion",
     "the-jewish-voice-opinion": "the-jewish-voice-and-opinion",
-    "jewishvoiceandopinion": "the-jewish-voice-and-opinion"
+    "jewishvoiceandopinion": "the-jewish-voice-and-opinion",
+    "suntimes": "chicago-sun-times"
   }
 }
