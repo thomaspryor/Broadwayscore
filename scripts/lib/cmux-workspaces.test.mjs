@@ -97,9 +97,9 @@ test('pruneDone: skips mid-turn tabs; closes only dead ones; throw = alive', () 
   const calls = [];
   const { closed, skipped } = cw.pruneDone({
     listWorkspaces: () => [
-      { ref: 'workspace:1', title: '✅ waiting tab' },
-      { ref: 'workspace:2', title: '✅ dead tab' },
-      { ref: 'workspace:3', title: '✅ cmux-error tab' },
+      { ref: 'workspace:1', title: '✅ 🤖 waiting tab' },
+      { ref: 'workspace:2', title: '✅ 🤖 dead tab' },
+      { ref: 'workspace:3', title: '✅ 🤖 cmux-error tab' },
       { ref: 'workspace:4', title: 'unmarked live tab' },
     ],
     claudeAliveIn: ref => {
@@ -132,8 +132,8 @@ test('pruneDone: does NOT close when the second independent signal says alive, e
   const calls = [];
   const { closed, skipped } = cw.pruneDone({
     listWorkspaces: () => [
-      { ref: 'workspace:1', title: '✅ desynced tab (primary says dead, surface says alive)' },
-      { ref: 'workspace:2', title: '✅ truly dead tab (both signals agree)' },
+      { ref: 'workspace:1', title: '✅ 🤖 desynced tab (primary says dead, surface says alive)' },
+      { ref: 'workspace:2', title: '✅ 🤖 truly dead tab (both signals agree)' },
     ],
     claudeAliveIn: () => false, // primary registry: both look dead
     terminalSurfaceAliveIn: ref => ref === 'workspace:1', // surface registry disagrees on workspace:1
@@ -367,10 +367,10 @@ test('pruneDone: skips ✅🤖 tab when claudeMidTurnIn throws (uncertainty must
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
-// Owner escalation #2 (2026-08-02): owner-opened ✅ tabs idle at the prompt
-// now close too — the July protection survives as focused/mid-turn/unmarked
-// skips, not as a blanket non-🤖 exemption.
-test('pruneDone: non-🤖 ✅ tab idle at the prompt CLOSES (owner escalation 2026-08-02)', () => {
+// Owner rule #3 (2026-08-02, supersedes same-day escalation #2): auto-close
+// is limited to 🤖 auto-dispatched tabs. Owner-opened ✅ tabs are never
+// closed autonomously — idle, mid-turn, or dead.
+test('pruneDone: non-🤖 ✅ tab idle at the prompt is SKIPPED (owner rule 2026-08-02: 🤖-only)', () => {
   const cw = require('./cmux-workspaces.js');
   const calls = [];
   const { closed, skipped } = cw.pruneDone({
@@ -380,9 +380,23 @@ test('pruneDone: non-🤖 ✅ tab idle at the prompt CLOSES (owner escalation 20
     claudeMidTurnIn: () => false,
     closeWorkspace: ref => calls.push(ref),
   });
-  assert.deepEqual(calls, ['workspace:1']);
-  assert.deepEqual(closed.map(w => w.ref), ['workspace:1']);
-  assert.deepEqual(skipped, []);
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: non-🤖 ✅ tab with a fully DEAD claude is still skipped (owner-opened tabs are hands-off)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages', selected: false }],
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
 test('pruneDone: non-🤖 ✅ tab mid-turn stays skipped', () => {
