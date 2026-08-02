@@ -156,8 +156,13 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
     try {
+      // P1, not P2: notion-tasks-sync pull mirrors ONLY P0/P1 cards into the
+      // shared task list — a P2 card never gets a task number, so it can
+      // never dispatch and gets re-filed as a duplicate every morning
+      // (live-run finding 2026-08-02). P1 also matches the owner rule that
+      // P0/P1 auto-dispatch at creation.
       execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', row.title,
-        '--priority', 'P2', '--status', 'Not started',
+        '--priority', 'P1', '--status', 'Not started',
         '--notes', buildCardNotes(row),
       ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
       row.state = 'card-filed';
