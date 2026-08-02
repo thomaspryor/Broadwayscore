@@ -138,6 +138,58 @@ test('no history, however erratic, buys unlimited silence — threshold is cappe
   const s = computeArmState(ancient, { asOf: '2026-08-02' });
   assert.equal(s.verdict, 'dead', `arm dead 200d must alert regardless of an ancient gap, got ${s.verdict}`);
   assert.ok(s.threshold <= 45, `threshold must be capped, got ${s.threshold}`);
+  assert.equal(s.thresholdCapped, true, 'a capped arm must say so, so the alert can word itself truthfully');
+});
+
+/** An arm yielding every `every` days, then silent for `quiet` days. */
+function cadenceThenSilence(every, yields, quiet, asOf = '2026-08-02') {
+  const end = Date.parse(`${asOf}T00:00:00Z`);
+  const m = new Map();
+  for (let k = yields; k >= 1; k -= 1) m.set(new Date(end - (quiet + (k - 1) * every) * DAY).toISOString().slice(0, 10), 3);
+  for (let i = quiet - 1; i >= 0; i -= 1) {
+    const key = new Date(end - i * DAY).toISOString().slice(0, 10);
+    if (!m.has(key)) m.set(key, 0);
+  }
+  return m;
+}
+
+test('a capped alert never states arithmetic the reader can check and find false', () => {
+  // The counterpart the cap made necessary: when the ceiling binds, the reason
+  // used to read "threshold 45d = longest quiet gap 59d + 2" — visibly wrong,
+  // in the one sentence that justifies paging the owner.
+  const s = computeArmState(cadenceThenSilence(60, 4, 46), { asOf: '2026-08-02' });
+  assert.equal(s.verdict, 'dead');
+  assert.equal(s.thresholdCapped, true);
+  assert.ok(
+    !s.reason.includes(`gap ${s.longestPriorGap}d + `),
+    `capped reason must not claim the derivation it did not use: ${s.reason}`
+  );
+  assert.match(s.reason, /ceiling/, `capped reason must name the ceiling: ${s.reason}`);
+});
+
+test('an arm that legitimately yields less often than the ceiling is judged by ITS ceiling', () => {
+  // The false-positive class a single global constant creates: a 60-day-cadence
+  // arm quiet 46 days is inside its own rhythm, but the 45d default calls it
+  // dead. Declaring maxQuietDays in the registry is how such an arm opts out —
+  // without weakening the bound for anything that did not declare one.
+  const days = cadenceThenSilence(60, 4, 46);
+  assert.equal(computeArmState(days, { asOf: '2026-08-02' }).verdict, 'dead', 'default ceiling still binds');
+
+  const declared = detectDeadArms(
+    [...days.entries()].map(([date, itemsFound]) => ({ arm: 'outlet:sparse', date, itemsFound })),
+    [{ id: 'outlet:sparse', kind: 'outlet', label: 'Sparse', maxQuietDays: 90 }],
+    { asOf: '2026-08-02' }
+  );
+  assert.equal(declared.states[0].verdict, 'healthy', 'a declared ceiling must let a genuinely sparse arm rest');
+  assert.equal(declared.dead.length, 0);
+});
+
+test('an explicit operator floor outranks the ceiling — the flag is not a dead control', () => {
+  // Math.min applied last silently overrode --min-streak-days: an operator
+  // raising the floor to 90 to quiet a noisy arm still got 45, with no warning.
+  const s = computeArmState(cadenceThenSilence(60, 4, 46), { asOf: '2026-08-02', minStreakDays: 90 });
+  assert.ok(s.threshold >= 90, `operator floor must win over the ceiling, got ${s.threshold}`);
+  assert.equal(s.verdict, 'healthy', 'quiet 46d is under an operator floor of 90d');
 });
 
 test('a brand-new arm with no productive day yet cannot alert', () => {
