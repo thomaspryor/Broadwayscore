@@ -109,6 +109,8 @@ async function captureUiScreenshots({ workdir, outDir, routes = DEFAULT_ROUTES }
         try {
           const res = await page.goto(base + route, { waitUntil: 'networkidle', timeout: SHOT_TIMEOUT_MS });
           if (!res || res.status() >= 400) throw new Error(`${route} returned ${res ? res.status() : 'no response'}`);
+          // route is one of our own DEFAULT_ROUTES entries ('/', '/show/hamilton') — a
+          // fixed ASCII path list we author, not a show title — no diacritic fold needed.
           const name = `${route.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home'}-${w.label}.png`;
           const file = path.join(outDir, name);
           await page.screenshot({ path: file, fullPage: true });

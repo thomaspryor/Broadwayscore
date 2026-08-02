@@ -34,6 +34,8 @@ const CURRENT_FAR_DAYS = 90;           // current show's opening this far from r
 /**
  * Normalize a title for sibling grouping (same rules as review-file-writer.js).
  */
+const { foldDiacritics } = require('./title-match');
+
 function normalizeTitle(title) {
   return String(title || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
 }
@@ -146,7 +148,7 @@ function collectSameTitleSignals(candidate, ctx) {
   // "criterion") — these overmatch unrelated URLs and would falsely link a
   // review to the wrong production. Shared with audit-cross-production.js.
   if (url && candidate.venue) {
-    const venueNorm = String(candidate.venue).toLowerCase();
+    const venueNorm = foldDiacritics(String(candidate.venue)).toLowerCase();
     // Strip generic suffixes that match many URLs.
     const stripped = venueNorm
       .replace(/\b(theatre|theater|playhouse|the)\b/g, '')

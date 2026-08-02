@@ -43,9 +43,11 @@ const STOP_WORDS = new Set([
 // Keep the 'cuckoo'-flavoured tokens only (distinctive enough singly).
 const STAGE_TRAP_TOKENS = ['cuckoo', 'cuckoos', 'cuckoonest'];
 
+const { foldDiacritics } = require('./title-match');
+
 function titleTokens(title) {
   if (!title) return [];
-  return title
+  return foldDiacritics(title)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
@@ -70,12 +72,15 @@ function extractHtmlTitle(html) {
   if (!html) return '';
   const m = html.match(/<title[^>]*>([\s\S]{0,500}?)<\/title>/i);
   if (!m) return '';
-  return m[1]
+  // Fold diacritics — an aggregator's real <title> may spell an accented show
+  // correctly while tTokens (titleTokens, folded above) is ASCII, so an
+  // unfolded pageTitle would never match at line ~158 (task #760 ship-check).
+  return foldDiacritics(m[1]
     .replace(/&amp;/g, '&')
     .replace(/&#x27;|&#39;|&apos;/g, "'")
     .replace(/&quot;/g, '"')
     .replace(/&nbsp;/g, ' ')
-    .trim()
+    .trim())
     .toLowerCase();
 }
 
@@ -92,7 +97,11 @@ const GENERIC_VENUE_TOKENS = new Set([
 ]);
 function bodyContainsVenue(html, venue) {
   if (!html || !venue) return false;
-  const v = venue.trim().toLowerCase();
+  // Fold both sides — the page body (external) and our venue name can each
+  // independently be accented or ASCII (e.g. West End's "Noël Coward
+  // Theatre"); comparing unfolded left the check unable to match either
+  // direction (task #760 ship-check).
+  const v = foldDiacritics(venue).trim().toLowerCase();
   if (!v) return false;
   // Refuse to match when the venue's distinguishing token is a generic
   // single word (avoid "Globe Theatre" → "globe" anywhere in body trick).
@@ -102,7 +111,7 @@ function bodyContainsVenue(html, venue) {
   }
   const escaped = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const re = new RegExp(`(?:^|[^a-z0-9])${escaped}(?:[^a-z0-9]|$)`, 'i');
-  return re.test(html);
+  return re.test(foldDiacritics(html));
 }
 
 function explicitUrlYear(url) {

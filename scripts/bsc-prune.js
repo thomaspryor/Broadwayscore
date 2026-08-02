@@ -75,6 +75,16 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // landing between this write and the close still sees a reconciled ref.
   // Entries are written for ✅ workspaces pruneDone may go on to SKIP (live
   // claude); that is the safe direction — a ✅ workspace must never park.
+  //
+  // ACCEPTED TRADEOFF (ship-check, Codex): writing before the close means a
+  // ✅ workspace that pruneDone skips is marked reconciled for its CURRENT
+  // launch. If its ✅ were later removed and work resumed under that same
+  // launch, an owner close would not park it. Narrow (requires un-✅-ing a
+  // marked-done tab) and self-correcting on the next dispatch, since the
+  // terminal check compares against the LAST launch's ts — a re-dispatch
+  // makes the ref parkable again. Writing after the close instead would
+  // reopen the wider race this ordering exists to prevent: a concurrent
+  // sweep seeing a closed, absent, unreconciled ref and parking finished work.
   let entriesBeforePrune;
   try { entriesBeforePrune = readLedgerEntriesFn(); } catch { entriesBeforePrune = []; }
   if (!dryRun) {
@@ -195,6 +205,29 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   if (dryRun) { console.log('  [dry-run] no ledger write, no Notion update'); return; }
 
   for (const v of vanished) {
+    // Re-read and re-validate immediately before the append (ship-check P0,
+    // Codex). The candidate list above is a SNAPSHOT: between computing it and
+    // appending, bsc-next can dispatch this same task and append its own
+    // 'launch'. Our stale 'vanished' would then land AFTER that launch, and
+    // parkedTasks() — which replays in file order — would park a workspace the
+    // owner is actively working in. Re-deriving from fresh entries and keeping
+    // only refs that are still candidates closes the window to the width of a
+    // single appendFileSync. Also makes two concurrent prune runs idempotent:
+    // the second sees the first's 'vanished' as a terminal entry and drops it.
+    let stillVanished;
+    try {
+      const fresh = readLedgerEntriesFn();
+      stillVanished = dispatchLedger
+        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs })
+        .some(f => f.workspaceRef === v.workspaceRef);
+    } catch (e) {
+      console.error(`[bsc-prune] WARN re-validate failed for ${v.workspaceRef}, skipping park: ${e.message}`);
+      continue; // fail closed — never park on a stale read
+    }
+    if (!stillVanished) {
+      console.log(`  ${v.workspaceRef} re-dispatched or already reconciled since the scan — not parking`);
+      continue;
+    }
     // Ledger first: the park must hold even if Notion is unreachable. The
     // ledger is what bsc-next actually gates on; the Notion status is the
     // owner-visible mirror of it.
