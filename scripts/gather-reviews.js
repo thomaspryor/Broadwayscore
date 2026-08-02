@@ -98,7 +98,7 @@ const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups')
 const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { searchOutletSites, selectApplicableSiteSearchOutlets } = require('./lib/site-search-discovery');
+const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -4545,42 +4545,72 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const market = isWestEnd ? 'west-end' : 'broadway';
     const alreadyFoundIds = new Set(foundReviews.map(r => (r.outletId || '').toLowerCase()));
     const knownUrlsSoFar = new Set(foundReviews.map(r => r.url).filter(Boolean));
+    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
 
-    const siteSearchIds = selectApplicableSiteSearchOutlets(market, show, alreadyFoundIds);
-
-    if (siteSearchIds.length === 0) {
-      console.log('\n[1c/4] Site Search... no applicable outlets missing');
-    } else {
-      console.log(`\n[1c/4] Site Search: ${siteSearchIds.length} outlet(s) — ${siteSearchIds.join(', ')}`);
-      try {
-        const siteSearchResults = await searchOutletSites(show.title, siteSearchIds, {
+    // Two-phase, mirroring opening-night-poller.js: free SSR outlets fire first;
+    // paid JS-rendered outlets fire only for outlets STILL missing after the SSR
+    // pass. Firing everything in one flat batch (the original version of this step)
+    // let sibling endpoints for the same outlet — e.g. free 'telegraph' (SSR) and
+    // paid 'telegraph-search' (JS) — both burn a call even when the free one had
+    // already found the review, and spent ScrapingBee budget with no cap (ship-check
+    // finding, #767).
+    const ssrIds = selectApplicableSiteSearchOutlets(market, show, alreadyFoundIds, false);
+    let siteSearchResults = [];
+    try {
+      if (ssrIds.length > 0) {
+        console.log(`\n[1c/4] Site Search (SSR): ${ssrIds.length} outlet(s) — ${ssrIds.join(', ')}`);
+        siteSearchResults = await searchOutletSites(show.title, ssrIds, {
           knownUrls: knownUrlsSoFar,
           verbose: true,
-          skipJs: !process.env.SCRAPINGBEE_API_KEY,
+          skipJs: true,
           market,
           openingDate: show.openingDate || null,
           show,
         });
-
-        health.siteSearch.searched = siteSearchIds.length;
-        health.siteSearch.hits = siteSearchResults.length;
-
-        for (const result of siteSearchResults) {
-          const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
-          const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
-          foundReviews.push({
-            showId,
-            outletId: result.outletId,
-            outlet: result.outlet || (outletMeta && outletMeta.name) || result.outletId,
-            criticName: isSingleCriticOutlet ? outletMeta.critics[0] : 'Unknown',
-            url: result.url,
-            source: 'site-search',
-          });
-        }
-        console.log(`  [Site Search Total] ${siteSearchResults.length} review(s) found`);
-      } catch (err) {
-        console.log(`  Site search error: ${err.message}`);
+        for (const r of siteSearchResults) { if (r.url) knownUrlsSoFar.add(r.url); }
+      } else {
+        console.log('\n[1c/4] Site Search (SSR)... no applicable outlets missing');
       }
+
+      const foundAfterSsr = new Set(alreadyFoundIds);
+      for (const r of siteSearchResults) { if (r.outletId) foundAfterSsr.add(r.outletId.toLowerCase()); }
+      const jsIds = scrapingBeeKey
+        ? selectApplicableSiteSearchOutlets(market, show, foundAfterSsr, true)
+            .filter(id => SITE_SEARCH_ENDPOINTS[id].requiresJs)
+        : [];
+
+      let jsResults = [];
+      if (jsIds.length > 0) {
+        console.log(`  Site Search (JS, still missing): ${jsIds.length} outlet(s) — ${jsIds.join(', ')}`);
+        jsResults = await searchOutletSites(show.title, jsIds, {
+          knownUrls: knownUrlsSoFar,
+          verbose: true,
+          skipJs: false,
+          market,
+          openingDate: show.openingDate || null,
+          show,
+        });
+        siteSearchResults.push(...jsResults);
+      }
+
+      health.siteSearch.searched = ssrIds.length + jsIds.length;
+      health.siteSearch.hits = siteSearchResults.length;
+
+      for (const result of siteSearchResults) {
+        const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
+        const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
+        foundReviews.push({
+          showId,
+          outletId: result.outletId,
+          outlet: result.outlet || (outletMeta && outletMeta.name) || result.outletId,
+          criticName: isSingleCriticOutlet ? outletMeta.critics[0] : 'Unknown',
+          url: result.url,
+          source: 'site-search',
+        });
+      }
+      console.log(`  [Site Search Total] ${siteSearchResults.length} review(s) found`);
+    } catch (err) {
+      console.log(`  Site search error: ${err.message}`);
     }
   }
 
