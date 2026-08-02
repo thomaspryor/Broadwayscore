@@ -70,7 +70,16 @@
     "legally-blonde-2007/njcom--unknown.json",
     "legally-blonde-2007/people--dave-quinn.json",
     "glengarry-glen-ross-2005/whatsonstage--unknown.json",
-    "king-lear-2004/playbill--unknown.json"
+    "king-lear-2004/playbill--unknown.json",
+    "king-lear-2004/stagezine--david-nounou.json",
+    "king-lear-2004/talkinbroadway--unknown.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2002/metrmag--unknown.json",
+    "jesus-christ-superstar-2000/musical-theatre-review--unknown.json",
+    "jesus-christ-superstar-2000/whatsonstage--unknown.json",
+    "hello-dolly-1995/nbcnews--unknown.json",
+    "into-the-woods-1987/cbsnews--shania-russell.json",
+    "into-the-woods-1987/ew--unknown.json",
+    "into-the-woods-1987/indiewire--unknown.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -174,7 +183,8 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "faith-healer-2006/playbill--unknown.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-    "king-lear-2004/nytg--unknown.json"
+    "king-lear-2004/nytg--unknown.json",
+    "noises-off-2001/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -232,10 +242,18 @@
       "legally-blonde-2007/allie-and-the-after-party--allie-bugajski.json",
       "legally-blonde-2007/people--dave-quinn.json",
       "glengarry-glen-ross-2005/whatsonstage--unknown.json",
-      "king-lear-2004/playbill--unknown.json"
+      "king-lear-2004/playbill--unknown.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2002/metrmag--unknown.json",
+      "jesus-christ-superstar-2000/musical-theatre-review--unknown.json",
+      "jesus-christ-superstar-2000/whatsonstage--unknown.json",
+      "hello-dolly-1995/nbcnews--unknown.json",
+      "into-the-woods-1987/cbsnews--shania-russell.json",
+      "into-the-woods-1987/ew--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/noises-off-2001/about-entertainment--ben-brantley.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -251,7 +269,9 @@
       "ink-2019/philadelphia-inquirer--unknown.json",
       "legally-blonde-2007/newsday--unknown.json",
       "legally-blonde-2007/nydailynews--unknown.json",
-      "legally-blonde-2007/njcom--unknown.json"
+      "legally-blonde-2007/njcom--unknown.json",
+      "king-lear-2004/talkinbroadway--unknown.json",
+      "into-the-woods-1987/indiewire--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -268,11 +288,12 @@
       "my-name-is-lucy-barton-2020/nydailynews--unknown.json",
       "linda-vista-2019/nydailynews--unknown.json",
       "burn-this-2019/broadwaynews--unknown.json",
-      "kiss-me-kate-2019/broadwaynews--unknown.json"
+      "kiss-me-kate-2019/broadwaynews--unknown.json",
+      "king-lear-2004/stagezine--david-nounou.json"
     ]
   },
   "startTime": "2026-08-01T23:45:40.770Z",
-  "lastProcessed": "king-lear-2004/playbill--unknown.json",
+  "lastProcessed": "into-the-woods-1987/indiewire--unknown.json",
   "log": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -337,6 +358,17 @@
     },
     {
       "t": "2026-08-02T00:54:11.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T01:12:09.638Z",
+      "event": "bb-session",
+      "session": "375faa2c",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9C0CE0DB1130F931A35752C1"
+    },
+    {
+      "t": "2026-08-02T01:12:10.551Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
