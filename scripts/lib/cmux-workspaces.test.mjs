@@ -265,6 +265,29 @@ test('pruneDone: closes ✅🤖 tab idle at the prompt (live claude, not mid-tur
   assert.deepEqual(skipped, []);
 });
 
+// Owner escalation 2026-08-02 (scheduled auto-prune tick): the currently
+// SELECTED workspace is never closed, even when every other signal says
+// closeable — the owner is often selected on a ✅🤖 tab precisely to read
+// its final summary, and yanking it mid-read is the 2026-07-15 "closed
+// while typing" incident class. A later tick closes it once focus moves.
+test('pruneDone: never closes the selected workspace, even a closeable ✅🤖 idle one', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ 🤖⚡ Infra·selected tab', selected: true },
+      { ref: 'workspace:2', title: '✅ 🤖⚡ Infra·background tab', selected: false },
+    ],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false, // both idle at the prompt
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
 test('pruneDone: skips ✅🤖 tab that is mid-turn (running)', () => {
   const cw = require('./cmux-workspaces.js');
   const calls = [];

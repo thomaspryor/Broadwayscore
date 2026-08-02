@@ -264,6 +264,18 @@ function unparkEntry({ taskId, reason = null }) {
   return { event: 'unpark', taskId: String(taskId), reason };
 }
 
+// Newest-parked-first, capped shape for a single digest line (card #777).
+// Extracted as a pure function (CLAUDE.md §15) so autonomous-email.js and
+// bsc-status.js share one tested selection instead of each re-deriving it —
+// an unbounded historical replay in one email footer line becomes
+// unwieldy/clipped over months and buries the card the owner most needs to
+// see (ship-check finding, Codex adversarial review).
+function selectParkedCardsForDigest(parked, maxShown = 10) {
+  const sorted = [...parked.values()].sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
+  const shown = sorted.slice(0, maxShown).map(e => ({ taskId: e.taskId, subject: e.subject, workspaceRef: e.workspaceRef }));
+  return { shown, moreCount: Math.max(0, sorted.length - maxShown) };
+}
+
 // ── Headless-job events (Autopilot v5, task #459) ──────────────────────────
 // bsc-runner.js appends these; bsc-reconcile.js and bsc-status.js fold them.
 // One ledger for tabs AND jobs on purpose: the dead-attempt guard must see
@@ -305,5 +317,5 @@ module.exports = {
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
-  pruneClosedEntry, parkedTasks, unparkEntry,
+  pruneClosedEntry, parkedTasks, unparkEntry, selectParkedCardsForDigest,
 };

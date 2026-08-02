@@ -40,6 +40,7 @@ const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 const MANIFEST_FILES = [
   path.join(ROOT, 'tests', 'unit-test-manifest.txt'),
   path.join(ROOT, 'tests', 'unit-test-manifest-tsx.txt'),
+  path.join(ROOT, 'tests', 'e2e-unit-test-manifest.txt'),
 ];
 
 // Known-broken tests that need investigation before they can be wired into CI.

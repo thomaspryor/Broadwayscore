@@ -275,6 +275,12 @@ function pruneDone(opts = {}) {
   const skipped = [];
   const disagreements = [];
   for (const w of done) {
+    // Never close the workspace the owner is currently LOOKING AT (owner
+    // escalation 2026-08-02, enables the scheduled auto-prune tick). A ✅🤖
+    // tab is often selected precisely because the owner is reading its final
+    // summary; yanking it mid-read is the 2026-07-15 "closed while typing"
+    // incident class. A later tick closes it once focus moves elsewhere.
+    if (w.selected) { skipped.push(w); continue; }
     const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
     if (disagreement) disagreements.push(w);
     // Only query mid-turn status for the auto-dispatch exception — an

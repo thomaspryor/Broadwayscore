@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T20:46:14.258Z",
+  "timestamp": "2026-08-02T21:27:10.272Z",
   "stats": {
     "totalReviews": 41307,
-    "alreadyFlagged": 18091,
-    "dateGuardCatches": 86,
-    "directorMismatch": 941,
+    "alreadyFlagged": 18088,
+    "dateGuardCatches": 88,
+    "directorMismatch": 943,
     "tvFilmSignals": 1135,
-    "londonSignals": 785,
-    "offBroadwaySignals": 469,
+    "londonSignals": 786,
+    "offBroadwaySignals": 470,
     "yearMismatch": 87,
-    "noPublishDate": 3394
+    "noPublishDate": 3391
   },
   "findings": [
     {
@@ -5416,6 +5416,25 @@
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 81,
+      "publishDate": "2025-10-08",
+      "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -24376,6 +24395,19 @@
       ]
     },
     {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "whatsonstage--ron-simpson.json",
+      "publishDate": "2025-07-09",
+      "url": "https://www.whatsonstage.com/tours/the-enormous-crocodile-the-musical-tour/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 384d before show (2025-07-09 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
       "showId": "the-father-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 77,
@@ -24606,6 +24638,20 @@
       "score": 79,
       "publishDate": "2026-07-21",
       "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2026",
+      "file": "wsj--charles-isherwood.json",
+      "score": 39,
+      "publishDate": "2026-07-23",
+      "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards-bad-hand-59068784",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30508,6 +30554,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "wsj--charles-isherwood.json",
+      "score": 75,
+      "publishDate": "November 3, 2022",
+      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -39121,6 +39181,20 @@
       "score": 88,
       "publishDate": null,
       "url": "https://www.slantmagazine.com/theater/prima-facie-review-jodie-comer/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-2023",
+      "file": "wsj--charles-isherwood.json",
+      "score": 89,
+      "publishDate": "April 26, 2023",
+      "url": "https://www.wsj.com/articles/prima-facie-review-jodie-comers-barrister-on-broadway-28c81e25",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

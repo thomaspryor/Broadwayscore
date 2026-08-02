@@ -464,6 +464,23 @@ async function main() {
     console.error(`[email] WARN could not read prune sweeps: ${String(err.message).slice(0, 120)}`);
   }
 
+  // Parked cards (card #777): bsc-prune's tab-close park (#776) writes a
+  // 'vanished' ledger entry and pauses the Notion card, but until this
+  // nothing surfaced it — a card could sit parked indefinitely with no
+  // signal (same write-only-signal class as #689/#690/#641/#692).
+  let parkedCards = null;
+  let parkedCardsMoreCount = 0;
+  try {
+    const parked = dispatchLedger.parkedTasks(dispatchLedger.readEntries());
+    if (parked.size) {
+      const { shown, moreCount } = dispatchLedger.selectParkedCardsForDigest(parked);
+      parkedCards = shown;
+      parkedCardsMoreCount = moreCount;
+    }
+  } catch (err) {
+    console.error(`[email] WARN could not read parked cards: ${String(err.message).slice(0, 120)}`);
+  }
+
   const admin = await fetchAdminUsage();
   // "What changed while you slept" — owner request 2026-07-22. Fails soft:
   // a broken source becomes a "couldn't check" line inside the block.
@@ -532,6 +549,8 @@ async function main() {
     redditDigest,
     recheck,
     prunedCount,
+    parkedCards,
+    parkedCardsMoreCount,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
     runSkipped,
