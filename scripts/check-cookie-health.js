@@ -543,13 +543,20 @@ async function main() {
 
     // wsj-specific: scripts/wsj-otp-login.js (task #779) is the only source of
     // fresh wsj cookies now (Safari extraction is dead on Tahoe) and it only
-    // runs via the monthly launchd job. Checked unconditionally (before the
-    // Layer-1 structure early-exit below) so a missing/broken wsj.json still
-    // surfaces "launchd job may have never run" instead of getting swallowed
-    // by a generic "Not found" — the cadence-aware threshold (40d, not the
-    // generic 21d STALENESS_WARN_DAYS) is tied to the same _extracted-at.json
-    // meta scripts/wsj-otp-login.js stamps on every successful run (task #830).
-    if (fileKey === 'wsj') {
+    // runs via the monthly launchd job, which stamps the LOCAL
+    // data/cookies/_extracted-at.json (gitignored — never present in CI's
+    // checkout). Gated on that local file existing: in CI, loadCookieMeta
+    // would otherwise fall through to bundle `_meta`, a whole-bundle Safari-
+    // extraction push timestamp with no `method` field, which would either
+    // misreport freshness or (once meta is empty/absent) redden the
+    // twice-weekly check-cookie-health.yml run every time — this check only
+    // has real signal on the machine that actually runs wsj-otp-login.js.
+    // Checked unconditionally (before the Layer-1 structure early-exit below)
+    // so a missing/broken wsj.json still surfaces "launchd job may have never
+    // run" instead of getting swallowed by a generic "Not found" — the
+    // cadence-aware threshold (40d, not the generic 21d STALENESS_WARN_DAYS)
+    // is tied to the same _extracted-at.json meta (task #830).
+    if (fileKey === 'wsj' && fs.existsSync(path.join(COOKIE_DIR, '_extracted-at.json'))) {
       const otpFreshness = checkWsjOtpFreshness(loadCookieMeta('wsj'));
       console.log(`${icons[otpFreshness.status]} wsj-otp-freshness: ${otpFreshness.message}`);
       results.push({
@@ -606,24 +613,6 @@ async function main() {
       staleDays: stale.staleDays,
       cookies: structure.cookies,
     });
-
-    // wsj-specific: scripts/wsj-otp-login.js (task #779) is the only source of
-    // fresh wsj cookies now (Safari extraction is dead on Tahoe) and it only
-    // runs via the monthly launchd job — the generic 21d checkStaleness above
-    // would false-positive on that normal cadence, so this is a separate,
-    // cadence-aware check tied to the same _extracted-at.json meta (task #830).
-    if (fileKey === 'wsj') {
-      const otpFreshness = checkWsjOtpFreshness(loadCookieMeta('wsj'));
-      console.log(`${icons[otpFreshness.status]} wsj-otp-freshness: ${otpFreshness.message}`);
-      results.push({
-        name: 'wsj-otp-freshness',
-        status: otpFreshness.status,
-        message: otpFreshness.message,
-        isCritical: true,
-        layer: 2,
-        otpAgeDays: otpFreshness.ageDays,
-      });
-    }
   }
 
   // --- Non-critical outlets: Layer 1 only ---

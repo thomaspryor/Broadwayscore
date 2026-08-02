@@ -3,35 +3,57 @@
  *
  * scripts/wsj-otp-login.js is run monthly by
  * scripts/launchd/com.broadwayscore.wsj-cookie-refresh.plist and stamps
- * data/cookies/_extracted-at.json's `wsj` entry on every successful run.
- * Nothing previously read that timestamp for staleness — a silently dead
- * launchd job (asleep Mac, logged-out Chrome, drifted login-page selectors)
- * would leave data/cookies/wsj.json going stale with zero alert, the same
- * failure shape as #650/#559/#564/#567 in this repo.
+ * data/cookies/_extracted-at.json's `wsj` entry (with `method: 'otp-login'`)
+ * on every successful run. Nothing previously read that timestamp for
+ * staleness — a silently dead launchd job (asleep Mac, logged-out Chrome,
+ * drifted login-page selectors) would leave data/cookies/wsj.json going
+ * stale with zero alert, the same failure shape as #650/#559/#564/#567.
  *
  * WARN_DAYS=40 gives one missed monthly cycle (~30d) plus slack before
  * nagging. FAIL_DAYS=70 means two missed cycles — past that, cookies are
  * essentially certain to be dead regardless of what Layer 1/2 report.
+ *
+ * The caller MUST gate on the meta being method:'otp-login' — extract-
+ * safari-cookies.py's bundle `_meta` carries no `method` field and is a
+ * whole-bundle push timestamp, not a per-outlet OTP-refresh timestamp; it
+ * must never be mistaken for this signal (would report false freshness, or
+ * in CI — where the local file never exists — false staleness twice a week).
  */
 
 const WSJ_OTP_WARN_DAYS = 40;
 const WSJ_OTP_FAIL_DAYS = 70;
 
 /**
- * @param {{extractedAtUnix?: number, extractedAt?: string}|null} meta - loadCookieMeta('wsj') result
+ * @param {{extractedAtUnix?: number, extractedAt?: string, method?: string}|null} meta - loadCookieMeta('wsj') result
  * @param {number} nowUnix - seconds since epoch (defaults to Date.now())
  */
 function checkWsjOtpFreshness(meta, nowUnix = Date.now() / 1000) {
-  let extractedUnix = meta && meta.extractedAtUnix;
-  if (!extractedUnix && meta && meta.extractedAt) {
+  if (!meta) {
+    return {
+      status: 'fail',
+      message: 'no wsj OTP-refresh record in _extracted-at.json — launchd job may have never run',
+      ageDays: null,
+    };
+  }
+
+  if (meta.method !== 'otp-login') {
+    return {
+      status: 'warn',
+      message: `wsj meta not sourced from OTP-login (method=${meta.method || 'unknown'}) — Safari extraction may have overwritten it; run node scripts/wsj-otp-login.js to confirm freshness`,
+      ageDays: null,
+    };
+  }
+
+  let extractedUnix = Number.isFinite(meta.extractedAtUnix) ? meta.extractedAtUnix : null;
+  if (extractedUnix === null && meta.extractedAt) {
     const parsed = Date.parse(meta.extractedAt) / 1000;
     if (Number.isFinite(parsed)) extractedUnix = parsed;
   }
 
-  if (!extractedUnix) {
+  if (extractedUnix === null) {
     return {
       status: 'fail',
-      message: 'no wsj OTP-refresh record in _extracted-at.json — launchd job may have never run',
+      message: 'wsj OTP meta present but has no valid timestamp (extractedAtUnix/extractedAt both invalid)',
       ageDays: null,
     };
   }
