@@ -12,6 +12,7 @@ const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -349,6 +350,28 @@ function saveReview(review, overwrite = false, dir = outputDir) {
 module.exports = { extractReviewsFromDTLI, saveReview };
 
 if (require.main !== module) return;
+
+// Task #653: routing the writes through safeWriteReview made this script "risky"
+// in audit-help-flag-safety.js's eyes (Rule B), and correctly so — a bare `--help`
+// used to run a full corpus-wide DTLI extraction. Bail before any real work.
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`
+extract-dtli-reviews.js — extract reviews from archived DTLI (Did They Like It) pages
+
+Usage:
+  node scripts/extract-dtli-reviews.js
+
+Reads every HTML page in data/aggregator-archive/dtli/ and writes one review file
+per critic to data/review-texts/{showId}/{outletId}--{critic-slug}.json via
+safeWriteReview (PROTECTED_FIELDS on the existing file always win).
+
+Options:
+  --help, -h   Show this message
+
+No flags: the run is always a full sweep of the archived pages.
+`.trim());
+  return;
+}
 
 // Main
 if (!fs.existsSync(dtliDir)) {
