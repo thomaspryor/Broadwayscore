@@ -61,10 +61,25 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
   if (byCritic) return { review: byCritic, matchedBy: 'critic' };
 
   // Byline disagreement — same article, different name on it. The URL decides.
+  //
+  // Deliberately NOT scoped to outletId: the outlet ID itself drifts. When a
+  // canonical registry entry lists a bare domain (suntimes.com) and the article
+  // lives on a subdomain (chicago.suntimes.com), provisionalOutletIdFromHost
+  // mints a second outlet, so the manual entry and its pipeline twin disagree
+  // on outletId and an outlet-scoped URL match cannot fire. That is exactly how
+  // iceboy-regional-2026 kept Steven Oxman's Sun-Times review twice — pipeline
+  // 'suntimes' scored 75 alongside the human's 'chicago-sun-times' correction of
+  // 65, on one identical URL (found 2026-08-02, verifying the first fix).
+  //
+  // Safe because a URL identifies one page at one publisher: syndicated
+  // republications live at different URLs, so show + URL is a true identity.
   const wantUrl = manual.url ? normalizeUrl(manual.url) : null;
   if (!wantUrl) return null;
-  const byUrl = reviews.find(r => sameSlot(r) && r.url && normalizeUrl(r.url) === wantUrl);
-  if (byUrl) return { review: byUrl, matchedBy: 'url' };
+  const byUrl = reviews.find(r =>
+    r.showId === manual.showId && r.url && normalizeUrl(r.url) === wantUrl);
+  if (byUrl) {
+    return { review: byUrl, matchedBy: byUrl.outletId === manual.outletId ? 'url' : 'url-cross-outlet' };
+  }
 
   return null;
 }
@@ -81,12 +96,13 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
  * @param {object[]} reviews - mutated in place
  * @param {object[]} manualEntries
  * @param {(url: string) => string|null} normalizeUrl
- * @returns {{preserved: number, appended: number, matchedByUrl: number}}
+ * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number}}
  */
 function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
   let preserved = 0;
   let appended = 0;
   let matchedByUrl = 0;
+  let matchedCrossOutlet = 0;
 
   for (const manual of manualEntries) {
     const twin = findPipelineTwin(manual, reviews, normalizeUrl);
@@ -97,7 +113,8 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
       const idx = reviews.indexOf(twin.review);
       if (idx >= 0) reviews[idx] = manual;
       preserved++;
-      if (twin.matchedBy === 'url') matchedByUrl++;
+      if (twin.matchedBy.startsWith('url')) matchedByUrl++;
+      if (twin.matchedBy === 'url-cross-outlet') matchedCrossOutlet++;
       continue;
     }
 
@@ -110,7 +127,7 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
     // nothing scoreable — appending here would duplicate, so do nothing.
   }
 
-  return { preserved, appended, matchedByUrl };
+  return { preserved, appended, matchedByUrl, matchedCrossOutlet };
 }
 
 module.exports = { criticKey, findPipelineTwin, mergeManualEntries };
