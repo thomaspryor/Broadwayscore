@@ -31,6 +31,16 @@ const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
 const SCRIPTS_DIR = path.join(ROOT, 'scripts'); // top level only; scripts/lib/ runs via its own glob
 const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
+// test.yml's main runner reads file lists from these manifests (task #763 —
+// replaced a single 15,987-char inline `node --test <368 files>` line, which
+// guaranteed a merge conflict on every concurrent test addition) instead of
+// listing test filenames inline. A registration now lives in the manifest,
+// not literally inside test.yml, so it must be scanned too or every
+// manifest-registered test reads as an orphan.
+const MANIFEST_FILES = [
+  path.join(ROOT, 'tests', 'unit-test-manifest.txt'),
+  path.join(ROOT, 'tests', 'unit-test-manifest-tsx.txt'),
+];
 
 // Known-broken tests that need investigation before they can be wired into CI.
 // Each entry MUST have a Notion card so the exemption can be unwound. Audit will
@@ -103,6 +113,11 @@ function collectReferencedTests() {
   const referenced = new Set();
   for (const file of fs.readdirSync(WORKFLOWS_DIR).filter(f => f.endsWith('.yml'))) {
     const content = fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf8');
+    for (const match of content.matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
+  }
+  for (const manifestPath of MANIFEST_FILES) {
+    if (!fs.existsSync(manifestPath)) continue;
+    const content = fs.readFileSync(manifestPath, 'utf8');
     for (const match of content.matchAll(REFERENCE_REGEX)) referenced.add(match[0]);
   }
   return referenced;
