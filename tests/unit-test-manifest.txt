@@ -150,6 +150,7 @@ tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
 tests/unit/hc-author-override.test.mjs
+tests/unit/headless-prompt-no-owner-handoff.test.mjs
 tests/unit/health-check-batch-state.test.mjs
 tests/unit/health-check-bww-miss-ledger.test.mjs
 tests/unit/health-check-repeat-failures.test.mjs
@@ -172,6 +173,7 @@ tests/unit/is-scoreable-suspected-misattribution.test.mjs
 tests/unit/is-test-email.test.mjs
 tests/unit/json-write-guard.test.mjs
 tests/unit/late-star-anchor.test.mjs
+tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
@@ -245,6 +247,7 @@ tests/unit/promote-regional-auto.test.mjs
 tests/unit/protected-field-lock.test.mjs
 tests/unit/protected-fields-sync.test.mjs
 tests/unit/protected-fields-three-way-sync.test.mjs
+tests/unit/provider-telemetry.test.mjs
 tests/unit/pull-quote-guards.test.mjs
 tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs

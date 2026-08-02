@@ -1242,9 +1242,37 @@ async function searchOutletSites(showTitle, outletIds, options = {}) {
   return results;
 }
 
+/**
+ * Which SITE_SEARCH_ENDPOINTS keys are worth querying for a given show right now.
+ * Pure selection logic shared by every caller (gather-reviews.js, opening-night-poller.js)
+ * so "missing outlet" filtering can't silently drift between the scheduled sweep and the
+ * opening-night fast path.
+ *
+ * Missing-check is keyed on the EFFECTIVE outlet id: a sibling entry (e.g.
+ * 'telegraph-search' → 'telegraph') must not re-fire for an outlet already covered
+ * under its canonical id.
+ *
+ * @param {string} market - 'broadway' | 'west-end' (etc.) — matched against each endpoint's `market`
+ * @param {Object|null} show - Full show object; passed to applies() predicates (opera-only outlets)
+ * @param {Set<string>} alreadyFoundIds - Lowercased outletIds already covered by earlier layers
+ * @param {boolean} [includeJs] - When false (default true), only requiresJs=false endpoints pass
+ * @returns {string[]} SITE_SEARCH_ENDPOINTS keys to search
+ */
+function selectApplicableSiteSearchOutlets(market, show, alreadyFoundIds = new Set(), includeJs = true) {
+  return Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
+    const ep = SITE_SEARCH_ENDPOINTS[id];
+    const effectiveId = (ep.outletIdOverride || id).toLowerCase();
+    return (includeJs || !ep.requiresJs)
+      && (!ep.market || ep.market === market)
+      && (!ep.applies || ep.applies(show))
+      && !alreadyFoundIds.has(effectiveId);
+  });
+}
+
 module.exports = {
   searchOutletSites,
   searchOutletSite,
+  selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
   urlLooksLikeReview,
 };
