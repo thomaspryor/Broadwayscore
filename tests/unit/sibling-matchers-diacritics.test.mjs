@@ -204,13 +204,10 @@ const UNFOLDED_BASELINE = new Set([
   // route is one of our own hardcoded route paths ('/', '/show/hamilton') —
   // ASCII by construction, not a show title. See inline comment at the call site.
   'autonomous-ui-capture.js',
-  // hay (review fullText) is compared against ownVenueSlug, which is built by
-  // an UNFOLDED venueSlug() in two files OUTSIDE scripts/lib (audit-cross-
-  // production.js, audit-review-url-clusters.js). Folding only this side would
-  // desync the pairing and break today's coincidentally-working accented-venue
-  // matches. Needs a coordinated fix across all three files — tracked
-  // separately, not part of task #760. See inline comment at the call site.
-  'cross-production-guards.js',
+  // cross-production-guards.js FIXED under task #783: hay now folds via
+  // foldDiacritics before the ASCII strip, matched against venue-
+  // classification.js's shared venueSlug() (also folded) — the two audit
+  // scripts that used to duplicate an unfolded venueSlug() now import it too.
   // response is an LLM's YES/NO answer text, not a show title. See inline
   // comment at the call site.
   'page-validator.js',
@@ -301,7 +298,12 @@ const UNFOLDED_BASELINE_ROOT = new Set([
 // The shred signature: an ASCII-only character-class filter applied to text.
 // Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
 // still destroys accented letters, so the class is not narrower than /[^a-z0-9.
-const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?0-9/;
+// Task #790: a trailing 0-9 requirement here left NAME matchers (critic/cast
+// bylines never contain digits, e.g. [^a-z ] or [^a-z\s]) completely invisible
+// to this guard even though they shred accented names identically to a slug
+// builder. The signature now stops at the a-z(A-Z)? prefix — any ASCII-only
+// character class anchored there counts, digit or no digit.
+const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?/;
 // Every fold spelling in the codebase counts: foldDiacritics (the canonical
 // helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
 // and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.
@@ -338,6 +340,8 @@ describe('structural guard: no NEW unfolded title matcher', () => {
       'title-match.js', 'rss-discovery.js', 'omc-discovery.js', 'theatermania-discovery.js',
       'show-score-discover.js', 'dtli-homepage-scan.js', 'venue-aliases.js',
       'creative-team-verify.js', 'precursor-wikipedia.js', 'deduplication.js',
+      // task #783
+      'cross-production-guards.js', 'venue-classification.js',
     ];
     for (const f of fixed) {
       assert.ok(!unfolded.includes(f), `${f} regressed: it lost its diacritic fold`);
