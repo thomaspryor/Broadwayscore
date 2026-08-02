@@ -252,6 +252,8 @@ const OB_VENUE_CONFIGS = [
  * Parse a venue listing page's HTML into candidate objects.
  * Pure: no fetch, no IO. Fixture-testable.
  */
+const { foldDiacritics } = require('./title-match');
+
 function parseVenueListingHtml(venue, html) {
   if (!html || html.length < 50) return [];
 
@@ -291,7 +293,7 @@ function parseVenueListingHtml(venue, html) {
   return filtered.map(title => ({
     title,
     venue: venue.name,
-    slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    slug: foldDiacritics(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
     category: venue.category || 'off-broadway',
     source: `venue-page:${venue.name.toLowerCase().replace(/\s+/g, '-')}`,
     discoveredAt: new Date().toISOString(),

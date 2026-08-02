@@ -39,6 +39,8 @@ const { isLondonMarket } = require('./venue-classification');
 const DEFAULT_COOLDOWN_HOURS = 6;
 
 /** Market-appropriate search phrase, mirrors url-discovery.js's marketTerm. */
+const { foldDiacritics } = require('./title-match');
+
 function marketTermFor(show) {
   const cat = (show && (show.category || show.market)) || '';
   if (isLondonMarket(cat)) return 'West End review';
@@ -71,7 +73,7 @@ const VENUE_STOPWORDS = new Set([
   'centre', 'hall', 'west', 'east', 'north', 'south', 'city', 'street',
 ]);
 function venueQueryToken(venue) {
-  const tokens = String(venue || '').toLowerCase()
+  const tokens = foldDiacritics(String(venue || '')).toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
     .filter(w => w.length > 3 && !VENUE_STOPWORDS.has(w));
   return tokens.length ? tokens[0] : null;

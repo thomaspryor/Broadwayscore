@@ -7,6 +7,8 @@
 //
 // If you extend the patterns here, also extend the audit script's signal list.
 
+const { foldDiacritics } = require('./title-match');
+
 const OPERA_TITLES = [
   'cavalleria rusticana', 'pagliacci', 'nabucco', 'rigoletto', 'tristan', 'isolde',
   'madama butterfly', 'eugene onegin', 'la traviata', 'tosca', 'la boheme',
@@ -62,7 +64,7 @@ const TITLE_STOPWORDS = new Set([
 // tokens ("the", "of") and 1-3 char words match too freely; only ≥4-char
 // non-stopword tokens carry signal.
 function meaningfulTitleTokens(title) {
-  return String(title || '')
+  return foldDiacritics(String(title || ''))
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)

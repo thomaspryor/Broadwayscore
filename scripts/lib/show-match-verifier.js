@@ -43,9 +43,11 @@ const STOP_WORDS = new Set([
 // Keep the 'cuckoo'-flavoured tokens only (distinctive enough singly).
 const STAGE_TRAP_TOKENS = ['cuckoo', 'cuckoos', 'cuckoonest'];
 
+const { foldDiacritics } = require('./title-match');
+
 function titleTokens(title) {
   if (!title) return [];
-  return title
+  return foldDiacritics(title)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)

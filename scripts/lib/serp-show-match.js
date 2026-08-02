@@ -17,6 +17,8 @@
  * @param {string} showTitle    canonical show title from shows.json
  * @returns {boolean}
  */
+const { foldDiacritics } = require('./title-match');
+
 function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
   const title = (resultTitle || '').toLowerCase();
   const url = (resultUrl || '').toLowerCase();
@@ -57,7 +59,7 @@ function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
   // Check URL slug with boundary matching (delimiters: / and -)
   // Prevents "bug" matching "debugging", "six" matching "sixth"
   for (const v of variants) {
-    const slug = v.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const slug = foldDiacritics(v).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     if (slug.length >= 3) {
       const slugEscaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       if (new RegExp(`(?:^|[/\\-])${slugEscaped}(?:$|[/\\-])`, 'i').test(url)) return true;
