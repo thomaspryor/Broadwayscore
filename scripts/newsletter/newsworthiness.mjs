@@ -247,7 +247,8 @@ function dedupeByKind(candidates) {
   return out;
 }
 
-// Build a subject line from the top candidates. Caps at 130 chars; appends
+// Build a subject line from the top candidates. Hard-capped at 80 chars (the
+// same limit pre-send-check enforces); appends
 // ", and more." when ≥3 items survive. Returns { subject, showRefs } — the
 // subject slices up to 4 unique-by-kind candidates (the lede takes only 3),
 // so a subject-only 4th item exists that the lede's showRefs never covers;
@@ -264,8 +265,29 @@ export function buildSubjectFromCandidates(candidates) {
     tail = parts.length >= 3 ? ', and more.' : '.';
     subject = parts.map(c => c.headline).join(', ') + tail;
   }
+  // The loop above stops at parts.length === 1, so a SINGLE headline longer
+  // than the cap escapes it entirely and the 80-char limit fails open. Long
+  // show titles do this on their own: "Les Misérables: The Arena Concert
+  // Spectacular opens off-Broadway to strong reviews." is 83, and it shipped
+  // into the 2026-07-27 Broadway draft. The cost isn't the subject — it's that
+  // pre-send-check treats over-length as a soft issue and injects its red
+  // "PRE-SEND ISSUES" banner into the draft BODY, which every subscriber sees
+  // if the owner hits Send without spotting it (caught in the Sunday review
+  // pass, 2026-08-02). Trim at a word boundary so the cap always holds.
+  if (subject.length > 80) subject = trimToWordBoundary(subject, 80);
   const showRefs = parts.map(c => c.show).filter(Boolean).map(s => ({ id: s.id, slug: s.slug, title: s.title }));
   return { subject, showRefs };
+}
+
+// Trim to at most `limit` chars, cutting at a word boundary and ending in a
+// single ellipsis. Falls back to a hard cut when the string has no usable
+// space (one very long unbroken token), so the return is always <= limit.
+export function trimToWordBoundary(s, limit) {
+  if (s.length <= limit) return s;
+  const cut = s.slice(0, limit - 1); // leave one char for the ellipsis
+  const lastSpace = cut.lastIndexOf(' ');
+  const base = lastSpace > limit / 2 ? cut.slice(0, lastSpace) : cut;
+  return base.replace(/[\s,.:;!?-]+$/, '') + '…';
 }
 
 // Editorial lede — 2-3 sentence narrative from the top candidates.
