@@ -5,9 +5,10 @@
  * spawn a background process that survives past job completion the way
  * merge-worktree-to-main.sh's local-session mitigation does (task #668,
  * scripts/verify-merge-landed.js). So the CI-side mitigation instead
- * durably records {sha, branch, ts, workflow} for every successful push to
- * data/audit/recent-pushes.jsonl (scripts/record-push-ledger.js appends one
- * line per push, committed+pushed on its own — see that file for why), and
+ * durably records {sha, branch, ts, workflow} for every successful push on
+ * the dedicated single-commit `push-ledger` branch (scripts/record-push-
+ * ledger.js via scripts/lib/push-ledger-store.js — NOT commits to main;
+ * see the store's header for the 2026-08-02 commit-churn rationale), and
  * a scheduled workflow (check-push-ledger.yml -> scripts/check-push-ledger.js)
  * re-checks recent entries' reachability against origin via the GitHub
  * compare API (scripts/lib/gh-compare-check.js), on a delay long enough for
