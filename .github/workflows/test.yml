@@ -64,6 +64,16 @@ on:
       - 'scripts/lib/bww-roundup-parser.js'
       - 'scripts/lib/bww-roundup-parser.test.mjs'
       - 'tests/fixtures/bww-roundups/**'
+      # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
+      # raw-wrote over already-flagged review files, so ~155 excluded historical
+      # DTLI excerpts re-entered reviews.json on every review-refresh and were
+      # re-excluded by the next rebuild — the +/-150/day exact-revert flap. Tests
+      # live in tests/unit-test-manifest.txt; these are path-listed so a solo edit
+      # to the writer, the detector, or the watermark gate triggers CI.
+      - 'scripts/extract-dtli-reviews.js'
+      - 'scripts/lib/corpus-determinism.js'
+      - 'scripts/audit-corpus-determinism.js'
+      - 'scripts/pre-deploy-check.js'
       - 'scripts/fix-photo-credit-byline-phantoms.js'
       # Manual-entry merge: the LAST write into reviews.json, running after every
       # dedup pass, so a missed match appends a phantom duplicate nothing can
