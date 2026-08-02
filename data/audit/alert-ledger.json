@@ -129,7 +129,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -138,7 +138,8 @@
       "lastNotifiedAt": "2026-08-01T19:57:34.627Z",
       "notifyCount": 7,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-02T15:22:35.021Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -200,11 +201,10 @@
       "disposition": "auto",
       "title": "Unexpected scheduled digest sender fired on 2026-07-26: autonomous-email",
       "firstSeen": "2026-07-27T15:55:14.211Z",
-      "lastSeen": "2026-08-01T15:24:18.623Z",
-      "lastNotifiedAt": "2026-07-31T15:43:37.447Z",
-      "notifyCount": 2,
-      "cardId": "3ae637c5-416f-81b6-a247-ddfca7adf728",
-      "silentRefires": 1
+      "lastSeen": "2026-08-02T15:24:42.432Z",
+      "lastNotifiedAt": "2026-08-02T15:24:42.432Z",
+      "notifyCount": 3,
+      "cardId": "3b0637c5-416f-81b8-9058-fd8bd01a42c1"
     },
     "health-check:Workflow repeat-failure: Check Corpus Drift": {
       "status": "open",
