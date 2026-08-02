@@ -128,9 +128,15 @@ function dispatchDetached(taskId, log, delaySec = 0) {
   // `git worktree add` lock and all but one die 'worktree-error' (live-run
   // finding 2026-08-02: 3 same-instant dispatches → 2 failed). taskId is
   // numeric and delaySec is internal, so the sh -c line is injection-safe.
-  const id = String(parseInt(taskId, 10));
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node ${JSON.stringify(path.join(REPO, 'scripts', 'bsc-next.js'))} --id ${id} --headless`;
-  const child = spawn('sh', ['-c', cmd],
+  // Codex hardening (2026-08-02): validate the id as a real integer (parseInt
+  // silently truncates junk), and pass the script path as a positional shell
+  // arg instead of interpolating it (JSON.stringify is NOT shell quoting —
+  // $() would survive inside double quotes).
+  const idNum = Number(taskId);
+  if (!Number.isSafeInteger(idNum) || idNum <= 0) throw new Error(`invalid taskId for dispatch: ${String(taskId).slice(0, 40)}`);
+  const id = String(idNum);
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless`;
+  const child = spawn('sh', ['-c', cmd, 'sh', path.join(REPO, 'scripts', 'bsc-next.js')],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
   fs.closeSync(logFd);
