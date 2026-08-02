@@ -39,9 +39,16 @@ function hasAutoDispatchMarker(title) {
 // isRunning: whether the live claude is mid-turn (true) vs idle-at-prompt
 // (false) — irrelevant when hasLiveClaude is false, so callers may pass
 // anything (or omit it) in that case.
+// 2026-08-02 owner escalation #2 ("this tab has not been swept away — I'm
+// skeptical it's actually working"): the non-🤖 exemption is REMOVED. A ✅
+// mark now means closeable for ANY tab once its claude is idle at the
+// prompt — owner-opened tabs included. The protections that made the July
+// incidents possible are gone regardless of this flag: pruneDone never
+// closes the SELECTED tab (re-checked immediately before close), never a
+// mid-turn tab, never an unmarked tab. isAutoDispatched is kept in the
+// signature for observability/back-compat but no longer gates closing.
 function isCloseable({ hasLiveClaude, isAutoDispatched, isRunning }) {
   if (!hasLiveClaude) return true;
-  if (!isAutoDispatched) return false;
   return !isRunning;
 }
 

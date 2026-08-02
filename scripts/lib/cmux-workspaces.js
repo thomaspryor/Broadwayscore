@@ -283,14 +283,13 @@ function pruneDone(opts = {}) {
     if (w.selected) { skipped.push(w); continue; }
     const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
     if (disagreement) disagreements.push(w);
-    // Only query mid-turn status for the auto-dispatch exception — an
-    // owner-driven live tab is skipped regardless, so there's no need to
-    // spend an extra cmux call finding out whether it's busy. Any error
-    // (or a non-auto title) defaults isRunning to true — fail-safe: never
-    // treat uncertainty as "idle, close it."
+    // Query mid-turn status for EVERY live ✅ tab (owner escalation #2,
+    // 2026-08-02: the non-🤖 exemption is removed — a ✅ owner-opened tab
+    // idle at the prompt closes too). Any error defaults isRunning to true —
+    // fail-safe: never treat uncertainty as "idle, close it."
     const isAutoDispatched = hasAutoDispatchMarker(w.title);
     let isRunning = true;
-    if (!dead && isAutoDispatched) {
+    if (!dead) {
       try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
     }
     if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning })) { skipped.push(w); continue; }
