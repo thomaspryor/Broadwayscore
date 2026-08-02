@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-02T23:48:03.668Z",
+  "timestamp": "2026-08-02T23:57:04.936Z",
   "stats": {
-    "totalReviews": 41306,
+    "totalReviews": 41313,
     "alreadyFlagged": 18083,
     "dateGuardCatches": 91,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
-    "londonSignals": 787,
+    "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
     "noPublishDate": 3387
@@ -41611,6 +41611,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "publishDate": "2026-07-31",
+      "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
