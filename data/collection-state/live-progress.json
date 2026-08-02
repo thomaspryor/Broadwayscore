@@ -1,28 +1,50 @@
 {
-  "updatedAt": "2026-08-02T09:28:02.526Z",
-  "processed": 23,
-  "failed": 127,
-  "successRate": "15.3%",
+  "updatedAt": "2026-08-02T09:31:20.201Z",
+  "processed": 20,
+  "failed": 90,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 6,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archiveToday": 1,
-    "archive": 2
+    "brightdata": 2,
+    "archiveToday": 3,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-08-02T09:22:33.981Z",
+      "t": "2026-08-02T09:27:56.399Z",
       "event": "bb-session",
-      "session": "8e1cb67d",
-      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+      "session": "f6474322",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
     },
     {
-      "t": "2026-08-02T09:22:35.015Z",
+      "t": "2026-08-02T09:27:57.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T09:28:13.304Z",
+      "event": "bb-session",
+      "session": "c0cb0da8",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T09:28:14.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T09:28:53.953Z",
+      "event": "bb-session",
+      "session": "34ba65fc",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-02T09:28:54.924Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
