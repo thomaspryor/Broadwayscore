@@ -127,6 +127,16 @@ function loadLedger() {
 }
 
 function saveLedger(ledger) {
+  // Tests must NEVER write a real ledger. 2026-08-02: the tracked
+  // data/audit/alert-ledger.json was found carrying this module's own test
+  // conditions ('test:unwritable-ledger', a fake on-monitor-launch-failed-*
+  // with cardId 'fake-card-id'), swept into main by an unrelated wholesale
+  // data commit — and the same commit rolled back the REAL opening-night SLA
+  // state, causing a duplicate owner page. Guarded at write time (not
+  // require time) so read-only tests of the path-resolution logic still load.
+  if (process.env.NODE_TEST_CONTEXT && !process.env.ALERT_LEDGER_PATH) {
+    throw new Error('owner-alert-router: refusing to write a REAL alert ledger under node:test — set ALERT_LEDGER_PATH to a temp file (see loadRouterWithFakes)');
+  }
   fs.mkdirSync(path.dirname(LEDGER_PATH), { recursive: true });
   // Atomic write: a kill mid-write must not truncate the ledger and drop
   // every condition's open/silent state (same pattern as notion-action-poll.js).
