@@ -64,6 +64,21 @@ function buildOutletDomains() {
 
 const { map: OUTLET_DOMAINS, aliasMap: REGISTRY_DOMAIN_ALIASES } = buildOutletDomains();
 
+// Whether an outlet is eligible for the per-outlet SERP discovery arm — i.e.
+// whether it has a resolvable registry domain to restrict `site:` queries and
+// validate result hosts against. 362 of 1,002 registry outlets carry
+// `domain: null`; for those the host guard used to be vacuous (targetDomain
+// resolved to '', so the check at the bottom of discoverCorrectUrl's result
+// loop never fired) and ANY host was accepted as that outlet's review — how
+// a facebook.com post got filed as "Telegraph Uk" (task #720) and how
+// newsshopper.co.uk / theatreandartreviews.com articles got filed under
+// "The Herald" / "Daily Echo" (task #766). Outlets with no registry domain
+// are not eligible; callers must skip the SERP arm rather than fall back to
+// an unrestricted search.
+function isOutletEligibleForSerpDiscovery(outletId) {
+  return !!OUTLET_DOMAINS[(outletId || '').toLowerCase()];
+}
+
 // Build a Google `site:` clause covering a domain AND its registry domainAliases.
 // Outlets often publish on an alias TLD (theatreandtonic.com primary vs .co.uk live;
 // londontheatrereviews.co.uk primary vs londontheatre.co.uk live); a single-domain
@@ -845,6 +860,31 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const outletId = (review.outletId || '').toLowerCase();
   const domain = options.domainOverride || OUTLET_DOMAINS[outletId];
 
+  // Extract old URL's domain for fallback matching — hoisted above the
+  // eligibility gate below so a domainless outlet with a legitimate existing
+  // review URL can still anchor host verification to it (preserves dead-link
+  // recovery for rediscover-review-urls.js / recover-serp-text.js /
+  // retry-wrong-urls.js on domainless outlets that are already correctly
+  // attributed).
+  let oldDomain = '';
+  try {
+    oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
+  } catch (e) {}
+
+  // Skip outlets with no resolvable registry domain AND no existing review
+  // URL to anchor to — see isOutletEligibleForSerpDiscovery for why. Checked
+  // before any SERP call (saves the API cost too). A domainless outlet that
+  // already has a correctly-attributed review.url is NOT skipped here —
+  // oldDomain still gives the host-check loop below something real to
+  // verify candidates against; only the fully-vacuous case (no registry
+  // domain AND no anchor at all) is blocked. That fully-vacuous case is
+  // exactly how the-herald/daily-echo/telegraph-uk misattributions happened
+  // (task #766) — those were fresh discoveries with no prior URL.
+  if (!options.domainOverride && !isOutletEligibleForSerpDiscovery(outletId) && !oldDomain) {
+    log(`    ⊘ Skipping SERP discovery for "${outletId}": no registry domain and no existing URL to anchor to (host guard would be vacuous, task #766)`);
+    return null;
+  }
+
   // Build search query — include year to disambiguate revivals
   // Include critic name as an unquoted boost when available and trustworthy.
   // Web-search sourced reviews often have fabricated critic names — skip those.
@@ -904,12 +944,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     return '__SERP_UNAVAILABLE__';
   }
 
-  // Extract old URL's domain for fallback matching
-  let oldDomain = '';
-  try {
-    oldDomain = new URL(review.url).hostname.replace(/^www\./, '');
-  } catch (e) {}
-
+  // oldDomain computed above (before the eligibility gate) — reused here.
   if (!results.length) {
     // Fallback 1: retry with stripped title (e.g., "The Tempest" instead of "The Tempest - Globe")
     // Reviewers omit venue/subtitle suffixes, causing 0 SERP hits for the full title
@@ -998,6 +1033,12 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // tao-of-glass-west-end-2026 ended up with a facebook.com/thestage post
     // stored as a "Telegraph Uk" review (task #720). Shared with the rest of the
     // pipeline via lib/domain-filters so the block-list stays single-source.
+    //
+    // The eligibility gate above (isOutletEligibleForSerpDiscovery) already
+    // returns before this loop runs for any outlet with no registry domain, so
+    // targetDomain below is never '' in practice — the explicit `!targetDomain`
+    // branch just below is defense-in-depth against a future caller that
+    // passes domainOverride:'' or otherwise bypasses that gate (task #766).
     if (isBlockedReviewUrl(url)) {
       log(`    ✗ Blocked non-review host/path: ${url.substring(0, 80)}`);
       continue;
@@ -1045,7 +1086,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       urlDomain = new URL(url).hostname.replace(/^www\./, '');
     } catch (e) { continue; }
 
-    if (targetDomain && !domainMatchesExpected(targetDomain.replace(/^www\./, ''), urlDomain)) continue;
+    if (!targetDomain) continue; // vacuous guard — never trust a host with nothing to check it against
+    if (!domainMatchesExpected(targetDomain.replace(/^www\./, ''), urlDomain)) continue;
 
     const title = (result.title || '').toLowerCase();
     const showSlugCheck = showTitleLower.replace(/\s+/g, '-');
@@ -1339,6 +1381,7 @@ module.exports = {
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
+  isOutletEligibleForSerpDiscovery,
   buildSiteClause,
   isGenericShowTitle,
   hasDisambiguator,
