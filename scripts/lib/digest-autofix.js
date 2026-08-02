@@ -120,15 +120,21 @@ function buildCardNotes(row) {
 
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
-function dispatchDetached(taskId, log) {
+function dispatchDetached(taskId, log, delaySec = 0) {
   fs.mkdirSync(LOG_DIR, { recursive: true });
   const logPath = path.join(LOG_DIR, `${taskId}-${Date.now()}.log`);
   const logFd = fs.openSync(logPath, 'a');
-  const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId), '--headless'],
+  // Staggered start: simultaneous detached spawns race on the main repo's
+  // `git worktree add` lock and all but one die 'worktree-error' (live-run
+  // finding 2026-08-02: 3 same-instant dispatches → 2 failed). taskId is
+  // numeric and delaySec is internal, so the sh -c line is injection-safe.
+  const id = String(parseInt(taskId, 10));
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node ${JSON.stringify(path.join(REPO, 'scripts', 'bsc-next.js'))} --id ${id} --headless`;
+  const child = spawn('sh', ['-c', cmd],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
   fs.closeSync(logFd);
-  log(`[digest-autofix] dispatch attempted for #${taskId} (headless, detached; log: ${logPath})`);
+  log(`[digest-autofix] dispatch attempted for #${id} (headless, detached, +${delaySec}s stagger; log: ${logPath})`);
 }
 
 /**
@@ -207,7 +213,7 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
     if (!row.taskId) continue; // sync lag — the drain picks it up on its next tick
     if (budget <= 0) { row.state = 'queued'; continue; }
     try {
-      dispatchDetached(row.taskId, log);
+      dispatchDetached(row.taskId, log, (cap - budget) * 45);
       row.state = 'dispatched';
       budget--;
     } catch (err) {
