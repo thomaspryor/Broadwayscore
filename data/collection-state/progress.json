@@ -19,7 +19,10 @@
     "pride-west-end-2026/whatsonstage--editorial-staff.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -151,7 +154,14 @@
     "much-ado-about-nothing-globe-off-west-end-2026/express-uk--stefan-kyriazis.json",
     "ride-the-cyclone-off-west-end-2026/hollywood-reporter--david-rooney.json",
     "ride-the-cyclone-off-west-end-2026/nytimes--charles-isherwood.json",
-    "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json"
+    "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -169,7 +179,9 @@
       "pride-west-end-2026/whatsonstage--editorial-staff.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -181,13 +193,53 @@
       "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json"
     ]
   },
   "startTime": "2026-08-02T09:51:32.385Z",
-  "lastProcessed": "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json",
-  "log": []
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-02T10:19:37.048Z",
+      "event": "bb-session",
+      "session": "2a7e5b4d",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T10:19:37.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T10:19:52.999Z",
+      "event": "bb-session",
+      "session": "e9b2e349",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T10:19:53.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T10:20:58.179Z",
+      "event": "bb-session",
+      "session": "ca764675",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-02T10:20:58.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

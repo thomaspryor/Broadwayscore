@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-08-02T10:08:56.281Z",
-  "processed": 20,
-  "failed": 130,
-  "successRate": "13.3%",
+  "updatedAt": "2026-08-02T10:22:49.088Z",
+  "processed": 23,
+  "failed": 137,
+  "successRate": "14.4%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 16,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
+    "brightdata": 1,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-08-02T10:19:37.048Z",
+      "event": "bb-session",
+      "session": "2a7e5b4d",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T10:19:37.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T10:19:52.999Z",
+      "event": "bb-session",
+      "session": "e9b2e349",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T10:19:53.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T10:20:58.179Z",
+      "event": "bb-session",
+      "session": "ca764675",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-02T10:20:58.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
