@@ -652,24 +652,31 @@ async function runAggregators(show) {
     console.log(`  Show Score error: ${err.message}`);
   }
 
-  // 1c. BWW Review Roundup (skip for off-Broadway; skip URL guessing for WE — BWW RR rare for WE)
-  // For WE: only check if a manual --bww-roundup-url is provided (bypass discovery entirely)
+  // 1c. BWW Review Roundup (skip for off-Broadway AND West End/off-West End —
+  // reviews.php is the paid Browserbase fallback and those categories skip it
+  // by default; the cheap section scan + cheap reviews.php scan still run)
   // Resolve BWW RR URL: CLI arg > shows.json field > reviews.php listing (Browserbase) > SERP fallback
   let BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
   let bwwResolvedVia = BWW_ROUNDUP_URL_CLI ? 'CLI' : (show.bwwRoundupUrl ? 'shows.json' : null);
 
-  // Primary auto-discovery for Broadway AND off-Broadway. OB roundups live on
-  // BWW's /off-broadway/ section page (cheap ScrapingBee scan, no Browserbase) —
-  // discoverBwwRoundupUrl tries that first, then falls back to reviews.php
-  // (Browserbase) for Broadway. SERP/Google indexing lags BWW publication by
-  // 1-6 hours; the listing pages update within minutes. Pre-2026-06-06 OB was
-  // skipped here entirely, so off-Broadway roundups (Girl, Interrupted /
-  // A Woman Among Women) were only ever found via flaky Google SERP.
-  if (!BWW_ROUNDUP_URL && !isWestEnd) {
+  // Primary auto-discovery for Broadway, off-Broadway, AND West End/off-West
+  // End. OB roundups live on BWW's /off-broadway/ section page, WE roundups
+  // on /westend/ (both cheap ScrapingBee scans, no Browserbase) —
+  // discoverBwwRoundupUrl tries the matching section page first, then the
+  // cheap reviews.php scan, then falls back to paid reviews.php for Broadway
+  // only (shouldSkipReviewsPhp defaults off-broadway/west-end/off-west-end to
+  // skip it — #756 audit, 2026-08-02). SERP/Google indexing lags BWW
+  // publication by 1-6 hours; the listing pages update within minutes.
+  // Before 2026-08-02 this whole block was gated `!isWestEnd`, so WE shows
+  // never got auto-discovery at all — the live 2026-07-31 verification that
+  // reviews.php-cheap matched midnight-at-the-never-get-west-end-2026 never
+  // reached shows.json because this gate short-circuited it first.
+  if (!BWW_ROUNDUP_URL) {
     const browserbaseReady = process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID;
-    // reviews.php (the Broadway fallback) needs Browserbase; the OB section scan
-    // does not — only fail-loud about missing Browserbase when it actually matters.
-    if (!browserbaseReady && !isOffBroadway) {
+    // reviews.php (the Broadway-only paid fallback) needs Browserbase; the
+    // section scan + cheap reviews.php scan do not — only fail-loud about
+    // missing Browserbase when it actually matters (Broadway shows).
+    if (!browserbaseReady && !(isOffBroadway || isWestEnd)) {
       // Silent skip on missing secrets is the Beaches-2026-04-22 failure mode —
       // poller falls through to SERP/URL-guessing which hits wrong/unpublished URLs.
       console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
