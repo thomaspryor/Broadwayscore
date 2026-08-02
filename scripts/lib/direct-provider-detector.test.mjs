@@ -109,6 +109,38 @@ test('flags Browserbase session-list reads too — the file-level allowlist, not
   assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
 });
 
+test('flags a bare-host constant for scrapingbee/brightdata/scrapingdog (same split defeat)', () => {
+  // The /v1 fix was Browserbase-only; the identical technique defeated the other
+  // three, whose patterns are path-aware precisely so they can exempt the
+  // billing/SERP siblings. Verified escaping 2026-08-02 before this was added.
+  const cases = [
+    [`const SB = 'https://app.scrapingbee.com';\nfetch(SB + '/api/v1/?url=' + u);`, 'scrapingbee'],
+    [`const BD = 'https://api.brightdata.com';\nhttps.request(BD + '/request', o);`, 'brightdata'],
+    [`const SD = 'https://api.scrapingdog.com';\nfetch(SD + '/scrape?api_key=' + k);`, 'scrapingdog'],
+    [`const BB = 'https://www.browserbase.com';\nfetch(BB + '/v1/sessions');`, 'browserbase'],
+  ];
+  for (const [src, provider] of cases) {
+    const hits = scanSourceForDirectProviderCalls(src);
+    assert.equal(hits.length, 1, `${provider} bare-host constant should be flagged`);
+    assert.equal(hits[0].provider, provider);
+  }
+});
+
+test('bare-host patterns do NOT re-flag the intentionally-exempt billing/SERP endpoints', () => {
+  // These are excluded by path on purpose; a literal carrying any path must not
+  // match the bare-host patterns, or the billing exemptions silently die.
+  const exempt = [
+    `httpsGet('https://app.scrapingbee.com/api/v1/usage?api_key=' + k);`,
+    `const u = 'https://app.scrapingbee.com/api/v1/store/google?search=' + q;`,
+    `const c = 'https://api.brightdata.com/zone/cost?zone=x';`,
+    `httpsGet('https://api.scrapingdog.com/account?api_key=' + k);`,
+    `console.log('https://www.browserbase.com/sessions/' + id);`,
+  ];
+  for (const src of exempt) {
+    assert.equal(scanSourceForDirectProviderCalls(src).length, 0, `should stay exempt: ${src}`);
+  }
+});
+
 test('reports correct line numbers for multiple hits across lines', () => {
   const src = [
     '// comment',
