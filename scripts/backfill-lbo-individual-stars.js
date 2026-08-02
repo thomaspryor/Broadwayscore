@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { isRoundupUrl } = require('./lib/review-guards');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
@@ -66,8 +67,22 @@ async function main() {
       for (const f of lboFiles) {
         const fp = path.join(fullDir, f);
         let d; try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
-        if (d.source !== 'lbo-individual') continue;
+        // `source` is only the LAST writer to touch the file; the full
+        // provenance lives in `sources[]`. 30 first-party LBO bylines carry
+        // 'lbo-individual' there under a different primary source, and this
+        // scalar-only check skipped every one of them — the same gap the
+        // getBestScore exemption had (audit 2026-08-02, see rebuild-helpers.js
+        // isLBOFirstParty). Star backfill must see them too.
+        const sources = Array.isArray(d.sources) ? d.sources : [];
+        if (d.source !== 'lbo-individual' && !sources.includes('lbo-individual')) continue;
         if (!d.url || !d.url.includes('londonboxoffice.co.uk')) continue;
+        // `sources[]` is append-only history, so widening the filter above also
+        // admits files that were later merged with an LBO ROUNDUP. Backfilling
+        // a roundup page's headline star into aggregatorStars would hand the
+        // scoring engine a relayed aggregate dressed as a critic's rating.
+        // Gate on the current URL, same content-identity check getBestScore's
+        // isLBOFirstParty uses.
+        if (isRoundupUrl(d.url).isRoundup) continue;
         if (d.aggregatorStars) continue;
         const key = `${showDir}/${f}`;
         if (!candidates.has(key)) candidates.set(key, { showDir, file: f, url: d.url });

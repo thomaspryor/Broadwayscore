@@ -495,7 +495,27 @@ function getBestScore(data, opts = {}) {
   // editorial team — the bstarsN class on those pages IS the critic's
   // published rating, not a third-party aggregator score. Treat them like a
   // known-star-outlet to bypass downgrade. (Stuart King report 2026-04-26.)
-  const isLBOFirstParty = data.source === 'lbo-individual' && data.outletId === 'london-box-office';
+  //
+  // `source` is only the LAST writer to touch the file; the full provenance
+  // lives in `sources[]`. 30 first-party LBO bylines carry 'lbo-individual'
+  // in sources[] under a different primary source (12 of them 'lbo-roundup',
+  // which IS in AGGREGATOR_SOURCES) — the original single-field predicate
+  // missed every one, so the same Stuart King 3★/4★ reviews the 2026-04-26
+  // fix was written for kept getting the WE-aggregator downgrade. Read the
+  // array. (Aggregator/first-party split audit 2026-08-02.)
+  //
+  // `sources[]` is APPEND-ONLY merge history (review-file-writer.js preserves
+  // every prior source on merge), so a token in it proves the file was touched
+  // by that path once — not that the CURRENT payload is a byline review. The
+  // URL is the content-identity check: LBO's own roundups live at
+  // /news/post/review-round-up-* and isRoundupUrl matches them, so requiring a
+  // non-roundup URL keeps a later-merged roundup from inheriting the exemption
+  // and shipping a relayed headline star as a critic's own rating.
+  const lboSources = Array.isArray(data.sources) ? data.sources : [];
+  const { isRoundupUrl } = require('./review-guards');
+  const isLBOFirstParty = data.outletId === 'london-box-office'
+    && (data.source === 'lbo-individual' || lboSources.includes('lbo-individual'))
+    && !isRoundupUrl(data.url || '').isRoundup;
   // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet + NOT LBO first-party
   const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet && !isLBOFirstParty;
 
