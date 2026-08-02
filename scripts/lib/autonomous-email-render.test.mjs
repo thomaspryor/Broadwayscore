@@ -452,49 +452,26 @@ test('renderHealthDigestBlock: nothing to render without a snapshot', () => {
   assert.equal(renderHealthDigestBlock(null), '');
 });
 
-test('renderHealthDigestBlock: all-clear snapshot renders a calm passed line', () => {
-  const html = renderHealthDigestBlock({ subject: 'BSC Daily: All clear (27/27 passed)', errors: [], warns: [], passedCount: 27 });
-  assert.match(html, /Site health: all 27 checks passed/);
+test('renderHealthDigestBlock: all-clear snapshot renders the calm header (v3)', () => {
+  const html = renderHealthDigestBlock({ generatedAt: '2026-07-30T07:00:00Z', errors: [], warns: [], queued: [], passedCount: 27 });
+  assert.match(html, /0 errors, 0 warnings/);
+  assert.ok(!/Fix this/.test(html));
 });
-
-test('renderHealthDigestBlock: escalated URGENT snapshot lists errors and the day count in red', () => {
-  const health = {
-    subject: 'BSC URGENT (day 6): 2 unresolved errors',
-    bannerText: '2 errors, 1 warning',
-    consecutiveErrorDays: 6,
-    errors: [{ name: 'Data: cookie expiration', message: 'The Stage cookie expired' }, { name: 'Pipeline: stuck work', message: '5 shows stuck' }],
-    warns: [{ name: 'SEO: health', message: 'field LCP still red' }],
-    autoFixedCount: 1,
-  };
-  const html = renderHealthDigestBlock(health);
-  assert.match(html, /color:#dc2626/);
-  assert.match(html, /\(day 6\)/);
-  assert.match(html, /Data: cookie expiration/);
-  assert.match(html, /The Stage cookie expired/);
-  assert.match(html, /1 auto-fixed overnight/);
-});
-
-test('renderHealthDigestBlock: (a) each ERROR row carries a signed Fix-this link; warnings never get one', () => {
-  const secret = 'test-secret';
-  const exp = 1900000000;
-  const fixUrl = buildDispatchUrl({
-    conditionKey: 'health-check:Data: cookie expiration',
-    title: 'BSC Daily: Data: cookie expiration',
-    exp, secret, baseUrl: 'https://broadwayscorecard.com',
-  });
+test('renderHealthDigestBlock: escalated URGENT snapshot shows the consecutive-day count (v3)', () => {
   const html = renderHealthDigestBlock({
-    subject: 'BSC Daily: 1 unresolved error',
-    errors: [{ name: 'Data: cookie expiration', message: 'The Stage cookie expired', fixUrl }],
-    warns: [{ name: 'SEO: health', message: 'field LCP still red' }],
+    generatedAt: '2026-07-30T07:00:00Z', consecutiveErrorDays: 4,
+    errors: [{ name: 'Test Suite red', message: 'x' }], warns: [], queued: [],
   });
-  assert.match(html, /Fix this →/);
-  // href is HTML-escaped like every other card-sourced URL (& → &amp;)
-  const escapedUrl = fixUrl.replace(/&/g, '&amp;');
-  assert.match(html, new RegExp(`href="${escapedUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
-  // only ONE Fix-this link renders — the warning row must not get one
-  assert.equal((html.match(/Fix this →/g) || []).length, 1);
+  assert.match(html, /1 error, 0 warnings/);
+  assert.match(html, /day 4 of consecutive errors/);
+  assert.ok(html.includes('Being fixed automatically'));
 });
-
+test('renderHealthDigestBlock v3: never renders a button, even when rows carry stale fixUrls', () => {
+  const health = { errors: [{ name: 'A', message: 'x', fixUrl: 'https://broadwayscorecard.com/api/autonomous-action?action=dispatch' }], warns: [], queued: [] };
+  const html = renderHealthDigestBlock(health);
+  assert.ok(!/Fix this/.test(html), 'stale fixUrl on a row must not resurrect the button');
+  assert.ok(html.includes('Being fixed automatically'));
+});
 test('renderHealthDigestBlock: an error with no fixUrl renders with no Fix-this link (backward compatible)', () => {
   const html = renderHealthDigestBlock({
     subject: 'BSC Daily: 1 unresolved error',
@@ -633,8 +610,9 @@ test('renderEmail: merged digest — site health block appears below the divider
     warns: [],
   };
   const html = renderEmail({ items: [], stats: STATS, awaitingTotal: 0, health });
-  assert.match(html, /Site health: 1 error/);
-  assert.ok(html.indexOf('Site health:') > html.indexOf('For your records'), 'health block is below the divider, not above');
+  // v3 header dropped the "Site health:" prefix — the count line IS the header.
+  assert.match(html, /1 error, 0 warnings/);
+  assert.ok(html.indexOf('1 error, 0 warnings') > html.indexOf('For your records'), 'health block is below the divider, not above');
   assert.match(html, /1 thing to look at below/);
 });
 
@@ -821,10 +799,13 @@ test('attachHealthFixUrls: missing/!malformed health is a no-op, never a crash',
   assert.equal(attachHealthFixUrls({ health, exp: 1, secret: 'k', baseUrl: 'https://x.com' }), 1);
 });
 
-test('attachHealthFixUrls: rendered through renderHealthDigestBlock, an error row shows a Fix this button', () => {
-  const health = { bannerText: '1 error', errors: [{ name: 'Sync: cast coverage', message: 'stale' }], warns: [] };
-  attachHealthFixUrls({ health, exp: 1893456000, secret: 'k', baseUrl: 'https://broadwayscorecard.com' });
-  const html = renderHealthDigestBlock(health);
-  assert.match(html, /Fix this/);
-  assert.match(html, /api\/autonomous-action\?action=dispatch/);
+test('v3: renderHealthDigestBlock renders NO buttons and reports every row in the autofix block', () => {
+  const health = { errors: [{ name: 'A broke', message: 'x' }], warns: [{ name: 'B drifting', message: 'y' }], queued: [] };
+  const html = renderHealthDigestBlock(health, [
+    { name: 'A broke', state: 'dispatched', taskId: 42 },
+    { name: 'B drifting', state: 'queued', taskId: null },
+  ]);
+  assert.ok(!/Fix this/.test(html), 'no Fix-this buttons in Digest v3');
+  assert.ok(html.includes('Being fixed automatically'));
+  assert.ok(html.includes('#42'));
 });
