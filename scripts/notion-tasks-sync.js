@@ -166,9 +166,20 @@ function readHwm(dir) {
 // Never regress the highwatermark below a value a concurrent session bumped it to.
 function writeHwm(dir, n) { fs.writeFileSync(hwmPath(dir), String(Math.max(readHwm(dir), n))); }
 
+// Card #854: completed tasks >48h old move to a sibling archive/ dir
+// (scripts/archive-completed-tasks.js) to shrink the harness's injected
+// task-list reminder. Falls back there so cmdPush/cmdStatus/taskBelongsTo
+// keep resolving an archived-but-not-yet-pushed card instead of treating it
+// as vanished (which would re-create a duplicate task+mapping on the next
+// pull). nextId()'s maxFile scan deliberately stays live-dir-only — see
+// scripts/lib/task-store-archive.js's docstring for why archived ids must
+// never re-enter that computation.
 function readTask(dir, taskId) {
   try { return JSON.parse(fs.readFileSync(path.join(dir, `${taskId}.json`), 'utf8')); }
-  catch { return null; }
+  catch {
+    try { return JSON.parse(fs.readFileSync(path.join(dir, 'archive', `${taskId}.json`), 'utf8')); }
+    catch { return null; }
+  }
 }
 
 // Marker embedded in every task we create, so we can prove a task file still
@@ -377,4 +388,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock };
+module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readHwm, writeHwm, acquireLock };
