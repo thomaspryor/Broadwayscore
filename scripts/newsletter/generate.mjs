@@ -2409,6 +2409,25 @@ function _closingCtx(usedKinds) {
   };
 }
 const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'short' ? 3 : 4) || { sentences: [], kinds: [], showRefs: [] };
+// WE aggregate opener (owner, 2026-08-02: the two-sentence lede reads too
+// sparse on a big opening week; wanted e.g. "A big weekend for London theatre,
+// six shows opening, four scoring over 75"). Fires only in the WE edition when
+// the week had 3+ scored openings. Names no shows, so the lede-⊆-body
+// invariant (card #482) is unaffected; the preheader picks it up as its first
+// sentence, which is the desired inbox preview.
+if (IS_WE && !process.env.LEDE_OVERRIDE) {
+  const _stories = weOpeningStories();
+  if (_stories.length >= 3) {
+    const _hot = _stories.filter(x => (x.agg.avg ?? 0) >= 75).length;
+    const _w = (n) => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n] || String(n);
+    const opener = _hot === _stories.length
+      ? `A big week for London theatre: ${_w(_stories.length)} shows opened, every one scoring 75 or higher.`
+      : _hot >= 2
+        ? `A big week for London theatre: ${_w(_stories.length)} shows opened, ${_w(_hot)} scoring 75 or higher.`
+        : `A busy week for London theatre, with ${_w(_stories.length)} new openings.`;
+    _ledeParts.sentences.unshift(opener);
+  }
+}
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
   for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
