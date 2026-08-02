@@ -913,6 +913,19 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'Playbill what-are-the-reviews roundup' };
   }
 
+  // Playbill's THIRD roundup slug shape: "Read the Reviews of ..." /
+  // "Updated: Read More Reviews of ...", on both /article/ and the older
+  // /news/article/ path. Same multi-outlet quote compilation as the two
+  // patterns above — found by sweeping every corpus URL on the roundup hosts
+  // for roundup-shaped URLs isRoundupUrl did NOT match (audit 2026-08-02,
+  // the WET /news/{slug}-reviews/ bug class). Two corpus files sit here
+  // (an-american-in-paris-2015, glengarry-glen-ross-2025), both outletId
+  // 'playbill' so they are page-as-review; neither is live today, so this is
+  // preventive.
+  if (/playbill\.com\/(?:news\/)?article\/(?:updated-)?read-(?:the-|more-)?reviews?-of-/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill read-the-reviews-of roundup' };
+  }
+
   // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One
   // 902-word roundup quoting 7 critics exploded into 7 per-critic files scored
   // 100 via unicode-stars on jesus-christ-superstar-west-end-2026 (2026-07-08).
