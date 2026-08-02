@@ -86,6 +86,17 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   for (const h of FORBIDDEN_HEADINGS) {
     if (html.includes(h)) violations.push(`forbidden section "${h}" rendered — deleted by the 2026-08-02 owner mandate`);
   }
+  // Owner mandate 2026-08-02: a "Needs your attention" section with zero
+  // clickable action links is a prose-only ask — banned. (view links or
+  // signed Dispatch-a-fix buttons both count; the sig checks below still
+  // validate any dispatch URLs.)
+  if (html.includes('Needs your attention')) {
+    const block = html.slice(html.indexOf('Needs your attention'));
+    if (!/<a\b[^>]*href=/.test(block)) {
+      violations.push('"Needs your attention" section has no clickable action — prose-only asks are banned (owner mandate 2026-08-02)');
+    }
+  }
+
   const { selectHealthRows } = require('./autonomous-email-render.js');
   const namedRows = health
     ? selectHealthRows({ errors: health.errors, warns: health.warns }).rows.filter((r) => r && r.name)

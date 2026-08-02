@@ -235,12 +235,36 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
   sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, now = new Date(),
+  dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
   // buttons, ever — "Why do I need to hit 'Fix this'. I'm obvi going to hit it
   // for everything here. Just have a Claude session fix them." Auto-dispatch
   // happens in main() via lib/digest-autofix.js BEFORE compose; this function
   // only renders the resulting statuses.
+  // Owner mandate 2026-08-02: every Needs-your-attention card carries a
+  // one-click signed dispatch link (never prose-only). Same fail-soft rule
+  // as everything else: no secret -> no button, email still sends.
+  if (dispatchSecret && sections.health && Array.isArray(sections.health.queued)) {
+    try {
+      const { buildDispatchUrl } = require('./lib/dispatch-link.js');
+      const cfg = (() => { try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; } })();
+      const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
+      const exp = Math.floor(now.getTime() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
+      for (const q of sections.health.queued) {
+        if (!q || !q.title || q.actionUrl) continue;
+        q.actionUrl = buildDispatchUrl({
+          conditionKey: `digest-needs-you:${q.title}`,
+          title: `Fix: ${String(q.title).slice(0, 130)}`,
+          description: q.description || '',
+          exp, secret: dispatchSecret, baseUrl,
+        });
+      }
+    } catch (err) {
+      console.error(`[digest] WARN needs-you action links failed (cards render link-less): ${String(err.message).slice(0, 120)}`);
+    }
+  }
+
   const subject = buildSubject({ health: sections.health, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, now });
   return { subject, html };

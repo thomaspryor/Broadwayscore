@@ -333,12 +333,22 @@ function renderHealthDigestBlock(health, autofixRows = null) {
   const clip = (s2, n) => { const t = String(s2); return t.length > n ? `${t.slice(0, n - 1)}\u2026` : t; };
   const validQueued = queued.filter(Boolean)
     .filter(q => !QUEUED_TELEMETRY_BLOCKLIST.some(re2 => re2.test(String(q.title || ''))));
+  // Owner mandate 2026-08-02 (second half, stated twice): anything that still
+  // needs the human MUST carry a one-click action — "If something TRULY needs
+  // approval, give me a link to click Approve so I can move on with my life."
+  // composeDigestEmail attaches q.actionUrl (signed dispatch link, same HMAC
+  // machinery as the API's approve/dispatch flow); prose-only cards are a
+  // regression the content invariant now catches.
   const queuedHtml = validQueued.length
     ? `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
         <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
         ${validQueued.map(q => {
           const href = safeUrl(q.url);
-          return `<div style="font-size:12px;color:#555;margin:0 0 6px;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>`;
+          const action = safeUrl(q.actionUrl);
+          return `<div style="margin:0 0 10px;">
+            <div style="font-size:12px;color:#555;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>
+            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:3px 12px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+          </div>`;
         }).join('')}</div>`
     : '';
 
