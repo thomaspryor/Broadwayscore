@@ -953,6 +953,13 @@ on:
       # happened; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/digest-content-invariants.js'
       - 'scripts/lib/digest-content-invariants.test.mjs'
+      # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
+      # filing + headless dispatch; colocated test runs in the
+      # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
+      # safe-form acceptance probe those cards carry.
+      - 'scripts/lib/digest-autofix.js'
+      - 'scripts/lib/digest-autofix.test.mjs'
+      - 'scripts/check-health-row-absent.js'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
