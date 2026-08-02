@@ -11,6 +11,7 @@
 
 const https = require('https');
 const http = require('http');
+const { foldDiacritics } = require('./title-match');
 
 // Theater-specific feeds (narrow enough that date-window filtering is safe)
 // NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
@@ -211,8 +212,11 @@ function parseFeedItems(xml) {
  * Matches show title words (ignoring articles) against RSS item title.
  */
 function titleMatchesShow(itemTitle, showTitle) {
-  // Strip articles and punctuation, get significant words
-  const normalize = t => t.toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, '').trim();
+  // Strip articles and punctuation, get significant words.
+  // foldDiacritics runs BEFORE the [^a-z0-9' ] filter: without it "Misérables"
+  // loses the é entirely and tokenizes to "misrables", which matches nothing.
+  // See title-match.js foldDiacritics (task #648).
+  const normalize = t => foldDiacritics(t).toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, '').trim();
   const showWords = normalize(showTitle)
     .split(/\s+/)
     .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
