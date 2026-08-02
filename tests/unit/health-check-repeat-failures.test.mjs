@@ -238,3 +238,48 @@ test('progressWatchResults: a stalled surface warns with value, cycles, and hint
   assert.match(results[0].message, /is at 141 and hasn't moved in 3 consecutive check/);
   assert.match(results[0].hint, /audit-stuck-rescore-flags\.js/);
 });
+
+test('progressWatchResults: includes lastSummary context in a stalled alert message when present (task #761)', () => {
+  const report = {
+    surfaces: {
+      needsRescoreUnblocked: {
+        label: 'needsRescore queue (unblocked)',
+        value: 141,
+        stalled: true,
+        cycles: 3,
+        reason: 'unchanged for 3 consecutive cycles (value: 141)',
+        hint: 'node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown',
+      },
+    },
+    lastSummary: {
+      needsRescoreUnblocked: 141,
+      needsRescoreRaw: 200,
+      needsRescoreNotScoreable: 40,
+      needsRescoreBlocked: 19,
+    },
+  };
+  const results = progressWatchResults(report);
+  assert.equal(results.length, 1);
+  assert.match(results[0].message, /is at 141 and hasn't moved in 3 consecutive check\(s\)\. Context: /);
+  assert.match(results[0].message, /"needsRescoreRaw":200/);
+  assert.match(results[0].message, /"needsRescoreNotScoreable":40/);
+  assert.match(results[0].message, /"needsRescoreBlocked":19/);
+});
+
+test('progressWatchResults: omits context when lastSummary is absent', () => {
+  const report = {
+    surfaces: {
+      needsRescoreUnblocked: {
+        label: 'needsRescore queue (unblocked)',
+        value: 141,
+        stalled: true,
+        cycles: 3,
+        hint: 'node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown',
+      },
+    },
+  };
+  const results = progressWatchResults(report);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].message, "needsRescore queue (unblocked) is at 141 and hasn't moved in 3 consecutive check(s).");
+  assert.doesNotMatch(results[0].message, /Context:/);
+});
