@@ -74,6 +74,28 @@ function planAutofix({ health, extraIssues = [], tasks = [] } = {}) {
   });
 }
 
+// Card notes must pass notion-brain's card-quality gate for "Not started"
+// cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
+// and >=300 chars (the gate rejected the first live send's shorter format).
+function buildCardNotes(row) {
+  return [
+    '## Problem',
+    `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${row.name}": ${row.message || '(no detail message — reproduce locally for specifics)'}`,
+    '',
+    '## Evidence',
+    `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
+    '',
+    '## Suggested approach',
+    `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+    '',
+    '## Acceptance criteria',
+    // The backticked command is the machine-checkable proof bsc-next's verify
+    // gate arms and the nightly acceptance recheck re-runs. base64url keeps
+    // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
+    `\`node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(row.name, 'utf8').toString('base64url')}\` passes — i.e. the daily health check no longer lists "${row.name}" among errors or warnings.`,
+  ].join('\n');
+}
+
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
 function dispatchDetached(taskId, log) {
@@ -114,7 +136,7 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
     try {
       execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', row.title,
         '--priority', 'P2', '--status', 'Not started',
-        '--notes', `${row.message}\n\nAuto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). Fix the underlying issue, then prove it.\n\nVERIFY: node scripts/health-check.js\n\n## Acceptance criteria\n\`node scripts/health-check.js\` no longer lists "${row.name}" among errors or warnings.`,
+        '--notes', buildCardNotes(row),
       ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
       row.state = 'card-filed';
       filedAny = true;
@@ -160,4 +182,4 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   return plan;
 }
 
-module.exports = { planAutofix, runAutofix, matchOpenTask, DISPATCH_CAP };
+module.exports = { planAutofix, runAutofix, matchOpenTask, buildCardNotes, DISPATCH_CAP };
