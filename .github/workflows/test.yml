@@ -204,7 +204,9 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'scripts/lib/gh-compare-check.js'
       - 'scripts/lib/push-ledger.js'
+      - 'scripts/lib/push-ledger-store.js'
       - 'tests/unit/push-ledger.test.mjs'
+      - 'tests/unit/push-ledger-store.test.mjs'
       - '.github/workflows/check-push-ledger.yml'
       - 'scripts/lib/rescore-queue-depth.js'
       - 'tests/unit/rescore-queue-depth.test.mjs'
@@ -3058,6 +3060,7 @@ jobs:
             tests/unit/check-corpus-drift.test.mjs \
             tests/unit/progress-watch.test.mjs \
             tests/unit/push-ledger.test.mjs \
+            tests/unit/push-ledger-store.test.mjs \
             tests/unit/rescore-queue-depth.test.mjs \
             tests/unit/scoring-queue-counts.test.mjs \
             tests/unit/outlet-domain-mismatch.test.mjs \
