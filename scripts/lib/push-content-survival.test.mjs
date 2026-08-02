@@ -8,7 +8,14 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyFileSurvival, classifyAll, anyReverted } = require('./push-content-survival.js');
+const {
+  classifyFileSurvival,
+  classifyFileSurvivalDeep,
+  extractAddedLines,
+  addedLinesSurvived,
+  classifyAll,
+  anyReverted,
+} = require('./push-content-survival.js');
 const CLI = join(dirname(fileURLToPath(import.meta.url)), 'push-content-survival.js');
 
 // ── Pure classifier ──────────────────────────────────────────────────────
@@ -46,6 +53,191 @@ test('classifyAll + anyReverted: clean run with no reversions', () => {
     { file: 'merged.txt', baseBlob: 'A', localBlob: 'B', finalBlob: 'D' },
   ]);
   assert.equal(anyReverted(classified), false);
+});
+
+// ── Deep (line-level) check for the 'ambiguous' bucket (task #833) ──────────
+// A file-level blob comparison can't tell "a legitimate 3-way merge combined
+// our edit with an unrelated concurrent one" from "our edit was clobbered by
+// a concurrent write that also touched this file" — both produce final !=
+// base AND final != local. This extracts the lines OUR commit added and
+// checks whether they're still present verbatim in the final content, which
+// answers "is MY change there" directly instead of inferring it from
+// whole-file identity.
+test('extractAddedLines: pulls + lines from a unified diff, skips the +++ header and blanks', () => {
+  const patch = [
+    '--- a/test.yml', '+++ b/test.yml', '@@ -1,3 +1,5 @@',
+    ' line1', '+MAPFILE-LINE-1', '+MAPFILE-LINE-2', '+', ' line2', ' line3',
+  ].join('\n');
+  assert.deepEqual(extractAddedLines(patch), ['MAPFILE-LINE-1', 'MAPFILE-LINE-2']);
+});
+
+test('extractAddedLines: empty/null patch -> no added lines', () => {
+  assert.deepEqual(extractAddedLines(''), []);
+  assert.deepEqual(extractAddedLines(null), []);
+});
+
+test('addedLinesSurvived: true when every added line is present in final content', () => {
+  assert.equal(
+    addedLinesSurvived(['MAPFILE-LINE-1', 'MAPFILE-LINE-2'], 'line1\nline2\nline3\n', 'line1\nMAPFILE-LINE-1\nMAPFILE-LINE-2\nline2\n'),
+    true
+  );
+});
+
+test('addedLinesSurvived: false when an added line is missing (task #833 signature)', () => {
+  assert.equal(
+    addedLinesSurvived(['MAPFILE-LINE-1', 'MAPFILE-LINE-2'], 'line1\nline2\n', 'line1\nMAPFILE-LINE-1\nline2\n'),
+    false
+  );
+});
+
+test('addedLinesSurvived: fails OPEN with no added lines (pure deletion) or missing final content', () => {
+  assert.equal(addedLinesSurvived([], 'base', 'anything'), true);
+  assert.equal(addedLinesSurvived(['x'], 'base', null), true);
+});
+
+// Adversarial review finding (task #833 follow-up): a naive set-membership
+// check would report "survived" whenever the added line's text ALSO occurs
+// somewhere else in the file — even when the actual occurrence our commit
+// introduced was clobbered. Occurrence-COUNT comparison against base catches
+// this: the line already existed once at base, so surviving at count 1 in
+// final (not 2) proves our added occurrence specifically is gone.
+test('addedLinesSurvived: false when the added line text pre-existed elsewhere and our occurrence was clobbered (duplicate-line false-negative fix)', () => {
+  const addedLines = ['- run: npm test'];
+  const baseContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n'; // one pre-existing occurrence
+  // final still has exactly ONE occurrence (the pre-existing one) — our
+  // ADDED occurrence in a second job never made it in.
+  const finalContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n  b:\n    steps:\n      - run: something-else\n';
+  assert.equal(addedLinesSurvived(addedLines, baseContent, finalContent), false);
+});
+
+test('addedLinesSurvived: true when the added line text pre-existed elsewhere AND our new occurrence also survived', () => {
+  const addedLines = ['- run: npm test'];
+  const baseContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n'; // one pre-existing occurrence
+  // final has TWO occurrences: the pre-existing one plus ours.
+  const finalContent = 'jobs:\n  a:\n    steps:\n      - run: npm test\n  b:\n    steps:\n      - run: npm test\n';
+  assert.equal(addedLinesSurvived(addedLines, baseContent, finalContent), true);
+});
+
+// Adversarial review finding: a byte-exact comparison would false-positive
+// 'reverted' on a legitimate 3-way merge where a concurrent formatter only
+// changed INTERNAL whitespace (indentation, double-spacing) on our own added
+// line. Internal-whitespace normalization tolerates pure reformatting while
+// still catching real content differences.
+test('addedLinesSurvived: tolerates internal-whitespace-only reformatting of our own added line', () => {
+  const addedLines = ['  key:   value'];
+  const finalContent = 'key: value\n'; // formatter collapsed the double-space and indentation
+  assert.equal(addedLinesSurvived(addedLines, '', finalContent), true);
+});
+
+test('classifyFileSurvivalDeep: non-ambiguous statuses pass through unchanged (no extra work needed)', () => {
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'B' }), 'survived');
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'B', finalBlob: 'A' }), 'reverted');
+  assert.equal(classifyFileSurvivalDeep({ baseBlob: 'A', localBlob: 'A', finalBlob: 'A' }), 'unchanged');
+});
+
+test('classifyFileSurvivalDeep: ambiguous + added lines present -> stays ambiguous (legitimate concurrent merge)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\nline3\n',
+    finalContent: 'line1\nMAPFILE-LINE-1\nMAPFILE-LINE-2\nunrelated-concurrent-edit\n',
+  });
+  assert.equal(status, 'ambiguous');
+});
+
+test('classifyFileSurvivalDeep: ambiguous + added lines MISSING -> downgraded to reverted (task #833 signature)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['MAPFILE-LINE-1', 'MAPFILE-LINE-2'],
+    baseContent: 'line1\nline2\n',
+    finalContent: 'line1\nsome-other-concurrent-edit\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+// ── CLI: full end-state repro of the task #833 signature ────────────────────
+// Builds the documented end-state directly (same convention as the task #619
+// repro below): our commit adds 2 lines to a file; the ref we "pushed" to has
+// a THIRD version — neither pre-edit base nor our intended content — that is
+// missing our 2 added lines. The pre-fix classifier would call this
+// 'ambiguous' and exit 0; the deep check must catch it.
+test('CLI: catches the task #833 signature (ambiguous merge that silently clobbered our added lines)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-833-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // our run's commit: adds 2 "mapfile" lines (the task #833 incident's own shape)
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: restore mapfile lines');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // "origin" after the buggy resolution: a genuine ref-update landed (real new
+  // commit, matching the reported "Push succeeded" symptom), but this file's
+  // final content is a THIRD version — a concurrent edit that touched the same
+  // file elsewhere and, in doing so, clobbered our 2-line insertion. This is
+  // neither pure base nor pure local, so the old blob-only check calls it
+  // 'ambiguous' and lets it through.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nCONCURRENT-EDIT\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: unrelated edit that clobbered our insertion');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 1, `expected the deep check to catch the missing added lines and exit 1. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+  assert.match(out, /test\.yml/);
+  assert.match(out, /task #833 signature/);
+});
+
+test('CLI: a genuine 3-way merge (our lines AND a concurrent edit both survive) stays ambiguous, exits 0', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-833-ok-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'fix: restore mapfile lines');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // Final content legitimately combines OUR added lines with an unrelated
+  // concurrent edit elsewhere in the file — nothing was lost.
+  gitc(dir, 'branch', 'origin-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'origin-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'test.yml'))}, 'line1\\nMAPFILE-LINE-1\\nMAPFILE-LINE-2\\nline2\\nline3\\nCONCURRENT-APPEND\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: unrelated append, our lines untouched');
+  const originTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${originTip}`,
+  ]);
+  assert.equal(code, 0, `expected a clean exit — our lines survived alongside the concurrent edit. Output:\n${out}`);
+  assert.match(out, /AMBIGUOUS/);
 });
 
 // ── CLI + a real repo reproducing the incident's own end-state ──────────

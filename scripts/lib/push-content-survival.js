@@ -57,6 +57,113 @@ function classifyFileSurvival({ baseBlob, localBlob, finalBlob }) {
   return 'ambiguous';
 }
 
+// Task #833: 'ambiguous' (final content matches neither base nor local) was
+// treated as always-OK — the reasoning being "probably a legitimate 3-way
+// merge that combined our edit with an unrelated concurrent change". That
+// reasoning has a hole: under heavy push-mutex contention (many sessions
+// racing the SAME shared checkout, mutex fails open after its 900s timeout —
+// see push-mutex.sh), a concurrent write to the SAME file can land in a way
+// that discards our specific hunk while still changing the file from its
+// pre-edit base — e.g. a rebase/merge/reset from a sibling process touching
+// the same file elsewhere. File-level blob comparison alone can't tell "both
+// edits survived" from "our edit was clobbered by an unrelated one" once ANY
+// other change also touches the file. Reproduced live: task #833 (commit
+// d405dcfbe03, a 2-line addition to .github/workflows/test.yml) vanished
+// from origin/main with push-with-retry.sh reporting success — the file's
+// final content differed from both base and local, so the old classifier
+// waved it through as 'ambiguous'.
+//
+// This extracts the LINES our own commit(s) added (from the base->local
+// patch) and checks whether every one of them is still present, verbatim,
+// in the final content. This directly answers "is MY change there" instead
+// of inferring it from whole-file identity, and works regardless of what
+// else changed in the file.
+
+/**
+ * @param {string} patch unified diff text for a single file (base..local)
+ * @returns {string[]} non-blank lines the patch ADDED, with the leading '+' stripped
+ */
+function extractAddedLines(patch) {
+  if (!patch) return [];
+  return patch
+    .split('\n')
+    .filter((l) => l.startsWith('+') && !l.startsWith('+++'))
+    .map((l) => l.slice(1))
+    .filter((l) => l.trim().length > 0);
+}
+
+// Normalize a line for comparison: trim + collapse internal whitespace runs.
+// Plain .trim() only strips leading/trailing whitespace, so a concurrent
+// formatter that re-indents or collapses double-spaces on OUR OWN added line
+// (common for YAML/JSON auto-formatters) would make a byte-exact comparison
+// report our content as missing — a false 'reverted' on a genuinely-safe
+// 3-way merge (adversarial review finding, task #833 follow-up). Collapsing
+// internal whitespace keeps the check meaningful (real content differences
+// still fail) while tolerating pure reformatting.
+function normalizeLine(line) {
+  return line.trim().replace(/\s+/g, ' ');
+}
+
+// Multiset of normalized non-blank lines in `content`, keyed by normalized
+// text -> occurrence count.
+function lineCounts(content) {
+  const counts = new Map();
+  for (const line of (content || '').split('\n')) {
+    const n = normalizeLine(line);
+    if (!n) continue;
+    counts.set(n, (counts.get(n) || 0) + 1);
+  }
+  return counts;
+}
+
+/**
+ * @param {string[]} addedLines lines our commit(s) added (from extractAddedLines)
+ * @param {string|null} baseContent the file's full content BEFORE our commit (pre-edit)
+ * @param {string|null} finalContent the file's full content at the ref we just pushed
+ * @returns {boolean} true if OUR added lines are still present in finalContent BEYOND
+ *   whatever identical lines already existed at base — i.e. not just "this text
+ *   appears somewhere in the file" but "an occurrence attributable to our commit is
+ *   still there". A pure set-membership check would report 'survived' whenever an
+ *   added line's text also happens to occur elsewhere in the file (adversarial
+ *   review finding, task #833 follow-up: plausible for repetitive CI-YAML
+ *   boilerplate) even when the actual line our commit added was clobbered. Fails
+ *   OPEN (true) when there is nothing to check (pure deletion) or finalContent is
+ *   unavailable, matching this guard's existing fail-open conventions elsewhere.
+ */
+function addedLinesSurvived(addedLines, baseContent, finalContent) {
+  if (!addedLines || addedLines.length === 0) return true;
+  if (finalContent == null) return true;
+  const added = new Map();
+  for (const l of addedLines) {
+    const n = normalizeLine(l);
+    if (!n) continue;
+    added.set(n, (added.get(n) || 0) + 1);
+  }
+  const base = lineCounts(baseContent);
+  const final = lineCounts(finalContent);
+  for (const [line, addedCount] of added) {
+    const required = (base.get(line) || 0) + addedCount;
+    if ((final.get(line) || 0) < required) return false;
+  }
+  return true;
+}
+
+/**
+ * Deep variant of classifyFileSurvival: only does extra work for the
+ * 'ambiguous' bucket (survived/reverted/unchanged are already decided by the
+ * cheap blob comparison). Downgrades 'ambiguous' to 'reverted' when our own
+ * added content demonstrably did not make it into the final file.
+ * @param {{baseBlob: string|null, localBlob: string|null, finalBlob: string|null,
+ *           addedLines?: string[], baseContent?: string|null, finalContent?: string|null}} entry
+ * @returns {'survived'|'unchanged'|'reverted'|'ambiguous'}
+ */
+function classifyFileSurvivalDeep(entry) {
+  const base = classifyFileSurvival(entry);
+  if (base !== 'ambiguous') return base;
+  if (addedLinesSurvived(entry.addedLines, entry.baseContent, entry.finalContent)) return 'ambiguous';
+  return 'reverted';
+}
+
 /**
  * @param {Array<{file: string, baseBlob: string|null, localBlob: string|null, finalBlob: string|null}>} entries
  * @returns {Array<{file: string, status: string}>}
@@ -69,7 +176,14 @@ function anyReverted(classified) {
   return classified.some((c) => c.status === 'reverted');
 }
 
-module.exports = { classifyFileSurvival, classifyAll, anyReverted };
+module.exports = {
+  classifyFileSurvival,
+  classifyFileSurvivalDeep,
+  extractAddedLines,
+  addedLinesSurvived,
+  classifyAll,
+  anyReverted,
+};
 
 // ── CLI ───────────────────────────────────────────────────────────────────
 // Usage: node push-content-survival.js --before-sha=<sha> --base-sha=<sha>
@@ -135,17 +249,47 @@ if (require.main === module) {
     finalBlob: gitTry(['rev-parse', `${checkRef}:${file}`]),
   }));
 
-  const classified = classifyAll(entries);
+  // Deep-check only the 'ambiguous' bucket (task #833): survived/reverted/
+  // unchanged are already fully decided by the cheap blob comparison, so
+  // only pay for the extra patch + file-content reads where they matter.
+  //
+  // Content is read via the ALREADY-RESOLVED blob SHAs (e.baseBlob/e.finalBlob),
+  // not by re-resolving `checkRef:file` a second time (adversarial review
+  // finding, task #833 follow-up): `checkRef` is a moving ref
+  // (origin/$PULL_BRANCH), so a second `git show checkRef:file` call could
+  // observe a DIFFERENT commit than the one `finalBlob` was rev-parsed
+  // against if the local tracking ref advances between the two calls (e.g. a
+  // concurrent fetch on a shared checkout — the exact contention class
+  // push-mutex.sh exists to guard against). A blob SHA is content-addressed
+  // and immutable, so `git show <blob-sha>` is guaranteed to return the exact
+  // bytes that blob was computed from, eliminating the race entirely.
+  for (const e of entries) {
+    if (classifyFileSurvival(e) !== 'ambiguous') continue;
+    const patch = gitTry(['diff', `${baseSha}..${beforeSha}`, '--', e.file]);
+    e.addedLines = extractAddedLines(patch);
+    e.baseContent = e.baseBlob ? gitTry(['show', e.baseBlob]) : null;
+    e.finalContent = e.finalBlob ? gitTry(['show', e.finalBlob]) : null;
+  }
+
+  const classified = entries.map((e) => ({ file: e.file, status: classifyFileSurvivalDeep(e) }));
   const reverted = classified.filter((c) => c.status === 'reverted');
   const ambiguous = classified.filter((c) => c.status === 'ambiguous');
+  const revertedFromAmbiguous = new Set(
+    entries.filter((e) => classifyFileSurvival(e) === 'ambiguous' && classifyFileSurvivalDeep(e) === 'reverted').map((e) => e.file)
+  );
 
   for (const c of ambiguous) {
-    console.log(`[content-survival] AMBIGUOUS (likely legitimate concurrent merge): ${c.file}`);
+    console.log(`[content-survival] AMBIGUOUS (likely legitimate concurrent merge, our own added lines confirmed present): ${c.file}`);
   }
 
   if (reverted.length > 0) {
     console.error(`[content-survival] FAILED — ${reverted.length} file(s) silently REVERTED to pre-edit content on ${checkRef}:`);
-    for (const c of reverted) console.error(`  - ${c.file}`);
+    for (const c of reverted) {
+      const note = revertedFromAmbiguous.has(c.file)
+        ? ' (task #833 signature: final content matches neither base nor local, but our added lines are missing — clobbered by a concurrent write, not a legitimate merge)'
+        : '';
+      console.error(`  - ${c.file}${note}`);
+    }
     console.error('  This is the task #619 signature: a push reported success, but the run\'s own');
     console.error('  content change is not on the ref we just pushed. Some conflict-resolution step');
     console.error('  in this run discarded it in favour of the pre-existing/remote version.');
