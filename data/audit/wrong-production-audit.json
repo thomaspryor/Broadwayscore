@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-02T21:27:10.272Z",
+  "timestamp": "2026-08-02T21:43:53.719Z",
   "stats": {
     "totalReviews": 41307,
-    "alreadyFlagged": 18088,
-    "dateGuardCatches": 88,
-    "directorMismatch": 943,
-    "tvFilmSignals": 1135,
+    "alreadyFlagged": 18086,
+    "dateGuardCatches": 90,
+    "directorMismatch": 944,
+    "tvFilmSignals": 1136,
     "londonSignals": 786,
-    "offBroadwaySignals": 470,
+    "offBroadwaySignals": 479,
     "yearMismatch": 87,
     "noPublishDate": 3391
   },
@@ -5509,6 +5509,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"terry hands\" from cyrano-de-bergerac-1984"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 88,
+      "publishDate": "2025-10-08",
+      "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon-royal-shakespeare-company-adrian-lester",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -24395,19 +24414,6 @@
       ]
     },
     {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "whatsonstage--ron-simpson.json",
-      "publishDate": "2025-07-09",
-      "url": "https://www.whatsonstage.com/tours/the-enormous-crocodile-the-musical-tour/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 384d before show (2025-07-09 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
       "showId": "the-father-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 77,
@@ -24624,6 +24630,20 @@
       "score": 78,
       "publishDate": "October 14, 2015",
       "url": "http://www.hollywoodreporter.com/review/james-earl-jones-cicely-tyson-832144",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2015",
+      "file": "wsj--terry-teachout.json",
+      "score": 71,
+      "publishDate": "2015-10-15",
+      "url": "http://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29832,6 +29852,20 @@
       ]
     },
     {
+      "showId": "a-dolls-house-part-2-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 42,
+      "publishDate": "April 27th, 2017",
+      "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-an-unneeded-sequel-1493339401",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
@@ -32799,6 +32833,31 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "thestage--dave-fargnoli.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 92,
+      "publishDate": "2025-10-08",
+      "url": "https://www.whatsonstage.com/news/cyrano-de-bergerac-with-adrian-lester-at-the-rscs-swan-theatre-review_1697511/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        }
+      ]
+    },
+    {
       "showId": "dad-dont-read-this-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 75,
@@ -32912,6 +32971,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "file": "wsj--terry-teachout.json",
+      "score": 92,
+      "publishDate": "December 5th, 2016",
+      "url": "http://www.wsj.com/articles/dear-evan-hansen-review-an-ode-to-outsiders-1480955949",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -34210,6 +34283,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 79,
+      "publishDate": "April 18th, 2017",
+      "url": "https://www.wsj.com/articles/groundhog-day-the-musical-review-reliable-and-relivable-1492542578",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -36089,6 +36176,20 @@
       ]
     },
     {
+      "showId": "john-lithgow-stories-by-heart-2018",
+      "file": "wsj--unknown.json",
+      "score": 87,
+      "publishDate": "January 11th, 2018",
+      "url": "https://www.wsj.com/articles/john-lithgow-stories-by-heart-review-jumping-off-the-page-1515720600",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
       "showId": "junk-2017",
       "file": "chicagotribune--chris-jones.json",
       "score": 78,
@@ -36099,6 +36200,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "junk-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 63,
+      "publishDate": "November 9, 2017",
+      "url": "https://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -40375,6 +40490,20 @@
       ]
     },
     {
+      "showId": "spongebob-squarepants-2017",
+      "file": "wsj--edward-rothstein.json",
+      "score": 50,
+      "publishDate": "2017-12-06",
+      "url": "https://www.wsj.com/articles/spongebob-squarepants-review-an-ocean-of-colorful-camp-1512593375",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
       "showId": "spring-awakening-2006",
       "file": "nytimes--ben-brantley.json",
       "score": 80,
@@ -44124,6 +44253,20 @@
       ]
     },
     {
+      "showId": "the-play-that-goes-wrong-2017",
+      "file": "wsj--edward-rothstein.json",
+      "score": 90,
+      "publishDate": "April 6th, 2017",
+      "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-hectic-whodunit-humor-1491420572",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
@@ -45194,6 +45337,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "torch-song-2018",
+      "file": "wsj--matt-windman.json",
+      "score": 75,
+      "publishDate": "November 1st, 2018",
+      "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-1541118600",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "torch-song-2018",
+      "file": "wsj--terry-teachout.json",
+      "score": 50,
+      "publishDate": "2018-11-02",
+      "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-1541118600?gaa_at=eafs&gaa_n=AWEtsqeyjRY6nUxpgbcxXhSwsWNvc8QE1zi9Y9Jyfk7SZklVykHM_KUac4LZ&gaa_ts=698b9533&gaa_sig=qNgbhLffcKxCAegOUNkKQ67gtVzx7PWfSi126SjjGxvsReUNKywAZslJ4x7TV4_VpH0ofz9CBEm3qpUPiklgVw%3D%3D",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
