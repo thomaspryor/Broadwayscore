@@ -31,6 +31,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
+const { pruneEmptyShowImageDir } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -2836,6 +2837,31 @@ async function main() {
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
     console.log(`\nDry-run report: ${reportPath}`);
     generateComparisonPage(dryRunResults);
+  }
+
+  // Several fetch paths mkdir public/images/shows/<id>/ BEFORE they know whether
+  // any candidate will verify, so a show whose candidates are all rejected is
+  // left with an EMPTY directory. Every downstream "has this show got art?"
+  // reader used directory existence, so those empty dirs made imageless shows
+  // read as covered and vanish from the missing cohort — that is how a show
+  // reaches the live homepage showing "Images coming soon". Sweep them here so
+  // the cleanup covers every failure path, present and future, rather than
+  // being threaded through each mkdir site individually.
+  const prunedDirs = [];
+  for (const root of [IMAGES_DIR, DRY_RUN_DIR]) {
+    let names;
+    try {
+      names = fs.readdirSync(root, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const d of names) {
+      if (!d.isDirectory()) continue;
+      if (pruneEmptyShowImageDir(path.join(root, d.name))) prunedDirs.push(d.name);
+    }
+  }
+  if (prunedDirs.length > 0) {
+    console.log(`\n🧹 Removed ${prunedDirs.length} empty image dir(s) left by failed fetches (they would have read as coverage): ${prunedDirs.join(', ')}`);
   }
 
   // Summary
