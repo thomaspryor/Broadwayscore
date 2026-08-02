@@ -283,3 +283,42 @@ test('progressWatchResults: omits context when lastSummary is absent', () => {
   assert.equal(results[0].message, "needsRescore queue (unblocked) is at 141 and hasn't moved in 3 consecutive check(s).");
   assert.doesNotMatch(results[0].message, /Context:/);
 });
+
+test('progressWatchResults: an unserializable lastSummary (circular ref) omits context but still surfaces the alert (task #761 hardening)', () => {
+  const circular = { needsRescoreUnblocked: 141 };
+  circular.self = circular;
+  const report = {
+    surfaces: {
+      needsRescoreUnblocked: {
+        label: 'needsRescore queue (unblocked)',
+        value: 141,
+        stalled: true,
+        cycles: 3,
+        hint: 'node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown',
+      },
+    },
+    lastSummary: circular,
+  };
+  const results = progressWatchResults(report);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].message, "needsRescore queue (unblocked) is at 141 and hasn't moved in 3 consecutive check(s).");
+  assert.doesNotMatch(results[0].message, /Context:/);
+});
+
+test('progressWatchResults: an oversized lastSummary is truncated in the alert message', () => {
+  const report = {
+    surfaces: {
+      needsRescoreUnblocked: {
+        label: 'needsRescore queue (unblocked)',
+        value: 141,
+        stalled: true,
+        cycles: 3,
+        hint: 'node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown',
+      },
+    },
+    lastSummary: { hugeField: 'x'.repeat(1000) },
+  };
+  const results = progressWatchResults(report);
+  assert.equal(results.length, 1);
+  assert.match(results[0].message, /Context: .{500}…$/);
+});
