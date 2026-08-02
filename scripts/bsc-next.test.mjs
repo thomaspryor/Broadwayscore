@@ -398,3 +398,29 @@ test('buildSeed: with a model, the quoted title carries the model glyph (product
   assert.match(seed, /🤖⚡ Infra·P1 pending/);
   assert.match(seed, /cmux workspace-action --action rename --title "🤖⚡ Infra·P1 pending — <current phase>"/);
 });
+
+// ── Owner-close park guard (task #578) ─────────────────────────────────────
+const { parkedGuard } = require('./bsc-next.js');
+const PARK = { event: 'vanished', taskId: '42', workspaceRef: 'workspace:7', ts: '2026-08-02T10:00:00.000Z' };
+
+test('parkedGuard: refuses a task whose workspace the owner closed', () => {
+  const refusal = parkedGuard({ id: '42' }, [PARK], {});
+  assert.match(refusal, /#42 is parked/);
+  assert.match(refusal, /workspace:7/);
+  assert.match(refusal, /--id 42 --force/, 'must name its own escape hatch');
+});
+
+test('parkedGuard: silent for an unparked task', () => {
+  assert.equal(parkedGuard({ id: '43' }, [PARK], {}), null);
+});
+
+test('parkedGuard: --force / --dry-run / --print-prompt all bypass', () => {
+  for (const flag of ['force', 'dry-run', 'print-prompt']) {
+    assert.equal(parkedGuard({ id: '42' }, [PARK], { [flag]: true }), null, `${flag} must bypass`);
+  }
+});
+
+test('parkedGuard: a later launch clears the park (force IS the unpark)', () => {
+  const entries = [PARK, { event: 'launch', taskId: '42', workspaceRef: 'workspace:9', ts: '2026-08-02T11:00:00.000Z' }];
+  assert.equal(parkedGuard({ id: '42' }, entries, {}), null);
+});

@@ -22,6 +22,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
+import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
@@ -29,6 +30,7 @@ const require = createRequire(import.meta.url);
 const { buildFixApprovalEmail } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
+const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -104,6 +106,39 @@ async function sendEmail(to, from, subject, html) {
     req.write(data);
     req.end();
   });
+}
+
+// Files a self-contained P1 card so the standing P0/P1-auto-dispatch-at-creation
+// path (CLAUDE.md §6) picks this up and runs a real fix session — replaces the
+// old dead end of just emailing the owner "needs your attention" with nothing
+// actionable behind it (task #755). This runner has no cmux/bsc-next available
+// (GitHub Actions), so filing the card is the CI-side half of the dispatch;
+// notion-tasks-sync.js pull + the Mac-side loop do the rest. Fail-soft: a
+// broken Notion call must never crash the workflow — the fallback email still
+// fires either way (with different wording depending on whether this worked).
+function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
+  const card = buildEscalationCard({ diagnosis, planReason, issueNumber, issueUrl });
+  const scriptsDir = path.join(ROOT, 'scripts');
+  try {
+    execFileSync('node', [
+      path.join(scriptsDir, 'notion-brain.js'), 'create', card.title,
+      '--priority', card.priority, '--status', card.status, '--action', card.action,
+      '--notes', card.notes,
+    ], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
+  } catch (err) {
+    console.error('escalatePlanRefusal: notion-brain create failed:', err.message);
+    return { filed: false };
+  }
+  try {
+    execFileSync('node', [path.join(scriptsDir, 'notion-tasks-sync.js'), 'pull'],
+      { cwd: ROOT, encoding: 'utf8', timeout: 120000 });
+  } catch (err) {
+    // Card is filed either way — a later scheduled sync picks it up. This
+    // just shortens the dispatch latency when it works.
+    console.error('escalatePlanRefusal: notion-tasks-sync pull failed (card still filed):', err.message);
+  }
+  console.log(`escalatePlanRefusal: filed P1 card "${card.title}"`);
+  return { filed: true, title: card.title };
 }
 
 // --- GPT-4o verification ---
@@ -424,17 +459,34 @@ Or if you cannot create an actionable plan:
     console.log(`Cannot create plan: ${plan.reason}`);
     output('plan_created', 'false');
 
-    // Send a fallback notification email so the owner knows manual attention is needed
+    // Task #755 (owner mandate 2026-08-02): a refused plan used to just email
+    // the owner "needs your attention" with nothing behind it — homework, not
+    // a fix. File a self-contained P1 card instead so the standing dispatch
+    // loop picks it up and a real session lands the fix.
+    const issueUrl = `https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}`;
+    let escalation = { filed: false };
+    try {
+      escalation = escalatePlanRefusal({ diagnosis, planReason: plan.reason, issueNumber, issueUrl });
+    } catch (err) {
+      console.error('escalatePlanRefusal threw:', err.message);
+    }
+
+    // Send a status email — its wording depends on whether the card above
+    // actually got filed (auto-dispatched) or not (genuine fallback, still
+    // needs a human to look).
     const ownerEmail = process.env.OWNER_EMAIL;
     if (ownerEmail) {
       const who = diagnosis.submitterName && diagnosis.submitterName !== 'Anonymous' ? diagnosis.submitterName : 'Someone';
       const showRef = diagnosis.submitterShow ? ` about <strong>${diagnosis.submitterShow}</strong>` : '';
-      const issueUrl = `https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}`;
+
+      const banner = escalation.filed
+        ? `<p style="margin:0 0 12px;padding:10px 14px;background-color:#dbeafe;border:1px solid #3b82f6;border-radius:6px;color:#1e40af;font-size:14px;">&#129302; <strong>Fix session dispatched</strong> &mdash; auto-fix and the plan generator both couldn't scope this one, so a P1 card was filed and queued for a Claude session to investigate. No action needed.</p>`
+        : `<p style="margin:0 0 12px;padding:10px 14px;background-color:#fef3c7;border:1px solid #f59e0b;border-radius:6px;color:#92400e;font-size:14px;">&#9888;&#65039; <strong>Needs your attention</strong> &mdash; auto-fix and plan generator both couldn't handle this one, and filing the auto-dispatch card also failed.</p>`;
 
       const fallbackHtml = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-<p style="margin:0 0 12px;padding:10px 14px;background-color:#fef3c7;border:1px solid #f59e0b;border-radius:6px;color:#92400e;font-size:14px;">&#9888;&#65039; <strong>Needs your attention</strong> &mdash; auto-fix and plan generator both couldn't handle this one.</p>
+${banner}
 <p style="margin:0;">${who} reported a bug${showRef}:</p>
 <br>
 ${diagnosis.originalMessage
@@ -453,8 +505,8 @@ ${diagnosis.originalMessage
 </body></html>`;
 
       const fallbackSubject = diagnosis.submitterShow
-        ? `Manual Fix Needed: ${diagnosis.submitterShow} (#${issueNumber})`
-        : `Manual Fix Needed (#${issueNumber})`;
+        ? `${escalation.filed ? 'Fix dispatched' : 'Manual Fix Needed'}: ${diagnosis.submitterShow} (#${issueNumber})`
+        : `${escalation.filed ? 'Fix dispatched' : 'Manual Fix Needed'} (#${issueNumber})`;
 
       try {
         await sendEmail(
@@ -463,12 +515,12 @@ ${diagnosis.originalMessage
           fallbackSubject,
           fallbackHtml
         );
-        console.log(`Fallback notification email sent to ${ownerEmail}`);
+        console.log(`Status email sent to ${ownerEmail}`);
       } catch (err) {
-        console.error('Failed to send fallback email:', err.message);
+        console.error('Failed to send status email:', err.message);
       }
     } else {
-      console.log('No OWNER_EMAIL set — skipping fallback email');
+      console.log('No OWNER_EMAIL set — skipping status email');
     }
 
     return;

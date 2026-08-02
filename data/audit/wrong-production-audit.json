@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T19:23:25.990Z",
+  "timestamp": "2026-08-02T19:30:43.897Z",
   "stats": {
-    "totalReviews": 41309,
-    "alreadyFlagged": 18094,
-    "dateGuardCatches": 85,
+    "totalReviews": 41307,
+    "alreadyFlagged": 18089,
+    "dateGuardCatches": 87,
     "directorMismatch": 941,
     "tvFilmSignals": 1135,
     "londonSignals": 785,
     "offBroadwaySignals": 469,
     "yearMismatch": 87,
-    "noPublishDate": 3395
+    "noPublishDate": 3393
   },
   "findings": [
     {
@@ -24358,6 +24358,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "everything-theatre--mary-pollard.json",
+      "score": 94,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 792d before show (2024-05-27 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "whatsonstage--ron-simpson.json",
+      "score": null,
+      "publishDate": "2023-12-08",
+      "url": "https://www.whatsonstage.com/news/roald-dahls-the-enormous-crocodile-at-leeds-playhouse-review_1557063/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 963d before show (2023-12-08 vs 2026-07-28)"
         }
       ]
     },

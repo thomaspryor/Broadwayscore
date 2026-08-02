@@ -65,6 +65,12 @@ on:
       - 'scripts/lib/systematic-fix-detection.js'
       - 'scripts/lib/systematic-fix-detection.test.mjs'
       - 'scripts/generate-remediation-plan.js'
+      # Plan-refusal auto-dispatch (task #755): what generate-remediation-plan.js
+      # does when the LLM planner refuses — files a P1 card instead of a dead-end
+      # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/plan-refusal-escalation.js'
+      - 'scripts/lib/plan-refusal-escalation.test.mjs'
       - 'scripts/execute-approved-fix.js'
       # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
@@ -497,6 +503,14 @@ on:
       - 'scripts/lib/rescore-lifecycle.js'
       - 'scripts/llm-scoring/index.ts'
       - 'tests/unit/rescore-lifecycle.test.mjs'
+      # Canonical cascade-gate queue counts (task #652). llm-ensemble-score.yml
+      # gates phases 2-4 on UNSCORED == 0; its old inline counter drifted looser
+      # than the scorer's own selection filter and starved the cascade for
+      # months. Path-list all four or a solo edit gets ZERO CI.
+      - 'scripts/lib/scoring-queue-counts.js'
+      - 'scripts/lib/scorable-text.js'
+      - 'scripts/count-scoring-queue.js'
+      - 'tests/unit/scoring-queue-counts.test.mjs'
       # Post-rebase cross-show ownership gate in push-review-texts (2026-07-12).
       # Without these a solo edit triggers ZERO CI.
       - 'scripts/validate-added-review-ownership.js'
@@ -1095,6 +1109,20 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/alert-ledger-commit-check.js'
       - 'scripts/lib/alert-ledger-commit-check.test.mjs'
+      # Cross-run dead-arm detector (card #647) — the class behind all three
+      # arms the 2026-07-30 pipeline audit found dead with zero alarms.
+      # Colocated *.test.mjs run via the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/arm-yield.js'
+      - 'scripts/lib/arm-yield.test.mjs'
+      - 'scripts/lib/arm-registry.js'
+      - 'scripts/record-arm-yield.js'
+      - 'scripts/check-arm-yield.js'
+      # cron-health multi-day stale escalation (card #647, root cause (b)).
+      - 'scripts/lib/cron-stale-streak.js'
+      - 'scripts/lib/cron-stale-streak.test.mjs'
+      - 'scripts/update-cron-health-state.js'
       # Lint guard: reset --soft + scoped-add + commit phantom-staged-revert
       # pattern (card #687). Colocated *.test.mjs runs via the lib-test glob;
       # path-listed so a solo edit triggers CI.
@@ -2985,7 +3013,7 @@ jobs:
             tests/unit/progress-watch.test.mjs \
             tests/unit/push-ledger.test.mjs \
             tests/unit/rescore-queue-depth.test.mjs \
-            tests/unit/rescore-actionable-depth.test.mjs \
+            tests/unit/scoring-queue-counts.test.mjs \
             tests/unit/outlet-domain-mismatch.test.mjs \
             tests/unit/date-guard-uk-exemption.test.mjs \
             tests/unit/dateless-revival-guard.test.mjs \
