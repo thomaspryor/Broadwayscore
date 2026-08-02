@@ -72,6 +72,33 @@ test('buildDailyReport buckets unclassified owner emails as "other", not a sende
   assert.equal(bucket.other.length, 1);
 });
 
+test('decideDayViolation: an expected sender delivering MORE THAN ONCE in a day is a violation', () => {
+  // 2026-08-02: the Sunday morning digest was delivered twice (07:30 launchd
+  // + a 15:12 live test send) and this monitor read the day as "No
+  // violations" because it only checked key presence, never count.
+  const duplicated = {
+    senders: new Map([
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Sun, Aug 2', 'Morning digest — Sun, Aug 2'] }],
+      ['opening-digest', { label: 'Opening digest', subjects: ['1 needs help · Aug 2'] }],
+    ]),
+    other: [],
+  };
+  const decision = decideDayViolation(duplicated);
+  assert.equal(decision.violation, true);
+  assert.deepEqual(decision.duplicateKeys, ['morning-digest']);
+  assert.deepEqual(decision.unexpectedKeys, []);
+
+  // Exactly-once stays clean.
+  const single = {
+    senders: new Map([
+      ['morning-digest', { label: 'Morning digest', subjects: ['Morning digest — Sun, Aug 2'] }],
+    ]),
+    other: [],
+  };
+  assert.equal(decideDayViolation(single).violation, false);
+  assert.deepEqual(decideDayViolation(single).duplicateKeys, []);
+});
+
 test('decideDayViolation: expected senders are fine, any unexpected sender is a violation', () => {
   // The expected daily set (morning-digest + opening-digest, restored
   // 2026-07-30) firing together is the healthy state, not a violation.

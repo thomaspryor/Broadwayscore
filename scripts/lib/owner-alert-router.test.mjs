@@ -21,6 +21,14 @@ const require = createRequire(import.meta.url);
 function loadRouterWithFakes({ execFileSyncImpl, sendAlertImpl, ledgerEnvPath } = {}) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-test-'));
   const priorLedgerEnv = process.env.ALERT_LEDGER_PATH;
+  // Default to a per-load temp ledger. Loading bare used to resolve to the
+  // REAL ledger (tracked in CI, ~/.broadwayscore-state locally): this exact
+  // file's synthetic conditions were found committed to main inside
+  // data/audit/alert-ledger.json on 2026-08-02, and the router now refuses
+  // real-ledger writes under node:test (saveLedger guard). Pass
+  // `ledgerEnvPath: null` explicitly for read-only tests of the bare-env
+  // path-resolution logic.
+  if (ledgerEnvPath === undefined) ledgerEnvPath = path.join(tmpDir, 'alert-ledger.json');
   if (ledgerEnvPath) process.env.ALERT_LEDGER_PATH = ledgerEnvPath;
   else delete process.env.ALERT_LEDGER_PATH;
   const modulePath = require.resolve('./owner-alert-router.js');
@@ -638,7 +646,9 @@ test('tracked ledger: the same git checkout wipe re-fires the alert (the bug bei
 });
 
 test('ledger path resolution: CI uses the tracked ledger, local execution does not', async () => {
-  const { router, restore } = loadRouterWithFakes();
+  // Explicit null: this test asserts the BARE-env resolution logic (read-only
+  // — any write would trip the saveLedger node:test guard).
+  const { router, restore } = loadRouterWithFakes({ ledgerEnvPath: null });
   try {
     // The unit-test process itself is the local case unless CI is set; either
     // way the resolved path must be one of the two known ledgers, never a
