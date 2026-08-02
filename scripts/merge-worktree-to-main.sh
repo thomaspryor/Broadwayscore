@@ -197,9 +197,18 @@ if [ -n "$(echo "$AUDIT_CHANGED_FILES" | tr -d '[:space:]')" ]; then
     echo "" >&2
     echo "(Bypass ONLY for a genuine emergency: fix on $BRANCH and re-run, or" >&2
     echo " manually 'git merge $BRANCH --no-edit' + 'git push --no-verify'.)" >&2
-    g reset --hard "$ORIGIN_BASE_SHA" >/dev/null 2>&1
+    # Deliberately NOT `git reset --hard` here — same reasoning as the
+    # syntax-floor check above: $ORIGIN_BASE_SHA anchors to origin's tip at
+    # run start, not to local main's state before THIS merge. A prior
+    # invocation of this script can die after merging but before pushing
+    # (see the ORIGIN_BASE_SHA comment above), leaving an unrelated,
+    # not-yet-pushed merge sitting in $MAIN_DIR. Resetting to $ORIGIN_BASE_SHA
+    # would silently discard that other work too. Push never happens on this
+    # path (die() below exits before the push section), so origin is
+    # unaffected either way — leave $MAIN_DIR for the operator to resolve,
+    # exactly like the syntax-floor failure does.
     restore_stash
-    die "push audits failed on $BRANCH's changes — merge refused, main reset back to origin's tip ($ORIGIN_BASE_SHA). Fix the violation on $BRANCH, then re-run this script."
+    die "push audits failed on $BRANCH's changes — merge refused (not pushed). Resolve the violation in $MAIN_DIR (fix on $BRANCH and re-merge, or fix directly and commit), then re-run this script."
   fi
 fi
 
