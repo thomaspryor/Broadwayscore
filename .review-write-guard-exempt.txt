@@ -55,12 +55,10 @@ collect-west-end-reviews.js -- legacy-pending-migration
 convert-show-score-to-review-texts.js -- legacy-pending-migration
 create-stubs-from-reviews-json.js -- legacy-pending-migration
 detect-cross-outlet-duplicates.js -- legacy-pending-migration
-discover-outlet-reviews-serp.js -- legacy-pending-migration
 extract-dtli-reviews.js -- legacy-pending-migration
 extract-embedded-grades.js -- legacy-pending-migration
 extract-explicit-ratings.js -- legacy-pending-migration
 extract-full-reviews.js -- legacy-pending-migration
-extract-stagedoor-reviews.js -- legacy-pending-migration
 fetch-bww-roundups.js -- legacy-pending-migration
 fetch-from-wayback.js -- legacy-pending-migration
 fetch-nysr-scores.js -- legacy-pending-migration
@@ -89,7 +87,6 @@ flag-junk-url-reviews.js -- legacy-pending-migration
 flag-rescore-needed.js -- legacy-pending-migration
 flag-single-model-for-rescore.js -- legacy-pending-migration
 flag-we-cross-production.js -- legacy-pending-migration
-gather-reviews.js -- legacy-pending-migration
 mark-uncalculated-reviews.js -- legacy-pending-migration
 merge-dtli-excerpts.js -- legacy-pending-migration
 merge-showscore-excerpts.js -- legacy-pending-migration
@@ -115,11 +112,8 @@ score-all-unscored.js -- legacy-pending-migration
 score-final-unscored.js -- legacy-pending-migration
 score-remaining-reviews.js -- legacy-pending-migration
 scrape-broadway-and-me.js -- legacy-pending-migration
-scrape-nysr-reviews.js -- legacy-pending-migration
 scrape-reviews.js -- legacy-pending-migration
 scrape-showscore-we.js -- legacy-pending-migration
-scrape-theatre-reviews.js -- legacy-pending-migration
-scrape-thestage-roundups.js -- legacy-pending-migration
 scrape-wp-theater-blogs.js -- legacy-pending-migration
 sync-review-texts.js -- legacy-pending-migration
 unabandon-non-serp-cycles.js -- legacy-pending-migration

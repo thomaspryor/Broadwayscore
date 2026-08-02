@@ -22,6 +22,7 @@ const {
   findExistingReviewFile,
   generateReviewFilename,
 } = require('./lib/review-normalization');
+const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/stagedoor');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -33,9 +34,13 @@ const showFilter = process.argv.find(a => a.startsWith('--show='))?.split('=')[1
 /**
  * Save a review file, merging with existing if present.
  * Never overwrites existing data with strictly less content.
+ *
+ * @param {object} review
+ * @param {string} [dir] - output root, defaults to the real review-texts dir;
+ *   overridable for unit tests (mirrors extract-dtli-reviews.js saveReview()).
  */
-function saveReview(review) {
-  const showDir = path.join(outputDir, review.showId);
+function saveReview(review, dir = outputDir) {
+  const showDir = path.join(dir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
   }
@@ -75,9 +80,24 @@ function saveReview(review) {
     };
   }
 
-  fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
+  // Task #653/#816: findExistingReviewFile() above deliberately skips
+  // wrongProduction/duplicateOf files, so a flagged file already at this
+  // canonical path leaves `existingFile` null and a raw writeFileSync would
+  // clobber it — dropping the exclusion flags and re-admitting contamination
+  // on the next rebuild. safeWriteReview preserves PROTECTED_FIELDS;
+  // preserveFlaggedFields keeps the flagged file's own url so the write doesn't
+  // trip applyUrlChangeInvariant and strip publishDate along with it.
+  review = preserveFlaggedFields(filepath, review);
+  safeWriteReview(filepath, review);
   return filepath;
 }
+
+// Export pure/testable functions for unit testing. Top-level runner below only
+// runs when invoked as a script (not when required from a test) — mirrors the
+// CLAUDE.md §15 extraction pattern used by extract-dtli-reviews.js.
+module.exports = { saveReview };
+
+if (require.main !== module) return;
 
 // Main
 if (!fs.existsSync(archiveDir)) {
