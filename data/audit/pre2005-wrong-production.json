@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-02T09:22:20.679Z",
+    "generatedAt": "2026-08-02T10:07:01.588Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 81,
+    "totalFlagged": 82,
     "highConfidence": 4,
-    "mediumConfidence": 77,
+    "mediumConfidence": 78,
     "lowConfidence": 0,
-    "reassignable": 32
+    "reassignable": 34
   },
   "results": [
     {
@@ -1035,17 +1035,31 @@
       "showId": "all-my-sons-1987",
       "showTitle": "All My Sons",
       "showYear": 1987,
-      "file": "theatermania--kenji-fujishima.json",
-      "outlet": "TheaterMania",
-      "criticName": "Kenji Fujishima",
+      "file": "adriandimanlig--adrian-dimanlig.json",
+      "outlet": "Adriandimanlig",
+      "criticName": "Adrian Dimanlig",
       "publishDate": null,
       "confidence": "medium",
-      "suggestedShowId": null,
+      "suggestedShowId": "all-my-sons-2008",
       "signals": [
-        "revival text signals: new production, this production",
-        "no publishDate + revival signals + revivals exist"
+        "year 2008 in text matches revival all-my-sons-2008"
       ],
-      "textSnippet": "   \"If one is willing to overlook the incongruity of making George black but keeping Ann white, there's something empowering in Ogbuagu and Fluker playing the grim truth tellers amid a sea of white ch"
+      "textSnippet": "Tracy Letts and Annette Bening in Roundabout Theatre Company’s revival of “All My Sons” by Arthur Miller at the American Airlines Theatre. Photo by Joan Marcus. This week, Roundabout Theatre Company’s"
+    },
+    {
+      "showId": "all-my-sons-1987",
+      "showTitle": "All My Sons",
+      "showYear": 1987,
+      "file": "cititour--brian-scott-lipton.json",
+      "outlet": "Cititour",
+      "criticName": "Brian Scott Lipton",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "all-my-sons-2019",
+      "signals": [
+        "year 2020 in text matches revival all-my-sons-2019"
+      ],
+      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com Review\n Arthur Miller delivered a powerful message about the dangers of capitalism in his Tony Award-winning 1947 drama, “All My Sons,” and se"
     },
     {
       "showId": "democracy-2004",
