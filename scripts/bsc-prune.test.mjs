@@ -230,3 +230,34 @@ test('sweepVanished: an empty cmux listing parks nothing (restart/crash guard)',
   assert.deepEqual(appended, []);
   assert.deepEqual(parked, []);
 });
+
+test('sweepVanished: re-validates before appending — a task re-dispatched mid-sweep is NOT parked', () => {
+  // ship-check P0 (Codex): the candidate list is a snapshot. If bsc-next
+  // dispatches this task between the scan and the append, our stale 'vanished'
+  // lands AFTER its 'launch' and parkedTasks() (file order) parks a LIVE tab.
+  const entries = [EPOCH_ENTRY, LAUNCHED];
+  const { appended, parked, deps } = harness(entries);
+  let reads = 0;
+  deps.readLedgerEntriesFn = () => {
+    reads++;
+    // First read = the scan. Second read = the pre-append re-validate, by which
+    // time bsc-next has relaunched the same workspace ref.
+    return reads === 1 ? entries : entries.concat([
+      { event: 'launch', taskId: '5', subject: 'card', workspaceRef: 'workspace:1', ts: '2026-08-02T16:00:00.000Z' },
+      { event: 'prune-closed', taskId: '5', workspaceRef: 'workspace:1', ts: '2026-08-02T16:00:01.000Z' },
+    ]);
+  };
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.deepEqual(appended, [], 'must not park a task reconciled since the scan');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: a failed re-validate read fails closed (no park)', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
+  let reads = 0;
+  const first = [EPOCH_ENTRY, LAUNCHED];
+  deps.readLedgerEntriesFn = () => { if (++reads === 1) return first; throw new Error('EIO'); };
+  assert.doesNotThrow(() => sweepVanished({ all: [ws(9)], ...deps }));
+  assert.deepEqual(appended, [], 'a stale/failed read must never park');
+  assert.deepEqual(parked, []);
+});
