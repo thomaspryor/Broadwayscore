@@ -20,6 +20,8 @@ const MULTI_CRITIC_SERP_OUTLETS = new Set([
  * @param {string[]} criticsArray - the outlet's critics list (from critic-outlets.json)
  * @returns {boolean}
  */
+const { foldDiacritics } = require('./title-match');
+
 function shouldQueryPerCritic(outletIdLower, criticsArray) {
   if (!outletIdLower) return false;
   if (!Array.isArray(criticsArray) || criticsArray.length <= 1) return false;
@@ -34,7 +36,7 @@ function shouldQueryPerCritic(outletIdLower, criticsArray) {
  */
 function normalizeCriticForCoverage(name) {
   if (!name) return '';
-  const stripped = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const stripped = foldDiacritics(String(name)).toLowerCase().replace(/[^a-z0-9]+/g, '');
   if (!stripped || stripped === 'unknown') return '';
   return stripped;
 }

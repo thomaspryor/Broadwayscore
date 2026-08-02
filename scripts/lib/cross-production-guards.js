@@ -51,6 +51,13 @@ function isEvergreenListingUrl(url) {
  * @param {string|null} ownVenueSlug - venueSlug(prod.venue)
  * @returns {boolean}
  */
+// NOT diacritic-folded on purpose: `hay` must stay byte-for-byte paired with
+// how `ownVenueSlug` was built by the caller's own (unfolded) venueSlug()
+// (scripts/audit-cross-production.js / scripts/audit-review-url-clusters.js —
+// both outside scripts/lib, so out of this class's scope). Folding only this
+// side would desync the two encodings and turn today's coincidentally-working
+// accented-venue matches into misses. Fix requires updating all three files
+// together — tracked separately, not part of task #760.
 function contentMatchesFiledUnderVenue(review, ownVenueSlug) {
   if (!ownVenueSlug) return false;
   const hay = String((review && review.fullText) || '')

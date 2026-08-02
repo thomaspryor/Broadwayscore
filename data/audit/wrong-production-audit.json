@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-02T19:42:46.976Z",
+  "timestamp": "2026-08-02T20:15:13.583Z",
   "stats": {
     "totalReviews": 41307,
-    "alreadyFlagged": 18089,
-    "dateGuardCatches": 87,
+    "alreadyFlagged": 18091,
+    "dateGuardCatches": 86,
     "directorMismatch": 941,
     "tvFilmSignals": 1135,
     "londonSignals": 785,
@@ -24365,25 +24365,13 @@
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "everything-theatre--mary-pollard.json",
       "score": 94,
+      "publishDate": "2024-05-27",
+      "url": "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 792d before show (2024-05-27 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "whatsonstage--ron-simpson.json",
-      "score": null,
-      "publishDate": "2023-12-08",
-      "url": "https://www.whatsonstage.com/news/roald-dahls-the-enormous-crocodile-at-leeds-playhouse-review_1557063/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 963d before show (2023-12-08 vs 2026-07-28)"
         }
       ]
     },

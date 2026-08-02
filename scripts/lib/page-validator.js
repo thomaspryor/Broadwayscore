@@ -116,6 +116,8 @@ function callOpenAI(prompt) {
  * Parse a YES/NO response from the LLM, handling case, punctuation, whitespace.
  * Returns true for YES, false for NO, null for unparseable.
  */
+// response is an LLM's YES/NO answer text, not a show title — no diacritic
+// fold needed here.
 function parseYesNo(response) {
   if (!response) return null;
   const clean = response.trim().replace(/[^a-zA-Z]/g, '').toLowerCase();
