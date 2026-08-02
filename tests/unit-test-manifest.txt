@@ -22,6 +22,7 @@ scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
 scripts/lib/cli-help.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
+scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/exec-error-detail.test.mjs
 scripts/lib/ip-cidr.test.mjs
 scripts/lib/push-content-survival.test.mjs
@@ -48,6 +49,7 @@ tests/unit/award-category-canonical.test.mjs
 tests/unit/award-score-link-slug.test.mjs
 tests/unit/awards-person-winner-pairing.test.mjs
 tests/unit/backfill-html-override-rename.test.mjs
+tests/unit/backfill-lbo-help-safety.test.mjs
 tests/unit/backfill-unknown-critics-locked.test.mjs
 tests/unit/bd-telemetry.test.mjs
 tests/unit/block-review-cli.test.mjs
@@ -110,6 +112,7 @@ tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
 tests/unit/core-data-sync-decision.test.mjs
+tests/unit/corpus-determinism.test.mjs
 tests/unit/creative-team-validator.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-registry-guard.test.mjs
@@ -136,6 +139,7 @@ tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/exclusion-logger.test.mjs
+tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs

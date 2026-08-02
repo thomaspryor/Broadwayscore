@@ -115,6 +115,8 @@ const US_DOMAIN_SUFFIXES = [
   'playbill.com', 'time.com', 'rollingstone.com', 'usatoday.com',
 ];
 
+const { foldDiacritics } = require('./title-match');
+
 function _loadShowsJson() {
   if (_showsJsonCache) return _showsJsonCache;
   try {
@@ -131,7 +133,7 @@ function _loadShowsJson() {
  */
 function _normalizeTitleForMatch(t) {
   if (!t) return '';
-  return String(t)
+  return foldDiacritics(String(t))
     .toLowerCase()
     .replace(/^\s*(the|a|an)\s+/, '')
     .replace(/\s*[:\-–—].*$/, '')

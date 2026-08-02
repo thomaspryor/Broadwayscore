@@ -8,6 +8,7 @@
 
 const { TRYOUT_URL_MARKERS } = require('./content-filters');
 const { shortTitleCandidate } = require('./title-normalization');
+const { foldDiacritics } = require('./title-match');
 
 /**
  * Check if "Review Roundup" appears in the <title> tag (not just anywhere on the page).
@@ -60,7 +61,7 @@ const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', '
  * Mirrors the logic in findBWWRoundupLinkOnHomepage (gather-reviews.js).
  */
 function normalizeTitleWords(title) {
-  return title
+  return foldDiacritics(title)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .split(/\s+/)

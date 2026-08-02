@@ -34,6 +34,8 @@ const CURRENT_FAR_DAYS = 90;           // current show's opening this far from r
 /**
  * Normalize a title for sibling grouping (same rules as review-file-writer.js).
  */
+const { foldDiacritics } = require('./title-match');
+
 function normalizeTitle(title) {
   return String(title || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
 }
@@ -145,19 +147,59 @@ function collectSameTitleSignals(candidate, ctx) {
   // that are in GENERIC_VENUE_SLUGS (e.g. "broadway", "lyceum", "apollo",
   // "criterion") — these overmatch unrelated URLs and would falsely link a
   // review to the wrong production. Shared with audit-cross-production.js.
+  //
+  // Whole-venue generic check (task #787), gated BEFORE the per-word split:
+  // 5 GENERIC_VENUE_SLUGS entries are hyphenated multi-word slugs
+  // ("studio-54", "circle-in-the-square", "duke-of-yorks", "music-box",
+  // "victoria-palace") that can never equal a single whitespace-split token,
+  // so they were silently dead here. A venue whose FULL canonical slug
+  // matches one of these is entirely generic (e.g. "Victoria Palace Theatre"
+  // -> "victoria-palace") and contributes no tokens. canonicalSlug below
+  // mirors audit-cross-production.js's own (not-yet-shared — task #783 is
+  // still in flight, unify there once it lands) venueSlug(): lowercase, strip
+  // "theatre"/"theater", hyphen-join. Deliberately NOT done by flattening
+  // each hyphenated entry into standalone words ("victoria", "palace",
+  // "circle", "square", "studio", "music") and denylisting those globally —
+  // that would also suppress "victoria" for "Apollo Victoria Theatre", a
+  // real, DISTINCT West End venue (wicked-west-end-2021) whose own canonical
+  // slug ("apollo-victoria") is not generic. Per-word denylisting below stays
+  // scoped to GENERIC_VENUE_SLUGS's genuinely standalone single-word entries.
+  //
+  // Beyond that whole-venue gate, this signal still isn't a single-slug
+  // match: it tests each significant WORD of the venue name as an
+  // independent substring of a URL path — a deliberately looser, per-word
+  // match tuned for how outlets slug review URLs — and additionally strips
+  // "playhouse"/"the" (the canonicalSlug check above only strips
+  // "theatre"/"theater", matching how GENERIC_VENUE_SLUGS entries are built).
+  //
+  // canonicalSlug also strips a LEADING "the " and apostrophes before
+  // hyphenating (adversarial ship-check catch): without these, "The Circle
+  // in the Square Theatre" or "Duke of York's Theatre" wouldn't collapse
+  // onto their GENERIC_VENUE_SLUGS entries ("circle-in-the-square",
+  // "duke-of-yorks") even though they denote the same generic venue. Only
+  // the LEADING "the" is stripped — not every occurrence — so the internal
+  // "the" that "circle-in-the-square" itself requires survives.
   if (url && candidate.venue) {
-    const venueNorm = String(candidate.venue).toLowerCase();
-    // Strip generic suffixes that match many URLs.
-    const stripped = venueNorm
-      .replace(/\b(theatre|theater|playhouse|the)\b/g, '')
-      .replace(/[^a-z0-9 ]+/g, ' ')
-      .trim();
-    const tokens = stripped.split(/\s+/).filter(t => t.length >= 5 && !GENERIC_VENUE_SLUGS.has(t));
-    const urlLower = url.toLowerCase();
-    for (const tok of tokens) {
-      if (urlLower.includes(tok)) {
-        signals.push('venue-substring');
-        break;
+    const venueNorm = foldDiacritics(String(candidate.venue)).toLowerCase();
+    const canonicalSlug = venueNorm
+      .replace(/^the\s+/, '')
+      .replace(/[‘’′']/g, '')
+      .replace(/\btheatre\b|\btheater\b/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (!GENERIC_VENUE_SLUGS.has(canonicalSlug)) {
+      // Strip generic suffixes that match many URLs.
+      const stripped = venueNorm
+        .replace(/\b(theatre|theater|playhouse|the)\b/g, '')
+        .replace(/[^a-z0-9 ]+/g, ' ')
+        .trim();
+      const tokens = stripped.split(/\s+/).filter(t => t.length >= 5 && !GENERIC_VENUE_SLUGS.has(t));
+      const urlLower = url.toLowerCase();
+      for (const tok of tokens) {
+        if (urlLower.includes(tok)) {
+          signals.push('venue-substring');
+          break;
+        }
       }
     }
   }

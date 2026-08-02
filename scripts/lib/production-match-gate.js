@@ -37,9 +37,11 @@ const SLUG_STOPWORDS = new Set([
   'new', 'revival', 'production', 'review', 'tour', 'uk', 'us',
 ]);
 
+const { foldDiacritics } = require('./title-match');
+
 function titleSlugTokens(showTitle) {
   return new Set(
-    String(showTitle || '')
+    foldDiacritics(String(showTitle || ''))
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, ' ')
       .split(/\s+/)
@@ -62,7 +64,7 @@ function productionMatchSignals(show = {}) {
 
   // Venue tokens (skip generic words).
   const venue = typeof show.venue === 'string' ? show.venue : (show.venue && show.venue.name) || '';
-  for (const w of String(venue).toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
+  for (const w of foldDiacritics(String(venue)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(/\s+/)) {
     if (w.length >= 4 && !VENUE_STOPWORDS.has(w)) tokens.add(w);
   }
 

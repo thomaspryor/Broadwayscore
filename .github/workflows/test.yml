@@ -515,6 +515,17 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # Corpus determinism (task #653): extract-dtli-reviews.js re-extraction must
+      # not clobber wrongProduction/contentTier on an already-excluded review —
+      # that ping-pong was the ±150/day reviews.json flap. Path-listed so a solo
+      # edit to either file triggers CI.
+      - 'scripts/extract-dtli-reviews.js'
+      - 'tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs'
+      - 'scripts/lib/corpus-determinism.js'
+      - 'scripts/audit-corpus-determinism.js'
+      - 'tests/unit/corpus-determinism.test.mjs'
+      # Second writer of the shared deploy watermark (#653) — same CI gate.
+      - 'scripts/pre-deploy-check.js'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/lib/transfer-detection.js'
       - 'scripts/detect-regional-transfers.js'
@@ -953,6 +964,13 @@ on:
       # happened; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/digest-content-invariants.js'
       - 'scripts/lib/digest-content-invariants.test.mjs'
+      # Digest v3 auto-dispatch (owner mandate 2026-08-02) — planner + card
+      # filing + headless dispatch; colocated test runs in the
+      # scripts/lib/*.test.mjs glob step. check-health-row-absent.js is the
+      # safe-form acceptance probe those cards carry.
+      - 'scripts/lib/digest-autofix.js'
+      - 'scripts/lib/digest-autofix.test.mjs'
+      - 'scripts/check-health-row-absent.js'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
@@ -1303,6 +1321,9 @@ on:
       - 'scripts/lib/site-search-discovery.test.mjs'
       - 'scripts/lib/url-discovery.js'
       - 'scripts/lib/domain-filters.js'
+      # Domainless-outlet SERP guard (task #766): eligibility check colocated
+      # test isn't covered by a glob elsewhere, so it's path-listed here too.
+      - 'scripts/lib/domainless-outlet-guard.test.mjs'
       # T1/T2 silent-gap sweep (2026-07-18 Times/Oresteia + NYT/Potluck class):
       # classifier is colocated-tested via the lib-test glob; path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).

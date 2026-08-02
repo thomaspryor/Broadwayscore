@@ -26,6 +26,8 @@ const JUNK_LINE_RE = [
 /**
  * Returns true if a line is chrome/nav rather than review content.
  */
+const { foldDiacritics } = require('./title-match');
+
 function isJunkLine(line) {
   const t = line.trim();
   if (!t) return false;
@@ -68,24 +70,27 @@ function stripNavChrome(text) {
  */
 function countShowKeywords(body, show) {
   if (!show) return 99; // no show provided → skip keyword gate
-  const lower = body.toLowerCase();
+  // Fold both the haystack and the needle keywords — shows.json titles are
+  // largely ASCII while review bodies spell accented shows correctly, so an
+  // unfolded haystack would silently un-match a folded keyword (#648/#760).
+  const lower = foldDiacritics(body).toLowerCase();
   const keywords = new Set();
 
   function addWords(str, minLen) {
     if (!str) return;
-    const clean = str.toLowerCase().replace(/[^a-z0-9 ]/g, ' ');
+    const clean = foldDiacritics(str).toLowerCase().replace(/[^a-z0-9 ]/g, ' ');
     for (const w of clean.split(/\s+/)) {
       if (w.length >= minLen) keywords.add(w);
     }
   }
 
   if (typeof show === 'string') {
-    const fullTitle = show.toLowerCase().trim();
+    const fullTitle = foldDiacritics(show).toLowerCase().trim();
     if (fullTitle.length >= 2) keywords.add(fullTitle); // always add full title (handles "Six", "Bug", "Wit")
     addWords(show, 4);
   } else {
     if (show.title) {
-      const fullTitle = show.title.toLowerCase().trim();
+      const fullTitle = foldDiacritics(show.title).toLowerCase().trim();
       if (fullTitle.length >= 2) keywords.add(fullTitle); // always add full title
       addWords(show.title, 4);
     }
