@@ -1,15 +1,15 @@
 {
   "system": "seo",
-  "status": "pass",
-  "lastChecked": "2026-08-02T07:40:18.114Z",
+  "status": "warn",
+  "lastChecked": "2026-08-02T21:53:31.727Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "SEO: health",
-      "status": "pass",
-      "message": "Healthy (7d ago)"
+      "status": "warn",
+      "message": "1 SEO warning(s): Lighthouse score below 70 on /show/hamilton: 69/100 (lab only — field CWV healthy)"
     }
   ]
 }
