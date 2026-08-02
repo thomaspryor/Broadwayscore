@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T02:18:02.616Z",
+  "timestamp": "2026-08-02T04:11:09.157Z",
   "stats": {
-    "totalReviews": 41208,
-    "alreadyFlagged": 18030,
+    "totalReviews": 41210,
+    "alreadyFlagged": 18034,
     "dateGuardCatches": 85,
-    "directorMismatch": 951,
+    "directorMismatch": 950,
     "tvFilmSignals": 1127,
-    "londonSignals": 783,
+    "londonSignals": 784,
     "offBroadwaySignals": 467,
-    "yearMismatch": 89,
-    "noPublishDate": 3386
+    "yearMismatch": 88,
+    "noPublishDate": 3383
   },
   "findings": [
     {
@@ -2854,6 +2854,7 @@
     {
       "showId": "brainiac-live-west-end-2026",
       "file": "london-theatre-reviews--unknown.json",
+      "score": 90,
       "publishDate": "2026-07-29",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
       "findings": [
@@ -10019,7 +10020,7 @@
     {
       "showId": "gypsy-2024",
       "file": "tennessean--patrick-ryan.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2024-12-20",
       "url": "https://www.tennessean.com/story/entertainment/music/2024/12/20/gypsy-review-audra-mcdonald/77016921007/",
       "findings": [
@@ -12120,25 +12121,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-1987",
-      "file": "metrmag--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.metrmag.com/latest-reviews/into-the-woods-james-lapine-and-stephen-sondheim-emerson-colonial-theatre-boston-ma-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2022 (3x) more than 1987 (1x). 2022 matches production: into-the-woods-2022"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-1997",
       "file": "theater-pizzazz--samuel-l-leiter.json",
       "score": 85,
@@ -13894,7 +13876,7 @@
     {
       "showId": "king-lear-2004",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
+      "score": 72,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/world/KingLear.html",
       "findings": [
@@ -30776,7 +30758,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2026-02-06",
       "url": "https://theatreandtonic.co.uk/blog/arcadia-at-the-old-vic-review",
       "findings": [
@@ -32452,6 +32434,7 @@
     {
       "showId": "cleansed-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 40,
       "publishDate": "2026-07-30",
       "url": "https://www.londonboxoffice.co.uk/news/post/cleansed-almeida-theatre-review",
       "findings": [
@@ -32855,6 +32838,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -41684,7 +41680,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "london-unattached--fiona-maclean.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2026-04-03",
       "url": "https://www.london-unattached.com/authenticator-national-theatre-review/",
       "findings": [
@@ -41698,7 +41694,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "north-west-end--michelle-knight.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-04-07",
       "url": "https://northwestend.com/the-authenticator-national-theatre/",
       "findings": [
