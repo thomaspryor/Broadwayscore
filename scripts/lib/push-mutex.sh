@@ -88,11 +88,25 @@ _push_mutex_lock_dir() {
   echo "${common_dir}/broadwayscore-push-main.lock"
 }
 
-# Portable directory mtime (epoch seconds). BSD `stat` (macOS) and GNU `stat`
-# (Linux CI) take different flags; try both, fail open to 0 (treated as
-# "unknown age", never spuriously stale) if neither works.
+# Portable directory mtime (epoch seconds). LATENT BUG FIXED (task #458,
+# 2026-08-02): the original `stat -f %m` / `stat -c %Y` fallback assumed `-f`
+# always meant "BSD file-status mode" (macOS) with GNU `stat -f` erroring so
+# the `||` fell through to `-c`. It does NOT error on Linux — GNU coreutils
+# `-f` means `--file-system` (filesystem status, a different mode entirely),
+# and `%m` isn't a valid file-system directive there, so GNU stat silently
+# emits its default multi-line `--file-system` output (starting `  File: ...`)
+# instead of failing. That text then flows into `age=$(( now - dir_mtime ))`
+# below, and under `set -u` bash reads the bare word "File" inside the
+# arithmetic context as a variable reference, aborting with "File: unbound
+# variable". This was NEVER exercised on Linux CI before — the branch that
+# calls this function only runs on genuine lock CONTENTION, which is rare in
+# normal single-writer usage — until this task's mutex-deadline regression
+# test deliberately forced contention and reproduced it on a live CI run
+# (Unit Tests job, run 30753779040). Fixed with `date -r FILE +%s`, which
+# reads a file's mtime identically under BSD date (macOS) and GNU date
+# (Linux) — no flag collision, no fallback chain needed.
 _push_mutex_dir_mtime() {
-  stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0
+  date -r "$1" +%s 2>/dev/null || echo 0
 }
 
 # Acquire the mutex. Sets PUSH_MUTEX_HELD=1 and PUSH_MUTEX_LOCKDIR on success.
