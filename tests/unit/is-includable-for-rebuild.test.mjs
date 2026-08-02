@@ -758,3 +758,97 @@ describe('isIncludableForRebuild — pre-opening temporal gate integration', () 
     );
   });
 });
+
+// Task #838: rebuild-all-reviews.js's actual exclusion set includes reasons
+// this predicate did NOT mirror. Discovered via CI run
+// https://github.com/thomaspryor/Broadwayscore/actions/runs/30768630991
+// (rebuild-reviews.yml, 2026-08-02) — real files excluded with
+// reason="skippedTourContamination"/"skippedSyndicated" that this predicate
+// counted includable.
+describe('isIncludableForRebuild — tour/film contamination safety net (task #838)', () => {
+  const recentFetch = '2026-06-17T12:37:46.446Z'; // after CONTAMINATION_AUDIT_CUTOFF
+  const tourText = 'This is a national tour production visiting our city this week. '.repeat(3);
+  const filmText = 'This adaptation is now streaming on Netflix. The cinematography is stunning throughout this new movie version of the classic story, filling out the rest of this synopsis with more filler words to reach the length threshold required for the detector to actually run its check against the text content here.';
+
+  it('returns false for a tour-signal review fetched after the audit cutoff', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: tourText, textFetchedAt: recentFetch }),
+      false
+    );
+  });
+
+  it('returns false for a film/TV-signal review fetched after the audit cutoff', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: filmText, textFetchedAt: recentFetch }),
+      false
+    );
+  });
+
+  it('returns true for the same tour-signal text fetched BEFORE the audit cutoff', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: tourText, textFetchedAt: '2025-01-01T00:00:00Z' }),
+      true
+    );
+  });
+
+  it('returns true when allowTourSignal overrides a tour-signal match', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: tourText, textFetchedAt: recentFetch, allowTourSignal: true }),
+      true
+    );
+  });
+
+  it('returns true when allowFilmSignal overrides a film/TV-signal match', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: filmText, textFetchedAt: recentFetch, allowFilmSignal: true }),
+      true
+    );
+  });
+
+  it('returns true when the show is type: special (tour language is expected)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild(
+        { fullText: tourText, textFetchedAt: recentFetch },
+        { type: 'special' }
+      ),
+      true
+    );
+  });
+
+  it('returns true when the show status is tour-stop', () => {
+    assert.strictEqual(
+      isIncludableForRebuild(
+        { fullText: tourText, textFetchedAt: recentFetch },
+        { status: 'tour-stop' }
+      ),
+      true
+    );
+  });
+
+  it('returns true when the review was already ensemble-rejected (rejectedBy set)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: tourText, textFetchedAt: recentFetch, rejectedBy: ['gpt-5.4'] }),
+      true
+    );
+  });
+});
+
+describe('isIncludableForRebuild — scoreStatus TO_BE_CALCULATED (task #838)', () => {
+  it('returns false when scoreStatus is TO_BE_CALCULATED, even with fullText', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, scoreStatus: 'TO_BE_CALCULATED' }),
+      false
+    );
+  });
+
+  it('returns false when scoreStatus is TO_BE_CALCULATED, even with aggregatorStars', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withAgg, scoreStatus: 'TO_BE_CALCULATED' }),
+      false
+    );
+  });
+
+  it('returns true when scoreStatus is absent', () => {
+    assert.strictEqual(isIncludableForRebuild({ ...withText }), true);
+  });
+});

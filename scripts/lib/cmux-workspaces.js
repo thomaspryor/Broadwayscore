@@ -241,23 +241,15 @@ function computeClaudeAlive(meta, opts = {}) {
   return !checkLiveness(meta.workspaceRef, aliveFn, surfaceAliveFn).dead;
 }
 
-// Close every ✅-marked workspace WITHOUT a LIVE claude process. Alive-but-
-// waiting counts as live: ✅ auto-marks land when a task completes even while
-// the owner is still reviewing in the tab, and closing kills claude (10 tabs
-// lost mid-review, 2026-07-21). Only tabs whose claude process is GONE — the
-// script's original charter, "sessions that died before self-closing" — are
-// closable. Skipped tabs are reported; the owner closes them by hand.
-//
-// EXCEPTION (card #709, owner-approved 2026-07-31): a ✅🤖 auto-dispatched
-// workspace whose claude is alive but IDLE AT THE PROMPT (not mid-turn) is
-// also closeable — every finished auto-dispatched session leaves its claude
-// idle at the prompt rather than exiting, so the live-claude skip above was
-// closing ~nothing autonomously and 21 finished tabs needed manual claude-
-// process kills before a sweep could touch them. Owner-driven (non-🤖) ✅
-// tabs keep the full protection from the 2026-07-21 incident regardless of
-// idle/running state — only the auto-dispatch class relaxes. See
-// scripts/lib/prune-closeable.js for the pure predicate + idle-vs-mid-turn
-// signal (hasLiveClaude && !hasRunningClaude).
+// Close ✅-marked 🤖 auto-dispatched workspaces that are dead or idle at the
+// prompt (owner rule #3, 2026-08-02: auto-close is limited to sessions that
+// were automatically spun up by other sessions — owner-opened ✅ tabs are
+// never closed autonomously, even with a fully dead claude; they are
+// reported as skipped and the owner closes them by hand). Mid-turn tabs are
+// never closed (card #709: idle-at-prompt vs mid-turn distinction). The
+// 2026-07-21 incident (10 tabs lost mid-review) is why uncertainty always
+// resolves to skip. See scripts/lib/prune-closeable.js for the pure
+// predicate + idle-vs-mid-turn signal (hasLiveClaude && !hasRunningClaude).
 //
 // A "not alive" verdict from claudeAliveIn alone is not enough to close
 // (card #559) — see checkLiveness's header comment. Returns
@@ -283,10 +275,11 @@ function pruneDone(opts = {}) {
     if (w.selected) { skipped.push(w); continue; }
     const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
     if (disagreement) disagreements.push(w);
-    // Query mid-turn status for EVERY live ✅ tab (owner escalation #2,
-    // 2026-08-02: the non-🤖 exemption is removed — a ✅ owner-opened tab
-    // idle at the prompt closes too). Any error defaults isRunning to true —
-    // fail-safe: never treat uncertainty as "idle, close it."
+    // Query mid-turn status for EVERY live ✅ tab (owner rule #3,
+    // 2026-08-02: only 🤖 auto-dispatched tabs are closeable at all — see
+    // prune-closeable.js — but the probe still runs for observability). Any
+    // error defaults isRunning to true — fail-safe: never treat uncertainty
+    // as "idle, close it."
     const isAutoDispatched = hasAutoDispatchMarker(w.title);
     let isRunning = true;
     if (!dead) {
