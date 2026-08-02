@@ -330,8 +330,13 @@ function main() {
     return outletScanFailed ? 1 : 0;
   }
   if (!fresh.length) {
+    // MUST still surface an unusable corpus. Returning 0 here let a bad
+    // review-texts checkout combined with unavailable workflow observations
+    // exit green, so `Notify on failure` never ran and the blindness was
+    // invisible — the swallow this guard exists to prevent (Codex review
+    // round 3).
     console.log('Nothing observable to record.');
-    return 0;
+    return outletScanFailed ? 1 : 0;
   }
 
   // Re-recording a day REPLACES it (dedupeEntries keeps the last write), so a

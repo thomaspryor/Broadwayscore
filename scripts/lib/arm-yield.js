@@ -82,6 +82,23 @@ const DEFAULTS = {
    * module exists to stop.
    */
   maxObservationAgeDays: 3,
+  /**
+   * Hard ceiling on any arm's learned threshold, however long it has
+   * historically gone quiet.
+   *
+   * Three review rounds each bolted another branch onto this heuristic to stop
+   * a sparse arm false-alarming — fixed window, then widen for sparse, then
+   * reach back one more yield — and the third let an arm import an unboundedly
+   * old gap. Measured: an arm dead 200 days scored threshold 301 and reported
+   * HEALTHY, i.e. the detector failing at the exact job it exists to do.
+   *
+   * A cap is the bound those branches were missing. The most a long, irregular
+   * history can buy is this many days of silence; past that, silence is
+   * reported no matter how erratic the arm used to be. This is deliberately a
+   * CEILING rather than a fourth special case — it cannot be defeated by a
+   * history shape nobody has thought of yet.
+   */
+  maxThresholdDays: 45,
 
   // ── Collapse rule (cadence:'steady' arms only) ────────────────────────────
   /** Trailing window whose volume is compared against the arm's demonstrated peak. */
@@ -313,7 +330,10 @@ function computeArmState(dailyCounts, opts = {}) {
   }
 
   const windowItems = inWindow.reduce((sum, d) => sum + (map.get(d) || 0), 0);
-  const threshold = Math.max(cfg.minStreakDays, longestPriorGap + 1 + cfg.gapSafetyDays);
+  const threshold = Math.min(
+    cfg.maxThresholdDays,
+    Math.max(cfg.minStreakDays, longestPriorGap + 1 + cfg.gapSafetyDays)
+  );
 
   const state = {
     verdict: 'healthy',

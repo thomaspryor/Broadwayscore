@@ -126,6 +126,20 @@ test('a LOW-FREQUENCY arm is still judged — the baseline widens past 30 days',
   assert.equal(computeArmState(healthy, { asOf: '2026-08-02' }).verdict, 'healthy');
 });
 
+test('no history, however erratic, buys unlimited silence — threshold is capped', () => {
+  // Codex review round 3, reproduced before fixing: an arm with an ancient
+  // 300-day gap in its history scored threshold 301 and reported HEALTHY after
+  // being dead 200 days. Three rounds of widening the gap sample had removed
+  // every bound; the cap restores one.
+  const end = Date.parse('2026-08-02T00:00:00Z');
+  const ancient = new Map();
+  for (const i of [560, 260, 230, 200]) ancient.set(new Date(end - i * DAY).toISOString().slice(0, 10), 2);
+  for (let i = 199; i >= 0; i -= 1) ancient.set(new Date(end - i * DAY).toISOString().slice(0, 10), 0);
+  const s = computeArmState(ancient, { asOf: '2026-08-02' });
+  assert.equal(s.verdict, 'dead', `arm dead 200d must alert regardless of an ancient gap, got ${s.verdict}`);
+  assert.ok(s.threshold <= 45, `threshold must be capped, got ${s.threshold}`);
+});
+
 test('a brand-new arm with no productive day yet cannot alert', () => {
   const fresh = series('2026-07-30', [0, 0, 0, 0, 0]);
   assert.equal(computeArmState(fresh, { asOf: '2026-07-30' }).verdict, 'no-history');
