@@ -14,5 +14,21 @@
     "severity": "error",
     "url": null,
     "queuedAt": "2026-08-02T12:20:25.846Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 80% (453/566)\noff-broadway: 48.5% (161/332)\nwest-end: 71.5% (391/547)\n\nOldest gaps:\n1536 — guardian (251h)\n1536 — independent (251h)\nA Midsummer Night's Dream - Globe — financialtimes (251h)\nA Midsummer Night's Dream - Globe — telegraph (251h)\nA Midsummer Night's Dream — financialtimes (251h)\n… 204 more open gap(s)",
+    "severity": "warning",
+    "url": null,
+    "queuedAt": "2026-08-02T15:20:29.605Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "queuedAt": "2026-08-02T15:20:31.993Z"
   }
 ]

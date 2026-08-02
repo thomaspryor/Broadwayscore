@@ -223,6 +223,41 @@ fi
 # the lock — restore_head_if_moved only needs to EXIST by the time the trap
 # fires, not by the time it's registered (ship-check finding, task #556).
 push_mutex_acquire
+# Reset the deadline clock AFTER the mutex resolves, but ONLY when it was
+# actually ACQUIRED (task #458, 2026-07-30 finding; refined per adversarial
+# review below). $SECONDS counts from bash startup, and the deadline check
+# below reads it directly — so if push_mutex_acquire blocked for any real
+# stretch waiting on another session's lock (its own timeout defaults to
+# 900s, deliberately longer than this script's PUSH_DEADLINE_SEC default of
+# 240s so a legitimate holder is never raced), that wait time was already
+# silently spent against PUSH_DEADLINE_SEC before the retry loop ran a
+# single iteration. Reproduced live (card #669, interactive worktree
+# session): "waiting on lock held by pid 25008 (timeout 900s)" immediately
+# followed by "deadline 240s exceeded after 0 attempt(s)" — the push itself
+# never got a chance to run. The mutex's own wait is a QUEUEING cost, not
+# push/retry work, so it must not count against the work budget when the
+# lock protects that work.
+#
+# GATED on PUSH_MUTEX_HELD=1 (first cut reset unconditionally — adversarial
+# review, task #458): push_mutex_acquire returns success both when it
+# acquired the lock AND when it FAILED OPEN after timing out — see
+# push-mutex.sh's own header, "a waiter that can't acquire the lock within
+# PUSH_LOCK_TIMEOUT_SEC proceeds WITHOUT it". An unconditional reset would
+# grant a full fresh PUSH_DEADLINE_SEC retry/rebase/push window to a caller
+# that is explicitly UNPROTECTED by the mutex — reopening exactly the
+# concurrent-push race this lock exists to prevent (task #556), and doing
+# so with MORE exposure than before this fix (previously such a caller hit
+# the deadline almost immediately and exited fast; now it would spend the
+# full budget racing other holders). When the lock was NOT acquired, the
+# existing behavior (deadline measured from script start, so a long mutex
+# wait leaves little/no budget) is the safer failure mode: fail fast rather
+# than proceed unprotected for a full extra window. Safe: every other use
+# of $SECONDS in this script (fetch_start below) only takes DIFFERENCES
+# against a later read of $SECONDS, so resetting the baseline here (when it
+# happens) doesn't change their meaning.
+if [ "$PUSH_MUTEX_HELD" = "1" ]; then
+  SECONDS=0
+fi
 trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
 
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
