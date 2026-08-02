@@ -32,6 +32,16 @@ on:
       - 'scripts/lib/bww-roundup-parser.test.mjs'
       - 'tests/fixtures/bww-roundups/**'
       - 'scripts/fix-photo-credit-byline-phantoms.js'
+      # Manual-entry merge: the LAST write into reviews.json, running after every
+      # dedup pass, so a missed match appends a phantom duplicate nothing can
+      # collapse. A lowercase-only byline compare let "R. Scott Reedy" (manual)
+      # miss "R Scott Reedy" (pipeline) and double-count a BroadwayWorld review
+      # on wonder-regional-2026 (owner feedback, 2026-08-02). Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI.
+      - 'scripts/lib/manual-entry-merge.js'
+      - 'scripts/lib/manual-entry-merge.test.mjs'
+      - 'data/audit/same-url-duplicate-baseline.json'
       # Systematic-fix detection: guards the feedback remediation pipeline
       # against value-generalization (the 2026-07-31 close-all-147-open-shows
       # proposal). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs

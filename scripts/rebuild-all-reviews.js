@@ -49,6 +49,7 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
+const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -4511,35 +4512,14 @@ if (consistencyIssues.length > 0) {
     if (fs.existsSync(currentReviewsPath)) {
       const currentData = JSON.parse(fs.readFileSync(currentReviewsPath, 'utf8'));
       const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true);
-      let preserved = 0;
-      const normCritic = (name) => (name || 'unknown').toLowerCase().trim();
-      for (const manual of manualEntries) {
-        const manualCritic = normCritic(manual.criticName);
-        // Match by showId + outletId + criticName. Outlets like NYSR have multiple
-        // critics per show — matching only by outletId returns the wrong entry and
-        // leaves the actual pipeline version un-replaced (causing a duplicate).
-        const pipelineVersion = allReviews.find(r =>
-          r.showId === manual.showId &&
-          r.outletId === manual.outletId &&
-          normCritic(r.criticName) === manualCritic
-        );
-        if (pipelineVersion && pipelineVersion.scoreSource === 'human-review') {
-          // Pipeline processed the source file with humanReviewScore — it's authoritative
-          continue;
-        }
-        if (pipelineVersion && pipelineVersion.assignedScore) {
-          // Pipeline has an LLM score — keep manual entry (human score beats LLM)
-          const idx = allReviews.indexOf(pipelineVersion);
-          if (idx >= 0) allReviews[idx] = manual;
-          preserved++;
-        } else if (!pipelineVersion) {
-          // Pipeline didn't produce this review at all — keep manual entry
-          allReviews.push(manual);
-          preserved++;
-        }
-      }
+      // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
+      // every dedup pass, so a missed match appends a permanent phantom duplicate —
+      // the helper matches punctuation-insensitively and falls back to the URL.
+      const { preserved, appended, matchedByUrl } =
+        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup);
       if (preserved > 0) {
-        console.log(`\n✅ Preserved ${preserved} manual entries from previous reviews.json`);
+        console.log(`\n✅ Preserved ${preserved} manual entries from previous reviews.json` +
+          ` (${appended} appended, ${matchedByUrl} matched by URL after byline mismatch)`);
       }
     }
   } catch (e) {
