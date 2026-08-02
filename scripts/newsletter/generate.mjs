@@ -117,7 +117,14 @@ const markFeatured = (...ids) => { for (const id of ids) if (id) featuredShowIds
 const _openingShowRefs = [];
 const markOpening = (section, showList) => {
   for (const s of showList || []) {
-    if (s && s.id) _openingShowRefs.push({ section, id: s.id, slug: s.slug, title: s.title, category: s.category || null, image: getImage(s) });
+    if (!s || !s.id) continue;
+    // poster: opening cards render images.poster when declared (posterOrThumb),
+    // so pre-send-check phantom-checks the poster path too — a valid thumbnail
+    // with a phantom poster still breaks the hero card.
+    const poster = s.images && s.images.poster
+      ? 'https://broadwayscorecard.com' + (s.images.poster.startsWith('/') ? s.images.poster : '/' + s.images.poster)
+      : null;
+    _openingShowRefs.push({ section, id: s.id, slug: s.slug, title: s.title, category: s.category || null, image: getImage(s), poster });
   }
 };
 
@@ -2601,7 +2608,10 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   openingShows: dedupeShowRefs(_openingShowRefs
     .filter(r => (IS_WE
       ? ['london-openings', 'also-opened-recently']
-      : ['broadway-openings', 'offbroadway-openings', 'london-openings', 'opera-openings', 'also-opened-recently']
+      // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
+      // slot for it, so including it here would gate the BW draft on shows the
+      // email never renders (ship-check finding, 2026-08-02).
+      : ['broadway-openings', 'offbroadway-openings', 'london-openings', 'opera-openings']
     ).includes(r.section))
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),

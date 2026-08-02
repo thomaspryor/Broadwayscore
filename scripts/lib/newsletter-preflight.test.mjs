@@ -51,6 +51,17 @@ test('phantomImageViolations flags metadata pointing at missing files', () => {
   assert.match(out[0], /phantom path/);
 });
 
+test('phantomImageViolations checks the poster too (posterOrThumb renders it when declared)', () => {
+  const shows = [{
+    id: 'x', title: 'Phantom Poster',
+    image: 'https://broadwayscorecard.com/images/shows/x/thumbnail.webp',   // real
+    poster: 'https://broadwayscorecard.com/images/shows/x/poster.webp',     // phantom
+  }];
+  const out = phantomImageViolations(shows, (rel) => rel.endsWith('thumbnail.webp'));
+  assert.equal(out.length, 1);
+  assert.match(out[0], /poster points at/);
+});
+
 test('countEmptyImgSrc counts only empty-src img tags', () => {
   const html = '<img width="56" src="" alt=""><img src="https://broadwayscorecard.com/i.jpg"><div src=""></div><img class="x" src="">';
   assert.equal(countEmptyImgSrc(html), 2);
@@ -82,6 +93,16 @@ test('classifyGapEntry: fresh gap / fresh ok / stale / no-data', () => {
   assert.equal(classifyGapEntry({ at: 'garbage', gaps: 1, uncollected: 1 }, NOW), 'no-data');
   // freshHours option is respected
   assert.equal(classifyGapEntry({ at: hoursAgo(72), gaps: 3, uncollected: 3 }, NOW, { freshHours: 96 }), 'gap');
+});
+
+test('classifyGapEntry: schema safety — corrupt counts and future timestamps are no-data', () => {
+  assert.equal(classifyGapEntry({ at: hoursAgo(2), uncollected: -1 }, NOW), 'no-data');
+  assert.equal(classifyGapEntry({ at: hoursAgo(2), uncollected: 2.5 }, NOW), 'no-data');
+  assert.equal(classifyGapEntry({ at: hoursAgo(2), uncollected: '3' }, NOW), 'no-data');
+  // future `at` beyond 1h skew must not read as eternally fresh
+  assert.equal(classifyGapEntry({ at: hoursAgo(-6), uncollected: 0 }, NOW), 'no-data');
+  // small skew tolerated
+  assert.equal(classifyGapEntry({ at: hoursAgo(-0.5), uncollected: 0 }, NOW), 'ok');
 });
 
 test('classifyGapEntry: flaggedMisses-only show (Tao of Glass shape) is ok, not gap', () => {

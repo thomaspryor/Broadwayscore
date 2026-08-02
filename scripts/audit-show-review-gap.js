@@ -1368,13 +1368,16 @@ async function main(argv = process.argv.slice(2)) {
       checkpoint[s.id] = {
         at: new Date().toISOString(),
         gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
-        // uncollected: reviews we literally do not have on disk (aggregator
-        // lists a URL we never fetched, or cites an outlet with no URL).
-        // Consumed by the newsletter pre-send gate (task #823), which must NOT
-        // block on flaggedMisses — those are collected-but-excluded files and
-        // include permanent, correct exclusions (non-reviews, roundups) that
-        // would fail every issue forever.
-        uncollected: r.missing.length + r.citedNoUrl.length,
+        // uncollected: CURRENT-run reviews we literally do not have on disk
+        // (aggregator lists a URL we never fetched, or cites an outlet with no
+        // URL). Consumed by the newsletter pre-send gate (task #823), which
+        // must NOT block on: flaggedMisses (collected-but-excluded files whose
+        // exclusions are often permanent and correct — non-reviews, roundups),
+        // or priorRun rows (prior-production URLs kept report-only in the
+        // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
+        // 2018 Broadway run; same filter the WE completeness alert applies).
+        uncollected: r.missing.filter(m => !m.priorRun).length
+          + r.citedNoUrl.filter(c => !c.priorRun).length,
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         // Cooldown stamps ONLY on a fully-successful census (every query

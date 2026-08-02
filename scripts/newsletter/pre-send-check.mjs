@@ -162,8 +162,13 @@ if (!Array.isArray(meta.openingShows)) {
   try {
     const audit = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/show-review-gap.json'), 'utf8'));
     for (const r of audit.results || []) {
-      if (r.showId && Array.isArray(r.missing) && r.missing.length) {
-        missingHostsById[r.showId] = r.missing.map(m => m.host || m.outletId || m.url || String(m)).filter(Boolean);
+      if (!r.showId || !Array.isArray(r.missing)) continue;
+      // priorRun rows are prior-production URLs the audit keeps report-only
+      // (TKAM class) — they're excluded from checkpoint.uncollected, so they
+      // must not be named in the failure message either.
+      const current = r.missing.filter(m => !m.priorRun);
+      if (current.length) {
+        missingHostsById[r.showId] = current.map(m => m.host || m.outletId || m.url || String(m)).filter(Boolean);
       }
     }
   } catch { /* hosts are enrichment only */ }
@@ -186,7 +191,9 @@ if (emptySrcCount > 0) {
 // Catches deploy lag / prod 404s the local file check can't see. Network
 // observations are SOFT by design: Vercel bot-challenge or a flaky connection
 // must not block the draft, but a 404 on send morning belongs in the banner.
-if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1') {
+// Skipped when a hard failure already exists — the run is stopping anyway, so
+// don't spend up to 40×8s of network time first (ship-check finding).
+if (process.env.NEWSLETTER_SKIP_IMAGE_FETCH !== '1' && hardFailures.length === 0) {
   const imgUrls = extractSiteImageUrls(html).slice(0, 40);
   const badImgs = [];
   for (const url of imgUrls) {
@@ -217,6 +224,10 @@ if (!html.includes('display:none !important') || !html.includes('max-height:0'))
 if (hardFailures.length > 0) {
   console.error(`\n🛑 Pre-send HARD FAILURE — workflow stopped:\n`);
   for (const f of hardFailures) console.error(`   · ${f}`);
+  if (softIssues.length > 0) {
+    console.error(`\n   (also ${softIssues.length} soft issue(s) — fix alongside:)`);
+    for (const i of softIssues) console.error(`   · ${i}`);
+  }
   process.exit(1);
 }
 

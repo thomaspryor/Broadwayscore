@@ -122,3 +122,23 @@ test('a brand-new stub still gets written when nothing exists at the path', () =
     assert.equal(after.bwwExcerpt, 'A fresh BWW excerpt.');
   });
 });
+
+test('an incoming write carrying wrongProductionManualClear reaches safeWriteReview intact (P1 adversarial-review finding)', () => {
+  withTempFile((filePath) => {
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+
+    // A deliberate human clear: wrongProduction is absent and the manual-clear
+    // breadcrumb is set. preserveFlaggedFields must NOT strip this breadcrumb
+    // before safeWriteReview's isIntentionalClear machinery sees it — every
+    // CLEAR_BREADCRUMBS field lives in PROTECTED_FIELDS, so without the
+    // early-return the breadcrumb was silently deleted and the flag
+    // resurrected from the on-disk value.
+    saveAggregatorStub(filePath, {
+      ...freshBwwStub(),
+      wrongProductionManualClear: true,
+    });
+
+    const after = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    assert.notEqual(after.wrongProduction, true, 'wrongProduction was resurrected despite an intentional manual clear');
+  });
+});

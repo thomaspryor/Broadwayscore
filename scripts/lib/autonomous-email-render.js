@@ -287,6 +287,7 @@ const AUTOFIX_STATE_LABEL = {
   'queued': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
   'card-filed': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
   'card-failed': ['\u26a0\ufe0f', 'could not be queued automatically \u2014 will retry tomorrow'],
+  'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
 };
 function renderAutofixBlock(autofixRows) {
   let rows = (autofixRows || []).filter(r => r && r.name);

@@ -1,20 +1,20 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-02T07:40:18.114Z",
+  "lastChecked": "2026-08-02T21:53:31.726Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "3 NEW review(s) whose explicit rating contradicts the score (worst: the-imaginary-invalid Theater Life 4.5/5 stars→90 vs LLM 41, gap 49)"
+      "status": "pass",
+      "message": "No new star/score contradictions (48 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (19340/19607)"
+      "message": "98.6% scored (19380/19655)"
     },
     {
       "name": "Quality: corpus drift",
