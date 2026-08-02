@@ -17,7 +17,10 @@
     "pride-west-end-2026/whatsonstage--editorial-staff.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -151,7 +154,14 @@
     "ride-the-cyclone-off-west-end-2026/hollywood-reporter--david-rooney.json",
     "ride-the-cyclone-off-west-end-2026/nytimes--charles-isherwood.json",
     "ride-the-cyclone-off-west-end-2026/newsday--linda-winer.json",
-    "ride-the-cyclone-off-west-end-2026/talkinbroadway--unknown.json"
+    "ride-the-cyclone-off-west-end-2026/talkinbroadway--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -165,7 +175,9 @@
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "pride-west-end-2026/whatsonstage--editorial-staff.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -179,16 +191,54 @@
     "brightdata": [
       "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre-reviews--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/the-saviors-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json"
     ]
   },
   "startTime": "2026-08-02T10:32:58.716Z",
-  "lastProcessed": "ride-the-cyclone-off-west-end-2026/talkinbroadway--unknown.json",
-  "log": []
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-02T11:14:36.055Z",
+      "event": "bb-session",
+      "session": "265b3167",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T11:14:36.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T11:14:52.001Z",
+      "event": "bb-session",
+      "session": "dd7c6b0b",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-02T11:14:52.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T11:15:49.866Z",
+      "event": "bb-session",
+      "session": "4ab149fb",
+      "url": "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atla"
+    },
+    {
+      "t": "2026-08-02T11:15:50.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
