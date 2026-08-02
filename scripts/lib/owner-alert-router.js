@@ -135,6 +135,22 @@ function saveLedger(ledger) {
   fs.renameSync(tmp, LEDGER_PATH);
 }
 
+// The ledger is bookkeeping, not the alert itself: by the time it is written
+// the card/email has already gone out. A write failure (unwritable HOME under
+// a launchd agent, full disk, permissions) must therefore NOT propagate and
+// take down the caller's whole check — it degrades to "this condition may
+// re-notify next run", which is exactly the pre-fix behaviour. Loud on
+// purpose: silent non-persistence is the bug this card exists for.
+function persistLedger(ledger) {
+  try {
+    saveLedger(ledger);
+    return true;
+  } catch (err) {
+    console.error(`[alert-router] FAILED to persist the ledger at ${LEDGER_PATH}: ${err.message} — cooldowns will NOT hold until this is fixed (card #693)`);
+    return false;
+  }
+}
+
 function hoursSince(iso) {
   const t = new Date(iso).getTime();
   if (!Number.isFinite(t)) return Infinity;
@@ -332,7 +348,7 @@ async function routeAlert(opts) {
   if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours) {
     existing.lastSeen = now;
     existing.silentRefires = (existing.silentRefires || 0) + 1;
-    saveLedger(ledger);
+    persistLedger(ledger);
     return { action: 'silent', conditionKey, cardId: existing.cardId || null };
   }
 
@@ -389,7 +405,7 @@ async function routeAlert(opts) {
     notifyCount: (existing?.notifyCount || 0) + 1,
     cardId: result.cardId !== undefined ? result.cardId : (existing?.cardId || null),
   };
-  saveLedger(ledger);
+  persistLedger(ledger);
   return result;
 }
 
@@ -402,7 +418,7 @@ function resolveCondition(conditionKey) {
   if (!existing || existing.status !== 'open') return false;
   existing.status = 'resolved';
   existing.resolvedAt = new Date().toISOString();
-  saveLedger(ledger);
+  persistLedger(ledger);
   return true;
 }
 
@@ -415,7 +431,7 @@ function deleteCondition(conditionKey) {
   const ledger = loadLedger();
   if (!(conditionKey in ledger.conditions)) return false;
   delete ledger.conditions[conditionKey];
-  saveLedger(ledger);
+  persistLedger(ledger);
   return true;
 }
 

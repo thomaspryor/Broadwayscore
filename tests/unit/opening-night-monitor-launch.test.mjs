@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import fs, { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import os from 'node:os';
@@ -211,51 +211,88 @@ test('pass env forwards the API key only under auth.mode api-key', () => {
 // parallel session's `git checkout`/`reset --hard` cannot wipe — the live
 // failure was the same on-monitor-launch-failed alert emailing twice 21 min
 // apart through a cooldownHours: 3 window, with the git-tracked ledger showing
-// neither send. This exercises the REAL alert() wrapper against the REAL
-// router (only routeAlert itself is stubbed, so no card/email is filed).
-test('alert() reports the ledger the router actually resolved, not data/audit', async () => {
+// neither send. routeAlert itself is REAL here — only the Notion CLI call and
+// the Resend sender are stubbed — so this asserts the cooldown actually holds
+// end-to-end through the launcher, not merely that a path gets logged.
+test('alert(): a second launch-failure inside the cooldown is suppressed, and the tracked ledger is never touched', async () => {
   const require = createRequire(import.meta.url);
   const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const discordPath = require.resolve('../../scripts/lib/discord-notify.js');
+  const childProcessPath = require.resolve('node:child_process');
   const launcher = require('../../scripts/opening-night-monitor-launch.js');
 
-  // A ledger outside any git checkout, the way a local sender gets routed.
-  const pinnedLedger = path.join(os.tmpdir(), 'alert-router-launcher-test', 'alert-ledger.json');
+  // A ledger outside any git checkout — where a local sender gets routed.
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-launcher-'));
+  const pinnedLedger = path.join(tmpDir, 'state', 'alert-ledger.json');
   const priorEnv = process.env.ALERT_LEDGER_PATH;
   process.env.ALERT_LEDGER_PATH = pinnedLedger;
-  const priorCache = require.cache[routerPath];
+
+  const priorRouterCache = require.cache[routerPath];
+  const priorDiscordCache = require.cache[discordPath];
   delete require.cache[routerPath];
-  const realRouter = require(routerPath);
-  const routed = [];
-  require.cache[routerPath] = {
-    id: routerPath,
-    filename: routerPath,
-    loaded: true,
-    exports: { ...realRouter, routeAlert: async (opts) => { routed.push(opts); return { action: 'silent' }; } },
+  delete require.cache[discordPath];
+
+  // No Notion card, no Resend email, no writes into the repo's data/audit/.
+  const dispatches = [];
+  const realChildProcess = require(childProcessPath);
+  const realExecFileSync = realChildProcess.execFileSync;
+  realChildProcess.execFileSync = (...args) => {
+    dispatches.push(args);
+    return JSON.stringify({ id: 'fake-card-id' });
   };
+  require.cache[discordPath] = {
+    id: discordPath, filename: discordPath, loaded: true,
+    exports: { sendAlert: async () => true },
+  };
+
+  const router = require(routerPath);
+  const realWriteFileSync = fs.writeFileSync;
+  const realReadFileSync = fs.readFileSync;
+  const attemptsLog = path.join(tmpDir, 'alert-router-attempts.jsonl');
+  fs.writeFileSync = (p, ...rest) => realWriteFileSync(p === router._ATTEMPTS_LOG_PATH ? attemptsLog : p, ...rest);
+
+  const readTracked = () => {
+    try { return realReadFileSync(router._TRACKED_LEDGER_PATH, 'utf8'); } catch { return null; }
+  };
+  const trackedBefore = readTracked();
 
   const logs = [];
   const realConsoleLog = console.log;
   console.log = (...args) => logs.push(args.join(' '));
-  launcher.alert.loggedLedger = false; // the path is logged once per process
+  launcher.alert.loggedLedger = false; // the resolved path is logged once per process
   try {
-    const result = await launcher.alert({
-      conditionKey: 'test:launcher-ledger',
-      title: 'test',
+    const opts = {
+      conditionKey: 'test:launcher-launch-failed',
+      title: 'monitor pass FAILED (test)',
       description: 'test',
       disposition: 'auto',
-    });
-    assert.equal(result.action, 'silent');
-    assert.equal(routed.length, 1, 'the alert went through owner-alert-router');
+      cooldownHours: 3,
+    };
+    const first = await launcher.alert(opts);
+    assert.equal(first.action, 'auto', 'first failure of the night notifies');
+    assert.equal(dispatches.length, 1);
+    assert.ok(fs.existsSync(pinnedLedger), 'cooldown state landed on the machine-local ledger');
+
+    // Nothing was written into the git-tracked ledger, so there is no
+    // uncommitted edit for a parallel session's checkout/reset to wipe — the
+    // whole failure mode is gone rather than merely narrowed.
+    assert.equal(trackedBefore, readTracked(), 'the launcher must not touch the git-tracked ledger');
+
+    const second = await launcher.alert(opts);
+    assert.equal(second.action, 'silent', 'second failure inside the 3h cooldown must not re-notify');
+    assert.equal(dispatches.length, 1, 'exactly one dispatch — the live bug sent two 21 min apart');
 
     const ledgerLine = logs.find(l => l.includes('alert ledger:'));
     assert.ok(ledgerLine, 'the tick logs which ledger it used');
     assert.ok(ledgerLine.includes(pinnedLedger), `expected the resolved ledger path in: ${ledgerLine}`);
     assert.ok(ledgerLine.includes('survives git ops'), 'a non-tracked ledger must be reported as git-safe');
-    assert.equal(ledgerLine.includes('/data/audit/alert-ledger.json'), false,
-      'the launcher must not report the git-tracked ledger — that one gets clobbered mid-night');
   } finally {
     console.log = realConsoleLog;
-    if (priorCache) require.cache[routerPath] = priorCache; else delete require.cache[routerPath];
+    fs.writeFileSync = realWriteFileSync;
+    realChildProcess.execFileSync = realExecFileSync;
+    if (priorRouterCache) require.cache[routerPath] = priorRouterCache; else delete require.cache[routerPath];
+    if (priorDiscordCache) require.cache[discordPath] = priorDiscordCache; else delete require.cache[discordPath];
     if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 });

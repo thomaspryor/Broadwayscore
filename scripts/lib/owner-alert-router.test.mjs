@@ -702,3 +702,34 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
     fs.rmSync(stateDir, { recursive: true, force: true });
   }
 });
+
+// The ledger is written AFTER the card/email has gone out. An unwritable
+// ledger path (no HOME under a launchd agent, full disk, permissions) must
+// therefore degrade to "logged loudly, may re-notify next run" — never take
+// down the caller's whole check, which for health-check.js would mean losing
+// every remaining condition in that run.
+test('an unwritable ledger path does not throw — the alert still dispatches, loudly', async () => {
+  const unwritable = path.join(os.tmpdir(), 'alert-router-unwritable', 'not-a-dir', 'alert-ledger.json');
+  fs.mkdirSync(path.dirname(path.dirname(unwritable)), { recursive: true });
+  fs.writeFileSync(path.dirname(unwritable), 'this is a FILE, so mkdir of the ledger dir must fail\n');
+  const { router, calls, restore } = loadRouterWithFakes({ ledgerEnvPath: unwritable });
+  const errors = [];
+  const realConsoleError = console.error;
+  console.error = (...args) => errors.push(args.join(' '));
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test:unwritable-ledger',
+      title: 'Test alert',
+      description: 'desc',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'auto', 'the card was still dispatched');
+    assert.equal(calls.execFileSync.length, 1);
+    assert.ok(errors.some(e => e.includes('FAILED to persist the ledger')),
+      'a ledger that cannot be written must be reported, not swallowed');
+  } finally {
+    console.error = realConsoleError;
+    restore();
+    fs.rmSync(path.dirname(path.dirname(unwritable)), { recursive: true, force: true });
+  }
+});
