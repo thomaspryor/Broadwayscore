@@ -34,7 +34,7 @@ cd "$(dirname "$0")/../.."
 # A mid-loop failure (e.g. Resend 429 after the broadway PATCH) leaves one
 # edition refreshed and the other stale. Re-running IS the reconciliation —
 # every step is idempotent — so say that instead of failing silently.
-trap 'echo "FAILED partway — one edition may be refreshed and the other stale. Re-run this script to reconcile (all steps are idempotent)." >&2' ERR
+trap 'git checkout -- data/newsletter-state.json 2>/dev/null || true; echo "FAILED partway — one edition may be refreshed and the other stale. Re-run this script to reconcile (all steps are idempotent)." >&2' ERR
 
 if [ ! -f .env ]; then
   echo "ERROR: no .env here ($(pwd)) — run from the main configured checkout (needs RESEND_API_KEY), not a worktree/fresh clone." >&2
