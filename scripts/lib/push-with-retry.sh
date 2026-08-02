@@ -223,6 +223,22 @@ fi
 # the lock — restore_head_if_moved only needs to EXIST by the time the trap
 # fires, not by the time it's registered (ship-check finding, task #556).
 push_mutex_acquire
+# Reset the deadline clock AFTER the mutex resolves (task #458, 2026-07-30
+# finding). $SECONDS counts from bash startup, and the deadline check below
+# reads it directly — so if push_mutex_acquire blocked for any real stretch
+# waiting on another session's lock (its own timeout defaults to 900s,
+# deliberately longer than this script's PUSH_DEADLINE_SEC default of 240s so
+# a legitimate holder is never raced), that wait time was already silently
+# spent against PUSH_DEADLINE_SEC before the retry loop ran a single
+# iteration. Reproduced live (card #669, interactive worktree session):
+# "waiting on lock held by pid 25008 (timeout 900s)" immediately followed by
+# "deadline 240s exceeded after 0 attempt(s)" — the push itself never got a
+# chance to run. The mutex's own wait is a QUEUEING cost, not push/retry
+# work, so it must not count against the work budget. Safe: every other use
+# of $SECONDS in this script (fetch_start below) only takes DIFFERENCES
+# against a later read of $SECONDS, so resetting the baseline here doesn't
+# change their meaning.
+SECONDS=0
 trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
 
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────

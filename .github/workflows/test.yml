@@ -326,6 +326,12 @@ on:
       - 'scripts/lib/push-with-retry.sh'
       - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/lib/push-with-retry.deadline.test.sh'
+      # #458 (2026-07-30 finding, card #669): mutex-wait-vs-deadline interaction.
+      # push_mutex_acquire can block for a real stretch (its own timeout defaults
+      # to 900s, longer than PUSH_DEADLINE_SEC's 240s default) BEFORE the retry
+      # loop's deadline check ever runs, so a busy mutex alone could exhaust the
+      # whole push budget with zero attempts. Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/push-with-retry.mutex-deadline.test.sh'
       - 'scripts/lib/push-with-retry.fetch-timeout.test.sh'
       # Git Data API push fallback (task #707, generalizes the task #698 live
       # fix): opt-in (PUSH_VIA_API_FALLBACK=1) replacement for the local
@@ -2195,6 +2201,19 @@ jobs:
         # (task #183 / Notion 39d637c5 — the "Record pipeline success" hang).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.deadline.test.sh
+
+      - name: Run push-with-retry mutex/deadline interaction test (bash integration)
+        # Task #458 (2026-07-30 finding, card #669): push_mutex_acquire can block
+        # for a real stretch waiting on another session's lock (its own timeout
+        # defaults to 900s, deliberately longer than PUSH_DEADLINE_SEC's 240s
+        # default) — that wait time was silently spent against the deadline
+        # BEFORE the retry loop ran a single iteration, so a busy mutex alone
+        # could abort the whole push with "0 attempts". Fix: SECONDS=0 right
+        # after push_mutex_acquire returns, so the deadline governs actual
+        # push/retry work, not queueing time. This test pre-holds the mutex with
+        # a live process and asserts a real push attempt still runs afterward.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.mutex-deadline.test.sh
 
       - name: Run push-with-retry fetch-timeout test (bash integration)
         # Task #464 root-cause fix: the mid-loop fetch could hit the full
