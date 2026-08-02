@@ -1,44 +1,11 @@
 {
-  "generatedAt": "2026-08-02T09:38:41.575Z",
+  "generatedAt": "2026-08-02T07:50:38.244Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 145,
+  "checked": 143,
   "clean": 143,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "title": "The Importance of Being Oscar",
-      "openingDate": "2026-07-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76 vs local 71.2 (Δ4.8)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 10
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2022-06-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 86.38)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 3
-    }
-  ]
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
