@@ -236,6 +236,14 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null } = {}) {
 function pruneClosedEntry(workspace, entries) {
   const launch = launchByRef(workspace.ref, entries);
   if (!launch) return null; // not a bsc-next auto-dispatch — not ours to journal
+  // Idempotence for the scheduled auto-prune tick (owner escalation
+  // 2026-08-02): a ✅ workspace bsc-prune SKIPS (live claude) used to get a
+  // fresh terminal breadcrumb on every sweep — harmless at owner-run cadence,
+  // ~288 duplicate lines/day/ref at a 5-min tick. Same already-reconciled
+  // rule vanishedBreadcrumbs applies: a terminal entry at or after this
+  // launch means the ref is journaled and needs nothing more.
+  const term = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event)).get(workspace.ref);
+  if (term && launch.ts && term.ts && term.ts >= launch.ts) return null;
   return {
     event: 'prune-closed',
     taskId: launch.taskId,
