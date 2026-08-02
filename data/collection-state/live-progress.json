@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-02T08:34:16.718Z",
-  "processed": 103,
-  "failed": 959,
-  "successRate": "9.7%",
+  "updatedAt": "2026-08-02T08:37:53.513Z",
+  "processed": 109,
+  "failed": 912,
+  "successRate": "10.7%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 82,
     "amp": 0,
     "browserbase": 1,
-    "directCookies": 0,
+    "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 17,
-    "archiveToday": 9,
+    "archiveToday": 17,
     "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-02T00:04:17.692Z",
@@ -91,6 +91,18 @@
       "t": "2026-08-02T01:12:10.551Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-02T08:29:04.529Z",
+      "event": "bb-session",
+      "session": "96226615",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-02T08:29:22.113Z",
+      "event": "bb-session",
+      "session": "acadf150",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }
