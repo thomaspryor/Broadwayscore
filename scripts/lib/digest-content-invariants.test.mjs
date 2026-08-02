@@ -17,7 +17,7 @@ function healthWith(errors, warns = []) {
   return { generatedAt: NOW.toISOString(), errors, warns, queued: [] };
 }
 
-test('real assembly path: every rendered health row (errors AND warnings) gets a Fix-this button', () => {
+test('real assembly path v3: zero buttons; every named row lands in Being-fixed-automatically', () => {
   const health = healthWith([
     { name: 'Test Suite red', message: 'unit tests failing on main' },
     { name: 'Deploy stuck', message: 'vercel-deploy.yml has not run in 12h' },
@@ -33,13 +33,13 @@ test('real assembly path: every rendered health row (errors AND warnings) gets a
   const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
   assert.equal(result.ok, true);
-  // 2 errors + 1 warning = 3 rendered rows = 3 buttons. Warnings carry
-  // buttons since the 2026-08-01 owner escalation ("a bunch of other shit
-  // with no actions to take") — a row with no action does not belong here.
-  assert.equal(countFixThisButtons(html), 3);
+  // Digest v3 (owner mandate 2026-08-02): NO buttons — auto-dispatch replaced
+  // them. The report block must exist instead.
+  assert.equal(countFixThisButtons(html), 0);
+  assert.ok(html.includes('Being fixed automatically'));
 });
 
-test('real assembly path: zero errors, one warning -> the warning still gets its own button', () => {
+test('real assembly path v3: zero errors, one warning -> reported in the autofix block, no button', () => {
   const health = healthWith([], [{ name: 'SEO: LCP elevated' }]);
   const { subject, html } = composeDigestEmail({
     sections: { health },
@@ -49,55 +49,35 @@ test('real assembly path: zero errors, one warning -> the warning still gets its
   });
   const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
-  assert.equal(countFixThisButtons(html), 1);
+  assert.equal(countFixThisButtons(html), 0);
+  assert.ok(html.includes('Being fixed automatically'));
 });
 
-test('real assembly path: no dispatch secret -> no buttons attached, but errors still render (fail-soft, not fail-invisible)', () => {
+test('real assembly path v3: no dispatch secret changes nothing — zero buttons either way, invariant passes', () => {
   const health = healthWith([{ name: 'Test Suite red', message: 'x' }]);
-  const { html } = composeDigestEmail({
-    sections: { health },
-    now: NOW,
-    dispatchSecret: null,
-    dispatchConfigPath: NO_CONFIG_PATH,
+  const { subject, html } = composeDigestEmail({
+    sections: { health }, now: NOW, dispatchSecret: null, dispatchConfigPath: NO_CONFIG_PATH,
   });
-  // No secret -> no fixUrl -> no button. This is the ONE state where the
-  // count invariant is expected to legitimately mismatch (0 buttons for 1
-  // error) — assertDigestInvariants still flags it, which is correct: the
-  // owner should know a fix-worthy morning shipped without a tappable link.
-  const result = assertDigestInvariants(html, { health });
-  assert.equal(result.ok, false);
-  assert.match(result.violations[0], /expected 1 "Fix this" button/);
+  const result = assertDigestInvariants(html, { health, subject });
+  assert.deepEqual(result.violations, []);
+  assert.equal(countFixThisButtons(html), 0);
 });
 
-test('real assembly path: every action URL is https, correct host, 64-hex sig', () => {
+test('real assembly path v3: the composed email contains ZERO dispatch action URLs', () => {
   const health = healthWith([
     { name: 'A', message: 'a' }, { name: 'B', message: 'b' }, { name: 'C', message: 'c' },
   ]);
   const { html } = composeDigestEmail({
     sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH,
   });
-  const urls = extractActionUrls(html);
-  assert.equal(urls.length, 3);
-  for (const url of urls) {
-    const u = new URL(url);
-    assert.equal(u.protocol, 'https:');
-    assert.equal(u.hostname, 'broadwayscorecard.com');
-    assert.match(u.searchParams.get('sig'), /^[0-9a-f]{64}$/);
-  }
+  assert.equal(extractActionUrls(html).length, 0);
 });
 
-test('regression bait: deleting the attachHealthFixUrls call would make this RED (proves the test can see the #634 class)', () => {
-  // This test does not itself delete the line — see the card's acceptance
-  // criteria for the manual RED/GREEN proof — but it pins the contract that
-  // makes that deletion visible: composeDigestEmail (the real function
-  // main() calls) must be the one producing the buttons, not a fixture the
-  // test hand-assembles.
-  const health = healthWith([{ name: 'X', message: 'x' }]);
-  const { html } = composeDigestEmail({
-    sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH,
-  });
-  assert.equal(countFixThisButtons(html), 1);
-  assert.ok(health.errors[0].fixUrl, 'attachHealthFixUrls must have mutated health.errors[0].fixUrl in place');
+test('regression bait v3: reintroducing ANY Fix-this anchor turns the invariant red', () => {
+  const html = '<div><a href="https://broadwayscorecard.com/api/autonomous-action?action=dispatch&sig='+ 'a'.repeat(64) +'">Fix this →</a></div>';
+  const result = assertDigestInvariants(html, { health: null, subject: 'x' });
+  assert.equal(result.ok, false);
+  assert.ok(result.violations.some(v => /NO Fix-this buttons/.test(v)));
 });
 
 test('subject invariant: non-empty and under 120 chars on the real assembled subject', () => {
@@ -110,12 +90,12 @@ test('subject invariant: non-empty and under 120 chars on the real assembled sub
   assert.ok(subject.length > 0 && subject.length < 120);
 });
 
-test('unit: catches a mismatched button count on a hand-built fixture', () => {
+test('unit: catches a stray Fix-this button on a hand-built fixture', () => {
   const health = healthWith([{ name: 'A', message: 'a' }, { name: 'B', message: 'b' }]);
   const html = '<div>Fix needed: A</div><a>Fix this →</a>'; // only 1 button for 2 errors
   const result = assertDigestInvariants(html, { health });
   assert.equal(result.ok, false);
-  assert.match(result.violations[0], /expected 2 .* found 1/);
+  assert.ok(result.violations.some(v => /NO Fix-this buttons/.test(v)));
 });
 
 test('unit: catches a non-https or wrong-host action URL', () => {
@@ -145,29 +125,25 @@ test('unit: catches unrendered template artifacts (undefined/NaN text node, [obj
   assert.equal(assertDigestInvariants('<div>Property foo is undefined in prod.</div>', {}).ok, true);
 });
 
-test('real assembly path: nameless health error is not counted against the button total (matches attachHealthFixUrls own skip)', () => {
-  const health = healthWith([{ name: 'A', message: 'a' }, { message: 'no name, skipped by attachHealthFixUrls' }]);
-  const { html } = composeDigestEmail({
-    sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH,
-  });
-  assert.equal(countFixThisButtons(html), 1);
-  const result = assertDigestInvariants(html, { health });
+test('real assembly path v3: nameless health rows never crash the render or the invariant', () => {
+  const health = healthWith([{ name: 'A', message: 'a' }, { message: 'no name' }]);
+  const { subject, html } = composeDigestEmail({ sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH });
+  const result = assertDigestInvariants(html, { health, subject });
   assert.deepEqual(result.violations, []);
+  assert.equal(result.ok, true);
 });
 
-test('real assembly path: verifySecret upgrades sig check to real HMAC verification — wrong secret fails, right secret passes', () => {
-  const health = healthWith([{ name: 'A', message: 'a' }]);
-  const { html } = composeDigestEmail({
-    sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH,
-  });
-  const good = assertDigestInvariants(html, { health, verifySecret: SECRET });
-  assert.deepEqual(good.violations, []);
-
-  const bad = assertDigestInvariants(html, { health, verifySecret: 'wrong-secret' });
-  assert.equal(bad.ok, false);
-  assert.match(bad.violations.join(' '), /does not verify against the given secret/);
+test('unit: verifySecret upgrades sig check to real HMAC verification on any action URL present', () => {
+  // Composed v3 emails carry no action URLs, so this guard is exercised on a
+  // fixture: if an action URL ever reappears, its sig must verify.
+  const { buildDispatchUrl } = require('./dispatch-link.js');
+  const url = buildDispatchUrl({ conditionKey: 'health-check:A', title: 'BSC Daily: A', exp: 1893456000, secret: SECRET, baseUrl: 'https://broadwayscorecard.com' });
+  const html = `<a href="${url.replace(/&/g, '&amp;')}">view</a>`;
+  const good = assertDigestInvariants(html, { verifySecret: SECRET });
+  assert.ok(!good.violations.some(v => /does not verify/.test(v)));
+  const bad = assertDigestInvariants(html, { verifySecret: 'wrong-secret' });
+  assert.ok(bad.violations.some(v => /does not verify against the given secret/.test(v)));
 });
-
 test('unit: countFixThisButtons requires an actual anchor, not bare prose containing the phrase', () => {
   assert.equal(countFixThisButtons('<p>You should Fix this issue yourself.</p>'), 0);
   assert.equal(countFixThisButtons('<a href="https://x">Fix this →</a>'), 1);

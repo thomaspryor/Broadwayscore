@@ -34,7 +34,11 @@ REPO_DIR="/Users/tompryor/Broadwayscore"
 LOG_DIR="$REPO_DIR/data/newsletter-drafts"
 LOCK_DIR="$LOG_DIR/sunday-review.lock"
 LOCK_META="$LOG_DIR/sunday-review-lock.json"
-CLAUDE_TIMEOUT_SEC=1800
+# 2026-08-02: was 1800. The 08-02 run hit the alarm (exit 142) 19 min after it
+# had emailed the owner, mid-way through landing a code fix — so the prompt's
+# "fix the root cause and merge it yourself" lane needs room to finish. 3600s
+# still bounds a wedged session well inside the Sunday morning window.
+CLAUDE_TIMEOUT_SEC=3600
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/sunday-review-$(date +%Y%m%d-%H%M).log"
 exec >> "$LOG_FILE" 2>&1

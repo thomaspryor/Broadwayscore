@@ -871,8 +871,23 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'The Stage review-round-ups page' };
   }
 
-  // WestEndTheatre.com reviews pages (aggregator roundups, not individual reviews)
-  if (/westendtheatre\.com\/.*\/reviews\//i.test(url)) {
+  // WestEndTheatre.com reviews pages (aggregator roundups, not individual reviews).
+  // WET publishes NO first-party criticism — every rating on the site is a relay
+  // of some other outlet's star (audit 2026-08-02: all 37 articles in its
+  // /category/news/reviews/ index are multi-outlet roundups; the bylines
+  // — Ghenet Pinderhughes Randall, Paul Raven, Julianna Barnaby — are the
+  // compilers, and each row inside carries the QUOTED critic's name + outlet).
+  //
+  // Two URL shapes, both roundups:
+  //   /{id}/news/reviews/{slug}-reviews/  — the /reviews/ section path
+  //   /{id}/news/{slug}-reviews/          — posted straight under /news/
+  // Only the first was matched, so the-oresteia (4/5) and jesus-christ-superstar
+  // roundups were ingested as first-party WET reviews carrying the roundup's
+  // headline star. They are live-suppressed today only by an unrelated
+  // wrongProduction flag; clearing that flag would ship the aggregate as a
+  // critic review.
+  if (/westendtheatre\.com\/.*\/reviews\//i.test(url)
+      || /westendtheatre\.com\/(?:\d+\/)?news\/(?:[^/?#]+\/)*[^/?#]*-reviews?(?:-round-?up)?\/?(?:[?#]|$)/i.test(url)) {
     return { isRoundup: true, reason: 'WestEndTheatre.com aggregator roundup page' };
   }
 

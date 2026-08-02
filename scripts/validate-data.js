@@ -1752,11 +1752,23 @@ function validateReviewsJson() {
   const seenUrls = {};
   for (const r of reviews) {
     if (!r.url) continue;
-    const key = `${r.showId}|${(r.outletId || r.outlet || '').toLowerCase()}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
+    // Keyed on show + URL WITHOUT outletId. An outlet-scoped key misses the
+    // case where the outlet ID itself drifts: a canonical registry entry on a
+    // bare domain (suntimes.com) plus an article on a subdomain
+    // (chicago.suntimes.com) mints a provisional second outlet, and the same
+    // article then counts twice under two IDs at two different scores
+    // (iceboy-regional-2026, Steven Oxman, 75 + 65 — found 2026-08-02).
+    const key = `${r.showId}|${r.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '')}`;
     if (seenUrls[key]) {
-      urlDuplicates.push({ key, showId: r.showId, outlet: r.outlet, url: r.url, critics: [seenUrls[key], r.criticName] });
+      const prev = seenUrls[key];
+      urlDuplicates.push({
+        key, showId: r.showId, outlet: r.outlet, url: r.url,
+        critics: [prev.criticName, r.criticName],
+        crossOutlet: prev.outletId !== r.outletId,
+        outlets: prev.outletId !== r.outletId ? [prev.outletId, r.outletId] : null,
+      });
     } else {
-      seenUrls[key] = r.criticName;
+      seenUrls[key] = r;
     }
   }
   // One article at one outlet for one show is exactly one review, so a same-URL
@@ -1785,7 +1797,8 @@ function validateReviewsJson() {
   if (newUrlDuplicates.length > 0) {
     error(`Found ${newUrlDuplicates.length} NEW duplicate URL(s) within same show+outlet in reviews.json:`);
     newUrlDuplicates.slice(0, 10).forEach(d => {
-      error(`  ${d.showId}: ${d.outlet} | ${d.url} (${d.critics.join(', ')})`);
+      const where = d.crossOutlet ? `${d.outlets.join(' vs ')} [CROSS-OUTLET]` : d.outlet;
+      error(`  ${d.showId}: ${where} | ${d.url} (${d.critics.join(', ')})`);
     });
     if (newUrlDuplicates.length > 10) {
       error(`  ...and ${newUrlDuplicates.length - 10} more`);

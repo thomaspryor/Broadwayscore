@@ -73,26 +73,36 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   // button. Counting nameless entries here would flag correct fail-soft
   // behavior as a violation (ship-check adversarial finding, codex
   // 2026-07-30).
-  // Widened 2026-08-01 (owner: "ONE fix it button and a bunch of other shit
-  // with no actions"): the bar is now every RENDERED row, warnings included.
-  // selectHealthRows is imported from the renderer rather than reimplemented
-  // so the row budget can never drift between what is drawn and what is
-  // asserted — a second copy here would let this check go quietly false.
-  const { selectHealthRows } = require('./autonomous-email-render.js');
-  // `health.warns` ONLY — no `|| health.warnings` fallback. The renderer reads
-  // health.warns (autonomous-email-render.js: `const warns = ... health.warns`),
-  // so counting health.warnings here would assert buttons for rows that are
-  // never drawn and report a violation on a correct email (ship-check finding,
-  // codex 2026-08-01). The checker must mirror the renderer, not guess at it.
-  const namedRows = health
-    ? selectHealthRows({ errors: health.errors, warns: health.warns })
-        .rows.filter((r) => r && r.name)
-    : [];
-  if (namedRows.length > 0) {
-    const fixCount = countFixThisButtons(html);
-    if (fixCount !== namedRows.length) {
-      violations.push(`expected ${namedRows.length} "Fix this" button(s) for ${namedRows.length} rendered health row(s), found ${fixCount}`);
+  // Digest v3 (owner mandate 2026-08-02): the email must NEVER ask. Zero
+  // Fix-this buttons — auto-dispatch replaced them — and every named health
+  // row must appear inside the "Being fixed automatically" block with a
+  // status line. Forbidden sections are the telemetry the owner called
+  // unintelligible/useless; their headings reappearing is a regression.
+  const fixCount = countFixThisButtons(html);
+  if (fixCount !== 0) {
+    violations.push(`Digest v3 renders NO Fix-this buttons (auto-dispatch replaced them) — found ${fixCount}`);
+  }
+  const FORBIDDEN_HEADINGS = ['Closing soon', 'Score drift', 'Backlog drain', 'T1 Coverage Scoreboard', 'Deployed coverage', 'Fixes &amp; features merged'];
+  for (const h of FORBIDDEN_HEADINGS) {
+    if (html.includes(h)) violations.push(`forbidden section "${h}" rendered — deleted by the 2026-08-02 owner mandate`);
+  }
+  // Owner mandate 2026-08-02: a "Needs your attention" section with zero
+  // clickable action links is a prose-only ask — banned. (view links or
+  // signed Dispatch-a-fix buttons both count; the sig checks below still
+  // validate any dispatch URLs.)
+  if (html.includes('Needs your attention')) {
+    const block = html.slice(html.indexOf('Needs your attention'));
+    if (!/<a\b[^>]*href=/.test(block)) {
+      violations.push('"Needs your attention" section has no clickable action — prose-only asks are banned (owner mandate 2026-08-02)');
     }
+  }
+
+  const { selectHealthRows } = require('./autonomous-email-render.js');
+  const namedRows = health
+    ? selectHealthRows({ errors: health.errors, warns: health.warns }).rows.filter((r) => r && r.name)
+    : [];
+  if (namedRows.length > 0 && !html.includes('Being fixed automatically')) {
+    violations.push(`health has ${namedRows.length} named issue(s) but no "Being fixed automatically" block — the email is asking or hiding instead of fixing`);
   }
 
   // Every dispatch action URL must be a live, correctly-signed link — a
