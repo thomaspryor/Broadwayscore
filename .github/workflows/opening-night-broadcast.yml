@@ -327,7 +327,10 @@ jobs:
           BREACHED_SHOWS=()
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
           for SHOW in "${SHOWS[@]}"; do
-            node scripts/opening-night-checklist.js --show="$SHOW" --json > /tmp/checklist-"$SHOW".json 2>&1 || true
+            # --out: remediation logs go to stdout, so a merged redirect makes
+            # the JSON unparseable and the catch below reads ERRORS=0 — passing
+            # the QA gate exactly when a show has missing reviews.
+            node scripts/opening-night-checklist.js --show="$SHOW" --json --out=/tmp/checklist-"$SHOW".json 2>&1 || true
             ERRORS=$(node -e "
               try {
                 const d = JSON.parse(require('fs').readFileSync('/tmp/checklist-${SHOW}.json','utf8'));
@@ -806,14 +809,19 @@ jobs:
               fs.writeFileSync(sentPath, JSON.stringify(data, null, 2));
             "
             git add -f data/opening-night-sent.json 2>/dev/null || true
-            node -e "
+            # Pass via env, never shell-interpolated into the JS source: a
+            # title with an apostrophe (190 shows in the corpus) breaks the
+            # single-quoted literal, the step exits 1 with NO alert sent, and
+            # the cooldown stamped above suppresses the retry — silent
+            # permanent suppression. Same pattern as BREACHED_LIST above.
+            OVERDUE_LIST="$OVERDUE" node -e "
               const { sendAlert } = require('./scripts/lib/discord-notify.js');
               sendAlert({
                 title: 'Opening Night Broadcast Overdue',
-                description: 'These shows opened 6+ hours ago but the broadcast has not sent. The data pipeline may be stuck (gather/rebuild/score).',
+                description: 'These shows opened 6+ hours ago but the broadcast has not sent. Each line names the blocking unscored file when the orphan gate is the cause; otherwise the pipeline (gather/rebuild/score) may be stuck.',
                 severity: 'error',
                 email: true,
-                fields: [{ name: 'Shows', value: '$OVERDUE' }],
+                fields: [{ name: 'Shows', value: process.env.OVERDUE_LIST || '?' }],
               });
             "
           fi

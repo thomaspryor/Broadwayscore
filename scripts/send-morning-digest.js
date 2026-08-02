@@ -417,10 +417,22 @@ async function main() {
   // dayKeyET expects a Resend-style string (its toDate does string surgery);
   // a bare Date object mangles to Invalid Date. Pass ISO.
   const todayET = dayKeyET(new Date().toISOString());
+  // State is a per-recipient MAP — a single-record file would let a test
+  // send to a throwaway address overwrite the owner's stamp, re-opening the
+  // exact duplicate-send hole this guard exists to close (ship-check P1).
+  let sentState = {};
+  try {
+    const parsed = JSON.parse(fs.readFileSync(SENT_STATE, 'utf8'));
+    if (parsed && typeof parsed === 'object') {
+      sentState = parsed.recipients && typeof parsed.recipients === 'object'
+        ? parsed.recipients
+        // Legacy single-record shape {dayET,to,id,at} — fold into the map.
+        : (parsed.to ? { [parsed.to]: parsed } : {});
+    }
+  } catch { /* no state yet */ }
   if (!args.force) {
-    let prev = null;
-    try { prev = JSON.parse(fs.readFileSync(SENT_STATE, 'utf8')); } catch { /* no state yet */ }
-    if (prev && prev.dayET === todayET && prev.to === sendTo) {
+    const prev = sentState[sendTo];
+    if (prev && prev.dayET === todayET) {
       console.error(`[digest] already sent to ${sendTo} today (ET ${todayET}, Resend id ${prev.id || '?'}) — refusing duplicate send. Use --dry-run to preview, or --force for a deliberate re-send.`);
       process.exit(1);
     }
@@ -443,8 +455,9 @@ async function main() {
   }
   console.log(`[digest] sent to ${sendTo} (subject: ${subject} · id ${res.json?.id || '?'})`);
   try {
+    sentState[sendTo] = { dayET: todayET, id: res.json?.id || null, at: new Date().toISOString() };
     fs.mkdirSync(path.dirname(SENT_STATE), { recursive: true });
-    fs.writeFileSync(SENT_STATE, JSON.stringify({ dayET: todayET, to: sendTo, id: res.json?.id || null, at: new Date().toISOString() }, null, 2) + '\n');
+    fs.writeFileSync(SENT_STATE, JSON.stringify({ recipients: sentState }, null, 2) + '\n');
   } catch (e) {
     console.error(`[digest] warn: could not persist sent-state (${e.message}) — the once-per-day guard will not hold until this is fixed`);
   }
