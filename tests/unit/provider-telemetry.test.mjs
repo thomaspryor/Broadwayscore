@@ -20,8 +20,10 @@ process.env.SCRAPER_SPEND_LEDGER_PATH = LEDGER_SCRATCH;
 
 const require = createRequire(import.meta.url);
 const {
-  recordBbCall, recordBdCall, countCallsByProvider, topCallers, computeAttributedPct,
+  recordBbCall, recordBdCall, recordSbCall, recordSdCall,
+  countCallsByProvider, topCallers, computeAttributedPct,
 } = require('../../scripts/lib/provider-telemetry.js');
+const { mergeScraperSpendLedger } = require('../../scripts/lib/merge-scraper-spend-ledger.js');
 
 function _captureStdout(fn) {
   const lines = [];
@@ -74,6 +76,75 @@ test('ledger accumulates one row per call across providers', () => {
   const ledger = _readLedger();
   assert.equal(ledger.length, 3);
   assert.equal(ledger.filter(r => r.provider === 'browserbase').length, 2);
+});
+
+// ---------- concurrent-writer race + reconciliation (task #784) ----------
+//
+// _appendLedgerLine() is a local readFileSync + push + writeFileSync, not a
+// true append — reproduces the scenario where two CI runners each check out
+// the same committed ledger ("base"), then independently call
+// recordXCall() (which internally calls _appendLedgerLine()) against their
+// own local copy without seeing the other's write. When push-with-retry.sh's
+// `git rebase -X theirs` resolves the resulting conflicting hunk WITHOUT
+// reporting a conflict, ONE runner's appended row is silently dropped unless
+// mergeScraperSpendLedger() (invoked by reconcile-merged-json.js) unions them
+// back together.
+
+test('two concurrent runners each appending to the same base ledger both survive reconciliation', () => {
+  const oursPath = path.join(os.tmpdir(), `provider-telemetry-test-ours-${process.pid}.jsonl`);
+  const remotePath = path.join(os.tmpdir(), `provider-telemetry-test-remote-${process.pid}.jsonl`);
+  try { fs.unlinkSync(oursPath); } catch { /* fine if absent */ }
+  try { fs.unlinkSync(remotePath); } catch { /* fine if absent */ }
+
+  // A prior commit already landed one row — this is the shared "base" both
+  // runners check out before appending.
+  process.env.SCRAPER_SPEND_LEDGER_PATH = oursPath;
+  _captureStdout(() => {
+    recordBdCall({ url: 'https://variety.com', fn: 'web-unlocker', success: true, status: 200 });
+  });
+  fs.copyFileSync(oursPath, remotePath);
+
+  // Runner A (e.g. sweep-we-aggregators.js) appends its own call against its
+  // local checkout of the base ledger, unaware of runner B.
+  process.env.SCRAPER_SPEND_LEDGER_PATH = oursPath;
+  _captureStdout(() => {
+    recordSbCall({ url: 'https://westendtheatre.com', fn: 'page', success: true, status: 200, credits: 5 });
+  });
+
+  // Runner B (e.g. scrape-thestage-roundups.js) appends a DIFFERENT call
+  // against its own local checkout of the same base, concurrently.
+  process.env.SCRAPER_SPEND_LEDGER_PATH = remotePath;
+  _captureStdout(() => {
+    recordSdCall({ url: 'https://thestage.co.uk', fn: 'page', success: true, status: 200, credits: 3 });
+  });
+  process.env.SCRAPER_SPEND_LEDGER_PATH = LEDGER_SCRATCH;
+
+  const oursEntries = fs.readFileSync(oursPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+  const remoteEntries = fs.readFileSync(remotePath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+  assert.equal(oursEntries.length, 2); // base + runner A's row
+  assert.equal(remoteEntries.length, 2); // base + runner B's row
+
+  // Without reconciliation, `git rebase -X theirs` would silently keep
+  // "ours" (base + runner A) and drop runner B's row entirely — the bug this
+  // card exists to fix. mergeScraperSpendLedger() is what reconcile-merged-
+  // json.js calls post-rebase to union them back together.
+  const { merged, stats } = mergeScraperSpendLedger(oursEntries, remoteEntries);
+  assert.equal(merged.length, 3, 'both concurrent rows must survive reconciliation, not just one side');
+  assert.ok(merged.some(r => r.provider === 'scrapingbee'), "runner A's row survives");
+  assert.ok(merged.some(r => r.provider === 'scrapingdog'), "runner B's row must not be dropped");
+  assert.equal(stats.added, 1); // only runner B's row was novel; the shared base row was deduped
+
+  try { fs.unlinkSync(oursPath); } catch { /* cleanup */ }
+  try { fs.unlinkSync(remotePath); } catch { /* cleanup */ }
+});
+
+test('mergeScraperSpendLedger collapses an exact-duplicate re-read (amend read-back) but keeps distinct rows', () => {
+  const base = { ts: '2026-08-02T10:00:00.000Z', provider: 'brightdata', script: 'x.js', workflow: null, host: 'a.com', fn: 'web-unlocker', success: true, status: 200, credits: null, fallback_from: null, purpose: null };
+  const distinct = { ...base, host: 'b.com' };
+  const { merged, stats } = mergeScraperSpendLedger([base], [base, distinct]);
+  assert.equal(merged.length, 2);
+  assert.equal(stats.added, 1);
+  assert.equal(stats.kept, 1); // the byte-identical base row collapsed, not duplicated
 });
 
 // ---------- countCallsByProvider / topCallers ----------

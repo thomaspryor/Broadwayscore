@@ -153,6 +153,14 @@ jobs:
       # traffic even though every session WAS attributed at the source.
       - name: Commit scraper-spend ledger
         if: always() && inputs.dry_run != true
+        env:
+          # Task #784: concurrent shows/runs can each append to this ledger.
+          # `git rebase -X theirs` resolves a conflicting hunk in favour of the
+          # replayed local commit WITHOUT reporting a conflict (#420/#698
+          # class), so a losing run's appended row(s) can be silently dropped
+          # instead of unioned. Opts into the same post-rebase reconcile pass
+          # #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git add data/audit/scraper-spend-ledger.jsonl || true
           if git diff --staged --quiet; then
