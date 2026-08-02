@@ -848,12 +848,17 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   // Build search query — include year to disambiguate revivals
   // Include critic name as an unquoted boost when available and trustworthy.
   // Web-search sourced reviews often have fabricated critic names — skip those.
-  // A show with declared priorRuns spans more than one year, so no single year
-  // token is correct — pinning the query to the CURRENT engagement's year makes
-  // the earlier run's press unfindable. Drop the token for those shows; the
-  // widened SERP date window plus validateSerpCandidate's venue/cast/creative
-  // disambiguators carry the anti-contamination load. [GUARD:PRIOR-RUN-DISCOVERY]
-  const spansPriorRuns = !!earliestPriorRunStart(showInfo);
+  // A show whose declared priorRuns fall in a DIFFERENT year spans more than
+  // one year, so no single year token is correct — pinning the query to the
+  // CURRENT engagement's year makes the earlier run's press unfindable. Drop
+  // the token only for those shows; the widened SERP date window plus
+  // validateSerpCandidate's venue/cast/creative disambiguators carry the
+  // anti-contamination load. A prior run in the SAME calendar year keeps the
+  // token: dropping it would forfeit a real disambiguator for nothing.
+  // [GUARD:PRIOR-RUN-DISCOVERY]
+  const priorStartForQuery = earliestPriorRunStart(showInfo);
+  const spansPriorRuns = !!priorStartForQuery && !!showInfo.year
+    && priorStartForQuery.getUTCFullYear() !== parseInt(showInfo.year, 10);
   const yearClause = (showInfo.year && !spansPriorRuns) ? ` ${showInfo.year}` : '';
   const criticName = (review.criticName && review.criticName !== 'Unknown'
     && review.source !== 'web-search') ? review.criticName : '';
@@ -1019,16 +1024,15 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     }
 
     // Skip URLs whose embedded year is outside the production window.
-    // A declared prior run moves the floor back to that run's year — otherwise
-    // the -3y grace silently rejects earlier-run press for any return
-    // engagement more than three years on. [GUARD:PRIOR-RUN-DISCOVERY]
-    let openYear = showInfo.year ? parseInt(showInfo.year) : null;
-    const priorStartForUrl = earliestPriorRunStart(showInfo);
-    if (openYear && priorStartForUrl) {
-      openYear = Math.min(openYear, priorStartForUrl.getUTCFullYear());
-    }
+    // A declared prior run readmits EXACTLY the years that run spans — not a
+    // shifted floor. Passing the prior year in as `openingYear` would compound
+    // isUrlYearOutsideWindow's own -3y grace, so a 2026 return with a 2022
+    // prior run would start accepting 2019 same-title revival URLs that
+    // NOTHING downstream rejects. [GUARD:PRIOR-RUN-DISCOVERY]
+    const openYear = showInfo.year ? parseInt(showInfo.year) : null;
     const closeYear = showInfo.closingDate ? new Date(showInfo.closingDate).getFullYear() : null;
-    if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
+    if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)
+        && !isUrlYearInPriorRun(url, showInfo.priorRuns)) {
       log(`    [SKIP] URL year outside production window: ${url}`);
       continue;
     }
@@ -1169,14 +1173,50 @@ function earliestPriorRunStart(show) {
 }
 
 /**
+ * Does a URL's embedded /YYYY/ fall inside a year a declared prior run spans?
+ *
+ * Exact — not a shifted floor. Used as a narrow readmission on top of
+ * isUrlYearOutsideWindow so a declared prior run buys back its OWN years and
+ * nothing more. (Handing the prior year to isUrlYearOutsideWindow as
+ * `openingYear` instead would stack its -3y grace on top: a 2022 prior run
+ * would silently start accepting 2019 URLs.)
+ *
+ * @param {string} url
+ * @param {Array<{openingDate?: string, closingDate?: string}>} priorRuns
+ * @returns {boolean}
+ */
+function isUrlYearInPriorRun(url, priorRuns) {
+  if (!url || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
+  const m = String(url).match(/\/((?:19|20)\d{2})\//);
+  if (!m) return false;
+  const urlYear = parseInt(m[1], 10);
+  for (const run of priorRuns) {
+    if (!run || !run.openingDate) continue;
+    const open = new Date(run.openingDate);
+    if (isNaN(open.getTime())) continue;
+    const close = run.closingDate ? new Date(run.closingDate) : null;
+    const from = open.getUTCFullYear();
+    const to = (close && !isNaN(close.getTime())) ? close.getUTCFullYear() : from;
+    if (urlYear >= from && urlYear <= to) return true;
+  }
+  return false;
+}
+
+/**
  * Calculate a date window for SERP queries to avoid cross-production contamination.
  * Returns { dateMin: Date, dateMax: Date } or null if no dates available.
  *
  * A show that declares priorRuns widens dateMin back to its earliest declared
  * prior-run opening (minus the same 7-day pre-press margin) so the earlier
- * run's reviews are inside the SERP window. Per-review acceptance is still
- * gated downstream by isWithinPriorRun(), so widening here only changes what
- * discovery can SEE, never what the rebuild admits.
+ * run's reviews are inside the SERP window.
+ *
+ * This is a real widening of what discovery can surface, and downstream
+ * acceptance is NOT a full backstop: isWithinPriorRun() is date-only (it never
+ * consults venue), so a same-market, same-title OTHER production reviewed
+ * inside the declared interval would pass. That is the trust boundary
+ * priorRuns already carries corpus-wide — it is an operator declaration, hand-
+ * written per show with a sourced note, not an inferred field. Declare it only
+ * with verified dates.
  */
 function calculateDateWindow(show) {
   const opening = show.openingDate ? new Date(show.openingDate) : null;
@@ -1310,6 +1350,7 @@ module.exports = {
   getShowInfo,
   calculateDateWindow,
   earliestPriorRunStart,
+  isUrlYearInPriorRun,
   buildDateTbs,
   validateUrlDomain,
   getTryoutRejectionStats,

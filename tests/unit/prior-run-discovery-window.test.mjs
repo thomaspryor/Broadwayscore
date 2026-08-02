@@ -19,7 +19,11 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { calculateDateWindow, earliestPriorRunStart } = require('../../scripts/lib/url-discovery.js');
+const {
+  calculateDateWindow,
+  earliestPriorRunStart,
+  isUrlYearInPriorRun,
+} = require('../../scripts/lib/url-discovery.js');
 const { isUrlYearOutsideWindow } = require('../../scripts/lib/content-filters.js');
 
 const BRAINIAC = {
@@ -92,21 +96,42 @@ describe('calculateDateWindow — priorRuns widening', () => {
   });
 });
 
-describe('URL-year floor moves with the declared prior run', () => {
-  // The -3y grace in isUrlYearOutsideWindow covers Brainiac (2024 vs 2026)
-  // but NOT a return engagement further out — e.g. a 2022 original run.
-  const url2022 = 'https://www.thestage.co.uk/reviews/2022/some-show-review';
+describe('isUrlYearInPriorRun — exact readmission, no extra grace', () => {
+  // ship-check (Codex, 2026-08-02): handing the prior-run year to
+  // isUrlYearOutsideWindow as `openingYear` would COMPOUND its own -3y grace,
+  // so a 2026 return with a 2022 prior run would start accepting 2019
+  // same-title revival URLs — which nothing downstream rejects.
+  const TKAM = [{ openingDate: '2022-03-01', closingDate: '2023-05-31' }];
 
-  it('rejects a 2022 URL when the floor is the 2026 engagement', () => {
-    assert.strictEqual(isUrlYearOutsideWindow(url2022, 2026, 2026), true);
+  it('readmits a URL year the prior run actually spans', () => {
+    assert.strictEqual(isUrlYearInPriorRun('https://www.thestage.co.uk/reviews/2022/x-review', TKAM), true);
+    assert.strictEqual(isUrlYearInPriorRun('https://www.thestage.co.uk/reviews/2023/x-review', TKAM), true);
   });
 
-  it('accepts it once the floor moves back to the prior run year', () => {
-    const priorYear = earliestPriorRunStart({
-      priorRuns: [{ openingDate: '2022-03-01', closingDate: '2023-05-31' }],
-    }).getUTCFullYear();
-    const floor = Math.min(2026, priorYear);
-    assert.strictEqual(floor, 2022);
-    assert.strictEqual(isUrlYearOutsideWindow(url2022, floor, 2026), false);
+  it('does NOT readmit years the prior run does not span', () => {
+    // The compounded-grace bug would have accepted 2019 (2022 - 3).
+    assert.strictEqual(isUrlYearInPriorRun('https://www.thestage.co.uk/reviews/2019/x-review', TKAM), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://www.thestage.co.uk/reviews/2021/x-review', TKAM), false);
+    assert.strictEqual(isUrlYearOutsideWindow('https://www.thestage.co.uk/reviews/2019/x-review', 2026, 2026), true);
+  });
+
+  it('treats a closingDate-less prior run as a single year', () => {
+    const oneYear = [{ openingDate: '2024-07-30' }];
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/2024/r', oneYear), true);
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/2025/r', oneYear), false);
+  });
+
+  it('returns false with no priorRuns, no year in the URL, or bad dates', () => {
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/2024/r', null), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/2024/r', []), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/some-review', TKAM), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://x.co.uk/2024/r', [{ openingDate: 'nope' }]), false);
+  });
+
+  it('readmits the Brainiac 2024 Marylebone year', () => {
+    assert.strictEqual(
+      isUrlYearInPriorRun('https://www.thestage.co.uk/reviews/2024/brainiac-live-review', BRAINIAC.priorRuns),
+      true,
+    );
   });
 });
