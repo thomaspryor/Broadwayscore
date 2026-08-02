@@ -90,7 +90,7 @@ describe('isIncludableForRebuild — runtime known-syndication dedup (task #838)
     assert.strictEqual(isIncludableForRebuild(data, undefined, p), true);
   });
 
-  test('filePath omitted → dedup skipped (opt-in, matches duplicateOf behavior)', () => {
+  test('filePath omitted → dedup skipped (same opt-in mechanism as duplicateOf, though the pre-existing no-filePath default differs: duplicateOf excludes, syndication includes)', () => {
     const secondaryData = basePayload({ criticName: 'Chris Jones', outletId: 'nydailynews' });
     assert.strictEqual(isIncludableForRebuild(secondaryData), true);
   });

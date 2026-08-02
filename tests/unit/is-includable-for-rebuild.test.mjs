@@ -798,6 +798,13 @@ describe('isIncludableForRebuild — tour/film contamination safety net (task #8
     );
   });
 
+  it('returns true when allowFilmSignal overrides a film/TV-signal match', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ fullText: filmText, textFetchedAt: recentFetch, allowFilmSignal: true }),
+      true
+    );
+  });
+
   it('returns true when the show is type: special (tour language is expected)', () => {
     assert.strictEqual(
       isIncludableForRebuild(
