@@ -949,6 +949,13 @@ on:
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/lib/score-tier-label-contract.test.mjs'
       - 'scripts/newsletter/**'
+      # Headless-run prompt files + the guard that scans them. Neither is under
+      # scripts/newsletter/**, so without these entries an owner-handoff line
+      # added to a phase prompt (or a gutted guard) would get ZERO CI (2026-08-02).
+      - 'scripts/opening-night-prompts/**'
+      - 'scripts/lib/headless-prompt-guard.js'
+      - 'tests/unit/headless-prompt-no-owner-handoff.test.mjs'
+      - 'tests/fixtures/sunday-review-prompt-2026-08-02-offending.md'
       # Lede ⊆ body pre-send invariant (card #482) — pure predicate lives outside
       # scripts/newsletter/** so it needs its own path entry; colocated test runs
       # in the scripts/lib/*.test.mjs glob step.

@@ -2,28 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const REPO = path.resolve(new URL('../..', import.meta.url).pathname);
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const {
-  HEADLESS_PROMPT_FILES,
   findOwnerHandoffViolations,
+  discoverHeadlessPromptFiles,
+  promptPathsReferencedByLaunchers,
 } = require(path.join(REPO, 'scripts/lib/headless-prompt-guard.js'));
+
+const FIXTURE = path.join(REPO, 'tests/fixtures/sunday-review-prompt-2026-08-02-offending.md');
 
 // Regression: 2026-08-02. sunday-review-prompt.md told the Sunday headless run
 // to "open a PR rather than committing straight to main" and to "leave the PR
 // open and mention it in the summary email so the owner merges". The owner got
 // an email asking them to merge PR #518. Unattended runs land their own fixes.
-test('headless prompt guard flags the exact 2026-08-02 offending text', () => {
-  const offending = [
-    'commit, push, and open a PR rather than committing straight to main from',
-    'this headless run — do NOT push directly to `main`.',
-    '',
-    'Do not merge to main yourself in this headless run — leave the PR open and',
-    'mention it in the summary email so the owner merges when they look at things.',
-  ].join('\n');
-
+test('flags the real pre-fix prompt text, verbatim from the fixture', () => {
+  const offending = fs.readFileSync(FIXTURE, 'utf8');
   const violations = findOwnerHandoffViolations(offending);
   const matched = violations.map((v) => v.match.toLowerCase());
 
@@ -34,6 +31,27 @@ test('headless prompt guard flags the exact 2026-08-02 offending text', () => {
     matched.some((m) => m.includes('do not merge to main yourself')),
     'should flag "do not merge to main yourself"'
   );
+});
+
+// The first version of this guard matched only ~6 literal phrasings. A future
+// prompt could say the same thing 10 other ways and sail through, which is
+// exactly the failure mode the guard exists to prevent (second-opinion D1).
+test('catches semantically equivalent handoff phrasings, not just the original wording', () => {
+  const equivalents = [
+    'Raise a PR and note it in the email.',
+    'Create a pull request for this fix.',
+    'File a PR against main.',
+    'Submit a pull request instead.',
+    'Push the branch and let the owner merge it.',
+    'Leave the branch open for the owner.',
+    'Park the PR open until Monday.',
+    'Hand the fix off to the owner.',
+    'The fix is ready for review.',
+    'Wait for owner approval before merging.',
+    'Run gh pr create with the summary.',
+  ];
+  const missed = equivalents.filter((s) => findOwnerHandoffViolations(s).length === 0);
+  assert.deepEqual(missed, [], `these handoff phrasings slipped through:\n${missed.join('\n')}`);
 });
 
 test('example fences are exempt so a prompt can quote the phrasing it bans', () => {
@@ -51,11 +69,7 @@ test('example fences are exempt so a prompt can quote the phrasing it bans', () 
   assert.deepEqual(findOwnerHandoffViolations(withFence), []);
 });
 
-test('an unclosed fence does not silently exempt the rest of the file', () => {
-  // Fail-loud sanity: if someone opens a fence and forgets to close it, the
-  // guard would go blind. Assert the closing marker count matches on real files
-  // (checked in the corpus test below), and that text after a *closed* fence is
-  // still scanned.
+test('text after a CLOSED fence is still scanned', () => {
   const reopened = [
     '<!-- prompt-guard:examples-start -->',
     '- "Merge PR #1."',
@@ -68,19 +82,48 @@ test('an unclosed fence does not silently exempt the rest of the file', () => {
   assert.match(violations[0].match, /open a PR/i);
 });
 
+// The three ways a fence could blind the scanner while still looking balanced
+// to a naive open/close tally. Each must produce its own violation — silence
+// here is a one-line, CI-passing exemption of an entire prompt file.
+test('an unclosed fence is a violation, not a silent blindfold', () => {
+  const unclosed = [
+    '<!-- prompt-guard:examples-start -->',
+    '- "Merge PR #1."',
+    'Then go open a PR for the owner.',
+  ].join('\n');
+
+  const whys = findOwnerHandoffViolations(unclosed).map((v) => v.why);
+  assert.ok(whys.some((w) => /never closed/.test(w)), `expected unclosed-fence violation, got: ${whys.join(' | ')}`);
+});
+
+test('both fence markers on one line is a violation', () => {
+  const inline = [
+    '<!-- prompt-guard:examples-start --> x <!-- prompt-guard:examples-end -->',
+    'Then go open a PR for the owner.',
+  ].join('\n');
+
+  const violations = findOwnerHandoffViolations(inline);
+  const whys = violations.map((v) => v.why);
+  assert.ok(whys.some((w) => /one line/.test(w)), `expected malformed-fence violation, got: ${whys.join(' | ')}`);
+  // and the line after it is still scanned
+  assert.ok(violations.some((v) => /open a PR/i.test(v.match)), 'text after a malformed fence must still be scanned');
+});
+
+test('a stray closing marker is a violation', () => {
+  const stray = ['<!-- prompt-guard:examples-end -->', 'Then go open a PR for the owner.'].join('\n');
+  const whys = findOwnerHandoffViolations(stray).map((v) => v.why);
+  assert.ok(whys.some((w) => /without being opened/.test(w)), `expected stray-end violation, got: ${whys.join(' | ')}`);
+});
+
 test('every shipped headless prompt is clean', () => {
+  const files = discoverHeadlessPromptFiles(REPO);
+  assert.ok(files.length >= 5, `discovery found only ${files.length} prompt files — glob likely broken`);
+
   const problems = [];
-
-  for (const rel of HEADLESS_PROMPT_FILES) {
+  for (const rel of files) {
     const abs = path.join(REPO, rel);
-    assert.ok(fs.existsSync(abs), `${rel} listed in HEADLESS_PROMPT_FILES but missing on disk`);
-    const text = fs.readFileSync(abs, 'utf8');
-
-    const opens = (text.match(/<!--\s*prompt-guard:examples-start\s*-->/gi) || []).length;
-    const closes = (text.match(/<!--\s*prompt-guard:examples-end\s*-->/gi) || []).length;
-    assert.equal(opens, closes, `${rel}: unbalanced prompt-guard example fences (${opens} open, ${closes} close)`);
-
-    for (const v of findOwnerHandoffViolations(text)) {
+    assert.ok(fs.existsSync(abs), `${rel} discovered but missing on disk`);
+    for (const v of findOwnerHandoffViolations(fs.readFileSync(abs, 'utf8'))) {
       problems.push(`${rel}:${v.line} "${v.match}" — ${v.why}`);
     }
   }
@@ -89,5 +132,35 @@ test('every shipped headless prompt is clean', () => {
     problems,
     [],
     `Headless prompts must not hand the owner a code review:\n${problems.join('\n')}`
+  );
+});
+
+// Coverage inversion (the tests/unit/no-reset-rsync-push-pattern.test.mjs
+// pattern): derive what the launchers actually feed to `claude -p` and assert
+// the globs reach all of it, so a prompt in a NEW directory can't ship unscanned.
+test('no launcher feeds claude a prompt path the globs do not cover', () => {
+  const scanned = discoverHeadlessPromptFiles(REPO).map((p) => path.posix.dirname(p));
+  const referenced = promptPathsReferencedByLaunchers(REPO);
+
+  // Normalize a launcher's prompt reference to a repo-relative directory:
+  // drop every path segment that is (or contains) a shell variable, since those
+  // are either the repo root ($REPO_DIR) or an indirection whose target was
+  // captured as its own ref ($PROMPT_DIR/phase${PHASE}.md -> $PROMPT_DIR).
+  const toDir = (ref) => {
+    const dir = /\.md$/.test(ref) ? path.posix.dirname(ref) : ref;
+    return dir.split('/').filter((seg) => seg && !seg.includes('$') && seg !== '.').join('/');
+  };
+
+  const uncovered = referenced.filter((ref) => {
+    if (ref.includes('mktemp') || ref.startsWith('/tmp')) return false; // inline, scanned as source
+    const rel = toDir(ref);
+    if (!rel) return false; // pure variable indirection — its target is its own ref
+    return !scanned.some((s) => s === rel || s.endsWith(`/${rel}`) || rel.endsWith(`/${s}`));
+  });
+
+  assert.deepEqual(
+    uncovered,
+    [],
+    `these launcher prompt paths are outside PROMPT_GLOBS — add a glob:\n${uncovered.join('\n')}`
   );
 });
