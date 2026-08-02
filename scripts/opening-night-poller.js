@@ -1077,37 +1077,15 @@ async function runAggregators(show) {
         console.log('  The Stage: no archive — attempting live fetch via BrowserBase (cookie auth)...');
         try {
           const { chromium } = require('playwright');
-          const https = require('https');
+          const { createBbSession } = require('./lib/browserbase-session');
 
-          // Create BrowserBase session
-          const bbApiKey = process.env.BROWSERBASE_API_KEY;
-          const bbProjectId = process.env.BROWSERBASE_PROJECT_ID;
-          const sessionBody = JSON.stringify({
-            projectId: bbProjectId,
-            browserSettings: { solveCaptchas: true },
-          });
-          const session = await new Promise((resolve, reject) => {
-            const req = https.request('https://www.browserbase.com/v1/sessions', {
-              method: 'POST',
-              headers: { 'x-bb-api-key': bbApiKey, 'Content-Type': 'application/json' },
-            }, (res) => {
-              let d = '';
-              res.on('data', c => d += c);
-              res.on('end', () => {
-                try { resolve(JSON.parse(d)); }
-                catch (e) { reject(new Error(`BrowserBase API returned non-JSON: ${d.slice(0, 200)}`)); }
-              });
-            });
-            req.on('error', reject);
-            req.end(sessionBody);
+          const session = await createBbSession({
+            caller: 'opening-night-poller.js:the-stage',
+            purpose: 'The Stage cookie-auth live fetch',
+            body: { browserSettings: { solveCaptchas: true } },
           });
 
-          if (!session || !session.id) {
-            throw new Error(`BrowserBase session creation failed: ${JSON.stringify(session).slice(0, 200)}`);
-          }
-
-          const connectUrl = `wss://connect.browserbase.com?apiKey=${bbApiKey}&sessionId=${session.id}`;
-          const browser = await chromium.connectOverCDP(connectUrl);
+          const browser = await chromium.connectOverCDP(session.connectUrl);
           try {
             const context = browser.contexts()[0] || await browser.newContext();
             const page = context.pages()[0] || await context.newPage();

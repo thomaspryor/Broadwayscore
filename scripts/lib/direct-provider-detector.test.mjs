@@ -50,6 +50,23 @@ test('flags a direct Scrapingdog /scrape call, not /account', () => {
   assert.equal(hits[0].line, 1);
 });
 
+test('flags a direct Browserbase session-create call (api. or www. host)', () => {
+  const src = [
+    `https.request('https://api.browserbase.com/v1/sessions', opts);`,
+    `https.request('https://www.browserbase.com/v1/sessions', opts);`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 2);
+  assert.ok(hits.every(h => h.provider === 'browserbase'));
+});
+
+test('flags Browserbase session-list reads too — the file-level allowlist, not the regex, carves those out', () => {
+  const src = `axios.get(BROWSERBASE_SESSIONS_URL, { params: { projectId } });`;
+  // BROWSERBASE_SESSIONS_URL isn't a literal in this line, so nothing matches —
+  // confirms the detector only sees literal URL text, same as the other providers.
+  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+});
+
 test('reports correct line numbers for multiple hits across lines', () => {
   const src = [
     '// comment',

@@ -7,8 +7,8 @@ const { selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./
 
 // Regression coverage for #767: gather-reviews.js never invoked the site-search arm,
 // so Telegraph/Variety/The Stage/Independent/Parterre discovery only ran inside
-// opening-night-poller.js. This exercises the shared selection logic both callers
-// now use, against the real SITE_SEARCH_ENDPOINTS registry (no mocks).
+// opening-night-poller.js. This exercises the selection logic gather-reviews.js's
+// STEP 1c now uses, against the real SITE_SEARCH_ENDPOINTS registry (no mocks).
 
 test('broadway market returns broadway-only + market-agnostic outlets, excludes west-end-only', () => {
   const ids = selectApplicableSiteSearchOutlets('broadway', { id: 'some-show', type: 'play' }, new Set());

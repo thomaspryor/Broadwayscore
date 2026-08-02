@@ -50,11 +50,11 @@ const EXEMPT_NEVER_CI = {
 };
 
 const EXEMPT_KNOWN_BROKEN = {
-  // Another session's in-progress work (task #757, Sunday newsletter prompt
-  // guard): the test exists on disk but 1 of 4 cases still fails because its
-  // guard lib is mid-build. Exempted 2026-08-02 so unrelated pushes are not
-  // blocked; #757's session registers it in test.yml when the guard is done.
-  'headless-prompt-no-owner-handoff.test.mjs': 'task #757 WIP — register in test.yml when its guard lib passes',
+  // (headless-prompt-no-owner-handoff.test.mjs removed 2026-08-02 — the task
+  // #757 exemption above was explicitly conditional on "register in test.yml
+  // when its guard lib passes". The guard shipped, all 10 cases pass, and the
+  // test is now in the tests/unit node --test list, so the exemption decayed
+  // the moment it was registered and the decayed-exemption gate demanded it go.)
 
   // (opening-night-checks-bww-rr.test.mjs removed 2026-08-01 — it was never
   // "behavior drift". Its no-bwwRoundupUrl case asserted the branch the check
