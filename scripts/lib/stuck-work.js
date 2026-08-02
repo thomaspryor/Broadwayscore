@@ -12,9 +12,15 @@
  */
 
 const { BRAIN_DATABASE_ID: DATABASE_ID, NOTION_VERSION } = require('./notion-constants');
+const { parseRecheckAfterFromCard } = require('./recheck-stamp');
 
 const ORPHAN_HOURS_DEFAULT = 48;
 const PAUSED_LOW_PRIORITY_DAYS = 7;
+// A Paused card whose RECHECK-AFTER stamp is due gets this many days for the
+// nightly acceptance recheck to pick it up before it counts as stuck again —
+// "due today, recheck runs tonight" must not warn. Past the grace, an overdue
+// stamp IS stuck work: the recheck should have had something to say by now.
+const STAMP_OVERDUE_GRACE_DAYS = 3;
 // Backstop against runaway pagination (100 cards/page). The brain DB is ~1.4k
 // cards total, ~120 in the queried states — 20 pages is far beyond plausible.
 const MAX_PAGES = 20;
@@ -26,15 +32,17 @@ const MAX_PAGES = 20;
 // per-actor activity needs the #279 alert-ledger.
 
 /**
- * @param {Array<{name:string,status:string,priority:string|null,lastEditedAt:string,url?:string}>} cards
+ * @param {Array<{name:string,status:string,priority:string|null,lastEditedAt:string,url?:string,notes?:string,outcome?:string}>} cards
  * @param {number} nowMs
- * @returns {{pausedCritical:Array, pausedStale:Array, orphaned:Array}}
+ * @returns {{pausedCritical:Array, pausedStale:Array, pausedAwaitingRecheck:Array, orphaned:Array}}
  */
 function classifyStuckCards(cards, nowMs, opts = {}) {
   const orphanHours = opts.orphanHours ?? ORPHAN_HOURS_DEFAULT;
   const pausedLowDays = opts.pausedLowDays ?? PAUSED_LOW_PRIORITY_DAYS;
+  const graceDays = opts.stampGraceDays ?? STAMP_OVERDUE_GRACE_DAYS;
   const pausedCritical = [];
   const pausedStale = [];
+  const pausedAwaitingRecheck = [];
   const orphaned = [];
   let invalidDates = 0;
 
@@ -48,10 +56,28 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
     const critical = /^P[01]\b/.test(card.priority || '');
 
     if (card.status === 'Paused') {
-      // Any paused P0/P1 is a blind-spot alarm regardless of age — high
-      // priority means someone decided it matters, then it went invisible.
-      if (critical) pausedCritical.push({ ...card, idleHours });
-      else if (idleHours > pausedLowDays * 24) pausedStale.push({ ...card, idleHours });
+      // /wrap-up's process rule REQUIRES deferred-effect fixes to sit Paused
+      // with a RECHECK-AFTER stamp until their effect is observable — those
+      // cards are parked by design, not stuck, so they get their own info
+      // bucket instead of the blind-spot alarm. Only while the stamp is in
+      // the future or within the recheck's grace window: past that, the
+      // recheck should have resolved it and the card is stuck after all.
+      const stampMs = parseRecheckAfterFromCard(card);
+      const stampOverdueDays = stampMs != null ? (nowMs - stampMs) / 86400000 : null;
+      if (critical) {
+        if (stampMs != null && stampOverdueDays <= graceDays) {
+          pausedAwaitingRecheck.push({ ...card, idleHours, recheckAfterMs: stampMs });
+        } else {
+          // No stamp → the original blind-spot alarm, regardless of age.
+          // Stamp overdue past grace → stuck, with the overdue count attached
+          // so the digest line can say why.
+          pausedCritical.push({ ...card, idleHours, ...(stampMs != null ? { stampOverdueDays: Math.floor(stampOverdueDays) } : {}) });
+        }
+      } else if (idleHours > pausedLowDays * 24) {
+        // Stamped-and-waiting P2s are parked by the same process rule — keep
+        // them out of the FYI line while their stamp is still in the future.
+        if (!(stampMs != null && stampMs > nowMs)) pausedStale.push({ ...card, idleHours });
+      }
     } else if (card.status === 'In progress' && idleHours > orphanHours) {
       orphaned.push({ ...card, idleHours });
     }
@@ -61,7 +87,8 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
   pausedCritical.sort(byIdle);
   pausedStale.sort(byIdle);
   orphaned.sort(byIdle);
-  return { pausedCritical, pausedStale, orphaned, invalidDates };
+  pausedAwaitingRecheck.sort((a, b) => a.recheckAfterMs - b.recheckAfterMs);
+  return { pausedCritical, pausedStale, pausedAwaitingRecheck, orphaned, invalidDates };
 }
 
 /**
@@ -103,6 +130,13 @@ async function fetchBrainCards(apiKey, fetchImpl = fetch) {
         priority: props.Priority?.select?.name || null,
         lastEditedAt: page.last_edited_time,
         url: page.url,
+        // RECHECK-AFTER stamps live in Notes or Outcome. Notion property
+        // values are a ~1800-char preview (notion-brain overflows longer
+        // content to the page body) — sessions PREPEND to Outcome at wrap-up,
+        // so the newest stamp lives in the preview head; a stamp buried past
+        // the cap degrades safely to the warn firing (fail-safe, not silent).
+        notes: (props.Notes?.rich_text || []).map((t) => t.plain_text).join(''),
+        outcome: (props.Outcome?.rich_text || []).map((t) => t.plain_text).join(''),
       });
     }
     cursor = data.has_more ? data.next_cursor : undefined;
@@ -110,4 +144,4 @@ async function fetchBrainCards(apiKey, fetchImpl = fetch) {
   return cards;
 }
 
-module.exports = { classifyStuckCards, fetchBrainCards, ORPHAN_HOURS_DEFAULT, PAUSED_LOW_PRIORITY_DAYS };
+module.exports = { classifyStuckCards, fetchBrainCards, ORPHAN_HOURS_DEFAULT, PAUSED_LOW_PRIORITY_DAYS, STAMP_OVERDUE_GRACE_DAYS };

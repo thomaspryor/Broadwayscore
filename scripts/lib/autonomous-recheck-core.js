@@ -24,25 +24,16 @@
 'use strict';
 
 const { evaluateVerifiability } = require('./verify-gate.js');
+// Stamp parsing lives in a zero-dependency leaf so stuck-work.js (daily
+// health digest) can share the exact predicate without dragging in this
+// module's verify-gate dependency chain. Re-exported below unchanged.
+const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 
 // A card only recently marked Done is worth re-checking; anything older was
 // either already re-checked or has been true for long enough that a nightly
 // re-run adds nothing. Superseded per-card by an explicit RECHECK-AFTER stamp
 // (see parseRecheckAfter/doneWithinWindow below).
 const DEFAULT_WINDOW_HOURS = 24;
-
-// `RECHECK-AFTER: 2026-08-08` — case-insensitive, date-only (parsed as
-// midnight UTC, i.e. the START of that day: the recheck becomes due the
-// instant that UTC day begins, not at its end — a deferred-effect claim like
-// "7-day spend streak" names the day its OWN window already closes on).
-const RECHECK_AFTER_RE = /RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/i;
-
-function parseRecheckAfter(notes) {
-  const m = RECHECK_AFTER_RE.exec(String(notes || ''));
-  if (!m) return null;
-  const t = Date.parse(`${m[1]}T00:00:00Z`);
-  return Number.isFinite(t) ? t : null;
-}
 
 // Was the card marked Done inside the window? Keyed on explicit completion
 // signals: completedDate (date-only, parses as midnight UTC) and lastEditedAt
@@ -58,8 +49,11 @@ function doneWithinWindow(card, windowHours, now) {
   // deferred effect becomes checkable, which the blanket 24h Done-window
   // cannot know. Due the instant `now` reaches the stamped day; stays due
   // indefinitely after (same "still due" semantics the window itself has —
-  // a card is never un-selected just because a run was missed).
-  const recheckAfter = parseRecheckAfter(card.notes);
+  // a card is never un-selected just because a run was missed). Scans
+  // notes AND outcome (task 3b06: sessions naturally write the stamp into
+  // Outcome at wrap-up, and those stamps were invisible here — 3 of 5 live
+  // stamped cards could never trigger their own recheck).
+  const recheckAfter = parseRecheckAfterFromCard(card);
   if (recheckAfter != null) return now >= recheckAfter;
 
   // Without a stamp, only a Done card can be window-eligible — a Paused card
@@ -91,7 +85,7 @@ function doneWithinWindow(card, windowHours, now) {
  * tonight, and with what.
  *
  * @param {object} o
- * @param {{id:string,name:string,status?:string,notes?:string,ageDays:number,completedDate?:string|null,lastEditedAt?:string|null}[]} o.doneCards - notion-brain list --status Done,Paused --sort edited
+ * @param {{id:string,name:string,status?:string,notes?:string,outcome?:string,ageDays:number,completedDate?:string|null,lastEditedAt?:string|null}[]} o.doneCards - notion-brain list --status Done,Paused --sort edited --include-notes
  * @param {{event:string,taskId:string,notionId?:string,verifyCmd?:string|null,verifyReason?:string|null,subject?:string,ts?:string}[]} o.launchEntries - dispatch-ledger
  * @param {number} [o.windowHours]
  * @param {(cardId:string)=>boolean} [o.isClaimed] - a card someone is actively working RIGHT NOW is skipped
@@ -201,6 +195,7 @@ module.exports = {
   RECHECK_AFTER_RE,
   SHADOW_EXIT,
   parseRecheckAfter,
+  parseRecheckAfterFromCard,
   doneWithinWindow,
   selectRecheckTargets,
   summarize,
