@@ -173,3 +173,7 @@ gh: API rate limit exceeded for user ID 3475675. If you reach out to GitHub Supp
 verify-merge-landed: check skipped at +120s (Command failed: gh api repos/thomaspryor/Broadwayscore/compare/699838007e496a4d598ad5a22decab54b9d99efb...main --jq .status
 gh: API rate limit exceeded for user ID 3475675. If you reach out to GitHub Support for help, please include the request ID 408A:18C12C:72E5741:191603BC:6A6FB731 and timestamp 2026-08-02 21:31:29 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)
 ) — will retry at next delay
+verify-merge-landed: worktree-p1-816-write-guard-siblings -> main still reachable from origin/main (compare status: ahead) at +120s
+verify-merge-landed: worktree-p1-816-write-guard-siblings -> main still reachable from origin/main (compare status: ahead) at +480s
+verify-merge-landed: worktree-p1-816-write-guard-siblings -> main still reachable from origin/main (compare status: ahead) at +900s
+verify-merge-landed: worktree-p1-816-write-guard-siblings -> main survived all 3 delayed check(s) — done
