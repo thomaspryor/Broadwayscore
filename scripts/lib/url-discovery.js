@@ -211,6 +211,7 @@ function getShowInfo(showId) {
         openingDate: showEntry.openingDate || null,
         closingDate: showEntry.closingDate || null,
         previewsStartDate: showEntry.previewsStartDate || null,
+        priorRuns: Array.isArray(showEntry.priorRuns) ? showEntry.priorRuns : null,
         venue: showEntry.venue || showEntry.theater || null,
         cast: Array.isArray(showEntry.cast) ? showEntry.cast : [],
         creativeNames,
@@ -233,6 +234,7 @@ function getShowInfo(showId) {
     openingDate: null,
     closingDate: null,
     previewsStartDate: null,
+    priorRuns: null,
     venue: null,
     cast: [],
     leadActor: null,
@@ -846,7 +848,13 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   // Build search query — include year to disambiguate revivals
   // Include critic name as an unquoted boost when available and trustworthy.
   // Web-search sourced reviews often have fabricated critic names — skip those.
-  const yearClause = showInfo.year ? ` ${showInfo.year}` : '';
+  // A show with declared priorRuns spans more than one year, so no single year
+  // token is correct — pinning the query to the CURRENT engagement's year makes
+  // the earlier run's press unfindable. Drop the token for those shows; the
+  // widened SERP date window plus validateSerpCandidate's venue/cast/creative
+  // disambiguators carry the anti-contamination load. [GUARD:PRIOR-RUN-DISCOVERY]
+  const spansPriorRuns = !!earliestPriorRunStart(showInfo);
+  const yearClause = (showInfo.year && !spansPriorRuns) ? ` ${showInfo.year}` : '';
   const criticName = (review.criticName && review.criticName !== 'Unknown'
     && review.source !== 'web-search') ? review.criticName : '';
   const criticClause = criticName ? ` ${criticName}` : '';
@@ -1010,8 +1018,15 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       }
     }
 
-    // Skip URLs whose embedded year is outside the production window
-    const openYear = showInfo.year ? parseInt(showInfo.year) : null;
+    // Skip URLs whose embedded year is outside the production window.
+    // A declared prior run moves the floor back to that run's year — otherwise
+    // the -3y grace silently rejects earlier-run press for any return
+    // engagement more than three years on. [GUARD:PRIOR-RUN-DISCOVERY]
+    let openYear = showInfo.year ? parseInt(showInfo.year) : null;
+    const priorStartForUrl = earliestPriorRunStart(showInfo);
+    if (openYear && priorStartForUrl) {
+      openYear = Math.min(openYear, priorStartForUrl.getUTCFullYear());
+    }
     const closeYear = showInfo.closingDate ? new Date(showInfo.closingDate).getFullYear() : null;
     if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)) {
       log(`    [SKIP] URL year outside production window: ${url}`);
@@ -1126,8 +1141,42 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 }
 
 /**
+ * Earliest usable openingDate across a show's declared priorRuns, as a Date,
+ * or null when the show declares none (the normal case).
+ *
+ * priorRuns declares that an EARLIER run of this same production is in scope
+ * (venue transfer, return engagement, Olivier-winning original run). The
+ * rebuild-side guards already honour it via isWithinPriorRun(); discovery did
+ * not, so the earlier run's press was unreachable — the SERP date window and
+ * the year token both pinned every query to the CURRENT engagement.
+ * Confirmed live 2026-08-02 on brainiac-live-west-end-2026: every per-outlet
+ * query read `"Brainiac Live" West End review 2026`, so the 2024 Marylebone
+ * corpus behind its 2025 Olivier win could never surface. [GUARD:PRIOR-RUN-DISCOVERY]
+ *
+ * @param {{priorRuns?: Array<{openingDate?: string}>}} show
+ * @returns {Date|null}
+ */
+function earliestPriorRunStart(show) {
+  if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return null;
+  let earliest = null;
+  for (const run of show.priorRuns) {
+    if (!run || !run.openingDate) continue;
+    const d = new Date(run.openingDate);
+    if (isNaN(d.getTime())) continue;
+    if (!earliest || d.getTime() < earliest.getTime()) earliest = d;
+  }
+  return earliest;
+}
+
+/**
  * Calculate a date window for SERP queries to avoid cross-production contamination.
  * Returns { dateMin: Date, dateMax: Date } or null if no dates available.
+ *
+ * A show that declares priorRuns widens dateMin back to its earliest declared
+ * prior-run opening (minus the same 7-day pre-press margin) so the earlier
+ * run's reviews are inside the SERP window. Per-review acceptance is still
+ * gated downstream by isWithinPriorRun(), so widening here only changes what
+ * discovery can SEE, never what the rebuild admits.
  */
 function calculateDateWindow(show) {
   const opening = show.openingDate ? new Date(show.openingDate) : null;
@@ -1140,9 +1189,16 @@ function calculateDateWindow(show) {
   const DAY = 86400000;
 
   // Start: previewsStart - 7 days, or openingDate - 30 days
-  const dateMin = previews
+  let dateMin = previews
     ? new Date(previews.getTime() - 7 * DAY)
     : new Date(opening.getTime() - 30 * DAY);
+
+  // Widen back to the earliest declared prior run, when one exists.
+  const priorStart = earliestPriorRunStart(show);
+  if (priorStart) {
+    const priorMin = new Date(priorStart.getTime() - 7 * DAY);
+    if (priorMin.getTime() < dateMin.getTime()) dateMin = priorMin;
+  }
 
   // End: earliest of (closingDate + 30, today + 30, openingDate + 180)
   const candidates = [new Date(now.getTime() + 30 * DAY)];
@@ -1253,6 +1309,7 @@ module.exports = {
   shouldAcceptEmptyScrapingdogSerp,
   getShowInfo,
   calculateDateWindow,
+  earliestPriorRunStart,
   buildDateTbs,
   validateUrlDomain,
   getTryoutRejectionStats,
