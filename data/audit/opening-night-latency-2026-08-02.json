@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-02T02:00:13.723Z",
+  "generatedAt": "2026-08-02T03:27:50.632Z",
   "date": "2026-08-02",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 168293,
+  "entryCount": 174304,
   "shows": [
     {
       "showId": "cats-the-jellicle-ball-2026",
@@ -22,8 +22,8 @@
     {
       "showId": "every-brilliant-thing-2026",
       "reviewCount": 30,
-      "median_e2e_ms": 58354830,
-      "p90_e2e_ms": 58354830,
+      "median_e2e_ms": 63385830,
+      "p90_e2e_ms": 63385830,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -35,7 +35,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout:adam-feldman:https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
-          "e2e_ms": 58354830,
+          "e2e_ms": 63385830,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -177,7 +177,7 @@
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -327,7 +327,7 @@
     },
     {
       "showId": "hit-machine-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -343,8 +343,8 @@
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
       "reviewCount": 5,
-      "median_e2e_ms": 58337887,
-      "p90_e2e_ms": 58337887,
+      "median_e2e_ms": 63368887,
+      "p90_e2e_ms": 63368887,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -356,7 +356,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/showstopper-the-improvised-musical",
-          "e2e_ms": 58337887,
+          "e2e_ms": 63368887,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -438,7 +438,7 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -453,7 +453,7 @@
     },
     {
       "showId": "my-name-is-lucy-barton-2020",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -514,8 +514,8 @@
     {
       "showId": "11-to-midnight-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 58361116,
-      "p90_e2e_ms": 58361116,
+      "median_e2e_ms": 63392116,
+      "p90_e2e_ms": 63392116,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -527,7 +527,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "one-minute-critic:ryan-leeds:https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
-          "e2e_ms": 58361116,
+          "e2e_ms": 63392116,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -535,8 +535,8 @@
     {
       "showId": "a-chorus-line-2006",
       "reviewCount": 7,
-      "median_e2e_ms": 58360770,
-      "p90_e2e_ms": 58360770,
+      "median_e2e_ms": 63391770,
+      "p90_e2e_ms": 63391770,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -548,7 +548,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:tim-bano:https://www.timeout.com/london/theatre/a-chorus-line-1-review",
-          "e2e_ms": 58360770,
+          "e2e_ms": 63391770,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -556,8 +556,8 @@
     {
       "showId": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 58354990,
-      "p90_e2e_ms": 58354990,
+      "median_e2e_ms": 63385990,
+      "p90_e2e_ms": 63385990,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -569,7 +569,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "stagebiz:jacquelyn-claire:http://stagebiz.com/entangled-at-jeffrey-and-paula-gural-theatre-a-r-t-new-york-theatres/",
-          "e2e_ms": 58354990,
+          "e2e_ms": 63385990,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -577,8 +577,8 @@
     {
       "showId": "faith-healer-2006",
       "reviewCount": 4,
-      "median_e2e_ms": 58354806,
-      "p90_e2e_ms": 58354806,
+      "median_e2e_ms": 63385806,
+      "p90_e2e_ms": 63385806,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -590,7 +590,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/faith-healer-2-review",
-          "e2e_ms": 58354806,
+          "e2e_ms": 63385806,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -598,8 +598,8 @@
     {
       "showId": "hadestown-2019",
       "reviewCount": 47,
-      "median_e2e_ms": 58347798,
-      "p90_e2e_ms": 58347798,
+      "median_e2e_ms": 63378798,
+      "p90_e2e_ms": 63378798,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -611,7 +611,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "dc-metro-theater-arts:deb-miller:https://dcmetrotheaterarts.com/2019/04/22/review-hadestown-at-the-walter-kerr-theatre/",
-          "e2e_ms": 58347798,
+          "e2e_ms": 63378798,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -619,8 +619,8 @@
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "reviewCount": 20,
-      "median_e2e_ms": 58345894,
-      "p90_e2e_ms": 58345894,
+      "median_e2e_ms": 63376894,
+      "p90_e2e_ms": 63376894,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -632,7 +632,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:alice-saville:https://www.timeout.com/london/theatre/how-to-succeed-in-business-without-really-trying-review",
-          "e2e_ms": 58345894,
+          "e2e_ms": 63376894,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -640,8 +640,8 @@
     {
       "showId": "spring-awakening-2015",
       "reviewCount": 42,
-      "median_e2e_ms": 58337257,
-      "p90_e2e_ms": 58337257,
+      "median_e2e_ms": 63368257,
+      "p90_e2e_ms": 63368257,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -653,7 +653,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "washington-times:mark-kennedy:http://www.washingtontimes.com/news/2015/sep/27/review-new-spring-awakening-opens-its-arms-to-all/",
-          "e2e_ms": 58337257,
+          "e2e_ms": 63368257,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -661,8 +661,8 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 58334463,
-      "p90_e2e_ms": 58334463,
+      "median_e2e_ms": 63365463,
+      "p90_e2e_ms": 63365463,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -674,7 +674,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-          "e2e_ms": 58334463,
+          "e2e_ms": 63365463,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -682,8 +682,8 @@
     {
       "showId": "the-lion-king-1997",
       "reviewCount": 29,
-      "median_e2e_ms": 58333301,
-      "p90_e2e_ms": 58333345,
+      "median_e2e_ms": 63364301,
+      "p90_e2e_ms": 63364345,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -695,17 +695,17 @@
       "slowest_reviews": [
         {
           "reviewKey": "jasonraize:frank-scheck:http://www.jasonraize.net/pr_tlk_spt112197.html",
-          "e2e_ms": 58333345,
+          "e2e_ms": 63364345,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-sommers:http://www.jasonraize.net/pr_tlk_njsl111497.html",
-          "e2e_ms": 58333301,
+          "e2e_ms": 63364301,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-kuchwara:http://www.jasonraize.net/pr_tlk_ftu112397.html",
-          "e2e_ms": 58333257,
+          "e2e_ms": 63364257,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -713,8 +713,8 @@
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 58331387,
-      "p90_e2e_ms": 58331387,
+      "median_e2e_ms": 63362387,
+      "p90_e2e_ms": 63362387,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -726,7 +726,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "theater-life:lauren-yarger:http://theaterlife.com/the-peculiar-patriot-1-2/",
-          "e2e_ms": 58331387,
+          "e2e_ms": 63362387,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -899,6 +899,231 @@
     {
       "showId": "heathers-the-musical-off-broadway-2025",
       "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "malory-towers-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "titus-andronicus-off-broadway-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "no-singing-in-the-navy-off-broadway-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "gypsy-2024",
+      "reviewCount": 43,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "fat-ham-2023",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ink-2019",
+      "reviewCount": 47,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "kiss-me-kate-2019",
+      "reviewCount": 50,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "reviewCount": 53,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "into-the-woods-1987",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
