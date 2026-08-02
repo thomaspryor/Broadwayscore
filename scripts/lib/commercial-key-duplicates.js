@@ -29,6 +29,10 @@ function findDuplicateKeyPairs(commercialShows, showBySlug, showById) {
     if (showBySlug[key]) continue;
     const show = showById[key];
     if (!show) continue;
+    // Defense-in-depth: shows like mamma-mia-2001 have id === slug, so clause
+    // 1 already excludes them — but if that clause ever regressed, a self-pair
+    // here would let --apply delete the show's ONLY entry. Never self-pair.
+    if (show.slug === key) continue;
     if (!(show.slug in commercialShows)) continue;
     pairs.push({ idKey: key, slugKey: show.slug });
   }
@@ -48,15 +52,18 @@ function deepEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-/** Containment: deep-equal, array whose every element appears in the slug
- * entry's array, or a string the slug entry's string includes (the Jul 19
- * merge concatenated notes, keeping the original text as a substring). */
-function contained(idValue, slugValue) {
+/** Containment: deep-equal, or an array whose every element appears in the
+ * slug entry's array. Substring containment applies ONLY to `notes` (the Jul
+ * 19 merge concatenated notes, keeping the original text as a substring) —
+ * for any other string field a prefix match would silently discard a
+ * genuinely different value (e.g. a recoupedSource URL that happens to be a
+ * prefix of the slug entry's). */
+function contained(field, idValue, slugValue) {
   if (deepEqual(idValue, slugValue)) return true;
   if (Array.isArray(idValue) && Array.isArray(slugValue)) {
     return idValue.every((x) => slugValue.some((y) => deepEqual(x, y)));
   }
-  if (typeof idValue === 'string' && typeof slugValue === 'string') {
+  if (field === 'notes' && typeof idValue === 'string' && typeof slugValue === 'string') {
     return slugValue.includes(idValue);
   }
   return false;
@@ -73,7 +80,7 @@ function contained(idValue, slugValue) {
 function conflictingFields(idEntry, slugEntry) {
   return Object.keys(idEntry)
     .filter((f) => !isModelStampedField(f))
-    .filter((f) => !contained(idEntry[f], slugEntry[f]));
+    .filter((f) => !contained(f, idEntry[f], slugEntry[f]));
 }
 
 module.exports = { findDuplicateKeyPairs, conflictingFields, isModelStampedField };
