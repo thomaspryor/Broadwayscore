@@ -102,7 +102,41 @@ test('waitForLaunchOutcome: nothing ever runs → injection-never-ran, retry all
 test('waitForLaunchOutcome: claude tag alone never verifies without a live wrapper process (#548 cross-check intact)', () => {
   const { res } = fakeWait({ wrapperAliveAt: () => false, tagAliveAt: () => true });
   assert.notEqual(res.action, 'ok', 'cmux tag registry can desync — the OS process is ground truth');
-  assert.equal(res.state, STATES.INJECTION_NEVER_RAN);
+  // …but it also must not retry into a workspace cmux says is live: unverified,
+  // not dead (ship-check hardening).
+  assert.equal(res.action, 'fail');
+  assert.equal(res.state, STATES.WRAPPER_GONE_TAG_ALIVE);
+});
+
+test('waitForLaunchOutcome: ONE flaky ps sample never closes a live launch (probe fails closed)', () => {
+  // osProcessAliveForSeed returns false on any ps error/timeout/truncation.
+  // Without debouncing, that single miss reads as "the wrapper died" and the
+  // launcher closes and relaunches a healthy session.
+  let polls = 0;
+  const { res } = fakeWait({
+    wrapperAliveAt: () => { polls += 1; return polls !== 3; }, // one bad sample mid-flight
+    tagAliveAt: t => t >= 120,
+  });
+  assert.equal(res.action, 'ok', 'a single missed sample must not end the wait');
+});
+
+test('waitForLaunchOutcome: a REAL wrapper exit (sustained misses) still ends the wait', () => {
+  // The debounce must not make a genuine death undetectable.
+  const { res } = fakeWait({ wrapperAliveAt: t => t < 30 });
+  assert.equal(res.state, STATES.WRAPPER_EXITED);
+  assert.equal(res.action, 'retry');
+});
+
+test('waitForLaunchOutcome: the boot budget starts when the wrapper appears, not at workspace creation', () => {
+  // Injection lands at 60s (inside the 90s grace); claude registers at 400s.
+  // Total elapsed then exceeds the 360s cap, but the BOOT only took ~340s —
+  // measuring the cap from workspace creation would kill this healthy launch.
+  const { res } = fakeWait({
+    wrapperAliveAt: t => t >= 60,
+    tagAliveAt: t => t >= 400,
+  });
+  assert.equal(res.action, 'ok');
+  assert.ok(res.elapsedSec >= 360, 'total elapsed exceeded the slow-boot cap, yet the launch verified');
 });
 
 test('shouldAdoptLateStart: adopts a failed-verify result whose leftover workspace is now alive', () => {

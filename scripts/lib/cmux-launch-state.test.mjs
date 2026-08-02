@@ -65,6 +65,32 @@ test('wrapper ran then exited with no claude → wrapper-exited (a real death, r
   assert.equal(decideLaunchWait({ wrapperEverSeen: true, elapsedSec: 3, attempt: 2, maxAttempts: 2 }).action, 'fail');
 });
 
+test('wrapper gone but cmux still reports a live claude → never retry (ambiguous, leave it alone)', () => {
+  // Signals disagree. Believing "dead" closes and relaunches over a possibly
+  // real session (the #705 duplicate); believing "alive" only costs an
+  // unverified report. The asymmetry decides it.
+  const d = decideLaunchWait({ wrapperAlive: false, wrapperEverSeen: true, tagAlive: true, elapsedSec: 30, attempt: 1, maxAttempts: 2 });
+  assert.equal(d.action, 'fail');
+  assert.equal(d.state, STATES.WRAPPER_GONE_TAG_ALIVE);
+  assert.equal(isSlowBootFailure(d.state), true, 'callers must not journal this as a death either');
+
+  // Same veto when the wrapper was never seen at all (a lost ps probe).
+  assert.equal(decideLaunchWait({ tagAlive: true, elapsedSec: 500, attempt: 1, maxAttempts: 2 }).state, STATES.WRAPPER_GONE_TAG_ALIVE);
+  // …and without the tag, that same state IS a retryable death.
+  assert.equal(decideLaunchWait({ wrapperEverSeen: true, tagAlive: false, elapsedSec: 30, attempt: 1, maxAttempts: 2 }).action, 'retry');
+});
+
+test('the slow-boot cap is a BOOT budget, measured from the wrapper appearing', () => {
+  // Injection landed at 89s of a 90s grace; claude then needs 5 more minutes.
+  // Measuring the cap from workspace creation would leave only 271s of 360s
+  // and kill a healthy launch (Codex ship-check).
+  const late = { wrapperAlive: true, wrapperEverSeen: true, slowBootCapSec: 360 };
+  assert.equal(decideLaunchWait({ ...late, elapsedSec: 389, bootElapsedSec: 300 }).action, 'wait');
+  assert.equal(decideLaunchWait({ ...late, elapsedSec: 449, bootElapsedSec: 360 }).state, STATES.SLOW_BOOT_TIMEOUT);
+  // bootElapsedSec omitted → falls back to elapsedSec (old behavior).
+  assert.equal(decideLaunchWait({ ...late, elapsedSec: 400 }).state, STATES.SLOW_BOOT_TIMEOUT);
+});
+
 test('caller-supplied windows are honored (bsc-next passes its own)', () => {
   const cfg = { injectionGraceSec: 10, slowBootCapSec: 40 };
   assert.equal(decideLaunchWait({ ...cfg, elapsedSec: 9 }).state, STATES.AWAITING_INJECTION);

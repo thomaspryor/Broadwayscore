@@ -44,6 +44,11 @@ const MAX_ATTEMPTS = 2;
 // ~120 probes — cheap, and coarse enough not to spin.
 const PROBE_INTERVAL_SEC = 3;
 
+// Consecutive ps samples that must MISS the wrapper before it counts as gone.
+// The probe fails closed on any ps error/timeout/truncation, and a single
+// false miss would otherwise close and relaunch a live session.
+const WRAPPER_MISS_STREAK = 2;
+
 function sleepSec(s) { spawnSync('sleep', [String(s)]); }
 
 // Poll fn() every second until it returns truthy or timeoutSec elapses.
@@ -146,23 +151,44 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   const wrapperProbe = probes.wrapperAlive || osProcessAliveForSeed;
   const tagProbe = probes.claudeTagAlive || (ref => cmuxws.claudeAliveIn(ref));
   const napSec = probes.intervalSec ?? PROBE_INTERVAL_SEC; // ?? not ||: a test seam of 0 must mean "don't sleep"
-  const now = probes.now || (() => Date.now());
+  // MONOTONIC clock, not Date.now (Codex ship-check): an NTP step or a manual
+  // clock change during a 6-minute wait would otherwise move elapsed backward
+  // (wait forever) or forward (kill a healthy boot early).
+  const now = probes.now || (() => Number(process.hrtime.bigint() / 1000000n));
 
   const startedAt = now();
+  let wrapperFirstSeenAt = null;
   let wrapperEverSeen = false;
+  let missStreak = 0;
   let announced = null;
   for (;;) {
-    const wrapperAlive = wrapperProbe(marker);
-    if (wrapperAlive) wrapperEverSeen = true;
+    const sampleAlive = wrapperProbe(marker);
+    if (sampleAlive) {
+      if (!wrapperEverSeen) wrapperFirstSeenAt = now();
+      wrapperEverSeen = true; missStreak = 0;
+    } else { missStreak += 1; }
+    // Debounce the ps probe once the wrapper HAS been seen (ship-check, GPT
+    // reviewer): osProcessAliveForSeed fails CLOSED on a ps error, truncation
+    // or timeout, so one unlucky sample would read as "the wrapper died" and
+    // — before the tag veto below — close and relaunch a healthy session.
+    // A process that really exited stays missing, so requiring consecutive
+    // misses costs only PROBE_INTERVAL_SEC on a genuine death.
+    const wrapperAlive = sampleAlive || (wrapperEverSeen && missStreak < WRAPPER_MISS_STREAK);
     // verifiedAlive's both-signals rule (card #548) restated in terms of the
     // probes already taken: cmux's tag alone has a known false-positive mode.
-    const claudeRegistered = !!(wrapperAlive && ws && tagProbe(ws.ref));
-    const elapsedSec = (now() - startedAt) / 1000;
+    const tagAlive = !!(ws && tagProbe(ws.ref));
+    const claudeRegistered = !!(wrapperAlive && tagAlive);
+    const stamp = now();
+    const elapsedSec = (stamp - startedAt) / 1000;
+    // The boot budget starts when the command actually STARTED, not when the
+    // workspace was created — otherwise a slow injection eats the boot window
+    // it was supposed to protect (Codex ship-check).
+    const bootElapsedSec = wrapperFirstSeenAt === null ? null : (stamp - wrapperFirstSeenAt) / 1000;
     const d = decideLaunchWait({
-      claudeRegistered, wrapperAlive, wrapperEverSeen, elapsedSec,
+      claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
       attempt, maxAttempts, injectionGraceSec, slowBootCapSec,
     });
-    if (d.action !== 'wait') return { ...d, wrapperAlive, elapsedSec: Math.round(elapsedSec) };
+    if (d.action !== 'wait') return { ...d, wrapperAlive, tagAlive, elapsedSec: Math.round(elapsedSec) };
     if (d.state !== announced) {
       announced = d.state;
       if (d.state === STATES.LAUNCHING_SLOW) {
@@ -355,5 +381,5 @@ module.exports = {
   launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor,
   strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
-  MAX_ATTEMPTS, PROBE_INTERVAL_SEC,
+  MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK,
 };

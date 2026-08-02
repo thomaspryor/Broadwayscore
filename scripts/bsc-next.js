@@ -642,11 +642,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
         ? `  ${res.workspaceRef}: wrapper process STILL RUNNING — check the tab in a minute before doing anything to it`
         : `  dead workspace: ${res.workspaceRef} (left open for inspection)`);
     }
-    if (!stillBooting) {
-      console.error(`  command that should have run:`);
-      console.error(`  ${res.command}`);
-      console.error(`  Run it yourself in a workspace, or retry: claude "$(cat ${res.seedFile})"`);
-    }
+    // Always print the command — an operator diagnosing EITHER failure needs
+    // it, and hiding it on the still-booting path would make a wrong verdict
+    // from the state machine harder to recover from (ship-check finding).
+    console.error(stillBooting ? `  command that IS running there:` : `  command that should have run:`);
+    console.error(`  ${res.command}`);
+    if (!stillBooting) console.error(`  Run it yourself in a workspace, or retry: claude "$(cat ${res.seedFile})"`);
     process.exit(1);
   }
 }

@@ -44,6 +44,7 @@ const STATES = Object.freeze({
   INJECTION_NEVER_RAN: 'injection-never-ran', // grace expired, wrapper never appeared
   WRAPPER_EXITED: 'wrapper-exited',         // wrapper ran and died without claude registering
   SLOW_BOOT_TIMEOUT: 'slow-boot-timeout',   // wrapper still alive at the cap — alive, just not verifiable yet
+  WRAPPER_GONE_TAG_ALIVE: 'wrapper-gone-tag-alive', // wrapper not in ps, but cmux still reports a live claude
 });
 
 // Human-readable reason per terminal state, for the launch result and logs.
@@ -54,6 +55,7 @@ const REASONS = Object.freeze({
   [STATES.INJECTION_NEVER_RAN]: 'command injection never ran (no wrapper process appeared)',
   [STATES.WRAPPER_EXITED]: 'launch wrapper exited without claude registering',
   [STATES.SLOW_BOOT_TIMEOUT]: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
+  [STATES.WRAPPER_GONE_TAG_ALIVE]: 'launch wrapper is gone from the process table but cmux still reports a live claude in the workspace — ambiguous, left alone',
 });
 
 /**
@@ -63,7 +65,13 @@ const REASONS = Object.freeze({
  * @param {boolean} s.claudeRegistered  a live claude is verified for this launch
  * @param {boolean} s.wrapperAlive      this launch's bash wrapper is in the OS process table RIGHT NOW
  * @param {boolean} s.wrapperEverSeen   it was seen alive at any earlier poll of this attempt
+ * @param {boolean} s.tagAlive          cmux's own registry reports a live claude in this workspace
  * @param {number}  s.elapsedSec        seconds since new-workspace returned
+ * @param {number}  [s.bootElapsedSec]  seconds since the wrapper was FIRST seen (defaults to
+ *                                      elapsedSec). The slow-boot cap is a boot budget, so it
+ *                                      must not be eaten by however long the injection took to
+ *                                      land — a wrapper that appears at 89s of a 90s grace
+ *                                      otherwise got 271s of a nominal 360s (Codex ship-check).
  * @param {number}  [s.attempt]         1-based attempt number
  * @param {number}  [s.maxAttempts]     attempts allowed in total
  * @param {number}  [s.injectionGraceSec]
@@ -74,13 +82,16 @@ function decideLaunchWait({
   claudeRegistered = false,
   wrapperAlive = false,
   wrapperEverSeen = false,
+  tagAlive = false,
   elapsedSec = 0,
+  bootElapsedSec = null,
   attempt = 1,
   maxAttempts = 2,
   injectionGraceSec = DEFAULT_INJECTION_GRACE_SEC,
   slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC,
 } = {}) {
   const elapsed = Number.isFinite(elapsedSec) ? Math.max(0, elapsedSec) : 0;
+  const booting = Number.isFinite(bootElapsedSec) ? Math.max(0, bootElapsedSec) : elapsed;
 
   // 1. Verified — nothing else matters.
   if (claudeRegistered) return { action: 'ok', state: STATES.REGISTERED, reason: null };
@@ -90,14 +101,24 @@ function decideLaunchWait({
   //    duplicate factory this card exists to close. Wait to the cap, then
   //    report a DISTINCT state so the caller leaves the workspace alone.
   if (wrapperAlive) {
-    return elapsed < slowBootCapSec
+    return booting < slowBootCapSec
       ? { action: 'wait', state: STATES.LAUNCHING_SLOW, reason: null }
       : { action: 'fail', state: STATES.SLOW_BOOT_TIMEOUT, reason: REASONS[STATES.SLOW_BOOT_TIMEOUT] };
   }
 
-  // 3. Wrapper ran and is now GONE with no claude: the command died (bad
-  //    settings path, crashed shell, killed pane). Genuinely dead — the one
-  //    non-injection case where a fresh attempt is the right move.
+  // 2b. Wrapper gone, but cmux still reports a live claude in the workspace.
+  //     The two signals disagree, and the failure mode of each is asymmetric:
+  //     believing "dead" closes and relaunches over what may be a real
+  //     session (the #705 duplicate), while believing "alive" only costs an
+  //     unverified report. Never retry into ambiguity — hand the caller a
+  //     not-dead failure and leave the workspace alone. (Reachable when the
+  //     wrapper is SIGKILLed and orphans its claude child, or when a ps
+  //     sample is unreliable.)
+  if (tagAlive) return { action: 'fail', state: STATES.WRAPPER_GONE_TAG_ALIVE, reason: REASONS[STATES.WRAPPER_GONE_TAG_ALIVE] };
+
+  // 3. Wrapper ran and is now GONE with no claude anywhere: the command died
+  //    (bad settings path, crashed shell, killed pane). Genuinely dead — the
+  //    one non-injection case where a fresh attempt is the right move.
   if (wrapperEverSeen) return terminal(STATES.WRAPPER_EXITED, attempt, maxAttempts);
 
   // 4. No wrapper has ever been seen. Inside the grace window the keystrokes
@@ -115,10 +136,11 @@ function terminal(state, attempt, maxAttempts) {
     : { action: 'fail', state, reason: REASONS[state] };
 }
 
-// True when the launch failed but its process is still running — the caller
-// must NOT close the workspace, journal a death, or dispatch a replacement.
+// True when verification failed but something may still be alive in the
+// workspace — the caller must NOT close it, journal a death, or dispatch a
+// replacement. Covers both "wrapper still running" and "signals disagree".
 function isSlowBootFailure(state) {
-  return state === STATES.SLOW_BOOT_TIMEOUT;
+  return state === STATES.SLOW_BOOT_TIMEOUT || state === STATES.WRAPPER_GONE_TAG_ALIVE;
 }
 
 module.exports = {
