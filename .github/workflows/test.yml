@@ -422,12 +422,9 @@ on:
       # Task #819: merge-worktree-to-main.sh checkout-fail regression guard —
       # proves die() actually terminates the process (non-zero exit, no
       # leaked stash) on both the "stash succeeded, checkout still blocked"
-      # and "genuine UU merge conflict" shapes. push-mutex.sh listed too:
-      # die() calls push_mutex_release, so a solo edit there can change the
-      # exit path this test exercises. Path-listed so a solo edit to any of
-      # the three triggers CI.
+      # and "genuine UU merge conflict" shapes. Path-listed so a solo edit
+      # to either file triggers CI.
       - 'scripts/merge-worktree-to-main.sh'
-      - 'scripts/lib/push-mutex.sh'
       - 'scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
