@@ -48,30 +48,14 @@ const RETRY_BASE_MS = 2000;    // Exponential backoff base
 // GEMINI VISION PROMPT
 // ============================================================
 
-const VERIFICATION_PROMPT = `You are verifying Broadway show thumbnail images. I will show you an image that is supposed to be the thumbnail for a specific Broadway show.
+// Prompt lives in scripts/lib/verify-image.js so the auditor and the fetcher
+// share ONE set of venue rules. This file used to carry a second Broadway-only
+// copy; a divergent copy is how the fetcher ended up rejecting correct West End
+// / Off-Broadway key art for months (2026-08-02).
+const { buildVerificationPrompt } = require('./lib/verify-image');
+const { getMarketLabel } = require('./lib/market-label');
 
-Your task: Determine if this image is a legitimate promotional image, poster artwork, logo, or production photo for the named show.
 
-IMPORTANT RULES:
-- Many Broadway shows use simple text-based logos or stylized title treatments as their official promotional art. These ARE correct if they show the right show title.
-- Playbill-standard template images (yellow PLAYBILL header with a show photo below) are NOT acceptable thumbnails - they are photos of physical playbill programs, not promotional art.
-- Seating charts, venue maps, ticket listings, social media logos, and generic graphics are NOT acceptable.
-- If the image shows a DIFFERENT Broadway show's title or artwork, it is wrong.
-- A generic theater/stage photo without any show-specific branding is NOT acceptable.
-- Revival productions may share artwork with earlier productions - this is acceptable.
-
-Reply with ONLY this JSON (no markdown fencing, no explanation):
-{"match":true,"confidence":"high","description":"brief description of what the image shows","issues":[]}
-
-Or if there's a problem:
-{"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"]}
-
-Issue categories: wrong_show, playbill_cover, seating_chart, logo_not_show, generic_image, social_media_logo, ticket_listing, venue_photo, wrong_production
-
-Confidence levels:
-- "high": You are very sure of your assessment
-- "medium": You think you're right but aren't certain
-- "low": You're guessing`;
 
 // ============================================================
 // KNOWN SAMPLES FOR PROMPT VALIDATION (Step 1A)
@@ -164,16 +148,19 @@ class ImageVerifier {
     this.totalOutputTokens = 0;
   }
 
-  async verifyImage(showTitle, imageData, mimeType) {
+  async verifyImage(showTitle, imageData, mimeType, showContext = {}) {
     await this.rateLimiter.wait();
 
-    const userPrompt = `The Broadway show is: "${showTitle}"\n\nIs this image a correct thumbnail for this show?`;
+    const market = showContext.category || showContext.market;
+    const marketLabel = getMarketLabel(market);
+    const systemPrompt = buildVerificationPrompt({ market, venue: showContext.venue });
+    const userPrompt = `The ${marketLabel} show is: "${showTitle}"${showContext.venue ? ` at ${showContext.venue}` : ''}\n\nIs this image a correct thumbnail for this show?`;
 
     let lastError = null;
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
         const result = await this.model.generateContent([
-          { text: VERIFICATION_PROMPT + '\n\n' + userPrompt },
+          { text: systemPrompt + '\n\n' + userPrompt },
           {
             inlineData: {
               data: imageData.toString('base64'),
@@ -208,7 +195,7 @@ class ImageVerifier {
     };
   }
 
-  async verifyImageFromUrl(showTitle, imageUrl) {
+  async verifyImageFromUrl(showTitle, imageUrl, showContext = {}) {
     // Download the image first, then send as base64
     // Gemini doesn't support arbitrary fileUri URLs
     try {
@@ -216,7 +203,7 @@ class ImageVerifier {
       if (resp.ok) {
         const buffer = Buffer.from(await resp.arrayBuffer());
         const contentType = resp.headers.get('content-type') || 'image/jpeg';
-        return await this.verifyImage(showTitle, buffer, contentType);
+        return await this.verifyImage(showTitle, buffer, contentType, showContext);
       } else {
         return {
           match: null,
@@ -344,7 +331,7 @@ async function validatePrompt(verifier, shows) {
 
     const imageData = fs.readFileSync(thumbFile);
     const mimeType = getMimeType(thumbFile);
-    const result = await verifier.verifyImage(show.title, imageData, mimeType);
+    const result = await verifier.verifyImage(show.title, imageData, mimeType, show);
 
     results.total++;
     const correct = (result.match === expectedCorrect);
@@ -390,7 +377,7 @@ async function validatePrompt(verifier, shows) {
 
     const imageData = fs.readFileSync(thumbFile);
     const mimeType = getMimeType(thumbFile);
-    const result = await verifier.verifyImage(show.title, imageData, mimeType);
+    const result = await verifier.verifyImage(show.title, imageData, mimeType, show);
     console.log(`  INFO  ${id}: match=${result.match}, conf=${result.confidence} - ${result.description}`);
     results.details.push({
       showId: id, category: 'edge_case',
@@ -536,9 +523,9 @@ async function runFullAudit(verifier, shows, singleShow = null) {
 
     let verification;
     if (imageSource === 'cdn') {
-      verification = await verifier.verifyImageFromUrl(show.title, thumb);
+      verification = await verifier.verifyImageFromUrl(show.title, thumb, show);
     } else {
-      verification = await verifier.verifyImage(show.title, imageData, mimeType);
+      verification = await verifier.verifyImage(show.title, imageData, mimeType, show);
     }
 
     // Determine action

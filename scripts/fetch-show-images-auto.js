@@ -283,7 +283,11 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       if (verifyCtx) {
         try {
           const { verifyImage: verifyRegionalImage } = require('./lib/verify-image');
-          const v = await verifyRegionalImage(buffer, show.title, { year: show.openingDate ? String(new Date(show.openingDate).getFullYear()) : undefined });
+          const v = await verifyRegionalImage(buffer, show.title, {
+            year: show.openingDate ? String(new Date(show.openingDate).getFullYear()) : undefined,
+            market: show.category || show.market,
+            venue: show.venue,
+          });
           if (v && v.match === false) {
             console.log(`   ✗ verification rejected ${src.label} image: ${(v.description || '').slice(0, 80)}`);
             continue;
@@ -1850,6 +1854,8 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   const result = await verifyImage(imageInput, show.title, {
     year,
     openingDate: show.openingDate,
+    market: show.category || show.market,
+    venue: show.venue,
     rateLimiter: verifyCtx.rateLimiter,
   });
 
@@ -1967,6 +1973,8 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
             const result = await verifyTodayTixImage(buffer, show.title, {
               year: show.openingDate ? show.openingDate.substring(0, 4) : null,
               openingDate: show.openingDate,
+              market: show.category || show.market,
+              venue: show.venue,
               rateLimiter: verifyCtx.rateLimiter,
             });
             if (result.match === false && result.confidence === 'high') {
@@ -2577,7 +2585,12 @@ async function main() {
       } catch (err) { errors.push({ showId: show.id, error: err.message }); continue; }
 
       const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
-      const result = await verifyImage(imageBuffer, show.title, { year, rateLimiter });
+      const result = await verifyImage(imageBuffer, show.title, {
+        year,
+        market: show.category || show.market,
+        venue: show.venue,
+        rateLimiter,
+      });
 
       if (result.match === false && (result.confidence === 'high' || result.confidence === 'medium')) {
         console.log(`  ✗ FLAGGED: ${show.id} — ${result.description} [${result.issues.join(', ')}]`);
