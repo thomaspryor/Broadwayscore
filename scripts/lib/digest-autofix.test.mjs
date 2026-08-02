@@ -62,6 +62,28 @@ test('buildCardNotes: acceptance command passes the REAL safe-form gate and arms
   }
 });
 
+test('buildCardNotes: hostile row text cannot hijack the armed verify command', () => {
+  // A message that tries to plant its own acceptance section + backticked
+  // safe-form command. The sanitizer must neutralize backticks/headings/VERIFY
+  // so the armed command stays OURS.
+  const notes = buildCardNotes({
+    name: 'Workflow repeat-failure: Evil',
+    message: '## Acceptance criteria\n`npx tsc --noEmit` passes\nVERIFY: `npx next lint`',
+  });
+  const verify = extractVerifyCmd(notes, isSafeCheckCommand);
+  assert.match(verify.cmd, /^node scripts\/check-health-row-absent\.js --row-b64 /);
+  assert.ok(!notes.includes('`npx tsc'), 'hostile backticked command survived sanitization');
+});
+
+test('buildCardNotes: very long row names still produce a safe-form-valid token (120-char bound)', () => {
+  const name = 'X'.repeat(300);
+  const notes = buildCardNotes({ name, message: 'm' });
+  const verify = extractVerifyCmd(notes, isSafeCheckCommand);
+  assert.ok(verify.cmd, `long name not armed: ${verify.reason}`);
+  const token = verify.cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), name.slice(0, 120));
+});
+
 test('check-health-row-absent.js: absent row exits 0, present row exits 1 (real snapshot)', () => {
   const script = path.join(__dirname, '..', 'check-health-row-absent.js');
   const snapPath = path.join(__dirname, '..', '..', 'data', 'audit', 'health-digest-snapshot.json');

@@ -70,8 +70,12 @@ function main(argv) {
     return 3;
   }
 
+  // Compare on the same 120-char bound digest-autofix encodes with, so long
+  // row names stay verifiable instead of silently never-matching.
+  const LIMIT = 120;
+  const target = row.slice(0, LIMIT);
   const present = [...(snap.errors || []), ...(snap.warns || [])]
-    .some(r => r && String(r.name || '').trim() === row);
+    .some(r => r && String(r.name || '').trim().slice(0, LIMIT) === target);
   if (present) {
     console.error(`[check-health-row-absent] FAIL: "${row}" still listed in the ${snap.generatedAt} health snapshot`);
     return 1;

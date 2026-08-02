@@ -74,13 +74,33 @@ function planAutofix({ health, extraIssues = [], tasks = [] } = {}) {
   });
 }
 
+// Row text comes from health-check output (semi-trusted: workflow names and
+// scraped strings can leak in). extractVerifyCmd treats the FIRST
+// "## Acceptance criteria" section / any "VERIFY:" line / backticked span in
+// the notes as the card's executable proof, so hostile row text could inject
+// its own safe-but-unrelated command (Codex finding, 2026-08-02). Neutralize
+// the three carriers before interpolating.
+function sanitizeRowText(s) {
+  return String(s || '')
+    .replace(/`/g, "'")
+    .replace(/^#+\s/gm, '')
+    .replace(/VERIFY\s*:/gi, 'VERIFY -');
+}
+
+// The b64url token must fit SAFE_CHECK_FORMS' 200-char cap AND decode back to
+// exactly what check-health-row-absent.js compares — so BOTH sides slice the
+// row name to the same bound (120 chars ≈ ≤160 b64 chars even for multi-byte).
+const ROW_NAME_MATCH_LIMIT = 120;
+
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
 // and >=300 chars (the gate rejected the first live send's shorter format).
 function buildCardNotes(row) {
+  const name = sanitizeRowText(row.name);
+  const message = sanitizeRowText(row.message);
   return [
     '## Problem',
-    `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${row.name}": ${row.message || '(no detail message — reproduce locally for specifics)'}`,
+    `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
     '',
     '## Evidence',
     `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
@@ -92,7 +112,9 @@ function buildCardNotes(row) {
     // The backticked command is the machine-checkable proof bsc-next's verify
     // gate arms and the nightly acceptance recheck re-runs. base64url keeps
     // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
-    `\`node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(row.name, 'utf8').toString('base64url')}\` passes — i.e. the daily health check no longer lists "${row.name}" among errors or warnings.`,
+    // Encode the RAW name (the checker compares against raw snapshot names);
+    // only prose gets sanitized. Slice matches the checker's own bound.
+    `\`node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(row.name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
   ].join('\n');
 }
 
@@ -160,7 +182,16 @@ function runAutofix({ plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, 
   // 3. Re-resolve task ids and dispatch the first `cap` queued rows. Rows
   //    whose card just got filed pick up their fresh task id here.
   let tasks = [];
-  try { tasks = loadTasksFn ? loadTasksFn() : require('../bsc-next.js').loadTasks(); } catch { /* dispatch skipped below */ }
+  try {
+    if (loadTasksFn) tasks = loadTasksFn();
+    else {
+      // loadTasks REQUIRES the shared task directory — calling it bare returns
+      // [] silently (readdirSync(undefined) is swallowed), which killed both
+      // dedup and dispatch on the first live run (Codex finding, 2026-08-02).
+      const bn = require('../bsc-next.js');
+      tasks = bn.loadTasks(bn.TASKS_DIR);
+    }
+  } catch { /* dispatch skipped below */ }
   let budget = cap;
   for (const row of plan) {
     if (row.state === 'in-progress' || row.state === 'card-failed') continue;
