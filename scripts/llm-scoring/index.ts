@@ -77,6 +77,9 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
 const { EXCERPT_FIELDS, hasExcerpt: hasAnyExcerptField } = require('../lib/excerpt-fields');
+// Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
+// so "would this review be scoreable?" has exactly one answer — see task #652.
+const { selectScorableText } = require('../lib/scorable-text');
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -1061,8 +1064,26 @@ async function main(): Promise<void> {
     });
     console.log(`Filtering to stuck-emergency reviews for one-shot retry: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
-    // Filter to unscored reviews
-    filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
+    // Filter to unscored reviews.
+    //
+    // The blocked-skip mirrors the --needs-rescore branch above (task #652).
+    // The 2026-07-11 anti-starvation drain only rescued Phase 2, so the daily
+    // unscored pass kept re-picking the same deterministically-unscoreable
+    // heads every run: run 30516591548 reported "Valid files: 45 -> Processed:
+    // 0, Errors: 45", every one of them input_validation_failed:body_too_short
+    // on text that had not changed since the previous run's identical failure.
+    let unscoredBlockedSkipped = 0;
+    filesToProcess = allFiles.filter(f => {
+      if ((f.data as any).llmScore) return false;
+      if (isBlockedFromRescore(f.data as any)) {
+        unscoredBlockedSkipped++;
+        return false;
+      }
+      return true;
+    });
+    if (unscoredBlockedSkipped > 0) {
+      console.log(`Skipping ${unscoredBlockedSkipped} unscored reviews blocked by a prior terminal text-gate failure (fullText unchanged since)\n`);
+    }
   } else {
     filesToProcess = allFiles;
   }
@@ -1095,19 +1116,21 @@ async function main(): Promise<void> {
   // showTitles is loaded above (line ~776) for the isScoreable wrongShow gate;
   // assessTextQuality reuses it for show-mention validation.
 
-  // Helper to get scorable text (fullText or excerpts)
-  // Uses the full content-quality module for comprehensive garbage detection
+  // Helper to get scorable text (fullText or excerpts).
+  //
+  // The selection itself lives in scripts/lib/scorable-text.js so the cascade
+  // gate's counter can ask the SAME question (task #652 — the workflow's
+  // inline "has text" check was `fullText.length > 100`, which counted 16
+  // reviews the scorer skips outright, permanently pinning UNSCORED above 0).
+  // This wrapper keeps the telemetry that is specific to a scoring run.
   const getScorableText = (data: ReviewTextFile, filePath: string): string | null => {
-    // Check fullText first (but not if it's garbage)
-    if (data.fullText && data.fullText.length >= 100) {
-      // Use the comprehensive content-quality module for garbage detection
-      const showTitle = showTitles.get(data.showId) || undefined;
-      const qualityCheck: ContentQualityResult = assessTextQuality(data.fullText, data.showId, showTitle);
-
-      if (qualityCheck.quality === 'garbage') {
-        // Log and track the skip
+    const selection = selectScorableText(data, {
+      showTitle: showTitles.get(data.showId) || undefined,
+      minTextLength: options.minTextLength,
+      onFullTextRejected: (qualityCheck: ContentQualityResult) => {
         if (options.verbose) {
-          console.log(`  Skipping garbage fullText: ${qualityCheck.issues.join(', ')}`);
+          const label = qualityCheck.quality === 'garbage' ? 'garbage' : 'suspicious';
+          console.log(`  Skipping ${label} fullText: ${qualityCheck.issues.join(', ')}`);
         }
         garbageSkips.push({
           showId: data.showId || 'unknown',
@@ -1118,49 +1141,14 @@ async function main(): Promise<void> {
           issues: qualityCheck.issues,
           skippedAt: new Date().toISOString()
         });
-        // Fall through to excerpts
-      } else if (qualityCheck.quality === 'suspicious' && qualityCheck.confidence === 'high') {
-        // Also skip high-confidence suspicious content
-        if (options.verbose) {
-          console.log(`  Skipping suspicious fullText: ${qualityCheck.issues.join(', ')}`);
+        // Multi-show reviews with garbage fullText legitimately fall through to
+        // excerpts — no trimming needed, the excerpt IS the per-show slice.
+        if (data.isMultiShowReview && options.verbose) {
+          console.log(`  Multi-show review falling back to excerpts (fullText was garbage/missing)`);
         }
-        garbageSkips.push({
-          showId: data.showId || 'unknown',
-          outletId: data.outletId || 'unknown',
-          filePath,
-          quality: qualityCheck.quality,
-          confidence: qualityCheck.confidence,
-          issues: qualityCheck.issues,
-          skippedAt: new Date().toISOString()
-        });
-        // Fall through to excerpts
-      } else {
-        // Text is valid or low-suspicion - use it
-        return data.fullText;
-      }
-    }
-
-    // Fall back to excerpts (multi-show reviews with garbage fullText use excerpts directly — no trimming needed)
-    if (data.isMultiShowReview && options.verbose) {
-      console.log(`  Multi-show review falling back to excerpts (fullText was garbage/missing)`);
-    }
-    // Build deduped excerpt string from all sources (uses canonical EXCERPT_FIELDS)
-    const excerpts: string[] = [];
-    for (const field of EXCERPT_FIELDS) {
-      const val = data[field];
-      if (val && !excerpts.some(e => e === val)) {
-        excerpts.push(val);
-      }
-    }
-
-    if (excerpts.length > 0) {
-      const combined = excerpts.join('\n\n');
-      if (combined.length >= options.minTextLength) {
-        return combined;
-      }
-    }
-
-    return null;
+      },
+    });
+    return selection ? selection.text : null;
   };
 
   // Pre-filter: skip reviews already flagged as unscorable
