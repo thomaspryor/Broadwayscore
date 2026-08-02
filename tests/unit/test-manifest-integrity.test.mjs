@@ -9,7 +9,11 @@ const { validateManifest } = require('../../scripts/lib/test-manifest.js');
 
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-const MANIFESTS = ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt'];
+const MANIFESTS = [
+  'tests/unit-test-manifest.txt',
+  'tests/unit-test-manifest-tsx.txt',
+  'tests/e2e-unit-test-manifest.txt',
+];
 
 for (const manifest of MANIFESTS) {
   test(`${manifest} is non-empty and every listed file exists`, () => {
