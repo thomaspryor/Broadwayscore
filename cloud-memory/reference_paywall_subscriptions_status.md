@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: e02aeafc-deda-4880-86b6-03c60e59e534
-  modified: 2026-07-22T00:55:36.348Z
+  modified: 2026-08-02T19:45:10.727Z
 ---
 
 Owner's paywall subscription status (as of 2026-07-21):
@@ -16,8 +16,9 @@ Owner's paywall subscription status (as of 2026-07-21):
 - newspapers.com — cancelled earlier; access ends 2026-08-27. Was never automatable (viewer blocks all tiers).
 
 **Active + verified working (functional body-length test 2026-07-19/20):**
-- WSJ UPDATE 2026-08-02: subscription ACTIVE (auto-renews 2026-08-08 at $20/4wk, 50% discount locked for 13 payments per Jul 18 renewal email). But the Safari LOGIN session lapsed after the 2026-07-20 export — fresh Safari cookies return HTTP 401. Fix = owner signs in at wsj.com in Safari once, then run `python3 scripts/extract-safari-cookies.py --push`. NEVER confuse a lapsed login with a cancelled subscription (a session on 2026-08-02 wrongly told the owner WSJ was cancelled by reading only this file's index description).
-NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard, Independent — cookies refreshed from owner Safari 2026-07-20, pushed to COOKIES_BUNDLE_1-4 secrets.
+- WSJ UPDATE 2026-08-02 19:34 UTC: subscription ACTIVE (auto-renews 2026-08-08 at $20/4wk, 50% discount locked for 13 payments per Jul 18 renewal email). Safari LOGIN session lapsed after the 2026-07-20 export. Owner ran `python3 scripts/extract-safari-cookies.py --push` WITHOUT first logging into wsj.com in Safari — the script only harvests whatever cookies already exist in Safari's jar, it does not perform a login. Result: still LOGGED-OUT (body 300 / need 1500). The fix requires the owner to actually open Safari, sign into wsj.com interactively, THEN re-run the extract script — running the script alone accomplishes nothing. NEVER confuse a lapsed login with a cancelled subscription (a session on 2026-08-02 wrongly told the owner WSJ was cancelled by reading only this file's index description).
+- WaPo REGRESSION 2026-08-02 19:34 UTC: same verify-cookie-login.js run that reconfirmed WSJ also found washingtonpost.com now LOGGED-OUT (body 400 / need 1500) — previously verified working 2026-07-19/20. Same fix: owner must log into washingtonpost.com in Safari before re-running the extract script.
+NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard, Independent — cookies refreshed from owner Safari 2026-07-20, pushed to COOKIES_BUNDLE_1-4 secrets. As of 2026-08-02 the wsj/wapo entries in that list are stale (see regressions above) — nytimes, variety, thestage, newyorker, ft, thetimes still verified logged-in.
 
 **No subscription exists (never prompt for login):**
 - Backstage — jar is only a cf_clearance bot cookie; no credentials, no Gmail receipts in 2 years.
