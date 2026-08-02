@@ -1227,6 +1227,10 @@ const TRUNCATION_SIGNALS = {
     /\bcontinue\s+reading\s*$/im,
     /\bclick\s+here\s+to\s+read\b/i,
     /\byou\s+may\s+also\s+like\b/i,
+    // Print-critic byline sign-off ("Write to Terry Teachout at tteachout@wsj.com") —
+    // common WSJ/newspaper footer that has no proper-punctuation ending of its own
+    // and was previously misread as the review's real (truncated) ending (task #860).
+    /\bwrite\s+to\s+(?:him|her|them|[a-z][a-z.'-]*(?:\s+[a-z][a-z.'-]*){0,3})\s+at\s+[\w.+-]+@[\w.-]+\.\w+/i,
   ]
 };
 
@@ -1396,6 +1400,10 @@ function hasOpinionLanguage(text) {
     /\b(hilarious|deliriously|razor-sharp|piercing|lacerating|incisive|impeccably)\b/,
     /\b(entertaining|enjoyable|engaging|charming|affecting|mesmerizing|hypnotic)\b/,
     /\b(perfectly\s+cast|well\s+cast|perfectly\s+suited|well\s+suited)\b/,
+    // Terse capsule-review vocabulary (short WSJ-style drama columns) — these were
+    // absent from the original list, causing legit 150-300 word reviews to read as
+    // opinion-free and fall through to truncated (task #860).
+    /\b(excellent|impressive|ideal|sublime|witty|elegant|charismatic|vivid|resonant|ingenious|delightful|first-rate|top-notch|well-made|well-crafted)\b/,
   ];
   let matches = 0;
   for (const pattern of opinionMarkers) {
@@ -1568,11 +1576,28 @@ function classifyContentTier(review) {
   // - Must contain opinion/evaluative language (not just topic keywords)
   // - Must end with proper punctuation
   // - Must be longer than aggregator excerpts (relaxed 1.1x multiplier)
+  //
+  // Footer-junk tolerance: a trailing byline/bio footer (e.g. "Mr. Teachout ... Write
+  // to him at tteachout@wsj.com") doesn't mean the review itself is truncated — the
+  // hasProperEnding check above already salvages the real ending from before the
+  // footer when 'has_footer_junk' is the only signal. Mirrors the same tolerance
+  // Path 1 (longer reviews) already grants footer junk above.
+  const path3SignalsOk = truncation.signals.every(s => s === 'has_footer_junk');
+  // Trusted-capture relaxation: fetchMethod values ending in -subscriber-browser-session
+  // (wsj-subscriber-browser-session, nyt-subscriber-browser-session,
+  // newyorker-subscriber-browser-session) mean an authenticated session pulled the
+  // real article DOM, not a scraped/truncated snippet — so the opinion-language
+  // keyword list (a proxy for "is this a real review, not a press release") isn't
+  // needed as a second signal for terse historical critics (e.g. WSJ's Terry
+  // Teachout) whose capsule style doesn't hit the listed vocabulary. Task #860: this
+  // fallback was silently reclassifying real, correctly-recovered T1 review text as
+  // truncated.
+  const isTrustedSubscriberCapture = /-subscriber-browser-session$/.test(review.fetchMethod || '');
   const looseExcerptCheck = !hasExcerpt || charCount >= longestExcerptLen * 1.1;
   if (wordCount >= 150 && hasProperEnding &&
       truncation.severeCount === 0 && truncation.moderateCount === 0 &&
-      truncation.signals.length === 0 &&
-      looseExcerptCheck && hasOpinionLanguage(fullText)) {
+      path3SignalsOk &&
+      looseExcerptCheck && (hasOpinionLanguage(fullText) || isTrustedSubscriberCapture)) {
     return {
       contentTier: 'complete',
       wordCount,
