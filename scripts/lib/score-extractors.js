@@ -790,18 +790,30 @@ function extractUKStarRating(html, text) {
   }
 
   // 4. Spelled-out star ratings: "Five stars!", "Three Stars</p>", "star rating: five stars"
+  //
+  // Anchored to the first/last 15% of TEXT (verdict position), same convention
+  // as the bare "X/5" pattern below. Unanchored, this false-positives on prose
+  // mentioning star billing mid-review — e.g. "billed with two stars, the cast
+  // is packed with talent" (celebrity headliners, not a 2-star rating) matched
+  // at the 75% mark and corrupted iceboy-regional-2026's Allie and the After
+  // Party rating (card #806, 2026-08-02).
   {
     const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/im;
-    const wsMatch = html.match(wordStarPat) || text.match(wordStarPat);
-    if (wsMatch) {
-      const rating = wordMap[wsMatch[1].toLowerCase()];
-      if (rating) {
-        return {
-          originalScore: `${rating}/5 stars`,
-          normalizedScore: starsToNumeric(rating, 5),
-          source: 'word-stars'
-        };
+    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/gim;
+    for (const source of [html, text]) {
+      const srcLen = source.length;
+      const wsMatches = [...source.matchAll(wordStarPat)];
+      for (const wsMatch of wsMatches) {
+        const pos = wsMatch.index;
+        if (srcLen > 0 && !(pos <= srcLen * 0.15 || pos >= srcLen * 0.85)) continue;
+        const rating = wordMap[wsMatch[1].toLowerCase()];
+        if (rating) {
+          return {
+            originalScore: `${rating}/5 stars`,
+            normalizedScore: starsToNumeric(rating, 5),
+            source: 'word-stars'
+          };
+        }
       }
     }
   }

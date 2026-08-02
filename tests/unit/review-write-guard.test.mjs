@@ -851,3 +851,103 @@ describe('showId backstop', () => {
     assert.equal(fs.existsSync(srcPath), false);
   });
 });
+
+describe('safeWriteReview intentional-clear breadcrumbs (2026-08-02 FP-recovery incident)', () => {
+  const flaggedOnDisk = () => ({
+    showId: 'test-show',
+    outlet: 'blog',
+    url: 'https://example.com/review',
+    fullText: 'A real review of this production...',
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+  });
+
+  test('deleted wrongProduction with override breadcrumb stays cleared', () => {
+    const filePath = path.join(tmpDir, 'cleared-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    delete cleared.wrongProductionReason;
+    cleared.wrongProductionOverride = true;
+    cleared.wrongProductionOverrideReason = 'verified real review of this production';
+    const result = safeWriteReview(filePath, cleared);
+    assert.equal(result.wrote, true);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, undefined);
+    assert.equal(result.preserved.includes('wrongProduction'), false);
+  });
+
+  test('deleted wrongProduction with manualClear breadcrumb stays cleared', () => {
+    const filePath = path.join(tmpDir, 'manual-cleared-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    delete cleared.wrongProductionReason;
+    cleared.wrongProductionManualClear = true;
+    safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, undefined);
+  });
+
+  test('deleted wrongProduction WITHOUT breadcrumb is restored (data-loss protection intact)', () => {
+    const filePath = path.join(tmpDir, 'no-breadcrumb-review.json');
+    fs.writeFileSync(filePath, JSON.stringify(flaggedOnDisk(), null, 2));
+    const cleared = flaggedOnDisk();
+    delete cleared.wrongProduction;
+    const result = safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+    assert.equal(result.preserved.includes('wrongProduction'), true);
+  });
+
+  test('breadcrumb-less write onto a fully-flagged file preserves ALL flag fields (no in-loop poisoning)', () => {
+    // Adversarial-review P0 (2026-08-02): restoring the breadcrumb field from
+    // disk mid-loop must not make LATER breadcrumb-keyed fields (reason/note)
+    // look intentionally cleared. A plain enrichment write with no breadcrumb
+    // must leave the whole flag family intact and coherent.
+    const filePath = path.join(tmpDir, 'poison-order-review.json');
+    const onDisk = {
+      ...flaggedOnDisk(),
+      wrongProductionOverride: true,           // historical clear breadcrumb on disk
+      wrongShow: true,
+      wrongShowReason: 'venue mismatch',
+      wrongShowNote: 'keep me',
+    };
+    fs.writeFileSync(filePath, JSON.stringify(onDisk, null, 2));
+    safeWriteReview(filePath, { showId: 'test-show', outlet: 'blog', url: 'https://example.com/review' });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+    assert.equal(written.wrongProductionReason, 'anticipatory_pre_opening_post');
+    assert.equal(written.wrongShow, true);
+    assert.equal(written.wrongShowReason, 'venue mismatch');
+    assert.equal(written.wrongShowNote, 'keep me');
+  });
+
+  test('stale replay: existing breadcrumb + re-set flag on disk wins over incoming stale clear', () => {
+    // Adversarial-review P0 (2026-08-02): if the file on disk ALREADY carries
+    // the clear breadcrumb and the flag was deliberately re-set over it, an
+    // incoming write replaying that stale breadcrumb must NOT drop the flag.
+    const filePath = path.join(tmpDir, 'stale-replay-review.json');
+    const onDisk = { ...flaggedOnDisk(), wrongProductionOverride: true }; // re-flagged over an old clear
+    fs.writeFileSync(filePath, JSON.stringify(onDisk, null, 2));
+    const staleIncoming = { ...flaggedOnDisk(), wrongProductionOverride: true };
+    delete staleIncoming.wrongProduction; // reader saw pre-re-flag state
+    delete staleIncoming.wrongProductionReason;
+    const result = safeWriteReview(filePath, staleIncoming);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+    assert.equal(result.preserved.includes('wrongProduction'), true);
+  });
+
+  test('lock beats breadcrumb: clearing a flag on a _locked file still preserves it', () => {
+    const filePath = path.join(tmpDir, 'locked-review.json');
+    const locked = { ...flaggedOnDisk(), _locked: true };
+    fs.writeFileSync(filePath, JSON.stringify(locked, null, 2));
+    const cleared = { ...flaggedOnDisk(), _locked: true };
+    delete cleared.wrongProduction;
+    cleared.wrongProductionOverride = true;
+    safeWriteReview(filePath, cleared);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.wrongProduction, true);
+  });
+});
