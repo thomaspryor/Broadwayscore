@@ -63,11 +63,19 @@ async function main() {
   }
 
   // Keep-alive session bound to the persistent context (persist:true → save cookies back).
-  const session = await bb('POST', '/sessions', {
+  // Routed through the createBbSession chokepoint (task #752) so this session's
+  // spend is attributed in the ledger + Browserbase userMetadata like every other caller.
+  const { createBbSession } = require('./lib/browserbase-session');
+  const session = await createBbSession({
+    apiKey,
     projectId,
-    keepAlive: true,
-    proxies: true,
-    browserSettings: { context: { id: contextId, persist: true }, solveCaptchas: true },
+    caller: 'newspapers-browserbase-login.js',
+    purpose: 'newspapers.com interactive login into persistent context',
+    body: {
+      keepAlive: true,
+      proxies: true,
+      browserSettings: { context: { id: contextId, persist: true }, solveCaptchas: true },
+    },
   });
   console.log(`Session ${session.id} started.`);
 
