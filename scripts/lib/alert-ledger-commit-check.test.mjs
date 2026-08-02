@@ -167,6 +167,14 @@ test('clean: for-loop with `do` on its own next line', () => {
   assert.deepEqual(findMissingLedgerCommits(SPLIT_DO_LOOP_FIXTURE), []);
 });
 
+test('clean: for-loop with a trailing comment after `do` (task #763 exemption-marker case)', () => {
+  const fixture = LOOP_COMMIT_FIXTURE.replace(
+    '; do\n',
+    '; do # workflow-line-length-ok: fixed list, not a growing one\n'
+  );
+  assert.deepEqual(findMissingLedgerCommits(fixture), []);
+});
+
 test('flags disposition:\'digest\' with no alert-digest-queue.json commit', () => {
   const violations = findMissingLedgerCommits(DIGEST_NO_QUEUE_FIXTURE);
   assert.equal(violations.length, 1);
