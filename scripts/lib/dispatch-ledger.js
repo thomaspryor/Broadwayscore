@@ -139,6 +139,131 @@ function failedLaunchEntries({ taskId, subject, workspaceRef, model = null, veri
   return deadConfirmed ? [{ event: 'dead', ...base, title: null }, launch] : [launch];
 }
 
+// ── Owner-closed workspaces (task #578) ────────────────────────────────────
+// deadBreadcrumbs above can only see workspaces cmux STILL LISTS. When the
+// owner closes a tab it leaves the list entirely, so its 'launch' entry was
+// orphaned: deadAttemptsForTask() counted zero deaths and the dispatch guard
+// re-opened the same card, forever (owner report 2026-08-02 — 17 launches in
+// one day, 194 distinct launch refs against 26 live workspaces).
+//
+// A closed tab is an OWNER SIGNAL ("stop working this card"), not a failure,
+// so it deliberately does NOT join the DEADLIKE set — burning one of two
+// retries would mean closing a tab twice to make it stop. It parks instead.
+//
+// Absence is weak evidence (the whole #559/#564/#567 bug family came from
+// trusting one liveness signal), so three things fence this in:
+//   1. Only workspace-shaped refs. 'headless:N' and ref-less launches are
+//      never in a cmux listing and would park instantly — they belong to the
+//      headless-liveness half of #578, not here.
+//   2. Only launches newer than a recorded epoch. Without this the first
+//      sweep parks every historically-closed tab, including ones that closed
+//      because they FINISHED.
+//   3. Only launches with no terminal entry recorded after them, which is
+//      what makes ✅-then-closed workspaces (prune-closed) immune.
+const WORKSPACE_REF_RE = /^workspace:\d+$/;
+
+// Events that end a launch's life. Any of these recorded AFTER a launch means
+// that launch is already reconciled and needs no vanished breadcrumb.
+const TERMINAL_LAUNCH_EVENTS = new Set(['dead', 'vanished', 'prune-closed']);
+
+function isWorkspaceRef(ref) {
+  return typeof ref === 'string' && WORKSPACE_REF_RE.test(ref);
+}
+
+// Last entry per workspaceRef matching `pred`. Last-wins (not launchByRef's
+// first-wins) because cmux refs are only monotonic until someone reinstalls
+// it — after a counter reset, workspace:12 can belong to a 2026-07 task and a
+// 2026-09 one, and the recent launch is the one a sweep is reconciling.
+function lastByRef(entries, pred) {
+  const m = new Map();
+  for (const e of entries) {
+    if (!isWorkspaceRef(e.workspaceRef) || !pred(e)) continue;
+    m.set(e.workspaceRef, e);
+  }
+  return m;
+}
+
+// Timestamp this machine started trusting absence-means-closed. Returns null
+// when unset, which every caller must treat as "do not sweep" — see
+// vanishedBreadcrumbs' fail-closed guard.
+function vanishEpoch(entries) {
+  const e = entries.find(x => x.event === 'vanish-epoch');
+  return e ? e.ts : null;
+}
+
+function vanishEpochEntry() {
+  return { event: 'vanish-epoch', taskId: 'epoch' };
+}
+
+// `liveRefs`: Set of workspace refs cmux currently lists. Returns the NEW
+// 'vanished' breadcrumbs to append — one per launched-but-absent workspace.
+// Idempotent: a ref only ever contributes one breadcrumb, because the
+// breadcrumb itself is a terminal event for the next sweep.
+function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null } = {}) {
+  if (!(liveRefs instanceof Set)) {
+    throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
+  }
+  // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
+  // empty listing is indistinguishable from cmux being restarted, crashed, or
+  // mid-reinstall — and that is precisely the moment when every ref on the
+  // machine looks vanished at once.
+  if (!epochTs || liveRefs.size === 0) return [];
+
+  const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
+  const out = [];
+  for (const [ref, launch] of lastByRef(entries, e => e.event === 'launch')) {
+    if (liveRefs.has(ref)) continue;                       // still on screen
+    if (!launch.ts || launch.ts < epochTs) continue;       // pre-epoch history is not ours to park
+    const term = lastTerminal.get(ref);
+    if (term && term.ts >= launch.ts) continue;            // already reconciled
+    out.push({
+      event: 'vanished',
+      taskId: launch.taskId,
+      subject: launch.subject,
+      workspaceRef: ref,
+      notionId: launch.notionId || null,
+    });
+  }
+  return out;
+}
+
+// Terminal entry for a workspace bsc-prune is about to close because it is
+// ✅-marked (i.e. FINISHED). Written BEFORE the close, for the same reason
+// failedLaunchEntries writes 'dead' before 'launch': the two writes are
+// separate appends and a concurrent sweep can land between them. Written
+// after the close, that sweep would see a launched, absent, unreconciled ref
+// and park a card whose work is already done.
+function pruneClosedEntry(workspace, entries) {
+  const launch = launchByRef(workspace.ref, entries);
+  if (!launch) return null; // not a bsc-next auto-dispatch — not ours to journal
+  return {
+    event: 'prune-closed',
+    taskId: launch.taskId,
+    subject: launch.subject,
+    workspaceRef: workspace.ref,
+    title: workspace.title || null,
+  };
+}
+
+// Tasks currently parked by an owner tab-close. A later 'launch' clears the
+// park on purpose: dispatching anyway (bsc-next --force) IS the unpark, so the
+// state is self-healing rather than a trap only a remembered flag escapes.
+// 'unpark' exists for clearing without dispatching.
+function parkedTasks(entries) {
+  const parked = new Map();
+  for (const e of entries) {
+    if (e.taskId == null) continue;
+    const id = String(e.taskId);
+    if (e.event === 'vanished') parked.set(id, e);
+    else if (e.event === 'unpark' || e.event === 'launch') parked.delete(id);
+  }
+  return parked;
+}
+
+function unparkEntry({ taskId, reason = null }) {
+  return { event: 'unpark', taskId: String(taskId), reason };
+}
+
 // ── Headless-job events (Autopilot v5, task #459) ──────────────────────────
 // bsc-runner.js appends these; bsc-reconcile.js and bsc-status.js fold them.
 // One ledger for tabs AND jobs on purpose: the dead-attempt guard must see
@@ -176,6 +301,9 @@ function openJobs(entries) {
 
 module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
+  TERMINAL_LAUNCH_EVENTS,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
+  isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
+  pruneClosedEntry, parkedTasks, unparkEntry,
 };
