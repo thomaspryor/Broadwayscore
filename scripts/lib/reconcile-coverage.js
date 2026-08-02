@@ -59,6 +59,7 @@ const MANAGED_BASENAMES = [
   'diary-shows.json',
   'social-post-history.json',
   'audit/bww-roundup-miss-ledger.jsonl',
+  'audit/scraper-spend-ledger.jsonl',
 ];
 
 const PUSH_SH_RE = /push-with-retry\.sh\b/;

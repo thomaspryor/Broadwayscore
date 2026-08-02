@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -255,8 +256,8 @@ function extractReviewsFromDTLI(content, showId) {
   return reviews;
 }
 
-function saveReview(review, overwrite = false) {
-  const showDir = path.join(outputDir, review.showId);
+function saveReview(review, overwrite = false, dir = outputDir) {
+  const showDir = path.join(dir, review.showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
   }
@@ -276,6 +277,25 @@ function saveReview(review, overwrite = false) {
         return null; // Skip — preserves manual dedup flags
       }
     } catch { /* corrupt file — fall through and let normal logic handle */ }
+  }
+
+  // Task #653 follow-up (ship-check): keep the file's OWN url when we are about to
+  // write over an existing file that findExistingReviewFile refused to hand back as
+  // a merge target (i.e. it carries wrongProduction/duplicateOf). safeWriteReview
+  // preserves PROTECTED_FIELDS, but a canonical URL change first triggers
+  // applyUrlChangeInvariant, which deliberately clears wrongProduction,
+  // wrongProductionNote, contentTier AND publishDate as "old-URL-derived" — and with
+  // publishDate gone, flag-wrong-production-by-date can no longer re-derive the date
+  // guard, so the review re-enters reviews.json permanently. DTLI's link is the
+  // aggregator's, not necessarily the article's current URL; the existing merge
+  // branch below already prefers `existing.url`, so do the same on this path.
+  if (!overwrite && fs.existsSync(filepath)) {
+    try {
+      const onDisk = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+      if (onDisk && onDisk.url && (onDisk.wrongProduction || onDisk.wrongShow)) {
+        review = { ...review, url: onDisk.url };
+      }
+    } catch { /* corrupt file — fall through */ }
   }
 
   // Check for existing file under any outlet ID variant (canonical or legacy)
@@ -306,13 +326,27 @@ function saveReview(review, overwrite = false) {
     };
   }
 
-  fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
+  // Route through the shared write chokepoint instead of a raw writeFileSync.
+  //
+  // Task #653 (corpus non-determinism): findExistingReviewFile DELIBERATELY skips
+  // wrongProduction/duplicateOf files ("never a merge target"), so for every
+  // already-flagged DTLI file `existingFile` came back null and the raw write
+  // below clobbered the flagged file with a clean 12-field object — dropping
+  // wrongProduction/wrongProductionNote/contentTier. The bare rebuild that runs
+  // next in review-refresh.yml then re-included ~155 historical 2014-dated DTLI
+  // excerpts across 92 shows and pushed that reviews.json to core-data; the
+  // push-review-texts PROTECTED_FIELDS restore put the flags back in review-texts
+  // afterwards, so the very next rebuild anywhere dropped them again. That is the
+  // exact-revert ping-pong (19361 → 19510 → 19358 on 2026-08-02, 51 swings ≥40
+  // reviews in 30 days). safeWriteReview's default merge preserves PROTECTED_FIELDS
+  // from the file on disk, so a re-extraction can no longer resurrect contamination.
+  safeWriteReview(filepath, review);
   return filepath;
 }
 
 // Export pure functions for unit testing. Top-level runner below only runs
 // when invoked as a script (not when required from a test).
-module.exports = { extractReviewsFromDTLI };
+module.exports = { extractReviewsFromDTLI, saveReview };
 
 if (require.main !== module) return;
 
