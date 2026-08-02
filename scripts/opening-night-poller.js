@@ -1592,10 +1592,14 @@ async function pollCycle() {
     }
     const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
       const ep = SITE_SEARCH_ENDPOINTS[id];
+      // Missing-check keyed on the EFFECTIVE outlet id: a sibling entry
+      // ('telegraph-search' → 'telegraph') must not re-fire a paid JS render
+      // for an outlet the free SSR pass already covered (task #720).
+      const effectiveId = (ep.outletIdOverride || id).toLowerCase();
       return ep.requiresJs
         && (!ep.market || ep.market === market)
         && (!ep.applies || ep.applies(show))
-        && !foundAfterParallel.has(id.toLowerCase());
+        && !foundAfterParallel.has(effectiveId);
     });
     if (missingJsIds.length > 0) {
       jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
