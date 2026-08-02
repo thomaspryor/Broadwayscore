@@ -179,8 +179,20 @@ function lockMeta() {
 // exit", never toward "crash before deciding").
 async function alert(opts) {
   try {
-    const { routeAlert } = require('./lib/owner-alert-router.js');
-    return await routeAlert(opts);
+    const router = require('./lib/owner-alert-router.js');
+    // This launcher is a launchd sender in the SHARED ~/Broadwayscore checkout,
+    // so its cooldown state must never sit uncommitted in the git-tracked
+    // data/audit/alert-ledger.json — a parallel session's checkout/reset wipes
+    // it between ticks and every re-fire looks new (card #693: the same
+    // on-monitor-launch-failed alert emailed twice 21 min apart through a
+    // cooldownHours: 3 window). owner-alert-router.js routes non-CI callers to
+    // ~/.broadwayscore-state/alert-ledger.json; log which ledger a tick used so
+    // a future double-send is diagnosable from the launcher log alone.
+    if (!alert.loggedLedger) {
+      alert.loggedLedger = true;
+      log(`alert ledger: ${router.ledgerPath()} (${router.isLocalLedger() ? 'machine-local, survives git ops' : 'git-tracked'})`);
+    }
+    return await router.routeAlert(opts);
   } catch (e) {
     log(`ALERT ROUTING FAILED (${e.message}) — ${opts.title}`);
     return { action: 'failed' };
@@ -509,7 +521,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, alert, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

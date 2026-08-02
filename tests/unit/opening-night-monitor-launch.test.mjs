@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import os from 'node:os';
 import { launchDecision, activeWindows, LAUNCH_INFLIGHT_GRACE_SEC } from '../../scripts/lib/opening-night-windows.js';
 
 // Card #650: the launcher previously opened a cmux workspace to run the
@@ -201,4 +204,58 @@ test('pass env forwards the API key only under auth.mode api-key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   assert.match(src, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'/, 'pass env must branch on auth.mode');
   assert.match(src, /authPing\(\{ ANTHROPIC_API_KEY: '' \}\)/, 'preflight must probe the stored-login path in the pass\'s own env shape');
+});
+
+// Card #693: this launcher runs under launchd in the SHARED ~/Broadwayscore
+// checkout. Its routeAlert cooldown state must land on a ledger that a
+// parallel session's `git checkout`/`reset --hard` cannot wipe — the live
+// failure was the same on-monitor-launch-failed alert emailing twice 21 min
+// apart through a cooldownHours: 3 window, with the git-tracked ledger showing
+// neither send. This exercises the REAL alert() wrapper against the REAL
+// router (only routeAlert itself is stubbed, so no card/email is filed).
+test('alert() reports the ledger the router actually resolved, not data/audit', async () => {
+  const require = createRequire(import.meta.url);
+  const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const launcher = require('../../scripts/opening-night-monitor-launch.js');
+
+  // A ledger outside any git checkout, the way a local sender gets routed.
+  const pinnedLedger = path.join(os.tmpdir(), 'alert-router-launcher-test', 'alert-ledger.json');
+  const priorEnv = process.env.ALERT_LEDGER_PATH;
+  process.env.ALERT_LEDGER_PATH = pinnedLedger;
+  const priorCache = require.cache[routerPath];
+  delete require.cache[routerPath];
+  const realRouter = require(routerPath);
+  const routed = [];
+  require.cache[routerPath] = {
+    id: routerPath,
+    filename: routerPath,
+    loaded: true,
+    exports: { ...realRouter, routeAlert: async (opts) => { routed.push(opts); return { action: 'silent' }; } },
+  };
+
+  const logs = [];
+  const realConsoleLog = console.log;
+  console.log = (...args) => logs.push(args.join(' '));
+  launcher.alert.loggedLedger = false; // the path is logged once per process
+  try {
+    const result = await launcher.alert({
+      conditionKey: 'test:launcher-ledger',
+      title: 'test',
+      description: 'test',
+      disposition: 'auto',
+    });
+    assert.equal(result.action, 'silent');
+    assert.equal(routed.length, 1, 'the alert went through owner-alert-router');
+
+    const ledgerLine = logs.find(l => l.includes('alert ledger:'));
+    assert.ok(ledgerLine, 'the tick logs which ledger it used');
+    assert.ok(ledgerLine.includes(pinnedLedger), `expected the resolved ledger path in: ${ledgerLine}`);
+    assert.ok(ledgerLine.includes('survives git ops'), 'a non-tracked ledger must be reported as git-safe');
+    assert.equal(ledgerLine.includes('/data/audit/alert-ledger.json'), false,
+      'the launcher must not report the git-tracked ledger — that one gets clobbered mid-night');
+  } finally {
+    console.log = realConsoleLog;
+    if (priorCache) require.cache[routerPath] = priorCache; else delete require.cache[routerPath];
+    if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
+  }
 });
