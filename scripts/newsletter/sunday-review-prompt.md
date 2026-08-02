@@ -77,13 +77,8 @@ For each edition that has a draft, read the generated HTML file and check:
   "1 WEEK". Read the generator's number-formatting helpers in
   `scripts/newsletter/generate.mjs` (search for the relevant section — Movers,
   recoupment, closings) if you find one; these are usually a missing
-  singular/plural branch. Fix in `scripts/newsletter/generate.mjs` if it's a
-  code bug (this touches `scripts/`, so per CLAUDE.md §1 worktree rule, make
-  that specific fix in a fresh `EnterWorktree` session-equivalent: use `git
-  checkout -b fix/newsletter-<short-desc>`, commit, push, and open a PR rather
-  than committing straight to main from this headless run — do NOT push
-  directly to `main` for `scripts/` changes even though you have
-  `--dangerously-skip-permissions`).
+  singular/plural branch. Fix it in code per the lane in step 4 — you fix and
+  land it yourself, you do not hand it to the owner.
 - **Section sanity**: recoupment section cites announcements no older than
   ~30 days as "recent"; closings section doesn't list a show whose
   `closingDate` has already passed without it actually being closed
@@ -100,13 +95,30 @@ For each edition that has a draft, read the generated HTML file and check:
   then re-run `refresh-drafts.sh <weekStart>` so the draft picks it up.
   Never hand-edit the generated HTML file directly — it will be
   overwritten by the next refresh and the root cause survives.
-- **Generator code fixes** (pluralization, off-by-one date math): branch +
-  PR as described above. Do not merge to main yourself in this headless
-  run — leave the PR open and mention it in the summary email so the owner
-  merges when they look at things. Exception: if CLAUDE.md's autonomous-loop
-  infrastructure would normally auto-merge a change this small and you are
-  confident it's correct and tested, you may follow that path instead — but
-  a fresh PR is the safe default here.
+- **Generator code fixes** (pluralization, off-by-one date math, a cap that
+  fails open): **you fix the root cause and land it yourself.** A summary
+  email that ends by pointing the owner at a branch or a PR is a process
+  failure, not a handoff (owner escalation 2026-08-02). The lane, in order:
+  1. `EnterWorktree` (CLAUDE.md §1 — `scripts/` edits are worktree-mandatory;
+     never edit `scripts/` from the main checkout).
+  2. Make the fix, and add a regression test that fails against the old code
+     (CLAUDE.md §15: `require()`/import the real function, never re-implement
+     it in the test; register the test in `test.yml`'s explicit `node --test`
+     list — that batch is not globbed).
+  3. Verify locally, and paste the real output into your own log: `npx tsc
+     --noEmit`, the new test, and the end-to-end command that reproduces the
+     original symptom (for a draft bug: re-run `refresh-drafts.sh <weekStart>`
+     and grep the regenerated HTML for the symptom).
+  4. Land it: `scripts/merge-worktree-to-main.sh` (it merges origin, merges the
+     branch, pushes with retry, and verifies the files exist on origin/main —
+     never hand-roll `git pull --rebase`, it drops merge commits).
+  5. If the merge script exits non-zero, the fix did NOT land. Retry it once;
+     if it still fails, that specific blocker is the one thing that goes in
+     the email — with what failed, not a request to merge anything.
+  If a fix is genuinely too large to land safely inside this run's wall clock,
+  do not park it on a branch: card it via `node scripts/notion-brain.js create
+  ...` at P1 and dispatch it per CLAUDE.md §6, then say in the email that it's
+  carded and dispatched. The owner never gets asked to review code.
 - After ANY fix, re-run `refresh-drafts.sh <weekStart>` and re-check the
   specific issue you fixed actually changed in the new HTML. Don't claim a
   fix worked without re-reading the regenerated file.
@@ -139,8 +151,20 @@ exactly 3 lines, plain English, no jargon:
    whether the drafts are ready to send as-is.
 2. What you found and fixed (or "nothing wrong found" — say so plainly, don't
    pad).
-3. Anything still needing the owner's judgment (an open PR to merge, a data
-   question you couldn't resolve, etc.) — or "nothing else — ready to send."
+3. Anything still needing the owner's judgment — or "nothing else — ready to
+   send." This line is for decisions only the owner can make: a data question
+   you couldn't resolve, an editorial call, a fact you can't verify. It is
+   **never** a request to review, merge, or look at code. All of these are
+   banned:
+
+<!-- prompt-guard:examples-start -->
+   - "Merge PR #518 when you get a minute."
+   - "When you have a minute, take a look at the branch."
+   - "The fix is ready for your review."
+<!-- prompt-guard:examples-end -->
+
+   If there was a code fix, it is already on `main` (step 4) and this line
+   says so in one clause, or says nothing at all.
 
 If step 1 already determined there's nothing to review, you should have
 already stopped without emailing (see step 1) — don't send a "nothing to
@@ -153,6 +177,15 @@ Print a final one-line summary to stdout (the launcher captures this in its
 log file): what you reviewed, what you fixed, whether you emailed the owner.
 Then stop — do not run `/ship-check`, `/wrap-up`, or open a Notion card
 sequence for this run; it's a scheduled content-review pass, not a coding
-task, unless step 4 required an actual code fix (in which case treat that
-one fix normally: PR, and note it in the Notion brain per CLAUDE.md §6 if
-non-trivial).
+task, unless step 4 required an actual code fix (in which case treat that one
+fix normally: land it on `main` per step 4's lane, and note it in the Notion
+brain per CLAUDE.md §6 if non-trivial).
+
+## Budget
+
+You have ~55 minutes of wall clock (the launcher kills the session at
+`CLAUDE_TIMEOUT_SEC`). Spend it in this order: review (steps 1-3), then land
+any code fix (step 4), then email (step 6). **The email is last** — an email
+that describes a fix which then got cut off by the timeout is worse than no
+email. If you're past ~40 minutes and a fix hasn't landed, stop working on it,
+card + dispatch it per step 4's fallback, and send the email.
