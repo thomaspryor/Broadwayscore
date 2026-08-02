@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T05:14:58.897Z",
+  "timestamp": "2026-08-02T06:22:38.887Z",
   "stats": {
-    "totalReviews": 41209,
-    "alreadyFlagged": 18034,
+    "totalReviews": 41207,
+    "alreadyFlagged": 18040,
     "dateGuardCatches": 85,
-    "directorMismatch": 950,
+    "directorMismatch": 941,
     "tvFilmSignals": 1127,
     "londonSignals": 784,
     "offBroadwaySignals": 467,
-    "yearMismatch": 88,
-    "noPublishDate": 3380
+    "yearMismatch": 87,
+    "noPublishDate": 3372
   },
   "findings": [
     {
@@ -8699,20 +8699,6 @@
       ]
     },
     {
-      "showId": "glengarry-glen-ross-1984",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
       "showId": "glengarry-glen-ross-2012",
       "file": "backstage--erik-haagensen.json",
       "score": 63,
@@ -11095,52 +11081,10 @@
     },
     {
       "showId": "hello-dolly-1978",
-      "file": "nytg--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/bernadette-peters-victor-garber-and-more-debut-in-hello-dolly-on-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://playbill.com/article/looking-at-the-old-girl-now-mdash-hello-dolly-50-years-later-com-214020",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lee roy reams\" from hello-dolly-1995"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
       "file": "theatermania--pete-hempstead.json",
       "score": 87,
       "publishDate": null,
       "url": "http://www.theatermania.com/broadway/reviews/hello-dolly-review_84177.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from hello-dolly-2017"
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-1978",
-      "file": "village-voice--michael-feingold.json",
-      "score": 63,
-      "publishDate": null,
-      "url": "http://www.villagevoice.com/arts/with-hello-dolly-bette-midler-midler-brings-back-the-show-thatll-never-go-away-9970559",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -13889,57 +13833,10 @@
     },
     {
       "showId": "king-lear-2004",
-      "file": "theater-scene--victor-gluck.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/broadway-plays/king-lear/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from king-lear-2019"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2019 (2x) more than 2004 (0x). 2019 matches production: king-lear-2019"
-        }
-      ]
-    },
-    {
-      "showId": "king-lear-2004",
-      "file": "theatermania--david-gordon.json",
-      "score": 64,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/broadway/reviews/king-lear_88326.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from king-lear-2019"
-        }
-      ]
-    },
-    {
-      "showId": "king-lear-2004",
       "file": "thestage--nicole-serratore.json",
       "score": 80,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/2019/king-lear-starring-glenda-jackson-review-cort-theatre-new-york/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from king-lear-2019"
-        }
-      ]
-    },
-    {
-      "showId": "king-lear-2004",
-      "file": "towleroad--naveen-kumar.json",
-      "score": 41,
-      "publishDate": null,
-      "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15441,20 +15338,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from m-butterfly-1988"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-1981",
-      "file": "amny--john-carucci.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/broadway/review-macbeth-hits-broadway-with-daniel-craig-and-weird-direction/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
         }
       ]
     },
@@ -17452,20 +17335,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 2\""
-        }
-      ]
-    },
-    {
-      "showId": "on-the-town-1971",
-      "file": "newsday--linda-winer.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "http://www.newsday.com/entertainment/theater/on-the-town-review-misty-copeland-s-small-but-impressive-broadway-debut-1.10777597",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john rando\" from on-the-town-2014"
         }
       ]
     },
@@ -24128,7 +23997,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 87,
+      "score": 81,
       "publishDate": "2025-05-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
       "findings": [
@@ -24147,7 +24016,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2025-05-14",
       "url": "https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html",
       "findings": [
@@ -24175,7 +24044,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 89,
+      "score": 95,
       "publishDate": "2025-05-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
       "findings": [
@@ -24221,7 +24090,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2025-05-14",
       "url": "https://www.standard.co.uk/culture/theatre/the-comedy-about-spies-noel-coward-theatre-review-b1227551.html",
       "findings": [
@@ -24276,7 +24145,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 66,
+      "score": 60,
       "publishDate": "2025-05-14",
       "url": "https://www.thetimes.com/article/eaafd29a-2398-4612-9a87-370d891587ee",
       "findings": [
@@ -42301,7 +42170,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "timeout-london--tom-wicker.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "May 14th, 2025",
       "url": "https://www.timeout.com/london/theatre/the-comedy-about-spies-review",
       "findings": [
