@@ -25,6 +25,8 @@ const path = require('path');
 // HTML Cleaning
 // ============================================================
 
+const { foldDiacritics } = require('./title-match');
+
 function cleanHtmlForLLM(html) {
   let text = html
     .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -139,7 +141,7 @@ function isPartialExtraction(extractedCount, expectedCount, {
 
 function _normalizeCriticForDedup(name) {
   if (!name || typeof name !== 'string') return '';
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
+  return foldDiacritics(name).toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
 }
 
 // Delegate to the canonical helper so tracking-only query params (?triedRedirect,

@@ -27,6 +27,8 @@ let _cachedRegistry = null;
 let _cachedDomainMap = null;
 let _cachedAmbiguous = null;
 
+const { foldDiacritics } = require('./title-match');
+
 function loadRegistry() {
   if (_cachedRegistry) return _cachedRegistry;
   _cachedRegistry = require(path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'));
@@ -130,7 +132,7 @@ function resolveCanonicalOutletId({ outletArg, url }) {
 
   // Case C: Slug fallback — unknown outlet, no URL help. Emit warning so
   // operator sees the drift before it propagates.
-  const slug = aliasResolved || outletArg.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const slug = aliasResolved || foldDiacritics(outletArg).toLowerCase().replace(/[^a-z0-9]+/g, '-');
   return {
     outletId: slug,
     displayName: outletArg,
@@ -190,6 +192,10 @@ const PROVISIONAL_MULTIPART_SUFFIXES = [
   'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
   'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
 ];
+// host is a URL hostname (DNS domains are ASCII/punycode by construction) —
+// no diacritic fold needed here, unlike the outletArg slug fallback above.
+// host is a URL hostname (DNS domains are ASCII/punycode by construction) —
+// no diacritic fold needed here, unlike the outletArg slug fallback above.
 function provisionalOutletIdFromHost(host) {
   if (!host || typeof host !== 'string') return null;
   const h = host.replace(/^www\./, '').toLowerCase().trim();

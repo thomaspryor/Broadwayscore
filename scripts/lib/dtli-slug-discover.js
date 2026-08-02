@@ -27,15 +27,17 @@ const FETCH_TIMEOUT_MS = 15000;
 
 const STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for']);
 
+const { foldDiacritics } = require('./title-match');
+
 function slugify(text) {
-  return (text || '')
+  return foldDiacritics(text || '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
 
 function tokensFromTitle(title) {
-  return (title || '')
+  return foldDiacritics(title || '')
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)

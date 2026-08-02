@@ -33,9 +33,11 @@ const STOPWORDS = new Set([
 /**
  * Normalize free text into a Set of significant tokens for fuzzy matching.
  */
+const { foldDiacritics } = require('./title-match');
+
 function tokenize(text) {
   if (!text || typeof text !== 'string') return new Set();
-  const tokens = text
+  const tokens = foldDiacritics(text)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)

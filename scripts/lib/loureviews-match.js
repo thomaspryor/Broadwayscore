@@ -31,6 +31,8 @@ const GENERIC_WORDS = new Set(['the', 'a', 'an', 'of', 'and', 'to', 'in', 'at', 
 // vs the post "I'll Be Back" — and blocks the match.
 const ALLOWED_EXTRA = new Set(['musical', 'play', 'part', 'parts', 'live', 'concert', 'show']);
 
+const { foldDiacritics } = require('./title-match');
+
 function decodeEntities(s) {
   return String(s || '')
     .replace(/&#8217;|&#039;|&rsquo;|&#8216;/g, "'")
@@ -47,7 +49,7 @@ function decodeEntities(s) {
  * apostrophes/punctuation → spaces, collapse whitespace.
  */
 function normalizeTitle(s) {
-  return decodeEntities(s)
+  return foldDiacritics(decodeEntities(s))
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')

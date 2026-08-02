@@ -20,7 +20,9 @@
 
 const PRE_OPEN_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
 
-function normTitle(t) { return (t || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+const { foldDiacritics } = require('./title-match');
+
+function normTitle(t) { return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
 
 // Unambiguous: a production's previews always precede its opening. Anything else is a bug.
 function previewsAfterOpening(show) {
