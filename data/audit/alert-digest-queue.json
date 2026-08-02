@@ -1,34 +1,10 @@
 [
   {
     "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: browserbase $9.7 > $4 (97 sessions); brightdata $10.38 > $2.5 (3267 serp + 3651 unlocker reqs); scrapingdog 93110 credits > 45000",
-    "description": "Day 2026-07-31. 2026-07-31 · Browserbase: $9.7 (97 sessions) · 2026-07-31 · Bright Data: $10.38 (3267 serp / 3651 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 93110 credits (529106 this cycle). Verification streak reset to 0.",
+    "title": "Scraping spend over budget: browserbase $11.5 > $4 (115 sessions); brightdata $6.16 > $2.5 (1358 serp + 2746 unlocker reqs); scrapingdog 104074 credits > 45000",
+    "description": "Day 2026-08-01. 2026-08-01 · Browserbase: $11.5 (115 sessions) · 2026-08-01 · Bright Data: $6.16 (1358 serp / 2746 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 104074 credits (633180 this cycle). Verification streak reset to 0.",
     "severity": "error",
     "url": null,
-    "queuedAt": "2026-08-01T07:38:45.314Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "4 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "queuedAt": "2026-08-01T08:48:28.632Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 81.7% (454/556)\noff-broadway: 49.4% (154/312)\nwest-end: 71.3% (390/547)\n\nOldest gaps:\n1536 — guardian (231h)\n1536 — independent (231h)\nA Midsummer Night's Dream - Globe — financialtimes (231h)\nA Midsummer Night's Dream - Globe — telegraph (231h)\nA Midsummer Night's Dream — financialtimes (231h)\n… 203 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "queuedAt": "2026-08-01T19:17:20.189Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30715317140",
-    "queuedAt": "2026-08-01T19:57:34.627Z"
+    "queuedAt": "2026-08-02T07:40:26.544Z"
   }
 ]

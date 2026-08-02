@@ -1,0 +1,15 @@
+{
+  "system": "workflow coverage",
+  "status": "warn",
+  "lastChecked": "2026-08-02T07:40:18.116Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow coverage: never-run",
+      "status": "warn",
+      "message": "1 workflow(s) registered on GitHub Actions with ZERO lifetime runs (>30d old): batch-commercial-research.yml"
+    }
+  ]
+}
