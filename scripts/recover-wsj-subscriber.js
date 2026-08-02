@@ -3,6 +3,12 @@
 /**
  * Recover WSJ review full text using subscriber cookies + plain HTTP.
  *
+ * DEPRECATED as of task #779 (2026-08-02) — use scripts/recover-wsj-browser.js
+ * instead. Verified live: a plain fetch() with genuinely valid session
+ * cookies now gets HTTP 401 (WSJ appears to gate on TLS/request fingerprint,
+ * not just the Cookie header), so the "NOVEL APPROACH" below no longer
+ * works. Kept for reference/history; not wired into any cron.
+ *
  * NOVEL APPROACH: All previous WSJ attempts used browser automation (Playwright,
  * Browserbase) which triggers PerimeterX/DataDome bot detection. This script
  * uses plain HTTP requests with subscriber session cookies — no browser, no JS
@@ -30,6 +36,15 @@ const { execSync } = require('child_process');
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/recover-wsj-subscriber.js');
+  console.log('');
+  console.log('DEPRECATED (task #779) — plain fetch() with valid cookies now gets HTTP 401.');
+  console.log('Use scripts/recover-wsj-browser.js instead (real browser navigation).');
+  process.exit(0);
+}
 
 // ============================================================================
 // Configuration
