@@ -419,6 +419,20 @@ function renderRedditDigestBlock(snapshot) {
   return renderNamedDigestBlock('r/Broadway', snapshot);
 }
 
+// Parked cards (card #777): bsc-prune's tab-close park (#776) writes a
+// 'vanished' ledger entry and pauses the Notion card, but nothing surfaced
+// that anywhere — a card could sit parked indefinitely with no signal, the
+// same write-only-signal class as #689/#690/#641/#692. `parkedCards` is the
+// array shape autonomous-email.js builds from dispatchLedger.parkedTasks():
+// [{taskId, subject, workspaceRef}].
+function renderParkedCardsBlock(parkedCards) {
+  if (!Array.isArray(parkedCards) || !parkedCards.length) return '';
+  const names = parkedCards
+    .map(p => `#${esc(p.taskId)}${p.workspaceRef ? ` (${esc(p.workspaceRef)})` : ''}`)
+    .join(', ');
+  return `<p style="font-size:12px;color:#666;margin:0 0 10px;">Parked by you: ${parkedCards.length} card${parkedCards.length > 1 ? 's' : ''} — ${names}. Resume with <code>bsc-next.js --id &lt;id&gt; --force</code>.</p>`;
+}
+
 function renderItem(item) {
   const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
@@ -663,6 +677,11 @@ function renderEmail(data) {
     tail.push(`<p style="font-size:12px;color:#666;margin:0 0 10px;">Closed ${data.prunedCount} finished tab${data.prunedCount > 1 ? 's' : ''} from earlier sessions.</p>`);
   }
 
+  // Parked cards (card #777) — see renderParkedCardsBlock.
+  if (Array.isArray(data.parkedCards) && data.parkedCards.length) {
+    tail.push(renderParkedCardsBlock(data.parkedCards));
+  }
+
   const footerBits = [];
   if (lastRunNote) footerBits.push(esc(lastRunNote));
   footerBits.push(`${awaitingTotal} awaiting approval`);
@@ -684,4 +703,5 @@ module.exports = {
   renderHealthScoreboard, renderAutofixBlock, plainHealthLine,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
+  renderParkedCardsBlock,
 };
