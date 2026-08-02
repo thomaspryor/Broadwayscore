@@ -288,9 +288,15 @@ const AUTOFIX_STATE_LABEL = {
   'card-filed': ['\u23f3', 'queued \u2014 the next automated pass picks it up today'],
   'card-failed': ['\u26a0\ufe0f', 'could not be queued automatically \u2014 will retry tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
+  // Attempt-memory (task #843): same fixed content failed twice unchanged —
+  // never redispatched blind, needs a human look at the card itself.
+  'parked': ['\u23f8\ufe0f', 'kept failing the same way \u2014 parked, needs a manual look'],
 };
 function renderAutofixBlock(autofixRows) {
-  let rows = (autofixRows || []).filter(r => r && r.name);
+  // 'decision' rows are genuine judgment calls (task #843) — they belong ONLY
+  // in the "Needs your attention" card with a button, never here (this block
+  // would otherwise mislabel them as an in-flight auto-fix).
+  let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision');
   if (!rows.length) return '';
   // Two checks can share a plain-English translation (e.g. two "Stuck work:"
   // variants) — collapse them so the owner never reads the same sentence twice.
@@ -304,9 +310,10 @@ function renderAutofixBlock(autofixRows) {
   const lines = rows.map(r => {
     const [icon, label] = AUTOFIX_STATE_LABEL[r.state] || ['\u23f3', 'queued'];
     const ref = r.taskId ? ` <span style="color:#bbb;">(#${esc(String(r.taskId))})</span>` : '';
+    const attemptNote = r.state === 'dispatched' && r.attempt > 1 ? ` \u2014 attempt ${r.attempt}${r.model ? ` (${esc(r.model)})` : ''}` : '';
     return `<div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">${icon} ${esc(plainHealthLine(r.name))}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>
-      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">${esc(label)}</div>
+      <div style="font-size:11px;color:#999;margin:1px 0 0 22px;">${esc(label)}${attemptNote}</div>
     </div>`;
   }).join('');
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
@@ -346,8 +353,14 @@ function renderHealthDigestBlock(health, autofixRows = null) {
         ${validQueued.map(q => {
           const href = safeUrl(q.url);
           const action = safeUrl(q.actionUrl);
+          // Every remaining queued row is a genuine decision (task #843):
+          // technical rows are folded into renderAutofixBlock's "Being fixed
+          // automatically" list before this ever runs — see
+          // send-morning-digest.js. decisionPrompt names the actual choice
+          // so a bare button never leaves the owner guessing what it does.
           return `<div style="margin:0 0 10px;">
             <div style="font-size:12px;color:#555;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#2563eb;">view</a>` : ''}</div>
+            ${q.decisionPrompt ? `<div style="font-size:11px;color:#b45309;margin:2px 0 0;">Decision needed: ${esc(clip(q.decisionPrompt, 200))}</div>` : ''}
             ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#16a34a;text-decoration:none;padding:3px 12px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
           </div>`;
         }).join('')}</div>`

@@ -254,7 +254,16 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
   }
 }
 
-function queueDigestLine({ title, description, severity, conditionKey, url }) {
+// `decision`/`decisionPrompt` (task #843, owner mandate 2026-08-02): a digest
+// row is auto-dispatched by scripts/lib/digest-autofix.js by default — a
+// caller opts a row OUT of that (keeps a bare Dispatch-a-fix button) only by
+// setting decision:true, for the rare row that's a genuine judgment call
+// (e.g. "raise the budget vs cut spend") rather than a technical fix.
+// `model` lets a caller force the escalated model on the row's first
+// auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
+// opus immediately since it's already the SECOND machine attempt at the
+// underlying failure — the first, disposition:'auto', card already failed).
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model }) {
   let queue = [];
   try {
     const parsed = JSON.parse(fs.readFileSync(DIGEST_QUEUE_PATH, 'utf8'));
@@ -263,7 +272,11 @@ function queueDigestLine({ title, description, severity, conditionKey, url }) {
   // Replace any existing queued line for the same condition instead of
   // stacking duplicates if the digest hasn't been drained yet.
   queue = queue.filter(q => q.conditionKey !== conditionKey);
-  queue.push({ conditionKey, title, description, severity, url: url || null, queuedAt: new Date().toISOString() });
+  queue.push({
+    conditionKey, title, description, severity, url: url || null,
+    decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
+    queuedAt: new Date().toISOString(),
+  });
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
   fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
 }
@@ -324,7 +337,12 @@ function drainDigestQueue() {
  *           approach" or is folded into the email body), severity (default
  *           'error'), fields ([{name,value}]), url, cardAction (Notion Action
  *           value for disposition='auto', default 'Investigate'), priority,
- *           category, tags, cooldownHours (default 7 days).
+ *           category, tags, cooldownHours (default 7 days), decision +
+ *           decisionPrompt (disposition='digest'/page-gated-'human' only —
+ *           marks the row a genuine judgment call so digest-autofix.js
+ *           never auto-dispatches it, see queueDigestLine's header note),
+ *           model (forces the model on the row's first digest-autofix
+ *           dispatch attempt).
  *
  * Returns { action: 'silent'|'auto'|'digest'|'human', conditionKey, cardId? }.
  */
@@ -343,6 +361,9 @@ async function routeAlert(opts) {
     category,
     tags,
     cooldownHours = DEFAULT_COOLDOWN_HOURS,
+    decision,
+    decisionPrompt,
+    model,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -387,7 +408,7 @@ async function routeAlert(opts) {
     if (!dispatch.ok) result.dispatchError = dispatch.error;
     notifyOk = dispatch.ok;
   } else if (effectiveDisposition === 'digest') {
-    queueDigestLine({ title, description, severity, conditionKey, url });
+    queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model });
   } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
     result.delivered = delivered;

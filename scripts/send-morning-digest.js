@@ -363,9 +363,24 @@ async function main() {
     // returns [] (readdirSync(undefined) swallowed), which disabled dedup on
     // the first live run (Codex finding, 2026-08-02).
     try { const bn = require('./bsc-next.js'); tasks = bn.loadTasks(bn.TASKS_DIR); } catch { /* plan degrades to needs-card */ }
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks }), dryRun, log: (m) => console.log(m) });
+    // Task #843 (owner escalation 2026-08-02): "Needs your attention" rows
+    // (owner-alert-router's disposition:'digest' queue) go through the SAME
+    // plan/dispatch pipeline as health.errors/warns now — a bare button was
+    // the whole bug this card exists to fix. Only rows the caller explicitly
+    // marked `decision: true` come back with state:'decision' and stay in
+    // sections.health.queued below (button-only); every other queued row is
+    // filtered OUT of that array so renderHealthDigestBlock's "Needs your
+    // attention" card only ever shows genuine judgment calls.
+    const queuedForAutofix = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun, log: (m) => console.log(m) });
+    if (sections.health && Array.isArray(sections.health.queued)) {
+      const decisionConditionKeys = new Set(
+        autofixRows.filter(r => r.state === 'decision' && r.conditionKey).map(r => r.conditionKey));
+      sections.health.queued = sections.health.queued.filter(q => q && decisionConditionKeys.has(q.conditionKey));
+    }
     const d = autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length;
-    console.log(`[digest] autofix: ${autofixRows.length} issue(s) — ${d} being worked, ${autofixRows.length - d} queued`);
+    const decisions = autofixRows.filter(r => r.state === 'decision').length;
+    console.log(`[digest] autofix: ${autofixRows.length} issue(s) — ${d} being worked, ${autofixRows.length - d - decisions} queued, ${decisions} decision(s) left for the owner`);
   } catch (err) {
     console.error(`[digest] WARN autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }

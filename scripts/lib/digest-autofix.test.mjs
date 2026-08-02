@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
@@ -11,8 +13,19 @@ const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION } = require('./scrapingbee-ack.js');
+const { computeContentHash } = require('./attempt-memory.js');
+const dispatchLedger = require('./dispatch-ledger.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Isolated ledger file per test — never the real data/audit/digest-autofix-ledger.jsonl.
+function tmpLedgerPath() {
+  return path.join(os.tmpdir(), `digest-autofix-ledger-test-${process.pid}-${Math.random().toString(36).slice(2)}.jsonl`);
+}
+function appendRaw(p, entry) {
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
+}
 
 test('planAutofix: dedups against open tasks, maps states', () => {
   const health = { errors: [{ name: 'A', message: 'a' }], warns: [{ name: 'B', message: 'b' }] };
@@ -199,4 +212,150 @@ test('check-health-row-absent.js: --help and missing args exit 2 without touchin
     try { execFileSync('node', [script, ...args], { encoding: 'utf8' }); } catch (err) { code = err.status; }
     assert.equal(code, 2, `args ${JSON.stringify(args)}`);
   }
+});
+
+// ── task #843: "Needs your attention" queued rows fold into the same
+// plan/dispatch pipeline as health rows, unless explicitly marked a decision ──
+
+test('planAutofix: a queued (digest-queue) row is treated as a normal autofix candidate by default', () => {
+  const queued = [{ conditionKey: 'provider-spend:overspend', title: 'Scraping spend over budget: BrightData', description: 'Day 2026-08-02 over budget.' }];
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].name, 'Scraping spend over budget: BrightData');
+  assert.equal(plan[0].state, 'needs-card'); // no open task yet — needs a card filed, same as an error/warn row
+  assert.equal(plan[0].conditionKey, 'provider-spend:overspend');
+});
+
+test('planAutofix: a queued row already covered by an open task dedups the same way health rows do', () => {
+  const queued = [{ conditionKey: 'test-yml:main-streak-escalation', title: 'main test.yml STILL red — auto-dispatch did not resolve it', description: 'x' }];
+  const tasks = [{ id: 733, status: 'pending', subject: 'Fix: BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it' }];
+  const plan = planAutofix({ health: {}, tasks, queued });
+  assert.equal(plan[0].state, 'queued');
+  assert.equal(plan[0].taskId, 733);
+});
+
+test('planAutofix: decision-type item never enters the autofix pipeline — state "decision", no taskId, no card-filing', () => {
+  const queued = [{
+    conditionKey: 'provider-spend:overspend', title: 'Scraping spend over budget',
+    description: 'Day over budget.', decision: true, decisionPrompt: 'raise the monthly budget or cut demand?',
+  }];
+  const tasks = [{ id: 999, status: 'pending', subject: 'BSC Daily: Scraping spend over budget' }]; // even WITH an open task —
+  const plan = planAutofix({ health: {}, tasks, queued });
+  assert.equal(plan[0].state, 'decision'); // decision always wins, ignores existing-task lookup entirely
+  assert.equal(plan[0].taskId, null);
+  assert.equal(plan[0].decisionPrompt, 'raise the monthly budget or cut demand?');
+});
+
+test('runAutofix: a "decision" row is left completely untouched (no card, no dispatch) even outside dry-run', () => {
+  const plan = [{ name: 'X', message: 'm', title: 'BSC Daily: X', state: 'decision', taskId: null, conditionKey: 'k:1' }];
+  const dispatchCalls = [];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [],
+    ledgerPath: tmpLedgerPath(), dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(out[0].state, 'decision');
+  assert.equal(dispatchCalls.length, 0);
+});
+
+test('runAutofix: dispatches a needs-attention technical row and records the attempt in its own ledger', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [{ name: 'Foo failing', message: 'bar', title: 'BSC Daily: Foo failing', state: 'queued', taskId: 501, conditionKey: 'k:foo' }];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 501, status: 'pending', subject: 'BSC Daily: Foo failing' }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(out[0].state, 'dispatched');
+  assert.equal(out[0].attempt, 1);
+  assert.equal(dispatchCalls.length, 1);
+  assert.equal(dispatchCalls[0][0], 501); // taskId
+  assert.equal(dispatchCalls[0][3], null); // model — first attempt, no escalation
+  const ledgerEntries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n').map(l => JSON.parse(l));
+  assert.equal(ledgerEntries.length, 1);
+  assert.equal(ledgerEntries[0].event, 'auto-dispatch');
+  assert.equal(ledgerEntries[0].taskId, '501');
+});
+
+test('runAutofix: second dispatch attempt on the SAME row content escalates to --model opus', () => {
+  const ledgerPath = tmpLedgerPath();
+  const row = { name: 'Foo failing', message: 'bar', title: 'BSC Daily: Foo failing', state: 'queued', taskId: 502, conditionKey: 'k:foo2' };
+  const dispatchCalls = [];
+  const dispatchFn = (...args) => dispatchCalls.push(args);
+
+  // Attempt 1 — no prior ledger entries, no escalation.
+  runAutofix({
+    plan: [{ ...row }], dryRun: false, loadTasksFn: () => [{ id: 502, status: 'pending', subject: row.title }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [], dispatchFn,
+  });
+  assert.equal(dispatchCalls[0][3], null);
+
+  // Attempt 2 — same taskId + same content hash already logged once → opus.
+  const out2 = runAutofix({
+    plan: [{ ...row }], dryRun: false, loadTasksFn: () => [{ id: 502, status: 'pending', subject: row.title }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [], dispatchFn,
+  });
+  assert.equal(out2[0].attempt, 2);
+  assert.equal(dispatchCalls[1][3], 'opus');
+});
+
+test('runAutofix: a caller-supplied model hint (test.yml streak escalation) is honored on the FIRST attempt', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [{ name: 'main test.yml STILL red', message: 'm', title: 'BSC Daily: main test.yml STILL red', state: 'queued', taskId: 733, conditionKey: 'test-yml:main-streak-escalation', model: 'opus' }];
+  runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 733, status: 'pending', subject: 'BSC Daily: main test.yml STILL red' }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(dispatchCalls[0][3], 'opus');
+});
+
+test('runAutofix: attempt-memory respected — a row that failed twice unchanged is "parked", never redispatched blind', () => {
+  const ledgerPath = tmpLedgerPath();
+  const title = 'BSC Daily: Chronically broken row';
+  const message = 'always fails';
+  const contentHash = computeContentHash({ name: title, notes: message });
+  // Seed two prior failures for this exact content — attempt-memory's default maxFailures.
+  appendRaw(ledgerPath, { event: 'card-fail', cardId: '503', contentHash, note: 'fail 1' });
+  appendRaw(ledgerPath, { event: 'card-fail', cardId: '503', contentHash, note: 'fail 2' });
+
+  const dispatchCalls = [];
+  const plan = [{ name: 'Chronically broken row', message, title, state: 'queued', taskId: 503, conditionKey: 'k:broken' }];
+  const out = runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 503, status: 'pending', subject: title }],
+    ledgerPath, dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+  });
+  assert.equal(out[0].state, 'parked');
+  assert.ok(out[0].parkReason && out[0].parkReason.startsWith('parked:'));
+  assert.equal(dispatchCalls.length, 0); // never redispatched
+});
+
+test('runAutofix: reconciles a prior dispatch into card-pass via the shared dispatch-ledger job lifecycle', () => {
+  const ledgerPath = tmpLedgerPath();
+  const title = 'BSC Daily: Reconciles fine';
+  const message = 'm';
+  const contentHash = computeContentHash({ name: title, notes: message });
+  const dispatchTs = new Date(Date.now() - 60_000).toISOString();
+  appendRaw(ledgerPath, { event: 'auto-dispatch', taskId: '504', contentHash, ts: dispatchTs });
+
+  const sharedEntries = [
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '504', jobId: 'job-1', ts: dispatchTs },
+    { event: dispatchLedger.JOB_EVENTS.DONE, taskId: '504', jobId: 'job-1', ts: new Date().toISOString(), costUSD: 0.5 },
+  ];
+
+  const plan = [{ name: 'Reconciles fine', message, title, state: 'in-progress', taskId: 504, conditionKey: 'k:ok' }];
+  // in-progress rows never get dispatched again, but reconciliation still runs
+  // and should resolve the outstanding attempt to card-pass (task marked completed).
+  runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [{ id: 504, status: 'completed', subject: title }],
+    ledgerPath, dispatchLedgerEntriesFn: () => sharedEntries,
+    dispatchFn: () => { throw new Error('must not dispatch an in-progress row'); },
+  });
+  const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n').map(l => JSON.parse(l));
+  const resolved = entries.find(e => e.event === 'card-pass');
+  assert.ok(resolved, 'expected the prior dispatch to resolve to card-pass');
+  assert.equal(resolved.cardId, '504');
 });
