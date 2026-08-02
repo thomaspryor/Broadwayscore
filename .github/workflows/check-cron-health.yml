@@ -142,6 +142,14 @@ jobs:
             # != failure) trip this after ~8.5 days. It went 8 straight Mondays
             # cancelled (May 25 - Jul 13 2026) with zero alerts.
             "scraper-cost-report.yml|205|Weekly Scraper Cost Report"
+            # Daily 12:25 UTC. The cross-run dead-arm detector (card #647). A
+            # detector that stops running is indistinguishable from one finding
+            # nothing — the same invisibility that let three arms sit dead for
+            # 11 days, 16 days and 5 months. 36h = daily cadence + 12h cron-lag
+            # cushion. Safe to list because check-arm-yield.js exits 0 whenever
+            # it RAN, dead arms included, so a real dead arm can never make this
+            # entry look stale and trigger a redispatch loop.
+            "check-arm-yield.yml|36|Check Arm Yield (dead-arm detector)"
           )
 
           FAILURES=""
@@ -270,15 +278,22 @@ jobs:
           PAGE_COUNT=$(printf '%s' "$PAGE_LIST" | grep -c . || true)
 
           # Persist current state for next run's diff (stale set + one-shot
-          # redispatch ledger; an entry gets a single self-heal attempt per streak).
-          mkdir -p "$(dirname "$STATE_FILE")"
-          NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          jq -n --arg ts "$NOW_ISO" \
-            --arg stale "$CURRENT_STALE" \
-            --arg redispatched "$REDISPATCHED_NOW" \
-            '{stale: ($stale | split("\n") | map(select(length > 0))),
-              redispatched: ($redispatched | split("\n") | map(select(length > 0))),
-              updatedAt: $ts}' > "$STATE_FILE"
+          # redispatch ledger; an entry gets a single self-heal attempt per
+          # streak) AND advance each entry's consecutive-stale-day count.
+          #
+          # The streak is card #647's root cause (b). Before it, this file
+          # recorded WHICH crons were stale but not FOR HOW LONG, so "stale
+          # again today" and "stale for eleven days" were indistinguishable and
+          # every long outage decayed into a silent chronic-stale digest line.
+          # The 2026-07-30 audit found this file listing "Opening Night
+          # Orchestrator" as stale with "redispatched": [] — it knew, and had
+          # no mechanism to do anything further about it.
+          #
+          # Decision logic lives in scripts/lib/cron-stale-streak.js so the
+          # escalation boundary is unit-tested against the real function
+          # (CLAUDE.md rule 15), not re-implemented in shell.
+          CURRENT_STALE="$CURRENT_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
+            STATE_FILE="$STATE_FILE" node scripts/update-cron-health-state.js
 
           # Emit step outputs the notify-failure step reads to toggle severity/email.
           echo "newly_stale_count=${NEWLY_COUNT}" >> "$GITHUB_OUTPUT"
@@ -503,6 +518,44 @@ jobs:
             })().catch(e => { console.error("routeAlert failed:", e.message); process.exit(1); });
           '
 
+      # Multi-day stale crons ESCALATE from "digest line" to actual work
+      # (card #647, root cause (b)). The pre-existing paths both stop short:
+      # the self-heal redispatch fires once per streak, and the chronic-stale
+      # branch below is a warning, which notify-failure deliberately no-ops.
+      # After 3 consecutive daily checks stale, the redispatch has demonstrably
+      # not fixed it, so this files a Notion Action Queue card that the action
+      # dispatcher works hands-free — disposition 'auto', the router's existing
+      # mechanism for machine-investigable conditions. cooldownHours 168 keeps
+      # a cron nobody can fix to one card a week rather than one a day.
+      - name: Escalate crons stale 3+ consecutive days
+        if: always() && steps.check.outputs.escalate_count != '0' && steps.check.outputs.escalate_count != ''
+        env:
+          ESCALATE_NAMES: ${{ steps.check.outputs.escalate_names }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.ESCALATE_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            const runUrl = process.env.RUN_URL;
+            (async () => {
+              for (const name of names) {
+                const result = await routeAlert({
+                  conditionKey: `cron-health-chronic:${name}`,
+                  title: `Cron stale 3+ consecutive days: ${name}`,
+                  description: `${name} has been stale on three or more consecutive daily cron-health checks. The one-shot self-heal redispatch has already run and did not fix it, so this needs a real diagnosis rather than another notification.`,
+                  hint: `Check whether its runs are CANCELLED rather than failed (a timeout cap — notify-failure never sees those, and \`if: always()\` does not fire on cancellation), or failing at severity:low/email:false. Start with: gh run list --workflow=<file> --limit 30 --json createdAt,conclusion,event`,
+                  severity: "error",
+                  disposition: "auto",
+                  cooldownHours: 168,
+                  url: runUrl,
+                  fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
+                });
+                console.log(`[cron-health-chronic] ${name}: ${result.action}`);
+              }
+            })().catch(e => { console.error("escalation routeAlert failed:", e.message); process.exit(1); });
+          '
+
       # Recovered crons re-arm their condition immediately (same rationale as
       # update-show-status.yml's #486 fix) — without this a cron that flaps
       # (broken → self-heals → breaks again next week) would wait out the 24h
@@ -513,7 +566,13 @@ jobs:
           node -e '
             const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
             const names = (process.env.RECOVERED_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
-            for (const name of names) resolveCondition(`cron-health:${name}`);
+            for (const name of names) {
+              resolveCondition(`cron-health:${name}`);
+              // Also re-arm the 3-day chronic escalation (card #647): without
+              // this a cron that flaps would sit out the previous incident's
+              // 168h cooldown before its NEXT multi-day outage could escalate.
+              resolveCondition(`cron-health-chronic:${name}`);
+            }
           '
         env:
           RECOVERED_NAMES: ${{ steps.check.outputs.recovered_names }}
