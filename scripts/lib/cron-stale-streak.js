@@ -26,6 +26,21 @@
 const DEFAULT_ESCALATE_AFTER_DAYS = 3;
 
 /**
+ * Largest day-gap between two checks that still counts as "consecutive" — 2
+ * tolerates exactly one missed daily check (cron-health itself gets skipped or
+ * cancelled sometimes) without letting a streak span an arbitrary outage.
+ */
+const MAX_GAP_DAYS = 2;
+
+/** Whole calendar days between two 'YYYY-MM-DD' strings; NaN-safe. */
+function daysBetween(from, to) {
+  const a = Date.parse(`${from}T00:00:00Z`);
+  const b = Date.parse(`${to}T00:00:00Z`);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return Infinity;
+  return Math.round((b - a) / 86400000);
+}
+
+/**
  * Advance the per-cron stale streaks by one check.
  *
  * A name present in `currentStale` increments; a name absent resets to zero by
@@ -68,7 +83,26 @@ function updateStaleStreaks(prevState, currentStale, opts = {}) {
     const prev = prevStreak[name];
     const prevDays = Number(prev && typeof prev === 'object' ? prev.days : prev) || 0;
     const prevDay = prev && typeof prev === 'object' ? prev.lastCounted : null;
-    const days = prevDay === today ? prevDays || 1 : prevDays + 1;
+
+    let days;
+    if (!prevDays) {
+      days = 1;
+    } else if (!prevDay) {
+      // Legacy numeric state, written before day-keying. It carries no date, so
+      // we cannot tell whether it was already counted today; incrementing would
+      // risk escalating 24h early on migration day. Adopt the count as-is and
+      // stamp today — erring late, never early.
+      days = prevDays;
+    } else {
+      const gap = daysBetween(prevDay, today);
+      if (gap <= 0) days = prevDays; // same day (or a clock that moved backwards)
+      // A gap of 2 means one check was missed — cron-health is daily but does
+      // get skipped. Tolerate that; anything longer is not a *consecutive*
+      // streak and must restart, or "3 consecutive days" silently becomes
+      // "3 checks, whenever they happened" (Codex ship-check finding).
+      else if (gap <= MAX_GAP_DAYS) days = prevDays + 1;
+      else days = 1;
+    }
     staleStreak[name] = { days, lastCounted: today };
     if (days >= escalateAfterDays) escalate.push(name);
   }
