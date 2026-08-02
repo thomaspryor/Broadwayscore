@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T09:04:11.125Z",
+  "timestamp": "2026-08-02T09:15:38.112Z",
   "stats": {
-    "totalReviews": 41244,
-    "alreadyFlagged": 18039,
-    "dateGuardCatches": 85,
+    "totalReviews": 41265,
+    "alreadyFlagged": 18038,
+    "dateGuardCatches": 87,
     "directorMismatch": 941,
     "tvFilmSignals": 1128,
     "londonSignals": 784,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 3414
+    "noPublishDate": 3435
   },
   "findings": [
     {
@@ -23551,6 +23551,20 @@
       ]
     },
     {
+      "showId": "the-car-man-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 81,
+      "publishDate": "2022-06-13",
+      "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-the-royal-albert-hall-review_56708/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1506d before show (2022-06-13 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
       "showId": "the-cher-show-2018",
       "file": "cabaret-scenes--elizabeth-ahlfors.json",
       "score": 77,
@@ -41809,6 +41823,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "daily-echo--lorelei-reddin.json",
+      "score": null,
+      "publishDate": "2025-11-11",
+      "url": "https://www.dailyecho.co.uk/news/25609300.matthew-bournes-car-man-mayflower-theatre-2026/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 259d before show (2025-11-11 vs 2026-07-28)"
         }
       ]
     },
