@@ -1,10 +1,38 @@
 {
-  "generatedAt": "2026-08-02T01:22:29.040Z",
+  "generatedAt": "2026-08-02T01:49:34.758Z",
   "summary": {
-    "total": 0,
+    "total": 1,
     "high": 0,
     "medium": 0,
-    "low": 0
+    "low": 1
   },
-  "collisions": []
+  "collisions": [
+    {
+      "url": "https://www.google.com/sorry/index?continue=https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html&q=EgSExF6yGL6-utMGIi1A1LaU5KgRUmFOTHHcHm1lNXGFJDBheMAo_rpqa5FDclna4k4mT724-vfu_WAyAnJSWgFD",
+      "normalizedUrl": "https://google.com/sorry/index",
+      "candidates": [
+        {
+          "showId": "an-ark-2026",
+          "file": "the-interested-bystander--cary-wong.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "the-interested-bystander"
+        },
+        {
+          "showId": "beautiful-the-carole-king-musical-2014",
+          "file": "gotham-playgoer--robert-sholiton.json",
+          "publishDate": null,
+          "openingDate": "2014-01-12",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "gotham-playgoer"
+        }
+      ],
+      "suggestedWinner": "beautiful-the-carole-king-musical-2014",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    }
+  ]
 }
