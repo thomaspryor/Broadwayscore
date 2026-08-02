@@ -139,6 +139,13 @@ test('REGRESSION: a git-pull merge (parent2 = origin/main) does not hide the ses
   // the actual "push rejected because origin moved" → pull → retry sequence.
   const originClone = mkdtempSync(join(tmpdir(), 'review-gate-scope-origin-'));
   git(repo, 'clone', '-q', repo, originClone);
+  // `git clone` does not inherit the parent repo's LOCAL config (user.email
+  // etc. set in makeRepo() above) — CI runners have no global git identity
+  // either, so a commit in originClone fails there even though it passes on
+  // a dev machine with a global identity configured.
+  git(originClone, 'config', 'user.email', 'test@example.com');
+  git(originClone, 'config', 'user.name', 'Test');
+  git(originClone, 'config', 'commit.gpgsign', 'false');
   git(repo, 'remote', 'add', 'origin', originClone);
   t.after(() => rmSync(originClone, { recursive: true, force: true }));
 
