@@ -87,10 +87,33 @@ test('threshold is the longest quiet gap the arm has shown, plus a 2-day margin'
   assert.equal(state.verdict, 'healthy');
 });
 
-test('an arm with too few productive days is never judged', () => {
+test('an arm with too few productive days EVER is not judged', () => {
   const barely = series('2026-07-30', [...Array(28).fill(0), 1, 0]);
   const state = computeArmState(barely, { asOf: '2026-07-30' });
   assert.equal(state.verdict, 'insufficient-history');
+});
+
+test('a LOW-FREQUENCY arm is still judged — the baseline widens past 30 days', () => {
+  // Codex ship-check finding (2026-08-02), verified against the real code: a
+  // monthly cron has ONE productive day in any 30-day window, so a fixed
+  // window parked it on 'insufficient-history' forever — silent no matter how
+  // long it stayed dead. That is scoring-audit's exact failure (5/5 monthly
+  // runs failed since 2026-03-01, nobody told).
+  const monthly = new Map();
+  const end = Date.parse('2026-08-02T00:00:00Z');
+  for (let i = 270; i >= 90; i -= 30) monthly.set(new Date(end - i * DAY).toISOString().slice(0, 10), 2);
+  for (let i = 89; i >= 0; i -= 1) monthly.set(new Date(end - i * DAY).toISOString().slice(0, 10), 0);
+
+  const dead = computeArmState(monthly, { asOf: '2026-08-02' });
+  assert.equal(dead.verdict, 'dead', `monthly arm dead 90d must alert, got ${dead.verdict}`);
+  assert.ok(dead.threshold >= 30, `threshold should reflect a ~30d cadence, got ${dead.threshold}`);
+
+  // ...and the SAME arm 20 days after a yield is still healthy: widening the
+  // lookback must not make a sparse arm trigger-happy.
+  const healthy = new Map();
+  for (let i = 200; i >= 20; i -= 30) healthy.set(new Date(end - i * DAY).toISOString().slice(0, 10), 2);
+  for (let i = 19; i >= 0; i -= 1) healthy.set(new Date(end - i * DAY).toISOString().slice(0, 10), 0);
+  assert.equal(computeArmState(healthy, { asOf: '2026-08-02' }).verdict, 'healthy');
 });
 
 test('a brand-new arm with no productive day yet cannot alert', () => {

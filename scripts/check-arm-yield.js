@@ -98,6 +98,16 @@ function readLedger(file) {
     .filter(Boolean);
 }
 
+/**
+ * Plain-English site impact per arm kind, used as the FIRST sentence of every
+ * alert. Without this the owner cannot tell a cosmetic pipeline hiccup from
+ * "the site is missing reviews right now", and treats both as noise.
+ */
+const IMPACT = {
+  outlet: 'The site may be missing new reviews from this outlet.',
+  workflow: 'A scheduled job that keeps the site up to date has stopped succeeding.',
+};
+
 const ICON = {
   dead: '💀',
   unobserved: '🕳️',
@@ -159,13 +169,20 @@ async function main() {
     const conditionKey = `arm-yield:${s.id}`;
     const result = await routeAlert({
       conditionKey,
-      title: `Pipeline arm silent ${s.daysSinceLastYield}d: ${s.label}`,
+      // Impact first, mechanism second. The owner reads this in a 7am digest
+      // and is not a developer: the first sentence has to say what it means for
+      // the SITE, not quote the threshold maths that decided to send it
+      // (gpt-5.4-mini ship-check review, 2026-08-02 — "lead with user impact,
+      // not statistics", and the terms 'arm'/'baseline'/'threshold' read as
+      // internal jargon).
+      title: `${s.label} has stopped updating (${s.daysSinceLastYield} days)`,
       description:
-        `${s.label} has produced nothing since ${s.lastYieldDate} (${s.daysSinceLastYield} days). ` +
-        `Its own recent history never went quiet for more than ${s.longestPriorGap} day(s), ` +
-        `so the alert threshold for this arm is ${s.threshold} days. ` +
-        `Baseline: ${s.productiveDays} productive day(s) / ${s.windowItems} item(s) between ` +
-        `${s.baselineWindow.from} and ${s.baselineWindow.to}.`,
+        `${IMPACT[s.id.split(':')[0]] || 'Part of the pipeline has stopped producing.'} ` +
+        `Nothing new since ${s.lastYieldDate}, ${s.daysSinceLastYield} days ago. ` +
+        `It has never before gone quiet for more than ${s.longestPriorGap} day(s), so this is not its normal rhythm. ` +
+        `Nothing is fixing this automatically — it needs a look.\n\n` +
+        `(Detail: threshold ${s.threshold}d, from ${s.productiveDays} productive day(s) / ${s.windowItems} item(s) ` +
+        `between ${s.baselineWindow.from} and ${s.baselineWindow.to}.)`,
       hint:
         `Check whether the arm's runs are being CANCELLED (a timeout cap — invisible to notify-failure, ` +
         `since \`if: always()\` does not fire on cancellation) or failing quietly at severity:low/email:false. ` +
@@ -186,13 +203,13 @@ async function main() {
     const c = s.collapse;
     const result = await routeAlert({
       conditionKey,
-      title: `Pipeline arm yield collapsed to ${Math.round(c.ratio * 100)}%: ${s.label}`,
+      title: `${s.label} is producing far less than usual (${Math.round(c.ratio * 100)}% of normal)`,
       description:
-        `${s.label} produced ${c.recentVolume} item(s) between ${c.recentWindow.from} and ${c.recentWindow.to}, ` +
-        `against a peak of ${c.peakVolume} over the same window length in the trailing ${DEFAULTS.lookbackDays} days. ` +
-        `It is still producing occasionally, so the silence rule does not fire — this is the shape the ` +
-        `opening-night orchestrator's 2026-07-13..07-30 outage had (two successful scheduled runs in eighteen days, ` +
-        `with stray single successes that reset any consecutive-zero counter).`,
+        `${IMPACT[s.id.split(':')[0]] || 'Part of the pipeline has nearly stopped producing.'} ` +
+        `It managed ${c.recentVolume} in the last ${DEFAULTS.recentDays} days, against ${c.peakVolume} in its best ` +
+        `recent fortnight. It has not stopped completely, which is why nothing else has flagged it — ` +
+        `this is the shape the opening-night orchestrator's July outage had, where two stray successes in ` +
+        `eighteen days kept every "has it gone silent?" check happy. It needs a look.`,
       hint:
         `For a workflow arm, compare scheduled runs against successes: ` +
         `gh run list --workflow=<file> --limit 100 --json createdAt,conclusion,event. ` +

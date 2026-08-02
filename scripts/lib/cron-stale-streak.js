@@ -38,13 +38,23 @@ const DEFAULT_ESCALATE_AFTER_DAYS = 3;
  * mean a cron that breaks, gets a card, and is still broken a month later has
  * nothing tracking it — the same silence in a different place.
  *
+ * Streaks count DAYS, not invocations: each entry stores the day it was last
+ * counted, and a second run on the same day is a no-op. check-cron-health has
+ * no concurrency group, so the noon cron and any manual dispatch can both land
+ * on the same day — a naive increment would let two runs push an entry over the
+ * escalation line a day early, and "consecutive checks" would quietly stop
+ * meaning "consecutive days" (Codex ship-check finding). Day-keying also makes
+ * the update idempotent, which matters because the state file is committed
+ * through push-with-retry's last-writer-wins conflict handling.
+ *
  * @param {object|null} prevState prior cron-health-state.json contents
  * @param {string[]} currentStale friendly names stale at THIS check
- * @param {{escalateAfterDays?: number}} [opts]
- * @returns {{staleStreak: Object<string, number>, escalate: string[], recovered: string[]}}
+ * @param {{escalateAfterDays?: number, today?: string}} [opts]
+ * @returns {{staleStreak: Object<string, {days:number, lastCounted:string}>, escalate: string[], recovered: string[]}}
  */
 function updateStaleStreaks(prevState, currentStale, opts = {}) {
   const escalateAfterDays = opts.escalateAfterDays || DEFAULT_ESCALATE_AFTER_DAYS;
+  const today = opts.today || new Date().toISOString().slice(0, 10);
   const prevStreak = (prevState && prevState.staleStreak) || {};
   const stale = [...new Set((currentStale || []).map((n) => String(n).trim()).filter(Boolean))].sort();
 
@@ -55,9 +65,12 @@ function updateStaleStreaks(prevState, currentStale, opts = {}) {
     // anything. Seeding from the old `stale` array would be a guess about how
     // long it had been stale; starting at 1 costs at most escalateAfterDays
     // of delay once, on the first run after deploy, and never over-escalates.
-    const streak = (Number(prevStreak[name]) || 0) + 1;
-    staleStreak[name] = streak;
-    if (streak >= escalateAfterDays) escalate.push(name);
+    const prev = prevStreak[name];
+    const prevDays = Number(prev && typeof prev === 'object' ? prev.days : prev) || 0;
+    const prevDay = prev && typeof prev === 'object' ? prev.lastCounted : null;
+    const days = prevDay === today ? prevDays || 1 : prevDays + 1;
+    staleStreak[name] = { days, lastCounted: today };
+    if (days >= escalateAfterDays) escalate.push(name);
   }
 
   const recovered = Object.keys(prevStreak).filter((name) => !staleStreak[name]).sort();

@@ -82,9 +82,9 @@ function main() {
   fs.renameSync(tmp, stateFile);
 
   for (const name of currentStale) {
-    const days = staleStreak[name];
+    const days = (staleStreak[name] || {}).days || 0;
     const mark = days >= escalateAfterDays ? '🚨 ESCALATE' : '  ';
-    console.log(`${mark} ${name}: stale ${days} consecutive check(s)`);
+    console.log(`${mark} ${name}: stale ${days} consecutive day(s)`);
   }
   if (recovered.length) console.log(`✅ Streak cleared: ${recovered.join(', ')}`);
 
