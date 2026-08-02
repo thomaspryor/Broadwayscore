@@ -59,15 +59,44 @@ test('wrapper alive from the first poll → wake never fires', () => {
 });
 
 test('wrapper appears before wakeAfterSec → no wake, normal slow-boot path', () => {
-  // First poll misses (elapsed still under the wake threshold on the same
-  // iteration), wrapper is there from the second poll on.
-  const { result, wakes } = runOutcome({ wrapperAliveSeq: [true], tagAlive: false, wakeAfterSec: 60 });
+  // First poll misses, wrapper is there from the second poll on — well
+  // before the (deliberately huge) wake threshold.
+  const { result, wakes } = runOutcome({ wrapperAliveSeq: [false, true], tagAlive: false, wakeAfterSec: 60 });
   assert.equal(wakes.length, 0);
   assert.equal(result.state, 'slow-boot-timeout', 'wrapper alive but claude never registers → slow-boot, not dead');
   assert.equal(result.wakeAttempted, false);
 });
 
-test('WAKE_AFTER_SEC default exists and sits inside the injection grace window', () => {
+test('deferred tab: wrapper appears only AFTER the wake, past the ORIGINAL grace → still ok (grace restarts at wake)', () => {
+  // The feature's whole point: a deferred surface starts its command only
+  // once woken, and the render + shell init can outlive the original grace.
+  // Wake fires at 2s (grace 3s → restarted to 5s); the wrapper appears at
+  // ~3.5s — DEAD under the pre-restart logic, verified ok with it.
+  const wakes = [];
+  let polls = 0;
+  const result = waitForLaunchOutcome({
+    ws: { ref: 'workspace:999' },
+    marker: 'bsc-cmd-test-deadbeef.sh',
+    attempt: 2, maxAttempts: 2,
+    injectionGraceSec: 3, slowBootCapSec: 5, wakeAfterSec: 2,
+    probes: {
+      // Tag registers together with the wrapper — a tag-without-wrapper from
+      // poll 1 would (correctly) short-circuit into wrapper-gone-tag-alive.
+      wrapperAlive: () => { polls += 1; return wakes.length > 0 && polls >= 14; },
+      claudeTagAlive: () => wakes.length > 0 && polls >= 14,
+      wake: () => wakes.push(true),
+      intervalSec: 0,
+      now: fakeClock(),
+    },
+  });
+  assert.equal(result.action, 'ok', 'a woken tab whose command starts after the original grace must verify, not die');
+  assert.equal(wakes.length, 1);
+  assert.equal(result.wakeAttempted, true);
+});
+
+test('WAKE_AFTER_SEC default exists and sits inside the injection window', () => {
   assert.ok(Number.isFinite(WAKE_AFTER_SEC) && WAKE_AFTER_SEC > 0);
-  assert.ok(WAKE_AFTER_SEC < 90, 'wake must fire before the default injection grace can expire');
+  // launchCmuxSession's default verifyTimeoutSec is 30 — the wake must fire
+  // well before the tightest real grace can expire.
+  assert.ok(WAKE_AFTER_SEC < 30, 'wake must fire before the default injection grace can expire');
 });

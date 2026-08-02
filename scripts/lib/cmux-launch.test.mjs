@@ -20,6 +20,10 @@ function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, ...o
       now: () => { const v = t; t += 5000; return v; },
       wrapperAlive: () => { const v = wrapperAliveAt(t / 1000); polls.push({ t: t / 1000, wrapperAlive: v }); return v; },
       claudeTagAlive: () => tagAliveAt(t / 1000),
+      // MUST be stubbed: without it the deferred-render wake default fires a
+      // REAL `cmux set-app-focus active` on the host with no clear (lazy-exec
+      // fix ship-check finding, 2026-08-02).
+      wake: () => {},
     },
   });
   return { res, polls };
