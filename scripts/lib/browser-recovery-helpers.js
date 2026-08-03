@@ -106,7 +106,12 @@ function processRecoveredText(candidate, rawText, labels) {
     return { ok: false, reason: `garbage content: ${garbageCheck.reason}` };
   }
 
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-(west-end|off-broadway|regional)$/, '').replace(/-/g, ' ');
+  // Order matters: "off-west-end" must be checked before the shorter
+  // "west-end" alternative, or the "off-" prefix is left dangling in the
+  // derived title (360-allstars-off-west-end-2026 -> "360 allstars off",
+  // confirmed live 2026-08-02 — validateShowMentioned then rejects a real,
+  // correctly-recovered Off-West-End review as "show not mentioned").
+  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-(off-west-end|west-end|off-broadway|regional)$/, '').replace(/-/g, ' ');
   const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
   if (!mentionResult.valid) {
     return { ok: false, reason: `show not mentioned: "${showTitle}"` };
