@@ -221,6 +221,50 @@ runs:
           exit 0
         fi
 
+        # CONFLICT-MARKER / INVALID-JSON GUARD (2026-08-03): an autostash-pop
+        # conflict slipped past the ls-files -u check above (checkout --theirs
+        # failures are swallowed by `|| true`) and raw <<<<<<< markers were
+        # COMMITTED to the data repo (small-off-broadway-2026/
+        # washpost--unknown.json, commit 609b1bef553 via rebuild-fast), turning
+        # CI Data Validation red for 8 consecutive runs. push-core-data already
+        # validates JSON before committing; this is the review-texts twin,
+        # scoped to STAGED files (full-tree scan of 41K files is too slow).
+        # A bad staged file is reverted to its last committed version (or
+        # dropped entirely if new) so one poisoned file never blocks the push.
+        BAD_FILES=$(git diff --staged --name-only --diff-filter=ACMR \
+          | { grep '\.json$' || true; } \
+          | node -e '
+            const fs = require("fs");
+            const files = fs.readFileSync(0, "utf8").split("\n").filter(Boolean);
+            for (const f of files) {
+              try {
+                const raw = fs.readFileSync(f, "utf8");
+                if (/^<{7} /m.test(raw)) { console.log(f); continue; }
+                JSON.parse(raw);
+              } catch { console.log(f); }
+            }
+          ')
+        if [ -n "$BAD_FILES" ]; then
+          BAD_JSON=0
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            BAD_JSON=$((BAD_JSON+1))
+            if git cat-file -e "HEAD:$f" 2>/dev/null; then
+              echo "::warning::push-review-texts: $f has conflict markers or invalid JSON — reverted to HEAD version"
+              git checkout HEAD -- "$f"
+            else
+              echo "::warning::push-review-texts: new file $f has conflict markers or invalid JSON — dropped from commit"
+              git rm --cached -q -- "$f" 2>/dev/null || true
+              rm -f -- "$f"
+            fi
+          done <<< "$BAD_FILES"
+          echo "::warning::push-review-texts: repaired $BAD_JSON invalid staged JSON file(s) before commit"
+          if git diff --staged --quiet; then
+            echo "No review-texts changes to push after invalid-file repair"
+            exit 0
+          fi
+        fi
+
         # Commit
         CHANGED=$(git diff --staged --stat | tail -1)
         git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
