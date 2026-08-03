@@ -425,17 +425,26 @@ test('parkedGuard: a later launch clears the park (force IS the unpark)', () => 
   assert.equal(parkedGuard({ id: '42' }, entries, {}), null);
 });
 
-// ── Card #854: archive/ union in loadTasks ──────────────────────────────────
+// ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────
 const os = require('os');
 const path = require('path');
 const { loadTasks } = require('./bsc-next.js');
 
-test('loadTasks: merges archive/ so an archived --id lookup still resolves', () => {
+test('loadTasks: stays live-dir-only — does not merge archive/ (ship-check finding: eager merge re-read the whole archive on every call)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-next-loadtasks-'));
   fs.writeFileSync(path.join(dir, '5.json'), JSON.stringify({ id: '5', subject: 'live pending', status: 'pending' }));
   fs.mkdirSync(path.join(dir, 'archive'));
   fs.writeFileSync(path.join(dir, 'archive', '2.json'), JSON.stringify({ id: '2', subject: 'old finished work', status: 'completed' }));
   const tasks = loadTasks(dir);
-  assert.deepEqual(tasks.map((t) => t.id), ['2', '5']);
-  assert.equal(pickTask(tasks, { id: '2' }).subject, 'old finished work');
+  assert.deepEqual(tasks.map((t) => t.id), ['5']);
+});
+
+test('pickTask: --id falls back to a point lookup in archive/ when the dir is passed and the live array misses', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-next-picktask-archive-'));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '2.json'), JSON.stringify({ id: '2', subject: 'old finished work', status: 'completed' }));
+  const tasks = [{ id: '5', subject: 'live pending', status: 'pending' }];
+  assert.equal(pickTask(tasks, { id: '2' }, dir).subject, 'old finished work');
+  assert.equal(pickTask(tasks, { id: '2' }), null, 'no dir passed — pre-#854 behavior, archived id not found');
+  assert.equal(pickTask(tasks, { id: '999' }, dir), null, 'dir passed but id truly does not exist anywhere');
 });

@@ -168,26 +168,42 @@ function writeHwm(dir, n) { fs.writeFileSync(hwmPath(dir), String(Math.max(readH
 
 // Card #854: completed tasks >48h old move to a sibling archive/ dir
 // (scripts/archive-completed-tasks.js) to shrink the harness's injected
-// task-list reminder. Falls back there so cmdPush/cmdStatus/taskBelongsTo
-// keep resolving an archived-but-not-yet-pushed card instead of treating it
-// as vanished (which would re-create a duplicate task+mapping on the next
-// pull). nextId()'s maxFile scan deliberately stays live-dir-only — see
-// scripts/lib/task-store-archive.js's docstring for why archived ids must
-// never re-enter that computation.
-function readTask(dir, taskId) {
+// task-list reminder. readLiveTask() is the pre-#854 behavior (live dir
+// only); readTask() additionally falls back to archive/ so cmdPush/
+// cmdStatus keep resolving an archived-but-not-yet-pushed card instead of
+// treating it as vanished. nextId()'s maxFile scan deliberately stays
+// live-dir-only — see scripts/lib/task-store-archive.js's docstring for why
+// archived ids must never re-enter that computation.
+//
+// cmdPull's toUpdate path (ownership check + `existing` read) MUST use
+// readLiveTask, not readTask: a card reopened in Notion after its mirrored
+// task was archived would otherwise read the archive copy's stale
+// status:'completed', mergeStatus's sticky-completed rule would carry that
+// into the freshly-written LIVE file, and the reopened card would be
+// permanently invisible to actionable() — resurrected-stuck-completed
+// instead of the pre-#854 "id reused, mint a fresh task" fallback via
+// doCreate. Ship-check adversarial review caught this 2026-08-02.
+function readLiveTask(dir, taskId) {
   try { return JSON.parse(fs.readFileSync(path.join(dir, `${taskId}.json`), 'utf8')); }
-  catch {
-    try { return JSON.parse(fs.readFileSync(path.join(dir, 'archive', `${taskId}.json`), 'utf8')); }
-    catch { return null; }
-  }
+  catch { return null; }
+}
+function readTask(dir, taskId) {
+  const live = readLiveTask(dir, taskId);
+  if (live) return live;
+  try { return JSON.parse(fs.readFileSync(path.join(dir, 'archive', `${taskId}.json`), 'utf8')); }
+  catch { return null; }
 }
 
 // Marker embedded in every task we create, so we can prove a task file still
 // belongs to a given Notion card before rewriting or closing it. The integer
 // id namespace is shared with live sessions; the page id is our real key.
 function notionMarker(pageId) { return `[notion:${pageId}]`; }
-function taskBelongsTo(dir, taskId, pageId) {
-  const t = readTask(dir, taskId);
+// liveOnly: true restricts the lookup to the live dir (cmdPull's ownership
+// check — see readTask's docstring above for why). Default (cmdPush) also
+// checks archive/, so a card can still be closed once its mirrored task has
+// aged out of the live dir.
+function taskBelongsTo(dir, taskId, pageId, { liveOnly = false } = {}) {
+  const t = liveOnly ? readLiveTask(dir, taskId) : readTask(dir, taskId);
   return !!(t && typeof t.description === 'string' && t.description.includes(notionMarker(pageId)));
 }
 // Lowest id >= startId whose file does not already exist, so we never clobber a
@@ -305,8 +321,8 @@ function cmdPull(args) {
 
     for (const { card } of plan.toCreate) doCreate(card);
     for (const { card, taskId } of plan.toUpdate) {
-      if (!dry && !taskBelongsTo(dir, taskId, card.id)) { doCreate(card); continue; }
-      const existing = readTask(dir, taskId) || {};
+      if (!dry && !taskBelongsTo(dir, taskId, card.id, { liveOnly: true })) { doCreate(card); continue; }
+      const existing = readLiveTask(dir, taskId) || {};
       const mapped = mapCardToTask(card, taskId);
       mapped.status = mergeStatus(existing.status, mapped.status);
       const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
@@ -388,4 +404,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readHwm, writeHwm, acquireLock };
+module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock };
