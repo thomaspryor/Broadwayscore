@@ -22,6 +22,7 @@ const { execSync } = require('child_process');
 
 const BASELINE_PATH = path.join(__dirname, '../data/audit/bundle-size-baseline.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/bundle-size-history.json');
+const { foldHistoryByDay } = require('./lib/history-fold-by-day');
 
 const SHARED_JS_WARN_DELTA = 5; // kB
 const PAGE_JS_WARN_DELTA = 10;  // kB
@@ -109,7 +110,13 @@ function appendHistory(data) {
     },
   });
 
-  // Keep last 50 entries
+  // Fold to one entry per calendar day BEFORE trimming. Without this the
+  // "last 50 entries" window is 50 RUNS, not 50 days — and CI runs this many
+  // times a day. The live file held 50 entries covering 8 days, 21 of them on
+  // 2026-04-19, so the far end of the "trend" was yesterday rather than last
+  // month. Same class as the #530 duplicate-history-row bug, but invisible here
+  // because the key is a full ISO timestamp so no two rows ever collide.
+  history = foldHistoryByDay(history, 'timestamp');
   if (history.length > 50) history = history.slice(-50);
 
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
