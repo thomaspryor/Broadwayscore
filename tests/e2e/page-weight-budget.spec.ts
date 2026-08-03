@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { measurePageWeight, overBudgetMessage, type PageWeight } from './helpers/page-weight';
+import {
+  measurePageWeight,
+  noFlightPayloadDetectedMessage,
+  overBudgetMessage,
+  type PageWeight,
+} from './helpers/page-weight';
 
 /**
  * Page-weight budget gate (card #961).
@@ -36,10 +41,17 @@ test.describe('Page weight budget', () => {
   for (const [route, budget] of Object.entries(PAGE_WEIGHT_BUDGETS)) {
     test(`${route} stays under its document-weight budget`, async ({ page }) => {
       const response = await page.goto(route);
+      expect(response?.ok(), `${route} did not return a 2xx response (status ${response?.status()})`).toBeTruthy();
+
       const html = (await response?.text()) ?? '';
       expect(html.length, `${route} returned an empty response`).toBeGreaterThan(0);
 
       const measured = measurePageWeight(html);
+
+      // Anti-vacuity: a Next.js flight-encoding change would otherwise zero
+      // out rscBytes and let the assertion below pass forever (see
+      // noFlightPayloadDetectedMessage in helpers/page-weight.ts).
+      expect(measured.rscBytes, noFlightPayloadDetectedMessage(route)).toBeGreaterThan(0);
 
       expect(
         measured.documentBytes,

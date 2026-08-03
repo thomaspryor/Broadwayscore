@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
-import { measurePageWeight, overBudgetMessage } from './helpers/page-weight';
+import {
+  FLIGHT_CHUNK_RE,
+  measurePageWeight,
+  noFlightPayloadDetectedMessage,
+  overBudgetMessage,
+} from './helpers/page-weight';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -139,8 +144,9 @@ test.describe('Show Detail Pages', () => {
       const response = await page.goto(`/show/${show.slug}`);
       const html = (await response?.text()) ?? '';
 
-      // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks.
-      const flight = (html.match(/self\.__next_f\.push\(\[1,"(?:[^"\\]|\\.)*"\]\)/g) || []).join('');
+      // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks
+      // (FLIGHT_CHUNK_RE, shared with the page-weight budget tests below).
+      const flight = (html.match(FLIGHT_CHUNK_RE) || []).join('');
       const ids = Array.from(
         flight.matchAll(/\\"showId\\":\\"([a-z0-9-]+)\\"/g),
         m => m[1],
@@ -191,12 +197,17 @@ test.describe('Show Detail Pages', () => {
   // down once #962 lands.
   test('show page stays under its document-weight budget', async ({ page }) => {
     const budget = { documentBytes: 990_000, rscBytes: 830_000 };
-    const response = await page.goto(`/show/${weightBudgetShow.slug}`);
+    const route = `/show/${weightBudgetShow.slug}`;
+    const response = await page.goto(route);
+    expect(response?.ok(), `${route} did not return a 2xx response (status ${response?.status()})`).toBeTruthy();
+
     const html = (await response?.text()) ?? '';
-    expect(html.length, `/show/${weightBudgetShow.slug} returned an empty response`).toBeGreaterThan(0);
+    expect(html.length, `${route} returned an empty response`).toBeGreaterThan(0);
 
     const measured = measurePageWeight(html);
-    const route = `/show/${weightBudgetShow.slug}`;
+
+    // Anti-vacuity: see noFlightPayloadDetectedMessage in helpers/page-weight.ts.
+    expect(measured.rscBytes, noFlightPayloadDetectedMessage(route)).toBeGreaterThan(0);
 
     expect(
       measured.documentBytes,
