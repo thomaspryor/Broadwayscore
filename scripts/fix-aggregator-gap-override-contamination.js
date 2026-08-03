@@ -43,7 +43,7 @@ const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
-const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -122,7 +122,7 @@ function run() {
 
       const pub = bestDate(data);
       if (!pub) { skippedNoDate++; continue; }
-      if (isWithinPriorRun(pub, show.priorRuns)) { skippedPriorRun++; continue; }
+      if (isWithinPriorRun(pub, show.priorRuns) || isWithinTourLeg(pub, show.tourLegs)) { skippedPriorRun++; continue; }
 
       const lateBound = close ? new Date(close.getTime() + DAYS_AFTER_CLOSE * 86400000) : null;
       const daysBefore = earliest ? (earliest.getTime() - 14 * 86400000 - pub.getTime()) / 86400000 : -1;
