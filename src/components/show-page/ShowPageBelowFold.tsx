@@ -83,6 +83,9 @@ export interface ShowPageBelowFoldProps {
   isCuratedHistoricalShow: boolean;
   lastUpdated: string | null;
   score: number | undefined;
+  /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
+      Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
+  faqs: Array<{ question: string; answer: string }>;
 }
 
 function formatDate(dateStr: string | null | undefined): string {
@@ -147,6 +150,7 @@ export default function ShowPageBelowFold({
   isCuratedHistoricalShow,
   lastUpdated,
   score,
+  faqs,
 }: ShowPageBelowFoldProps) {
   return (
     <>
@@ -253,6 +257,33 @@ export default function ShowPageBelowFold({
           showSlug={show.slug}
           market={show.category}
         />
+      )}
+
+      {/* PAA-style Q&A block — visible counterpart to the faqSchema emitted in
+          page.tsx (Google discounts FAQPage schema with no matching on-page
+          content). Native <details>/<summary> so it works without JS and stays
+          crawlable; this chunk is prerendered into the static HTML, verified
+          against prod. Sits below Showtimes per owner, 2026-08-02 — it used to
+          render directly under the Critic Scorecard, which pushed the actual
+          scorecards down the page. Must stay 1:1 with getShowFAQs(), not a
+          subset, or the schema advertises Q&As Google can't find on the page. */}
+      {faqs.length > 0 && (
+        <section className="card p-5 sm:p-6 mb-5 sm:mb-8" aria-labelledby="show-faq-heading">
+          <h2 id="show-faq-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none mb-4">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3" data-testid="show-faq-block">
+            {faqs.map((faq, i) => (
+              <details key={i} className="group border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                <summary className="text-sm font-medium text-gray-200 cursor-pointer list-none flex items-start justify-between gap-3 marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span>{faq.question}</span>
+                  <span aria-hidden="true" className="text-gray-500 group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
+                </summary>
+                <p className="text-sm text-gray-400 leading-relaxed mt-2">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
       )}
 
       {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
