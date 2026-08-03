@@ -110,7 +110,14 @@ export function sortTicketLinks(links: TicketLinkData[], overrideFirstPlatform?:
     });
 }
 
-/** Is this platform currently hidden from rendering? Exposed for analytics/debug. */
+/**
+ * Is this platform hidden by DEFAULT (i.e. when a show also carries TodayTix)?
+ * Ticketmaster's real hidden status is link-set-dependent — see
+ * getVisibleTicketLinks — so this answers "hidden in the common case," not
+ * "hidden on every show." Exposed for analytics/debug only; nothing in this
+ * repo calls it as of 2026-08-03. Prefer getVisibleTicketLinks/sortTicketLinks
+ * for anything that decides real per-show visibility.
+ */
 export function isPlatformHidden(platform: string): boolean {
   return HIDDEN_PLATFORMS.has(platform);
 }
