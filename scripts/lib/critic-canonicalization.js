@@ -47,6 +47,16 @@ const CRITIC_CANONICAL_MAP = {
   'cote-notices': {
     [normalizeCriticKey('David Finkle')]: 'David Cote',
   },
+  // JK's Theatre Scene is Jeff Kyler's single-author blog (x.com/jkstheatrescene,
+  // display name "Jeff Kyler"; Show-Score credits agree). The blog itself only
+  // signs posts "JK". "Jeff Kready" was a bad guess — that's a Broadway actor
+  // with no connection to the blog (Louise Penn misattribution sweep, 2026-08-03).
+  'jks-theatre-scene': {
+    [normalizeCriticKey('JK')]: 'Jeff Kyler',
+    [normalizeCriticKey('Jk')]: 'Jeff Kyler',
+    [normalizeCriticKey('Jeff Kready')]: 'Jeff Kyler',
+    [normalizeCriticKey('View my Complete')]: 'Jeff Kyler',
+  },
 };
 
 /**
