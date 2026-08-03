@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-03T01:35:53.611Z",
+  "updatedAt": "2026-08-03T01:51:21.034Z",
   "processed": 9,
-  "failed": 46,
-  "successRate": "16.4%",
+  "failed": 56,
+  "successRate": "13.8%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
@@ -10,7 +10,7 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 8,
+    "archiveToday": 10,
     "archive": 0
   },
   "browserbaseSessions": 2,
@@ -68,6 +68,28 @@
     },
     {
       "t": "2026-08-03T01:33:48.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T01:49:24.930Z",
+      "event": "bb-session",
+      "session": "fa1793a1",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T01:49:25.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T01:49:41.951Z",
+      "event": "bb-session",
+      "session": "9525c7b4",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T01:49:42.844Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
