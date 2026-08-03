@@ -169,13 +169,27 @@ function loadCandidates() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
-      if (!data.url) { skippedNoUrl++; continue; }
+      // A missing url still qualifies in --domain mode when SERP keys are
+      // configured: discoverCorrectUrl() resolves the target domain from
+      // OUTLET_DOMAINS[outletId] (not from data.url), so it can find a fresh
+      // URL from scratch. Without SERP keys there's nothing to anchor a
+      // urlless file to, so it's correctly skipped. --outlet mode still
+      // requires a url since there's no per-outlet domain to match against.
+      const hasSerpKeys = !!(CONFIG.scrapingBeeKey || CONFIG.brightDataKey);
+      if (!data.url && (CONFIG.outlet || !hasSerpKeys)) { skippedNoUrl++; continue; }
       if (CONFIG.outlet) {
         if ((data.outletId || '') !== CONFIG.outlet) { skippedWrongDomain++; continue; }
-      } else {
+      } else if (data.url) {
         let domain;
         try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
         if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
+      } else {
+        // No url to check a domain against — fall back to outletId, since
+        // that's the same signal discoverCorrectUrl() will use to resolve
+        // OUTLET_DOMAINS. Guards against a --domain=telegraph.co.uk run
+        // accidentally picking up a urlless file from an unrelated outlet.
+        const domainSlug = CONFIG.domain.replace(/\.[a-z.]+$/, '').replace(/[^a-z0-9]/gi, '');
+        if (!(data.outletId || '').toLowerCase().includes(domainSlug)) { skippedWrongDomain++; continue; }
       }
 
       if (data.contentTier === 'complete') { skippedComplete++; continue; }
@@ -348,21 +362,26 @@ async function main() {
     console.log(`\n[${i + 1}/${candidates.length}] ${c.reviewId} (${c.criticName})`);
     console.log(`  URL: ${c.url}`);
 
-    // Step 1: try re-fetching the existing URL directly.
+    // Step 1: try re-fetching the existing URL directly (skipped when the
+    // file has no url at all — nothing to re-fetch, go straight to SERP).
     let recovered = false;
-    const existingFetch = await fetchAndExtract(c.url);
-    if (existingFetch) {
-      const result = await processRecovered(c, existingFetch.text, existingFetch.html, c.url, 'same-url');
-      if (result.ok) {
-        console.log(`  ✓ RECOVERED via same-url re-fetch`);
-        stats.recovered++;
-        stats.sameUrl++;
-        recovered = true;
+    if (c.url) {
+      const existingFetch = await fetchAndExtract(c.url);
+      if (existingFetch) {
+        const result = await processRecovered(c, existingFetch.text, existingFetch.html, c.url, 'same-url');
+        if (result.ok) {
+          console.log(`  ✓ RECOVERED via same-url re-fetch`);
+          stats.recovered++;
+          stats.sameUrl++;
+          recovered = true;
+        } else {
+          stats[result.reason] = (stats[result.reason] || 0) + 1;
+        }
       } else {
-        stats[result.reason] = (stats[result.reason] || 0) + 1;
+        console.log(`  → Existing URL fetch failed/empty`);
       }
     } else {
-      console.log(`  → Existing URL fetch failed/empty`);
+      console.log(`  → No existing URL, going straight to SERP rediscovery`);
     }
 
     // Step 2: SERP rediscovery if same-url didn't work.
@@ -403,7 +422,7 @@ async function main() {
       }
     }
 
-    if (!recovered && !CONFIG.dryRun) {
+    if (!recovered && !CONFIG.dryRun && c.url) {
       exhausted[c.url] = { reason: 'recovery_exhausted', lastAttempt: new Date().toISOString() };
     }
 
