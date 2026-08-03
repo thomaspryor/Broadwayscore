@@ -106,6 +106,18 @@ test('handoff break: site clicks flowing, Impact recording almost nothing', () =
   assert.equal(res.verdict, 'broken');
 });
 
+test('handoff break: a SINGLE all-zero Impact day fires even when the 3d ratio looks fine (Codex finding)', () => {
+  const posthog = new Map([['2026-07-31', 40], ['2026-08-01', 40], ['2026-08-02', 40]]);
+  const impact = new Map([['2026-07-31', 25], ['2026-08-01', 25], ['2026-08-02', 0]]);
+  const res = checkHandoffBreak({ impactClicksByDay: impact, posthogTTClicksByDay: posthog, asOf: '2026-08-02' });
+  assert.equal(res.verdict, 'broken');
+  assert.equal(res.zeroDay, '2026-08-02');
+  // ...but a low-traffic zero day stays quiet (Poisson noise, not an outage)
+  const quiet = new Map([['2026-07-31', 40], ['2026-08-01', 40], ['2026-08-02', 5]]);
+  const res2 = checkHandoffBreak({ impactClicksByDay: impact, posthogTTClicksByDay: quiet, asOf: '2026-08-02' });
+  assert.equal(res2.zeroDay === '2026-08-02' && quiet.get('2026-08-02') < 15, false);
+});
+
 test('bot divergence trips when Impact clicks dwarf real clicks', () => {
   const posthog = new Map([['2026-08-01', 10], ['2026-08-02', 10], ['2026-07-31', 10]]);
   const impact = new Map([['2026-08-01', 90], ['2026-08-02', 80], ['2026-07-31', 85]]);
