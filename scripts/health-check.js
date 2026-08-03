@@ -1605,7 +1605,7 @@ async function checkStuckWorkInner() {
   // check name would mint a new alert-router condition key (pass/warn/error
   // is the whole status vocabulary — there is no "info" status).
   const parkedNote = pausedParked.length > 0
-    ? `${pausedParked.length} parked via tab-close, oldest ${new Date(pausedParked[0].parkedAtMs).toISOString().slice(0, 10)} — resume: node scripts/bsc-next.js --id N --force`
+    ? `${pausedParked.length} parked via tab-close, oldest ${new Date(pausedParked[0].parkedAtMs).toISOString().slice(0, 10)} — resume: node scripts/bsc-next.js --id ${pausedParked[0].parkedTaskId ?? 'N'} --force`
     : '';
   const awaitingNote = [
     pausedAwaitingRecheck.length > 0
