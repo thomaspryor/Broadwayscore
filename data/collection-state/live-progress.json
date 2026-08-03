@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-03T00:41:48.946Z",
-  "processed": 4,
-  "failed": 6,
-  "successRate": "40.0%",
+  "updatedAt": "2026-08-03T01:01:19.361Z",
+  "processed": 9,
+  "failed": 26,
+  "successRate": "25.7%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 4,
+    "archiveToday": 6,
     "archive": 0
   },
   "browserbaseSessions": 2,
@@ -26,6 +26,28 @@
       "event": "bb-session",
       "session": "2676cfc7",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-03T00:58:05.694Z",
+      "event": "bb-session",
+      "session": "5e7e907f",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T00:58:06.006Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T00:58:21.593Z",
+      "event": "bb-session",
+      "session": "24439bca",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T00:58:21.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
