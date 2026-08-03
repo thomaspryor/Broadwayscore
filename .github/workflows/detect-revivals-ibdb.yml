@@ -2,9 +2,14 @@ name: Detect Revivals (IBDB)
 
 on:
   schedule:
-    # Weekly on Wednesdays at 8 AM UTC (3 AM EST) — offset from enrich-ibdb-dates.yml (7 AM UTC)
-    # to avoid both writers landing in the same shows-json-writer concurrency slot.
-    - cron: '0 8 * * 3'
+    # Weekly on Wednesdays at 11 AM UTC (6 AM EST). shows-json-writer is also
+    # used by update-show-status.yml (daily 8am UTC, ~10min typical), enrich-
+    # ibdb-dates.yml (Wed 7am UTC), and audit-closing-dates.yml (daily 2pm
+    # UTC) — 11am sits in the gap between the morning cluster and the
+    # afternoon audit rather than landing exactly on top of another writer
+    # (ship-check adversarial review, #982: an earlier 8am slot collided
+    # directly with update-show-status.yml's daily run).
+    - cron: '0 11 * * 3'
   workflow_dispatch:
     inputs:
       apply:
@@ -85,7 +90,16 @@ jobs:
           # run for manual review, not silently apply a large batch unattended.
 
       - name: Push core data to private repo
-        if: always()
+        # success() only, NOT always(): the script checkpoints (writes +
+        # applies) every 10 shows DURING the loop, before the final >5-change
+        # safety gate is evaluated — so a gate-triggered exit 1 still leaves
+        # partially-applied changes in the local checkout. Pushing on
+        # `always()` would publish that partial batch despite the run being
+        # red (ship-check adversarial review, #982). A failed run now
+        # publishes nothing; the next scheduled run re-checks the same shows
+        # (ibdbRevivalChecked was checkpointed locally but never pushed) and a human can
+        # `--show=` a subset or `--force` manually in the meantime.
+        if: success()
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
