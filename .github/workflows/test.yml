@@ -1301,6 +1301,13 @@ on:
       - 'scripts/bsc-needs-you.js'
       - 'scripts/lib/needs-you-snapshot.js'
       - 'scripts/lib/needs-you-snapshot.test.mjs'
+      # Digest liveness gate (task #940, owner screenshots 2026-08-03): never
+      # let "Being fixed automatically" claim a fix session is live without
+      # cross-referencing the shared dispatch ledger + a live cmux listing.
+      # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/lib/digest-liveness.js'
+      - 'scripts/lib/digest-liveness.test.mjs'
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/lib/bsc-runner.js'

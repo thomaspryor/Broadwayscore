@@ -392,6 +392,34 @@ async function main() {
     // attention" card only ever shows genuine judgment calls.
     const queuedForAutofix = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
     autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun, log: (m) => console.log(m) });
+    // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
+    // once claimed "a fix session is working on it now" for 4 issues whose
+    // sessions had died hours earlier — 'in-progress' state comes purely
+    // from the task list's status field, which stays stuck if nobody flips
+    // it back. Cross-reference every 'in-progress' row against a LIVE cmux
+    // listing + the shared dispatch ledger before the email renders it; a
+    // row with no live proof downgrades to 'no-live-session' (honest label,
+    // see autonomous-email-render.js). Reuses cmux-workspaces.js's shared
+    // listWorkspaces()/claudeAliveIn (not a second raw `cmux list-workspaces`
+    // parser) — existence in the listing alone is not proof of a live
+    // session (ship-check adversarial finding, 2026-08-03: a workspace can
+    // outlive the claude process that opened it), so digest-liveness.js also
+    // requires claudeAliveIn's tag/process check to agree. Fail-soft: a
+    // broken cmux/ledger read just means every row degrades to
+    // "unconfirmed" this run, never blocks the send.
+    try {
+      const { applyLivenessGate } = require('./lib/digest-liveness.js');
+      const dispatchLedger = require('./lib/dispatch-ledger.js');
+      const { cmuxAvailable, listWorkspaces, claudeAliveIn } = require('./lib/cmux-workspaces.js');
+      let liveWorkspaces = [];
+      try {
+        if (cmuxAvailable()) liveWorkspaces = listWorkspaces();
+      } catch { /* cmux unreachable this run — every in-progress row reads as unconfirmed */ }
+      const isProcessAlive = (ref) => { try { return claudeAliveIn(ref); } catch { return true; } };
+      autofixRows = applyLivenessGate(autofixRows, { dispatchLedgerEntries: dispatchLedger.readEntries(), liveWorkspaces, isProcessAlive });
+    } catch (err) {
+      console.error(`[digest] WARN liveness gate failed (in-progress claims unverified this run): ${String(err.message).slice(0, 120)}`);
+    }
     if (sections.health && Array.isArray(sections.health.queued)) {
       const decisionConditionKeys = new Set(
         autofixRows.filter(r => r.state === 'decision' && r.conditionKey).map(r => r.conditionKey));
