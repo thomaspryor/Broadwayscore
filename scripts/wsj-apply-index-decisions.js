@@ -31,6 +31,17 @@
 const fs = require('fs');
 const path = require('path');
 
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(`wsj-apply-index-decisions.js — apply manually-verified WSJ index decisions (task #841).
+
+Usage: node scripts/wsj-apply-index-decisions.js [--dry-run]
+
+  --dry-run   print what would change without writing any review files`);
+  process.exit(0);
+}
+
 const dryRun = process.argv.includes('--dry-run');
 const REVIEW_TEXTS_DIR = '/Users/tompryor/Broadwayscore/data/review-texts';
 const INDEX_PATH = path.join(__dirname, '..', 'data', 'audit', 'wsj-theater-review-index.json');
