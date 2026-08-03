@@ -23,6 +23,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-verify');
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { cleanup: cleanupScraper } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -712,7 +713,14 @@ async function main() {
   return results;
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+main()
+  .catch(err => {
+    console.error('Fatal error:', err);
+    process.exitCode = 1;
+  })
+  .finally(() => {
+    // fetchUrl()'s Playwright fallback leaves Chromium open on success —
+    // cleanup() closes it with a timeout guard. Without this, any run that
+    // touches even one Playwright-fetched URL hangs forever (#438/#914 class).
+    cleanupScraper().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });

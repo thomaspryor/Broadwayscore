@@ -27,7 +27,7 @@ const path = require('path');
 
 const { ROUNDUP_URL_SOURCES } = require('./gather-reviews');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { fetchPage, getScraperStats } = require('./lib/scraper');
+const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Paths
@@ -480,10 +480,19 @@ function writeOutput(stats, results, mismatches) {
 
 // Allow importing as a module (for tests) without running CLI
 if (require.main === module) {
-  main().catch(err => {
-    console.error('Fatal error:', err);
-    process.exit(1);
-  });
+  main()
+    .catch(err => {
+      console.error('Fatal error:', err);
+      process.exitCode = 1;
+    })
+    .finally(() => {
+      // A successful Playwright fetch (fetchWithPlaywright's happy path) leaves
+      // the Chromium browser process running for reuse and never closes it —
+      // cleanup() closes it with a timeout guard. Without this, any run that
+      // touches even one Playwright-fetched URL hangs forever (same class as
+      // task #438/#914).
+      cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+    });
 }
 
 module.exports = { urlPathContainsTitleWords };

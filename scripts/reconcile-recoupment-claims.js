@@ -49,7 +49,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { serpQuery } = require('./lib/url-discovery');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
 const gate = require('./lib/commercial-apply-gate');
@@ -390,5 +390,11 @@ async function main() {
 module.exports = { resolveSlug, buildQueries };
 
 if (require.main === module) {
-  main().catch(e => { console.error('FATAL', e); process.exit(1); });
+  main()
+    .catch(e => { console.error('FATAL', e); process.exitCode = 1; })
+    .finally(() => {
+      // A successful Playwright fetch leaves Chromium open — cleanup() closes
+      // it with a timeout guard (#438/#914 class).
+      cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+    });
 }

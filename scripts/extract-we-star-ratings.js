@@ -8,7 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -121,4 +121,10 @@ async function main() {
   console.log(`Failed: ${failed}`);
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+main()
+  .catch(err => { console.error(err); process.exitCode = 1; })
+  .finally(() => {
+    // A successful Playwright fetch leaves Chromium open — cleanup() closes
+    // it with a timeout guard (#438/#914 class).
+    cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });
