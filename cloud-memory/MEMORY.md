@@ -88,6 +88,7 @@
 - [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for months; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
 - [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
+- [SB quota ride-out](feedback_sb_quota_ride_out.md) — settled owner decision: quota exhausted = ride it out, NEVER re-ask about SB billing; SB is fallback not dependence; blame the failing step, not scraper warnings
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers
