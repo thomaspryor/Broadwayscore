@@ -3,7 +3,10 @@
     "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
     "space-dogs-off-west-end-2026/stagedtheatre--unknown.json",
     "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
-    "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "shifters-off-broadway-2026/nytg--gillian-russo.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -11,14 +14,24 @@
     "tao-of-glass-west-end-2026/bachtrack--unknown.json",
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
     "tao-of-glass-west-end-2026/thestage--the-stage.json",
-    "tao-of-glass-west-end-2026/tribune--unknown.json"
+    "tao-of-glass-west-end-2026/tribune--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
       "space-dogs-off-west-end-2026/stagedtheatre--unknown.json",
-      "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json"
+      "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "shifters-off-broadway-2026/nytg--gillian-russo.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -31,12 +44,14 @@
       "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
       "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
       "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json"
+      "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-03T00:33:47.869Z",
-  "lastProcessed": "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+  "lastProcessed": "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
   "log": [
     {
       "t": "2026-08-03T00:36:53.201Z",
@@ -49,6 +64,28 @@
       "event": "bb-session",
       "session": "2676cfc7",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-03T00:58:05.694Z",
+      "event": "bb-session",
+      "session": "5e7e907f",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T00:58:06.006Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T00:58:21.593Z",
+      "event": "bb-session",
+      "session": "24439bca",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T00:58:21.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
