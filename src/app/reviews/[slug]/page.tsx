@@ -8,7 +8,7 @@ import ReviewBody from '@/components/reviews/ReviewBody';
 import StressTest from '@/components/reviews/StressTest';
 import AuthorCard from '@/components/reviews/AuthorCard';
 import { AUTHOR } from '@/config/author';
-import { BASE_URL, toAbsoluteUrl, generateBreadcrumbSchema } from '@/lib/seo';
+import { BASE_URL, toAbsoluteUrl, generateBreadcrumbSchema, generateAuthorPersonSchema } from '@/lib/seo';
 import { getDataStats } from '@/lib/data-core';
 
 export const revalidate = 3600;
@@ -78,10 +78,7 @@ export default async function ReviewPage({ params }: { params: { slug: string } 
     '@context': 'https://schema.org',
     '@type': 'Review',
     headline: review.title,
-    author: {
-      '@type': 'Person',
-      name: AUTHOR.name,
-    },
+    author: generateAuthorPersonSchema(),
     publisher: {
       '@type': 'Organization',
       name: 'Broadway Scorecard',
@@ -140,7 +137,10 @@ export default async function ReviewPage({ params }: { params: { slug: string } 
               {review.title}
             </h1>
             <p className="mt-3 text-sm text-gray-400">
-              By <span className="text-gray-200 font-medium">{AUTHOR.name}</span>
+              By{' '}
+              <Link href={AUTHOR.url} className="text-gray-200 font-medium hover:text-brand transition-colors underline-offset-2 hover:underline">
+                {AUTHOR.name}
+              </Link>
             </p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-gray-400">
               <span className="font-medium text-gray-200">{review.show}</span>
