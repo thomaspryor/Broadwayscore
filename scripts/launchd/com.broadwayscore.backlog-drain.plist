@@ -45,7 +45,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; { git fetch origin main --quiet &amp;&amp; git merge --ff-only origin/main --quiet || echo "[backlog-drain] ff-only update skipped (dirty/diverged checkout) — running with local data"; } &amp;&amp; exec node scripts/backlog-drain.js</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=backlog-drain bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/backlog-drain.js</string>
     </array>
     <key>StartCalendarInterval</key>
     <array>

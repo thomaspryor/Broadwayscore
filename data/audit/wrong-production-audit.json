@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-02T23:12:15.107Z",
+  "timestamp": "2026-08-02T23:57:04.936Z",
   "stats": {
-    "totalReviews": 41307,
-    "alreadyFlagged": 18087,
+    "totalReviews": 41313,
+    "alreadyFlagged": 18083,
     "dateGuardCatches": 91,
     "directorMismatch": 944,
-    "tvFilmSignals": 1135,
-    "londonSignals": 787,
+    "tvFilmSignals": 1136,
+    "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
     "noPublishDate": 3387
@@ -486,6 +486,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "a-time-to-kill-2013",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 42,
+      "publishDate": "October 20, 2013",
+      "url": "http://www.nytimes.com/2013/10/21/theater/reviews/a-time-to-kill-opens-on-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -41597,6 +41611,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "publishDate": "2026-07-31",
+      "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

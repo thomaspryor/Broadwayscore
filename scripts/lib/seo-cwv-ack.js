@@ -8,6 +8,15 @@
  *
  * Scoped per {url, metric} — only the exact known regression is downgraded.
  * A field regression on a different page or metric still errors normally.
+ *
+ * `url` may also be the bare origin (SITE_HOST, no path). check-seo-health.js
+ * reports a PSI origin-fallback breach against the origin rather than against each
+ * page that inherited it, and looks the acknowledgment up the same way — so an
+ * origin-wide regression needs its own entry here. A page entry deliberately does
+ * NOT silence an origin-wide number: it describes one page, and CrUX can stop
+ * publishing page-level data for that URL at any time (as it did for /west-end on
+ * 2026-08-02), at which point the entry simply stops matching. See
+ * scripts/lib/seo-cwv-field-scope.js for how scope is decided.
  */
 
 'use strict';

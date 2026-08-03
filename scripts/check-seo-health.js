@@ -24,6 +24,7 @@ const {
   SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC,
 } = require('./submit-google-indexing');
 const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
+const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -801,6 +802,12 @@ async function checkCoreWebVitals() {
 
     return {
       url,
+      // PSI silently swaps in the ORIGIN's field data when this URL has too few
+      // CrUX samples, with no difference in response shape. Capture the marker so
+      // downstream anomalies can say whose number this is (see seo-cwv-field-scope.js).
+      originFallback: typeof data.loadingExperience?.origin_fallback === 'boolean'
+        ? data.loadingExperience.origin_fallback
+        : undefined,
       lcp: crux.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
       fid: crux.FIRST_INPUT_DELAY_MS?.percentile ?? null,
       cls: crux.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile != null
@@ -851,7 +858,10 @@ async function checkCoreWebVitals() {
     }
   }
 
-  return results;
+  // Stamp page-level vs origin-fallback onto every record before it is persisted,
+  // so history carries the scope and next week's comparison can tell a real LCP
+  // change apart from a measurement swap.
+  return annotateFieldScope(results);
 }
 
 // --- Anomaly Detection ---
@@ -939,22 +949,82 @@ function detectCWVAnomalies(currentCWV, history) {
   const issues = [];
   if (!currentCWV || currentCWV.length === 0) return issues;
 
+  // Field metrics are page-level only when the URL clears CrUX's sampling floor;
+  // otherwise PSI hands back the ORIGIN's numbers under the same field names. Every
+  // origin-scoped URL in a run therefore carries one identical measurement, so the
+  // field-threshold checks below must fire ONCE for the origin rather than once per
+  // page — five CRITICALs for one site-wide number is the alert storm this prevents.
+  const scoped = annotateFieldScope(currentCWV);
+  const originScoped = scoped.filter(r => r.fieldScope === 'origin');
+  // Read each origin metric as the worst non-null value across the cohort rather
+  // than whatever the FIRST origin record happens to hold. Inference groups records
+  // by an identical triple so they agree, but PSI's own origin_fallback marker
+  // bypasses that grouping — so record[0] can legitimately carry a null LCP and
+  // silence a real breach reported by its sibling.
+  const worstOrigin = (metric) => {
+    const vals = originScoped.map(r => r[metric]).filter(v => v != null);
+    return vals.length ? Math.max(...vals) : null;
+  };
+  const originRep = originScoped.length
+    ? { lcp: worstOrigin('lcp'), cls: worstOrigin('cls'), inp: worstOrigin('inp') }
+    : null;
+  const originPages = originScoped.map(r => r.url.replace(SITE_HOST, '') || '/');
+  // Origin-level breaches are reported against the origin, so the acknowledgment
+  // registry is consulted at origin scope too — a url-scoped ack (#368's /west-end
+  // entry) deliberately does NOT silence a site-wide number it never described.
+  const originAck = (metric) => findCWVFieldAcknowledgment(SITE_HOST, metric);
+  // Every message leads with its scope — "SITE-WIDE:" or the page path — so the
+  // owner can triage "the whole site got slower for real visitors" (serious) from
+  // "one page scored badly on a simulated test" (usually ignorable) without
+  // reading past the first word. The page list is capped: past three names it
+  // stops being scannable and becomes a wall of slashes.
+  const listPages = originPages.length > 3
+    ? `${originPages.slice(0, 3).join(', ')}, +${originPages.length - 3} more`
+    : originPages.join(', ');
+  const originSuffix = ` — whole-site measurement; ${originPages.length} audited page(s) have too little traffic to measure on their own (${listPages})`;
+  // Same "lab low + field bad = real users hurt" escalation the per-URL check uses,
+  // evaluated once at origin scope instead of once per affected page.
+  const originLabLow = originScoped.some(
+    r => r.performanceScore != null && r.performanceScore < CWV_ABSOLUTE.lighthouseMin
+  );
+
+  if (originRep) {
+    if (originRep.lcp && originRep.lcp > CWV_ABSOLUTE.lcp) {
+      const ack = originAck('lcp');
+      issues.push({
+        type: 'cwv_lcp_absolute',
+        severity: originLabLow && !ack ? 'error' : 'warning',
+        scope: 'origin',
+        message: `SITE-WIDE: real visitors' LCP is ${originRep.lcp}ms, over the ${CWV_ABSOLUTE.lcp}ms target${originSuffix}${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
+      });
+    }
+    if (originRep.cls != null && originRep.cls > CWV_ABSOLUTE.cls) {
+      issues.push({ type: 'cwv_cls_absolute', severity: 'warning', scope: 'origin', message: `SITE-WIDE: real visitors' CLS is ${originRep.cls}, over the ${CWV_ABSOLUTE.cls} target${originSuffix}` });
+    }
+    if (originRep.inp && originRep.inp > CWV_ABSOLUTE.inp) {
+      issues.push({ type: 'cwv_inp_absolute', severity: 'warning', scope: 'origin', message: `SITE-WIDE: real visitors' INP is ${originRep.inp}ms, over the ${CWV_ABSOLUTE.inp}ms target${originSuffix}` });
+    }
+  }
+
   // Absolute threshold checks (always run, even without history)
-  for (const current of currentCWV) {
+  for (const current of scoped) {
     const shortUrl = current.url.replace(SITE_HOST, '');
-    if (current.lcp && current.lcp > CWV_ABSOLUTE.lcp) {
+    const isOrigin = current.fieldScope === 'origin';
+    // Field-metric breaches for origin-scoped URLs were already emitted once above.
+    if (!isOrigin && current.lcp && current.lcp > CWV_ABSOLUTE.lcp) {
       const ack = findCWVFieldAcknowledgment(current.url, 'lcp');
       issues.push({
         type: 'cwv_lcp_absolute',
         severity: 'warning',
-        message: `LCP exceeds Good threshold on ${shortUrl}: ${current.lcp}ms (limit: ${CWV_ABSOLUTE.lcp}ms)${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
+        scope: 'url',
+        message: `${shortUrl}: real visitors' LCP is ${current.lcp}ms, over the ${CWV_ABSOLUTE.lcp}ms target${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
       });
     }
-    if (current.cls != null && current.cls > CWV_ABSOLUTE.cls) {
-      issues.push({ type: 'cwv_cls_absolute', severity: 'warning', message: `CLS exceeds Good threshold on ${shortUrl}: ${current.cls} (limit: ${CWV_ABSOLUTE.cls})` });
+    if (!isOrigin && current.cls != null && current.cls > CWV_ABSOLUTE.cls) {
+      issues.push({ type: 'cwv_cls_absolute', severity: 'warning', scope: 'url', message: `${shortUrl}: real visitors' CLS is ${current.cls}, over the ${CWV_ABSOLUTE.cls} target` });
     }
-    if (current.inp && current.inp > CWV_ABSOLUTE.inp) {
-      issues.push({ type: 'cwv_inp_absolute', severity: 'warning', message: `INP exceeds Good threshold on ${shortUrl}: ${current.inp}ms (limit: ${CWV_ABSOLUTE.inp}ms)` });
+    if (!isOrigin && current.inp && current.inp > CWV_ABSOLUTE.inp) {
+      issues.push({ type: 'cwv_inp_absolute', severity: 'warning', scope: 'url', message: `${shortUrl}: real visitors' INP is ${current.inp}ms, over the ${CWV_ABSOLUTE.inp}ms target` });
     }
     if (current.performanceScore != null && current.performanceScore < CWV_ABSOLUTE.lighthouseMin) {
       // Lab Lighthouse is a synthetic, heavily-throttled score (slow-4G + 4x CPU). A
@@ -966,11 +1036,24 @@ function detectCWVAnomalies(currentCWV, history) {
       // A field-LCP acknowledgment (fix shipped, CrUX 28-day window still trailing)
       // downgrades this back to warning — the digest still shows it as tracked-warn
       // (not silently dropped) instead of paging daily for already-fixed work (#368).
-      const ack = fieldUnhealthy ? findCWVFieldAcknowledgment(current.url, 'lcp') : null;
+      // Only consult the url-scoped ack when the number really is this page's.
+      // Appending "acknowledged: fix shipped on /west-end" to a message that just
+      // said the value is NOT /west-end's reads as the system contradicting itself.
+      const ack = fieldUnhealthy && !isOrigin ? findCWVFieldAcknowledgment(current.url, 'lcp') : null;
+      // When the field number is the origin's, it says nothing about THIS page, so it
+      // cannot escalate this page — the single origin-scoped anomaly above owns that
+      // escalation. Naming the scope also stops the next reader from chasing a
+      // page-specific LCP fix for a site-wide measurement (what card #419 asked for).
+      const escalates = fieldUnhealthy && !ack && !isOrigin;
+      const fieldClause = !fieldUnhealthy
+        ? ' — simulated test only; real visitors are fine, usually ignorable'
+        : isOrigin
+          ? ' — simulated test only for this page; the site-wide slowdown is reported separately and is not this page\'s'
+          : ` AND real visitors' LCP is ${current.lcp}ms over the ${CWV_ABSOLUTE.lcp}ms target — this one is real`;
       issues.push({
         type: 'cwv_lighthouse_low',
-        severity: fieldUnhealthy && !ack ? 'error' : 'warning',
-        message: `Lighthouse score below ${CWV_ABSOLUTE.lighthouseMin} on ${shortUrl}: ${current.performanceScore}/100${fieldUnhealthy ? ` + field LCP ${current.lcp}ms over ${CWV_ABSOLUTE.lcp}ms` : ' (lab only — field CWV healthy)'}${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
+        severity: escalates ? 'error' : 'warning',
+        message: `${shortUrl}: scored ${current.performanceScore}/100 on a simulated phone test (below ${CWV_ABSOLUTE.lighthouseMin})${fieldClause}${ack ? ` — acknowledged: ${ack.reason} [expires ${ack.expires}]` : ''}`,
       });
     }
   }
@@ -980,19 +1063,58 @@ function detectCWVAnomalies(currentCWV, history) {
   const priorWeek = history[history.length - 1];
   if (!priorWeek.coreWebVitals || priorWeek.coreWebVitals.length === 0) return issues;
 
-  for (const current of currentCWV) {
-    const prior = priorWeek.coreWebVitals.find(p => p.url === current.url);
+  // Prior snapshots written before this change carry no fieldScope, so re-derive it
+  // from that week's own batch rather than treating the gap as "same scope".
+  const priorScoped = annotateFieldScope(priorWeek.coreWebVitals);
+
+  // Origin-scoped field metrics are one shared measurement, so a week-over-week
+  // field regression on them is ONE event — reporting it per page turns a single
+  // site-wide change into five identical digest lines. Emit it once here, then skip
+  // the field comparisons for those pages below. (Lighthouse score is genuinely
+  // per-page lab data, so cwv_lighthouse_drop stays per-URL.)
+  const originFieldReported = new Set();
+  if (originScoped.length) {
+    const priorOriginScoped = priorScoped.filter(p => p.fieldScope === 'origin');
+    const priorWorst = (metric) => {
+      const vals = priorOriginScoped.map(p => p[metric]).filter(v => v != null);
+      return vals.length ? Math.max(...vals) : null;
+    };
+    const priorLcp = priorWorst('lcp');
+    const priorCls = priorWorst('cls');
+    if (originRep?.lcp != null && priorLcp != null && originRep.lcp - priorLcp > 500) {
+      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', scope: 'origin', message: `SITE-WIDE: real visitors' LCP got worse — ${originRep.lcp}ms (was ${priorLcp}ms)` });
+    }
+    if (originRep?.cls != null && priorCls != null && originRep.cls - priorCls > 0.05) {
+      issues.push({ type: 'cwv_cls_regression', severity: 'warning', scope: 'origin', message: `SITE-WIDE: real visitors' CLS got worse — ${originRep.cls} (was ${priorCls})` });
+    }
+    // Only suppress the per-page comparison when there WAS an origin cohort last
+    // week to compare against; otherwise these pages fall through to the scope-switch
+    // guard below, which is the correct handling for a cohort that just appeared.
+    if (priorOriginScoped.length) originScoped.forEach(r => originFieldReported.add(r.url));
+  }
+
+  for (const current of scoped) {
+    const prior = priorScoped.find(p => p.url === current.url);
     if (!prior) continue;
 
     const shortUrl = current.url.replace(SITE_HOST, '');
-    if (current.lcp && prior.lcp && current.lcp - prior.lcp > 500) {
-      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', message: `LCP regressed on ${shortUrl}: ${current.lcp}ms (was ${prior.lcp}ms)` });
+    // A page crossing the CrUX sampling floor swaps a page-level measurement for an
+    // origin-level one (or back). /west-end did exactly that on 2026-08-02: 2275ms →
+    // 1467ms with nothing about the page changed. Comparing across that swap invents
+    // a several-hundred-ms delta, which clears the 500ms bar on its own.
+    const swapped = scopeChanged(current.fieldScope, prior.fieldScope)
+      || originFieldReported.has(current.url);
+    if (swapped && scopeChanged(current.fieldScope, prior.fieldScope)) {
+      console.log(`  ${shortUrl}: field data switched ${prior.fieldScope} → ${current.fieldScope} — field regression comparison skipped (not comparable)`);
     }
-    if (current.cls != null && prior.cls != null && current.cls - prior.cls > 0.05) {
-      issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `CLS regressed on ${shortUrl}: ${current.cls} (was ${prior.cls})` });
+    if (!swapped && current.lcp && prior.lcp && current.lcp - prior.lcp > 500) {
+      issues.push({ type: 'cwv_lcp_regression', severity: 'warning', message: `${shortUrl}: real visitors' LCP got worse — ${current.lcp}ms (was ${prior.lcp}ms)` });
+    }
+    if (!swapped && current.cls != null && prior.cls != null && current.cls - prior.cls > 0.05) {
+      issues.push({ type: 'cwv_cls_regression', severity: 'warning', message: `${shortUrl}: real visitors' CLS got worse — ${current.cls} (was ${prior.cls})` });
     }
     if (current.performanceScore != null && prior.performanceScore != null && prior.performanceScore - current.performanceScore > 10) {
-      issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `Lighthouse score dropped on ${shortUrl}: ${current.performanceScore} (was ${prior.performanceScore})` });
+      issues.push({ type: 'cwv_lighthouse_drop', severity: 'warning', message: `${shortUrl}: simulated-test score dropped to ${current.performanceScore} (was ${prior.performanceScore})` });
     }
   }
 

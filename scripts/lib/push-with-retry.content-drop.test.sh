@@ -26,6 +26,17 @@
 #      became an ancestor of HEAD (true even when a modified file's content
 #      was discarded along the way).
 #
+# Case 3 (task #833) extends this to a SIBLING gap in that same guard: when
+# the final content matches NEITHER base nor local (a THIRD version — e.g. a
+# concurrent write from another session sharing this machine's checkout,
+# under push-mutex fail-open contention), the original guard classified this
+# 'ambiguous' and always let it through, reasoning it was "probably a
+# legitimate 3-way merge". Reproduced live: task #833, a 2-line addition to
+# .github/workflows/test.yml vanished from origin/main with push-with-retry.sh
+# reporting success — final content differed from both base and local. The
+# deep check (classifyFileSurvivalDeep) verifies OUR added lines are actually
+# present in the final content before accepting 'ambiguous' as safe.
+#
 # Run: bash scripts/lib/push-with-retry.content-drop.test.sh
 set -uo pipefail
 
@@ -120,6 +131,35 @@ if [ "$new_guard_code" -eq 1 ] && echo "$new_guard_out" | grep -q "REVERTED"; th
   echo "PASS[2b]: new push-content-survival.js CATCHES the exact task #619 signature (content reverted to pre-edit base)"
 else
   echo "FAIL[2b]: expected new guard to fail loudly (exit 1, REVERTED). Got exit $new_guard_code:"; echo "$new_guard_out" | sed 's/^/    /'
+  fail=1
+fi
+
+# ── Case 3 (task #833): 'ambiguous' end-state where a concurrent write     ──
+# clobbered OUR added lines. Final content matches neither base nor local —
+# the exact bucket the pre-fix guard always waved through.
+node -e "1" 2>/dev/null || true
+git init -q "$TMP/repro3"
+gitc "$TMP/repro3" config user.email t@t; gitc "$TMP/repro3" config user.name t
+printf 'line1\nline2\nline3\n' > "$TMP/repro3/test.yml"
+gitc "$TMP/repro3" add -A; gitc "$TMP/repro3" commit -q -m base
+gitc "$TMP/repro3" branch -M main
+BASE3=$(gitc "$TMP/repro3" rev-parse HEAD)
+printf 'line1\nMAPFILE-LINE-1\nMAPFILE-LINE-2\nline2\nline3\n' > "$TMP/repro3/test.yml"
+gitc "$TMP/repro3" add -A; gitc "$TMP/repro3" commit -q -m "fix: restore mapfile lines"
+BEFORE3=$(gitc "$TMP/repro3" rev-parse HEAD)
+gitc "$TMP/repro3" branch origin-tip "$BASE3"
+gitc "$TMP/repro3" checkout -q origin-tip
+printf 'line1\nCONCURRENT-EDIT\nline2\nline3\n' > "$TMP/repro3/test.yml"
+gitc "$TMP/repro3" add -A; gitc "$TMP/repro3" commit -q -m "concurrent: unrelated edit that clobbered our insertion"
+FINAL3=$(gitc "$TMP/repro3" rev-parse HEAD)
+gitc "$TMP/repro3" checkout -q main
+
+case3_out=$(cd "$TMP/repro3" && node "$CONTENT_CLI" --before-sha="$BEFORE3" --base-sha="$BASE3" --check-ref="$FINAL3" 2>&1); case3_code=$?
+
+if [ "$case3_code" -eq 1 ] && echo "$case3_out" | grep -q "REVERTED" && echo "$case3_out" | grep -q "task #833 signature"; then
+  echo "PASS[3]: push-content-survival.js's deep check catches the task #833 signature (ambiguous merge that silently clobbered our added lines)"
+else
+  echo "FAIL[3]: expected the deep check to fail loudly (exit 1, REVERTED, task #833 signature). Got exit $case3_code:"; echo "$case3_out" | sed 's/^/    /'
   fail=1
 fi
 

@@ -163,3 +163,25 @@ test('#485: an old-format lock (bare PID, no acquiredAt) falls back to mtime sta
   release();
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ── Card #854: readTask falls back to archive/ ──────────────────────────────
+const { readTask } = require('./notion-tasks-sync.js');
+
+test('readTask: falls back to archive/<id>.json when the live copy has been archived', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed', description: '[notion:abc] P1 · Done · eng' }));
+  const task = readTask(dir, '9');
+  assert.equal(task.status, 'completed');
+  assert.equal(readTask(dir, '999'), null);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('readTask: live copy wins over an archive copy with the same id', () => {
+  const dir = tmpDir();
+  fs.writeFileSync(path.join(dir, '9.json'), JSON.stringify({ id: '9', status: 'in_progress' }));
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed' }));
+  assert.equal(readTask(dir, '9').status, 'in_progress');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

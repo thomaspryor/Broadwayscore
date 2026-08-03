@@ -63,14 +63,25 @@ function parseArgs(argv) {
   return a;
 }
 
+// Card #854: completed tasks >48h old are moved to a sibling archive/ dir
+// (scripts/archive-completed-tasks.js) so the harness's injected task-list
+// reminder — one line per file in this directory — stops scaling with the
+// full history of every task ever completed. mergeWithArchive() folds
+// archive/ back in so `--id <archived id>` and any completed-task lookup
+// (completedLaunchGuard, findLiveWorkspaceForTask) keep working exactly as
+// before; actionable() only ever returns pending/in_progress tasks, which
+// are never archived, so the default dispatch path never touches archive/.
+const { mergeWithArchive } = require('./lib/task-store-archive.js');
+
 // ── pure logic (exported for tests) ────────────────────────────────────────
 function loadTasks(dir) {
   let files;
   try { files = fs.readdirSync(dir); } catch { return []; }
-  return files
+  const live = files
     .filter(f => /^\d+\.json$/.test(f))
     .map(f => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
-    .filter(Boolean)
+    .filter(Boolean);
+  return mergeWithArchive(dir, live)
     .sort((x, y) => parseInt(x.id, 10) - parseInt(y.id, 10)); // id order == mirror/priority order
 }
 

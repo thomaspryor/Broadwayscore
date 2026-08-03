@@ -49,6 +49,20 @@ const PROBE_INTERVAL_SEC = 3;
 // false miss would otherwise close and relaunch a live session.
 const WRAPPER_MISS_STREAK = 2;
 
+// Seconds without the wrapper EVER appearing before forcing cmux awake (see
+// setAppFocus). A healthy injection produces the wrapper within ~2-3s even on
+// a loaded host; 5s is late enough not to wake on every launch and early
+// enough that the injection grace window still has its full meaning after.
+const WAKE_AFTER_SEC = 5;
+
+// Seconds between wake re-fires while the wrapper still has not appeared.
+// set-app-focus active is a persistent override, so one call normally
+// suffices — but a CONCURRENT launcher that also woke clears the override
+// when it finishes (the clear is launch-scoped, not refcounted), which would
+// re-defer this launch's still-unrendered surface. Re-asserting is idempotent
+// and costs one cmux round trip per interval.
+const REWAKE_INTERVAL_SEC = 10;
+
 function sleepSec(s) { spawnSync('sleep', [String(s)]); }
 
 // Poll fn() every second until it returns truthy or timeoutSec elapses.
@@ -68,6 +82,25 @@ function pollUntil(fn, timeoutSec) {
 // verified-running claude session matters more than its tab color.
 function setAutoColor(ref) {
   try { spawnSync(CMUX, ['workspace-action', '--action', 'set-color', '--color', 'Blue', '--workspace', ref], { encoding: 'utf8', timeout: 3000 }); } catch { /* cosmetic only */ }
+}
+
+// Force cmux out of its deferred-render state (diagnosed live 2026-08-02):
+// while the app is backgrounded, cmux does not create the terminal surface
+// for a new workspace, so the --command it was handed never EXECUTES — task
+// #828's typed command sat un-run for 77 minutes until the owner foregrounded
+// the app, at which point every deferred tab booted at once. To the verifier
+// below, that deferral is indistinguishable from a swallowed injection, and
+// INJECTION_NEVER_RAN → retry is the duplicate factory: BOTH workspaces boot
+// on the next foreground (live duplicate pair reproduced same day).
+// `set-app-focus active` is a persistent override that makes deferred
+// surfaces materialize and their commands run (validated live: a probe
+// command deferred 20s+ under `set-app-focus inactive` started within
+// seconds of this call; `simulate-app-active` alone did NOT wake it).
+// The override must not outlive the launch — launchCmuxSession clears it in
+// a finally, otherwise cmux would be blinded to the app's real focus state
+// indefinitely.
+function setAppFocus(state) {
+  try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000 }).status === 0; } catch { return false; }
 }
 
 // Fail-CLOSED liveness for the late-adopt path. cmuxws.claudeAliveIn is
@@ -147,9 +180,14 @@ function verifiedAlive(ws, marker) {
 // wrapperEverSeen is per-ATTEMPT state and lives here rather than in the pure
 // decision: "the wrapper ran and then died" is only distinguishable from
 // "the wrapper never ran" by remembering earlier polls.
-function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, probes = {} }) {
+function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGraceSec, slowBootCapSec, wakeAfterSec = WAKE_AFTER_SEC, wakeFn = null, probes = {} }) {
   const wrapperProbe = probes.wrapperAlive || osProcessAliveForSeed;
   const tagProbe = probes.claudeTagAlive || (ref => cmuxws.claudeAliveIn(ref));
+  // probes.wake is the TEST seam and wins; wakeFn is how launchCmuxSession
+  // observes fire-time (it must learn a wake happened even if this wait is
+  // later interrupted by a throw — outcome-based tracking would leak the
+  // override on any non-return path).
+  const wake = probes.wake || wakeFn || (() => setAppFocus('active'));
   const napSec = probes.intervalSec ?? PROBE_INTERVAL_SEC; // ?? not ||: a test seam of 0 must mean "don't sleep"
   // MONOTONIC clock, not Date.now (Codex ship-check): an NTP step or a manual
   // clock change during a 6-minute wait would otherwise move elapsed backward
@@ -161,6 +199,9 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   let wrapperEverSeen = false;
   let missStreak = 0;
   let announced = null;
+  let wakeAttempted = false;
+  let nextWakeAtSec = wakeAfterSec;
+  let effectiveGraceSec = injectionGraceSec;
   for (;;) {
     const sampleAlive = wrapperProbe(marker);
     if (sampleAlive) {
@@ -184,11 +225,29 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
     // workspace was created — otherwise a slow injection eats the boot window
     // it was supposed to protect (Codex ship-check).
     const bootElapsedSec = wrapperFirstSeenAt === null ? null : (stamp - wrapperFirstSeenAt) / 1000;
+    // Deferred-render wake (see setAppFocus): if the wrapper has NEVER been
+    // seen by wakeAfterSec, the likeliest cause is cmux deferring the surface
+    // because the app is backgrounded, not a swallowed injection. The FIRST
+    // wake also restarts the injection grace: the original grace was budgeted
+    // for type-into-pane latency, but a woken tab must additionally render
+    // its surface from scratch and run shell init — possibly alongside every
+    // other deferred tab flushing at once. Re-fires every REWAKE_INTERVAL_SEC
+    // in case a concurrent launcher's clear re-deferred a still-unrendered
+    // surface.
+    if (!wrapperEverSeen && elapsedSec >= nextWakeAtSec) {
+      if (!wakeAttempted) {
+        effectiveGraceSec = elapsedSec + injectionGraceSec;
+        console.error(`[cmux-launch] ${ws ? ws.ref : 'workspace'}: no wrapper process after ${Math.round(elapsedSec)}s — forcing app-focus active to flush cmux's deferred surface render (lazy-exec fix, 2026-08-02); injection grace restarted`);
+      }
+      wakeAttempted = true;
+      nextWakeAtSec = elapsedSec + REWAKE_INTERVAL_SEC;
+      wake();
+    }
     const d = decideLaunchWait({
       claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
-      attempt, maxAttempts, injectionGraceSec, slowBootCapSec,
+      attempt, maxAttempts, injectionGraceSec: effectiveGraceSec, slowBootCapSec,
     });
-    if (d.action !== 'wait') return { ...d, wrapperAlive, tagAlive, elapsedSec: Math.round(elapsedSec) };
+    if (d.action !== 'wait') return { ...d, wrapperAlive, tagAlive, wakeAttempted, elapsedSec: Math.round(elapsedSec) };
     if (d.state !== announced) {
       announced = d.state;
       if (d.state === STATES.LAUNCHING_SLOW) {
@@ -241,7 +300,11 @@ function shouldAdoptLateStart(result, isAlive) {
  *                                 Never triggers a relaunch — a live wrapper
  *                                 means a live boot (card #705). Default 360.
  * @param {object}  [opts.probes]  test seam: {wrapperAlive, claudeTagAlive,
- *                                 intervalSec, now} — never set in real use.
+ *                                 wake, intervalSec, now} — never set in real
+ *                                 use. Tests calling waitForLaunchOutcome
+ *                                 directly MUST pass probes.wake (a no-op),
+ *                                 or a local test run fires a REAL
+ *                                 `set-app-focus active` with no clear.
  * @param {number}  [opts.lateAdoptSec] seconds to keep watching a FAILED
  *                                 launch's leftover workspace before calling
  *                                 it dead. A claude that registers here is
@@ -252,7 +315,20 @@ function shouldAdoptLateStart(result, isAlive) {
  *                                 0 = off (legacy behavior).
  * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, state?: string, reason?: string, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string, command: string}}
  */
-function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, probes = {} }) {
+function launchCmuxSession(opts) {
+  // The deferred-render wake (setAppFocus 'active') is a PERSISTENT override;
+  // clear it however the launch ends so cmux isn't permanently blinded to the
+  // app's real focus state. Cleared only when a wake actually fired — an
+  // unconditional clear would stomp a concurrent launcher's active window.
+  const wakeState = { woke: false };
+  try {
+    return launchCmuxSessionInner(opts, wakeState);
+  } finally {
+    if (wakeState.woke) setAppFocus('clear');
+  }
+}
+
+function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, probes = {} }, wakeState = { woke: false }) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
@@ -324,6 +400,10 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
     outcome = waitForLaunchOutcome({
       ws, marker: cmdMarker, attempt, maxAttempts: MAX_ATTEMPTS,
       injectionGraceSec: verifyTimeoutSec, slowBootCapSec, probes,
+      // woke is recorded AT FIRE TIME, not from the returned outcome — a
+      // throw/interrupt between the wake and the return would otherwise skip
+      // the finally-clear and leave the override pinned.
+      wakeFn: () => { wakeState.woke = true; return setAppFocus('active'); },
     });
     if (outcome.action === 'ok') {
       if (autoColor) setAutoColor(ws.ref);
@@ -378,8 +458,9 @@ function launchCmuxSession({ title, seed, seedKey, cwd, model = 'sonnet', focus 
 }
 
 module.exports = {
-  launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor,
+  launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor, setAppFocus,
   strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
-  MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK,
+  MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
+  REWAKE_INTERVAL_SEC,
 };

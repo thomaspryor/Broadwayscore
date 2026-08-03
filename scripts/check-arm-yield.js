@@ -179,7 +179,14 @@ async function main() {
       description:
         `${IMPACT[s.id.split(':')[0]] || 'Part of the pipeline has stopped producing.'} ` +
         `Nothing new since ${s.lastYieldDate}, ${s.daysSinceLastYield} days ago. ` +
-        `It has never before gone quiet for more than ${s.longestPriorGap} day(s), so this is not its normal rhythm. ` +
+        // Only claim "longer than it has ever been quiet" when that is what
+        // fired the alert. On a capped threshold the arm's own history is
+        // LONGER than the alerting bar, so this sentence would contradict the
+        // alert it is justifying — the reader checks the numbers and stops
+        // trusting the detector.
+        (s.thresholdCapped
+          ? `Its past gaps run as long as ${s.longestPriorGap} day(s), but no arm is allowed to stay silent past ${s.threshold} days without a look. `
+          : `It has never before gone quiet for more than ${s.longestPriorGap} day(s), so this is not its normal rhythm. `) +
         `Nothing is fixing this automatically — it needs a look.\n\n` +
         `(Detail: threshold ${s.threshold}d, from ${s.productiveDays} productive day(s) / ${s.windowItems} item(s) ` +
         `between ${s.baselineWindow.from} and ${s.baselineWindow.to}.)`,

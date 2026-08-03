@@ -22,6 +22,7 @@ const { loadCookiesByFileKey, loadCookieMeta, getEnvVarForFileKey, getAllFileKey
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
 
 // --- Outlet Configuration ---
 
@@ -540,6 +541,34 @@ async function main() {
       continue;
     }
 
+    // wsj-specific: scripts/wsj-otp-login.js (task #779) is the only source of
+    // fresh wsj cookies now (Safari extraction is dead on Tahoe) and it only
+    // runs via the monthly launchd job, which stamps the LOCAL
+    // data/cookies/_extracted-at.json (gitignored — never present in CI's
+    // checkout). Gated on that local file existing: in CI, loadCookieMeta
+    // would otherwise fall through to bundle `_meta`, a whole-bundle Safari-
+    // extraction push timestamp with no `method` field, which would either
+    // misreport freshness or (once meta is empty/absent) redden the
+    // twice-weekly check-cookie-health.yml run every time — this check only
+    // has real signal on the machine that actually runs wsj-otp-login.js.
+    // Checked unconditionally (before the Layer-1 structure early-exit below)
+    // so a missing/broken wsj.json still surfaces "launchd job may have never
+    // run" instead of getting swallowed by a generic "Not found" — the
+    // cadence-aware threshold (40d, not the generic 21d STALENESS_WARN_DAYS)
+    // is tied to the same _extracted-at.json meta (task #830).
+    if (fileKey === 'wsj' && fs.existsSync(path.join(COOKIE_DIR, '_extracted-at.json'))) {
+      const otpFreshness = checkWsjOtpFreshness(loadCookieMeta('wsj'));
+      console.log(`${icons[otpFreshness.status]} wsj-otp-freshness: ${otpFreshness.message}`);
+      results.push({
+        name: 'wsj-otp-freshness',
+        status: otpFreshness.status,
+        message: otpFreshness.message,
+        isCritical: true,
+        layer: 2,
+        otpAgeDays: otpFreshness.ageDays,
+      });
+    }
+
     const structure = checkStructure(fileKey);
     if (structure.status !== 'pass') {
       const icon = icons[structure.status] || '?';
@@ -687,8 +716,20 @@ async function main() {
     console.log('\nTo refresh: python3 scripts/extract-safari-cookies.py --push');
   }
 
+  // WSJ's OTP-login refresh (task #830) uses its own cadence-aware threshold
+  // (40d, not the generic 21d STALENESS_WARN_DAYS) since it's monthly by
+  // design — folded into its own alert lane rather than staleCritical above.
+  const wsjOtpWarn = results.filter(r => r.name === 'wsj-otp-freshness' && r.status === 'warn');
+
+  if (wsjOtpWarn.length > 0) {
+    console.log(`\n${icons.warn} WSJ OTP REFRESH:`);
+    for (const r of wsjOtpWarn) {
+      console.log(`  ${r.message}`);
+    }
+  }
+
   // --- Alerting ---
-  if (criticalFailures.length > 0 || expiringSoon.length > 0 || staleCritical.length > 0) {
+  if (criticalFailures.length > 0 || expiringSoon.length > 0 || staleCritical.length > 0 || wsjOtpWarn.length > 0) {
     try {
       const { sendAlert } = require('./lib/discord-notify');
 
@@ -718,9 +759,17 @@ async function main() {
         });
       }
 
+      if (wsjOtpWarn.length > 0) {
+        fields.push({
+          name: 'WSJ OTP Refresh',
+          value: wsjOtpWarn.map(r => r.message).join('\n'),
+          inline: false,
+        });
+      }
+
       fields.push({
         name: 'Action',
-        value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push`',
+        value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push` (or for wsj: `node scripts/wsj-otp-login.js`)',
         inline: false,
       });
 
@@ -729,12 +778,16 @@ async function main() {
         ? `Cookie Health — ${criticalFailures.length} Failed`
         : expiringSoon.length > 0
           ? `Cookie Health — ${expiringSoon.length} Expiring Soon`
-          : `Cookie Health — ${staleCritical.length} Stale`;
+          : staleCritical.length > 0
+            ? `Cookie Health — ${staleCritical.length} Stale`
+            : `Cookie Health — WSJ OTP Refresh Overdue`;
       const description = criticalFailures.length > 0
         ? 'Critical outlet cookies are dead or expiring. Review collection is silently degraded.'
         : expiringSoon.length > 0
           ? 'Auth cookies expiring soon. Refresh before they die.'
-          : 'Critical outlet extractions are stale (>30d). Re-extract from Safari.';
+          : staleCritical.length > 0
+            ? 'Critical outlet extractions are stale (>30d). Re-extract from Safari.'
+            : 'WSJ OTP-login launchd job missed its monthly refresh window — check it is still running.';
       await sendAlert({
         title,
         description,
@@ -751,7 +804,7 @@ async function main() {
     process.exit(1);
   }
 
-  if (failures.length === 0 && warnings.length === 0 && expiringSoon.length === 0 && staleCritical.length === 0) {
+  if (failures.length === 0 && warnings.length === 0 && expiringSoon.length === 0 && staleCritical.length === 0 && wsjOtpWarn.length === 0) {
     console.log('\nAll cookies healthy.');
   }
 }

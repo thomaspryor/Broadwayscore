@@ -81,6 +81,7 @@ tests/unit/cast-changes-validate-event.test.mjs
 tests/unit/cast-extraction-guards.test.mjs
 tests/unit/cast-tombstone.test.mjs
 tests/unit/check-corpus-drift.test.mjs
+tests/unit/cmux-launch-wake.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
 tests/unit/ci-red-claims.test.mjs
 tests/unit/circular-duplicate-pair.test.mjs
@@ -283,8 +284,8 @@ tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs
 tests/unit/restore-protected-fields-stale-checkout.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs
-tests/unit/review-gate.test.mjs
 tests/unit/review-gate-scope.test.mjs
+tests/unit/review-gate.test.mjs
 tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
@@ -314,6 +315,7 @@ tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
+tests/unit/seo-cwv-field-scope.test.mjs
 tests/unit/serp-burst-caps.test.mjs
 tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs

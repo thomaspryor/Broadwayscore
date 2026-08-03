@@ -265,10 +265,15 @@ test('buildHtml: freshness count folds into the auto-fix issue counter, does not
   assert.match(html, /Nothing needs your attention/);
 });
 
-// summarizeFreshnessHighSeverity itself still names show IDs (verified above)
-// — that per-show detail now reaches the owner via the auto-filed "BSC
-// Daily:" card (digest-autofix.js), not the email body itself.
-test('acceptance: a blanked-tickets open show summary still names its show ID (feeds the auto-fix card, not the email body)', () => {
+// summarizeFreshnessHighSeverity itself still names show IDs (verified above).
+// NOTE: as of this writing that per-show detail does NOT reach the owner
+// anywhere — digest-autofix.js's freshness extraIssue only carries the
+// aggregate count (send-morning-digest.js main(), ~line 354), so task #689's
+// "named by show ID" acceptance criterion is currently unmet end-to-end. That
+// is a pre-existing production gap (not introduced by this test fix); this
+// test only pins down that the summarizer's own output still has the data
+// available if a future caller wants to use it. Tracked as a follow-up card.
+test('acceptance: a blanked-tickets open show summary still names its show ID (summarizer output only — not yet surfaced anywhere)', () => {
   const report = {
     generatedAt: '2026-07-30T06:54:26.128Z',
     dataQuality: {
@@ -348,12 +353,15 @@ test('summarizeClosingSoon: maxItems truncation keeps the soonest-closing rows, 
 });
 
 // Task #690's original acceptance criterion (closing-soon shows render in the
-// morning digest by show ID) was superseded 2026-07-30 ("Restore standalone
-// Opening Digest email" — card #633): closing-soon moved OUT of this email
-// entirely into send-opening-digest.js, so sections.closingSoon is now a
-// no-op here by design (buildHtml's closingSoonCount is computed but
-// deliberately unused — see the comment at its call site).
-test('buildHtml: closingSoon section is a no-op here — closing-soon lives in the standalone opening digest (card #633)', () => {
+// morning digest by show ID) was retired 2026-07-30 when card #633 moved
+// closing-soon OUT of this email into a standalone send-opening-digest.js —
+// but that file was verified NOT to reference closingSoon at all (grepped
+// 2026-08-02), so closingSoon currently has ZERO consumers anywhere in the
+// codebase (a silent regression of #690, pre-existing, not introduced by this
+// diff). This test only pins down the CURRENT state: sections.closingSoon is
+// a no-op in buildHtml (closingSoonCount is computed but deliberately
+// unused). Tracked as a follow-up card, not fixed here.
+test('buildHtml: closingSoon section is a no-op here (closingSoon currently has no consumer anywhere — pre-existing gap, tracked separately)', () => {
   const report = {
     generatedAt: '2026-07-30T06:54:26.128Z',
     closingSoon: [{ id: 'les-mis-arena-concert-2026', title: 'Les Mis Arena Concert Spectacular', closingDate: '2026-08-02', daysLeft: 3 }],

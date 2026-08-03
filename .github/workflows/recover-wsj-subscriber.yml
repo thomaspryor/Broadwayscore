@@ -50,6 +50,7 @@ jobs:
           COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
         run: |
           if [ -z "$COOKIES_BUNDLE_11" ]; then
             echo "::warning::Cookie bundles not set — skipping recovery"

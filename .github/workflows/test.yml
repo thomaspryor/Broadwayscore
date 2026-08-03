@@ -70,6 +70,14 @@ on:
       # re-excluded by the next rebuild — the +/-150/day exact-revert flap. Tests
       # live in tests/unit-test-manifest.txt; these are path-listed so a solo edit
       # to the writer, the detector, or the watermark gate triggers CI.
+      # SEO health alerting (task #419): check-seo-health.js turns PageSpeed results
+      # into anomalies, and an 'error' severity auto-creates a CRITICAL Notion card.
+      # Its scope/severity logic is covered by tests/unit/seo-*.test.mjs, but without
+      # these path entries a solo edit to the script or its lib gets ZERO CI — the
+      # allow-list failure mode in memory/feedback_test_yml_push_path_allowlist.md.
+      - 'scripts/check-seo-health.js'
+      - 'scripts/lib/seo-cwv-field-scope.js'
+      - 'scripts/lib/seo-cwv-ack.js'
       - 'scripts/extract-dtli-reviews.js'
       - 'scripts/lib/corpus-determinism.js'
       - 'scripts/audit-corpus-determinism.js'
@@ -439,6 +447,13 @@ on:
       - 'scripts/merge-worktree-to-main.sh'
       - 'scripts/lib/push-mutex.sh'
       - 'scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'
+      # Card #835: shared range-scoped push-audit dispatch — extracted from
+      # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
+      # below) so scripts/merge-worktree-to-main.sh can call the same runner.
+      # Colocated .test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit to the .sh triggers CI.
+      - 'scripts/lib/run-push-audits.sh'
+      - 'scripts/lib/run-push-audits.test.mjs'
       # diary-shows.json rebase-race reconciliation (card #176). Pure merge fn
       # in scripts/lib/merge-diary-shows.js; test lives in tests/unit/ (in the
       # node --test batch). Path-listed so a solo lib edit triggers CI
@@ -718,6 +733,11 @@ on:
       - 'scripts/enrich-todaytix-runtimes.js'
       - 'scripts/scrape-show-score-audience.js'
       - 'scripts/check-cookie-health.js'
+      # WSJ OTP-refresh freshness check (task #830) — colocated *.test.mjs
+      # runs in the scripts/lib/*.test.mjs glob; the .js source needs explicit
+      # listing (no scripts/lib/** broad glob) so a solo edit triggers CI.
+      - 'scripts/lib/wsj-otp-freshness.js'
+      - 'scripts/lib/wsj-otp-freshness.test.mjs'
       - 'scripts/recollect-for-scores.js'
       - 'scripts/lib/ibdb-dates.js'
       - 'scripts/lib/ibdb-cast.js'
@@ -1120,6 +1140,13 @@ on:
       - 'scripts/notion-tasks-sync.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
+      # Card #854: task-store archiver — moves completed tasks >48h old to
+      # archive/ so the harness's injected task-list reminder stops scaling
+      # with all-time task count. Colocated test runs in the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/archive-completed-tasks.js'
+      - 'scripts/lib/task-store-archive.js'
+      - 'scripts/lib/task-store-archive.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       - 'scripts/bsc-conductor.js'
@@ -3383,13 +3410,21 @@ jobs:
               // Separate conditionKey, 24h cooldown: re-pages once a day while
               // main stays red 4+ in a row, instead of firing every push (spam)
               // or firing exactly once ever (the old cooldownHours:0 hack, which
-              // also fully bypassed the ledger's own dedup).
+              // also fully bypassed the ledger's own dedup). disposition:'human'
+              // is not on the page-worthy allowlist, so the router downgrades
+              // this to the morning digest anyway — task #843: model:'opus'
+              // makes digest-autofix.js dispatch THIS row (a technical
+              // investigation, not a decision) straight to opus on its first
+              // attempt, since it's already the SECOND machine attempt at the
+              // underlying failure (the 2nd-failure 'auto' card above already
+              // tried once and didn't resolve it).
               await routeAlert({
                 conditionKey: 'test-yml:main-streak-escalation',
                 title: 'main test.yml STILL red — auto-dispatch did not resolve it',
                 description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
                 severity: 'error',
                 disposition: 'human',
+                model: 'opus',
                 fields,
                 url: runUrl,
                 cooldownHours: 24,

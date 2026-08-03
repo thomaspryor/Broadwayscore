@@ -176,6 +176,42 @@ if [ ${#SYNTAX_CHECK_FILES[@]} -gt 0 ]; then
   fi
 fi
 
+# --- Range-scoped push audits (card #835) ---
+# scripts/hooks/pre-push runs these gates (audit-unbounded-fetch,
+# audit-tests-vs-derived-data, audit-orphan-tests,
+# audit-playwright-evaluate-click, lint-write-routing.sh) at PUSH time — but
+# this script previously ran none of them, so a violating worktree branch
+# merged straight onto local main unaudited. The gate then blocked the WRONG
+# person: whoever next ran `git push` on main ate a failure someone else
+# introduced (two such incidents inside one hour on 2026-08-02: an
+# unregistered test and an unbounded-fetch violation, both fixed by a
+# downstream session that was merely trying to push something unrelated).
+# Sharing scripts/lib/run-push-audits.sh with the hook means both call sites
+# run the identical gate list — they cannot drift apart. Same diff anchor
+# ($ORIGIN_BASE_SHA vs HEAD) as the syntax-floor check above.
+AUDIT_CHANGED_FILES=$(g diff --name-only "$ORIGIN_BASE_SHA" HEAD 2>/dev/null || true)
+if [ -n "$(echo "$AUDIT_CHANGED_FILES" | tr -d '[:space:]')" ]; then
+  log "running push audits on ${BRANCH}'s changes (scripts/lib/run-push-audits.sh)"
+  if ! AUDIT_OUT=$( (cd "$MAIN_DIR" && echo "$AUDIT_CHANGED_FILES" | bash scripts/lib/run-push-audits.sh) 2>&1 ); then
+    echo "$AUDIT_OUT" >&2
+    echo "" >&2
+    echo "(Bypass ONLY for a genuine emergency: fix on $BRANCH and re-run, or" >&2
+    echo " manually 'git merge $BRANCH --no-edit' + 'git push --no-verify'.)" >&2
+    # Deliberately NOT `git reset --hard` here — same reasoning as the
+    # syntax-floor check above: $ORIGIN_BASE_SHA anchors to origin's tip at
+    # run start, not to local main's state before THIS merge. A prior
+    # invocation of this script can die after merging but before pushing
+    # (see the ORIGIN_BASE_SHA comment above), leaving an unrelated,
+    # not-yet-pushed merge sitting in $MAIN_DIR. Resetting to $ORIGIN_BASE_SHA
+    # would silently discard that other work too. Push never happens on this
+    # path (die() below exits before the push section), so origin is
+    # unaffected either way — leave $MAIN_DIR for the operator to resolve,
+    # exactly like the syntax-floor failure does.
+    restore_stash
+    die "push audits failed on $BRANCH's changes — merge refused (not pushed). Resolve the violation in $MAIN_DIR (fix on $BRANCH and re-merge, or fix directly and commit), then re-run this script."
+  fi
+fi
+
 # --- Push, integrating remote moves via merge (never rebase) on rejection ---
 if [ "${DRY_RUN:-0}" = "1" ]; then
   log "DRY_RUN=1 — skipping push"
