@@ -408,6 +408,14 @@ on:
       # scripts/health-check.js (checkQuality "Quality: star-vs-score mismatch").
       - 'scripts/lib/star-score-mismatch.js'
       - 'scripts/lib/star-score-mismatch.test.mjs'
+      # extractScore()'s KNOWN_STAR_OUTLETS fallthrough (card #935): a combined
+      # multi-show roundup column's per-show rating list ("Phaedra ***** Sylvia
+      # *** ...") was resolved by blindly taking the FIRST anchored star group,
+      # attaching the wrong show's rating. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/score-extractors.js'
+      - 'scripts/lib/score-extractors.test.mjs'
+      - 'scripts/recover-explicit-ratings.js'
       # Content-aware should-deploy gate (vercel-deploy.yml preflight). Pure
       # decide() + colocated test run by the scripts/lib/*.test.mjs glob;
       # path-listed so a solo edit triggers CI (allow-list gate).
