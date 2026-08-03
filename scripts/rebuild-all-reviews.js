@@ -47,6 +47,7 @@ const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
+const { extractBylineFromText } = require('./lib/byline-from-text');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
@@ -3519,6 +3520,23 @@ showDirs.forEach(showId => {
           stats.resolvedUnknownOutlet = (stats.resolvedUnknownOutlet || 0) + 1;
           if (!stats.resolvedUnknownOutletDetails) stats.resolvedUnknownOutletDetails = [];
           stats.resolvedUnknownOutletDetails.push(`${showId}/${file}: unknown → ${resolvedOutlet}`);
+        }
+      }
+
+      // Byline-from-text resolution: outlets whose critic never appears in scrapable
+      // metadata but is printed as the first line of the article body (Plays
+      // International: "<Name> in the West End ★★★★☆ <date>"). Must run BEFORE the
+      // defaultCritic fill — the fill misattributed 30/31 PI reviews to the outlet's
+      // defaultCritic (Louise Penn report, 2026-08-03).
+      {
+        const oid = normalizeOutletCanonical(data.outletId || data.outlet);
+        const crit = (data.criticName || '').trim().toLowerCase();
+        if (!crit || crit === 'unknown' || crit === 'unnamed' || crit === 'ri-admin') {
+          const parsed = extractBylineFromText(oid, data.fullText);
+          if (parsed && parsed.known) {
+            data.criticName = parsed.name;
+            stats.resolvedBylineFromText = (stats.resolvedBylineFromText || 0) + 1;
+          }
         }
       }
 
