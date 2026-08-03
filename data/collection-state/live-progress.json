@@ -1,31 +1,30 @@
 {
-  "updatedAt": "2026-08-03T19:43:50.014Z",
-  "processed": 30,
-  "failed": 124,
-  "successRate": "19.5%",
+  "updatedAt": "2026-08-03T19:47:17.600Z",
+  "processed": 31,
+  "failed": 133,
+  "successRate": "18.9%",
   "tierBreakdown": {
     "playwright": 17,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 3,
     "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-08-03T19:15:35.480Z",
+      "t": "2026-08-03T19:46:45.850Z",
       "event": "bb-session",
-      "session": "62926ca2",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "4750f401",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-br"
     },
     {
-      "t": "2026-08-03T19:15:53.113Z",
-      "event": "bb-session",
-      "session": "33137361",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "t": "2026-08-03T19:46:46.608Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
