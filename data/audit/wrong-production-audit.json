@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T01:36:09.492Z",
+  "timestamp": "2026-08-03T04:18:48.882Z",
   "stats": {
-    "totalReviews": 41332,
-    "alreadyFlagged": 18064,
+    "totalReviews": 41339,
+    "alreadyFlagged": 18077,
     "dateGuardCatches": 103,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
-    "londonSignals": 788,
+    "londonSignals": 789,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3391
+    "noPublishDate": 3392
   },
   "findings": [
     {
@@ -16896,6 +16896,8 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "telegraph--marianka-swain.json",
+      "publishDate": "2022-10-24",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sons-queer-what-can-do-garrick-theatre-review-rob-madges-bittersweet/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22907,6 +22909,8 @@
       "showId": "sylvia-off-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 61,
+      "publishDate": "2023-02-15",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sylvia-old-vic-review-suffragettes-meet-hamilton-pantomime/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -45730,6 +45734,20 @@
       "score": 79,
       "publishDate": "2025-03-19",
       "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nytimes--jesse-green.json",
+      "score": 92,
+      "publishDate": "2025-03-19",
+      "url": "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

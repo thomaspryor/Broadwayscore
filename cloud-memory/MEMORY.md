@@ -1,6 +1,6 @@
 ## Memory Index
 
-> Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Always-on index only — 450+ files on disk are recalled on demand. **At cap: add ⇒ remove/merge one.**
+> Caps: 180 lines/20KB (hook-enforced; harness truncates ~200). Index only; 450+ files recalled on demand. **At cap: add ⇒ merge one.**
 
 ## 🌐 External APIs & services
 - [Vercel API + billing](reference_vercel_billing_api.md) — VERCEL_TOKEN in .env; /v1/invoices[/upcoming]; deploy freq = cost lever ([[feedback_vercel_api_access.md]])
@@ -41,7 +41,7 @@
 - [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout wiring
 - [test.yml gotchas](feedback_test_yml_push_path_allowlist.md) — push path allow-list (non-listed scripts/ = ZERO CI); data gates flap, first failure masks rest; two disjoint unit batches; verify new test RAN ([[feedback_ci_step_short_circuits_colocated_tests.md]])
 - [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; needs duplicateClearReason exception
-- [Vercel build config](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block; no dynamic paths in server code, grep src/ before outputFileTracingExcludes ([[feedback_vercel_nft_dynamic_paths.md]])
+- [Vercel build config](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* go in build step env: block; no dynamic paths in server code, grep src/ before outputFileTracingExcludes ([[feedback_vercel_nft_dynamic_paths.md]])
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
 - [GHA cron reliability](feedback_github_cron_delays.md) — fire 30min-3h late, shift earlier + launchd backup; ~60d inactive → silently disabled HTTP 422 ([[feedback_github_auto_disable_workflows.md]])
 - [GHA step gotchas](feedback_gha_secrets_in_if.md) — secrets unusable in step if:; `if: always()` ~5min on cancel ([[feedback_if_always_does_not_run_on_cancel.md]]); cache@v4 no save on key hit ([[feedback_actions_cache_no_save_on_hit.md]])
@@ -49,7 +49,7 @@
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
 - [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; PreToolUse has no model field
-- [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's stash); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
+- [Compound shell/git traps](feedback_compound_shell_git_traps.md) — zsh vars don't word-split; never `stash pop` after conditional push (pops another session's); `git push` standalone ([[feedback_prepush_gate_stash_push_parser.md]])
 
 ## 🔌 External APIs & verification
 - [Live-API contract test](feedback_live_api_contract_test.md) — call live API; verify bug claim first ([[feedback_verify_bug_claim_before_fixing.md]], [[feedback_404_not_terminal.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
@@ -87,7 +87,7 @@
 ## 📊 Data pipeline & scraping
 - [NEVER ask user to create a Reddit app](feedback_reddit_app_creation_broken.md) — prefs/apps broken for months; Reddit via SB post-reset + null-counter degradation
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
-- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
+- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; 60-100K cr/day; BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]], [[feedback_sb_quota_ride_out.md]] ride it out, never re-ask billing)
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers
@@ -95,8 +95,8 @@
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
 - [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies, cookie-only; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — import normalizeTitle from title-match.js; commit audience-buzz before CI rebuild ([[feedback_audience_buzz_commit_before_rebuild.md]])
-- [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — hardcoded cells[N] breaks on column changes
-- [Orphan cast invisible by design](feedback_orphan_cast_invisible_by_design.md) — rows w/o ibdbPersonId skipped at manifest build; clean contamination first
+- [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — hardcoded cells[N] breaks on column change
+- [Orphan cast invisible by design](feedback_orphan_cast_invisible_by_design.md) — rows w/o ibdbPersonId skipped at manifest build
 
 ## 🧮 Scoring & review guards
 - [Scoring-logic delta required](feedback_scoring_delta_required.md) — run scoring-delta.js + temporal fixture; Stop hook enforces
@@ -137,6 +137,5 @@
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
 
 ## 📚 Reference & repo layout
-- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled subs Jul 2026; check before cookie/Browserbase advice
+- [Paywall subs status](reference_paywall_subscriptions_status.md) — cancelled subs Jul 2026; check before cookie/Browserbase advice; TR = paid UK archive ([[reference_theatre_record.md]])
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) w/ GitHub names + paths; ~/.claude is private repo via claude-sync ([[reference_claude_config_sync.md]])
-- [Theatre Record reference](reference_theatre_record.md) — paid UK review archive

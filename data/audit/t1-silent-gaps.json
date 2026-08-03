@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T02:49:24.015Z",
+  "generatedAt": "2026-08-03T04:12:19.008Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 253.62985194444445,
+      "fileAgeHours": 255.01179611111112,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 212.93279972222223
+      "nonTerminalAgeHours": 214.31474222222224
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 15.370819444444445
+      "nonTerminalAgeHours": 16.752761944444444
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=brainiac-live-west-end-2026 --url=https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/ --outlet=theatre-weekly   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-02T18:53:45.331Z",
-      "fileAgeHours": 7.927411666666667,
+      "fileAgeHours": 9.309354166666667,
       "gapSeenAt": "2026-08-02T20:22:17.063Z",
-      "nonTerminalAgeHours": 6.4519311111111115
+      "nonTerminalAgeHours": 7.833873611111111
     }
   ],
   "contradictions": []
