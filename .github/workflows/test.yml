@@ -828,6 +828,10 @@ on:
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
       - 'scripts/lib/gap-audit-merge.test.mjs'
+      # Coverage Verdict S2 (#906): censusVerdict per-candidate states +
+      # censusVerdictFor producer adapter. Colocated test runs in the tests/unit
+      # node --test batch (not globbed); path-listed so a solo edit triggers CI.
+      - 'tests/unit/coverage-verdict.test.mjs'
       # Spawns real concurrent processes to prove the write lock actually
       # serializes the read-modify-write (without it, 7 of 8 updates are lost).
       - 'scripts/lib/gap-audit-merge.concurrent.test.mjs'

@@ -40,32 +40,110 @@
 // then read them as `no-census-yet`. Derived, not guessed, so the two can't
 // drift apart silently.
 const { MAX_FRESHNESS_SKIP_MS } = require('./gap-audit-freshness');
+const { censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./review-census');
 const RETENTION_GRACE_DAYS = 30;
 const DEFAULT_RETENTION_DAYS = Math.ceil(MAX_FRESHNESS_SKIP_MS / (24 * 3600 * 1000)) + RETENTION_GRACE_DAYS;
 
+/** Best-effort hostname (no `www.`) for a review URL — the fallback candidate
+ * identity when an aggregator-listed URL has no knownOutletId resolved yet. */
+function hostOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return null; }
+}
+
 /**
- * Coverage state for one audited show, in the plan's vocabulary.
+ * Adapt a show-review-gap `result` (missing/flaggedMisses/citedNoUrl/
+ * aggregatorListedUrls) into the census shape censusVerdict() expects, and
+ * call it for the verdict + per-candidate states (Coverage Verdict S2, task
+ * #906). This is the single source of truth the S0 docstring earmarked for
+ * S2: gapStateFor no longer hand-derives complete/incomplete/no-census-yet —
+ * it reads `.verdict` off this.
  *
- * S0 SCOPE — this exists to give the blast-radius guard something to diff, and
- * it derives state from the gap-audit result the audit already computes. It
- * deliberately reuses censusVerdict()'s vocabulary (complete | incomplete |
- * no-census-yet, scripts/lib/review-census.js) rather than inventing new words,
- * but it is a SECOND place that computes a verdict, which the plan's rule 3
- * ("no new parallel machinery") does not want long-term. S2 owns the merge:
- * when censusVerdict() grows per-show candidate states, this should call it
- * instead of re-deriving. Tracked on the S2 card.
+ * Identity: outletId is knownOutletId when the aggregator/dirFile scan
+ * resolved one, else the bare hostname. A hostname always carries a dot/TLD
+ * so it can never collide with a real canonical outlet id (e.g. "standard" vs
+ * "standard.co.uk") — safe to mix within one show's synthetic census even
+ * though this never touches the outlet registry.
+ *
+ * hadAnySource intentionally matches the OLD gapStateFor's `sawReference`
+ * (aggregatorArticles.length>0 || aggregatorListedUrls.length>0) rather than
+ * also counting citedNoUrl, so this is a drop-in replacement with the same
+ * verdict on real data (parity-tested). The one deliberate behavior change is
+ * inherited from censusVerdict() itself: an aggregator article that yielded
+ * ZERO extractable URLs now reads `no-census-yet` instead of `complete` — the
+ * vacuous-truth trap review-census.js's own docstring warns about. The S0
+ * blast-radius guard is exactly the safety net for that class of shift.
+ *
+ * @param {object} result  one audit-show-review-gap.js per-show result
+ * @param {object} [opts]  forwarded to censusVerdict (now/clockAnchor/prevCandidates/suppressed/…)
+ * @returns {{verdict, missing, suppressedMissing, candidates, liveCount, candidateCount}}
+ */
+function censusVerdictFor(result, opts = {}) {
+  if (!result || typeof result !== 'object') {
+    return { verdict: 'no-census-yet', missing: [], suppressedMissing: [], candidates: [], liveCount: 0, candidateCount: 0 };
+  }
+  const missingUrls = new Set((result.missing || []).map((m) => m.url));
+  const flaggedUrls = new Set((result.flaggedMisses || []).map((m) => m.url));
+  const entries = [];
+  const covered = new Set();
+  for (const url of (result.aggregatorListedUrls || [])) {
+    if (missingUrls.has(url) || flaggedUrls.has(url)) continue;
+    const id = hostOf(url);
+    if (!id || covered.has(id)) continue;
+    covered.add(id);
+    entries.push({ outletId: id, outlet: id, critic: 'Unknown', stars: null, url });
+  }
+  // knownOutletId first (real registry id), then the host field the audit
+  // already computed alongside url, then a fresh parse of url as a last
+  // resort — a missing/flagged entry must never silently vanish from the
+  // census just because none of its identity fields happened to be set.
+  //
+  // Collision guard (ship-check finding): an UNREGISTERED host (no
+  // knownOutletId) falls back to its bare hostname, same as the "covered"
+  // loop above. If that host has ONE covered URL and a DIFFERENT missing/
+  // flagged URL, both would land on the identical outletId — censusVerdict's
+  // covered-set check would then treat the missing citation as covered too,
+  // silently masking a real gap (the exact vacuous-truth trap this system
+  // exists to prevent). A knownOutletId is curated and safe to collapse on;
+  // a bare hostname is not, so give the URL its own identity whenever it
+  // would otherwise collide with something already in `covered`.
+  const identityFor = (m) => {
+    const id = m.knownOutletId || m.host || hostOf(m.url);
+    if (!id) return null;
+    if (!m.knownOutletId && covered.has(id)) return `${id}::${m.url || 'no-url'}`;
+    return id;
+  };
+  for (const m of (result.missing || [])) {
+    const id = identityFor(m);
+    if (!id) continue;
+    entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
+  }
+  for (const m of (result.flaggedMisses || [])) {
+    const id = identityFor(m);
+    if (!id) continue;
+    entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
+  }
+  for (const c of (result.citedNoUrl || [])) {
+    if (!c || !c.outletId) continue;
+    entries.push({ outletId: c.outletId, outlet: c.outletName || c.outletId, critic: 'Unknown', stars: null, url: '' });
+  }
+  const hadAnySource = (Array.isArray(result.aggregatorArticles) && result.aggregatorArticles.length > 0)
+    || (Array.isArray(result.aggregatorListedUrls) && result.aggregatorListedUrls.length > 0);
+  const census = { entries, count: entries.length, sourcesPresent: hadAnySource ? ['gap-audit'] : [], hadAnySource };
+  const censusOpts = { suppressed: CI_UNFETCHABLE_OUTLETS, clockAnchor: result.openingDate || null, ...opts };
+  const v = censusVerdict(census, covered, censusOpts);
+  return { ...v, liveCount: covered.size, candidateCount: entries.length };
+}
+
+/**
+ * Coverage state for one audited show, in the plan's vocabulary
+ * (complete | incomplete | no-census-yet). Thin wrapper over
+ * censusVerdictFor().verdict — kept as its own export because blast-radius
+ * comparisons (stateMap) only ever need the verdict string, never the full
+ * per-candidate detail, and never need a clock (verdict itself doesn't read
+ * clockAgeHours — only the per-candidate GAP/IN_FLIGHT split does).
  */
 function gapStateFor(result) {
-  if (!result || typeof result !== 'object') return 'no-census-yet';
-  const missing = Array.isArray(result.missing) ? result.missing.length : 0;
-  const flagged = Array.isArray(result.flaggedMisses) ? result.flaggedMisses.length : 0;
-  const citedNoUrl = Array.isArray(result.citedNoUrl) ? result.citedNoUrl.length : 0;
-  const sawReference = (Array.isArray(result.aggregatorArticles) && result.aggregatorArticles.length > 0)
-    || (Array.isArray(result.aggregatorListedUrls) && result.aggregatorListedUrls.length > 0);
-  // Empty census is never "complete" (the rule censusVerdict already enforces):
-  // finding no aggregator reference at all is ignorance, not proof of coverage.
-  if (!sawReference) return 'no-census-yet';
-  return (missing + flagged + citedNoUrl) > 0 ? 'incomplete' : 'complete';
+  return censusVerdictFor(result).verdict;
 }
 
 /** { showId -> state } for a results array — the blast-radius guard's input. */
@@ -99,11 +177,17 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
   // — must collapse to one row, or every merge appends another copy and the
   // counts inflate silently forever.
   const byId = new Map();
+  // Keyed lookup into the PRIOR file (not the merged one) so freshly-audited
+  // shows can carry each candidate's firstSeenAt forward even though their
+  // top-level result is being fully replaced this run.
+  const prevById = new Map();
   // 1. carry forward prior entries this run did NOT re-audit, subject to retention
   const prevResults = Array.isArray(prevAudit && prevAudit.results) ? prevAudit.results : [];
   let carried = 0, dropped = 0;
   for (const r of prevResults) {
-    if (!r || !r.showId || freshIds.has(r.showId)) continue;
+    if (!r || !r.showId) continue;
+    prevById.set(r.showId, r);
+    if (freshIds.has(r.showId)) continue;
     // No computedAt (pre-#893 file) → stamp it with the previous run's
     // generatedAt so it ages out normally instead of living forever.
     const stamp = r.computedAt || (prevAudit && prevAudit.generatedAt) || null;
@@ -114,10 +198,17 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
     if (!byId.has(r.showId)) carried++;
     byId.set(r.showId, stamp ? { ...r, computedAt: stamp } : { ...r });
   }
-  // 2. this run's entries win, stamped now (last write per showId wins)
+  // 2. this run's entries win, stamped now (last write per showId wins).
+  // censusVerdict (task #906) is (re)computed here — carried-forward entries
+  // above keep whatever verdict they were stamped with the run that produced
+  // them; only freshly-audited results get a new one, with firstSeenAt
+  // continuity from the previous run's candidates for the SAME show.
   for (const r of runResults) {
     if (!r || !r.showId) continue;
-    byId.set(r.showId, { ...r, computedAt: now });
+    const prevCandidates = (prevById.get(r.showId) && prevById.get(r.showId).censusVerdict
+      && prevById.get(r.showId).censusVerdict.candidates) || [];
+    const cv = censusVerdictFor(r, { now, prevCandidates });
+    byId.set(r.showId, { ...r, censusVerdict: cv, computedAt: now });
   }
 
   const merged = [...byId.values()].sort((a, b) => String(a.showId).localeCompare(String(b.showId)));
@@ -199,4 +290,4 @@ function withFileLock(lockPath, fn, opts = {}) {
   }
 }
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, stateMap, withFileLock, DEFAULT_RETENTION_DAYS };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, withFileLock, DEFAULT_RETENTION_DAYS };
