@@ -161,7 +161,17 @@
     "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
     "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
     "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
-    "macbeth-off-broadway-2026/independent--alice-saville.json"
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "othello-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,16 +209,8 @@
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
     ],
     "archiveToday": [
-      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
-      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/thestage--unknown.json",
-      "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-car-man-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
+      "data/review-texts/disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/othello-off-broadway-2026/wsj--unknown.json"
     ],
     "archive": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json",
@@ -232,13 +234,24 @@
     ]
   },
   "startTime": "2026-08-03T10:14:54.967Z",
-  "lastProcessed": "macbeth-off-broadway-2026/independent--alice-saville.json",
+  "lastProcessed": "othello-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-08-03T10:26:40.491Z",
       "event": "bb-session",
       "session": "ce3655a6",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-03T10:28:54.783Z",
+      "event": "bb-session",
+      "session": "65ed3e6b",
+      "url": "https://www.wsj.com/articles/othello-review-shakespeares-battle-scarred-hero-com"
+    },
+    {
+      "t": "2026-08-03T10:28:55.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

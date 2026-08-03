@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-03T10:28:29.444Z",
+  "updatedAt": "2026-08-03T10:29:14.385Z",
   "processed": 20,
-  "failed": 120,
-  "successRate": "14.3%",
+  "failed": 130,
+  "successRate": "13.3%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -10,16 +10,27 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 3,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-03T10:26:40.491Z",
       "event": "bb-session",
       "session": "ce3655a6",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-03T10:28:54.783Z",
+      "event": "bb-session",
+      "session": "65ed3e6b",
+      "url": "https://www.wsj.com/articles/othello-review-shakespeares-battle-scarred-hero-com"
+    },
+    {
+      "t": "2026-08-03T10:28:55.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
