@@ -41,20 +41,23 @@ test('ToggleBar default-variant button signals interactivity (cursor + press fee
   assert.match(defaultVariantSrc, /active:scale-95/, 'default-variant sort button must give tactile press feedback');
 });
 
-test('homepage SORT row wires the AUDIENCE option to a real sort-changing handler', () => {
-  const sortBlockStart = HOME_CLIENT_SRC.indexOf('label="SORT:"');
+function extractSortBlock(src) {
+  const sortBlockStart = src.indexOf('label="SORT:"');
   assert.ok(sortBlockStart !== -1, 'SORT ToggleBar not found in HomePageClient');
-  const sortBlockEnd = HOME_CLIENT_SRC.indexOf('ariaLabel="Sort shows"', sortBlockStart);
-  const sortBlock = HOME_CLIENT_SRC.slice(sortBlockStart, sortBlockEnd);
+  const sortBlockEnd = src.indexOf('ariaLabel="Sort shows"', sortBlockStart);
+  assert.ok(sortBlockEnd !== -1, 'end of SORT ToggleBar (ariaLabel="Sort shows") not found');
+  return src.slice(sortBlockStart, sortBlockEnd);
+}
+
+test('homepage SORT row wires the AUDIENCE option to a real sort-changing handler', () => {
+  const sortBlock = extractSortBlock(HOME_CLIENT_SRC);
 
   assert.match(sortBlock, /value: 'audience_buzz' as SortParam/, 'AUDIENCE option must map to the audience_buzz sort value');
   assert.match(sortBlock, /updateParams\(\{ sort: next \}\)/, 'clicking a sort option must call updateParams to actually change the sort');
 });
 
 test('homepage AUDIENCE sort option carries a title tooltip for every direction state', () => {
-  const sortBlockStart = HOME_CLIENT_SRC.indexOf('label="SORT:"');
-  const sortBlockEnd = HOME_CLIENT_SRC.indexOf('ariaLabel="Sort shows"', sortBlockStart);
-  const sortBlock = HOME_CLIENT_SRC.slice(sortBlockStart, sortBlockEnd);
+  const sortBlock = extractSortBlock(HOME_CLIENT_SRC);
 
   const audienceOptionMatch = sortBlock.match(
     /value: 'audience_buzz' as SortParam,\s*\n\s*label:[^\n]*\n\s*title:\s*([^\n]*)\n/
@@ -67,4 +70,23 @@ test('homepage AUDIENCE sort option carries a title tooltip for every direction 
   assert.match(titleExpr, /click to sort by audience score/i);
   // No em dashes in user-facing tooltip copy.
   assert.doesNotMatch(titleExpr, /—/);
+});
+
+test('switching Score Mode to audience lands on the audience_buzz sort, not score_desc', () => {
+  // Root cause behind the AUDIENCE rage clicks: score_desc/score_asc adapt to
+  // scoreMode (see the sort switch), so forcing sort:'score_desc' on mode-switch
+  // left CRITICS visually active while the list was already audience-sorted —
+  // clicking AUDIENCE couldn't change anything already displayed. Guard against
+  // regressing back to that state.
+  const scoreToggleStart = HOME_CLIENT_SRC.indexOf('<ScoreToggle');
+  assert.ok(scoreToggleStart !== -1, 'ScoreToggle usage not found in HomePageClient');
+  const scoreToggleEnd = HOME_CLIENT_SRC.indexOf('className="flex-shrink-0"', scoreToggleStart);
+  assert.ok(scoreToggleEnd !== -1, 'end of ScoreToggle usage not found');
+  const scoreToggleBlock = HOME_CLIENT_SRC.slice(scoreToggleStart, scoreToggleEnd);
+
+  assert.match(
+    scoreToggleBlock,
+    /updateParams\(\{ scoreMode: key, sort: 'audience_buzz' \}\)/,
+    "switching to audience scoreMode must set sort:'audience_buzz' so AUDIENCE (not CRITICS) shows as active"
+  );
 });

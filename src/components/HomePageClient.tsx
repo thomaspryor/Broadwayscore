@@ -714,7 +714,12 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           value={scoreMode}
           onChange={(key) => {
             if (key === 'audience') {
-              updateParams({ scoreMode: key, sort: 'score_desc' });
+              // Switching to audience mode with sort still pinned to 'score_desc' left
+              // CRITICS visually active while the list was already audience-sorted (the
+              // 'score_desc' case adapts to scoreMode below) — AUDIENCE looked clickable
+              // but couldn't change anything already showing. Land on the sort value that
+              // matches what's actually displayed.
+              updateParams({ scoreMode: key, sort: 'audience_buzz' });
             } else {
               updateParams({ scoreMode: key });
             }
@@ -747,9 +752,17 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               title: sort === 'recent' ? 'Sorted newest first, click to reverse' : sort === 'recent_asc' ? 'Sorted oldest first, click to reverse' : 'Click to sort by opening date',
             },
             {
+              // score_desc/score_asc sort by whichever score is currently displayed
+              // (see the sort switch below) — the tooltip must track scoreMode too, or
+              // it lies while viewing audience scores.
               value: 'score_desc' as SortParam,
               label: sort === 'score_desc' ? 'CRITICS ↓' : sort === 'score_asc' ? 'CRITICS ↑' : 'CRITICS',
-              title: sort === 'score_desc' ? 'Sorted by critic score, highest first, click to reverse' : sort === 'score_asc' ? 'Sorted by critic score, lowest first, click to reverse' : 'Click to sort by critic score',
+              title: (() => {
+                const scoreLabel = scoreMode === 'audience' ? 'audience score' : 'critic score';
+                if (sort === 'score_desc') return `Sorted by ${scoreLabel}, highest first, click to reverse`;
+                if (sort === 'score_asc') return `Sorted by ${scoreLabel}, lowest first, click to reverse`;
+                return `Click to sort by ${scoreLabel}`;
+              })(),
             },
             {
               value: 'audience_buzz' as SortParam,
