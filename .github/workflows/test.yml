@@ -2828,6 +2828,25 @@ jobs:
       # pattern on the contamination/text-quality/provisional-venue steps.
       # Setup steps (checkout, npm ci, freshness canary) and the auto-close
       # MUTATION stay fail-fast above — downstream is meaningless if they break.
+      - name: Run explainExclusion corpus parity (needs review-texts)
+        # Coverage Verdict S0 (task #902) shipped review-guards.explain.test.mjs
+        # with a three-layer design whose top layer sweeps the whole review-texts
+        # corpus asserting explainExclusion()===null <=> isIncludableForRebuild().
+        # That layer never ran in CI: the scripts/lib/*.test.mjs glob lives in the
+        # unit-tests job, and unit-tests only runs checkout-core-data, which copies
+        # /tmp/core-data-checkout/*.json into data/ and NEVER data/review-texts/.
+        # The corpus comes from checkout-review-texts, used only by data-validation
+        # / e2e-tests / visual-regression — so the parity test hit its
+        # corpus-missing branch and t.skip()'d on every run while reporting green.
+        # Re-running the same file HERE, after checkout-review-texts, is what makes
+        # the parity claim real; REQUIRE_REVIEW_CORPUS=1 turns a missing corpus into
+        # a hard failure so a silently-broken checkout can never restore the skip.
+        # Layers 1-2 re-run cheaply (~ms); the corpus layer is the ~8s cost.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/review-guards.explain.test.mjs
+
       - name: Run data validation
         if: always()
         run: node scripts/validate-data.js
