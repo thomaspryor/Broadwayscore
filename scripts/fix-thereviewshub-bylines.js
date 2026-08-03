@@ -19,6 +19,19 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv)) {
+  console.log(`fix-thereviewshub-bylines.js — recover The Reviews Hub critic bylines from live pages.
+
+Usage:
+  node scripts/fix-thereviewshub-bylines.js           dry run (fetches pages, reports only)
+  node scripts/fix-thereviewshub-bylines.js --apply   write corrections
+
+Run from the repo root that owns the canonical data/review-texts store.`);
+  process.exit(0);
+}
+
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const APPLY = process.argv.includes('--apply');
