@@ -262,6 +262,16 @@ export interface ComputedShow {
   coverageAcked?: boolean;
 }
 
+/**
+ * ComputedShow variant whose criticScore.reviews is narrowed to R instead of the
+ * full ComputedReview[]. Lets client-boundary props declare exactly which review
+ * fields they serialize — widening back to full reviews becomes a compile error,
+ * not a silent regression (card #962, sibling of the #419 Theater Pick<> pattern).
+ */
+export type ComputedShowWithReviews<R> = Omit<ComputedShow, 'criticScore'> & {
+  criticScore: (Omit<CriticScoreResult, 'reviews'> & { reviews: R[] }) | null;
+};
+
 // ===========================================
 // HELPER: GET OUTLET CONFIG
 // ===========================================
