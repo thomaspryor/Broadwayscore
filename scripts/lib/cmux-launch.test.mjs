@@ -165,3 +165,26 @@ test('osActivateCmuxApp: best-effort OS-level activation, never throws (card #90
   assert.doesNotThrow(() => osActivateCmuxApp());
   assert.equal(CMUX_APP, '/Applications/cmux.app');
 });
+
+test('waitForLaunchOutcome: wake() sees isFirstWake=true only on the FIRST call, false on rewakes (Codex P1, 2026-08-03)', () => {
+  // osActivateCmuxApp (real OS foreground) is gated on !isFirstWake — firing
+  // it on every 5s-delayed launch would steal screen focus for the common
+  // brief-lag case, not just a genuine outage. Pin the sequence the caller
+  // (launchCmuxSessionInner) relies on to make that gating correct.
+  let t = 0;
+  const wakeCalls = [];
+  waitForLaunchOutcome({
+    ws: { ref: 'workspace:900' }, marker: 'bsc-cmd-705-abcd1234.sh',
+    attempt: 1, maxAttempts: 2, injectionGraceSec: 90, slowBootCapSec: 360,
+    probes: {
+      intervalSec: 0,
+      now: () => { const v = t; t += 5000; return v; },
+      wrapperAlive: () => false,
+      claudeTagAlive: () => false,
+      wake: isFirstWake => wakeCalls.push(isFirstWake),
+    },
+  });
+  assert.ok(wakeCalls.length >= 2, 'the never-injects case must rewake more than once inside the grace window');
+  assert.equal(wakeCalls[0], true);
+  assert.ok(wakeCalls.slice(1).every(v => v === false), 'every call after the first must report isFirstWake=false');
+});

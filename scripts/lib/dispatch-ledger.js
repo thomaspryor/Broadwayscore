@@ -407,7 +407,13 @@ function openTaskWorkspaceLaunches(entries) {
 // failing to ever start.
 const OUTAGE_MIN_DISTINCT_TASKS = 3;
 const OUTAGE_LOOKBACK_MS = 30 * 60 * 1000; // matches the observed 8/3 cluster width with room to spare
-const OUTAGE_REASON_RE = /injection never ran|wrapper exited/;
+// 'wrapper exited' deliberately EXCLUDED (Codex adversarial review, 2026-08-03):
+// that state means the typed command DID run and then the process died — a
+// per-task crash/bad-command signature, proof injection is working, not the
+// launcher failing to inject. Conflating it here would raise a confident,
+// false "cmux is not accepting commands" alarm off three unrelated task
+// bugs, exactly the kind of silent-wrongness this detector exists to avoid.
+const OUTAGE_REASON_RE = /injection never ran/;
 
 // entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
 // is unavailable in workflow scripts, callers pass it explicitly).
@@ -418,15 +424,18 @@ function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, m
     OUTAGE_REASON_RE.test(String(e.failureReason || '')) && e.ts && Date.parse(e.ts) >= cutoff);
   if (!deaths.length) return { outage: false, count: 0, taskIds: [] };
 
-  const oldestDeathTs = deaths.reduce((min, e) => e.ts < min ? e.ts : min, deaths[0].ts);
-  // A VERIFIED success (no 'unverified' flag — see failedLaunchEntries) after
-  // the oldest death in the window is proof the launcher recovered mid-window;
-  // an outage report describing a resolved incident as ongoing would send
-  // whoever reads it chasing a ghost.
-  const recovered = entries.some(e => e.event === 'launch' && !e.unverified && e.ts && e.ts > oldestDeathTs);
+  // Newest death, not oldest (Codex adversarial review, 2026-08-03 — P0):
+  // comparing against the OLDEST death let failure→success→3-more-failures
+  // read as "recovered" the instant that one success landed, even though the
+  // launcher broke again right after it. Only a verified success AFTER every
+  // death currently in the window is real evidence the launcher is healthy
+  // right now.
+  const newestDeathTs = deaths.reduce((max, e) => e.ts > max ? e.ts : max, deaths[0].ts);
+  const recovered = entries.some(e => e.event === 'launch' && !e.unverified && e.ts && e.ts > newestDeathTs);
   if (recovered) return { outage: false, count: deaths.length, taskIds: [...new Set(deaths.map(e => String(e.taskId)))], recovered: true };
 
   const taskIds = [...new Set(deaths.map(e => String(e.taskId)))];
+  const oldestDeathTs = deaths.reduce((min, e) => e.ts < min ? e.ts : min, deaths[0].ts);
   return {
     outage: taskIds.length >= minDistinctTasks,
     count: deaths.length,

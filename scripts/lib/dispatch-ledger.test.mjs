@@ -469,6 +469,42 @@ test('detectLauncherOutage: an UNVERIFIED launch entry (itself a failed attempt)
   assert.equal(detectLauncherOutage(entries, { now }).outage, true);
 });
 
+test('detectLauncherOutage: a success SANDWICHED between failures does not mask the outage (Codex P0, 2026-08-03)', () => {
+  // failure -> success -> 3 MORE failures. Comparing against the oldest death
+  // would call this "recovered" the instant the one success landed, even
+  // though the launcher broke again right after — the ledger's actual
+  // account of what's happening RIGHT NOW must win.
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const death = (taskId, ref, minsAgo) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: 'command injection never ran (no wrapper process appeared)',
+    ts: new Date(now - minsAgo * 60000).toISOString(),
+  });
+  const entries = [
+    death('897', 'workspace:60', 25),
+    { event: 'launch', taskId: '900', workspaceRef: 'workspace:72', ts: new Date(now - 22 * 60000).toISOString() },
+    death('855', 'workspace:61', 15), death('857', 'workspace:65', 10), death('902', 'workspace:67', 5),
+  ];
+  const r = detectLauncherOutage(entries, { now });
+  assert.equal(r.outage, true, 'three fresh failures after the recovery must still alarm');
+  assert.equal(r.recovered, undefined);
+});
+
+test('detectLauncherOutage: "wrapper exited" is NOT outage evidence — injection ran, the command itself died (Codex P0, 2026-08-03)', () => {
+  // A wrapper that ran and then exited proves the typed command DID start —
+  // that's a per-task crash/bad-command signature, not cmux refusing to
+  // inject. Conflating the two would raise a false "cmux is broken" alarm
+  // off three unrelated task bugs.
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const exited = (taskId, ref) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: 'launch wrapper exited without claude registering',
+    ts: new Date(now - 5 * 60000).toISOString(),
+  });
+  const entries = ['1', '2', '3'].map((t, i) => exited(t, `workspace:${i}`));
+  assert.equal(detectLauncherOutage(entries, { now }).outage, false);
+});
+
 test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are not outage evidence', () => {
   const now = Date.parse('2026-08-03T03:00:00.000Z');
   const bootDeath = (taskId, ref) => ({

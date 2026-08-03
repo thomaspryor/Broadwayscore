@@ -207,7 +207,7 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   // observes fire-time (it must learn a wake happened even if this wait is
   // later interrupted by a throw — outcome-based tracking would leak the
   // override on any non-return path).
-  const wake = probes.wake || wakeFn || (() => { osActivateCmuxApp(); return setAppFocus('active'); });
+  const wake = probes.wake || wakeFn || (isFirstWake => { if (!isFirstWake) osActivateCmuxApp(); return setAppFocus('active'); });
   const napSec = probes.intervalSec ?? PROBE_INTERVAL_SEC; // ?? not ||: a test seam of 0 must mean "don't sleep"
   // MONOTONIC clock, not Date.now (Codex ship-check): an NTP step or a manual
   // clock change during a 6-minute wait would otherwise move elapsed backward
@@ -255,13 +255,14 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
     // in case a concurrent launcher's clear re-deferred a still-unrendered
     // surface.
     if (!wrapperEverSeen && elapsedSec >= nextWakeAtSec) {
-      if (!wakeAttempted) {
+      const isFirstWake = !wakeAttempted;
+      if (isFirstWake) {
         effectiveGraceSec = elapsedSec + injectionGraceSec;
         console.error(`[cmux-launch] ${ws ? ws.ref : 'workspace'}: no wrapper process after ${Math.round(elapsedSec)}s — forcing app-focus active to flush cmux's deferred surface render (lazy-exec fix, 2026-08-02); injection grace restarted`);
       }
       wakeAttempted = true;
       nextWakeAtSec = elapsedSec + REWAKE_INTERVAL_SEC;
-      wake();
+      wake(isFirstWake);
     }
     const d = decideLaunchWait({
       claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
@@ -423,7 +424,14 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // woke is recorded AT FIRE TIME, not from the returned outcome — a
       // throw/interrupt between the wake and the return would otherwise skip
       // the finally-clear and leave the override pinned.
-      wakeFn: () => { wakeState.woke = true; osActivateCmuxApp(); return setAppFocus('active'); },
+      // OS-level activation (open -a) only from the SECOND wake onward — not
+      // the first (P1, Codex adversarial review 2026-08-03): calling it on
+      // every 5s-delayed launch would steal screen focus for the common
+      // brief-lag case (#705 measured 4-5 min boots as normal under load),
+      // not just a genuine outage. First wake stays exactly as #849 shipped
+      // it (internal cmux flag only); escalating to a real OS foreground is
+      // reserved for a launch that is STILL not injecting ~10s+ later.
+      wakeFn: isFirstWake => { wakeState.woke = true; if (!isFirstWake) osActivateCmuxApp(); return setAppFocus('active'); },
     });
     if (outcome.action === 'ok') {
       if (autoColor) setAutoColor(ws.ref);
