@@ -281,3 +281,31 @@ test('loadCookieMeta: no WSJ_COOKIES env var set at all -> falls back to bundle 
     resetEnv();
   }
 });
+
+test('loadCookieMeta: bundle has cookies but NO _meta + env has meta -> must still agree with loadCookiesByFileKey (bundle wins, unknown freshness)', () => {
+  // Regression for a guard mismatch found in ship-check review: loadCookieMeta
+  // used to gate on meta PRESENCE (hasBundleMeta) while loadCookiesByFileKey
+  // gates on cookie PRESENCE (bundleCookies) — a bundle with cookies but no
+  // _meta (a real case: whole-bundle Safari-extraction pushes can omit it)
+  // made the two functions disagree about which tier was actually selected.
+  resetEnv();
+  try {
+    setBundle('wsj', [{ name: 'bundle-no-meta', value: '1', domain: 'wsj.com' }], undefined);
+    process.env.WSJ_COOKIES = Buffer.from(
+      JSON.stringify([{ name: 'env-with-meta', value: '2', domain: 'wsj.com' }])
+    ).toString('base64');
+    process.env.WSJ_COOKIES_META = Buffer.from(
+      JSON.stringify({ extractedAtUnix: 9999999999 })
+    ).toString('base64');
+
+    const loaded = loadCookiesByFileKey('wsj');
+    assert.equal(loaded.source, 'bundle');
+
+    const meta = loadCookieMeta('wsj');
+    // Bundle was actually selected but has no timestamp of its own — must
+    // NOT report the env secret's timestamp as if it described what's in use.
+    assert.notEqual(meta && meta.source, 'env');
+  } finally {
+    resetEnv();
+  }
+});
