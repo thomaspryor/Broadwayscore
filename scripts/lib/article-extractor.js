@@ -422,18 +422,27 @@ function extractArticleText(html, hostname) {
   // The Stage: requires subscriber auth; body lives in <p> across multiple
   // aos-DS32-WYSEdit blocks with mid-article promo widgets. Logged-out HTML
   // has no body, so this returns null and the verifier still flags logout.
+  // Returns null explicitly (not falls through to the generic <article>/<main>
+  // patterns below) — ship-check adversarial review (task #919, 2026-08-03)
+  // found that falling through lets the generic pattern grab non-review page
+  // chrome (headline/standfirst/nav) that clears its own 300-char floor,
+  // silently defeating the "logout returns null" guarantee this comment
+  // claims and letting a dead session look like a successful recovery.
   if (host.includes('thestage.co.uk')) {
     const stageText = extractStageBody(html);
-    if (stageText && stageText.length >= 300) return stageText;
+    return stageText && stageText.length >= 300 ? stageText : null;
   }
 
   // The Times / Sunday Times: requires subscriber auth; body paragraphs carry
   // a UUID id, unlike surrounding chrome (quizle, newsletter box, promoted
-  // content). Logged-out HTML has zero UUID-id paragraphs, so this returns
-  // null and the verifier still flags logout.
+  // content). Logged-out HTML has zero UUID-id paragraphs. Returns null
+  // explicitly for the same reason as thestage above — verified live: the
+  // generic <article> fallback returns 316 chars of headline+quizle text on
+  // a real logged-out thetimes.com page, which clears its 300-char floor and
+  // would otherwise be mistaken for a successful recovery.
   if (host.includes('thetimes.co.uk') || host.includes('thetimes.com')) {
     const timesText = extractTimesBody(html);
-    if (timesText && timesText.length >= 300) return timesText;
+    return timesText && timesText.length >= 300 ? timesText : null;
   }
 
   // Lighting & Sound America: table-based layout, no container div — prose lives

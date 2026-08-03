@@ -96,8 +96,17 @@ const CRITICAL_OUTLETS = {
     // Swapped for a live review URL and added minBodyChars: the body-length
     // check catches a dead session that cookie-expiry alone misses, same
     // rationale as thestage above.
+    //
+    // authCookies MUST be non-empty: checkLiveAccess() treats authCookies=[]
+    // as "soft paywall" and short-circuits to a PASS whenever the fetched
+    // HTML is merely long (>50000 chars) and paywall-keyword-matched — before
+    // minBodyChars ever runs. `authId` is Times UK's real subscriber-session
+    // cookie (present on both thetimes.com and thetimes.co.uk after login;
+    // also the canonical name recollect-for-scores.js already keys off of).
+    // Ship-check adversarial review caught this 2026-08-03 — with
+    // authCookies=[], minBodyChars above was unreachable dead code.
     testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
-    authCookies: [],
+    authCookies: ['authId'],
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
     minBodyChars: 1200,
   },
