@@ -36,7 +36,17 @@
     "the-gin-game-2026/american-theater-web--andy-propst.json",
     "the-gin-game-2026/ap--mark-kennedy.json",
     "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
-    "the-gin-game-2026/northjerseycom--robert-feldberg.json"
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -63,12 +73,14 @@
       "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
       "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-03T00:33:47.869Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
+  "lastProcessed": "shifters-off-broadway-2026/independent--alice-saville.json",
   "log": [
     {
       "t": "2026-08-03T00:36:53.201Z",
@@ -101,6 +113,28 @@
     },
     {
       "t": "2026-08-03T00:58:58.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T01:33:30.609Z",
+      "event": "bb-session",
+      "session": "4bac7f71",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T01:33:31.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T01:33:47.446Z",
+      "event": "bb-session",
+      "session": "47be7cff",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T01:33:48.338Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
