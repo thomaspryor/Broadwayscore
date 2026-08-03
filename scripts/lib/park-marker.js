@@ -35,6 +35,20 @@ function parseParkedDate(text) {
 }
 
 /**
+ * Task id from the resume command in the marker body — only meaningful when
+ * the marker itself is at the head (same recency contract as parseParkedDate).
+ * First match wins: parkCard's own resume line sits directly under the
+ * marker, above any older outcome content.
+ * @returns {number|null}
+ */
+function parseParkedTaskId(text) {
+  const s = String(text || '');
+  if (!PARK_MARKER_RE.test(s)) return null;
+  const m = /--id (\d+) --force/.exec(s);
+  return m ? Number(m[1]) : null;
+}
+
+/**
  * The exact Outcome text parkCard writes — byte-identical to the inline
  * string it shipped with on 2026-08-02 (bsc-prune.js, task #776).
  * @param {{dateStr:string, workspaceRef:string, taskId:string|number}} p
@@ -43,4 +57,4 @@ function formatParkOutcome({ dateStr, workspaceRef, taskId }) {
   return `## Parked ${dateStr}\nOwner closed its workspace (${workspaceRef}) without marking it done, so the dispatcher stopped re-opening it. Resume with \`node scripts/bsc-next.js --id ${taskId} --force\`.`;
 }
 
-module.exports = { PARK_MARKER_RE, parseParkedDate, formatParkOutcome };
+module.exports = { PARK_MARKER_RE, parseParkedDate, parseParkedTaskId, formatParkOutcome };
