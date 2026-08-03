@@ -21,6 +21,12 @@ on:
 jobs:
   investigate:
     runs-on: ubuntu-latest
+    # Explicit rather than repo-default: the failed-steps fetch needs
+    # actions:read, and a future tightening of default token permissions
+    # would otherwise silently regress it to empty output (fail-open hides it).
+    permissions:
+      contents: read
+      actions: read
     steps:
       # Required for the local notify-failure action below
       - name: Checkout repository
@@ -44,7 +50,7 @@ jobs:
           FAILED=""
           if [ -n "$RUN_ID" ]; then
             FAILED=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/jobs" \
-              --jq '[.jobs[] | .name as $j | (.steps // [])[] | select(.conclusion == "failure") | "\($j) → \(.name)"] | unique | join("; ")' 2>/dev/null || echo "")
+              --jq '[.jobs[] | .name as $j | (.steps // [])[] | select(.conclusion == "failure" or .conclusion == "cancelled") | "\($j) → \(.name) (\(.conclusion))"] | unique | join("; ")' 2>/dev/null || echo "")
           fi
           echo "failed_steps=$FAILED" >> "$GITHUB_OUTPUT"
           echo "Failed steps in source run ${RUN_ID:-unknown}: ${FAILED:-none found}"
