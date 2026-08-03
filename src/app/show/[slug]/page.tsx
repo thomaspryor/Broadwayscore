@@ -43,6 +43,7 @@ import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
+import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
@@ -328,6 +329,24 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
 
+  // Narrow the show's OWN criticScore.reviews at each client boundary that doesn't
+  // need the full review objects. ReviewsList (below) is the only consumer that
+  // needs criticName/outlet/url/quote/etc; ShowHeroRedesign only needs reviewScore
+  // (for ScoreBreakdownBar); ShowPageBelowFoldLoader/WhereItRanks need none at all.
+  // Passing the same full show object across all three boundaries tripled this
+  // show's own review array in the RSC payload — 117 review objects inlined for
+  // 39 real reviews on /show/hamilton. Card #962, follow-up to #419.
+  const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
+    ...show,
+    criticScore: show.criticScore
+      ? { ...show.criticScore, reviews: show.criticScore.reviews.map(r => ({ reviewScore: r.reviewScore })) }
+      : null,
+  };
+  const showForBelowFold: ComputedShowWithReviews<never> = {
+    ...show,
+    criticScore: show.criticScore ? { ...show.criticScore, reviews: [] } : null,
+  };
+
   // Pre-compute values that would require data-module imports in a client component.
   // These are passed as serializable props to ShowPageBelowFoldLoader.
   const audienceShowScoreUrl = audienceBuzz?.sources.showScore ? getShowScoreUrl(show.id) : undefined;
@@ -408,7 +427,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         <RedesignOn>
           <div className="mb-6">
             <ShowHeroRedesign
-              show={show}
+              show={showForHero}
               consensusText={consensus?.text ?? null}
               audienceGrade={audienceGrade}
               audienceCount={totalAudienceCount}
@@ -915,7 +934,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
              16. Quick Facts                                                  */}
 
         <ShowPageBelowFoldLoader
-          show={show}
+          show={showForBelowFold}
           videoReviews={videoReviews}
           audienceBuzz={audienceBuzz}
           audienceShowScoreUrl={audienceShowScoreUrl}

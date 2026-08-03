@@ -16,7 +16,7 @@
 import { showFormatPlural } from '@/lib/show-format';
 import { useState } from 'react';
 import Link from 'next/link';
-import type { ComputedShow } from '@/lib/data-types';
+import type { ComputedShowWithReviews } from '@/lib/data-types';
 import type { ShowRanks, RankCell, RankMetric } from '@/lib/data-show-ranks';
 import {
   getBrowseSlug,
@@ -32,7 +32,9 @@ interface Props {
   /** Ranks computed with format: show.type — narrowed to musical-or-play pool.
    *  Null if the show isn't a musical or play (Special / Limited Engagement). */
   ranksByFormat: ShowRanks | null;
-  show: ComputedShow;
+  // Never reads criticScore.reviews (only show.type/category/status) — narrowed so
+  // widening back to the full review array would be a compile error. Card #962.
+  show: ComputedShowWithReviews<never>;
 }
 
 type FormatChoice = 'all' | 'own';
