@@ -941,6 +941,11 @@ on:
       - 'scripts/lib/review-gate.mjs'
       - 'tests/unit/review-gate.test.mjs'
       - 'tests/unit/review-gate-scope.test.mjs'
+      # pre-push-visual-gate.sh's own-merge-scoped UI-file query (task #879)
+      # reuses review-gate.mjs's scopedChangedFiles — path-listed so a solo
+      # edit to the hook or its test still triggers CI.
+      - '.claude/hooks/pre-push-visual-gate.sh'
+      - 'tests/unit/pre-push-visual-gate-scope.test.mjs'
       # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
       # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
       - 'scripts/audit-workflow-hygiene.js'
@@ -1162,6 +1167,14 @@ on:
       # colocated test runs in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-status.js'
+      # bsc-needs-you (card #870 — "Needs You" tab triage: owner pain
+      # 2026-08-02, "giant list of tabs and I can't tell which ones actually
+      # need decisions from me"). Pure logic lives in scripts/lib/ so the
+      # colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/bsc-needs-you.js'
+      - 'scripts/lib/needs-you-snapshot.js'
+      - 'scripts/lib/needs-you-snapshot.test.mjs'
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/lib/bsc-runner.js'
