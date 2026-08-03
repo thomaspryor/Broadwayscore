@@ -132,6 +132,17 @@ test('loadEnv keeps "=" inside values intact', () => {
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// Worktrees never have their own .env (gitignored, not copied on EnterWorktree),
+// so __dirname-relative resolution finds nothing there — this is exactly the bug
+// notion-brain.js hit (commit 3fd452ba1fc) before the fix was generalized here
+// (task #983). Self-skips off the machine that owns CANONICAL_REPO (e.g. CI).
+test('loadEnv() with no repoRoot falls back to the canonical repo .env', () => {
+  const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+  if (!fs.existsSync(path.join(CANONICAL_REPO, '.env'))) return;
+  const res = loadEnv();
+  assert.equal(res.path, path.join(CANONICAL_REPO, '.env'));
+});
+
 // dotenv is NOT in package.json — require('dotenv') would throw MODULE_NOT_FOUND
 // and take the whole launchd job down. This asserts we never reintroduce it.
 test('the loader has no dotenv dependency', () => {

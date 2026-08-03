@@ -489,18 +489,7 @@ async function main() {
   console.log('');
 
   // Load env if running locally
-  try {
-    const envPath = path.join(__dirname, '../.env');
-    if (fs.existsSync(envPath)) {
-      const envContent = fs.readFileSync(envPath, 'utf8');
-      for (const line of envContent.split('\n')) {
-        const match = line.match(/^([A-Z_]+)=(.+)$/);
-        if (match && !process.env[match[1]]) {
-          process.env[match[1]] = match[2].trim();
-        }
-      }
-    }
-  } catch (e) {}
+  require('./lib/load-env').loadEnv();
 
   console.log('Scanning review files...');
   let files = scanReviewFiles();
