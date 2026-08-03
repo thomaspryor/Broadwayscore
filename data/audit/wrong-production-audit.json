@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T01:03:13.001Z",
+  "timestamp": "2026-08-03T01:36:09.492Z",
   "stats": {
-    "totalReviews": 41329,
+    "totalReviews": 41332,
     "alreadyFlagged": 18064,
-    "dateGuardCatches": 101,
+    "dateGuardCatches": 103,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
     "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3392
+    "noPublishDate": 3391
   },
   "findings": [
     {
@@ -42226,6 +42226,7 @@
     {
       "showId": "the-car-man-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
+      "score": 82,
       "publishDate": "2026-06-25",
       "url": "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
       "findings": [
@@ -42239,6 +42240,7 @@
     {
       "showId": "the-car-man-west-end-2026",
       "file": "cheeky-little-matinee--cheekylittlematinee.json",
+      "score": 96,
       "publishDate": "2026-06-17",
       "url": "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
       "findings": [
@@ -42246,6 +42248,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 41d before show (2026-06-17 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "daily-echo--lorelei-reddin.json",
+      "score": null,
+      "publishDate": "2025-11-11",
+      "url": "https://www.dailyecho.co.uk/news/25609300.matthew-bournes-car-man-mayflower-theatre-2026/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 259d before show (2025-11-11 vs 2026-07-28)"
         }
       ]
     },
@@ -42265,6 +42281,7 @@
     {
       "showId": "the-car-man-west-end-2026",
       "file": "harry-theatre-life--harry-brogan.json",
+      "score": 85,
       "publishDate": "2026-06-24",
       "url": "https://www.harrytheatrelife.co.uk/post/review-matthew-bourne-s-the-car-man-uk-ireland-tour-the-lowry-salford",
       "findings": [
@@ -42278,6 +42295,7 @@
     {
       "showId": "the-car-man-west-end-2026",
       "file": "jadar--jay-darcy.json",
+      "score": 78,
       "publishDate": "2026-06-24",
       "url": "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
       "findings": [
@@ -42290,7 +42308,22 @@
     },
     {
       "showId": "the-car-man-west-end-2026",
+      "file": "quays-life--carmel-thomason.json",
+      "score": 86,
+      "publishDate": "2026-06-24",
+      "url": "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
       "file": "timeout-london--unknown.json",
+      "score": 94,
       "publishDate": "2026-06-23",
       "url": "https://www.timeout.com/london/dance/the-car-man",
       "findings": [
