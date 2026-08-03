@@ -48,8 +48,9 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const USAGE = `Usage: node scripts/bsc-reconcile.js [--dry-run]
 Marks headless jobs whose process died as orphaned, sweeps stale leases,
-re-dispatches in_progress tasks whose cmux tab died, queues digest lines.
-Retry of orphaned headless jobs requires BSC_RECONCILE_RETRY=1.`;
+re-dispatches in_progress tasks whose cmux tab died, re-dispatches stalled
+in_progress tasks whose last job/tab terminated without completing them,
+queues digest lines. Retry of orphaned headless jobs requires BSC_RECONCILE_RETRY=1.`;
 
 // --help before ANY side effect (house rule: --help fall-through incidents).
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
@@ -109,6 +110,16 @@ function sleepMs(ms) { spawnSync('sleep', [String(ms / 1000)]); }
 // below — is directly testable without invoking a real spawnSync).
 function redispatchArgv(taskId) {
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId), '--force'];
+}
+
+// Stalled-task redispatch deliberately does NOT carry --force: unlike the
+// dead-tab case above there is no live-looking workspace for the
+// duplicate-dispatch guard to false-match on (the whole trigger is that the
+// ledger shows nothing open), so every bsc-next guard — parked, dead-attempt,
+// duplicate — should stay armed and be the honest reason a redispatch is
+// refused.
+function stallRedispatchArgv(taskId) {
+  return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 
 // ── In-progress task session reconciler (task #883) ────────────────────────
@@ -240,6 +251,119 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
   return { checked: tasks.length, dead: dead.map(d => d.task.id), redispatched };
 }
 
+// ── Stalled-task sweep (owner mandate 2026-08-03: "close the loop") ────────
+// The 2026-08-03 digest claimed four issues were "being fixed by a session
+// right now" (#733/#807/#808/#935); in reality every one had been dispatched
+// as a headless job that TERMINATED hours earlier (job-failed for two,
+// job-done without the task ever being completed for the other two) while the
+// task sat in_progress. That state was invisible to both sweeps above: the
+// orphan sweep only watches OPEN jobs, and reconcileTaskSessions only watches
+// open WORKSPACE launches. This sweep owns the leftover shape: an in_progress
+// task whose ledger holds SOME dispatch history but nothing open — no live
+// tab, no live job. It redispatches once per stall through bsc-next's normal
+// guarded path (no --force — see stallRedispatchArgv), and stamps a
+// stall-sweep marker either way so a refused/parked task is surfaced once,
+// not re-attempted every 5-minute tick. Tasks with NO ledger history at all
+// are skipped on purpose — same rationale as reconcileTaskSessions: a
+// hand-claimed interactive session is invisible to us and not ours to declare
+// dead.
+const STALL_EVENT = 'stall-sweep-attempted';
+const STALL_COOLDOWN_MS = 30 * 60 * 1000; // let a just-finished session's task-status writes land first
+// Codex pre-ship catch: deadAttemptsForTask counts only failures/orphans, so a
+// job that keeps ending job-DONE without ever completing its task would re-arm
+// the sweep every cooldown — one task could burn ~48 sessions/day forever.
+// Total stall redispatches per task are therefore capped by counting the
+// task's own stall markers: past the cap it gets ONE task-stall-exhausted
+// report per re-arm (which lands in the digest's stuck bucket) and no more
+// sessions until a human intervenes.
+const MAX_STALL_ATTEMPTS_PER_TASK = 2;
+
+function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
+  const {
+    loadTasksFn = bscNext.loadTasks,
+    tasksDir = bscNext.TASKS_DIR,
+    readLedgerEntriesFn = ledger.readEntries,
+    appendLedgerFn = ledger.appendEntry,
+    dispatchFn = (taskId) => spawnSync('node', stallRedispatchArgv(taskId), { encoding: 'utf8', cwd: REPO, timeout: DISPATCH_TIMEOUT_MS }),
+    reportFn = report,
+    nowFn = Date.now,
+  } = deps;
+
+  const tasks = loadTasksFn(tasksDir).filter(t => t.status === 'in_progress');
+  if (!tasks.length) return { checked: 0, stalled: [], redispatched: [] };
+
+  const entries = readLedgerEntriesFn();
+  const openLaunches = ledger.openTaskWorkspaceLaunches(entries);
+  const openJobTasks = new Set(ledger.openJobs(entries).map(j => String(j.taskId)));
+
+  const stalled = [];
+  const redispatched = [];
+  let dispatchBudget = MAX_REDISPATCH_PER_TICK;
+
+  for (const task of tasks) {
+    const id = String(task.id);
+    if (openLaunches.has(id) || openJobTasks.has(id)) continue; // something is (believed) live — other sweeps own it
+    const taskEntries = entries.filter(e => String(e.taskId) === id);
+    if (!taskEntries.length) continue; // never dispatcher-managed — invisible on purpose
+
+    const tsOf = (e) => Date.parse(e.ts || '') || 0;
+    const lastActivity = Math.max(...taskEntries.filter(e => e.event !== STALL_EVENT).map(tsOf));
+    if (!lastActivity || nowFn() - lastActivity < STALL_COOLDOWN_MS) continue; // still settling
+    const markers = taskEntries.filter(e => e.event === STALL_EVENT);
+    const lastMarker = Math.max(0, ...markers.map(tsOf));
+    if (lastMarker >= lastActivity) continue; // this stall already attempted/surfaced — new activity re-arms
+
+    // Classify how the last dispatch ended, purely for the report line.
+    const jobs = [...ledger.foldJobs(taskEntries).values()].sort((a, b) => tsOf(a) - tsOf(b));
+    const lastJob = jobs[jobs.length - 1];
+    const how = lastJob
+      ? (lastJob.event === ledger.JOB_EVENTS.DONE ? 'last job reported done but the task was never completed' : `last job ended ${lastJob.event}`)
+      : 'last workspace launch is terminal';
+
+    stalled.push(id);
+    reportFn({ kind: 'task-stalled', taskId: id, detail: `in_progress task #${id} "${task.subject}" has no live session or job (${how}) — nothing is actually working on it` });
+    if (dryRun) continue;
+
+    if (markers.length >= MAX_STALL_ATTEMPTS_PER_TASK) {
+      appendLedgerFn({ event: STALL_EVENT, taskId: id });
+      reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
+      continue;
+    }
+    if (ledger.deadAttemptsForTask(id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
+      // Marker stamped: this verdict is stable, so surface it once per stall,
+      // not every 5-minute tick.
+      appendLedgerFn({ event: STALL_EVENT, taskId: id });
+      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs a human look, not another automatic retry` });
+      continue;
+    }
+    if (dispatchBudget <= 0) {
+      // NO marker on throttle: the budget is per-tick, so the next tick must
+      // pick this task up again — a backlog drains at MAX_REDISPATCH_PER_TICK
+      // per tick instead of stalling forever behind a spent budget.
+      reportFn({ kind: 'task-stall-throttled', taskId: id, detail: `#${id} deferred — this tick's stall budget (${MAX_REDISPATCH_PER_TICK}) is spent` });
+      continue;
+    }
+    // Marker stamped before the attempt: whether bsc-next accepts or refuses
+    // (parked card, card-gate rejection), the outcome is recorded once and the
+    // report line is the surface — a refusal must not re-fire every tick.
+    appendLedgerFn({ event: STALL_EVENT, taskId: id });
+    dispatchBudget--;
+    let r;
+    try { r = dispatchFn(id); } catch (e) { r = { status: 1, stderr: e.message }; }
+    const ok = r && r.status === 0;
+    reportFn({
+      kind: ok ? 'task-stall-redispatched' : 'task-stall-refused',
+      taskId: id,
+      detail: ok
+        ? `re-dispatched stalled #${id} via bsc-next --id`
+        : `bsc-next refused stalled #${id}: ${String((r && (r.stderr || r.stdout)) || 'unknown error').trim().split('\n').slice(-1)[0]}`,
+    });
+    if (ok) redispatched.push(id);
+  }
+
+  return { checked: tasks.length, stalled, redispatched };
+}
+
 async function main() {
   const entries = ledger.readEntries();
   const open = ledger.openJobs(entries);
@@ -327,10 +451,18 @@ async function main() {
   } catch (e) {
     console.error(`[bsc-reconcile] task-session sweep crashed (non-fatal): ${e.message}`);
   }
+
+  // Owner mandate 2026-08-03: stalled-task sweep, same best-effort isolation.
+  try {
+    const stallSweep = reconcileStalledTasks({ dryRun: DRY });
+    console.log(`[bsc-reconcile] stalled checked=${stallSweep.checked} stalled=${stallSweep.stalled.length} redispatched=${stallSweep.redispatched.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] stalled-task sweep crashed (non-fatal): ${e.message}`);
+  }
 }
 
 if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, redispatchArgv, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK };

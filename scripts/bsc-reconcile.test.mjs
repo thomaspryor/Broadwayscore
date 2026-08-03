@@ -214,3 +214,185 @@ test('reconcileTaskSessions: a failed cmux listing is reported and returns clean
   assert.deepEqual(r.dead, []);
   assert.ok(r.error);
 });
+
+// ── reconcileStalledTasks (owner mandate 2026-08-03: close the loop) ────────
+const { reconcileStalledTasks, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS } = require('./bsc-reconcile.js');
+
+const NOW = Date.parse('2026-08-03T12:00:00.000Z');
+const hoursAgo = (h) => new Date(NOW - h * 3600 * 1000).toISOString();
+const jobSpawned = (taskId, jobId, ts) => ({ event: 'job-spawned', taskId: String(taskId), jobId, ts });
+const jobEnd = (taskId, jobId, event, ts) => ({ event, taskId: String(taskId), jobId, ts });
+
+function stallHarness({ tasks = [], entries = [], dispatchStatus = 0 } = {}) {
+  const reported = [];
+  const dispatched = [];
+  const appended = [];
+  const deps = {
+    loadTasksFn: () => tasks,
+    tasksDir: '/fake/dir',
+    readLedgerEntriesFn: () => entries,
+    appendLedgerFn: (e) => appended.push({ ts: new Date(NOW).toISOString(), ...e }),
+    dispatchFn: (taskId) => { dispatched.push(String(taskId)); return { status: dispatchStatus, stderr: 'guard: refused' }; },
+    reportFn: (l) => reported.push(l),
+    nowFn: () => NOW,
+  };
+  return { deps, reported, dispatched, appended };
+}
+
+test('stallRedispatchArgv deliberately carries NO --force — every bsc-next guard stays armed', () => {
+  const argv = stallRedispatchArgv('733');
+  assert.ok(argv.includes('--id') && argv.includes('733'));
+  assert.ok(!argv.includes('--force'), 'stalled redispatch must go through the fully-guarded path');
+});
+
+test('the 2026-08-03 shape: terminal job-failed + in_progress task → reported stalled and redispatched', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(733, 'Fix: Test Suite repeat-failure')],
+    entries: [jobSpawned(733, 'j1', hoursAgo(6)), jobEnd(733, 'j1', 'job-failed', hoursAgo(5))],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, ['733']);
+  assert.deepEqual(h.dispatched, ['733']);
+  assert.ok(h.reported.some(l => l.kind === 'task-stalled' && /job-failed/.test(l.detail)));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT && e.taskId === '733'), 'marker stamped');
+});
+
+test('job-done but task still in_progress → stalled, with the never-completed wording', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(808, 'BSC Daily: Audience coverage')],
+    entries: [jobSpawned(808, 'j2', hoursAgo(6)), jobEnd(808, 'j2', 'job-done', hoursAgo(5))],
+  });
+  reconcileStalledTasks({ deps: h.deps });
+  assert.ok(h.reported.some(l => l.kind === 'task-stalled' && /never completed/.test(l.detail)));
+});
+
+test('open headless job → NOT stalled (orphan sweep owns it)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(900)],
+    entries: [jobSpawned(900, 'j3', hoursAgo(6))],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, []);
+  assert.deepEqual(h.dispatched, []);
+});
+
+test('open workspace launch → NOT stalled (tab sweep owns it)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(901)],
+    entries: [launch(901, 'workspace:9')],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('no ledger history at all → skipped (hand-claimed sessions are invisible on purpose)', () => {
+  const h = stallHarness({ tasks: [inProgressTask(902)], entries: [] });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('cooldown: terminal event younger than STALL_COOLDOWN_MS → not yet stalled', () => {
+  const freshTs = new Date(NOW - STALL_COOLDOWN_MS / 2).toISOString();
+  const h = stallHarness({
+    tasks: [inProgressTask(903)],
+    entries: [jobSpawned(903, 'j4', hoursAgo(1)), jobEnd(903, 'j4', 'job-failed', freshTs)],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('marker newer than last activity → stall already handled, no re-attempt every tick', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(904)],
+    entries: [
+      jobSpawned(904, 'j5', hoursAgo(8)), jobEnd(904, 'j5', 'job-failed', hoursAgo(7)),
+      { event: STALL_EVENT, taskId: '904', ts: hoursAgo(6) },
+    ],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, []);
+  assert.deepEqual(h.dispatched, []);
+});
+
+test('new activity after the marker re-arms the stall', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(905)],
+    entries: [
+      jobSpawned(905, 'j6', hoursAgo(9)), jobEnd(905, 'j6', 'job-failed', hoursAgo(8)),
+      { event: STALL_EVENT, taskId: '905', ts: hoursAgo(7) },
+      jobSpawned(905, 'j7', hoursAgo(3)), jobEnd(905, 'j7', 'job-failed', hoursAgo(2)),
+    ],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, ['905']);
+});
+
+test('refused dispatch still stamps the marker and reports task-stall-refused (no every-tick spam)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(906)],
+    entries: [jobSpawned(906, 'j8', hoursAgo(6)), jobEnd(906, 'j8', 'job-failed', hoursAgo(5))],
+    dispatchStatus: 1,
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.redispatched, []);
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-refused'));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT && e.taskId === '906'));
+});
+
+test('per-tick budget throttles the third stalled task WITHOUT a marker (retries next tick)', () => {
+  const mk = (id, job) => [jobSpawned(id, job, hoursAgo(6)), jobEnd(id, job, 'job-failed', hoursAgo(5))];
+  const h = stallHarness({
+    tasks: [inProgressTask(910), inProgressTask(911), inProgressTask(912)],
+    entries: [...mk(910, 'a'), ...mk(911, 'b'), ...mk(912, 'c')],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.equal(r.stalled.length, 3);
+  assert.equal(h.dispatched.length, 2);
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-throttled' && l.taskId === '912'));
+  assert.ok(!h.appended.some(e => e.event === STALL_EVENT && e.taskId === '912'), 'throttled task must NOT be marker-stamped');
+});
+
+test('dryRun reports but never stamps or dispatches', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(913)],
+    entries: [jobSpawned(913, 'j9', hoursAgo(6)), jobEnd(913, 'j9', 'job-failed', hoursAgo(5))],
+  });
+  const r = reconcileStalledTasks({ dryRun: true, deps: h.deps });
+  assert.deepEqual(r.stalled, ['913']);
+  assert.deepEqual(h.dispatched, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('Codex catch: the job-done 48-sessions/day loop is capped — after MAX_STALL_ATTEMPTS_PER_TASK markers, exhausted, no dispatch', () => {
+  const { MAX_STALL_ATTEMPTS_PER_TASK } = require('./bsc-reconcile.js');
+  // Two prior stall cycles, each: marker → redispatch → job-done without completion.
+  const h = stallHarness({
+    tasks: [inProgressTask(920)],
+    entries: [
+      jobSpawned(920, 'k1', hoursAgo(20)), jobEnd(920, 'k1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(18) },
+      jobSpawned(920, 'k2', hoursAgo(17)), jobEnd(920, 'k2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(15) },
+      jobSpawned(920, 'k3', hoursAgo(14)), jobEnd(920, 'k3', 'job-done', hoursAgo(13)),
+    ],
+  });
+  assert.equal(MAX_STALL_ATTEMPTS_PER_TASK, 2);
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, ['920'], 'still reported stalled (honest surface)');
+  assert.deepEqual(h.dispatched, [], 'but NO further session is spawned');
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-exhausted'));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT), 'exhausted verdict stamps a marker so it reports once per re-arm, not every tick');
+});
+
+test('exhausted verdict is silenced by its own marker on the following tick', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(921)],
+    entries: [
+      jobSpawned(921, 'm1', hoursAgo(20)), jobEnd(921, 'm1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(18) },
+      jobSpawned(921, 'm2', hoursAgo(17)), jobEnd(921, 'm2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(15) },
+      jobSpawned(921, 'm3', hoursAgo(14)), jobEnd(921, 'm3', 'job-done', hoursAgo(13)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(12) }, // the exhausted stamp
+    ],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, [], 'marker newer than last activity — quiet until new activity');
+  assert.deepEqual(h.dispatched, []);
+});
