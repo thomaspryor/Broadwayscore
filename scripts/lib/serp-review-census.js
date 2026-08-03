@@ -126,6 +126,91 @@ function buildCensusQueries(show, opts = {}) {
 }
 
 /**
+ * The owner's own query, verbatim: no quotes, no year, no market term, just
+ * "<title> <venue> review" — then READ PAST PAGE ONE.
+ *
+ * Why this is a separate arm (owner escalation 2026-08-02, task #872): every
+ * query buildCensusQueries produces is phrase-quoted and year-clamped, which
+ * is a precision instrument. A human Googling a new opening types the plain
+ * words and scrolls. Measured on The Car Man (2026-08-02, Scrapingdog/gb):
+ * the quoted census arms returned Sheffield-tour and Instagram chaff, while
+ * `The Car Man review` page 2 held jadar.uk, cheekylittlematinee.com and
+ * on-magazine.co.uk — three of the six reviews the owner found by hand and
+ * the census reported as absent. Brainiac Live: thespyinthestalls (page 1) +
+ * fairypoweredproductions (page 2). Tao of Glass: liamodell + timeout london
+ * (page 2). Page 1 alone would have missed most of them: ticketing, venue and
+ * social results crowd it out on a brand-new show.
+ *
+ * @param {object} show shows.json record ({title, venue|theater})
+ * @returns {string|null}
+ */
+function buildNaiveCensusQuery(show) {
+  if (!show || !show.title) return null;
+  const title = String(show.title).replace(/\s*&\s*/g, ' and ');
+  const venue = String(show.venue || show.theater || '').trim();
+  return venue ? `${title} ${venue} review` : `${title} review`;
+}
+
+/**
+ * Google country code for a show's census queries.
+ *
+ * url-discovery.js's _resolveGeo falls back to a substring test — `query
+ * .includes('West End')` — so only the PRIMARY census arm (which happens to
+ * contain the literal market term) searched google.co.uk. The venue-scoped,
+ * creative-scoped and naive arms for a London show all searched US Google,
+ * where UK theatre blogs rank far lower or not at all. Deriving geo from the
+ * show's market instead of from the query text fixes that for every arm.
+ */
+function censusGeoFor(show) {
+  const cat = (show && (show.category || show.market)) || '';
+  return isLondonMarket(cat) ? 'gb' : 'us';
+}
+
+/** Default depth of the naive arm (pages 0,1,2 = Google results 1-30). */
+const DEFAULT_NAIVE_PAGES = 3;
+
+/**
+ * Full census execution plan: every query the census should run for a show,
+ * with the per-arm settings the caller must honor (date window on/off, result
+ * page, geo). Pure + exported so the arm set is unit-testable without a live
+ * SERP provider.
+ *
+ * The naive arm deliberately runs WITHOUT the date window. calculateDateWindow
+ * becomes `after:/before:` operators on every provider, and Google can only
+ * honor those for pages it has dated — undated blog posts (the exact long-tail
+ * class this arm exists to catch) drop out of a date-restricted search.
+ * Wrong-production noise is not the census's job to filter: acceptSerpCensusResult
+ * plus the downstream production guards decide that, and the census is a
+ * report-only completeness reference.
+ *
+ * @param {object} show
+ * @param {object} [opts]
+ * @param {string[]} [opts.creativeNames]
+ * @param {number} [opts.naivePages] pages of the naive arm to read (default 3, 0 disables)
+ * @returns {Array<{arm: string, query: string, useDateRange: boolean, page: number, geo: string}>}
+ */
+function buildCensusPlan(show, opts = {}) {
+  const geo = censusGeoFor(show);
+  const plan = buildCensusQueries(show, opts).map((query, i) => ({
+    arm: i === 0 ? 'primary' : `scoped${i}`,
+    query,
+    useDateRange: true,
+    page: 0,
+    geo,
+  }));
+  if (!plan.length) return plan;
+
+  const naivePages = Number.isInteger(opts.naivePages) ? opts.naivePages : DEFAULT_NAIVE_PAGES;
+  const naive = buildNaiveCensusQuery(show);
+  if (naive && naivePages > 0) {
+    for (let page = 0; page < naivePages; page++) {
+      plan.push({ arm: `naive-p${page}`, query: naive, useDateRange: false, page, geo });
+    }
+  }
+  return plan;
+}
+
+/**
  * Should the census run for this show right now? Pure gate combining the
  * opening-window scope with a per-show cooldown so the source fires a
  * handful of times across the window, not every hourly audit cycle.
@@ -148,9 +233,13 @@ function shouldRunSerpCensus({ inWindow, lastRunAt, now = Date.now(), cooldownHo
 
 module.exports = {
   DEFAULT_COOLDOWN_HOURS,
+  DEFAULT_NAIVE_PAGES,
   marketTermFor,
   buildCensusQuery,
   buildCensusQueries,
+  buildNaiveCensusQuery,
+  buildCensusPlan,
+  censusGeoFor,
   venueQueryToken,
   shouldRunSerpCensus,
 };
