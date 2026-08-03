@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-08-03T00:00:08.164Z",
-  "windowDays": 21,
-  "targets": 1,
+  "generatedAt": "2026-08-03T00:10:09.884Z",
+  "windowDays": 1095,
+  "targets": 13,
   "counts": {
-    "withGap": 0,
-    "totalMissing": 0,
-    "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 0,
+    "withGap": 10,
+    "totalMissing": 28,
+    "totalCitedNoUrl": 1,
+    "totalFlaggedMisses": 26,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "brainiac-live-west-end-2026",
-      "title": "Brainiac Live",
-      "openingDate": "2026-07-29",
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
@@ -63,6 +63,1722 @@
       "serpCensus": {
         "ran": false,
         "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707650/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707672/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707673/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707673/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "the-saviors-off-broadway-2026",
+      "title": "The Saviors",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-were-critics-testify-for-bubba-weilers-the-saviors",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/The-Saviors/1387",
+        "https://culturesauce.com/saviors-bubba-weiler-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+        "https://thefrontrowcenter.com/2026/07/the-saviors/",
+        "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
+        "https://nystagereview.com/2026/07/27/the-saviors-what-would-jesus-do/",
+        "https://www.newyorktheatreguide.com/reviews/the-saviors-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/the-saviors-review-childlike-faith-adult-betrayal.html",
+        "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+        "https://www.theatrely.com/post/the-saviors-two-young-catholics-in-a-miraculous-new-play-review",
+        "https://www.thewrap.com/creative-content/reviews/the-saviors-off-broadway-review-altar-boys/",
+        "https://www.talkinbroadway.com/page/ob/07_27_26.html"
+      ],
+      "dirFiles": 24,
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/07_27_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_27_26.html"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "title": "Cat Cohen: Broad Strokes",
+      "openingDate": "2026-07-27",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
+        "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
+        "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+        "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
+        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/"
+      ],
+      "dirFiles": 17,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nypost.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      }
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
+        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
+        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
+        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
+        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
+        "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
+      ],
+      "dirFiles": 14,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+          "host": "1minutecritic.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "nypost.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 4,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+          "host": "1minutecritic.substack.com",
+          "outletId": "1minutecritic",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
+        "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
+        "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+        "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
+        "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
+        "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
+        "https://www.whatsonstage.com/news/the-enormous-crocodile-musical-announces-2026-uk-tour_1686246/",
+        "https://seatplan.com/london/the-enormous-crocodile-tickets/",
+        "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
+        "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+        "https://www.timeout.com/london/theatre/the-enormous-crocodile-review"
+      ],
+      "dirFiles": 9,
+      "dirClean": 5,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
+          "host": "theatrevibe.co.uk",
+          "knownOutletId": "theatre-vibe",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
+          "host": "myshrewsbury.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true
+        },
+        {
+          "url": "https://seatplan.com/london/the-enormous-crocodile-tickets/",
+          "host": "seatplan.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--west-end-theatre.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-enormous-crocodile-musical-announces-2026-uk-tour_1686246/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--ron-simpson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/tours/the-enormous-crocodile-the-musical-tour/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Enormous Crocodile\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Enormous Crocodile\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Enormous Crocodile\" review lyric",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 11,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
+          "host": "theatrevibe.co.uk",
+          "outletId": "theatre-vibe",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
+          "host": "myshrewsbury.co.uk",
+          "outletId": "myshrewsbury",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707831/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
+          "host": "thereviewshub.com",
+          "outletId": "thereviewshub",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://seatplan.com/london/the-enormous-crocodile-tickets/",
+          "host": "seatplan.com",
+          "outletId": "seatplan",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        }
+      ]
+    },
+    {
+      "showId": "dog-man-the-musical-west-end-2026",
+      "title": "Dog Man - The Musical",
+      "openingDate": "2026-07-29",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+        "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+        "https://www.timeout.com/london/theatre/the-truth-review",
+        "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+        "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+        "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
+      ],
+      "dirFiles": 2,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+          "host": "bookitplease.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 2,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-truth-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        }
+      ],
+      "citedNoUrl": [
+        {
+          "outletId": "telegraph",
+          "outletName": "The Telegraph",
+          "stars": 4,
+          "source": "theatre-reviews",
+          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/the-truth-apollo-reviews/",
+          "priorRun": false,
+          "hasExcludedFiles": false
+        }
+      ],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 0,
+        "perSource": {
+          "theatre-reviews": {
+            "cited": 1,
+            "corroborated": 0
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Dog Man - The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"Dog Man - The Musical\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"Dog Man - The Musical\" review queen",
+            "ok": true,
+            "results": 10,
+            "error": null
+          }
+        ],
+        "queriesOk": 2,
+        "resultCount": 1,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+          "host": "bookitplease.com",
+          "outletId": "bookitplease",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707874/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707932/day) projects exhaustion in ~5d, before the 30d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "title": "The Car Man",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/the-car-man-lyceum-theatre-sheffield/",
+        "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
+        "https://redbuslondinium.uk/2026/08/03/review-matthew-bournes-the-car-man-sadlers-wells/",
+        "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-sheffield/",
+        "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum",
+        "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
+        "https://www.londontheatre.co.uk/show/45797-the-car-man",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-car-man-review-this-is-one-killer-thriller-kdjxdg9ph",
+        "https://www.liftedleg.com/2026/08/matthew-bournes-new-adventures-the-car-man-review",
+        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker"
+      ],
+      "dirFiles": 32,
+      "dirClean": 2,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://redbuslondinium.uk/2026/08/03/review-matthew-bournes-the-car-man-sadlers-wells/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-sheffield/",
+          "host": "on-magazine.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-car-man-review-this-is-one-killer-thriller-kdjxdg9ph",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.liftedleg.com/2026/08/matthew-bournes-new-adventures-the-car-man-review",
+          "host": "liftedleg.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--sam-admin.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum",
+          "host": "nowthenmagazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nowthenmagazine--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alun-hood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-the-royal-albert-hall-review_56708/"
+            },
+            {
+              "file": "whatsonstage--tanyel-gumushan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.whatsonstage.com/news/the-car-man-to-return-for-major-uk-tour_1701487/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/show/45797-the-car-man",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londontheatre.co.uk/show/45797-the-car-man"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--lyndsey-winship.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-car-man-sadlers-wells-review-a-steamy-melodrama-that-s-just-right-for-sultry-summer-nights-10401810.html"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--zoe-anderson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/independentpremium/culture/the-car-man-review-royal-albert-hall-b2098818.html"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--rachel-ward.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/culture/theatre/dance/11747488/The-Car-Man-Sadlers-Wells-review-masterful.html"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2022/jun/12/matthew-bournes-the-car-man-review-steamy-dance-thriller-with-a-supercharged-engine"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 6,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 6,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 6,
+        "corroborated": 0,
+        "perSource": {
+          "westendtheatre": {
+            "cited": 4,
+            "corroborated": 0
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Car Man\" West End review 2026",
+        "queryStatus": [
+          {
+            "query": "\"The Car Man\" West End review 2026",
+            "ok": true,
+            "results": 10,
+            "error": null
+          },
+          {
+            "query": "\"The Car Man\" review sadler",
+            "ok": true,
+            "results": 8,
+            "error": null
+          },
+          {
+            "query": "\"The Car Man\" Bourne review",
+            "ok": true,
+            "results": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 3,
+        "resultCount": 9,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://redbuslondinium.uk/2026/08/03/review-matthew-bournes-the-car-man-sadlers-wells/",
+          "host": "redbuslondinium.uk",
+          "outletId": "redbuslondinium",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707969/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-sheffield/",
+          "host": "on-magazine.co.uk",
+          "outletId": "on-magazine",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707970/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-car-man-review-this-is-one-killer-thriller-kdjxdg9ph",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~707971/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://www.liftedleg.com/2026/08/matthew-bournes-new-adventures-the-car-man-review",
+          "host": "liftedleg.com",
+          "outletId": "liftedleg",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        }
+      ]
+    },
+    {
+      "showId": "bughouse-off-broadway-2026",
+      "title": "Bughouse",
+      "openingDate": "2026-03-11",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-the-world-premiere-of-bughouse-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/2026/03/11/bughouse-beth-henley-henry-darger-off-broadway-review/",
+        "https://1minutecritic.com/bughouse-review-vineyard-theatre-henry-darger/",
+        "https://exeuntnyc.com/reviews/review-bughouse-at-the-vineyard-theatre/",
+        "https://thefrontrowcenter.com/2026/03/bughouse/",
+        "https://newyorktheater.me/2026/03/12/bughouse-review-on-outsider-artist-henry-darger/",
+        "https://www.newyorktheatreguide.com/reviews/bughouse-off-broadway-review",
+        "https://www.nytimes.com/2026/03/12/theater/bughouse-review-henry-darger.html",
+        "https://theaterlife.com/bughouse-1-2/",
+        "https://www.theatermania.com/news/review-the-life-of-prolific-outsider-artist-henry-darger-gets-slender-treatment-in-bughouse_1827480/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=POSQ0N",
+        "https://www.talkinbroadway.com/page/ob/03_11_26.html",
+        "https://www.theaterscene.net/plays/solo-plays/bughouse/joseph-pisano/",
+        "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/"
+      ],
+      "dirFiles": 21,
+      "dirClean": 14,
+      "inReviewsJson": 14,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POSQ0N",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=POSQ0N"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-bughouse-at-vineyard-theatre-through-sunday-april-5-2026/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "this-is-my-favorite-song-off-broadway-2024",
+      "title": "This Is My Favorite Song",
+      "openingDate": "2024-11-21",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/this-is-my-favorite-song-off-broadway-review",
+        "https://www.theatermania.com/news/review-francesca-duva-gets-us-to-smile-noisily-in-this-is-my-favorite-song_1756508/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=D7GAN1",
+        "https://www.theaterscene.net/plays/solo-plays/this-is-my-favorite-song/tony-marinelli/",
+        "https://exeuntnyc.com/reviews/review-this-is-my-favorite-song-at-playwrights-horizons/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=D7GAN1",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=D7GAN1#:~:text=This%20is%20a%20remarkably%20blunt,part%20isn%27t%20entirely%20true."
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "well-ill-let-you-go-off-broadway-2026",
+      "title": "Well, I'll Let You Go",
+      "openingDate": "2026-04-30",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-reviews-think-of-bubba-weilers-well-ill-let-you-go-at-studio-seaview"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/well-ill-let-you-go-review-off-broadway/",
+        "https://cititour.com/NYC_Broadway/Well-Ill-Let-You-Go/1379",
+        "https://culturesauce.com/well-ill-let-you-go-2026-off-broadway-review/",
+        "https://nystagereview.com/2026/05/14/well-ill-let-you-go-coping-with-grief-magnificently/",
+        "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
+        "https://www.thewrap.com/creative-content/theater/well-ill-let-you-go-off-broadway-review/",
+        "https://studioseaview.com/show/well-ill-let-you-go/",
+        "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
+        "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
+        "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
+        "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
+        "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/"
+      ],
+      "dirFiles": 23,
+      "dirClean": 11,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "ny1.com",
+          "count": 1
+        },
+        {
+          "host": "offoffonline.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/"
+            }
+          ]
+        },
+        {
+          "url": "https://studioseaview.com/show/well-ill-let-you-go/",
+          "host": "studioseaview.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "studioseaviewcom--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://studioseaview.com/show/well-ill-let-you-go/?"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--allison-considine.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review"
+            },
+            {
+              "file": "nytg--andy-lefkowitz.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/well-ill-let-you-go-celebrates-community-in-its-off-broadway-return"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/"
+            }
+          ]
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--loren-noveck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      }
+    },
+    {
+      "showId": "chess-2025",
+      "title": "Chess",
+      "openingDate": "2025-11-16",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-make-their-move-on-broadways-new-chess-revival",
+        "https://playbill.com/article/what-do-critics-think-of-the-london-chess-revival-starring-michael-ball-and-alexandra-burke-2",
+        "https://www.broadwayworld.com/article/Review-Roundup-CHESS-Revival-Officially-Opens-on-Broadway-20251116",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/chess-broadway-review-aaron-tveit-lea-michele/",
+        "https://www.amny.com/entertainment/broadway/review-chess-the-musical/",
+        "https://cititour.com/NYC_Broadway/Chess/1341",
+        "https://www.thedailybeast.com/obsessed/chess-review-theaters-most-notorious-strange-beast-finally-returns/",
+        "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
+        "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
+        "https://www.theguardian.com/stage/2025/nov/17/chess-review-broadway-abba",
+        "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
+        "https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
+        "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
+        "https://nystagereview.com/2025/11/16/chess-just-another-bored-game/",
+        "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
+        "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
+        "https://people.com/broadway-chess-revival-scores-lea-michele-aaron-tveit-and-nicholas-christopher-review-11850544",
+        "https://www.theatermania.com/news/review-chess-returns-to-broadway-with-checkmate-vocals-and-a-checked-out-book_1812218/",
+        "http://www.theatrely.com/post/this-chess-is-a-blast-review",
+        "https://www.timeout.com/newyork/theater/chess-broadway-musical-revival-review-aaron-tveit-lea-michele-nicholas-christopher",
+        "https://www.usatoday.com/story/entertainment/music/2025/11/16/chess-2025-broadway-review/87305495007/",
+        "https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
+        "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
+        "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
+        "https://www.thewrap.com/chess-broadway-review-abba-musical-lea-michele/",
+        "https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic",
+        "https://theguardian.com/stage/2018/may/02/chess-review-cold-war-musical-london-coliseum",
+        "https://hollywoodreporter.com/review/chess-theater-1107878",
+        "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+        "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
+        "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+        "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+        "http://variety.com/2018/legit/reviews/chess-review-english-national-opera-1202795353/",
+        "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
+        "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
+        "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
+        "http://variety.com/2018/legit/reviews/chess-review-kennedy-center-1202703667/",
+        "https://www.washingtonpost.com/lifestyle/chess-has-the-best-cast-of-any-musical-this-season-but-the-show-itself-has-issues/2018/02/16/f66ebb10-12d2-11e8-827c-5150c6f3dc79_story.html"
+      ],
+      "dirFiles": 57,
+      "dirClean": 35,
+      "inReviewsJson": 32,
+      "missing": [
+        {
+          "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+          "host": "radiotimes.com",
+          "knownOutletId": "radio-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-metro-theater-arts",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/"
+            }
+          ]
+        },
+        {
+          "url": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "i-paper--unknown.json",
+              "flag": "nonReview",
+              "urlInDir": "https://inews.co.uk/culture/chess-english-national-opera-review-coliseum-alexandra-burke/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dctheatrescene--jeffrey-walker.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-the-london-chess-revival-starring-michael-ball-and-alexandra-burke-2",
+          "publishDate": "2018-05-02"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218",
+          "publishDate": "2018-02-18"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/chess-coliseum-review-abba-musical-eno-benny-andersson-bjorn-ulvaeus-tim-rice-a8332331.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://radiotimes.com/news/2018-05-02/chess-review-a-timely-revival-of-benny-and-bjorns-cold-war-musical/",
+          "host": "radiotimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theupcoming.co.uk/2018/05/02/chess-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
+          "host": "dcmetrotheaterarts.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thetimes.com/article/theatre-and-dance-review-nine-night-windrush-movement-of-the-people-present-laughter-absolute-hell-chess-zgqr5d9kf?shareToken=9ada00cc7b840ca715b0d246329885c1&srsltid=AfmBOorFkcrkQp3LXYfM9vZOfgvQte12dNtTGdl9awjkYBrgsBJzaEKW",
+          "host": "thetimes.com",
+          "file": "times-uk--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~708135/day) projects exhaustion in ~5d, before the 31d-out renewal — still us",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "title": "The Traitors: Live Experience",
+      "openingDate": "2025-08-02",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
       }
     }
   ]
