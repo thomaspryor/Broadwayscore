@@ -1357,6 +1357,10 @@ on:
       - 'scripts/lib/claude-cli.js'
       - 'scripts/bsc-reconcile.js'
       - 'scripts/bsc-reconcile.test.mjs'
+      # Flagless-resume revive helper (task #985) — colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/revive-session.js'
+      - 'scripts/lib/revive-session.test.mjs'
       - 'tests/unit/bsc-runner-lease.test.mjs'
       - 'scripts/lib/session-wrapups.js'
       - 'scripts/lib/session-wrapups.test.mjs'
