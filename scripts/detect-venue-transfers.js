@@ -38,7 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseDate } = require('./lib/date-utils');
 const { normalizeTitle } = require('./lib/title-normalization');
-const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 
 let getTier, regionForShowCategory;
 try { ({ getTier, regionForShowCategory } = require('./lib/outlet-tiers')); } catch { getTier = () => 3; }
@@ -203,9 +203,9 @@ function main() {
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       if (d.wrongProduction !== true) continue;
-      // Already recoverable via a declared priorRun → not a loss.
+      // Already recoverable via a declared priorRun/tourLeg → not a loss.
       const eff = effectiveDate(d);
-      if (eff && isWithinPriorRun(eff, show.priorRuns)) continue;
+      if (eff && (isWithinPriorRun(eff, show.priorRuns) || isWithinTourLeg(eff, show.tourLegs))) continue;
       // Already routed to a named sibling entry → not a loss.
       if (isRoutedToSibling(d)) { routedAway++; continue; }
       // Content problems (wrong SHOW, roundup) are not transfer losses.
