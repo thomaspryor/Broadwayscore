@@ -24,7 +24,7 @@
 
 const { BRAIN_DATABASE_ID: DATABASE_ID, NOTION_VERSION } = require('./notion-constants');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp');
-const { parseParkedDate } = require('./park-marker');
+const { parseParkedDate, parseParkedTaskId } = require('./park-marker');
 
 const ORPHAN_HOURS_DEFAULT = 48;
 const PAUSED_LOW_PRIORITY_DAYS = 7;
@@ -102,9 +102,11 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
           // last_edited_time is bot-bumped and would reset the clock.
           const parkedDays = (nowMs - parkedAtMs) / 86400000;
           if (parkedDays <= parkedEscalationDays) {
-            pausedParked.push({ ...card, idleHours, parkedAtMs });
+            pausedParked.push({ ...card, idleHours, parkedAtMs, parkedTaskId: parseParkedTaskId(card.outcome) });
           } else {
-            pausedCritical.push({ ...card, idleHours, parkedOverdueDays: Math.floor(parkedDays - parkedEscalationDays) });
+            // max(1, …): a card 7.0–8.0 days parked is 1 day past the window,
+            // never "overdue 0d" in the digest line.
+            pausedCritical.push({ ...card, idleHours, parkedOverdueDays: Math.max(1, Math.floor(parkedDays - parkedEscalationDays)) });
           }
         } else if (stampMs != null && stampOverdueDays <= graceDays) {
           pausedAwaitingRecheck.push({ ...card, idleHours, recheckAfterMs: stampMs });
