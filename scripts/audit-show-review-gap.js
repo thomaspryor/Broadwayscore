@@ -175,9 +175,21 @@ function saveCheckpoint(cp) {
 // "previous file unparseable", which is the #893 wipe all over again.
 // rename(2) within the same directory is atomic on macOS and Linux.
 function writeJsonAtomic(filePath, obj) {
+  // mkdir here, not at the first audit write: saveCheckpoint() runs inside the
+  // per-show loop, long before the audit file is written, so on a fresh
+  // checkout with no data/audit/ every checkpoint save was silently swallowed
+  // by its own catch and the run lost all its freshness stamps.
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
   const tmp = `${filePath}.tmp-${process.pid}`;
-  fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
-  fs.renameSync(tmp, filePath);
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+    fs.renameSync(tmp, filePath);
+  } catch (e) {
+    // Don't leave a predictable half-written .tmp-<pid> behind for the next
+    // run (or a glob) to trip over.
+    try { fs.unlinkSync(tmp); } catch { /* already gone */ }
+    throw e;
+  }
 }
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
@@ -2012,11 +2024,25 @@ async function main(argv = process.argv.slice(2)) {
     // and newsletter-preflight's HARD gate reads the checkpoint, not this file
     // (lib/newsletter-preflight.js completenessFindings). Leaving `uncollected:
     // 0, at: <now>` behind would let a refused audit bless the weekly send.
-    // Roll the checkpoint back to its pre-run state so those shows re-audit.
-    if (useCheckpoint && checkpointAtStart) {
+    // Roll the checkpoint back so those shows re-audit — but ONLY the entries
+    // for shows THIS run touched, and under the checkpoint's own lock.
+    // Re-writing the whole start-of-run snapshot would clobber a concurrent
+    // run's freshly-saved stamps for shows this run never looked at (the
+    // wholesale-overwrite bug this whole task exists to kill, reintroduced on
+    // the sibling file). Re-read under the lock so we merge against current
+    // state rather than our stale in-memory copy.
+    const auditedIds = results.map(r => r && r.showId).filter(Boolean);
+    if (useCheckpoint && checkpointAtStart && auditedIds.length) {
       try {
-        saveCheckpoint(checkpointAtStart);
-        console.error('::warning::rolled the gap-audit checkpoint back to its pre-run state — this run\'s freshness stamps are not trustworthy.');
+        withFileLock(`${CHECKPOINT_PATH}.lock`, () => {
+          const current = loadCheckpoint();
+          for (const id of auditedIds) {
+            if (Object.prototype.hasOwnProperty.call(checkpointAtStart, id)) current[id] = checkpointAtStart[id];
+            else delete current[id]; // never audited before this run — leave no stamp behind
+          }
+          saveCheckpoint(current);
+        });
+        console.error(`::warning::rolled ${auditedIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.`);
       } catch (e) {
         console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
       }

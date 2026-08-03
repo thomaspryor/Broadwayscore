@@ -21,6 +21,19 @@ export interface PriorRun {
   venue?: string; // Display label, e.g. "Bushwick Starr"
 }
 
+/**
+ * A venue stop of the CURRENT touring production (not a distinct prior run).
+ * Reviews dated inside any tourLeg window pass the date/venue-based
+ * wrongProduction guards the same way a priorRun window does. See
+ * scripts/lib/wrong-production-autoclear.js and scripts/lib/tour-legs.js.
+ */
+export interface TourLeg {
+  venue: string; // Display label, e.g. "Ahmanson Theatre"
+  startDate: string; // ISO date — start of this leg (previews or opening)
+  endDate?: string; // ISO date — end of this leg (defaults to startDate + 180 days)
+  corroborationUrl: string; // Required: URL proving this leg happened
+}
+
 export interface ShowMetadata {
   id: string;
   title: string;
@@ -34,6 +47,7 @@ export interface ShowMetadata {
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
   priorRuns?: PriorRun[];
+  tourLegs?: TourLeg[];
 }
 
 // ============================================

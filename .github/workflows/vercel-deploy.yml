@@ -500,7 +500,7 @@ jobs:
               -f alert_type=vercel_deploy_fail \
               -f alert_title="Deploy still broken: 3rd consecutive failure (~15 min)" \
               -f alert_context="{\"streak\":$STREAK,\"note\":\"Deploys have been failing for ~15 min across all parallel sessions. Check Actions tab.\"}" \
-              -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/workflows/vercel-deploy.yml"
+              -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
             echo "Streak is $STREAK — no escalation needed"
           fi
