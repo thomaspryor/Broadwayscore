@@ -47,6 +47,15 @@ source "$SCRIPT_DIR/push-mutex.sh"
 push_mutex_acquire
 trap 'push_mutex_release' EXIT
 
+# unbounded-fetch-ok: this script has NO workflow caller — the guard reaches it
+# only transitively and reports it as "reachable from 166 shallow workflow(s)".
+# Verified 2026-08-02: `grep -rl sync-audit-checkout .github/workflows/` returns
+# nothing; the sole caller is scripts/autonomous-nightly.sh, a local launchd
+# script running against the full ~/Broadwayscore clone, never a fetch-depth: 1
+# CI checkout. Same justification as scripts/notion-action-poll.js:480. It was
+# blocking EVERY session's push through run-push-audits.sh (task #863 class), so
+# the waiver is deliberate, not a bypass — if a workflow ever calls this, take
+# the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
 if ! git fetch origin main --quiet; then
   echo "::error::[$TAG] git fetch origin main failed"
   exit 1
