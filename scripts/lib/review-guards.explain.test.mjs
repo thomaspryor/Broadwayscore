@@ -26,6 +26,13 @@ const { explainExclusion, isIncludableForRebuild } = guards;
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+// The corpus layer skips when data/review-texts is absent so a bare worktree can
+// still run layers 1-2. That skip is a LOCAL affordance only: set
+// REQUIRE_REVIEW_CORPUS=1 and a missing corpus is a hard failure instead. CI sets
+// it on the one job that checks the corpus out, so "the parity test was green"
+// can never again mean "the parity test skipped" (see the workflow comment in
+// test.yml's Data Validation job).
+const REQUIRE_CORPUS = process.env.REQUIRE_REVIEW_CORPUS === '1';
 
 test('explainExclusion is exported and returns null / a rule name (never a boolean)', () => {
   assert.strictEqual(typeof explainExclusion, 'function');
@@ -117,9 +124,17 @@ test('a clean review yields null and includable=true', () => {
 
 test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on every corpus file', (t) => {
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
-    // Local worktrees without the private core-data checkout. CI's
-    // checkout-core-data action populates it, so the corpus layer always runs
-    // there — never silently "pass" by pretending the corpus was checked.
+    // NOT populated by checkout-core-data — that action copies only
+    // /tmp/core-data-checkout/*.json into data/, never data/review-texts/. The
+    // corpus lives in a separate private repo pulled by checkout-review-texts,
+    // which the unit-tests job (where the scripts/lib/*.test.mjs glob runs) does
+    // not use. So this branch is the CI default, not the local edge case: until
+    // REQUIRE_REVIEW_CORPUS was added, "parity test green" in CI meant "parity
+    // test skipped" on every single run.
+    assert.ok(
+      !REQUIRE_CORPUS,
+      `REQUIRE_REVIEW_CORPUS=1 but no corpus at ${REVIEW_TEXTS_DIR} — the review-texts checkout did not land, so the parity layer would have silently skipped. Fix the checkout rather than unsetting the flag.`
+    );
     t.skip(`no corpus at ${REVIEW_TEXTS_DIR} (run ./scripts/setup-local-data.sh, or set REVIEW_TEXTS_DIR)`);
     return;
   }
