@@ -49,6 +49,8 @@ export interface ReviewTextFile {
   venue?: string;
   /** Show type — injected at scoring time */
   type?: string;
+  /** Declared earlier runs/tour legs of the same production — injected at scoring time */
+  priorRuns?: Array<{ openingDate?: string; closingDate?: string; venue?: string; note?: string }>;
 }
 
 /**
