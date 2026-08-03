@@ -180,6 +180,22 @@ jobs:
             || echo "::warning::review-texts ff-pull failed — recovery may run against a stale checkout"
           node scripts/audit-show-review-gap.js $ARGS
 
+      # Coverage Verdict S2 (#906) scope item 4 — WARN-ONLY. The audit step
+      # above is the single writer of data/audit/show-review-gap.json and, since
+      # #906, stamps a censusVerdict (with per-candidate states) onto every show
+      # it re-audited. This reads that fresh file back and reports any review URL
+      # the audit knows about that came out WITHOUT a state — the monitor for the
+      # producer's own output.
+      #
+      # It always exits 0 (the script has no strict mode at all): the plan
+      # forbids a hard fail until the report has been clean for two weeks AND the
+      # failure sits behind the kill switch. `if: always()` so a failed/cancelled
+      # audit still gets its partial file reported; COVERAGE_GATE_DISABLED makes
+      # it a no-op.
+      - name: Stateless coverage-candidate report (warn-only)
+        if: always()
+        run: node scripts/report-stateless-candidates.js
+
       # Dir-driven sweep for tier-1/2 reviews that were discovered but sit in a
       # terminal unscoreable state (empty paywall stub / bot-stub rejection /
       # never-scored). Complements the aggregator-driven audit above: it needs
