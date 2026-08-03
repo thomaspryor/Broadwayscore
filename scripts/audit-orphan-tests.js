@@ -58,6 +58,12 @@ const EXEMPT_NEVER_CI = {
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
   // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
   'verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
+  // Deferred-effect acceptance probe (task #419, card 3a7637c5-416f-81fd):
+  // asserts the "SEO: health" digest condition doesn't fire on the next
+  // weekly check-seo-health.yml run. Run by autonomous-acceptance-recheck.js
+  // at its RECHECK-AFTER date, never by CI. Lives in scripts/, not
+  // tests/unit/ (same pattern as the entry above).
+  'verify-seo-health-clean.test.mjs': '3a7637c5-416f-81fd',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
