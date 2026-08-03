@@ -921,6 +921,10 @@ on:
       # thing that catches it, and it only runs if these paths are listed.
       - 'scripts/lib/serp-cache.js'
       - 'scripts/lib/serp-cache.test.mjs'
+      # Sibling key-parity guard: _serpWithChain hands both caches the same
+      # cacheOpts, so a field in one key and not the other is a silent bug.
+      - 'scripts/lib/serp-negative-cache.js'
+      - 'scripts/lib/serp-negative-cache.test.mjs'
       # Reddit audience-buzz contamination filters (generic-title / roundup guard).
       # Colocated scripts/lib/*.test.mjs step covers reddit-post-filters.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
