@@ -358,3 +358,41 @@ test('dryRun reports but never stamps or dispatches', () => {
   assert.deepEqual(h.dispatched, []);
   assert.deepEqual(h.appended, []);
 });
+
+test('Codex catch: the job-done 48-sessions/day loop is capped — after MAX_STALL_ATTEMPTS_PER_TASK markers, exhausted, no dispatch', () => {
+  const { MAX_STALL_ATTEMPTS_PER_TASK } = require('./bsc-reconcile.js');
+  // Two prior stall cycles, each: marker → redispatch → job-done without completion.
+  const h = stallHarness({
+    tasks: [inProgressTask(920)],
+    entries: [
+      jobSpawned(920, 'k1', hoursAgo(20)), jobEnd(920, 'k1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(18) },
+      jobSpawned(920, 'k2', hoursAgo(17)), jobEnd(920, 'k2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(15) },
+      jobSpawned(920, 'k3', hoursAgo(14)), jobEnd(920, 'k3', 'job-done', hoursAgo(13)),
+    ],
+  });
+  assert.equal(MAX_STALL_ATTEMPTS_PER_TASK, 2);
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, ['920'], 'still reported stalled (honest surface)');
+  assert.deepEqual(h.dispatched, [], 'but NO further session is spawned');
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-exhausted'));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT), 'exhausted verdict stamps a marker so it reports once per re-arm, not every tick');
+});
+
+test('exhausted verdict is silenced by its own marker on the following tick', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(921)],
+    entries: [
+      jobSpawned(921, 'm1', hoursAgo(20)), jobEnd(921, 'm1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(18) },
+      jobSpawned(921, 'm2', hoursAgo(17)), jobEnd(921, 'm2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(15) },
+      jobSpawned(921, 'm3', hoursAgo(14)), jobEnd(921, 'm3', 'job-done', hoursAgo(13)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(12) }, // the exhausted stamp
+    ],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, [], 'marker newer than last activity — quiet until new activity');
+  assert.deepEqual(h.dispatched, []);
+});

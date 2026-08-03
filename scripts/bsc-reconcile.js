@@ -269,6 +269,14 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
 // dead.
 const STALL_EVENT = 'stall-sweep-attempted';
 const STALL_COOLDOWN_MS = 30 * 60 * 1000; // let a just-finished session's task-status writes land first
+// Codex pre-ship catch: deadAttemptsForTask counts only failures/orphans, so a
+// job that keeps ending job-DONE without ever completing its task would re-arm
+// the sweep every cooldown — one task could burn ~48 sessions/day forever.
+// Total stall redispatches per task are therefore capped by counting the
+// task's own stall markers: past the cap it gets ONE task-stall-exhausted
+// report per re-arm (which lands in the digest's stuck bucket) and no more
+// sessions until a human intervenes.
+const MAX_STALL_ATTEMPTS_PER_TASK = 2;
 
 function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
   const {
@@ -301,7 +309,8 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
     const tsOf = (e) => Date.parse(e.ts || '') || 0;
     const lastActivity = Math.max(...taskEntries.filter(e => e.event !== STALL_EVENT).map(tsOf));
     if (!lastActivity || nowFn() - lastActivity < STALL_COOLDOWN_MS) continue; // still settling
-    const lastMarker = Math.max(0, ...taskEntries.filter(e => e.event === STALL_EVENT).map(tsOf));
+    const markers = taskEntries.filter(e => e.event === STALL_EVENT);
+    const lastMarker = Math.max(0, ...markers.map(tsOf));
     if (lastMarker >= lastActivity) continue; // this stall already attempted/surfaced — new activity re-arms
 
     // Classify how the last dispatch ended, purely for the report line.
@@ -315,6 +324,11 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
     reportFn({ kind: 'task-stalled', taskId: id, detail: `in_progress task #${id} "${task.subject}" has no live session or job (${how}) — nothing is actually working on it` });
     if (dryRun) continue;
 
+    if (markers.length >= MAX_STALL_ATTEMPTS_PER_TASK) {
+      appendLedgerFn({ event: STALL_EVENT, taskId: id });
+      reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
+      continue;
+    }
     if (ledger.deadAttemptsForTask(id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
       // Marker stamped: this verdict is stable, so surface it once per stall,
       // not every 5-minute tick.
@@ -451,4 +465,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK };
