@@ -93,8 +93,18 @@ strip_build_artifacts() {
   LAST_STRIP_FREED_KB=$freed
 }
 
+# Sets LAST_CLEAN_DD_FREED_KB / LAST_SCRATCHPAD_FREED_KB (global, not a
+# subshell return) — same reason as LAST_STRIP_FREED_KB above: log()'s tee'd
+# stdout would otherwise get captured alongside the numeric return by any
+# caller using `x=$(this_fn)`, corrupting the number (task #968: this exact
+# bug was silently breaking check_disk_floor's total below — an `ALERT:
+# ...\nCLEAN ...\n0` blob assigned to floor_freed_kb, which then failed
+# `$((...))` arithmetic and killed the whole run with "unbound variable"
+# before it could log a final freed-space DONE line).
+LAST_CLEAN_DD_FREED_KB=0
 clean_derived_data() {
   local dd="$HOME/Library/Developer/Xcode/DerivedData" sz
+  LAST_CLEAN_DD_FREED_KB=0
   [ -d "$dd" ] || return 0
   sz=$(du -sk "$dd" 2>/dev/null | awk '{print $1}')
   sz=${sz:-0}
@@ -105,9 +115,10 @@ clean_derived_data() {
     rm -rf "${dd:?}"/*
     log "CLEAN  DerivedData — freed $(human_kb "$sz")"
   fi
-  echo "$sz"
+  LAST_CLEAN_DD_FREED_KB=$sz
 }
 
+LAST_SCRATCHPAD_FREED_KB=0
 clean_stale_scratchpad() {
   local total=0 dir sz
   while IFS= read -r dir; do
@@ -124,7 +135,7 @@ clean_stale_scratchpad() {
     fi
     total=$((total + sz))
   done < <(find "$REPO" -maxdepth 3 -type d -name scratchpad -not -path '*/node_modules/*' 2>/dev/null)
-  echo "$total"
+  LAST_SCRATCHPAD_FREED_KB=$total
 }
 
 clean_unavailable_simulators() {
@@ -143,19 +154,21 @@ clean_unavailable_simulators() {
 # Emergency cleanup, gated on the free-space floor. None of these touch
 # worktree state or unmerged work — DerivedData/scratchpad/sims are all
 # regenerable caches.
+LAST_FLOOR_FREED_KB=0
 check_disk_floor() {
-  local before after floor_freed=0 part
+  local before after floor_freed=0
+  LAST_FLOOR_FREED_KB=0
   before=$(disk_free_gb)
   if [ "$before" -ge "$DISK_FLOOR_GB" ]; then
     return 0
   fi
   log "ALERT: disk free ${before}GB below floor ${DISK_FLOOR_GB}GB — running emergency cleanup"
-  part=$(clean_derived_data); floor_freed=$((floor_freed + ${part:-0}))
-  part=$(clean_stale_scratchpad); floor_freed=$((floor_freed + ${part:-0}))
+  clean_derived_data; floor_freed=$((floor_freed + LAST_CLEAN_DD_FREED_KB))
+  clean_stale_scratchpad; floor_freed=$((floor_freed + LAST_SCRATCHPAD_FREED_KB))
   clean_unavailable_simulators
   after=$(disk_free_gb)
   log "DIGEST: disk-floor cleanup freed $(human_kb "$floor_freed") — free space ${before}GB -> ${after}GB (floor ${DISK_FLOOR_GB}GB)"
-  echo "$floor_freed"
+  LAST_FLOOR_FREED_KB=$floor_freed
 }
 
 # Bound the fetch — a hung network call used to stall the whole GC (and the
@@ -168,8 +181,8 @@ else
   git fetch origin main -q 2>/dev/null || log "WARN: git fetch failed (offline?) — using cached origin/main"
 fi
 
-floor_freed_kb=$(check_disk_floor)
-floor_freed_kb=${floor_freed_kb:-0}
+check_disk_floor
+floor_freed_kb=$LAST_FLOOR_FREED_KB
 
 removed=0 kept=0 skipped=0 strip_freed_kb=0
 stale_unmerged=()

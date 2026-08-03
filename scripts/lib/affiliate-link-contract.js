@@ -117,6 +117,11 @@ function validatePlatformConfig(platforms = PLATFORMS) {
     if (cfg.type === 'partnerize' && !cfg.partnerizeCampaignRef) {
       problems.push(`${name}: enabled partnerize platform missing partnerizeCampaignRef`);
     }
+    // Coherence: an enabled platform that isn't revenue-reporting would show
+    // its paid traffic as non-affiliate in every report (Codex finding).
+    if (cfg.enabled && !cfg.revenueReporting) {
+      problems.push(`${name}: enabled but revenueReporting=false — its affiliate traffic would report as unmonetized`);
+    }
   }
   return problems;
 }
