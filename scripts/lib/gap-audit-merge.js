@@ -85,10 +85,21 @@ function censusVerdictFor(result, opts = {}) {
   const flaggedUrls = new Set((result.flaggedMisses || []).map((m) => m.url));
   const entries = [];
   const covered = new Set();
+  // One candidate per URL, NOT per host. `covered` stays outlet(host)-level —
+  // that is the verdict's input and a second URL from an already-covered outlet
+  // must not change complete/incomplete — but the CANDIDATE list is the plan's
+  // "every review the system knows about gets exactly one visible state", so an
+  // outlet that published two reviewed URLs owes two states. Deduping entries by
+  // host here left the sibling URL with no state at all (caught by
+  // report-stateless-candidates.js on real data: Time Out + londontheatre on
+  // tao-of-glass, nystagereview on les-miserables-arena). Identical repeated URLs
+  // still collapse.
+  const seenUrls = new Set();
   for (const url of (result.aggregatorListedUrls || [])) {
     if (missingUrls.has(url) || flaggedUrls.has(url)) continue;
     const id = hostOf(url);
-    if (!id || covered.has(id)) continue;
+    if (!id || seenUrls.has(url)) continue;
+    seenUrls.add(url);
     covered.add(id);
     entries.push({ outletId: id, outlet: id, critic: 'Unknown', stars: null, url });
   }
@@ -131,7 +142,11 @@ function censusVerdictFor(result, opts = {}) {
   const census = { entries, count: entries.length, sourcesPresent: hadAnySource ? ['gap-audit'] : [], hadAnySource };
   const censusOpts = { suppressed: CI_UNFETCHABLE_OUTLETS, clockAnchor: result.openingDate || null, ...opts };
   const v = censusVerdict(census, covered, censusOpts);
-  return { ...v, liveCount: covered.size, candidateCount: entries.length };
+  // liveCount counts LIVE CANDIDATES, not covered outlets, so it stays the
+  // numerator of the pair the public `cov` field publishes
+  // (liveCount/candidateCount are both URL-level or the ratio is nonsense).
+  const liveCount = v.candidates.filter((c) => c.state === 'live').length;
+  return { ...v, liveCount, candidateCount: entries.length };
 }
 
 /**
