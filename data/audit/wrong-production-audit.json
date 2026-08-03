@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T21:16:43.115Z",
+  "timestamp": "2026-08-03T23:57:05.888Z",
   "stats": {
-    "totalReviews": 41469,
-    "alreadyFlagged": 18111,
-    "dateGuardCatches": 110,
-    "directorMismatch": 945,
+    "totalReviews": 41437,
+    "alreadyFlagged": 18109,
+    "dateGuardCatches": 111,
+    "directorMismatch": 944,
     "tvFilmSignals": 1143,
-    "londonSignals": 806,
+    "londonSignals": 804,
     "offBroadwaySignals": 481,
     "yearMismatch": 86,
-    "noPublishDate": 3441
+    "noPublishDate": 3437
   },
   "findings": [
     {
@@ -379,7 +379,7 @@
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
+      "file": "thereviewshub--phoebe-taplin.json",
       "score": 90,
       "publishDate": "2026-06-13",
       "url": "https://www.thereviewshub.com/a-life-in-four-seasons-regents-park-open-air-theatre-london/",
@@ -2184,7 +2184,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "file": "plays-international--maryam-philpott.json",
+      "file": "plays-international--franco-milazzo.json",
       "score": 56,
       "publishDate": "2026-05-31",
       "url": "https://playsinternational.org.uk/beetlejuice-prince-edward-theatre/",
@@ -9268,7 +9268,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--jane-edwardes.json",
       "score": 79,
       "publishDate": "2026-06-19",
       "url": "https://playsinternational.org.uk/glengarry-glen-ross-old-vic/",
@@ -9414,7 +9414,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
+      "file": "thereviewshub--christine-stanton.json",
       "score": 70,
       "publishDate": "2026-06-18",
       "url": "https://www.thereviewshub.com/glengarry-glen-ross-old-vic-london/",
@@ -12925,22 +12925,8 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "plays-international--maryam-philpott.json",
+      "file": "plays-international--jeremy-malies.json",
       "score": 77,
-      "publishDate": "2025-12-15",
-      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "file": "plays-international--unknown.json",
-      "score": 80,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -13729,7 +13715,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "plays-international--maryam-philpott.json",
+      "file": "plays-international--jane-edwardes.json",
       "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
@@ -30122,7 +30108,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
+      "file": "thereviewshub--richard-maguire.json",
       "score": 62,
       "publishDate": null,
       "url": "https://www.thereviewshub.com/midsummer-nights-dream-regents-park-open-air-theatre-london/",
@@ -37233,20 +37219,6 @@
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
       "score": 90,
-      "publishDate": "2026-04-02",
-      "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "score": 90,
       "publishDate": null,
       "url": "https://www.thereviewshub.com/les-liaisons-dangereuses-national-theatre-london/",
       "findings": [
@@ -41969,20 +41941,6 @@
     },
     {
       "showId": "tao-of-glass-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "score": 90,
-      "publishDate": "2026-07-31",
-      "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "tao-of-glass-west-end-2026",
       "file": "west-end-best-friend--diana-feng.json",
       "score": 89,
       "publishDate": "2026-07-31",
@@ -43371,6 +43329,20 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "plays-to-see--unknown.json",
+      "score": 77,
+      "publishDate": "2025-08-20",
+      "url": "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 342d before show (2025-08-20 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
       "file": "westendtheatre--west-end-theatre.json",
       "publishDate": "2026-07-22",
       "url": "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
@@ -44627,7 +44599,7 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 61,
       "publishDate": "2026-07-17",
       "url": "https://playsinternational.org.uk/the-oresteia-bridge-theatre/",
@@ -45478,7 +45450,7 @@
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
-      "file": "plays-international--maryam-philpott.json",
+      "file": "plays-international--david-wootton.json",
       "score": 79,
       "publishDate": "2026-06-27",
       "url": "https://playsinternational.org.uk/the-truth-apollo-theatre/",
