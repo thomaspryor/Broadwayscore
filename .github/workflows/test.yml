@@ -671,6 +671,13 @@ on:
       - 'scripts/audit-orphan-tests.js'
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
+      # Shared duplicateOf N-node cycle walk (Notion #967) — used by
+      # review-write-guard.js, audit-duplicate-of-url-mismatch.js, and
+      # rebuild-all-reviews.js (all already listed), but a solo edit to this
+      # file alone needs its own entry (no scripts/lib/** broad glob).
+      # Colocated test runs in the tests/unit node --test batch (already
+      # covered by 'tests/**' above).
+      - 'scripts/lib/duplicate-cycle.js'
       # Date-plausibility ingest quarantine (card #832). Colocated
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; the .js source
       # needs explicit listing (no scripts/lib/** broad glob) — path-listed

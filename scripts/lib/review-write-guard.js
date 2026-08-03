@@ -39,6 +39,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
 const { validateTemporalAttribution } = require('./temporal-byline-guard');
+const { wouldFormDuplicateCycle: _wouldFormDuplicateCycleN } = require('./duplicate-cycle');
 
 // Lazy-loaded, memoized once per process — safeWriteReview is called
 // thousands of times per rebuild run and shows.json rarely changes mid-run.
@@ -815,14 +816,30 @@ function safeWriteReview(filePath, newData, options = {}) {
       try {
         colliderData = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), collider), 'utf-8'));
       } catch { /* unreadable collider — fall back to marking dup (historical behavior) */ }
-      if (wouldFormDuplicateCycle(path.basename(filePath), colliderData)) {
-        // The collider already points its duplicateOf at us — marking us dup of
-        // it would form an A↔B 2-cycle that excludes BOTH files from the rebuild
-        // (242 corpus-wide, 2026-07-11). Decline to mark; we are the canonical
-        // the collider defers to. If we were previously (wrongly) marked dup of
-        // this same collider, clear it now with a breadcrumb so the push-restore
-        // exception (isIntentionalClear) doesn't resurrect the cycle.
-        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider}, but ${collider} already points back at us — keeping primary to avoid a duplicateOf cycle`);
+      // Sibling loader for the N-hop cycle walk, seeded with the collider read
+      // above so it costs no extra I/O in the (overwhelmingly common) 2-node
+      // case; only walking past the collider touches disk again.
+      const siblingDir = path.dirname(filePath);
+      const siblingCache = { [collider]: colliderData };
+      const loadSibling = (name) => {
+        if (Object.prototype.hasOwnProperty.call(siblingCache, name)) return siblingCache[name];
+        try {
+          siblingCache[name] = JSON.parse(fs.readFileSync(path.join(siblingDir, name), 'utf-8'));
+        } catch {
+          siblingCache[name] = null;
+        }
+        return siblingCache[name];
+      };
+      if (wouldFormDuplicateCycle(path.basename(filePath), collider, loadSibling)) {
+        // The collider's duplicateOf chain already loops back to us (directly,
+        // the A↔B 2-cycle, or via one or more intermediate siblings) — marking
+        // us dup of it would close the loop and exclude every member from the
+        // rebuild (242 corpus-wide, 2026-07-11; N-node case: Notion #941
+        // washpost 3-cycle). Decline to mark; we are the canonical the collider
+        // (transitively) defers to. If we were previously (wrongly) marked dup
+        // of this same collider, clear it now with a breadcrumb so the
+        // push-restore exception (isIntentionalClear) doesn't resurrect the cycle.
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider}, but ${collider}'s duplicateOf chain already loops back to us — keeping primary to avoid a duplicateOf cycle`);
         if (newData.duplicateOf === collider) {
           newData.duplicateClearReason = `auto-cleared at write: refusing duplicateOf cycle with ${collider} (it already points back at us)`;
           newData.duplicateOf = null;
@@ -959,22 +976,28 @@ function getEffectiveProtectedFields(existingData) {
  * @returns {boolean} true → mark new file duplicate; false → keep new file primary
  */
 /**
- * Would marking `thisBasename` as duplicateOf the collider form a 2-cycle?
- * True when the collider ALREADY points its duplicateOf back at this file — i.e.
- * the collider has declared US canonical. Marking us duplicate of it in turn
- * makes A.duplicateOf=B AND B.duplicateOf=A, and the rebuild then excludes BOTH
- * files, silently dropping the review (242 corpus-wide, 2026-07-11). This is the
- * A↔B analogue of the self-referential auto-clear at ~line 528 — the write-guard
- * broke the 1-cycle but not the 2-cycle. Break it at write time by declining to
- * mark: the collider stays pointing at us, so exactly one direction survives.
+ * Would marking `thisBasename` as duplicateOf `candidateTarget` complete a
+ * duplicateOf cycle of ANY length, not just the direct 2-node case (the
+ * collider pointing its duplicateOf back at us — A.duplicateOf=B AND
+ * B.duplicateOf=A, and the rebuild then excludes BOTH files, silently
+ * dropping the review, 242 corpus-wide, 2026-07-11)? A longer chain is just
+ * as real: A already duplicateOf B, B already duplicateOf C, and this write
+ * sets C.duplicateOf=A closes A->B->C->A just as surely (Notion #941 washpost
+ * 3-cycle: andor-brodeur -> justin-davidson -> michael-andor-brodeur ->
+ * andor-brodeur — caught only by the post-hoc audit, never at write time).
+ * Delegates the actual walk to scripts/lib/duplicate-cycle.js so write-time
+ * refusal and the audit's post-hoc detection can never disagree about what
+ * counts as a cycle. Declining to mark leaves the pre-existing chain intact,
+ * so exactly one direction survives.
  *
- * Pure (no I/O) for tests/unit/circular-duplicate-pair.test.mjs.
+ * Pure (no I/O) — `loadSibling` is injected — for tests/unit/circular-duplicate-pair.test.mjs.
  * @param {string} thisBasename basename of the file being written
- * @param {{duplicateOf?:string}|null} colliderData parsed collider record
+ * @param {string|null|undefined} candidateTarget the duplicateOf value about to be set (the collider's basename)
+ * @param {(basename: string) => ({duplicateOf?: string}|null)} loadSibling loads a sibling's parsed record by basename
  * @returns {boolean}
  */
-function wouldFormDuplicateCycle(thisBasename, colliderData) {
-  return !!(colliderData && colliderData.duplicateOf === thisBasename);
+function wouldFormDuplicateCycle(thisBasename, candidateTarget, loadSibling) {
+  return _wouldFormDuplicateCycleN(thisBasename, candidateTarget, loadSibling);
 }
 
 // Body-length thresholds shared by the collision-decision helpers below.
