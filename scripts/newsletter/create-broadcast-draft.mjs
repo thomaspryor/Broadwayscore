@@ -186,7 +186,21 @@ if (!fs.existsSync(htmlPath) || !fs.existsSync(metaPath)) {
   process.exit(1);
 }
 
-const html = fs.readFileSync(htmlPath, 'utf8');
+let html = fs.readFileSync(htmlPath, 'utf8');
+// Strip the pre-send-check soft-issue banner before it can reach a SUBSCRIBER
+// draft (task #746). pre-send-check.mjs injects the banner into the generated
+// HTML so the owner sees warnings in the preview email — but this script
+// PATCHes that same file into the real audience broadcast, and on 2026-08-02
+// the operator had to hand-strip the banner twice on a live send night. The
+// banner is owner-review chrome, never subscriber content; the issues it
+// carried are still visible in pre-send-check's console output and CI
+// annotations. Match on the banner's unique background color (#7c2d12),
+// which appears nowhere in the real templates.
+const BANNER_RE = /<div style="background:#7c2d12;[\s\S]*?<\/div>/;
+if (BANNER_RE.test(html)) {
+  html = html.replace(BANNER_RE, '');
+  console.warn('⚠️  Stripped pre-send soft-issue banner from draft HTML before PATCH (subscribers must never see it — task #746). Review the pre-send-check output for the underlying issues.');
+}
 const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 const subject = (flags.subject || meta.subject || '').toString().trim();
 
