@@ -91,9 +91,24 @@ const CRITICAL_OUTLETS = {
   },
   thetimes: {
     envVar: 'THETIMES_COOKIES',
-    testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1776-review-broadway-revival',
-    authCookies: [], // Complex subscriber auth — monitor via structural/volume check
+    // Old testUrl (1776-review-broadway-revival) 404s — confirmed live
+    // 2026-08-03 while building the OTP-login recovery pipeline (task #919).
+    // Swapped for a live review URL and added minBodyChars: the body-length
+    // check catches a dead session that cookie-expiry alone misses, same
+    // rationale as thestage above.
+    //
+    // authCookies MUST be non-empty: checkLiveAccess() treats authCookies=[]
+    // as "soft paywall" and short-circuits to a PASS whenever the fetched
+    // HTML is merely long (>50000 chars) and paywall-keyword-matched — before
+    // minBodyChars ever runs. `authId` is Times UK's real subscriber-session
+    // cookie (present on both thetimes.com and thetimes.co.uk after login;
+    // also the canonical name recollect-for-scores.js already keys off of).
+    // Ship-check adversarial review caught this 2026-08-03 — with
+    // authCookies=[], minBodyChars above was unreachable dead code.
+    testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
+    authCookies: ['authId'],
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
+    minBodyChars: 1200,
   },
   nypost: {
     // No NYPOST_COOKIES secret exists (card #582 leads confirmed it's absent from
