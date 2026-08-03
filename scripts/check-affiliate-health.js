@@ -43,7 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
-const { computeArmState, computeCollapseState, todayKey } = require('./lib/arm-yield');
+const { computeArmState, computeCollapseState, todayKey, toDayKey } = require('./lib/arm-yield');
 const {
   checkHandoffBreak,
   checkBotDivergence,
@@ -81,10 +81,15 @@ function parseArgs(argv) {
     const hit = argv.find((a) => a.startsWith(`--${name}=`));
     return hit ? hit.slice(name.length + 3) : null;
   };
+  // Judge as of YESTERDAY (UTC), the last COMPLETE day, by default. The cron
+  // fires 06:45 UTC when "today" is a sliver everywhere (and Impact's
+  // reporting day, US-anchored, has barely started) — trailing windows that
+  // include a partial day systematically undercount and skew every threshold.
+  const yesterday = toDayKey(Date.parse(`${todayKey()}T00:00:00Z`) - 24 * 60 * 60 * 1000);
   return {
     dryRun: argv.includes('--dry-run'),
     json: argv.includes('--json'),
-    asOf: get('as-of') || todayKey(),
+    asOf: get('as-of') || yesterday,
     fixture: get('fixture'),
   };
 }
