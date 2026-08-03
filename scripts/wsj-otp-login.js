@@ -203,7 +203,7 @@ async function main() {
 
     console.log(`Wrote ${wsjCookies.length} cookies to ${COOKIE_PATH}`);
 
-    if (shouldPush && !pushCookiesToGitHubSecret(wsjCookies)) {
+    if (shouldPush && !pushCookiesToGitHubSecret(wsjCookies, meta.wsj)) {
       // Login + local write already succeeded above — a push failure here
       // is a distinct, secondary problem (network/gh-auth), not a login
       // failure. Don't throw: that would make main()'s catch print "FATAL"
@@ -226,7 +226,13 @@ async function main() {
 // bundles are rebuilt from ALL outlets at once by extract-safari-cookies.py,
 // not incrementally by a single-outlet script. Returns false (not throw) on
 // failure so a push hiccup can't masquerade as a login failure — see caller.
-function pushCookiesToGitHubSecret(cookies) {
+//
+// Also pushes a companion WSJ_COOKIES_META secret (base64 JSON
+// {extractedAt, extractedAtUnix}) — without it cookie-loader.js's
+// selectFresherCookieTier() has no way to know this secret is newer than a
+// stale COOKIES_BUNDLE_* wsj entry, and the bundle silently wins forever
+// (task #881).
+function pushCookiesToGitHubSecret(cookies, meta) {
   console.log('Pushing cookies to GitHub secret WSJ_COOKIES...');
   const base64Val = Buffer.from(JSON.stringify(cookies)).toString('base64');
   try {
@@ -235,12 +241,29 @@ function pushCookiesToGitHubSecret(cookies) {
       stdio: ['pipe', 'inherit', 'inherit'],
     });
     console.log('Pushed WSJ_COOKIES to GitHub secrets.');
-    return true;
   } catch (err) {
     console.error(`WARNING: failed to push WSJ_COOKIES secret: ${err.message}`);
     console.error('WARNING: local cookie refresh succeeded but CI will keep using the previous secret until this is retried.');
     return false;
   }
+
+  if (meta) {
+    const metaBase64 = Buffer.from(JSON.stringify(meta)).toString('base64');
+    try {
+      execSync('gh secret set WSJ_COOKIES_META --repo thomaspryor/Broadwayscore', {
+        input: metaBase64,
+        stdio: ['pipe', 'inherit', 'inherit'],
+      });
+      console.log('Pushed WSJ_COOKIES_META to GitHub secrets.');
+    } catch (err) {
+      console.error(`WARNING: failed to push WSJ_COOKIES_META secret: ${err.message}`);
+      console.error('WARNING: WSJ_COOKIES was pushed but freshness comparison against COOKIES_BUNDLE_* will fall back to bundle-wins until this is retried.');
+      // Not fatal to the overall push: WSJ_COOKIES itself landed, this only
+      // affects tier-selection freshness — same reasoning as the cookie push above.
+    }
+  }
+
+  return true;
 }
 
 main()
