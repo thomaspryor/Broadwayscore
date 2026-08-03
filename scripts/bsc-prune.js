@@ -258,8 +258,9 @@ function mainLocked({ dryRun, deps }) {
   // where surface attachment cannot bite). in_progress stays with the #883
   // reconciler; unmapped tabs are report-only. The idle bucket's dead
   // breadcrumbs above are terminal ledger entries, so these closes can never
-  // be mistaken for owner closes by sweepVanished, and bsc-next's
-  // deadDispatchGuard (2 recorded deaths) caps revival recurrence.
+  // be mistaken for owner closes by sweepVanished; revival recurrence is
+  // capped by an explicit deadAttemptsForTask check inside the sweep (the
+  // --headless path never reaches bsc-next's own deadDispatchGuard).
   sweepZombieTabs({
     all, idle, dryRun,
     closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn,
@@ -420,43 +421,74 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
     catch (e) { console.error(`[zombie-sweep] WARN ledger write failed for ${c.ref}: ${e.message}`); }
   }
 
+  const revived = [];
   for (const r of revive) {
+    // The 2-death recurrence backstop must live HERE: bsc-next's --headless
+    // branch returns before deadDispatchGuard ever runs (second-opinion
+    // catch, 2026-08-03 — the guard is only wired into the cmux dispatch
+    // path). The idle bucket wrote this tick's 'dead' breadcrumb before we
+    // re-read entries, so the count already includes this death: a tab that
+    // zombies twice stops being revived and stays in the digest for a human.
+    const priorDeaths = dispatchLedger.deadAttemptsForTask(r.taskId, entriesAfterBreadcrumbs(readLedgerEntriesFn, entries));
+    if (priorDeaths.length >= dispatchLedger.DEAD_ATTEMPT_LIMIT) {
+      console.log(`[zombie-sweep] task #${r.taskId} has died ${priorDeaths.length}x — closing husk ${r.ref} but NOT re-dispatching (deadDispatchGuard threshold); investigate via digest`);
+      try { closeWorkspaceFn(r.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${r.ref}: ${e.message}`); }
+      continue;
+    }
     console.log(`[zombie-sweep] never-booted launch ${r.ref} task #${r.taskId} — closing husk and re-dispatching headless`);
     try { closeWorkspaceFn(r.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${r.ref}: ${e.message}`); }
-    // Ledger 'dead' for this ref was already written by the idle bucket this
-    // tick; only the re-dispatch remains. bsc-next re-checks eligibility,
-    // duplicate guards, and the 2-death refusal itself.
     redispatchFn(r.taskId);
+    revived.push(r);
   }
   if (reviveDeferred.length) console.log(`[zombie-sweep] ${reviveDeferred.length} more never-booted tab(s) deferred to the next tick (per-tick cap)`);
 
-  pageFn({ corpses, revive });
+  pageFn({ corpses, revive: revived });
 }
 
+// Fresh entries so the death count includes THIS tick's idle-bucket
+// breadcrumbs; falls back to the sweep's earlier snapshot on read failure.
+function entriesAfterBreadcrumbs(readLedgerEntriesFn, snapshot) {
+  try { return readLedgerEntriesFn(); } catch { return snapshot; }
+}
+
+// Fire-and-forget: the sweep runs under the 4-min-stale run lock, so a
+// synchronous wait here (2 revives x 120s worst case, second-opinion catch)
+// could outlive the lock and let the next tick start a concurrent sweep.
+// bsc-next --headless hands off to bsc-runner and exits on its own; output
+// goes to a per-task log under data/audit/headless-logs/ for the audit trail.
 function redispatchHeadless(taskId) {
-  const { spawnSync } = require('child_process');
-  const res = spawnSync('node', [path.join(__dirname, 'bsc-next.js'), '--id', String(taskId), '--headless'], { encoding: 'utf8', timeout: 120_000 });
-  const tail = ((res.stdout || '') + (res.stderr || '')).trim().split('\n').slice(-2).join(' | ');
-  console.log(`[zombie-sweep] re-dispatch #${taskId} → exit=${res.status} ${tail}`);
+  const { spawn } = require('child_process');
+  const logDir = path.join(__dirname, '..', 'data', 'audit', 'headless-logs');
+  let out = 'ignore';
+  try { fs.mkdirSync(logDir, { recursive: true }); out = fs.openSync(path.join(logDir, `zombie-redispatch-${taskId}.log`), 'a'); } catch { /* log loss never blocks the dispatch */ }
+  const child = spawn('node', [path.join(__dirname, 'bsc-next.js'), '--id', String(taskId), '--headless'], { detached: true, stdio: ['ignore', out, out] });
+  child.unref();
+  if (out !== 'ignore') { try { fs.closeSync(out); } catch { /* child holds its own fd */ } }
+  console.log(`[zombie-sweep] re-dispatch #${taskId} spawned detached (log: data/audit/headless-logs/zombie-redispatch-${taskId}.log)`);
 }
 
-// Digest page (aggregate, once per tick) — every auto-close of an unmarked
-// tab must be loud and auditable, same doctrine as pageNoPayloadClose.
+// Digest page — every auto-close of an unmarked tab must be loud and
+// auditable, same doctrine as pageNoPayloadClose. Per-ref conditionKeys
+// (matching that sibling), NOT one static key: a static key's 1h cooldown
+// would silently swallow the second batch of closes during exactly the
+// mass-outage scenario this sweep exists for (second-opinion catch).
 function pageZombieSweep({ corpses, revive }) {
   try {
     const { routeAlert } = require('./lib/owner-alert-router.js');
-    const lines = [
-      ...corpses.map(c => `closed corpse ${c.ref} "${c.title}" (${c.reason})`),
-      ...revive.map(r => `closed never-booted ${r.ref}, re-dispatched task #${r.taskId} headless`),
+    const events = [
+      ...corpses.map(c => ({ ref: c.ref, line: `closed corpse ${c.ref} "${c.title}" (${c.reason})` })),
+      ...revive.map(r => ({ ref: r.ref, line: `closed never-booted ${r.ref}, re-dispatched task #${r.taskId} headless` })),
     ];
-    routeAlert({
-      conditionKey: 'bsc-prune:zombie-sweep',
-      title: `Zombie-tab sweep: closed ${corpses.length + revive.length} dead 🤖 tab(s)`,
-      description: lines.join('\n'),
-      severity: 'info',
-      disposition: 'digest',
-      cooldownHours: 1,
-    }).catch(() => {});
+    for (const e of events) {
+      routeAlert({
+        conditionKey: `bsc-prune:zombie-sweep:${e.ref}`,
+        title: `Zombie-tab sweep closed ${e.ref}`,
+        description: e.line,
+        severity: 'info',
+        disposition: 'digest',
+        cooldownHours: 1,
+      }).catch(() => {});
+    }
   } catch { /* alerting must never block the sweep */ }
 }
 

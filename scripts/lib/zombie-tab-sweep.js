@@ -20,8 +20,9 @@
  *   revive  — dead 🤖 tab whose task is still pending: the launch never ran.
  *             Close the husk and re-dispatch headless (bsc-next --headless),
  *             where cmux surface attachment cannot bite. Capped per tick;
- *             bsc-next's deadDispatchGuard (2 recorded deaths) is the
- *             recurrence backstop.
+ *             the CALLER must enforce the deadAttemptsForTask recurrence cap
+ *             (bsc-next's --headless path never reaches its own
+ *             deadDispatchGuard — verified 2026-08-03).
  *   report  — dead 🤖 tab we can't map to a task (no launch entry, no task
  *             file) or whose task is in_progress (the #883 reconciler's
  *             territory — never race it). Listed, never touched.

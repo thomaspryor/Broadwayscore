@@ -165,6 +165,32 @@ test('sweepZombieTabs wiring: dry-run closes nothing, real run closes corpse and
   assert.equal(calls.paged, 1);
 });
 
+test('sweepZombieTabs: revive skipped (husk still closed) once dead attempts hit the guard threshold', () => {
+  const prune = require('../bsc-prune.js');
+  const { DEAD_ATTEMPT_LIMIT } = require('./dispatch-ledger.js');
+  const calls = { closed: [], redispatched: [], paged: [] };
+  const deadEntries = [];
+  for (let i = 0; i < DEAD_ATTEMPT_LIMIT; i++) {
+    deadEntries.push({ event: 'launch', workspaceRef: `workspace:${60 + i}`, taskId: 914, subject: 'b', ts: `2026-08-03T0${i}:00:00Z` });
+    deadEntries.push({ event: 'dead', workspaceRef: `workspace:${60 + i}`, taskId: 914, ts: `2026-08-03T0${i}:30:00Z` });
+  }
+  const entries = deadEntries.concat([{ event: 'launch', workspaceRef: 'workspace:70', taskId: 914, subject: 'b', ts: '2026-08-03T05:00:00Z' }]);
+  prune.sweepZombieTabs({
+    all: [{ ref: 'workspace:70', title: '🤖⚡ Data·keeps dying' }],
+    idle: [{ ref: 'workspace:70', title: '🤖⚡ Data·keeps dying' }],
+    dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: () => {},
+    readLedgerEntriesFn: () => entries,
+    taskStatusByIdFn: () => 'pending',
+    redispatchFn: (id) => calls.redispatched.push(id),
+    pageFn: (p) => calls.paged.push(p),
+  });
+  assert.deepEqual(calls.closed, ['workspace:70'], 'husk must still close');
+  assert.deepEqual(calls.redispatched, [], 'must NOT re-dispatch past the death threshold');
+  assert.deepEqual(calls.paged[0].revive, [], 'guarded task must not be paged as revived');
+});
+
 test('sweepZombieTabs kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 does nothing', () => {
   const prune = require('../bsc-prune.js');
   const calls = { closed: [] };
