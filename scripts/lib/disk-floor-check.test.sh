@@ -77,6 +77,69 @@ else
   echo "FAIL[4]: custom floor override was not honored"; fail=1
 fi
 
+# Case 5: lock held by a LIVE process → GC is skipped (serialization guard,
+# task #968 adversarial review: concurrent low-disk sessions must not all
+# launch their own full GC scan at once).
+BINDIR=$(fake_bin $((3 * 1024 * 1024)))
+rm -f "$GC_MARKER"
+LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
+rm -rf "$LOCK_DIR"
+mkdir -p "$LOCK_DIR"
+echo $$ > "$LOCK_DIR/pid"   # this test process is alive for the duration of this check
+OUT=$( ( PATH="$BINDIR:$PATH"; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) 2>&1 )
+if [ -f "$GC_MARKER" ]; then
+  echo "FAIL[5]: GC ran despite a live-held lock. Output: $OUT"; fail=1
+else
+  echo "PASS[5]: live-held lock correctly skips GC (no concurrent scan launched)"
+fi
+rm -rf "$LOCK_DIR"
+
+# Case 6: lock held by a DEAD process (simulates a session killed mid-GC,
+# e.g. machine sleep or an external timeout wrapper — the RETURN trap that
+# normally cleans up the lock never fires on a hard kill) → the stale lock
+# is reclaimed via PID liveness check and GC still runs. Age-only reclaim
+# was deliberately rejected (would race a legitimately slow-but-alive GC).
+BINDIR=$(fake_bin $((3 * 1024 * 1024)))
+rm -f "$GC_MARKER"
+rm -rf "$LOCK_DIR"
+mkdir -p "$LOCK_DIR"
+( exit 0 ) & DEAD_PID=$!
+wait "$DEAD_PID" 2>/dev/null
+echo "$DEAD_PID" > "$LOCK_DIR/pid"   # now guaranteed not running
+OUT=$( ( PATH="$BINDIR:$PATH"; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) 2>&1 )
+if [ -f "$GC_MARKER" ]; then
+  echo "PASS[6]: dead-holder lock reclaimed, GC ran"
+else
+  echo "FAIL[6]: stale lock (dead pid $DEAD_PID) was NOT reclaimed. Output: $OUT"; fail=1
+fi
+rm -rf "$LOCK_DIR"
+
+# Case 7: `df` itself fails (nonzero exit) — under the caller's real-world
+# `set -euo pipefail` (push-with-retry.sh, merge-worktree-to-main.sh), an
+# unguarded `free_gb=$(df ... | awk ...)` assignment would trip errexit and
+# silently kill the ENTIRE push/merge — the opposite of "fail-open"
+# (adversarial review, task #968). Assert the caller survives past the call.
+BROKEN_DF_DIR="$TMP/bin-broken-df"
+mkdir -p "$BROKEN_DF_DIR"
+cat > "$BROKEN_DF_DIR/df" <<'EOF'
+#!/usr/bin/env bash
+exit 1
+EOF
+chmod +x "$BROKEN_DF_DIR/df"
+rm -f "$GC_MARKER"
+OUT=$( PATH="$BROKEN_DF_DIR:$PATH" bash -c '
+  set -euo pipefail
+  cd "'"$FAKE_REPO"'"
+  source "scripts/lib/disk-floor-check.sh"
+  ensure_disk_floor
+  echo SURVIVED
+' 2>&1 )
+if grep -q "SURVIVED" <<<"$OUT"; then
+  echo "PASS[7]: caller survives a failing df under set -euo pipefail (fail-open holds)"
+else
+  echo "FAIL[7]: caller was killed by a failing df under set -e — fail-open is broken. Output: $OUT"; fail=1
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "disk-floor-check test: FAILED"; exit 1
 fi
