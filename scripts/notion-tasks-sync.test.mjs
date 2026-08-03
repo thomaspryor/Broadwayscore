@@ -185,3 +185,50 @@ test('readTask: live copy wins over an archive copy with the same id', () => {
   assert.equal(readTask(dir, '9').status, 'in_progress');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ship-check adversarial finding (2026-08-02): taskBelongsTo's default
+// (archive-aware) mode is correct for cmdPush/cmdStatus, but wrong for
+// cmdPull — a card reopened in Notion after its mirrored task was archived
+// must NOT resolve via taskBelongsTo({liveOnly:true}), or planPull's
+// toUpdate branch reads the archive's stale status:'completed' and
+// mergeStatus's sticky-completed rule resurrects a permanently-stuck
+// live file instead of routing to doCreate (fresh task, correct status).
+const { readLiveTask } = require('./notion-tasks-sync.js');
+
+test('taskBelongsTo: liveOnly:true does not see an archive-only match (cmdPull ownership check)', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed', description: '[notion:abc] P1 · Done · eng' }));
+  assert.equal(taskBelongsTo(dir, '9', 'abc'), true, 'default (cmdPush) mode sees the archived copy');
+  assert.equal(taskBelongsTo(dir, '9', 'abc', { liveOnly: true }), false, 'liveOnly mode (cmdPull) must not');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('readLiveTask: never falls back to archive/ (cmdPull\'s `existing` read)', () => {
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({ id: '9', status: 'completed' }));
+  assert.equal(readLiveTask(dir, '9'), null);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('planPull + readLiveTask/taskBelongsTo(liveOnly): a reopened card whose mirrored task was archived is NOT resurrected as stuck-completed', () => {
+  // Simulates the exact bug: card was archived (completed >48h ago), then
+  // reopened in Notion (status back to "In progress"). cmdPull's toUpdate
+  // path must treat this as "id no longer belongs to us" (liveOnly check
+  // fails, since the file only exists in archive/) and mint a fresh task
+  // via doCreate — never write a resurrected completed copy into the live dir.
+  const dir = tmpDir();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  const pageId = 'abc-123';
+  fs.writeFileSync(path.join(dir, 'archive', '9.json'), JSON.stringify({
+    id: '9', status: 'completed', description: `[notion:${pageId}] P1 Next · Done · eng`,
+  }));
+  const belongsLive = taskBelongsTo(dir, '9', pageId, { liveOnly: true });
+  assert.equal(belongsLive, false, 'ownership check must fail for an archive-only file — this is what routes cmdPull to doCreate');
+  // If this were true (the pre-fix bug), the caller would instead do:
+  //   const existing = readTask(dir, '9') || {};  // status:'completed' from archive
+  //   mapped.status = mergeStatus('completed', 'pending'); // -> 'completed' (sticky)
+  //   writeTask(dir, {...mapped, status: 'completed'});    // resurrected, stuck forever
+  fs.rmSync(dir, { recursive: true, force: true });
+});
