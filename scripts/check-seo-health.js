@@ -24,6 +24,7 @@ const {
   SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC,
 } = require('./submit-google-indexing');
 const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
+const { summarizeBotQueries, botDropExplainsDecline } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
@@ -221,6 +222,39 @@ async function checkSearchPerformance(token) {
     }));
   } catch { /* non-critical */ }
 
+  // Bot-shaped query census for this week and the prior one. Rank-trackers and
+  // scrapers issue `site:` / stacked-exact-phrase queries that earn thousands of
+  // impressions and zero clicks; when such a cluster switches on or off, site
+  // impressions swing 30%+ with no change in click outcomes. Measuring it here
+  // is what lets detectPerformanceAnomalies() tell that apart from a real
+  // ranking loss instead of paging the owner (card #530).
+  let botSignature = null;
+  try {
+    const [curQ, priorQ] = await Promise.all([
+      gscFetch(
+        `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/searchAnalytics/query`,
+        token,
+        { method: 'POST', body: JSON.stringify({ startDate: fmt(startDate), endDate: fmt(endDate), dimensions: ['query'], rowLimit: 5000 }) }
+      ),
+      gscFetch(
+        `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/searchAnalytics/query`,
+        token,
+        { method: 'POST', body: JSON.stringify({ startDate: fmt(priorStart), endDate: fmt(priorEnd), dimensions: ['query'], rowLimit: 5000 }) }
+      ),
+    ]);
+    const curBots = summarizeBotQueries(curQ.rows || []);
+    const priorBots = summarizeBotQueries(priorQ.rows || []);
+    botSignature = {
+      botImpressions: curBots.botImpressions,
+      botQueries: curBots.botQueries,
+      botShare: Math.round(curBots.botShare * 10000) / 10000,
+      namedImpressions: curBots.totalImpressions,
+      priorBotImpressions: priorBots.botImpressions,
+      examples: curBots.examples.length ? curBots.examples : priorBots.examples,
+    };
+    console.log(`  Bot-shaped queries: ${curBots.botQueries} queries / ${curBots.botImpressions} impressions (was ${priorBots.botImpressions}), ${(curBots.botShare * 100).toFixed(1)}% of named impressions`);
+  } catch { /* non-critical — alerting falls back to the clicks+position guard */ }
+
   return {
     period: { start: fmt(startDate), end: fmt(endDate) },
     clicks: cur.clicks,
@@ -229,6 +263,7 @@ async function checkSearchPerformance(token) {
     position: Math.round(cur.position * 10) / 10,
     priorClicks: prev.clicks,
     priorImpressions: prev.impressions,
+    botSignature,
     topQueries,
     topPages,
   };
@@ -885,6 +920,22 @@ function detectAnomalies(currentMetrics, history) {
   const impressionsDrop = avgImpressions > 0 ? (avgImpressions - currentMetrics.impressions) / avgImpressions : 0;
   const positionIncrease = currentMetrics.position - avgPosition;
 
+  // A departing zero-click bot-query cluster takes impressions with it AND drags
+  // average position the wrong way, because those impressions sat at good
+  // positions. Both movements are one event, so neither is independent evidence
+  // of a ranking loss — but the impressions guard's `positionHealthy` clause and
+  // the position_worse warning below each read them as such, which is how card
+  // #530 ("34% impressions drop", 2026-07-26) got raised over a third-party
+  // scraper switching off on 2026-07-15 while clicks were UP 13%.
+  const bot = currentMetrics.botSignature;
+  const botImpressionsDelta = bot ? (bot.priorBotImpressions || 0) - (bot.botImpressions || 0) : 0;
+  const botDropExplains = bot ? botDropExplainsDecline({
+    impressionsDelta: avgImpressions - currentMetrics.impressions,
+    botImpressionsDelta,
+    namedImpressions: bot.namedImpressions,
+    totalImpressions: currentMetrics.impressions,
+  }) : false;
+
   let seasonallyExpected = false;
   if (history.length >= 52) {
     const lastYear = history[history.length - 52];
@@ -927,6 +978,8 @@ function detectAnomalies(currentMetrics, history) {
       console.log(`  Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg, but matches seasonal pattern — suppressed`);
     } else if (clicksHealthy && positionHealthy) {
       console.log(`  Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg, but clicks (${currentMetrics.clicks} vs avg ${Math.round(avgClicks)}, ${Math.round(clicksDrop * 100)}% drop) and position (${currentMetrics.position} vs avg ${avgPosition.toFixed(1)}) are stable — suppressed`);
+    } else if (clicksHealthy && botDropExplains) {
+      console.log(`  Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg with clicks stable (${currentMetrics.clicks} vs avg ${Math.round(avgClicks)}); zero-click bot-shaped queries fell ${botImpressionsDelta} impressions (e.g. ${JSON.stringify(bot.examples?.[0] || '')}) — scraper churn, suppressed`);
     } else {
       issues.push({ type: 'impressions_drop', severity: 'error', message: `Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg (${currentMetrics.impressions} vs avg ${Math.round(avgImpressions)})` });
       console.log(`  ALERT: ${issues[issues.length - 1].message}`);
@@ -934,8 +987,12 @@ function detectAnomalies(currentMetrics, history) {
   }
 
   if (positionIncrease > 5) {
-    issues.push({ type: 'position_worse', severity: 'warning', message: `Avg position worsened by ${positionIncrease.toFixed(1)} spots (${currentMetrics.position} vs avg ${avgPosition.toFixed(1)})` });
-    console.log(`  ALERT: ${issues[issues.length - 1].message}`);
+    if (botDropExplains && clicksDrop < 0.15) {
+      console.log(`  Avg position worsened by ${positionIncrease.toFixed(1)} spots, but ${botImpressionsDelta} zero-click bot-shaped impressions left the mix and clicks held — averaging artefact, suppressed`);
+    } else {
+      issues.push({ type: 'position_worse', severity: 'warning', message: `Avg position worsened by ${positionIncrease.toFixed(1)} spots (${currentMetrics.position} vs avg ${avgPosition.toFixed(1)})` });
+      console.log(`  ALERT: ${issues[issues.length - 1].message}`);
+    }
   }
 
   if (issues.length === 0) {
@@ -1138,7 +1195,13 @@ function saveSnapshot(healthData, performanceData) {
   fs.writeFileSync(HEALTH_PATH, JSON.stringify(healthData, null, 2) + '\n');
   console.log(`\nSaved health snapshot to ${HEALTH_PATH}`);
 
-  const history = loadHistory();
+  // Every alert threshold in detectPerformanceAnomalies() is a comparison against
+  // the trailing 4-week average, so a duplicated week silently reweights all of
+  // them. A rerun of the weekly workflow (or two runs landing in one calendar
+  // day) used to blind-append a second row for the same date — data/audit/
+  // seo-performance-history.json carried a duplicate 2026-06-21 for six weeks.
+  // Replace-by-date instead of appending.
+  const history = loadHistory().filter(row => row.date !== healthData.lastChecked);
   history.push({
     date: healthData.lastChecked,
     clicks: performanceData.clicks,
