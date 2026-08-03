@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
+import { measurePageWeight, overBudgetMessage } from './helpers/page-weight';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -11,6 +12,11 @@ const shows = showsData.shows || showsData;
 // Get a sample of shows to test (first 10 + random selection)
 const openShows = shows.filter((s: any) => s.status === 'open');
 const sampleShows = openShows.slice(0, Math.min(15, openShows.length));
+
+// Card #419's own regression was measured on /show/hamilton (deepest review
+// corpus in the catalogue, so the heaviest realistic show page). Fall back to
+// the first open show if it's ever closed/renamed so this doesn't go dark.
+const weightBudgetShow = openShows.find((s: any) => s.slug === 'hamilton') || sampleShows[0];
 
 test.describe('Show Detail Pages', () => {
   test('all open show pages load without 404', async ({ page }) => {
@@ -164,6 +170,43 @@ test.describe('Show Detail Pages', () => {
           + 'serializeShowForClient() (see src/app/show/[slug]/page.tsx).',
       ).toEqual([]);
     }
+  });
+
+  // Page-weight budget gate (card #961). The only prior signal for the #419
+  // class of regression was a weekly Lighthouse lab score oscillating 64-81
+  // across weeks and naming the wrong page in the alert. This asserts real
+  // uncompressed document bytes and inlined-RSC bytes on every push/PR/daily
+  // run instead — see tests/e2e/page-weight-budget.spec.ts for the
+  // non-show-page routes (/, /west-end, /off-broadway, guides).
+  //
+  // Budget = /show/hamilton production document bytes measured 2026-08-03
+  // (`curl -s --compressed https://broadwayscorecard.com/show/hamilton | wc
+  // -c` = 789,332) x1.25 headroom, rounded up to the nearest 10KB. rscBytes
+  // budget = inlined `self.__next_f.push(...)` flight-chunk bytes from that
+  // same fetch (660,598), same rounding.
+  //
+  // NOTE: this page is currently carrying the unresolved bloat tracked by
+  // #962 (review arrays serializing into the payload 3x) — this budget locks
+  // in TODAY'S weight so it can't get worse, it is not a target. Ratchet it
+  // down once #962 lands.
+  test('show page stays under its document-weight budget', async ({ page }) => {
+    const budget = { documentBytes: 990_000, rscBytes: 830_000 };
+    const response = await page.goto(`/show/${weightBudgetShow.slug}`);
+    const html = (await response?.text()) ?? '';
+    expect(html.length, `/show/${weightBudgetShow.slug} returned an empty response`).toBeGreaterThan(0);
+
+    const measured = measurePageWeight(html);
+    const route = `/show/${weightBudgetShow.slug}`;
+
+    expect(
+      measured.documentBytes,
+      overBudgetMessage(route, 'documentBytes', measured.documentBytes, budget.documentBytes),
+    ).toBeLessThanOrEqual(budget.documentBytes);
+
+    expect(
+      measured.rscBytes,
+      overBudgetMessage(route, 'rscBytes', measured.rscBytes, budget.rscBytes),
+    ).toBeLessThanOrEqual(budget.rscBytes);
   });
 
   test('external links open correctly', async ({ page, context }) => {
