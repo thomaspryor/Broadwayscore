@@ -31,6 +31,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=scripts/lib/push-mutex.sh
 source "$SCRIPT_DIR/push-mutex.sh"
+# shellcheck source=scripts/lib/disk-floor-check.sh
+source "$SCRIPT_DIR/disk-floor-check.sh"
+ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
