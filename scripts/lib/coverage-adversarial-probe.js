@@ -82,22 +82,74 @@ function summarizeShow(candidates) {
 }
 
 /**
+ * Did the run's naive SERP queries actually reach a live provider? Mirrors
+ * census-recall.js's detectProviderOutage exactly (task #903 ship-check
+ * finding, Codex review): a missing key, an exhausted ScrapingBee cap, or a
+ * dead Bright Data zone makes every query return zero raw results —
+ * numerically identical to "every show has zero candidates", which
+ * summarizeShow() reads as a trivial pass. Without this guard a dead SERP
+ * chain reports 'clean' every week, which is worse than not probing at all.
+ *
+ * @param {Array<object>} rows {queries:[{ok, raw}]}
+ * @returns {{outage:boolean, queries:number, productive:number}}
+ */
+function detectProviderOutage(rows, opts = {}) {
+  const minProductiveFraction = opts.minProductiveFraction === undefined ? 0.34 : opts.minProductiveFraction;
+  const queries = (Array.isArray(rows) ? rows : []).flatMap(r => Array.isArray(r.queries) ? r.queries : []);
+  const productive = queries.filter(q => q && q.ok && (q.raw || 0) > 0).length;
+  const fraction = queries.length ? productive / queries.length : 1;
+  return { outage: queries.length > 0 && fraction < minProductiveFraction, queries: queries.length, productive };
+}
+
+/**
+ * Did the run actually have the on-disk review corpus to classify against?
+ * Mirrors census-recall.js's onDiskUnavailable guard (Codex review finding):
+ * a missing/empty review-texts checkout makes onDiskByUrl empty for every
+ * show, so EVERY discovered candidate reads as a gap — reporting a
+ * corpus-wide collapse instead of the probe's own missing input. In a
+ * 19,000+-review corpus, zero on-disk records across every measured show
+ * means the checkout failed, not that the pipeline lost its corpus.
+ *
+ * @param {Array<object>} rows {onDiskCount:number}
+ * @returns {boolean}
+ */
+function onDiskUnavailable(rows) {
+  const measured = (Array.isArray(rows) ? rows : []).filter(r => (r.sampleState || 'measured') === 'measured');
+  return measured.length > 0 && !measured.some(r => (r.onDiskCount || 0) > 0);
+}
+
+/**
  * Run-level verdict across every sampled show.
  *
  * 'inconclusive' — no show was actually measurable this run (every sample
- * was settling/undated, or the SERP chain was down and returned nothing at
- * all). This must NEVER read as 'clean': a dead provider silently passing the
- * probe every week would be worse than no probe at all — indistinguishable
- * from real health right up until the week it matters.
+ * was settling/undated), OR the run's own infrastructure could not answer
+ * the question this week (a provider outage, or a missing on-disk corpus).
+ * This must NEVER read as 'clean': a dead provider or an absent checkout
+ * silently passing the probe every week would be worse than no probe at
+ * all — indistinguishable from real health right up until the week it
+ * matters.
  *
- * @param {Array<object>} rows {showId, sampleState, candidates:[...]}
- * @returns {{verdict:'clean'|'gaps-found'|'inconclusive', measured:number, gapCount:number, gapShows:string[]}}
+ * @param {Array<object>} rows {showId, sampleState, candidates:[...], queries, onDiskCount}
+ * @returns {{verdict:'clean'|'gaps-found'|'inconclusive', measured:number, gapCount:number, gapShows:string[], reason?:string}}
  */
 function summarizeRun(rows) {
   const list = Array.isArray(rows) ? rows : [];
   const measured = list.filter(r => (r.sampleState || 'measured') === 'measured');
   if (measured.length === 0) {
-    return { verdict: 'inconclusive', measured: 0, gapCount: 0, gapShows: [] };
+    return { verdict: 'inconclusive', measured: 0, gapCount: 0, gapShows: [], reason: 'no sampled show was in a measurable state this run (settling/undated)' };
+  }
+  const outage = detectProviderOutage(list);
+  if (outage.outage) {
+    return {
+      verdict: 'inconclusive', measured: measured.length, gapCount: 0, gapShows: [],
+      reason: `provider outage — only ${outage.productive}/${outage.queries} naive-query attempt(s) returned any raw result; the SERP chain is down, not the pipeline`,
+    };
+  }
+  if (onDiskUnavailable(list)) {
+    return {
+      verdict: 'inconclusive', measured: measured.length, gapCount: 0, gapShows: [],
+      reason: 'on-disk review corpus unavailable (review-texts checkout missing/empty) — every candidate would falsely read as a gap',
+    };
   }
   const gapShows = [];
   let gapCount = 0;
@@ -177,4 +229,6 @@ module.exports = {
   summarizeShow,
   summarizeRun,
   evaluateAcceptance,
+  detectProviderOutage,
+  onDiskUnavailable,
 };

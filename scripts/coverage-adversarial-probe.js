@@ -178,8 +178,21 @@ async function probeOneShow(show, { pages, now, settlingHours }) {
     sampleReason: sample.reason,
     naiveQuery: null,
     candidates: [],
+    // {ok, raw} per naive-query attempt — detectProviderOutage's evidence
+    // that this run actually reached a live SERP provider (Codex ship-check
+    // finding: a swallowed exception must not read the same as "nothing to
+    // find", which summarizeShow() otherwise treats as a trivial pass).
+    queries: [],
+    // Size of the on-disk review-texts map for this show — onDiskUnavailable's
+    // evidence that the corpus checkout was actually present (Codex
+    // ship-check finding: an empty checkout must not read as "everything is
+    // a gap").
+    onDiskCount: 0,
   };
   if (sample.state !== 'measured') return row;
+
+  const onDiskByUrl = onDiskByUrlFor(show.id);
+  row.onDiskCount = onDiskByUrl.size;
 
   const showInfo = getShowInfo(show.id);
   const geo = censusGeoFor(show);
@@ -190,15 +203,16 @@ async function probeOneShow(show, { pages, now, settlingHours }) {
   const found = new Set();
   for (let page = 0; page < pages; page++) {
     let results = [];
+    let ok = true;
     try { results = await serpQuery(naiveQuery, { dateRange: null, preferSpeed: false, page, geo }) || []; }
-    catch { results = []; }
+    catch { results = []; ok = false; }
+    row.queries.push({ ok, raw: results.length });
     for (const sr of results) {
       const accepted = acceptSerpCensusResult(sr, { show, showInfo });
       if (accepted) found.add(accepted);
     }
   }
 
-  const onDiskByUrl = onDiskByUrlFor(show.id);
   const guards = { isIncludableForRebuild, explainExclusion };
   row.candidates = [...found].map(url => classifyCandidate(url, show, onDiskByUrl, guards));
   return row;
@@ -238,11 +252,18 @@ async function main() {
   if (!sample.length) {
     console.error('No shows matched the sample window — nothing to probe this run.');
     // Not a hard failure: an empty pool (e.g. a dead week for new openings)
-    // is real information, not an error. Still write a record so the trend
-    // does not silently skip a week.
-    const out = { generatedAt: new Date().toISOString(), sample: [], summary: { verdict: 'inconclusive', measured: 0, gapCount: 0, gapShows: [] } };
+    // is real information, not an error. Still write a report AND (under
+    // --trend) a trend entry — the trend ledger must not silently skip a
+    // week, else a --trend cron run leaves the status file aging toward
+    // false staleness instead of recording this week's true "nothing to
+    // measure" (ship-check finding: the original code returned before ever
+    // reaching the --trend block below).
+    const generatedAt = new Date().toISOString();
+    const summary = { verdict: 'inconclusive', measured: 0, gapCount: 0, gapShows: [], reason: 'no shows in the sample window' };
+    const out = { generatedAt, sample: [], summary };
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
+    if (hasFlag('trend')) recordTrendAndStatus({ generatedAt, sampleSize: 0, summary });
     return 0;
   }
 
@@ -267,6 +288,7 @@ async function main() {
   const summary = summarizeRun(rows);
   console.log('── RUN VERDICT ──');
   console.log(`  ${summary.verdict.toUpperCase()} — ${summary.measured} show(s) measured, ${summary.gapCount} gap(s)${summary.gapShows.length ? ` (${summary.gapShows.join(', ')})` : ''}`);
+  if (summary.reason) console.log(`  ${summary.reason}`);
 
   const out = { generatedAt: new Date().toISOString(), days, pages, sample: sample.map(s => s.id), shows: rows, summary };
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -275,35 +297,47 @@ async function main() {
 
   let exitCode = 0;
   if (hasFlag('trend')) {
-    const entry = {
-      date: out.generatedAt.slice(0, 10),
-      generatedAt: out.generatedAt,
-      sampleSize: sample.length,
-      verdict: summary.verdict,
-      measured: summary.measured,
-      gapCount: summary.gapCount,
-      gapShows: summary.gapShows,
-    };
-    const entries = appendTrendEntry(TREND_PATH, entry);
-    const acceptance = evaluateAcceptance(entries);
-    fs.mkdirSync(path.dirname(STATUS_PATH), { recursive: true });
-    fs.writeFileSync(STATUS_PATH, JSON.stringify({
-      generatedAt: out.generatedAt,
-      verdict: summary.verdict,
-      gapCount: summary.gapCount,
-      gapShows: summary.gapShows,
-      trendEntries: entries.length,
-      acceptance,
-      latest: entry,
-    }, null, 2) + '\n');
-    console.log(`\n── ACCEPTANCE (2 consecutive clean weeks) ──`);
-    console.log(`  ${acceptance.accepted ? 'ACCEPTED' : 'not yet'} — ${acceptance.reason}`);
-    console.log(`  ledger: ${path.relative(ROOT, TREND_PATH)}`);
-    console.log(`  status: ${path.relative(ROOT, STATUS_PATH)}`);
+    recordTrendAndStatus({ generatedAt: out.generatedAt, sampleSize: sample.length, summary });
   }
 
   if (summary.verdict === 'gaps-found' && hasFlag('fail-on-gap')) exitCode = 1;
   return exitCode;
+}
+
+/** Append this run's verdict to the trend ledger, judge the acceptance bar,
+ * and write both output files. Shared by the normal path AND the empty-pool
+ * early-return (ship-check finding: the original code only reached this
+ * block via the full sample path, so an empty-pool week under --trend left
+ * the trend ledger silently missing that week and the status file aging
+ * toward false staleness instead of recording "nothing to measure"). */
+function recordTrendAndStatus({ generatedAt, sampleSize, summary }) {
+  const entry = {
+    date: generatedAt.slice(0, 10),
+    generatedAt,
+    sampleSize,
+    verdict: summary.verdict,
+    measured: summary.measured,
+    gapCount: summary.gapCount,
+    gapShows: summary.gapShows,
+    reason: summary.reason || null,
+  };
+  const entries = appendTrendEntry(TREND_PATH, entry);
+  const acceptance = evaluateAcceptance(entries);
+  fs.mkdirSync(path.dirname(STATUS_PATH), { recursive: true });
+  fs.writeFileSync(STATUS_PATH, JSON.stringify({
+    generatedAt,
+    verdict: summary.verdict,
+    gapCount: summary.gapCount,
+    gapShows: summary.gapShows,
+    trendEntries: entries.length,
+    acceptance,
+    latest: entry,
+  }, null, 2) + '\n');
+  console.log(`\n── ACCEPTANCE (2 consecutive clean weeks) ──`);
+  console.log(`  ${acceptance.accepted ? 'ACCEPTED' : 'not yet'} — ${acceptance.reason}`);
+  console.log(`  ledger: ${path.relative(ROOT, TREND_PATH)}`);
+  console.log(`  status: ${path.relative(ROOT, STATUS_PATH)}`);
+  return { entry, entries, acceptance };
 }
 
 function readTrendEntries(trendPath) {
@@ -315,10 +349,27 @@ function readTrendEntries(trendPath) {
   } catch { return []; }
 }
 
-/** Same-date replacement, temp-file+rename write — mirrors
- * audit-serp-census-recall.js's appendTrendEntry exactly. */
-function appendTrendEntry(trendPath, entry) {
+/**
+ * Same-date replacement, temp-file+rename write — mirrors
+ * audit-serp-census-recall.js's appendTrendEntry, INCLUDING its "don't
+ * downgrade a same-day record" guard (Codex ship-check finding: the first
+ * version of this function replaced unconditionally, so a stronger earlier
+ * measurement that day — e.g. the real weekly cron — could be silently
+ * overwritten by a thinner manual poke run later the same day). A
+ * replacement is accepted only when it measured at least as many shows;
+ * cross-push races on this file are additionally handled by the
+ * reconcile-merged-json.js registration (mergeCoverageAdversarialProbeTrend),
+ * which this same "more evidence wins" rule mirrors.
+ */
+function appendTrendEntry(trendPath, entry, opts = {}) {
   const existing = readTrendEntries(trendPath);
+  const weaker = entry.date
+    ? existing.find(e => e.date === entry.date && (e.measured || 0) > (entry.measured || 0))
+    : null;
+  if (weaker && !opts.force) {
+    console.log(`  (kept the existing ${entry.date} entry — it measured ${weaker.measured} show(s) vs this run's ${entry.measured || 0})`);
+    return existing;
+  }
   const kept = entry.date ? existing.filter(e => e.date !== entry.date) : existing;
   const all = [...kept, entry].slice(-TREND_MAX_ENTRIES);
   fs.mkdirSync(path.dirname(trendPath), { recursive: true });
@@ -335,4 +386,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pickSample, onDiskByUrlFor, probeOneShow, appendTrendEntry, readTrendEntries, USAGE };
+module.exports = { pickSample, onDiskByUrlFor, probeOneShow, appendTrendEntry, readTrendEntries, recordTrendAndStatus, USAGE };
