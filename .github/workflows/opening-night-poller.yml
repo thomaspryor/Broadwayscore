@@ -81,7 +81,10 @@ concurrency:
   # show set every time, so serializing them loses nothing: one runs, one
   # queues, and GitHub superseding an older pending dispatch is harmless
   # (cancelled runs never alert and don't count toward failure streaks).
-  group: opening-night-poller-${{ inputs.show_id || 'auto-discovery' }}
+  # Market-scoped when the dispatcher passes market (orchestrator always does),
+  # so BW and WE orchestrators keep their pollers parallel to each other and
+  # update-show-status's market-less opener dispatch doesn't compete with them.
+  group: opening-night-poller-${{ inputs.show_id || inputs.market || 'auto-discovery' }}
   cancel-in-progress: false
 
 jobs:

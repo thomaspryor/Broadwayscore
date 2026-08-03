@@ -96,6 +96,10 @@ jobs:
 
       - name: Determine market
         id: market
+        # NOTE: the hour→market ranges below are DUPLICATED in the Redundancy
+        # guard's hour_to_market() (it derives OTHER scheduled runs' markets
+        # from their startedAt hour). Editing the cron schedule or these ranges
+        # means updating both.
         run: |
           INPUT_MARKET="${{ inputs.market }}"
           if [ "$INPUT_MARKET" != "" ] && [ "$INPUT_MARKET" != "auto" ]; then
@@ -146,7 +150,9 @@ jobs:
           MY_MARKET: ${{ steps.market.outputs.market }}
           MY_ID: ${{ github.run_id }}
         run: |
-          # Same hour→market mapping as the "Determine market" step above.
+          # Same hour→market mapping as the "Determine market" step above —
+          # edits to either must update both. Guard input is validated to two
+          # digits before this is called, so $((10#$H)) can't syntax-error.
           hour_to_market() {
             local H=$((10#$1))
             if [ "$H" -ge 22 ] || [ "$H" -le 4 ]; then echo broadway
@@ -156,18 +162,37 @@ jobs:
             else echo broadway; fi
           }
 
+          # in_progress only, deliberately NOT queued/pending: our own guard
+          # runs while we're already in_progress, and a queued run will see US
+          # when it starts — deferring to queued runs here would let two runs
+          # each defer to the other (mutual skip = zero coverage). Limit 50:
+          # busy nights push active runs past 20 (watch-aggregator-urls.js
+          # learned this the hard way).
           RUNS=$(gh run list --workflow=opening-night-orchestrator.yml \
-            --status=in_progress --limit=20 \
+            --status=in_progress --limit=50 \
             --json databaseId,event,displayTitle,startedAt \
             --jq '.[] | [.databaseId, .event, .startedAt, .displayTitle] | @tsv' 2>/dev/null || echo "")
 
           MY_START=$(printf '%s\n' "$RUNS" | awk -F'\t' -v id="$MY_ID" '$1==id {print $3}')
-          [ -z "$MY_START" ] && MY_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          if [ -z "$MY_START" ]; then
+            # We're in_progress but absent from the listing — the API view is
+            # stale or partial, so any verdict from it is unreliable. Fail open.
+            echo "redundant=false" >> $GITHUB_OUTPUT
+            echo "Own run $MY_ID not in the in_progress listing — API view unreliable, proceeding (fail open)."
+            exit 0
+          fi
 
           REDUNDANT=false
           while IFS=$'\t' read -r ID EVENT START TITLE; do
             [ -z "$ID" ] && continue
             [ "$ID" = "$MY_ID" ] && continue
+            # Malformed startedAt (empty, wrong shape) → say nothing about this
+            # row rather than risk a bash arithmetic error failing the job and
+            # paging — the exact storm this guard exists to prevent.
+            case "$START" in
+              [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:*) ;;
+              *) echo "Skipping run $ID — malformed startedAt '$START'"; continue ;;
+            esac
             # Only defer to runs that started earlier (same-second tie broken by
             # run id, so two runs can never both skip in each other's favor).
             if [[ "$START" > "$MY_START" ]]; then continue; fi
@@ -191,6 +216,11 @@ jobs:
           echo "redundant=$REDUNDANT" >> $GITHUB_OUTPUT
           if [ "$REDUNDANT" = "true" ]; then
             echo "::notice::Redundant trigger — an earlier orchestrator already covers market=$MY_MARKET; exiting quietly."
+            {
+              echo "## ⏭️ Redundant trigger — skipped"
+              echo "An earlier-started orchestrator run already covers market **$MY_MARKET** (see log for run id)."
+              echo "If that run dies, the next cron/backup trigger takes over — this skip does not cancel anything."
+            } >> "$GITHUB_STEP_SUMMARY"
           else
             echo "No earlier in-progress orchestrator covers market=$MY_MARKET — proceeding."
           fi
