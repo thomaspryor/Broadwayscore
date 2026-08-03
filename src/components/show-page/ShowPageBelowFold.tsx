@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
+import { formatShowDate as formatDate } from '@/lib/show-date-line';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import VideoReviewsShelf from '@/components/VideoReviewsShelf';
@@ -103,15 +104,6 @@ export interface ShowPageBelowFoldProps {
   /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
       Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
   faqs: ShowFAQ[];
-}
-
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return '';
-  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-  const date = new Date(cleanedDateStr);
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) return '';
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 function getGoogleMapsUrl(address: string): string {
