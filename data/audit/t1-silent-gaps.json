@@ -1,29 +1,8 @@
 {
-  "generatedAt": "2026-08-03T01:30:15.441Z",
+  "generatedAt": "2026-08-03T02:49:24.015Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2026-07-28",
-      "file": "british-theatre--velda-harris.json",
-      "outletId": "british-theatre",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sheffield-lyceu-25762",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-car-man-west-end-2026 --url=https://www.britishtheatreguide.info/reviews/the-car-man-sheffield-lyceu-25762 --outlet=british-theatre --critic=\"Velda Harris\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-07-28T11:41:21.581Z",
-      "fileAgeHours": 133.81493361111112,
-      "gapSeenAt": "2026-08-03T01:30:15.441Z",
-      "nonTerminalAgeHours": 0
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -37,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 252.310805,
+      "fileAgeHours": 253.62985194444445,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 211.6137513888889
+      "nonTerminalAgeHours": 212.93279972222223
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -56,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 14.051771111111112
+      "nonTerminalAgeHours": 15.370819444444445
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -71,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=brainiac-live-west-end-2026 --url=https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/ --outlet=theatre-weekly   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-02T18:53:45.331Z",
-      "fileAgeHours": 6.608363611111111,
+      "fileAgeHours": 7.927411666666667,
       "gapSeenAt": "2026-08-02T20:22:17.063Z",
-      "nonTerminalAgeHours": 5.132882777777778
+      "nonTerminalAgeHours": 6.4519311111111115
     }
   ],
   "contradictions": []

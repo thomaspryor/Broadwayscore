@@ -1,69 +1,11 @@
 {
-  "generatedAt": "2026-08-03T01:30:24.711Z",
+  "generatedAt": "2026-08-03T02:49:32.655Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 145,
-  "clean": 142,
-  "defective": 3,
-  "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2026-07-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: fairypoweredproductions, seeing-dance"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 89.51 vs local 89.6 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [
-        "fairypoweredproductions",
-        "seeing-dance"
-      ],
-      "localCount": 11,
-      "deployedCount": 9
-    },
-    {
-      "showId": "the-jonathan-larson-project-off-west-end-2026",
-      "title": "The Jonathan Larson Project",
-      "openingDate": "2026-07-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: ayoungishperspective"
-        }
-      ],
-      "missingFromProd": [
-        "ayoungishperspective"
-      ],
-      "localCount": 22,
-      "deployedCount": 22
-    },
-    {
-      "showId": "space-dogs-off-west-end-2026",
-      "title": "Space Dogs",
-      "openingDate": "2026-07-31",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.46 vs local 72.02 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13
-    }
-  ]
+  "clean": 145,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
