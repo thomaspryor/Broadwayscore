@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 #
-# Weekly GC for .claude/worktrees: remove worktrees whose branch is fully
-# merged into origin/main. Also: emergency disk-free floor cleanup, stale
+# GC for .claude/worktrees: remove worktrees whose branch is fully merged
+# into origin/main. Also: emergency disk-free floor cleanup, stale
 # build-artifact stripping, and a digest line for stranded unmerged work.
+# Runs hourly + daily via launchd (task #968) — NOT weekly despite the name
+# this comment used to carry; fixed after an adversarial review caught the
+# doc drift.
 #
 # SAFETY: never uses --force. `git worktree remove` (plain) refuses to remove a
 # worktree that has uncommitted changes OR a branch with unmerged commits — that
@@ -43,6 +46,37 @@ SCRATCHPAD_STALE_DAYS="${WORKTREE_GC_SCRATCHPAD_STALE_DAYS:-3}"
 
 cd "$REPO" || { echo "repo not found: $REPO" >&2; exit 1; }
 mkdir -p "$(dirname "$LOG")"
+
+# Single-source-of-truth serialization lock (task #968 follow-up). This
+# script now has THREE invocation paths that can overlap: the hourly/daily
+# launchd cron, scripts/lib/disk-floor-check.sh's ensure_disk_floor()
+# (fires from inside push-with-retry.sh / merge-worktree-to-main.sh when
+# disk is critically low — exactly when MANY concurrent sessions hit the
+# same branch at once), and manual runs. Locking only inside
+# ensure_disk_floor (an earlier version of this fix) missed the cron path
+# entirely; locking here covers all three from one place. Non-blocking:
+# if another invocation already holds the lock, skip this run rather than
+# queuing — a GC that's already in flight will free the same space.
+# PID-liveness reclaim (not age-based) matches push-mutex.sh's documented
+# reasoning (task #556): age-only reclaim would race a legitimately slow
+# holder (a full scan across 60+ worktrees can genuinely take ~5min).
+GC_LOCK_DIR="/tmp/broadwayscore-disk-floor-gc.lock"
+gc_lock_acquired=0
+if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
+  gc_lock_acquired=1
+else
+  gc_lock_holder_pid=$(cat "$GC_LOCK_DIR/pid" 2>/dev/null) || true
+  if [ -n "${gc_lock_holder_pid:-}" ] && ! kill -0 "$gc_lock_holder_pid" 2>/dev/null; then
+    rm -rf "$GC_LOCK_DIR" 2>/dev/null || true
+    mkdir "$GC_LOCK_DIR" 2>/dev/null && gc_lock_acquired=1
+  fi
+fi
+if [ "$gc_lock_acquired" != "1" ]; then
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] SKIP-RUN — another gc-merged-worktrees.sh invocation already in progress" | tee -a "$LOG"
+  exit 0
+fi
+echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
+trap 'rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
 
 ts() { date '+%Y-%m-%d %H:%M:%S'; }
 log() { echo "[$(ts)] $*" | tee -a "$LOG"; }

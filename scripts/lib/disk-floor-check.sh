@@ -18,7 +18,7 @@ ensure_disk_floor() {
   [ -n "${GITHUB_ACTIONS:-}" ] && return 0
 
   local floor_gb="${DISK_PREFLIGHT_FLOOR_GB:-5}"
-  local self_dir repo_root gc_script free_gb lock_dir
+  local self_dir repo_root gc_script free_gb
 
   # self_dir = .../scripts/lib (this file's dir) → repo_root is two levels up.
   self_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)" || return 0
@@ -35,48 +35,18 @@ ensure_disk_floor() {
   [ -n "$free_gb" ] || return 0
 
   if [ "$free_gb" -lt "$floor_gb" ] 2>/dev/null; then
-    # Non-blocking lock: under the exact failure mode this guards against
-    # (disk floor breached), MANY concurrent sessions hit this branch at
-    # once. Without serialization every one of them launches its own full
-    # ~60-worktree GC scan simultaneously — wasted CPU/IO exactly when the
-    # machine can least afford it, plus concurrent `git worktree prune` /
-    # cache-delete races (adversarial review, task #968). If another
-    # session already holds the lock, skip running GC ourselves (it's
-    # already being remediated) rather than blocking this push on it.
-    #
-    # PID-liveness reclaim (not age-based): a lock whose holder process was
-    # killed (SIGKILL, machine sleep, `_timeout` wrapper elsewhere) would
-    # otherwise strand every future call in the "skip" branch forever, since
-    # `mkdir`-lock cleanup relies on a RETURN trap that never fires on a
-    # hard kill. Age-only reclaim was rejected on purpose (matches
-    # push-mutex.sh's documented reasoning, task #556): it would let a
-    # second GC start concurrently with a first one that's just legitimately
-    # slow (~5min on 60+ worktrees), recreating the exact race this lock
-    # exists to prevent. Reclaim only when `kill -0` proves the holder is
-    # actually dead.
-    local lock_holder_pid lock_acquired=0
-    lock_dir="/tmp/broadwayscore-disk-floor-gc.lock"
-    if mkdir "$lock_dir" 2>/dev/null; then
-      lock_acquired=1
-    else
-      lock_holder_pid=$(cat "$lock_dir/pid" 2>/dev/null) || true
-      if [ -n "$lock_holder_pid" ] && ! kill -0 "$lock_holder_pid" 2>/dev/null; then
-        echo "⚠️  disk preflight: reclaiming stale GC lock (holder pid $lock_holder_pid is not running)" >&2
-        rm -rf "$lock_dir" 2>/dev/null || true
-        mkdir "$lock_dir" 2>/dev/null && lock_acquired=1
-      fi
-    fi
-
-    if [ "$lock_acquired" = "1" ]; then
-      echo $$ > "$lock_dir/pid" 2>/dev/null || true
-      trap 'rmdir "$lock_dir" 2>/dev/null || rm -rf "$lock_dir" 2>/dev/null' RETURN
-      echo "⚠️  disk preflight: ${free_gb}GB free < ${floor_gb}GB floor — running emergency worktree GC before git op" >&2
-      bash "$gc_script" >>"$repo_root/data/audit/worktree-gc.log" 2>&1 || true
-      free_gb=$(df -Pk "$repo_root" 2>/dev/null | awk 'NR==2 {print int($4/1024/1024)}') || true
-      echo "⚠️  disk preflight: free space now ${free_gb:-unknown}GB after GC" >&2
-    else
-      echo "⚠️  disk preflight: ${free_gb}GB free < ${floor_gb}GB floor, but GC already running in another session — skipping" >&2
-    fi
+    # Serialization lives INSIDE gc-merged-worktrees.sh itself (task #968
+    # follow-up), not here. An earlier version locked only at this call
+    # site, which missed the launchd cron's direct invocation of the same
+    # script entirely — two sessions could both pass this floor check at
+    # once and each spawn a redundant ~60-worktree GC scan simultaneously.
+    # The script's own lock now covers every invocation path (cron, this
+    # preflight, manual runs) from one place, so this just calls it and
+    # trusts it to no-op (SKIP-RUN, exit 0) if another run is in flight.
+    echo "⚠️  disk preflight: ${free_gb}GB free < ${floor_gb}GB floor — running emergency worktree GC before git op" >&2
+    bash "$gc_script" >>"$repo_root/data/audit/worktree-gc.log" 2>&1 || true
+    free_gb=$(df -Pk "$repo_root" 2>/dev/null | awk 'NR==2 {print int($4/1024/1024)}') || true
+    echo "⚠️  disk preflight: free space now ${free_gb:-unknown}GB after GC" >&2
   fi
   return 0
 }
