@@ -52,6 +52,7 @@ on:
       - 'scripts/lib/census-recall.js'
       - 'scripts/lib/census-recall.test.mjs'
       - 'scripts/audit-serp-census-recall.js'
+      - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
@@ -964,14 +965,6 @@ on:
       # cacheOpts, so a field in one key and not the other is a silent bug.
       - 'scripts/lib/serp-negative-cache.js'
       - 'scripts/lib/serp-negative-cache.test.mjs'
-      # SERP census recall cadence (task #898/#901): weekly regression detector
-      # over the trend history audit-serp-census-recall.js now appends to.
-      # Colocated scripts/lib/*.test.mjs step covers census-recall-trend.test.mjs;
-      # path-listed so a solo edit to either file still triggers CI.
-      - 'scripts/audit-serp-census-recall.js'
-      - 'scripts/lib/census-recall-trend.js'
-      - 'scripts/lib/census-recall-trend.test.mjs'
-      - '.github/workflows/audit-serp-census-recall.yml'
       # Reddit audience-buzz contamination filters (generic-title / roundup guard).
       # Colocated scripts/lib/*.test.mjs step covers reddit-post-filters.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
