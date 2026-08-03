@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "the-car-man-west-end-2026",
   "openingDate": "2026-07-28",
-  "detectedAt": "2026-08-03T00:48:51.937Z",
+  "detectedAt": "2026-08-03T01:03:04.013Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "a-youngish-perspective--unknown.json",
+      "outletId": "a-youngish-perspective",
+      "criticName": "Unknown",
+      "url": "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
+      "fullTextLen": 4574,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "cheeky-little-matinee--cheekylittlematinee.json",
       "outletId": "cheeky-little-matinee",
@@ -17,6 +31,20 @@
       "originalScoreNormalized": null,
       "llmScore": null,
       "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
+      "file": "east-midlands-theatre--unknown.json",
+      "outletId": "east-midlands-theatre",
+      "criticName": "Unknown",
+      "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
+      "fullTextLen": 4048,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
       "eligibilityReason": null
     },
     {
@@ -160,7 +188,7 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 11,
+  "orphanCount": 13,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
