@@ -69,6 +69,16 @@ fi
 # Fresh main — the executor branches worktrees off origin/main, and triage
 # reads the freshest card mirror. Never fatal: a fetch hiccup shouldn't
 # skip the night, worktrees fetch again themselves.
+# unbounded-fetch-ok: no workflow EXECUTES this script — the two .github hits are
+# a comment (data-health-check.yml:143) and a CI path-filter (test.yml:1351),
+# neither of which runs it. It is the Mac Studio launchd entrypoint, running
+# against the full ~/Broadwayscore clone, never a fetch-depth: 1 checkout, which
+# is the condition the guard exists to protect (the loop itself was retired
+# 2026-07-27 — memory/autonomous-loop-schedule.md). Same justification and shape
+# as the waiver in scripts/lib/sync-audit-checkout.sh. Verified 2026-08-02. It
+# was blocking EVERY session's push through run-push-audits.sh (#863 class). If a
+# workflow ever runs this, take the flags from scripts/lib/shallow-fetch-args.js
+# and delete this comment.
 git fetch origin main || echo "[nightly] WARN git fetch failed"
 # Card #364 ship-check finding: fetch alone updates refs/remotes/origin/main
 # but NOT this checkout's working tree — autonomous-email.js reads
