@@ -18,6 +18,7 @@
 const fs = require('fs');
 const { execFileSync } = require('child_process');
 const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
+const dispatchLedger = require('./dispatch-ledger.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
@@ -251,6 +252,14 @@ function computeClaudeAlive(meta, opts = {}) {
 // resolves to skip. See scripts/lib/prune-closeable.js for the pure
 // predicate + idle-vs-mid-turn signal (hasLiveClaude && !hasRunningClaude).
 //
+// "🤖 auto-dispatched" is detected two ways as of card #971: the title glyph
+// (hasAutoDispatchMarker) OR an unreconciled dispatch-ledger launch record
+// whose subject still matches the LIVE title (dispatchLedger.
+// isLedgerAutoDispatched — two independent signals, ledger + title, so a
+// recycled ref's unrelated owner-opened tab can't inherit a stale launch's
+// auto-dispatch status) — a session that renames its tab mid-work drops the
+// glyph but the ledger still remembers bsc-next.js launched it.
+//
 // A "not alive" verdict from claudeAliveIn alone is not enough to close
 // (card #559) — see checkLiveness's header comment. Returns
 // { closed, skipped, disagreements }; failures to close one workspace don't
@@ -262,10 +271,22 @@ function pruneDone(opts = {}) {
   const runningFn = opts.claudeMidTurnIn || claudeMidTurnIn;
   const listFn = opts.listWorkspaces || listWorkspaces;
   const closeFn = opts.closeWorkspace || closeWorkspace;
+  const readLedgerEntriesFn = opts.readLedgerEntries || dispatchLedger.readEntries;
   const done = listFn().filter(w => isDoneTitle(w.title));
   const closed = [];
   const skipped = [];
   const disagreements = [];
+  // Card #971: a 🤖 auto-dispatched session that renames its tab mid-work
+  // (common — status-reflecting renames) drops the title glyph, so
+  // hasAutoDispatchMarker alone misreads it as owner-opened and it never
+  // auto-closes even after it ✅-marks and goes idle/dead. Read once per
+  // sweep (not per workspace) — a ledger read failure fails closed to []
+  // (isLedgerAutoDispatched then finds no launch for any ref, same as
+  // before this fix: only the title glyph counts).
+  let ledgerEntries = [];
+  if (done.length) {
+    try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+  }
   for (const w of done) {
     // Never close the workspace the owner is currently LOOKING AT (owner
     // escalation 2026-08-02, enables the scheduled auto-prune tick). A ✅🤖
@@ -280,7 +301,7 @@ function pruneDone(opts = {}) {
     // prune-closeable.js — but the probe still runs for observability). Any
     // error defaults isRunning to true — fail-safe: never treat uncertainty
     // as "idle, close it."
-    const isAutoDispatched = hasAutoDispatchMarker(w.title);
+    const isAutoDispatched = hasAutoDispatchMarker(w.title) || dispatchLedger.isLedgerAutoDispatched(w.ref, w.title, ledgerEntries);
     let isRunning = true;
     if (!dead) {
       try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
@@ -292,9 +313,20 @@ function pruneDone(opts = {}) {
     // seconds per workspace, and the owner can click INTO this tab in that
     // window. Re-list immediately before the destructive close and skip if
     // it is selected NOW. Any error re-listing = uncertainty = don't close.
+    //
+    // Card #971 extension (Codex adversarial review P0, 2026-08-03): the
+    // original guard only re-checked `selected`, not workspace IDENTITY — if
+    // this exact ref were closed and immediately recycled to an unrelated
+    // tab within the probe window, that new tab's title was never
+    // re-verified before the close below. Re-run the SAME auto-dispatch test
+    // against the FRESH title (not the stale `w.title` this loop iteration
+    // captured) so a same-tick identity change also aborts the close, not
+    // just a same-tick selection change.
     try {
       const fresh = listFn().find(x => x.ref === w.ref);
       if (!fresh || fresh.selected) { skipped.push(w); continue; }
+      const stillAutoDispatched = hasAutoDispatchMarker(fresh.title) || dispatchLedger.isLedgerAutoDispatched(fresh.ref, fresh.title, ledgerEntries);
+      if (!stillAutoDispatched) { skipped.push(w); continue; }
     } catch { skipped.push(w); continue; }
     try { closeFn(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }

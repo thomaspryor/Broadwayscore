@@ -281,6 +281,65 @@ function pruneClosedEntry(workspace, entries) {
   };
 }
 
+// Reconciling events for isLedgerAutoDispatched, DELIBERATELY narrower than
+// TERMINAL_LAUNCH_EVENTS — excludes 'prune-closed'. Verified live against
+// production data (2026-08-03): mainLocked (bsc-prune.js) writes a
+// 'prune-closed' entry for EVERY ✅-marked workspace BEFORE pruneDone even
+// evaluates it, including ones pruneDone goes on to SKIP (its own header
+// comment: "Entries are written for ✅ workspaces pruneDone may go on to
+// SKIP... that is the safe direction"). workspace:124 in production had a
+// same-tick 'prune-closed' entry for a tab that was still open with its 🤖
+// glyph already gone — treating 'prune-closed' as reconciling here would
+// have self-defeated this exact function on the FIRST sweep after every
+// glyph-loss, since the write always lands in the ledger before this read.
+// 'dead' (idle-unmarked bucket), 'vanished' (absent-from-listing sweep), and
+// 'remapped' (renumber) are never written for a ref that is CURRENTLY ✅ and
+// listed — the only bucket pruneDone calls this for — so none of them share
+// prune-closed's same-tick self-defeat risk.
+const LEDGER_DISPATCH_RECONCILED_EVENTS = new Set(['dead', 'vanished', 'remapped']);
+
+// The unreconciled launch record for `workspaceRef`, or null. Uses lastByRef
+// (last-match, not launchByRef's first-match — see card 3b1637c5: cmux
+// recycles workspace refs across restarts, so first-match can attribute a
+// recycled ref to a long-dead task) AND requires the launch to be
+// UNRECONCILED against LEDGER_DISPATCH_RECONCILED_EVENTS.
+function findLedgerAutoDispatchLaunch(workspaceRef, entries) {
+  if (!isWorkspaceRef(workspaceRef)) return null;
+  const launch = lastByRef(entries, e => e.event === 'launch').get(workspaceRef);
+  if (!launch) return null;
+  const term = lastByRef(entries, e => LEDGER_DISPATCH_RECONCILED_EVENTS.has(e.event)).get(workspaceRef);
+  if (term && launch.ts && term.ts && term.ts >= launch.ts) return null; // reconciled — not ours anymore
+  return launch;
+}
+
+// Whether the CURRENT occupant of `workspaceRef` (identified by its LIVE
+// title) is a 🤖 auto-dispatch according to the ledger — the fallback
+// pruneDone's isAutoDispatched check falls back to when the 🤖 title glyph
+// is gone (card #971: a dispatched session that renames its tab mid-work —
+// common for status-reflecting renames — drops the glyph, so the title-only
+// check misreads it as owner-opened and it never auto-closes, even after it
+// ✅-marks and goes idle/dead).
+//
+// Requires TWO independent signals to agree, not just an unreconciled ledger
+// launch (Codex adversarial review, 2026-08-03, P0 catch): 'prune-closed' is
+// deliberately excluded from LEDGER_DISPATCH_RECONCILED_EVENTS above (see its
+// header comment — it self-defeats on every still-open skip), which means a
+// ref that was GENUINELY closed via a real prune-closed close, then recycled
+// by cmux to an unrelated owner-opened tab, has no reconciling event left for
+// findLedgerAutoDispatchLaunch to see — that stale launch would otherwise
+// read as "still open." titleMatchesSubject (used elsewhere in this file for
+// exactly this "does the same session still occupy this ref" question, in
+// findRenumberedWorkspace) is the second signal: an owner's unrelated tab
+// will not share a >=20-char prefix with a launch subject it has never seen,
+// while a genuine status-reflecting rename preserves the original title as a
+// prefix by convention (dispatch instructions require appending, never
+// replacing, the title). Same dual-signal doctrine as checkLiveness in
+// cmux-workspaces.js (never trust one registry alone for a close decision).
+function isLedgerAutoDispatched(workspaceRef, title, entries) {
+  const launch = findLedgerAutoDispatchLaunch(workspaceRef, entries);
+  return Boolean(launch) && titleMatchesSubject(title, launch.subject);
+}
+
 // ── Restart-vs-close disambiguation (task #883) ────────────────────────────
 // A cmux crash/restart renumbers EVERY open workspace ref at once, so a
 // naive "ref not in the current listing" read (vanishedBreadcrumbs above)
@@ -540,7 +599,7 @@ module.exports = {
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
-  pruneClosedEntry, parkedTasks, unparkEntry, selectParkedCardsForDigest,
+  pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
   looksLikeRestart, RESTART_MIN_COUNT, RESTART_FRACTION,
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
