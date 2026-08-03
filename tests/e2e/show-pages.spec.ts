@@ -110,6 +110,62 @@ test.describe('Show Detail Pages', () => {
     expect(hasScore || hasNoScoreIndicator).toBeTruthy();
   });
 
+  // Regression guard for card #419. The show page hands several props to
+  // ShowPageBelowFoldLoader ('use client'), and anything crossing that boundary is
+  // serialized verbatim into the inlined RSC flight payload. Twice now a prop has
+  // been a full ComputedShow/Theater carrying OTHER shows' entire criticScore.reviews
+  // arrays (related shows, other productions, the venue's back catalogue) — 645KB of
+  // the 781KB /show/hamilton document, none of it rendered, and it fell straight onto
+  // LCP for mobile visitors.
+  //
+  // The invariant: the only review objects a show page may inline are its own. Foreign
+  // showIds in the flight payload mean a fat object crossed the boundary again. The
+  // TypeScript prop types (ShowCardShow / Pick<Theater,...>) are the first line of
+  // defence; this catches whatever the types don't, on the page as actually served.
+  test('does not inline other shows\' review objects in the RSC payload', async ({ page }) => {
+    // A show with reviews is required: the anti-vacuity check below keys off the
+    // page's OWN showId appearing in the payload, which only happens once there is
+    // at least one review object to serialize.
+    const scored = sampleShows.filter((s: any) => s.status === 'open').slice(0, 3);
+    expect(scored.length, 'no open shows to sample').toBeGreaterThan(0);
+
+    for (const show of scored) {
+      const response = await page.goto(`/show/${show.slug}`);
+      const html = (await response?.text()) ?? '';
+
+      // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks.
+      const flight = (html.match(/self\.__next_f\.push\(\[1,"(?:[^"\\]|\\.)*"\]\)/g) || []).join('');
+      const ids = Array.from(
+        flight.matchAll(/\\"showId\\":\\"([a-z0-9-]+)\\"/g),
+        m => m[1],
+      );
+
+      // ANTI-VACUITY. Without this the assertion below passes for free the moment
+      // Next.js changes its flight-chunk syntax or its string escaping — the regexes
+      // stop matching, `ids` is empty, and a guard that can no longer fail silently
+      // reports green forever. This is the exact vacuous-guard shape that shipped
+      // three times in this repo (#766, #782, #793), so the guard asserts it can
+      // still SEE the payload before asserting anything about its contents. If this
+      // line fails, fix the regexes — do not delete the check.
+      expect(
+        ids,
+        `Could not find any review objects in the RSC payload for ${show.slug}. `
+          + 'Either the page genuinely has no reviews (pick a different sample) or '
+          + "Next.js changed its flight-chunk encoding and this test's regexes need "
+          + 'updating. Until then the foreign-showId assertion below proves nothing.',
+      ).toContain(show.id);
+
+      const foreign = Array.from(new Set(ids)).filter(id => id !== show.id);
+      expect(
+        foreign,
+        `Show page for ${show.slug} inlined review objects belonging to other shows. `
+          + 'Something is passing a full ComputedShow/Theater across the '
+          + 'ShowPageBelowFoldLoader client boundary again — card-shape it with '
+          + 'serializeShowForClient() (see src/app/show/[slug]/page.tsx).',
+      ).toEqual([]);
+    }
+  });
+
   test('external links open correctly', async ({ page, context }) => {
     const show = sampleShows[0];
     await page.goto(`/show/${show.slug}`);

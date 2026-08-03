@@ -21,6 +21,7 @@ import LotteryRushCard from '@/components/LotteryRushCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
 import CastSection from '@/components/CastSection';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
+import type { ShowCardShow } from '@/components/show-cards/types';
 import RelatedShows from '@/components/RelatedShows';
 import type { AudienceMarket } from '@/config/audience-sources';
 import type {
@@ -64,16 +65,25 @@ export interface ShowPageBelowFoldProps {
   showtimeIds: TodayTixShowtimeData | undefined;
   sortedTicketLinks: TicketLinkData[];
   socialPulse: SocialPulsePayload | null;
-  theater: Theater | undefined;
+  // Narrowed to the fields the two theater cards actually render. The full
+  // Theater carries `allShows: ComputedShow[]` — every production ever staged at
+  // the venue, each with its own criticScore.reviews — which this client boundary
+  // would inline into the RSC payload (~135KB on /show/hamilton for the Richard
+  // Rodgers' back catalogue, none of it rendered). Card #419.
+  theater: Pick<Theater, 'name' | 'slug' | 'venueScores' | 'accessibility' | 'externalLinks' | 'structuredTips'> | undefined;
   lotteryRush: ShowLotteryRush | undefined;
   castChangesData: ShowCastChanges | undefined;
   castFile: ShowCastFile | null;
   castActorSlugs: Record<string, string>;
   castTonyMap: Record<string, ShowTonyInfo>;
   creativePrincipals: Array<{ name: string; role: string; link: string | null }>;
-  otherProductions: ComputedShow[];
-  relatedShowsOpen: ComputedShow[];
-  relatedShowsClosed: ComputedShow[];
+  // Card-shaped, not full ComputedShow: these cross the 'use client' boundary and
+  // get serialized into the inlined RSC payload, so page.tsx runs them through
+  // serializeShowForClient(). Widening these back to ComputedShow re-inlines every
+  // related show's entire criticScore.reviews array (645KB on /show/hamilton, #419).
+  otherProductions: ShowCardShow[];
+  relatedShowsOpen: ShowCardShow[];
+  relatedShowsClosed: ShowCardShow[];
   comparisons: { slug: string; otherSlug: string }[];
   venueSlug: string | null;
   isWestEnd: boolean;
@@ -495,7 +505,7 @@ export default function ShowPageBelowFold({
               return (
                 <MiniShowCard
                   key={prod.id}
-                  show={{ ...prod as unknown as import('@/components/show-cards/types').ShowCardShow, subtitle, subtitleColor }}
+                  show={{ ...prod, subtitle, subtitleColor }}
                 />
               );
             })}
