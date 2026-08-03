@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -406,4 +406,77 @@ test('parkedTasks: a vanished task does NOT count toward the dead-attempt limit'
     { event: 'vanished', taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }];
   assert.equal(deadAttemptsForTask('1', entries).length, 0,
     'closing a tab twice must not burn the 2-death budget — it parks instead');
+});
+
+// ── detectLauncherOutage (card #900) ────────────────────────────────────────
+test('detectLauncherOutage: fires only when injection-never-ran deaths span 3+ distinct tasks', () => {
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const death = (taskId, ref, minsAgo) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: `command injection never ran (no wrapper process appeared) in ${ref}`,
+    ts: new Date(now - minsAgo * 60000).toISOString(),
+  });
+  // Same task retried twice — not cross-task evidence.
+  const singleTask = [death('855', 'workspace:61', 10), death('855', 'workspace:63', 5)];
+  assert.equal(detectLauncherOutage(singleTask, { now }).outage, false);
+
+  // 3 distinct tasks, all within the lookback window.
+  const crossTask = [death('897', 'workspace:60', 28), death('855', 'workspace:61', 25),
+    death('857', 'workspace:65', 20)];
+  const r = detectLauncherOutage(crossTask, { now });
+  assert.equal(r.outage, true);
+  assert.deepEqual(r.taskIds.sort(), ['855', '857', '897']);
+});
+
+test('detectLauncherOutage: ignores deaths outside the lookback window', () => {
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const old = ['897', '855', '857'].map((taskId, i) => ({
+    event: 'dead', taskId, workspaceRef: `workspace:${i}`,
+    failureReason: 'command injection never ran (no wrapper process appeared)',
+    ts: new Date(now - 90 * 60000).toISOString(), // 90 min ago, default lookback is 30
+  }));
+  assert.equal(detectLauncherOutage(old, { now }).outage, false);
+});
+
+test('detectLauncherOutage: a verified success after the failures clears the outage', () => {
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const death = (taskId, ref, minsAgo) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: 'command injection never ran (no wrapper process appeared)',
+    ts: new Date(now - minsAgo * 60000).toISOString(),
+  });
+  const entries = [
+    death('897', 'workspace:60', 20), death('855', 'workspace:61', 15), death('857', 'workspace:65', 10),
+    { event: 'launch', taskId: '900', workspaceRef: 'workspace:72', ts: new Date(now - 5 * 60000).toISOString() },
+  ];
+  const r = detectLauncherOutage(entries, { now });
+  assert.equal(r.outage, false);
+  assert.equal(r.recovered, true);
+});
+
+test('detectLauncherOutage: an UNVERIFIED launch entry (itself a failed attempt) does not count as recovery', () => {
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const death = (taskId, ref, minsAgo) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: 'command injection never ran (no wrapper process appeared)',
+    ts: new Date(now - minsAgo * 60000).toISOString(),
+  });
+  const entries = [
+    death('897', 'workspace:60', 20), death('855', 'workspace:61', 15), death('857', 'workspace:65', 10),
+    // failedLaunchEntries always pairs a 'dead' with an unverified 'launch' — this must not look like recovery.
+    { event: 'launch', taskId: '857', workspaceRef: 'workspace:65', unverified: true, ts: new Date(now - 10 * 60000).toISOString() },
+  ];
+  assert.equal(detectLauncherOutage(entries, { now }).outage, true);
+});
+
+test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are not outage evidence', () => {
+  const now = Date.parse('2026-08-03T03:00:00.000Z');
+  const bootDeath = (taskId, ref) => ({
+    event: 'dead', taskId, workspaceRef: ref,
+    failureReason: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
+    ts: new Date(now - 5 * 60000).toISOString(),
+  });
+  const entries = ['1', '2', '3'].map((t, i) => bootDeath(t, `workspace:${i}`));
+  assert.equal(detectLauncherOutage(entries, { now }).outage, false,
+    'a live-wrapper slow boot is not the launcher failing to inject — must not alarm on it');
 });
