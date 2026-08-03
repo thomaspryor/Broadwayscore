@@ -3410,13 +3410,21 @@ jobs:
               // Separate conditionKey, 24h cooldown: re-pages once a day while
               // main stays red 4+ in a row, instead of firing every push (spam)
               // or firing exactly once ever (the old cooldownHours:0 hack, which
-              // also fully bypassed the ledger's own dedup).
+              // also fully bypassed the ledger's own dedup). disposition:'human'
+              // is not on the page-worthy allowlist, so the router downgrades
+              // this to the morning digest anyway — task #843: model:'opus'
+              // makes digest-autofix.js dispatch THIS row (a technical
+              // investigation, not a decision) straight to opus on its first
+              // attempt, since it's already the SECOND machine attempt at the
+              // underlying failure (the 2nd-failure 'auto' card above already
+              // tried once and didn't resolve it).
               await routeAlert({
                 conditionKey: 'test-yml:main-streak-escalation',
                 title: 'main test.yml STILL red — auto-dispatch did not resolve it',
                 description: `main test.yml is STILL red after ${streak} consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
                 severity: 'error',
                 disposition: 'human',
+                model: 'opus',
                 fields,
                 url: runUrl,
                 cooldownHours: 24,
