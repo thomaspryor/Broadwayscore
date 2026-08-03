@@ -2501,7 +2501,31 @@ function buildMultiProdYearGuard(shows) {
 }
 
 /**
- * Returns true if rebuild-all-reviews.js would include this review in reviews.json.
+ * Returns the NAME of the first exclusion rule that keeps this review out of
+ * reviews.json, or null when rebuild-all-reviews.js would include it.
+ *
+ * This is the single implementation of the includability decision.
+ * `isIncludableForRebuild(...)` below is a two-line wrapper over it
+ * (`explainExclusion(...) === null`) — deliberately NOT a second copy of the
+ * rule chain. A forked "explain" variant is exactly the bug class in
+ * memory/feedback_includability_predicates_must_be_canonical.md: the two
+ * copies drift and the boolean silently stops matching the reason. Add new
+ * rules HERE, returning a stable kebab/camel rule name, never `false`.
+ *
+ * SCOPE — read this before treating a rule name as ground truth. This function
+ * explains THIS PREDICATE's decision. The predicate is a mirror of
+ * rebuild-all-reviews.js with the documented gaps listed under "Known
+ * limitations" below; where the mirror and the rebuild disagree, the rebuild
+ * wins and no rule name here describes that. So a returned name is "the first
+ * rule this predicate tripped on", which is a strong diagnostic and a bad
+ * audit-of-record. Anything that needs the rebuild's actual reason must read it
+ * from the rebuild's own exclusion log, not from here.
+ *
+ * Rule names are stable identifiers for the Coverage Verdict pipeline
+ * (data/audit/*, private) — they are NOT user-facing copy and must never be
+ * published per-outlet on the public site (plan rule 2, ~25% FP rate on
+ * exclusion flags). Consumers map them to plain English themselves.
+ *
  * Mirrors the pure-flag exclusion conditions from rebuild-all-reviews.js.
  *
  * Known limitations (context-dependent guards not expressible as pure predicates):
@@ -2527,8 +2551,8 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
-function isIncludableForRebuild(data, show, filePath) {
-  if (!data) return false;
+function explainExclusion(data, show, filePath) {
+  if (!data) return 'no-data';
 
   // S3-T6: CV-promotion-deferred reviews are explicitly includable.
   //
@@ -2562,7 +2586,7 @@ function isIncludableForRebuild(data, show, filePath) {
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false;
-    if (!cleared) return false;
+    if (!cleared) return 'wrongProduction';
   }
 
   // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
@@ -2577,13 +2601,13 @@ function isIncludableForRebuild(data, show, filePath) {
   // show, isLikelyStaleWrongShow defers to the rebuild. Conservative — see
   // helper docstring for the full filter chain.
   if (data.wrongShow === true) {
-    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
+    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
   }
-  if (data.wrongAttribution === true) return false;
+  if (data.wrongAttribution === true) return 'wrongAttribution';
   // Pre-opening temporal gate: a never-opened show cannot carry reviews
   // published long before its own previews window (helper honors priorRuns +
   // every manual-clear/early-date override — see its docstring).
-  if (isPrematureReviewForUnopenedShow(data, show)) return false;
+  if (isPrematureReviewForUnopenedShow(data, show)) return 'prematureForUnopenedShow';
   // duplicateOf: when filePath is provided, mirror rebuild-all-reviews.js's
   // circular-duplicate-recovery logic (BUG F / Heated Rivalry nyt-theater--*
   // pair, 2026-05-27). The rebuild keeps the lexically-LOWER filename when
@@ -2593,7 +2617,7 @@ function isIncludableForRebuild(data, show, filePath) {
   // historical "skip on any duplicateOf" behavior — recovery is opt-in.
   // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 1685-1730.
   if (data.duplicateOf) {
-    if (!filePath) return false;
+    if (!filePath) return 'duplicateOf';
     const pathMod = require('path');
     const fsMod = require('fs');
     const showDir = pathMod.dirname(filePath);
@@ -2619,7 +2643,7 @@ function isIncludableForRebuild(data, show, filePath) {
         if (circularSameText) {
           // Tiebreak: keep lexicographically-LOWER filename. Matches rebuild's
           // `file > data.duplicateOf` skip condition (we skip when greater).
-          if (thisFile > data.duplicateOf) return false;
+          if (thisFile > data.duplicateOf) return 'duplicateOfCircularTiebreak';
           // else: lexically lower → ALLOW (fall through to remaining guards).
         } else {
           // Circular with DIFFERENT text — rebuild treats these as legitimate
@@ -2631,14 +2655,14 @@ function isIncludableForRebuild(data, show, filePath) {
         // rebuild's `refAlsoDupe` branch lets this through. Fall through.
       } else {
         // Reference exists and is NOT also flagged → legitimate dup, skip.
-        return false;
+        return 'duplicateOf';
       }
     }
   }
-  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return 'isRoundupArticle';
   // Unflagged roundup pages (flag setter is enrichment-gated; parity with rebuild's
   // inclusion gate so scoring never scores what rebuild excludes — ship-check 2026-07-10)
-  if (isRoundupPageAsReview(data)) return false;
+  if (isRoundupPageAsReview(data)) return 'roundupPageAsReview';
   // Blocked review URLs (google redirect wrappers, ticket pages, aggregator/roundup
   // domains, social media). Rebuild has auto-rejected these since the gather-time
   // guard was added (rebuild-all-reviews.js "skippedBlockedUrl" — rebuild does NOT
@@ -2648,16 +2672,16 @@ function isIncludableForRebuild(data, show, filePath) {
   // forever, and those false suppressions padded the JCS broadcast-block warnings
   // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
   // memory/feedback_includability_predicates_must_be_canonical.md.
-  if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return false;
+  if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
   if (
     data.isNonReview === true ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
     data.nonReviewContent === true
-  ) return false;
-  if (data.fabricatedEntry === true) return false;
-  if (data.isSyndicatedDuplicate === true) return false;
-  if (data.crossOutletDuplicate === true) return false;
+  ) return 'nonReview';
+  if (data.fabricatedEntry === true) return 'fabricatedEntry';
+  if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
+  if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
   // Runtime known-syndication dedup: same critic publishes simultaneously at a
   // primary outlet and one or more secondary outlets (wire service / content-
   // sharing agreement). rebuild-all-reviews.js skips the secondary copy even
@@ -2688,7 +2712,7 @@ function isIncludableForRebuild(data, show, filePath) {
             } catch { return false; }
           });
         } catch { /* show dir unreadable — fall through, don't exclude */ }
-        if (hasPrimary) return false;
+        if (hasPrimary) return 'knownSyndicationSecondary';
       }
     }
   }
@@ -2709,11 +2733,11 @@ function isIncludableForRebuild(data, show, filePath) {
     const introText = data.fullText.slice(0, 600);
     if (!data.allowTourSignal && show?.status !== 'tour-stop' && show?.type !== 'special') {
       const tourCheck = isTourReviewExcerpt(introText, { currentShowId: show?.id, currentShowTitle: show?.title });
-      if (tourCheck.isTourReview) return false;
+      if (tourCheck.isTourReview) return 'tourContaminationInText';
     }
     if (!data.allowFilmSignal) {
       const filmCheck = isFilmTvReview(introText);
-      if (filmCheck.isFilmTv) return false;
+      if (filmCheck.isFilmTv) return 'filmTvContaminationInText';
     }
   }
   // scoreStatus explicitly marked TO_BE_CALCULATED: getBestScore() (rebuild-
@@ -2722,22 +2746,22 @@ function isIncludableForRebuild(data, show, filePath) {
   // serpRetry-polling) that rebuild drops via skippedNoScore without ever
   // calling logExclusion (task #838's "unlogged stub" gap — a genuine
   // rebuild-all-reviews.js silent-exclusion path, not just a mirror miss).
-  if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
+  if (data.scoreStatus === 'TO_BE_CALCULATED') return 'scoreStatusToBeCalculated';
   // BWW aggregator ambiguity: review was extracted from BWW's /reviews/ page for a show
   // that has title-token-overlap siblings (e.g. "Cats" reviews landing on a
   // "CATS: The Jellicle Ball" page) with no date or URL-year to disambiguate.
   // Excluded until manually cleared via bwwAggregatorAmbiguousClearedNote.
-  if (data.bwwAggregatorAmbiguous === true && !data.bwwAggregatorAmbiguousClearedNote) return false;
+  if (data.bwwAggregatorAmbiguous === true && !data.bwwAggregatorAmbiguousClearedNote) return 'bwwAggregatorAmbiguous';
   // suspectedMisattribution: stale-flag override mirrors wrongShow's pattern at
   // line 1726. Pre-2026-04-29 only is-scoreable.ts honored isLikelyStale*; rebuild
   // unconditionally blocked, which made the LLM/rebuild parity refactor (Notion
   // 34f637c5-416f-810d) lose the override on delegation. Adding it here keeps both
   // predicates symmetric and preserves the registry-aware behavior.
-  if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return false;
+  if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return 'suspectedMisattribution';
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high'
-  ) return false;
+  ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
   // Exception: 'not_a_review' rejection fires on excerpt/promo text (ShowScore, LBO)
@@ -2759,9 +2783,9 @@ function isIncludableForRebuild(data, show, filePath) {
     // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
     // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
     // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return false;
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectionReason';
   }
-  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
+  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
   // cleared by a re-scrape (collect-review-texts.js line 4247) or explicit manual reset.
@@ -2793,7 +2817,7 @@ function isIncludableForRebuild(data, show, filePath) {
     // Exception 4: matches the rejectionReason exception above (line ~2650) — an
     // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
     // the same reason: the rejection was about the fullText fetch, not this content.
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return false;
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectedAt';
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -2806,11 +2830,11 @@ function isIncludableForRebuild(data, show, filePath) {
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false;
     const wpBlocking = data.wrongProduction === true && !wpCleared;
-    if (data.wrongShow || wpBlocking) return false;
+    if (data.wrongShow || wpBlocking) return 'wrongContentFlagsUncleared';
     // If no substantial text, also correct to exclude
     const hasText = !!(data.fullText && data.fullText.trim().length >= 200);
     const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
-    if (!hasText && !hasSignal) return false;
+    if (!hasText && !hasSignal) return 'wrongContentNoUsableSignal';
   }
 
   // Invalid content tier: rebuild's drift-checker excludes this at line 3158.
@@ -2821,16 +2845,16 @@ function isIncludableForRebuild(data, show, filePath) {
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false;
-    if (!wpCleared) return false;
+    if (!wpCleared) return 'contentTierInvalid';
     // Cleared — fall through and let text/signal check decide
   }
 
   // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
   // On disk the fullText still exists, so we must check excerpt fields directly.
   if (data.fullTextWrongAuthor === true) {
-    if (!require('./excerpt-fields').hasExcerpt(data)) return false;
+    if (!require('./excerpt-fields').hasExcerpt(data)) return 'fullTextWrongAuthorNoExcerpt';
     // Has excerpt — fall through to final text/agg check (excerpts count as content)
-    return true;
+    return null;
   }
 
   // Must have either review text or an aggregator signal. Excerpt-only reviews
@@ -2844,9 +2868,19 @@ function isIncludableForRebuild(data, show, filePath) {
     data.originalScore != null ||
     data.llmScore
   );
-  if (!hasText && !hasAggregatorSignal) return false;
+  if (!hasText && !hasAggregatorSignal) return 'noTextOrScoreSignal';
 
-  return true;
+  return null;
+}
+
+/**
+ * Returns true if rebuild-all-reviews.js would include this review in reviews.json.
+ *
+ * ~35 call sites depend on this boolean; it delegates to explainExclusion() so
+ * the two can never disagree. Do not reimplement the rule chain here.
+ */
+function isIncludableForRebuild(data, show, filePath) {
+  return explainExclusion(data, show, filePath) === null;
 }
 
 /**
@@ -3434,6 +3468,7 @@ module.exports = {
   recordSerpAttempt,
   pickRerouteTarget,
   isIncludableForRebuild,
+  explainExclusion,
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,

@@ -167,12 +167,25 @@ function loadCheckpoint() {
   try { return JSON.parse(fs.readFileSync(CHECKPOINT_PATH, 'utf8')) || {}; } catch { return {}; }
 }
 function saveCheckpoint(cp) {
-  try { fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(cp, null, 2)); } catch { /* non-fatal */ }
+  try { writeJsonAtomic(CHECKPOINT_PATH, cp); } catch { /* non-fatal */ }
+}
+// Write-then-rename. A plain writeFileSync of a 150KB JSON is not atomic: a
+// concurrent reader (newsletter-preflight, another audit run) can observe a
+// truncated file, and on the audit file specifically a torn read turns into
+// "previous file unparseable", which is the #893 wipe all over again.
+// rename(2) within the same directory is atomic on macOS and Linux.
+function writeJsonAtomic(filePath, obj) {
+  const tmp = `${filePath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+  fs.renameSync(tmp, filePath);
 }
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
+// Per-show merge for the audit file (#893) + the S0 blast-radius guard.
+const { mergeGapAudit, countsFor, stateMap, withFileLock } = require('./lib/gap-audit-merge');
+const { blastRadiusCheck } = require('./lib/coverage-gate');
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -1392,6 +1405,10 @@ async function main(argv = process.argv.slice(2)) {
   // those still within their freshness window, so each time-boxed run makes
   // forward progress instead of re-auditing the same first shows every hour.
   const checkpoint = useCheckpoint ? loadCheckpoint() : {};
+  // Pre-run snapshot: if the blast-radius guard refuses this run's results, the
+  // freshness stamps written during the run are equally untrustworthy and get
+  // rolled back to this (see the guard branch near the end of main()).
+  const checkpointAtStart = useCheckpoint ? JSON.parse(JSON.stringify(checkpoint)) : null;
   if (useCheckpoint && !showFilter) {
     const now = Date.now();
     const before = targets.length;
@@ -1855,29 +1872,91 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
 
-  const audit = {
+  const runAudit = {
     generatedAt: new Date().toISOString(),
     windowDays,
     targets: targets.length,
-    counts: {
-      withGap: results.filter(r => r.missing.length + r.flaggedMisses.length + (r.citedNoUrl || []).length > 0).length,
-      totalMissing: results.reduce((a, r) => a + r.missing.length, 0),
-      totalCitedNoUrl: results.reduce((a, r) => a + (r.citedNoUrl || []).length, 0),
-      totalFlaggedMisses: results.reduce((a, r) => a + r.flaggedMisses.length, 0),
-      totalRecoverable: results.reduce((a, r) => a + r.flaggedMisses.filter(m => m.recoverable).length, 0),
-      totalRecovered: results.reduce((a, r) => a + (r.recoveryResults || []).filter(x => x.recovered).length, 0),
-    },
     results,
   };
+
+  // #893: this file used to be overwritten wholesale from `results`, so a
+  // `--show=X` run (what the send-day runbook and every "collect the missing
+  // reviews" hint tell you to run) replaced every other show's audited state
+  // with one entry — and newsletter-preflight then reported "unverified" for
+  // the rest. Merge per show instead: this run wins for the shows it audited,
+  // everything else is carried forward with its own computedAt stamp.
+  //
+  // A PRESENT-BUT-UNPARSEABLE file is NOT the same as an absent one. Swallowing
+  // a parse error into `prevAudit = null` would silently recreate #893 exactly:
+  // the next `--show=X` merges against an empty prior and writes one entry over
+  // 25 shows' state. Absent → nothing to carry (first run, fine). Corrupt →
+  // refuse to write, keep the bad file for inspection, and say so loudly.
+  //
+  // The read → merge → write is done under an exclusive lock, because the
+  // GitHub concurrency group only serializes GitHub runs: the hourly cron and a
+  // human running the same command locally can overlap, and last-writer-wins on
+  // an unlocked read-modify-write drops the other run's per-show results — #893
+  // again, from a different cause. This satisfies the plan's S0 acceptance
+  // ("--show=X twice concurrently → no lost data"), proven by
+  // scripts/lib/gap-audit-merge.concurrent.test.mjs.
+  const { audit, mergedResults, unknownOutlets, blast, lockHeld } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
+  let prevAudit = null;
+  let prevUnreadable = null;
+  if (fs.existsSync(AUDIT_PATH)) {
+    try {
+      prevAudit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+      if (!prevAudit || !Array.isArray(prevAudit.results)) {
+        prevUnreadable = 'file parsed but has no results array';
+        prevAudit = null;
+      }
+    } catch (e) {
+      prevUnreadable = (e.message || String(e)).slice(0, 200);
+      prevAudit = null;
+    }
+  }
+  const audit = mergeGapAudit(prevAudit, runAudit);
+  const mergedResults = audit.results;
+
+  // Blast-radius guard (plan S0): a run that flips >5% of shows' coverage state
+  // is far more likely to be a broken input (dead SERP provider, empty census,
+  // partial core-data checkout) than a real mass change. Refuse the write and
+  // say so. Fail-open by construction — small/scoped runs and an absent
+  // previous file both return ok. Force through with
+  // COVERAGE_BLAST_RADIUS_OVERRIDE=1.
+  const blast = prevUnreadable
+    ? {
+      ok: false, compared: 0, changed: 0, changedPct: 0, changedIds: [],
+      reason: `previous ${AUDIT_PATH} exists but could not be read (${prevUnreadable}) — refusing to write, because merging against an empty prior would drop every show not audited this run (#893). Delete or repair the file, then re-run.`,
+    }
+    : (() => {
+      // Compare ONLY the shows this run actually re-examined. Comparing the
+      // whole merged file against the whole previous file would dilute the
+      // signal into uselessness: carried-forward entries are copies, so they
+      // can never change state, but they still count toward the denominator.
+      // The checkpoint tracks ~490 shows while a throttled hourly run audits a
+      // few dozen — a 100%-corrupted batch from a dead SERP provider would land
+      // at 20/490 = 4% and slip under the 5% threshold, which is the exact
+      // outage this guard exists to catch (ship-check finding, task #902).
+      const auditedIds = new Set(results.map(r => r && r.showId).filter(Boolean));
+      const only = (m) => Object.fromEntries(Object.entries(m).filter(([id]) => auditedIds.has(id)));
+      return blastRadiusCheck(
+        only(stateMap(prevAudit && prevAudit.results)),
+        only(stateMap(mergedResults)),
+        { label: 'review-gap' }
+      );
+    })();
 
   // Roll up unknown outlet hosts: hosts that aggregator articles linked to
   // but our outlet-registry.json doesn't recognize. These are the gather
   // chain's blind spots — gather rejects them with "Could not resolve outlet
   // from URL" and the review never lands. (gaycitynews.com and theknockturnal.com
   // on 2026-05-27 — both registered after this audit surfaced them.)
+  // Rolled up over the MERGED results, not just this run's — same clobber class
+  // as the audit file itself (#893): a `--show=X` run used to blank the
+  // unknown-outlet list for every other show.
   const unknownOutletHosts = new Map();
-  for (const r of results) {
-    for (const m of r.missing) {
+  for (const r of mergedResults) {
+    for (const m of (r.missing || [])) {
       if (m.knownOutletId) continue;
       if (!unknownOutletHosts.has(m.host)) {
         unknownOutletHosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
@@ -1892,18 +1971,59 @@ async function main(argv = process.argv.slice(2)) {
     .map(e => ({ ...e, shows: [...e.shows] }))
     .sort((a, b) => b.occurrences - a.occurrences);
 
-  if (!dryRun) {
+  if (!dryRun && blast.ok) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify(audit, null, 2));
-    console.log(`\nWrote audit: ${AUDIT_PATH}`);
-    fs.writeFileSync(UNKNOWN_OUTLETS_PATH, JSON.stringify({
+    writeJsonAtomic(AUDIT_PATH, audit);
+    console.log(`\nWrote audit: ${AUDIT_PATH} (${audit.auditedThisRun} audited this run, ${audit.carriedForward} carried forward, ${audit.prunedStale} pruned >${audit.retentionDays}d)`);
+    writeJsonAtomic(UNKNOWN_OUTLETS_PATH, {
       generatedAt: audit.generatedAt,
       count: unknownOutlets.length,
       outlets: unknownOutlets,
-    }, null, 2));
+    });
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
   }
-  console.log(`Summary: ${audit.counts.withGap}/${results.length} shows audited with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed this run) | ${unknownOutlets.length} unknown outlets`);
+  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held };
+  }); // end withFileLock
+
+  if (!lockHeld) {
+    console.error('::warning::gap-audit lock could not be acquired (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent audit run could have lost data.');
+  }
+
+  // Alerting is deliberately OUTSIDE the lock: routeAlert does network I/O and
+  // must not hold the write lock across an await.
+  if (!dryRun && !blast.ok) {
+    console.error(`::error::${blast.reason}`);
+    console.error(`Changed shows (first 20): ${blast.changedIds.slice(0, 20).join(', ')}`);
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      await routeAlert({
+        conditionKey: 'review-gap:blast-radius-refused',
+        title: `Review-gap audit refused to write — ${blast.changedPct.toFixed(1)}% of shows changed coverage state`,
+        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\nThe previous ${AUDIT_PATH} is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
+        severity: 'error',
+        disposition: 'human',
+        cooldownHours: 6,
+      });
+    } catch (e) {
+      // Alerting must never mask the guard: the ::error:: above already fired.
+      console.error(`::warning::blast-radius alert routing failed: ${(e.message || '').slice(0, 120)}`);
+    }
+    // The refused run's checkpoint stamps are just as suspect as its results,
+    // and newsletter-preflight's HARD gate reads the checkpoint, not this file
+    // (lib/newsletter-preflight.js completenessFindings). Leaving `uncollected:
+    // 0, at: <now>` behind would let a refused audit bless the weekly send.
+    // Roll the checkpoint back to its pre-run state so those shows re-audit.
+    if (useCheckpoint && checkpointAtStart) {
+      try {
+        saveCheckpoint(checkpointAtStart);
+        console.error('::warning::rolled the gap-audit checkpoint back to its pre-run state — this run\'s freshness stamps are not trustworthy.');
+      } catch (e) {
+        console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
+      }
+    }
+  }
+  if (verbose) console.log(`Blast radius: ${blast.reason}`);
+  console.log(`Summary: ${audit.counts.withGap}/${mergedResults.length} shows on file with gaps (${results.length} audited this run) | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed) | ${unknownOutlets.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
@@ -1972,7 +2092,17 @@ async function main(argv = process.argv.slice(2)) {
   // 40-min job HARD-cancel — which then starves the commit/push step of its window
   // and the run shows 'cancelled' with the checkpoint+ingests un-pushed (the
   // steady-state maintenance-cancel bug, 2026-06-16). Close the scraper and exit.
-  const exitCode = (failOnGap && audit.counts.withGap > 0) ? 1 : 0;
+  // --fail-on-gap judges THIS run, not the whole file. Since #893 made the
+  // audit file cumulative (carried-forward entries from earlier runs), reading
+  // audit.counts here would redden CI on gaps this run never looked at — and
+  // keep it red until every historical entry aged out.
+  const runWithGap = countsFor(results).withGap;
+  // A refused write must redden the run. Exiting 0 would leave the workflow
+  // green while the audit file silently went stale — the same "green run,
+  // nobody notices" shape as the collector/discovery outage floors above,
+  // which both exit 1. The alert alone is not enough: it is cooldown'd and
+  // email-delivery can fail.
+  const exitCode = (!dryRun && !blast.ok) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);
 }
