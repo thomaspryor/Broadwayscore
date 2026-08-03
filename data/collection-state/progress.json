@@ -141,7 +141,17 @@
     "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
     "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
     "macbeth-off-broadway-2026/independent--alice-saville.json",
-    "macbeth-off-broadway-2026/standard--nick-curtis.json"
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "othello-off-broadway-2026/wsj--unknown.json",
+    "othello-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -176,17 +186,31 @@
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/othello-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/othello-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-08-03T10:59:00.526Z",
-  "lastProcessed": "macbeth-off-broadway-2026/standard--nick-curtis.json",
+  "lastProcessed": "othello-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-08-03T11:08:51.215Z",
       "event": "bb-session",
       "session": "e1a0a43e",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-03T11:11:20.308Z",
+      "event": "bb-session",
+      "session": "af6007b9",
+      "url": "https://www.wsj.com/articles/othello-review-shakespeares-battle-scarred-hero-com"
+    },
+    {
+      "t": "2026-08-03T11:11:21.068Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
