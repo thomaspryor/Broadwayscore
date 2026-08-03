@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T10:14:58.713Z",
+  "generatedAt": "2026-08-03T12:09:29.990Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 261.0561480555556,
+      "fileAgeHours": 262.96483694444447,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 220.3591047222222
+      "nonTerminalAgeHours": 222.26779277777777
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,24 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 22.797124444444446
-    },
-    {
-      "showId": "othello-off-broadway-2026",
-      "title": "Othello",
-      "openingDate": "2026-07-05",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "url": "https://www.broadwayworld.com/shows/Othello-336222.html",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=othello-off-broadway-2026 --url=https://www.broadwayworld.com/shows/Othello-336222.html --outlet=broadwayworld   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-03T04:15:11.105Z",
-      "fileAgeHours": 5.9965575,
-      "gapSeenAt": "2026-08-03T08:19:50.879Z",
-      "nonTerminalAgeHours": 1.9188427777777777
+      "nonTerminalAgeHours": 24.7058125
     }
   ],
   "contradictions": []
