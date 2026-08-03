@@ -254,6 +254,11 @@ export interface ComputedShow {
   methodologyVersion: string;
   methodologyDate: string;
   computedAt: string;
+  // Coverage Verdict (S2/S3, tasks #906/#905) — attached in data-core.ts from
+  // data/audit/show-review-gap.json + data/audit/score-public-since.json.
+  // Fails open: absent when the audit file/kill switch/no stamp yet.
+  cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
+  scorePublicSince?: string | null;
 }
 
 // ===========================================

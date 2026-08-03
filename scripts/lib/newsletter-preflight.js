@@ -127,6 +127,55 @@ function completenessFindings(openingShows, checkpoint, nowMs, opts = {}) {
   return { hard, soft };
 }
 
+// Coverage Verdict S3 (task #905): a gapped featured show no longer hard-
+// blocks the send (task #823's behavior) — it gets SWAPPED with the next
+// eligible show among this issue's other openings, and the swap is always
+// named in the report. Never silent, never blocks (plan rule 1: fail open).
+// `allowGaps`/`ackedShowIds` both mean "send this show as-is, gap and all" —
+// the difference is scope (one-run env override vs. a persisted per-show
+// ack) — see pre-send-check.mjs for how each is populated.
+//
+// @param openingShows  meta.openingShows, in render order
+// @param checkpoint    gap-audit-checkpoint.json ({showId: {at,gaps,uncollected}})
+// @param nowMs
+// @param opts { freshHours, ackedShowIds: Set<string>, allowGaps: boolean }
+// @returns {{swaps: Array<{from, to, reason}>, notes: string[]}}
+//   from/to are {id, title} — to is null when no eligible replacement exists.
+function gapSwapDecisions(openingShows, checkpoint, nowMs, opts = {}) {
+  const { freshHours = 48, ackedShowIds = new Set(), allowGaps = false } = opts;
+  const list = (openingShows || []).filter((s) => s && s.id);
+  const swaps = [];
+  const notes = [];
+  const usedAsSwapTarget = new Set();
+  for (const s of list) {
+    const entry = (checkpoint || {})[s.id];
+    const state = classifyGapEntry(entry, nowMs, { freshHours });
+    if (state !== 'gap') continue;
+    if (allowGaps) {
+      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) — sending as-is (NEWSLETTER_ALLOW_GAPS=1).`);
+      continue;
+    }
+    if (ackedShowIds.has(s.id)) {
+      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) — acknowledged, sending as-is.`);
+      continue;
+    }
+    const eligible = list.find((c) => c.id !== s.id
+      && !usedAsSwapTarget.has(c.id)
+      && classifyGapEntry((checkpoint || {})[c.id], nowMs, { freshHours }) !== 'gap');
+    if (eligible) {
+      usedAsSwapTarget.add(eligible.id);
+      swaps.push({
+        from: { id: s.id, title: s.title },
+        to: { id: eligible.id, title: eligible.title },
+        reason: `coverage gap: ${entry.uncollected} review(s) already cited by aggregators are still uncollected`,
+      });
+    } else {
+      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) and no eligible replacement exists among this issue's other openings — sending as-is.`);
+    }
+  }
+  return { swaps, notes };
+}
+
 module.exports = {
   missingImageViolations,
   localPathForImageUrl,
@@ -135,4 +184,5 @@ module.exports = {
   extractSiteImageUrls,
   classifyGapEntry,
   completenessFindings,
+  gapSwapDecisions,
 };

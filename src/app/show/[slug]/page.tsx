@@ -34,7 +34,7 @@ import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
-import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
+import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
@@ -92,7 +92,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
   const isCuratedHistorical = CURATED_HISTORICAL_SHOWS.has(show.id);
   const isTBD = show.status === 'previews' || show.status === 'upcoming' ||
-    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical);
+    applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical), {
+      scorePublicSince: show.scorePublicSince,
+      coverageState: show.cov?.state,
+    });
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
@@ -363,7 +366,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
   const isCuratedHistoricalShow = CURATED_HISTORICAL_SHOWS.has(show.id);
-  const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
+  const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
+    applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
+      scorePublicSince: show.scorePublicSince,
+      coverageState: show.cov?.state,
+    });
   const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
@@ -499,7 +506,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 const reviewCount = show.criticScore?.reviewCount || 0;
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
-                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
+                const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
+                  applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
+                    scorePublicSince: show.scorePublicSince,
+                    coverageState: show.cov?.state,
+                  });
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
@@ -696,7 +707,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             const reviewCount = show.criticScore?.reviewCount || 0;
             const tier1Count = show.criticScore?.tier1Count || 0;
             const tier2Count = show.criticScore?.tier2Count || 0;
-            const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
+            const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
+              applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
+                scorePublicSince: show.scorePublicSince,
+                coverageState: show.cov?.state,
+              });
             if (showTBD || !show.criticScore?.reviews || show.criticScore.reviews.length === 0) return null;
             return (
               <ScoreBreakdownBar

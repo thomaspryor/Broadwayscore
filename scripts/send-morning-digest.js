@@ -217,6 +217,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // it's the most personally actionable: only the owner can resolve these.
   if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
+  // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
+  // moreCount} shape, no new render code.
+  if (sections.coverageVerdict) blocks.push(renderNamedDigestBlock('Coverage verdict', sections.coverageVerdict));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
   if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);

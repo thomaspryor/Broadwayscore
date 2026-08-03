@@ -2,6 +2,8 @@
 // Imports: shows.json (~1.3 MB), reviews.json (~3.8 MB), audience.json (~8 KB), buzz.json (~7 KB)
 // Also imports getShowGrosses from data-grosses for browse page performance sort
 
+import fs from 'fs';
+import path from 'path';
 import {
   computeShowData,
   ComputedShow,
@@ -56,6 +58,37 @@ for (const r of reviews) {
   else reviewsByShowId.set(r.showId, [r]);
 }
 
+// Coverage Verdict (S2/S3, tasks #906/#905) — read once at module load, same
+// fail-open contract as generate-mobile-show-details.js's `cov` wiring: a
+// missing/unreadable audit file (or COVERAGE_GATE_DISABLED) just means every
+// show gets no `cov`/`scorePublicSince`, so existing TBD behavior is
+// unchanged. fs.readFileSync (not a static JSON import) because these audit
+// files can legitimately be absent on a fresh checkout — a static import
+// would hard-fail the build instead of degrading gracefully.
+const coverageGateDisabled = /^(1|true|yes|on)$/i.test(String(process.env.COVERAGE_GATE_DISABLED || '').trim());
+const covByShowId = new Map<string, ComputedShow['cov']>();
+const scorePublicSinceByShowId = new Map<string, string>();
+if (!coverageGateDisabled) {
+  try {
+    const gapAudit = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 'show-review-gap.json'), 'utf-8'));
+    for (const r of (gapAudit.results || [])) {
+      if (!r || !r.showId || !r.censusVerdict) continue;
+      covByShowId.set(r.showId, {
+        state: r.censusVerdict.verdict,
+        liveCount: r.censusVerdict.liveCount,
+        candidateCount: r.censusVerdict.candidateCount,
+        computedAt: r.computedAt || null,
+      });
+    }
+  } catch { /* absent/unreadable — every show gets no cov, existing behavior unchanged */ }
+  try {
+    const stamps = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 'score-public-since.json'), 'utf-8'));
+    for (const [showId, iso] of Object.entries(stamps)) {
+      if (typeof iso === 'string') scorePublicSinceByShowId.set(showId, iso);
+    }
+  } catch { /* absent/unreadable — every show gets no scorePublicSince */ }
+}
+
 // Cache for computed shows
 let computedShowsCache: ComputedShow[] | null = null;
 
@@ -67,7 +100,14 @@ export function getAllShows(): ComputedShow[] {
 
   computedShowsCache = shows
     .filter((show: any) => !show._devOnly)
-    .map(show => computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz));
+    .map(show => {
+      const computed = computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz);
+      const cov = covByShowId.get(show.id);
+      if (cov) computed.cov = cov;
+      const scorePublicSince = scorePublicSinceByShowId.get(show.id);
+      if (scorePublicSince) computed.scorePublicSince = scorePublicSince;
+      return computed;
+    });
 
   return computedShowsCache;
 }

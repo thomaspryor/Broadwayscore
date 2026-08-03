@@ -54,6 +54,12 @@ const SNAPSHOTS = [
   // CI-produced in data-health-check.yml and committed, like health above.
   // optionalIfMissing until the first daily run lands the file on main.
   { key: 'providerSpend', label: 'scraping spend', file: 'provider-spend-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // Coverage Verdict digest line (Coverage Verdict S3, task #905) —
+  // scripts/produce-coverage-digest-snapshot.js formats show-review-gap.json's
+  // censusVerdict into plain-English "N of M known reviews live" lines via
+  // scripts/lib/coverage-digest.js. optionalIfMissing: a quiet day (nothing
+  // incomplete) is the common case, not a producer failure.
+  { key: 'coverageVerdict', label: 'coverage verdict', file: 'coverage-digest-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

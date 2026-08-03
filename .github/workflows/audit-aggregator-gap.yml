@@ -298,6 +298,17 @@ jobs:
         if: always()
         run: node scripts/shadow-autoclear-report.js
 
+      # Coverage Verdict digest line (S3, task #905): reads the censusVerdict
+      # the gap-audit step above just wrote onto show-review-gap.json and
+      # formats "N of M known reviews live" lines into
+      # coverage-digest-snapshot.json for send-morning-digest.js — the "small
+      # producer on the audit cron" the plan calls for. Fails open (kill
+      # switch / missing audit file → no write, section just omitted from the
+      # email) so it can never block this job.
+      - name: Coverage digest snapshot
+        if: always()
+        run: node scripts/produce-coverage-digest-snapshot.js
+
       - name: Commit audit JSON (public repo)
         if: always()
         env:
@@ -339,7 +350,7 @@ jobs:
           # workflow a committer of the file; the keep-local interaction that
           # implies is tracked in task #537 and is not made worse by ALSO
           # persisting here (the alternative is losing the line outright).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

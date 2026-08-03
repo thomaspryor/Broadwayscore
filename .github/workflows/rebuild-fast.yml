@@ -159,6 +159,15 @@ jobs:
         run: bash scripts/generate-mobile-artifacts.sh
         continue-on-error: true
 
+      # Coverage Verdict S3 (task #905): stamps the first time each show's
+      # score goes public (public/data/shows/{id}.json's `cs` field, just
+      # regenerated above) into data/audit/score-public-since.json — the
+      # score-regression floor's clock. Append-only, fails open, cheap
+      # (local file read, no network) — safe on every rebuild.
+      - name: Score-public-since stamp
+        run: node scripts/audit-score-public-since.js
+        continue-on-error: true
+
       - name: Get new review count
         id: after
         run: |

@@ -235,6 +235,60 @@ export function reviewsRemainingForScore(
 }
 
 // ===========================================
+// COVERAGE VERDICT SCORE-REGRESSION FLOOR (S3, task #905)
+// ===========================================
+
+/** Hours a score must have been public before the floor protects it. */
+export const SCORE_REGRESSION_FLOOR_HOURS = 24;
+
+/**
+ * Adjusts the plain review-count TBD gate (`!hasEnoughReviews(...)`) with two
+ * Coverage Verdict rules:
+ *  1. Never-public + incomplete coverage: a show whose score has NEVER been
+ *     public stays in "Awaiting Reviews" even if reviewCount clears the
+ *     normal threshold, as long as the coverage verdict says known
+ *     aggregator-cited reviews are still missing (and the gap isn't acked).
+ *  2. Score-regression floor: once `scorePublicSince` is >24h old, the score
+ *     is shown regardless of anything else — a later verdict change, a
+ *     flagged review dropping reviewCount back under threshold, etc. can
+ *     never make an already-settled score disappear again.
+ *
+ * Fails open: no `coverageState` (missing/unreadable audit, kill switch) or
+ * `coverageAcked` never blocks — only an explicit 'incomplete' verdict on a
+ * never-public show does.
+ *
+ * @param reviewCountTBD  the existing `!hasEnoughReviews(...)` result
+ * @param opts.scorePublicSince  ISO timestamp of the first time this show's
+ *   score cleared the review-count threshold, or null/undefined if never.
+ * @param opts.coverageState  the show's `cov.state` field ('complete' |
+ *   'incomplete' | 'no-census-yet' | undefined).
+ * @param opts.coverageAcked  true when the owner has acknowledged this show's
+ *   coverage gap (reuses the t1-scoreboard ack store).
+ * @param opts.now  ms epoch, defaults to Date.now() — inject in tests.
+ * @returns true when the show should show "Awaiting Reviews" instead of its score.
+ */
+export function applyCoverageFloor(
+  reviewCountTBD: boolean,
+  opts: {
+    scorePublicSince?: string | null;
+    coverageState?: string | null;
+    coverageAcked?: boolean;
+    now?: number;
+  } = {},
+): boolean {
+  if (opts.scorePublicSince) {
+    const publicMs = Date.parse(opts.scorePublicSince);
+    if (Number.isFinite(publicMs)) {
+      const now = opts.now ?? Date.now();
+      if (now - publicMs > SCORE_REGRESSION_FLOOR_HOURS * 3600 * 1000) return false; // floor wins outright
+    }
+  }
+  if (reviewCountTBD) return true;
+  if (!opts.scorePublicSince && opts.coverageState === 'incomplete' && !opts.coverageAcked) return true;
+  return false;
+}
+
+// ===========================================
 // CRITIC LABEL THRESHOLDS (for weighted score)
 // ===========================================
 

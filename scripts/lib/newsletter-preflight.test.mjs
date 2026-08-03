@@ -12,6 +12,7 @@ const {
   extractSiteImageUrls,
   classifyGapEntry,
   completenessFindings,
+  gapSwapDecisions,
 } = createRequire(import.meta.url)('./newsletter-preflight.js');
 
 const NOW = Date.parse('2026-08-02T12:00:00Z');
@@ -143,4 +144,81 @@ test('completenessFindings: stale and absent entries are soft, never hard', () =
   assert.equal(soft.length, 2);
   assert.match(soft[0], /unverified/);
   assert.match(soft[1], /no usable gap audit entry/);
+});
+
+// ── gapSwapDecisions (Coverage Verdict S3, task #905) ─────────────────────────
+
+test('gapSwapDecisions: 2026-08-02 incident shape (Brainiac + Traitors) swaps instead of hard-failing', () => {
+  const openingShows = [
+    { id: 'brainiac-live-west-end-2026', title: 'Brainiac Live!' },
+    { id: 'the-traitors-live-experience-off-west-end-2026', title: 'The Traitors: Live Experience' },
+    { id: 'tao-of-glass-west-end-2026', title: 'Tao of Glass' },
+  ];
+  const checkpoint = {
+    'brainiac-live-west-end-2026': { at: hoursAgo(3), gaps: 3, uncollected: 3 },
+    'the-traitors-live-experience-off-west-end-2026': { at: hoursAgo(5), gaps: 7, uncollected: 7 },
+    'tao-of-glass-west-end-2026': { at: hoursAgo(1), gaps: 3, uncollected: 0 }, // clean (flaggedMisses only)
+  };
+  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, NOW);
+  assert.equal(swaps.length, 1); // only one eligible replacement exists
+  assert.equal(swaps[0].from.id, 'brainiac-live-west-end-2026');
+  assert.equal(swaps[0].to.id, 'tao-of-glass-west-end-2026');
+  assert.equal(notes.length, 1);
+  assert.match(notes[0], /The Traitors: Live Experience/);
+  assert.match(notes[0], /no eligible replacement/);
+});
+
+test('gapSwapDecisions: never hard-fails and never touches a clean show', () => {
+  const openingShows = [{ id: 'clean', title: 'Clean Show' }];
+  const { swaps, notes } = gapSwapDecisions(openingShows, { clean: { at: hoursAgo(1), gaps: 0, uncollected: 0 } }, NOW);
+  assert.equal(swaps.length, 0);
+  assert.equal(notes.length, 0);
+});
+
+test('gapSwapDecisions: allowGaps sends every gapped show as-is, no swaps', () => {
+  const openingShows = [
+    { id: 'gapped-a', title: 'A' },
+    { id: 'gapped-b', title: 'B' },
+  ];
+  const checkpoint = {
+    'gapped-a': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    'gapped-b': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+  };
+  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, NOW, { allowGaps: true });
+  assert.equal(swaps.length, 0);
+  assert.equal(notes.length, 2);
+  for (const n of notes) assert.match(n, /NEWSLETTER_ALLOW_GAPS=1/);
+});
+
+test('gapSwapDecisions: an acked show is sent as-is, not swapped', () => {
+  const openingShows = [
+    { id: 'acked-show', title: 'Acked' },
+    { id: 'clean-show', title: 'Clean' },
+  ];
+  const checkpoint = {
+    'acked-show': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    'clean-show': { at: hoursAgo(1), gaps: 0, uncollected: 0 },
+  };
+  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, NOW, { ackedShowIds: new Set(['acked-show']) });
+  assert.equal(swaps.length, 0);
+  assert.equal(notes.length, 1);
+  assert.match(notes[0], /acknowledged/);
+});
+
+test('gapSwapDecisions: a clean show already claimed as a swap target is not reused', () => {
+  const openingShows = [
+    { id: 'gap-1', title: 'Gap 1' },
+    { id: 'gap-2', title: 'Gap 2' },
+    { id: 'clean', title: 'Clean' },
+  ];
+  const checkpoint = {
+    'gap-1': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    'gap-2': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    clean: { at: hoursAgo(1), gaps: 0, uncollected: 0 },
+  };
+  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, NOW);
+  assert.equal(swaps.length, 1);
+  assert.equal(swaps[0].to.id, 'clean');
+  assert.equal(notes.length, 1);
+  assert.match(notes[0], /Gap 2/);
 });
