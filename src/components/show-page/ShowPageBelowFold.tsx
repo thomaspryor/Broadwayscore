@@ -26,7 +26,7 @@ import type { ShowCardShow } from '@/components/show-cards/types';
 import RelatedShows from '@/components/RelatedShows';
 import type { AudienceMarket } from '@/config/audience-sources';
 import type {
-  ComputedShow,
+  ComputedShowWithReviews,
   ShowAwards,
   ShowGrosses,
   ShowSchedule,
@@ -47,7 +47,13 @@ import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
 
 export interface ShowPageBelowFoldProps {
-  show: ComputedShow;
+  // Narrowed to drop criticScore.reviews — this chunk (and WhereItRanks, which it
+  // renders) only reads criticScore.{score,reviewCount,tier1Count,tier2Count}.
+  // ReviewsList is the only consumer of the show's own review objects; passing
+  // them here too tripled that array's serialized size in the RSC payload
+  // (measured 117 review objects inlined on /show/hamilton for 39 real reviews).
+  // Card #962, sibling of the #419 Theater Pick<> fix.
+  show: ComputedShowWithReviews<never>;
   videoReviews: VideoReview[];
   audienceBuzz: AudienceBuzzData | undefined;
   audienceShowScoreUrl: string | undefined;

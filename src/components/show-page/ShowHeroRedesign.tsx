@@ -63,7 +63,7 @@ import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
-import type { ComputedShow } from '@/lib/engine';
+import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 
 /** Inlined to avoid pulling @/lib/data-core (server-only JSON imports) into the
  *  client bundle. Matches the data-core slugify exactly. */
@@ -79,7 +79,11 @@ import HeroRankLine from '@/components/show-page/HeroRankLine';
 // ─── Props ───────────────────────────────────────────────────────────────
 
 interface ShowHeroRedesignProps {
-  show: ComputedShow;
+  // Narrowed to only the field ScoreBreakdownBar reads (reviewScore) — the full
+  // ComputedReview objects (criticName/outlet/url/quote/summary/...) tripled the
+  // size of this show's own review array in the RSC payload once counted across
+  // this boundary + ShowPageBelowFoldLoader + ReviewsList. Card #962.
+  show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>;
   consensusText: string | null;
   audienceGrade: AudienceGrade | null;
   audienceCount: number;
@@ -733,7 +737,7 @@ function Inner({
 
 // ─── Sub-components ──────────────────────────────────────────────────────
 
-function DateLine({ show }: { show: ComputedShow }) {
+function DateLine({ show }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-gray-500';
@@ -759,7 +763,7 @@ function DateLine({ show }: { show: ComputedShow }) {
   );
 }
 
-function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: number }) {
+function AwaitingCard({ show, reviewCount }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number }) {
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
       <p className="text-sm font-semibold text-gray-300 mb-0.5">Awaiting reviews</p>
