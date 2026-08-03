@@ -7,7 +7,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import type { ComputedShow } from '@/lib/data-types';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { createShowSerializer } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -43,11 +43,15 @@ export const metadata: Metadata = {
   },
 };
 
-function serializeShow(show: ComputedShow): HomepageShow {
-  return serializeShowForClient(show);
-}
-
 export default function HomePage() {
+  // Memoized per-render: the same show appears in the full grid AND several
+  // featured shelves (Tony Winners, Date Night, Closing Soon, ...). Sharing one
+  // serialized object reference per show lets the RSC flight serializer dedupe
+  // repeat occurrences instead of re-inlining criticScore/images/etc each time.
+  const serialize = createShowSerializer();
+  function serializeShow(show: ComputedShow): HomepageShow {
+    return serialize(show) as HomepageShow;
+  }
   const allShows = getBroadwayShows();
   const stats = getDataStats();
   const upcomingShows = getUpcomingShows();
