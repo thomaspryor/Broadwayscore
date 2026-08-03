@@ -1,0 +1,101 @@
+name: Detect Revivals (IBDB)
+
+on:
+  schedule:
+    # Weekly on Wednesdays at 8 AM UTC (3 AM EST) — offset from enrich-ibdb-dates.yml (7 AM UTC)
+    # to avoid both writers landing in the same shows-json-writer concurrency slot.
+    - cron: '0 8 * * 3'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Write changes (unchecked = dry-run only)'
+        required: true
+        default: true
+        type: boolean
+      show:
+        description: 'Optional: specific show slug/id to check'
+        required: false
+        type: string
+      category:
+        description: 'Category filter'
+        required: false
+        default: 'off-broadway'
+        type: choice
+        options:
+          - off-broadway
+          - broadway
+
+permissions:
+  contents: write
+
+# Same writer group as enrich-ibdb-dates/update-show-status — this workflow
+# read-mutate-writes shows.json (isRevival, ibdbRevivalChecked, tags).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  detect-revivals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run IBDB revival detection
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          FLAGS="--apply"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.apply }}" = "false" ]; then
+            FLAGS=""
+          fi
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+          CATEGORY="${{ inputs.category || 'off-broadway' }}"
+          FLAGS="$FLAGS --category=$CATEGORY"
+
+          echo "Running: node scripts/detect-revivals-ibdb.js $FLAGS"
+          node scripts/detect-revivals-ibdb.js $FLAGS
+          # --force not passed: a >5-change run exits 1 on purpose (safety gate,
+          # see scripts/detect-revivals-ibdb.js) and should surface as a failed
+          # run for manual review, not silently apply a large batch unattended.
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from detect-revivals-ibdb'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'IBDB Revival Detection Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
