@@ -134,3 +134,4 @@ opening-night-latency-report.js -- legacy-pending-migration
 unflag-wrong-production-fps.js -- legacy-pending-migration
 notion-action-poll.js -- writes to scripts/agent-memory/ only; review-texts appears in dep-existence check (line 358) not in any writeFileSync path
 audit-serp-census-recall.js -- read-only audit; writes only data/audit/serp-census-recall.json (OUT_PATH, line 54). review-texts appears at line 53 as REVIEW_TEXTS_DIR, a READ root, never in a writeFileSync path. Same false-positive shape as notion-action-poll.js above. Was blocking every session push via run-push-audits.sh (#863 class).
+coverage-adversarial-probe.js -- read-only audit; writes only data/audit/ (outPath/STATUS_PATH). REVIEW_TEXTS_DIR (line 66) is a READ root for building per-show records, never in a writeFileSync path. Same false-positive shape as audit-serp-census-recall.js above (#863 class); was blocking every session push via run-push-audits.sh (task #947).
