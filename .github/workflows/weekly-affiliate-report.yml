@@ -77,6 +77,14 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+    # Shares data-health-check.yml's concurrency group: both write the same
+    # alert-ledger/digest-queue audit files, and push-with-retry's data/audit
+    # conflict policy keeps one side wholesale — an overlap would silently
+    # drop one job's alert/cooldown state (Codex ship-check finding). Same
+    # group name across workflows = one queue; queued, never cancelled.
+    concurrency:
+      group: data-health-check
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
 
