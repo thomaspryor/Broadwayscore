@@ -16,6 +16,12 @@ const { normalizeUrl: canonicalizeUrlForCompare } = require('./review-normalizat
 // this ever runs. Reused verbatim, not re-derived, per the day-one triage's
 // instruction to check existing aggregator/venue classifications first.
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
+// Ticketing/venue-production-page/event-listing patterns — canonical copy in
+// non-review-url-patterns.js, shared with audit-show-review-gap.js's own
+// discovery-time isReviewUrl() filter (task #907 ship-check finding: this
+// module originally hand-duplicated a subset of these; two independently
+// maintained copies of the same policy will drift).
+const { namedNonReviewReason } = require('./non-review-url-patterns');
 
 /**
  * coverage-adversarial-probe.js — pure decision layer for the Coverage
@@ -54,60 +60,44 @@ const MIN_RUN_GAP_DAYS = 5;
 const REQUIRED_CLEAN_RUNS = 2;
 
 /**
- * Named non-review-page patterns the naive census arm's un-scoped query
- * surfaces alongside real reviews: ticketing/reseller pages, venue own-site
- * production pages, and third-party event listings. None of these were ever
- * a review to find, so a show missing a review-texts file for them is not a
- * gap — it is exactly the class explainExclusion() names for on-disk
- * records, just for a URL that never had a file to begin with.
+ * Is this candidate URL a known not-a-review page? Two classes:
  *
- * Evidence (task #907 day-one triage, 6 of 9 first-run "gaps"):
- * newyorkcitytheatre.com / newbrunswicktheater.com (ticket resellers),
- * nationaltheatre.org.uk/productions/ (venue's own production page, not a
- * review), middlesexcountyculture.com/event/ (third-party event listing),
- * londontheatre.co.uk/show/NNNN (ticket-purchase page — NOT /reviews/, which
- * audit-show-review-gap.js already treats as a real review source; only the
- * /show/ path is excluded here). Two more surfaced by the fix's own live
- * --sample re-run (same run that verified the fix): broadway.com (ticketing
- * marketplace, not a registered review outlet — data/outlet-registry.json has
- * no broadway.com entry) and theatermania.com/shows/ (their OWN ticketing/
- * show-info page — theatermania IS a registered review outlet, but its real
- * reviews live under /news/review-.../, never /shows/, so only that one path
- * is excluded, not the whole host).
+ * 1. Ticketing/venue-production/event-listing hosts (namedNonReviewReason,
+ *    shared with audit-show-review-gap.js's discovery-time isReviewUrl() —
+ *    see non-review-url-patterns.js's own header). Evidence (task #907
+ *    day-one triage, 6 of 9 first-run "gaps"): newyorkcitytheatre.com,
+ *    nationaltheatre.org.uk/productions/, londontheatre.co.uk/show/NNNN,
+ *    etc. None of these were ever a review to find, so a show missing a
+ *    review-texts file for them is not a gap — it is exactly the class
+ *    explainExclusion() names for on-disk records, just for a URL that
+ *    never had a file to begin with.
  *
- * Deliberately a small, separate list rather than importing
- * audit-show-review-gap.js's NON_REVIEW_HOST_PATTERNS: that file pulls in
- * cheerio/scraper/etc. at require-time, which would break this module's
- * "pure, no heavy deps" contract for its own test file. The two lists serve
- * different stages (isReviewUrl runs before a URL is even considered a
- * candidate; this runs after, as the last check before declaring a gap) and
- * may overlap without needing to be one list.
- */
-const NON_REVIEW_URL_PATTERNS = [
-  { host: /(^|\.)newyorkcitytheatre\.com$/, reason: 'ticketing-reseller' },
-  { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },
-  { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
-  { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
-  { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
-  { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
-  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
-];
-
-/**
- * Is this candidate URL a known not-a-review page (ticketing/venue/listing)?
+ * 2. Aggregator own-site show-landing pages (show-score.com, stagedoor.com,
+ *    etc. — the canonical AGGREGATOR_DOMAINS set from aggregator-domains.js,
+ *    reused verbatim, not re-derived). These list every outlet's stars in
+ *    one place, so they rank for "<title> review", but are never themselves
+ *    a review to gather. Deliberately NOT folded into namedNonReviewReason /
+ *    isReviewUrl: a real aggregator-sourced star-stub legitimately carries
+ *    this exact URL on disk (isAggregatorReviewSource in aggregator-
+ *    domains.js), and lookupRecord() already matches it before this ever
+ *    runs — excluding the whole domain at isReviewUrl's discovery-time gate
+ *    would make onDiskByUrlFor() (scripts/coverage-adversarial-probe.js)
+ *    silently stop indexing those legitimately-captured files, understating
+ *    real "live" coverage. Show-score.com's own show pages are handled by
+ *    their own dedicated integration (update-show-status.js /
+ *    show-score-status.js), not the per-review discovery path this probe
+ *    audits, so excluding them here (post-lookup, probe-only) is safe.
+ *
  * @param {string} url
  * @returns {string|null} a reason label, or null if not a recognized pattern
  */
 function classifyNonReviewUrl(url) {
+  const named = namedNonReviewReason(url);
+  if (named) return named;
   let u;
   try { u = new URL(url); } catch { return null; }
   const host = u.hostname.replace(/^www\./, '').toLowerCase();
   if (AGGREGATOR_DOMAINS.has(host)) return 'aggregator-own-page';
-  for (const p of NON_REVIEW_URL_PATTERNS) {
-    if (!p.host.test(host)) continue;
-    if (p.path && !p.path.test(u.pathname)) continue;
-    return p.reason;
-  }
   return null;
 }
 
@@ -156,7 +146,20 @@ function classifyCandidate(url, show, onDiskByUrl, guards) {
     return { url, state: 'gap', reason: null };
   }
   if (rec.pending) {
-    return { url, state: 'excluded', reason: `quarantined: ${rec.pendingReason || 'pending-review'}` };
+    // 'no-byline' (gather-reviews.js) is an ACTIVE WORKING QUEUE item, not a
+    // settled exclusion: the pipeline already captured this review's text,
+    // it's just waiting on critic-name resolution (memory: the "_pending
+    // no-byline strand" has its own drain process). Labeling it identically
+    // to a permanent exclusion (date_implausible: wrong production/date,
+    // never becomes live) would read as "handled forever" when it's really
+    // "already known, still open" (Codex ship-check finding, task #907).
+    // Both branches return 'excluded' — NOT 'gap' — because either way the
+    // probe's only question here is "did the pipeline already discover this
+    // URL", and the answer is yes for both.
+    const reason = rec.pendingReason === 'no-byline'
+      ? 'quarantined: no-byline (already captured, queued for byline resolution — not a new gap)'
+      : `quarantined: ${rec.pendingReason || 'pending-review'}`;
+    return { url, state: 'excluded', reason };
   }
   const { data, filePath } = rec;
   let includable = false;

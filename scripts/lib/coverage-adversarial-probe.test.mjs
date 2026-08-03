@@ -163,6 +163,23 @@ test('classifyCandidate: pending record still resolves through scheme/www normal
   assert.equal(r.reason, 'quarantined: date_implausible');
 });
 
+test('classifyCandidate: a no-byline pending record is excluded (already captured — not a gap) but its reason reads as an open queue item, not a settled exclusion', () => {
+  // gather-reviews.js's no-byline strand (515 of 538 _pending files in the
+  // live corpus at time of writing) is an active working queue, not a
+  // permanent exclusion like date_implausible — the label must say so
+  // (Codex ship-check finding, task #907: labeling both identically implies
+  // "handled forever" for content that's actually still open).
+  const onDisk = new Map([
+    ['https://www.example-outlet.com/review-the-car-man', {
+      data: {}, filePath: '/pending/x.json', pending: true, pendingReason: 'no-byline',
+    }],
+  ]);
+  const r = classifyCandidate('https://www.example-outlet.com/review-the-car-man', SHOW, onDisk, guardsFor({ includable: false }));
+  assert.equal(r.state, 'excluded');
+  assert.match(r.reason, /no-byline/);
+  assert.match(r.reason, /not a new gap/);
+});
+
 test('summarizeShow: passes with zero candidates', () => {
   const s = summarizeShow([]);
   assert.equal(s.pass, true);
