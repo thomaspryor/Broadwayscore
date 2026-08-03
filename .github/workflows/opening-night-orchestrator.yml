@@ -73,11 +73,14 @@ permissions:
   contents: read
   actions: write
 
-# No workflow-level concurrency group: a group keyed on github.run_id (the old
+# No workflow-level concurrency group (NOT per-run group intended, unlike the
+# other workflows in this repo): a group keyed on github.run_id (the old
 # setup) is unique per run and serializes NOTHING, and a shared group can't be
 # market-aware (scheduled runs only resolve their market mid-run). Same-market
 # dedup is handled by the "Redundancy guard" step below; BW and WE orchestrators
-# still run in parallel.
+# still run in parallel. This is the workflow that caused the 2026-08-03 alert
+# storm — see task #922 audit for the 14 other run_id-keyed groups reviewed
+# afterward (memory/feedback_concurrency_group_must_serialize_work_not_runs.md).
 
 jobs:
   orchestrate:
