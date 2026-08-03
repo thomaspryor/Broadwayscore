@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-03T20:56:58.847Z",
-  "processed": 53,
-  "failed": 341,
-  "successRate": "13.5%",
+  "updatedAt": "2026-08-03T21:04:56.039Z",
+  "processed": 63,
+  "failed": 481,
+  "successRate": "11.6%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 9,
     "directCookies": 4,
     "scrapingbee": 0,
-    "brightdata": 8,
+    "brightdata": 10,
     "archiveToday": 10,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-03T19:46:45.850Z",
@@ -25,6 +25,30 @@
       "t": "2026-08-03T19:46:46.608Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-08-03T21:02:28.464Z",
+      "event": "bb-session",
+      "session": "f85b5e8e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-03T21:03:02.396Z",
+      "event": "bb-session",
+      "session": "96bdfa9d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-08-03T21:03:18.387Z",
+      "event": "bb-session",
+      "session": "f8698798",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-03T21:03:39.549Z",
+      "event": "bb-session",
+      "session": "cca415df",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
     }
   ]
 }
