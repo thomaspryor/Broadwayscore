@@ -64,7 +64,7 @@ const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview } = require('./lib/review-guards');
-const { isWithinPriorRun, hasDeclaredPriorRuns } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
@@ -3551,7 +3551,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (review.publishDate && _showMeta) {
     try {
       const show = _showMeta;
-      if (show.category !== 'off-broadway' && !isWithinPriorRun(review.publishDate, show.priorRuns)) {
+      if (show.category !== 'off-broadway' && !isWithinPriorRun(review.publishDate, show.priorRuns) && !isWithinTourLeg(review.publishDate, show.tourLegs)) {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
           const pubDate = new Date(review.publishDate);
@@ -3730,16 +3730,18 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   }
 
   // Skip shows in previews — they haven't opened yet, any scraped reviews are
-  // wrong-production. EXCEPTION: a show that declares a priorRuns window was
-  // already reviewed during an earlier run (venue transfer / return engagement);
-  // those reviews are legitimate and must still be discovered. Per-review date
-  // gating downstream (isWithinPriorRun) keeps the window honest.
-  if (show.status === 'previews' && !hasDeclaredPriorRuns(show)) {
+  // wrong-production. EXCEPTION: a show that declares a priorRuns OR tourLegs
+  // window was already reviewed during an earlier run / at an earlier tour
+  // stop; those reviews are legitimate and must still be discovered.
+  // Per-review date gating downstream (isWithinPriorRun/isWithinTourLeg) keeps
+  // the window honest.
+  const hasContinuityWindow = hasDeclaredPriorRuns(show) || hasDeclaredTourLegs(show);
+  if (show.status === 'previews' && !hasContinuityWindow) {
     console.log(`[SKIP] ${showId}: Show is in previews (opens ${show.openingDate}) — skipping to avoid wrong-production contamination`);
     return { success: true, skipped: true, reason: 'previews' };
   }
-  if (show.status === 'previews' && hasDeclaredPriorRuns(show)) {
-    console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns — discovering reviews from the earlier run`);
+  if (show.status === 'previews' && hasContinuityWindow) {
+    console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns/tourLegs — discovering reviews from the earlier run/tour stop`);
   }
 
   const year = new Date(show.openingDate).getFullYear();

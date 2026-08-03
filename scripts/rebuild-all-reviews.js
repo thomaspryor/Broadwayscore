@@ -59,7 +59,9 @@ const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   isWithinPriorRun,
+  isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
 } = require('./lib/wrong-production-autoclear');
@@ -1325,10 +1327,10 @@ const crossShowFingerprints = new Map();
         // Also strips the auto-set wrongProductionReason values written by date
         // setters (e.g. collect-review-texts.js anticipatory gate's
         // "anticipatory_pre_opening_post"); ALL operator-set reasons are protected.
-        if (shouldAutoClearWrongProductionPriorRun(d, showRecord)) {
+        if (shouldAutoClearWrongProductionPriorRun(d, showRecord) || shouldAutoClearWrongProductionTourLeg(d, showRecord)) {
           const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
           d.wrongProduction = false;
-          d.wrongProductionAutoCleared = `rebuild: priorRuns covers publishDate (was: ${wasNote})`;
+          d.wrongProductionAutoCleared = `rebuild: priorRuns/tourLegs covers publishDate (was: ${wasNote})`;
           d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete d.wrongProductionNote;
           // Strip auto-set wrongProductionReason values (anticipatory ingest gate
@@ -1686,6 +1688,9 @@ const crossShowFingerprints = new Map();
         // CV's wrongProduction (CV identifies a different venue/run, which is
         // exactly what priorRuns IS for). Skip promotion — operator-trust over CV.
         const ppInPriorRun = isWithinPriorRun(d.publishDate, showById[sid]?.priorRuns);
+        // Same gate for a declared tourLegs window (current-production continuity
+        // at a different venue stop, not a distinct earlier production).
+        const ppInTourLeg = isWithinTourLeg(d.publishDate, showById[sid]?.tourLegs);
         // Festival-venue carve-out (R&J Delacorte 2026-06-15): a stale CV row whose
         // wrongProduction is purely a "Delacorte/Shakespeare-in-the-Park is not an
         // Off-Broadway venue" objection must not be promoted. New CV writes already
@@ -1699,7 +1704,7 @@ const crossShowFingerprints = new Map();
           && isReviewWithinOwnProductionWindow(showById[sid], d.publishDate);
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
-            && !ppCvWpAdvisory && !ppInPriorRun && !ppVenueCarveout) {
+            && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1710,7 +1715,7 @@ const crossShowFingerprints = new Map();
           }
         } else if (cv.wrongProduction === true && ppVenueCarveout) {
           stats.cvWrongProductionVenueCarveout = (stats.cvWrongProductionVenueCarveout || 0) + 1;
-        } else if (cv.wrongProduction === true && ppInPriorRun) {
+        } else if (cv.wrongProduction === true && (ppInPriorRun || ppInTourLeg)) {
           stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
         } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
           stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
@@ -1817,12 +1822,14 @@ showDirs.forEach(showId => {
           // different venue, which is exactly what priorRuns IS for). Skip
           // promotion — operator-trust over CV.
           const uInPriorRun = isWithinPriorRun(ud.publishDate, showById[showId]?.priorRuns);
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory && !uInPriorRun) {
+          // Same gate for a declared tourLegs window.
+          const uInTourLeg = isWithinTourLeg(ud.publishDate, showById[showId]?.tourLegs);
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
-          } else if (ucv.wrongProduction === true && uInPriorRun) {
+          } else if (ucv.wrongProduction === true && (uInPriorRun || uInTourLeg)) {
             stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
           } else if (ucv.wrongProduction === true && uCvWpAdvisory) {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
@@ -2280,10 +2287,12 @@ showDirs.forEach(showId => {
           // production at a different venue, which is exactly what priorRuns IS
           // for). Skip promotion — operator-trust over CV.
           const cvInPriorRun = isWithinPriorRun(data.publishDate, showById[showId]?.priorRuns);
+          // Same gate for a declared tourLegs window.
+          const cvInTourLeg = isWithinTourLeg(data.publishDate, showById[showId]?.tourLegs);
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
               && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket
-              && !cvWpAdvisory && !cvInPriorRun) {
+              && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -2292,7 +2301,7 @@ showDirs.forEach(showId => {
             if (cvLowButStrong) {
               stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
             }
-          } else if (cv.wrongProduction === true && cvInPriorRun) {
+          } else if (cv.wrongProduction === true && (cvInPriorRun || cvInTourLeg)) {
             stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
           } else if (cv.wrongProduction === true && cvWpAdvisory) {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;

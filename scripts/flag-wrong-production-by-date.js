@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 
@@ -154,7 +154,7 @@ function run() {
       // window — legitimate coverage of an earlier run of THIS production.
       // Applies to both before_preview and after_close (a priorRun's reviews can
       // appear long after the current production's closing date too).
-      if (isWithinPriorRun(pubDate, show.priorRuns)) {
+      if (isWithinPriorRun(pubDate, show.priorRuns) || isWithinTourLeg(pubDate, show.tourLegs)) {
         priorRunSkipped++;
         continue;
       }

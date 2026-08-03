@@ -229,6 +229,7 @@ function getShowInfo(showId) {
         closingDate: showEntry.closingDate || null,
         previewsStartDate: showEntry.previewsStartDate || null,
         priorRuns: Array.isArray(showEntry.priorRuns) ? showEntry.priorRuns : null,
+        tourLegs: Array.isArray(showEntry.tourLegs) ? showEntry.tourLegs : null,
         venue: showEntry.venue || showEntry.theater || null,
         cast: Array.isArray(showEntry.cast) ? showEntry.cast : [],
         creativeNames,
@@ -252,6 +253,7 @@ function getShowInfo(showId) {
     closingDate: null,
     previewsStartDate: null,
     priorRuns: null,
+    tourLegs: null,
     venue: null,
     cast: [],
     leadActor: null,
@@ -1088,7 +1090,8 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     const openYear = showInfo.year ? parseInt(showInfo.year) : null;
     const closeYear = showInfo.closingDate ? new Date(showInfo.closingDate).getFullYear() : null;
     if (openYear && isUrlYearOutsideWindow(url, openYear, closeYear)
-        && !isUrlYearInPriorRun(url, showInfo.priorRuns)) {
+        && !isUrlYearInPriorRun(url, showInfo.priorRuns)
+        && !isUrlYearInTourLeg(url, showInfo.tourLegs)) {
       log(`    [SKIP] URL year outside production window: ${url}`);
       continue;
     }
@@ -1230,6 +1233,27 @@ function earliestPriorRunStart(show) {
 }
 
 /**
+ * Same as earliestPriorRunStart, but for a declared tourLegs window (venue
+ * stops of the CURRENT touring production) instead of priorRuns (a distinct
+ * earlier production). Widens discovery the same way: a tour leg predating
+ * the show's primary opening date must still be reachable by SERP queries.
+ *
+ * @param {{tourLegs?: Array<{startDate?: string}>}} show
+ * @returns {Date|null}
+ */
+function earliestTourLegStart(show) {
+  if (!show || !Array.isArray(show.tourLegs) || show.tourLegs.length === 0) return null;
+  let earliest = null;
+  for (const leg of show.tourLegs) {
+    if (!leg || !leg.startDate) continue;
+    const d = new Date(leg.startDate);
+    if (isNaN(d.getTime())) continue;
+    if (!earliest || d.getTime() < earliest.getTime()) earliest = d;
+  }
+  return earliest;
+}
+
+/**
  * Does a URL's embedded /YYYY/ fall inside a year a declared prior run spans?
  *
  * Exact — not a shifted floor. Used as a narrow readmission on top of
@@ -1260,6 +1284,31 @@ function isUrlYearInPriorRun(url, priorRuns) {
     const close = run.closingDate ? new Date(run.closingDate) : null;
     const from = open.getUTCFullYear();
     const to = (close && !isNaN(close.getTime())) ? close.getUTCFullYear() : from;
+    if (urlYear >= from && urlYear <= to) return true;
+  }
+  return false;
+}
+
+/**
+ * Same as isUrlYearInPriorRun, but for a declared tourLegs window instead of
+ * priorRuns. A tour leg readmits exactly the years IT spans.
+ *
+ * @param {string} url
+ * @param {Array<{startDate?: string, endDate?: string}>} tourLegs
+ * @returns {boolean}
+ */
+function isUrlYearInTourLeg(url, tourLegs) {
+  if (!url || !Array.isArray(tourLegs) || tourLegs.length === 0) return false;
+  const m = String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/);
+  if (!m) return false;
+  const urlYear = parseInt(m[1], 10);
+  for (const leg of tourLegs) {
+    if (!leg || !leg.startDate) continue;
+    const start = new Date(leg.startDate);
+    if (isNaN(start.getTime())) continue;
+    const end = leg.endDate ? new Date(leg.endDate) : null;
+    const from = start.getUTCFullYear();
+    const to = (end && !isNaN(end.getTime())) ? end.getUTCFullYear() : from;
     if (urlYear >= from && urlYear <= to) return true;
   }
   return false;
@@ -1301,6 +1350,14 @@ function calculateDateWindow(show) {
   if (priorStart) {
     const priorMin = new Date(priorStart.getTime() - 7 * DAY);
     if (priorMin.getTime() < dateMin.getTime()) dateMin = priorMin;
+  }
+
+  // Same widening for the earliest declared tourLeg (current-production
+  // continuity at an earlier venue stop, not a distinct earlier production).
+  const tourLegStart = earliestTourLegStart(show);
+  if (tourLegStart) {
+    const tourLegMin = new Date(tourLegStart.getTime() - 7 * DAY);
+    if (tourLegMin.getTime() < dateMin.getTime()) dateMin = tourLegMin;
   }
 
   // End: earliest of (closingDate + 30, today + 30, openingDate + 180)
@@ -1431,6 +1488,8 @@ module.exports = {
   calculateDateWindow,
   earliestPriorRunStart,
   isUrlYearInPriorRun,
+  earliestTourLegStart,
+  isUrlYearInTourLeg,
   buildDateTbs,
   validateUrlDomain,
   getTryoutRejectionStats,

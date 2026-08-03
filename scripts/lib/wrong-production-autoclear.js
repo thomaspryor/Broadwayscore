@@ -257,6 +257,35 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
 }
 
 /**
+ * Same decision as shouldAutoClearWrongProductionPriorRun, but for a declared
+ * tourLegs window (current-production continuity) instead of priorRuns (a
+ * distinct earlier production). Kept as a SEPARATE function — mirroring
+ * rather than merging with the priorRuns version — because the two fields
+ * describe different things and a future divergence (e.g. tourLegs someday
+ * gaining its own manual-reason vocabulary) should not require re-splitting
+ * a merged predicate.
+ */
+function shouldAutoClearWrongProductionTourLeg(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show || !Array.isArray(show.tourLegs) || show.tourLegs.length === 0) return false;
+  const note = data.wrongProductionNote || '';
+  const reason = data.wrongProductionReason || '';
+  const isDateOnlyAutoFlag = startsWithAny(note, DATE_GUARD_PREFIXES)
+    || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+  if (!isDateOnlyAutoFlag && !isAutoReason) return false;
+  const effDate = effectiveFlagDate(data);
+  if (!effDate || !isWithinTourLeg(effDate, show.tourLegs)) return false;
+  const reasonIsAuto = isAutoReason || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const hasManualReason = !!reason && !reasonIsAuto;
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  return !hasManualReason && !cvConfirmedWrongArticle;
+}
+
+/**
  * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
  * strip wrongProduction from a review file.
  *
@@ -421,6 +450,7 @@ module.exports = {
   isWithinTourLeg,
   hasDeclaredTourLegs,
   shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
 };

@@ -505,12 +505,13 @@ function decideInclusion(review, show, guards) {
     const evalPreWindow = guards.__dateGuard?.evaluatePreWindowInclusion;
     if (evalPreWindow) {
       // Same predicate the rebuild inclusion pass calls (parity by construction,
-      // incl. the priorRuns exemption the legacy sim branch below lacked).
+      // incl. the priorRuns/tourLegs exemptions the legacy sim branch below lacked).
       const pw = evalPreWindow({
         pubDate: new Date(review.publishDate),
         showEarliest: new Date(show.earliestDate),
         isFlexCategory: isOB || isLondon,
         priorRuns: show.priorRuns,
+        tourLegs: show.tourLegs,
       });
       if (pw.exclude) {
         return { included: false, reason: `date-guard (>${pw.threshold}d before show)` };
@@ -622,6 +623,10 @@ function main() {
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS) === String(working.__dateGuard?.PRE_WINDOW_DAYS)
         && String(baseline.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY) === String(working.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY)
         && (baseline.__priorRunLib?.isWithinPriorRun?.toString() || '') === (working.__priorRunLib?.isWithinPriorRun?.toString() || '')
+        // Same rationale for isWithinTourLeg: evaluatePreWindowInclusion's own
+        // toString() doesn't capture the source of a function it CALLS, so an
+        // edit only inside isWithinTourLeg would otherwise go undetected here.
+        && (baseline.__priorRunLib?.isWithinTourLeg?.toString() || '') === (working.__priorRunLib?.isWithinTourLeg?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
@@ -715,6 +720,7 @@ function main() {
       category: s.category || 'broadway',
       status: s.status || 'open',
       priorRuns: s.priorRuns || null,
+      tourLegs: s.tourLegs || null,
     });
   }
 
