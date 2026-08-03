@@ -27,6 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractPlaysInternationalByline } = require('./lib/byline-from-text');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const APPLY = process.argv.includes('--apply');
 const FETCH = process.argv.includes('--fetch');
@@ -121,13 +122,13 @@ async function main() {
         fs.mkdirSync(GRAVEYARD, { recursive: true });
         if (richness(data) > richness(existing)) {
           fs.renameSync(targetPath, path.join(GRAVEYARD, `${showId}--dupe-${targetFile}`));
-          fs.writeFileSync(targetPath, JSON.stringify(data, null, 2) + '\n');
+          safeWriteReview(targetPath, data);
           fs.renameSync(filePath, path.join(GRAVEYARD, `${showId}--source-${file}`));
         } else {
           fs.renameSync(filePath, path.join(GRAVEYARD, `${showId}--${file}`));
         }
       } else {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        safeWriteReview(filePath, data);
         if (nameChanged) fs.renameSync(filePath, targetPath);
       }
     }
