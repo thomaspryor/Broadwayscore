@@ -1,0 +1,137 @@
+name: Audit SERP Census Recall
+
+# READ-ONLY measurement (task #898/#901): re-runs the #872 naive-vs-scoped
+# recall harness on a cadence so an arm regression has a second data point to
+# show up against, instead of #872's one committed snapshot. Never mutates
+# review-texts or shows.json — only data/audit/serp-census-recall*.json.
+
+on:
+  schedule:
+    # Weekly, alongside audit-aggregator-coverage.yml (06:00 UTC Mondays) —
+    # offset 15 min so the two don't queue on the same runner minute.
+    - cron: '15 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max shows from the recent-openings pool'
+        required: false
+        default: '20'
+      days:
+        description: 'Pool window: shows opened within the last N days'
+        required: false
+        default: '30'
+      shows:
+        description: 'Comma-separated show IDs to audit instead of the pool'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    name: Run census recall harness
+    runs-on: ubuntu-latest
+    # ~100-120 SERP calls at the default --limit=20 (see script header cost
+    # note), all through the cached BD/SB/SD chain. 20 min covers that plus
+    # the commit/push retry.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # onDiskUrls() reads data/review-texts/{show}/*.json to compute the
+      # onDisk arm of ground truth.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run census recall harness
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # Kill switch shared with audit-aggregator-gap.yml's SERP census
+          # step (#872): set the repo/org variable to '1' to skip entirely
+          # without a code change, e.g. during a provider outage.
+          SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
+        run: |
+          ARGS="--limit=${{ inputs.limit || '20' }} --days=${{ inputs.days || '30' }}"
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="--shows=${{ inputs.shows }}"
+          fi
+          node scripts/audit-serp-census-recall.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/audit/serp-census-recall.json data/audit/serp-census-recall-history.json 2>/dev/null; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/serp-census-recall.json
+          git add data/audit/serp-census-recall-history.json 2>/dev/null || true
+
+          MSG="audit: SERP census recall"
+          if node -e "process.exit(require('fs').existsSync('data/audit/serp-census-recall.json') ? 0 : 1)"; then
+            SUMMARY=$(node -e "const d=require('./data/audit/serp-census-recall.json'); console.log('scoped ' + d.totals.scopedRecall + ', naive ' + d.totals.naiveRecall + ', combined ' + d.totals.combinedRecall)")
+            MSG="$MSG ($SUMMARY)"
+          fi
+
+          git commit -m "$MSG
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit SERP Census Recall Failed'
+          severity: 'warning'
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## SERP Census Recall Audit" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f data/audit/serp-census-recall.json ]; then
+            node -e "
+              const d = require('./data/audit/serp-census-recall.json');
+              console.log('**Shows audited:** ' + d.totals.shows);
+              console.log('**Ground-truth URLs:** ' + d.totals.truthUrls);
+              console.log('**Scoped-arm recall:** ' + d.totals.scopedRecall);
+              console.log('**Naive-arm recall:** ' + d.totals.naiveRecall);
+              console.log('**Combined (scoped+onDisk) recall:** ' + d.totals.combinedRecall);
+              console.log('**Naive-only URLs found:** ' + d.totals.newFromNaive);
+            " >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No report written (kill switch active or no shows matched)." >> "$GITHUB_STEP_SUMMARY"
+          fi

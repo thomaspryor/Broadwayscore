@@ -52,6 +52,8 @@ const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const OUT_PATH = path.join(ROOT, 'data', 'audit', 'serp-census-recall.json');
+const HISTORY_PATH = path.join(ROOT, 'data', 'audit', 'serp-census-recall-history.json');
+const HISTORY_MAX_ENTRIES = 12;
 
 const USAGE = `Usage: node scripts/audit-serp-census-recall.js [options]
 
@@ -64,9 +66,13 @@ Options:
   --pages=N        Naive-arm pages to read (default ${DEFAULT_NAIVE_PAGES})
   --scoped-only    Run only the pre-#872 scoped arms (no naive arm)
   --out=PATH       Override output path (default data/audit/serp-census-recall.json)
+  --no-history     Skip appending to the rolling trend history file
   --help, -h       Show this message
 
-Writes a per-show recall report to ${path.relative(ROOT, OUT_PATH)}.`;
+Writes a per-show recall report to ${path.relative(ROOT, OUT_PATH)}.
+Appends a trend point to ${path.relative(ROOT, HISTORY_PATH)} (last ${HISTORY_MAX_ENTRIES} runs) unless --out or --no-history is set.
+
+Kill switch: SERP_GAP_CENSUS_DISABLED=1 skips the run entirely (exit 0).`;
 
 const args = process.argv.slice(2);
 function getArg(name, dflt = null) {
@@ -128,8 +134,31 @@ async function runArm(show, showInfo, { query, dateRange, page, geo }) {
 
 const pct = (n, d) => (d === 0 ? 1 : Math.round((n / d) * 1000) / 1000);
 
+/**
+ * Rolling trend history — the committed OUT_PATH snapshot overwrites every
+ * run, so on its own there is no second data point to diff a regression
+ * against (task #898). Keeps the last `maxEntries` runs, oldest dropped.
+ */
+function appendHistory(entry, historyPath = HISTORY_PATH, maxEntries = HISTORY_MAX_ENTRIES) {
+  let history = [];
+  try {
+    const parsed = JSON.parse(fs.readFileSync(historyPath, 'utf8'));
+    if (Array.isArray(parsed)) history = parsed;
+  } catch { /* no history file yet */ }
+  history.push(entry);
+  if (history.length > maxEntries) history = history.slice(history.length - maxEntries);
+  fs.mkdirSync(path.dirname(historyPath), { recursive: true });
+  fs.writeFileSync(historyPath, JSON.stringify(history, null, 2) + '\n');
+  return history;
+}
+
 async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return 0; }
+
+  if (process.env.SERP_GAP_CENSUS_DISABLED === '1') {
+    console.log('SERP_GAP_CENSUS_DISABLED=1 — skipping census recall run (kill switch active).');
+    return 0;
+  }
 
   const shows = loadShows();
   const pool = pickShows(shows);
@@ -172,6 +201,7 @@ async function main() {
     const truth = new Set([...scopedUrls, ...naiveUrls, ...disk]);
     const inTruth = (set) => [...set].filter(u => truth.has(u)).length;
     const newFromNaive = [...naiveUrls].filter(u => !scopedUrls.has(u) && !disk.has(u));
+    const combinedCovered = new Set([...scopedUrls, ...disk]).size;
 
     const row = {
       showId: show.id,
@@ -185,6 +215,7 @@ async function main() {
         scoped: scopedUrls.size,
         naive: naiveUrls.size,
         onDisk: disk.size,
+        combinedCovered,
       },
       recall: {
         scoped: pct(inTruth(scopedUrls), truth.size),
@@ -192,7 +223,7 @@ async function main() {
         onDisk: pct(inTruth(disk), truth.size),
         // The headline number: what the census (scoped arms) plus what we
         // already hold still miss, relative to everything findable.
-        censusPlusDisk: pct(new Set([...scopedUrls, ...disk]).size, truth.size),
+        censusPlusDisk: pct(combinedCovered, truth.size),
       },
       newFromNaive,
       missedByCensus: [...truth].filter(u => !scopedUrls.has(u)),
@@ -217,20 +248,48 @@ async function main() {
     naiveUrls: sum(r => r.counts.naive),
     onDiskUrls: sum(r => r.counts.onDisk),
     newFromNaive: sum(r => r.newFromNaive.length),
+    combinedCoveredUrls: sum(r => r.counts.combinedCovered),
   };
   totals.scopedRecall = pct(totals.scopedUrls, totals.truthUrls);
   totals.naiveRecall = pct(totals.naiveUrls, totals.truthUrls);
+  // Same headline as each row's recall.censusPlusDisk, aggregated: what the
+  // census (scoped arms) plus what's already on disk covers, relative to
+  // everything findable. This is the number the S1 cadence trends alongside
+  // naiveRecall (see lib/census-recall-trend.js) — a naive-arm regression
+  // could hide behind a healthy scoped+onDisk number, and vice versa.
+  totals.combinedRecall = pct(totals.combinedCoveredUrls, totals.truthUrls);
 
   const out = { generatedAt: new Date().toISOString(), naivePages, totals, shows: report };
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
 
+  // Rolling trend history — the committed snapshot above overwrites every
+  // run, so without this a regression has no prior data point to diff
+  // against (task #898: the #872 meta-failure was measuring once and never
+  // again). Skippable via --no-history for one-off local recall checks.
+  let history = null;
+  if (!hasFlag('no-history') && outPath === OUT_PATH) {
+    history = appendHistory({
+      generatedAt: out.generatedAt,
+      naivePages,
+      shows: totals.shows,
+      totals: {
+        truthUrls: totals.truthUrls,
+        scopedRecall: totals.scopedRecall,
+        naiveRecall: totals.naiveRecall,
+        combinedRecall: totals.combinedRecall,
+      },
+    });
+  }
+
   console.log('── TOTALS ──');
   console.log(`  ground-truth URLs: ${totals.truthUrls}`);
   console.log(`  scoped arms:       ${totals.scopedUrls} (recall ${totals.scopedRecall})`);
   console.log(`  naive arm:         ${totals.naiveUrls} (recall ${totals.naiveRecall})`);
+  console.log(`  combined (scoped+onDisk): recall ${totals.combinedRecall}`);
   console.log(`  naive-only URLs:   ${totals.newFromNaive}`);
   console.log(`\nWrote ${path.relative(ROOT, outPath)}`);
+  if (history) console.log(`Wrote ${path.relative(ROOT, HISTORY_PATH)} (${history.length}/${HISTORY_MAX_ENTRIES} run(s) trended)`);
   return 0;
 }
 
@@ -241,4 +300,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { onDiskUrls, pickShows, USAGE };
+module.exports = { onDiskUrls, pickShows, appendHistory, USAGE, HISTORY_PATH, HISTORY_MAX_ENTRIES };
