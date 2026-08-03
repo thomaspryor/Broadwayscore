@@ -92,6 +92,18 @@ test('launchByRef finds the launch entry that produced a given workspace ref', (
   assert.equal(launchByRef('workspace:404', entries), null);
 });
 
+test('launchByRef is LAST-match, not first — a recycled ref attributes to the CURRENT task (card #960)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // cmux restarted and re-issued workspace:12 to an unrelated later task.
+    { event: 'launch', taskId: '640', subject: 'Rage clicks sweep', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const launch = launchByRef('workspace:12', entries);
+  assert.equal(launch.taskId, '640');
+  assert.equal(launch.subject, 'Rage clicks sweep');
+});
+
 test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells existed before the 3rd)', () => {
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
 });
@@ -128,6 +140,39 @@ test('deadBreadcrumbs across repeated sweeps: second sweep sees the first sweep\
   const afterWrite = [...entries, ...firstSweep];
   const secondSweep = deadBreadcrumbs(idle, afterWrite);
   assert.equal(secondSweep.length, 0);
+});
+
+test('deadBreadcrumbs attributes a recycled ref to the CURRENT task, not the long-dead one (card #960)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', subject: 'old task, long gone', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // cmux recycled workspace:12 onto a fresh, healthy task's dispatch.
+    { event: 'launch', taskId: '640', subject: 'current healthy task', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const idle = [{ ref: 'workspace:12', title: 'current healthy task' }];
+  const bc = deadBreadcrumbs(idle, entries);
+  assert.equal(bc.length, 1);
+  // Before the fix (first-match + ref-only idempotency), this would poison
+  // task 297's count a second time and never touch 640 — the healthy task's
+  // death would stay hidden forever, since the OLD 'dead' entry for this ref
+  // would look like it already covers the new launch too.
+  assert.equal(bc[0].taskId, '640');
+  assert.equal(bc[0].subject, 'current healthy task');
+});
+
+test('deadBreadcrumbs: a dead entry stamped at the SAME instant as the current launch still suppresses (fail-safe direction)', () => {
+  // Real appendEntry() writes are monotonically increasing ISO timestamps
+  // from separate lifecycle events, so an exact tie is a contrived edge —
+  // but the >= comparison must resolve it toward "don't re-flag" (matching
+  // every other ts-reconciled function in this file: vanishedBreadcrumbs,
+  // pruneClosedEntry, findLedgerAutoDispatchLaunch), not toward emitting a
+  // duplicate breadcrumb for a launch that already has one.
+  const entries = [
+    { event: 'launch', taskId: '640', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+    { event: 'dead', taskId: '640', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const idle = [{ ref: 'workspace:12', title: 'current healthy task' }];
+  assert.deepEqual(deadBreadcrumbs(idle, entries), []);
 });
 
 // ── Task #503: the guard above shipped armed and STILL let 10 orphan auto-
