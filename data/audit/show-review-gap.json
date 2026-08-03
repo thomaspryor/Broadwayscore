@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-03T03:38:14.208Z",
+  "generatedAt": "2026-08-03T03:41:54.102Z",
   "windowDays": 21,
   "targets": 1,
   "counts": {
-    "withGap": 1,
-    "totalMissing": 5,
+    "withGap": 0,
+    "totalMissing": 0,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 0,
     "totalRecoverable": 0,
@@ -12,115 +12,18 @@
   },
   "results": [
     {
-      "showId": "space-dogs-off-west-end-2026",
-      "title": "Space Dogs",
-      "openingDate": "2026-07-31",
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs"
-      ],
-      "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
-        "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
-        "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
-        "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
-      ],
-      "dirFiles": 15,
-      "dirClean": 13,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "onin.london",
-          "count": 1
-        },
-        {
-          "host": "operationlivetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        }
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
@@ -155,21 +58,12 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
         "ran": false,
         "reason": "cooldown"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs",
-          "publishDate": "2022-02-14"
-        }
-      ]
+      }
     }
   ]
 }
