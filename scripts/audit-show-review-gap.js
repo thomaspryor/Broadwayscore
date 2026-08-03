@@ -1387,6 +1387,25 @@ async function main(argv = process.argv.slice(2)) {
   } else {
     targets = allShows.filter(isShowEligible);
   }
+  // Retention set for PERSISTED entries in the write step below (#893) — which
+  // prior-run entries survive a partial run that didn't re-audit them. This is
+  // DELIBERATELY NOT `isShowEligible` (which is scoped to THIS invocation's
+  // --window/--include-closed): the documented single-show recovery command
+  // (scripts/lib/newsletter-preflight.js's hard-failure message —
+  // `--show=ID --checkpoint`, no --window/--include-closed) defaults to a
+  // narrow 21-day open-only window. Using that narrow, run-scoped eligibility
+  // as the retention rule would prune every closed/older show's entry out of
+  // the corpus on exactly the command meant to fix ONE show — reintroducing
+  // #893 via a different trigger (ship-check finding). Retention instead uses
+  // a fixed, generous bound independent of what this run chose to re-audit.
+  const RETENTION_WINDOW_DAYS = Math.max(windowDays, 1095);
+  function isRetainable(show) {
+    if (!show.openingDate) return false;
+    const opened = new Date(show.openingDate);
+    const diffDays = (Date.now() - opened) / 86400000;
+    return diffDays >= -3 && diffDays <= RETENTION_WINDOW_DAYS;
+  }
+  const eligibleShowIds = new Set(allShows.filter(isRetainable).map(s => s.id));
 
   // Checkpoint ordering: process least-recently-audited shows first and skip
   // those still within their freshness window, so each time-boxed run makes
@@ -1855,19 +1874,42 @@ async function main(argv = process.argv.slice(2)) {
     }
   }
 
+  // Merge this run's results into whatever is already persisted on disk,
+  // keyed by showId (#893). A targeted `--show=X` run, or a `--checkpoint`
+  // run that freshness-skipped most of the corpus, only re-audits a SUBSET
+  // of shows — writing `results` alone (this run's subset) as the full file
+  // silently dropped every other show's last-known entry, including entries
+  // written minutes earlier by a sibling `--show=` invocation on send day.
+  // A persisted entry is kept only if it's still in the currently-eligible
+  // window (bounds file growth to the live/back-catalogue scope this script
+  // actually cares about) OR was refreshed this run (always kept, regardless
+  // of eligibility — a targeted --show= run's own target always wins).
+  let persistedResults = [];
+  if (!dryRun) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+      if (Array.isArray(prev.results)) persistedResults = prev.results;
+    } catch { /* first run / missing / corrupt file — start fresh */ }
+  }
+  const mergedResultsMap = new Map(
+    persistedResults.filter(r => r && r.showId && eligibleShowIds.has(r.showId)).map(r => [r.showId, r])
+  );
+  for (const r of results) mergedResultsMap.set(r.showId, r);
+  const mergedResults = [...mergedResultsMap.values()];
+
   const audit = {
     generatedAt: new Date().toISOString(),
     windowDays,
     targets: targets.length,
     counts: {
-      withGap: results.filter(r => r.missing.length + r.flaggedMisses.length + (r.citedNoUrl || []).length > 0).length,
-      totalMissing: results.reduce((a, r) => a + r.missing.length, 0),
-      totalCitedNoUrl: results.reduce((a, r) => a + (r.citedNoUrl || []).length, 0),
-      totalFlaggedMisses: results.reduce((a, r) => a + r.flaggedMisses.length, 0),
-      totalRecoverable: results.reduce((a, r) => a + r.flaggedMisses.filter(m => m.recoverable).length, 0),
-      totalRecovered: results.reduce((a, r) => a + (r.recoveryResults || []).filter(x => x.recovered).length, 0),
+      withGap: mergedResults.filter(r => r.missing.length + r.flaggedMisses.length + (r.citedNoUrl || []).length > 0).length,
+      totalMissing: mergedResults.reduce((a, r) => a + r.missing.length, 0),
+      totalCitedNoUrl: mergedResults.reduce((a, r) => a + (r.citedNoUrl || []).length, 0),
+      totalFlaggedMisses: mergedResults.reduce((a, r) => a + r.flaggedMisses.length, 0),
+      totalRecoverable: mergedResults.reduce((a, r) => a + r.flaggedMisses.filter(m => m.recoverable).length, 0),
+      totalRecovered: mergedResults.reduce((a, r) => a + (r.recoveryResults || []).filter(x => x.recovered).length, 0),
     },
-    results,
+    results: mergedResults,
   };
 
   // Roll up unknown outlet hosts: hosts that aggregator articles linked to
@@ -1875,8 +1917,11 @@ async function main(argv = process.argv.slice(2)) {
   // chain's blind spots — gather rejects them with "Could not resolve outlet
   // from URL" and the review never lands. (gaycitynews.com and theknockturnal.com
   // on 2026-05-27 — both registered after this audit surfaced them.)
+  // Computed from mergedResults (not this run's `results`) for the same
+  // reason as above — otherwise a targeted run would wipe every other show's
+  // previously-surfaced unknown outlets too.
   const unknownOutletHosts = new Map();
-  for (const r of results) {
+  for (const r of mergedResults) {
     for (const m of r.missing) {
       if (m.knownOutletId) continue;
       if (!unknownOutletHosts.has(m.host)) {
@@ -1903,7 +1948,7 @@ async function main(argv = process.argv.slice(2)) {
     }, null, 2));
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
   }
-  console.log(`Summary: ${audit.counts.withGap}/${results.length} shows audited with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed this run) | ${unknownOutlets.length} unknown outlets`);
+  console.log(`Summary: ${audit.counts.withGap}/${mergedResults.length} shows (corpus) with gaps | ${results.length} audited this run | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed this run) | ${unknownOutlets.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
