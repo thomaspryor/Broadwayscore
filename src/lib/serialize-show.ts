@@ -89,3 +89,32 @@ export function serializeShowForClient(
     performances: overrides?.performances,
   };
 }
+
+/**
+ * Per-render memoized serializer. List pages (homepage, /west-end,
+ * /off-broadway) build several overlapping show lists — a Best Recent Shows
+ * shelf, a Tony Winners shelf, the full grid, etc. — from the same underlying
+ * show data. Calling serializeShowForClient() separately for each occurrence
+ * produces a distinct object per call, so React's RSC flight serializer (which
+ * dedupes by object reference) re-inlines the full show payload for every
+ * shelf a show appears on instead of emitting a single backreference.
+ * createShowSerializer() caches by show id (+ overrides fingerprint, so a
+ * page that calls it with different overrides for the same show never
+ * silently reuses another call site's result) so repeat occurrences within
+ * one page render share the same object reference. Scope one instance per
+ * page render (not module-level) so overrides don't leak across pages/builds.
+ */
+export function createShowSerializer() {
+  const cache = new Map<string, ShowCardShow>();
+  return function serialize(
+    show: Parameters<typeof serializeShowForClient>[0],
+    overrides?: Parameters<typeof serializeShowForClient>[1],
+  ): ShowCardShow {
+    const key = overrides ? `${show.id}:${JSON.stringify(overrides)}` : show.id;
+    const cached = cache.get(key);
+    if (cached) return cached;
+    const serialized = serializeShowForClient(show, overrides);
+    cache.set(key, serialized);
+    return serialized;
+  };
+}

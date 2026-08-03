@@ -26,6 +26,7 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
+import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-flag-awareness.mjs';
 
 // Load .env into process.env without external dotenv dependency.
 // Only sets keys not already in env (so explicit env overrides .env).
@@ -58,6 +59,7 @@ function parseArgs(argv) {
     refRoles: null, // null → all default to 'goal'; otherwise aligned with refs[]
     branch: null,
     out: null,
+    features: null, // null → not explicitly passed; falls back to process.env.NEXT_PUBLIC_FEATURES
     help: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -86,6 +88,7 @@ function parseArgs(argv) {
     }
     else if (key === 'branch') args.branch = val;
     else if (key === 'out') args.out = val;
+    else if (key === 'features') args.features = val.split(',').map(s => s.trim()).filter(Boolean);
   }
   return args;
 }
@@ -131,6 +134,12 @@ Options:
                               - before: impl MUST differ from this reference (requested change).
   --branch <name>           git branch (defaults to current). Used in output dir naming.
   --out <dir>               output directory (defaults to .claude/visual-qa/<branch>/)
+  --features <a,b,c>        NEXT_PUBLIC_FEATURES the dev server was started with. Defaults to
+                            this process's own NEXT_PUBLIC_FEATURES env (best-effort — only
+                            correct if the dev server shares the same .env). Recorded in
+                            verdict.json and cross-checked against changed files gated behind
+                            a DEMO_FEATURES-only flag (src/config/feature-flags.ts) — see
+                            memory/feedback_visual_qa_dev_server_in_worktree.md item 4.
 
 Widths swept (fixed): ${WIDTHS.join(', ')}
 
@@ -609,6 +618,42 @@ function pruneStaleVerdictDirs(currentBranch, baseDir = '.claude/visual-qa') {
   return pruned;
 }
 
+// ── Demo-flag awareness (#950) ──────────────────────────────────────────────
+
+// Changed source files: committed-since-main + staged + working-tree diffs,
+// deduped. Covers the common case (uncommitted branch work) and the
+// already-pushed case without requiring the caller to know which applies.
+function getChangedSourceFiles() {
+  const files = new Set();
+  const tryDiff = (cmd) => {
+    try {
+      const out = execSync(cmd, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+      if (out) out.split('\n').forEach(f => files.add(f));
+    } catch { /* base ref may not exist locally (shallow clone, offline) — best-effort */ }
+  };
+  tryDiff('git diff --name-only origin/main...HEAD');
+  tryDiff('git diff --name-only HEAD');
+  tryDiff('git diff --name-only --cached');
+  return [...files].filter(f => /^src\/.*\.(tsx|ts|jsx|js)$/.test(f));
+}
+
+// Recursively list source files under the given dirs (relative paths), for
+// the reverse-import scan (who renders a changed component, and under what
+// gate). Scoped to src/app + src/components — that's where page-level
+// gating (RedesignOn/RedesignOff, featureFlags.X &&) actually lives.
+function listSourceFiles(dirs) {
+  const out = [];
+  for (const dir of dirs) {
+    if (!existsSync(dir)) continue;
+    for (const entry of readdirSync(dir, { recursive: true, withFileTypes: true })) {
+      if (!entry.isFile() || !/\.(tsx|ts|jsx|js)$/.test(entry.name)) continue;
+      const parent = entry.parentPath ? entry.parentPath : join(dir, entry.path || '');
+      out.push(join(parent, entry.name));
+    }
+  }
+  return out;
+}
+
 function isLocalhost(url) {
   if (!url) return false;
   try {
@@ -661,7 +706,15 @@ Then re-run this command.`);
   const branch = args.branch || getCurrentBranch();
   const outDir = args.out || `.claude/visual-qa/${branch}`;
 
+  // Effective NEXT_PUBLIC_FEATURES for this run. --features is authoritative;
+  // the env fallback is best-effort (only correct if the dev server process
+  // shares this script's .env) and is flagged as such in the log line.
+  const envFeatures = (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map(s => s.trim()).filter(Boolean);
+  const runFeatures = args.features !== null ? args.features : envFeatures;
+  const featuresSource = args.features !== null ? '--features' : 'NEXT_PUBLIC_FEATURES env (unconfirmed — dev server may differ)';
+
   console.error(`[visual-qa] url=${args.url} branch=${branch} paths=${args.paths.join(',')} widths=${WIDTHS.join(',')} elements=${args.elements.length} refs=${args.refs ? args.refs.length : 'none'}`);
+  console.error(`[visual-qa] features=${runFeatures.length ? runFeatures.join(',') : '(none)'} (source: ${featuresSource})`);
   console.error(`[visual-qa] out=${outDir}`);
   console.error(`[visual-qa] dev server OK (${health.bytes} bytes HTML)`);
 
@@ -714,11 +767,44 @@ Then re-run this command.`);
     }
   }
 
+  // Demo-flag awareness (#950): a changed file only reachable behind a
+  // DEMO_FEATURES flag renders here (because runFeatures had it ON) but never
+  // renders in production (CI's vercel-deploy.yml guarantees demo flags never
+  // reach prod NEXT_PUBLIC_FEATURES). A bare overallPass=true in that case is
+  // exactly what shipped ShowHeroRedesign.tsx invisible on 2026-08-03.
+  let demoFlagFindings = [];
+  try {
+    const demoFeatures = parseDemoFeatures(readFileSync('src/config/feature-flags.ts', 'utf8'));
+    const changedPaths = getChangedSourceFiles();
+    const changedFiles = changedPaths
+      .filter(p => existsSync(p))
+      .map(p => ({ path: p, content: readFileSync(p, 'utf8') }));
+    if (demoFeatures.length > 0 && changedFiles.length > 0 && runFeatures.length > 0) {
+      const sourceFiles = listSourceFiles(['src/app', 'src/components'])
+        .map(p => ({ path: p, content: readFileSync(p, 'utf8') }));
+      demoFlagFindings = detectFlagGatedChangedFiles({ changedFiles, sourceFiles, demoFeatures, runFeatures });
+    }
+  } catch (err) {
+    console.error(`[visual-qa] WARN: demo-flag detection failed (non-fatal): ${err?.message}`);
+  }
+  if (demoFlagFindings.length > 0) {
+    console.error('[visual-qa] 🛑 DEMO-ONLY FLAG GATING CHANGED FILE(S) — this run cannot pass silently:');
+    for (const f of demoFlagFindings) {
+      const viaSuffix = f.via.length ? ` (gated via ${f.via.join(', ')})` : '';
+      console.error(`  - ${f.file} is only reachable via demo flag(s) [${f.flags.join(', ')}]${viaSuffix} — production will NOT render this.`);
+    }
+    console.error('  These flags never reach production NEXT_PUBLIC_FEATURES (vercel-deploy.yml enforces it), so');
+    console.error('  screenshots above prove nothing about what ships. Re-run with --features excluding them, or');
+    console.error('  get explicit sign-off that this file is intentionally demo-gated before treating this PASS.');
+  }
+
   const overallPass = redirectReport.length > 0
     ? false // screenshots are of the wrong page — nothing below can be trusted
-    : verdicts
-      ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
-      : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
+    : demoFlagFindings.length > 0
+      ? false // changed file is invisible in production — never a silent PASS
+      : verdicts
+        ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
+        : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
 
   // Build the verdict using stable inputs only — see scripts/lib/verdict-hash.mjs
   // for the full inputs list. Anything mutable (timestamps, runIds, raw file
@@ -755,12 +841,15 @@ Then re-run this command.`);
     overflowReportForHash,
     redirectReport,
     verdicts,
+    features: runFeatures, // NEXT_PUBLIC_FEATURES this run rendered with — part of hash (changes screenshot content)
     overallPass,
     // Metadata — NOT part of hash:
     screenshots,
     elementCrops,
     refs: args.refs || [],
     overflowReport,
+    featuresSource,
+    demoFlagFindings,
     timestamp: new Date().toISOString(),
     runId: generateRunId(),
     contentHash: null, // filled in next
@@ -789,6 +878,17 @@ Then re-run this command.`);
   console.log(`URL: ${args.url}  Paths: ${args.paths.join(', ')}`);
   console.log(`Content hash: ${verdict.contentHash}`);
   console.log(`Screenshots: ${screenshots.length}, element crops: ${elementCrops.length}, overflow findings: ${overflowReport.length}`);
+  console.log(`Features: ${runFeatures.length ? runFeatures.join(',') : '(none)'} (source: ${featuresSource})`);
+  if (demoFlagFindings.length > 0) {
+    console.log('');
+    console.log(`🛑 DEMO-ONLY FLAG GATING (${demoFlagFindings.length}) — these changed file(s) are invisible in production:`);
+    for (const f of demoFlagFindings) {
+      const viaSuffix = f.via.length ? ` (via ${f.via.join(', ')})` : '';
+      console.log(`  - ${f.file} — gated behind [${f.flags.join(', ')}]${viaSuffix}`);
+    }
+    console.log('  Production never gets these flags (vercel-deploy.yml blocks it). Re-run without them, or get');
+    console.log('  explicit owner sign-off that this file is intentionally demo-only before treating this as shippable.');
+  }
   if (redirectReport.length > 0) {
     console.log('');
     console.log(`🛑 REDIRECT MISMATCH (${redirectReport.length}) — every screenshot above is of the WRONG PAGE, not the requested path:`);

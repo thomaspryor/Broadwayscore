@@ -82,7 +82,7 @@ function parseArgs(argv) {
 // branch does a cheap point lookup into archive/ instead, only on a live
 // miss — the one call site that actually needs to reach an archived task
 // (completedLaunchGuard's --dry-run inspection path).
-const { readArchivedTask } = require('./lib/task-store-archive.js');
+const { readArchivedTask, mergeWithArchive } = require('./lib/task-store-archive.js');
 
 // ── pure logic (exported for tests) ────────────────────────────────────────
 function loadTasks(dir) {
@@ -695,8 +695,19 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // in_progress candidate is compared with). Non-blocking first cut — a
   // shared scripts/ path or near-identical title is suggestive, not proof
   // (two cards can legitimately touch the same file for unrelated reasons).
+  //
+  // Card #955: task-store-archive.js now also archives in_progress tasks
+  // untouched >7d — including ones whose dispatching session is still
+  // genuinely alive but just hasn't written to the task file (long batch
+  // work is normal here per CLAUDE.md). Reading `tasks` (live-dir-only, see
+  // loadTasks()'s docstring) alone would make those invisible to exactly the
+  // overlap check this comment describes, defeating its purpose for the
+  // longest-running work — the cases most likely to collide with a fresh
+  // dispatch. Merging in archive/ here (not in loadTasks()'s hot `--list`
+  // path, which returns above this line) is safe: this block only runs once
+  // per actual dispatch attempt, not on every list/actionable() call.
   try {
-    const inProgressCards = tasks
+    const inProgressCards = mergeWithArchive(TASKS_DIR, tasks)
       .filter(t => t.status === 'in_progress' && String(t.id) !== String(task.id))
       .map(t => ({ id: t.id, subject: t.subject, notes: t.description }));
     const overlaps = findOverlappingCards({ id: task.id, subject: task.subject, notes: task.description }, inProgressCards);

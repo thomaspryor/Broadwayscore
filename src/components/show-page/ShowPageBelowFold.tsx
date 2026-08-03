@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
+import { formatShowDate as formatDate } from '@/lib/show-date-line';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import VideoReviewsShelf from '@/components/VideoReviewsShelf';
@@ -21,10 +22,11 @@ import LotteryRushCard from '@/components/LotteryRushCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
 import CastSection from '@/components/CastSection';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
+import type { ShowCardShow } from '@/components/show-cards/types';
 import RelatedShows from '@/components/RelatedShows';
 import type { AudienceMarket } from '@/config/audience-sources';
 import type {
-  ComputedShow,
+  ComputedShowWithReviews,
   ShowAwards,
   ShowGrosses,
   ShowSchedule,
@@ -45,7 +47,13 @@ import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
 
 export interface ShowPageBelowFoldProps {
-  show: ComputedShow;
+  // Narrowed to drop criticScore.reviews — this chunk (and WhereItRanks, which it
+  // renders) only reads criticScore.{score,reviewCount,tier1Count,tier2Count}.
+  // ReviewsList is the only consumer of the show's own review objects; passing
+  // them here too tripled that array's serialized size in the RSC payload
+  // (measured 117 review objects inlined on /show/hamilton for 39 real reviews).
+  // Card #962, sibling of the #419 Theater Pick<> fix.
+  show: ComputedShowWithReviews<never>;
   videoReviews: VideoReview[];
   audienceBuzz: AudienceBuzzData | undefined;
   audienceShowScoreUrl: string | undefined;
@@ -64,16 +72,25 @@ export interface ShowPageBelowFoldProps {
   showtimeIds: TodayTixShowtimeData | undefined;
   sortedTicketLinks: TicketLinkData[];
   socialPulse: SocialPulsePayload | null;
-  theater: Theater | undefined;
+  // Narrowed to the fields the two theater cards actually render. The full
+  // Theater carries `allShows: ComputedShow[]` — every production ever staged at
+  // the venue, each with its own criticScore.reviews — which this client boundary
+  // would inline into the RSC payload (~135KB on /show/hamilton for the Richard
+  // Rodgers' back catalogue, none of it rendered). Card #419.
+  theater: Pick<Theater, 'name' | 'slug' | 'venueScores' | 'accessibility' | 'externalLinks' | 'structuredTips'> | undefined;
   lotteryRush: ShowLotteryRush | undefined;
   castChangesData: ShowCastChanges | undefined;
   castFile: ShowCastFile | null;
   castActorSlugs: Record<string, string>;
   castTonyMap: Record<string, ShowTonyInfo>;
   creativePrincipals: Array<{ name: string; role: string; link: string | null }>;
-  otherProductions: ComputedShow[];
-  relatedShowsOpen: ComputedShow[];
-  relatedShowsClosed: ComputedShow[];
+  // Card-shaped, not full ComputedShow: these cross the 'use client' boundary and
+  // get serialized into the inlined RSC payload, so page.tsx runs them through
+  // serializeShowForClient(). Widening these back to ComputedShow re-inlines every
+  // related show's entire criticScore.reviews array (645KB on /show/hamilton, #419).
+  otherProductions: ShowCardShow[];
+  relatedShowsOpen: ShowCardShow[];
+  relatedShowsClosed: ShowCardShow[];
   comparisons: { slug: string; otherSlug: string }[];
   venueSlug: string | null;
   isWestEnd: boolean;
@@ -87,15 +104,6 @@ export interface ShowPageBelowFoldProps {
   /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
       Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
   faqs: ShowFAQ[];
-}
-
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return '';
-  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-  const date = new Date(cleanedDateStr);
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) return '';
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 function getGoogleMapsUrl(address: string): string {
@@ -495,7 +503,7 @@ export default function ShowPageBelowFold({
               return (
                 <MiniShowCard
                   key={prod.id}
-                  show={{ ...prod as unknown as import('@/components/show-cards/types').ShowCardShow, subtitle, subtitleColor }}
+                  show={{ ...prod, subtitle, subtitleColor }}
                 />
               );
             })}

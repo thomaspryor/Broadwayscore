@@ -41,21 +41,59 @@ function isNeedsYouTitle(title) {
   return String(title || '').trim().slice(0, 4).includes('❓');
 }
 
-// Pure: cross-reference persisted questions against live workspace titles.
+// Card #940 (owner screenshot 2026-08-03): a session sometimes emits a stub
+// "DECISION NEEDED: none — no pending decision" line instead of omitting the
+// block entirely when it has nothing to ask. workspace-mark-done.js's
+// hasDecisionNeeded() only pattern-matches the literal "DECISION NEEDED:"
+// prefix — it can't tell that stub apart from a real question — so the ❓
+// glyph and the extracted content disagree: the title says "waiting on
+// you", the content says there's nothing to wait on. Any "none"-shaped (or
+// empty) extraction is treated as no pending decision, never rendered.
+// Ambiguous bare words only count as empty when immediately followed by
+// end-of-string or punctuation — "none of the 3 vendors quoted under
+// budget..." is a real decision, not a stub, even though it starts with
+// "none".
+const BARE_EMPTY_RE = /^\s*(none|n\/a|nothing)\s*(?:[.,;:\-—–]|$)/i;
+// "no decision"-shaped phrasings — same termination discipline as
+// BARE_EMPTY_RE above: "No decision has been made about vendor X — should
+// we wait?" is a real question that happens to start with "No decision",
+// not a stub, so the phrase must end (punctuation or end-of-string)
+// immediately after the stub shape, not just match as a prefix.
+const PHRASE_EMPTY_RE = /^\s*no\s+(?:pending\s+)?decision(?:\s+(?:needed|pending))?\s*(?:[.,;:\-—–]|$)|^\s*nothing\s+pending\s*(?:[.,;:\-—–]|$)/i;
+function isEmptyDecisionContent(question) {
+  const q = String(question || '').trim();
+  if (!q) return true;
+  return BARE_EMPTY_RE.test(q) || PHRASE_EMPTY_RE.test(q);
+}
+
+// Pure: cross-reference persisted questions against live workspace titles,
+// dropping any whose extracted content is empty/none regardless of glyph.
 function pendingDecisions(states, workspaces) {
   const byRef = new Map(workspaces.map(w => [w.ref, w.title]));
   return states
     .filter(s => s && s.ref && byRef.has(s.ref))
     .map(s => ({ ...s, title: byRef.get(s.ref) }))
-    .filter(s => isNeedsYouTitle(s.title));
+    .filter(s => isNeedsYouTitle(s.title))
+    .filter(s => !isEmptyDecisionContent(s.question));
 }
 
 function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
   if (!cmuxAvailable()) return null;
   let workspaces;
   try { workspaces = listWorkspaces(); } catch { return null; }
-  const pending = pendingDecisions(readNeedsYouState(dir), workspaces)
+  const states = readNeedsYouState(dir);
+  const pending = pendingDecisions(states, workspaces)
     .sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  // Glyph/content mismatch count (card #940): ❓-titled tabs whose extracted
+  // question was empty/none, so they were excluded above. Logged, not
+  // thrown — this must never block the digest, only make the mismatch
+  // visible for the hook-side extraction bug it points at.
+  const byRef = new Map(workspaces.map(w => [w.ref, w.title]));
+  const glyphMatched = states.filter(s => s && s.ref && byRef.has(s.ref) && isNeedsYouTitle(byRef.get(s.ref)));
+  const mismatches = glyphMatched.length - pending.length;
+  if (mismatches > 0) {
+    console.error(`[needs-you] WARN ${mismatches} tab(s) ❓-marked but decision content was empty/none — excluded from "Needs your decision"`);
+  }
   return {
     generatedAt: new Date().toISOString(),
     bannerText: pending.length
@@ -66,5 +104,5 @@ function buildNeedsYouSnapshot({ dir = NEEDS_YOU_DIR } = {}) {
 }
 
 module.exports = {
-  NEEDS_YOU_DIR, readNeedsYouState, isNeedsYouTitle, pendingDecisions, buildNeedsYouSnapshot,
+  NEEDS_YOU_DIR, readNeedsYouState, isNeedsYouTitle, isEmptyDecisionContent, pendingDecisions, buildNeedsYouSnapshot,
 };

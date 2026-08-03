@@ -207,6 +207,61 @@ describe('verifyFetchedUrl', () => {
     });
   });
 
+  // Regressions for task #6: Variety review URLs failing extraction because
+  // verifyFetchedUrl only compared full paths, and Variety's permalink scheme
+  // varies (category slug, era) while the numeric post ID stays constant.
+  describe('trailing numeric post-ID match (task #6, Variety)', () => {
+    test('same post ID, different category slug (tv vs legit) → verified true', () => {
+      // Real case: variety.com canonical tag disagrees with og:url on which
+      // category ("tv" vs "legit") the same review URL belongs under.
+      const html = '<html><head><link rel="canonical" href="https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/"></head></html>';
+      const url = 'https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'post_id_match');
+    });
+
+    test('legacy VE<id> URL redirects to modern permalink sharing the same ID → verified true', () => {
+      // Real case: legacy variety.com/review/VE<id> URL, totally different
+      // directory structure than the modern /YYYY/legit/reviews/<slug>-<id>/
+      // permalink — same article, same trailing numeric ID.
+      const html = '<html><head><link rel="canonical" href="https://variety.com/2012/legit/reviews/the-producers-1117947963/"></head></html>';
+      const url = 'http://www.variety.com/review/VE1117947963?refCatId=33';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, true);
+      assert.equal(result.reason, 'post_id_match');
+    });
+
+    test('different post IDs on the same host → still url_mismatch (no false accept)', () => {
+      const html = '<html><head><link rel="canonical" href="https://variety.com/2009/legit/reviews/joe-turner-review-1234567890/"></head></html>';
+      const url = 'https://variety.com/2009/film/awards/joe-turner-9876543210/';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('short numeric suffix (<6 digits) does not trigger post-ID match', () => {
+      const html = '<html><head><link rel="canonical" href="https://example.com/archive/2026/article-99999"></head></html>';
+      const url = 'https://example.com/news/2026/other-99999';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+
+    test('post-ID match is host-scoped: BroadwayWorld date-suffixed URLs do NOT false-accept', () => {
+      // Regression for a second-opinion review finding: BWW's
+      // Review-Roundup-<SHOW>-<MMDDYYYY> scheme carries an 8-digit date
+      // suffix. Two different shows' roundups published the same date must
+      // NOT verify as the same article just because the trailing digits
+      // match — the post-ID rule only applies to allowlisted hosts.
+      const html = '<html><head><link rel="canonical" href="https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-20260416"></head></html>';
+      const url = 'https://www.broadwayworld.com/article/Review-Roundup-PROOF-20260416';
+      const result = verifyFetchedUrl(html, url);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+  });
+
   describe('edge cases', () => {
     test('missing input → not verified', () => {
       assert.equal(verifyFetchedUrl('', 'https://example.com/foo').verified, false);

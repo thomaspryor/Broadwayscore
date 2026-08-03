@@ -36,11 +36,14 @@ import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
+import { getBroadwayDuration } from '@/lib/date-utils';
+import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
+import { serializeShowForClient } from '@/lib/serialize-show';
+import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
@@ -197,26 +200,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-// Use UTC-based formatting to avoid timezone-related hydration mismatch
-function formatDate(dateStr: string | null | undefined): string {
-  // Return empty string for null/undefined/empty dates
-  if (!dateStr) {
-    return '';
-  }
-
-  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.) that break Date parsing
-  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-  const date = new Date(cleanedDateStr);
-
-  // Check for invalid date or Unix epoch (which indicates missing date)
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) {
-    return ''; // Hide date instead of showing garbage
-  }
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-}
-
 function TicketIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -331,11 +314,38 @@ export default async function ShowPage({ params }: { params: { slug: string } })
     }
   }
   const blogReview = await getBlogReviewByShowSlug(show.slug);
-  const relatedShowsOpen = getRelatedShowsOpen(show);
-  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
-  const otherProductions = getOtherProductions(show);
+  // Card-shape these before they cross the client boundary. getRelatedShows*/
+  // getOtherProductions return full ComputedShow objects, each carrying its own
+  // criticScore.reviews array — passing them raw to ShowPageBelowFoldLoader
+  // ('use client') serialized ~20 shows' entire review corpora into the inlined
+  // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
+  // 643 review objects, none of which any card renders (the cards read only
+  // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
+  const relatedShowsOpen = getRelatedShowsOpen(show).map(s => serializeShowForClient(s));
+  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end')
+    ? getRelatedShowsClosed(show).map(s => serializeShowForClient(s))
+    : [];
+  const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
+
+  // Narrow the show's OWN criticScore.reviews at each client boundary that doesn't
+  // need the full review objects. ReviewsList (below) is the only consumer that
+  // needs criticName/outlet/url/quote/etc; ShowHeroRedesign only needs reviewScore
+  // (for ScoreBreakdownBar); ShowPageBelowFoldLoader/WhereItRanks need none at all.
+  // Passing the same full show object across all three boundaries tripled this
+  // show's own review array in the RSC payload — 117 review objects inlined for
+  // 39 real reviews on /show/hamilton. Card #962, follow-up to #419.
+  const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
+    ...show,
+    criticScore: show.criticScore
+      ? { ...show.criticScore, reviews: show.criticScore.reviews.map(r => ({ reviewScore: r.reviewScore })) }
+      : null,
+  };
+  const showForBelowFold: ComputedShowWithReviews<never> = {
+    ...show,
+    criticScore: show.criticScore ? { ...show.criticScore, reviews: [] } : null,
+  };
 
   // Pre-compute values that would require data-module imports in a client component.
   // These are passed as serializable props to ShowPageBelowFoldLoader.
@@ -417,7 +427,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         <RedesignOn>
           <div className="mb-6">
             <ShowHeroRedesign
-              show={show}
+              show={showForHero}
               consensusText={consensus?.text ?? null}
               audienceGrade={audienceGrade}
               audienceCount={totalAudienceCount}
@@ -624,43 +634,19 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
-                {show.status === 'previews' || show.status === 'upcoming' ? (
-                  /* openingDate is routinely null Off-Broadway (many OB runs have no
-                     separate press night), and this branch used to render nothing at
-                     all in that case — a show with a known first-preview AND closing
-                     date showed neither. Falls back to previewsStartDate, and shows
-                     the closing date here too (it was previously only reachable via
-                     the non-previews branches). Owner report on The Pass, 2026-08-02.
-                     Mirrors DateLine in ShowHeroRedesign.tsx — keep the two in sync. */
-                  <>
-                    {formatDate(show.openingDate) ? (
-                      <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
-                    ) : formatDate(show.previewsStartDate) ? (
-                      <span> <span className="text-gray-500">·</span> Previews from {formatDate(show.previewsStartDate)}</span>
-                    ) : null}
-                    {formatDate(show.closingDate) && (
-                      <span> <span className="text-gray-500">·</span> <span className="text-amber-400">Closes {formatDate(show.closingDate)}</span></span>
-                    )}
-                  </>
-                ) : show.closingDate ? (
-                  <>
-                    {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
-                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
-                    {show.status === 'closed' && (() => {
-                      const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
-                      return runLen ? <span> <span className="text-gray-500">·</span> Ran for {runLen}</span> : null;
-                    })()}
-                  </>
-                ) : formatDate(show.openingDate) ? (
-                  <>
-                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
-                    {(() => {
-                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? null : 'on Broadway';
-                      const dur = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-                      return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
-                    })()}
-                  </>
-                ) : null}
+                {/* Date-line segments come from the shared show-date-line
+                    module (src/lib/show-date-line.ts) — the single source
+                    of truth for start/closing/duration rules, also consumed
+                    by DateLine in ShowHeroRedesign.tsx. Do not fork this
+                    logic back into inline branches (task #951). */}
+                {(() => {
+                  const durationSuffix = getHeroDurationSuffix(show);
+                  const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
+                  const segments = getShowDateLineSegments(show, durationText);
+                  return segments.map((seg, i) => (
+                    <span key={i}> <span className="text-gray-500">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
+                  ));
+                })()}
               </p>
 
               {/* Regional trust line — keyed on category (renders even if the market flag is off,
@@ -948,7 +934,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
              16. Quick Facts                                                  */}
 
         <ShowPageBelowFoldLoader
-          show={show}
+          show={showForBelowFold}
           videoReviews={videoReviews}
           audienceBuzz={audienceBuzz}
           audienceShowScoreUrl={audienceShowScoreUrl}
@@ -967,7 +953,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           showtimeIds={showtimeIds}
           sortedTicketLinks={sortedTicketLinks}
           socialPulse={socialPulse}
-          theater={theater}
+          theater={theater && {
+            name: theater.name,
+            slug: theater.slug,
+            venueScores: theater.venueScores,
+            accessibility: theater.accessibility,
+            externalLinks: theater.externalLinks,
+            structuredTips: theater.structuredTips,
+          }}
           lotteryRush={lotteryRush}
           castChangesData={castChangesData}
           castFile={castFile}

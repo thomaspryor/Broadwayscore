@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { validateShowMentioned } = require('./content-quality.js');
+const { validateShowMentioned, verifyFullTextContent, validateContentMentionsShow } = require('./content-quality.js');
 
 // ============================================================================
 // validateShowMentioned Check 3 (task #915, follow-up to #895's 28/39
@@ -112,4 +112,78 @@ test('validateShowMentioned: Check 3 rejects a short idWord matched only as a mi
   while (text.length < 3200) text += paragraph;
   const result = validateShowMentioned(text, null, 'rent-2026');
   assert.equal(result.valid, false, `"rent" should not match inside "different"/"apparent", got: ${result.reason}`);
+});
+
+// ============================================================================
+// validateShowMentioned generic idWords (task #947, live incident during
+// task #914's outlet sweep). showId 'a-woman-among-women-off-broadway-2026'
+// decomposes to idWords ['woman','among','women','broadway'] — every one of
+// them a common English word or market-suffix artifact, so Check 2's
+// "2+ matches" bar was clearing on generic-usage rate alone. Two completely
+// unrelated Variety articles (an actor profile, a Tony-Awards-hosting news
+// piece) were written as contentTier=complete "reviews" of the show as a
+// result, overriding a prior correct url_content_mismatch rejection.
+// ============================================================================
+
+// Synthetic stand-in for the real incident fixture (a celebrity profile) —
+// not the copyrighted article text, which lives only in the private
+// review-texts repo. Deliberately hits 'women'/'among'/'broadway' at
+// ordinary-English-usage rates while never mentioning the show.
+function buildUnrelatedCelebrityProfile() {
+  const paragraph = 'The actor reflected on a long career among veteran performers, noting that women in the industry still fight for equal billing on Broadway and beyond. He recalled early roles playing men of few words, and joked that among his proudest credits was a single scene that ran the length of a full act. Broadway insiders say the honor is well deserved. ';
+  let text = '';
+  while (text.length < 3200) text += paragraph;
+  return text;
+}
+
+test('validateShowMentioned: unrelated long article hitting only generic idWords is REJECTED (a-woman-among-women class, task #947)', () => {
+  const text = buildUnrelatedCelebrityProfile();
+  assert.ok(text.length > 3000);
+  const result = validateShowMentioned(text, 'A Woman Among Women', 'a-woman-among-women-off-broadway-2026');
+  assert.equal(result.valid, false, `expected rejection — idWords are all generic, got: ${result.reason}`);
+});
+
+test('validateShowMentioned: a show whose idWords are ALL generic still validates via exact title match (Check 1 unaffected)', () => {
+  const text = 'Critics were divided on the new play A Woman Among Women, which opened downtown this week to mixed reviews. '.repeat(3);
+  const result = validateShowMentioned(text, 'A Woman Among Women', 'a-woman-among-women-off-broadway-2026');
+  assert.equal(result.valid, true, `expected Check 1 exact-title match to still validate, got: ${result.reason}`);
+  assert.equal(result.reason, 'Exact show title found');
+});
+
+test('validateShowMentioned: idWords with a mix of generic and distinctive words still match on the distinctive word alone', () => {
+  // 'little-women-2005' -> idWords ['little', 'women']; 'women' is generic
+  // but 'little' is not, so the single-significant-word branch should fire.
+  const text = 'This revival brings a fresh, unsentimental energy to the March sisters that keeps the show moving briskly through its two acts. '.repeat(15) + 'A little more restraint from the ensemble would have helped the quieter scenes land. ';
+  const result = validateShowMentioned(text, 'Little Women', 'little-women-2005');
+  assert.equal(result.valid, true, `expected 'little' alone to still validate, got: ${result.reason}`);
+});
+
+// verifyFullTextContent and validateContentMentionsShow have their own,
+// independent idWords derivations (task #947 second-opinion review found
+// both were reachable through the SAME show as the live incident and were
+// not filtered). Both now apply the GENERIC_ID_WORDS filter too.
+//
+// Fixture deliberately avoids 'woman'/'among'/'women' (which would trip
+// verifyFullTextContent's separate TITLE-word 50% match — a different,
+// pre-existing mechanism working off the literal title string, not the
+// showId-derived idWords this fix targets; out of scope here) and instead
+// repeats only the idWords-fallback-relevant generic word 'broadway', which
+// does not appear in the title itself.
+function buildUnrelatedBroadwayIndustryPiece() {
+  const paragraph = 'Ticket prices on Broadway have climbed again this season, with several long-running Broadway hits raising top prices ahead of the holidays. Industry watchers say Broadway grosses remain strong despite the increases. ';
+  let text = '';
+  while (text.length < 3200) text += paragraph;
+  return text;
+}
+
+test('verifyFullTextContent: unrelated article hitting only generic idWords does NOT score a titleFound match (a-woman-among-women class, task #947)', () => {
+  const text = buildUnrelatedBroadwayIndustryPiece();
+  const result = verifyFullTextContent(text, { title: 'A Woman Among Women', id: 'a-woman-among-women-off-broadway-2026' });
+  assert.equal(result.details.titleFound, false, `expected no title match from generic idWords alone, got positiveSignals: ${JSON.stringify(result.positiveSignals)}`);
+});
+
+test('validateContentMentionsShow: unrelated article hitting only generic idWords does NOT clear the mention threshold (task #947)', () => {
+  const text = buildUnrelatedBroadwayIndustryPiece();
+  const result = validateContentMentionsShow(text, null, 'A Woman Among Women', 'a-woman-among-women-off-broadway-2026');
+  assert.equal(result.valid, false, `expected generic idWords alone to fail the mention-count gate, got: ${JSON.stringify(result)}`);
 });

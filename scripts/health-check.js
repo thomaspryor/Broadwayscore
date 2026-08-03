@@ -960,6 +960,22 @@ function checkQuality() {
       }
       return censusRecallResult(data);
     }),
+
+    // Coverage Verdict S5 (task #903, the FINAL sprint). Findings surface
+    // here — never as email spam or a blocking CI run — because the plan is
+    // explicit that a seeded adversarial finding is this-week work, not a
+    // page. An error is reserved for the detector itself going quiet.
+    runCheck(COVERAGE_PROBE_CHECK, () => {
+      const statusFile = path.join(AUDIT_DIR, 'coverage-adversarial-probe-status.json');
+      if (!fs.existsSync(statusFile)) return coverageProbeResult(null);
+      let data;
+      try {
+        data = readJSON(statusFile);
+      } catch (err) {
+        return { name: COVERAGE_PROBE_CHECK, status: 'warn', message: `Unparseable coverage-adversarial-probe-status.json: ${err.message}` };
+      }
+      return coverageProbeResult(data);
+    }),
   ];
 }
 
@@ -1027,6 +1043,65 @@ function censusRecallResult(data, opts = {}) {
   return {
     name, status: 'pass',
     message: `${summary || 'no search methods recorded'} — ${scope}; ${data.comparedArms ?? 0} search method(s) steady vs recent weeks (${formatAge(age)} ago)`,
+  };
+}
+
+const COVERAGE_PROBE_CHECK = 'Coverage: adversarial probe';
+/** Weekly cron; past this the probe has missed a run outright. */
+const COVERAGE_PROBE_MAX_AGE_HOURS = 24 * 9;
+
+/**
+ * Render the Coverage Verdict S5 adversarial-probe verdict as a digest check
+ * (task #903, the FINAL sprint).
+ *
+ * A found gap is a warn, not an error: it is a real, current finding that
+ * needs a human to ingest or explain the review, but the pipeline is not
+ * broken by it existing (it exists precisely because the pipeline has not
+ * caught up yet). An error is reserved for the DETECTOR going quiet — no
+ * data, or stale data — which means the weekly cadence has stopped and this
+ * check can no longer see anything at all.
+ *
+ * Pure so it can be tested against fixtures without a live audit file.
+ *
+ * @param {object|null} data parsed data/audit/coverage-adversarial-probe-status.json
+ * @param {object} [opts] {nowMs} for deterministic age in tests
+ */
+function coverageProbeResult(data, opts = {}) {
+  const name = COVERAGE_PROBE_CHECK;
+  if (!data) {
+    return { name, status: 'warn', message: 'No adversarial-probe data (coverage-adversarial-probe.yml may not have run yet)', hint: 'Run `gh workflow run "Coverage Adversarial Probe"`' };
+  }
+  const now = opts.nowMs === undefined ? Date.now() : opts.nowMs;
+  const ts = data.generatedAt ? Date.parse(data.generatedAt) : NaN;
+  const age = Number.isFinite(ts) ? (now - ts) / 3600000 : Infinity;
+  if (age > COVERAGE_PROBE_MAX_AGE_HOURS) {
+    return {
+      name, status: 'warn',
+      message: `Probe last ran ${formatAge(age)} ago (weekly cron, >${COVERAGE_PROBE_MAX_AGE_HOURS / 24}d)`,
+      hint: 'coverage-adversarial-probe.yml may be stale or disabled — the probe is blind while it is.',
+    };
+  }
+
+  if (data.verdict === 'gaps-found') {
+    const shows = (data.gapShows || []).join(', ') || 'unnamed show(s)';
+    return {
+      name, status: 'warn',
+      message: `The naive search found ${data.gapCount ?? '?'} review URL(s) this pipeline hasn't discovered yet: ${shows}`,
+      hint: 'See data/audit/coverage-adversarial-probe.json for the URLs, then ingest or explain each one.',
+    };
+  }
+  if (data.verdict === 'inconclusive') {
+    return {
+      name, status: 'warn',
+      message: `This week's sample had nothing measurable (settling/undated shows, or a SERP outage) — no evidence either way`,
+      hint: 'Not a failure — the next weekly run should have a measurable sample.',
+    };
+  }
+  const acceptance = data.acceptance || {};
+  const acceptedNote = acceptance.accepted ? ' — 2 consecutive clean weeks, acceptance bar cleared' : '';
+  return {
+    name, status: 'pass',
+    message: `Every discovered review URL was live or named-excluded (${formatAge(age)} ago)${acceptedNote}`,
   };
 }
 
@@ -3345,4 +3420,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, censusRecallResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };

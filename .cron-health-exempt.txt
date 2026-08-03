@@ -150,3 +150,12 @@ check-push-ledger.yml
 # that the detector itself has gone blind"), which is strictly better cron
 # coverage than CRITICAL_CRONS' generic recency page. Digest-only.
 audit-census-recall.yml
+# 2026-08-03: weekly seeded adversarial coverage probe (Coverage Verdict S5,
+# task #903 — the final sprint). Pure measurement, same posture as
+# audit-census-recall.yml: gates nothing, changes no user-facing data, so a
+# missed run costs a data point. Also monitors its own absence: health-check.js's
+# "Coverage: adversarial probe" check warns when
+# data/audit/coverage-adversarial-probe-status.json goes stale
+# (tests/unit/health-check-coverage-probe.test.mjs), which is strictly better
+# cron coverage than CRITICAL_CRONS' generic recency page. Digest-only.
+coverage-adversarial-probe.yml

@@ -850,23 +850,17 @@ on:
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
       - 'scripts/lib/gap-audit-merge.test.mjs'
-      # Task #923: the file lock withFileLock used to live inside
-      # gap-audit-merge.js (scoped to one file); it now also guards
-      # gap-audit-checkpoint.json, so it moved to its own shared module.
-      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
-      # path-listed so a solo edit triggers CI.
-      - 'scripts/lib/file-lock.js'
-      - 'scripts/lib/file-lock.test.mjs'
-      # Task #923: merge-aware read-modify-write for
-      # data/audit/gap-audit-checkpoint.json — the #893 whole-object-write race
-      # class, one file over. Without saveCheckpointEntries an hourly cron run
-      # overlapping a local --show=X run last-writer-wins the whole checkpoint.
-      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob.
-      - 'scripts/lib/gap-audit-checkpoint.js'
-      - 'scripts/lib/gap-audit-checkpoint.test.mjs'
-      # Spawns real concurrent processes to prove the checkpoint write path
-      # actually serializes+merges instead of last-writer-wins.
-      - 'scripts/lib/gap-audit-checkpoint.concurrent.test.mjs'
+      # Merge-aware checkpoint writes for classify-wrong-show.js /
+      # classify-wrong-production.js (#925, the #893 class): enrich-reviews.yml
+      # deliberately doesn't serialize its own runs (#922) and can overlap
+      # rebuild-reviews.yml, so a plain whole-object write erases the other
+      # run's freshly-classified keys. Colocated *.test.mjs spawns real
+      # concurrent processes to prove the lock+merge holds; path-listed so a
+      # solo edit to any of these three files triggers CI.
+      - 'scripts/lib/classify-checkpoint.js'
+      - 'scripts/lib/classify-checkpoint.concurrent.test.mjs'
+      - 'scripts/classify-wrong-show.js'
+      - 'scripts/classify-wrong-production.js'
       # Coverage Verdict S2 (#906): censusVerdict per-candidate states +
       # censusVerdictFor producer adapter. Colocated test runs in the tests/unit
       # node --test batch (not globbed); path-listed so a solo edit triggers CI.
@@ -1321,6 +1315,13 @@ on:
       - 'scripts/bsc-needs-you.js'
       - 'scripts/lib/needs-you-snapshot.js'
       - 'scripts/lib/needs-you-snapshot.test.mjs'
+      # Digest liveness gate (task #940, owner screenshots 2026-08-03): never
+      # let "Being fixed automatically" claim a fix session is live without
+      # cross-referencing the shared dispatch ledger + a live cmux listing.
+      # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/lib/digest-liveness.js'
+      - 'scripts/lib/digest-liveness.test.mjs'
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/lib/bsc-runner.js'

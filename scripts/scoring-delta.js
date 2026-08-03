@@ -124,6 +124,13 @@ const INCLUSION_FILES = [
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
+  // Historical miss (task #947): classifyContentTier/validateShowMentioned here
+  // drive contentTier and show-match rejections that rebuild-all-reviews.js and
+  // recover-serp-text.js both consume for inclusion — CLAUDE.md rule 12 already
+  // documented this file as "on the score-source watchlist" but it was never
+  // actually added, so the Check-2 generic-idWords bug (2 wrong-show recoveries,
+  // task #914 live incident) shipped without tripping this gate.
+  'scripts/lib/content-quality.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but

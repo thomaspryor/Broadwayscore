@@ -30,6 +30,7 @@ const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { GEMINI_FLASH } = require('./lib/models');
+const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
 
 let lockedSkipCount = 0;
 
@@ -445,9 +446,14 @@ async function main() {
     await Promise.all(promises);
     processed += batch.length;
 
-    // Save checkpoint every batch
-    fs.mkdirSync(path.dirname(CHECKPOINT_PATH), { recursive: true });
-    fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(checkpoint, null, 2));
+    // Save checkpoint every batch. Merge-aware: this checkpoint file is local
+    // scratch (never committed), so the real risk isn't cross-CI-runner —
+    // it's a second local invocation (another terminal, a launchd job, a
+    // parallel session) writing the SAME on-disk path concurrently. A plain
+    // whole-object write would erase the other run's keys (#925, the #893
+    // class). Reassigning `checkpoint` to the merged result also lets later
+    // batches in THIS run skip keys a sibling run just added.
+    checkpoint = mergeWriteCheckpoint(CHECKPOINT_PATH, checkpoint);
 
     // Progress
     const pct = Math.round((processed / limitedItems.length) * 100);
@@ -495,10 +501,13 @@ async function main() {
     });
   }
 
-  // Clean up checkpoint on full completion
-  if (processed === limitedItems.length && LIMIT === 0 && fs.existsSync(CHECKPOINT_PATH)) {
-    fs.unlinkSync(CHECKPOINT_PATH);
-    console.log('\nCleaned up checkpoint file.');
+  // Clean up checkpoint on full completion — but only if nothing on disk is
+  // unknown to us (a concurrent run may have merge-written keys since our
+  // last save; deleting then would erase that run's progress, same #893 class).
+  if (processed === limitedItems.length && LIMIT === 0) {
+    if (deleteCheckpointIfCaughtUp(CHECKPOINT_PATH, checkpoint)) {
+      console.log('\nCleaned up checkpoint file.');
+    }
   }
 
   console.log(`[LOCKED-SKIP-COUNT] classify-wrong-show: ${lockedSkipCount}`);

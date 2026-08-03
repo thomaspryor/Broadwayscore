@@ -50,6 +50,11 @@ const HASH_EXCLUDED_TOP_LEVEL_FIELDS = [
   'schemaVersion',
   'verdictSchemaVersion',
   'branch',
+  // #950: diagnostic-only fields. `features` (the flags actually rendered)
+  // stays IN the hash — it changes screenshot content. `featuresSource` and
+  // `demoFlagFindings` are commentary about that same run, not content.
+  'featuresSource',
+  'demoFlagFindings',
 ];
 
 // Per-screenshot-digest fields stripped before hashing. `path` is the route

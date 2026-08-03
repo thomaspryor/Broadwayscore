@@ -86,6 +86,7 @@ const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
 const { mergeOwnerEmailLog } = require('./merge-owner-email-log');
 const { mergeCensusRecallTrend } = require('./merge-census-recall-trend');
+const { mergeCoverageAdversarialProbeTrend } = require('./merge-coverage-adversarial-probe-trend');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
 // matches diary-shows.json's producers, which write no trailing newline — so a
@@ -100,6 +101,7 @@ const MANAGED = [
   { file: 'data/audit/scraper-spend-ledger.jsonl', merge: mergeScraperSpendLedger, format: 'jsonl' },
   { file: 'data/audit/owner-email-log.jsonl', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'data/audit/census-recall-trend.jsonl', merge: mergeCensusRecallTrend, format: 'jsonl' },
+  { file: 'data/audit/coverage-adversarial-probe-trend.jsonl', merge: mergeCoverageAdversarialProbeTrend, format: 'jsonl' },
 ];
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */

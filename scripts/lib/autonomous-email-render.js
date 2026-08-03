@@ -291,6 +291,11 @@ const AUTOFIX_STATE_LABEL = {
   // Attempt-memory (task #843): same fixed content failed twice unchanged —
   // never redispatched blind, needs a human look at the card itself.
   'parked': ['\u23f8\ufe0f', 'kept failing the same way \u2014 parked, needs a manual look'],
+  // Liveness gate (task #940): the task list said in_progress but neither a
+  // live cmux workspace nor an open headless job backs that claim right
+  // now \u2014 the session that was working it may have died silently. Never
+  // say "working on it" without proof; this is the honest downgrade.
+  'no-live-session': ['\u23f8\ufe0f', 'marked in progress but no live session was found \u2014 worth a look'],
 };
 function renderAutofixBlock(autofixRows) {
   // 'decision' rows are genuine judgment calls (task #843) — they belong ONLY

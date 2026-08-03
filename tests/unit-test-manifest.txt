@@ -172,6 +172,7 @@ tests/unit/headless-prompt-no-owner-handoff.test.mjs
 tests/unit/health-check-batch-state.test.mjs
 tests/unit/health-check-bww-miss-ledger.test.mjs
 tests/unit/health-check-census-recall.test.mjs
+tests/unit/health-check-coverage-probe.test.mjs
 tests/unit/health-check-repeat-failures.test.mjs
 tests/unit/high-confidence-author.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
@@ -219,6 +220,7 @@ tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
+tests/unit/nyt-review-extraction.test.mjs
 tests/unit/ob-candidates-digest.test.mjs
 tests/unit/ob-cross-validation.test.mjs
 tests/unit/off-broadway-venue-fallback.test.mjs
@@ -391,6 +393,7 @@ tests/unit/venue-listing-discover.test.mjs
 tests/unit/verify-all-scored.test.mjs
 tests/unit/verify-fetched-url.test.mjs
 tests/unit/video-discovery-merge.test.mjs
+tests/unit/visual-qa-flag-awareness.test.mjs
 tests/unit/watchlist-delete-icon-contrast.test.mjs
 tests/unit/we-gap-reference.test.mjs
 tests/unit/we-gate-proving.test.mjs

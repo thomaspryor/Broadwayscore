@@ -187,6 +187,47 @@ function audit() {
           url: data.url,
           siblingUrl: sibling.url,
         });
+        continue;
+      }
+
+      // Cycle detection: walk the duplicateOf chain from `file`. The single-hop
+      // 2-cycle (A.duplicateOf=B, B.duplicateOf=A) is handled by rebuild-all-reviews.js's
+      // circular-tiebreak (content-fingerprint comparison), but that logic only checks
+      // ONE hop back — a 3+-node cycle (A->B->C->A) never finds a terminal non-duplicate
+      // node, so EVERY member falls through rebuild's "ref is also a dupe" skip check and
+      // ALL of them land in reviews.json as same-URL duplicates (Notion #941 — washpost
+      // 3-cycle: andor-brodeur -> justin-davidson -> michael-andor-brodeur -> andor-brodeur,
+      // none of it caught until the Data Validation gate's duplicate-URL check went red).
+      // Walk with a visited-set; a cycle length CAN legitimately be short (2), so this
+      // reports 2-cycles too as a defense-in-depth signal even though rebuild handles those.
+      const chain = [file];
+      const seen = new Set([file]);
+      let cursor = data.duplicateOf;
+      let cycleFound = false;
+      // Bound by the show dir's own file count, not a fixed constant — a cycle
+      // can't be longer than the number of files that could participate in it,
+      // and a fixed cap (e.g. 20) would silently MISS longer cycles by falling
+      // off the loop before revisiting the start (caught by a 30-file stress
+      // test in duplicate-of-url-mismatch.test.mjs).
+      for (let hop = 0; hop < files.length && cursor; hop++) {
+        if (seen.has(cursor)) { chain.push(cursor); cycleFound = true; break; }
+        const cursorData = load(cursor);
+        if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
+        chain.push(cursor);
+        seen.add(cursor);
+        cursor = cursorData.duplicateOf;
+      }
+      if (cycleFound) {
+        mismatches.push({
+          showId: path.basename(showDir),
+          file,
+          field: 'duplicateOf',
+          duplicateOf: data.duplicateOf,
+          reason: 'duplicateOf-cycle',
+          url: data.url || null,
+          siblingUrl: null,
+          chain,
+        });
       }
     }
   }
@@ -197,6 +238,12 @@ function audit() {
 function fix(mismatches) {
   let cleared = 0;
   for (const m of mismatches) {
+    // Cycles have no unambiguous auto-fix: unlike a stale pointer (one clear
+    // "right" side — the surviving file), picking which cycle member becomes
+    // canonical requires judgment (byline completeness, which copy has real
+    // content/score, etc. — see the Notion #941 washpost fix). Surfaced in the
+    // report for manual triage instead of silently nulling an arbitrary member.
+    if (m.reason === 'duplicateOf-cycle') continue;
     const filePath = path.join(REVIEW_TEXTS_DIR, m.showId, m.file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     const field = m.field || 'duplicateOf';
@@ -242,29 +289,44 @@ function main() {
     console.log(`    → duplicateOf: ${m.duplicateOf}  (${m.reason})`);
     console.log(`    → our url:     ${m.url}`);
     console.log(`    → sibling url: ${m.siblingUrl}`);
+    if (m.chain) console.log(`    → chain:       ${m.chain.join(' -> ')} -> ...`);
     console.log('');
   }
 
+  const cycles = mismatches.filter(m => m.reason === 'duplicateOf-cycle');
+  // Cycles never self-heal (fix() explicitly refuses them — picking the canonical
+  // member needs human judgment) and their count scales with cycle SIZE, not
+  // incident count (one 7-file cycle = 7 entries). Mixing them into the surge/gate
+  // floor below — designed around self-healing, one-mismatch-per-incident churn —
+  // would let a single uncleared cycle permanently eat headroom off the 25-item
+  // floor, eventually blocking --fix or reddening --gate for unrelated, genuinely
+  // auto-healable stale flags. Count only the auto-healable reasons against it.
+  const autoHealable = mismatches.filter(m => m.reason !== 'duplicateOf-cycle');
+
   if (FIX) {
-    if (mismatches.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
-      console.error(`::error::Refusing to auto-clear ${mismatches.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
+    if (autoHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      console.error(`::error::Refusing to auto-clear ${autoHealable.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
       process.exit(1);
     }
     const cleared = fix(mismatches);
     console.log(`\nCleared ${cleared} stale duplicateOf flag(s). Re-run rebuild to surface the recovered reviews.`);
+    if (cycles.length > 0) {
+      console.log(`\n${cycles.length} duplicateOf-cycle mismatch(es) were NOT auto-fixed — choosing which file becomes canonical needs manual review. See the chains above.`);
+    }
     process.exit(0);
   }
 
-  // --gate: catastrophe floor only. Every mismatch is auto-healable by
-  // clear-stale-duplicate-of.yml --fix, so a sub-floor count is surfaced above but
-  // does NOT block the trunk. A spike past FIX_SURGE_THRESHOLD is a producer
-  // regression where auto-clearing would flood scoring — that blocks.
+  // --gate: catastrophe floor only. Every AUTO-HEALABLE mismatch (i.e. excluding
+  // duplicateOf-cycle, which never self-heals — see autoHealable above) is
+  // auto-healable by clear-stale-duplicate-of.yml --fix, so a sub-floor count is
+  // surfaced above but does NOT block the trunk. A spike past FIX_SURGE_THRESHOLD
+  // is a producer regression where auto-clearing would flood scoring — that blocks.
   if (GATE) {
-    if (shouldBlockDuplicateOfGate({ mismatchCount: mismatches.length, floor: FIX_SURGE_THRESHOLD })) {
-      console.error(`\n❌ GATE: ${mismatches.length} duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
+    if (shouldBlockDuplicateOfGate({ mismatchCount: autoHealable.length, floor: FIX_SURGE_THRESHOLD })) {
+      console.error(`\n❌ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
       process.exit(1);
     }
-    console.log(`\n✅ GATE: ${mismatches.length} duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
+    console.log(`\n✅ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}${cycles.length > 0 ? ` (+ ${cycles.length} duplicateOf-cycle, excluded — needs manual triage, never auto-clears)` : ''}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
     process.exit(0);
   }
 

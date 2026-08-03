@@ -1187,6 +1187,35 @@ function verifyFetchedUrl(html, expectedUrl) {
           return { verified: true, reason: 'suffix_redirect' };
         }
       }
+
+      // Trailing numeric post-ID match (task #6, Variety): permalink schemes
+      // vary by category/era but the numeric post ID embedded at the end of
+      // the last path segment stays constant for the same article — e.g.
+      // variety.com/2026/tv/reviews/...-1236685975/ vs its own canonical tag
+      // .../legit/reviews/...-1236685975/ (Variety's canonical and og:url tags
+      // disagree on which category slug "wins" for the same post), or a
+      // legacy variety.com/review/VE1117947963 vs modern
+      // /2012/legit/reviews/the-producers-1117947963/. Directory depth is
+      // irrelevant here (legacy URLs use a totally different structure), so
+      // this runs independent of the suffix_redirect depth check above.
+      //
+      // Host-scoped deliberately (unlike suffix_redirect above, which is safe
+      // on any host because it requires a word-boundary AND matching parent
+      // directory): a bare trailing-digit-run match is NOT safe generically.
+      // BroadwayWorld's Review-Roundup-<SHOW>-<MMDDYYYY> URLs (see the
+      // title_matches_homepage fixture below) carry an 8-digit date suffix,
+      // so two different shows' roundups published on the same date would
+      // false-match under this rule with no host restriction — confirmed in
+      // review. Only allowlist hosts verified to use a CMS-unique numeric
+      // post ID (not a date/index) in this position.
+      const POST_ID_HOSTS = new Set(['variety.com']);
+      if (POST_ID_HOSTS.has(expHost)) {
+        const expIdMatch = expLast && expLast.match(/(\d{6,})$/);
+        const actIdMatch = actLast && actLast.match(/(\d{6,})$/);
+        if (expIdMatch && actIdMatch && expIdMatch[1] === actIdMatch[1]) {
+          return { verified: true, reason: 'post_id_match' };
+        }
+      }
     }
   } catch { /* fall through */ }
 
