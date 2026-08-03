@@ -5,6 +5,7 @@ const require = createRequire(import.meta.url);
 const {
   selectFresherCookieTier,
   loadEnvMeta,
+  loadCookieMeta,
   loadCookiesForDomain,
   loadCookiesByFileKey,
   clearCache,
@@ -208,6 +209,74 @@ test('loadCookiesByFileKey: reverse case (bundle fresher) reports source bundle'
     const result = loadCookiesByFileKey('wsj');
     assert.equal(result.source, 'bundle');
     assert.equal(result.cookies[0].name, 'fresh-bundle');
+  } finally {
+    resetEnv();
+  }
+});
+
+test('loadCookiesByFileKey: a fresher-but-EMPTY env secret must not discard a populated bundle', () => {
+  resetEnv();
+  try {
+    setBundle('wsj', [{ name: 'populated-bundle', value: '1', domain: 'wsj.com' }], { extractedAtUnix: 1000 });
+    process.env.WSJ_COOKIES = Buffer.from(JSON.stringify([])).toString('base64');
+    process.env.WSJ_COOKIES_META = Buffer.from(
+      JSON.stringify({ extractedAtUnix: 2000 })
+    ).toString('base64');
+
+    const result = loadCookiesByFileKey('wsj');
+    assert.equal(result.source, 'bundle');
+    assert.equal(result.cookies.length, 1);
+    assert.equal(result.cookies[0].name, 'populated-bundle');
+  } finally {
+    resetEnv();
+  }
+});
+
+test('loadCookieMeta: tier-aware — reports env source when env is the fresher, selected tier', () => {
+  resetEnv();
+  try {
+    setBundle('wsj', [{ name: 'stale', value: '1', domain: 'wsj.com' }], { extractedAtUnix: 1000 });
+    process.env.WSJ_COOKIES = Buffer.from(
+      JSON.stringify([{ name: 'fresh', value: '2', domain: 'wsj.com' }])
+    ).toString('base64');
+    process.env.WSJ_COOKIES_META = Buffer.from(
+      JSON.stringify({ extractedAtUnix: 2000 })
+    ).toString('base64');
+
+    const meta = loadCookieMeta('wsj');
+    assert.equal(meta.source, 'env');
+    assert.equal(meta.extractedAtUnix, 2000);
+  } finally {
+    resetEnv();
+  }
+});
+
+test('loadCookieMeta: reverse case (bundle fresher) reports bundle source (matches loadCookiesByFileKey)', () => {
+  resetEnv();
+  try {
+    setBundle('wsj', [{ name: 'fresh-bundle', value: '1', domain: 'wsj.com' }], { extractedAtUnix: 2000 });
+    process.env.WSJ_COOKIES = Buffer.from(
+      JSON.stringify([{ name: 'stale-env', value: '2', domain: 'wsj.com' }])
+    ).toString('base64');
+    process.env.WSJ_COOKIES_META = Buffer.from(
+      JSON.stringify({ extractedAtUnix: 1000 })
+    ).toString('base64');
+
+    const meta = loadCookieMeta('wsj');
+    assert.equal(meta.source, 'bundle');
+    assert.equal(meta.extractedAtUnix, 2000);
+  } finally {
+    resetEnv();
+  }
+});
+
+test('loadCookieMeta: no WSJ_COOKIES env var set at all -> falls back to bundle meta (unchanged behavior)', () => {
+  resetEnv();
+  try {
+    setBundle('wsj', [{ name: 'only-bundle', value: '1', domain: 'wsj.com' }], { extractedAtUnix: 1000 });
+    const meta = loadCookieMeta('wsj');
+    assert.equal(meta.source, 'bundle');
+    assert.equal(meta.extractedAtUnix, 1000);
   } finally {
     resetEnv();
   }

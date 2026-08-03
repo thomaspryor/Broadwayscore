@@ -130,15 +130,32 @@ function loadFileMeta() {
 
 /**
  * Return extraction metadata for a fileKey, or null.
- * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'file' }
- * Bundle metadata wins over file metadata (matches the load order in
- * loadCookiesByFileKey — bundles are tier 1).
+ * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'env'|'file' }
+ * Tier-aware as of task #881: mirrors loadCookiesByFileKey's actual tier
+ * selection (via selectFresherCookieTier) rather than always reporting bundle
+ * meta — otherwise check-cookie-health.js could report an outlet stale off an
+ * old bundle timestamp while the loader was actually using a fresher Tier-2
+ * secret (or vice versa).
  */
 function loadCookieMeta(fileKey) {
   loadBundles();
   const bundleMeta = _bundleMetaCache && _bundleMetaCache[fileKey];
-  if (bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix)) {
+  const hasBundleMeta = bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix);
+
+  const envVar = FILE_KEY_TO_ENV_VAR[fileKey];
+  const envMeta = envVar && process.env[envVar] ? loadEnvMeta(envVar) : null;
+  const hasEnvMeta = envMeta && (envMeta.extractedAt || envMeta.extractedAtUnix);
+
+  if (hasBundleMeta && hasEnvMeta) {
+    return selectFresherCookieTier(bundleMeta, envMeta) === 'env'
+      ? { ...envMeta, source: 'env' }
+      : { ...bundleMeta, source: 'bundle' };
+  }
+  if (hasBundleMeta) {
     return { ...bundleMeta, source: 'bundle' };
+  }
+  if (hasEnvMeta) {
+    return { ...envMeta, source: 'env' };
   }
   const fileMeta = loadFileMeta()[fileKey];
   if (fileMeta && (fileMeta.extractedAt || fileMeta.extractedAtUnix)) {
@@ -312,11 +329,13 @@ function loadCookiesByFileKey(fileKey) {
 
   // Tier 1 vs Tier 2 freshness check (task #881) — same logic as
   // loadCookiesForDomain, kept in sync since check-cookie-health.js reports
-  // through this path instead.
+  // through this path instead. requireNonEmpty:true here (unlike the Tier-2
+  // fallback below) because this branch is choosing to DISCARD a known-
+  // populated bundle — a fresher-but-empty env secret must not win that trade.
   if (bundleCookies && envRawVal) {
     const tier = selectFresherCookieTier(_bundleMetaCache[fileKey], loadEnvMeta(envVar));
     if (tier === 'env') {
-      const envCookies = parseCookieEnvVar(envVar, envRawVal, { requireNonEmpty: false });
+      const envCookies = parseCookieEnvVar(envVar, envRawVal, { requireNonEmpty: true });
       if (envCookies) return { source: 'env', cookies: envCookies };
     }
   }
