@@ -11,7 +11,7 @@
  * @param {string|null} args.outletId - outletId on the review
  * @returns {{ flag: boolean, issue: 'before_preview'|'after_close'|null, diffDays: number, daysAllowedBefore: number }}
  */
-const { isWithinPriorRun } = require('./wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
 // Exported so the calling script can use the same constants in log messages
 // without drift. See scripts/flag-wrong-production-by-date.js.
@@ -187,6 +187,8 @@ function isArticleOutsideProductionWindow(show, dateStr) {
   if (!decision.flag) return false;
   // priorRun coverage is legitimate same-production history, not contamination.
   if (isWithinPriorRun(pubDate, show.priorRuns)) return false;
+  // tourLeg coverage is the same current production at a different venue stop.
+  if (isWithinTourLeg(pubDate, show.tourLegs)) return false;
   return true;
 }
 
@@ -208,9 +210,11 @@ function isArticleOutsideProductionWindow(show, dateStr) {
  * @param {boolean} args.isFlexCategory - off-broadway or London market (90d legacy family)
  * @param {Array|null|undefined} args.priorRuns - show.priorRuns; a covered date is
  *   legitimate earlier-run coverage, never excluded here
- * @returns {{ exclude: boolean, daysBefore: number|null, threshold: number, reason: 'pre-window date'|'prior-run window'|null }}
+ * @param {Array|null|undefined} args.tourLegs - show.tourLegs; a covered date is
+ *   legitimate current-production coverage at another venue stop, never excluded here
+ * @returns {{ exclude: boolean, daysBefore: number|null, threshold: number, reason: 'pre-window date'|'prior-run window'|'tour-leg window'|null }}
  */
-function evaluatePreWindowInclusion({ pubDate, showEarliest, isFlexCategory, priorRuns }) {
+function evaluatePreWindowInclusion({ pubDate, showEarliest, isFlexCategory, priorRuns, tourLegs }) {
   const threshold = isFlexCategory ? PRE_WINDOW_DAYS : PRE_WINDOW_DAYS_BROADWAY;
   if (!pubDate || isNaN(pubDate.getTime()) || !showEarliest || isNaN(showEarliest.getTime())) {
     return { exclude: false, daysBefore: null, threshold, reason: null };
@@ -221,6 +225,9 @@ function evaluatePreWindowInclusion({ pubDate, showEarliest, isFlexCategory, pri
   }
   if (isWithinPriorRun(pubDate, priorRuns)) {
     return { exclude: false, daysBefore, threshold, reason: 'prior-run window' };
+  }
+  if (isWithinTourLeg(pubDate, tourLegs)) {
+    return { exclude: false, daysBefore, threshold, reason: 'tour-leg window' };
   }
   return { exclude: true, daysBefore, threshold, reason: 'pre-window date' };
 }

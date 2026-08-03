@@ -347,6 +347,13 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
     Array.isArray(show.priorRuns) &&
     show.priorRuns.some(r => r && (r.openingDate || r.closingDate || r.previewsStartDate))
   ) return false;
+  // Same carve-out for a declared tourLegs entry — a review of the CURRENT
+  // touring production's earlier venue stop is not premature, it's coverage
+  // of this same production continuity (see wrong-production-autoclear.js).
+  if (
+    Array.isArray(show.tourLegs) &&
+    show.tourLegs.some(l => l && (l.startDate || l.endDate))
+  ) return false;
   if (
     data.wrongProductionManualClear === true ||
     data.wrongProductionOverride === true ||
@@ -588,8 +595,12 @@ function getWrongProductionReasonFromUrl(url, show) {
   // window below would false-flag it (e.g. Sexual Misconduct of the Middle
   // Classes 2026, whose Audible Minetta Lane 2025 reviews predate previews by
   // ~290 days). Lazy require to avoid a load-order cycle.
-  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
   if (isWithinPriorRun(urlDate, show.priorRuns)) return null;
+  // Tour-leg exemption (current-production continuity): a review dated within
+  // a declared venue stop of the current tour is legitimate coverage of THIS
+  // production, not a different one.
+  if (isWithinTourLeg(urlDate, show.tourLegs)) return null;
 
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;

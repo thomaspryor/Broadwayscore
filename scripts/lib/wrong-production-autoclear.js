@@ -66,6 +66,63 @@ function isWithinPriorRun(reviewDate, priorRuns) {
 }
 
 /**
+ * Decide whether a review's publishDate falls inside any of the show's
+ * declared tourLegs windows (current-touring-production continuity model).
+ *
+ * Each tourLeg describes a venue stop of the CURRENT touring production —
+ * unlike priorRuns (a distinct EARLIER production), a tourLeg is part of the
+ * same ongoing run, just in a different city. A review whose publishDate sits
+ * inside tourLeg.startDate..endDate is legitimate coverage of this production
+ * at that stop and must not be flagged wrongProduction by date-only guards.
+ *
+ * Same defaults/edge-cases as isWithinPriorRun: missing endDate defaults to
+ * startDate + 180 days; comparison is inclusive of both bounds, date-only.
+ *
+ * @param {Date|string|null} reviewDate
+ * @param {Array<{startDate?: string, endDate?: string, venue?: string}>} tourLegs
+ * @returns {boolean}
+ */
+function isWithinTourLeg(reviewDate, tourLegs) {
+  if (!reviewDate || !Array.isArray(tourLegs) || tourLegs.length === 0) return false;
+  const rd = reviewDate instanceof Date ? reviewDate : parseDate(reviewDate);
+  if (!rd || isNaN(rd.getTime())) return false;
+  const rdMs = rd.getTime();
+
+  for (const leg of tourLegs) {
+    if (!leg || !leg.startDate) continue;
+    const start = parseDate(leg.startDate);
+    if (!start || isNaN(start.getTime())) continue;
+    let end;
+    if (leg.endDate) {
+      end = parseDate(leg.endDate);
+      if (!end || isNaN(end.getTime())) end = undefined;
+    }
+    if (!end) {
+      end = new Date(start.getTime());
+      end.setUTCDate(end.getUTCDate() + 180);
+    }
+    if (rdMs >= start.getTime() && rdMs <= end.getTime()) return true;
+  }
+  return false;
+}
+
+/**
+ * True when a show declares at least one usable tourLegs window (a venue stop
+ * of the current touring production). "Usable" means at least one entry has
+ * a startDate. Mirrors hasDeclaredPriorRuns.
+ *
+ * @param {{ tourLegs?: Array<{startDate?: string}> }} show
+ * @returns {boolean}
+ */
+function hasDeclaredTourLegs(show) {
+  return !!(
+    show &&
+    Array.isArray(show.tourLegs) &&
+    show.tourLegs.some((l) => l && l.startDate)
+  );
+}
+
+/**
  * True when a show declares at least one usable priorRuns window (a previous
  * run of the same artistic production: workshop→mainstage, return engagement,
  * or a venue transfer). "Usable" means at least one entry has an openingDate.
@@ -361,6 +418,8 @@ module.exports = {
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   hasDeclaredPriorRuns,
+  isWithinTourLeg,
+  hasDeclaredTourLegs,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,

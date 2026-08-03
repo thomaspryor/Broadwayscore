@@ -12,7 +12,7 @@
  * cyrano (#832).
  */
 const { earliestShowDate } = require('./date-guard');
-const { isWithinPriorRun } = require('./wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 const { parseDate: parsePlausibilityDate } = require('./date-utils');
 
 const DAYS_IMPLAUSIBLE_BEFORE = 180;
@@ -44,7 +44,11 @@ function evaluateDatePlausibility({ review, show }) {
   if (!pub || !earliestD) return { ...empty, earliestDate: earliestStr };
 
   const daysBefore = Math.round((earliestD.getTime() - pub.getTime()) / 86400000);
-  if (daysBefore > DAYS_IMPLAUSIBLE_BEFORE && !isWithinPriorRun(pub, show.priorRuns)) {
+  if (
+    daysBefore > DAYS_IMPLAUSIBLE_BEFORE &&
+    !isWithinPriorRun(pub, show.priorRuns) &&
+    !isWithinTourLeg(pub, show.tourLegs)
+  ) {
     return { implausible: true, daysBefore, earliestDate: earliestStr, reason: 'date_implausible' };
   }
   return { implausible: false, daysBefore, earliestDate: earliestStr, reason: null };
