@@ -16,11 +16,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
 const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { runChecks } = require('./opening-night-readiness');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
@@ -60,7 +60,15 @@ function reviewsRemainingForScore(reviewCount, category, tier1And2Count) {
   return Math.max(0, min - reviewCount);
 }
 
+const USAGE = `generate-status-page.js — write public/opening-night-status.json + public/status.html
+  node scripts/generate-status-page.js                 generate both files
+  node scripts/generate-status-page.js --lookback=4    override lookback days
+  node scripts/generate-status-page.js --help, -h      print this usage and exit — no reads/writes
+`;
+
 function main() {
+  // --help/-h checked BEFORE any read/write (help-flag safety Rule B, task #498).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadJSON(path.join(DATA_DIR, 'shows.json'));
   if (!showsData) { console.error('Cannot load shows.json'); process.exit(1); }
   const showsList = Array.isArray(showsData.shows || showsData) ? (showsData.shows || showsData) : Object.values(showsData.shows || showsData);
@@ -196,6 +204,10 @@ function main() {
   // ── Readiness checks for upcoming + today's shows ──
   let readinessData = null;
   try {
+    // Lazy require: opening-night-readiness executes its full readiness sweep
+    // at require time (no require.main guard), so a top-level require would run
+    // it even for --help. Same lazy pattern as loadReviewsWithBlog below.
+    const { runChecks } = require('./opening-night-readiness');
     readinessData = runChecks();
     // Merge per-show readiness into upcoming cards
     if (readinessData?.checks) {
