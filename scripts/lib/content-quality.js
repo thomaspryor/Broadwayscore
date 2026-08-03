@@ -550,6 +550,34 @@ function includesAtWordStart(lower, word) {
 }
 
 /**
+ * Words that carry near-zero disambiguating power when derived from a show
+ * ID slug, even though they pass the idWords length filter. Two flavors:
+ *   - market/category suffixes appended to every ID in that market (e.g.
+ *     "...-off-broadway-2026"), not part of the actual title
+ *   - common English words that appear at generic-usage rates in almost any
+ *     theater-adjacent article regardless of the show
+ * Task #947 (live incident, task #914 outlet sweep): showId
+ * 'a-woman-among-women-off-broadway-2026' decomposes to idWords
+ * ['woman','among','women','broadway'] — ALL FOUR are generic, so two
+ * completely unrelated Variety articles (a Keith David profile, a Pink/Tony-
+ * Awards piece) cleared Check 2's "2+ matches" bar on generic-English-usage
+ * rate alone, overriding a prior correct url_content_mismatch rejection.
+ * @type {Set<string>}
+ */
+const GENERIC_ID_WORDS = new Set([
+  // Market/category suffixes appended to showId, not part of the title
+  'broadway', 'west', 'end', 'off', 'tour', 'touring', 'national', 'regional',
+  'revival', 'transfer', 'return', 'returns', 'encore', 'encores', 'musical',
+  // Common English words with weak disambiguating power on their own
+  'woman', 'women', 'man', 'men', 'girl', 'girls', 'boy', 'boys', 'love',
+  'life', 'lives', 'living', 'time', 'times', 'world', 'house', 'home',
+  'among', 'family', 'friend', 'friends', 'mother', 'father', 'brother',
+  'sister', 'people', 'night', 'nights', 'day', 'days', 'years', 'year',
+  'moment', 'moments', 'thing', 'things', 'place', 'places', 'name', 'names',
+  'part', 'parts',
+]);
+
+/**
  * Validate that text mentions the expected show
  * More robust than the basic check in assessTextQuality
  *
@@ -588,19 +616,27 @@ function validateShowMentioned(text, showTitle, showId) {
     idWords = idBase.split('-').filter(w => w.length > 3 && !['the', 'and', 'for'].includes(w));
   }
 
+  // Drop generic words (see GENERIC_ID_WORDS above) before using idWords as
+  // match evidence in Check 2/3. If EVERY idWord is generic, there is no
+  // distinctive show-specific signal to fall back on — leave idWordsForMatch
+  // empty rather than reverting to the generic words, so Check 2/3 correctly
+  // decline to validate (only Check 1's exact title match can confirm a show
+  // whose title is entirely common words).
+  const idWordsForMatch = idWords.filter(w => !GENERIC_ID_WORDS.has(w));
+
   // Check 2: Show ID words. Word-boundary matched (not raw .includes()) for
   // the same reason as Check 3 below — a multi-word idWords list can still
   // rack up 2 coincidental mid-word substring hits in unrelated text (e.g.
   // "arena" inside "quARENAntine" alongside another fragment), which would
   // otherwise validate before Check 3's stricter guard is ever reached.
-  if (idWords.length >= 2) {
-    const matchCount = idWords.filter(w => includesAtWordStart(lower, w)).length;
-    if (matchCount >= 2 || (matchCount === idWords.length)) {
-      return { valid: true, confidence: 'medium', reason: `${matchCount}/${idWords.length} show ID words found` };
+  if (idWordsForMatch.length >= 2) {
+    const matchCount = idWordsForMatch.filter(w => includesAtWordStart(lower, w)).length;
+    if (matchCount >= 2 || (matchCount === idWordsForMatch.length)) {
+      return { valid: true, confidence: 'medium', reason: `${matchCount}/${idWordsForMatch.length} show ID words found` };
     }
-  } else if (idWords.length === 1 && idWords[0].length > 4) {
+  } else if (idWordsForMatch.length === 1 && idWordsForMatch[0].length > 4) {
     // Single significant word (e.g., "cabaret", "hamilton")
-    if (includesAtWordStart(lower, idWords[0])) {
+    if (includesAtWordStart(lower, idWordsForMatch[0])) {
       return { valid: true, confidence: 'medium', reason: 'Show name word found' };
     }
   }
@@ -625,9 +661,9 @@ function validateShowMentioned(text, showTitle, showId) {
   // that appear in totally unrelated long articles (caught in review).
   // Matching at word-start still allows inflected forms the fallback exists
   // for ("turners" -> "turner's", "come" -> "comes").
-  if (text.length > 3000 && idWords.length > 0) {
+  if (text.length > 3000 && idWordsForMatch.length > 0) {
     const hasTheaterContext = THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length >= 5;
-    const hasAnyShowWord = idWords.some(w => includesAtWordStart(lower, w));
+    const hasAnyShowWord = idWordsForMatch.some(w => includesAtWordStart(lower, w));
     if (hasTheaterContext && hasAnyShowWord) {
       return { valid: true, confidence: 'low', reason: 'Long review with theater context and partial show-name match' };
     }
@@ -2180,9 +2216,15 @@ function verifyFullTextContent(fullText, showMetadata) {
     }
 
     // Check show ID words as fallback (e.g., "back-to-the-future-2023" → "back", "future")
+    // Task #947: filter through GENERIC_ID_WORDS first — same generic-word
+    // rubber-stamp risk as validateShowMentioned's Check 2 (e.g.
+    // 'a-woman-among-women-off-broadway-2026' -> ['woman','among','women','broadway'],
+    // all generic, none of which should count as show-specific evidence here.
     if (!titleFound && showMetadata.id) {
       const idBase = showMetadata.id.replace(/-\d{4}$/, '');
-      const idWords = idBase.split('-').filter(w => w.length > 4 && !['the', 'and', 'for'].includes(w));
+      const idWords = idBase.split('-')
+        .filter(w => w.length > 4 && !['the', 'and', 'for'].includes(w))
+        .filter(w => !GENERIC_ID_WORDS.has(w));
       if (idWords.length >= 2) {
         const matchedIdWords = idWords.filter(w => text.includes(w));
         if (matchedIdWords.length >= 2) {
@@ -2719,7 +2761,11 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   if (showId) {
     const idBase = showId.replace(/-\d{4}$/, '');
     for (const w of idBase.split('-')) {
-      if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w)) {
+      // Task #947: skip generic idWords (see GENERIC_ID_WORDS above) — a
+      // word like 'women'/'broadway' would otherwise count toward
+      // mentionCount purely on generic-English-usage rate, not any actual
+      // reference to the show.
+      if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w) && !GENERIC_ID_WORDS.has(w.toLowerCase())) {
         tokens.add(w.toLowerCase());
         // Also add singular form of plural ID words (>5 chars to avoid noise):
         // "turners" → "turner" matches the natural body usage. Joe Turner.

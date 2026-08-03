@@ -36,6 +36,7 @@ const path = require('path');
 const https = require('https');
 const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, CLAUDE_OPUS, GEMINI_FLASH } = require('./lib/models');
+const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
 const { isSameTitleDifferentYearFalsePositive, hasStrongDifferentShowSignal, hasNamedDifferentDirectorSignal } = require('./lib/review-guards');
 
 let lockedSkipCount = 0;
@@ -529,8 +530,13 @@ async function main() {
     await Promise.all(promises);
     processed += batch.length;
 
-    // Save checkpoint every batch
-    fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(checkpoint, null, 2));
+    // Save checkpoint every batch. Merge-aware: this checkpoint file is local
+    // scratch (never committed), so the real risk isn't cross-CI-runner —
+    // it's a second local invocation (another terminal, a launchd job, a
+    // parallel session) writing the SAME on-disk path concurrently. A plain
+    // whole-object write would erase the other run's freshly-classified keys
+    // (#925, the #893 class).
+    checkpoint = mergeWriteCheckpoint(CHECKPOINT_PATH, checkpoint);
 
     // Progress
     const pct = Math.round((processed / limitedItems.length) * 100);
@@ -665,10 +671,13 @@ async function main() {
     console.log('\nNo high-confidence wrong-production verdicts to apply.');
   }
 
-  // Clean up checkpoint on completion
-  if (processed === limitedItems.length && fs.existsSync(CHECKPOINT_PATH)) {
-    fs.unlinkSync(CHECKPOINT_PATH);
-    console.log('Cleaned up checkpoint file.');
+  // Clean up checkpoint on completion — but only if nothing on disk is
+  // unknown to us (a concurrent run may have merge-written keys since our
+  // last save; deleting then would erase that run's progress, same #893 class).
+  if (processed === limitedItems.length) {
+    if (deleteCheckpointIfCaughtUp(CHECKPOINT_PATH, checkpoint)) {
+      console.log('Cleaned up checkpoint file.');
+    }
   }
 
   console.log(`[LOCKED-SKIP-COUNT] classify-wrong-production: ${lockedSkipCount}`);

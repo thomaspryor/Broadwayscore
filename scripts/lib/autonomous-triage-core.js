@@ -42,6 +42,10 @@ const SAFE_CHECK_FORMS = [
   // satisfies this injection gate and survives cardCheckArgv's quote-free
   // whitespace split (scripts/lib/autonomous-checks.js).
   { re: /^node scripts\/check-health-row-absent\.js --row-b64 ([A-Za-z0-9_-]{1,200})$/ },
+  // Coverage Verdict S5 (task #903): read-only acceptance check for the
+  // "two consecutive clean weeks" bar — reads a status file the weekly
+  // adversarial-probe cron already wrote, no arguments, nothing to inject.
+  { re: /^node scripts\/check-coverage-probe-clean\.js$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -71,7 +75,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, or `node scripts/check-health-row-absent.js --row-b64 <base64url row name>` (health-digest rows only)';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name>` (health-digest rows only), or `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test

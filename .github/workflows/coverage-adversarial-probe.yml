@@ -1,0 +1,151 @@
+name: Coverage Adversarial Probe
+
+# Coverage Verdict S5 (task #903, the FINAL sprint).
+#
+# The plan's acceptance bar is deliberately NOT "the owner found nothing this
+# week" — that passes vacuously the moment the owner stops checking, which is
+# the exact #872 failure mode (four consecutive owner spot-checks in a row
+# found published reviews the census had reported absent). Instead: every
+# week, take 5 random shows from the last ~45 days that the OPERATOR did not
+# choose, run the naive Google query a human would type (S1's harness, reused
+# verbatim), and assert every discovered review URL is either LIVE on the
+# site or NAMED (explainExclusion() gives the rule that kept it out). A URL
+# that is neither is a real, current gap.
+#
+# Cost posture: 5 shows/week x 1 naive-query page = ~5 SERP calls through the
+# shared BD/SD/SB chain (24h disk cache) — a fraction of audit-census-recall's
+# own ~25 calls/week.
+#
+# The job exits 0 even when a gap is found. Findings surface through
+# data/audit/coverage-adversarial-probe-status.json, which health-check.js
+# renders as the daily-digest check "Coverage: adversarial probe" — never as
+# email spam or a red CI run holding up unrelated merges (same posture
+# audit-census-recall.yml takes for recall regressions; a permanently-red run
+# would make check-cron-health flag this detector as stale and redispatch it
+# in a loop).
+#
+# "Two consecutive clean weeks = done" is judged by
+# scripts/lib/coverage-adversarial-probe.js's evaluateAcceptance() over the
+# trend ledger this workflow appends to; scripts/check-coverage-probe-clean.js
+# is the read-only acceptance command recorded on Notion card #903 at pause
+# time, re-run nightly by scripts/autonomous-acceptance-recheck.js.
+#
+# Kill switch: set the ADVERSARIAL_PROBE_DISABLED repo Actions VARIABLE to 1 —
+# the run then exits without spending a single SERP call.
+
+on:
+  schedule:
+    - cron: '15 12 * * 1'  # Mondays 12:15 UTC, after audit-census-recall's 11:40 slot
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Shows to probe (default 5)'
+        required: false
+        type: string
+        default: '5'
+      pages:
+        description: 'Naive-query pages to read per show'
+        required: false
+        type: string
+        default: '1'
+      days:
+        description: 'Pool = shows opened within the last N days'
+        required: false
+        type: string
+        default: '45'
+      no_trend:
+        description: 'Probe and print, but do not append to the trend ledger'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coverage-adversarial-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # The probe's live/excluded classification needs the on-disk review
+      # corpus — without it every candidate reads as an undiscovered gap,
+      # which would report a corpus-wide collapse instead of the probe's own
+      # absence of data (the same onDisk-unavailable lesson census-recall
+      # already encodes).
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: '1'
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Run the seeded adversarial probe
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          ADVERSARIAL_PROBE_DISABLED: ${{ vars.ADVERSARIAL_PROBE_DISABLED }}
+          # This is a MONITOR, not a pipeline — same posture as
+          # audit-census-recall.yml: never spend the ScrapingBee credits an
+          # opening-night ingest run might need. BD/SD still serve the query.
+          SERP_NO_SB: '1'
+          # workflow_dispatch string inputs land here as ENV VARS, not
+          # interpolated directly into the shell command below (ship-check/
+          # Codex finding: a raw `${{ inputs.sample }}` in a `run:` block is a
+          # command-injection surface for a job holding `contents: write` and
+          # provider secrets — a dispatcher who typed `5; curl evil` would have
+          # it execute). The shell only ever reads these as opaque strings.
+          PROBE_SAMPLE: ${{ inputs.sample || '5' }}
+          PROBE_PAGES: ${{ inputs.pages || '1' }}
+          PROBE_DAYS: ${{ inputs.days || '45' }}
+          PROBE_NO_TREND: ${{ inputs.no_trend && 'true' || '' }}
+        run: |
+          TREND_FLAG="--trend"
+          if [ -n "$PROBE_NO_TREND" ]; then TREND_FLAG=""; fi
+          node scripts/coverage-adversarial-probe.js \
+            --sample="$PROBE_SAMPLE" \
+            --pages="$PROBE_PAGES" \
+            --days="$PROBE_DAYS" \
+            $TREND_FLAG \
+            | tee "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit probe report + trend ledger
+        if: ${{ always() && !inputs.no_trend }}
+        env:
+          # Same read-modify-write race as census-recall-trend.jsonl (task
+          # #784's class) — opts into the post-rebase union re-merge.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          for f in data/audit/coverage-adversarial-probe.json \
+                   data/audit/coverage-adversarial-probe-trend.jsonl \
+                   data/audit/coverage-adversarial-probe-status.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No probe state to commit"
+            exit 0
+          fi
+          git commit -m "audit: coverage adversarial probe trend [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Coverage Adversarial Probe Failed (the probe itself is broken)'
+          severity: 'warning'
