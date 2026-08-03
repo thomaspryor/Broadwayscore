@@ -12,16 +12,23 @@
         {
           "value": 145,
           "ts": "2026-08-02T06:13:15.904Z"
+        },
+        {
+          "value": 214,
+          "ts": "2026-08-03T06:13:34.637Z"
         }
       ],
       "stalled": false,
-      "reason": "insufficient-history",
+      "reason": "moving",
       "direction": "down",
-      "value": 145
+      "value": 214
     }
   },
-  "lastRunAt": "2026-08-02T06:13:15.904Z",
+  "lastRunAt": "2026-08-03T06:13:34.637Z",
   "lastSummary": {
-    "needsRescoreUnblocked": 145
+    "needsRescoreUnblocked": 214,
+    "needsRescoreRaw": 256,
+    "needsRescoreNotScoreable": 15,
+    "needsRescoreBlocked": 27
   }
 }
