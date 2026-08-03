@@ -25,6 +25,16 @@
 const fs = require('fs');
 const path = require('path');
 
+// Worktrees never have their own .env (gitignored, not copied on
+// EnterWorktree), so the __dirname-relative default below resolves to a
+// worktree root with no .env and readEnvFile silently finds nothing. Fall
+// back to the canonical repo path — same idiom dispatch-ledger.js uses for
+// its own REPO/LEDGER_PATH constants (task #983, generalizing the
+// notion-brain.js fix in commit 3fd452ba1fc). Only applies when the caller
+// did not pass an explicit repoRoot, so callers that need a specific
+// directory (e.g. tests) are unaffected.
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+
 /**
  * Pure parser: .env text → { KEY: value }. No I/O, no process.env access, so it
  * is directly unit-testable (CLAUDE.md rule 15) and — critically — usable by
@@ -67,7 +77,10 @@ function parseEnvFile(raw) {
 // degrade to "no .env".
 function readEnvFile(repoRoot) {
   const root = repoRoot || path.join(__dirname, '..', '..');
-  const envPath = path.join(root, '.env');
+  let envPath = path.join(root, '.env');
+  if (!repoRoot && !fs.existsSync(envPath) && fs.existsSync(path.join(CANONICAL_REPO, '.env'))) {
+    envPath = path.join(CANONICAL_REPO, '.env');
+  }
   try {
     return { ok: true, path: envPath, values: parseEnvFile(fs.readFileSync(envPath, 'utf8')) };
   } catch (err) {
