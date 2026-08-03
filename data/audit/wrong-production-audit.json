@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-03T16:13:21.695Z",
+  "timestamp": "2026-08-03T16:58:09.692Z",
   "stats": {
-    "totalReviews": 41465,
+    "totalReviews": 41466,
     "alreadyFlagged": 18113,
-    "dateGuardCatches": 109,
+    "dateGuardCatches": 110,
     "directorMismatch": 945,
     "tvFilmSignals": 1143,
-    "londonSignals": 804,
+    "londonSignals": 805,
     "offBroadwaySignals": 480,
     "yearMismatch": 86,
     "noPublishDate": 3438
@@ -35294,6 +35294,24 @@
       "publishDate": "2026-04-15",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/heart-wall-theatre-review-pbwhxxk5w",
       "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "file": "londontheatrehub--london-theatre-hub-editorial-team.json",
+      "publishDate": "2026-05-24",
+      "url": "https://londontheatrehub.co.uk/shows/heathers-the-musical/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-24 vs 2026-07-09)"
+        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
