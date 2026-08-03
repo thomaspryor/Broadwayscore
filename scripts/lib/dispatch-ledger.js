@@ -71,6 +71,30 @@ function readEntries(ledgerPath = LEDGER_PATH) {
   return entries;
 }
 
+// Session-system overhaul S3 (card #856): context-limit succession chains a
+// task through multiple relaunches without ever finishing it — a session at
+// 80% context checkpoints and self-dispatches a successor onto the SAME
+// task via `bsc-next.js --id N --succession`. Runaway guard from the S3
+// pre-mortem (P0): a task that never actually makes progress could chain
+// successors forever, burning a launch every few minutes. Depth is derived
+// from the ledger itself (never trusted from a CLI arg the caller could get
+// wrong or spoof): count 'launch' entries for this task, walking forward in
+// time, resetting to 1 on any launch that is NOT a succession (a fresh
+// dispatch — --force redispatch, or the task's original launch — starts a
+// new chain) and incrementing on every launch that IS (successionOf set).
+// The returned value is the depth of the LAST launch already in the ledger;
+// the succession about to be dispatched would be depth+1.
+const SUCCESSION_DEPTH_CAP = 5;
+
+function successionDepthForTask(taskId, entries) {
+  const launches = entries
+    .filter(e => e.event === 'launch' && String(e.taskId) === String(taskId))
+    .sort((a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : 0));
+  let depth = 0;
+  for (const e of launches) depth = e.successionOf || e.succession ? depth + 1 : 1;
+  return depth;
+}
+
 function deadAttemptsForTask(taskId, entries) {
   // Failed/orphaned headless jobs count as dead attempts too — this is the
   // "one ledger, one guard" promise: a task cannot burn unlimited headless
@@ -512,7 +536,7 @@ function openJobs(entries) {
 
 module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
-  TERMINAL_LAUNCH_EVENTS,
+  TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,

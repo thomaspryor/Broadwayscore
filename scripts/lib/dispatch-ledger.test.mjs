@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -42,6 +42,45 @@ test('deadAttemptsForTask filters by taskId and event=dead, ignores launches', (
   assert.equal(deadAttemptsForTask(297, entries).length, 2); // numeric/string id agnostic
   assert.equal(deadAttemptsForTask('46', entries).length, 1);
   assert.equal(deadAttemptsForTask('999', entries).length, 0);
+});
+
+test('successionDepthForTask: no launches yet is depth 0, a fresh (non-succession) launch is depth 1', () => {
+  assert.equal(successionDepthForTask('856', []), 0);
+  const entries = [{ event: 'launch', taskId: '856', ts: '2026-08-03T00:00:00Z', workspaceRef: 'workspace:1' }];
+  assert.equal(successionDepthForTask('856', entries), 1);
+});
+
+test('successionDepthForTask: each successionOf launch increments the chain', () => {
+  const entries = [
+    { event: 'launch', taskId: '856', ts: '2026-08-03T00:00:00Z', workspaceRef: 'workspace:1' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T01:00:00Z', workspaceRef: 'workspace:2', successionOf: 'workspace:1' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T02:00:00Z', workspaceRef: 'workspace:3', successionOf: 'workspace:2' },
+  ];
+  assert.equal(successionDepthForTask('856', entries), 3);
+});
+
+test('successionDepthForTask: a fresh (non-succession) redispatch resets the chain', () => {
+  const entries = [
+    { event: 'launch', taskId: '856', ts: '2026-08-03T00:00:00Z', workspaceRef: 'workspace:1' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T01:00:00Z', workspaceRef: 'workspace:2', successionOf: 'workspace:1' },
+    // owner --force redispatches from scratch after investigating — new chain starts at 1
+    { event: 'launch', taskId: '856', ts: '2026-08-03T05:00:00Z', workspaceRef: 'workspace:9' },
+  ];
+  assert.equal(successionDepthForTask('856', entries), 1);
+});
+
+test('successionDepthForTask ignores other tasks and unordered ts input', () => {
+  const entries = [
+    { event: 'launch', taskId: '9', ts: '2026-08-03T09:00:00Z', workspaceRef: 'workspace:9', successionOf: 'x' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T02:00:00Z', workspaceRef: 'workspace:3', successionOf: 'workspace:2' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T00:00:00Z', workspaceRef: 'workspace:1' },
+    { event: 'launch', taskId: '856', ts: '2026-08-03T01:00:00Z', workspaceRef: 'workspace:2', successionOf: 'workspace:1' },
+  ];
+  assert.equal(successionDepthForTask('856', entries), 3);
+});
+
+test('SUCCESSION_DEPTH_CAP is 5', () => {
+  assert.equal(SUCCESSION_DEPTH_CAP, 5);
 });
 
 test('launchByRef finds the launch entry that produced a given workspace ref', () => {

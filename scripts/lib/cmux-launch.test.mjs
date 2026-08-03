@@ -2,8 +2,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP } = require('./cmux-launch.js');
+const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
+
+// Card #856 (Session-system overhaul S3): launcher auth pre-check gate.
+test('shouldRefuseForAuth: refuses only on an explicit ok:false result', () => {
+  assert.equal(shouldRefuseForAuth({ ok: false, mode: 'fail', detail: 'Not logged in' }), true);
+  assert.equal(shouldRefuseForAuth({ ok: true, mode: 'oauth' }), false);
+  assert.equal(shouldRefuseForAuth({ ok: true, mode: 'api-key' }), false);
+  assert.equal(shouldRefuseForAuth(null), false);
+  assert.equal(shouldRefuseForAuth(undefined), false);
+});
 
 // Fake clock + probes for the verification wait (card #705). intervalSec 0
 // keeps `sleep 0` cheap; `now` advances 5 simulated seconds per poll so a

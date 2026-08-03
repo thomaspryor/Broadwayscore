@@ -438,3 +438,99 @@ test('acquireRunLock: second acquire is refused while fresh, stale lock is taken
     assert.equal(acquireRunLock(lockDir, 60_000), 'error');
   } finally { rmSync(base, { recursive: true, force: true }); }
 });
+
+// No-payload reaper (card #856, Session-system overhaul S3, 4b).
+const { sweepNoPayload } = require('./bsc-prune.js');
+
+function noPayloadHarness({ priorState = {} } = {}) {
+  const closed = [];
+  const appended = [];
+  const paged = [];
+  let savedState = null;
+  const deps = {
+    closedRefs: new Set(),
+    idleRefs: new Set(),
+    isDoneTitleFn: (title) => String(title).trim().slice(0, 4).includes('✅'),
+    closeWorkspaceFn: (ref) => closed.push(ref),
+    loadNoPayloadStateFn: () => priorState,
+    saveNoPayloadStateFn: (s) => { savedState = s; },
+    pageNoPayloadCloseFn: (o, launch) => paged.push({ o, launch }),
+    readLedgerEntriesFn: () => [],
+    appendLedgerEntryFn: (e) => appended.push(e),
+  };
+  return { closed, appended, paged, deps, getSavedState: () => savedState };
+}
+
+const authDeadWs = (n) => ({ ref: `workspace:${n}`, title: `🤖 dead one ${n}` });
+const ownerWs = (n) => ({ ref: `workspace:${n}`, title: `owner's own tab ${n}` });
+
+test('sweepNoPayload: never a candidate without the 🤖 auto-dispatch marker (owner tab)', () => {
+  const { closed, deps } = noPayloadHarness();
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [ownerWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+});
+
+test('sweepNoPayload: never a candidate for the selected tab, even if 🤖 + auth-dead', () => {
+  const { closed, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => 'Not logged in';
+  sweepNoPayload({ all: [{ ...authDeadWs(1), selected: true }], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+});
+
+test('sweepNoPayload: first sighting quarantines, does not close', () => {
+  const { closed, getSavedState, deps } = noPayloadHarness();
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+  assert.deepEqual(getSavedState(), { 'workspace:1': 1 });
+});
+
+test('sweepNoPayload: the 3rd consecutive sighting closes, journals a dead entry, and pages the digest', () => {
+  const { closed, appended, paged, getSavedState, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, ['workspace:1']);
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'dead');
+  assert.equal(appended[0].reason, 'no-payload');
+  assert.equal(paged.length, 1);
+  assert.deepEqual(getSavedState(), {}); // dropped once closed, not carried forward
+});
+
+test('sweepNoPayload: --dry-run never closes, never persists state, never pages', () => {
+  const { closed, appended, paged, getSavedState, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => 'Not logged in · Please run /login';
+  sweepNoPayload({ all: [authDeadWs(1)], dryRun: true, ...deps });
+  assert.deepEqual(closed, []);
+  assert.deepEqual(appended, []);
+  assert.deepEqual(paged, []);
+  assert.equal(getSavedState(), null, 'dry-run must never persist quarantine state');
+});
+
+test('sweepNoPayload: a normal working pane is never flagged, regardless of prior quarantine state', () => {
+  const { closed, getSavedState, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => '│ ctx 42% │ doing real work';
+  sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+  assert.deepEqual(getSavedState(), {}, 'recovery clears state instead of decaying');
+});
+
+test('sweepNoPayload: NO_PAYLOAD_REAPER_DISABLED=1 kill switch short-circuits entirely (no screen reads, no state writes)', () => {
+  const { closed, getSavedState, deps } = noPayloadHarness({ priorState: { 'workspace:1': 2 } });
+  deps.readScreenFn = () => { throw new Error('must not be called'); };
+  process.env.NO_PAYLOAD_REAPER_DISABLED = '1';
+  try {
+    assert.doesNotThrow(() => sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps }));
+  } finally { delete process.env.NO_PAYLOAD_REAPER_DISABLED; }
+  assert.deepEqual(closed, []);
+  assert.equal(getSavedState(), null);
+});
+
+test('sweepNoPayload: a ref already in idleRefs (dead process — the pre-existing idle-unmarked bucket) is never a candidate here', () => {
+  const { closed, deps } = noPayloadHarness();
+  deps.readScreenFn = () => { throw new Error('must not be called for an idle ref'); };
+  deps.idleRefs = new Set(['workspace:1']);
+  sweepNoPayload({ all: [authDeadWs(1)], dryRun: false, ...deps });
+  assert.deepEqual(closed, []);
+});
