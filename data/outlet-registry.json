@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-03T00:41:02.074Z",
+    "lastUpdated": "2026-08-03T01:08:54.484Z",
     "version": "2.1.0",
-    "lastChange": "standingCoverage derived from measured 3-season Broadway coverage (card #627): +9 outlets clearing the bar, -hollywood-reporter (19%, silence now caught by outlet-cadence heartbeat)"
+    "lastChange": "merge auto-registered ayoungishperspective into a-youngish-perspective (alias already present)"
   },
   "outlets": {
     "westendtheatre": {
@@ -2787,7 +2787,9 @@
         "british-theatre-guide",
         "british theatre guide",
         "britishtheatreguide-info",
-        "britishtheatreguide-com"
+        "britishtheatreguide-com",
+        "britishtheatreguide",
+        "btg"
       ],
       "domain": "britishtheatre.com",
       "region": "london",
@@ -9912,7 +9914,9 @@
       "displayName": "Seeing Dance",
       "tier": 3,
       "aliases": [
-        "seeing-dance"
+        "seeing-dance",
+        "seeingdance",
+        "seeing dance"
       ],
       "domain": "seeingdance.com",
       "region": "london"
@@ -10235,14 +10239,6 @@
       ],
       "domain": "viewfromthegods.co.uk"
     },
-    "ayoungishperspective": {
-      "displayName": "Ayoungishperspective",
-      "tier": 3,
-      "aliases": [
-        "ayoungishperspective"
-      ],
-      "domain": "ayoungishperspective.co.uk"
-    },
     "jewishnews": {
       "displayName": "Jewishnews",
       "tier": 3,
@@ -10293,16 +10289,6 @@
       "domain": "jadar.uk",
       "region": "london"
     },
-    "seeingdance": {
-      "displayName": "SeeingDance",
-      "tier": 4,
-      "aliases": [
-        "seeingdance",
-        "seeing dance"
-      ],
-      "domain": "seeingdance.com",
-      "region": "london"
-    },
     "cheeky-little-matinee": {
       "displayName": "Cheeky Little Matinee",
       "tier": 4,
@@ -10323,17 +10309,6 @@
         "on yorkshire magazine"
       ],
       "domain": "on-magazine.co.uk",
-      "region": "london"
-    },
-    "british-theatre-guide": {
-      "displayName": "British Theatre Guide",
-      "tier": 3,
-      "aliases": [
-        "british-theatre-guide",
-        "britishtheatreguide",
-        "btg"
-      ],
-      "domain": "britishtheatreguide.info",
       "region": "london"
     },
     "nowthenmagazine": {
@@ -10369,6 +10344,54 @@
         "lifted leg"
       ],
       "domain": "liftedleg.com",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "flicker-magazine": {
+      "displayName": "Flicker Magazine",
+      "tier": 3,
+      "aliases": [
+        "flicker-magazine",
+        "flickermagazine",
+        "flicker magazine"
+      ],
+      "domain": "flickermagazine.art",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "east-midlands-theatre": {
+      "displayName": "East Midlands Theatre",
+      "tier": 3,
+      "aliases": [
+        "east-midlands-theatre",
+        "eastmidlandstheatre",
+        "east midlands theatre"
+      ],
+      "domain": "eastmidlandstheatre.com",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "a-youngish-perspective": {
+      "displayName": "A Youngish Perspective",
+      "tier": 3,
+      "aliases": [
+        "a-youngish-perspective",
+        "ayoungishperspective",
+        "a youngish perspective"
+      ],
+      "domain": "ayoungishperspective.co.uk",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "quays-life": {
+      "displayName": "Quays Life",
+      "tier": 3,
+      "aliases": [
+        "quays-life",
+        "quayslife",
+        "quays life"
+      ],
+      "domain": "quayslife.com",
       "region": "london",
       "accessModel": "free"
     }
