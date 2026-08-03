@@ -530,6 +530,26 @@ const ARTICLE_BOUNDARY_PATTERNS = [
 ];
 
 /**
+ * True if `word` appears in `lower` starting at a word boundary — i.e. not
+ * as a mid-word substring of an unrelated word. Deliberately checks only the
+ * LEFT boundary (not both), so inflected forms like "come" -> "comes" or
+ * "turner" -> "turner's" still count as a match; a raw `.includes()` would
+ * also match "come" inside "become" or "rent" inside "different", neither of
+ * which is evidence the word was actually used.
+ * @param {string} lower - already-lowercased haystack
+ * @param {string} word - already-lowercase needle
+ */
+function includesAtWordStart(lower, word) {
+  let idx = lower.indexOf(word);
+  while (idx !== -1) {
+    const before = idx === 0 ? '' : lower[idx - 1];
+    if (!/[a-z0-9]/i.test(before)) return true;
+    idx = lower.indexOf(word, idx + 1);
+  }
+  return false;
+}
+
+/**
  * Validate that text mentions the expected show
  * More robust than the basic check in assessTextQuality
  *
@@ -559,31 +579,57 @@ function validateShowMentioned(text, showTitle, showId) {
     }
   }
 
-  // Check 2: Show ID words (e.g., "back-to-the-future-2023" -> ["back", "future"])
+  // Show ID words (e.g., "back-to-the-future-2023" -> ["back", "future"]).
+  // Computed once and reused by Check 2 (full-strength match) and Check 3
+  // (weaker fallback, still requires SOME show-specific evidence — see below).
+  let idWords = [];
   if (showId) {
-    // Remove year suffix and split
     const idBase = showId.replace(/-\d{4}$/, '');
-    const idWords = idBase.split('-').filter(w => w.length > 3 && !['the', 'and', 'for'].includes(w));
+    idWords = idBase.split('-').filter(w => w.length > 3 && !['the', 'and', 'for'].includes(w));
+  }
 
-    if (idWords.length >= 2) {
-      const matchCount = idWords.filter(w => lower.includes(w)).length;
-      if (matchCount >= 2 || (matchCount === idWords.length)) {
-        return { valid: true, confidence: 'medium', reason: `${matchCount}/${idWords.length} show ID words found` };
-      }
-    } else if (idWords.length === 1 && idWords[0].length > 4) {
-      // Single significant word (e.g., "cabaret", "hamilton")
-      if (lower.includes(idWords[0])) {
-        return { valid: true, confidence: 'medium', reason: 'Show name word found' };
-      }
+  // Check 2: Show ID words. Word-boundary matched (not raw .includes()) for
+  // the same reason as Check 3 below — a multi-word idWords list can still
+  // rack up 2 coincidental mid-word substring hits in unrelated text (e.g.
+  // "arena" inside "quARENAntine" alongside another fragment), which would
+  // otherwise validate before Check 3's stricter guard is ever reached.
+  if (idWords.length >= 2) {
+    const matchCount = idWords.filter(w => includesAtWordStart(lower, w)).length;
+    if (matchCount >= 2 || (matchCount === idWords.length)) {
+      return { valid: true, confidence: 'medium', reason: `${matchCount}/${idWords.length} show ID words found` };
+    }
+  } else if (idWords.length === 1 && idWords[0].length > 4) {
+    // Single significant word (e.g., "cabaret", "hamilton")
+    if (includesAtWordStart(lower, idWords[0])) {
+      return { valid: true, confidence: 'medium', reason: 'Show name word found' };
     }
   }
 
-  // Check 3: For very long reviews, relax the requirement slightly
-  if (text.length > 3000) {
-    // Long reviews might use pronouns or "the show" instead of title
+  // Check 3: For very long reviews, relax the title-match requirement to a
+  // single show-ID word — but NEVER on theater-keyword count alone. A long
+  // article about anything theater-adjacent (an obituary, a Tony roundup, an
+  // actor profile) trivially racks up 5+ generic keyword hits without ever
+  // mentioning the specific show; that rubber-stamped 28 of 39 unrelated NYT
+  // articles as "reviews" in task #895 (les-miserables-arena-concert-
+  // spectacular-off-broadway-2026/nytimes--richard-sandomir.json was a bike
+  // acrobat's obituary that hit theater/west end/act/audience/costume without
+  // ever saying "Les Miserables"). Requiring at least one show-ID word keeps
+  // the pronoun-heavy-review use case this check exists for, while refusing
+  // to validate content that never references the show at all.
+  //
+  // The word must start at a word boundary (not just appear anywhere as a
+  // raw substring) — a plain lower.includes() reopens the exact false-positive
+  // hole Check 2's single-word branch already guards against with its
+  // length>4 floor: idWords for a show like "rent-2026" is just ["rent"],
+  // which is a substring of ordinary words like "diffeRENT" or "appaRENT"
+  // that appear in totally unrelated long articles (caught in review).
+  // Matching at word-start still allows inflected forms the fallback exists
+  // for ("turners" -> "turner's", "come" -> "comes").
+  if (text.length > 3000 && idWords.length > 0) {
     const hasTheaterContext = THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length >= 5;
-    if (hasTheaterContext) {
-      return { valid: true, confidence: 'low', reason: 'Long review with theater context (title not found)' };
+    const hasAnyShowWord = idWords.some(w => includesAtWordStart(lower, w));
+    if (hasTheaterContext && hasAnyShowWord) {
+      return { valid: true, confidence: 'low', reason: 'Long review with theater context and partial show-name match' };
     }
   }
 
