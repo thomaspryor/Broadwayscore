@@ -836,6 +836,23 @@ on:
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
       - 'scripts/lib/gap-audit-merge.test.mjs'
+      # Task #923: the file lock withFileLock used to live inside
+      # gap-audit-merge.js (scoped to one file); it now also guards
+      # gap-audit-checkpoint.json, so it moved to its own shared module.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/file-lock.js'
+      - 'scripts/lib/file-lock.test.mjs'
+      # Task #923: merge-aware read-modify-write for
+      # data/audit/gap-audit-checkpoint.json — the #893 whole-object-write race
+      # class, one file over. Without saveCheckpointEntries an hourly cron run
+      # overlapping a local --show=X run last-writer-wins the whole checkpoint.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/gap-audit-checkpoint.js'
+      - 'scripts/lib/gap-audit-checkpoint.test.mjs'
+      # Spawns real concurrent processes to prove the checkpoint write path
+      # actually serializes+merges instead of last-writer-wins.
+      - 'scripts/lib/gap-audit-checkpoint.concurrent.test.mjs'
       # Coverage Verdict S2 (#906): censusVerdict per-candidate states +
       # censusVerdictFor producer adapter. Colocated test runs in the tests/unit
       # node --test batch (not globbed); path-listed so a solo edit triggers CI.

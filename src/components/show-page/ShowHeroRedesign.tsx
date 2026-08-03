@@ -735,26 +735,45 @@ function DateLine({ show }: { show: ComputedShow }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-gray-500';
-  if (show.status === 'closed' && show.openingDate && show.closingDate) {
-    return (
-      <p className={dateClass}>
-        {formatDate(show.openingDate)} → {formatDate(show.closingDate)}
-      </p>
-    );
-  }
-  if (show.status === 'previews' || show.status === 'upcoming') {
-    if (show.openingDate) {
-      return <p className={dateClass}>Opens {formatDate(show.openingDate)}</p>;
+
+  // openingDate is routinely null Off-Broadway (many OB runs have no separate
+  // press night), so every branch falls back to previewsStartDate for the
+  // start half. Without the fallback the whole line vanished on OB previews
+  // shows that DO have both a first-preview and a closing date — owner report
+  // on The Pass, 2026-08-02.
+  const start = show.openingDate || show.previewsStartDate;
+  const startIsPreview = !show.openingDate && !!show.previewsStartDate;
+
+  if (show.status === 'closed') {
+    if (start && show.closingDate) {
+      return (
+        <p className={dateClass}>
+          {formatDate(start)} → {formatDate(show.closingDate)}
+        </p>
+      );
     }
+    // Only one end known. "Opened <date>" alone would read identically to an
+    // open show's line, leaving the StatusBadge as the sole signal that the run
+    // is over — 14 shows in shows.json hit this. Past tense says it here.
+    if (start) return <p className={dateClass}>Ran from {formatDate(start)}</p>;
+    if (show.closingDate) return <p className={dateClass}>Closed {formatDate(show.closingDate)}</p>;
     return null;
   }
-  // open
-  return (
-    <p className={dateClass}>
-      {show.openingDate && <>Opened {formatDate(show.openingDate)}</>}
-      {show.closingDate && <> · Closes {formatDate(show.closingDate)}</>}
-    </p>
-  );
+
+  // Assemble from whichever halves exist so a missing start never leaves an
+  // orphaned " · Closes …" separator. filter(Boolean).join(' · ') is the
+  // codebase idiom for optional-part metadata lines.
+  const isUnopened = show.status === 'previews' || show.status === 'upcoming';
+  const startLabel = isUnopened
+    ? (startIsPreview ? 'Previews from' : 'Opens')
+    : (startIsPreview ? 'Running since' : 'Opened');
+
+  const line = [
+    start && `${startLabel} ${formatDate(start)}`,
+    show.closingDate && `Closes ${formatDate(show.closingDate)}`,
+  ].filter(Boolean).join(' · ');
+
+  return line ? <p className={dateClass}>{line}</p> : null;
 }
 
 function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: number }) {

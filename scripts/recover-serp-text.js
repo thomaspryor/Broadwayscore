@@ -40,7 +40,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
-const { fetchPage, unwrapRedirectUrl } = require('./lib/scraper');
+const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -456,7 +456,16 @@ async function main() {
   console.log(JSON.stringify(stats, null, 2));
 }
 
-main().catch(err => {
-  console.error('FATAL ERROR:', err);
-  process.exit(1);
-});
+main()
+  .catch(err => {
+    console.error('FATAL ERROR:', err);
+    process.exitCode = 1;
+  })
+  .finally(() => {
+    // A successful Playwright fetch (fetchWithPlaywright's happy path) leaves
+    // the Chromium browser process running for reuse and never closes it —
+    // cleanup() closes it with a timeout guard. Without this, any run that
+    // touches even one Playwright-fetched URL hangs forever after printing
+    // its summary (same class as task #438's 45-min discover-new-shows.js hang).
+    cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });
