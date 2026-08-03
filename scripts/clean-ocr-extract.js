@@ -16,9 +16,8 @@ Usage:
   node scripts/clean-ocr-extract.js [options]
   node scripts/clean-ocr-extract.js --help, -h    print this usage and exit
 `;
-const envPath = path.join(__dirname, '..', '.env');
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ||
-  (fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8').match(/ANTHROPIC_API_KEY=([^\n]+)/)?.[1] : null);
+if (!process.env.ANTHROPIC_API_KEY) require('./lib/load-env').loadEnv();
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 if (!ANTHROPIC_API_KEY) {
   console.error('ANTHROPIC_API_KEY not found');

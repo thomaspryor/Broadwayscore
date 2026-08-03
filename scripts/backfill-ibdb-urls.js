@@ -17,20 +17,7 @@ const path = require('path');
 const { searchIBDB } = require('./lib/ibdb-dates');
 
 // Load .env if available
-try {
-  const envPath = path.join(__dirname, '..', '.env');
-  if (fs.existsSync(envPath)) {
-    const envContent = fs.readFileSync(envPath, 'utf8');
-    for (const line of envContent.split('\n')) {
-      const match = line.match(/^([^#=]+)=(.*)$/);
-      if (match) {
-        const key = match[1].trim();
-        const val = match[2].trim().replace(/^["']|["']$/g, '');
-        if (!process.env[key]) process.env[key] = val;
-      }
-    }
-  }
-} catch (e) { /* ignore */ }
+require('./lib/load-env').loadEnv();
 
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');

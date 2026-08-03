@@ -12,22 +12,10 @@
  */
 
 const crypto = require('crypto');
-const path = require('path');
 const fs = require('fs');
 
 // Load .env
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eq = trimmed.indexOf('=');
-    if (eq === -1) continue;
-    const key = trimmed.slice(0, eq);
-    const val = trimmed.slice(eq + 1);
-    if (!process.env[key]) process.env[key] = val;
-  }
-}
+require('./lib/load-env').loadEnv();
 
 const Anthropic = require('@anthropic-ai/sdk');
 const { Client: NotionClient } = require('@notionhq/client');
