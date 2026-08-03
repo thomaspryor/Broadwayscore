@@ -1,11 +1,25 @@
 {
   "stale": [
+    "Check Arm Yield (dead-arm detector)",
     "Recover Explicit Ratings",
-    "Scrape WestEndTheatre",
     "Sweep WE Aggregators"
   ],
   "redispatched": [
-    "Scrape WestEndTheatre"
+    "Check Arm Yield (dead-arm detector)"
   ],
-  "updatedAt": "2026-08-02T12:22:24Z"
+  "staleStreak": {
+    "Check Arm Yield (dead-arm detector)": {
+      "days": 1,
+      "lastCounted": "2026-08-03"
+    },
+    "Recover Explicit Ratings": {
+      "days": 1,
+      "lastCounted": "2026-08-03"
+    },
+    "Sweep WE Aggregators": {
+      "days": 1,
+      "lastCounted": "2026-08-03"
+    }
+  },
+  "updatedAt": "2026-08-03T13:02:28.370Z"
 }
