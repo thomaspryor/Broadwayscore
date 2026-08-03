@@ -26,6 +26,9 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=scripts/lib/push-mutex.sh
 source "$SCRIPT_DIR/lib/push-mutex.sh"
+# shellcheck source=scripts/lib/disk-floor-check.sh
+source "$SCRIPT_DIR/lib/disk-floor-check.sh"
+ensure_disk_floor   # task #968: self-heal low-disk before the merge+push that needs the space
 
 die() { push_mutex_release; echo "❌ $*" >&2; exit 1; }
 log() { echo "→ $*"; }

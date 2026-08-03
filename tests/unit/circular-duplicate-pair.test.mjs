@@ -29,16 +29,44 @@ const {
 const body = (n) => 'x'.repeat(n);
 
 // ---------------------------------------------------------------------------
-// 1. wouldFormDuplicateCycle (pure)
+// 1. wouldFormDuplicateCycle (pure, load injected — no I/O)
 // ---------------------------------------------------------------------------
-test('wouldFormDuplicateCycle: true when collider points back at this file', () => {
-  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', { duplicateOf: 'nyt--brantley.json' }), true);
+test('wouldFormDuplicateCycle: true when collider points back at this file (2-node)', () => {
+  const load = (name) => (name === 'nyt--other.json' ? { duplicateOf: 'nyt--brantley.json' } : null);
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', 'nyt--other.json', load), true);
 });
 test('wouldFormDuplicateCycle: false when collider points elsewhere / nowhere', () => {
-  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', { duplicateOf: 'nyt--other.json' }), false);
-  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', { duplicateOf: null }), false);
-  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', {}), false);
-  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', null), false);
+  const pointsElsewhere = (name) => (name === 'nyt--other.json' ? { duplicateOf: 'nyt--someone-else.json' } : null);
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', 'nyt--other.json', pointsElsewhere), false);
+  const pointsNowhere = () => ({ duplicateOf: null });
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', 'nyt--other.json', pointsNowhere), false);
+  const empty = () => ({});
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', 'nyt--other.json', empty), false);
+  const missing = () => null;
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', 'nyt--other.json', missing), false);
+  assert.equal(wouldFormDuplicateCycle('nyt--brantley.json', null, missing), false);
+});
+test('wouldFormDuplicateCycle: true for a 3-node cycle (A already dup of B, B already dup of C, write sets C.duplicateOf=A)', () => {
+  // A.duplicateOf=B, B.duplicateOf=C already exist on disk. Writing C with
+  // duplicateOf=A would close A->B->C->A — the Notion #941 washpost class,
+  // now caught at write time instead of only by the post-hoc audit.
+  const records = {
+    'outlet--a.json': { duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { duplicateOf: 'outlet--c.json' },
+  };
+  const load = (name) => records[name] || null;
+  assert.equal(wouldFormDuplicateCycle('outlet--c.json', 'outlet--a.json', load), true);
+});
+test('wouldFormDuplicateCycle: false when the chain terminates without looping back', () => {
+  // A.duplicateOf=B, B.duplicateOf=C, C has no duplicateOf — writing a NEW
+  // file D with duplicateOf=A is not a cycle (D isn't anywhere in A's chain).
+  const records = {
+    'outlet--a.json': { duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { duplicateOf: 'outlet--c.json' },
+    'outlet--c.json': {},
+  };
+  const load = (name) => records[name] || null;
+  assert.equal(wouldFormDuplicateCycle('outlet--d.json', 'outlet--a.json', load), false);
 });
 
 // ---------------------------------------------------------------------------
@@ -55,6 +83,22 @@ test('safeWriteReview does NOT mark a file dup when the same-URL collider points
   safeWriteReview(aPath, { url, fullText: body(3000), criticName: 'Ben Brantley' });
   const a = JSON.parse(fs.readFileSync(aPath, 'utf-8'));
   assert.equal(a.duplicateOf ?? null, null, 'A must stay primary — no cycle');
+});
+
+test('safeWriteReview does NOT mark a file dup when the collider chain loops back through TWO intermediate siblings (3-node cycle, Notion #941 write-time class)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cyc3-'));
+  const url = 'https://www.washingtonpost.com/2026/01/01/theater/proof-review/';
+  // On-disk chain: charles -> other -> brantley (the file about to be written).
+  // Writing brantley with the same URL as charles must NOT set
+  // brantley.duplicateOf = charles, since that would close the loop.
+  fs.writeFileSync(path.join(dir, 'wapo--charles.json'),
+    JSON.stringify({ url, fullText: body(2000), duplicateOf: 'wapo--other.json', duplicateReason: 'url-collision-detected-at-write' }));
+  fs.writeFileSync(path.join(dir, 'wapo--other.json'),
+    JSON.stringify({ duplicateOf: 'wapo--brantley.json', duplicateReason: 'url-collision-detected-at-write' }));
+  const aPath = path.join(dir, 'wapo--brantley.json');
+  safeWriteReview(aPath, { url, fullText: body(3000), criticName: 'Ben Brantley' });
+  const a = JSON.parse(fs.readFileSync(aPath, 'utf-8'));
+  assert.equal(a.duplicateOf ?? null, null, 'brantley must stay primary — no 3-node cycle');
 });
 
 test('safeWriteReview clears a pre-marked duplicateOf that would form a cycle, with breadcrumb', () => {
