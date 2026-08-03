@@ -37,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { pushCookieSecretWithMeta } = require('./lib/otp-login-helpers');
 
 const args = process.argv.slice(2);
 if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
@@ -227,43 +228,17 @@ async function main() {
 // not incrementally by a single-outlet script. Returns false (not throw) on
 // failure so a push hiccup can't masquerade as a login failure — see caller.
 //
-// Also pushes a companion WSJ_COOKIES_META secret (base64 JSON
-// {extractedAt, extractedAtUnix}) — without it cookie-loader.js's
+// Delegates to the shared pushCookieSecretWithMeta() helper (task #897) so
+// #850/#876's OTP-login outlets inherit this WSJ_COOKIES_META companion-push
+// behavior instead of re-deriving it — without it cookie-loader.js's
 // selectFresherCookieTier() has no way to know this secret is newer than a
 // stale COOKIES_BUNDLE_* wsj entry, and the bundle silently wins forever
 // (task #881).
 function pushCookiesToGitHubSecret(cookies, meta) {
-  console.log('Pushing cookies to GitHub secret WSJ_COOKIES...');
-  const base64Val = Buffer.from(JSON.stringify(cookies)).toString('base64');
-  try {
-    execSync('gh secret set WSJ_COOKIES --repo thomaspryor/Broadwayscore', {
-      input: base64Val,
-      stdio: ['pipe', 'inherit', 'inherit'],
-    });
-    console.log('Pushed WSJ_COOKIES to GitHub secrets.');
-  } catch (err) {
-    console.error(`WARNING: failed to push WSJ_COOKIES secret: ${err.message}`);
-    console.error('WARNING: local cookie refresh succeeded but CI will keep using the previous secret until this is retried.');
-    return false;
-  }
-
-  if (meta) {
-    const metaBase64 = Buffer.from(JSON.stringify(meta)).toString('base64');
-    try {
-      execSync('gh secret set WSJ_COOKIES_META --repo thomaspryor/Broadwayscore', {
-        input: metaBase64,
-        stdio: ['pipe', 'inherit', 'inherit'],
-      });
-      console.log('Pushed WSJ_COOKIES_META to GitHub secrets.');
-    } catch (err) {
-      console.error(`WARNING: failed to push WSJ_COOKIES_META secret: ${err.message}`);
-      console.error('WARNING: WSJ_COOKIES was pushed but freshness comparison against COOKIES_BUNDLE_* will fall back to bundle-wins until this is retried.');
-      // Not fatal to the overall push: WSJ_COOKIES itself landed, this only
-      // affects tier-selection freshness — same reasoning as the cookie push above.
-    }
-  }
-
-  return true;
+  const result = pushCookieSecretWithMeta('WSJ_COOKIES', cookies, meta, {
+    repo: 'thomaspryor/Broadwayscore',
+  });
+  return result.cookiesPushed;
 }
 
 main()
