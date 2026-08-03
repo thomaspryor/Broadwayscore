@@ -297,66 +297,6 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]
   [ "$VERIFY_FAIL" = 0 ] || die "origin/$DEFAULT_BRANCH does not match what we pushed — a file we added is absent, or a file we deleted is still there"
 fi
 
-# --- VERIFY the CONTENT survived, not just the filenames (card 3b1637c5) ─────
-# The existence loop above (cat-file -e) proves a same-named file is present on
-# origin — it CANNOT prove that file still holds the lines this merge pushed. A
-# concurrent session whose merge reverts our hunks while leaving the path in
-# place satisfies every check above: our merge commit really IS an ancestor of
-# origin's tip, and the file really DOES exist. Task #684's T12 fix was dropped
-# from origin exactly this way TWICE (2026-08-01 and 2026-08-02), each time
-# after this script reported "verified on origin"; both drops were caught only
-# by a human running `git show origin/$DEFAULT_BRANCH:<file> | grep`.
-#
-# scripts/lib/push-with-retry.sh:640 already defends ITS push path with
-# scripts/lib/push-content-survival.js — this path never called it, so every
-# modification-only merge (no files added, none deleted) shipped with zero
-# content verification. Reuse the same helper and the same kill switch, so a
-# false-positive storm can be silenced without a code revert.
-#   base   = $ORIGIN_BASE_SHA — origin's tip at run start (captured before both
-#            merges), so $ORIGIN_BASE_SHA..HEAD is exactly this run's outgoing diff
-#   before = HEAD — what we merged and just pushed
-#   final  = origin/$DEFAULT_BRANCH — what is actually live right now
-# Exit codes: 0 = nothing reverted, 1 = a file REVERTED to its pre-merge content
-# (hard failure), 2 = bad args / git failure (fail OPEN — same convention as the
-# helper's other callers: a broken check must never fail an otherwise-good push).
-#
-# KNOWN LIMITATION: the diff range also covers files that only OTHER sessions
-# touched (we merge origin before pushing, so their commits ride along in
-# HEAD). If a third session legitimately reverts one of those files back to its
-# $ORIGIN_BASE_SHA content inside our window, this reports 'reverted' for a file
-# that was never ours. That is a loud false alarm AFTER a successful push, not a
-# lost push — and it is the same trade-off push-with-retry.sh already accepts.
-if [ "${DRY_RUN:-0}" != "1" ] \
-   && [ "${PUSH_SKIP_CONTENT_SURVIVAL_CHECK:-}" != "1" ] \
-   && command -v node >/dev/null 2>&1 \
-   && [ -f "$SCRIPT_DIR/lib/push-content-survival.js" ]; then
-  # The block above only fetches when VERIFY_FILES/DELETED_FILES is non-empty,
-  # so re-fetch (bounded, best-effort) rather than trust a possibly-stale
-  # tracking ref. Fail OPEN on the fetch itself — a network hiccup here must not
-  # manufacture a failure on a push that already succeeded.
-  for _fa in 1 2 3; do
-    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null && break
-    sleep 2
-  done
-  CS_HEAD="$(g rev-parse HEAD 2>/dev/null || true)"
-  if [ -n "$CS_HEAD" ] && [ -n "${ORIGIN_BASE_SHA:-}" ]; then
-    echo "── content-survival check vs origin/$DEFAULT_BRANCH ──"
-    # `cd || exit 2` inside the subshell, NOT `cd &&`: push-content-survival.js
-    # shells out to plain `git` in the CWD (it has no -C equivalent), and a
-    # failed cd must land on the fail-OPEN code (2), never on the REVERTED
-    # code (1) that aborts the script.
-    CS_OUT="$(cd "$MAIN_DIR" 2>/dev/null || exit 2; node "$SCRIPT_DIR/lib/push-content-survival.js" \
-      --before-sha="$CS_HEAD" \
-      --base-sha="$ORIGIN_BASE_SHA" \
-      --check-ref="origin/$DEFAULT_BRANCH" 2>&1)"
-    CS_RC=$?
-    [ -n "$CS_OUT" ] && echo "$CS_OUT"
-    if [ "$CS_RC" = 1 ]; then
-      die "origin/$DEFAULT_BRANCH REVERTED content this merge pushed (see above) — the push landed but the lines are GONE. $BRANCH still holds the commits: re-run this script to re-merge, and investigate the concurrent writer that reverted them."
-    fi
-  fi
-fi
-
 # --- Schedule a delayed re-verify (task #668) ────────────────────────────────
 # The verify block above proves the push landed at THIS INSTANT — it cannot
 # see a race that resolves after this script exits. #668's incident: this
@@ -379,6 +319,88 @@ if [ "${DRY_RUN:-0}" != "1" ]; then
         --delays=120,480,900 </dev/null >>"$VERIFY_LOG" 2>&1 &
     )
     log "delayed re-verify scheduled (+2m/+8m/+15m against $MERGE_SHA) — log: $VERIFY_LOG"
+  fi
+fi
+
+# --- VERIFY the CONTENT survived, not just the filenames (card 3b1637c5) ─────
+# The existence loop above (cat-file -e) proves a same-named file is present on
+# origin — it CANNOT prove that file still holds the lines this merge pushed. A
+# concurrent session whose merge reverts our hunks while leaving the path in
+# place satisfies every check above: our merge commit really IS an ancestor of
+# origin's tip, and the file really DOES exist. Task #684's T12 fix was dropped
+# from origin exactly this way TWICE (2026-08-01 and 2026-08-02), each time
+# after this script reported "verified on origin"; both drops were caught only
+# by a human running `git show origin/$DEFAULT_BRANCH:<file> | grep`.
+#
+# scripts/lib/push-with-retry.sh:640 already defends ITS push path with
+# scripts/lib/push-content-survival.js — this path never called it, so every
+# modification-only merge (no files added, none deleted) shipped with zero
+# content verification. Reuse the same helper and the same kill switch, so a
+# false-positive storm can be silenced without a code revert.
+#
+# Deliberately placed AFTER the #668 delayed re-verify above, not before: die()
+# here exits the script, and scheduling that background watcher first means a
+# detected revert still gets its +2m/+8m/+15m follow-up instead of losing it.
+#
+# SCOPE — anchored to the BRANCH, not to $ORIGIN_BASE_SHA (adversarial-review
+# finding). $ORIGIN_BASE_SHA..HEAD would also cover every file that only OTHER
+# sessions touched (we merge origin before pushing, so their commits ride along
+# in HEAD); with ~80 concurrent sessions on this main, "someone else changed
+# that file too" is the common case, not an edge case, and the check would fire
+# constantly on files that were never ours. Anchoring to the branch's own
+# merge-base makes the comparison exactly:
+#   base   = merge-base($BRANCH, $ORIGIN_BASE_SHA) — the file before OUR edits
+#   before = $BRANCH tip — the content we intended to publish
+#   final  = origin/$DEFAULT_BRANCH — what is actually live right now
+# so only files this branch itself modified are examined. The trade: if the
+# origin merge 3-way-combined someone else's edit into the same file, final
+# matches neither base nor local and classifies as 'ambiguous' (not flagged) —
+# a false negative we accept, because the incident this exists to catch (our
+# lines gone, file back at its pre-edit content) still lands squarely on
+# 'reverted'.
+# Exit codes: 0 = nothing reverted, 1 = a file REVERTED to its pre-merge content
+# (hard failure), 2 = bad args / git failure (fail OPEN — same convention as the
+# helper's other callers: a broken check must never fail an otherwise-good push).
+if [ "${DRY_RUN:-0}" != "1" ] \
+   && [ "${PUSH_SKIP_CONTENT_SURVIVAL_CHECK:-}" != "1" ] \
+   && command -v node >/dev/null 2>&1 \
+   && [ -f "$SCRIPT_DIR/lib/push-content-survival.js" ]; then
+  # The existence block only fetches when VERIFY_FILES/DELETED_FILES is
+  # non-empty, so re-fetch (bounded, best-effort) rather than trust a
+  # possibly-stale tracking ref. Fail OPEN on the fetch itself — a network
+  # hiccup here must not manufacture a failure on a push that already succeeded.
+  for _fa in 1 2 3; do
+    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null && break
+    sleep 2
+  done
+  CS_BASE="$(g merge-base "$BRANCH" "${ORIGIN_BASE_SHA:-HEAD}" 2>/dev/null || true)"
+  CS_TIP="$(g rev-parse "$BRANCH" 2>/dev/null || true)"
+  if [ -n "$CS_BASE" ] && [ -n "$CS_TIP" ]; then
+    echo "── content-survival check vs origin/$DEFAULT_BRANCH ──"
+    # `cd || exit 2` inside the subshell, NOT `cd &&`: push-content-survival.js
+    # shells out to plain `git` in the CWD (it has no -C equivalent), and a
+    # failed cd must land on the fail-OPEN code (2), never on the REVERTED
+    # code (1) that aborts the script.
+    CS_OUT="$(cd "$MAIN_DIR" 2>/dev/null || exit 2; node "$SCRIPT_DIR/lib/push-content-survival.js" \
+      --before-sha="$CS_TIP" \
+      --base-sha="$CS_BASE" \
+      --check-ref="origin/$DEFAULT_BRANCH" 2>&1)"
+    CS_RC=$?
+    [ -n "$CS_OUT" ] && echo "$CS_OUT"
+    if [ "$CS_RC" = 1 ]; then
+      # Recovery guidance matters here and is easy to get wrong: re-running
+      # this script does NOT restore the content. $BRANCH is already merged
+      # into $DEFAULT_BRANCH, so `git merge $BRANCH` is a no-op, the outgoing
+      # diff is empty, and the re-run would exit 0 with the lines still gone.
+      # The content has to be re-applied on top of the reverting commit.
+      echo "" >&2
+      echo "  Recovery (re-running this script will NOT help — $BRANCH is already merged," >&2
+      echo "  so the merge is a no-op and the revert is the NEWER commit):" >&2
+      echo "    1. find the reverting commit:  git -C $MAIN_DIR log --oneline -5 origin/$DEFAULT_BRANCH -- <file>" >&2
+      echo "    2. re-apply our version:       git -C $MAIN_DIR checkout $BRANCH -- <file>" >&2
+      echo "    3. commit + push that, then tell the other session's owner what reverted it." >&2
+      die "origin/$DEFAULT_BRANCH REVERTED content this merge pushed (see above) — the push landed but the lines are GONE."
+    fi
   fi
 fi
 
