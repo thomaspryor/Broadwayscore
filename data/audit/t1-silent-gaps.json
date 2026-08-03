@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T16:49:00.572Z",
+  "generatedAt": "2026-08-03T17:36:22.424Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 267.62294083333336,
+      "fileAgeHours": 268.4123088888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 226.9262877777778
+      "nonTerminalAgeHours": 227.7156911111111
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 29.3643075
+      "nonTerminalAgeHours": 30.153710833333335
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -51,12 +51,12 @@
         "ok": false,
         "reason": "⚠️  ScrapingBee failed (render_js=false, domain=washingtonpost.com): ScrapingBee HTTP 401: {\"message"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=crazysexycool-regional-2026 --url=https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-brings-bangers-tlc-deserves-bolder-musical-treatment/ --outlet=washpost --critic=\"Thomas Floyd\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 0.8243747222222222,
+      "fileAgeHours": 1.6137777777777778,
       "gapSeenAt": "2026-08-03T16:49:00.572Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 0.7894033333333333
     }
   ],
   "contradictions": []
