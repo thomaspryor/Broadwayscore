@@ -29,7 +29,8 @@
     "jesus-christ-superstar-west-end-2026/theatreandtonic--emmie-newitt.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "crazysexycool-regional-2026/washpost--thomas-floyd.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -135,7 +136,16 @@
     "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
     "the-guilty-west-end-2026/washpost--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json",
+    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-west-end-2026/amny--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -198,6 +208,18 @@
     ]
   },
   "startTime": "2026-08-03T18:49:40.714Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-  "log": []
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-03T19:46:45.850Z",
+      "event": "bb-session",
+      "session": "4750f401",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-br"
+    },
+    {
+      "t": "2026-08-03T19:46:46.608Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
