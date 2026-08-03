@@ -49,8 +49,14 @@ test('batchStateResult: 30h-old batch is error (past the 24h vendor-expiry windo
   assert.ok(result.hint, 'error result should include a hint');
 });
 
-test('batchStateResult: 12h boundary is still pass, 12.5h flips to warn', () => {
-  assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(12), itemCount: 1 })).status, 'pass');
+// Boundary fixtures sit a hair INSIDE the line, not exactly on it: the
+// predicate is `age > 12`, and `hoursAgoIso(12)` is already 12h + however many
+// milliseconds elapse before batchStateResult() reads the clock — so the
+// "exactly 12h" case flipped to warn on a slow runner and reddened main
+// (2026-08-03). 0.01h = 36s of slack, still far tighter than the 0.5h step
+// the test is actually asserting.
+test('batchStateResult: just under 12h is still pass, 12.5h flips to warn', () => {
+  assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(11.99), itemCount: 1 })).status, 'pass');
   assert.equal(batchStateResult(validState({ submittedAt: hoursAgoIso(12.5), itemCount: 1 })).status, 'warn');
 });
 
