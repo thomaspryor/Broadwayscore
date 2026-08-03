@@ -12522,6 +12522,129 @@
       "computedAt": "2026-08-03T15:54:33.136Z"
     },
     {
+      "showId": "don-giovanni-off-broadway-2025",
+      "title": "Don Giovanni",
+      "openingDate": "2025-09-24",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-did-critics-think-of-ivo-van-hoves-don-giovanni-at-metropolitan-opera",
+        "https://www.broadwayworld.com/article/Review-Roundup-Ivo-van-Hoves-DON-GIOVANNI-Opens-at-the-Metropolitan-Opera-20230506"
+      ],
+      "aggregatorListedUrls": [
+        "https://newyorkclassicalreview.com/2023/05/an-ideal-mozart-cast-lifts-a-not-ideal-staging-in-mets-new-don-giovanni/",
+        "https://www.nytimes.com/2023/05/07/arts/music/review-don-giovanni-mozart-met-opera.html",
+        "https://operawire.com/metropolitan-opera-2022-23-review-don-giovanni/",
+        "https://www.nytimes.com/2023/04/29/arts/music/don-giovanni-met-opera.html",
+        "https://www.wsj.com/articles/don-giovanni-review-ivo-van-hoves-grim-mozart-at-the-met-80e69ff0",
+        "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/"
+      ],
+      "dirFiles": 8,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "bachtrack.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "pages-on-stages--mason-pilevsky.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-ivo-van-hoves-don-giovanni-at-metropolitan-opera",
+          "publishDate": "2023-05-06"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Ivo-van-Hoves-DON-GIOVANNI-Opens-at-the-Metropolitan-Opera-20230506",
+          "publishDate": "2023-05-06"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "pages-on-stages",
+            "outlet": "pages-on-stages",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://newyorkclassicalreview.com/2023/05/an-ideal-mozart-cast-lifts-a-not-ideal-staging-in-mets-new-don-giovanni/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2023/05/07/arts/music/review-don-giovanni-mozart-met-opera.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "https://operawire.com/metropolitan-opera-2022-23-review-don-giovanni/",
+            "outletId": "operawire.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2023/04/29/arts/music/don-giovanni-met-opera.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/don-giovanni-review-ivo-van-hoves-grim-mozart-at-the-met-80e69ff0",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/",
+            "outletId": "pages-on-stages",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          }
+        ],
+        "liveCount": 4,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-08-03T15:54:33.136Z"
+    },
+    {
       "showId": "driftwood-west-end-2026",
       "title": "Driftwood",
       "openingDate": "2026-06-09",
@@ -51960,6 +52083,36 @@
         "candidateCount": 21
       },
       "computedAt": "2026-08-03T14:41:38.469Z"
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "title": "The Truth",
+      "openingDate": "2026-06-24",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-03T15:54:33.136Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
