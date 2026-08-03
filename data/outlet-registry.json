@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-02T19:22:47.171Z",
+    "lastUpdated": "2026-08-03T00:27:12.578Z",
     "version": "2.1.0",
     "lastChange": "standingCoverage derived from measured 3-season Broadway coverage (card #627): +9 outlets clearing the bar, -hollywood-reporter (19%, silence now caught by outlet-cadence heartbeat)"
   },
@@ -5986,24 +5986,25 @@
     },
     "fairypoweredproductions": {
       "displayName": "Fairy Powered Productions",
-      "tier": 3,
+      "tier": 4,
       "aliases": [
-        "fairypoweredproductions"
+        "fairypoweredproductions",
+        "fairy powered productions",
+        "fairy powered"
       ],
-      "region": "london",
-      "accessModel": "free",
-      "domain": "fairypoweredproductions.com"
+      "domain": "fairypoweredproductions.com",
+      "region": "london"
     },
     "the-spy-in-the-stalls": {
       "displayName": "The Spy in the Stalls",
-      "tier": 3,
+      "tier": 4,
       "aliases": [
         "the-spy-in-the-stalls",
-        "thespyinthestalls"
+        "thespyinthestalls",
+        "spy in the stalls"
       ],
-      "region": "london",
-      "accessModel": "free",
-      "domain": "thespyinthestalls.com"
+      "domain": "thespyinthestalls.com",
+      "region": "london"
     },
     "labor-press": {
       "displayName": "Labor Press",
@@ -10207,7 +10208,8 @@
       "aliases": [
         "pinkprincetheatre"
       ],
-      "domain": "pinkprincetheatre.com"
+      "domain": "pinkprincetheatre.com",
+      "region": "london"
     },
     "londonbornandbred": {
       "displayName": "Londonbornandbred",
@@ -10281,27 +10283,76 @@
       ],
       "domain": "londonmumsmagazine.com"
     },
-    "the-spy-in-the-stalls": {
-      "displayName": "The Spy in the Stalls",
-      "tier": 4,
+    "jadar": {
+      "displayName": "JADAR",
+      "tier": 3,
       "aliases": [
-        "the-spy-in-the-stalls",
-        "thespyinthestalls",
-        "spy in the stalls"
+        "jadar",
+        "jadar-uk"
       ],
-      "domain": "thespyinthestalls.com",
-      "region": "london"
+      "domain": "jadar.uk",
+      "region": "london",
+      "accessModel": "free"
     },
-    "fairypoweredproductions": {
-      "displayName": "Fairy Powered Productions",
-      "tier": 4,
+    "cheeky-little-matinee": {
+      "displayName": "Cheeky Little Matinee",
+      "tier": 3,
       "aliases": [
-        "fairypoweredproductions",
-        "fairy powered productions",
-        "fairy powered"
+        "cheeky-little-matinee",
+        "cheeky little matinee",
+        "cheekylittlematinee"
       ],
-      "domain": "fairypoweredproductions.com",
-      "region": "london"
+      "domain": "cheekylittlematinee.com",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "on-magazine": {
+      "displayName": "On Magazine",
+      "tier": 3,
+      "aliases": [
+        "on-magazine",
+        "on magazine",
+        "onmagazine"
+      ],
+      "domain": "on-magazine.co.uk",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "nowthenmagazine": {
+      "displayName": "Now Then Magazine",
+      "tier": 3,
+      "aliases": [
+        "nowthenmagazine",
+        "now-then-magazine",
+        "now then magazine"
+      ],
+      "domain": "nowthenmagazine.com",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "harry-theatre-life": {
+      "displayName": "Harry Theatre Life",
+      "tier": 3,
+      "aliases": [
+        "harry-theatre-life",
+        "harrytheatrelife",
+        "harry theatre life"
+      ],
+      "domain": "harrytheatrelife.co.uk",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "liftedleg": {
+      "displayName": "Lifted Leg",
+      "tier": 3,
+      "aliases": [
+        "liftedleg",
+        "lifted-leg",
+        "lifted leg"
+      ],
+      "domain": "liftedleg.com",
+      "region": "london",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {

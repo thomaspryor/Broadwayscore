@@ -215,6 +215,14 @@ const PATTERNS = [
   // NYSR (WordPress) — entry-content
   ['nystagereview.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
+  // on-magazine.co.uk (On: Yorkshire Magazine, WordPress + Bunyad theme) — body
+  // lives in .article-content, NOT entry-content, so every generic fallback
+  // returned 0 chars and the review landed as a silent stub (Car Man / Sheffield
+  // Lyceum, task #874). Stop at the author-box / post-nav / related-posts chrome
+  // so the "you may also like" teaser headlines don't get scored as review prose.
+  ['on-magazine.co.uk', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+class="[^"]*(?:saboxplugin|s-post-nav|bk-related-posts)[^"]*"/, 300],
+  ['on-magazine.co.uk', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
+
   // newyorktheater.me (WordPress + Jetpack) — entry-content. Jetpack injects
   // sharedaddy share buttons + jp-relatedposts INSIDE entry-content, before
   // </article>. Stop at the first chrome marker to avoid pulling related-post
