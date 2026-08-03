@@ -73,6 +73,7 @@ const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChall
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
+const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
@@ -3769,6 +3770,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     urlValidation: { checked: 0, nulled: 0 },
   };
 
+  // Tracks every review-texts write this run makes for this show — new files via
+  // createReviewFile(), BWW excerpt merges/stubs (STEP 3b), and wrongUrl SERP-retry
+  // fixes (STEP 1b) all mutate content that rebuild-all-reviews.js needs to fold in.
+  // filesCreated in the returned result is this counter, not just STEP 3's tally —
+  // a run that only merged BWW excerpts or fixed a wrongUrl still needs a rebuild.
+  let reviewFilesTouched = 0;
+
   // STEP 1: Check ALL THREE aggregators (DTLI, Show Score, BWW Review Roundups)
   console.log('\n[1/4] Checking aggregators...');
 
@@ -4551,6 +4559,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             data.needsRefetch = true;
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
             health.wrongUrlRetry.fixed++;
+            reviewFilesTouched++;
           } else {
             console.log('✗');
           }
@@ -4900,6 +4909,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' });
       if (result === true) {
         created++;
+        reviewFilesTouched++;
       } else if (typeof result === 'string' && health.rejections[result] !== undefined) {
         health.rejections[result]++;
       }
@@ -4961,6 +4971,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             fs.renameSync(tmpPath, filePath);
             console.log(`    [BWW merged] ${file}`);
             merged++;
+            reviewFilesTouched++;
           }
           matched = true;
           break;
@@ -5008,6 +5019,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           saveAggregatorStub(filePath, stub);
           console.log(`    [BWW stub] ${filename}`);
           stubsCreated++;
+          reviewFilesTouched++;
         }
       }
     }
@@ -5130,7 +5142,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     success: true,
     showId,
     reviewsFound: foundReviews.length,
-    filesCreated: created,
+    filesCreated: reviewFilesTouched,
     health,
   };
 }
@@ -5230,8 +5242,10 @@ async function main() {
   // Rebuild reviews.json (skip in aggregators-only mode — caller rebuilds once at end)
   if (aggregatorsOnly) {
     console.log('\nSkipping rebuild (--aggregators-only mode)');
-  } else {
+  } else if (shouldTriggerRebuild(results)) {
     await rebuildReviewsJson();
+  } else {
+    console.log('\nSkipping rebuild (no review files created this run)');
   }
 
   // Final per-show summary
