@@ -20,6 +20,10 @@ permissions:
   actions: write   # dispatch llm-ensemble-score when new reviews land
 
 concurrency:
+  # per-run group intended: single daily cron + rare manual dispatch, no
+  # external dispatcher can stack triggers. Ingestion dedups by existing file
+  # (see comment above), so an overlapping run is a self-deduping no-op, not
+  # a race (task #922 audit, 2026-08-03).
   group: poll-loureviews-${{ github.run_id }}
   cancel-in-progress: false
 

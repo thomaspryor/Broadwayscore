@@ -1,6 +1,13 @@
 name: Collect Review Texts
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
+# per-run group intended (hybrid): scheduled/no-filter runs share a stable
+# 'global' group (queued, not cancelled) so the 3x-daily cron can't overlap
+# itself. Parallel manual dispatches WITH a show_filter deliberately fall
+# back to github.run_id — that's the documented multi-runner pattern ("launch
+# multiple with different show_filter values" in .github/workflows/CLAUDE.md)
+# where each partition must run independently, not queue behind the others
+# (task #922 audit, 2026-08-03).
 concurrency:
   group: collect-reviews-${{ github.event.inputs.show_filter && github.run_id || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.market_filter || 'all-markets' }}
   cancel-in-progress: false

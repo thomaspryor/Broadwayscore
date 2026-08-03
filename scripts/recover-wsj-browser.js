@@ -49,6 +49,7 @@ const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(','
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
+const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
 
 const CONFIG = {
   reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
@@ -151,6 +152,15 @@ function processRecoveredText(candidate, rawText) {
   const data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
   if (data.fullText && data.fullText.length >= cleanedText.length) {
     return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
+  }
+
+  // Date-plausibility guard (task #915) — see browser-recovery-helpers.js
+  // checkDatePlausibility for rationale. This file predates that shared
+  // helper (WSJ was the original implementation it was generalized from) so
+  // it calls the shared check directly rather than duplicating the logic.
+  const dateRejection = checkDatePlausibility(candidate, data);
+  if (dateRejection) {
+    return { ok: false, reason: dateRejection };
   }
 
   data.fullText = cleanedText;
