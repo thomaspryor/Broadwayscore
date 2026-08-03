@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-08-03T06:25:11.128Z",
-  "processed": 26,
-  "failed": 102,
-  "successRate": "20.3%",
+  "updatedAt": "2026-08-03T06:38:59.569Z",
+  "processed": 44,
+  "failed": 184,
+  "successRate": "19.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 6,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archiveToday": 4,
-    "archive": 3
+    "brightdata": 8,
+    "archiveToday": 6,
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-08-03T06:26:30.203Z",
+      "event": "bb-session",
+      "session": "7301279f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/to-kill-a-mockingbird-broadway-"
+    }
+  ]
 }
