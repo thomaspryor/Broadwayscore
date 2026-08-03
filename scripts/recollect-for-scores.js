@@ -95,15 +95,7 @@ function loadCookiesForUrl(url) {
 }
 
 // Load env from .env file if present
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
-    const match = line.match(/^([A-Z_]+)\s*=\s*(.+)$/);
-    if (match && !process.env[match[1]]) {
-      process.env[match[1]] = match[2].trim().replace(/^["']|["']$/g, '');
-    }
-  }
-}
+require('./lib/load-env').loadEnv();
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 let _browser;
