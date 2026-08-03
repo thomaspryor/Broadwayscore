@@ -396,3 +396,148 @@ test('exhausted verdict is silenced by its own marker on the following tick', ()
   assert.deepEqual(r.stalled, [], 'marker newer than last activity — quiet until new activity');
   assert.deepEqual(h.dispatched, []);
 });
+
+// ── reconcileFlaglessSessions (task #985) ───────────────────────────────────
+const { reconcileFlaglessSessions, MAX_REVIVE_PER_TICK } = require('./bsc-reconcile.js');
+
+function flaglessHarness({ workspaces = [], entries = [], alive = () => true, midTurn = () => false, detections = {} } = {}) {
+  const reported = [];
+  const revived = [];
+  const deps = {
+    listWorkspacesFn: () => workspaces,
+    claudeAliveInFn: (ref) => alive(ref),
+    claudeMidTurnInFn: (ref) => midTurn(ref),
+    readLedgerEntriesFn: () => entries,
+    detectFn: (ref) => detections[ref] || { flagless: false, pid: null, command: null },
+    reviveFn: (ref) => { revived.push(ref); return { revived: true, ref, pid: 1, command: `claude --resume x --dangerously-skip-permissions` }; },
+    reportFn: (l) => reported.push(l),
+  };
+  return { deps, reported, revived };
+}
+
+test('reconcileFlaglessSessions: flags and revives a 🤖 workspace whose live claude is missing the flag', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖⚡ Data·gap-audit-checkpoint-lock-warning' }],
+    detections: { 'workspace:116': { flagless: true, pid: 35401, command: 'claude --worktree x --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116']);
+  assert.deepEqual(r.revived, ['workspace:116']);
+  assert.ok(h.reported.some(l => l.kind === 'flagless-session'));
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revived'));
+});
+
+test('reconcileFlaglessSessions: ignores non-🤖 workspaces even if flagless', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:5', title: 'Owner-opened session' }],
+    detections: { 'workspace:5': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.checked, 0);
+  assert.deepEqual(r.flagless, []);
+});
+
+test('reconcileFlaglessSessions: 🤖 detected via ledger even without the title glyph (card #971 pattern)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:200', title: 'Renamed mid-work status line' }],
+    entries: [{ event: 'launch', taskId: '985', subject: 'Renamed mid-work status line', workspaceRef: 'workspace:200' }],
+    detections: { 'workspace:200': { flagless: true, pid: 2, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:200']);
+});
+
+test('reconcileFlaglessSessions: skips a dead workspace (other sweeps own it)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:1', title: '🤖 dead tab' }],
+    alive: () => false,
+    detections: { 'workspace:1': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, [], 'a dead workspace must not be flagged by this sweep');
+  assert.deepEqual(r.revived, []);
+});
+
+test('reconcileFlaglessSessions: already-flagged 🤖 workspace is left alone', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:2', title: '🤖 healthy tab' }],
+    detections: { 'workspace:2': { flagless: false, pid: 1, command: 'claude --model sonnet --dangerously-skip-permissions x' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, []);
+  assert.deepEqual(r.revived, []);
+});
+
+test('reconcileFlaglessSessions: dryRun reports but never revives', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ dryRun: true, deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116']);
+  assert.deepEqual(r.revived, []);
+  assert.deepEqual(h.revived, []);
+});
+
+test('reconcileFlaglessSessions: per-tick revive budget throttles further flagless tabs', () => {
+  const workspaces = Array.from({ length: MAX_REVIVE_PER_TICK + 2 }, (_, i) => ({ ref: `workspace:${i}`, title: '🤖 tab' }));
+  const detections = Object.fromEntries(workspaces.map(w => [w.ref, { flagless: true, pid: 1, command: 'claude --resume abc' }]));
+  const h = flaglessHarness({ workspaces, detections });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.equal(r.flagless.length, workspaces.length, 'every flagless tab is still reported');
+  assert.equal(r.revived.length, MAX_REVIVE_PER_TICK, 'but only the per-tick budget is actually revived');
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revive-throttled'));
+});
+
+test('reconcileFlaglessSessions: cmux listing failure reports and returns empty, non-fatal', () => {
+  const reported = [];
+  const r = reconcileFlaglessSessions({
+    deps: {
+      listWorkspacesFn: () => { throw new Error('socket down'); },
+      reportFn: (l) => reported.push(l),
+    },
+  });
+  assert.deepEqual(r, { checked: 0, flagless: [], revived: [] });
+  assert.ok(reported.some(l => l.kind === 'flagless-sweep-error'));
+});
+
+// Ship-check adversarial finding: a flagless session that hasn't hit its
+// first permission-gated tool call yet is still ACTIVELY WORKING, not
+// stalled — respawn-pane would kill it mid-task. Only revive when idle.
+test('reconcileFlaglessSessions: defers a flagless-but-mid-turn (busy) workspace instead of killing it', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    midTurn: () => true,
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116'], 'still reported — the owner should know');
+  assert.deepEqual(r.revived, [], 'but NOT revived — killing an active turn would lose in-progress work');
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revive-deferred-busy'));
+  assert.deepEqual(h.revived, []);
+});
+
+test('reconcileFlaglessSessions: revives once the busy session goes idle (mid-turn check reflects current state, not cached)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    midTurn: () => false,
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.revived, ['workspace:116']);
+});
+
+// Same rule as pruneDone's close-path guard (card #971) — never act on a
+// workspace the owner is currently looking at; they may already be about to
+// hand-approve the stalled prompt.
+test('reconcileFlaglessSessions: never revives (or even attempts) the currently-selected workspace', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit', selected: true }],
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.checked, 1, 'still counted as an auto-dispatched workspace checked');
+  assert.deepEqual(r.flagless, [], 'selected tab is skipped before even running detection');
+  assert.deepEqual(r.revived, []);
+  assert.deepEqual(h.revived, []);
+});
