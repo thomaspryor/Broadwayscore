@@ -1,5 +1,22 @@
 'use strict';
 
+// Reused verbatim (not reimplemented) per the plan's "no new parallel
+// machinery" rule and the day-one triage's own instruction: a canonical
+// URL comparator already exists for exactly this problem (dedup comparison
+// stripping scheme/www/trailing-slash/fragment/tracking-params — see its
+// own header). Requiring it here keeps this module's own fs/path requires
+// unexecuted at call time (module load only), so the "pure, fixture-testable"
+// contract above still holds.
+const { normalizeUrl: canonicalizeUrlForCompare } = require('./review-normalization');
+// The canonical aggregator-domain set (show-score.com, stagedoor.com, etc.) —
+// their OWN show-landing pages surface constantly in the naive census arm
+// (they list every outlet's stars, so they rank for "<title> review") but are
+// never themselves a review to gather; a real aggregator-sourced star-stub
+// carries this URL on disk already and is matched by lookupRecord() before
+// this ever runs. Reused verbatim, not re-derived, per the day-one triage's
+// instruction to check existing aggregator/venue classifications first.
+const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
+
 /**
  * coverage-adversarial-probe.js — pure decision layer for the Coverage
  * Verdict S5 weekly adversarial probe (task #903, the FINAL sprint).
@@ -37,19 +54,110 @@ const MIN_RUN_GAP_DAYS = 5;
 const REQUIRED_CLEAN_RUNS = 2;
 
 /**
+ * Named non-review-page patterns the naive census arm's un-scoped query
+ * surfaces alongside real reviews: ticketing/reseller pages, venue own-site
+ * production pages, and third-party event listings. None of these were ever
+ * a review to find, so a show missing a review-texts file for them is not a
+ * gap — it is exactly the class explainExclusion() names for on-disk
+ * records, just for a URL that never had a file to begin with.
+ *
+ * Evidence (task #907 day-one triage, 6 of 9 first-run "gaps"):
+ * newyorkcitytheatre.com / newbrunswicktheater.com (ticket resellers),
+ * nationaltheatre.org.uk/productions/ (venue's own production page, not a
+ * review), middlesexcountyculture.com/event/ (third-party event listing),
+ * londontheatre.co.uk/show/NNNN (ticket-purchase page — NOT /reviews/, which
+ * audit-show-review-gap.js already treats as a real review source; only the
+ * /show/ path is excluded here). Two more surfaced by the fix's own live
+ * --sample re-run (same run that verified the fix): broadway.com (ticketing
+ * marketplace, not a registered review outlet — data/outlet-registry.json has
+ * no broadway.com entry) and theatermania.com/shows/ (their OWN ticketing/
+ * show-info page — theatermania IS a registered review outlet, but its real
+ * reviews live under /news/review-.../, never /shows/, so only that one path
+ * is excluded, not the whole host).
+ *
+ * Deliberately a small, separate list rather than importing
+ * audit-show-review-gap.js's NON_REVIEW_HOST_PATTERNS: that file pulls in
+ * cheerio/scraper/etc. at require-time, which would break this module's
+ * "pure, no heavy deps" contract for its own test file. The two lists serve
+ * different stages (isReviewUrl runs before a URL is even considered a
+ * candidate; this runs after, as the last check before declaring a gap) and
+ * may overlap without needing to be one list.
+ */
+const NON_REVIEW_URL_PATTERNS = [
+  { host: /(^|\.)newyorkcitytheatre\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
+  { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
+  { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
+  { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
+];
+
+/**
+ * Is this candidate URL a known not-a-review page (ticketing/venue/listing)?
+ * @param {string} url
+ * @returns {string|null} a reason label, or null if not a recognized pattern
+ */
+function classifyNonReviewUrl(url) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  if (AGGREGATOR_DOMAINS.has(host)) return 'aggregator-own-page';
+  for (const p of NON_REVIEW_URL_PATTERNS) {
+    if (!p.host.test(host)) continue;
+    if (p.path && !p.path.test(u.pathname)) continue;
+    return p.reason;
+  }
+  return null;
+}
+
+/**
+ * Find the on-disk record for a candidate URL, tolerant of scheme (http vs
+ * https), www-prefix, and trailing-slash differences between the SERP-
+ * discovered URL and the stored one (task #907: theartsdesk.com's Sinatra
+ * review was counted a gap because the SERP result came back http:// while
+ * the stored review is https://). Exact match first (the common case, O(1));
+ * falls back to a canonicalized scan only on a miss — per-show maps are a
+ * few dozen entries at most, so this never runs against the whole corpus.
+ *
+ * @param {Map<string,object>} onDiskByUrl
+ * @param {string} url
+ * @returns {object|null}
+ */
+function lookupRecord(onDiskByUrl, url) {
+  if (onDiskByUrl.has(url)) return onDiskByUrl.get(url);
+  const target = canonicalizeUrlForCompare(url);
+  for (const [key, rec] of onDiskByUrl) {
+    if (canonicalizeUrlForCompare(key) === target) return rec;
+  }
+  return null;
+}
+
+/**
  * Classify one SERP-discovered candidate URL against what the pipeline
  * already holds for the show.
  *
  * @param {string} url normalized candidate URL
  * @param {object} show shows.json record
- * @param {Map<string,{data:object, filePath:string|null}>} onDiskByUrl
- *   normalized URL -> {data, filePath} for every review-texts file for this show
+ * @param {Map<string,{data:object, filePath:string|null, pending?:boolean, pendingReason?:string}>} onDiskByUrl
+ *   normalized URL -> record for every review-texts file for this show,
+ *   INCLUDING quarantined data/review-texts/_pending/<show>/ files (marked
+ *   `pending: true`) — a URL correctly quarantined by the write-guard (e.g.
+ *   date-implausible, prior-production) is a named exclusion, not a gap the
+ *   probe doesn't know about (task #907: the-state-of-the-arts Car Man case).
  * @param {{isIncludableForRebuild: Function, explainExclusion: Function}} guards
  * @returns {{url:string, state:'live'|'excluded'|'gap', reason:string|null}}
  */
 function classifyCandidate(url, show, onDiskByUrl, guards) {
-  const rec = onDiskByUrl.get(url);
-  if (!rec) return { url, state: 'gap', reason: null };
+  const rec = lookupRecord(onDiskByUrl, url);
+  if (!rec) {
+    const nonReviewReason = classifyNonReviewUrl(url);
+    if (nonReviewReason) return { url, state: 'excluded', reason: nonReviewReason };
+    return { url, state: 'gap', reason: null };
+  }
+  if (rec.pending) {
+    return { url, state: 'excluded', reason: `quarantined: ${rec.pendingReason || 'pending-review'}` };
+  }
   const { data, filePath } = rec;
   let includable = false;
   try { includable = guards.isIncludableForRebuild(data, show, filePath) === true; }
@@ -226,6 +334,8 @@ module.exports = {
   MIN_RUN_GAP_DAYS,
   REQUIRED_CLEAN_RUNS,
   classifyCandidate,
+  classifyNonReviewUrl,
+  lookupRecord,
   summarizeShow,
   summarizeRun,
   evaluateAcceptance,

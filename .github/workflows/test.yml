@@ -1208,6 +1208,18 @@ on:
       - 'scripts/lib/coverage-digest.test.mjs'
       - 'scripts/produce-coverage-digest-snapshot.js'
       - 'scripts/produce-coverage-digest-snapshot.test.mjs'
+      # Coverage Verdict S5 (task #903) — the seeded weekly adversarial probe.
+      # Never added a path entry when it shipped (task #907 day-one triage
+      # found this gap): none of these were path-listed, so a push touching
+      # only these files would trigger ZERO CI (the exact "non-listed
+      # scripts/ = ZERO CI" class). classifyCandidate/classifyNonReviewUrl's
+      # colocated test runs in the scripts/lib/*.test.mjs glob step; the CLI
+      # wrapper and trend-merge helper have no broad glob covering scripts/
+      # root or scripts/lib/*.js, so they need explicit entries too.
+      - 'scripts/lib/coverage-adversarial-probe.js'
+      - 'scripts/lib/coverage-adversarial-probe.test.mjs'
+      - 'scripts/coverage-adversarial-probe.js'
+      - 'scripts/lib/merge-coverage-adversarial-probe-trend.js'
       - '.github/workflows/audit-aggregator-gap.yml'
       # Sunday pre-owner-look content review launchd job (card #507) —
       # "already ran today" lock decision lives outside scripts/newsletter/**

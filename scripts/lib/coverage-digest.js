@@ -31,7 +31,24 @@ function coverageStatus(result) {
 
   const missing = Array.isArray(result.missing) ? result.missing : [];
   const excluded = missing.filter((m) => m && m.priorRun);
-  const pending = Math.max(0, candidateCount - liveCount - excluded.length);
+  // `candidateCount` is scoped to THIS run's roundup census (S2); `excluded`
+  // is drawn from `result.missing`, a broader all-history citation list (WE
+  // + aggregator-article + SERP census, accumulated across every scanner
+  // that has ever cited this show) that is NOT a subset of the census
+  // candidates. For a long-running or common-shared title (task #907:
+  // othello-off-broadway-2026 — Classical Theatre of Harlem's off-Broadway
+  // run — carries 54 correctly-flagged priorRun citations from the
+  // unrelated 2025 Denzel Washington Broadway production, against only 38
+  // current-run census candidates), excluded.length can exceed
+  // candidateCount. Investigated: NOT a title-collision census-contamination
+  // bug (every one of the 54 carries priorRunSource: 'aggregator-article-date'
+  // and points at the 2025 Broadway run's own reviews) — the guard is
+  // correctly naming a real different production, so the LINE's total must
+  // simply be big enough to hold everything it itemizes, or it reads as
+  // nonsense ("0 of 38 known — 54 excluded"). "known" is therefore the total
+  // of everything actually accounted for, never less than the census figure.
+  const known = Math.max(candidateCount, liveCount + excluded.length);
+  const pending = Math.max(0, known - liveCount - excluded.length);
 
   const parts = [];
   if (pending > 0) parts.push(`${pending} being fetched`);
@@ -45,7 +62,7 @@ function coverageStatus(result) {
   }
   return {
     liveCount, candidateCount,
-    detail: `${liveCount} of ${candidateCount} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`,
+    detail: `${liveCount} of ${known} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`,
   };
 }
 

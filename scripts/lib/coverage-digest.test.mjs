@@ -69,6 +69,38 @@ test('coverageDigestItems produces the renderNamedDigestBlock {title, detail} sh
   }]);
 });
 
+// ── Line coherence when `excluded` (drawn from the broader all-history
+// missing-citation list) exceeds `candidateCount` (this run's roundup
+// census) — task #907, othello-off-broadway-2026: 38 census candidates but
+// 54 correctly-flagged priorRun citations from the unrelated 2025 Broadway
+// production. The line must never read "N excluded" where N > "of M known".
+
+test('excluded count exceeding candidateCount never renders excluded > known (Othello-shaped fixture)', () => {
+  const missing = Array.from({ length: 54 }, (_, i) => ({ url: `https://outlet${i}.com/othello-2025-review`, priorRun: true }));
+  const line = coverageDigestLine({
+    title: 'Othello',
+    showId: 'othello-off-broadway-2026',
+    censusVerdict: { verdict: 'incomplete', liveCount: 0, candidateCount: 38 },
+    missing,
+  });
+  assert.strictEqual(line, 'Othello: 0 of 54 known reviews live — 54 excluded (older production)');
+  const knownMatch = line.match(/of (\d+) known/);
+  const excludedMatch = line.match(/(\d+) excluded/);
+  assert.ok(Number(excludedMatch[1]) <= Number(knownMatch[1]), 'excluded must never exceed known');
+});
+
+test('excluded within candidateCount is unaffected by the known-total fix (regression guard)', () => {
+  const line = coverageDigestLine({
+    title: 'The Car Man',
+    showId: 'the-car-man-west-end-2026',
+    censusVerdict: { verdict: 'incomplete', liveCount: 11, candidateCount: 14 },
+    missing: [
+      { url: 'a' }, { url: 'b' }, { url: 'c', priorRun: true },
+    ],
+  });
+  assert.strictEqual(line, 'The Car Man: 11 of 14 known reviews live — 2 being fetched, 1 excluded (older production)');
+});
+
 test('coverageDigestLines sorts least-complete first and respects the limit', () => {
   const results = [
     { title: 'Mostly Done', showId: 'a', censusVerdict: { verdict: 'incomplete', liveCount: 4, candidateCount: 5 }, missing: [{ url: 'x' }] },
