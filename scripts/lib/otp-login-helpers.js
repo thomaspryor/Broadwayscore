@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const PROJECT_ROOT = path.join(__dirname, '..', '..');
 const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
@@ -118,4 +118,69 @@ function writeOtpCookies(fileKey, cookies) {
   return cookiePath;
 }
 
-module.exports = { launchOtpBrowser, pollGmailForOtpCode, writeOtpCookies, COOKIE_DIR };
+/**
+ * Push a cookies secret plus its companion `${envVarName}_META` secret to
+ * GitHub Actions secrets, base64-encoded. Extracted from wsj-otp-login.js's
+ * pushCookiesToGitHubSecret() (task #897, generalizing #845/#881 so new
+ * --push outlets from #850/#876 inherit the fix rather than re-deriving it):
+ * the cookies push is fatal — its failure means CI keeps using the stale
+ * secret — while a meta-push failure after cookies land is logged and
+ * degrades gracefully, since cookie-loader.js's selectFresherCookieTier()
+ * just falls back to bundle-wins for that outlet until the meta secret is
+ * retried.
+ *
+ * @param {string} envVarName - e.g. 'WSJ_COOKIES'
+ * @param {Array|object} cookies - JSON-serializable cookie payload
+ * @param {object} [meta] - JSON-serializable freshness meta (e.g.
+ *   {extractedAt, extractedAtUnix}); skipped entirely if falsy
+ * @param {object} [opts]
+ * @param {string} [opts.repo] - defaults to GITHUB_REPOSITORY env or
+ *   thomaspryor/Broadwayscore
+ * @returns {{cookiesPushed: boolean, metaPushed: boolean}}
+ */
+function pushCookieSecretWithMeta(envVarName, cookies, meta, opts = {}) {
+  const repo = opts.repo || process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  const result = { cookiesPushed: false, metaPushed: false };
+
+  console.log(`Pushing cookies to GitHub secret ${envVarName}...`);
+  const cookiesBase64 = Buffer.from(JSON.stringify(cookies)).toString('base64');
+  try {
+    // execFileSync (argv array), not execSync (shell string) — envVarName/repo
+    // are no longer hardcoded literals once #850/#876 pass in outlet-driven
+    // values, so string interpolation into a shell command would be an
+    // injection vector. This still passes ['gh', 'secret', 'set', name,
+    // '--repo', repo] to gh exactly as the shell-string form did.
+    execFileSync('gh', ['secret', 'set', envVarName, '--repo', repo], {
+      input: cookiesBase64,
+      stdio: ['pipe', 'inherit', 'inherit'],
+    });
+    console.log(`Pushed ${envVarName} to GitHub secrets.`);
+    result.cookiesPushed = true;
+  } catch (err) {
+    console.error(`WARNING: failed to push ${envVarName} secret: ${err.message}`);
+    console.error('WARNING: local cookie refresh succeeded but CI will keep using the previous secret until this is retried.');
+    return result;
+  }
+
+  if (meta) {
+    const metaEnvVar = `${envVarName}_META`;
+    const metaBase64 = Buffer.from(JSON.stringify(meta)).toString('base64');
+    try {
+      execFileSync('gh', ['secret', 'set', metaEnvVar, '--repo', repo], {
+        input: metaBase64,
+        stdio: ['pipe', 'inherit', 'inherit'],
+      });
+      console.log(`Pushed ${metaEnvVar} to GitHub secrets.`);
+      result.metaPushed = true;
+    } catch (err) {
+      console.error(`WARNING: failed to push ${metaEnvVar} secret: ${err.message}`);
+      console.error(`WARNING: ${envVarName} was pushed but freshness comparison against COOKIES_BUNDLE_* will fall back to bundle-wins until this is retried.`);
+      // Not fatal to the overall push: the cookies secret itself landed,
+      // this only affects tier-selection freshness.
+    }
+  }
+
+  return result;
+}
+
+module.exports = { launchOtpBrowser, pollGmailForOtpCode, writeOtpCookies, pushCookieSecretWithMeta, COOKIE_DIR };
