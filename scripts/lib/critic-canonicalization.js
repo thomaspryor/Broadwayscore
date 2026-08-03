@@ -51,6 +51,13 @@ const CRITIC_CANONICAL_MAP = {
   // display name "Jeff Kyler"; Show-Score credits agree). The blog itself only
   // signs posts "JK". "Jeff Kready" was a bad guess — that's a Broadway actor
   // with no connection to the blog (Louise Penn misattribution sweep, 2026-08-03).
+  // The Recs signs posts "The Recs <initials> - <Full Name>" — strip the
+  // house prefix so the person gets the byline (misattribution sweep 2026-08-03).
+  'the-recs': {
+    [normalizeCriticKey('The Recs RDC - Randall David Cook')]: 'Randall David Cook',
+    [normalizeCriticKey('The Recs EM - Erin Muldoon')]: 'Erin Muldoon',
+    [normalizeCriticKey('The Recs SCD - Steve Coats-Dennis')]: 'Steve Coats-Dennis',
+  },
   'jks-theatre-scene': {
     [normalizeCriticKey('JK')]: 'Jeff Kyler',
     [normalizeCriticKey('Jk')]: 'Jeff Kyler',
