@@ -39,6 +39,7 @@ const KNOWN_FREELANCERS = [
   'donna-herman',      // Front Row Center + NYTG
   'joel-benjamin',     // Theater Scene + Stage and Cinema
   'victor-gluck',      // Theater Scene + Stage and Cinema
+  'louise-penn',       // LouReviews founder + team reviewer at BroadwayWorld UK, Plays International, The Reviews Hub (her email 2026-08-03)
   'juan-a-ramirez',    // Theatrely + Stage and Cinema
   'steven-ross',       // FrontMezzJunkies + OutBuzz
   'loren-noveck',      // Exeunt Magazine + The Stage
@@ -77,6 +78,7 @@ const KNOWN_MULTI_OUTLET_PAIRS = {
   'david-benedict': ['thestage'],
   'natasha-tripney': ['standard'],
   'john-anderson': ['wsj'],
+  'louise-penn': ['plays-international', 'broadwayworld', 'thereviewshub'],
 };
 
 const MIN_REVIEWS_FOR_REGISTRY = 3;
