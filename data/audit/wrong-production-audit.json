@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T19:37:46.246Z",
+  "timestamp": "2026-08-03T21:16:43.115Z",
   "stats": {
     "totalReviews": 41469,
-    "alreadyFlagged": 18112,
-    "dateGuardCatches": 111,
+    "alreadyFlagged": 18111,
+    "dateGuardCatches": 110,
     "directorMismatch": 945,
     "tvFilmSignals": 1143,
     "londonSignals": 806,
-    "offBroadwaySignals": 480,
+    "offBroadwaySignals": 481,
     "yearMismatch": 86,
-    "noPublishDate": 3440
+    "noPublishDate": 3441
   },
   "findings": [
     {
@@ -32989,6 +32989,19 @@
       ]
     },
     {
+      "showId": "crazysexycool-regional-2026",
+      "file": "washpost--thomas-floyd.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-brings-bangers-tlc-deserves-bolder-musical-treatment/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "cymbeline-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 75,
@@ -40813,19 +40826,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
-        }
-      ]
-    },
-    {
-      "showId": "space-dogs-off-west-end-2026",
-      "file": "whatsonstage--unknown.json",
-      "publishDate": "2026-06-09",
-      "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 52d before show (2026-06-09 vs 2026-07-31)"
         }
       ]
     },

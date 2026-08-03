@@ -67,7 +67,10 @@ function mergeCheckpointEntries(current, entries) {
  * @param {Object} entries  {showId: entryObject | undefined}
  */
 function saveCheckpointEntries(checkpointPath, entries) {
-  withFileLock(`${checkpointPath}.lock`, () => {
+  withFileLock(`${checkpointPath}.lock`, (held) => {
+    if (!held) {
+      console.error(`::warning::gap-audit-checkpoint save lock could not be acquired for ${checkpointPath} (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent run could have lost data.`);
+    }
     const current = loadCheckpoint(checkpointPath);
     const merged = mergeCheckpointEntries(current, entries);
     writeJsonAtomic(checkpointPath, merged);
@@ -103,7 +106,10 @@ function applyCheckpointRollback(current, auditedIds, checkpointAtStart) {
  * rollback call site's counterpart to saveCheckpointEntries.
  */
 function rollbackCheckpointEntries(checkpointPath, auditedIds, checkpointAtStart) {
-  withFileLock(`${checkpointPath}.lock`, () => {
+  withFileLock(`${checkpointPath}.lock`, (held) => {
+    if (!held) {
+      console.error(`::warning::gap-audit-checkpoint rollback lock could not be acquired for ${checkpointPath} (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent run could have lost data.`);
+    }
     const current = loadCheckpoint(checkpointPath);
     const merged = applyCheckpointRollback(current, auditedIds, checkpointAtStart);
     writeJsonAtomic(checkpointPath, merged);
