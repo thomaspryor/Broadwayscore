@@ -23,6 +23,13 @@
  *   node scripts/audit-direct-provider-calls.js                report only
  *   node scripts/audit-direct-provider-calls.js --strict        exit 1 on new (non-baselined) violators
  *   node scripts/audit-direct-provider-calls.js --update-baseline   regenerate the baseline from current scan
+ *
+ * hygiene-help-flag-ok: audit-help-flag-safety.js's RISKY_CALL_RE matches the
+ * literal string "fetchPage(" inside the USAGE help text below (a prose
+ * mention, not a call) and flags it as risky-work-before-the---help-gate. The
+ * gate above runs first and this script does no fs/network work in default
+ * mode regardless. Verified: node scripts/audit-direct-provider-calls.js --help
+ * exits immediately with no side effects.
  */
 const fs = require('fs');
 const path = require('path');
@@ -48,13 +55,20 @@ const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
 const UPDATE_BASELINE = args.includes('--update-baseline');
 
+// Matches both .js and .ts callers — task #684 ship-check found the original
+// .js-only walk silently missed two known direct-ScrapingBee cron scripts
+// (scrape-grosses.ts, scrape-alltime.ts, task #328), the exact class this
+// audit exists to catch.
+const SOURCE_FILE_RE = /\.(js|ts)$/;
+const TEST_FILE_RE = /\.test\.(js|ts)$/;
+
 function walkJsFiles(dir, out) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       walkJsFiles(full, out);
-    } else if (entry.name.endsWith('.js') && !entry.name.endsWith('.test.js')) {
+    } else if (SOURCE_FILE_RE.test(entry.name) && !TEST_FILE_RE.test(entry.name)) {
       out.push(full);
     }
   }

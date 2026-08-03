@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-01",
+  "generatedAt": "2026-08-03",
   "files": {
     "scripts/backfill-cast-web.js": {
       "providers": [
@@ -68,6 +68,12 @@
       ],
       "cronReachable": true
     },
+    "scripts/scrape-alltime.ts": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
     "scripts/scrape-broadway-com-audience.js": {
       "providers": [
         "scrapingbee"
@@ -85,6 +91,12 @@
         "scrapingbee"
       ],
       "cronReachable": true
+    },
+    "scripts/scrape-grosses.ts": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
     },
     "scripts/scrape-lbo-audience.js": {
       "providers": [
@@ -135,6 +147,12 @@
         "scrapingbee"
       ],
       "cronReachable": true
+    },
+    "scripts/verify-reviews.ts": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
     }
   }
 }
