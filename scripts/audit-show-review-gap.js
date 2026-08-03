@@ -83,6 +83,9 @@ Modes:
                          each missing aggregator URL whose outlet is in the
                          registry
   --ingest-cap=N         per-show ingest cap (default 5)
+  --census-window=N      widen ONLY the SERP census eligibility window (task
+                         #903 S5 one-off catch-up backfill; default is
+                         inOpeningWindow's own 21 days regardless of --window)
   --checkpoint           process least-recently-audited shows first, skip
                          shows audited within a freshness window
   --include-closed       also audit closed shows (back-catalogue backfill)
@@ -122,6 +125,14 @@ const UNKNOWN_OUTLETS_PATH = path.join(ROOT, 'data', 'audit', 'unknown-aggregato
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const windowDays = parseInt(args.find(a => a.startsWith('--window='))?.split('=')[1] || '21', 10);
+// One-off catch-up lever (task #903 S5, 60-day verdict backfill): the SERP
+// census itself is normally scoped to inOpeningWindow's own 21-day default
+// regardless of --window, by design (S1 bounds ongoing SERP spend to
+// freshly-opened shows). --census-window=N widens ONLY the census
+// eligibility check for a bounded backfill run. Omitted (the cron's normal
+// invocation), behavior is byte-identical to before this flag existed.
+const censusWindowRaw = parseInt(args.find(a => a.startsWith('--census-window='))?.split('=')[1] || '', 10);
+const censusWindowDays = Number.isFinite(censusWindowRaw) ? censusWindowRaw : undefined;
 const failOnGap = args.includes('--fail-on-gap');
 const dispatchGather = args.includes('--dispatch-gather');
 const ingestMissing = args.includes('--ingest-missing');
@@ -806,7 +817,9 @@ async function auditShow(show, opts = {}) {
   // (SB has hit its monthly cap before — #224). Kill switch: SERP_GAP_CENSUS_DISABLED=1.
   const serpCensusUrls = new Set();
   if (process.env.SERP_GAP_CENSUS_DISABLED !== '1') {
-    const inWindowNow = inOpeningWindow(show);
+    const inWindowNow = censusWindowDays !== undefined
+      ? inOpeningWindow(show, Date.now(), censusWindowDays)
+      : inOpeningWindow(show);
     const cooldownRaw = parseInt(process.env.SERP_CENSUS_COOLDOWN_HOURS || '', 10);
     const cooldownHours = Number.isFinite(cooldownRaw) ? cooldownRaw : SERP_CENSUS_DEFAULT_COOLDOWN_HOURS;
     if (shouldRunSerpCensus({ inWindow: inWindowNow, lastRunAt: opts.lastCensusAt || null, cooldownHours })) {

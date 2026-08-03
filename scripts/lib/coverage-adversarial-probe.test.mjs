@@ -8,6 +8,8 @@ const {
   summarizeShow,
   summarizeRun,
   evaluateAcceptance,
+  detectProviderOutage,
+  onDiskUnavailable,
 } = require('./coverage-adversarial-probe.js');
 
 const SHOW = { id: 'the-car-man-west-end-2026', title: 'The Car Man' };
@@ -77,8 +79,8 @@ test('summarizeRun: no measured shows is inconclusive, never clean', () => {
 
 test('summarizeRun: clean when every measured show passes', () => {
   const r = summarizeRun([
-    { showId: 'a', sampleState: 'measured', candidates: [{ state: 'live' }] },
-    { showId: 'b', sampleState: 'measured', candidates: [{ state: 'excluded' }] },
+    { showId: 'a', sampleState: 'measured', onDiskCount: 3, candidates: [{ state: 'live' }] },
+    { showId: 'b', sampleState: 'measured', onDiskCount: 2, candidates: [{ state: 'excluded' }] },
   ]);
   assert.equal(r.verdict, 'clean');
   assert.equal(r.measured, 2);
@@ -86,12 +88,70 @@ test('summarizeRun: clean when every measured show passes', () => {
 
 test('summarizeRun: gaps-found when at least one measured show has a real gap', () => {
   const r = summarizeRun([
-    { showId: 'a', sampleState: 'measured', candidates: [{ state: 'live' }] },
-    { showId: 'b', sampleState: 'measured', candidates: [{ state: 'gap' }] },
+    { showId: 'a', sampleState: 'measured', onDiskCount: 3, candidates: [{ state: 'live' }] },
+    { showId: 'b', sampleState: 'measured', onDiskCount: 2, candidates: [{ state: 'gap' }] },
   ]);
   assert.equal(r.verdict, 'gaps-found');
   assert.deepEqual(r.gapShows, ['b']);
   assert.equal(r.gapCount, 1);
+});
+
+test('detectProviderOutage: no queries recorded is not an outage (nothing to judge)', () => {
+  const o = detectProviderOutage([{ queries: [] }]);
+  assert.equal(o.outage, false);
+});
+
+test('detectProviderOutage: every naive query failing is a real outage', () => {
+  const o = detectProviderOutage([
+    { queries: [{ ok: false, raw: 0 }, { ok: false, raw: 0 }] },
+    { queries: [{ ok: false, raw: 0 }] },
+  ]);
+  assert.equal(o.outage, true);
+});
+
+test('detectProviderOutage: a mostly-healthy chain with one flaky query is not an outage', () => {
+  const o = detectProviderOutage([
+    { queries: [{ ok: true, raw: 8 }] },
+    { queries: [{ ok: true, raw: 5 }] },
+    { queries: [{ ok: false, raw: 0 }] },
+  ]);
+  assert.equal(o.outage, false);
+});
+
+test('onDiskUnavailable: zero on-disk records across every measured show means the checkout failed', () => {
+  assert.equal(onDiskUnavailable([
+    { sampleState: 'measured', onDiskCount: 0 },
+    { sampleState: 'measured', onDiskCount: 0 },
+  ]), true);
+});
+
+test('onDiskUnavailable: at least one measured show with on-disk records means the corpus is present', () => {
+  assert.equal(onDiskUnavailable([
+    { sampleState: 'measured', onDiskCount: 0 },
+    { sampleState: 'measured', onDiskCount: 4 },
+  ]), false);
+});
+
+test('onDiskUnavailable: no measured shows at all is not "unavailable" — summarizeRun already calls that inconclusive', () => {
+  assert.equal(onDiskUnavailable([{ sampleState: 'settling', onDiskCount: 0 }]), false);
+});
+
+test('summarizeRun: a provider outage never reads as clean, even with zero candidates everywhere', () => {
+  const r = summarizeRun([
+    { showId: 'a', sampleState: 'measured', onDiskCount: 3, candidates: [], queries: [{ ok: false, raw: 0 }] },
+    { showId: 'b', sampleState: 'measured', onDiskCount: 2, candidates: [], queries: [{ ok: false, raw: 0 }] },
+  ]);
+  assert.equal(r.verdict, 'inconclusive');
+  assert.match(r.reason, /provider outage/);
+});
+
+test('summarizeRun: a missing on-disk corpus never reads as gaps-found, even with candidates everywhere', () => {
+  const r = summarizeRun([
+    { showId: 'a', sampleState: 'measured', onDiskCount: 0, candidates: [{ state: 'gap' }], queries: [{ ok: true, raw: 5 }] },
+    { showId: 'b', sampleState: 'measured', onDiskCount: 0, candidates: [{ state: 'gap' }], queries: [{ ok: true, raw: 5 }] },
+  ]);
+  assert.equal(r.verdict, 'inconclusive');
+  assert.match(r.reason, /on-disk review corpus unavailable/);
 });
 
 test('evaluateAcceptance: fewer than 2 measurable runs is not accepted', () => {
@@ -140,4 +200,44 @@ test('evaluateAcceptance: two consecutive clean weeks, properly spaced, is accep
   ]);
   assert.equal(r.accepted, true);
   assert.match(r.reason, /2 consecutive clean weekly run/);
+});
+
+// ── Trend-ledger union merge (task #784's race class, applied to #903) ──────
+
+const { mergeCoverageAdversarialProbeTrend } = require('./merge-coverage-adversarial-probe-trend.js');
+const { mergerFor } = require('./reconcile-merged-json.js');
+
+test('the coverage-probe trend ledger is registered with the post-rebase reconciler', () => {
+  // Without this registration, `rebase -X theirs` silently drops a concurrent
+  // writer's line with no conflict reported — task #784's class, applied here
+  // per a #903 ship-check finding (the first version of this sprint shipped
+  // without it, unlike the analogous census-recall-trend.jsonl).
+  assert.ok(mergerFor('data/audit/coverage-adversarial-probe-trend.jsonl'), 'not in the MANAGED registry');
+});
+
+test('merging keeps the better-evidenced (more shows measured) entry for a shared date and unions the rest', () => {
+  const r = mergeCoverageAdversarialProbeTrend(
+    [{ date: '2026-07-26', measured: 5 }, { date: '2026-08-02', measured: 5 }],
+    [{ date: '2026-07-26', measured: 2 }, { date: '2026-08-09', measured: 5 }],
+  );
+  assert.deepEqual(r.merged.map(e => e.date), ['2026-07-26', '2026-08-02', '2026-08-09']);
+  assert.equal(r.merged.find(e => e.date === '2026-07-26').measured, 5);
+  assert.equal(r.stats.added, 1);
+});
+
+test('a remote entry that measured MORE shows wins the shared date', () => {
+  const r = mergeCoverageAdversarialProbeTrend(
+    [{ date: '2026-08-02', measured: 1 }],
+    [{ date: '2026-08-02', measured: 5 }],
+  );
+  assert.equal(r.merged[0].measured, 5);
+  assert.equal(r.stats.replaced, 1);
+});
+
+test('merging is idempotent — re-merging the same sides changes nothing', () => {
+  const ours = [{ date: '2026-08-02', measured: 5 }];
+  const remote = [{ date: '2026-08-02', measured: 5 }];
+  const once = mergeCoverageAdversarialProbeTrend(ours, remote).merged;
+  const twice = mergeCoverageAdversarialProbeTrend(once, remote).merged;
+  assert.deepEqual(twice, once);
 });

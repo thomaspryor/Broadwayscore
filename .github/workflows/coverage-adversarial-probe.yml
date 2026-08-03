@@ -104,12 +104,24 @@ jobs:
           # audit-census-recall.yml: never spend the ScrapingBee credits an
           # opening-night ingest run might need. BD/SD still serve the query.
           SERP_NO_SB: '1'
+          # workflow_dispatch string inputs land here as ENV VARS, not
+          # interpolated directly into the shell command below (ship-check/
+          # Codex finding: a raw `${{ inputs.sample }}` in a `run:` block is a
+          # command-injection surface for a job holding `contents: write` and
+          # provider secrets — a dispatcher who typed `5; curl evil` would have
+          # it execute). The shell only ever reads these as opaque strings.
+          PROBE_SAMPLE: ${{ inputs.sample || '5' }}
+          PROBE_PAGES: ${{ inputs.pages || '1' }}
+          PROBE_DAYS: ${{ inputs.days || '45' }}
+          PROBE_NO_TREND: ${{ inputs.no_trend && 'true' || '' }}
         run: |
+          TREND_FLAG="--trend"
+          if [ -n "$PROBE_NO_TREND" ]; then TREND_FLAG=""; fi
           node scripts/coverage-adversarial-probe.js \
-            --sample=${{ inputs.sample || '5' }} \
-            --pages=${{ inputs.pages || '1' }} \
-            --days=${{ inputs.days || '45' }} \
-            ${{ inputs.no_trend && ' ' || '--trend' }} \
+            --sample="$PROBE_SAMPLE" \
+            --pages="$PROBE_PAGES" \
+            --days="$PROBE_DAYS" \
+            $TREND_FLAG \
             | tee "$GITHUB_STEP_SUMMARY"
 
       - name: Commit probe report + trend ledger

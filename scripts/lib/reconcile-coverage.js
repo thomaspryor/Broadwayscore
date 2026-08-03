@@ -62,6 +62,7 @@ const MANAGED_BASENAMES = [
   'audit/scraper-spend-ledger.jsonl',
   'audit/owner-email-log.jsonl',
   'audit/census-recall-trend.jsonl',
+  'audit/coverage-adversarial-probe-trend.jsonl',
 ];
 
 const PUSH_SH_RE = /push-with-retry\.sh\b/;
