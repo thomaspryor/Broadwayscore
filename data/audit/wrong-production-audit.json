@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T16:58:09.692Z",
+  "timestamp": "2026-08-03T17:42:20.480Z",
   "stats": {
-    "totalReviews": 41466,
+    "totalReviews": 41468,
     "alreadyFlagged": 18113,
     "dateGuardCatches": 110,
     "directorMismatch": 945,
     "tvFilmSignals": 1143,
-    "londonSignals": 805,
+    "londonSignals": 806,
     "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3438
+    "noPublishDate": 3439
   },
   "findings": [
     {
@@ -33375,6 +33375,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "dinosaur-world-live-off-west-end-2026",
+      "file": "westendtheatre--west-end-theatre.json",
+      "publishDate": null,
+      "url": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
