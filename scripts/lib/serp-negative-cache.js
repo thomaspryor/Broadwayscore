@@ -24,8 +24,19 @@ const DISABLED = process.env.BD_SERP_CACHE_DISABLED === '1';
 
 const _cache = createTtlCache({ dir: CACHE_DIR, ttlMs: NEGATIVE_CACHE_TTL_MS, disabled: DISABLED });
 
+// Whitelist, not passthrough — must stay field-for-field in step with
+// serp-cache.js's _normOpts, because _serpWithChain hands BOTH caches the same
+// cacheOpts object. `page` was added there for the paginated census (#872); if
+// it were missing here, an empty page 0 would satisfy the lookup for pages 1-2
+// and a deep-page sweep would go blind for the 45-min TTL. Anything new that
+// changes the RESULTS must be added to both files.
 function _normOpts(opts = {}) {
-  return { geo: opts.geo || '', dateMin: opts.dateMin || '', dateMax: opts.dateMax || '' };
+  return {
+    geo: opts.geo || '',
+    dateMin: opts.dateMin || '',
+    dateMax: opts.dateMax || '',
+    page: opts.page ? String(opts.page) : '',
+  };
 }
 
 function get(query, opts = {}) {
