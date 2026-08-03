@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-02T23:57:04.936Z",
+  "timestamp": "2026-08-03T00:17:22.065Z",
   "stats": {
-    "totalReviews": 41313,
-    "alreadyFlagged": 18083,
-    "dateGuardCatches": 91,
+    "totalReviews": 41319,
+    "alreadyFlagged": 18086,
+    "dateGuardCatches": 92,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
     "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3387
+    "noPublishDate": 3389
   },
   "findings": [
     {
@@ -41617,6 +41617,7 @@
     {
       "showId": "tao-of-glass-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
+      "score": 88,
       "publishDate": "2026-07-31",
       "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
       "findings": [
@@ -42847,6 +42848,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "myshrewsbury--six-ticks-limited.json",
+      "publishDate": "2026-06-05",
+      "url": "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 53d before show (2026-06-05 vs 2026-07-28)"
         }
       ]
     },
