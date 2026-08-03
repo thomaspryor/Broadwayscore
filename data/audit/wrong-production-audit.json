@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T00:17:22.065Z",
+  "timestamp": "2026-08-03T00:49:02.283Z",
   "stats": {
-    "totalReviews": 41319,
-    "alreadyFlagged": 18086,
-    "dateGuardCatches": 92,
+    "totalReviews": 41326,
+    "alreadyFlagged": 18077,
+    "dateGuardCatches": 96,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
     "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3389
+    "noPublishDate": 3388
   },
   "findings": [
     {
@@ -42185,6 +42185,58 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "cheeky-little-matinee--cheekylittlematinee.json",
+      "publishDate": "2026-06-17",
+      "url": "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 41d before show (2026-06-17 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "harry-theatre-life--harry-brogan.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.harrytheatrelife.co.uk/post/review-matthew-bourne-s-the-car-man-uk-ireland-tour-the-lowry-salford",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "jadar--jay-darcy.json",
+      "publishDate": "2026-06-24",
+      "url": "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-06-23",
+      "url": "https://www.timeout.com/london/dance/the-car-man",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-06-23 vs 2026-07-28)"
         }
       ]
     },

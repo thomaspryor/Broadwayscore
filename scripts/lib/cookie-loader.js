@@ -130,19 +130,103 @@ function loadFileMeta() {
 
 /**
  * Return extraction metadata for a fileKey, or null.
- * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'file' }
- * Bundle metadata wins over file metadata (matches the load order in
- * loadCookiesByFileKey — bundles are tier 1).
+ * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'env'|'file' }
+ * Tier-aware as of task #881: mirrors loadCookiesByFileKey's actual tier
+ * selection (via selectFresherCookieTier) rather than always reporting bundle
+ * meta — otherwise check-cookie-health.js could report an outlet stale off an
+ * old bundle timestamp while the loader was actually using a fresher Tier-2
+ * secret (or vice versa).
  */
 function loadCookieMeta(fileKey) {
   loadBundles();
   const bundleMeta = _bundleMetaCache && _bundleMetaCache[fileKey];
-  if (bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix)) {
+  const hasBundleMeta = bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix);
+
+  const envVar = FILE_KEY_TO_ENV_VAR[fileKey];
+  const envMeta = envVar && process.env[envVar] ? loadEnvMeta(envVar) : null;
+  const hasEnvMeta = envMeta && (envMeta.extractedAt || envMeta.extractedAtUnix);
+
+  if (hasBundleMeta && hasEnvMeta) {
+    return selectFresherCookieTier(bundleMeta, envMeta) === 'env'
+      ? { ...envMeta, source: 'env' }
+      : { ...bundleMeta, source: 'bundle' };
+  }
+  if (hasBundleMeta) {
     return { ...bundleMeta, source: 'bundle' };
+  }
+  if (hasEnvMeta) {
+    return { ...envMeta, source: 'env' };
   }
   const fileMeta = loadFileMeta()[fileKey];
   if (fileMeta && (fileMeta.extractedAt || fileMeta.extractedAtUnix)) {
     return { ...fileMeta, source: 'file' };
+  }
+  return null;
+}
+
+/**
+ * Tier-2 (individual env var secret, e.g. WSJ_COOKIES) extraction metadata,
+ * read from a companion `${envVar}_META` env var — base64-encoded JSON
+ * shaped like a bundle's `_meta`. Scripts that push an individual cookie
+ * secret (e.g. wsj-otp-login.js --push) push this alongside it so
+ * selectFresherCookieTier() has something to compare against; without it,
+ * Tier 2 has no known freshness and Tier 1 keeps winning by default.
+ */
+function loadEnvMeta(envVar) {
+  const val = process.env[`${envVar}_META`];
+  if (!val) return null;
+  try {
+    const decoded = Buffer.from(val, 'base64').toString('utf-8');
+    const meta = JSON.parse(decoded);
+    if (meta && typeof meta === 'object' && (meta.extractedAt || meta.extractedAtUnix)) {
+      return meta;
+    }
+  } catch (e) {
+    console.log(`  ⚠ Failed to parse ${envVar}_META env var: ${e.message}`);
+  }
+  return null;
+}
+
+function metaUnixTime(meta) {
+  if (!meta) return null;
+  if (Number.isFinite(meta.extractedAtUnix)) return meta.extractedAtUnix;
+  if (meta.extractedAt) {
+    const parsed = Date.parse(meta.extractedAt);
+    if (!Number.isNaN(parsed)) return Math.floor(parsed / 1000);
+  }
+  return null;
+}
+
+/**
+ * Decide which tier is fresher when BOTH a Tier-1 bundle entry and a Tier-2
+ * individual env var secret exist for the same outlet. Pure function so it's
+ * directly unit-testable (see cookie-loader.test.mjs) rather than only
+ * exercisable through a live CI run.
+ *
+ * Only switches to 'env' when both timestamps are known AND env is strictly
+ * newer — any missing/unparseable timestamp on either side falls back to the
+ * historical default ('bundle' always wins when present), so outlets with no
+ * meta on either tier see no behavior change from before this function
+ * existed (task #881).
+ */
+function selectFresherCookieTier(bundleMeta, envMeta) {
+  const bundleUnix = metaUnixTime(bundleMeta);
+  const envUnix = metaUnixTime(envMeta);
+  if (bundleUnix !== null && envUnix !== null && envUnix > bundleUnix) {
+    return 'env';
+  }
+  return 'bundle';
+}
+
+function parseCookieEnvVar(envVar, rawVal, { requireNonEmpty }) {
+  try {
+    const decoded = Buffer.from(rawVal, 'base64').toString('utf-8');
+    const cookies = JSON.parse(decoded);
+    if (Array.isArray(cookies) && (!requireNonEmpty || cookies.length > 0)) {
+      return cookies;
+    }
+  } catch (e) {
+    console.log(`  ⚠ Failed to parse ${envVar} env var: ${e.message}`);
   }
   return null;
 }
@@ -175,28 +259,41 @@ function loadCookiesForDomain(domain) {
     return null;
   }
 
-  // Tier 1: COOKIES_BUNDLE_* env vars
+  // Tier 1: COOKIES_BUNDLE_* env vars — but if a Tier-2 individual secret is
+  // ALSO present, check freshness before defaulting to the bundle (task #881:
+  // a stale bundle entry used to permanently shadow a fresher pushed secret).
   const bundles = loadBundles();
-  if (bundles[cookieConfig.fileKey]) {
-    const cookies = bundles[cookieConfig.fileKey];
-    console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from bundle`);
-    _cookieCache[normalizedDomain] = cookies;
-    return cookies;
+  const bundleCookies = bundles[cookieConfig.fileKey];
+  const envRawVal = process.env[cookieConfig.envVar];
+
+  if (bundleCookies && envRawVal) {
+    const tier = selectFresherCookieTier(
+      _bundleMetaCache[cookieConfig.fileKey],
+      loadEnvMeta(cookieConfig.envVar)
+    );
+    if (tier === 'env') {
+      const envCookies = parseCookieEnvVar(cookieConfig.envVar, envRawVal, { requireNonEmpty: true });
+      if (envCookies) {
+        console.log(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar} (fresher than bundle)`);
+        _cookieCache[normalizedDomain] = envCookies;
+        return envCookies;
+      }
+    }
+  }
+
+  if (bundleCookies) {
+    console.log(`  🍪 Loaded ${bundleCookies.length} cookies for ${normalizedDomain} from bundle`);
+    _cookieCache[normalizedDomain] = bundleCookies;
+    return bundleCookies;
   }
 
   // Tier 2: Individual env var (backward compat)
-  const envVal = process.env[cookieConfig.envVar];
-  if (envVal) {
-    try {
-      const decoded = Buffer.from(envVal, 'base64').toString('utf-8');
-      const cookies = JSON.parse(decoded);
-      if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
-        _cookieCache[normalizedDomain] = cookies;
-        return cookies;
-      }
-    } catch (e) {
-      console.log(`  ⚠ Failed to parse ${cookieConfig.envVar} env var: ${e.message}`);
+  if (envRawVal) {
+    const envCookies = parseCookieEnvVar(cookieConfig.envVar, envRawVal, { requireNonEmpty: true });
+    if (envCookies) {
+      console.log(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
+      _cookieCache[normalizedDomain] = envCookies;
+      return envCookies;
     }
   }
 
@@ -225,20 +322,33 @@ function loadCookiesForDomain(domain) {
  * Returns { source: 'bundle'|'env'|'file', cookies: [] } or null.
  */
 function loadCookiesByFileKey(fileKey) {
-  // Tier 1: Bundles
   const bundles = loadBundles();
-  if (bundles[fileKey]) {
-    return { source: 'bundle', cookies: bundles[fileKey] };
+  const bundleCookies = bundles[fileKey];
+  const envVar = FILE_KEY_TO_ENV_VAR[fileKey];
+  const envRawVal = envVar && process.env[envVar];
+
+  // Tier 1 vs Tier 2 freshness check (task #881) — same logic as
+  // loadCookiesForDomain, kept in sync since check-cookie-health.js reports
+  // through this path instead. requireNonEmpty:true here (unlike the Tier-2
+  // fallback below) because this branch is choosing to DISCARD a known-
+  // populated bundle — a fresher-but-empty env secret must not win that trade.
+  if (bundleCookies && envRawVal) {
+    const tier = selectFresherCookieTier(_bundleMetaCache[fileKey], loadEnvMeta(envVar));
+    if (tier === 'env') {
+      const envCookies = parseCookieEnvVar(envVar, envRawVal, { requireNonEmpty: true });
+      if (envCookies) return { source: 'env', cookies: envCookies };
+    }
+  }
+
+  // Tier 1: Bundles
+  if (bundleCookies) {
+    return { source: 'bundle', cookies: bundleCookies };
   }
 
   // Tier 2: Individual env var
-  const envVar = FILE_KEY_TO_ENV_VAR[fileKey];
-  if (envVar && process.env[envVar]) {
-    try {
-      const decoded = Buffer.from(process.env[envVar], 'base64').toString('utf-8');
-      const cookies = JSON.parse(decoded);
-      if (Array.isArray(cookies)) return { source: 'env', cookies };
-    } catch {}
+  if (envRawVal) {
+    const envCookies = parseCookieEnvVar(envVar, envRawVal, { requireNonEmpty: false });
+    if (envCookies) return { source: 'env', cookies: envCookies };
   }
 
   // Tier 3: Local file
@@ -324,6 +434,8 @@ module.exports = {
   loadCookiesForDomain,
   loadCookiesByFileKey,
   loadCookieMeta,
+  loadEnvMeta,
+  selectFresherCookieTier,
   hasCookiesForUrl,
   buildCookieHeaderForUrl,
   getEnvVarForFileKey,

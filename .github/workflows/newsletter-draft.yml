@@ -50,6 +50,10 @@ on:
         description: 'Optional show id to float to the top of the Opened Off-Broadway section (editorial lead override).'
         required: false
         default: ''
+      weLead:
+        description: 'Optional show id to float to WE opening story #1 (subject/lede + first card, WE edition).'
+        required: false
+        default: ''
       dropSections:
         description: 'Comma-separated section names to drop this issue (e.g. biggest-movers). One-off editorial lever.'
         required: false
@@ -169,6 +173,7 @@ jobs:
           LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
           SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
           NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
+          NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
           NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
           NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
           NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
@@ -210,6 +215,7 @@ jobs:
           LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
           SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
           NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
+          NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
           NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
           NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
           NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
