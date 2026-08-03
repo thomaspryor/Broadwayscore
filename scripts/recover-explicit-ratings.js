@@ -360,7 +360,7 @@ async function phase1ExtractLocal(reviews) {
     if (!text || text.length < 20) continue;
 
     // Try rule-based extraction first (free, no LLM)
-    let result = extractScoreRuleBased('', text, review.data.outletId || '');
+    let result = extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
     // Fall back to LLM if rule-based didn't find anything
     if (!result) {
       result = await extractExplicitScore({
@@ -760,7 +760,7 @@ async function phase3ScrapeURLs(reviews) {
 
       if (html && html.length > 500) {
         // Try rule-based extractors first (free, handles SVG/CSS/image star patterns)
-        let result = extractScoreRuleBased(html, review.data.fullText || '', review.data.outletId || '');
+        let result = extractScoreRuleBased(html, review.data.fullText || '', review.data.outletId || '', review.data.showTitle || '');
         // Fall back to LLM-based extraction if rule-based didn't find anything
         if (!result) {
           result = await extractExplicitScore({
