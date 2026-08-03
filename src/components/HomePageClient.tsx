@@ -744,18 +744,22 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             {
               value: 'recent' as SortParam,
               label: sort === 'recent' ? 'NEWEST ↓' : sort === 'recent_asc' ? 'NEWEST ↑' : 'NEWEST',
+              title: sort === 'recent' ? 'Sorted newest first, click to reverse' : sort === 'recent_asc' ? 'Sorted oldest first, click to reverse' : 'Click to sort by opening date',
             },
             {
               value: 'score_desc' as SortParam,
               label: sort === 'score_desc' ? 'CRITICS ↓' : sort === 'score_asc' ? 'CRITICS ↑' : 'CRITICS',
+              title: sort === 'score_desc' ? 'Sorted by critic score, highest first, click to reverse' : sort === 'score_asc' ? 'Sorted by critic score, lowest first, click to reverse' : 'Click to sort by critic score',
             },
             {
               value: 'audience_buzz' as SortParam,
               label: sort === 'audience_buzz' ? 'AUDIENCE ↓' : sort === 'audience_asc' ? 'AUDIENCE ↑' : 'AUDIENCE',
+              title: sort === 'audience_buzz' ? 'Sorted by audience score, highest first, click to reverse' : sort === 'audience_asc' ? 'Sorted by audience score, lowest first, click to reverse' : 'Click to sort by audience score',
             },
             {
               value: 'alpha' as SortParam,
               label: sort === 'alpha' ? 'A-Z ↓' : sort === 'alpha_desc' ? 'A-Z ↑' : 'A-Z',
+              title: sort === 'alpha' ? 'Sorted alphabetically, A to Z, click to reverse' : sort === 'alpha_desc' ? 'Sorted alphabetically, Z to A, click to reverse' : 'Click to sort alphabetically',
             },
           ]}
           value={
