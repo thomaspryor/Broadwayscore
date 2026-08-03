@@ -82,8 +82,16 @@ async function main() {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const html = await res.text();
-        const m = REVIEWER_RE.exec(html);
-        if (m) name = m[1].trim();
+        // Match page-wide, but only trust a unanimous result — a related-posts
+        // widget could surface another article's "Reviewer:" line.
+        const names = [...html.matchAll(new RegExp(REVIEWER_RE, 'gu'))].map((m) => m[1].trim());
+        const unique = [...new Set(names)];
+        if (unique.length === 1) name = unique[0];
+        else if (unique.length > 1) {
+          unresolved.push({ showId, file, reason: `conflicting Reviewer lines: ${unique.join(' / ')}` });
+          await sleep(1000);
+          continue;
+        }
       } catch (e) {
         unresolved.push({ showId, file, reason: `fetch failed: ${e.message}` });
         await sleep(1000);
