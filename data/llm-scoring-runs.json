@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-07-31T21:22:57.109Z",
-    "completedAt": "2026-07-31T21:22:57.312Z",
-    "totalReviews": 1,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-vessel-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-07-31T21:48:39.318Z",
     "completedAt": "2026-07-31T21:48:45.503Z",
     "totalReviews": 41301,
@@ -382278,6 +382258,26 @@
       "input": 12073,
       "output": 476,
       "total": 34881
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-03T07:18:26.301Z",
+    "completedAt": "2026-08-03T07:18:37.431Z",
+    "totalReviews": 41602,
+    "processed": 0,
+    "skipped": 41598,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 12073,
+      "output": 463,
+      "total": 34863
     },
     "errorDetails": [
       {
