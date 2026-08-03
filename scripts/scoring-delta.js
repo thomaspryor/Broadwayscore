@@ -627,6 +627,16 @@ function main() {
         // predicate silently skipped Phase A ("decisions identical") — the
         // Benjamin Button pre-opening gate was invisible to this tool.
         && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '')
+        // …and the rule chain it delegates to. Since task #902,
+        // isIncludableForRebuild is a permanent 2-line wrapper
+        // (`explainExclusion(...) === null`), so its OWN source never changes
+        // again — every future exclusion-rule edit happens inside
+        // explainExclusion. Comparing only the wrapper would silently reopen
+        // the 2026-07-21 blind spot documented directly above: guardsIdentical
+        // stays true, Phase A prints "decisions identical — skipping inclusion
+        // replay", and a real scoring change ships unreplayed.
+        // scripts/lib/review-guards.explain.test.mjs asserts this line exists.
+        && (baseline.explainExclusion?.toString() || '') === (working.explainExclusion?.toString() || '')
         && (baseline.isPrematureReviewForUnopenedShow?.toString() || '') === (working.isPrematureReviewForUnopenedShow?.toString() || '')
         // Threshold constants are free variables of the pre-opening gate — a
         // constant-only edit leaves the function source identical (same trap

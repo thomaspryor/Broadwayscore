@@ -53,6 +53,21 @@ test('isIncludableForRebuild delegates to explainExclusion (no forked rule chain
   );
 });
 
+test('scoring-delta.js compares explainExclusion, not just the wrapper', () => {
+  // The §12.7 gate detects guard-logic edits by diffing predicate SOURCE
+  // (scoring-delta.js `guardsIdentical`). isIncludableForRebuild is now a
+  // permanent 2-line wrapper, so its source is frozen — comparing only it means
+  // every future rule edit reads as "decisions identical" and skips the
+  // inclusion replay. That is the exact 2026-07-21 blind spot the list was
+  // extended to close; this test keeps it closed.
+  const src = fs.readFileSync(path.join(ROOT, 'scripts', 'scoring-delta.js'), 'utf8');
+  assert.match(
+    src,
+    /baseline\.explainExclusion\?\.toString\(\)[\s\S]{0,80}working\.explainExclusion\?\.toString\(\)/,
+    'scoring-delta.js must include explainExclusion in its guard-identity comparison'
+  );
+});
+
 test('each exclusion rule name fires for its own trigger', () => {
   const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
   const cases = [

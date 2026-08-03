@@ -816,6 +816,12 @@ on:
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
       - 'scripts/lib/gap-audit-merge.test.mjs'
+      # Spawns real concurrent processes to prove the write lock actually
+      # serializes the read-modify-write (without it, 7 of 8 updates are lost).
+      - 'scripts/lib/gap-audit-merge.concurrent.test.mjs'
+      # Retention is derived from MAX_FRESHNESS_SKIP_MS here — an edit to the
+      # freshness windows changes how long gap entries are retained.
+      - 'scripts/lib/gap-audit-freshness.js'
       # Market label injected into every LLM scoring/classifier prompt. A bare
       # `: 'Broadway'` fallback here told the ensemble a regional tryout was a
       # Broadway show, so both legs rejected the review as wrong_production

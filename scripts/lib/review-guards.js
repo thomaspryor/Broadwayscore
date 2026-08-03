@@ -2512,6 +2512,15 @@ function buildMultiProdYearGuard(shows) {
  * copies drift and the boolean silently stops matching the reason. Add new
  * rules HERE, returning a stable kebab/camel rule name, never `false`.
  *
+ * SCOPE — read this before treating a rule name as ground truth. This function
+ * explains THIS PREDICATE's decision. The predicate is a mirror of
+ * rebuild-all-reviews.js with the documented gaps listed under "Known
+ * limitations" below; where the mirror and the rebuild disagree, the rebuild
+ * wins and no rule name here describes that. So a returned name is "the first
+ * rule this predicate tripped on", which is a strong diagnostic and a bad
+ * audit-of-record. Anything that needs the rebuild's actual reason must read it
+ * from the rebuild's own exclusion log, not from here.
+ *
  * Rule names are stable identifiers for the Coverage Verdict pipeline
  * (data/audit/*, private) — they are NOT user-facing copy and must never be
  * published per-outlet on the public site (plan rule 2, ~25% FP rate on

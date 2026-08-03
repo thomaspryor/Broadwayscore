@@ -96,6 +96,32 @@ test('a missing / unreadable previous file just means "nothing to carry"', () =>
   }
 });
 
+test('duplicate showIds collapse to one row (ship-check: append list inflated counts)', () => {
+  // Two rows for the same show — from the run, and across a merge — must never
+  // both survive: an append list would add another copy on every subsequent
+  // merge and quietly double the gap counts.
+  const dup = mergeGapAudit(null, runOf([
+    result('a-show'),
+    result('a-show', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] }),
+  ]));
+  assert.strictEqual(dup.results.length, 1);
+  assert.strictEqual(dup.results[0].missing.length, 1, 'last row for a showId wins');
+  assert.strictEqual(dup.counts.totalMissing, 1);
+
+  // and a prior file that already contains duplicates gets de-duplicated too
+  const dirtyPrev = { generatedAt: '2026-08-01T00:00:00.000Z', results: [result('b-show'), result('b-show')] };
+  const cleaned = mergeGapAudit(dirtyPrev, runOf([result('a-show')]));
+  assert.deepStrictEqual(cleaned.results.map(r => r.showId), ['a-show', 'b-show']);
+  assert.strictEqual(cleaned.carriedForward, 1);
+});
+
+test('an entry with an unparseable computedAt is kept, not silently pruned', () => {
+  const prev = { generatedAt: '2026-08-01T00:00:00.000Z', results: [{ ...result('weird-show'), computedAt: 'not-a-date' }] };
+  const after = mergeGapAudit(prev, runOf([result('a-show')]), { retentionDays: 1 });
+  assert.deepStrictEqual(after.results.map(r => r.showId).sort(), ['a-show', 'weird-show']);
+  assert.strictEqual(after.prunedStale, 0);
+});
+
 test('gapStateFor: empty census is never "complete"', () => {
   assert.strictEqual(gapStateFor(result('a')), 'complete');
   assert.strictEqual(gapStateFor(result('a', { missing: [{ host: 'x.com' }] })), 'incomplete');

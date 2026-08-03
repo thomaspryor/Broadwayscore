@@ -28,6 +28,12 @@ const OPENING_WARM_FRESHNESS_MS = 3 * 60 * 60 * 1000;
 // Talkin' Broadway (and occasionally others) publish up to 24h before the
 // official opening (CLAUDE.md rule 14) — cover the eve-of-opening day too.
 const PRE_OPENING_GRACE_MS = 24 * 60 * 60 * 1000;
+// Longest re-audit skip any show can earn (closed + audited clean). Exported so
+// show-review-gap.json's retention can be derived from it rather than guessed:
+// a retention shorter than this evicts closed-clean shows long before they are
+// due to be re-audited, and they read as no-census-yet in the meantime
+// (ship-check finding, task #902).
+const MAX_FRESHNESS_SKIP_MS = 365 * 24 * 60 * 60 * 1000;
 
 function inOpeningPriorityWindow(show, now = Date.now()) {
   if (show?.status === 'closed') return false;
@@ -44,7 +50,7 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
   const closed = show && show.status === 'closed';
   // A closed show that audited clean won't get new reviews — re-check only yearly
   // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
-  if (closed && lastEntry && lastEntry.gaps === 0) return 365 * 24 * 60 * 60 * 1000; // 365d
+  if (closed && lastEntry && lastEntry.gaps === 0) return MAX_FRESHNESS_SKIP_MS; // 365d
   if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
   if (inOpeningPriorityWindow(show, now)) {
     return inOpeningWindow(show, now, OPENING_HOT_DAYS)
@@ -81,4 +87,5 @@ module.exports = {
   OPENING_HOT_DAYS,
   OPENING_WINDOW_FRESHNESS_MS,
   OPENING_WARM_FRESHNESS_MS,
+  MAX_FRESHNESS_SKIP_MS,
 };
