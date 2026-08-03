@@ -93,6 +93,14 @@ on:
       # "impressions down 34%" reading was a false alarm (clicks were UP 13%).
       # This lib is what tells that apart from a real ranking loss.
       - 'scripts/lib/seo-bot-query-signature.js'
+      # Rolling-window history files ("keep last N entries") assume one entry
+      # per day; CI runs the producer many times a day, so the window silently
+      # collapses — bundle-size-history.json held 50 entries covering 9 days,
+      # 21 on 2026-04-19 alone. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/history-fold-by-day.js'
+      - 'scripts/lib/history-fold-by-day.test.mjs'
+      - 'scripts/check-bundle-size.js'
       - 'scripts/extract-dtli-reviews.js'
       - 'scripts/lib/corpus-determinism.js'
       - 'scripts/audit-corpus-determinism.js'
