@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-03T02:47:15.884Z",
+  "updatedAt": "2026-08-03T03:31:17.180Z",
   "processed": 9,
-  "failed": 86,
-  "successRate": "9.5%",
+  "failed": 96,
+  "successRate": "8.6%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 12,
+    "archiveToday": 14,
     "archive": 0
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-08-03T00:36:53.201Z",
-      "event": "bb-session",
-      "session": "148fefac",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-08-03T00:37:10.349Z",
-      "event": "bb-session",
-      "session": "2676cfc7",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
     {
       "t": "2026-08-03T00:58:42.120Z",
       "event": "bb-session",
@@ -112,6 +100,28 @@
     },
     {
       "t": "2026-08-03T02:45:17.939Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T03:29:33.610Z",
+      "event": "bb-session",
+      "session": "5da76e40",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T03:29:34.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-03T03:29:50.617Z",
+      "event": "bb-session",
+      "session": "ff92b1ff",
+      "url": "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html"
+    },
+    {
+      "t": "2026-08-03T03:29:51.466Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
