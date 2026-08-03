@@ -23,6 +23,8 @@ const {
   calculateDateWindow,
   earliestPriorRunStart,
   isUrlYearInPriorRun,
+  earliestTourLegStart,
+  isUrlYearInTourLeg,
 } = require('../../scripts/lib/url-discovery.js');
 const { isUrlYearOutsideWindow } = require('../../scripts/lib/content-filters.js');
 
@@ -151,5 +153,105 @@ describe('isUrlYearInPriorRun — dash-delimited year tokens (#872)', () => {
   it('does not read a longer digit run (article ID) as a year', () => {
     assert.strictEqual(isUrlYearInPriorRun('https://example.com/story/a12022x/review', TKAM_RUNS), false);
     assert.strictEqual(isUrlYearInPriorRun('https://example.com/shows/120224/review', TKAM_RUNS), false);
+  });
+});
+
+// Coverage Verdict S4 (2026-08-03): tourLegs is the SAME discovery-widening
+// gap priorRuns had (Brainiac Live, above) but for the current touring
+// production's OTHER venue stops rather than a distinct earlier production.
+// earliestTourLegStart/isUrlYearInTourLeg mirror earliestPriorRunStart/
+// isUrlYearInPriorRun exactly — same tests, tourLegs shape (venue/startDate/
+// endDate) instead of priorRuns (venue/openingDate/closingDate).
+const TOUR_SHOW = {
+  openingDate: '2026-07-29',
+  closingDate: '2026-08-30',
+  previewsStartDate: '2026-07-26',
+  tourLegs: [{
+    venue: 'Ahmanson Theatre',
+    startDate: '2026-01-10',
+    endDate: '2026-02-14',
+    corroborationUrl: 'https://playbill.com/a',
+  }],
+};
+
+describe('earliestTourLegStart', () => {
+  it('returns null when the show declares no tourLegs', () => {
+    assert.strictEqual(earliestTourLegStart({ openingDate: '2026-07-29' }), null);
+    assert.strictEqual(earliestTourLegStart({ tourLegs: [] }), null);
+    assert.strictEqual(earliestTourLegStart(null), null);
+  });
+
+  it('picks the EARLIEST startDate across multiple tour legs', () => {
+    const d = earliestTourLegStart({
+      tourLegs: [
+        { venue: 'Venue A', startDate: '2025-11-21' },
+        { venue: 'Venue B', startDate: '2025-10-08' },
+      ],
+    });
+    assert.strictEqual(d.toISOString().slice(0, 10), '2025-10-08');
+  });
+
+  it('skips entries with a missing or unparseable startDate', () => {
+    const d = earliestTourLegStart({
+      tourLegs: [{ venue: 'No Date' }, { startDate: 'not-a-date' }, { startDate: '2026-01-10' }],
+    });
+    assert.strictEqual(d.toISOString().slice(0, 10), '2026-01-10');
+    assert.strictEqual(earliestTourLegStart({ tourLegs: [{ venue: 'No Date' }] }), null);
+  });
+});
+
+describe('calculateDateWindow — tourLegs widening', () => {
+  it('widens dateMin back to the earliest tour leg', () => {
+    const win = calculateDateWindow(TOUR_SHOW);
+    assert.strictEqual(win.dateMin.toISOString().slice(0, 10), '2026-01-03');
+    const legReview = new Date('2026-01-20').getTime();
+    assert.ok(legReview >= win.dateMin.getTime());
+    assert.ok(legReview <= win.dateMax.getTime());
+  });
+
+  it('leaves the window untouched for a show with no tourLegs', () => {
+    const { tourLegs, ...noLeg } = TOUR_SHOW;
+    const win = calculateDateWindow(noLeg);
+    assert.strictEqual(win.dateMin.toISOString().slice(0, 10), '2026-07-19');
+  });
+
+  it('never NARROWS the window when a tour leg is later than previews', () => {
+    const win = calculateDateWindow({
+      openingDate: '2026-07-29',
+      previewsStartDate: '2026-07-26',
+      tourLegs: [{ venue: 'X', startDate: '2026-07-28' }],
+    });
+    assert.strictEqual(win.dateMin.toISOString().slice(0, 10), '2026-07-19');
+  });
+});
+
+describe('isUrlYearInTourLeg', () => {
+  const TOUR_LEGS = [{ venue: 'Ahmanson Theatre', startDate: '2025-11-01', endDate: '2026-01-15' }];
+
+  it('readmits a URL year the tour leg actually spans', () => {
+    assert.strictEqual(isUrlYearInTourLeg('https://www.latimes.com/2025/x-review', TOUR_LEGS), true);
+    assert.strictEqual(isUrlYearInTourLeg('https://www.latimes.com/2026/x-review', TOUR_LEGS), true);
+  });
+
+  it('does NOT readmit years the tour leg does not span', () => {
+    assert.strictEqual(isUrlYearInTourLeg('https://www.latimes.com/2024/x-review', TOUR_LEGS), false);
+  });
+
+  it('treats an endDate-less tour leg as a single year', () => {
+    const oneYear = [{ venue: 'X', startDate: '2026-01-10' }];
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/2026/r', oneYear), true);
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/2027/r', oneYear), false);
+  });
+
+  it('returns false with no tourLegs, no year in the URL, or bad dates', () => {
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/2026/r', null), false);
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/2026/r', []), false);
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/some-review', TOUR_LEGS), false);
+    assert.strictEqual(isUrlYearInTourLeg('https://x.co.uk/2026/r', [{ venue: 'X', startDate: 'nope' }]), false);
+  });
+
+  it('reads a slug-style year the same as a /YYYY/ path segment', () => {
+    assert.strictEqual(isUrlYearInTourLeg('https://example.com/2025-tour-review/', TOUR_LEGS), true);
+    assert.strictEqual(isUrlYearInTourLeg('https://example.com/reviews/tour-2019', TOUR_LEGS), false);
   });
 });
