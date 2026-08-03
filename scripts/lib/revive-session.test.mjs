@@ -6,6 +6,7 @@ const {
   findClaudeCodePid,
   isFlaglessClaudeCommand,
   composeReviveCommand,
+  findFirstSurfaceRef,
   detectFlaglessSession,
   reviveSession,
 } = require('./revive-session.js');
@@ -114,7 +115,20 @@ test('detectFlaglessSession: fails safe when the cmux/ps call throws', () => {
   assert.equal(result.flagless, false);
 });
 
-test('reviveSession: respawns a flagless workspace with the flag restored', () => {
+// Real `cmux list-pane-surfaces --workspace X` sample shape (captured live,
+// 2026-08-03).
+const REAL_SURFACES_TEXT = '* surface:138  zz-respawn-test  [selected]';
+
+test('findFirstSurfaceRef: extracts a surface ref from real list-pane-surfaces output', () => {
+  assert.equal(findFirstSurfaceRef(REAL_SURFACES_TEXT), 'surface:138');
+});
+
+test('findFirstSurfaceRef: null on empty/no-match input', () => {
+  assert.equal(findFirstSurfaceRef(''), null);
+  assert.equal(findFirstSurfaceRef('no surfaces here'), null);
+});
+
+test('reviveSession: respawns a flagless workspace with the flag restored (via resolved --surface)', () => {
   let respawnedWith = null;
   const result = reviveSession('workspace:116', {
     model: 'sonnet',
@@ -122,11 +136,13 @@ test('reviveSession: respawns a flagless workspace with the flag restored', () =
       detectFn: () => ({ flagless: true, pid: 14046, command: FLAGLESS_RESUME }),
       readLedgerEntriesFn: () => [],
       launchByRefFn: () => null,
-      respawnFn: (ref, command) => { respawnedWith = { ref, command }; },
+      listPaneSurfacesFn: () => REAL_SURFACES_TEXT,
+      respawnFn: (ref, surfaceRef, command) => { respawnedWith = { ref, surfaceRef, command }; },
     },
   });
   assert.equal(result.revived, true);
   assert.equal(respawnedWith.ref, 'workspace:116');
+  assert.equal(respawnedWith.surfaceRef, 'surface:138');
   assert.match(respawnedWith.command, /--dangerously-skip-permissions/);
 });
 
@@ -155,6 +171,24 @@ test('reviveSession: no-op when no claude process was found (nothing to revive)'
   assert.equal(called, false);
 });
 
+// Ship-check adversarial finding, verified LIVE (2026-08-03): `cmux
+// respawn-pane --workspace X --command Y` alone throws `invalid_params:
+// Surface is not a terminal` — the surface ref must be resolved and passed
+// explicitly. If that resolution ever fails, refuse rather than guess.
+test('reviveSession: refuses to revive when no surface can be resolved (never call respawn-pane blind)', () => {
+  let called = false;
+  const result = reviveSession('workspace:116', {
+    deps: {
+      detectFn: () => ({ flagless: true, pid: 14046, command: FLAGLESS_RESUME }),
+      listPaneSurfacesFn: () => 'no surfaces here',
+      respawnFn: () => { called = true; },
+    },
+  });
+  assert.equal(result.revived, false);
+  assert.equal(result.reason, 'no-surface-found');
+  assert.equal(called, false);
+});
+
 test('reviveSession: falls back to the ledger model when no explicit model is passed', () => {
   let respawnedWith = null;
   const result = reviveSession('workspace:116', {
@@ -162,7 +196,8 @@ test('reviveSession: falls back to the ledger model when no explicit model is pa
       detectFn: () => ({ flagless: true, pid: 14046, command: FLAGLESS_RESUME }),
       readLedgerEntriesFn: () => [{ event: 'launch', workspaceRef: 'workspace:116', model: 'opus' }],
       launchByRefFn: (ref, entries) => entries.find(e => e.workspaceRef === ref) || null,
-      respawnFn: (ref, command) => { respawnedWith = { ref, command }; },
+      listPaneSurfacesFn: () => REAL_SURFACES_TEXT,
+      respawnFn: (ref, surfaceRef, command) => { respawnedWith = { ref, surfaceRef, command }; },
     },
   });
   assert.equal(result.revived, true);

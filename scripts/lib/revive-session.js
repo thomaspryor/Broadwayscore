@@ -69,6 +69,22 @@ function composeReviveCommand(originalCommand, { model = null } = {}) {
   return parts.join(' ').replace(/\s+/g, ' ').trim();
 }
 
+// Extract the first `surface:N` ref from `cmux list-pane-surfaces --workspace
+// X` output (lines look like `* surface:138  <title>  [selected]` or
+// `  surface:122  <title>`). Pure — exported for tests.
+//
+// `cmux respawn-pane --workspace X --command Y` alone is NOT sufficient —
+// verified live, 2026-08-03: it throws `invalid_params: Surface is not a
+// terminal` even against a workspace whose only surface IS a terminal
+// (`surface-health` confirmed `type=terminal`). Passing the resolved
+// `--surface` ref explicitly is what actually works. Every real 🤖
+// auto-dispatched workspace has exactly one pane/one surface (cmux-launch.js
+// never splits), so "first surface" is unambiguous in practice.
+function findFirstSurfaceRef(listPaneSurfacesText) {
+  const m = /surface:\d+/.exec(String(listPaneSurfacesText));
+  return m ? m[0] : null;
+}
+
 // Detect whether `ref`'s current occupant is a live-but-flagless claude
 // process. Fails safe to { flagless: false } on any I/O error or when no
 // claude process can be found — this predicate gates a consequential auto-
@@ -100,12 +116,17 @@ function reviveSession(ref, opts = {}) {
     detectFn = detectFlaglessSession,
     readLedgerEntriesFn = ledger.readEntries,
     launchByRefFn = ledger.launchByRef,
-    respawnFn = (r, command) => execFileSync(CMUX, ['respawn-pane', '--workspace', r, '--command', command], { encoding: 'utf8', timeout: 5000 }),
+    listPaneSurfacesFn = (r) => cmuxws.run(['list-pane-surfaces', '--workspace', r]),
+    respawnFn = (r, surfaceRef, command) => execFileSync(CMUX, ['respawn-pane', '--workspace', r, '--surface', surfaceRef, '--command', command], { encoding: 'utf8', timeout: 5000 }),
   } = deps;
 
   const detection = detectFn(ref, deps);
   if (!detection.command) return { revived: false, reason: 'no-claude-process-found', ref };
   if (!detection.flagless) return { revived: false, reason: 'already-flagged', ref };
+
+  let surfaceRef;
+  try { surfaceRef = findFirstSurfaceRef(listPaneSurfacesFn(ref)); } catch { surfaceRef = null; }
+  if (!surfaceRef) return { revived: false, reason: 'no-surface-found', ref };
 
   let model = opts.model || null;
   if (!model) {
@@ -117,7 +138,7 @@ function reviveSession(ref, opts = {}) {
   }
 
   const command = composeReviveCommand(detection.command, { model });
-  respawnFn(ref, command);
+  respawnFn(ref, surfaceRef, command);
   return { revived: true, ref, pid: detection.pid, command };
 }
 
@@ -125,6 +146,7 @@ module.exports = {
   findClaudeCodePid,
   isFlaglessClaudeCommand,
   composeReviveCommand,
+  findFirstSurfaceRef,
   detectFlaglessSession,
   reviveSession,
 };
