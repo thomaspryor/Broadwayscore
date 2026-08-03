@@ -60,7 +60,9 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
+const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
+const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 
@@ -87,6 +89,11 @@ const MAX_REDISPATCH_PER_TICK = 2;
 // synchronous wait (verifyTimeoutSec 90s + slowBootCapSec 360s +
 // lateAdoptSec 60s ≈ 8.5 min — see cmux-launch.js's launchCmux() call).
 const DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
+// Task #985: same per-tick throttle shape as MAX_REDISPATCH_PER_TICK — a
+// revive respawns a live pane in place (not a fresh dispatch), but capping it
+// keeps a first-ever run against several flagless tabs from hammering cmux
+// (and the owner's screen, if any of them wake it) in one tick.
+const MAX_REVIVE_PER_TICK = 3;
 
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
@@ -364,6 +371,101 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
   return { checked: tasks.length, stalled, redispatched };
 }
 
+// ── Flagless-resume sweep (task #985) ───────────────────────────────────────
+// cmux's OWN restart-recovery path (triggered reviving a dead pane — #886)
+// can resume a session with a bare `claude --worktree X --resume <id>`
+// command that never carries --dangerously-skip-permissions, so a 🤖
+// auto-dispatched tab silently degrades to manual permission mode and stalls
+// on the next tool-call approval — invisible to every OTHER sweep in this
+// file, which only checks whether a claude process exists, not what flags it
+// was started with. Every 🤖 workspace with a LIVE claude process is checked
+// each tick; a flagless one is respawned in place (same pane, flag restored)
+// via revive-session.js rather than closed/redispatched, so the owner's tab
+// and its conversation stay put.
+function reconcileFlaglessSessions({ dryRun = false, deps = {} } = {}) {
+  const {
+    listWorkspacesFn = cmuxws.listWorkspaces,
+    claudeAliveInFn = cmuxws.claudeAliveIn,
+    claudeMidTurnInFn = cmuxws.claudeMidTurnIn,
+    readLedgerEntriesFn = ledger.readEntries,
+    detectFn = reviveSessionLib.detectFlaglessSession,
+    reviveFn = reviveSessionLib.reviveSession,
+    reportFn = report,
+  } = deps;
+
+  let workspaces;
+  try { workspaces = listWorkspacesFn(); } catch (e) {
+    reportFn({ kind: 'flagless-sweep-error', taskId: 'sweep', detail: `cmux listing failed: ${e.message}` });
+    return { checked: 0, flagless: [], revived: [] };
+  }
+
+  let entries = [];
+  try { entries = readLedgerEntriesFn(); } catch { /* isLedgerAutoDispatched below falls back to title-only */ }
+
+  const autoDispatched = workspaces.filter(w =>
+    hasAutoDispatchMarker(w.title) || ledger.isLedgerAutoDispatched(w.ref, w.title, entries));
+
+  const flagless = [];
+  const revived = [];
+  let budget = MAX_REVIVE_PER_TICK;
+  for (const ws of autoDispatched) {
+    // Never yank a tab the owner is looking at right now (same rule as
+    // pruneDone's close-path guard, card #971) — a flagless session stalled
+    // at a permission prompt is often exactly the tab the owner has open to
+    // go approve it by hand; respawning under them is disruptive, and the
+    // next tick catches it if they haven't.
+    if (ws.selected) continue;
+
+    // Only a LIVE process can be flagless in a meaningful sense — a dead
+    // workspace is reconcileTaskSessions'/bsc-prune's territory, not this
+    // sweep's; checking it here would just duplicate their work.
+    let alive = true;
+    try { alive = claudeAliveInFn(ws.ref); } catch { alive = true; } // fail-safe: uncertain → skip, don't revive
+    if (!alive) continue;
+
+    const detection = detectFn(ws.ref, deps);
+    if (!detection.flagless) continue;
+
+    flagless.push(ws.ref);
+    reportFn({ kind: 'flagless-session', taskId: 'sweep', detail: `🤖 workspace ${ws.ref} "${ws.title}" is running claude WITHOUT --dangerously-skip-permissions (pid ${detection.pid}) — stalls on the next permission prompt` });
+    if (dryRun) continue;
+
+    // Mid-turn safety (ship-check adversarial finding): a flagless session
+    // that hasn't hit its first permission-gated tool call yet is still
+    // ACTIVELY WORKING, not stalled — `cmux respawn-pane` kills the running
+    // process outright. Same idle-vs-mid-turn distinction bsc-prune.js
+    // already applies before any destructive action on a live claude
+    // process (hasLiveClaude && !hasRunningClaude). Only revive when idle —
+    // i.e. actually stalled — and defer a busy one to the next tick, when it
+    // will either have finished naturally or hit the permission wall and
+    // gone idle.
+    let running = false;
+    try { running = claudeMidTurnInFn(ws.ref); } catch { running = true; } // fail-safe: uncertain → treat as busy, don't kill it
+    if (running) {
+      reportFn({ kind: 'flagless-revive-deferred-busy', taskId: 'sweep', detail: `${ws.ref} is flagless but still mid-turn (actively running) — deferring revive to next tick rather than killing in-progress work` });
+      continue;
+    }
+
+    if (budget <= 0) {
+      reportFn({ kind: 'flagless-revive-throttled', taskId: 'sweep', detail: `${ws.ref} deferred — this tick's revive budget (${MAX_REVIVE_PER_TICK}) is spent; will retry next tick` });
+      continue;
+    }
+    budget--;
+    let result;
+    try { result = reviveFn(ws.ref, { deps }); } catch (e) { result = { revived: false, reason: e.message }; }
+    reportFn({
+      kind: result.revived ? 'flagless-revived' : 'flagless-revive-failed',
+      taskId: 'sweep',
+      detail: result.revived
+        ? `respawned ${ws.ref} with --dangerously-skip-permissions restored`
+        : `failed to revive ${ws.ref}: ${result.reason || 'unknown error'}`,
+    });
+    if (result.revived) revived.push(ws.ref);
+  }
+
+  return { checked: autoDispatched.length, flagless, revived };
+}
+
 async function main() {
   const entries = ledger.readEntries();
   const open = ledger.openJobs(entries);
@@ -459,10 +561,18 @@ async function main() {
   } catch (e) {
     console.error(`[bsc-reconcile] stalled-task sweep crashed (non-fatal): ${e.message}`);
   }
+
+  // Task #985: flagless-resume sweep, same best-effort isolation.
+  try {
+    const flaglessSweep = reconcileFlaglessSessions({ dryRun: DRY });
+    console.log(`[bsc-reconcile] flagless checked=${flaglessSweep.checked} flagless=${flaglessSweep.flagless.length} revived=${flaglessSweep.revived.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] flagless-session sweep crashed (non-fatal): ${e.message}`);
+  }
 }
 
 if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK };
