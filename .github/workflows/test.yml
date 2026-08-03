@@ -84,8 +84,15 @@ on:
       # these path entries a solo edit to the script or its lib gets ZERO CI — the
       # allow-list failure mode in memory/feedback_test_yml_push_path_allowlist.md.
       - 'scripts/check-seo-health.js'
+      - 'scripts/check-seo-health.test.mjs'
       - 'scripts/lib/seo-cwv-field-scope.js'
       - 'scripts/lib/seo-cwv-ack.js'
+      # Bot-shaped GSC query detection (task #530). A third-party scraper's
+      # `site:` / stacked-exact-phrase queries earned ~12K zero-click desktop
+      # impressions/fortnight until it stopped on 2026-07-15; the resulting
+      # "impressions down 34%" reading was a false alarm (clicks were UP 13%).
+      # This lib is what tells that apart from a real ranking loss.
+      - 'scripts/lib/seo-bot-query-signature.js'
       - 'scripts/extract-dtli-reviews.js'
       - 'scripts/lib/corpus-determinism.js'
       - 'scripts/audit-corpus-determinism.js'
