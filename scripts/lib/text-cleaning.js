@@ -267,6 +267,11 @@ const HIGH_CONFIDENCE_JUNK_PATTERNS = [
   // Generic WordPress sidebar widgets
   /\s*CategoriesCategories[\s\S]*$/is,
   /\s*Theater blogroll[\s\S]*$/is,
+  // washingtonpost.com comment-count + "The 7" newsletter footer (task #876,
+  // confirmed live on masquerade-2025 / the-wiz-2024 recoveries — without
+  // this the trailing footer makes detectTruncationSignals() misclassify a
+  // complete review as truncated).
+  /\s*\d+\s*Comments\s*NEWSLETTER\s*WEEKDAYS\s*The 7[\s\S]*$/i,
 ];
 
 /**

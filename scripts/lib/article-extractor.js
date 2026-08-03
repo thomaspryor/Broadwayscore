@@ -103,7 +103,12 @@ function extractStageBody(html) {
     // Copyright
     /^©\s*Copyright/.test(t) ||
     // Related-articles widget link clusters
-    /Related Articles|More from this Author|Login Register/i.test(t);
+    /Related Articles|More from this Author|Login Register/i.test(t) ||
+    // Newsletter-signup CTA — trailing paragraph, not part of the review, but
+    // with no closing punctuation of its own it makes detectTruncationSignals()
+    // misread a genuinely complete review as truncated (task #876, confirmed
+    // live on archduke-west-end-2026 / burlesque-west-end-2026 recoveries).
+    /sign up to The Stage.s weekly reviews newsletter/i.test(t);
   const paras = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
     .map((m) => stripHtml(m[1]))
     .filter((t) => t.length > 40 && /[a-z]/.test(t) && !isTrailingNoise(t));
