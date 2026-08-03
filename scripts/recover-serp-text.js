@@ -58,7 +58,7 @@ const CONFIG = {
   limit: parseInt(getArg('limit') || '20', 10),
   dryRun: args.includes('--dry-run'),
   showFilter: getArg('show') || null,
-  reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
+  reviewTextsDir: process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts'),
   showsPath: path.join(__dirname, '..', 'data', 'shows.json'),
   exhaustedPath: path.join(__dirname, '..', 'data', 'audit', 'serp-text-exhausted.json'),
   minTextLength: 300,
