@@ -159,9 +159,20 @@ function gapSwapDecisions(openingShows, checkpoint, nowMs, opts = {}) {
       notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) — acknowledged, sending as-is.`);
       continue;
     }
+    // Eligible target must be CONFIRMED clean ('ok'), not merely non-'gap' —
+    // 'stale'/'no-data' is unverified, not clean, and picking one would
+    // silently trade a known gap for an unverified one while the report
+    // reads as if the target is settled (ship-check finding). Also must
+    // share the gapped show's category: pre-send-check.mjs applies the swap
+    // via a market-specific editorial lead override (NEWSLETTER_OB_LEAD /
+    // NEWSLETTER_WE_LEAD) — picking a target from a different market means
+    // the override can never find it in that market's list, so the source
+    // gets excluded but the "swap" never actually promotes anything
+    // (Codex adversarial finding, 2026-08-03).
     const eligible = list.find((c) => c.id !== s.id
       && !usedAsSwapTarget.has(c.id)
-      && classifyGapEntry((checkpoint || {})[c.id], nowMs, { freshHours }) !== 'gap');
+      && c.category === s.category
+      && classifyGapEntry((checkpoint || {})[c.id], nowMs, { freshHours }) === 'ok');
     if (eligible) {
       usedAsSwapTarget.add(eligible.id);
       swaps.push({

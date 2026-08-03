@@ -46,6 +46,17 @@ data/audit/market-misroutes.json merge=ours
 data/audit/unknown-aggregator-outlets.json merge=ours
 data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
+# Coverage Verdict S3 (task #905): score-public-since.json is append-only
+# per-showId (never overwritten once stamped) and coverage-digest-snapshot.json
+# is a latest-wins snapshot — same "bot-only regenerated state" shape as the
+# rows above. Written by two concurrent rebuild workflows (rebuild-fast.yml,
+# rebuild-reviews.yml); a lost stamp on conflict just delays the 24h floor's
+# protection window — it never causes an incorrect display (fail-open by
+# construction — see scripts/lib/score-public-since.js). Same known race
+# class as #893/#912/#923/#925, not solved here — tracked, not novel.
+data/audit/score-public-since.json merge=ours
+data/audit/coverage-digest-snapshot.json merge=ours
+
 # The two non-blocking monitor verdicts, committed by check-corpus-drift.yml
 # after every rebuild (each embeds a fresh generatedAt, so they churn ~16+/3d
 # and climbing). Bot-written full snapshots, latest-wins — same nature as

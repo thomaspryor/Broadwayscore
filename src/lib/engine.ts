@@ -259,6 +259,7 @@ export interface ComputedShow {
   // Fails open: absent when the audit file/kill switch/no stamp yet.
   cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
   scorePublicSince?: string | null;
+  coverageAcked?: boolean;
 }
 
 // ===========================================

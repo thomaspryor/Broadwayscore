@@ -91,11 +91,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // Without this, a previews show with 2 high-T1 reviews would show "Rave
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
   const isCuratedHistorical = CURATED_HISTORICAL_SHOWS.has(show.id);
-  const isTBD = show.status === 'previews' || show.status === 'upcoming' ||
-    applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical), {
-      scorePublicSince: show.scorePublicSince,
-      coverageState: show.cov?.state,
-    });
+  const isTBD = applyCoverageFloor(
+    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical)
+      || show.status === 'previews' || show.status === 'upcoming',
+    { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
+  );
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
@@ -366,11 +366,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
   const isCuratedHistoricalShow = CURATED_HISTORICAL_SHOWS.has(show.id);
-  const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
-    applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
-      scorePublicSince: show.scorePublicSince,
-      coverageState: show.cov?.state,
-    });
+  const showTBD = applyCoverageFloor(
+    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
+      || show.status === 'previews' || show.status === 'upcoming',
+    { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
+  );
   const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
@@ -506,11 +506,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 const reviewCount = show.criticScore?.reviewCount || 0;
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
-                const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
-                  applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
-                    scorePublicSince: show.scorePublicSince,
-                    coverageState: show.cov?.state,
-                  });
+                const showTBD = applyCoverageFloor(
+                  !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
+                    || show.status === 'previews' || show.status === 'upcoming',
+                  { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
+                );
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
@@ -707,11 +707,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             const reviewCount = show.criticScore?.reviewCount || 0;
             const tier1Count = show.criticScore?.tier1Count || 0;
             const tier2Count = show.criticScore?.tier2Count || 0;
-            const showTBD = show.status === 'previews' || show.status === 'upcoming' ||
-              applyCoverageFloor(!hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow), {
-                scorePublicSince: show.scorePublicSince,
-                coverageState: show.cov?.state,
-              });
+            const showTBD = applyCoverageFloor(
+              !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
+                || show.status === 'previews' || show.status === 'upcoming',
+              { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
+            );
             if (showTBD || !show.criticScore?.reviews || show.criticScore.reviews.length === 0) return null;
             return (
               <ScoreBreakdownBar

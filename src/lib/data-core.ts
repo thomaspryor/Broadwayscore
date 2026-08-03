@@ -68,6 +68,14 @@ for (const r of reviews) {
 const coverageGateDisabled = /^(1|true|yes|on)$/i.test(String(process.env.COVERAGE_GATE_DISABLED || '').trim());
 const covByShowId = new Map<string, ComputedShow['cov']>();
 const scorePublicSinceByShowId = new Map<string, string>();
+const coverageAckedShowIds = new Set<string>();
+// Same namespace pre-send-check.mjs writes with --ack-gap=<showId> (see
+// scripts/lib/t1-scoreboard.js cellKey/NEWSLETTER_GAP_NS) — one ack covers
+// both the newsletter swap gate and this show-page floor gate, since both
+// are the owner acknowledging the same underlying coverage gap on the same
+// show. The literal name is a historical newsletter-first artifact, not a
+// scoping restriction.
+const COVERAGE_ACK_NS_SUFFIX = '::newsletter-gap';
 if (!coverageGateDisabled) {
   try {
     const gapAudit = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 'show-review-gap.json'), 'utf-8'));
@@ -87,6 +95,16 @@ if (!coverageGateDisabled) {
       if (typeof iso === 'string') scorePublicSinceByShowId.set(showId, iso);
     }
   } catch { /* absent/unreadable — every show gets no scorePublicSince */ }
+  try {
+    const acks = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 't1-coverage-ack.json'), 'utf-8'));
+    if (Array.isArray(acks)) {
+      for (const a of acks) {
+        if (a && typeof a.key === 'string' && a.key.endsWith(COVERAGE_ACK_NS_SUFFIX)) {
+          coverageAckedShowIds.add(a.key.slice(0, -COVERAGE_ACK_NS_SUFFIX.length));
+        }
+      }
+    }
+  } catch { /* absent/unreadable — every show gets coverageAcked=false */ }
 }
 
 // Cache for computed shows
@@ -106,6 +124,7 @@ export function getAllShows(): ComputedShow[] {
       if (cov) computed.cov = cov;
       const scorePublicSince = scorePublicSinceByShowId.get(show.id);
       if (scorePublicSince) computed.scorePublicSince = scorePublicSince;
+      if (coverageAckedShowIds.has(show.id)) computed.coverageAcked = true;
       return computed;
     });
 

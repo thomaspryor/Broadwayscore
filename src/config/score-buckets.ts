@@ -263,7 +263,11 @@ export const SCORE_REGRESSION_FLOOR_HOURS = 24;
  * @param opts.coverageState  the show's `cov.state` field ('complete' |
  *   'incomplete' | 'no-census-yet' | undefined).
  * @param opts.coverageAcked  true when the owner has acknowledged this show's
- *   coverage gap (reuses the t1-scoreboard ack store).
+ *   coverage gap (reuses the t1-scoreboard ack store's 'newsletter-gap'
+ *   namespace — `data/audit/t1-coverage-ack.json`, populated via
+ *   `pre-send-check.mjs --ack-gap=<showId>`; read into ComputedShow by
+ *   src/lib/data-core.ts, same ack covers both the newsletter swap gate and
+ *   this floor).
  * @param opts.now  ms epoch, defaults to Date.now() — inject in tests.
  * @returns true when the show should show "Awaiting Reviews" instead of its score.
  */

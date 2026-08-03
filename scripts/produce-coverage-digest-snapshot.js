@@ -49,6 +49,13 @@ function buildSnapshot(gapAudit, nowIso) {
   return { generatedAt: nowIso, bannerText, items, moreCount: 0 };
 }
 
+function removeStaleSnapshot() {
+  try {
+    fs.unlinkSync(SNAPSHOT_PATH);
+    console.log(`[coverage-digest] removed stale ${SNAPSHOT_PATH}`);
+  } catch { /* nothing to remove */ }
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
   const fixtureArg = process.argv.find((a) => a.startsWith('--fixture='));
@@ -65,17 +72,24 @@ function main() {
     }
     gapAudit = build();
   } else {
-    // Fail open: kill switch or missing/unreadable audit → write nothing (an
-    // absent snapshot is optionalIfMissing in digest-snapshots.js, so the
-    // morning email just omits the section instead of showing stale/wrong data).
+    // Fail open: kill switch or missing/unreadable audit → write nothing, AND
+    // remove any prior snapshot. readSnapshot() in digest-snapshots.js only
+    // checks the age of the last write, not whether its content still
+    // reflects current reality — leaving a stale file in place would let a
+    // real (possibly outdated) completeness line keep rendering as "fresh"
+    // for up to maxAgeH (36h) of skipped runs. Deleting drops it to
+    // 'missing', which is optionalIfMissing for this key, so the morning
+    // email just omits the section instead of showing stale/wrong data.
     if (coverageGateDisabled()) {
       console.log('[coverage-digest] COVERAGE_GATE_DISABLED — skipping snapshot write');
+      removeStaleSnapshot();
       return;
     }
     try {
       gapAudit = JSON.parse(fs.readFileSync(GAP_AUDIT_PATH, 'utf8'));
     } catch (e) {
       console.log(`[coverage-digest] ${GAP_AUDIT_PATH} unreadable (${e.message}) — skipping snapshot write`);
+      removeStaleSnapshot();
       return;
     }
   }

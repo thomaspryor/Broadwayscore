@@ -103,7 +103,19 @@ const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _feature
 const featuredShowIds = new Set();
 const _moverShowIds = [];
 const _announcedShowIds = [];
-const notFeatured = (id) => !featuredShowIds.has(id);
+
+// NEWSLETTER_EXCLUDE_SHOWS=id1,id2 (Coverage Verdict S3, task #905): drops
+// specific shows from every section entirely — used by pre-send-check.mjs's
+// coverage-gap swap to actually remove a gapped show from the draft (not
+// just reorder it below the lead), so its incomplete score is never shown to
+// subscribers in ANY section (openings, movers, closings, catch-up — all
+// display a score). Off by default. Folded into notFeatured() so every
+// existing call site inherits it automatically instead of needing a
+// per-section opt-in (a 2026-08-03 review caught two call sites — catch-up
+// and the WE subject/lede picker — that a scattered per-section check had
+// missed; folding into the shared gate closes that whole class at once).
+const excludedShowIds = new Set((process.env.NEWSLETTER_EXCLUDE_SHOWS || '').split(',').map(s => s.trim()).filter(Boolean));
+const notFeatured = (id) => !featuredShowIds.has(id) && !excludedShowIds.has(id);
 const markFeatured = (...ids) => { for (const id of ids) if (id) featuredShowIds.add(id); };
 
 // Score-verdict openings this issue renders (opening hero cards + catch-up
@@ -647,7 +659,7 @@ function openingEventsForWeek(category) {
 function broadwayOpenings() {
   // Only feature shows we actually have reviews for (never name a no-review show).
   const events = openingEventsForWeek('broadway')
-    .filter(e => notFeatured(e.show.id))
+    .filter(e => notFeatured(e.show.id) && !excludedShowIds.has(e.show.id))
     .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
@@ -678,7 +690,8 @@ function offBroadwayOpenings() {
   const withScore = shows
     .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
       && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
-      && notFeatured(s.id) && !lastFeaturedIds.has(s.id)) // suppress last week's shows
+      && notFeatured(s.id) && !lastFeaturedIds.has(s.id) // suppress last week's shows
+      && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
@@ -1442,7 +1455,7 @@ function catchupOpeningsSection() {
     if (!isPrimaryMarket(s) || isOperaShow(s)) return false;
     if (s.status !== 'open') return false;
     if (!s.openingDate || s.openingDate < start || s.openingDate >= weekStartStr) return false; // before this week's window
-    if (!notFeatured(s.id)) return false; // not already a hero card or a closing-this-week row
+    if (!notFeatured(s.id) || excludedShowIds.has(s.id)) return false; // not already a hero card or a closing-this-week row
     return a && a.count >= minReviews(s.category);
   }).sort((a, b) => b.a.avg - a.a.avg)
     .slice(0, 6);
@@ -1933,7 +1946,7 @@ let _londonHasGoldOpening = false;
 // NEWSLETTER_OB_LEAD): floats that show to story #1 regardless of count.
 function weOpeningStories() {
   const ranked = shows
-    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate))
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && (IS_WE || x.agg.avg >= 75))
     .sort((a, b) => ((b.agg.count ?? 0) - (a.agg.count ?? 0)) || ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
@@ -1946,7 +1959,7 @@ function weOpeningStories() {
 }
 
 function londonSection() {
-  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate));
+  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
@@ -1993,7 +2006,7 @@ function londonSection() {
 // differ from theatre. Indigo/violet accent picks a color distinct from
 // gold (NYC) and pink (London) so the three feeds read as siblings.
 function operaOpeningsSection() {
-  const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate));
+  const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
   if (!withScore.length) return null;

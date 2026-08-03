@@ -222,3 +222,40 @@ test('gapSwapDecisions: a clean show already claimed as a swap target is not reu
   assert.equal(notes.length, 1);
   assert.match(notes[0], /Gap 2/);
 });
+
+test('gapSwapDecisions: eligible target must share the gapped show\'s category — a swap can never cross markets', () => {
+  // pre-send-check.mjs applies a swap via a market-specific editorial lead
+  // override (NEWSLETTER_OB_LEAD / NEWSLETTER_WE_LEAD). A cross-market pick
+  // would exclude the gapped show but the lead override could never find the
+  // target in the WRONG market's section, so nothing would actually be
+  // promoted (Codex adversarial finding, 2026-08-03).
+  const openingShows = [
+    { id: 'ob-gapped', title: 'OB Gapped', category: 'off-broadway' },
+    { id: 'we-clean', title: 'WE Clean', category: 'west-end' },
+    { id: 'ob-clean', title: 'OB Clean', category: 'off-broadway' },
+  ];
+  const checkpoint = {
+    'ob-gapped': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    'we-clean': { at: hoursAgo(1), gaps: 0, uncollected: 0 },
+    'ob-clean': { at: hoursAgo(1), gaps: 0, uncollected: 0 },
+  };
+  const { swaps } = gapSwapDecisions(openingShows, checkpoint, NOW);
+  assert.equal(swaps.length, 1);
+  assert.equal(swaps[0].to.id, 'ob-clean', 'must pick the same-category (off-broadway) target, not the west-end one');
+});
+
+test('gapSwapDecisions: no same-category eligible target falls back to a note, never picks cross-market', () => {
+  const openingShows = [
+    { id: 'ob-gapped', title: 'OB Gapped', category: 'off-broadway' },
+    { id: 'we-clean', title: 'WE Clean', category: 'west-end' },
+  ];
+  const checkpoint = {
+    'ob-gapped': { at: hoursAgo(1), gaps: 1, uncollected: 1 },
+    'we-clean': { at: hoursAgo(1), gaps: 0, uncollected: 0 },
+  };
+  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, NOW);
+  assert.equal(swaps.length, 0);
+  assert.equal(notes.length, 1);
+  assert.match(notes[0], /OB Gapped/);
+  assert.match(notes[0], /no eligible replacement/);
+});

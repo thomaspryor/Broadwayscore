@@ -33,6 +33,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
@@ -111,10 +112,93 @@ if (!fs.existsSync(htmlPath) || !fs.existsSync(metaPath)) {
 }
 
 let html = fs.readFileSync(htmlPath, 'utf8');
-const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+let meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+
+const repoRoot = path.join(__dirname, '..', '..');
+
+// ── Coverage-gap swap: apply BEFORE any other check runs, so every check
+// below sees the swapped draft, not the gapped one (Coverage Verdict S3,
+// task #905, supersedes task #823's hard fail). A swap is "applied" — not
+// just reported — when generate.mjs exposes an editorial lead override for
+// the gapped show's market (NEWSLETTER_OB_LEAD / NEWSLETTER_WE_LEAD): this
+// script re-invokes generate.mjs with that override AND
+// NEWSLETTER_EXCLUDE_SHOWS=<gapped ids> so the gapped show is actually
+// dropped from the openings section, not just demoted below the lead — a
+// gapped show left in the list still renders its (incomplete) score to
+// every subscriber, which is the exact thing this gate exists to prevent.
+// Broadway has no lead override today, so a Broadway-market gap stays
+// report-only — the note below says so honestly instead of pointing at a
+// "re-run refresh-drafts.sh" step that doesn't apply anything.
+// A SINGLE regeneration pass covers every market: generate.mjs is invoked
+// once with every gapped show's id in NEWSLETTER_EXCLUDE_SHOWS and every
+// market's lead env var set together (NEWSLETTER_OB_LEAD/WE_LEAD don't
+// conflict with each other — each only affects its own section). Doing this
+// per-category in a loop (one execFileSync call per market) was a real bug:
+// each subsequent regeneration call starts generate.mjs fresh, so a LATER
+// category's call would silently drop an EARLIER category's exclusions/lead
+// — the earlier swap was still logged as "applied" even though the final
+// draft no longer reflected it (Codex adversarial finding, 2026-08-03).
+// Grouped by ENV VAR, not category — west-end and off-west-end share
+// NEWSLETTER_WE_LEAD, so if both need a swap in the same run only the first
+// wins the lead slot (both still get excluded either way, so neither shows
+// its incomplete score). Capped at one regeneration pass — a swap target
+// that ALSO turns out to be gapped is reported, not chased (avoids infinite
+// regenerate loops).
+const LEAD_ENV_BY_CATEGORY = {
+  'off-broadway': 'NEWSLETTER_OB_LEAD',
+  'west-end': 'NEWSLETTER_WE_LEAD',
+  'off-west-end': 'NEWSLETTER_WE_LEAD',
+};
+const appliedSwapNotes = [];
+const unswappableNotes = [];
+if (Array.isArray(meta.openingShows)) {
+  let gapCheckpointEarly = {};
+  try { gapCheckpointEarly = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/gap-audit-checkpoint.json'), 'utf8')); } catch { /* no-op — reported as soft below */ }
+  const acksEarly = loadAcks();
+  const ackedShowIdsEarly = new Set(meta.openingShows.filter((s) => s && s.id && isAcked(cellKey(s.id, NEWSLETTER_GAP_NS), acksEarly)).map((s) => s.id));
+  const allowGapsEarly = process.env.NEWSLETTER_ALLOW_GAPS === '1';
+  const { swaps: swapsNeeded } = gapSwapDecisions(meta.openingShows, gapCheckpointEarly, Date.now(), { ackedShowIds: ackedShowIdsEarly, allowGaps: allowGapsEarly });
+
+  const swapsByEnvVar = new Map(); // envVar -> { leadId, entries: [] }
+  const excludeIds = [];
+  const applicableSwaps = [];
+  for (const s of swapsNeeded) {
+    const fromShow = meta.openingShows.find((os) => os && os.id === s.from.id);
+    const category = fromShow ? (fromShow.category || 'broadway') : 'broadway';
+    const envVar = LEAD_ENV_BY_CATEGORY[category];
+    if (!envVar) {
+      unswappableNotes.push(`COVERAGE SWAP NEEDED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. No editorial lead override exists for this market (${category}) — swap manually in the draft, or waive with --ack-gap=${s.from.id}.`);
+      continue;
+    }
+    excludeIds.push(s.from.id);
+    applicableSwaps.push(s);
+    if (!swapsByEnvVar.has(envVar)) swapsByEnvVar.set(envVar, { leadId: s.to.id, entries: [] });
+    swapsByEnvVar.get(envVar).entries.push(s);
+  }
+  if (applicableSwaps.length) {
+    const regenEnv = { ...process.env, NEWSLETTER_EXCLUDE_SHOWS: excludeIds.join(',') };
+    for (const [envVar, group] of swapsByEnvVar) regenEnv[envVar] = group.leadId;
+    try {
+      execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
+        cwd: repoRoot,
+        env: regenEnv,
+        stdio: 'pipe',
+      });
+      html = fs.readFileSync(htmlPath, 'utf8');
+      meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+      for (const s of applicableSwaps) {
+        appliedSwapNotes.push(`COVERAGE SWAP APPLIED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. Draft regenerated with ${s.from.id} excluded.`);
+      }
+    } catch (e) {
+      for (const s of applicableSwaps) {
+        unswappableNotes.push(`COVERAGE SWAP FAILED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — regeneration errored (${e.message.slice(0, 150)}). Swap manually, or waive with --ack-gap=${s.from.id}.`);
+      }
+    }
+  }
+}
 
 const hardFailures = [];  // stop the workflow entirely
-const softIssues = [];    // inject into draft banner so owner sees them
+const softIssues = [...appliedSwapNotes, ...unswappableNotes];    // inject into draft banner so owner sees them
 
 // ── HARD: unsubscribe placeholder ────────────────────────────────────────────
 if (!html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}')) {
@@ -196,8 +280,8 @@ if (meta.ledeShows?.length && !html.includes(BODY_MARKER)) {
 // ── HARD: featured-opening images (task #823/#714) ────────────────────────────
 // Born 2026-08-02: the checker blessed a WE draft whose top hero card
 // (Brainiac Live!) rendered the 🎭 no-image placeholder. Known locally; the
-// owner must never be the one catching it.
-const repoRoot = path.join(__dirname, '..', '..');
+// owner must never be the one catching it. Runs against the (possibly
+// swap-regenerated) draft loaded above.
 if (!Array.isArray(meta.openingShows)) {
   softIssues.push('meta.openingShows missing — draft was generated by an old generate.mjs; image/completeness gates did NOT run. Re-run refresh-drafts.sh.');
 } else {
@@ -208,10 +292,9 @@ if (!Array.isArray(meta.openingShows)) {
     try { return fs.statSync(path.join(repoRoot, rel)).size > 0; } catch { return false; }
   })) hardFailures.push(v);
 
-  // ── SOFT: review completeness — swap, never block (Coverage Verdict S3,
-  // task #905, supersedes task #823's hard fail). A fresh gap entry gets
-  // swapped with the next eligible opening (named below); stale/absent
-  // entries stay a plain "unverified" banner note.
+  // ── SOFT: review completeness — unverified (stale/no-data) entries only.
+  // Gap entries were already swapped or reported above, BEFORE this draft was
+  // loaded, so they don't need a second pass here.
   let gapCheckpoint = {};
   try { gapCheckpoint = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/gap-audit-checkpoint.json'), 'utf8')); } catch { /* soft path below */ }
   let missingHostsById = {};
@@ -230,15 +313,6 @@ if (!Array.isArray(meta.openingShows)) {
   } catch { /* hosts are enrichment only */ }
   const gapFindings = completenessFindings(meta.openingShows, gapCheckpoint, Date.now(), { missingHostsById });
   for (const v of gapFindings.soft) softIssues.push(v); // stale/no-data — unverified, not a gap
-
-  const acks = loadAcks();
-  const ackedShowIds = new Set(meta.openingShows.filter(s => s && s.id && isAcked(cellKey(s.id, NEWSLETTER_GAP_NS), acks)).map(s => s.id));
-  const allowGaps = process.env.NEWSLETTER_ALLOW_GAPS === '1';
-  const { swaps, notes } = gapSwapDecisions(meta.openingShows, gapCheckpoint, Date.now(), { ackedShowIds, allowGaps });
-  for (const s of swaps) {
-    softIssues.push(`COVERAGE SWAP: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. HTML still shows "${s.from.title}" as featured; re-run refresh-drafts.sh with the swap applied, or waive with --ack-gap=${s.from.id}.`);
-  }
-  for (const n of notes) softIssues.push(n);
 }
 // Any <img src=""> anywhere in the email (movers/closings rows use
 // `getImage(...) || ''`) — renders as a broken image in mail clients.
