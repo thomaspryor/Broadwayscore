@@ -20,6 +20,20 @@ on:
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/creative-team-verify.js'
       - 'scripts/lib/creative-team-verify.test.mjs'
+      # Affiliate revenue hardening (2026-08-03): link contract + anomaly
+      # decision layer for the site's only revenue stream. Colocated *.test.mjs
+      # run in the lib-test glob (incl. the real June–July incident replay);
+      # path-listed so a solo edit triggers CI. affiliate-platforms.json is the
+      # shared config the src/ build also imports — a bad edit breaks link
+      # rendering AND revenue reporting, so it must always run CI.
+      - 'scripts/lib/affiliate-link-contract.js'
+      - 'scripts/lib/affiliate-link-contract.test.mjs'
+      - 'scripts/lib/affiliate-anomaly.js'
+      - 'scripts/lib/affiliate-anomaly.test.mjs'
+      - 'scripts/lib/affiliate-stats.js'
+      - 'scripts/check-affiliate-health.js'
+      - 'scripts/verify-affiliate-links.js'
+      - 'src/config/affiliate-platforms.json'
       # Cookie loader: single source of truth for 35 outlets' auth cookies
       # across every scraping script. Was NOT in this allow-list at all before
       # task #881 (Tier-1/Tier-2 freshness comparison fix) — colocated

@@ -71,6 +71,27 @@ jobs:
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
 
+      # Affiliate revenue-stream monitor (affiliate hardening 2026-08-03).
+      # Runs BEFORE the health check so its snapshot is fresh when the
+      # "Revenue: affiliate health" digest line reads it. continue-on-error:
+      # a crash here must not block the health snapshot commit — the digest
+      # line's own 48h staleness guard is the dead-man for this step dying.
+      # Kill switch: `gh variable set AFFILIATE_MONITOR_DISABLED --body true`.
+      # Shadow burn-in until 2026-08-17 is enforced inside the script.
+      - name: Affiliate health monitor
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          AFFILIATE_MONITOR_DISABLED: ${{ vars.AFFILIATE_MONITOR_DISABLED }}
+        run: node scripts/check-affiliate-health.js
+
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -192,6 +213,10 @@ jobs:
           git add data/audit/digest-history.json 2>/dev/null || true
           git add data/audit/triage/ 2>/dev/null || true
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          # Affiliate monitor snapshot (2026-08-03) — single writer (this cron);
+          # without this line the snapshot never leaves the runner and the
+          # digest's staleness dead-man would false-fire daily.
+          git add data/audit/affiliate-health.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then

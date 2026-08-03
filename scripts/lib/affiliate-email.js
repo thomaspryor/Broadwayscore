@@ -18,7 +18,7 @@ function htmlInt(n) { return typeof n === 'number' ? n.toLocaleString() : '\u201
 function htmlPct(n) { return typeof n === 'number' ? `${(n * 100).toFixed(1)}%` : '\u2014'; }
 
 function buildAffiliateReportHtml(stats) {
-  const { window: win, funnel, unitEconomics, perPlatform, impact, errors, wowDelta } = stats;
+  const { window: win, funnel, unitEconomics, perPlatform, impact, errors, wowDelta, context } = stats;
 
   // Small green/red ▲▼ delta chip for week-over-week movement.
   // null pct (no prior-window activity) renders an em dash so the row stays aligned.
@@ -67,11 +67,49 @@ function buildAffiliateReportHtml(stats) {
       <span style="display:inline-block;">Sales ${wowChip(wowDelta.revenuePct)}</span>
       <br><span style="font-size:11px;color:rgba(255,255,255,0.3);">vs prior ${win.days}d (${esc(wowDelta.priorStartDate)} \u2013 ${esc(wowDelta.priorEndDate)}) \u00b7 Impact only</span>
     </p>` : '';
+  // Baseline line: WoW vs a single (possibly outlier-inflated) prior week is
+  // panic-prone \u2014 the trailing-baseline per-day average is the stable anchor.
+  let baselineLine = '';
+  if (context && context.baseline && context.baseline.payoutVsBaselinePct != null) {
+    const b = context.baseline;
+    baselineLine = `
+    <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.35);font-family:${FONT};">
+      vs trailing ${b.baseline.days}d baseline: ${wowChip(context.baseline.payoutVsBaselinePct)}
+      &nbsp;(${esc(htmlMoney(b.windowPerDay ? b.windowPerDay.payout : null))}/day now &middot; ${esc(htmlMoney(b.baselinePerDay ? b.baselinePerDay.payout : null))}/day baseline)
+    </p>`;
+  }
+  const partialBanner = context && context.partial ? `
+    <p style="margin:10px 0 0;font-size:11px;font-weight:700;color:#f87171;font-family:${FONT};">PARTIAL DATA \u2014 baseline/outlier context unavailable this week; treat deltas with caution.</p>` : '';
   const commissionHtml = card(`Our earnings \u2014 last ${win.days} days`, `
     <p style="margin:0;font-size:42px;font-weight:800;color:#ffffff;font-family:${FONT};line-height:1;">${esc(htmlMoney(stats.totals.commission))}</p>
     <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''} &middot; ${esc(htmlMoney(stats.totals.revenue))} attributed sales</p>
     ${wowLine}
+    ${baselineLine}
+    ${partialBanner}
   `);
+
+  // Context notes: outlier days, multi-order buyers, bot-click divergence \u2014
+  // the three annotations that would have made the 2026-08-03 "-77.6%" email
+  // explain itself instead of causing a fire drill.
+  let contextHtml = '';
+  if (context && !context.partial) {
+    const notes = [];
+    for (const d of context.outlierDays || []) {
+      notes.push(`Single day ${esc(d.day)} contributed ${Math.round(d.shareOfWindow * 100)}% of this window's commission (${esc(htmlMoney(d.payout))}).`);
+    }
+    for (const b of context.repeatBuyers || []) {
+      notes.push(`One buyer placed ${b.conversions} of this window's orders (${esc(htmlMoney(b.sales))} in sales, ${esc(htmlMoney(b.payout))} commission).`);
+    }
+    if (context.clickDivergenceRatio != null && context.clickDivergenceRatio > 2) {
+      notes.push(`Impact recorded ${esc(htmlInt(context.impactClicks))} clicks vs ${esc(htmlInt(funnel ? funnel.ticketClicks : null))} on-site ticket clicks (${context.clickDivergenceRatio.toFixed(1)}x) \u2014 likely bot hits on tracking links diluting EPC.`);
+    }
+    if (notes.length) {
+      contextHtml = card('Context \u2014 read before reacting to the deltas', `
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:rgba(255,255,255,0.7);font-family:${FONT};line-height:1.7;">
+          ${notes.map((n) => `<li style="margin:4px 0;">${n}</li>`).join('')}
+        </ul>`);
+    }
+  }
 
   // Funnel
   const funnelHtml = funnel ? card('Conversion funnel', `
@@ -180,6 +218,7 @@ function buildAffiliateReportHtml(stats) {
   </td></tr>
   <tr><td style="padding:20px 0 0;">
     ${commissionHtml}
+    ${contextHtml}
     ${funnelHtml}
     ${unitHtml}
     ${platformHtml}
