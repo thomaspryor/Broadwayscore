@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T13:53:02.187Z",
+  "generatedAt": "2026-08-03T14:45:02.163Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
@@ -18,7 +18,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-03T13:53:02.186Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 0.8666602777777778
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 264.690445,
+      "fileAgeHours": 265.5570963888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 223.9934027777778
+      "nonTerminalAgeHours": 224.86006305555554
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -52,7 +52,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 26.4314225
+      "nonTerminalAgeHours": 27.29808277777778
     }
   ],
   "contradictions": []
