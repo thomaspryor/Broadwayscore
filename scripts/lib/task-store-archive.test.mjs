@@ -121,16 +121,78 @@ test('mergeWithArchive: no archive/ directory — returns liveTasks unchanged', 
 });
 
 test('archiveCompletedTasks: re-verifies status at move time, not just at scan time (race-guard code path)', () => {
-  // Direct test of the re-check line (`parsed.status !== 'completed'`)
-  // rather than a scan/move race, which needs a live TaskUpdate racing the
-  // archiver to reproduce — not reproducible from a unit test. A task that
-  // is NOT completed must never be archived, full stop; selectArchivable
-  // already guarantees the scan phase agrees, so this pins the move-phase
-  // guard as an independent line of defense.
+  // Direct test of the re-check line rather than a scan/move race, which
+  // needs a live TaskUpdate racing the archiver to reproduce — not
+  // reproducible from a unit test. A task that is NOT completed/in_progress
+  // (e.g. reopened to pending) must never be archived, full stop;
+  // selectArchivable already guarantees the scan phase agrees, so this pins
+  // the move-phase guard as an independent line of defense.
   const dir = mkTmp();
-  writeTask(dir, 1, { status: 'in_progress' }, 1000);
+  writeTask(dir, 1, { status: 'pending' }, 1000);
   fs.mkdirSync(path.join(dir, 'archive'));
   const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
   assert.deepEqual(result.archived, []);
   assert.equal(fs.existsSync(path.join(dir, '1.json')), true);
+});
+
+test('selectArchivable: picks in_progress tasks untouched longer than staleInProgressMs (card #955)', () => {
+  const tasks = [
+    { id: '1', status: 'in_progress', mtimeMs: NOW - 200 * HOUR }, // >7d
+    { id: '2', status: 'in_progress', mtimeMs: NOW - 10 * HOUR }, // recent, active
+    { id: '3', status: 'pending', mtimeMs: NOW - 200 * HOUR }, // never archived regardless of age
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0 }), ['1']);
+});
+
+test('selectArchivable: staleInProgressMs: Infinity disables the in_progress population entirely', () => {
+  const tasks = [
+    { id: '1', status: 'in_progress', mtimeMs: NOW - 10_000 * HOUR },
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 0, staleInProgressMs: Infinity }), []);
+});
+
+test('selectArchivable: in_progress orphans still respect keepTopN frontier', () => {
+  const tasks = [
+    { id: '10', status: 'in_progress', mtimeMs: NOW - 1000 * HOUR },
+    { id: '11', status: 'in_progress', mtimeMs: NOW - 1000 * HOUR },
+  ];
+  assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 1 }), ['10']);
+});
+
+test('archiveCompletedTasks: move-time recheck uses fresh fs.statSync, not the scan snapshot (race guard)', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'in_progress' }, 200);
+  const livePath = path.join(dir, '1.json');
+  const origStat = fs.statSync;
+  let calls = 0;
+  fs.statSync = (p, ...rest) => {
+    if (p === livePath) {
+      calls += 1;
+      if (calls === 2) { // second stat = the move-time recheck
+        const fresh = new Date(NOW); // task was just touched — no longer stale
+        fs.utimesSync(livePath, fresh, fresh);
+      }
+    }
+    return origStat(p, ...rest);
+  };
+  try {
+    const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+    assert.deepEqual(result.archived, []);
+    assert.deepEqual(result.skipped.map((s) => s.id), ['1']);
+    assert.equal(fs.existsSync(livePath), true);
+  } finally {
+    fs.statSync = origStat;
+  }
+});
+
+test('archiveCompletedTasks: archives a stale in_progress orphan end-to-end', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'in_progress', subject: 'dead session claim' }, 200);
+  writeTask(dir, 2, { status: 'in_progress' }, 1); // fresh, must stay live
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, ['1']);
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), false);
+  assert.equal(fs.existsSync(path.join(dir, '2.json')), true);
+  const archived = JSON.parse(fs.readFileSync(path.join(dir, 'archive', '1.json'), 'utf8'));
+  assert.equal(archived.subject, 'dead session claim');
 });
