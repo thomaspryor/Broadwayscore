@@ -26,18 +26,9 @@
  */
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
-const path = require('path');
-const fs = require('fs');
 
 // Load .env
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf8');
-  for (const line of envContent.split('\n')) {
-    const match = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
-    if (match) process.env[match[1]] = process.env[match[1]] || match[2];
-  }
-}
+require('./lib/load-env').loadEnv();
 
 const PROPERTY_ID = process.env.GA4_PROPERTY_ID;
 

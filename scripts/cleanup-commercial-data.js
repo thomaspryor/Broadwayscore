@@ -9,6 +9,13 @@
  * 4. Add empty sources arrays where missing
  * 5. Remove orphaned entries (no matching show in shows.json)
  *
+ * INTENTIONALLY NOT SCHEDULED (audit #982): unlike dedupe-commercial-id-keys.js
+ * (self-healed weekly in commercial-weekly.yml), this script has no size cap
+ * on how much it deletes/auto-designates per run — step 5 silently drops
+ * every orphaned entry and step 3 auto-designates every closed-TBD show as
+ * Fizzle with no citation, no --force gate. Run by hand, review the dry-run
+ * diff first: node scripts/cleanup-commercial-data.js --dry-run
+ *
  * Usage: node scripts/cleanup-commercial-data.js [--dry-run]
  */
 
