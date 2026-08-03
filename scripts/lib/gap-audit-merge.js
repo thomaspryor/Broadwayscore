@@ -165,6 +165,13 @@ function countsFor(results) {
  * the audit forever on a leftover lockfile would be a worse failure than the
  * race it prevents.
  *
+ * PRECONDITION: staleMs must comfortably exceed how long `fn` runs. The lock's
+ * mtime is stamped once at acquire and never refreshed, so a critical section
+ * longer than staleMs lets a waiter classify a LIVE lock as abandoned and steal
+ * it. Here `fn` is a synchronous merge + two file writes (milliseconds) against
+ * a 5-minute default, so the margin is ~5 orders of magnitude — but anyone
+ * reusing this helper for slower work must raise staleMs to match.
+ *
  * @param {string} lockPath
  * @param {() => any} fn                 executed while holding the lock
  * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number}} [opts]
@@ -182,10 +189,24 @@ function withFileLock(lockPath, fn, opts = {}) {
     } catch (e) {
       if (e.code !== 'EEXIST') { held = false; break; } // unwritable dir etc — proceed unlocked
       // Break a lock left behind by a killed process.
+      //
+      // NOT unlinkSync: between judging the lock stale and deleting it, the
+      // original owner can release and a NEW process can take a fresh lock at
+      // the same path — the blind unlink would then delete a LIVE lock and two
+      // writers would run concurrently, which is the exact failure this
+      // function exists to prevent. rename(2) is atomic, so when several
+      // processes race to steal the same stale lock exactly one rename
+      // succeeds; the losers get ENOENT and simply retry. The steal only ever
+      // moves the file we actually judged stale.
       try {
-        const age = Date.now() - fs.statSync(lockPath).mtimeMs;
-        if (age > staleMs) { fs.unlinkSync(lockPath); continue; }
-      } catch { /* vanished between stat and unlink — retry */ }
+        const st = fs.statSync(lockPath);
+        if (Date.now() - st.mtimeMs > staleMs) {
+          const stealPath = `${lockPath}.stale-${process.pid}-${st.mtimeMs}`;
+          fs.renameSync(lockPath, stealPath); // throws ENOENT if someone else won
+          try { fs.unlinkSync(stealPath); } catch { /* best-effort */ }
+          continue; // retry the wx create immediately
+        }
+      } catch { /* vanished or lost the steal race — fall through and retry */ }
       // Busy-wait: this runs once at the very end of a multi-minute audit, so a
       // short synchronous spin is simpler than making the whole write path async.
       const until = Date.now() + waitMs;
@@ -195,7 +216,9 @@ function withFileLock(lockPath, fn, opts = {}) {
   try {
     return fn(held);
   } finally {
-    if (held) { try { require('fs').unlinkSync(lockPath); } catch { /* best-effort */ } }
+    // Only ever released when THIS process won the `wx` create above, so this
+    // can't remove a lock belonging to someone else.
+    if (held) { try { fs.unlinkSync(lockPath); } catch { /* best-effort */ } }
   }
 }
 

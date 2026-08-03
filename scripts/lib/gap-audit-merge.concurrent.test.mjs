@@ -104,6 +104,61 @@ test('withFileLock breaks a stale lock instead of hanging forever', () => {
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('racing stale-lock breakers: only ONE wins, and a live successor lock is never deleted', () => {
+  // The blind-unlink version of the stale break had a TOCTOU hole: between
+  // judging a lock stale and unlinking it, the owner could release and a NEW
+  // process could take a fresh lock — the unlink then deleted a LIVE lock and
+  // two writers ran at once, defeating the whole point. The rename-steal makes
+  // exactly one racer win.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gap-lock-race-'));
+  const lock = path.join(dir, 'r.lock');
+  const worker = path.join(dir, 'steal.cjs');
+  fs.writeFileSync(worker, `
+    const fs = require('fs');
+    const { withFileLock } = require(process.argv[2]);
+    const lock = process.argv[3], marker = process.argv[4];
+    withFileLock(lock, (held) => {
+      if (!held) { console.log('NOTHELD'); return; }
+      // Record overlap: if two processes are ever inside at once, the file
+      // will contain more than one line at the same instant.
+      fs.appendFileSync(marker, 'enter\\n');
+      const until = Date.now() + 120; while (Date.now() < until) {}
+      fs.appendFileSync(marker, 'exit\\n');
+    }, { timeoutMs: 8000, staleMs: 2000, waitMs: 10 });
+  `);
+  // staleMs (2000ms) must EXCEED the critical section (120ms): the lock's mtime
+  // is not refreshed while held, so a section longer than staleMs would let
+  // waiters legitimately steal a LIVE lock. The real default is 5 min against a
+  // sub-second section, so the margin holds in production — but it is a real
+  // constraint on this helper, documented in withFileLock.
+  // Plant a lock that is genuinely stale (60s old, well past staleMs).
+  fs.writeFileSync(lock, '999999 stale\n');
+  const old = new Date(Date.now() - 60_000);
+  fs.utimesSync(lock, old, old);
+  const marker = path.join(dir, 'marker.txt');
+  fs.writeFileSync(marker, '');
+
+  const racers = Array.from({ length: 6 }, () => new Promise((resolve, reject) => {
+    require('child_process').execFile(process.execPath, [worker, LIB, lock, marker],
+      (err, stdout, stderr) => (err ? reject(new Error(err.message + stderr)) : resolve(stdout)));
+  }));
+  return Promise.all(racers).then(() => {
+    const lines = fs.readFileSync(marker, 'utf8').trim().split('\n').filter(Boolean);
+    // Strict alternation enter/exit proves the critical section was never
+    // entered by two processes simultaneously.
+    let inside = 0;
+    for (const l of lines) {
+      if (l === 'enter') inside++;
+      else inside--;
+      assert.ok(inside <= 1, 'two processes were inside the critical section at once — stale-break race');
+      assert.ok(inside >= 0, 'unbalanced enter/exit');
+    }
+    assert.strictEqual(fs.existsSync(lock), false, 'lock released at the end');
+    assert.deepStrictEqual(fs.readdirSync(dir).filter(f => f.includes('.stale-')), [], 'no orphaned steal files');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});
+
 test('withFileLock still runs the work (fail-open) when the lock cannot be taken', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gap-lock-open-'));
   const lock = path.join(dir, 'y.lock');
