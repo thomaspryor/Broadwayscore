@@ -1,26 +1,43 @@
 {
   "processed": [
-    "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json"
+    "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "shifters-off-broadway-2026/nytg--gillian-russo.json"
   ],
   "failed": [
-    "space-dogs-off-west-end-2026/thestage--the-stage.json"
+    "space-dogs-off-west-end-2026/thestage--the-stage.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "shifters-off-broadway-2026/nytg--gillian-russo.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json"
+      "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json"
+      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-08-03T04:03:11.217Z",
-  "lastProcessed": "space-dogs-off-west-end-2026/thestage--the-stage.json",
+  "lastProcessed": "shifters-off-broadway-2026/nytg--gillian-russo.json",
   "log": []
 }
