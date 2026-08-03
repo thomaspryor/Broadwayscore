@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T14:09:42.488Z",
+  "timestamp": "2026-08-03T14:52:18.038Z",
   "stats": {
-    "totalReviews": 41445,
-    "alreadyFlagged": 18103,
-    "dateGuardCatches": 109,
+    "totalReviews": 41453,
+    "alreadyFlagged": 18107,
+    "dateGuardCatches": 110,
     "directorMismatch": 945,
     "tvFilmSignals": 1143,
-    "londonSignals": 803,
+    "londonSignals": 804,
     "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3436
+    "noPublishDate": 3435
   },
   "findings": [
     {
@@ -24271,6 +24271,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": null,
+      "publishDate": "2025-05-14",
+      "url": "https://www.broadwayworld.com/westend/article/Review-Roundup-THE-COMEDY-ABOUT-SPIES-from-Mischief-Theatre-20250514",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
       "score": 81,
       "publishDate": "2025-05-13",
@@ -31119,20 +31133,6 @@
     },
     {
       "showId": "archduke-west-end-2026",
-      "file": "broadwayworld--alexander-cohen.json",
-      "score": 60,
-      "publishDate": "2026-06-29",
-      "url": "https://www.broadwayworld.com/westend/article/Review-ARCHDUKE-Royal-Court-20260629",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "archduke-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 80,
       "publishDate": "2026-06-28",
@@ -33105,6 +33105,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": null,
+      "url": "https://variety.com/2026/theater/news/royal-shakespeare-company-cyrano-de-bergerac-west-end-1236645476/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -42997,6 +43010,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "broadwayworld--senior-franco-milazzo.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
