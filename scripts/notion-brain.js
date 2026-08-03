@@ -27,7 +27,15 @@ const path = require('path');
 const fs = require('fs');
 
 // ── Load .env ───────────────────────────────────────────────────────────
-const envPath = path.join(__dirname, '..', '.env');
+// Worktrees never have their own .env (gitignored, not copied on
+// EnterWorktree), so __dirname-relative resolution fails there — and this
+// script now runs on every commit via the mandatory notion-card-required
+// hook, so every worktree session hits it. Same fallback idiom
+// dispatch-ledger.js already uses for its own REPO/LEDGER_PATH constants.
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
+const envPath = fs.existsSync(path.join(__dirname, '..', '.env'))
+  ? path.join(__dirname, '..', '.env')
+  : path.join(CANONICAL_REPO, '.env');
 if (fs.existsSync(envPath)) {
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const trimmed = line.trim();
