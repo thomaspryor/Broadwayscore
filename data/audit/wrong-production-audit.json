@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T08:42:24.921Z",
+  "timestamp": "2026-08-03T10:21:10.179Z",
   "stats": {
-    "totalReviews": 41360,
-    "alreadyFlagged": 18086,
+    "totalReviews": 41414,
+    "alreadyFlagged": 18097,
     "dateGuardCatches": 108,
     "directorMismatch": 947,
-    "tvFilmSignals": 1144,
+    "tvFilmSignals": 1143,
     "londonSignals": 801,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3387
+    "noPublishDate": 3424
   },
   "findings": [
     {
@@ -17679,20 +17679,6 @@
       ]
     },
     {
-      "showId": "once-2012",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 87,
-      "publishDate": "March 18, 2012",
-      "url": "http://www.hollywoodreporter.com/review/once-theater-review-301366?utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "once-on-this-island-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 91,
@@ -24635,6 +24621,7 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 62,
       "publishDate": "2023-12-07",
       "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
       "findings": [
