@@ -623,6 +623,30 @@ function validateDates(shows) {
   }
 }
 
+/**
+ * Coverage Verdict S4 rails: every declared show.tourLegs entry must carry a
+ * corroborationUrl (no leg from memory) and must not overlap a declared
+ * priorRuns window at the same venue (a venue stop can't simultaneously be a
+ * past distinct production and a current tour leg). Both build-blocking —
+ * an uncorroborated or contradictory leg would let the tourLeg exemption in
+ * wrong-production-autoclear.js wave through contamination.
+ */
+function validateTourLegs(shows) {
+  info('Checking tourLegs corroboration + priorRuns overlap...');
+  const { validateShowTourLegs } = require('./lib/tour-legs-validation');
+  let issues = 0;
+  for (const show of shows) {
+    if (!Array.isArray(show.tourLegs) || show.tourLegs.length === 0) continue;
+    for (const msg of validateShowTourLegs(show)) {
+      error(`Show "${show.title}" (${show.id}): ${msg}`);
+      issues++;
+    }
+  }
+  if (issues === 0) {
+    ok('All tourLegs entries corroborated and non-overlapping');
+  }
+}
+
 function validateSlugs(shows) {
   info('Checking slug formats...');
   const slugRegex = /^[a-z0-9-]+$/;
@@ -4472,6 +4496,7 @@ function validateCrossMarketContamination() {
         showEarliest: new Date(earliest),
         isFlexCategory: true,
         priorRuns: show.priorRuns,
+        tourLegs: show.tourLegs,
       });
       isPreWindowDate = pw.exclude;
     }
@@ -4728,6 +4753,7 @@ function runValidation() {
   validateStatus(shows);
   validateShowTypes(shows);
   validateDates(shows);
+  validateTourLegs(shows);
   validateSlugs(shows);
   validateImageUrls(shows);
   validateImageFiles(shows);

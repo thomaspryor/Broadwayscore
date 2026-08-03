@@ -123,6 +123,13 @@ export interface PriorRun {
   venue?: string;                 // Display label, e.g. "Bushwick Starr"
 }
 
+export interface TourLeg {
+  venue: string;                  // Display label, e.g. "Ahmanson Theatre"
+  startDate: string;              // ISO date — start of this leg (previews or opening)
+  endDate?: string;                // ISO date — end of this leg (defaults to startDate + 180 days)
+  corroborationUrl: string;       // Required: URL proving this leg happened (validate-data.js rejects legs without one)
+}
+
 export interface Show {
   // Core identification
   id: string;                     // e.g., "two-strangers-bway-2025"
@@ -146,6 +153,7 @@ export interface Show {
   ageRecommendation?: string;     // e.g., "Ages 12+", "All ages"
   limitedRun?: boolean;           // true for shows with announced closing dates
   priorRuns?: PriorRun[];         // Earlier runs of the same artistic production
+  tourLegs?: TourLeg[];           // Venue stops of the CURRENT touring production (not a prior/distinct run)
 
   // Media
   images?: ShowImages;
