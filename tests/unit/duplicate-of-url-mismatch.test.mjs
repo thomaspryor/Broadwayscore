@@ -16,6 +16,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -27,6 +28,7 @@ const require = createRequire(import.meta.url);
 const FIXTURE = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-audit-'));
 process.env.REVIEW_TEXTS_DIR = FIXTURE;
 const { stripTrivial, audit, fix } = require('../../scripts/audit-duplicate-of-url-mismatch.js');
+const SCRIPT_PATH = path.join(import.meta.dirname, '..', '..', 'scripts', 'audit-duplicate-of-url-mismatch.js');
 
 function writeShow(showId, files) {
   const dir = path.join(FIXTURE, showId);
@@ -143,6 +145,94 @@ test('duplicateTextOf URL mismatch vs existing sibling is NOT flagged (syndicati
   });
   const mismatches = audit().filter(m => m.showId === 'synd-2026');
   assert.equal(mismatches.length, 0);
+});
+
+test('3-node duplicateOf cycle IS flagged for every member and --fix does NOT auto-clear it (Notion #941 washpost regression)', () => {
+  // Mirrors the carmen-off-broadway-2025 washpost bug: A -> B -> C -> A, all
+  // sharing the same URL. rebuild-all-reviews.js's circular-tiebreak only
+  // checks ONE hop back, so this never terminates and every member survives
+  // into reviews.json as a same-URL duplicate.
+  const url = 'https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/';
+  writeShow('cycle-2026', {
+    'washpost--a.json': { url, duplicateOf: 'washpost--b.json' },
+    'washpost--b.json': { url, duplicateOf: 'washpost--c.json' },
+    'washpost--c.json': { url, duplicateOf: 'washpost--a.json' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'cycle-2026');
+  assert.equal(mismatches.length, 3, 'all three cycle members are flagged');
+  for (const m of mismatches) {
+    assert.equal(m.reason, 'duplicateOf-cycle');
+    assert.ok(Array.isArray(m.chain) && m.chain.length >= 3, 'chain records the walked path');
+  }
+
+  const cleared = fix(mismatches);
+  assert.equal(cleared, 0, '--fix must not guess which cycle member is canonical');
+  for (const name of ['washpost--a.json', 'washpost--b.json', 'washpost--c.json']) {
+    const after = JSON.parse(fs.readFileSync(path.join(FIXTURE, 'cycle-2026', name), 'utf-8'));
+    assert.ok(after.duplicateOf, `${name} duplicateOf left untouched for manual triage`);
+  }
+});
+
+test('2-node duplicateOf cycle IS flagged (defense-in-depth alongside rebuild circular-tiebreak)', () => {
+  const url = 'https://example.com/two-node-cycle-review';
+  writeShow('cycle-2-2026', {
+    'outlet--a.json': { url, duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { url, duplicateOf: 'outlet--a.json' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'cycle-2-2026');
+  assert.equal(mismatches.length, 2);
+  assert.ok(mismatches.every(m => m.reason === 'duplicateOf-cycle'));
+});
+
+test('non-circular duplicateOf chain (terminates at a canonical file) is NOT flagged as a cycle', () => {
+  const url = 'https://example.com/chain-terminates-review';
+  writeShow('chain-ok-2026', {
+    'outlet--a.json': { url, duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { url, duplicateOf: 'outlet--canonical.json' },
+    'outlet--canonical.json': { url },
+  });
+  const mismatches = audit().filter(m => m.showId === 'chain-ok-2026');
+  assert.equal(mismatches.length, 0, 'a terminating chain is legitimate, not a cycle');
+});
+
+test('duplicateOf-cycle mismatches are excluded from the FIX_SURGE_THRESHOLD count (never self-heal, so must not eat the auto-heal floor)', () => {
+  // A single large cycle (30 files, all mutually duplicateOf) exceeds
+  // FIX_SURGE_THRESHOLD (25) on raw mismatch count alone, but --fix must still
+  // run for genuinely auto-healable stale flags elsewhere in the corpus —
+  // cycles never clear via fix() regardless, so they must not count against
+  // the surge floor meant to catch a producer-regression SPIKE in fixable churn.
+  // Runs against an ISOLATED fixture dir (not the shared module-level FIXTURE,
+  // which accumulates every other test's show dirs) so counts are exact.
+  const isolatedFixture = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-audit-surge-'));
+  const url = 'https://example.com/big-cycle-review';
+  const names = Array.from({ length: 30 }, (_, i) => `outlet${i}--critic${i}.json`);
+  const showDir = path.join(isolatedFixture, 'big-cycle-2026');
+  fs.mkdirSync(showDir, { recursive: true });
+  for (let i = 0; i < names.length; i++) {
+    fs.writeFileSync(path.join(showDir, names[i]), JSON.stringify({ url, duplicateOf: names[(i + 1) % names.length] }));
+  }
+  const staleDir = path.join(isolatedFixture, 'genuine-stale-2026');
+  fs.mkdirSync(staleDir, { recursive: true });
+  fs.writeFileSync(path.join(staleDir, 'guardian--unknown.json'), JSON.stringify({
+    url: 'https://www.theguardian.com/2026/jun/21/globe-much-ado',
+    duplicateOf: 'guardian--arifa-akbar.json',
+  }));
+  fs.writeFileSync(path.join(staleDir, 'guardian--arifa-akbar.json'), JSON.stringify({
+    url: 'https://www.theguardian.com/2025/feb/19/royal-much-ado',
+  }));
+
+  const out = execFileSync('node', [SCRIPT_PATH, '--fix'], {
+    env: { ...process.env, REVIEW_TEXTS_DIR: isolatedFixture },
+    encoding: 'utf-8',
+  });
+  assert.match(out, /Cleared 1 stale duplicateOf flag/, '--fix ran to completion (was not refused as a surge) and cleared the one genuine stale flag');
+  assert.match(out, /30 duplicateOf-cycle mismatch\(es\) were NOT auto-fixed/, 'all 30 cycle members reported but not cleared');
+
+  const staleAfter = JSON.parse(fs.readFileSync(path.join(staleDir, 'guardian--unknown.json'), 'utf-8'));
+  assert.equal(staleAfter.duplicateOf, null, 'genuine stale flag elsewhere in the corpus still gets cleared despite the 30-file cycle');
+
+  const cycleFileAfter = JSON.parse(fs.readFileSync(path.join(showDir, names[0]), 'utf-8'));
+  assert.ok(cycleFileAfter.duplicateOf, 'cycle member untouched');
 });
 
 test('non-filename duplicateOf sentinel values are ignored (report-only conservatism)', () => {
