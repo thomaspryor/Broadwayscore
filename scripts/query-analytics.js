@@ -26,8 +26,6 @@
  */
 
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
-const path = require('path');
-const fs = require('fs');
 
 // Load .env
 require('./lib/load-env').loadEnv();

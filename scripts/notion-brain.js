@@ -23,8 +23,6 @@
  */
 
 const { Client } = require('@notionhq/client');
-const path = require('path');
-const fs = require('fs');
 
 // ── Load .env ───────────────────────────────────────────────────────────
 // This script runs on every commit via the mandatory notion-card-required
