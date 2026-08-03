@@ -7,6 +7,7 @@ import type { BrowsePageConfig } from '@/config/browse-pages';
 // Re-export engine types
 export type {
   ComputedShow,
+  ComputedShowWithReviews,
   ComputedReview,
   CriticScoreResult,
   AudienceScoreResult,
