@@ -212,6 +212,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // render code.
   // Scraping spend vs budget (check-provider-spend.js, Scraping Cost System
   // v2) — same {generatedAt, bannerText, items} shape, no new render code.
+  // "Needs You" tab triage (card #870) — the owner's own pending decisions,
+  // not a health/pipeline issue. Placed first among the named blocks since
+  // it's the most personally actionable: only the owner can resolve these.
+  if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
   // commit messages, slugs, counters — is gone. One plain sentence remains.
@@ -323,6 +327,18 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN freshness-report read failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // "Needs You" tab triage (card #870) — cmux tabs with a pending owner
+  // decision (❓-prefixed by ~/.claude/hooks/lib/workspace-mark-done.js).
+  // Computed live, not read from a snapshot file — no producer cron exists
+  // or is needed; fail-soft like every other section here.
+  try {
+    const { buildNeedsYouSnapshot } = require('./lib/needs-you-snapshot.js');
+    const snap = buildNeedsYouSnapshot();
+    if (snap && snap.items.length) sections.needsYou = snap;
+  } catch (err) {
+    console.error(`[digest] WARN needs-you snapshot failed: ${String(err.message).slice(0, 120)}`);
   }
 
   const problemsNote = describeProblems(problems);
