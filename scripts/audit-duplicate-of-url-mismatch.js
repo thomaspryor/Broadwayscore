@@ -187,6 +187,42 @@ function audit() {
           url: data.url,
           siblingUrl: sibling.url,
         });
+        continue;
+      }
+
+      // Cycle detection: walk the duplicateOf chain from `file`. The single-hop
+      // 2-cycle (A.duplicateOf=B, B.duplicateOf=A) is handled by rebuild-all-reviews.js's
+      // circular-tiebreak (content-fingerprint comparison), but that logic only checks
+      // ONE hop back — a 3+-node cycle (A->B->C->A) never finds a terminal non-duplicate
+      // node, so EVERY member falls through rebuild's "ref is also a dupe" skip check and
+      // ALL of them land in reviews.json as same-URL duplicates (Notion #941 — washpost
+      // 3-cycle: andor-brodeur -> justin-davidson -> michael-andor-brodeur -> andor-brodeur,
+      // none of it caught until the Data Validation gate's duplicate-URL check went red).
+      // Walk with a visited-set; a cycle length CAN legitimately be short (2), so this
+      // reports 2-cycles too as a defense-in-depth signal even though rebuild handles those.
+      const chain = [file];
+      const seen = new Set([file]);
+      let cursor = data.duplicateOf;
+      let cycleFound = false;
+      for (let hop = 0; hop < 20 && cursor; hop++) {
+        if (seen.has(cursor)) { chain.push(cursor); cycleFound = true; break; }
+        const cursorData = load(cursor);
+        if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
+        chain.push(cursor);
+        seen.add(cursor);
+        cursor = cursorData.duplicateOf;
+      }
+      if (cycleFound) {
+        mismatches.push({
+          showId: path.basename(showDir),
+          file,
+          field: 'duplicateOf',
+          duplicateOf: data.duplicateOf,
+          reason: 'duplicateOf-cycle',
+          url: data.url || null,
+          siblingUrl: null,
+          chain,
+        });
       }
     }
   }
@@ -197,6 +233,12 @@ function audit() {
 function fix(mismatches) {
   let cleared = 0;
   for (const m of mismatches) {
+    // Cycles have no unambiguous auto-fix: unlike a stale pointer (one clear
+    // "right" side — the surviving file), picking which cycle member becomes
+    // canonical requires judgment (byline completeness, which copy has real
+    // content/score, etc. — see the Notion #941 washpost fix). Surfaced in the
+    // report for manual triage instead of silently nulling an arbitrary member.
+    if (m.reason === 'duplicateOf-cycle') continue;
     const filePath = path.join(REVIEW_TEXTS_DIR, m.showId, m.file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     const field = m.field || 'duplicateOf';
@@ -242,8 +284,11 @@ function main() {
     console.log(`    → duplicateOf: ${m.duplicateOf}  (${m.reason})`);
     console.log(`    → our url:     ${m.url}`);
     console.log(`    → sibling url: ${m.siblingUrl}`);
+    if (m.chain) console.log(`    → chain:       ${m.chain.join(' -> ')} -> ...`);
     console.log('');
   }
+
+  const cycles = mismatches.filter(m => m.reason === 'duplicateOf-cycle');
 
   if (FIX) {
     if (mismatches.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
@@ -252,6 +297,9 @@ function main() {
     }
     const cleared = fix(mismatches);
     console.log(`\nCleared ${cleared} stale duplicateOf flag(s). Re-run rebuild to surface the recovered reviews.`);
+    if (cycles.length > 0) {
+      console.log(`\n${cycles.length} duplicateOf-cycle mismatch(es) were NOT auto-fixed — choosing which file becomes canonical needs manual review. See the chains above.`);
+    }
     process.exit(0);
   }
 

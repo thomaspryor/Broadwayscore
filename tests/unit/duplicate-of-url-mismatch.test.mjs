@@ -145,6 +145,54 @@ test('duplicateTextOf URL mismatch vs existing sibling is NOT flagged (syndicati
   assert.equal(mismatches.length, 0);
 });
 
+test('3-node duplicateOf cycle IS flagged for every member and --fix does NOT auto-clear it (Notion #941 washpost regression)', () => {
+  // Mirrors the carmen-off-broadway-2025 washpost bug: A -> B -> C -> A, all
+  // sharing the same URL. rebuild-all-reviews.js's circular-tiebreak only
+  // checks ONE hop back, so this never terminates and every member survives
+  // into reviews.json as a same-URL duplicate.
+  const url = 'https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/';
+  writeShow('cycle-2026', {
+    'washpost--a.json': { url, duplicateOf: 'washpost--b.json' },
+    'washpost--b.json': { url, duplicateOf: 'washpost--c.json' },
+    'washpost--c.json': { url, duplicateOf: 'washpost--a.json' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'cycle-2026');
+  assert.equal(mismatches.length, 3, 'all three cycle members are flagged');
+  for (const m of mismatches) {
+    assert.equal(m.reason, 'duplicateOf-cycle');
+    assert.ok(Array.isArray(m.chain) && m.chain.length >= 3, 'chain records the walked path');
+  }
+
+  const cleared = fix(mismatches);
+  assert.equal(cleared, 0, '--fix must not guess which cycle member is canonical');
+  for (const name of ['washpost--a.json', 'washpost--b.json', 'washpost--c.json']) {
+    const after = JSON.parse(fs.readFileSync(path.join(FIXTURE, 'cycle-2026', name), 'utf-8'));
+    assert.ok(after.duplicateOf, `${name} duplicateOf left untouched for manual triage`);
+  }
+});
+
+test('2-node duplicateOf cycle IS flagged (defense-in-depth alongside rebuild circular-tiebreak)', () => {
+  const url = 'https://example.com/two-node-cycle-review';
+  writeShow('cycle-2-2026', {
+    'outlet--a.json': { url, duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { url, duplicateOf: 'outlet--a.json' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'cycle-2-2026');
+  assert.equal(mismatches.length, 2);
+  assert.ok(mismatches.every(m => m.reason === 'duplicateOf-cycle'));
+});
+
+test('non-circular duplicateOf chain (terminates at a canonical file) is NOT flagged as a cycle', () => {
+  const url = 'https://example.com/chain-terminates-review';
+  writeShow('chain-ok-2026', {
+    'outlet--a.json': { url, duplicateOf: 'outlet--b.json' },
+    'outlet--b.json': { url, duplicateOf: 'outlet--canonical.json' },
+    'outlet--canonical.json': { url },
+  });
+  const mismatches = audit().filter(m => m.showId === 'chain-ok-2026');
+  assert.equal(mismatches.length, 0, 'a terminating chain is legitimate, not a cycle');
+});
+
 test('non-filename duplicateOf sentinel values are ignored (report-only conservatism)', () => {
   writeShow('sentinel-2026', {
     'northjerseycom--robert-feldberg.json': {
