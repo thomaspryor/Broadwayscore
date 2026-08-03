@@ -966,31 +966,46 @@ function censusRecallResult(data, opts = {}) {
 
   const latest = data.latest || {};
   const summary = Object.entries(latest.families || {})
-    .map(([f, r]) => `${f} ${typeof r === 'number' ? r.toFixed(2) : 'n/a'}`)
+    .map(([f, r]) => `${SEARCH_METHOD_LABELS[f] || f} found ${pctOf(r)}`)
     .join(', ');
-  const scope = `${latest.shows ?? 0} show(s), ${latest.truthUrls ?? 0} findable review URLs`;
+  const scope = `across ${latest.shows ?? 0} recent opening(s); ${latest.truthUrls ?? 0} review pages any of our searches could find`;
 
   if (data.verdict === 'regressed') {
     const worst = (data.regressions || [])
-      .map(r => `${r.arm} ${r.current === null ? 'absent' : r.current} vs ${r.baseline} median`)
+      .map(r => `${SEARCH_METHOD_LABELS[r.arm] || r.arm} ${r.current === null ? 'stopped reporting' : `now finds ${pctOf(r.current)} vs ${pctOf(r.baseline)} recently`}`)
       .join('; ');
     return {
       name, status: 'warn',
-      message: `Census recall regressed — ${worst} (${scope})`,
+      message: `Review coverage dropped — ${worst} (${scope}). New shows may be going live with published reviews missing.`,
       hint: 'Run `node scripts/audit-serp-census-recall.js --sample=10` and compare per-arm recall; a dead query slot or a provider outage is the usual cause.',
     };
   }
   if (data.verdict === 'blind' || data.verdict === 'insufficient-sample') {
     return {
       name, status: 'warn',
-      message: `Recall not judgeable: ${data.reason || data.verdict}`,
-      hint: 'Needs more weekly runs on record before a regression can be detected.',
+      message: `Review coverage not judgeable yet: ${data.reason || data.verdict}`,
+      hint: 'Needs more weekly runs on record before a drop can be detected.',
     };
   }
   return {
     name, status: 'pass',
-    message: `${summary || 'no arms recorded'} — ${scope}, ${data.comparedArms ?? 0} arm(s) within threshold (${formatAge(age)} ago)`,
+    message: `${summary || 'no search methods recorded'} — ${scope}; ${data.comparedArms ?? 0} search method(s) steady vs recent weeks (${formatAge(age)} ago)`,
   };
+}
+
+// The owner reads this line in a morning email among ~30 others. "scoped",
+// "naive", "onDisk", "arm" and "recall 0.28" are internal vocabulary; a
+// fresh-eyes review (2026-08-02) confirmed every one of them stops a
+// non-engineer reader, and that a bare ratio invites a wrong conclusion
+// because nothing says whether 0.28 is normal.
+const SEARCH_METHOD_LABELS = {
+  scoped: 'our targeted searches',
+  naive: 'a plain Google search',
+  onDisk: 'reviews already collected',
+};
+/** 0.283 -> "28%". The percentage is what a reader actually parses. */
+function pctOf(r) {
+  return typeof r === 'number' && Number.isFinite(r) ? `${Math.round(r * 100)}%` : 'n/a';
 }
 
 // --- Outlet health signals (card #641) ---

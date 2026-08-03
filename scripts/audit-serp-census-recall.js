@@ -172,15 +172,18 @@ function pickShows(shows, opts = {}) {
   const now = opts.now === undefined ? Date.now() : opts.now;
   const cutoff = now - days * 86400000;
 
-  const pool = shows
-    .filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now)
-    .sort((a, b) => (a.openingDate < b.openingDate ? 1 : -1))
-    .slice(0, limit);
-
   // Undated candidates: open shows the pipeline is actively collecting for but
   // whose recall no date-windowed selection can ever measure.
   const undated = shows.filter(s => !s.openingDate && s.status === 'open' && s.title);
-  const undatedIncluded = includeUndated ? undated.slice(0, UNDATED_SAMPLE_CAP) : [];
+  // --limit is a hard ceiling on SERP spend, so undated samples come OUT of it
+  // rather than on top of it. Appending them would make `--sample=5
+  // --include-undated` quietly cost 8 shows' worth of calls.
+  const undatedIncluded = includeUndated ? undated.slice(0, Math.min(UNDATED_SAMPLE_CAP, Math.max(0, limit - 1))) : [];
+
+  const pool = shows
+    .filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now)
+    .sort((a, b) => (a.openingDate < b.openingDate ? 1 : -1))
+    .slice(0, Math.max(0, limit - undatedIncluded.length));
 
   return {
     pool: [...pool, ...undatedIncluded],
@@ -241,6 +244,13 @@ async function main() {
   console.log('');
 
   const report = [];
+  // `onDisk` is the only arm whose input is a checked-out repo rather than a
+  // provider call. If review-texts is absent or empty (a failed
+  // checkout-review-texts step), every show reads zero and the detector would
+  // call the corpus collapsed — an infrastructure fault reported as a recall
+  // regression. Tracked here so the run can declare the arm unavailable
+  // instead.
+  let sawAnyDisk = false;
   for (const show of pool) {
     const showInfo = getShowInfo(show.id);
     const dateRange = calculateDateWindow(show);
@@ -286,6 +296,7 @@ async function main() {
       arm: 'onDisk', query: null, page: null, geo: null,
       raw: disk.size, accepted: disk.size, urls: [...disk], ok: true, error: null,
     });
+    if (disk.size > 0) sawAnyDisk = true;
 
     const truth = new Set([...scopedUrls, ...naiveUrls, ...disk]);
     const inTruth = (set) => [...set].filter(u => truth.has(u)).length;
@@ -388,17 +399,26 @@ async function main() {
     console.log(`\n⚠ PROVIDER OUTAGE: all ${outage.serpRuns} SERP query-run(s) returned zero raw results — the scraping chain is down, not the census.`);
   }
 
+  // Zero on-disk URLs across every measured show, in a corpus of 19,000+
+  // reviews, means the review-texts checkout failed — not that the pipeline
+  // lost its corpus.
+  const onDiskUnavailable = measured.length > 0 && !sawAnyDisk;
+  out.onDiskUnavailable = onDiskUnavailable;
+  if (onDiskUnavailable) {
+    console.log('\n⚠ onDisk arm UNAVAILABLE: no review-texts found for any measured show — review-texts is probably not checked out. That arm is excluded from this run\'s trend judgement.');
+  }
+
   let exitCode = 0;
   if (hasFlag('trend')) {
     const trendPath = getArg('trend-out') || TREND_PATH;
-    const entry = summarizeRun(out);
+    const entry = summarizeRun(out, { unavailableArms: onDiskUnavailable ? ['onDisk'] : [] });
     const entries = providerOutage
       ? readTrendEntries(trendPath)
-      : appendTrendEntry(trendPath, entry);
+      : appendTrendEntry(trendPath, entry, { force: hasFlag('force-trend') });
     const judgement = providerOutage
       ? {
         verdict: 'blind',
-        reason: `every SERP arm returned zero raw results (${serpRuns.length} query-run(s)) — provider outage, run NOT recorded to the trend`,
+        reason: `${outage.productiveRuns} of ${outage.serpRuns} SERP query-run(s) returned any raw result — provider outage, run NOT recorded to the trend`,
         regressions: [], latest: null, comparedArms: 0,
       }
       : detectRecallRegression(entries);
@@ -431,23 +451,43 @@ async function main() {
 
 const fmtRecall = (r) => (r === null || r === undefined ? '  n/a' : r.toFixed(3));
 
+function readTrendEntries(trendPath) {
+  try { return parseTrendJsonl(fs.readFileSync(trendPath, 'utf8')); } catch { return []; }
+}
+
 /**
  * Append `entry` to the JSONL trend ledger and return every entry in order.
  *
  * Same-date entries are REPLACED, not appended: a re-run (a manual dispatch
  * after a provider outage, a backfill) must correct that day's number rather
  * than double-weight it in the median the regression detector reads.
+ *
+ * But a same-day replacement must not DOWNGRADE the record. A manual
+ * `--sample=1 --pages=1` poke on a morning the weekly cron has already run at
+ * `--sample=5 --pages=2` would otherwise overwrite the real measurement with a
+ * one-show sample, and every future median would be judged against that.
+ * A replacement is only accepted when it rests on at least as much ground
+ * truth — or when --force-trend says the operator means it.
+ *
+ * The whole file is rewritten (same-date replacement needs it), so the write
+ * goes through a temp file + rename: a kill mid-write would otherwise truncate
+ * the ENTIRE history rather than one line.
  */
-function readTrendEntries(trendPath) {
-  try { return parseTrendJsonl(fs.readFileSync(trendPath, 'utf8')); } catch { return []; }
-}
-
-function appendTrendEntry(trendPath, entry) {
+function appendTrendEntry(trendPath, entry, opts = {}) {
   const existing = readTrendEntries(trendPath);
+  const stronger = entry.date
+    ? existing.find(e => e.date === entry.date && (e.truthUrls || 0) > (entry.truthUrls || 0))
+    : null;
+  if (stronger && !opts.force) {
+    console.log(`  (kept the existing ${entry.date} entry — it measured ${stronger.truthUrls} ground-truth URLs vs this run's ${entry.truthUrls || 0}; pass --force-trend to override)`);
+    return existing;
+  }
   const kept = entry.date ? existing.filter(e => e.date !== entry.date) : existing;
   const all = [...kept, entry];
   fs.mkdirSync(path.dirname(trendPath), { recursive: true });
-  fs.writeFileSync(trendPath, all.map(e => JSON.stringify(e)).join('\n') + '\n');
+  const tmp = `${trendPath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, all.map(e => JSON.stringify(e)).join('\n') + '\n');
+  fs.renameSync(tmp, trendPath);
   return all;
 }
 

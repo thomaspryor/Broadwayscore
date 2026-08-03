@@ -121,7 +121,15 @@ test('summarizeRun excludes settling/unknown-date rows from the headline but tal
 
 // ── Regression detection ────────────────────────────────────────────────────
 
-const entry = (date, families, truthUrls = 40) => ({ date, families, truthUrls });
+// Entries carry familyYield (URLs/show) because the detector requires BOTH
+// recall AND absolute yield to fall before it alerts. Default yield tracks
+// recall so existing scenarios behave as their names say.
+const entry = (date, families, truthUrls = 40, familyYield = null) => ({
+  date,
+  families,
+  truthUrls,
+  familyYield: familyYield || Object.fromEntries(Object.entries(families).map(([k, v]) => [k, v * 8])),
+});
 
 test('detectRecallRegression reports blind rather than ok when there is no baseline', () => {
   assert.equal(detectRecallRegression([]).verdict, 'blind');
@@ -239,4 +247,169 @@ test('detectProviderOutage on an empty run is not an outage', () => {
 test('parseTrendJsonl skips a torn line instead of blinding the detector', () => {
   const recs = parseTrendJsonl('{"date":"2026-08-01"}\n{"date":"2026-08-0\n{"date":"2026-08-02"}\n\n');
   assert.deepEqual(recs.map(r => r.date), ['2026-08-01', '2026-08-02']);
+});
+
+// ── Fixes from ship-check (2026-08-02) ──────────────────────────────────────
+
+test('a good week for one arm does not report the others as regressed (denominator inflation)', () => {
+  // The scoped arm finds the SAME URLs every week; one deep naive week grows
+  // ground truth 40 -> 70, mechanically cutting scoped recall from 0.80 to
+  // 0.457. Reproduced as a false positive before the yield-corroboration rule.
+  const flatYield = { scoped: 32, naive: 30 };
+  const r = detectRecallRegression([
+    { date: '2026-07-12', families: { scoped: 0.8, naive: 0.75 }, truthUrls: 40, familyYield: flatYield },
+    { date: '2026-07-19', families: { scoped: 0.8, naive: 0.75 }, truthUrls: 40, familyYield: flatYield },
+    { date: '2026-07-26', families: { scoped: 0.8, naive: 0.75 }, truthUrls: 40, familyYield: flatYield },
+    { date: '2026-08-02', families: { scoped: 0.457, naive: 0.95 }, truthUrls: 70, familyYield: { scoped: 32, naive: 66 } },
+  ]);
+  assert.equal(r.verdict, 'ok', r.reason);
+});
+
+test('a real arm death still fires when its absolute yield collapses too', () => {
+  const r = detectRecallRegression([
+    { date: '2026-07-12', families: { scoped: 0.8 }, truthUrls: 40, familyYield: { scoped: 32 } },
+    { date: '2026-07-19', families: { scoped: 0.8 }, truthUrls: 40, familyYield: { scoped: 32 } },
+    { date: '2026-07-26', families: { scoped: 0.8 }, truthUrls: 40, familyYield: { scoped: 32 } },
+    { date: '2026-08-02', families: { scoped: 0.1 }, truthUrls: 40, familyYield: { scoped: 4 } },
+  ]);
+  assert.equal(r.verdict, 'regressed');
+  assert.equal(r.regressions[0].rule, 'week-on-week');
+});
+
+test('a slow decline that never trips week-on-week is caught by the drift rule', () => {
+  // 0.05/week for 10 weeks: 0.80 -> 0.30. The sliding median follows it down,
+  // so no single week ever clears 0.15 — verified silent before this rule.
+  const entries = [];
+  for (let i = 0; i < 11; i += 1) {
+    const recall = Math.round((0.8 - i * 0.05) * 1000) / 1000;
+    entries.push({
+      date: `2026-05-${String(3 + i).padStart(2, '0')}`,
+      families: { scoped: recall },
+      truthUrls: 40,
+      familyYield: { scoped: recall * 40 },
+    });
+  }
+  const r = detectRecallRegression(entries);
+  assert.equal(r.verdict, 'regressed', r.reason);
+  assert.equal(r.regressions[0].rule, 'slow-drift');
+});
+
+test('one query slot dying is caught even while its family stays inside the threshold', () => {
+  // scoped-q0 collapses 0.5 -> 0.02; q1/q2 pick up the slack so the FAMILY
+  // only moves 0.80 -> 0.72, under the 0.15 week-on-week threshold. Judging
+  // families alone reported a clean pass.
+  const base = (q0, q1, fam) => ({
+    families: { scoped: fam },
+    familyYield: { scoped: fam * 40 },
+    arms: { 'scoped-q0': q0, 'scoped-q1': q1 },
+    armYield: { 'scoped-q0': q0 * 40, 'scoped-q1': q1 * 40 },
+    truthUrls: 40,
+  });
+  const r = detectRecallRegression([
+    { date: '2026-07-12', ...base(0.5, 0.45, 0.8) },
+    { date: '2026-07-19', ...base(0.5, 0.45, 0.8) },
+    { date: '2026-07-26', ...base(0.5, 0.45, 0.8) },
+    { date: '2026-08-02', ...base(0.02, 0.70, 0.72) },
+  ]);
+  assert.equal(r.verdict, 'regressed', r.reason);
+  assert.ok(r.regressions.some(x => x.arm === 'scoped-q0' && x.level === 'arms'), JSON.stringify(r.regressions));
+});
+
+test('an arm whose input was unavailable is skipped, not reported as collapsed', () => {
+  // A failed review-texts checkout zeroes onDisk for infrastructure reasons.
+  const mk = (onDisk, unavailable) => ({
+    families: { scoped: 0.8, onDisk: onDisk },
+    familyYield: { scoped: 32, onDisk: onDisk * 40 },
+    truthUrls: 40,
+    unavailableArms: unavailable,
+  });
+  const r = detectRecallRegression([
+    { date: '2026-07-19', ...mk(0.9, []) },
+    { date: '2026-07-26', ...mk(0.9, []) },
+    { date: '2026-08-02', ...mk(0, ['onDisk']) },
+  ]);
+  assert.equal(r.verdict, 'ok', r.reason);
+  assert.ok(r.skipped.some(s => s.startsWith('onDisk')), JSON.stringify(r.skipped));
+});
+
+test('the same arm WITHOUT the unavailable marker is still reported as collapsed', () => {
+  const mk = (onDisk) => ({
+    families: { scoped: 0.8, onDisk },
+    familyYield: { scoped: 32, onDisk: onDisk * 40 },
+    truthUrls: 40,
+  });
+  const r = detectRecallRegression([
+    { date: '2026-07-19', ...mk(0.9) },
+    { date: '2026-07-26', ...mk(0.9) },
+    { date: '2026-08-02', ...mk(0) },
+  ]);
+  assert.equal(r.verdict, 'regressed');
+  assert.ok(r.regressions.some(x => x.arm === 'onDisk'));
+});
+
+test('detectProviderOutage fires on a PARTIAL outage, not just a total one', () => {
+  // 2 of 9 queries answered — a cap hit partway through. Numerically that run
+  // is mostly fiction, but a zero-test would have let it into the baseline.
+  const arms = [];
+  for (let i = 0; i < 9; i += 1) arms.push({ arm: `naive-p${i}`, raw: i < 2 ? 7 : 0, urls: [] });
+  const r = detectProviderOutage([{ counts: { truth: 2 }, arms }]);
+  assert.equal(r.outage, true);
+  assert.equal(r.productiveRuns, 2);
+});
+
+test('detectProviderOutage stays quiet when most queries answered', () => {
+  const arms = [];
+  for (let i = 0; i < 9; i += 1) arms.push({ arm: `naive-p${i}`, raw: i < 6 ? 7 : 0, urls: [] });
+  assert.equal(detectProviderOutage([{ counts: { truth: 9 }, arms }]).outage, false);
+});
+
+test('summarizeRun records per-show yield and the unavailable-arm marker', () => {
+  const e = summarizeRun({
+    generatedAt: '2026-08-02T12:00:00.000Z',
+    shows: [
+      row({ id: 'a', truth: 4, arms: [arm('scoped-q0', ['a', 'b']), arm('onDisk', [])] }),
+      row({ id: 'b', truth: 6, arms: [arm('scoped-q0', ['c', 'd', 'e']), arm('onDisk', [])] }),
+    ],
+  }, { unavailableArms: ['onDisk'] });
+  assert.equal(e.truthUrls, 10);
+  assert.equal(e.familyYield.scoped, 2.5); // 5 URLs over 2 shows
+  assert.deepEqual(e.unavailableArms, ['onDisk']);
+});
+
+// ── Trend-ledger union merge (task #784's race class) ───────────────────────
+
+const { mergeCensusRecallTrend } = require('./merge-census-recall-trend.js');
+const { mergerFor } = require('./reconcile-merged-json.js');
+
+test('the trend ledger is registered with the post-rebase reconciler', () => {
+  // Without this registration, `rebase -X theirs` silently drops a concurrent
+  // writer's line with no conflict reported — exactly task #784.
+  assert.ok(mergerFor('data/audit/census-recall-trend.jsonl'), 'not in the MANAGED registry');
+});
+
+test('merging keeps the better-evidenced entry for a shared date and unions the rest', () => {
+  const r = mergeCensusRecallTrend(
+    [{ date: '2026-07-26', truthUrls: 100 }, { date: '2026-08-02', truthUrls: 120 }],
+    [{ date: '2026-07-26', truthUrls: 40 }, { date: '2026-08-09', truthUrls: 90 }],
+  );
+  assert.deepEqual(r.merged.map(e => e.date), ['2026-07-26', '2026-08-02', '2026-08-09']);
+  assert.equal(r.merged.find(e => e.date === '2026-07-26').truthUrls, 100);
+  assert.equal(r.stats.added, 1);
+});
+
+test('a remote entry with MORE ground truth wins the shared date', () => {
+  const r = mergeCensusRecallTrend(
+    [{ date: '2026-08-02', truthUrls: 20 }],
+    [{ date: '2026-08-02', truthUrls: 200 }],
+  );
+  assert.equal(r.merged[0].truthUrls, 200);
+  assert.equal(r.stats.replaced, 1);
+});
+
+test('merging is idempotent — re-merging the same sides changes nothing', () => {
+  const ours = [{ date: '2026-08-02', truthUrls: 20 }];
+  const remote = [{ date: '2026-08-02', truthUrls: 20 }];
+  const once = mergeCensusRecallTrend(ours, remote).merged;
+  const twice = mergeCensusRecallTrend(once, remote).merged;
+  assert.deepEqual(twice, once);
 });

@@ -96,6 +96,14 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           CENSUS_RECALL_DISABLED: ${{ vars.CENSUS_RECALL_DISABLED }}
+          # This is a MONITOR, not a pipeline — it must never be the reason
+          # opening night has no ScrapingBee credits left. url-discovery.js
+          # otherwise allows up to 40 SB SERP calls per run (~1,000 credits),
+          # and the SB monthly cap has been exhausted before (#224). Bright
+          # Data / ScrapingDog still serve the queries; if they are both down
+          # the run reports a provider outage and records nothing, which is the
+          # correct outcome for a measurement.
+          SERP_NO_SB: '1'
         run: |
           node scripts/audit-serp-census-recall.js \
             --sample=${{ inputs.sample || '5' }} \
@@ -109,6 +117,13 @@ jobs:
       # 'blind' verdict forever.
       - name: Commit recall report + trend ledger
         if: ${{ always() && !inputs.no_trend }}
+        env:
+          # The trend ledger is a read-modify-write file that other data/audit
+          # writers race (task #784's class). `rebase -X theirs` resolves in our
+          # favour WITHOUT reporting a conflict, so a concurrent run's line would
+          # vanish silently. This opts into the post-rebase union re-merge; the
+          # merger is registered in scripts/lib/reconcile-merged-json.js.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           for f in data/audit/serp-census-recall.json \
                    data/audit/census-recall-trend.jsonl \

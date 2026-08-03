@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T03:26:23.904Z",
+  "generatedAt": "2026-08-03T03:41:15.812Z",
   "verdict": "blind",
   "reason": "only 0 prior run(s) on record (need 2) — no baseline to judge against yet",
   "regressions": [],
@@ -7,7 +7,7 @@
   "trendEntries": 1,
   "latest": {
     "date": "2026-08-03",
-    "generatedAt": "2026-08-03T03:26:23.904Z",
+    "generatedAt": "2026-08-03T03:41:15.812Z",
     "naivePages": 3,
     "shows": 10,
     "excluded": {},
@@ -28,6 +28,20 @@
       "scoped-q1": 0.141,
       "scoped-q2": 0.043
     },
+    "familyYield": {
+      "naive": 12.9,
+      "onDisk": 15.1,
+      "scoped": 6.6
+    },
+    "armYield": {
+      "naive-p0": 4.7,
+      "naive-p1": 4.8,
+      "naive-p2": 4.1,
+      "onDisk": 15.1,
+      "scoped-q0": 5,
+      "scoped-q1": 3.3,
+      "scoped-q2": 1
+    },
     "armsFailed": {
       "naive-p0": 0,
       "naive-p1": 0,
@@ -37,6 +51,7 @@
       "scoped-q1": 0,
       "scoped-q2": 0
     },
+    "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
         "shows": 3,

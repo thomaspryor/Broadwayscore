@@ -21,9 +21,11 @@ const ok = (over = {}) => ({
 test('a healthy run reports the per-arm recall the owner is meant to watch', () => {
   const r = censusRecallResult(ok(), { nowMs: NOW });
   assert.equal(r.status, 'pass');
-  assert.match(r.message, /scoped 0\.28/);
-  assert.match(r.message, /naive 0\.55/);
-  assert.match(r.message, /120 findable review URLs/);
+  // Plain English, not internal vocabulary: no "scoped"/"naive"/"recall 0.28".
+  assert.match(r.message, /our targeted searches found 28%/);
+  assert.match(r.message, /a plain Google search found 55%/);
+  assert.match(r.message, /120 review pages any of our searches could find/);
+  assert.doesNotMatch(r.message, /scoped|naive|onDisk|recall/);
 });
 
 test('a regression is a warn, not a page — the gate it feeds is fail-open', () => {
@@ -33,7 +35,9 @@ test('a regression is a warn, not a page — the gate it feeds is fail-open', ()
     regressions: [{ arm: 'scoped', baseline: 0.8, current: 0.2, drop: 0.6, reason: 'x' }],
   }), { nowMs: NOW });
   assert.equal(r.status, 'warn');
-  assert.match(r.message, /scoped 0\.2 vs 0\.8 median/);
+  assert.match(r.message, /our targeted searches now finds 20% vs 80% recently/);
+  // Says what it MEANS for the owner, not just that a number moved.
+  assert.match(r.message, /published reviews missing/);
   assert.match(r.hint, /audit-serp-census-recall\.js/);
 });
 
@@ -42,7 +46,7 @@ test('a vanished arm renders as absent rather than as a bare number', () => {
     verdict: 'regressed',
     regressions: [{ arm: 'naive', baseline: 0.9, current: null, drop: 0.9, reason: 'x' }],
   }), { nowMs: NOW });
-  assert.match(r.message, /naive absent vs 0\.9 median/);
+  assert.match(r.message, /a plain Google search stopped reporting/);
 });
 
 test('missing data warns instead of passing — a silent detector is the #898 failure', () => {
