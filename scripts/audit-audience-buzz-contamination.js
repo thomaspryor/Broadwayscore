@@ -70,6 +70,7 @@ const path = require('path');
 const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
 const { isRedditVolumeInflated, otherSourceReviewCounts, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
 const { isRedditEligible } = require('./lib/audience-weighting');
+const { normalizeTitle } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
 const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
@@ -87,7 +88,17 @@ const WARN_SIGNALS = new Set([
   'OTHER_SOURCE_DIVERGENCE',
   'OTHER_SOURCE_STALE',
   'REDDIT_GENERIC_VOLUME_INFLATION',
+  'TITLE_COLLISION_SIBLING_DIVERGENCE',
 ]);
+
+// TITLE_COLLISION_SIBLING_DIVERGENCE (task #57, 2026-08-03): a show whose title
+// also belongs to a DIFFERENT production (revival, transfer, other-market run —
+// e.g. Glengarry Glen Ross 2025 Broadway vs West End 2026) is a structural Reddit
+// contamination risk, since scrape-reddit-sentiment.js searches by title. Direct
+// sibling-vs-sibling comparison catches contamination that REDDIT_SCORE_DIVERGENCE
+// misses when neither show has >=2 other credible sources to build its own median
+// (small-audience/newly-opened shows). Threshold matches REDDIT_SCORE_DIVERGENCE
+// (>=40) and both sides need reviewCount>=10 to rule out small-n noise.
 
 // REDDIT_GENERIC_VOLUME_INFLATION (2026-06-15 music-city; 2026-07-11 title-
 // independent rewrite, Notion 39a637c5): REDDIT_SCORE_DIVERGENCE misses
@@ -148,6 +159,24 @@ function median(arr) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
+// Groups show ids by normalized title, keeping only titles shared by 2+
+// distinct productions (the revival/transfer/cross-market collision class).
+function buildTitleSiblingGroups(shows) {
+  const groups = new Map();
+  if (!shows) return groups;
+  for (const s of shows) {
+    if (!s || !s.title || !s.id) continue;
+    const key = normalizeTitle(s.title);
+    if (!key) continue;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(s.id);
+  }
+  for (const [key, list] of groups) {
+    if (list.length < 2) groups.delete(key);
+  }
+  return groups;
+}
+
 function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
   const shows = injectedShows !== undefined ? injectedShows : loadShows();
   const ids = shows ? new Set(shows.map(s => s.id)) : null;
@@ -156,6 +185,16 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
     ? injectedBuzz
     : JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8'));
   const showsMap = raw.shows || {};
+  const titleSiblingGroups = buildTitleSiblingGroups(shows);
+  // Canonical show id -> buzz record, so sibling lookups work regardless of
+  // which legacy key schema the sibling's own buzz entry happens to use.
+  const buzzByCanonicalId = new Map();
+  if (ids) {
+    for (const [key, rec] of Object.entries(showsMap)) {
+      const resolved = resolveBuzzKey(key, ids);
+      if (resolved) buzzByCanonicalId.set(resolved, rec);
+    }
+  }
   const issues = [];
   const currentYear = (today ? new Date(today) : new Date()).getFullYear();
 
@@ -210,6 +249,31 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
         const diff = Math.abs(src.score - m);
         if (diff >= 35) {
           flags.push(`OTHER_SOURCE_DIVERGENCE:src=${name},score=${src.score},median=${m},diff=${diff},rc=${rc}`);
+        }
+      }
+    }
+
+    // TITLE_COLLISION_SIBLING_DIVERGENCE — direct sibling-vs-sibling comparison
+    // for shows whose title collides with a different production (revival,
+    // transfer, other-market run). Catches contamination that REDDIT_SCORE_
+    // DIVERGENCE can't see when this show (or its sibling) lacks 2+ other
+    // credible sources to build its own median.
+    {
+      const canonicalId = resolvedId || (ids && ids.has(id) ? id : null);
+      const show = canonicalId && showById && showById.get(canonicalId);
+      const reddit = sources.reddit;
+      if (show && reddit && typeof reddit.score === 'number' && !reddit.suppressed && (reddit.reviewCount || 0) >= 10) {
+        const siblingIds = (titleSiblingGroups.get(normalizeTitle(show.title)) || [])
+          .filter(sid => sid !== canonicalId);
+        for (const siblingId of siblingIds) {
+          const siblingRec = buzzByCanonicalId.get(siblingId);
+          const siblingReddit = siblingRec && siblingRec.sources && siblingRec.sources.reddit;
+          if (!siblingReddit || typeof siblingReddit.score !== 'number' || siblingReddit.suppressed) continue;
+          if ((siblingReddit.reviewCount || 0) < 10) continue;
+          const diff = Math.abs(reddit.score - siblingReddit.score);
+          if (diff >= 40) {
+            flags.push(`TITLE_COLLISION_SIBLING_DIVERGENCE:sibling=${siblingId},score=${reddit.score},siblingScore=${siblingReddit.score},diff=${diff}`);
+          }
         }
       }
     }
