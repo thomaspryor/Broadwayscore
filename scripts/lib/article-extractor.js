@@ -117,6 +117,34 @@ function extractStageBody(html) {
 }
 
 /**
+ * The Times / The Sunday Times (thetimes.com / thetimes.co.uk) — subscriber-only.
+ * The article body sits inside `<article id="article-main">` as a flat run of
+ * `<p id="{uuid}">` tags (WordPress block content, each block gets a real
+ * v4-style UUID id) interleaved with unrelated chrome that does NOT carry a
+ * UUID id: a sidebar "quizle" question (`id="article-quizle-question"`), a
+ * cookie-consent placeholder (`class="times-embed-placeholder__message"`), a
+ * newsletter-signup box (no id/class), and a "Promoted Content" block. Filtering
+ * to `<p id="{uuid}">` alone cleanly isolates the review prose without any
+ * content-based noise heuristics — verified live 2026-08-03 against
+ * 1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb (logged in → 2799 chars,
+ * 7 paragraphs, lede through star rating; logged out → 0 matches, correctly
+ * flags a dead session).
+ */
+function extractTimesBody(html) {
+  const startM = html.match(/<article[^>]*id="article-main"[^>]*>/);
+  if (!startM) return null;
+  const endM = html.slice(startM.index).match(/data-testid="article-comments"/);
+  const region = html.slice(startM.index, startM.index + (endM ? endM.index : 60000));
+  const uuidId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const paras = [...region.matchAll(/<p[^>]*\bid="([^"]*)"[^>]*>([\s\S]*?)<\/p>/g)]
+    .filter((m) => uuidId.test(m[1]))
+    .map((m) => stripHtml(m[2]))
+    .filter((t) => t.length > 40 && /[a-z]/i.test(t));
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * Variety (variety.com) — the review body lives in a single `div.a-content`, but
  * the current layout injects promo modules MID-ARTICLE: `injected-related-story`
  * ("Related Stories") and `pmc-contextual-player` ("Popular on Variety"). The old
@@ -397,6 +425,15 @@ function extractArticleText(html, hostname) {
   if (host.includes('thestage.co.uk')) {
     const stageText = extractStageBody(html);
     if (stageText && stageText.length >= 300) return stageText;
+  }
+
+  // The Times / Sunday Times: requires subscriber auth; body paragraphs carry
+  // a UUID id, unlike surrounding chrome (quizle, newsletter box, promoted
+  // content). Logged-out HTML has zero UUID-id paragraphs, so this returns
+  // null and the verifier still flags logout.
+  if (host.includes('thetimes.co.uk') || host.includes('thetimes.com')) {
+    const timesText = extractTimesBody(html);
+    if (timesText && timesText.length >= 300) return timesText;
   }
 
   // Lighting & Sound America: table-based layout, no container div — prose lives

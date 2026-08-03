@@ -91,9 +91,15 @@ const CRITICAL_OUTLETS = {
   },
   thetimes: {
     envVar: 'THETIMES_COOKIES',
-    testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1776-review-broadway-revival',
-    authCookies: [], // Complex subscriber auth — monitor via structural/volume check
+    // Old testUrl (1776-review-broadway-revival) 404s — confirmed live
+    // 2026-08-03 while building the OTP-login recovery pipeline (task #919).
+    // Swapped for a live review URL and added minBodyChars: the body-length
+    // check catches a dead session that cookie-expiry alone misses, same
+    // rationale as thestage above.
+    testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
+    authCookies: [],
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
+    minBodyChars: 1200,
   },
   nypost: {
     // No NYPOST_COOKIES secret exists (card #582 leads confirmed it's absent from
