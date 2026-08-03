@@ -164,3 +164,33 @@ test('CI-unfetchable outlets (WSJ/New Yorker) block "complete" but read SUPPRESS
   assert.equal(wsj.state, 'SUPPRESSED');
   assert.equal(wsj.reason, 'ci-unfetchable');
 });
+
+// #906 ship-check finding: candidates are URL-level, so firstSeenAt continuity
+// must key on the URL. Keying on outletId alone let a brand-new sibling URL
+// inherit its older sibling's birth date and read as stale from day one.
+test('firstSeenAt: a new sibling URL is born now, it does not inherit its sibling age', () => {
+  const census = {
+    hadAnySource: true,
+    count: 2,
+    entries: [
+      { outletId: 'timeout', outlet: 'Time Out', url: 'https://timeout.com/old', critic: 'Unknown', stars: null },
+      { outletId: 'timeout', outlet: 'Time Out', url: 'https://timeout.com/new', critic: 'Unknown', stars: null },
+    ],
+  };
+  const prevCandidates = [{ url: 'https://timeout.com/old', outletId: 'timeout', state: 'live', firstSeenAt: '2026-07-01T00:00:00.000Z' }];
+  const out = candidateStatesFor(census, new Set(['timeout']), { now: '2026-08-03T00:00:00.000Z', prevCandidates });
+  const byUrl = Object.fromEntries(out.map((c) => [c.url, c.firstSeenAt]));
+  assert.equal(byUrl['https://timeout.com/old'], '2026-07-01T00:00:00.000Z');
+  assert.equal(byUrl['https://timeout.com/new'], '2026-08-03T00:00:00.000Z');
+});
+
+test('firstSeenAt: a URL-less candidate (citedNoUrl) still matches on outletId', () => {
+  const census = {
+    hadAnySource: true,
+    count: 1,
+    entries: [{ outletId: 'the-stage', outlet: 'The Stage', url: '', critic: 'Unknown', stars: null }],
+  };
+  const prevCandidates = [{ url: '', outletId: 'the-stage', state: 'IN_FLIGHT', firstSeenAt: '2026-07-01T00:00:00.000Z' }];
+  const out = candidateStatesFor(census, new Set(), { now: '2026-08-03T00:00:00.000Z', prevCandidates });
+  assert.equal(out[0].firstSeenAt, '2026-07-01T00:00:00.000Z');
+});

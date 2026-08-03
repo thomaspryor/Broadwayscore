@@ -1,210 +1,20 @@
 {
-  "generatedAt": "2026-08-03T04:12:18.410Z",
-  "windowDays": 1095,
-  "targets": 20,
+  "generatedAt": "2026-08-03T05:08:25.616Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 13,
+  "prunedStale": 0,
+  "retentionDays": 395,
   "counts": {
-    "withGap": 11,
-    "totalMissing": 53,
+    "withGap": 10,
+    "totalMissing": 52,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 85,
+    "totalFlaggedMisses": 81,
     "totalRecoverable": 2,
     "totalRecovered": 0
   },
   "results": [
-    {
-      "showId": "space-dogs-off-west-end-2026",
-      "title": "Space Dogs",
-      "openingDate": "2026-07-31",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs"
-      ],
-      "aggregatorListedUrls": [
-        "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
-        "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
-        "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
-        "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
-      ],
-      "dirFiles": 15,
-      "dirClean": 13,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "onin.london",
-          "count": 1
-        },
-        {
-          "host": "operationlivetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs",
-          "publishDate": "2022-02-14"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
-    },
     {
       "showId": "brainiac-live-west-end-2026",
       "title": "Brainiac Live",
@@ -518,646 +328,8 @@
           "host": "eastendkids.co.uk",
           "outletId": "eastendkids"
         }
-      ]
-    },
-    {
-      "showId": "tao-of-glass-west-end-2026",
-      "title": "Tao of Glass",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
-        "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
-        "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
-        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
-        "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-        "https://www.timeout.com/london/theatre/tao-of-glass-review",
-        "https://www.london-unattached.com/tao-of-glass-soho-place/",
-        "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
-        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-        "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
-        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-        "https://www.timeout.com/london/theatre/tao-of-glass",
-        "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-        "https://www.londontheatre.co.uk/show/46333-tao-of-glass",
-        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
-        "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace"
       ],
-      "dirFiles": 39,
-      "dirClean": 22,
-      "inReviewsJson": 19,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "northwestend.com",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-          "host": "liamodell.com",
-          "knownOutletId": "liamodell",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "liamodell--liam-odell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--franco-milazzo.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tao of Glass\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tao of Glass\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 8,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tao of Glass\" review soho",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tao of Glass Soho Place review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tao of Glass Soho Place review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tao of Glass Soho Place review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 18,
-        "error": null
-      }
-    },
-    {
-      "showId": "the-vessel-off-broadway-2026",
-      "title": "The Vessel",
-      "openingDate": "2026-07-30",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://dalyklerwhmui.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-        "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-        "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-        "https://www.hudsonyardsnewyork.com/discover/vessel",
-        "https://nyra.nyc/articles/the-thing-about-the-vessel",
-        "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-        "https://www.tripster.com/detail/vessel-new-york",
-        "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
-        "https://gracefkim.com/the-vessel-nyc/",
-        "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/"
-      ],
-      "dirFiles": 1,
-      "dirClean": 1,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://dalyklerwhmui.cloudfront.net",
-          "host": "cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-          "host": "empirehotelnyc.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-          "host": "travelingwithaga.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-          "host": "travelforaliving.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
-          "host": "hudsonyardsnewyork.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
-          "host": "nyra.nyc",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-          "host": "lauraperuchi.nyc",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tripster.com/detail/vessel-new-york",
-          "host": "tripster.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
-          "host": "hellotickets.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://gracefkim.com/the-vessel-nyc/",
-          "host": "gracefkim.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/",
-          "host": "amymarietta.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Vessel\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Vessel\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Vessel\" review midtown",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Vessel Midtown E review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Vessel Midtown E review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Vessel Midtown E review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 11,
-        "error": null
-      },
-      "ingestResults": [
-        {
-          "url": "https://dalyklerwhmui.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720422/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720422/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        },
-        {
-          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-          "host": "empirehotelnyc.com",
-          "outletId": "empirehotelnyc"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-          "host": "travelingwithaga.com",
-          "outletId": "travelingwithaga"
-        },
-        {
-          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-          "host": "travelforaliving.co.uk",
-          "outletId": "travelforaliving"
-        },
-        {
-          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
-          "host": "hudsonyardsnewyork.com",
-          "outletId": "hudsonyardsnewyork"
-        },
-        {
-          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
-          "host": "nyra.nyc",
-          "outletId": "nyra"
-        },
-        {
-          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-          "host": "lauraperuchi.nyc",
-          "outletId": "lauraperuchi"
-        },
-        {
-          "url": "https://www.tripster.com/detail/vessel-new-york",
-          "host": "tripster.com",
-          "outletId": "tripster"
-        },
-        {
-          "url": "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
-          "host": "hellotickets.com",
-          "outletId": "hellotickets"
-        },
-        {
-          "url": "https://gracefkim.com/the-vessel-nyc/",
-          "host": "gracefkim.com",
-          "outletId": "gracefkim"
-        },
-        {
-          "url": "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/",
-          "host": "amymarietta.com",
-          "outletId": "amymarietta"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
-        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
-        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/"
-      ],
-      "dirFiles": 14,
-      "dirClean": 10,
-      "inReviewsJson": 9,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheatreguide.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      }
+      "computedAt": "2026-08-03T04:12:18.410Z"
     },
     {
       "showId": "dog-man-the-musical-west-end-2026",
@@ -1339,837 +511,8 @@
           "reason": "⚠️  Scrapingdog pace (~720571/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
         }
       ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2026-07-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
-        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
-        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker"
-      ],
-      "dirFiles": 46,
-      "dirClean": 19,
-      "inReviewsJson": 17,
-      "missing": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "westendtheatre"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "ayoungishperspective.co.uk",
-          "count": 1
-        },
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "cheekylittlematinee.com",
-          "count": 1
-        },
-        {
-          "host": "fairypoweredproductions.com",
-          "count": 1
-        },
-        {
-          "host": "harrytheatrelife.co.uk",
-          "count": 1
-        },
-        {
-          "host": "jadar.uk",
-          "count": 1
-        },
-        {
-          "host": "liftedleg.com",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "nowthenmagazine.com",
-          "count": 1
-        },
-        {
-          "host": "on-magazine.co.uk",
-          "count": 1
-        },
-        {
-          "host": "pinkprincetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "quayslife.com",
-          "count": 1
-        },
-        {
-          "host": "seeingdance.com",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 2
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--lyndsey-winship.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-car-man-sadlers-wells-review-a-steamy-melodrama-that-s-just-right-for-sultry-summer-nights-10401810.html"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "westendtheatre"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--zoe-anderson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.independent.co.uk/independentpremium/culture/the-car-man-review-royal-albert-hall-b2098818.html"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--rachel-ward.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/culture/theatre/dance/11747488/The-Car-Man-Sadlers-Wells-review-masterful.html"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "westendtheatre"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/jun/12/matthew-bournes-the-car-man-review-steamy-dance-thriller-with-a-supercharged-engine"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "westendtheatre"
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 6,
-        "sources": {
-          "westendtheatre": {
-            "found": true,
-            "rows": 6,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 6,
-        "corroborated": 1,
-        "perSource": {
-          "westendtheatre": {
-            "cited": 5,
-            "corroborated": 1
-          }
-        }
-      },
-      "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
-      },
-      "ingestResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~720708/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
-        }
-      ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum",
-          "host": "nowthenmagazine.com",
-          "file": "nowthenmagazine--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2,
-          "uncited": true
-        }
-      ]
-    },
-    {
-      "showId": "the-rocky-horror-show-2026",
-      "title": "The Rocky Horror Show",
-      "openingDate": "2026-04-23",
-      "status": "open",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-ROCKY-HORROR-SHOW-Returns-to-Broadway-20260423"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/rocky-horror-show-broadway-review-luke-evans/",
-        "https://www.amny.com/entertainment/review-rocky-horror-time-warps-studio-54s/",
-        "https://cititour.com/NYC_Broadway/The-Rocky-Horror-Show/1376",
-        "https://culturesauce.com/2026/04/23/rocky-horror-show-broadway-review/",
-        "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is",
-        "https://www.chicagotribune.com/2026/04/23/review-rocky-horror-broadway/",
-        "https://deadline.com/2026/04/rocky-horror-show-broadway-review-1236867882/",
-        "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
-        "https://www.theguardian.com/stage/2026/apr/23/the-rocky-horror-show-review-broadway",
-        "https://nypost.com/2026/04/23/entertainment/the-rocky-horror-show-review-broadway-shows-got-killer-performances-but-dammit-janet-make-it-more-fun/",
-        "https://nystagereview.com/2026/04/23/the-rocky-horror-show-roundabout-rolls-out-a-not-so-hot-patootie/",
-        "https://nystagereview.com/2026/04/23/the-rocky-horror-show-lets-not-do-the-time-warp-again-and-say-we-did/",
-        "https://newyorktheater.me/2026/04/23/the-rocky-horror-show-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-rocky-horror-show-broadway-review-luke-evans",
-        "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html",
-        "https://people.com/the-rocky-horror-show-broadway-review-11954611",
-        "https://thequeerreview.com/2026/04/23/theatre-review-the-rocky-horror-show-studio-54-broadway/",
-        "https://www.theatermania.com/news/review-the-rocky-horror-show-receives-a-too-tame-broadway-revival_1834198/",
-        "https://www.theatrely.com/post/the-rocky-horror-show-is-a-burst-of-vibrant-queer-joy-review",
-        "https://www.timeout.com/newyork/news/broadway-review-the-rocky-horror-show-is-deliciously-warped-and-timely-042426",
-        "https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/",
-        "https://www.thewrap.com/creative-content/theater/the-rocky-horror-show-broadway-review/",
-        "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
-        "https://w42st.com/post/michael-musto-reviews-titanique-smigadoon-rocky-horror-show/",
-        "https://thecontending.com/the-rocky-horror-show-luke-evans-astounds-in-campy-queer-tastic-revival/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TEJ634"
-      ],
-      "dirFiles": 51,
-      "dirClean": 32,
-      "inReviewsJson": 34,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "jkstheatrescene.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is",
-          "host": "davidcote1.substack.com",
-          "knownOutletId": "cote-notices",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cote-notices--david-cote.json",
-              "flag": "duplicate",
-              "urlInDir": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is?triedRedirect=true"
-            },
-            {
-              "file": "cote-notices--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is?triedRedirect=true"
-            }
-          ]
-        },
-        {
-          "url": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--dalton-ross.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOooh6iTvLIyh8k2u7cuM6vpmVrIywFGm9lKCFM3XmT-5hzFS74Zx"
-            }
-          ]
-        },
-        {
-          "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
-          "host": "criterionticketing.com",
-          "knownOutletId": null,
-          "recoverable": true,
-          "recoverableFile": "criterionticketing--unknown.json",
-          "recoverableOutletId": "criterionticketing",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "criterionticketing--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "recoveryResults": [
-        {
-          "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
-          "host": "criterionticketing.com",
-          "file": "criterionticketing--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~720960/day) projects exhaustion in ~5d, before the 31d-out renewal — still us",
-          "recoveryCount": 1
-        }
-      ]
-    },
-    {
-      "showId": "the-potluck-off-broadway-2026",
-      "title": "The Potluck",
-      "openingDate": "2026-06-30",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K740FI",
-        "https://www.theaterscene.net/musicals/offbway/the-potluck/tony-marinelli/",
-        "https://newyorktheater.me/2026/07/13/the-potluck-review/",
-        "https://culturesauce.com/potluck-greensboro-massacre-musical-off-broadway-review/"
-      ],
-      "dirFiles": 13,
-      "dirClean": 8,
-      "inReviewsJson": 8,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "exeuntnyc.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      }
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "status": "open",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420",
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-        "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.avclub.com/apple-tv-plus-schmigadoon-offers-grand-musical-number-1847233449",
-        "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/",
-        "https://www.theguardian.com/tv-and-radio/2021/jul/16/schmigadoon-review-a-one-note-musical-and-even-that-falls-too-flat",
-        "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-        "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
-        "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
-        "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/",
-        "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/",
-        "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/",
-        "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
-        "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-        "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/",
-        "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-seen-it-11626371130",
-        "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
-        "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
-        "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
-        "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-musicals-de236228",
-        "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
-        "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/schmigadoon-broadway-review",
-        "https://nystagereview.com/2026/04/20/schmigadoon-talents-bustin-out-all-over/",
-        "https://www.theguardian.com/stage/2026/apr/20/schmigadoon-broadway-review",
-        "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/",
-        "https://www.thewrap.com/creative-content/reviews/schmigadoon-broadway-review-lorne-michaels-apple-tv-revival/",
-        "https://deadline.com/2026/04/schmigadoon-broadway-review-1236864610/",
-        "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
-        "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
-        "https://nypost.com/2026/04/20/entertainment/schmigadoon-review-tired-parody-of-broadways-golden-age-is-been-there-doon-that/",
-        "https://ew.com/schmigadoon-review-broadway-adaptation-11954517",
-        "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
-        "https://www.amny.com/entertainment/review-schmigadoon-broadway-joke-wears-thin/",
-        "https://1minutecritic.com/schmigadoon-broadway-review/",
-        "https://thecontending.com/schmigadoon-schmigafun/",
-        "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
-        "https://people.com/schmigadoon-broadway-review-11953679",
-        "https://www.avclub.com/schmigadoon-broadway-musical-reaction",
-        "https://www.purewow.com/entertainment/schmigadoon-broadway-review",
-        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-        "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-        "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-        "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-        "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-        "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/"
-      ],
-      "dirFiles": 82,
-      "dirClean": 43,
-      "inReviewsJson": 41,
-      "missing": [
-        {
-          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-          "host": "tvline.com",
-          "knownOutletId": "tv-line",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "joshatthemovies.com",
-          "count": 1
-        },
-        {
-          "host": "lavocedinewyork.com",
-          "count": 1
-        },
-        {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "stagezine.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        },
-        {
-          "host": "thejewishvoiceandopinion.com",
-          "count": 1
-        },
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 2
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/",
-          "host": "decider.com",
-          "knownOutletId": "decider",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "decider--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--daniel-fienberg.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
-          "host": "npr.org",
-          "knownOutletId": "npr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "npr--linda-holmes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--httpsobservercomauthorbrandon-katz.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/",
-          "host": "pastemagazine.com",
-          "knownOutletId": "paste-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "paste-magazine--amy-amatangelo.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/",
-          "host": "rollingstone.com",
-          "knownOutletId": "rollingstone",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "rollingstone--alan-sepinwall.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
-          "host": "slate.com",
-          "knownOutletId": "slate",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "slate--karen-han.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/"
-            }
-          ]
-        }
-      ],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
-          "publishDate": "2021-07-06"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-          "publishDate": "2025-02-03"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706",
-          "publishDate": "2021-07-06"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-          "host": "tvline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": []
+      "computedAt": "2026-08-03T04:12:18.410Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -2942,7 +1285,57 @@
         }
       ],
       "ingestResults": [],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-les-miserables-arena-concert-spectacular-at-radio-city-music-hall",
+        "https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
+        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
+        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
+        "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
+        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 10,
+      "inReviewsJson": 9,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "nypost.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "computedAt": "2026-08-03T04:12:18.410Z"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -3901,7 +2294,931 @@
           "reason": null
         }
       ],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
+        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420",
+        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
+        "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.avclub.com/apple-tv-plus-schmigadoon-offers-grand-musical-number-1847233449",
+        "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/",
+        "https://www.theguardian.com/tv-and-radio/2021/jul/16/schmigadoon-review-a-one-note-musical-and-even-that-falls-too-flat",
+        "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
+        "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
+        "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
+        "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/",
+        "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/",
+        "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/",
+        "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
+        "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
+        "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/",
+        "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-seen-it-11626371130",
+        "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
+        "https://www.timeout.com/newyork/news/broadway-review-schmigadoon-is-good-old-fashioned-musical-fun-042126",
+        "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
+        "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-musicals-de236228",
+        "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
+        "https://newyorktheater.me/2026/04/20/schmigadoon-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/schmigadoon-broadway-review",
+        "https://nystagereview.com/2026/04/20/schmigadoon-talents-bustin-out-all-over/",
+        "https://www.theguardian.com/stage/2026/apr/20/schmigadoon-broadway-review",
+        "https://nystagereview.com/2026/04/20/schmigadoon-doin-nicely-nicely-by-the-classics/",
+        "https://www.thewrap.com/creative-content/reviews/schmigadoon-broadway-review-lorne-michaels-apple-tv-revival/",
+        "https://deadline.com/2026/04/schmigadoon-broadway-review-1236864610/",
+        "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
+        "https://culturesauce.com/2026/04/20/schmigadoon-broadway-review/",
+        "https://nypost.com/2026/04/20/entertainment/schmigadoon-review-tired-parody-of-broadways-golden-age-is-been-there-doon-that/",
+        "https://ew.com/schmigadoon-review-broadway-adaptation-11954517",
+        "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
+        "https://www.amny.com/entertainment/review-schmigadoon-broadway-joke-wears-thin/",
+        "https://1minutecritic.com/schmigadoon-broadway-review/",
+        "https://thecontending.com/schmigadoon-schmigafun/",
+        "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
+        "https://people.com/schmigadoon-broadway-review-11953679",
+        "https://www.avclub.com/schmigadoon-broadway-musical-reaction",
+        "https://www.purewow.com/entertainment/schmigadoon-broadway-review",
+        "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
+        "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
+        "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
+        "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
+        "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
+        "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/"
+      ],
+      "dirFiles": 82,
+      "dirClean": 43,
+      "inReviewsJson": 41,
+      "missing": [
+        {
+          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
+          "host": "tvline.com",
+          "knownOutletId": "tv-line",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
+          "host": "entertainmentdaily.co.uk",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
+          "host": "cnet.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "joshatthemovies.com",
+          "count": 1
+        },
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stagezine.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "thejewishvoiceandopinion.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/",
+          "host": "decider.com",
+          "knownOutletId": "decider",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "decider--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://decider.com/2021/07/06/schmigadoon-on-apple-tv-plus-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--daniel-fienberg.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
+          "host": "npr.org",
+          "knownOutletId": "npr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "npr--linda-holmes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--httpsobservercomauthorbrandon-katz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2021/07/apple-schmigadoon-review-cecily-strong-keegan-michael-key/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/",
+          "host": "pastemagazine.com",
+          "knownOutletId": "paste-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "paste-magazine--amy-amatangelo.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.pastemagazine.com/tv/apple-tv-plus/schmigadoon-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/",
+          "host": "rollingstone.com",
+          "knownOutletId": "rollingstone",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rollingstone--alan-sepinwall.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.rollingstone.com/tv/tv-reviews/schmigadoon-review-cecily-strong-1195044/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
+          "host": "slate.com",
+          "knownOutletId": "slate",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "slate--karen-han.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-apple-tv-musical-comedy-series-schmigadoon",
+          "publishDate": "2021-07-06"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
+          "publishDate": "2025-02-03"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706",
+          "publishDate": "2021-07-06"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
+          "host": "tvline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
+          "host": "entertainmentdaily.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
+          "host": "cnet.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "space-dogs-off-west-end-2026",
+      "title": "Space Dogs",
+      "openingDate": "2026-07-31",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs"
+      ],
+      "aggregatorListedUrls": [
+        "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+        "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+        "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+        "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
+      ],
+      "dirFiles": 15,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [
+        {
+          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "onin.london",
+          "count": 1
+        },
+        {
+          "host": "operationlivetheatre.com",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs",
+          "publishDate": "2022-02-14"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
+        "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
+        "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
+        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+        "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
+        "https://www.timeout.com/london/theatre/tao-of-glass-review",
+        "https://www.london-unattached.com/tao-of-glass-soho-place/",
+        "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
+        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+        "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
+        "https://www.timeout.com/london/theatre/tao-of-glass",
+        "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
+        "https://www.londontheatre.co.uk/show/46333-tao-of-glass",
+        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
+        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
+        "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace"
+      ],
+      "dirFiles": 39,
+      "dirClean": 22,
+      "inReviewsJson": 19,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+          "host": "liamodell.com",
+          "knownOutletId": "liamodell",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "liamodell--liam-odell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--franco-milazzo.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Tao of Glass\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tao of Glass\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tao of Glass\" review soho",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tao of Glass Soho Place review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tao of Glass Soho Place review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tao of Glass Soho Place review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 18,
+        "error": null
+      },
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "title": "The Car Man",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": true,
+            "rows": 0,
+            "emptyParse": true,
+            "error": null,
+            "fetchErrors": 1
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 2
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 1
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Car Man\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Car Man\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Car Man\" review sadler",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Car Man\" Bourne review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Car Man Sadler's Wells review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Car Man Sadler's Wells review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Car Man Sadler's Wells review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
+      },
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-03T05:08:25.616Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -4099,7 +3416,569 @@
         }
       ],
       "ingestResults": [],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false
+      },
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "the-potluck-off-broadway-2026",
+      "title": "The Potluck",
+      "openingDate": "2026-06-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K740FI",
+        "https://www.theaterscene.net/musicals/offbway/the-potluck/tony-marinelli/",
+        "https://newyorktheater.me/2026/07/13/the-potluck-review/",
+        "https://culturesauce.com/potluck-greensboro-massacre-musical-off-broadway-review/"
+      ],
+      "dirFiles": 13,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "title": "The Rocky Horror Show",
+      "openingDate": "2026-04-23",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-ROCKY-HORROR-SHOW-Returns-to-Broadway-20260423"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/rocky-horror-show-broadway-review-luke-evans/",
+        "https://www.amny.com/entertainment/review-rocky-horror-time-warps-studio-54s/",
+        "https://cititour.com/NYC_Broadway/The-Rocky-Horror-Show/1376",
+        "https://culturesauce.com/2026/04/23/rocky-horror-show-broadway-review/",
+        "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is",
+        "https://www.chicagotribune.com/2026/04/23/review-rocky-horror-broadway/",
+        "https://deadline.com/2026/04/rocky-horror-show-broadway-review-1236867882/",
+        "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
+        "https://www.theguardian.com/stage/2026/apr/23/the-rocky-horror-show-review-broadway",
+        "https://nypost.com/2026/04/23/entertainment/the-rocky-horror-show-review-broadway-shows-got-killer-performances-but-dammit-janet-make-it-more-fun/",
+        "https://nystagereview.com/2026/04/23/the-rocky-horror-show-roundabout-rolls-out-a-not-so-hot-patootie/",
+        "https://nystagereview.com/2026/04/23/the-rocky-horror-show-lets-not-do-the-time-warp-again-and-say-we-did/",
+        "https://newyorktheater.me/2026/04/23/the-rocky-horror-show-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-rocky-horror-show-broadway-review-luke-evans",
+        "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html",
+        "https://people.com/the-rocky-horror-show-broadway-review-11954611",
+        "https://thequeerreview.com/2026/04/23/theatre-review-the-rocky-horror-show-studio-54-broadway/",
+        "https://www.theatermania.com/news/review-the-rocky-horror-show-receives-a-too-tame-broadway-revival_1834198/",
+        "https://www.theatrely.com/post/the-rocky-horror-show-is-a-burst-of-vibrant-queer-joy-review",
+        "https://www.timeout.com/newyork/news/broadway-review-the-rocky-horror-show-is-deliciously-warped-and-timely-042426",
+        "https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/",
+        "https://www.thewrap.com/creative-content/theater/the-rocky-horror-show-broadway-review/",
+        "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
+        "https://w42st.com/post/michael-musto-reviews-titanique-smigadoon-rocky-horror-show/",
+        "https://thecontending.com/the-rocky-horror-show-luke-evans-astounds-in-campy-queer-tastic-revival/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TEJ634"
+      ],
+      "dirFiles": 51,
+      "dirClean": 32,
+      "inReviewsJson": 34,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "jkstheatrescene.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is",
+          "host": "davidcote1.substack.com",
+          "knownOutletId": "cote-notices",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cote-notices--david-cote.json",
+              "flag": "duplicate",
+              "urlInDir": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is?triedRedirect=true"
+            },
+            {
+              "file": "cote-notices--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is?triedRedirect=true"
+            }
+          ]
+        },
+        {
+          "url": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ew--dalton-ross.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOooh6iTvLIyh8k2u7cuM6vpmVrIywFGm9lKCFM3XmT-5hzFS74Zx"
+            }
+          ]
+        },
+        {
+          "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
+          "host": "criterionticketing.com",
+          "knownOutletId": null,
+          "recoverable": true,
+          "recoverableFile": "criterionticketing--unknown.json",
+          "recoverableOutletId": "criterionticketing",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "criterionticketing--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "recoveryResults": [
+        {
+          "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
+          "host": "criterionticketing.com",
+          "file": "criterionticketing--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog pace (~720960/day) projects exhaustion in ~5d, before the 31d-out renewal — still us",
+          "recoveryCount": 1
+        }
+      ],
+      "computedAt": "2026-08-03T04:12:18.410Z"
+    },
+    {
+      "showId": "the-vessel-off-broadway-2026",
+      "title": "The Vessel",
+      "openingDate": "2026-07-30",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://dalyklerwhmui.cloudfront.net",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+        "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
+        "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
+        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
+        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
+        "https://www.hudsonyardsnewyork.com/discover/vessel",
+        "https://nyra.nyc/articles/the-thing-about-the-vessel",
+        "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
+        "https://www.tripster.com/detail/vessel-new-york",
+        "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
+        "https://gracefkim.com/the-vessel-nyc/",
+        "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
+          "host": "empirehotelnyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
+          "host": "travelingwithaga.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
+          "host": "travelforaliving.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
+          "host": "hudsonyardsnewyork.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
+          "host": "nyra.nyc",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
+          "host": "lauraperuchi.nyc",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tripster.com/detail/vessel-new-york",
+          "host": "tripster.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
+          "host": "hellotickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://gracefkim.com/the-vessel-nyc/",
+          "host": "gracefkim.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/",
+          "host": "amymarietta.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Vessel\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Vessel\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Vessel\" review midtown",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Vessel Midtown E review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Vessel Midtown E review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Vessel Midtown E review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
+      },
+      "ingestResults": [
+        {
+          "url": "https://dalyklerwhmui.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~720422/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~720422/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~720423/day) projects exhaustion in ~5d, before the 31d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        },
+        {
+          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
+          "host": "empirehotelnyc.com",
+          "outletId": "empirehotelnyc"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
+          "host": "travelingwithaga.com",
+          "outletId": "travelingwithaga"
+        },
+        {
+          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
+          "host": "travelforaliving.co.uk",
+          "outletId": "travelforaliving"
+        },
+        {
+          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
+          "host": "hudsonyardsnewyork.com",
+          "outletId": "hudsonyardsnewyork"
+        },
+        {
+          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
+          "host": "nyra.nyc",
+          "outletId": "nyra"
+        },
+        {
+          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
+          "host": "lauraperuchi.nyc",
+          "outletId": "lauraperuchi"
+        },
+        {
+          "url": "https://www.tripster.com/detail/vessel-new-york",
+          "host": "tripster.com",
+          "outletId": "tripster"
+        },
+        {
+          "url": "https://www.hellotickets.com/us/new-york/the-vessel/sc-1-1566",
+          "host": "hellotickets.com",
+          "outletId": "hellotickets"
+        },
+        {
+          "url": "https://gracefkim.com/the-vessel-nyc/",
+          "host": "gracefkim.com",
+          "outletId": "gracefkim"
+        },
+        {
+          "url": "https://amymarietta.com/the-vessel-most-underrated-thing-to-do-nyc/",
+          "host": "amymarietta.com",
+          "outletId": "amymarietta"
+        }
+      ],
+      "computedAt": "2026-08-03T04:12:18.410Z"
     }
   ]
 }
