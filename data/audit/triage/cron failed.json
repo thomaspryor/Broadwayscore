@@ -1,25 +1,15 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-07-25T16:22:12.822Z",
+  "lastChecked": "2026-08-03T07:57:59.090Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Cron failed: Update Show Status",
-      "status": "warn",
-      "message": "Last run inconclusive: cancelled (4h ago), no success in 36h"
-    },
-    {
       "name": "Cron failed: Test Suite",
       "status": "warn",
-      "message": "Last run inconclusive: cancelled (10h ago), no success in 48h"
-    },
-    {
-      "name": "Cron failed: Update Cast Changes",
-      "status": "warn",
-      "message": "Last run inconclusive: failure (7h ago), no success in 120h"
+      "message": "Last run inconclusive: cancelled (1h ago), no success in 48h"
     }
   ]
 }

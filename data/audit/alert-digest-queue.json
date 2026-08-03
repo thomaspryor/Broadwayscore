@@ -1,13 +1,13 @@
 [
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: browserbase $12.1 > $4 (121 sessions); brightdata $13.48 > $2.5 (4736 serp + 4252 unlocker reqs)",
+    "description": "Day 2026-08-02. 2026-08-02 · Browserbase: $12.1 (121 sessions) · 2026-08-02 · Bright Data: $13.48 (4736 serp / 4252 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 31380 credits (732945 this cycle) · Browserbase attribution: 0% attributed · Bright Data attribution: 1% attributed — top: opening-night-poller.js 46, recover-explicit-ratings.js 20 · ScrapingDog attribution: 1% attributed — top: recover-explicit-ratings.js 325, opening-night-poller.js 63, collect-review-texts.js 41. Verification streak reset to 0.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30784165332",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-03T04:38:30.239Z"
+    "model": null,
+    "queuedAt": "2026-08-03T07:58:15.300Z"
   }
 ]
