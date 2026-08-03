@@ -51,8 +51,8 @@ const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
-const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
-const { buildCensusQueries, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
+const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
+const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -195,6 +195,34 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^seatgeek\.com$/, /^stubhub\.com$/, /^broadwaydirect\.com$/,
   /(^|\.)ticketmaster\./, /^ovationtix\.com$/, /^web\.ovationtix\.com$/,
   /^tickets\./, /^boxoffice\./,
+  // Second wave, measured 2026-08-02 (task #872): the naive un-scoped census
+  // arm reaches deeper into the SERP than the site:-scoped arms ever did, so
+  // it surfaces the ticketing/listing/reference layer that sits between the
+  // real reviews. Every host here was an accepted "gap" in the recall harness
+  // on The Car Man / Brainiac Live / Tao of Glass and is never a review.
+  // (londontheatre.co.uk is deliberately NOT here — it publishes real reviews
+  // under /reviews/.)
+  /^seatplan\.com$/, /^lovetheatre\.com$/, /^lovetovisit\.com$/,
+  /^comparetheticketprice\.com$/, /^skiddle\.com$/, /^ticketsource\./,
+  /^nimaxtheatres\.com$/, /(^|\.)londontheatres\.co\.uk$/,
+  /^sadlerswells\.com$/, /^improbable\.co\.uk$/,
+  /^imdb\.com$/, /(^|\.)wikipedia\.org$/, /(^|\.)tripadvisor\./,
+  /^theatreboard\.com$/, /^officiallondontheatre\.com$/,
+  /(^|\.)london-theatreland\.co\.uk$/, /^ma\.to$/,
+  // Our own site is never a source for our own gap list.
+  /(^|\.)broadwayscorecard\.com$/,
+  // Book/consumer-review sites: a naive "<title> review" for a title that is
+  // also a book ("The Gruffalo") pulls these in wholesale.
+  // (hostOf/registrableHost strips "www." before these run — never add a
+  // www-prefixed pattern, it can only ever be dead.)
+  /(^|\.)goodreads\.com$/, /(^|\.)thebookbag\.co\.uk$/,
+  /(^|\.)fantasybookreview\.co\.uk$/,
+  // Remaining chaff measured in the first full recall run's newFromNaive
+  // (data/audit/serp-census-recall.json, 2026-08-02): social, resellers,
+  // experience marketplaces and venue own-sites.
+  /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
+  /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
+  /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([
@@ -500,6 +528,24 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   if (!u || !isReviewUrl(u)) return null;
   const tokens = titleTokens(show.title);
   if (!urlMatchesShow(u, tokens)) return null;
+  // Stale-production guard (#872). The naive census arm runs WITHOUT the
+  // after:/before: window on purpose (undated blog posts are exactly what it
+  // exists to catch), which lets long-running titles drag their own history
+  // in: a bare "The Car Man review" returns 2015 Sadler's Wells and 2022
+  // Royal Albert Hall write-ups alongside the 2026 run. A URL that carries a
+  // year in its path is cheap, reliable evidence — if that year predates this
+  // production's window (and no priorRuns claim it), it is a different
+  // production and does not belong in this show's gap list.
+  // Same delimiter set as isUrlYearInPriorRun (the readmission below) — if the
+  // two regexes disagree, a dash-form URL trips the guard while being invisible
+  // to the priorRuns escape hatch, dropping a declared prior run's reviews.
+  const urlYear = (String(u).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
+  if (urlYear && !isUrlYearInPriorRun(u, show.priorRuns)) {
+    const starts = [show.previewsStartDate, show.openingDate]
+      .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
+      .filter(Number.isFinite);
+    if (starts.length && parseInt(urlYear, 10) < Math.min(...starts)) return null;
+  }
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
@@ -738,45 +784,76 @@ async function auditShow(show, opts = {}) {
       const showInfo = getShowInfo(show.id);
       // Every show gets whatever scoped follow-up queries its metadata
       // supports (venue token, creative surname) — no title-ambiguity
-      // trigger. Rationale + rejected alternatives documented on
-      // buildCensusQueries (serp-review-census.js).
-      const queries = buildCensusQueries(show, { creativeNames: showInfo.creativeNames || [] });
-      if (queries.length) {
+      // trigger — PLUS the naive "<title> <venue> review" arm read three
+      // pages deep, which is literally what the owner types. Rationale +
+      // rejected alternatives documented on buildCensusQueries /
+      // buildCensusPlan (serp-review-census.js).
+      const naivePagesRaw = parseInt(process.env.SERP_CENSUS_NAIVE_PAGES || '', 10);
+      const plan = buildCensusPlan(show, {
+        creativeNames: showInfo.creativeNames || [],
+        ...(Number.isFinite(naivePagesRaw) ? { naivePages: naivePagesRaw } : {}),
+      });
+      if (plan.length) {
         const dateRange = calculateDateWindow(show);
         const queryStatus = [];
-        for (const query of queries) {
+        for (const step of plan) {
           try {
             // preferSpeed:false (BD-first) — this is a background completeness
             // sweep, not a user-waiting flow, and BD is the cheaper provider
             // (matches brand-mention-serp.js's SB-conservation posture).
-            const serpResults = await serpQuery(query, { dateRange, preferSpeed: false });
-            queryStatus.push({ query, ok: true, results: (serpResults || []).length, error: null });
+            const serpResults = await serpQuery(step.query, {
+              dateRange: step.useDateRange ? dateRange : null,
+              preferSpeed: false,
+              page: step.page,
+              geo: step.geo,
+            });
+            let accepted = 0;
             for (const sr of (serpResults || [])) {
-              const accepted = acceptSerpCensusResult(sr, { show, showInfo });
-              if (accepted) serpCensusUrls.add(accepted);
+              const url = acceptSerpCensusResult(sr, { show, showInfo });
+              if (url && !serpCensusUrls.has(url)) accepted++;
+              if (url) serpCensusUrls.add(url);
             }
+            queryStatus.push({
+              arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+              ok: true, results: (serpResults || []).length, accepted, error: null,
+            });
           } catch (e) {
             const err = (e.message || '').slice(0, 120);
-            queryStatus.push({ query, ok: false, results: 0, error: err });
-            console.error(`::error::SERP census query failed for ${show.id} (${query}): ${err}`);
+            queryStatus.push({
+              arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+              ok: false, results: 0, accepted: 0, error: err,
+            });
+            console.error(`::error::SERP census query failed for ${show.id} (${step.arm}: ${step.query} p${step.page}): ${err}`);
           }
         }
         const okCount = queryStatus.filter(q => q.ok).length;
-        // `complete` (ALL queries executed) gates the checkpoint cooldown in
-        // main(): a partial or total provider outage must NOT burn the
-        // cooldown, or a dead/flaky provider silently sleeps the census
-        // through the whole opening window (ship-check 2026-07-25 — the
-        // first cut stamped off "any query ran", which let one surviving
-        // low-value query mask a failed primary for 6h). `ran` stays "did
-        // any census work happen" for reporting.
+        // Which failures may burn the cooldown? The scoped arms are the census's
+        // floor — if any of those failed, the pass was not a census. The naive
+        // arm is deeper and more pages, so it is the likeliest to flake; before
+        // #872 there were 1-3 arms and "all must succeed" was cheap, but with 6
+        // arms an "all" rule means one chronically-failing deep page pins
+        // complete:false forever, the cooldown never stamps, and the census
+        // re-fires every cycle on every in-window show (~4,000 calls/day for a
+        // single bad show — ship-check 2026-08-02). So: all scoped arms must
+        // succeed AND the naive arm must have produced at least one good page.
+        const censusComplete = isCensusPassComplete(queryStatus);
+        // `complete` gates the checkpoint cooldown in main(): a partial or
+        // total provider outage must NOT burn the cooldown, or a dead/flaky
+        // provider silently sleeps the census through the whole opening
+        // window (ship-check 2026-07-25 — the first cut stamped off "any
+        // query ran", which let one surviving low-value query mask a failed
+        // primary for 6h). `ran` stays "did any census work happen" for
+        // reporting; `queriesOk`/`queryStatus` keep per-arm truth so a
+        // partially-degraded pass is still visible even when it stamps.
         result.serpCensus = {
           ran: okCount > 0,
-          complete: okCount === queries.length,
-          query: queries[0],
+          complete: censusComplete,
+          query: plan[0].query,
           queryStatus,
           queriesOk: okCount,
+          queriesTotal: plan.length,
           resultCount: serpCensusUrls.size,
-          error: okCount === queries.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
+          error: okCount === plan.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
         };
       }
     } else {

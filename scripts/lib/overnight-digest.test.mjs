@@ -53,6 +53,21 @@ test('parseWorkspaces finds open 🤖 sessions and duplicate dispatches', () => 
   assert.match(r.duplicates[0], /^2× /);
 });
 
+// Card #870 ship-check finding (Claude subagent review, verified live): a
+// ❓-tagged auto-dispatched tab hit a DECISION NEEDED and belongs in the
+// digest's separate "Needs your decision" section — if counted here too, the
+// renderer's hardcoded "🤖 tabs, none need you" line would contradict itself
+// in the SAME email.
+test('parseWorkspaces excludes ❓-tagged auto tabs from the "none need you" bucket', () => {
+  const raw = [
+    '  workspace:400  🤖⚡ Data·Fix the thing',
+    '  workspace:401  ❓ 🤖⚡ Data·Needs a decision',
+  ].join('\n');
+  const r = parseWorkspaces(raw);
+  assert.equal(r.autoOpen.length, 1);
+  assert.equal(r.autoOpen[0].ref, 'workspace:400');
+});
+
 test('summarizeWorktrees only reports branches ahead of main', () => {
   const r = summarizeWorktrees([
     { name: 'clean', ahead: 0, lastCommitDays: 1 },

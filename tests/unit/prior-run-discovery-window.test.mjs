@@ -135,3 +135,21 @@ describe('isUrlYearInPriorRun — exact readmission, no extra grace', () => {
     );
   });
 });
+
+describe('isUrlYearInPriorRun — dash-delimited year tokens (#872)', () => {
+  const TKAM_RUNS = [{ openingDate: '2022-03-21', closingDate: '2023-01-15' }];
+
+  it('reads a slug-style year the same as a /YYYY/ path segment', () => {
+    // The census's stale-production guard trips on BOTH delimiters; if this
+    // readmission only saw "/2022/", a dash-form prior-run URL would be
+    // dropped even though the show declares that run.
+    assert.strictEqual(isUrlYearInPriorRun('https://example.com/2022-to-kill-a-mockingbird-review/', TKAM_RUNS), true);
+    assert.strictEqual(isUrlYearInPriorRun('https://example.com/reviews/mockingbird-2023-tour', TKAM_RUNS), true);
+    assert.strictEqual(isUrlYearInPriorRun('https://example.com/2019-to-kill-a-mockingbird-review/', TKAM_RUNS), false);
+  });
+
+  it('does not read a longer digit run (article ID) as a year', () => {
+    assert.strictEqual(isUrlYearInPriorRun('https://example.com/story/a12022x/review', TKAM_RUNS), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://example.com/shows/120224/review', TKAM_RUNS), false);
+  });
+});

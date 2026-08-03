@@ -102,13 +102,66 @@ fi
 restore_stash() {
   [ "$STASHED" = 1 ] || return 0
   if ! g stash pop >/dev/null 2>&1; then
-    # Conflicts are only ever in auto-generated state files — take the committed
-    # version (the daemon regenerates them) and drop the stash. Discarding
-    # cloud-memory/ is safe: it's a mirror of local memory, regenerated and
-    # committed by session-stop's sync-memory-to-repo.sh --commit.
-    log "stash pop conflicted on auto-gen files — taking committed version"
-    g checkout HEAD -- cloud-memory/ data/audit/ public/data/admin/ >/dev/null 2>&1 || true
-    g checkout HEAD -- . >/dev/null 2>&1 || true
+    # This fallback used to assume stash-pop conflicts are ALWAYS in auto-
+    # generated state files and blindly `checkout HEAD -- .` across the WHOLE
+    # working tree. That's wrong whenever this fires while `git merge $BRANCH`
+    # (above) is itself mid-conflict: the conflicted path is then the branch's
+    # REAL change, and `checkout HEAD -- .` silently overwrites it with main's
+    # stale content — merge reports "resolve manually" but the file has
+    # already been wrongly "resolved" underneath that message (task #888,
+    # 2026-08-02: scripts/lib/sync-audit-checkout.sh's real fix was discarded
+    # this way).
+    #
+    # The real signal for "is there branch content at risk here" is whether a
+    # `git merge` is actually mid-conflict (MERGE_HEAD present), NOT a static
+    # path allowlist — this repo's local daemon churns far more than
+    # cloud-memory/, data/audit/, public/data/admin/ (e.g. public/data/shows/
+    # is `merge-coverage=exempt` in .gitattributes and among the highest-churn
+    # dirs in the repo). A path-allowlist that's too narrow would make
+    # ORDINARY daemon churn take the "leave it alone" branch below and wedge
+    # the shared main worktree for every session until an operator manually
+    # intervenes — trading one silent-wrong-content bug for a
+    # blocks-everyone-on-routine-churn bug. So: no MERGE_HEAD means nothing
+    # here is a genuine branch merge conflict, and a full reset is lossless
+    # (the stash pop failed, so git never dropped the stash entry — it's
+    # still recoverable via `git stash list` if the discarded churn mattered).
+    if ! g rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+      log "stash pop conflicted with no merge in progress — discarding stashed churn (reset --hard HEAD)"
+      g reset --hard HEAD >/dev/null 2>&1 || true
+      g stash drop >/dev/null 2>&1 || true
+      return 0
+    fi
+    # MERGE_HEAD is set: `git merge $BRANCH` above is genuinely mid-conflict
+    # and the stash-pop conflict landed on top of it. Only auto-resolve paths
+    # we can PROVE are the known daemon-churn set; anything else, leave
+    # untouched and fail loudly so the genuine merge conflict stays visible
+    # instead of being papered over.
+    local unmerged unsafe
+    unmerged=$(g diff --name-only --diff-filter=U 2>/dev/null)
+    if [ -z "$unmerged" ]; then
+      # Nothing actually unmerged — stash pop failed for some other reason.
+      # Nothing to auto-resolve; drop the stash and move on.
+      g stash drop >/dev/null 2>&1 || true
+      return 0
+    fi
+    unsafe=""
+    while IFS= read -r f; do
+      [ -n "$f" ] || continue
+      case "$f" in
+        cloud-memory/*|data/audit/*|public/data/admin/*) ;;
+        *) unsafe+="$f"$'\n' ;;
+      esac
+    done <<< "$unmerged"
+    if [ -n "$unsafe" ]; then
+      log "⚠ stash pop conflicted on non-auto-gen path(s) mid-merge — NOT auto-resolving (would risk silently discarding the real merge conflict, see task #888):"
+      echo "$unsafe" | sed 's/^/    /' >&2
+      return 1
+    fi
+    log "stash pop conflicted on auto-gen files only — taking committed version for those paths"
+    while IFS= read -r f; do
+      [ -n "$f" ] || continue
+      g checkout HEAD -- "$f" >/dev/null 2>&1 || true
+    done <<< "$unmerged"
     g stash drop >/dev/null 2>&1 || true
   fi
 }
@@ -246,7 +299,7 @@ else
   log "pushed"
 fi
 
-restore_stash
+restore_stash || die "push succeeded but the pre-merge stash left unresolved conflicts on non-auto-gen path(s) — check working tree in $MAIN_DIR and resolve manually"
 
 # --- VERIFY the files actually landed on origin (the step the incident skipped) ---
 if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]} )) -gt 0 ]; then
@@ -319,6 +372,88 @@ if [ "${DRY_RUN:-0}" != "1" ]; then
         --delays=120,480,900 </dev/null >>"$VERIFY_LOG" 2>&1 &
     )
     log "delayed re-verify scheduled (+2m/+8m/+15m against $MERGE_SHA) — log: $VERIFY_LOG"
+  fi
+fi
+
+# --- VERIFY the CONTENT survived, not just the filenames (card 3b1637c5) ─────
+# The existence loop above (cat-file -e) proves a same-named file is present on
+# origin — it CANNOT prove that file still holds the lines this merge pushed. A
+# concurrent session whose merge reverts our hunks while leaving the path in
+# place satisfies every check above: our merge commit really IS an ancestor of
+# origin's tip, and the file really DOES exist. Task #684's T12 fix was dropped
+# from origin exactly this way TWICE (2026-08-01 and 2026-08-02), each time
+# after this script reported "verified on origin"; both drops were caught only
+# by a human running `git show origin/$DEFAULT_BRANCH:<file> | grep`.
+#
+# scripts/lib/push-with-retry.sh:640 already defends ITS push path with
+# scripts/lib/push-content-survival.js — this path never called it, so every
+# modification-only merge (no files added, none deleted) shipped with zero
+# content verification. Reuse the same helper and the same kill switch, so a
+# false-positive storm can be silenced without a code revert.
+#
+# Deliberately placed AFTER the #668 delayed re-verify above, not before: die()
+# here exits the script, and scheduling that background watcher first means a
+# detected revert still gets its +2m/+8m/+15m follow-up instead of losing it.
+#
+# SCOPE — anchored to the BRANCH, not to $ORIGIN_BASE_SHA (adversarial-review
+# finding). $ORIGIN_BASE_SHA..HEAD would also cover every file that only OTHER
+# sessions touched (we merge origin before pushing, so their commits ride along
+# in HEAD); with ~80 concurrent sessions on this main, "someone else changed
+# that file too" is the common case, not an edge case, and the check would fire
+# constantly on files that were never ours. Anchoring to the branch's own
+# merge-base makes the comparison exactly:
+#   base   = merge-base($BRANCH, $ORIGIN_BASE_SHA) — the file before OUR edits
+#   before = $BRANCH tip — the content we intended to publish
+#   final  = origin/$DEFAULT_BRANCH — what is actually live right now
+# so only files this branch itself modified are examined. The trade: if the
+# origin merge 3-way-combined someone else's edit into the same file, final
+# matches neither base nor local and classifies as 'ambiguous' (not flagged) —
+# a false negative we accept, because the incident this exists to catch (our
+# lines gone, file back at its pre-edit content) still lands squarely on
+# 'reverted'.
+# Exit codes: 0 = nothing reverted, 1 = a file REVERTED to its pre-merge content
+# (hard failure), 2 = bad args / git failure (fail OPEN — same convention as the
+# helper's other callers: a broken check must never fail an otherwise-good push).
+if [ "${DRY_RUN:-0}" != "1" ] \
+   && [ "${PUSH_SKIP_CONTENT_SURVIVAL_CHECK:-}" != "1" ] \
+   && command -v node >/dev/null 2>&1 \
+   && [ -f "$SCRIPT_DIR/lib/push-content-survival.js" ]; then
+  # The existence block only fetches when VERIFY_FILES/DELETED_FILES is
+  # non-empty, so re-fetch (bounded, best-effort) rather than trust a
+  # possibly-stale tracking ref. Fail OPEN on the fetch itself — a network
+  # hiccup here must not manufacture a failure on a push that already succeeded.
+  for _fa in 1 2 3; do
+    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null && break
+    sleep 2
+  done
+  CS_BASE="$(g merge-base "$BRANCH" "${ORIGIN_BASE_SHA:-HEAD}" 2>/dev/null || true)"
+  CS_TIP="$(g rev-parse "$BRANCH" 2>/dev/null || true)"
+  if [ -n "$CS_BASE" ] && [ -n "$CS_TIP" ]; then
+    echo "── content-survival check vs origin/$DEFAULT_BRANCH ──"
+    # `cd || exit 2` inside the subshell, NOT `cd &&`: push-content-survival.js
+    # shells out to plain `git` in the CWD (it has no -C equivalent), and a
+    # failed cd must land on the fail-OPEN code (2), never on the REVERTED
+    # code (1) that aborts the script.
+    CS_OUT="$(cd "$MAIN_DIR" 2>/dev/null || exit 2; node "$SCRIPT_DIR/lib/push-content-survival.js" \
+      --before-sha="$CS_TIP" \
+      --base-sha="$CS_BASE" \
+      --check-ref="origin/$DEFAULT_BRANCH" 2>&1)"
+    CS_RC=$?
+    [ -n "$CS_OUT" ] && echo "$CS_OUT"
+    if [ "$CS_RC" = 1 ]; then
+      # Recovery guidance matters here and is easy to get wrong: re-running
+      # this script does NOT restore the content. $BRANCH is already merged
+      # into $DEFAULT_BRANCH, so `git merge $BRANCH` is a no-op, the outgoing
+      # diff is empty, and the re-run would exit 0 with the lines still gone.
+      # The content has to be re-applied on top of the reverting commit.
+      echo "" >&2
+      echo "  Recovery (re-running this script will NOT help — $BRANCH is already merged," >&2
+      echo "  so the merge is a no-op and the revert is the NEWER commit):" >&2
+      echo "    1. find the reverting commit:  git -C $MAIN_DIR log --oneline -5 origin/$DEFAULT_BRANCH -- <file>" >&2
+      echo "    2. re-apply our version:       git -C $MAIN_DIR checkout $BRANCH -- <file>" >&2
+      echo "    3. commit + push that, then tell the other session's owner what reverted it." >&2
+      die "origin/$DEFAULT_BRANCH REVERTED content this merge pushed (see above) — the push landed but the lines are GONE."
+    fi
   fi
 fi
 

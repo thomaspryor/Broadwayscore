@@ -317,7 +317,7 @@ function _resolveGeo(query, override) {
  * Returns [{url, title, snippet}] or null if unavailable/failed (so the chain
  * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
  */
-async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed) {
+async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page = 0) {
   // Circuit breaker (mirrors BD/SB SERP): once Scrapingdog SERP has failed
   // MAX_CONSECUTIVE_FAILURES times in a row this run, stop trying it first so a
   // degraded provider doesn't burn a credit + latency on every query before the
@@ -352,7 +352,11 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed) {
     attemptsMade++;
     try {
       const response = await axios.get('https://api.scrapingdog.com/google/', {
-        params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
+        // page is 0-indexed (page:1 returns Google results 11-20). Deep pages
+        // are where the long-tail blogs live — a naive "<title> review" search
+        // put jadar.uk / cheekylittlematinee on page 2 for The Car Man while
+        // page 1 was ticketing and social chaff (task #872 measurement).
+        params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us', page },
         timeout: 30000,
       });
       const data = response.data || {};
@@ -380,7 +384,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed) {
   return null;
 }
 
-async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
+async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
   if (_sbSerpCallCount >= SERP_SB_MAX_CALLS_PER_RUN) {
     if (!_sbSerpCapLogged) {
@@ -399,6 +403,9 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       const params = { api_key: apiKey, search: query };
+      // ScrapingBee's /store/google page param is 1-indexed; our page is
+      // 0-indexed (0 = first page), so only send it past the first page.
+      if (page > 0) params.page = page + 1;
       if (dateRange) {
         // Use Google's after:/before: operators (ScrapingBee doesn't support tbs param)
         const fmtD = d => d.toISOString().split('T')[0];
@@ -454,7 +461,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
  * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
-async function _serpViaBrightData(query, apiKey, log, dateRange, geo) {
+async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) {
   if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
   const fmtD = d => d.toISOString().split('T')[0];
@@ -462,21 +469,22 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo) {
   const fullQuery = query + dateQuery;
 
   // Try synchronous SERP API first (fastest, returns structured JSON directly)
-  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo);
+  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page);
   if (syncResult !== null) return syncResult;
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
-  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo);
+  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page);
 }
 
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
 const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
-async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
+async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page = 0) {
   try {
     // Use Google UK for West End queries, Google US for Broadway/OB
     // (explicit override wins — see _resolveGeo for UK-only slug-discovery callers)
     const geo = _resolveGeo(query, geoOverride);
+    const _q = page > 0 ? { q: query, gl: geo, start: page * 10 } : { q: query, gl: geo };
     const submitRes = await fetch(
       `https://api.brightdata.com/serp/req?customer=${_BD_CUSTOMER}&zone=${_BD_SERP_ZONE}`,
       {
@@ -485,7 +493,7 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({ query: { q: query, gl: geo } }),
+        body: JSON.stringify({ query: _q }),
         signal: AbortSignal.timeout(15000),
       }
     );
@@ -546,11 +554,12 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
   }
 }
 
-async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
+async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, page = 0) {
   const axios = require('axios');
   // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
   const geo = _resolveGeo(query, geoOverride);
-  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=${geo}`;
+  const startParam = page > 0 ? `&start=${page * 10}` : '';
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=${geo}${startParam}`;
 
   try {
     const response = await axios.post('https://api.brightdata.com/request', {
@@ -680,7 +689,7 @@ function _effectiveSerpSkips(skipProviders) {
   return skips;
 }
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null) {
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null, page = 0) {
   const _skips = _effectiveSerpSkips(skipProviders);
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
@@ -702,6 +711,10 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     geo: resolvedGeo,
     dateMin: dateRange ? dateRange.dateMin.toISOString().split('T')[0] : '',
     dateMax: dateRange ? _weeklyBucket(dateRange.dateMax) : '',
+    // Page MUST be part of the key or page 2/3 of a paginated sweep returns
+    // page 1's cached results (task #872 — the deep-page arm would silently
+    // become three copies of the same ten URLs).
+    ...(page > 0 ? { page: String(page) } : {}),
   };
   const cached = _serpCache.get(query, cacheOpts);
   if (cached) {
@@ -728,7 +741,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // failure (null) it falls through to the existing BD/SB chain, which stays
   // as the safety net.
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
-    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed);
+    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page);
     if (sdResults && sdResults.length > 0) {
       _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
       return { results: sdResults, provider: 'scrapingdog' };
@@ -767,8 +780,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // existing behavior.
   const bdGeo = geoOverride;
   const _withGeo = (fn) => (q, k, l, dr) => (fn === _serpViaBrightData
-    ? fn(q, k, l, dr, bdGeo)
-    : fn(q, k, l, dr));
+    ? fn(q, k, l, dr, bdGeo, page)
+    : fn(q, k, l, dr, page));
 
   let results = await _withGeo(primary.fn)(query, primary.key, log, dateRange);
   let provider = primary.name;
@@ -1231,7 +1244,13 @@ function earliestPriorRunStart(show) {
  */
 function isUrlYearInPriorRun(url, priorRuns) {
   if (!url || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
-  const m = String(url).match(/\/((?:19|20)\d{2})\//);
+  // Year as a standalone path token, delimited by "/" OR "-": WordPress dates
+  // give /2015/07/29/, but slug-style permalinks give -2015- or /2015-the-car-
+  // man-review/. The slash-only form left 481 dash-form URLs on disk invisible
+  // to this readmission — including one on a show that DOES declare the run
+  // (ship-check 2026-08-02, #872). Anchored on both sides so an article ID
+  // like /a12019x/ can't be read as a year.
+  const m = String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/);
   if (!m) return false;
   const urlYear = parseInt(m[1], 10);
   for (const run of priorRuns) {
@@ -1379,13 +1398,17 @@ async function serpQuery(query, options = {}) {
   // published yet" rather than a genuine zero (see shouldAcceptEmptyScrapingdogSerp).
   const emptyAuthoritative = options.emptyAuthoritative !== false;
   const negativeCacheTtlMs = options.negativeCacheTtlMs || null;
+  // 0-indexed Google result page (0 = results 1-10, 1 = 11-20, …). Default 0
+  // preserves every existing caller's behavior; the SERP census uses it to
+  // read past page 1, where niche outlets actually rank (task #872).
+  const page = Number.isInteger(options.page) && options.page > 0 ? options.page : 0;
 
   if (!sbKey && !bdKey) {
     log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative, negativeCacheTtlMs);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo, skipProviders, emptyAuthoritative, negativeCacheTtlMs, page);
   if (!results) return null;
 
   return results.slice(0, nbResults);
