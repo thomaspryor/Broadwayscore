@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-02T06:53:27.420Z",
+  "generatedAt": "2026-08-03T07:10:12.015Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-08-02T06:42:08.069Z",
-    "reviewsJsonAgeHours": 0.2,
+    "reviewsJsonLastUpdated": "2026-08-03T07:05:08.394Z",
+    "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 13,
-    "filesScanned": 210,
+    "showsScanned": 12,
+    "filesScanned": 231,
     "showsOverThreshold": 0,
     "orphanReviews": 0
   },
@@ -18,9 +18,9 @@
   "orphanReviews": [],
   "perShow": [
     {
-      "showDir": "cat-cohen-broad-strokes-off-broadway-2026",
-      "actual": 11,
-      "scanned": 16,
+      "showDir": "brainiac-live-west-end-2026",
+      "actual": 8,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -29,38 +29,54 @@
       "showDir": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "actual": 9,
       "scanned": 14,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "nydailynews--chris-jones.json",
-          "outletId": "nydailynews",
-          "criticName": "Chris Jones",
-          "publishDate": "2026-07-29",
-          "url": "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/"
-        }
-      ],
+      "suppressedCount": 0,
+      "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "space-dogs-off-west-end-2026",
-      "actual": 10,
-      "scanned": 14,
+      "actual": 13,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "tao-of-glass-west-end-2026",
-      "actual": 16,
-      "scanned": 34,
+      "actual": 19,
+      "scanned": 39,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "london-theatre--unknown.json",
+          "outletId": "london-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-07-31",
+          "url": "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-car-man-west-end-2026",
+      "actual": 17,
+      "scanned": 47,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-comedy-about-spies-west-end-2026",
-      "actual": 18,
+      "actual": 20,
       "scanned": 31,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-enormous-crocodile-west-end-2026",
+      "actual": 6,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -79,14 +95,6 @@
           "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/"
         }
       ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-saviors-off-broadway-2026",
-      "actual": 14,
-      "scanned": 24,
-      "suppressedCount": 0,
-      "suppressed": [],
       "overThreshold": false
     }
   ]
