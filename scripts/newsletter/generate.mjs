@@ -1966,7 +1966,10 @@ function londonSection() {
   // FIRST card, or the email contradicts its own subject line (owner,
   // 2026-08-02: subject said Tao of Glass, cards led with Brainiac Live).
   // Float it to the front; the rest keep the gold-first/score-desc order.
-  const ledeStory = weOpeningStories()[0];
+  // WE edition only: in the US edition the subject rarely names a London show
+  // (WE_OPENING_SECONDARY_BASE ranks below every NY opening), so reordering
+  // its London cards for a subject that never mentions them is noise.
+  const ledeStory = IS_WE ? weOpeningStories()[0] : null;
   if (ledeStory) {
     const li = withScore.findIndex(x => x.s.id === ledeStory.s.id);
     if (li > 0) withScore.unshift(withScore.splice(li, 1)[0]);
@@ -2415,19 +2418,24 @@ const _ledeParts = buildLedeSentences(newsworthyCandidates, LEDE_STYLE === 'shor
 // the week had 3+ scored openings. Names no shows, so the lede-⊆-body
 // invariant (card #482) is unaffected; the preheader picks it up as its first
 // sentence, which is the desired inbox preview.
+// Kept OUTSIDE _ledeParts and prepended per style below: mutating
+// _ledeParts.sentences would desync it from the parallel kinds/showRefs
+// arrays, and the 'short' style's slice(0, 3) would evict the third real news
+// sentence to make room (second-opinion review, 2026-08-02).
+let _weOpener = '';
 if (IS_WE && !process.env.LEDE_OVERRIDE) {
   const _stories = weOpeningStories();
   if (_stories.length >= 3) {
     const _hot = _stories.filter(x => (x.agg.avg ?? 0) >= 75).length;
     const _w = (n) => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n] || String(n);
-    const opener = _hot === _stories.length
+    _weOpener = _hot === _stories.length
       ? `A big week for London theatre: ${_w(_stories.length)} shows opened, every one scoring 75 or higher.`
       : _hot >= 2
         ? `A big week for London theatre: ${_w(_stories.length)} shows opened, ${_w(_hot)} scoring 75 or higher.`
         : `A busy week for London theatre, with ${_w(_stories.length)} new openings.`;
-    _ledeParts.sentences.unshift(opener);
   }
 }
+const _withOpener = (sentences) => _weOpener ? [_weOpener, ...sentences] : sentences;
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
   for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
@@ -2458,18 +2466,20 @@ let ledeShowRefs = [];
 if (process.env.LEDE_OVERRIDE) {
   ledeText = process.env.LEDE_OVERRIDE;
 } else if (LEDE_STYLE === 'expanded-para') {
-  ledeText = _ledeParts.sentences.concat(_ctx.map(c => c.text)).join(' ');
+  ledeText = _withOpener(_ledeParts.sentences.concat(_ctx.map(c => c.text))).join(' ');
   ledeShowRefs = _ledeParts.showRefs.concat(_ctx.map(c => c.showRef));
 } else if (LEDE_STYLE === 'expanded-two') {
-  ledeText = _ledeParts.sentences.join(' ');
+  ledeText = _withOpener(_ledeParts.sentences).join(' ');
   ledeSecondaryText = _ctx.map(c => c.text).join(' ');
   ledeShowRefs = _ledeParts.showRefs;
 } else if (LEDE_STYLE === 'expanded-brief') {
-  ledeText = _ledeParts.sentences.join(' ');
+  ledeText = _withOpener(_ledeParts.sentences).join(' ');
   ledeBullets = _ctx;
   ledeShowRefs = _ledeParts.showRefs;
 } else {
-  ledeText = _ledeParts.sentences.slice(0, 3).join(' ') || '';
+  // Opener prepends AFTER the slice — it must add to the 3 news sentences,
+  // not evict the third (second-opinion review, 2026-08-02).
+  ledeText = _withOpener(_ledeParts.sentences.slice(0, 3)).join(' ') || '';
   ledeShowRefs = _ledeParts.showRefs.slice(0, 3);
 }
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
