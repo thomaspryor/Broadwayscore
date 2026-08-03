@@ -384,10 +384,13 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
 // card body, and --note is silently dropped.
 function parkCard(vanished) {
   const { spawnSync } = require('child_process');
+  // The `## Parked <date>` header is a machine-parsed contract — stuck-work.js
+  // keys its pausedParked bucket on it. Always build it via park-marker.js.
+  const { formatParkOutcome } = require('./lib/park-marker.js');
   const res = spawnSync('node', [
     `${__dirname}/notion-brain.js`, 'update', vanished.notionId,
     '--status', 'Paused',
-    '--outcome', `## Parked ${new Date().toISOString().slice(0, 10)}\nOwner closed its workspace (${vanished.workspaceRef}) without marking it done, so the dispatcher stopped re-opening it. Resume with \`node scripts/bsc-next.js --id ${vanished.taskId} --force\`.`,
+    '--outcome', formatParkOutcome({ dateStr: new Date().toISOString().slice(0, 10), workspaceRef: vanished.workspaceRef, taskId: vanished.taskId }),
   ], { encoding: 'utf8', timeout: 60_000 });
   if (res.status !== 0) throw new Error((res.stderr || res.stdout || 'notion-brain update failed').trim().split('\n').slice(-1)[0]);
 }

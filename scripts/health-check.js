@@ -1590,19 +1590,29 @@ async function checkStuckWorkInner() {
     // genuinely empty brain — surface it instead of reporting a clean pass.
     return [{ name: 'Stuck work: brain cards', status: 'warn', message: 'Notion returned 0 Paused/In-progress cards — status names may have been renamed (check stuck-work.js filters)' }];
   }
-  const { pausedCritical, pausedStale, pausedAwaitingRecheck, orphaned, invalidDates } = classifyStuckCards(cards, Date.now());
+  const { pausedCritical, pausedStale, pausedAwaitingRecheck, pausedParked, orphaned, invalidDates } = classifyStuckCards(cards, Date.now());
   const results = [];
   // Card names are free text typed into Notion and land in the HTML email —
   // escape them (first check to inject arbitrary text into the digest).
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  // Stamped-but-overdue cards say why they count as stuck (the nightly
-  // recheck should have resolved them by now).
-  const fmt = (c) => `${esc(c.name.slice(0, 60))} (${Math.round(c.idleHours / 24)}d${c.stampOverdueDays != null ? `, stamp overdue ${c.stampOverdueDays}d` : ''})`;
+  // Stamped-but-overdue and parked-past-the-window cards say why they count
+  // as stuck (the nightly recheck / the owner should have acted by now).
+  const fmt = (c) => `${esc(c.name.slice(0, 60))} (${Math.round(c.idleHours / 24)}d${c.stampOverdueDays != null ? `, stamp overdue ${c.stampOverdueDays}d` : ''}${c.parkedOverdueDays != null ? `, parked past 7d window by ${c.parkedOverdueDays}d` : ''})`;
   // Cards Paused-with-a-future-RECHECK-AFTER-stamp are parked by process rule
   // (/wrap-up deferred-effect fixes), not stuck — reported as info, never warn.
-  const awaitingNote = pausedAwaitingRecheck.length > 0
-    ? `${pausedAwaitingRecheck.length} awaiting recheck, earliest due ${new Date(pausedAwaitingRecheck[0].recheckAfterMs).toISOString().slice(0, 10)}`
+  // Same for tab-close-parked cards (bsc-prune `## Parked` marker) inside
+  // their 7-day window. Both fold into the existing check's message: a new
+  // check name would mint a new alert-router condition key (pass/warn/error
+  // is the whole status vocabulary — there is no "info" status).
+  const parkedNote = pausedParked.length > 0
+    ? `${pausedParked.length} parked via tab-close, oldest ${new Date(pausedParked[0].parkedAtMs).toISOString().slice(0, 10)} — resume: node scripts/bsc-next.js --id ${pausedParked[0].parkedTaskId ?? 'N'} --force`
     : '';
+  const awaitingNote = [
+    pausedAwaitingRecheck.length > 0
+      ? `${pausedAwaitingRecheck.length} awaiting recheck, earliest due ${new Date(pausedAwaitingRecheck[0].recheckAfterMs).toISOString().slice(0, 10)}`
+      : '',
+    parkedNote,
+  ].filter(Boolean).join('; ');
 
   if (pausedCritical.length > 0) {
     results.push({
@@ -1612,7 +1622,7 @@ async function checkStuckWorkInner() {
       name: 'Stuck work: paused P0/P1 cards',
       status: 'warn',
       message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}`,
-      hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), close, or park with RECHECK-AFTER: YYYY-MM-DD',
+      hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), resume a parked card (bsc-next --id N --force), close, or park with RECHECK-AFTER: YYYY-MM-DD',
     });
   } else {
     results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}` });
@@ -3186,4 +3196,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState };
+module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
