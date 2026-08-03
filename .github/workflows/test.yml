@@ -802,6 +802,20 @@ on:
       # isRetrieved / blocksRediscovery predicates. Colocated test runs in the
       # lib-test glob; path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/review-guards.test.mjs'
+      # Coverage Verdict S0 (task #902): explainExclusion() is the single
+      # implementation of the includability decision and isIncludableForRebuild
+      # is a wrapper over it. This test's structural check fails the moment
+      # someone re-forks them. Colocated test runs in the lib-test glob;
+      # path-listed so a solo edit triggers CI (allow-list gate).
+      - 'scripts/lib/review-guards.explain.test.mjs'
+      # Coverage-gate kill switch + blast-radius guard shared by every verdict
+      # consumer. A silent regression here disarms the guard for all of them.
+      - 'scripts/lib/coverage-gate.js'
+      - 'scripts/lib/coverage-gate.test.mjs'
+      # Per-show merge for data/audit/show-review-gap.json (#893). Without it a
+      # `--show=X` run wipes every other show's audited state.
+      - 'scripts/lib/gap-audit-merge.js'
+      - 'scripts/lib/gap-audit-merge.test.mjs'
       # Market label injected into every LLM scoring/classifier prompt. A bare
       # `: 'Broadway'` fallback here told the ensemble a regional tryout was a
       # Broadway show, so both legs rejected the review as wrong_production
