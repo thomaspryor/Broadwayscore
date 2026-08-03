@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { coverageDigestItems } = require('./lib/coverage-digest.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { coverageGateDisabled } = require('./lib/coverage-gate.js');
 
 const REPO = path.join(__dirname, '..');
@@ -56,7 +57,16 @@ function removeStaleSnapshot() {
   } catch { /* nothing to remove */ }
 }
 
+const USAGE = `produce-coverage-digest-snapshot.js — write the coverage digest snapshot
+  node scripts/produce-coverage-digest-snapshot.js               write the snapshot
+  node scripts/produce-coverage-digest-snapshot.js --dry-run     print, don't write
+  node scripts/produce-coverage-digest-snapshot.js --dry-run --fixture=demo
+  node scripts/produce-coverage-digest-snapshot.js --help, -h    print this usage and exit — no reads/writes
+`;
+
 function main() {
+  // --help/-h checked BEFORE any read/write (help-flag safety Rule B, task #498).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const dryRun = process.argv.includes('--dry-run');
   const fixtureArg = process.argv.find((a) => a.startsWith('--fixture='));
   const nowIso = new Date().toISOString();
