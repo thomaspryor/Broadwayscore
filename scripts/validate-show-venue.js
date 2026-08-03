@@ -98,10 +98,14 @@ function isProvisional(show) {
   // same-titled but unrelated production (e.g. two different "Othello"s in
   // the same year — a commercial Broadway revival WITH a Playbill page, and
   // a free Classical Theatre of Harlem outdoor run WITHOUT one) and reports
-  // a false-positive venue/date mismatch. Only set when the venue/dates were
-  // cross-validated against >=2 independent primary sources instead (see
-  // statusBackfillSource) — task #814.
-  if (show.noPlaybillProductionPage === true) return false;
+  // a false-positive venue/date mismatch. Requires a substantive
+  // statusBackfillSource recording the independent cross-validation actually
+  // done — the flag alone is not honored, so it can't become a silent
+  // stub-from-memory bypass of CLAUDE.md §3 (second-opinion review, task
+  // #814).
+  if (show.noPlaybillProductionPage === true
+      && typeof show.statusBackfillSource === 'string'
+      && show.statusBackfillSource.length > 50) return false;
   if (show.provisional === true) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }

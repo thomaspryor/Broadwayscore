@@ -413,3 +413,26 @@ test('merging is idempotent — re-merging the same sides changes nothing', () =
   const twice = mergeCensusRecallTrend(once, remote).merged;
   assert.deepEqual(twice, once);
 });
+
+// ── combinedRecall (ported from the parallel #901 implementation) ───────────
+
+test('combinedRecall unions the scoped arms with what is already on disk', () => {
+  const agg = perArmRecall([row({
+    truth: 10,
+    arms: [
+      arm('scoped-q0', ['a', 'b']),
+      arm('onDisk', ['b', 'c', 'd']),
+      arm('naive-p0', ['e', 'f', 'g', 'h', 'i', 'j']),
+    ],
+  })]);
+  assert.equal(agg.combinedRecall, 0.4); // a,b,c,d — naive excluded, b not double-counted
+  assert.equal(agg.families.naive.recall, 0.6);
+});
+
+test('summarizeRun carries combinedRecall into the trend entry', () => {
+  const e = summarizeRun({
+    generatedAt: '2026-08-03T12:00:00.000Z',
+    shows: [row({ truth: 4, arms: [arm('scoped-q0', ['a']), arm('onDisk', ['b'])] })],
+  });
+  assert.equal(e.combinedRecall, 0.5);
+});
