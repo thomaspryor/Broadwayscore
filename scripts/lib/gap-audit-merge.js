@@ -264,76 +264,13 @@ function countsFor(results) {
   };
 }
 
-/**
- * Run `fn` while holding an exclusive lock on `lockPath`.
- *
- * The plan's S0 acceptance is "`--show=X` twice CONCURRENTLY → no lost data".
- * Merging alone doesn't give that: two overlapping runs (the hourly cron and a
- * human at a terminal, which the GitHub concurrency group does not serialize)
- * both read the same prior file and the later write drops the earlier run's
- * per-show update — #893's data loss from a different cause. `wx` open is
- * atomic on POSIX, so exactly one process wins the create.
- *
- * Fail-open on every uncertainty: a lock we cannot create after the timeout is
- * broken (assumed stale from a killed process) and the work proceeds. Blocking
- * the audit forever on a leftover lockfile would be a worse failure than the
- * race it prevents.
- *
- * PRECONDITION: staleMs must comfortably exceed how long `fn` runs. The lock's
- * mtime is stamped once at acquire and never refreshed, so a critical section
- * longer than staleMs lets a waiter classify a LIVE lock as abandoned and steal
- * it. Here `fn` is a synchronous merge + two file writes (milliseconds) against
- * a 5-minute default, so the margin is ~5 orders of magnitude — but anyone
- * reusing this helper for slower work must raise staleMs to match.
- *
- * @param {string} lockPath
- * @param {() => any} fn                 executed while holding the lock
- * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number}} [opts]
- */
-function withFileLock(lockPath, fn, opts = {}) {
-  const { timeoutMs = 30000, staleMs = 5 * 60 * 1000, waitMs = 100 } = opts;
-  const fs = require('fs');
-  const deadline = Date.now() + timeoutMs;
-  let held = false;
-  while (Date.now() < deadline) {
-    try {
-      fs.writeFileSync(lockPath, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
-      held = true;
-      break;
-    } catch (e) {
-      if (e.code !== 'EEXIST') { held = false; break; } // unwritable dir etc — proceed unlocked
-      // Break a lock left behind by a killed process.
-      //
-      // NOT unlinkSync: between judging the lock stale and deleting it, the
-      // original owner can release and a NEW process can take a fresh lock at
-      // the same path — the blind unlink would then delete a LIVE lock and two
-      // writers would run concurrently, which is the exact failure this
-      // function exists to prevent. rename(2) is atomic, so when several
-      // processes race to steal the same stale lock exactly one rename
-      // succeeds; the losers get ENOENT and simply retry. The steal only ever
-      // moves the file we actually judged stale.
-      try {
-        const st = fs.statSync(lockPath);
-        if (Date.now() - st.mtimeMs > staleMs) {
-          const stealPath = `${lockPath}.stale-${process.pid}-${st.mtimeMs}`;
-          fs.renameSync(lockPath, stealPath); // throws ENOENT if someone else won
-          try { fs.unlinkSync(stealPath); } catch { /* best-effort */ }
-          continue; // retry the wx create immediately
-        }
-      } catch { /* vanished or lost the steal race — fall through and retry */ }
-      // Busy-wait: this runs once at the very end of a multi-minute audit, so a
-      // short synchronous spin is simpler than making the whole write path async.
-      const until = Date.now() + waitMs;
-      while (Date.now() < until) { /* spin */ }
-    }
-  }
-  try {
-    return fn(held);
-  } finally {
-    // Only ever released when THIS process won the `wx` create above, so this
-    // can't remove a lock belonging to someone else.
-    if (held) { try { fs.unlinkSync(lockPath); } catch { /* best-effort */ } }
-  }
-}
+// withFileLock used to live here, scoped (per its old docstring) to this
+// file's merge. Task #923: it now also locks gap-audit-checkpoint.json, an
+// unrelated file, so it moved to lib/file-lock.js — a lock helper whose
+// docstring names one file while guarding a different one is exactly the kind
+// of drift that hides a missing lock call at the next site. Re-exported here
+// so existing `require('./gap-audit-merge').withFileLock` call sites keep
+// working.
+const { withFileLock } = require('./file-lock');
 
 module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, withFileLock, DEFAULT_RETENTION_DAYS };

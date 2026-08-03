@@ -194,12 +194,15 @@ let html = fs.readFileSync(htmlPath, 'utf8');
 // the operator had to hand-strip the banner twice on a live send night. The
 // banner is owner-review chrome, never subscriber content; the issues it
 // carried are still visible in pre-send-check's console output and CI
-// annotations. Match on the banner's unique background color (#7c2d12),
-// which appears nowhere in the real templates.
-const BANNER_RE = /<div style="background:#7c2d12;[\s\S]*?<\/div>/;
-if (BANNER_RE.test(html)) {
-  html = html.replace(BANNER_RE, '');
-  console.warn('⚠️  Stripped pre-send soft-issue banner from draft HTML before PATCH (subscribers must never see it — task #746). Review the pre-send-check output for the underlying issues.');
+// annotations. Builder + stripper share scripts/lib/pre-send-banner.js so
+// the markup and the strip regex can never drift apart.
+{
+  const { stripPreSendBanner } = cjsRequire(path.join(repo, 'scripts/lib/pre-send-banner.js'));
+  const res = stripPreSendBanner(html);
+  if (res.stripped) {
+    html = res.html;
+    console.warn('⚠️  Stripped pre-send soft-issue banner from draft HTML before PATCH (subscribers must never see it — task #746). Review the pre-send-check output for the underlying issues.');
+  }
 }
 const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 const subject = (flags.subject || meta.subject || '').toString().trim();

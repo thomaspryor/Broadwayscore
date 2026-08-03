@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T12:21:25.118Z",
+  "timestamp": "2026-08-03T14:09:42.488Z",
   "stats": {
-    "totalReviews": 41435,
-    "alreadyFlagged": 18102,
-    "dateGuardCatches": 108,
-    "directorMismatch": 947,
+    "totalReviews": 41445,
+    "alreadyFlagged": 18103,
+    "dateGuardCatches": 109,
+    "directorMismatch": 945,
     "tvFilmSignals": 1143,
-    "londonSignals": 801,
-    "offBroadwaySignals": 479,
+    "londonSignals": 803,
+    "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3432
+    "noPublishDate": 3436
   },
   "findings": [
     {
@@ -4536,24 +4536,6 @@
       "score": 90,
       "publishDate": null,
       "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-free-7e8237ba?gaa_at=eafs&gaa_n=AWEtsqf3rhX__INBXHgRHsI3IxIHt9SNy6mPj-PFQxxnEmKl0aTpO0dMHH2i&gaa_ts=69bd9c85&gaa_sig=CNgwMSu6ZTQjgdYO1Jas5jqZde5lxGvAMXF487IUMqeQbwSxAWsi-0160s1kyEWidvhQW1_8apI3seh7hkEJBg%3D%3D",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "new-york-city-theatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.newyorkcitytheatre.com/shows/perelman-performing-arts-center/cats",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44533,6 +44515,24 @@
     },
     {
       "showId": "the-oresteia-west-end-2026",
+      "file": "bridgetheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bridgetheatre.co.uk/whats-on/the-oresteia/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
       "file": "london-unattached--madeleine-morrow.json",
       "score": 96,
       "publishDate": "2026-07-15",
@@ -44542,6 +44542,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-oresteia-west-end-2026",
+      "file": "londontheatrehub--london-theatre-hub-editorial-team.json",
+      "publishDate": "2026-05-24",
+      "url": "https://londontheatrehub.co.uk/shows/the-oresteia/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-05-24 vs 2026-07-02)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

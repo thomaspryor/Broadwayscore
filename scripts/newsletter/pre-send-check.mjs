@@ -38,6 +38,7 @@ import { execFileSync } from 'node:child_process';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
 const { findLedeBodyViolations } = require_('../lib/lede-body-invariant.js');
+const { buildPreSendBanner } = require_('../lib/pre-send-banner.js');
 const {
   missingImageViolations,
   phantomImageViolations,
@@ -374,12 +375,10 @@ if (softIssues.length > 0) {
   // Emit GitHub Actions annotations so they appear in the workflow summary
   for (const i of softIssues) console.warn(`::warning::Pre-send: ${i}`);
 
-  const issueList = softIssues.map(i => `<li style="margin:2px 0;">${i}</li>`).join('');
-  const banner = `
-<div style="background:#7c2d12;color:#fef2f2;font-family:monospace;font-size:12px;padding:12px 16px;margin:0 0 0 0;border-bottom:2px solid #dc2626;">
-  <strong>⚠️ PRE-SEND ISSUES — fix before broadcasting to subscribers:</strong>
-  <ul style="margin:6px 0 0 0;padding-left:20px;">${issueList}</ul>
-</div>`;
+  // Markup lives in scripts/lib/pre-send-banner.js next to the stripper that
+  // create-broadcast-draft.mjs runs before PATCHing the audience draft — keep
+  // them together or the strip silently stops matching (task #746).
+  const banner = buildPreSendBanner(softIssues);
 
   // Insert banner right after <body ...>
   html = html.replace(/(<body[^>]*>)/, `$1${banner}`);

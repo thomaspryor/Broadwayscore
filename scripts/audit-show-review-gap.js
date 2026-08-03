@@ -163,22 +163,15 @@ const { articleRunIdentity, ingestBlockReason } = require('./lib/gap-ingest-poli
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
 // get a 365d skip; without invalidation the WE reference would never run on them).
 const WE_REF_VERSION = 2;
-function loadCheckpoint() {
-  try { return JSON.parse(fs.readFileSync(CHECKPOINT_PATH, 'utf8')) || {}; } catch { return {}; }
-}
-function saveCheckpoint(cp) {
-  try { writeJsonAtomic(CHECKPOINT_PATH, cp); } catch { /* non-fatal */ }
-}
 // Write-then-rename. A plain writeFileSync of a 150KB JSON is not atomic: a
 // concurrent reader (newsletter-preflight, another audit run) can observe a
 // truncated file, and on the audit file specifically a torn read turns into
 // "previous file unparseable", which is the #893 wipe all over again.
 // rename(2) within the same directory is atomic on macOS and Linux.
 function writeJsonAtomic(filePath, obj) {
-  // mkdir here, not at the first audit write: saveCheckpoint() runs inside the
-  // per-show loop, long before the audit file is written, so on a fresh
-  // checkout with no data/audit/ every checkpoint save was silently swallowed
-  // by its own catch and the run lost all its freshness stamps.
+  // mkdir here, not at the first audit write: on a fresh checkout with no
+  // data/audit/ a write was silently swallowed by its own catch and the run
+  // lost all its state.
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   const tmp = `${filePath}.tmp-${process.pid}`;
   try {
@@ -197,6 +190,17 @@ function writeJsonAtomic(filePath, obj) {
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, stateMap, withFileLock } = require('./lib/gap-audit-merge');
+// Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
+// file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
+// checkpoint from inside the per-show loop, unlocked on two of its three call
+// sites; saveCheckpointEntries only ever writes the ids THIS call touched, so
+// an overlapping run's stamps for other shows survive.
+const {
+  loadCheckpoint: loadCheckpointFile,
+  saveCheckpointEntries,
+  rollbackCheckpointEntries,
+} = require('./lib/gap-audit-checkpoint');
+const loadCheckpoint = () => loadCheckpointFile(CHECKPOINT_PATH);
 const { blastRadiusCheck } = require('./lib/coverage-gate');
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
@@ -1492,7 +1496,9 @@ async function main(argv = process.argv.slice(2)) {
         // $0.005/hour worst case while a provider is down.
         ...((r.serpCensus && r.serpCensus.complete) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
       };
-      saveCheckpoint(checkpoint);
+      // Merge-aware (#923): write only s.id, not the whole in-memory
+      // checkpoint — an overlapping run's stamps for other shows must survive.
+      saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
     }
     results.push(r);
 
@@ -1548,7 +1554,7 @@ async function main(argv = process.argv.slice(2)) {
           const { shouldEmailAlert } = require('./lib/discord-notify');
           if (delivered || !shouldEmailAlert('warning')) {
             checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered } };
-            saveCheckpoint(checkpoint);
+            saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
           }
         } catch (e) {
           console.error(`::error::WE gap alert failed for ${s.id}: ${(e.message || '').slice(0, 100)}`);
@@ -2029,19 +2035,12 @@ async function main(argv = process.argv.slice(2)) {
     // Re-writing the whole start-of-run snapshot would clobber a concurrent
     // run's freshly-saved stamps for shows this run never looked at (the
     // wholesale-overwrite bug this whole task exists to kill, reintroduced on
-    // the sibling file). Re-read under the lock so we merge against current
-    // state rather than our stale in-memory copy.
+    // the sibling file). rollbackCheckpointEntries re-reads under the lock so
+    // it merges against current state rather than our stale in-memory copy.
     const auditedIds = results.map(r => r && r.showId).filter(Boolean);
     if (useCheckpoint && checkpointAtStart && auditedIds.length) {
       try {
-        withFileLock(`${CHECKPOINT_PATH}.lock`, () => {
-          const current = loadCheckpoint();
-          for (const id of auditedIds) {
-            if (Object.prototype.hasOwnProperty.call(checkpointAtStart, id)) current[id] = checkpointAtStart[id];
-            else delete current[id]; // never audited before this run — leave no stamp behind
-          }
-          saveCheckpoint(current);
-        });
+        rollbackCheckpointEntries(CHECKPOINT_PATH, auditedIds, checkpointAtStart);
         console.error(`::warning::rolled ${auditedIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.`);
       } catch (e) {
         console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
