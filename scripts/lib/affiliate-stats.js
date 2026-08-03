@@ -19,17 +19,16 @@ const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cu
 
 // Platforms we have an affiliate program for — used to flag rows in the
 // per-platform table as revenue-producing vs unmonetized, even when a
-// platform has zero conversions in the current window. Mirror of
-// `enabled: true` entries in src/lib/affiliate-utils.ts AFFILIATE_CONFIG.
-// Keep both files in sync when adding or disabling an affiliate.
-const AFFILIATE_PLATFORMS = new Set([
-  'TodayTix',       // Impact (20944) — primary revenue source
-  'Ticketmaster',   // Impact (264167) — low coverage, 0 conv so far
-  'Vivid Seats',    // Impact (952533) — config on, no URLs in data
-  'SeatPlan',       // Impact (2219054) — WE venue tool, priority 3
-  'StubHub',        // Partnerize — hidden from rendering 2026-04-11 but
-                    //   still flagged so historical clicks show up correctly
-]);
+// platform has zero conversions in the current window. Derived from the
+// shared config (src/config/affiliate-platforms.json) so it can never drift
+// from what the site actually renders — `revenueReporting: true` covers the
+// StubHub case (links hidden 2026-04-11, historical clicks still affiliate).
+const AFFILIATE_PLATFORM_CONFIG = require('../../src/config/affiliate-platforms.json').platforms;
+const AFFILIATE_PLATFORMS = new Set(
+  Object.entries(AFFILIATE_PLATFORM_CONFIG)
+    .filter(([, cfg]) => cfg.revenueReporting)
+    .map(([name]) => name)
+);
 
 function fmtISO(d) {
   // Impact rejects millisecond precision
@@ -76,6 +75,125 @@ async function fetchImpact(startDate, endDate) {
   }
 
   return { actions: data.Actions || [] };
+}
+
+/**
+ * Daily Impact performance series (clicks + actions + payout + sales per day)
+ * via the partner_performance_by_day report. Actions.json cannot supply click
+ * counts at all — this report is the only per-day click source (affiliate
+ * hardening plan 2026-08-03, Codex review finding).
+ *
+ * Monitor-grade: THROWS on missing credentials instead of returning
+ * {skipped} — a missing secret must surface as an auth failure, never as a
+ * healthy-looking zero series.
+ *
+ * @param {number} days lookback (max 45)
+ * @param {{now?: Date}} [opts] injectable clock for tests/replays
+ * @returns {Promise<Array<{date:string, clicks:number, conversions:number, payout:number, sales:number}>>}
+ */
+async function fetchImpactDaily(days, opts = {}) {
+  const sid = process.env.IMPACT_ACCOUNT_SID;
+  const token = process.env.IMPACT_AUTH_TOKEN;
+  if (!sid || !token) {
+    throw new Error('Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)');
+  }
+  const now = opts.now || new Date();
+  const clamped = Math.min(Math.max(1, Math.floor(days)), IMPACT_MAX_DAYS);
+  const start = new Date(now.getTime() - clamped * 24 * 60 * 60 * 1000);
+  const url =
+    `https://api.impact.com/Mediapartners/${sid}/Reports/partner_performance_by_day.json` +
+    `?START_DATE=${fmtDate(start)}&END_DATE=${fmtDate(now)}&PageSize=${IMPACT_MAX_DAYS + 5}`;
+  const { ok, status, data } = await fetchWithTimeout(url, {
+    headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' },
+  });
+  if (!ok) throw new Error(`Impact performance-by-day error: HTTP ${status}`);
+  const records = data.Records || [];
+  return records
+    .map((r) => {
+      // date_display is e.g. "Aug 3, 2026" — normalize to YYYY-MM-DD (UTC).
+      const parsed = new Date(`${r.date_display} UTC`);
+      if (Number.isNaN(parsed.getTime())) return null;
+      return {
+        date: parsed.toISOString().slice(0, 10),
+        clicks: parseInt(r.Clicks, 10) || 0,
+        conversions: parseInt(r.Actions, 10) || 0,
+        payout: parseFloat(r.Action_Cost) || 0,
+        sales: parseFloat(r.Sale_zzzAmount) || 0,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/**
+ * Raw Impact actions for a trailing window (monitor/report-grade: throws on
+ * missing credentials). One fetch serves payout-anomaly checks, outlier
+ * annotations AND the WoW/baseline maths — never two calls whose partial
+ * failure can render a misleading "normal" report (Codex review finding).
+ */
+async function fetchImpactActionsWindow(days, opts = {}) {
+  const sid = process.env.IMPACT_ACCOUNT_SID;
+  const token = process.env.IMPACT_AUTH_TOKEN;
+  if (!sid || !token) {
+    throw new Error('Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)');
+  }
+  const now = opts.now || new Date();
+  const clamped = Math.min(Math.max(1, Math.floor(days)), IMPACT_MAX_DAYS);
+  const start = new Date(now.getTime() - clamped * 24 * 60 * 60 * 1000);
+  const end = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const result = await fetchImpact(start, end);
+  if (result.skipped) throw new Error(`Impact actions fetch skipped: ${result.reason}`);
+  return result.actions;
+}
+
+/**
+ * Daily PostHog ticket_click series with the REAL-USERS lens (owner + known
+ * bot geos excluded — the same lens as memory/feedback_analytics_real_users_lens).
+ * The legacy fetchPosthog() above deliberately keeps its unfiltered queries:
+ * the weekly report and /admin/affiliate have shipped those numbers for
+ * months and changing their basis silently would break every comparison.
+ * The monitor needs the filtered series because bot clicks are one of the
+ * exact anomalies it watches for.
+ *
+ * Monitor-grade: throws on missing credentials.
+ *
+ * @param {number} days lookback
+ * @returns {Promise<Array<{date:string, clicks:number, ttClicks:number}>>}
+ */
+async function fetchPosthogDailyClicks(days, opts = {}) {
+  const phKey = process.env.POSTHOG_PERSONAL_API_KEY;
+  const phProject = process.env.POSTHOG_PROJECT_ID;
+  if (!phKey || !phProject) {
+    throw new Error('PostHog credentials missing (POSTHOG_PERSONAL_API_KEY / POSTHOG_PROJECT_ID)');
+  }
+  const now = opts.now || new Date();
+  const start = new Date(now.getTime() - Math.max(1, Math.floor(days)) * 24 * 60 * 60 * 1000);
+  const hogql = `
+    SELECT toDate(timestamp) AS d,
+      count() AS clicks,
+      countIf(properties.platform = 'TodayTix') AS tt_clicks
+    FROM events
+    WHERE event = 'ticket_click'
+      AND timestamp >= toDateTime('${start.toISOString()}')
+      AND timestamp <= toDateTime('${now.toISOString()}')
+      AND coalesce(JSONExtractString(person.properties, 'is_owner'), '') != 'true'
+      AND properties.$geoip_country_code NOT IN ('SG', 'CN', 'VN')
+    GROUP BY d ORDER BY d
+  `;
+  const { ok, status, data } = await fetchWithTimeout(
+    `https://us.posthog.com/api/projects/${phProject}/query/`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${phKey}`, 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
+    }
+  );
+  if (!ok) throw new Error(`PostHog daily clicks error: HTTP ${status}`);
+  return (data.results || []).map(([d, clicks, tt]) => ({
+    date: String(d).slice(0, 10),
+    clicks: Number(clicks) || 0,
+    ttClicks: Number(tt) || 0,
+  }));
 }
 
 /**
@@ -298,10 +416,16 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
 
   const errors = [];
   let impact = null, partnerize = null, posthog = null;
+  let rawActions = null; // current-window Impact actions, reused for report context
 
   if (results[0].status === 'fulfilled') {
     const r = results[0].value;
-    impact = r.skipped ? { skipped: true, reason: r.reason } : summarizeImpact(r.actions);
+    if (r.skipped) {
+      impact = { skipped: true, reason: r.reason };
+    } else {
+      impact = summarizeImpact(r.actions);
+      rawActions = r.actions;
+    }
   } else {
     errors.push({ provider: 'impact', message: results[0].reason?.message || String(results[0].reason) });
   }
@@ -457,6 +581,54 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
     }
   }
 
+  // ── Report context: trailing baseline + outlier annotations ──────────────
+  // Panic-proofing (affiliate hardening 2026-08-03): the raw WoW delta once
+  // read -77.6% against a prior week inflated by one 11-conversion day, 6 of
+  // them a single buyer. This block gives every WoW number its context. All
+  // derived from ONE extra performance-report call + the current window's
+  // already-fetched raw actions; failure → context.partial so the email can
+  // say "PARTIAL DATA" instead of rendering silently-normal numbers.
+  let context = null;
+  if (includeWoW) {
+    context = { partial: false };
+    try {
+      const {
+        baselineComparison,
+        findOutlierDays,
+        findRepeatBuyers,
+      } = require('./affiliate-anomaly');
+      // Anchor per-day baseline math on the last COMPLETE day — window.end is
+      // "now", and counting a partial day as a whole day deflates "$/day now"
+      // every time the report runs midday (Codex ship-check finding).
+      const asOf = fmtDate(new Date(window.end.getTime() - 24 * 60 * 60 * 1000));
+      if (rawActions) {
+        context.outlierDays = findOutlierDays(rawActions, { share: 0.4 });
+        context.repeatBuyers = findRepeatBuyers(rawActions, { minConversions: 3 });
+      } else {
+        context.partial = true;
+      }
+      const baselineSpan = Math.min(clampedDays + 28, IMPACT_MAX_DAYS);
+      const dailyPerf = await fetchImpactDaily(baselineSpan, { now: window.end });
+      context.baseline = baselineComparison(dailyPerf, {
+        asOf,
+        windowDays: clampedDays,
+        baselineDays: baselineSpan - clampedDays,
+      });
+      // Bot-divergence note: Impact-recorded clicks vs real PostHog clicks
+      // over the window (Jul 31–Aug 2 2026 saw 2-3x bot inflation).
+      const impactWindowClicks = dailyPerf
+        .filter((d) => d.date > fmtDate(window.start) && d.date <= asOf)
+        .reduce((s, d) => s + d.clicks, 0);
+      if (posthog && !posthog.skipped && posthog.totalClicks > 0) {
+        context.impactClicks = impactWindowClicks;
+        context.clickDivergenceRatio = impactWindowClicks / posthog.totalClicks;
+      }
+    } catch (err) {
+      context.partial = true;
+      errors.push({ provider: 'impact-baseline', message: err.message });
+    }
+  }
+
   return {
     window: {
       days: clampedDays,
@@ -472,6 +644,7 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
     unitEconomics,
     perPlatform,
     wowDelta,
+    context,
     impact,
     partnerize,
     posthog,
@@ -482,10 +655,16 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
 
 module.exports = {
   getAffiliateStats,
+  // Monitor-grade fetchers (throw on missing credentials — affiliate hardening 2026-08-03)
+  fetchImpactDaily,
+  fetchImpactActionsWindow,
+  fetchPosthogDailyClicks,
   // Exported for testing / advanced callers
   analyzeTodaytixMix,
   summarizeImpact,
   clampDays,
+  AFFILIATE_PLATFORMS,
+  AFFILIATE_PLATFORM_CONFIG,
   IMPACT_MAX_DAYS,
   RATE_BUMP_DATE,
 };

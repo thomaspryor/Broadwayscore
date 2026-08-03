@@ -112,6 +112,45 @@ async function checkGemini() {
   return { name: 'Gemini', status: 'warn', message: `Unexpected status ${res.status}` };
 }
 
+// Affiliate revenue keys (affiliate hardening 2026-08-03). Same-day breakage
+// detection lives in check-affiliate-health.js (daily); these weekly pings
+// are the belt-and-braces validity report alongside every other service key.
+// Partnerize keys deliberately NOT pinged: integration dormant since
+// 2026-04-11 — a validity check on it would only manufacture noise.
+async function checkImpact() {
+  const sid = process.env.IMPACT_ACCOUNT_SID;
+  const token = process.env.IMPACT_AUTH_TOKEN;
+  if (!sid || !token) return { name: 'Impact (affiliate)', status: 'skip', message: 'Credentials not set' };
+
+  const auth = Buffer.from(`${sid}:${token}`).toString('base64');
+  // Campaigns.json is the cheapest endpoint this account's scopes can read —
+  // CompanyInformation.json and Ads.json both 403 for this media-partner tier
+  // even with valid credentials (verified live 2026-08-03), which would make
+  // the check a permanent false-fail.
+  const res = await httpsGet(`https://api.impact.com/Mediapartners/${sid}/Campaigns.json?PageSize=1`, {
+    Authorization: `Basic ${auth}`,
+    Accept: 'application/json',
+  });
+
+  if (res.status === 200) return { name: 'Impact (affiliate)', status: 'pass', message: 'Credentials valid' };
+  if (res.status === 401 || res.status === 403) return { name: 'Impact (affiliate)', status: 'fail', message: 'Credentials invalid or revoked — the ONLY revenue stream is unmonitorable' };
+  return { name: 'Impact (affiliate)', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
+async function checkPosthog() {
+  const key = process.env.POSTHOG_PERSONAL_API_KEY;
+  const project = process.env.POSTHOG_PROJECT_ID;
+  if (!key || !project) return { name: 'PostHog', status: 'skip', message: 'Credentials not set' };
+
+  const res = await httpsGet(`https://us.posthog.com/api/projects/${project}/`, {
+    Authorization: `Bearer ${key}`,
+  });
+
+  if (res.status === 200) return { name: 'PostHog', status: 'pass', message: 'Key valid' };
+  if (res.status === 401 || res.status === 403) return { name: 'PostHog', status: 'fail', message: 'Key invalid or revoked — click analytics + affiliate monitor blind' };
+  return { name: 'PostHog', status: 'warn', message: `Unexpected status ${res.status}` };
+}
+
 async function checkOpenRouter() {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return { name: 'OpenRouter', status: 'skip', message: 'Key not set' };
@@ -473,6 +512,8 @@ async function main() {
     checkTheatrToken,
     checkFormspreeSubscribers,
     checkFormspreeFeedback,
+    checkImpact,
+    checkPosthog,
   ];
 
   // Run all checks in parallel
