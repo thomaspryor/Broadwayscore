@@ -141,3 +141,12 @@ newsletter-draft-refresh.yml
 # window widens slightly; it's a low-stakes safety net atop push-with-retry.sh's
 # own push-time verify, not user-facing staleness. Digest-only.
 check-push-ledger.yml
+# 2026-08-03: weekly SERP-census recall measurement (Coverage Verdict S1,
+# tasks #872/#898/#901). Pure measurement — it gates nothing and changes no
+# user-facing data, so a missed run costs a data point, not correctness. It
+# also monitors its own absence: health-check.js's "Coverage: SERP census
+# recall" check warns when data/audit/census-recall-status.json goes stale
+# (tests/unit/health-check-census-recall.test.mjs, "a stale weekly run warns
+# that the detector itself has gone blind"), which is strictly better cron
+# coverage than CRITICAL_CRONS' generic recency page. Digest-only.
+audit-census-recall.yml
