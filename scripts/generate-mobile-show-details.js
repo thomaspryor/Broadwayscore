@@ -604,8 +604,9 @@ for (const show of visibleShows) {
   // Awards Scorecard parity: award score + tier + Pulitzer + other ceremonies.
   const awardsEntry = awardsShows[show.id];
   if (awardsEntry) {
-    const market = show.category === 'west-end' || show.category === 'off-west-end' ? 'west-end' : 'broadway';
-    const scoreResult = computeSiteAwardScore(show.id, awardsShows, market);
+    // 'broadway' for every market: the site's AwardScoreCard hard-codes it
+    // (AwardScoreCard.tsx:338), and the mobile score must match the site.
+    const scoreResult = computeSiteAwardScore(show.id, awardsShows, 'broadway');
     const oth = [];
     for (const [key, label] of OTHER_CEREMONY_LABELS) {
       const c = awardsEntry[key];
@@ -629,6 +630,10 @@ for (const show of visibleShows) {
         ip: scoreResult.inProgress || undefined,
         sub: awardSublabel(awardsEntry),
         sea: awardsEntry.tony?.season ?? null,
+        // Category-level counts, matching the site's Tony panel display
+        // ("11 wins of 13 noms" — unique categories, co-nominees counted once)
+        tw: awardsEntry.tony ? new Set(awardsEntry.tony.wins || []).size : undefined,
+        tn: awardsEntry.tony ? new Set(awardsEntry.tony.nominatedFor || []).size : undefined,
         pz,
         oth: oth.length > 0 ? oth : undefined,
       };
