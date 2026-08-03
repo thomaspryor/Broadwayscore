@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { validateShowMentioned } = require('./content-quality.js');
+const { validateShowMentioned, verifyFullTextContent, validateContentMentionsShow } = require('./content-quality.js');
 
 // ============================================================================
 // validateShowMentioned Check 3 (task #915, follow-up to #895's 28/39
@@ -156,4 +156,34 @@ test('validateShowMentioned: idWords with a mix of generic and distinctive words
   const text = 'This revival brings a fresh, unsentimental energy to the March sisters that keeps the show moving briskly through its two acts. '.repeat(15) + 'A little more restraint from the ensemble would have helped the quieter scenes land. ';
   const result = validateShowMentioned(text, 'Little Women', 'little-women-2005');
   assert.equal(result.valid, true, `expected 'little' alone to still validate, got: ${result.reason}`);
+});
+
+// verifyFullTextContent and validateContentMentionsShow have their own,
+// independent idWords derivations (task #947 second-opinion review found
+// both were reachable through the SAME show as the live incident and were
+// not filtered). Both now apply the GENERIC_ID_WORDS filter too.
+//
+// Fixture deliberately avoids 'woman'/'among'/'women' (which would trip
+// verifyFullTextContent's separate TITLE-word 50% match — a different,
+// pre-existing mechanism working off the literal title string, not the
+// showId-derived idWords this fix targets; out of scope here) and instead
+// repeats only the idWords-fallback-relevant generic word 'broadway', which
+// does not appear in the title itself.
+function buildUnrelatedBroadwayIndustryPiece() {
+  const paragraph = 'Ticket prices on Broadway have climbed again this season, with several long-running Broadway hits raising top prices ahead of the holidays. Industry watchers say Broadway grosses remain strong despite the increases. ';
+  let text = '';
+  while (text.length < 3200) text += paragraph;
+  return text;
+}
+
+test('verifyFullTextContent: unrelated article hitting only generic idWords does NOT score a titleFound match (a-woman-among-women class, task #947)', () => {
+  const text = buildUnrelatedBroadwayIndustryPiece();
+  const result = verifyFullTextContent(text, { title: 'A Woman Among Women', id: 'a-woman-among-women-off-broadway-2026' });
+  assert.equal(result.details.titleFound, false, `expected no title match from generic idWords alone, got positiveSignals: ${JSON.stringify(result.positiveSignals)}`);
+});
+
+test('validateContentMentionsShow: unrelated article hitting only generic idWords does NOT clear the mention threshold (task #947)', () => {
+  const text = buildUnrelatedBroadwayIndustryPiece();
+  const result = validateContentMentionsShow(text, null, 'A Woman Among Women', 'a-woman-among-women-off-broadway-2026');
+  assert.equal(result.valid, false, `expected generic idWords alone to fail the mention-count gate, got: ${JSON.stringify(result)}`);
 });

@@ -2216,9 +2216,15 @@ function verifyFullTextContent(fullText, showMetadata) {
     }
 
     // Check show ID words as fallback (e.g., "back-to-the-future-2023" → "back", "future")
+    // Task #947: filter through GENERIC_ID_WORDS first — same generic-word
+    // rubber-stamp risk as validateShowMentioned's Check 2 (e.g.
+    // 'a-woman-among-women-off-broadway-2026' -> ['woman','among','women','broadway'],
+    // all generic, none of which should count as show-specific evidence here.
     if (!titleFound && showMetadata.id) {
       const idBase = showMetadata.id.replace(/-\d{4}$/, '');
-      const idWords = idBase.split('-').filter(w => w.length > 4 && !['the', 'and', 'for'].includes(w));
+      const idWords = idBase.split('-')
+        .filter(w => w.length > 4 && !['the', 'and', 'for'].includes(w))
+        .filter(w => !GENERIC_ID_WORDS.has(w));
       if (idWords.length >= 2) {
         const matchedIdWords = idWords.filter(w => text.includes(w));
         if (matchedIdWords.length >= 2) {
@@ -2755,7 +2761,11 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   if (showId) {
     const idBase = showId.replace(/-\d{4}$/, '');
     for (const w of idBase.split('-')) {
-      if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w)) {
+      // Task #947: skip generic idWords (see GENERIC_ID_WORDS above) — a
+      // word like 'women'/'broadway' would otherwise count toward
+      // mentionCount purely on generic-English-usage rate, not any actual
+      // reference to the show.
+      if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w) && !GENERIC_ID_WORDS.has(w.toLowerCase())) {
         tokens.add(w.toLowerCase());
         // Also add singular form of plural ID words (>5 chars to avoid noise):
         // "turners" → "turner" matches the natural body usage. Joe Turner.
