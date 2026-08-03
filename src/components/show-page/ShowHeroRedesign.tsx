@@ -61,6 +61,8 @@ import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
+import { getBroadwayDuration } from '@/lib/date-utils';
+import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import type { ComputedShow } from '@/lib/engine';
 
 /** Inlined to avoid pulling @/lib/data-core (server-only JSON imports) into the
@@ -736,44 +738,25 @@ function DateLine({ show }: { show: ComputedShow }) {
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-gray-500';
 
-  // openingDate is routinely null Off-Broadway (many OB runs have no separate
-  // press night), so every branch falls back to previewsStartDate for the
-  // start half. Without the fallback the whole line vanished on OB previews
-  // shows that DO have both a first-preview and a closing date — owner report
-  // on The Pass, 2026-08-02.
-  const start = show.openingDate || show.previewsStartDate;
-  const startIsPreview = !show.openingDate && !!show.previewsStartDate;
+  // Segments (start/closing/duration text) come from the shared
+  // show-date-line module — the single source of truth also consumed by the
+  // legacy hero (src/app/show/[slug]/page.tsx). Do not fork this logic back
+  // into inline branches (task #951).
+  const durationSuffix = getHeroDurationSuffix(show);
+  const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
+  const segments = getShowDateLineSegments(show, durationText);
+  if (segments.length === 0) return null;
 
-  if (show.status === 'closed') {
-    if (start && show.closingDate) {
-      return (
-        <p className={dateClass}>
-          {formatDate(start)} → {formatDate(show.closingDate)}
-        </p>
-      );
-    }
-    // Only one end known. "Opened <date>" alone would read identically to an
-    // open show's line, leaving the StatusBadge as the sole signal that the run
-    // is over — 14 shows in shows.json hit this. Past tense says it here.
-    if (start) return <p className={dateClass}>Ran from {formatDate(start)}</p>;
-    if (show.closingDate) return <p className={dateClass}>Closed {formatDate(show.closingDate)}</p>;
-    return null;
-  }
-
-  // Assemble from whichever halves exist so a missing start never leaves an
-  // orphaned " · Closes …" separator. filter(Boolean).join(' · ') is the
-  // codebase idiom for optional-part metadata lines.
-  const isUnopened = show.status === 'previews' || show.status === 'upcoming';
-  const startLabel = isUnopened
-    ? (startIsPreview ? 'Previews from' : 'Opens')
-    : (startIsPreview ? 'Running since' : 'Opened');
-
-  const line = [
-    start && `${startLabel} ${formatDate(start)}`,
-    show.closingDate && `Closes ${formatDate(show.closingDate)}`,
-  ].filter(Boolean).join(' · ');
-
-  return line ? <p className={dateClass}>{line}</p> : null;
+  return (
+    <p className={dateClass}>
+      {segments.map((seg, i) => (
+        <React.Fragment key={i}>
+          {i > 0 ? ' · ' : ''}
+          {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}
+        </React.Fragment>
+      ))}
+    </p>
+  );
 }
 
 function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: number }) {
@@ -850,13 +833,4 @@ function YourRatingInline({
   );
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────
-
-/** Format ISO date as "Apr 10, 2026" — matches existing /show convention. */
-function formatDate(iso: string | null | undefined): string {
-  if (!iso) return '';
-  const d = new Date(iso + (iso.length === 10 ? 'T00:00:00' : ''));
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
 
