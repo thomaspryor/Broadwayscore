@@ -339,4 +339,10 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+// Reusable export — generate-mobile-show-details.js consumes the same
+// computation so the mobile Awards Scorecard matches the site (task: card parity).
+module.exports = { computeSiteAwardScore };
