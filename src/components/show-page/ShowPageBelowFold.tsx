@@ -13,6 +13,7 @@ import BoxOfficeStats from '@/components/BoxOfficeStats';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
 import ShowtimesCard from '@/components/ShowtimesCard';
+import ShowFAQSection, { type ShowFAQ } from '@/components/show-page/ShowFAQSection';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
@@ -85,7 +86,7 @@ export interface ShowPageBelowFoldProps {
   score: number | undefined;
   /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
       Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
-  faqs: Array<{ question: string; answer: string }>;
+  faqs: ShowFAQ[];
 }
 
 function formatDate(dateStr: string | null | undefined): string {
@@ -259,32 +260,12 @@ export default function ShowPageBelowFold({
         />
       )}
 
-      {/* PAA-style Q&A block — visible counterpart to the faqSchema emitted in
-          page.tsx (Google discounts FAQPage schema with no matching on-page
-          content). Native <details>/<summary> so it works without JS and stays
-          crawlable; this chunk is prerendered into the static HTML, verified
-          against prod. Sits below Showtimes per owner, 2026-08-02 — it used to
-          render directly under the Critic Scorecard, which pushed the actual
-          scorecards down the page. Must stay 1:1 with getShowFAQs(), not a
-          subset, or the schema advertises Q&As Google can't find on the page. */}
-      {faqs.length > 0 && (
-        <section className="card p-5 sm:p-6 mb-5 sm:mb-8" aria-labelledby="show-faq-heading">
-          <h2 id="show-faq-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none mb-4">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-3" data-testid="show-faq-block">
-            {faqs.map((faq, i) => (
-              <details key={i} className="group border-b border-white/5 pb-3 last:border-0 last:pb-0">
-                <summary className="text-sm font-medium text-gray-200 cursor-pointer list-none flex items-start justify-between gap-3 marker:content-none [&::-webkit-details-marker]:hidden">
-                  <span>{faq.question}</span>
-                  <span aria-hidden="true" className="text-gray-500 group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
-                </summary>
-                <p className="text-sm text-gray-400 leading-relaxed mt-2">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* PAA-style Q&A block — sits below Showtimes per owner, 2026-08-02 (it
+          used to render directly under the Critic Scorecard, which pushed the
+          actual scorecards down the page). Component lives in its own module so
+          the loader's ErrorBoundary can render it standalone when this chunk
+          fails — see ShowFAQSection.tsx for why that matters. */}
+      <ShowFAQSection faqs={faqs} />
 
       {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
       <div id="social-buzz" className="scroll-mt-20" />

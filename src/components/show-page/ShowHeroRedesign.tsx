@@ -752,25 +752,28 @@ function DateLine({ show }: { show: ComputedShow }) {
         </p>
       );
     }
-    // Fall through to the generic parts join below when only one end is known.
+    // Only one end known. "Opened <date>" alone would read identically to an
+    // open show's line, leaving the StatusBadge as the sole signal that the run
+    // is over — 14 shows in shows.json hit this. Past tense says it here.
+    if (start) return <p className={dateClass}>Ran from {formatDate(start)}</p>;
+    if (show.closingDate) return <p className={dateClass}>Closed {formatDate(show.closingDate)}</p>;
+    return null;
   }
 
-  // Build the line from whichever halves exist so a missing start never leaves
-  // an orphaned " · Closes …" separator.
-  const parts: string[] = [];
-  if (start) {
-    if (show.status === 'previews' || show.status === 'upcoming') {
-      parts.push(startIsPreview ? `Previews from ${formatDate(start)}` : `Opens ${formatDate(start)}`);
-    } else {
-      parts.push(startIsPreview ? `Running since ${formatDate(start)}` : `Opened ${formatDate(start)}`);
-    }
-  }
-  if (show.closingDate) {
-    parts.push(`${show.status === 'closed' ? 'Closed' : 'Closes'} ${formatDate(show.closingDate)}`);
-  }
-  if (parts.length === 0) return null;
+  // Assemble from whichever halves exist so a missing start never leaves an
+  // orphaned " · Closes …" separator. filter(Boolean).join(' · ') is the
+  // codebase idiom for optional-part metadata lines.
+  const isUnopened = show.status === 'previews' || show.status === 'upcoming';
+  const startLabel = isUnopened
+    ? (startIsPreview ? 'Previews from' : 'Opens')
+    : (startIsPreview ? 'Running since' : 'Opened');
 
-  return <p className={dateClass}>{parts.join(' · ')}</p>;
+  const line = [
+    start && `${startLabel} ${formatDate(start)}`,
+    show.closingDate && `Closes ${formatDate(show.closingDate)}`,
+  ].filter(Boolean).join(' · ');
+
+  return line ? <p className={dateClass}>{line}</p> : null;
 }
 
 function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: number }) {
