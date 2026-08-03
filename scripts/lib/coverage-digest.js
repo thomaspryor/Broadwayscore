@@ -31,22 +31,71 @@ function coverageStatus(result) {
 
   const missing = Array.isArray(result.missing) ? result.missing : [];
   const excluded = missing.filter((m) => m && m.priorRun);
-  const pending = Math.max(0, candidateCount - liveCount - excluded.length);
+  // `candidateCount` is scoped to THIS run's roundup census (S2); `excluded`
+  // is drawn from `result.missing`, a broader all-history citation list (WE
+  // + aggregator-article + SERP census, accumulated across every scanner
+  // that has ever cited this show) that is NOT a subset of the census
+  // candidates. For a long-running or common-shared title (task #907:
+  // othello-off-broadway-2026 — Classical Theatre of Harlem's off-Broadway
+  // run — carries 54 correctly-flagged priorRun citations from the
+  // unrelated 2025 Denzel Washington Broadway production, against only 38
+  // current-run census candidates), excluded.length can exceed
+  // candidateCount. Investigated: NOT a title-collision census-contamination
+  // bug (every one of the 54 carries priorRunSource: 'aggregator-article-date'
+  // and points at the 2025 Broadway run's own reviews) — the guard is
+  // correctly naming a real different production.
+  //
+  // The fix does NOT inflate `candidateCount` to "make room" for the
+  // overflow (an earlier version of this fix did — ship-check finding,
+  // task #907: that reported "0 of 54 known reviews live" for Othello,
+  // falsely implying those 54 unrelated-production reviews were part of
+  // THIS show's known pool). `candidateCount` stays exactly what the census
+  // actually found.
+  //
+  // There is no signal in the data for WHICH excluded citations (if any)
+  // genuinely belong to this run's census candidates vs an unrelated
+  // production sharing the title — only the aggregate count is available.
+  // Splitting the list at an arbitrary array index to "make the arithmetic
+  // fit" would misattribute specific citations to one bucket or the other
+  // with no basis. So this is a binary call: if `excluded` plausibly fits
+  // within what's left of the known census total, treat it as normal
+  // (unchanged — the common case, e.g. The Car Man's 1 excluded of 14). If
+  // it doesn't fit AT ALL (Othello: 54 > the 38 total there is to fit
+  // within), the whole list is reported as its own explicitly-unrelated
+  // clause instead of folded into the same "N excluded" tally a reader would
+  // otherwise take as a subset of "known".
+  const remaining = Math.max(0, candidateCount - liveCount);
+  const overflow = excluded.length > remaining;
 
   const parts = [];
-  if (pending > 0) parts.push(`${pending} being fetched`);
-  if (excluded.length > 0) {
+  if (!overflow) {
+    const pending = Math.max(0, remaining - excluded.length);
+    if (pending > 0) parts.push(`${pending} being fetched`);
+    if (excluded.length > 0) {
+      const byReason = new Map();
+      for (const m of excluded) {
+        const label = excludedReasonLabel(m);
+        byReason.set(label, (byReason.get(label) || 0) + 1);
+      }
+      for (const [label, count] of byReason) parts.push(`${count} excluded (${label})`);
+    }
+  } else if (remaining > 0) {
+    // Every one of the remaining un-fetched slots is still unaccounted for
+    // by this (entirely-unrelated) excluded list, so it all reads as "being
+    // fetched" rather than silently vanishing from the sentence.
+    parts.push(`${remaining} being fetched`);
+  }
+  let detail = `${liveCount} of ${candidateCount} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`;
+  if (overflow) {
     const byReason = new Map();
     for (const m of excluded) {
       const label = excludedReasonLabel(m);
       byReason.set(label, (byReason.get(label) || 0) + 1);
     }
-    for (const [label, count] of byReason) parts.push(`${count} excluded (${label})`);
+    const overflowParts = [...byReason].map(([label, count]) => `${count} (${label})`);
+    detail += ` — separately, ${overflowParts.join(', ')} on file from outside this run's candidate pool`;
   }
-  return {
-    liveCount, candidateCount,
-    detail: `${liveCount} of ${candidateCount} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`,
-  };
+  return { liveCount, candidateCount, detail };
 }
 
 /**

@@ -151,12 +151,18 @@ function pickSample(shows, opts = {}) {
 }
 
 /** Every review-texts record for a show, keyed by normalized URL, for the
- * live-vs-excluded-vs-gap classification. */
+ * live-vs-excluded-vs-gap classification. ALSO includes
+ * data/review-texts/_pending/<showId>/ quarantined files (marked
+ * `pending: true`): a review the write-guard correctly quarantined
+ * (date-implausible, prior-production) is a named exclusion the probe
+ * already knows about, not an unaccounted gap (task #907: the-state-of-
+ * the-arts Car Man case — a 2015 prior-production review, correctly
+ * quarantined by the #832 date guard, read as a silent gap before this). */
 function onDiskByUrlFor(showId) {
-  const dir = path.join(REVIEW_TEXTS_DIR, showId);
   const map = new Map();
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
   let entries;
-  try { entries = fs.readdirSync(dir); } catch { return map; }
+  try { entries = fs.readdirSync(dir); } catch { entries = []; }
   for (const f of entries) {
     if (!f.endsWith('.json')) continue;
     const filePath = path.join(dir, f);
@@ -164,6 +170,23 @@ function onDiskByUrlFor(showId) {
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
     const u = data && data.url;
     if (u && isReviewUrl(u)) map.set(normalizeReviewUrl(u), { data, filePath });
+  }
+  const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
+  let pendingEntries;
+  try { pendingEntries = fs.readdirSync(pendingDir); } catch { pendingEntries = []; }
+  for (const f of pendingEntries) {
+    if (!f.endsWith('.json')) continue;
+    const filePath = path.join(pendingDir, f);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+    const u = data && data.url;
+    if (!u || !isReviewUrl(u)) continue;
+    const key = normalizeReviewUrl(u);
+    // A live/on-disk record for the same URL always wins over a pending
+    // one — pending quarantine is a fallback classification, not an
+    // override of an already-scored file.
+    if (map.has(key)) continue;
+    map.set(key, { data, filePath, pending: true, pendingReason: data.pendingReason || null });
   }
   return map;
 }
