@@ -170,6 +170,22 @@ test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on e
       }
     }
   }
-  assert.ok(files > 0, `corpus at ${REVIEW_TEXTS_DIR} produced 0 readable files — the parity check would be vacuous`);
+  // An EMPTY corpus dir is the same situation as a missing one, and it is what
+  // CI actually produces: something in the unit-tests job leaves a bare
+  // data/review-texts/ behind (nothing is tracked under it — `git ls-tree
+  // data/review-texts/` is 0 files — and checkout-review-texts never runs in
+  // that job), so existsSync() said yes, the sweep read 0 files, and this
+  // assertion failed the whole workflow. Presence of the directory is not
+  // presence of the corpus; only the file count decides. Same policy as the
+  // missing-dir branch above: hard-fail under REQUIRE_REVIEW_CORPUS, skip
+  // otherwise.
+  if (files === 0) {
+    assert.ok(
+      !REQUIRE_CORPUS,
+      `REQUIRE_REVIEW_CORPUS=1 but ${REVIEW_TEXTS_DIR} holds 0 readable review files — the review-texts checkout did not land, so the parity layer would have been vacuous. Fix the checkout rather than unsetting the flag.`
+    );
+    t.skip(`corpus at ${REVIEW_TEXTS_DIR} is empty (run ./scripts/setup-local-data.sh, or set REVIEW_TEXTS_DIR)`);
+    return;
+  }
   assert.deepStrictEqual(mismatches, [], `explain/boolean disagreement on ${mismatches.length}+ of ${files} corpus files`);
 });
