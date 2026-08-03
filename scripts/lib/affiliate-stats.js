@@ -597,7 +597,10 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
         findOutlierDays,
         findRepeatBuyers,
       } = require('./affiliate-anomaly');
-      const asOf = fmtDate(window.end);
+      // Anchor per-day baseline math on the last COMPLETE day — window.end is
+      // "now", and counting a partial day as a whole day deflates "$/day now"
+      // every time the report runs midday (Codex ship-check finding).
+      const asOf = fmtDate(new Date(window.end.getTime() - 24 * 60 * 60 * 1000));
       if (rawActions) {
         context.outlierDays = findOutlierDays(rawActions, { share: 0.4 });
         context.repeatBuyers = findRepeatBuyers(rawActions, { minConversions: 3 });
