@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
 import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
@@ -242,9 +242,9 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                       const rawUrl = ensureHttps(lottery?.url || special?.url);
                       if (!platform) return <span className="text-gray-500">—</span>;
                       if (rawUrl) {
-                        const url = buildAffiliateUrl(rawUrl, platform || '', 'lottery').url;
+                        const { url, isAffiliate } = buildAffiliateUrl(rawUrl, platform || '', 'lottery');
                         return (
-                          <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors">
+                          <a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors">
                             {platform}<ExternalLinkIcon />
                           </a>
                         );
@@ -296,7 +296,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                                 <a
                                   href={buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery').url}
                                   target="_blank"
-                                  rel="noopener noreferrer"
+                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery').isAffiliate)}
                                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
                                   onClick={(e) => e.stopPropagation()}
                                 >
@@ -319,7 +319,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                                 <a
                                   href={buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery').url}
                                   target="_blank"
-                                  rel="noopener noreferrer"
+                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery').isAffiliate)}
                                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
                                   onClick={(e) => e.stopPropagation()}
                                 >
@@ -719,8 +719,8 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const rawUrl = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
                         const label = rush.platform || 'Box Office';
                         if (rawUrl) {
-                          const url = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush').url : rawUrl;
-                          return <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
+                          const affiliateResult = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush') : { url: rawUrl, isAffiliate: false };
+                          return <a href={affiliateResult.url} target="_blank" rel={affiliateRel(affiliateResult.isAffiliate)} className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
                         }
                         return <span className="text-emerald-400">{label}</span>;
                       })()}
@@ -729,8 +729,8 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const label = digital.platform || 'Digital';
                         const prefix = rush ? ' + ' : '';
                         if (rawUrl) {
-                          const url = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush').url;
-                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a></>;
+                          const { url, isAffiliate } = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush');
+                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a></>;
                         }
                         return <span className="text-blue-400">{prefix}{label}</span>;
                       })()}
@@ -783,12 +783,12 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                               {(() => {
                                 const rawUrl = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
                                 if (rawUrl) {
-                                  const url = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush').url : rawUrl;
+                                  const affiliateResult = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush') : { url: rawUrl, isAffiliate: false };
                                   return (
                                     <a
-                                      href={url}
+                                      href={affiliateResult.url}
                                       target="_blank"
-                                      rel="noopener noreferrer"
+                                      rel={affiliateRel(affiliateResult.isAffiliate)}
                                       className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
                                       onClick={(e) => e.stopPropagation()}
                                     >
@@ -823,7 +823,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                                 <a
                                   href={buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush').url}
                                   target="_blank"
-                                  rel="noopener noreferrer"
+                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush').isAffiliate)}
                                   className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium text-xs mt-2 transition-colors"
                                   onClick={(e) => e.stopPropagation()}
                                 >
@@ -855,7 +855,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                                 <a
                                   href={buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush').url}
                                   target="_blank"
-                                  rel="noopener noreferrer"
+                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush').isAffiliate)}
                                   className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium text-xs mt-2 transition-colors"
                                   onClick={(e) => e.stopPropagation()}
                                 >
