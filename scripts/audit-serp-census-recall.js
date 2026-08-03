@@ -85,6 +85,11 @@ const STATUS_PATH = path.join(AUDIT_DIR, 'census-recall-status.json');
 
 /** Undated shows pulled in per run under --include-undated (they have no window to scope on). */
 const UNDATED_SAMPLE_CAP = 3;
+/** Trend-ledger cap — a year of weekly runs, bounding the file without
+ * starving detectRecallRegression()'s drift window (which reads entries OLDER
+ * than the 4-run baseline; the parallel implementation's 12-run cap would have
+ * disabled that rule). */
+const TREND_MAX_ENTRIES = 52;
 
 const USAGE = `Usage: node scripts/audit-serp-census-recall.js [options]
 
@@ -213,9 +218,15 @@ const pct = (n, d) => (d === 0 ? 1 : Math.round((n / d) * 1000) / 1000);
 async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return 0; }
 
-  if (process.env.CENSUS_RECALL_DISABLED === '1' || process.env.CENSUS_RECALL_DISABLED === 'true') {
-    console.log('CENSUS_RECALL_DISABLED is set — skipping (no SERP calls spent).');
-    return 0;
+  // Both switches: CENSUS_RECALL_DISABLED is this cadence's own, and
+  // SERP_GAP_CENSUS_DISABLED is the census-wide one lib/serp-review-census.js
+  // already honours — an operator killing the census should not have to know
+  // this measurement is a separate lever.
+  for (const flag of ['CENSUS_RECALL_DISABLED', 'SERP_GAP_CENSUS_DISABLED']) {
+    if (process.env[flag] === '1' || process.env[flag] === 'true') {
+      console.log(`${flag} is set — skipping (no SERP calls spent).`);
+      return 0;
+    }
   }
 
   // Without this the SERP chain runs keyless: every arm returns [] with a
@@ -371,6 +382,7 @@ async function main() {
   console.log(`  measured shows:    ${totals.shows}${excludedRows.length ? ` (${excludedRows.length} excluded: ${excludedRows.map(r => r.sampleState).join(', ')})` : ''}`);
   console.log(`  ground-truth URLs: ${totals.truthUrls}`);
   console.log(`  naive-only URLs:   ${totals.newFromNaive}`);
+  console.log(`  combined recall:   ${fmtRecall(agg.combinedRecall)}  (scoped arms + what we already hold, vs everything findable)`);
   console.log('\n── PER-ARM RECALL ──');
   for (const [arm, v] of Object.entries(totals.perArm)) {
     console.log(`  ${arm.padEnd(12)} recall ${fmtRecall(v.recall)}  (${v.found}/${totals.truthUrls} URLs over ${v.queries} query-run(s)${v.failed ? `, ${v.failed} FAILED` : ''})`);
@@ -483,7 +495,7 @@ function appendTrendEntry(trendPath, entry, opts = {}) {
     return existing;
   }
   const kept = entry.date ? existing.filter(e => e.date !== entry.date) : existing;
-  const all = [...kept, entry];
+  const all = [...kept, entry].slice(-TREND_MAX_ENTRIES);
   fs.mkdirSync(path.dirname(trendPath), { recursive: true });
   const tmp = `${trendPath}.tmp-${process.pid}`;
   fs.writeFileSync(tmp, all.map(e => JSON.stringify(e)).join('\n') + '\n');

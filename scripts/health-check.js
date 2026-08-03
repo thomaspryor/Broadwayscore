@@ -3189,11 +3189,6 @@ async function main() {
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
-    try {
-      const censusHistory = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/serp-census-recall-history.json'), 'utf8'));
-      const { censusRecallTrendResults } = require('./lib/census-recall-trend.js');
-      allResults.push(...censusRecallTrendResults(censusHistory));
-    } catch { /* history absent (weekly cron hasn't run twice yet) — nothing to trend */ }
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
