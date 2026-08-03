@@ -297,6 +297,7 @@ interface ShowPriorityInfo {
   category: string;
   venue: string | null;
   type: string | null;
+  priorRuns: Array<{ openingDate?: string; closingDate?: string; venue?: string; note?: string }> | null;
 }
 
 /**
@@ -314,6 +315,7 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
         category: show.category || 'broadway',
         venue: show.venue || null,
         type: show.type || null,
+        priorRuns: Array.isArray(show.priorRuns) && show.priorRuns.length ? show.priorRuns : null,
       });
     }
   } catch {
@@ -1616,6 +1618,7 @@ async function main(): Promise<void> {
           reviewFile.category = showMeta.category ?? undefined;
           reviewFile.venue = showMeta.venue ?? undefined;
           reviewFile.type = showMeta.type ?? undefined;
+          reviewFile.priorRuns = showMeta.priorRuns ?? undefined;
         }
         if (reviewFile.isMultiShowReview && reviewFile.fullText) {
           const showTitle = showTitles.get(reviewFile.showId);
@@ -1864,6 +1867,7 @@ async function main(): Promise<void> {
       reviewFile.category = showMeta.category ?? undefined;
       reviewFile.venue = showMeta.venue ?? undefined;
       reviewFile.type = showMeta.type ?? undefined;
+      reviewFile.priorRuns = showMeta.priorRuns ?? undefined;
     }
 
     // Progress
