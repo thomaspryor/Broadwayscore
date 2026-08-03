@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getOffBroadwayShows, getNotableOffBroadwayShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { createShowSerializer } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -30,13 +30,18 @@ export const metadata: Metadata = {
   },
 };
 
-function serializeShow(show: ReturnType<typeof getOffBroadwayShows>[number]): OffBroadwayShow {
-  return serializeShowForClient(show, { category: 'off-broadway' });
-}
-
 export default function OffBroadwayPage() {
   if (!featureFlags.offBroadway) {
     notFound();
+  }
+
+  // Memoized per-render: shows repeat across the main grid, Top Recent Shows
+  // shelf, Starting Soon, and Just Opened lists. Sharing one serialized
+  // reference per show lets the RSC flight serializer dedupe repeat
+  // occurrences (#965).
+  const serialize = createShowSerializer();
+  function serializeShow(show: ReturnType<typeof getOffBroadwayShows>[number]): OffBroadwayShow {
+    return serialize(show, { category: 'off-broadway' }) as OffBroadwayShow;
   }
 
   const shows = getOffBroadwayShows();
