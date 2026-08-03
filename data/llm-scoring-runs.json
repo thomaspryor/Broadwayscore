@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-01T02:00:38.826Z",
-    "completedAt": "2026-08-01T02:00:39.028Z",
-    "totalReviews": 28,
-    "processed": 0,
-    "skipped": 27,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "tao-of-glass-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-01T03:49:47.214Z",
     "completedAt": "2026-08-01T03:49:47.424Z",
     "totalReviews": 28,
@@ -381227,6 +381207,20 @@
       "input": 4272,
       "output": 132,
       "total": 12056
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-08-03T15:31:50.644Z",
+    "completedAt": "2026-08-03T15:31:55.581Z",
+    "totalReviews": 27,
+    "processed": 1,
+    "skipped": 26,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4205,
+      "output": 339,
+      "total": 12213
     },
     "errorDetails": []
   }
