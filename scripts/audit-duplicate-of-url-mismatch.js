@@ -34,6 +34,7 @@ const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
+const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -192,31 +193,20 @@ function audit() {
 
       // Cycle detection: walk the duplicateOf chain from `file`. The single-hop
       // 2-cycle (A.duplicateOf=B, B.duplicateOf=A) is handled by rebuild-all-reviews.js's
-      // circular-tiebreak (content-fingerprint comparison), but that logic only checks
-      // ONE hop back — a 3+-node cycle (A->B->C->A) never finds a terminal non-duplicate
-      // node, so EVERY member falls through rebuild's "ref is also a dupe" skip check and
-      // ALL of them land in reviews.json as same-URL duplicates (Notion #941 — washpost
-      // 3-cycle: andor-brodeur -> justin-davidson -> michael-andor-brodeur -> andor-brodeur,
-      // none of it caught until the Data Validation gate's duplicate-URL check went red).
-      // Walk with a visited-set; a cycle length CAN legitimately be short (2), so this
-      // reports 2-cycles too as a defense-in-depth signal even though rebuild handles those.
-      const chain = [file];
-      const seen = new Set([file]);
-      let cursor = data.duplicateOf;
-      let cycleFound = false;
+      // circular-tiebreak (content-fingerprint comparison), and (since Notion #967)
+      // rebuild also handles N-node cycles via the same shared walk below — but this
+      // audit still reports both lengths as a defense-in-depth signal, and as the
+      // human-triage surface for cycles rebuild can't auto-resolve (no unambiguous
+      // canonical member). Originally added because a 3+-node cycle (A->B->C->A)
+      // never found a terminal non-duplicate node, so EVERY member fell through
+      // rebuild's old "ref is also a dupe" skip check and ALL of them landed in
+      // reviews.json as same-URL duplicates (Notion #941 — washpost 3-cycle:
+      // andor-brodeur -> justin-davidson -> michael-andor-brodeur -> andor-brodeur).
       // Bound by the show dir's own file count, not a fixed constant — a cycle
       // can't be longer than the number of files that could participate in it,
-      // and a fixed cap (e.g. 20) would silently MISS longer cycles by falling
-      // off the loop before revisiting the start (caught by a 30-file stress
-      // test in duplicate-of-url-mismatch.test.mjs).
-      for (let hop = 0; hop < files.length && cursor; hop++) {
-        if (seen.has(cursor)) { chain.push(cursor); cycleFound = true; break; }
-        const cursorData = load(cursor);
-        if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
-        chain.push(cursor);
-        seen.add(cursor);
-        cursor = cursorData.duplicateOf;
-      }
+      // and a fixed cap (e.g. 20) would silently MISS longer cycles (caught by a
+      // 30-file stress test in duplicate-of-url-mismatch.test.mjs).
+      const { cycleFound, chain } = findDuplicateOfCycle(file, load, files.length);
       if (cycleFound) {
         mismatches.push({
           showId: path.basename(showDir),
