@@ -29,6 +29,7 @@ const path = require('path');
 const https = require('https');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { setExtractedScore } = require('./lib/score-routing');
+const { cleanup: cleanupScraper } = require('./lib/scraper');
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -594,7 +595,14 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+main()
+  .catch(err => {
+    console.error('Fatal error:', err);
+    process.exitCode = 1;
+  })
+  .finally(() => {
+    // Phase 3's scraper.fetchPage() falls through to Playwright on some
+    // outlets, which leaves Chromium open on success — cleanup() closes it
+    // with a timeout guard (#438/#914 class).
+    cleanupScraper().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });

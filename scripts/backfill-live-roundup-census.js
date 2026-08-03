@@ -50,6 +50,7 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { buildCensusFromArchives, sourceExtractors } = require('./lib/review-census');
 const { isDispatchTierOutlet } = require('./lib/t1-ledger');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { cleanup: cleanupScraper } = require('./lib/scraper');
 const {
   selectBackfillWindow, diffLiveVsArchive, summarizeBackfill,
   emptyCheckpoint, isDone, recordDone, completedResults,
@@ -323,4 +324,10 @@ function safeCensus(showId, opts) {
   } catch { return { entries: [] }; }
 }
 
-main().catch((err) => { console.error(err); process.exit(1); });
+main()
+  .catch((err) => { console.error(err); process.exitCode = 1; })
+  .finally(() => {
+    // Live re-fetches can fall through to Playwright, which leaves Chromium
+    // open on success (#438/#914 class) — cleanup() closes it with a timeout guard.
+    cleanupScraper().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });

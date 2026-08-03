@@ -53,5 +53,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-03T14:22:36.833Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "2/146 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThe Enormous Crocodile: score-drift\nThe Smile Of Her: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-03T14:45:10.898Z"
   }
 ]

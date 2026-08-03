@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -137,4 +137,10 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+main()
+  .catch(e => { console.error(e); process.exitCode = 1; })
+  .finally(() => {
+    // A successful Playwright fetch leaves Chromium open — cleanup() closes
+    // it with a timeout guard (#438/#914 class).
+    cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
+  });
