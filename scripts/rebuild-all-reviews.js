@@ -1407,6 +1407,7 @@ const crossShowFingerprints = new Map();
             showEarliest,
             isFlexCategory: true,
             priorRuns: showRecord && showRecord.priorRuns,
+            tourLegs: showRecord && showRecord.tourLegs,
           });
           // Production-continuity skip: review falls inside a declared priorRuns window
           if (preWindow.reason === 'prior-run window') {
@@ -2090,6 +2091,7 @@ showDirs.forEach(showId => {
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
+              tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refExcluded = true;
           }
@@ -2146,6 +2148,7 @@ showDirs.forEach(showId => {
               showEarliest: showDateMap[showId],
               isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
               priorRuns: showById[showId]?.priorRuns,
+              tourLegs: showById[showId]?.tourLegs,
             });
             if (preWindow.exclude) refWouldBeExcluded = true;
           }
@@ -2809,6 +2812,7 @@ showDirs.forEach(showId => {
           showEarliest: openDate,
           isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
           priorRuns: showById[showId]?.priorRuns,
+          tourLegs: showById[showId]?.tourLegs,
         });
         if (preWindow.exclude) {
           // Current-run corroboration guard: strong contradiction (Theatre
@@ -4158,6 +4162,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                       showEarliest: sEarliest,
                       isFlexCategory: sCat === 'off-broadway' || isLondonMarket(sCat),
                       priorRuns: showById[showId]?.priorRuns,
+                      tourLegs: showById[showId]?.tourLegs,
                     });
                     if (preWindow.exclude) wouldBeExcluded = true;
                   }
