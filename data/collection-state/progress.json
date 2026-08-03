@@ -63,7 +63,10 @@
     "death-of-a-salesman-2026/theatre-reviews-limited--joseph-verlezza.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -431,7 +434,14 @@
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json"
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -476,12 +486,17 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "death-of-a-salesman-2026/theatre-reviews-limited--joseph-verlezza.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json",
@@ -521,7 +536,7 @@
     ]
   },
   "startTime": "2026-08-03T10:59:00.526Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
   "log": [
     {
       "t": "2026-08-03T11:08:51.215Z",
@@ -539,6 +554,18 @@
       "t": "2026-08-03T11:11:21.068Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-03T14:46:05.154Z",
+      "event": "bb-session",
+      "session": "5d53dda2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-08-03T14:46:40.372Z",
+      "event": "bb-session",
+      "session": "ff236aea",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
     }
   ]
 }
