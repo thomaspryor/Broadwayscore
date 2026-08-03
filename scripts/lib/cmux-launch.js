@@ -31,6 +31,7 @@ const { spawnSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
 const { decideLaunchWait, isSlowBootFailure, STATES,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
+const { preflightAuth } = require('./claude-cli.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const CMUX_APP = '/Applications/cmux.app';
@@ -286,6 +287,12 @@ function shouldAdoptLateStart(result, isAlive) {
   return !!(result && !result.ok && result.workspaceRef && isAlive);
 }
 
+// Pure gate decision for the auth preflight (card #856) — extracted so the
+// refusal logic is unit-testable without spawning a real `claude` process.
+function shouldRefuseForAuth(auth) {
+  return !!(auth && auth.ok === false);
+}
+
 /**
  * Launch a cmux workspace running `claude` on a seed prompt and verify a live
  * claude process actually started.
@@ -349,7 +356,27 @@ function launchCmuxSession(opts) {
   }
 }
 
-function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, probes = {} }, wakeState = { woke: false }) {
+// Best-effort digest page for a launch refused at the auth gate (card #856).
+// Never lets an alerting failure mask or block the real launch-failure
+// report — routeAlert's disposition:'digest' branch does its fs write
+// synchronously before any `await` in its body, so this fire-and-forget call
+// is durable by the time launchCmuxSessionInner returns, even though the
+// caller (bsc-next.js) may process.exit() moments later.
+function pageAuthPreflightFailure(detail) {
+  try {
+    const { routeAlert } = require('./owner-alert-router.js');
+    routeAlert({
+      conditionKey: 'cmux-launch:auth-preflight-failed',
+      title: 'cmux launch refused — claude auth preflight failed',
+      description: detail,
+      severity: 'error',
+      disposition: 'digest',
+      cooldownHours: 6,
+    }).catch(() => {});
+  } catch { /* alerting must never block reporting the real launch failure */ }
+}
+
+function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, probes = {} }, wakeState = { woke: false }) {
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
@@ -379,6 +406,29 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   fs.writeFileSync(cmdFile, `#!/bin/bash\n${command}\n`);
   const typed = ` bash ${cmdFile}`; // leading space additionally survives a swallowed first key
   if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
+
+  // Launcher auth pre-check (card #856, Session-system overhaul S3): 7 cmux
+  // launches died to "Not logged in" in the 5 days before this fix, and
+  // silently — a new pane's claude process registers (claudeAliveIn/
+  // hasClaudeChrome both go true), boots, and just sits on a login prompt,
+  // which every liveness check in this file reads as a healthy launch.
+  // preflightAuth() (scripts/lib/claude-cli.js, task #713) already solves
+  // exactly this for headless spawns by probing the real auth shape before
+  // spending a session attempt; reuse it here instead of re-inventing a
+  // pane-content probe. Fails CLOSED: refuse to open a doomed tab rather
+  // than let the owner discover it later. Kill switch matches the existing
+  // DEPLOY_GATE_DISABLED pattern — default OFF (preflight active) until this
+  // soaks; flip only if the probe itself proves flaky, never as a permanent
+  // bypass.
+  if (!skipAuthPreflight && process.env.CMUX_AUTH_PREFLIGHT_DISABLED !== '1') {
+    const auth = preflightAuth({ log: msg => console.error(`[cmux-launch] ${msg}`) });
+    if (shouldRefuseForAuth(auth)) {
+      const reason = `claude auth preflight failed — ${auth.detail || 'no working credential'}`;
+      console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
+      pageAuthPreflightFailure(reason);
+      return { ok: false, reason, authPreflightFailed: true, seedFile, command };
+    }
+  }
 
   // The SURVIVING workspace — the one attempt 2 left open. Deliberately reset
   // per attempt (Opus ship-check blocker, Codex): carrying attempt 1's ref
@@ -488,7 +538,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
 module.exports = {
   launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
   osActivateCmuxApp, strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
-  hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
+  hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,
 };

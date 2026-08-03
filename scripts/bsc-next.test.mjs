@@ -4,8 +4,9 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE } = require('./bsc-next.js');
+const { actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, main, USAGE, successionRefusal, buildSuccessionSeed } = require('./bsc-next.js');
 const { isDoneTitle } = require('./lib/cmux-workspaces.js');
+const { SUCCESSION_DEPTH_CAP } = require('./lib/dispatch-ledger.js');
 
 // 2026-07-14 incident class + scope add (2026-07-20): `--help` used to fall
 // through parseArgs as an unrecognized flag and launch a real Cmux workspace
@@ -44,7 +45,7 @@ test('--help / -h return before loadTasks/fetchCard/launchCmux/cmux ever run', (
 });
 
 test('USAGE documents the flags this CLI accepts', () => {
-  for (const flag of ['--pick', '--id', '--list', '--dry-run', '--exec', '--model', '--force', '--help, -h']) {
+  for (const flag of ['--pick', '--id', '--list', '--dry-run', '--exec', '--model', '--force', '--succession', '--handoff', '--help, -h']) {
     assert.ok(USAGE.includes(flag), `USAGE missing ${flag}`);
   }
 });
@@ -300,6 +301,121 @@ test('buildSeed: without a project (backward-compat callers), omits the rename i
   const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1' });
   assert.doesNotMatch(seed, /APPEND the current phase/);
   assert.doesNotMatch(seed, /🤖/);
+});
+
+// Context-limit succession (card #856, Session-system overhaul S3): the
+// runaway guard is a P0 from the pre-mortem — depth must come from the
+// ledger, never a caller-supplied number, and a chain past the cap refuses.
+test('successionRefusal: no prior launches → this dispatch is depth 1, never refused', () => {
+  assert.deepEqual(successionRefusal('856', []), { newDepth: 1, refusal: null });
+});
+
+test('successionRefusal: allows dispatch up to and including the cap', () => {
+  const entries = [];
+  for (let i = 1; i < SUCCESSION_DEPTH_CAP; i++) {
+    entries.push({ event: 'launch', taskId: '856', ts: `2026-08-03T0${i}:00:00Z`, workspaceRef: `workspace:${i}`, ...(i > 1 ? { successionOf: `workspace:${i - 1}` } : {}) });
+  }
+  // entries chain to depth SUCCESSION_DEPTH_CAP - 1; the next dispatch is
+  // exactly at the cap and must still be allowed.
+  const result = successionRefusal('856', entries);
+  assert.equal(result.newDepth, SUCCESSION_DEPTH_CAP);
+  assert.equal(result.refusal, null);
+});
+
+test('successionRefusal: refuses the dispatch that would exceed the cap', () => {
+  const entries = [];
+  for (let i = 1; i <= SUCCESSION_DEPTH_CAP; i++) {
+    entries.push({ event: 'launch', taskId: '856', ts: `2026-08-03T0${i}:00:00Z`, workspaceRef: `workspace:${i}`, ...(i > 1 ? { successionOf: `workspace:${i - 1}` } : {}) });
+  }
+  const result = successionRefusal('856', entries);
+  assert.equal(result.newDepth, SUCCESSION_DEPTH_CAP + 1);
+  assert.match(result.refusal, new RegExp(`hard cap is ${SUCCESSION_DEPTH_CAP}`));
+  assert.match(result.refusal, /chained \d+ succession dispatch/);
+});
+
+test('successionRefusal: --force bypasses the cap refusal', () => {
+  const entries = [];
+  for (let i = 1; i <= SUCCESSION_DEPTH_CAP; i++) {
+    entries.push({ event: 'launch', taskId: '856', ts: `2026-08-03T0${i}:00:00Z`, workspaceRef: `workspace:${i}`, ...(i > 1 ? { successionOf: `workspace:${i - 1}` } : {}) });
+  }
+  const result = successionRefusal('856', entries, { force: true });
+  assert.equal(result.refusal, null);
+});
+
+test('buildSuccessionSeed embeds the handoff brief verbatim and states the depth/cap', () => {
+  const task = { id: '856', subject: 'Session-system S3', status: 'in_progress' };
+  const seed = buildSuccessionSeed(task, 'Data', 'sonnet', 3, SUCCESSION_DEPTH_CAP, '## What is done\nfoo\n## What is next\nbar');
+  assert.match(seed, /succession \(depth 3\/5\)/);
+  assert.match(seed, /Succession depth: 3 of a hard cap of 5/);
+  assert.match(seed, /## What is done\nfoo\n## What is next\nbar/);
+  assert.match(seed, /RE-READ this card via notion-brain get/);
+  assert.match(seed, /successor in a context-limit handoff chain/);
+});
+
+// End-to-end succession dispatch (ship-check adversarial catch, 2026-08-03):
+// the real dispatch path — context-budget-nudge.sh's instructions — NEVER
+// passes --succession-of (that flag is optional caller-supplied provenance
+// only). An earlier version keyed successionDepthForTask's chain membership
+// on successionOf alone, so every REAL succession launch persisted with
+// successionOf:null and silently reset to depth 1 forever — the P0 runaway
+// guard never actually engaged in production. Every prior test in this file
+// hand-constructed ledger entries with successionOf pre-populated, which is
+// exactly why this slipped through: nothing drove runSuccessionDispatch()
+// itself against a real read/append round-trip. This test does.
+function runSuccessionHarness() {
+  const { runSuccessionDispatch } = require('./bsc-next.js');
+  const ledger = [];
+  const launched = [];
+  const paged = [];
+  let exitCode = null;
+  const origExit = process.exit;
+  const deps = {
+    launchCmux: () => { const ref = `workspace:${launched.length + 1}`; launched.push(ref); return { ok: true, ref }; },
+    readLedgerEntries: () => ledger.slice(),
+    appendLedgerEntry: (e) => { const w = { ts: new Date().toISOString(), ...e }; ledger.push(w); return w; },
+    fetchCard: () => null,
+    // Injected so this end-to-end test never writes to the real, shared
+    // data/audit/alert-digest-queue.json (it did, before this seam existed
+    // — see pageSuccessionCapExceeded's injection comment in bsc-next.js).
+    pageSuccessionCapExceeded: (task, depth) => paged.push({ task, depth }),
+  };
+  const dispatchOnce = (task, args) => {
+    process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
+    try { runSuccessionDispatch(task, args, deps); }
+    catch (e) { if (e.message !== '__EXIT__') throw e; }
+    finally { process.exit = origExit; }
+    const result = { exitCode, launchedCount: launched.length };
+    exitCode = null;
+    return result;
+  };
+  return { ledger, launched, paged, dispatchOnce };
+}
+
+test('runSuccessionDispatch end-to-end: 5 real successive dispatches succeed, the 6th is refused (no fabricated ledger state)', () => {
+  const { ledger, launched, paged, dispatchOnce } = runSuccessionHarness();
+  const task = { id: '856', subject: 'E2E succession test', status: 'in_progress' };
+  const handoffPath = path.join(os.tmpdir(), `e2e-succession-handoff-${process.pid}.md`);
+  fs.writeFileSync(handoffPath, '## Done\nfoo\n## Next\nbar\n');
+
+  for (let i = 1; i <= SUCCESSION_DEPTH_CAP; i++) {
+    const r = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+    assert.equal(r.exitCode, null, `dispatch ${i} should not have refused`);
+    assert.equal(r.launchedCount, i);
+  }
+  // Prove the depth actually accumulated from what runSuccessionDispatch
+  // itself wrote to the ledger — not from a test-fabricated fixture.
+  const launchEntries = ledger.filter(e => e.event === 'launch');
+  assert.equal(launchEntries.length, SUCCESSION_DEPTH_CAP);
+  assert.ok(launchEntries.every(e => e.succession === true), 'every real succession launch must set succession:true — this is the flag successionDepthForTask keys on');
+  assert.deepEqual(launchEntries.map(e => e.successionDepth), [1, 2, 3, 4, 5]);
+
+  // The 6th real dispatch — same code path, real ledger read-back — refuses.
+  const sixth = dispatchOnce(task, { id: task.id, succession: true, handoff: handoffPath });
+  assert.equal(sixth.exitCode, 1, 'the 6th succession dispatch must be refused by the depth cap');
+  assert.equal(sixth.launchedCount, SUCCESSION_DEPTH_CAP, 'no new workspace launched on refusal');
+  assert.equal(paged.length, 1, 'the injected pager (not the real routeAlert) sees exactly the one refusal');
+
+  fs.unlinkSync(handoffPath);
 });
 
 test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {

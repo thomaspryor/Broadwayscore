@@ -46,6 +46,14 @@ Usage:
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
   bsc-next --allow-unverifiable  dispatch a card with no runnable verify command
                            (recorded in the dispatch ledger; recheck lists it as unverifiable)
+  bsc-next --id N --succession --handoff <path>
+                           context-limit succession: relaunch task N's IN-FLIGHT
+                           work with a fresh context window, seeded from a
+                           checkpoint brief at <path> instead of the card. Skips
+                           the duplicate/dead/parked guards (the predecessor
+                           workspace is expected to still be open). Depth is
+                           derived from the dispatch ledger and hard-capped —
+                           see SUCCESSION_DEPTH_CAP in scripts/lib/dispatch-ledger.js.
   bsc-next --help, -h      show this message, do nothing else
 `;
 
@@ -317,6 +325,222 @@ function buildSeed(task, card, project, model) {
   ].filter(v => v !== null).join('\n');
 }
 
+// Context-limit succession (card #856, Session-system overhaul S3): a session
+// nearing its context limit checkpoints its in-flight work to a handoff file
+// and self-dispatches a successor onto the SAME task via
+// `bsc-next.js --id N --succession --handoff <path>` (context-budget-nudge.sh
+// is what tells it to do this, at prompt time, once it crosses 80% context).
+// Runaway guard from the S3 pre-mortem (P0): depth is derived from the ledger
+// itself (see dispatch-ledger.js's successionDepthForTask — never trusted
+// from a caller-supplied number) and hard-capped so a task that never
+// actually finishes can't chain successors forever. Pure decision, extracted
+// for tests (CLAUDE.md rule 15).
+function successionRefusal(taskId, ledgerEntries, opts = {}) {
+  const priorDepth = dispatchLedger.successionDepthForTask(taskId, ledgerEntries);
+  const newDepth = priorDepth + 1;
+  if (newDepth > dispatchLedger.SUCCESSION_DEPTH_CAP && !opts.force) {
+    return {
+      newDepth,
+      refusal: `task #${taskId} has already chained ${priorDepth} succession dispatch(es) — hard cap is ${dispatchLedger.SUCCESSION_DEPTH_CAP}. A chain this deep usually means the task keeps re-filling context without finishing: investigate scope/approach before continuing. Re-run with --force only once you understand why (or dispatch a normal, non-succession --force relaunch to start a fresh chain).`,
+    };
+  }
+  return { newDepth, refusal: null };
+}
+
+// Seed for a succession launch is the checkpoint brief, not the card — the
+// successor is continuing work already in progress, not starting fresh.
+// Keeps the SAME workspace-title convention as buildSeed() (buildAutoTitle
+// off task.subject/project/model) so the ✅ auto-mark hook and the
+// duplicate-dispatch guard, which both match on that exact title prefix,
+// keep working across the handoff.
+function buildSuccessionSeed(task, project, model, depth, cap, handoffText) {
+  return [
+    `[#${task.id}] ${task.subject} — succession (depth ${depth}/${cap}) —`,
+    ``,
+    `You are the successor in a context-limit handoff chain on this card. Your predecessor checkpointed and self-dispatched you because IT was running out of context — not because the work is done. Read the full handoff brief below and continue exactly where it left off: don't re-derive facts it already established, don't re-litigate decisions it already made, and don't silently drop any pending user decision or in-flight verification it flags.`,
+    ``,
+    `CARD: ${task.subject}`,
+    `Succession depth: ${depth} of a hard cap of ${cap}. bsc-next.js refuses (and pages the owner) past the cap — if you hit heavy context pressure again within just a few turns, that's a signal to shrink scope and keep working here, not to chain another successor.`,
+    project ? `This workspace is named "${buildAutoTitle({ subject: task.subject, project, model })}" — matches the auto-mark hook's title prefix, so ✅-marking and duplicate-dispatch detection keep working across the handoff. Append phase text after this exact title if you rename it, never replace it.` : null,
+    ``,
+    `HANDOFF BRIEF FROM YOUR PREDECESSOR:`,
+    '='.repeat(72),
+    handoffText.trim(),
+    '='.repeat(72),
+    ``,
+    `Before wrap-up, RE-READ this card via notion-brain get — directives may have been added since the original launch.`,
+    ``,
+    `Start by confirming you've absorbed the handoff (what's done, what's next, what still needs independent verification), then proceed.`,
+  ].filter(v => v !== null).join('\n');
+}
+
+// Best-effort digest page when a succession chain hits the depth cap (card
+// #856 P0 guard) — never lets an alerting failure mask the refusal already
+// printed to the caller. See cmux-launch.js's pageAuthPreflightFailure for
+// why an un-awaited routeAlert(disposition:'digest') call is safe here: its
+// fs write runs synchronously before any `await` in its body.
+function pageSuccessionCapExceeded(task, attemptedDepth) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    routeAlert({
+      conditionKey: `bsc-next:succession-cap:${task.id}`,
+      title: `Succession depth cap hit — task #${task.id} "${task.subject}"`,
+      description: `A successor session tried to hand off task #${task.id} again (attempted depth ${attemptedDepth}, hard cap ${dispatchLedger.SUCCESSION_DEPTH_CAP}). The task keeps re-filling context without finishing — investigate before re-dispatching with --force.`,
+      severity: 'error',
+      disposition: 'digest',
+      cooldownHours: 6,
+    }).catch(() => {});
+  } catch { /* alerting must never block the refusal already reported */ }
+}
+
+// Per-task succession lock (ship-check adversarial finding, 2026-08-03): a
+// lone process reading the ledger, deciding "depth OK", and only appending
+// its own launch entry AFTER the cmux launch completes leaves a real TOCTOU
+// window — two concurrent succession dispatches for the SAME task (e.g. two
+// stale successors both crossing 80% and both self-dispatching before
+// either's ledger entry lands) could both read the same priorDepth, both
+// pass the cap check, and both launch, silently doubling the effective
+// chain past SUCCESSION_DEPTH_CAP. Mirrors bsc-prune.js's acquireRunLock —
+// same atomic-mkdir-EEXIST pattern, own lock dir so an unrelated real prune
+// sweep is never blocked by a succession dispatch or vice versa. Held for
+// the full check-launch-append sequence (not just the read), so staleMs
+// must clear a genuinely slow launch: cmux-launch.js's slowBootCapSec caps
+// at 360s, so 8 minutes leaves headroom before a crashed holder's lock is
+// stolen.
+const SUCCESSION_LOCK_DIR = path.join(REPO, 'data', 'audit', 'succession-locks');
+const SUCCESSION_LOCK_STALE_MS = 8 * 60 * 1000;
+
+function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = SUCCESSION_LOCK_STALE_MS) {
+  try { fs.mkdirSync(lockDir, { recursive: true }); } catch { /* best-effort — mkdirSync below still fails informatively */ }
+  const p = path.join(lockDir, `${taskId}.lock`);
+  try {
+    fs.mkdirSync(p); // atomic: fails EEXIST iff another holder already has it
+    fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() }));
+    return true;
+  } catch (e) {
+    if (e.code !== 'EEXIST') return 'error';
+    try {
+      const meta = JSON.parse(fs.readFileSync(path.join(p, 'meta.json'), 'utf8'));
+      if (Date.now() - meta.ts < staleMs) return false; // fresh — genuinely held elsewhere
+      fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify({ pid: process.pid, ts: Date.now() })); // stale — take over
+      return true;
+    } catch { return 'error'; } // unreadable meta — fail closed (refuse), never guess it's free
+  }
+}
+
+function releaseSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR) {
+  try { fs.rmSync(path.join(lockDir, `${taskId}.lock`), { recursive: true, force: true }); } catch { /* next attempt's staleness check recovers */ }
+}
+
+// Side-effecting succession dispatch, split out of main() so the CI-red-
+// claim/verify-gate/duplicate-workspace machinery built for FRESH dispatches
+// never runs against a succession launch — it's continuing the same
+// in-progress task under a new context window, not a new decision to work it.
+function runSuccessionDispatch(task, args, deps) {
+  const {
+    launchCmux: launchCmuxFn, readLedgerEntries: readLedgerEntriesFn, appendLedgerEntry: appendLedgerEntryFn, fetchCard: fetchCardFn,
+    acquireSuccessionLock: acquireLockFn = acquireSuccessionLock, releaseSuccessionLock: releaseLockFn = releaseSuccessionLock,
+    // Injectable (ship-check catch, 2026-08-03): the end-to-end succession
+    // test drives the REAL refusal path (proving the depth cap actually
+    // stops a chain), and without this seam that test's every run would
+    // write a real entry into the shared, git-tracked digest queue the
+    // owner's actual morning digest reads — exactly what happened before
+    // this was made injectable. Production callers get the real pager.
+    pageSuccessionCapExceeded: pageCapExceededFn = pageSuccessionCapExceeded,
+  } = deps;
+
+  if (typeof args.handoff !== 'string' || !args.handoff) {
+    console.error('[bsc-next] --succession requires --handoff <path-to-checkpoint-brief>');
+    process.exit(1);
+  }
+  let handoffText;
+  try { handoffText = fs.readFileSync(args.handoff, 'utf8'); }
+  catch (e) { console.error(`[bsc-next] cannot read --handoff file "${args.handoff}": ${e.message}`); process.exit(1); }
+  if (!handoffText.trim()) {
+    console.error(`[bsc-next] --handoff file "${args.handoff}" is empty — write the checkpoint brief before dispatching a successor`);
+    process.exit(1);
+  }
+
+  // dry-run/print-prompt never touch the lock — they launch nothing, so
+  // there's nothing to race (and --dry-run must stay side-effect-free).
+  if (!(args['dry-run'] || args['print-prompt'])) {
+    const acquired = acquireLockFn(task.id);
+    if (acquired === false) {
+      console.error(`[bsc-next] REFUSING succession dispatch: another succession dispatch for task #${task.id} is already in flight (lock held, not stale). Wait for it to finish or fail before retrying — dispatching concurrently would let two successors both pass the depth cap.`);
+      process.exit(1);
+    }
+    if (acquired === 'error') {
+      console.error(`[bsc-next] REFUSING succession dispatch: could not acquire the per-task succession lock for #${task.id} (lock dir unreadable/corrupt) — failing closed rather than risk a concurrent double-dispatch.`);
+      process.exit(1);
+    }
+  }
+  try {
+    runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn });
+  } finally {
+    if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id);
+  }
+}
+
+function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn }) {
+  const handoffText = fs.readFileSync(args.handoff, 'utf8');
+  const entries = readLedgerEntriesFn();
+  const { newDepth, refusal } = successionRefusal(task.id, entries, args);
+  if (refusal) {
+    console.error(`[bsc-next] REFUSING succession dispatch: ${refusal}`);
+    pageCapExceededFn(task, newDepth);
+    process.exit(1);
+  }
+
+  const pid = notionIdOf(task);
+  const card = pid ? fetchCardFn(pid) : null;
+  const project = projectOf({ tags: card && card.tags, category: (card && card.category) || categoryOf(task), subject: task.subject });
+  const explicitModel = typeof args.model === 'string' ? args.model : null;
+  const model = resolveModel({ explicitFlag: explicitModel, task, card, notionId: pid, queuePath: QUEUE_PATH });
+  const seed = buildSuccessionSeed(task, project, model, newDepth, dispatchLedger.SUCCESSION_DEPTH_CAP, handoffText);
+
+  if (args['dry-run'] || args['print-prompt']) {
+    console.log(`# would launch SUCCESSION (depth ${newDepth}/${dispatchLedger.SUCCESSION_DEPTH_CAP}) on: #${task.id} [${task.status}] ${task.subject}\n`);
+    console.log(seed);
+    return;
+  }
+
+  // Carry forward the verify command captured at this task's most recent
+  // launch — succession continues the existing acceptance contract, it
+  // doesn't re-derive it (the card text bsc-next would otherwise re-gate on
+  // may not even be in hand here, since fetchCard degrades to null silently).
+  const priorLaunch = entries.filter(e => e.event === 'launch' && String(e.taskId) === String(task.id)).slice(-1)[0] || {};
+
+  const res = launchCmuxFn(task, seed, undefined, model, project);
+  if (res.ok) {
+    const tabTitle = buildAutoTitle({ subject: task.subject, project, model });
+    console.log(`[bsc-next] opened SUCCESSION Cmux tab "${tabTitle}" (${res.ref}) on #${task.id}, depth ${newDepth}/${dispatchLedger.SUCCESSION_DEPTH_CAP} (claude verified running${res.adoptedLate ? ', adopted after a late start' : ''})`);
+    try {
+      appendLedgerEntryFn({
+        event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
+        verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
+        notionId: pid || null, adoptedLate: res.adoptedLate || null,
+        // `succession: true` is the load-bearing flag successionDepthForTask()
+        // keys on (ship-check P0 catch, 2026-08-03): `--succession-of <ref>`
+        // is optional caller-supplied provenance ONLY — the real dispatch
+        // path (context-budget-nudge.sh's instructions) never passes it, so
+        // relying on successionOf alone left the depth cap permanently
+        // disarmed (every real succession entry read back as depth 1,
+        // forever). This flag is set unconditionally by virtue of reaching
+        // this code path at all — there is no other way to append a launch
+        // entry from runSuccessionDispatchLocked.
+        succession: true,
+        successionOf: (typeof args['succession-of'] === 'string' && args['succession-of']) || null,
+        successionDepth: newDepth,
+      });
+    } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
+  } else {
+    console.error(`[bsc-next] SUCCESSION LAUNCH NOT VERIFIED (${res.reason}).`);
+    console.error(`  command that should have run:`);
+    console.error(`  ${res.command}`);
+    process.exit(1);
+  }
+}
+
 // ── side-effecting helpers ─────────────────────────────────────────────────
 function fetchCard(pageId) {
   try {
@@ -447,6 +671,17 @@ function main(argv = process.argv.slice(2), deps = {}) {
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
+
+  // Context-limit succession (card #856) is a continuation of THIS task, not
+  // a fresh dispatch decision — it skips the overlap/verify-gate/duplicate-
+  // workspace machinery below entirely (see runSuccessionDispatch's header
+  // comment). --id is required (never picks a task automatically — a
+  // successor must land on the exact task it's continuing).
+  if (args.succession) {
+    if (!args.id) { console.error('[bsc-next] --succession requires --id <taskId> (never auto-picks a task).'); process.exit(1); }
+    runSuccessionDispatch(task, args, { launchCmux: launchCmuxFn, readLedgerEntries: readLedgerEntriesFn, appendLedgerEntry: appendLedgerEntryFn, fetchCard: fetchCardFn });
+    return;
+  }
 
   // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
   // catches a SECOND dispatch of THIS SAME task id. It has no way to catch
@@ -742,4 +977,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, acquireSuccessionLock, releaseSuccessionLock };

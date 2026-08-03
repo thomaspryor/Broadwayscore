@@ -18,6 +18,15 @@
  * touches cmux state (the same reason bsc-conductor's habitual
  * `bsc-prune --dry-run` orientation sweep still captures it).
  *
+ * Card #856 (Session-system overhaul S3, 4b): a narrow, owner-approved
+ * exception to "un-marked workspaces are NEVER closed" — a 🤖 auto-dispatched
+ * (never owner-opened) workspace whose claude process is alive but stuck on
+ * an auth-dead screen ("Not logged in") is neither idle (process alive) nor
+ * ever going to self-mark ✅, so it would otherwise sit open forever. Two
+ * consecutive sightings quarantine it (reported, not closed); the third
+ * closes it and pages the owner via the digest. Kill switch:
+ * NO_PAYLOAD_REAPER_DISABLED=1. See scripts/lib/no-payload-reaper.js.
+ *
  *   bsc-prune            close every ✅-marked workspace, list idle un-marked
  *   bsc-prune --dry-run  show what would close, close nothing
  *   bsc-prune --help, -h show this message, do nothing else
@@ -25,11 +34,15 @@
 
 const {
   cmuxAvailable, listWorkspaces, isDoneTitle, claudeAliveIn, terminalSurfaceAliveIn, checkLiveness, pruneDone,
+  closeWorkspace, run: cmuxRun,
 } = require('./lib/cmux-workspaces.js');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
+const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
 
 const USAGE = `bsc-prune — close finished Cmux workspaces.
 
@@ -58,6 +71,11 @@ function main(argv = process.argv.slice(2), deps = {}) {
     parkCard: parkCardFn = parkCard,
     acquireRunLock: acquireRunLockFn = acquireRunLock,
     releaseRunLock: releaseRunLockFn = releaseRunLock,
+    readScreen: readScreenFn = (ref) => cmuxRun(['read-screen', '--workspace', ref]),
+    closeWorkspace: closeWorkspaceFn = closeWorkspace,
+    loadNoPayloadState: loadNoPayloadStateFn = loadNoPayloadState,
+    saveNoPayloadState: saveNoPayloadStateFn = saveNoPayloadState,
+    pageNoPayloadClose: pageNoPayloadCloseFn = pageNoPayloadClose,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -82,7 +100,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     lockHeld = acquired === true;
   }
   try {
-    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn } });
+    mainLocked({ dryRun, deps: { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn } });
   } finally {
     if (lockHeld) releaseRunLockFn();
   }
@@ -115,7 +133,7 @@ function releaseRunLock(lockDir = LOCK_DIR) {
 }
 
 function mainLocked({ dryRun, deps }) {
-  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn } = deps;
+  const { listWorkspacesFn, pruneDoneFn, isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn } = deps;
 
   const all = listWorkspacesFn();
 
@@ -229,7 +247,115 @@ function mainLocked({ dryRun, deps }) {
     }
   }
 
+  // No-payload reaper (card #856, Session-system overhaul S3, 4b): distinct
+  // from the idle-unmarked listing above (which only ever catches a DEAD
+  // claude process) — this catches an ALIVE 🤖 auto-dispatched workspace
+  // stuck on an auth-dead screen ("Not logged in") that will otherwise sit
+  // open forever, since it's neither idle nor ever going to self-mark ✅.
+  // idle's refs are dead-process by definition and never candidates here.
+  const idleRefs = new Set(idle.map(w => w.ref));
+  sweepNoPayload({
+    all, closedRefs, idleRefs, dryRun,
+    isDoneTitleFn, readScreenFn, closeWorkspaceFn,
+    loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn,
+    readLedgerEntriesFn, appendLedgerEntryFn,
+  });
+
   sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn });
+}
+
+// Machine-local state (never git-tracked — same convention as
+// context-budget-nudge.sh's ~/.claude/state/statusline/ files): per-ref
+// consecutive no-payload sighting counts, persisted across sweep ticks.
+const NO_PAYLOAD_STATE_PATH = path.join(os.homedir(), '.claude', 'state', 'no-payload-reaper.json');
+
+function loadNoPayloadState(p = NO_PAYLOAD_STATE_PATH) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch { return {}; } // missing/corrupt — fail open to "nothing quarantined yet"
+}
+
+function saveNoPayloadState(state, p = NO_PAYLOAD_STATE_PATH) {
+  try {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, JSON.stringify(state, null, 2) + '\n');
+  } catch (e) { console.error(`[no-payload] WARN state write failed (non-fatal, next tick re-quarantines from 0): ${e.message}`); }
+}
+
+// Best-effort digest page when the reaper actually closes a workspace (card
+// #856) — a real behavior change from "nothing auto-closes an unmarked tab"
+// (feedback_never_close_unmarked_cmux_workspaces.md), so every close must be
+// loud and auditable, never silent. Never lets an alerting failure mask the
+// close already performed.
+function pageNoPayloadClose(observation, launch) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    const taskLabel = launch ? ` (task #${launch.taskId} "${launch.subject}")` : '';
+    routeAlert({
+      conditionKey: `bsc-prune:no-payload-close:${observation.ref}`,
+      title: `Closed a no-payload workspace — ${observation.ref}`,
+      description: `${observation.title}${taskLabel} sat on an auth-dead screen for ${QUARANTINE_LIMIT + 1} consecutive sweeps with no output, then was closed by bsc-prune's no-payload reaper. If this was real work, re-check claude auth and re-dispatch${launch ? `: node scripts/bsc-next.js --id ${launch.taskId} --force` : ''}.`,
+      severity: 'warning',
+      disposition: 'digest',
+      cooldownHours: 1,
+    }).catch(() => {});
+  } catch { /* alerting must never block the close already performed */ }
+}
+
+// Card #856, 4b. Owner rule 2026-08-02 ("auto-close is limited to 🤖
+// auto-dispatched tabs, full stop" — prune-closeable.js's isCloseable)
+// governs the candidate filter here too: never the selected tab, never a
+// ✅-marked or already-closed-this-sweep ref, never a dead-process ref
+// (that's the pre-existing idle-unmarked bucket's job), and never a tab
+// without the 🤖 marker — an owner-opened tab is NEVER a candidate,
+// regardless of what its screen shows. Kill switch matches the
+// DEPLOY_GATE_DISABLED pattern (default OFF — reaper active — until this
+// soaks).
+function sweepNoPayload({ all, closedRefs, idleRefs, dryRun, isDoneTitleFn, readScreenFn, closeWorkspaceFn, loadNoPayloadStateFn, saveNoPayloadStateFn, pageNoPayloadCloseFn, readLedgerEntriesFn, appendLedgerEntryFn }) {
+  if (process.env.NO_PAYLOAD_REAPER_DISABLED === '1') return;
+
+  const candidates = all.filter(w =>
+    !closedRefs.has(w.ref) && !idleRefs.has(w.ref) && !isDoneTitleFn(w.title) && !w.selected && hasAutoDispatchMarker(w.title)
+  );
+  if (!candidates.length) return;
+
+  const observations = candidates.map(w => {
+    let screenText = '';
+    try { screenText = readScreenFn(w.ref); } catch { /* read failure — never flag on uncertainty */ }
+    return { ref: w.ref, title: w.title, noPayload: screenLooksNoPayload(screenText) };
+  });
+
+  const priorState = loadNoPayloadStateFn();
+  const { toClose, toQuarantine, state } = noPayloadReaperTick(observations, priorState);
+
+  if (toQuarantine.length) {
+    console.log(`\n[no-payload] ${toQuarantine.length} 🤖 workspace(s) showing no payload (auth-dead pane), quarantined:`);
+    toQuarantine.forEach(o => console.log(`  ${o.ref}  ${o.title}  (sighting ${o.count}/${QUARANTINE_LIMIT})`));
+  }
+
+  if (dryRun) {
+    if (toClose.length) {
+      console.log(`\n[dry-run] would close ${toClose.length} no-payload workspace(s) (${QUARANTINE_LIMIT + 1} consecutive sightings):`);
+      toClose.forEach(o => console.log(`  ${o.ref}  ${o.title}`));
+    }
+    return; // never persist state or touch cmux under --dry-run
+  }
+
+  saveNoPayloadStateFn(state);
+  if (!toClose.length) return;
+
+  console.log(`\n[no-payload] closing ${toClose.length} workspace(s) that never produced output (${QUARANTINE_LIMIT + 1} consecutive auth-dead sightings):`);
+  let ledgerEntries;
+  try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+  for (const o of toClose) {
+    console.log(`  ${o.ref}  ${o.title}`);
+    try { closeWorkspaceFn(o.ref); } catch (e) { console.error(`[no-payload] WARN close failed for ${o.ref}: ${e.message}`); }
+    const launch = dispatchLedger.launchByRef(o.ref, ledgerEntries);
+    try { appendLedgerEntryFn({ event: 'dead', taskId: (launch && launch.taskId) || 'unknown', workspaceRef: o.ref, reason: 'no-payload' }); }
+    catch (e) { console.error(`[no-payload] WARN ledger write failed for ${o.ref}: ${e.message}`); }
+    pageNoPayloadCloseFn(o, launch);
+  }
 }
 
 // Task #578: reconcile launches whose workspace the owner CLOSED. Split out
@@ -397,4 +523,4 @@ function parkCard(vanished) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock };
+module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH };
