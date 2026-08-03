@@ -36,7 +36,8 @@ import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
+import { getBroadwayDuration } from '@/lib/date-utils';
+import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
@@ -196,26 +197,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       description: truncatedDescription,
     },
   };
-}
-
-// Use UTC-based formatting to avoid timezone-related hydration mismatch
-function formatDate(dateStr: string | null | undefined): string {
-  // Return empty string for null/undefined/empty dates
-  if (!dateStr) {
-    return '';
-  }
-
-  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.) that break Date parsing
-  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-  const date = new Date(cleanedDateStr);
-
-  // Check for invalid date or Unix epoch (which indicates missing date)
-  if (isNaN(date.getTime()) || date.getFullYear() < 1950) {
-    return ''; // Hide date instead of showing garbage
-  }
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
 function TicketIcon() {
@@ -634,43 +615,19 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
-                {show.status === 'previews' || show.status === 'upcoming' ? (
-                  /* openingDate is routinely null Off-Broadway (many OB runs have no
-                     separate press night), and this branch used to render nothing at
-                     all in that case — a show with a known first-preview AND closing
-                     date showed neither. Falls back to previewsStartDate, and shows
-                     the closing date here too (it was previously only reachable via
-                     the non-previews branches). Owner report on The Pass, 2026-08-02.
-                     Mirrors DateLine in ShowHeroRedesign.tsx — keep the two in sync. */
-                  <>
-                    {formatDate(show.openingDate) ? (
-                      <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
-                    ) : formatDate(show.previewsStartDate) ? (
-                      <span> <span className="text-gray-500">·</span> Previews from {formatDate(show.previewsStartDate)}</span>
-                    ) : null}
-                    {formatDate(show.closingDate) && (
-                      <span> <span className="text-gray-500">·</span> <span className="text-amber-400">Closes {formatDate(show.closingDate)}</span></span>
-                    )}
-                  </>
-                ) : show.closingDate ? (
-                  <>
-                    {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
-                    <span> <span className="text-gray-500">·</span> <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span></span>
-                    {show.status === 'closed' && (() => {
-                      const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
-                      return runLen ? <span> <span className="text-gray-500">·</span> Ran for {runLen}</span> : null;
-                    })()}
-                  </>
-                ) : formatDate(show.openingDate) ? (
-                  <>
-                    <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
-                    {(() => {
-                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? null : 'on Broadway';
-                      const dur = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-                      return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
-                    })()}
-                  </>
-                ) : null}
+                {/* Date-line segments come from the shared show-date-line
+                    module (src/lib/show-date-line.ts) — the single source
+                    of truth for start/closing/duration rules, also consumed
+                    by DateLine in ShowHeroRedesign.tsx. Do not fork this
+                    logic back into inline branches (task #951). */}
+                {(() => {
+                  const durationSuffix = getHeroDurationSuffix(show);
+                  const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
+                  const segments = getShowDateLineSegments(show, durationText);
+                  return segments.map((seg, i) => (
+                    <span key={i}> <span className="text-gray-500">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
+                  ));
+                })()}
               </p>
 
               {/* Regional trust line — keyed on category (renders even if the market flag is off,
