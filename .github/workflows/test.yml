@@ -1477,6 +1477,11 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/stuck-work.js'
       - 'scripts/lib/stuck-work.test.mjs'
+      # `## Parked <date>` marker contract shared by bsc-prune parkCard and
+      # the stuck-work classifier (2026-08-03). Colocated test runs in the
+      # lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/park-marker.js'
+      - 'scripts/lib/park-marker.test.mjs'
       - 'scripts/audit-t1-silent-gaps.js'
       # ST-1 (2026-07-22): manual-entry merge-path force-override fix — a merge
       # onto an existing wrongProduction:true file now clears it instead of

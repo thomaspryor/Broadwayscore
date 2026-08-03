@@ -8,13 +8,22 @@ const { classifyStuckCards, fetchBrainCards } = require('./stuck-work.js');
 const NOW = Date.parse('2026-07-22T12:00:00Z');
 const hoursAgo = (h) => new Date(NOW - h * 3600000).toISOString();
 
-test('paused P0/P1 flags regardless of age', () => {
+test('unstamped paused P0/P1 fires only past the 48h grace (was: regardless of age)', () => {
+  const fresh = { name: 'A', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1) };
+  const stuck = { name: 'A2', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(72) };
+  const r = classifyStuckCards([fresh, stuck], NOW);
+  // 1h ago = a routine wrap-up pause of live work — not stuck (yet).
+  assert.deepEqual(r.pausedCritical.map((c) => c.name), ['A2']);
+  assert.equal(r.pausedStale.length, 0);
+  assert.equal(r.pausedParked.length, 0);
+});
+
+test('unstamped paused P1 at 24h stays inside the grace window', () => {
   const r = classifyStuckCards(
-    [{ name: 'A', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1) }],
+    [{ name: 'A3', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(24) }],
     NOW,
   );
-  assert.equal(r.pausedCritical.length, 1);
-  assert.equal(r.pausedStale.length, 0);
+  assert.equal(r.pausedCritical.length, 0);
 });
 
 test('paused P2 flags only after 7 days', () => {
@@ -143,9 +152,9 @@ test('stamp overdue 1d stays in the grace window (due today, recheck runs tonigh
   assert.equal(r.pausedAwaitingRecheck.length, 1);
 });
 
-test('stampless paused P0 still fires exactly as before (regression guard)', () => {
+test('stampless paused P0 past the grace still fires (regression guard for the founding incident)', () => {
   const r = classifyStuckCards(
-    [{ name: 'K', status: 'Paused', priority: 'P0 Now', lastEditedAt: hoursAgo(1), notes: 'nothing dated', outcome: '' }],
+    [{ name: 'K', status: 'Paused', priority: 'P0 Now', lastEditedAt: hoursAgo(49), notes: 'nothing dated', outcome: '' }],
     NOW,
   );
   assert.deepEqual(r.pausedCritical.map((c) => c.name), ['K']);
@@ -168,6 +177,69 @@ test('pausedAwaitingRecheck sorts by soonest stamp first', () => {
     NOW,
   );
   assert.deepEqual(r.pausedAwaitingRecheck.map((c) => c.name), ['sooner', 'later']);
+});
+
+// ── `## Parked` marker awareness (bsc-prune tab-close parking, #776) ───────
+
+const parkedOutcome = (dateStr) => `## Parked ${dateStr}\nOwner closed its workspace (workspace:9) without marking it done, so the dispatcher stopped re-opening it. Resume with \`node scripts/bsc-next.js --id 42 --force\`.`;
+
+test('freshly parked P1 lands in pausedParked, not pausedCritical', () => {
+  const r = classifyStuckCards(
+    [{ name: 'P', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1), outcome: parkedOutcome('2026-07-21') }],
+    NOW,
+  );
+  assert.equal(r.pausedCritical.length, 0);
+  assert.deepEqual(r.pausedParked.map((c) => c.name), ['P']);
+  assert.equal(r.pausedParked[0].parkedAtMs, Date.parse('2026-07-21T00:00:00Z'));
+});
+
+test('parked past the 7d window escalates to pausedCritical with parkedOverdueDays', () => {
+  // Parked 2026-07-13, NOW 2026-07-22T12:00Z → 9.5 days parked → 2d past the window.
+  const r = classifyStuckCards(
+    [{ name: 'Q', status: 'Paused', priority: 'P0 Now', lastEditedAt: hoursAgo(1), outcome: parkedOutcome('2026-07-13') }],
+    NOW,
+  );
+  assert.equal(r.pausedParked.length, 0);
+  assert.equal(r.pausedCritical.length, 1);
+  assert.equal(r.pausedCritical[0].parkedOverdueDays, 2);
+});
+
+test('park marker wins over a stamp: parking is the newest state transition', () => {
+  const r = classifyStuckCards(
+    [{ name: 'R', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1), notes: 'RECHECK-AFTER: 2026-07-30', outcome: parkedOutcome('2026-07-21') }],
+    NOW,
+  );
+  assert.equal(r.pausedAwaitingRecheck.length, 0);
+  assert.deepEqual(r.pausedParked.map((c) => c.name), ['R']);
+});
+
+test('a buried (non-head) park marker is ignored — later outcome writes fail safe to the alarm', () => {
+  const buried = `## Shipped partial fix\n\n---\n\n${parkedOutcome('2026-07-21')}`;
+  const r = classifyStuckCards(
+    [{ name: 'S', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(72), outcome: buried }],
+    NOW,
+  );
+  assert.equal(r.pausedParked.length, 0);
+  assert.deepEqual(r.pausedCritical.map((c) => c.name), ['S']);
+});
+
+test('parked P2 stays governed by the ordinary 7d pausedStale rule (marker only carves out criticals)', () => {
+  const r = classifyStuckCards(
+    [{ name: 'T', status: 'Paused', priority: 'P2 Later', lastEditedAt: hoursAgo(24 * 10), outcome: parkedOutcome('2026-07-21') }],
+    NOW,
+  );
+  assert.deepEqual(r.pausedStale.map((c) => c.name), ['T']);
+});
+
+test('pausedParked sorts oldest park first', () => {
+  const r = classifyStuckCards(
+    [
+      { name: 'newer-park', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1), outcome: parkedOutcome('2026-07-21') },
+      { name: 'older-park', status: 'Paused', priority: 'P1 Next', lastEditedAt: hoursAgo(1), outcome: parkedOutcome('2026-07-18') },
+    ],
+    NOW,
+  );
+  assert.deepEqual(r.pausedParked.map((c) => c.name), ['older-park', 'newer-park']);
 });
 
 test('fetchBrainCards throws on HTTP error', async () => {

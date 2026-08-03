@@ -7,15 +7,36 @@
  * cards only), and session-start stale checks (In-progress only). Same for
  * "In progress" cards whose owning session died: nothing re-surfaces them.
  *
+ * Two legitimate Paused states are carved out so they don't fire the alarm
+ * (2026-08-03, card 3b1637c5):
+ *   - RECHECK-AFTER-stamped cards (deferred-effect fixes awaiting the nightly
+ *     recheck) → pausedAwaitingRecheck until the stamp is overdue past grace.
+ *   - `## Parked <date>`-marked cards (bsc-prune tab-close parking, #776) →
+ *     pausedParked until the park is older than PARKED_ESCALATION_DAYS.
+ * Unstamped, unmarked Paused P0/P1s get PAUSED_CRITICAL_GRACE_HOURS before
+ * counting as stuck — routine wrap-up pauses of live work no longer fire the
+ * next morning's digest, while the founding incident (a card Paused ~1 day
+ * with its build unshipped) still fires on digest 2-3.
+ *
  * classifyStuckCards is pure (rule 15) — health-check.js supplies cards from
  * fetchBrainCards below; tests supply fixtures.
  */
 
 const { BRAIN_DATABASE_ID: DATABASE_ID, NOTION_VERSION } = require('./notion-constants');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp');
+const { parseParkedDate } = require('./park-marker');
 
 const ORPHAN_HOURS_DEFAULT = 48;
 const PAUSED_LOW_PRIORITY_DAYS = 7;
+// How long an unstamped, unmarked Paused P0/P1 may sit before it counts as
+// stuck. 48h (not 24h) so a wrap-up pause from the prior afternoon doesn't
+// straddle the next 7:30am digest boundary.
+const PAUSED_CRITICAL_GRACE_HOURS = 48;
+// A tab-close-parked card is deliberately shelved by the owner — quiet for
+// this many days (surfaced as an FYI note), then it counts as stuck so parked
+// cards can't rot forever. Keyed on the DATE IN THE MARKER, never
+// last_edited_time (bots bump that and would reset the clock).
+const PARKED_ESCALATION_DAYS = 7;
 // A Paused card whose RECHECK-AFTER stamp is due gets this many days for the
 // nightly acceptance recheck to pick it up before it counts as stuck again —
 // "due today, recheck runs tonight" must not warn. Past the grace, an overdue
@@ -27,22 +48,28 @@ const MAX_PAGES = 20;
 
 // KNOWN LIMITATION: "activity" here is Notion's last_edited_time, which bots
 // (notion-action-poll, auto-fix-friction-card, tags sync) also bump — a dead
-// card touched by automation looks fresh and hides from the orphan bucket.
-// Good enough as a v1 heuristic (first live run still surfaced 50 orphans);
-// per-actor activity needs the #279 alert-ledger.
+// card touched by automation looks fresh and hides from the orphan bucket,
+// and (since 2026-08-03) a bot touching an unstamped Paused P0/P1 more often
+// than every PAUSED_CRITICAL_GRACE_HOURS can hold it inside the grace window
+// indefinitely. Accepted trade-off — there is no better timestamp on
+// unstamped cards; per-actor activity needs the #279 alert-ledger. The
+// parked/stamped escalations are immune (keyed on dates in the card text).
 
 /**
  * @param {Array<{name:string,status:string,priority:string|null,lastEditedAt:string,url?:string,notes?:string,outcome?:string}>} cards
  * @param {number} nowMs
- * @returns {{pausedCritical:Array, pausedStale:Array, pausedAwaitingRecheck:Array, orphaned:Array}}
+ * @returns {{pausedCritical:Array, pausedStale:Array, pausedAwaitingRecheck:Array, pausedParked:Array, orphaned:Array}}
  */
 function classifyStuckCards(cards, nowMs, opts = {}) {
   const orphanHours = opts.orphanHours ?? ORPHAN_HOURS_DEFAULT;
   const pausedLowDays = opts.pausedLowDays ?? PAUSED_LOW_PRIORITY_DAYS;
   const graceDays = opts.stampGraceDays ?? STAMP_OVERDUE_GRACE_DAYS;
+  const criticalGraceHours = opts.pausedCriticalGraceHours ?? PAUSED_CRITICAL_GRACE_HOURS;
+  const parkedEscalationDays = opts.parkedEscalationDays ?? PARKED_ESCALATION_DAYS;
   const pausedCritical = [];
   const pausedStale = [];
   const pausedAwaitingRecheck = [];
+  const pausedParked = [];
   const orphaned = [];
   let invalidDates = 0;
 
@@ -65,14 +92,33 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
       const stampMs = parseRecheckAfterFromCard(card);
       const stampOverdueDays = stampMs != null ? (nowMs - stampMs) / 86400000 : null;
       if (critical) {
-        if (stampMs != null && stampOverdueDays <= graceDays) {
+        // Park marker first: head-anchored, so a match means parking is the
+        // NEWEST outcome write — the most recent state transition wins over
+        // any stamp. Any later outcome write pushes the marker off the head
+        // and we fall through to stamp/grace logic (fail-safe).
+        const parkedAtMs = parseParkedDate(card.outcome);
+        if (parkedAtMs != null) {
+          // Escalation keys on the marker's own date, not idleHours —
+          // last_edited_time is bot-bumped and would reset the clock.
+          const parkedDays = (nowMs - parkedAtMs) / 86400000;
+          if (parkedDays <= parkedEscalationDays) {
+            pausedParked.push({ ...card, idleHours, parkedAtMs });
+          } else {
+            pausedCritical.push({ ...card, idleHours, parkedOverdueDays: Math.floor(parkedDays - parkedEscalationDays) });
+          }
+        } else if (stampMs != null && stampOverdueDays <= graceDays) {
           pausedAwaitingRecheck.push({ ...card, idleHours, recheckAfterMs: stampMs });
-        } else {
-          // No stamp → the original blind-spot alarm, regardless of age.
+        } else if (stampMs != null) {
           // Stamp overdue past grace → stuck, with the overdue count attached
           // so the digest line can say why.
-          pausedCritical.push({ ...card, idleHours, ...(stampMs != null ? { stampOverdueDays: Math.floor(stampOverdueDays) } : {}) });
+          pausedCritical.push({ ...card, idleHours, stampOverdueDays: Math.floor(stampOverdueDays) });
+        } else if (idleHours > criticalGraceHours) {
+          // No stamp, no marker, past the grace window → the original
+          // blind-spot alarm.
+          pausedCritical.push({ ...card, idleHours });
         }
+        // else: unstamped and paused within the grace window — a routine
+        // wrap-up pause of live work, not stuck (yet).
       } else if (idleHours > pausedLowDays * 24) {
         // Stamped-and-waiting P2s are parked by the same process rule — keep
         // them out of the FYI line while their stamp is still in the future.
@@ -88,7 +134,8 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
   pausedStale.sort(byIdle);
   orphaned.sort(byIdle);
   pausedAwaitingRecheck.sort((a, b) => a.recheckAfterMs - b.recheckAfterMs);
-  return { pausedCritical, pausedStale, pausedAwaitingRecheck, orphaned, invalidDates };
+  pausedParked.sort((a, b) => a.parkedAtMs - b.parkedAtMs);
+  return { pausedCritical, pausedStale, pausedAwaitingRecheck, pausedParked, orphaned, invalidDates };
 }
 
 /**
@@ -144,4 +191,4 @@ async function fetchBrainCards(apiKey, fetchImpl = fetch) {
   return cards;
 }
 
-module.exports = { classifyStuckCards, fetchBrainCards, ORPHAN_HOURS_DEFAULT, PAUSED_LOW_PRIORITY_DAYS, STAMP_OVERDUE_GRACE_DAYS };
+module.exports = { classifyStuckCards, fetchBrainCards, ORPHAN_HOURS_DEFAULT, PAUSED_LOW_PRIORITY_DAYS, STAMP_OVERDUE_GRACE_DAYS, PAUSED_CRITICAL_GRACE_HOURS, PARKED_ESCALATION_DAYS };
