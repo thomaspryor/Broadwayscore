@@ -168,9 +168,11 @@ test('censusVerdictFor: sibling URLs from one outlet each get their own candidat
   assert.deepStrictEqual(v.candidates.map((c) => c.url).sort(),
     ['https://other.com/c', 'https://timeout.com/a', 'https://timeout.com/b']);
   assert.ok(v.candidates.every((c) => c.state === 'live'));
-  // liveCount/candidateCount are the public `cov` pair — both URL-level.
-  assert.strictEqual(v.liveCount, 3);
-  assert.strictEqual(v.candidateCount, 3);
+  // The PUBLIC pair stays OUTLET-level (2 outlets, not 3 URLs): the audit
+  // resolves coverage per host, so publishing "3 of 3 reviews live" off one
+  // review file per host would claim more than we can vouch for.
+  assert.strictEqual(v.liveCount, 2);
+  assert.strictEqual(v.candidateCount, 2);
   // and the verdict itself is unchanged by the extra sibling
   assert.strictEqual(v.verdict, 'complete');
 });
@@ -191,4 +193,15 @@ test('censusVerdictFor: liveCount excludes non-live candidates', () => {
   assert.strictEqual(v.candidateCount, 2);
   assert.strictEqual(v.liveCount, 1);
   assert.strictEqual(v.verdict, 'incomplete');
+});
+
+test('censusVerdictFor: public counts are outlet-level even as candidates stay URL-level', () => {
+  const v = censusVerdictFor(result('a', {
+    aggregatorListedUrls: ['https://timeout.com/listing', 'https://timeout.com/review'],
+    missing: [{ host: 'gone.com', url: 'https://gone.com/1' }, { host: 'gone.com', url: 'https://gone.com/2' }],
+  }), { now: '2026-08-03T00:00:00.000Z' });
+  assert.strictEqual(v.candidates.length, 4);   // private detail: one row per URL
+  assert.strictEqual(v.candidateCount, 2);      // public: timeout.com + gone.com
+  assert.strictEqual(v.liveCount, 1);           // public: only timeout.com is covered
+  assert.ok(v.liveCount <= v.candidateCount);
 });

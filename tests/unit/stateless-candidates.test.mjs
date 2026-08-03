@@ -137,3 +137,38 @@ test('malformed input never throws', () => {
   assert.doesNotThrow(() => auditShowCandidates(null));
   assert.doesNotThrow(() => auditShowCandidates({ showId: 'x', censusVerdict: { candidates: [null, 'junk', {}] } }));
 });
+
+// #906 ship-check findings ---------------------------------------------------
+
+test('no-census-yet is not a finding: cited outlets on an unsourced show stay quiet', () => {
+  // censusVerdict returns candidates:[] by construction in this state, so
+  // reporting the cited outlets as stateless would be a finding no producer
+  // change could ever clear.
+  const a = auditShowCandidates(result({
+    citedNoUrl: [{ outletId: 'the-stage' }, { outletId: 'timeout' }],
+    censusVerdict: { verdict: 'no-census-yet', candidates: [] },
+  }));
+  assert.equal(a.hasVerdict, false);
+  assert.deepEqual(a.statelessOutlets, []);
+  assert.equal(a.verdict, 'no-census-yet');    // still reported, just not as a defect
+});
+
+test('checked separates "nothing to check" from "all clean" (no false green tick)', () => {
+  const nothing = reportStatelessCandidates([
+    result({ showId: 'unsourced', censusVerdict: { verdict: 'no-census-yet', candidates: [] }, citedNoUrl: [{ outletId: 'x' }] }),
+    result({ showId: 'not-yet-computed', aggregatorListedUrls: ['https://a.com/1'] }),
+  ], { now: NOW, windowDays: 30 });
+  assert.equal(nothing.examined, 2);
+  assert.equal(nothing.checked, 0);
+  assert.equal(nothing.findings.length, 0);
+
+  const clean = reportStatelessCandidates([
+    result({
+      showId: 'real',
+      aggregatorListedUrls: ['https://a.com/1'],
+      censusVerdict: { verdict: 'complete', candidates: [{ url: 'https://a.com/1', outletId: 'a.com', state: 'live' }] },
+    }),
+  ], { now: NOW, windowDays: 30 });
+  assert.equal(clean.checked, 1);
+  assert.equal(clean.findings.length, 0);
+});

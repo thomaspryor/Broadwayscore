@@ -394,16 +394,26 @@ function candidateStatesFor(census, coveredScoredOutlets, opts = {}) {
     const anchorMs = Date.parse(opts.clockAnchor);
     if (Number.isFinite(nowMs) && Number.isFinite(anchorMs)) clockAgeHours = (nowMs - anchorMs) / 3600000;
   }
+  // Candidate identity for firstSeenAt continuity is the URL when there is one,
+  // and the outletId only when there isn't (citedNoUrl rows). Candidates are
+  // URL-level, so one outlet can hold several: keying by outletId alone made a
+  // brand-new sibling URL inherit its older sibling's firstSeenAt (first-wins),
+  // back-dating the age S3's SLA surfaces will read. A URL with no prior row is
+  // genuinely new and is born `now` — falling back to the outlet would recreate
+  // the same back-dating.
+  const prevByUrl = new Map();
   const prevByOutlet = new Map();
   for (const p of (opts.prevCandidates || [])) {
-    if (p && p.outletId && !prevByOutlet.has(p.outletId)) prevByOutlet.set(p.outletId, p);
+    if (!p) continue;
+    if (p.url && !prevByUrl.has(p.url)) prevByUrl.set(p.url, p);
+    if (p.outletId && !prevByOutlet.has(p.outletId)) prevByOutlet.set(p.outletId, p);
   }
-  const firstSeenAtFor = (outletId) => {
-    const prev = prevByOutlet.get(outletId);
+  const firstSeenAtFor = (outletId, url) => {
+    const prev = url ? prevByUrl.get(url) : prevByOutlet.get(outletId);
     return (prev && prev.firstSeenAt) || nowIso;
   };
   return census.entries.map((e) => {
-    const firstSeenAt = firstSeenAtFor(e.outletId);
+    const firstSeenAt = firstSeenAtFor(e.outletId, e.url);
     if (outletInSet(coveredScoredOutlets, e.outletId)) {
       return { url: e.url || '', outletId: e.outletId, state: 'live', firstSeenAt };
     }

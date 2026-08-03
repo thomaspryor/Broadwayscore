@@ -84,7 +84,13 @@ function auditShowCandidates(result) {
   const showId = (result && result.showId) || null;
   const openingDate = (result && result.openingDate) || null;
   const cv = result && result.censusVerdict;
-  const hasVerdict = !!(cv && typeof cv === 'object');
+  // `no-census-yet` counts as "no verdict" for reporting: censusVerdict()
+  // returns an EMPTY candidates array by construction in that state, so a show
+  // the audit reached with only citedNoUrl rows (WE-reference path, no
+  // aggregator URLs) would otherwise report every cited outlet stateless
+  // forever — a finding no producer change could ever clear. Ignorance about a
+  // show is not a defect in the state machine.
+  const hasVerdict = !!(cv && typeof cv === 'object' && cv.verdict !== 'no-census-yet');
   const candidates = asArray(cv && cv.candidates);
 
   const statedUrls = new Set();
@@ -112,7 +118,7 @@ function auditShowCandidates(result) {
   return {
     showId,
     openingDate,
-    verdict: hasVerdict ? (cv.verdict || null) : null,
+    verdict: (cv && cv.verdict) || null,
     hasVerdict,
     knownCount,
     // How many of the KNOWN identities carry a state — not the raw candidate
@@ -178,7 +184,7 @@ function reportStatelessCandidates(results, opts = {}) {
     if (status === 'out-of-window') continue;
     examined++;
     const a = auditShowCandidates(r);
-    if (!a.hasVerdict) { noVerdict.push({ showId: a.showId, openingDate: a.openingDate }); continue; }
+    if (!a.hasVerdict) { noVerdict.push({ showId: a.showId, openingDate: a.openingDate, verdict: a.verdict }); continue; }
     if (a.statelessUrls.length || a.statelessOutlets.length || a.unknownStates.length) findings.push(a);
   }
 
@@ -189,7 +195,13 @@ function reportStatelessCandidates(results, opts = {}) {
     unknownStates: findings.reduce((n, f) => n + f.unknownStates.length, 0),
   };
 
-  return { windowDays, now, examined, findings, noVerdict, unknownDate, totals };
+  // `checked` is the only number that licenses a green tick: `examined` counts
+  // in-window shows, but a show with no verdict (or `no-census-yet`) was never
+  // actually checked. Reporting "✓ everything carries a state" off `examined`
+  // printed a green tick on a run where all 8 in-window shows had no verdict at
+  // all — a monitor claiming success for work it never did.
+  const checked = examined - noVerdict.length;
+  return { windowDays, now, examined, checked, findings, noVerdict, unknownDate, totals };
 }
 
 module.exports = {

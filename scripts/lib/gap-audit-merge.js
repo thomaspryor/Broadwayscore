@@ -142,11 +142,19 @@ function censusVerdictFor(result, opts = {}) {
   const census = { entries, count: entries.length, sourcesPresent: hadAnySource ? ['gap-audit'] : [], hadAnySource };
   const censusOpts = { suppressed: CI_UNFETCHABLE_OUTLETS, clockAnchor: result.openingDate || null, ...opts };
   const v = censusVerdict(census, covered, censusOpts);
-  // liveCount counts LIVE CANDIDATES, not covered outlets, so it stays the
-  // numerator of the pair the public `cov` field publishes
-  // (liveCount/candidateCount are both URL-level or the ratio is nonsense).
-  const liveCount = v.candidates.filter((c) => c.state === 'live').length;
-  return { ...v, liveCount, candidateCount: entries.length };
+  // PUBLIC counts are OUTLET-level, deliberately, even though `candidates` is
+  // URL-level. The gap audit resolves coverage per HOST (its dirByHost map), so
+  // two aggregator-listed URLs from one outlet are both stamped `live` off a
+  // single review file — publishing that as "2 of 2 reviews live" would state
+  // something we cannot vouch for, and aggregator lists routinely carry a
+  // listing page alongside the review (timeout.com/london/theatre/<show>).
+  // Distinct outlets is the finest granularity the audit actually knows, and it
+  // keeps liveCount ≤ candidateCount stable. Private per-candidate detail keeps
+  // full URL resolution for the owner surfaces.
+  const distinct = (rows) => new Set(rows.map((c) => c.outletId).filter(Boolean)).size;
+  const liveCount = distinct(v.candidates.filter((c) => c.state === 'live'));
+  const candidateCount = distinct(v.candidates);
+  return { ...v, liveCount, candidateCount };
 }
 
 /**

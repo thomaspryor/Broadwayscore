@@ -189,11 +189,18 @@ jobs:
       #
       # It always exits 0 (the script has no strict mode at all): the plan
       # forbids a hard fail until the report has been clean for two weeks AND the
-      # failure sits behind the kill switch. `if: always()` so a failed/cancelled
-      # audit still gets its partial file reported; COVERAGE_GATE_DISABLED makes
-      # it a no-op.
+      # failure sits behind the kill switch. COVERAGE_GATE_DISABLED makes it a
+      # no-op. Belt AND braces on never failing the job:
+      #   - continue-on-error: the script's own crash guard cannot cover a
+      #     LOAD-time throw (its top-level requires run before the try), e.g. a
+      #     partial checkout — that would exit non-zero and fail this job.
+      #   - `success() || failure()` rather than `always()`: always() also runs
+      #     on CANCELLATION, and this job is routinely hard-cancelled at the
+      #     timeout cap, where always()-steps cost ~5 extra minutes for a report
+      #     nobody will read.
       - name: Stateless coverage-candidate report (warn-only)
-        if: always()
+        if: success() || failure()
+        continue-on-error: true
         run: node scripts/report-stateless-candidates.js
 
       # Dir-driven sweep for tier-1/2 reviews that were discovered but sit in a

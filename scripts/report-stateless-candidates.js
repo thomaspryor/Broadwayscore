@@ -63,18 +63,25 @@ function main() {
     return;
   }
 
-  console.log(`Stateless-candidate report (warn-only) — window ${report.windowDays}d, ${report.examined} recently-opened show(s) examined`);
+  console.log(`Stateless-candidate report (warn-only) — window ${report.windowDays}d, ${report.examined} recently-opened show(s) examined, ${report.checked} with a verdict to check`);
   if (report.noVerdict.length) {
-    // Informational: a verdict appears only after the audit re-runs. Pre-#906
-    // rows legitimately have none.
-    console.log(`  ℹ ${report.noVerdict.length} in-window show(s) have no censusVerdict yet: ${report.noVerdict.map((s) => s.showId).join(', ')}`);
+    // Informational: a verdict appears only after the audit re-runs (pre-#906
+    // rows legitimately have none), and `no-census-yet` carries no candidates
+    // by construction. Neither is a defect.
+    console.log(`  ℹ ${report.noVerdict.length} in-window show(s) have no verdict to check: ${report.noVerdict.map((s) => `${s.showId}${s.verdict ? `(${s.verdict})` : ''}`).join(', ')}`);
   }
   if (report.unknownDate.length) {
     console.log(`  ℹ ${report.unknownDate.length} show(s) skipped — no parseable openingDate (unknown-date, not a finding)`);
   }
 
   if (!report.findings.length) {
-    console.log('  ✓ every known review URL on every in-window show carries a candidate state');
+    // Never print a green tick for work that was not done — a run where every
+    // in-window show lacked a verdict checked nothing at all.
+    if (report.checked === 0) {
+      console.log('  ℹ nothing to check this run — no in-window show had a verdict (not a pass, not a failure)');
+    } else {
+      console.log(`  ✓ every known review URL on all ${report.checked} checked show(s) carries a candidate state`);
+    }
     return;
   }
 
