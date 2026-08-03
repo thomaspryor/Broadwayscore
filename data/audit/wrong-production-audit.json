@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T14:52:18.038Z",
+  "timestamp": "2026-08-03T15:38:34.619Z",
   "stats": {
-    "totalReviews": 41453,
-    "alreadyFlagged": 18107,
-    "dateGuardCatches": 110,
+    "totalReviews": 41458,
+    "alreadyFlagged": 18106,
+    "dateGuardCatches": 109,
     "directorMismatch": 945,
     "tvFilmSignals": 1143,
     "londonSignals": 804,
     "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3435
+    "noPublishDate": 3442
   },
   "findings": [
     {
@@ -33069,17 +33069,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
         }
       ]
     },
