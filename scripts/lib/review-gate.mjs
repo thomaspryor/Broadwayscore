@@ -21,9 +21,14 @@
 // content-addressed, so it survives merges/rebases that don't change the diff.
 //
 // Queries (CLI, JSON to stdout — same conventions as transcript-scan.mjs):
-//   --query=diff-hash    [--repo=… --ref=HEAD]        current gated diff stats + hash
-//   --query=record       --reviewer=… --result=pass|fail [--session-id=…]
-//   --query=push-allowed [--repo=… --ref=HEAD --ledger-root=…]
+//   --query=diff-hash     [--repo=… --ref=HEAD]        current gated diff stats + hash
+//   --query=record        --reviewer=… --result=pass|fail [--session-id=…]
+//   --query=push-allowed  [--repo=… --ref=HEAD --ledger-root=…]
+//   --query=changed-files [--repo=… --ref=HEAD --pattern=<regex>] own-merge-scoped
+//                        changed file paths matching --pattern (default: all).
+//                        Shared with pre-push-visual-gate.sh (task #879) —
+//                        same own-merge scoping as diff-hash/push-allowed but
+//                        for callers with a non-GATED_PATH_RE file filter.
 //
 // push-allowed decision:
 //   1. gated lines (added+deleted in src/, scripts/, .github/workflows/ code
@@ -205,7 +210,7 @@ function ownMergeParent(repoRoot, ref, base) {
 // `twoDot` ranges are used only for drift calc (verdict.head..ref), which
 // must stay anchored to the verdict's own recorded head — own-merge scoping
 // does not apply there.
-function diffRangeArgs(repoRoot, base, ref, twoDot) {
+export function diffRangeArgs(repoRoot, base, ref, twoDot) {
   if (ref === 'WORKTREE') {
     // Working tree vs merge-base(base, HEAD) — the three-dot equivalent.
     let mb = base;
@@ -254,6 +259,37 @@ export function gatedDiffStats(repoRoot, base, ref, { twoDot = false } = {}) {
     totalLines += added + deleted;
   }
   return { files, totalLines };
+}
+
+// Changed file paths for base...ref, own-merge scoped the same way as
+// gatedDiffStats (see ownMergeParent above), but filtered by an arbitrary
+// caller-supplied regex instead of the hardcoded GATED_PATH_RE. Shared by
+// pre-push-visual-gate.sh (task #879), whose UI-file gate has a different
+// path definition (tsx/jsx/css/tailwind config) than this file's code-review
+// gate — without this, that hook re-implemented the unscoped
+// `origin/main...$DIFF_REF` diff and inherited the same #828 false-positive:
+// on a shared local main with ~20 parallel worktree sessions, another
+// session's already-merged-but-unpushed UI commit would show up as "UI files
+// changed" for a push that touched none.
+//
+// Known trade-off (shared with queryPushAllowed's own-scope budget check
+// above): if session A merges an unreviewed UI file onto local main and its
+// own push hasn't landed yet, then session B merges backend-only work on top
+// and pushes, B's push carries A's UI file to origin but this query reports
+// zero UI files — the visual-qa gate is skipped for content B never touched.
+// Accepted here for the same reason #828 accepted it for the code-review
+// gate: each session is expected to run its own /visual-qa (or ship-check)
+// before merging into shared main, so by the time a commit reaches this
+// scoping it should already have been reviewed by its own author session.
+export function scopedChangedFiles(repoRoot, base, ref, pathRegex) {
+  const range = diffRangeArgs(repoRoot, base, ref, false);
+  let out;
+  try {
+    out = git(repoRoot, ['diff', '--name-only', ...range]);
+  } catch {
+    return { files: [], error: `git diff failed for ${range.join(' ')}` };
+  }
+  return { files: out.split('\n').filter(Boolean).filter(p => pathRegex.test(p)) };
 }
 
 // Patch text for the gated files only: split on "diff --git" headers and
@@ -523,6 +559,8 @@ Queries:
   ci-red-claim-conflict   does --ref's gated diff conflict with an active
                    CI-red claim from another task? --own-task=<id> excludes
                    the caller's own claim (task #584).
+  changed-files  own-merge-scoped changed file paths matching --pattern
+                   (default: all). --pattern=<regex>
 
 Common options:
   --repo=<path>         git repo/worktree to diff in (default: cwd)
@@ -573,6 +611,19 @@ if (__isMain) {
     case 'ci-red-claim-conflict':
       result = queryCiRedClaimConflict({ repoRoot, ref, ownTaskId: args['own-task'] || null });
       break;
+    case 'changed-files': {
+      const base = resolveBase(repoRoot);
+      if (!base) { result = { error: 'no origin/main or main ref' }; break; }
+      let re;
+      try {
+        re = new RegExp(args.pattern || '.*');
+      } catch (e) {
+        result = { error: `bad --pattern: ${e.message}` };
+        break;
+      }
+      result = { base, ...scopedChangedFiles(repoRoot, base, ref, re) };
+      break;
+    }
     default:
       console.error(`ERROR: unknown or missing --query "${args.query || ''}"`);
       process.exit(1);
