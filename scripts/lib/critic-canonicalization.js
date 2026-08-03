@@ -57,6 +57,9 @@ const CRITIC_CANONICAL_MAP = {
     [normalizeCriticKey('The Recs RDC - Randall David Cook')]: 'Randall David Cook',
     [normalizeCriticKey('The Recs EM - Erin Muldoon')]: 'Erin Muldoon',
     [normalizeCriticKey('The Recs SCD - Steve Coats-Dennis')]: 'Steve Coats-Dennis',
+    // Same review text exists credited both ways (the-balusters-2026
+    // duplicateTextOf link), and the outlet signs him "The Recs RDC".
+    [normalizeCriticKey('David Cook')]: 'Randall David Cook',
   },
   'jks-theatre-scene': {
     [normalizeCriticKey('JK')]: 'Jeff Kyler',
