@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { getWestEndShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { createShowSerializer } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -37,16 +37,20 @@ export const metadata: Metadata = {
   },
 };
 
-function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEndShow {
-  return serializeShowForClient(show, {
-    isOffWestEnd: show.category === 'off-west-end',
-    category: (show.category as string) || 'west-end',
-  });
-}
-
 export default function WestEndPage() {
   if (!featureFlags.westEnd) {
     notFound();
+  }
+
+  // Memoized per-render: shows repeat across the main grid, Top Musicals shelf,
+  // and Lottery/Rush shelves. Sharing one serialized reference per show lets the
+  // RSC flight serializer dedupe repeat occurrences (#965).
+  const serialize = createShowSerializer();
+  function serializeShow(show: ReturnType<typeof getWestEndShows>[number]): WestEndShow {
+    return serialize(show, {
+      isOffWestEnd: show.category === 'off-west-end',
+      category: (show.category as string) || 'west-end',
+    }) as WestEndShow;
   }
 
   // getWestEndShows() already returns both WE + OWE shows

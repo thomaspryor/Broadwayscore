@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
+import {
+  FLIGHT_CHUNK_RE,
+  measurePageWeight,
+  noFlightPayloadDetectedMessage,
+  overBudgetMessage,
+} from './helpers/page-weight';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -11,6 +17,11 @@ const shows = showsData.shows || showsData;
 // Get a sample of shows to test (first 10 + random selection)
 const openShows = shows.filter((s: any) => s.status === 'open');
 const sampleShows = openShows.slice(0, Math.min(15, openShows.length));
+
+// Card #419's own regression was measured on /show/hamilton (deepest review
+// corpus in the catalogue, so the heaviest realistic show page). Fall back to
+// the first open show if it's ever closed/renamed so this doesn't go dark.
+const weightBudgetShow = openShows.find((s: any) => s.slug === 'hamilton') || sampleShows[0];
 
 test.describe('Show Detail Pages', () => {
   test('all open show pages load without 404', async ({ page }) => {
@@ -133,8 +144,9 @@ test.describe('Show Detail Pages', () => {
       const response = await page.goto(`/show/${show.slug}`);
       const html = (await response?.text()) ?? '';
 
-      // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks.
-      const flight = (html.match(/self\.__next_f\.push\(\[1,"(?:[^"\\]|\\.)*"\]\)/g) || []).join('');
+      // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks
+      // (FLIGHT_CHUNK_RE, shared with the page-weight budget tests below).
+      const flight = (html.match(FLIGHT_CHUNK_RE) || []).join('');
       const ids = Array.from(
         flight.matchAll(/\\"showId\\":\\"([a-z0-9-]+)\\"/g),
         m => m[1],
@@ -164,6 +176,48 @@ test.describe('Show Detail Pages', () => {
           + 'serializeShowForClient() (see src/app/show/[slug]/page.tsx).',
       ).toEqual([]);
     }
+  });
+
+  // Page-weight budget gate (card #961). The only prior signal for the #419
+  // class of regression was a weekly Lighthouse lab score oscillating 64-81
+  // across weeks and naming the wrong page in the alert. This asserts real
+  // uncompressed document bytes and inlined-RSC bytes on every push/PR/daily
+  // run instead — see tests/e2e/page-weight-budget.spec.ts for the
+  // non-show-page routes (/, /west-end, /off-broadway, guides).
+  //
+  // Budget = /show/hamilton production document bytes measured 2026-08-03
+  // (`curl -s --compressed https://broadwayscorecard.com/show/hamilton | wc
+  // -c` = 789,332) x1.25 headroom, rounded up to the nearest 10KB. rscBytes
+  // budget = inlined `self.__next_f.push(...)` flight-chunk bytes from that
+  // same fetch (660,598), same rounding.
+  //
+  // NOTE: this page is currently carrying the unresolved bloat tracked by
+  // #962 (review arrays serializing into the payload 3x) — this budget locks
+  // in TODAY'S weight so it can't get worse, it is not a target. Ratchet it
+  // down once #962 lands.
+  test('show page stays under its document-weight budget', async ({ page }) => {
+    const budget = { documentBytes: 990_000, rscBytes: 830_000 };
+    const route = `/show/${weightBudgetShow.slug}`;
+    const response = await page.goto(route);
+    expect(response?.ok(), `${route} did not return a 2xx response (status ${response?.status()})`).toBeTruthy();
+
+    const html = (await response?.text()) ?? '';
+    expect(html.length, `${route} returned an empty response`).toBeGreaterThan(0);
+
+    const measured = measurePageWeight(html);
+
+    // Anti-vacuity: see noFlightPayloadDetectedMessage in helpers/page-weight.ts.
+    expect(measured.rscBytes, noFlightPayloadDetectedMessage(route)).toBeGreaterThan(0);
+
+    expect(
+      measured.documentBytes,
+      overBudgetMessage(route, 'documentBytes', measured.documentBytes, budget.documentBytes),
+    ).toBeLessThanOrEqual(budget.documentBytes);
+
+    expect(
+      measured.rscBytes,
+      overBudgetMessage(route, 'rscBytes', measured.rscBytes, budget.rscBytes),
+    ).toBeLessThanOrEqual(budget.rscBytes);
   });
 
   test('external links open correctly', async ({ page, context }) => {
