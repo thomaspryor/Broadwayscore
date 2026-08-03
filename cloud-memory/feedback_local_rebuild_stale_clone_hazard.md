@@ -5,9 +5,12 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 1f9057e0-7e51-418d-bece-e697ac8cc073
+  modified: 2026-08-03T04:20:24.966Z
 ---
 
 **Never run `scripts/rebuild-all-reviews.js` locally on this machine. Rebuild via `gh workflow run rebuild-reviews.yml` only.**
+
+**`scripts/gather-reviews.js --shows=X` is NOT safe either — it auto-chains into a full local `rebuild-all-reviews.js` as its final phase**, even when scoped to one show (confirmed 2026-08-03, task #814). It silently modified ~45 unrelated review-texts files (stripping `wrongProduction: true` flags) and dropped a live scored review from `reviews.json` on a routine single-show discovery run. After ANY `gather-reviews.js` run: `git -C ~/broadway-review-texts status --short` and `git -C ~/broadway-scorecard-data status --short` before committing anything — `git checkout -- .` / `git checkout -- reviews.json` to discard the rebuild fallout, then separately `git add` only the specific new-show files you intended to create.
 
 Three stacked hazards, all hit on 2026-07-05:
 1. **No flag parsing.** `node scripts/rebuild-all-reviews.js --help` is not a help call — any unknown flag is ignored and a FULL rebuild starts immediately.
