@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
 
 // Re-export affiliate helpers so existing consumers don't break
 export { isAffiliateEnabled, isAffiliatePartner } from '@/lib/affiliate-utils';
@@ -159,7 +159,7 @@ export default function TicketLink({
     <a
       href={affiliateUrl}
       target="_blank"
-      rel="noopener noreferrer"
+      rel={affiliateRel(isAffiliate)}
       className={resolvedClassName}
       onClick={handleClick}
     >

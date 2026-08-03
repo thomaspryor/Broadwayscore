@@ -103,8 +103,19 @@ function deadAttemptsForTask(taskId, entries) {
   return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
 }
 
+// LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
+// restarts/renumberings — a ref last launched onto task A months ago can be
+// re-issued onto task B today. First-match would attribute every consumer
+// (deadBreadcrumbs, pruneClosedEntry, bsc-status display, the no-payload
+// reaper, sweepVanished's remap) to the wrong, long-dead task, most
+// damagingly poisoning deadAttemptsForTask counts: a healthy task inherits a
+// stranger's death count while the actually-dying task's count stays clean.
 function launchByRef(workspaceRef, entries) {
-  return entries.find(e => e.event === 'launch' && e.workspaceRef === workspaceRef) || null;
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const e = entries[i];
+    if (e.event === 'launch' && e.workspaceRef === workspaceRef) return e;
+  }
+  return null;
 }
 
 // Cross-reference bsc-prune's idle (no live claude, un-✅-marked) workspaces
@@ -113,15 +124,22 @@ function launchByRef(workspaceRef, entries) {
 // bsc-next.js and (b) doesn't already have a recorded death. Idempotent
 // across repeated bsc-prune runs: a workspace only ever contributes one dead
 // breadcrumb, however many times the sweep re-scans it.
+//
+// Idempotency is scoped to the CURRENT launch, not the ref (card #960): a
+// ref-only alreadyDead set would let one stale 'dead' entry from an EARLIER,
+// recycled occupant of this ref permanently suppress every future breadcrumb
+// for it — the opposite failure from first-match, but just as poisonous,
+// since a genuinely dying later task would then never trip
+// deadAttemptsForTask at all.
 function deadBreadcrumbs(idleWorkspaces, entries) {
-  const alreadyDead = new Set(
-    entries.filter(e => e.event === 'dead').map(e => e.workspaceRef)
-  );
   const out = [];
   for (const w of idleWorkspaces) {
-    if (alreadyDead.has(w.ref)) continue;
     const launch = launchByRef(w.ref, entries);
     if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
+    const alreadyDead = entries.some(e =>
+      e.event === 'dead' && e.workspaceRef === w.ref && (!e.ts || !launch.ts || e.ts >= launch.ts)
+    );
+    if (alreadyDead) continue;
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;
@@ -198,10 +216,12 @@ function isWorkspaceRef(ref) {
   return typeof ref === 'string' && WORKSPACE_REF_RE.test(ref);
 }
 
-// Last entry per workspaceRef matching `pred`. Last-wins (not launchByRef's
-// first-wins) because cmux refs are only monotonic until someone reinstalls
-// it — after a counter reset, workspace:12 can belong to a 2026-07 task and a
-// 2026-09 one, and the recent launch is the one a sweep is reconciling.
+// Last entry per workspaceRef matching `pred`, restricted to workspace:N refs
+// (unlike launchByRef, which also matches headless:N and ref-less launches).
+// Last-wins, same as launchByRef, because cmux refs are only monotonic until
+// someone reinstalls it — after a counter reset, workspace:12 can belong to a
+// 2026-07 task and a 2026-09 one, and the recent launch is the one a sweep is
+// reconciling.
 function lastByRef(entries, pred) {
   const m = new Map();
   for (const e of entries) {
@@ -299,7 +319,7 @@ function pruneClosedEntry(workspace, entries) {
 const LEDGER_DISPATCH_RECONCILED_EVENTS = new Set(['dead', 'vanished', 'remapped']);
 
 // The unreconciled launch record for `workspaceRef`, or null. Uses lastByRef
-// (last-match, not launchByRef's first-match — see card 3b1637c5: cmux
+// (same last-match semantics as launchByRef — see card #960/3b1637c5: cmux
 // recycles workspace refs across restarts, so first-match can attribute a
 // recycled ref to a long-dead task) AND requires the launch to be
 // UNRECONCILED against LEDGER_DISPATCH_RECONCILED_EVENTS.
