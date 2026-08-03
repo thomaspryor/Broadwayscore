@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BASE_URL } from '@/lib/seo';
+import { BASE_URL, generateAuthorPersonSchema } from '@/lib/seo';
+import { AUTHOR } from '@/config/author';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 
 export const metadata: Metadata = {
@@ -24,8 +25,14 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const personSchema = generateAuthorPersonSchema();
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-10">
@@ -37,8 +44,11 @@ export default function AboutPage() {
         {/* Main Card */}
         <div className="card p-6 sm:p-8 mb-6">
           <div className="space-y-5 text-gray-300 leading-relaxed text-lg">
+            <p className="text-sm font-semibold uppercase tracking-wide text-brand">
+              {AUTHOR.name} &mdash; {AUTHOR.jobTitle}
+            </p>
             <p>
-              I&apos;m Tom &mdash; I built Broadway Scorecard™ because I see 60+ shows a year and got tired
+              I&apos;m Tom Pryor &mdash; I built Broadway Scorecard™ because I see 60+ shows a year and got tired
               of not having a single place to compare reviews across critics.
             </p>
             <p>

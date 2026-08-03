@@ -5,7 +5,8 @@ import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReview
 import { isOperaShow } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
-import { SOCIAL_ACCOUNTS } from '@/config/branding';
+import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
+import { AUTHOR } from '@/config/author';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -66,6 +67,34 @@ export function generateOrganizationSchema() {
     description: 'Aggregated Broadway show ratings from professional critics',
     sameAs: SOCIAL_ACCOUNTS.map(a => a.url),
     inLanguage: 'en',
+  };
+}
+
+// Person Schema - Author entity for byline consolidation (/reviews/[slug] <-> /about).
+// Reuses the same social profiles as the Organization node's sameAs so Google
+// resolves "Tom Pryor" and "Broadway Scorecard" as connected entities rather
+// than two unrelated names — correct for a one-person site where those accounts
+// ARE Tom's voice for the brand. url + a stable @id point at /about, which
+// renders this same schema (see /about/page.tsx) so a crawler following the
+// byline link lands on a page that re-asserts the identical Person entity —
+// completing the byline -> /about -> Person schema consolidation chain.
+const AUTHOR_SOCIAL_PLATFORMS: SocialPlatform[] = ['bluesky', 'twitter', 'instagram'];
+export const AUTHOR_PERSON_ID = `${BASE_URL}${AUTHOR.url}#person`;
+
+export function generateAuthorPersonSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': AUTHOR_PERSON_ID,
+    name: AUTHOR.name,
+    url: toAbsoluteUrl(AUTHOR.url),
+    jobTitle: AUTHOR.jobTitle,
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Broadway Scorecard',
+      url: BASE_URL,
+    },
+    sameAs: SOCIAL_ACCOUNTS.filter(a => AUTHOR_SOCIAL_PLATFORMS.includes(a.platform)).map(a => a.url),
   };
 }
 
