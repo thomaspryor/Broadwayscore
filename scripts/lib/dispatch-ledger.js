@@ -392,6 +392,58 @@ function openTaskWorkspaceLaunches(entries) {
   return open;
 }
 
+// ── Cross-task launcher outage detector (card #900, 2026-08-03) ────────────
+// The 8/3 cmux restart produced six dead cmux-launch attempts across FIVE
+// distinct tasks (897/855x2/857/902/901) in under two hours, every one of
+// them "command injection never ran (no wrapper process appeared)" — the
+// wake fix (#849) already covers a single stuck launch, but nothing had ever
+// looked ACROSS tasks to notice that a run of these in a short window is not
+// "this task is unlucky," it's "cmux itself is not accepting new-workspace
+// injections right now." Each task silently ate its own dead-attempt count
+// and fell back to headless (or gave up) with no signal that the common
+// cause was the launcher, not the task. Pure + ledger-shaped like
+// looksLikeRestart above, but a distinct signal: that one detects EXISTING
+// workspaces vanishing from cmux's listing; this one detects NEW launches
+// failing to ever start.
+const OUTAGE_MIN_DISTINCT_TASKS = 3;
+const OUTAGE_LOOKBACK_MS = 30 * 60 * 1000; // matches the observed 8/3 cluster width with room to spare
+// 'wrapper exited' deliberately EXCLUDED (Codex adversarial review, 2026-08-03):
+// that state means the typed command DID run and then the process died — a
+// per-task crash/bad-command signature, proof injection is working, not the
+// launcher failing to inject. Conflating it here would raise a confident,
+// false "cmux is not accepting commands" alarm off three unrelated task
+// bugs, exactly the kind of silent-wrongness this detector exists to avoid.
+const OUTAGE_REASON_RE = /injection never ran/;
+
+// entries: full ledger (readEntries()). now: ms epoch (test seam — Date.now()
+// is unavailable in workflow scripts, callers pass it explicitly).
+function detectLauncherOutage(entries, { now, lookbackMs = OUTAGE_LOOKBACK_MS, minDistinctTasks = OUTAGE_MIN_DISTINCT_TASKS } = {}) {
+  if (!Number.isFinite(now)) throw new Error('detectLauncherOutage requires now (ms epoch)');
+  const cutoff = now - lookbackMs;
+  const deaths = entries.filter(e => e.event === 'dead' && isWorkspaceRef(e.workspaceRef) &&
+    OUTAGE_REASON_RE.test(String(e.failureReason || '')) && e.ts && Date.parse(e.ts) >= cutoff);
+  if (!deaths.length) return { outage: false, count: 0, taskIds: [] };
+
+  // Newest death, not oldest (Codex adversarial review, 2026-08-03 — P0):
+  // comparing against the OLDEST death let failure→success→3-more-failures
+  // read as "recovered" the instant that one success landed, even though the
+  // launcher broke again right after it. Only a verified success AFTER every
+  // death currently in the window is real evidence the launcher is healthy
+  // right now.
+  const newestDeathTs = deaths.reduce((max, e) => e.ts > max ? e.ts : max, deaths[0].ts);
+  const recovered = entries.some(e => e.event === 'launch' && !e.unverified && e.ts && e.ts > newestDeathTs);
+  if (recovered) return { outage: false, count: deaths.length, taskIds: [...new Set(deaths.map(e => String(e.taskId)))], recovered: true };
+
+  const taskIds = [...new Set(deaths.map(e => String(e.taskId)))];
+  const oldestDeathTs = deaths.reduce((min, e) => e.ts < min ? e.ts : min, deaths[0].ts);
+  return {
+    outage: taskIds.length >= minDistinctTasks,
+    count: deaths.length,
+    taskIds,
+    sinceTs: oldestDeathTs,
+  };
+}
+
 // Tasks currently parked by an owner tab-close. A later 'launch' clears the
 // park on purpose: dispatching anyway (bsc-next --force) IS the unpark, so the
 // state is self-healing rather than a trap only a remembered flag escapes.
@@ -470,4 +522,5 @@ module.exports = {
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,
   remapEntries,
   openTaskWorkspaceLaunches,
+  detectLauncherOutage, OUTAGE_MIN_DISTINCT_TASKS, OUTAGE_LOOKBACK_MS,
 };

@@ -33,6 +33,7 @@ const { decideLaunchWait, isSlowBootFailure, STATES,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
+const CMUX_APP = '/Applications/cmux.app';
 
 // Launch attempts per call. A second attempt is only ever reached when the
 // first left NOTHING running (see cmux-launch-state.js) — relaunching over a
@@ -101,6 +102,25 @@ function setAutoColor(ref) {
 // indefinitely.
 function setAppFocus(state) {
   try { return spawnSync(CMUX, ['set-app-focus', state], { encoding: 'utf8', timeout: 3000 }).status === 0; } catch { return false; }
+}
+
+// OS-level companion to setAppFocus (card #900, 2026-08-03): `set-app-focus`
+// is an IPC call INTO cmux's own socket handler asserting an internal flag —
+// it never touches the real macOS window server. Six launches across five
+// different tasks (897/855x2/857/902/901) died INJECTION_NEVER_RAN in the
+// two hours after the 8/3 "cmux hangs" restart despite this flag firing on
+// every one of them, then launches started succeeding again the moment
+// someone was actually driving the app (this task's own launch, and a live
+// diagnostic re-test, both succeeded instantly). The common factor isn't
+// backgrounded-vs-foregrounded from cmux's own point of view — it's whether
+// the OS ever actually activates cmux's window. `open -a` asks the OS
+// itself to do that: for an app that is merely occluded, on another Space,
+// or minimized (states set-app-focus cannot reach because it never leaves
+// cmux's process), activation forces a real render pass. Best-effort and
+// silent on failure — a missing/renamed app bundle must never block a
+// launch that might still succeed on the socket-level flag alone.
+function osActivateCmuxApp() {
+  try { spawnSync('open', ['-a', CMUX_APP], { timeout: 3000 }); } catch { /* best-effort recovery only */ }
 }
 
 // Fail-CLOSED liveness for the late-adopt path. cmuxws.claudeAliveIn is
@@ -187,7 +207,7 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
   // observes fire-time (it must learn a wake happened even if this wait is
   // later interrupted by a throw — outcome-based tracking would leak the
   // override on any non-return path).
-  const wake = probes.wake || wakeFn || (() => setAppFocus('active'));
+  const wake = probes.wake || wakeFn || (isFirstWake => { if (!isFirstWake) osActivateCmuxApp(); return setAppFocus('active'); });
   const napSec = probes.intervalSec ?? PROBE_INTERVAL_SEC; // ?? not ||: a test seam of 0 must mean "don't sleep"
   // MONOTONIC clock, not Date.now (Codex ship-check): an NTP step or a manual
   // clock change during a 6-minute wait would otherwise move elapsed backward
@@ -235,13 +255,14 @@ function waitForLaunchOutcome({ ws, marker, attempt, maxAttempts, injectionGrace
     // in case a concurrent launcher's clear re-deferred a still-unrendered
     // surface.
     if (!wrapperEverSeen && elapsedSec >= nextWakeAtSec) {
-      if (!wakeAttempted) {
+      const isFirstWake = !wakeAttempted;
+      if (isFirstWake) {
         effectiveGraceSec = elapsedSec + injectionGraceSec;
         console.error(`[cmux-launch] ${ws ? ws.ref : 'workspace'}: no wrapper process after ${Math.round(elapsedSec)}s — forcing app-focus active to flush cmux's deferred surface render (lazy-exec fix, 2026-08-02); injection grace restarted`);
       }
       wakeAttempted = true;
       nextWakeAtSec = elapsedSec + REWAKE_INTERVAL_SEC;
-      wake();
+      wake(isFirstWake);
     }
     const d = decideLaunchWait({
       claudeRegistered, wrapperAlive, wrapperEverSeen, tagAlive, elapsedSec, bootElapsedSec,
@@ -403,7 +424,14 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // woke is recorded AT FIRE TIME, not from the returned outcome — a
       // throw/interrupt between the wake and the return would otherwise skip
       // the finally-clear and leave the override pinned.
-      wakeFn: () => { wakeState.woke = true; return setAppFocus('active'); },
+      // OS-level activation (open -a) only from the SECOND wake onward — not
+      // the first (P1, Codex adversarial review 2026-08-03): calling it on
+      // every 5s-delayed launch would steal screen focus for the common
+      // brief-lag case (#705 measured 4-5 min boots as normal under load),
+      // not just a genuine outage. First wake stays exactly as #849 shipped
+      // it (internal cmux flag only); escalating to a real OS foreground is
+      // reserved for a launch that is STILL not injecting ~10s+ later.
+      wakeFn: isFirstWake => { wakeState.woke = true; if (!isFirstWake) osActivateCmuxApp(); return setAppFocus('active'); },
     });
     if (outcome.action === 'ok') {
       if (autoColor) setAutoColor(ws.ref);
@@ -458,8 +486,8 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
 }
 
 module.exports = {
-  launchCmuxSession, CMUX, pollUntil, sleepSec, setAutoColor, setAppFocus,
-  strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
+  launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
+  osActivateCmuxApp, strictlyAliveWorkspace, shouldAdoptLateStart, waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,

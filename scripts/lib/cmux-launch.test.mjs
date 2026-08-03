@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome } = require('./cmux-launch.js');
+const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // Fake clock + probes for the verification wait (card #705). intervalSec 0
@@ -152,4 +152,39 @@ test('shouldAdoptLateStart: refuses when the workspace never came alive, or the 
   assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: 'workspace:115' }, false), false);
   assert.equal(shouldAdoptLateStart({ ok: true, workspaceRef: 'workspace:115' }, true), false);
   assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: null }, true), false);
+});
+
+test('osActivateCmuxApp: best-effort OS-level activation, never throws (card #900)', () => {
+  // set-app-focus (the existing wake) is an IPC call INTO cmux's own socket
+  // handler — it never touches the real macOS window server, which is the
+  // gap this function closes (six cross-task INJECTION_NEVER_RAN failures
+  // in the two hours after the 8/3 restart despite the IPC flag firing on
+  // every one of them). `open -a` asks the OS itself to activate the app,
+  // which reaches states set-app-focus cannot. Must be silent/non-throwing
+  // even when `open` or the app bundle is unavailable (CI has no GUI).
+  assert.doesNotThrow(() => osActivateCmuxApp());
+  assert.equal(CMUX_APP, '/Applications/cmux.app');
+});
+
+test('waitForLaunchOutcome: wake() sees isFirstWake=true only on the FIRST call, false on rewakes (Codex P1, 2026-08-03)', () => {
+  // osActivateCmuxApp (real OS foreground) is gated on !isFirstWake — firing
+  // it on every 5s-delayed launch would steal screen focus for the common
+  // brief-lag case, not just a genuine outage. Pin the sequence the caller
+  // (launchCmuxSessionInner) relies on to make that gating correct.
+  let t = 0;
+  const wakeCalls = [];
+  waitForLaunchOutcome({
+    ws: { ref: 'workspace:900' }, marker: 'bsc-cmd-705-abcd1234.sh',
+    attempt: 1, maxAttempts: 2, injectionGraceSec: 90, slowBootCapSec: 360,
+    probes: {
+      intervalSec: 0,
+      now: () => { const v = t; t += 5000; return v; },
+      wrapperAlive: () => false,
+      claudeTagAlive: () => false,
+      wake: isFirstWake => wakeCalls.push(isFirstWake),
+    },
+  });
+  assert.ok(wakeCalls.length >= 2, 'the never-injects case must rewake more than once inside the grace window');
+  assert.equal(wakeCalls[0], true);
+  assert.ok(wakeCalls.slice(1).every(v => v === false), 'every call after the first must report isFirstWake=false');
 });

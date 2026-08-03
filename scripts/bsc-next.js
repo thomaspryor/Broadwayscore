@@ -687,6 +687,19 @@ function main(argv = process.argv.slice(2), deps = {}) {
         failedEntries.forEach(e => appendLedgerEntryFn(e));
         console.error(`  journaled ${stillBooting ? 'unverified (not dead)' : 'dead'} dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
       } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
+      // Cross-task outage check (card #900): a single dead launch is this
+      // task's problem; the SAME injection-never-ran signature across
+      // several DIFFERENT tasks in a short window is cmux's problem, and
+      // until now nothing ever looked across tasks to say so — each one
+      // silently ate a dead-attempt and the pattern only surfaced days
+      // later from ledger forensics. Best-effort: an outage-check failure
+      // must never block reporting the launch failure itself.
+      try {
+        const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
+        if (outage.outage) {
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+        }
+      } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
     }
     if (res.workspaceRef) {
       console.error(stillBooting
