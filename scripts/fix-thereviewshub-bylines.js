@@ -27,7 +27,9 @@ const REVIEW_TEXTS = path.join(ROOT, 'data', 'review-texts');
 const GRAVEYARD = path.join(REVIEW_TEXTS, '_superseded-misattributed');
 
 const HOUSE_RE = /^(the reviews hub.*|unknown|unnamed|)$/i;
-const REVIEWER_RE = /Reviewer:\s*(?:<[^>]*>\s*)*([A-Z][\w'’.-]*(?:\s+[A-Z][\w'’.-]*){0,3})/;
+// Unicode-aware: critic names include accented letters (e.g. Nilgün Yusuf).
+const REVIEWER_RE =
+  /Reviewer:\s*(?:<[^>]*>\s*)*(\p{Lu}[\p{L}'’.-]*(?:\s+\p{Lu}[\p{L}'’.-]*){0,3})/u;
 
 if (!fs.existsSync(REVIEW_TEXTS)) {
   console.error(`No data/review-texts under ${ROOT} — run from the main checkout.`);
