@@ -185,3 +185,76 @@ test('acceptSerpCensusResult applies the disambiguation gate to single-token tit
   assert.equal(acceptSerpCensusResult(wrongShowHit, { show: ohMary, showInfo: ohMaryInfo }), null);
   assert.equal(acceptSerpCensusResult(realHit, { show: ohMary, showInfo: ohMaryInfo }), 'https://example.com/reviews/oh-mary-review/');
 });
+
+// ---- stale-production guard on the un-windowed naive census arm (#872) ----
+
+const CAR_MAN_SHOW = {
+  id: 'the-car-man-west-end-2026',
+  title: 'The Car Man',
+  category: 'off-west-end',
+  previewsStartDate: '2026-07-28',
+  openingDate: '2026-07-28',
+  cast: [],
+  creativeTeam: [],
+};
+const CAR_MAN_INFO = { title: 'The Car Man', cast: [], creativeNames: [] };
+
+test('acceptSerpCensusResult rejects a prior-production URL whose path year predates this run', () => {
+  const old2015 = {
+    url: 'https://theidlewoman.net/2015/07/29/the-car-man-matthew-bourne/',
+    title: 'The Car Man — Matthew Bourne',
+    snippet: 'Sadler’s Wells, 2015.',
+  };
+  assert.equal(acceptSerpCensusResult(old2015, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }), null);
+});
+
+test('acceptSerpCensusResult keeps a current-run URL and one with no year in the path', () => {
+  const current = {
+    url: 'https://jadar.uk/2026/07/31/review-matthew-bournes-the-car-man/',
+    title: 'Review: Matthew Bourne’s The Car Man',
+    snippet: 'Sadler’s Wells.',
+  };
+  const undated = {
+    url: 'https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review',
+    title: 'The Car Man review',
+    snippet: 'Matthew Bourne at Sadler’s Wells.',
+  };
+  assert.ok(acceptSerpCensusResult(current, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }));
+  assert.ok(acceptSerpCensusResult(undated, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }));
+});
+
+test('acceptSerpCensusResult keeps an older URL when priorRuns declares that year', () => {
+  const withPrior = { ...CAR_MAN_SHOW, priorRuns: [{ openingDate: '2015-07-01', closingDate: '2015-08-09' }] };
+  const old2015 = {
+    url: 'https://theidlewoman.net/2015/07/29/the-car-man-matthew-bourne/',
+    title: 'The Car Man — Matthew Bourne',
+    snippet: 'Sadler’s Wells, 2015.',
+  };
+  assert.ok(acceptSerpCensusResult(old2015, { show: withPrior, showInfo: CAR_MAN_INFO }));
+});
+
+test('acceptSerpCensusResult drops the ticketing/listings layer the deep-page arm reaches', () => {
+  for (const url of [
+    'https://seatplan.com/london/the-car-man-tickets/',
+    'https://www.lovetovisit.com/uk-attractions/sadlers-wells/the-car-man',
+    'https://officiallondontheatre.com/show/the-car-man-111473280/',
+    'https://en.wikipedia.org/wiki/The_Car_Man_(Bourne)',
+  ]) {
+    assert.equal(
+      acceptSerpCensusResult({ url, title: 'The Car Man', snippet: '' }, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }),
+      null,
+      `expected ${url} to be rejected`,
+    );
+  }
+});
+
+test('stale-year guard and the priorRuns readmission read the SAME year delimiters', () => {
+  // Slug-style permalinks put the year between dashes, not slashes. If the
+  // guard's regex is wider than isUrlYearInPriorRun's, a declared prior run's
+  // dash-form reviews get dropped with no way back (ship-check 2026-08-02).
+  const dashOld = { url: 'https://example.com/2015-the-car-man-review/', title: 'The Car Man review', snippet: '' };
+  assert.equal(acceptSerpCensusResult(dashOld, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }), null);
+
+  const withPrior = { ...CAR_MAN_SHOW, priorRuns: [{ openingDate: '2015-07-01', closingDate: '2015-08-09' }] };
+  assert.ok(acceptSerpCensusResult(dashOld, { show: withPrior, showInfo: CAR_MAN_INFO }));
+});

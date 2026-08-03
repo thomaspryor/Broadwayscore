@@ -10,8 +10,12 @@
  * answer doesn't change every 30 minutes — a 24h cache cuts duplicates with
  * zero reliability impact.
  *
- * Storage: /tmp/bd-serp-cache/{sha1}.json. In CI, persisted across runs via
- * actions/cache@v4 with the same path. Local dev: persists until /tmp clears.
+ * Storage: /tmp/bd-serp-cache/{sha1}.json. Local dev: persists until /tmp
+ * clears. NOT persisted across CI runs today — no workflow restores this path
+ * with actions/cache (verified 2026-08-02, audit-aggregator-gap.yml has no
+ * cache step), so on a GitHub runner every run starts cold and the TTL bounds
+ * nothing cross-run. Treat the cache as a within-run/local dedupe only when
+ * reasoning about spend.
  *
  * Cached: result arrays including empty arrays (no organic results IS a valid
  * answer). Not cached: nulls (provider failures — retry next time).
@@ -25,8 +29,19 @@ const DISABLED = process.env.BD_SERP_CACHE_DISABLED === '1';
 
 const _cache = createTtlCache({ dir: CACHE_DIR, ttlMs: TTL_HOURS * 60 * 60 * 1000, disabled: DISABLED });
 
+// Whitelist, not passthrough: any field NOT listed here is silently dropped
+// from the cache key. `page` had to be added explicitly when the census
+// started reading past page 1 (task #872) — without it, pages 2 and 3 of a
+// paginated sweep hit page 1's cache entry and the deep-page arm degraded
+// into three copies of the same ten URLs. Anything new that changes the
+// RESULTS must be added here too.
 function _normOpts(opts = {}) {
-  return { geo: opts.geo || '', dateMin: opts.dateMin || '', dateMax: opts.dateMax || '' };
+  return {
+    geo: opts.geo || '',
+    dateMin: opts.dateMin || '',
+    dateMax: opts.dateMax || '',
+    page: opts.page ? String(opts.page) : '',
+  };
 }
 
 function get(query, opts = {}) {

@@ -915,6 +915,12 @@ on:
       # without this entry a solo edit to the lib triggers ZERO CI.
       - 'scripts/lib/serp-review-census.js'
       - 'scripts/lib/serp-review-census.test.mjs'
+      # SERP result cache (#872): `page` is part of the cache key. If a future
+      # edit drops it from _normOpts, every paginated census arm silently
+      # collapses onto page 1's cached results — the colocated test is the only
+      # thing that catches it, and it only runs if these paths are listed.
+      - 'scripts/lib/serp-cache.js'
+      - 'scripts/lib/serp-cache.test.mjs'
       # Reddit audience-buzz contamination filters (generic-title / roundup guard).
       # Colocated scripts/lib/*.test.mjs step covers reddit-post-filters.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
