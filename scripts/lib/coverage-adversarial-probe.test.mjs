@@ -5,6 +5,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   classifyCandidate,
+  classifyNonReviewUrl,
+  lookupRecord,
   summarizeShow,
   summarizeRun,
   evaluateAcceptance,
@@ -49,6 +51,133 @@ test('classifyCandidate: explainExclusion returning null on a non-includable fil
   const r = classifyCandidate('https://example.com/review', SHOW, onDisk, guardsFor({ includable: false, exclusionReason: null }));
   assert.equal(r.state, 'excluded');
   assert.equal(r.reason, 'unknown');
+});
+
+// ── URL normalization before live-comparison (task #907, evidence:
+// theartsdesk.com's Sinatra review counted a gap over http vs https) ───────
+
+test('classifyCandidate: scheme mismatch (http SERP result vs https on-disk) is LIVE, not a gap', () => {
+  const onDisk = new Map([
+    ['https://theartsdesk.com/new-reviews/frank-sinatra-review', { data: {}, filePath: '/x.json' }],
+  ]);
+  const r = classifyCandidate('http://theartsdesk.com/new-reviews/frank-sinatra-review', SHOW, onDisk, guardsFor({ includable: true }));
+  assert.equal(r.state, 'live');
+});
+
+test('classifyCandidate: www-prefix mismatch is LIVE, not a gap', () => {
+  const onDisk = new Map([
+    ['https://theartsdesk.com/new-reviews/frank-sinatra-review', { data: {}, filePath: '/x.json' }],
+  ]);
+  const r = classifyCandidate('https://www.theartsdesk.com/new-reviews/frank-sinatra-review', SHOW, onDisk, guardsFor({ includable: true }));
+  assert.equal(r.state, 'live');
+});
+
+test('classifyCandidate: trailing-slash mismatch is LIVE, not a gap', () => {
+  const onDisk = new Map([
+    ['https://theartsdesk.com/new-reviews/frank-sinatra-review', { data: {}, filePath: '/x.json' }],
+  ]);
+  const r = classifyCandidate('https://theartsdesk.com/new-reviews/frank-sinatra-review/', SHOW, onDisk, guardsFor({ includable: true }));
+  assert.equal(r.state, 'live');
+});
+
+test('lookupRecord: exact match short-circuits before any canonicalization scan', () => {
+  const onDisk = new Map([['https://example.com/review', { data: { marker: 1 } }]]);
+  const rec = lookupRecord(onDisk, 'https://example.com/review');
+  assert.equal(rec.data.marker, 1);
+});
+
+test('lookupRecord: a genuinely absent URL (no scheme/www/slash variant on disk either) is still null', () => {
+  const onDisk = new Map([['https://example.com/other-review', { data: {} }]]);
+  assert.equal(lookupRecord(onDisk, 'https://example.com/nope'), null);
+});
+
+// ── Non-review-page named exclusions (task #907, 6 of the first run's 9
+// "gaps": ticketing/venue/listing pages, never a review) ────────────────────
+
+test('classifyNonReviewUrl: ticketing reseller hosts are named, not a gap', () => {
+  assert.equal(classifyNonReviewUrl('https://www.newyorkcitytheatre.com/some-show'), 'ticketing-reseller');
+  assert.equal(classifyNonReviewUrl('https://newbrunswicktheater.com/tickets'), 'ticketing-reseller');
+});
+
+test('classifyNonReviewUrl: venue production page is named', () => {
+  assert.equal(classifyNonReviewUrl('https://www.nationaltheatre.org.uk/productions/the-car-man'), 'venue-production-page');
+});
+
+test('classifyNonReviewUrl: event listing page is named', () => {
+  assert.equal(classifyNonReviewUrl('https://middlesexcountyculture.com/event/the-car-man/'), 'event-listing');
+});
+
+test('classifyNonReviewUrl: londontheatre.co.uk /show/NNNN ticket page is named, but /reviews/ is NOT (it publishes real reviews)', () => {
+  assert.equal(classifyNonReviewUrl('https://www.londontheatre.co.uk/show/1234/the-car-man'), 'ticketing-listing');
+  assert.equal(classifyNonReviewUrl('https://www.londontheatre.co.uk/reviews/the-car-man'), null);
+});
+
+test('classifyNonReviewUrl: an ordinary outlet URL is not classified (returns null)', () => {
+  assert.equal(classifyNonReviewUrl('https://theartsdesk.com/new-reviews/frank-sinatra-review'), null);
+});
+
+test('classifyNonReviewUrl: broadway.com ticketing pages are named (surfaced by the fix\'s own live re-run)', () => {
+  assert.equal(classifyNonReviewUrl('https://www.broadway.com/shows/a-walk-on-the-moon/event/21764799/08-03-2026/1930/'), 'ticketing-reseller');
+});
+
+test('classifyNonReviewUrl: theatermania.com /shows/ is named, but its real /news/review-.../ path is NOT (it IS a registered outlet)', () => {
+  assert.equal(classifyNonReviewUrl('https://www.theatermania.com/shows/new-york-city-theater/les-miserables-the-arena-concert-spectacular_1832919/'), 'venue-production-page');
+  assert.equal(classifyNonReviewUrl('https://www.theatermania.com/news/review-camping-a-romantic-tragedy_1842335/'), null);
+});
+
+test('classifyNonReviewUrl: aggregator own-site show pages (show-score.com etc., canonical AGGREGATOR_DOMAINS set) are named', () => {
+  assert.equal(classifyNonReviewUrl('https://www.show-score.com/off-broadway-shows/hershey-felder-the-piano-and-me'), 'aggregator-own-page');
+  assert.equal(classifyNonReviewUrl('https://stagedoor.com/shows/some-show'), 'aggregator-own-page');
+});
+
+test('classifyCandidate: a ticketing/venue/listing URL not on disk is excluded (named), not a gap', () => {
+  const onDisk = new Map();
+  const r = classifyCandidate('https://www.nationaltheatre.org.uk/productions/the-car-man', SHOW, onDisk, guardsFor({ includable: false }));
+  assert.equal(r.state, 'excluded');
+  assert.equal(r.reason, 'venue-production-page');
+});
+
+// ── _pending/ quarantined files are named exclusions, not silent gaps
+// (task #907: the-state-of-the-arts Car Man case — a 2015 prior-production
+// review correctly quarantined by the #832 date guard) ─────────────────────
+
+test('classifyCandidate: a pending-quarantined record is excluded with its quarantine reason', () => {
+  const onDisk = new Map([
+    ['https://www.thestateofthearts.co.uk/features/review-the-car-man', {
+      data: { pendingReason: 'date_implausible' }, filePath: '/pending/x.json', pending: true, pendingReason: 'date_implausible',
+    }],
+  ]);
+  const r = classifyCandidate('https://www.thestateofthearts.co.uk/features/review-the-car-man', SHOW, onDisk, guardsFor({ includable: false }));
+  assert.equal(r.state, 'excluded');
+  assert.equal(r.reason, 'quarantined: date_implausible');
+});
+
+test('classifyCandidate: pending record still resolves through scheme/www normalization', () => {
+  const onDisk = new Map([
+    ['https://thestateofthearts.co.uk/features/review-the-car-man', {
+      data: {}, filePath: '/pending/x.json', pending: true, pendingReason: 'date_implausible',
+    }],
+  ]);
+  const r = classifyCandidate('http://www.thestateofthearts.co.uk/features/review-the-car-man/', SHOW, onDisk, guardsFor({ includable: false }));
+  assert.equal(r.state, 'excluded');
+  assert.equal(r.reason, 'quarantined: date_implausible');
+});
+
+test('classifyCandidate: a no-byline pending record is excluded (already captured — not a gap) but its reason reads as an open queue item, not a settled exclusion', () => {
+  // gather-reviews.js's no-byline strand (515 of 538 _pending files in the
+  // live corpus at time of writing) is an active working queue, not a
+  // permanent exclusion like date_implausible — the label must say so
+  // (Codex ship-check finding, task #907: labeling both identically implies
+  // "handled forever" for content that's actually still open).
+  const onDisk = new Map([
+    ['https://www.example-outlet.com/review-the-car-man', {
+      data: {}, filePath: '/pending/x.json', pending: true, pendingReason: 'no-byline',
+    }],
+  ]);
+  const r = classifyCandidate('https://www.example-outlet.com/review-the-car-man', SHOW, onDisk, guardsFor({ includable: false }));
+  assert.equal(r.state, 'excluded');
+  assert.match(r.reason, /no-byline/);
+  assert.match(r.reason, /not a new gap/);
 });
 
 test('summarizeShow: passes with zero candidates', () => {
