@@ -25,6 +25,7 @@ const { execFileSync } = require('child_process');
 // Done-marker detection is a known bug class (cmux prepends activity glyphs
 // before ✅) — reuse the hardened predicate instead of reimplementing it.
 const { isDoneTitle } = require('./cmux-workspaces.js');
+const { isNeedsYouTitle } = require('./needs-you-snapshot.js');
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
@@ -96,6 +97,12 @@ function parseWorkspaces(rawText) {
     const title = m[2].trim();
     if (!title.includes('🤖')) continue;
     if (isDoneTitle(title)) { autoDone++; continue; }
+    // Card #870: a ❓-prefixed auto tab hit a DECISION NEEDED and belongs in
+    // the digest's separate "Needs your decision" section, not this bucket —
+    // the render line below asserts "none need you" for whatever lands here
+    // (ship-check finding: an unfiltered ❓+🤖 tab would silently contradict
+    // that claim in the SAME email).
+    if (isNeedsYouTitle(title)) continue;
     auto.push({ ref: `workspace:${m[1]}`, title });
   }
   // Duplicate titles = the same card dispatched more than once (the exact
