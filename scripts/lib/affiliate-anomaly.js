@@ -44,11 +44,30 @@ function sumWindow(byDay, asOf, days) {
  * fine. (Clicks register at Impact BEFORE the redirect, so the inverse — links
  * fine, conversions dead — is covered by the flatline/collapse checks.)
  */
-function checkHandoffBreak({ impactClicksByDay, posthogTTClicksByDay, asOf, days = 3, minRatio = 0.3, minPosthogClicks = 30 }) {
+function checkHandoffBreak({ impactClicksByDay, posthogTTClicksByDay, asOf, days = 3, minRatio = 0.3, minPosthogClicks = 30, zeroDayPosthogFloor = 15 }) {
   const posthog = sumWindow(posthogTTClicksByDay, asOf, days);
   const impact = sumWindow(impactClicksByDay, asOf, days);
   if (posthog < minPosthogClicks) {
     return { verdict: 'not-applicable', reason: `only ${posthog} PostHog TodayTix clicks in ${days}d (need ${minPosthogClicks} for the ratio to mean anything)`, impact, posthog };
+  }
+  // Single-day total outage check: a one-day Impact=0 inside an otherwise
+  // healthy window survives the ratio test (25+25+0 vs 120 = 42% > 30%) and
+  // would go unreported until day 2-3 (Codex ship-check finding 2026-08-03).
+  // A full zero against real same-day clicks is never noise at this volume.
+  const impactMap = impactClicksByDay instanceof Map ? impactClicksByDay : new Map(Object.entries(impactClicksByDay || {}));
+  const posthogMap = posthogTTClicksByDay instanceof Map ? posthogTTClicksByDay : new Map(Object.entries(posthogTTClicksByDay || {}));
+  const endMs = dayToMs(asOf);
+  for (let i = 0; i < days; i += 1) {
+    const day = toDayKey(endMs - i * MS_PER_DAY);
+    const dayImpact = Number(impactMap.get(day)) || 0;
+    const dayPosthog = Number(posthogMap.get(day)) || 0;
+    if (dayImpact === 0 && dayPosthog >= zeroDayPosthogFloor) {
+      return {
+        verdict: 'broken',
+        reason: `Impact recorded ZERO clicks on ${day} while ${dayPosthog} real TodayTix clicks flowed — full one-day handoff outage (window ratio ${Math.round((impact / posthog) * 100)}% would have hidden it)`,
+        impact, posthog, ratio: impact / posthog, zeroDay: day,
+      };
+    }
   }
   const ratio = impact / posthog;
   if (ratio < minRatio) {
