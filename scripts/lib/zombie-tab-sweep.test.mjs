@@ -71,20 +71,43 @@ test('live duplicate by taskId → corpse even when task still pending', () => {
   assert.equal(r.corpses[0].reason, 'live-duplicate');
 });
 
-test('live duplicate by identical (truncated) title → corpse without any ledger mapping', () => {
+test('title equality only counts as duplicate when the dead tab has NO taskId mapping', () => {
   const title = '🤖⚡ Data·Gap-audit checkpoint writes are whole-object + unl';
-  const r = classify({
+  // Unmapped dead tab + identically titled live tab → corpse.
+  const unmapped = classify({
     deadAutoTabs: [dead('workspace:7', title)],
     liveWorkspaces: [{ ref: 'workspace:8', title }],
   });
-  assert.equal(r.corpses.length, 1);
-  assert.equal(r.corpses[0].reason, 'live-duplicate');
+  assert.equal(unmapped.corpses.length, 1);
+  assert.equal(unmapped.corpses[0].reason, 'live-duplicate');
+
+  // MAPPED pending dead tab whose title matches a live tab of a DIFFERENT
+  // task → revive, never a title-based corpse (a sibling task sharing a
+  // card-name prefix must not be closed as a "duplicate").
+  const mapped = classify({
+    deadAutoTabs: [dead('workspace:9', title)],
+    liveWorkspaces: [{ ref: 'workspace:10', title }],
+    launches: { 'workspace:9': { taskId: 930 }, 'workspace:10': { taskId: 931 } },
+    statuses: { 930: 'pending', 931: 'pending' },
+  });
+  assert.equal(mapped.corpses.length, 0);
+  assert.equal(mapped.revive.length, 1);
+  assert.equal(mapped.revive[0].taskId, '930');
+});
+
+test('different full titles are never duplicates (no prefix slicing)', () => {
+  const r = classify({
+    deadAutoTabs: [dead('workspace:11', '🤖⚡ Data·Coverage Verdict S0: foundations — explainExclusio')],
+    liveWorkspaces: [{ ref: 'workspace:12', title: '🤖⚡ Data·Coverage Verdict S0: foundations — explainExclusion + more' }],
+  });
+  assert.equal(r.corpses.length, 0);
+  assert.equal(r.report.length, 1); // unmapped, left alone
 });
 
 test('selected tab is never touched even if dead and completed', () => {
   const r = classify({
-    deadAutoTabs: [dead('workspace:9', '🤖⚡ Data·done', { selected: true })],
-    launches: { 'workspace:9': { taskId: 905 } },
+    deadAutoTabs: [dead('workspace:13', '🤖⚡ Data·done', { selected: true })],
+    launches: { 'workspace:13': { taskId: 905 } },
     statuses: { 905: 'completed' },
   });
   assert.equal(r.corpses.length + r.revive.length + r.report.length, 0);
@@ -92,14 +115,14 @@ test('selected tab is never touched even if dead and completed', () => {
 
 test('non-🤖 tab is never a candidate (defense in depth)', () => {
   const r = classify({
-    deadAutoTabs: [dead('workspace:10', 'owner tab no marker')],
-    launches: { 'workspace:10': { taskId: 905 } },
+    deadAutoTabs: [dead('workspace:14', 'owner tab no marker')],
+    launches: { 'workspace:14': { taskId: 905 } },
     statuses: { 905: 'completed' },
   });
   assert.equal(r.corpses.length + r.revive.length + r.report.length, 0);
 });
 
-test('revive is capped per tick, remainder deferred', () => {
+test('classify returns ALL revive candidates — the caller applies guard then cap', () => {
   const tabs = [];
   const launches = {};
   const statuses = {};
@@ -109,8 +132,7 @@ test('revive is capped per tick, remainder deferred', () => {
     statuses[800 + i] = 'pending';
   }
   const r = classify({ deadAutoTabs: tabs, launches, statuses });
-  assert.equal(r.revive.length, REVIVE_CAP_PER_TICK);
-  assert.equal(r.reviveDeferred.length, 2);
+  assert.equal(r.revive.length, REVIVE_CAP_PER_TICK + 2);
 });
 
 test('launchByRef throwing is treated as unmapped, never a crash', () => {
@@ -125,9 +147,9 @@ test('launchByRef throwing is treated as unmapped, never a crash', () => {
   assert.equal(r.report[0].reason, 'unmapped');
 });
 
-test('normalizeTitle: whitespace collapsed, 40-char prefix', () => {
+test('normalizeTitle collapses whitespace, keeps the full title', () => {
   assert.equal(normalizeTitle('  a   b  '), 'a b');
-  assert.equal(normalizeTitle('x'.repeat(60)).length, 40);
+  assert.equal(normalizeTitle('x'.repeat(60)).length, 60);
 });
 
 test('sweepZombieTabs wiring: dry-run closes nothing, real run closes corpse and re-dispatches pending', () => {
@@ -161,24 +183,51 @@ test('sweepZombieTabs wiring: dry-run closes nothing, real run closes corpse and
   prune.sweepZombieTabs({ ...deps, dryRun: false });
   assert.deepEqual(calls.closed.sort(), ['workspace:40', 'workspace:41']);
   assert.deepEqual(calls.redispatched, ['914']);
-  assert.equal(calls.ledger.filter(e => e.event === 'prune-closed' && e.reason === 'zombie-task-completed').length, 1);
+  const corpseEntry = calls.ledger.find(e => e.event === 'prune-closed' && e.reason === 'zombie-task-completed');
+  assert.ok(corpseEntry, 'corpse must write a prune-closed entry');
+  assert.equal(corpseEntry.subject, 'a', 'entry must carry subject like pruneClosedEntry does');
+  assert.equal(corpseEntry.title, '🤖⚡ Data·corpse task');
   assert.equal(calls.paged, 1);
 });
 
-test('sweepZombieTabs: revive skipped (husk still closed) once dead attempts hit the guard threshold', () => {
+test('sweepZombieTabs: close failure on the revive path must NOT re-dispatch (no concurrent double-run)', () => {
+  const prune = require('../bsc-prune.js');
+  const calls = { redispatched: [], paged: [] };
+  prune.sweepZombieTabs({
+    all: [{ ref: 'workspace:45', title: '🤖⚡ Data·never booted' }],
+    idle: [{ ref: 'workspace:45', title: '🤖⚡ Data·never booted' }],
+    dryRun: false,
+    closeWorkspaceFn: () => { throw new Error('cmux socket flake'); },
+    appendLedgerEntryFn: () => {},
+    readLedgerEntriesFn: () => [{ event: 'launch', workspaceRef: 'workspace:45', taskId: 914, subject: 'b', ts: '2026-08-03T00:00:01Z' }],
+    taskStatusByIdFn: () => 'pending',
+    redispatchFn: (id) => calls.redispatched.push(id),
+    pageFn: (p) => calls.paged.push(p),
+  });
+  assert.deepEqual(calls.redispatched, [], 'failed close must abort the re-dispatch');
+  assert.deepEqual(calls.paged[0].revive, [], 'aborted revive must not be paged as revived');
+});
+
+test('sweepZombieTabs: guard runs before the cap — guarded tasks never burn cap slots, and guarded closes are paged', () => {
   const prune = require('../bsc-prune.js');
   const { DEAD_ATTEMPT_LIMIT } = require('./dispatch-ledger.js');
   const calls = { closed: [], redispatched: [], paged: [] };
-  const deadEntries = [];
+
+  // Task 800 is past the death threshold; tasks 801..(801+CAP-1) are fresh.
+  const entries = [];
   for (let i = 0; i < DEAD_ATTEMPT_LIMIT; i++) {
-    deadEntries.push({ event: 'launch', workspaceRef: `workspace:${60 + i}`, taskId: 914, subject: 'b', ts: `2026-08-03T0${i}:00:00Z` });
-    deadEntries.push({ event: 'dead', workspaceRef: `workspace:${60 + i}`, taskId: 914, ts: `2026-08-03T0${i}:30:00Z` });
+    entries.push({ event: 'launch', workspaceRef: `workspace:${70 + i}`, taskId: 800, subject: 'x', ts: `2026-08-03T0${i}:00:00Z` });
+    entries.push({ event: 'dead', workspaceRef: `workspace:${70 + i}`, taskId: 800, ts: `2026-08-03T0${i}:30:00Z` });
   }
-  const entries = deadEntries.concat([{ event: 'launch', workspaceRef: 'workspace:70', taskId: 914, subject: 'b', ts: '2026-08-03T05:00:00Z' }]);
+  const tabs = [{ ref: 'workspace:80', title: '🤖⚡ Data·guarded' }];
+  entries.push({ event: 'launch', workspaceRef: 'workspace:80', taskId: 800, subject: 'x', ts: '2026-08-03T05:00:00Z' });
+  for (let i = 0; i < REVIVE_CAP_PER_TICK; i++) {
+    tabs.push({ ref: `workspace:${81 + i}`, title: `🤖⚡ Data·fresh ${i}` });
+    entries.push({ event: 'launch', workspaceRef: `workspace:${81 + i}`, taskId: 801 + i, subject: `f${i}`, ts: '2026-08-03T05:00:01Z' });
+  }
+
   prune.sweepZombieTabs({
-    all: [{ ref: 'workspace:70', title: '🤖⚡ Data·keeps dying' }],
-    idle: [{ ref: 'workspace:70', title: '🤖⚡ Data·keeps dying' }],
-    dryRun: false,
+    all: tabs, idle: tabs, dryRun: false,
     closeWorkspaceFn: (ref) => calls.closed.push(ref),
     appendLedgerEntryFn: () => {},
     readLedgerEntriesFn: () => entries,
@@ -186,9 +235,25 @@ test('sweepZombieTabs: revive skipped (husk still closed) once dead attempts hit
     redispatchFn: (id) => calls.redispatched.push(id),
     pageFn: (p) => calls.paged.push(p),
   });
-  assert.deepEqual(calls.closed, ['workspace:70'], 'husk must still close');
-  assert.deepEqual(calls.redispatched, [], 'must NOT re-dispatch past the death threshold');
-  assert.deepEqual(calls.paged[0].revive, [], 'guarded task must not be paged as revived');
+
+  // The guarded task's husk closed but not re-dispatched; ALL fresh tasks
+  // got cap slots (the guarded one didn't consume any).
+  assert.equal(calls.redispatched.length, REVIVE_CAP_PER_TICK);
+  assert.ok(!calls.redispatched.includes('800'));
+  assert.equal(calls.paged[0].guarded.length, 1, 'guarded close must be paged');
+  assert.equal(calls.paged[0].guarded[0].taskId, '800');
+  assert.ok(calls.closed.includes('workspace:80'), 'guarded husk must still close');
+});
+
+test('latestLaunchByRef returns the LAST launch for a recycled ref, not the first', () => {
+  const prune = require('../bsc-prune.js');
+  const entries = [
+    { event: 'launch', workspaceRef: 'workspace:12', taskId: 100, ts: '2026-08-01T00:00:00Z' },
+    { event: 'dead', workspaceRef: 'workspace:12', taskId: 100, ts: '2026-08-01T01:00:00Z' },
+    { event: 'launch', workspaceRef: 'workspace:12', taskId: 200, ts: '2026-08-03T00:00:00Z' },
+  ];
+  assert.equal(prune.latestLaunchByRef('workspace:12', entries).taskId, 200);
+  assert.equal(prune.latestLaunchByRef('workspace:99', entries), null);
 });
 
 test('sweepZombieTabs kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 does nothing', () => {

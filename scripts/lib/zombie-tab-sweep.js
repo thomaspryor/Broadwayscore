@@ -15,14 +15,16 @@
  * This module is the pure decision half (task #15-pattern: logic in lib,
  * bsc-prune wires I/O). Buckets:
  *   corpses — dead 🤖 tab whose task is already completed, OR whose task
- *             has another LIVE workspace (duplicate launch). Close; work is
- *             done or running elsewhere.
+ *             has another LIVE workspace with the same taskId, OR (only when
+ *             the ledger has NO taskId for the dead tab) an identically
+ *             titled live tab. Close; work is done or running elsewhere.
  *   revive  — dead 🤖 tab whose task is still pending: the launch never ran.
- *             Close the husk and re-dispatch headless (bsc-next --headless),
- *             where cmux surface attachment cannot bite. Capped per tick;
- *             the CALLER must enforce the deadAttemptsForTask recurrence cap
+ *             The CALLER closes the husk and re-dispatches headless — and
+ *             must apply BOTH the deadAttemptsForTask recurrence cap
  *             (bsc-next's --headless path never reaches its own
- *             deadDispatchGuard — verified 2026-08-03).
+ *             deadDispatchGuard — verified 2026-08-03) AND the per-tick
+ *             fan-out cap AFTER that guard, so guarded tasks never burn
+ *             cap slots (ship-check catch).
  *   report  — dead 🤖 tab we can't map to a task (no launch entry, no task
  *             file) or whose task is in_progress (the #883 reconciler's
  *             territory — never race it). Listed, never touched.
@@ -40,8 +42,11 @@ const REVIVE_CAP_PER_TICK = 2; // spend safety: never fan out more than 2 headle
  * @param {Array<{ref:string,title:string}>} liveWorkspaces every OTHER
  *        currently-listed workspace (for duplicate detection).
  * @param {(ref:string)=>({taskId:string|number,subject?:string}|null)} launchByRef
+ *        must return the LATEST launch for the ref — cmux recycles refs
+ *        across restarts, so a first-match lookup misattributes (Codex catch).
  * @param {(taskId:string)=>(string|null)} taskStatusById status from the
- *        shared task store, or null when the task file is missing.
+ *        shared task store (live dir + archive fallback), or null when the
+ *        task file is missing everywhere.
  * @param {(title:string)=>boolean} hasAutoDispatchMarker
  */
 function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskStatusById, hasAutoDispatchMarker }) {
@@ -64,28 +69,31 @@ function classifyZombieTabs({ deadAutoTabs, liveWorkspaces, launchByRef, taskSta
     const status = taskId ? taskStatusById(taskId) : null;
     const entry = { ref: w.ref, title: w.title, taskId, subject: (launch && launch.subject) || null, status };
 
-    // Duplicate: same task already has a LIVE workspace, or an identically
-    // titled live tab exists (covers launches the ledger missed).
-    const isDup = (taskId && liveTaskIds.has(taskId)) || liveByTitle.has(normalizeTitle(w.title));
-
-    if (status === 'completed' || isDup) { corpses.push({ ...entry, reason: status === 'completed' ? 'task-completed' : 'live-duplicate' }); continue; }
+    if (status === 'completed') { corpses.push({ ...entry, reason: 'task-completed' }); continue; }
+    // Duplicate: same task already has a LIVE workspace. Title equality is
+    // ONLY consulted when the ledger has no taskId for the dead tab — two
+    // DIFFERENT tasks can share a title prefix, so for mapped tabs the task
+    // id is the sole authority (GPT/Codex catch: the earlier 40-char-prefix
+    // match could close a pending sibling task as a "duplicate"). Full
+    // normalized-title equality, no prefix slice, for the unmapped case:
+    // re-dispatch dups get their identical title from the same card name.
+    const isDup = (taskId && liveTaskIds.has(taskId)) || (!taskId && liveByTitle.has(normalizeTitle(w.title)));
+    if (isDup) { corpses.push({ ...entry, reason: 'live-duplicate' }); continue; }
     if (status === 'pending') { revive.push(entry); continue; }
     // in_progress → #883 reconciler's job; unknown mapping → too little
     // evidence to close someone's tab. Both are report-only.
     report.push({ ...entry, reason: status === 'in_progress' ? 'reconciler-territory' : 'unmapped' });
   }
 
-  return { corpses, revive: revive.slice(0, REVIVE_CAP_PER_TICK), reviveDeferred: revive.slice(REVIVE_CAP_PER_TICK), report };
+  return { corpses, revive, report };
 }
 
 function safeLaunch(launchByRef, ref) {
   try { return launchByRef(ref) || null; } catch { return null; }
 }
 
-// cmux truncates sidebar titles; compare on a stable prefix so a truncated
-// dup ("…recover-*" vs "…recover-*-browser.js") still matches.
 function normalizeTitle(title) {
-  return String(title || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+  return String(title || '').replace(/\s+/g, ' ').trim();
 }
 
 module.exports = { classifyZombieTabs, normalizeTitle, REVIVE_CAP_PER_TICK };
