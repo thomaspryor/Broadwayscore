@@ -122,10 +122,16 @@ test('an entry with an unparseable computedAt is kept, not silently pruned', () 
   assert.strictEqual(after.prunedStale, 0);
 });
 
-test('gapStateFor: empty census is never "complete"', () => {
-  assert.strictEqual(gapStateFor(result('a')), 'complete');
-  assert.strictEqual(gapStateFor(result('a', { missing: [{ host: 'x.com' }] })), 'incomplete');
-  assert.strictEqual(gapStateFor(result('a', { flaggedMisses: [{ url: 'u' }] })), 'incomplete');
+test('gapStateFor: empty census is never "complete" (task #906: now reuses censusVerdict)', () => {
+  // An aggregator article was seen but it extracted ZERO review URLs — the
+  // vacuous-truth trap review-census.js's own docstring warns about. This is
+  // the ONE deliberate behavior change from the pre-#906 hand-rolled version
+  // (which read this as "complete"): finding no URLs is ignorance, not proof.
+  assert.strictEqual(gapStateFor(result('a')), 'no-census-yet');
+  // at least one real, covered URL and zero gaps == genuinely complete
+  assert.strictEqual(gapStateFor(result('a', { aggregatorListedUrls: ['https://x.com/review'] })), 'complete');
+  assert.strictEqual(gapStateFor(result('a', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] })), 'incomplete');
+  assert.strictEqual(gapStateFor(result('a', { flaggedMisses: [{ host: 'y.com', url: 'https://y.com/1' }] })), 'incomplete');
   assert.strictEqual(gapStateFor(result('a', { citedNoUrl: [{ outletId: 'o' }] })), 'incomplete');
   // no aggregator reference at all == ignorance, not proof of coverage
   assert.strictEqual(gapStateFor(result('a', { aggregatorArticles: [], aggregatorListedUrls: [] })), 'no-census-yet');
@@ -133,7 +139,12 @@ test('gapStateFor: empty census is never "complete"', () => {
 });
 
 test('stateMap keys by showId and skips junk rows', () => {
-  const m = stateMap([result('a-show'), result('b-show', { missing: [{ host: 'x' }] }), null, { title: 'no id' }]);
+  const m = stateMap([
+    result('a-show', { aggregatorListedUrls: ['https://x.com/review'] }),
+    result('b-show', { missing: [{ host: 'x', url: 'https://x.com/1' }] }),
+    null,
+    { title: 'no id' },
+  ]);
   assert.deepStrictEqual(m, { 'a-show': 'complete', 'b-show': 'incomplete' });
 });
 

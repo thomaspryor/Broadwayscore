@@ -28,7 +28,8 @@ const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
 
 // Schema version — bump when per-show detail format changes
-const DETAIL_SCHEMA_VERSION = 1;
+// v2 (task #906): added `cov` (Coverage Verdict public summary)
+const DETAIL_SCHEMA_VERSION = 2;
 
 // ===========================================
 // HASH-GATE (two-layer, per-show)
@@ -116,6 +117,7 @@ function computePerShowHash(show, globalHash, ctx) {
   hash.update(JSON.stringify(ctx.lotteryRush[show.id] ?? null));
   hash.update(JSON.stringify(ctx.theaterMeta[show.venue] ?? null));
   hash.update(JSON.stringify(ctx.videoReviewsByShow[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.coverageVerdictByShow[show.id] ?? null));
   // Cast file: hash content if present, label if absent — keeps "no cast"
   // distinguishable from "empty cast file."
   const castFile = path.join(dataDir, 'cast', `${show.id}.json`);
@@ -145,6 +147,11 @@ function writeCachedHash(globalHash, showHashes, fileCount) {
 }
 
 const FORCE_REGEN = process.argv.includes('--force') || process.env.FORCE_REGENERATE === '1' || process.env.FORCE_REGENERATE === 'true';
+// --show=<id>: regenerate just one show (debugging / verifying a single fix,
+// e.g. Coverage Verdict task #906). Scoped runs never touch the shared
+// per-show hash cache — writing a 1-entry cache would look like every other
+// show's hash vanished and force a full-corpus regen on the next real run.
+const SHOW_ARG = (process.argv.find((a) => a.startsWith('--show=')) || '').slice('--show='.length) || null;
 
 // ===========================================
 // LOAD DATA
@@ -269,6 +276,33 @@ try {
   console.warn('⚠ video-reviews.json not found — video reviews will be skipped');
 }
 
+// Coverage Verdict (task #906): compact PUBLIC summary of each show's private
+// censusVerdict (data/audit/show-review-gap.json, computed by
+// audit-show-review-gap.js + scripts/lib/gap-audit-merge.js's censusVerdictFor).
+// Only {state, liveCount, candidateCount} cross into public — never per-outlet
+// candidates/missing/reasons (plan rule: verdicts private, public gets counts
+// only). Fail-open + kill-switch respecting: a missing/unreadable audit file
+// or COVERAGE_GATE_DISABLED just means every show gets no `cov` field.
+let coverageVerdictByShow = {};
+try {
+  const { coverageGateDisabled } = require('./lib/coverage-gate');
+  if (!coverageGateDisabled()) {
+    const gapAudit = JSON.parse(fs.readFileSync(path.join(dataDir, 'audit', 'show-review-gap.json'), 'utf-8'));
+    for (const r of (gapAudit.results || [])) {
+      if (!r || !r.showId || !r.censusVerdict) continue;
+      coverageVerdictByShow[r.showId] = {
+        state: r.censusVerdict.verdict,
+        liveCount: r.censusVerdict.liveCount,
+        candidateCount: r.censusVerdict.candidateCount,
+        computedAt: r.computedAt || null,
+      };
+    }
+  }
+  console.log(`✓ Coverage verdicts: ${Object.keys(coverageVerdictByShow).length} shows`);
+} catch (err) {
+  console.warn('⚠ show-review-gap.json not found — cov field will be skipped');
+}
+
 // ===========================================
 // INDEX DATA
 // ===========================================
@@ -306,9 +340,16 @@ const showsWithScores = new Set();
 for (const review of reviews) {
   if (review.assignedScore != null) showsWithScores.add(review.showId);
 }
-const visibleShows = shows.filter(show =>
+let visibleShows = shows.filter(show =>
   showsWithScores.has(show.id) || show.status !== 'closed'
 );
+if (SHOW_ARG) {
+  visibleShows = shows.filter((show) => show.id === SHOW_ARG);
+  if (visibleShows.length === 0) {
+    console.error(`✗ --show=${SHOW_ARG}: no matching show in shows.json`);
+    process.exit(1);
+  }
+}
 
 // Per-show hash gate setup. computePerShowHash() reads from these — bundle
 // them into a context object so the helper doesn't depend on hoisted
@@ -316,6 +357,7 @@ const visibleShows = shows.filter(show =>
 const HASH_CTX = {
   reviewsByShow, audienceBuzz, tonyByShow, criticConsensus,
   showSchedules, grossesData, lotteryRush, theaterMeta, videoReviewsByShow,
+  coverageVerdictByShow,
 };
 
 // Always compute globalHash — needed both for skip decisions AND for writing
@@ -652,6 +694,12 @@ for (const show of visibleShows) {
     }
   } catch { /* skip if cast file is malformed */ }
 
+  // Coverage Verdict (task #906) — compact public summary only, see loader above.
+  const cov = coverageVerdictByShow[show.id];
+  if (cov) {
+    detail.cov = cov;
+  }
+
   // Write file
   const filePath = path.join(outputDir, `${show.id}.json`);
   const json = JSON.stringify(detail);
@@ -708,9 +756,13 @@ console.log(`mobile-details: cache=${cacheStatus} globalHash=${(globalHash || ''
 // reaching here means output is good). newShowHashes carries forward skipped
 // shows' hashes too — without that, the next run would see them as missing
 // and force-regen.
-try {
-  writeCachedHash(globalHash, newShowHashes, totalProcessed);
-  console.log(`✓ Hash cache written (globalHash=${globalHash.substring(0, 8)}…, ${Object.keys(newShowHashes).length} shows)`);
-} catch (err) {
-  console.warn(`⚠ Failed to write hash cache (non-fatal): ${err.message}`);
+if (SHOW_ARG) {
+  console.log(`✓ --show=${SHOW_ARG} scoped run — hash cache left untouched`);
+} else {
+  try {
+    writeCachedHash(globalHash, newShowHashes, totalProcessed);
+    console.log(`✓ Hash cache written (globalHash=${globalHash.substring(0, 8)}…, ${Object.keys(newShowHashes).length} shows)`);
+  } catch (err) {
+    console.warn(`⚠ Failed to write hash cache (non-fatal): ${err.message}`);
+  }
 }

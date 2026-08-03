@@ -29,6 +29,7 @@ const { normalizeOutlet, resolveOutletFromUrl, isJunkOutlet } = require('./revie
 const { verifyAggregatorUrl } = require('./show-match-verifier');
 const { parseArticleBodyReviews } = require('./bww-roundup-parser');
 const { standingOutletsSource } = require('./standing-outlets');
+const { classifyCell, CELL_REASON } = require('./t1-ledger');
 
 // Pull the canonical/og URL out of an archived roundup page so verifyAggregatorUrl
 // can score the slug. Falls back to '' (it then relies on the page <title> + venue).
@@ -339,46 +340,113 @@ function buildCensusFromArchives(showId, opts = {}) {
   return { ...unionCensus(perSource), archivesPresent, zeroExtract, wrongRoundup };
 }
 
+// Market-suffix tolerance: a roundup may label an outlet "Time Out"
+// (normalizeOutlet → "timeout") while reviews.json carries the London variant
+// "timeout-london" (and vice versa). Treat the bare id and its "-london"
+// variant as the same outlet, else Time Out (et al.) would read missing on
+// EVERY WE show → false-incomplete + dispatch storm. Codex ship-check #3.
+function outletVariants(id) {
+  const out = new Set([id]);
+  if (id.endsWith('-london')) out.add(id.slice(0, -'-london'.length));
+  else out.add(`${id}-london`);
+  return [...out];
+}
+function outletInSet(set, id) {
+  return outletVariants(id).some((v) => set.has(v));
+}
+
+/**
+ * Per-candidate URL-level states for every entry in a census (Coverage Verdict
+ * S2, task #906). A "candidate" is one censused (outletId, url) pair. Live
+ * (present-and-scored) entries get state:'live'; everything else reuses
+ * t1-ledger's classifyCell() states (GAP/IN_FLIGHT/SUPPRESSED/CIRCUIT_OPEN/
+ * NO_REVIEW_EXPECTED) — the SAME vocabulary the T1 ledger already ships, per
+ * the plan's "no new parallel machinery" rule.
+ *
+ * firstSeenAt is preserved across runs by looking up opts.prevCandidates (the
+ * previous run's candidates array for this show) by outletId — mirrors
+ * t1-ledger's mergeLedger firstSeenAt-birth contract so a candidate's age is
+ * stable and derivable rather than resetting every run.
+ *
+ * Pure — no clock reads. Callers pass `now` explicitly (or omit it, which
+ * makes every missing candidate read IN_FLIGHT, the fail-open default).
+ *
+ * @param {object} census  result of unionCensus / buildCensusFromArchives
+ * @param {Set<string>} coveredScoredOutlets
+ * @param {object} [opts]
+ *   { suppressed, noReviewExpected, circuitOpen: Set<string>,
+ *     now: string ISO, clockAnchor: string ISO — ("now" - "clockAnchor") is
+ *     classifyCell's clockAgeHours; omit either to leave every candidate
+ *     IN_FLIGHT (no measurable clock => never a GAP, per classifyCell's own
+ *     fail-open rule),
+ *     prevCandidates: Array<{outletId, firstSeenAt}> }
+ * @returns {Array<{url:string, outletId:string, state:string, reason?:string, firstSeenAt:string|null}>}
+ */
+function candidateStatesFor(census, coveredScoredOutlets, opts = {}) {
+  if (!census || !census.hadAnySource || census.count === 0) return [];
+  const suppressed = opts.suppressed || new Set();
+  const noReviewExpected = opts.noReviewExpected || new Set();
+  const circuitOpen = opts.circuitOpen || new Set();
+  const nowIso = opts.now || null;
+  let clockAgeHours = null;
+  if (opts.now && opts.clockAnchor) {
+    const nowMs = Date.parse(opts.now);
+    const anchorMs = Date.parse(opts.clockAnchor);
+    if (Number.isFinite(nowMs) && Number.isFinite(anchorMs)) clockAgeHours = (nowMs - anchorMs) / 3600000;
+  }
+  const prevByOutlet = new Map();
+  for (const p of (opts.prevCandidates || [])) {
+    if (p && p.outletId && !prevByOutlet.has(p.outletId)) prevByOutlet.set(p.outletId, p);
+  }
+  const firstSeenAtFor = (outletId) => {
+    const prev = prevByOutlet.get(outletId);
+    return (prev && prev.firstSeenAt) || nowIso;
+  };
+  return census.entries.map((e) => {
+    const firstSeenAt = firstSeenAtFor(e.outletId);
+    if (outletInSet(coveredScoredOutlets, e.outletId)) {
+      return { url: e.url || '', outletId: e.outletId, state: 'live', firstSeenAt };
+    }
+    const state = classifyCell({
+      noReviewExpected: outletInSet(noReviewExpected, e.outletId),
+      suppressed: outletInSet(suppressed, e.outletId),
+      clockAgeHours,
+      circuitOpen: outletInSet(circuitOpen, e.outletId),
+    });
+    return { url: e.url || '', outletId: e.outletId, state, reason: CELL_REASON[state], firstSeenAt };
+  });
+}
+
 /**
  * Three-state completeness verdict. The audit owns "present-and-scored"; this
  * helper folds in the no-census-yet rule so empty/failed census is NEVER complete.
  *
  * @param {object} census  result of unionCensus / buildCensusFromArchives
  * @param {Set<string>} coveredScoredOutlets  outletIds present in reviews.json WITH assignedScore != null
- * @param {object} [opts] { suppressed: Set<string> — known-unfetchable censused outlets }
- * @returns {{verdict:'complete'|'incomplete'|'no-census-yet', missing:Array, suppressedMissing:Array}}
+ * @param {object} [opts] { suppressed: Set<string> — known-unfetchable censused outlets, plus the
+ *   candidateStatesFor() opts (noReviewExpected/circuitOpen/now/clockAnchor/prevCandidates) }
+ * @returns {{verdict:'complete'|'incomplete'|'no-census-yet', missing:Array, suppressedMissing:Array, candidates:Array}}
  */
 function censusVerdict(census, coveredScoredOutlets, opts = {}) {
   if (!census || !census.hadAnySource || census.count === 0) {
-    return { verdict: 'no-census-yet', missing: [], suppressedMissing: [] };
+    return { verdict: 'no-census-yet', missing: [], suppressedMissing: [], candidates: [] };
   }
   const suppressed = opts.suppressed || new Set();
   const missing = [];
   const suppressedMissing = [];
-  // Market-suffix tolerance: a roundup may label an outlet "Time Out"
-  // (normalizeOutlet → "timeout") while reviews.json carries the London variant
-  // "timeout-london" (and vice versa). Treat the bare id and its "-london"
-  // variant as the same outlet, else Time Out (et al.) would read missing on
-  // EVERY WE show → false-incomplete + dispatch storm. Codex ship-check #3.
-  const variants = (id) => {
-    const out = new Set([id]);
-    if (id.endsWith('-london')) out.add(id.slice(0, -'-london'.length));
-    else out.add(`${id}-london`);
-    return [...out];
-  };
-  const inSet = (set, id) => variants(id).some((v) => set.has(v));
   for (const e of census.entries) {
-    if (inSet(coveredScoredOutlets, e.outletId)) continue;       // present AND scored — good
-    if (inSet(suppressed, e.outletId)) { suppressedMissing.push(e); continue; } // known-unfetchable: stays visible, blocks complete
+    if (outletInSet(coveredScoredOutlets, e.outletId)) continue;       // present AND scored — good
+    if (outletInSet(suppressed, e.outletId)) { suppressedMissing.push(e); continue; } // known-unfetchable: stays visible, blocks complete
     missing.push(e);
   }
   // Suppressed-but-missing still means we don't have everything → never "complete".
   const verdict = (missing.length === 0 && suppressedMissing.length === 0) ? 'complete' : 'incomplete';
-  return { verdict, missing, suppressedMissing };
+  const candidates = candidateStatesFor(census, coveredScoredOutlets, opts);
+  return { verdict, missing, suppressedMissing, candidates };
 }
 
 module.exports = {
   buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
-  standingOutletsSource,
+  standingOutletsSource, candidateStatesFor,
 };
