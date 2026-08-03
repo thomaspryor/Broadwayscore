@@ -159,6 +159,32 @@ test('selectArchivable: in_progress orphans still respect keepTopN frontier', ()
   assert.deepEqual(selectArchivable(tasks, { now: NOW, keepTopN: 1 }), ['10']);
 });
 
+test('archiveCompletedTasks: move-time recheck uses fresh fs.statSync, not the scan snapshot (race guard)', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'in_progress' }, 200);
+  const livePath = path.join(dir, '1.json');
+  const origStat = fs.statSync;
+  let calls = 0;
+  fs.statSync = (p, ...rest) => {
+    if (p === livePath) {
+      calls += 1;
+      if (calls === 2) { // second stat = the move-time recheck
+        const fresh = new Date(NOW); // task was just touched — no longer stale
+        fs.utimesSync(livePath, fresh, fresh);
+      }
+    }
+    return origStat(p, ...rest);
+  };
+  try {
+    const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+    assert.deepEqual(result.archived, []);
+    assert.deepEqual(result.skipped.map((s) => s.id), ['1']);
+    assert.equal(fs.existsSync(livePath), true);
+  } finally {
+    fs.statSync = origStat;
+  }
+});
+
 test('archiveCompletedTasks: archives a stale in_progress orphan end-to-end', () => {
   const dir = mkTmp();
   writeTask(dir, 1, { status: 'in_progress', subject: 'dead session claim' }, 200);

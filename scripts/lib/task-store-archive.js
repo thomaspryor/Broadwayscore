@@ -160,11 +160,17 @@ function archiveCompletedTasks(dir, opts = {}) {
       const archivePath = path.join(archiveDir, `${id}.json`);
       let raw;
       try { raw = fs.readFileSync(livePath, 'utf8'); } catch { skipped.push({ id, reason: 'live file vanished mid-run' }); continue; }
-      // Re-verify status right before moving — a concurrent TaskUpdate could
-      // have reopened this task between the initial scan and now.
-      let parsed;
+      // Re-verify right before moving — a concurrent TaskUpdate could have
+      // reopened this task (status) or, for the in_progress population,
+      // resumed active work on it (mtime) between the initial scan and now.
+      let parsed, liveStat;
       try { parsed = JSON.parse(raw); } catch { skipped.push({ id, reason: 'unparseable at move time' }); continue; }
       if (!['completed', 'in_progress'].includes(parsed.status)) { skipped.push({ id, reason: `status changed to ${parsed.status}` }); continue; }
+      if (parsed.status === 'in_progress') {
+        try { liveStat = fs.statSync(livePath); } catch { skipped.push({ id, reason: 'live file vanished mid-run' }); continue; }
+        const staleMs = opts.staleInProgressMs ?? DEFAULT_STALE_IN_PROGRESS_MS;
+        if (now - liveStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
+      }
 
       const tmp = `${archivePath}.tmp-${crypto.randomBytes(4).toString('hex')}`;
       fs.writeFileSync(tmp, raw);
