@@ -2,7 +2,7 @@
 
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
 import { getCurrencySymbol } from '@/lib/market-utils';
 
 interface LotteryRushCardProps {
@@ -99,7 +99,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
                 <a
                   href={buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition-colors mt-1"
                 >
                   {data.lottery.platform ? `Enter on ${data.lottery.platform}` : 'Enter lottery'}
@@ -126,7 +126,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
                 <a
                   href={buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors mt-1"
                 >
                   {data.specialLottery.platform ? `Enter on ${data.specialLottery.platform}` : 'Enter lottery'}
@@ -167,7 +167,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
                 <a
                   href={buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors mt-1"
                 >
                   {data.rush.platform ? `Get on ${data.rush.platform}` : 'More info'}
@@ -200,7 +200,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
                 <a
                   href={buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium transition-colors mt-1"
                 >
                   {data.digitalRush.platform ? `Get on ${data.digitalRush.platform}` : 'Get rush tickets'}

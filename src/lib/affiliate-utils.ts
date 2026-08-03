@@ -125,6 +125,15 @@ export function buildAffiliateUrl(
   }
 }
 
+/**
+ * rel attribute for a ticket/lottery/rush <a> tag. Affiliate links (Impact,
+ * Partnerize, UTM-tracked) need sponsored+nofollow so crawlers don't follow
+ * them and inflate Impact click counts / trip Google's paid-link policy.
+ */
+export function affiliateRel(isAffiliate: boolean): string {
+  return isAffiliate ? 'sponsored nofollow noopener noreferrer' : 'noopener noreferrer';
+}
+
 /** Check whether a platform has affiliate tracking enabled */
 export function isAffiliateEnabled(platform: string): boolean {
   return AFFILIATE_CONFIG[platform]?.enabled ?? false;
