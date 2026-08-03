@@ -80,6 +80,8 @@ function checkDatePlausibility(candidate, data) {
 // silently ignored — confirmed live 2026-08-02.
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', '..', 'data', 'review-texts');
 
+const PUSH_WITH_RETRY = path.join(__dirname, 'push-with-retry.sh');
+
 /**
  * Find review-text files for `filePrefix` (e.g. "nytimes") that are not yet
  * contentTier=complete, are not already flagged wrong-show/wrong-production,
@@ -215,20 +217,17 @@ function checkpoint(stats, commitMessagePrefix) {
     } catch {} // non-zero = there ARE staged changes
     const msg = `feat: ${commitMessagePrefix} - ${stats.recovered} reviews recovered (task #831)`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: reviewTextsRepo });
-    for (let i = 0; i < 5; i++) {
-      try {
-        execSync('git pull --rebase origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        execSync('git push origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
-        return;
-      } catch {
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: reviewTextsRepo }); } catch {}
-        const delay = 3000 + Math.random() * 5000;
-        const start = Date.now();
-        while (Date.now() - start < delay) {}
-      }
+    // push-with-retry.sh (not a hand-rolled `git pull --rebase`) — a bare
+    // rebase-fetch carries no depth bound, and ~130 of this repo's CI
+    // workflows check out on fetch-depth:1, so an unbounded fetch here would
+    // pull the whole ~2.1GB/165k-commit history instead of the small delta
+    // (task #466, caught by the unbounded-fetch push audit).
+    try {
+      execSync(`bash "${PUSH_WITH_RETRY}" 5`, { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 180000 });
+      console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
+    } catch {
+      console.log('  [Checkpoint] WARNING: could not push after retries');
     }
-    console.log('  [Checkpoint] WARNING: could not push after 5 attempts');
   } catch (e) {
     console.log(`  [Checkpoint] Error: ${e.message}`);
   }
