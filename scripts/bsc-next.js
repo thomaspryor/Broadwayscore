@@ -112,7 +112,7 @@ const { resolveModel } = require('./lib/bsc-next-model.js');
 // Cmux workspace naming (owner scope-add, card #168, 2026-07-14): auto-
 // dispatched workspaces get "🤖 <Project>·<subject>" so the sidebar is
 // scannable without opening every tab. See scripts/lib/workspace-naming.js.
-const { projectOf, buildAutoTitle, stripAutoPrefix, modelGlyph } = require('./lib/workspace-naming.js');
+const { projectOf, buildAutoTitle, modelGlyph } = require('./lib/workspace-naming.js');
 // The triage queue is a single canonical instance on the main checkout (like
 // notion-brain.js above) — anchor to REPO, not __dirname, so a dispatch
 // launched from inside a worktree still reads the real queue, not an empty
@@ -185,17 +185,14 @@ function completedLaunchGuard(task, opts) {
 // workspace:37 was still open on it). Titles get activity-glyph prefixes in
 // list output and may be truncated, so compare glyph-stripped prefixes.
 function findLiveWorkspaceForTask(task, workspaces, isDone) {
-  const launchTitle = task.subject.slice(0, 50);
-  return workspaces.find(w => {
-    if (isDone(w.title)) return false;      // finished — sweep will close it
-    // Strip cmux's own activity-glyph prefix (spinner/✳/etc — also eats the
-    // 🤖 auto-dispatch emoji, since it isn't a letter/digit), THEN strip the
-    // "<Project>·" naming prefix (scope add, card #168) so a live auto-
-    // dispatched workspace still matches its raw task subject.
-    const t = stripAutoPrefix(String(w.title).replace(/^[^\p{L}\p{N}[]+/u, ''));
-    const n = Math.min(t.length, launchTitle.length);
-    return n >= 20 && t.slice(0, n) === launchTitle.slice(0, n);
-  }) || null;
+  // titleMatchesSubject (dispatch-ledger.js) strips cmux's own activity-glyph
+  // prefix (spinner/✳/etc — also eats the 🤖 auto-dispatch emoji, since it
+  // isn't a letter/digit), THEN strips the "<Project>·" naming prefix (scope
+  // add, card #168), so a live auto-dispatched workspace still matches its
+  // raw task subject. Shared with the park-guard's renumber rematch (task
+  // #883) so both guards agree on the same >=20-char bar — a drift between
+  // them would make one see a match the other doesn't.
+  return workspaces.find(w => !isDone(w.title) && dispatchLedger.titleMatchesSubject(w.title, task.subject)) || null;
 }
 
 // Refuse a blind re-dispatch once a task has died DEAD_ATTEMPT_LIMIT times

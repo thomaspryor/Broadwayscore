@@ -312,6 +312,66 @@ test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () =
   assert.equal(vanishEpoch(readEntries(p)), written.ts);
 });
 
+// ── Restart-vs-close disambiguation (task #883) ────────────────────────────
+const {
+  titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
+  looksLikeRestart, openTaskWorkspaceLaunches,
+} = require('./dispatch-ledger.js');
+
+test('titleMatchesSubject: glyph/project-prefix tolerant, requires a >=20-char common prefix', () => {
+  const subject = 'Session-system overhaul S0: hook foundations for the reconciler';
+  assert.equal(titleMatchesSubject('🤖⚡ Data·Session-system overhaul S0: hook foundations', subject), true);
+  assert.equal(titleMatchesSubject('⠂ Session-system overhaul S0: hook foundations', subject), true);
+  assert.equal(titleMatchesSubject('✅ Session-system overhaul S0: hook foundations', subject), true, 'match is title-shape only; done-ness is the caller\'s job');
+  assert.equal(titleMatchesSubject('Unrelated card about something else', subject), false);
+  assert.equal(titleMatchesSubject('short', 'short'), false, 'too short to be evidence even on an exact match');
+});
+
+test('findRenumberedWorkspace: finds the same session under a new ref, excludes already-claimed refs', () => {
+  const launch = { taskId: '853', subject: 'Session-system overhaul S0: hook foundations for the reconciler', workspaceRef: 'workspace:12' };
+  const live = [
+    { ref: 'workspace:3', title: 'Unrelated' },
+    { ref: 'workspace:41', title: '🤖⚡ Data·Session-system overhaul S0: hook foundations' },
+  ];
+  assert.equal(findRenumberedWorkspace(launch, live).ref, 'workspace:41');
+  assert.equal(findRenumberedWorkspace(launch, live, new Set(['workspace:41'])), null, 'excludeRefs stops double-claiming');
+  assert.equal(findRenumberedWorkspace(launch, []), null);
+  assert.equal(findRenumberedWorkspace(launch, [{ ref: 'workspace:3', title: 'Unrelated' }]), null);
+});
+
+test('openWorkspaceLaunchCount: counts post-epoch, non-terminal workspace launches only', () => {
+  const entries = [
+    launch({ taskId: '1', workspaceRef: 'workspace:1', ts: AFTER }),
+    launch({ taskId: '2', workspaceRef: 'workspace:2', ts: AFTER }),
+    { event: 'dead', taskId: '2', workspaceRef: 'workspace:2', ts: '2026-08-02T13:00:00.000Z' },
+    launch({ taskId: '3', workspaceRef: 'workspace:3', ts: BEFORE }), // pre-epoch
+    launch({ taskId: '4', workspaceRef: 'headless:4', ts: AFTER }),  // not workspace-shaped
+  ];
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH }), 1);
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: null }), 0, 'no epoch = nothing counted');
+});
+
+test('looksLikeRestart: requires both a minimum absolute count and a majority fraction', () => {
+  assert.equal(looksLikeRestart(1, 10), false, 'a single ordinary tab-close never trips this');
+  assert.equal(looksLikeRestart(2, 3), false, 'below RESTART_MIN_COUNT even at high fraction');
+  assert.equal(looksLikeRestart(3, 20), false, 'below RESTART_FRACTION even at the count floor');
+  assert.equal(looksLikeRestart(5, 8), true);
+  assert.equal(looksLikeRestart(5, 0), false, 'zero denominator never restart-flags');
+});
+
+test('openTaskWorkspaceLaunches: latest workspace-shaped launch per task, excludes reconciled and headless', () => {
+  const entries = [
+    launch({ taskId: '1', workspaceRef: 'workspace:1', ts: AFTER }),
+    launch({ taskId: '2', workspaceRef: 'workspace:2', ts: AFTER }),
+    { event: 'dead', taskId: '2', workspaceRef: 'workspace:2', ts: '2026-08-02T13:00:00.000Z' },
+    launch({ taskId: '3', workspaceRef: 'headless:3', ts: AFTER }),
+    launch({ taskId: '1', workspaceRef: 'workspace:99', ts: '2026-08-02T14:00:00.000Z' }), // re-dispatch supersedes
+  ];
+  const open = openTaskWorkspaceLaunches(entries);
+  assert.deepEqual([...open.keys()].sort(), ['1']);
+  assert.equal(open.get('1').workspaceRef, 'workspace:99', 'the latest launch for the task wins');
+});
+
 test('pruneClosedEntry only journals workspaces bsc-next actually launched', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
   const e = pruneClosedEntry({ ref: 'workspace:1', title: '✅ done' }, entries);

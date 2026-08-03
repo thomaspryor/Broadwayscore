@@ -23,15 +23,33 @@
  * Detection quality note: "PID alive" alone is not enough — PIDs recycle — so
  * liveness = kill-style existence AND ps argv contains `claude`
  * (bsc-runner.pidLooksLikeClaude).
+ *
+ * Task #883 (owner pain 2026-08-03, "so painful when cmux hangs"): the above
+ * only ever covered headless (lease-based) jobs. The overwhelming majority of
+ * dispatches are cmux TABS, which had no equivalent self-heal — after a cmux
+ * freeze/restart a tab's claude process can die silently and nothing
+ * notices (task #853 was found dead only by a manual 35-workspace audit).
+ * reconcileTaskSessions() below extends this SAME 5-min tick to sweep the
+ * shared task list's in_progress tasks, checks each dispatcher-tracked
+ * workspace with the session-shaped two-signal liveness check (#578) after
+ * waking cmux once first (the #849 lazy-exec-tab fix — a backgrounded app
+ * can leave an existing tab's surface dormant the same way it defers a
+ * brand-new launch), and re-dispatches dead ones through bsc-next.js's
+ * normal --id path — inheriting every existing guard (duplicate-dispatch,
+ * dead-attempt limit, the #883 park-guard fix) instead of reimplementing any
+ * of them. Deliberately reuses this file's own report()/REPORT_PATH
+ * (append-only, gitignored, Mac-local) rather than a second events file.
  */
 
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const USAGE = `Usage: node scripts/bsc-reconcile.js [--dry-run]
 Marks headless jobs whose process died as orphaned, sweeps stale leases,
-queues digest lines. Retry of orphans requires BSC_RECONCILE_RETRY=1.`;
+re-dispatches in_progress tasks whose cmux tab died, queues digest lines.
+Retry of orphaned headless jobs requires BSC_RECONCILE_RETRY=1.`;
 
 // --help before ANY side effect (house rule: --help fall-through incidents).
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
@@ -40,6 +58,9 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 }
 
 const ledger = require('./lib/dispatch-ledger.js');
+const cmuxws = require('./lib/cmux-workspaces.js');
+const { setAppFocus } = require('./lib/cmux-launch.js');
+const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
@@ -47,6 +68,24 @@ const DRY = process.argv.includes('--dry-run');
 const MAX_RETRIES_PER_TICK = 2;
 const MAX_RETRIES_PER_DAY = 6;
 const GRACE_MS = 2 * 60 * 1000; // startup window before pid:null counts as dead
+// Same per-tick throttle shape as MAX_RETRIES_PER_TICK above (task #883,
+// ship-check catch): a first-ever run against a backlog with several
+// genuinely-dead sessions would otherwise re-dispatch all of them in one
+// tick — the owner's own soft cap is "more than ~3 auto-dispatches in one
+// session, pause and confirm." Spreading a burst over several 5-min ticks
+// costs nothing (these are corpses, not urgent), and keeps the reconciler
+// itself from being the thing that manufactures a dispatch storm.
+const MAX_REDISPATCH_PER_TICK = 2;
+// Bounds the child bsc-next --id call (task #883, ship-check catch): the
+// cmux hang this whole feature exists to route around is exactly the
+// condition that can also wedge the `cmux` CLI calls bsc-next itself makes
+// on the launch path. Without a cap here, one hung dispatch attempt blocks
+// this entire 5-min launchd tick indefinitely — including the headless-job
+// orphan detection above it in main() — silently disabling the self-heal.
+// 10 min gives clear headroom above bsc-next's own documented worst-case
+// synchronous wait (verifyTimeoutSec 90s + slowBootCapSec 360s +
+// lateAdoptSec 60s ≈ 8.5 min — see cmux-launch.js's launchCmux() call).
+const DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
 
 function report(line) {
   const entry = { ts: new Date().toISOString(), ...line };
@@ -61,6 +100,144 @@ function report(line) {
 function retriesInLast24h(entries) {
   const cutoff = Date.now() - 24 * 3600 * 1000;
   return entries.filter(e => e.event === ledger.JOB_EVENTS.RETRIED && Date.parse(e.ts) > cutoff).length;
+}
+
+function sleepMs(ms) { spawnSync('sleep', [String(ms / 1000)]); }
+
+// Pure argv builder for the redispatch child process (extracted so the
+// --force requirement — see the header comment on dispatchFn's default
+// below — is directly testable without invoking a real spawnSync).
+function redispatchArgv(taskId) {
+  return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId), '--force'];
+}
+
+// ── In-progress task session reconciler (task #883) ────────────────────────
+// See the file header comment for the "why". Deps are injectable so this is
+// unit-testable without a live cmux socket or task-list directory, matching
+// bsc-prune.js's mainLocked/sweepVanished pattern.
+function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
+  const {
+    loadTasksFn = bscNext.loadTasks,
+    tasksDir = bscNext.TASKS_DIR,
+    listWorkspacesFn = cmuxws.listWorkspaces,
+    isDoneTitleFn = cmuxws.isDoneTitle,
+    claudeAliveInFn = cmuxws.claudeAliveIn,
+    surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    readLedgerEntriesFn = ledger.readEntries,
+    wakeFn = () => setAppFocus('active'),
+    clearWakeFn = () => setAppFocus('clear'),
+    sleepFn = sleepMs,
+    // --force is REQUIRED here, not a shortcut (self-review catch,
+    // 2026-08-03): bsc-next's duplicate-dispatch guard (findLiveWorkspaceForTask)
+    // matches on listing+title only, never liveness — the dead-but-still-open
+    // tab this function just confirmed dead via TWO independent checkLiveness
+    // calls (initial + post-wake) is exactly what that guard would otherwise
+    // match and refuse as "a live workspace already matches task #N," even
+    // though it is not live. Without --force, every redispatch attempt for
+    // the literal scenario this reconciler exists for (#853: tab open,
+    // claude dead inside) would be refused forever and nothing would heal.
+    // Safe to force specifically because this function has ALREADY done more
+    // verification than a human running --force blind, and already re-checks
+    // everything else --force would otherwise skip at the call site: the
+    // dead-attempt-limit (checked just below, mirroring deadDispatchGuard)
+    // and parkedGuard/completedLaunchGuard (moot — this function never acts
+    // on a missing ref or a non-in_progress task in the first place).
+    dispatchFn = (taskId) => spawnSync('node', redispatchArgv(taskId), { encoding: 'utf8', cwd: REPO, timeout: DISPATCH_TIMEOUT_MS }),
+    reportFn = report,
+  } = deps;
+
+  const tasks = loadTasksFn(tasksDir).filter(t => t.status === 'in_progress');
+  if (!tasks.length) return { checked: 0, dead: [], redispatched: [] };
+
+  const entries = readLedgerEntriesFn();
+  // Latest workspace-shaped, non-terminal launch per task — what the ledger
+  // currently believes is a live cmux session. Tasks with no such launch
+  // were never dispatcher-managed (an interactively-opened session, or a
+  // task claimed by hand) — nothing here to reconcile them against.
+  const openLaunches = ledger.openTaskWorkspaceLaunches(entries);
+
+  let workspaces;
+  try { workspaces = listWorkspacesFn(); } catch (e) {
+    reportFn({ kind: 'task-sweep-error', taskId: 'sweep', detail: `cmux listing failed: ${e.message}` });
+    return { checked: tasks.length, dead: [], redispatched: [], error: e.message };
+  }
+  let byRef = new Map(workspaces.map(w => [w.ref, w]));
+
+  const candidates = [];
+  for (const task of tasks) {
+    const launch = openLaunches.get(String(task.id));
+    if (!launch) continue;
+    const ws = byRef.get(launch.workspaceRef);
+    // A ref MISSING from the listing (ship-check P1 fix, 2026-08-03) is
+    // deliberately NOT this reconciler's call — it is ambiguous between a
+    // cmux-restart renumber and the owner closing the tab, and bsc-prune's
+    // sweepVanished() ALREADY owns that exact disambiguation (title-match
+    // remap, then a bounded restart-hold before parking). Racing ahead of
+    // it here — which an earlier version of this function did — could
+    // re-dispatch a task the owner just closed, before bsc-prune's
+    // 'vanished'/park write ever lands to make bsc-next's parkedGuard
+    // refuse it: the exact regression #578's park guard exists to prevent.
+    // Only act when the workspace IS still listed but its claude process is
+    // confirmed gone — that is the literal "in_progress task with a dead
+    // session" this card names (the #853 "found dead manually" shape).
+    if (!ws) continue;
+    if (isDoneTitleFn(ws.title)) continue; // finished — bsc-prune closes it
+    if (!cmuxws.checkLiveness(ws.ref, claudeAliveInFn, surfaceAliveInFn).dead) continue;
+    candidates.push({ task, launch });
+  }
+  if (!candidates.length) return { checked: tasks.length, dead: [], redispatched: [] };
+
+  // Wake cmux once before trusting a "dead" verdict (#849 lazy-exec fix): a
+  // backgrounded app can leave an EXISTING tab's surface dormant the same
+  // way it defers a brand-new launch's typed command. Re-list and re-check
+  // after a short nudge before concluding the session is actually gone.
+  wakeFn();
+  sleepFn(3000);
+  try { workspaces = listWorkspacesFn(); byRef = new Map(workspaces.map(w => [w.ref, w])); }
+  catch { /* keep the pre-wake snapshot — a failed re-list must not block the sweep */ }
+  clearWakeFn();
+
+  const dead = candidates.filter(({ launch }) => {
+    const ws = byRef.get(launch.workspaceRef);
+    if (!ws) return false; // vanished between the two listings — bsc-prune's call now, not ours
+    return cmuxws.checkLiveness(ws.ref, claudeAliveInFn, surfaceAliveInFn).dead;
+  });
+
+  const redispatched = [];
+  let dispatchBudget = MAX_REDISPATCH_PER_TICK;
+  for (const { task, launch } of dead) {
+    reportFn({ kind: 'task-session-dead', taskId: task.id, detail: `in_progress task #${task.id} "${task.subject}" — dispatched workspace ${launch.workspaceRef} has no live claude process` });
+    if (dryRun) continue;
+    // Refuse to keep re-shelling a task bsc-next has already given up on
+    // (ship-check P2 fix): once DEAD_ATTEMPT_LIMIT deaths are recorded,
+    // EVERY future bsc-next --id call for it fails the same way forever —
+    // without this check the reconciler would hammer it every 5 minutes,
+    // stealing cmux focus (wakeFn) and spamming the digest for no gain. It
+    // genuinely needs a human (or --force) now; surface that once per tick,
+    // not retry it.
+    if (ledger.deadAttemptsForTask(task.id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
+      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs investigation or --force, not another automatic retry` });
+      continue;
+    }
+    if (dispatchBudget <= 0) {
+      reportFn({ kind: 'task-redispatch-throttled', taskId: task.id, detail: `#${task.id} deferred — this tick's redispatch budget (${MAX_REDISPATCH_PER_TICK}) is spent; will retry next tick` });
+      continue;
+    }
+    dispatchBudget--;
+    let r;
+    try { r = dispatchFn(task.id); } catch (e) { r = { status: 1, stderr: e.message }; }
+    const ok = r.status === 0;
+    reportFn({
+      kind: ok ? 'task-redispatched' : 'task-redispatch-refused',
+      taskId: task.id,
+      detail: ok
+        ? `re-dispatched #${task.id} via bsc-next --id`
+        : `bsc-next refused #${task.id}: ${String(r.stderr || r.stdout || 'unknown error').trim().split('\n').slice(-1)[0]}`,
+    });
+    if (ok) redispatched.push(task.id);
+  }
+
+  return { checked: tasks.length, dead: dead.map(d => d.task.id), redispatched };
 }
 
 async function main() {
@@ -140,10 +317,20 @@ async function main() {
   }
 
   console.log(`[bsc-reconcile] open=${open.length} orphaned=${orphaned} sweptLeases=${sweptLeases}${DRY ? ' (dry-run)' : ''}`);
+
+  // Task #883: cmux-tab session reconciler, same tick. Failure here must
+  // never take down the headless-job detection above it — this whole step
+  // is best-effort.
+  try {
+    const taskSweep = reconcileTaskSessions({ dryRun: DRY });
+    console.log(`[bsc-reconcile] tasks checked=${taskSweep.checked} dead=${taskSweep.dead.length} redispatched=${taskSweep.redispatched.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] task-session sweep crashed (non-fatal): ${e.message}`);
+  }
 }
 
 if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, redispatchArgv, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY };

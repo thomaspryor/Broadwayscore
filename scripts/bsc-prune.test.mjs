@@ -272,6 +272,140 @@ test('sweepVanished: re-validates before appending — a task re-dispatched mid-
   assert.deepEqual(parked, []);
 });
 
+// ── Restart-vs-close disambiguation (task #883) ─────────────────────────────
+// LAUNCHED's subject ('card') is deliberately too short (<20 chars) to ever
+// title-match — every test ABOVE this point already proves the pre-#883
+// behavior is unaffected by the new remap/circuit-breaker code path.
+const LONG_SUBJECT = 'Session-system overhaul S0: hook foundations for the reconciler';
+const LAUNCHED_LONG = { event: 'launch', taskId: '5', subject: LONG_SUBJECT, workspaceRef: 'workspace:1', notionId: 'nid', ts: '2026-08-02T10:00:00.000Z' };
+
+test('sweepVanished: same session under a new ref (title match) is remapped (both entries), not parked', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED_LONG]);
+  // workspace:1 is gone; workspace:41 has the SAME title under a new ref —
+  // the cmux-restart renumbering signature (owner report 2026-08-03).
+  sweepVanished({ all: [ws(9), { ref: 'workspace:41', title: `🤖⚡ Data·${LONG_SUBJECT}` }], ...deps });
+  assert.equal(appended.length, 2, 'old ref gets a terminal entry AND the new ref gets a launch (ship-check P0: a bare new launch left the old ref open forever)');
+  assert.equal(appended[0].event, 'remapped');
+  assert.equal(appended[0].workspaceRef, 'workspace:1');
+  assert.equal(appended[0].newRef, 'workspace:41');
+  assert.equal(appended[1].event, 'launch');
+  assert.equal(appended[1].workspaceRef, 'workspace:41');
+  assert.equal(appended[1].remapped, true);
+  assert.equal(appended[1].previousRef, 'workspace:1');
+  assert.deepEqual(parked, [], 'a renumbered session must never be parked');
+});
+
+test('sweepVanished: remap carries forward model/verifyCmd from the original launch', () => {
+  const armed = { ...LAUNCHED_LONG, model: 'opus', verifyCmd: 'node --test foo.test.mjs', verifyReason: null };
+  const { appended, deps } = harness([EPOCH_ENTRY, armed]);
+  sweepVanished({ all: [{ ref: 'workspace:41', title: `🤖⚡ Data·${LONG_SUBJECT}` }], ...deps });
+  const newLaunch = appended.find(e => e.event === 'launch');
+  assert.equal(newLaunch.model, 'opus');
+  assert.equal(newLaunch.verifyCmd, 'node --test foo.test.mjs');
+});
+
+test('sweepVanished: a remapped ref never re-triggers on the next sweep (no infinite remap spam)', () => {
+  // ship-check P0 regression test: without a terminal entry for the OLD ref,
+  // vanishedBreadcrumbs kept re-flagging it and findRenumberedWorkspace kept
+  // re-matching the same live workspace — one remap line every 5 minutes.
+  const { appended, deps } = harness([EPOCH_ENTRY, LAUNCHED_LONG]);
+  const all = [{ ref: 'workspace:41', title: `🤖⚡ Data·${LONG_SUBJECT}` }];
+  sweepVanished({ all, ...deps });
+  assert.equal(appended.length, 2, 'first sweep remaps once');
+  const entries2 = [EPOCH_ENTRY, LAUNCHED_LONG, ...appended];
+  deps.readLedgerEntriesFn = () => entries2;
+  sweepVanished({ all, ...deps });
+  assert.equal(appended.length, 2, 'second sweep must not append anything more — workspace:1 is already terminally reconciled');
+});
+
+test('sweepVanished: --dry-run reports a remap but writes nothing', () => {
+  const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED_LONG], { dryRun: true });
+  sweepVanished({ all: [{ ref: 'workspace:41', title: LONG_SUBJECT }], ...deps });
+  assert.deepEqual(appended, []);
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: mass-renumbering (no title match) withholds the park, records a restart-hold', () => {
+  // 3 tracked launches, all 3 vanish in the same sweep with no live title
+  // match for any of them — RESTART_MIN_COUNT=3 and 3/3 >= RESTART_FRACTION
+  // trips the circuit breaker; nothing should park, but the hold IS recorded
+  // (ship-check catch: without it, a genuine mass-close latches forever).
+  const entries = [
+    EPOCH_ENTRY,
+    { event: 'launch', taskId: '1', subject: 'Task one is a long enough subject', workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '2', subject: 'Task two is a long enough subject', workspaceRef: 'workspace:2', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '3', subject: 'Task three is a long enough subject', workspaceRef: 'workspace:3', ts: '2026-08-02T10:00:00.000Z' },
+  ];
+  const { appended, parked, deps } = harness(entries);
+  sweepVanished({ all: [ws(9)], ...deps }); // only an unrelated workspace listed
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'restart-hold');
+  assert.deepEqual(appended[0].refs.sort(), ['workspace:1', 'workspace:2', 'workspace:3']);
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: a still-active restart-hold (same refs, under 15min) keeps withholding without re-appending', () => {
+  const entries = [
+    EPOCH_ENTRY,
+    { event: 'launch', taskId: '1', subject: 'Task one is a long enough subject', workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '2', subject: 'Task two is a long enough subject', workspaceRef: 'workspace:2', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '3', subject: 'Task three is a long enough subject', workspaceRef: 'workspace:3', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'restart-hold', taskId: 'sweep', refs: ['workspace:1', 'workspace:2', 'workspace:3'], ts: new Date(Date.now() - 60_000).toISOString() },
+  ];
+  const { appended, parked, deps } = harness(entries);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.deepEqual(appended, [], 'an already-recorded, still-fresh hold must not be re-appended every tick');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: an expired restart-hold (>15min, same refs) falls through and parks', () => {
+  const entries = [
+    EPOCH_ENTRY,
+    { event: 'launch', taskId: '1', subject: 'Task one is a long enough subject', workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z', notionId: 'n1' },
+    { event: 'launch', taskId: '2', subject: 'Task two is a long enough subject', workspaceRef: 'workspace:2', ts: '2026-08-02T10:00:00.000Z', notionId: 'n2' },
+    { event: 'launch', taskId: '3', subject: 'Task three is a long enough subject', workspaceRef: 'workspace:3', ts: '2026-08-02T10:00:00.000Z', notionId: 'n3' },
+    { event: 'restart-hold', taskId: 'sweep', refs: ['workspace:1', 'workspace:2', 'workspace:3'], ts: new Date(Date.now() - 20 * 60_000).toISOString() },
+  ];
+  const { appended, parked, deps } = harness(entries);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 3, 'a genuine mass-close (never resolved by remap) parks once the hold window expires');
+  assert.deepEqual(appended.map(e => e.event), ['vanished', 'vanished', 'vanished']);
+  assert.equal(parked.length, 3);
+});
+
+test('sweepVanished: a NEW restart incident (different refs) starts its own fresh hold, not inheriting an old expired one', () => {
+  const entries = [
+    EPOCH_ENTRY,
+    { event: 'launch', taskId: '4', subject: 'Task four is a long enough subject', workspaceRef: 'workspace:4', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '5', subject: 'Task five is a long enough subject', workspaceRef: 'workspace:5', ts: '2026-08-02T10:00:00.000Z' },
+    { event: 'launch', taskId: '6', subject: 'Task six is a long enough subject', workspaceRef: 'workspace:6', ts: '2026-08-02T10:00:00.000Z' },
+    // An OLD, unrelated, already-expired hold from a prior (already resolved) incident.
+    { event: 'restart-hold', taskId: 'sweep', refs: ['workspace:1', 'workspace:2', 'workspace:3'], ts: new Date(Date.now() - 20 * 60_000).toISOString() },
+  ];
+  const { appended, parked, deps } = harness(entries);
+  sweepVanished({ all: [ws(9)], ...deps });
+  assert.equal(appended.length, 1, 'must start a FRESH hold for the new incident, not fall through because an unrelated old hold expired');
+  assert.equal(appended[0].event, 'restart-hold');
+  assert.deepEqual(parked, []);
+});
+
+test('sweepVanished: a single genuinely-closed tab among many open ones still parks normally', () => {
+  // 1 vanished out of 5 open launches — below both RESTART_MIN_COUNT's
+  // practical trigger and RESTART_FRACTION — must park as before.
+  const entries = [EPOCH_ENTRY, LAUNCHED_LONG];
+  for (let i = 2; i <= 5; i++) {
+    entries.push({ event: 'launch', taskId: String(i), subject: `Still-open task number ${i} long subject`, workspaceRef: `workspace:${i}`, ts: '2026-08-02T10:00:00.000Z' });
+  }
+  const { appended, parked, deps } = harness(entries);
+  // workspace:1 (LAUNCHED_LONG) vanishes with no title match; workspace:2-5
+  // (the other 4 tracked launches) are still live and listed.
+  sweepVanished({ all: [ws(2), ws(3), ws(4), ws(5)], ...deps });
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].event, 'vanished');
+  assert.equal(appended[0].taskId, '5');
+  assert.deepEqual(parked.map(p => p.notionId), ['nid']);
+});
+
 test('sweepVanished: a failed re-validate read fails closed (no park)', () => {
   const { appended, parked, deps } = harness([EPOCH_ENTRY, LAUNCHED]);
   let reads = 0;
