@@ -132,31 +132,41 @@ function loadFileMeta() {
  * Return extraction metadata for a fileKey, or null.
  * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'env'|'file' }
  * Tier-aware as of task #881: mirrors loadCookiesByFileKey's actual tier
- * selection (via selectFresherCookieTier) rather than always reporting bundle
- * meta — otherwise check-cookie-health.js could report an outlet stale off an
- * old bundle timestamp while the loader was actually using a fresher Tier-2
- * secret (or vice versa).
+ * selection rather than always reporting bundle meta — otherwise
+ * check-cookie-health.js could report an outlet stale off an old bundle
+ * timestamp while the loader was actually using a fresher Tier-2 secret (or
+ * vice versa). The selection guard below intentionally mirrors
+ * loadCookiesByFileKey's (`bundleCookies && envRawVal`, i.e. COOKIE
+ * presence) rather than meta presence — a bundle with cookies but no `_meta`
+ * still gets selected by selectFresherCookieTier's bundle-wins default, and
+ * this function must agree with that or it can report a tier that isn't the
+ * one actually in use.
  */
 function loadCookieMeta(fileKey) {
-  loadBundles();
+  const bundles = loadBundles();
+  const bundleCookies = bundles[fileKey];
   const bundleMeta = _bundleMetaCache && _bundleMetaCache[fileKey];
-  const hasBundleMeta = bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix);
 
   const envVar = FILE_KEY_TO_ENV_VAR[fileKey];
-  const envMeta = envVar && process.env[envVar] ? loadEnvMeta(envVar) : null;
-  const hasEnvMeta = envMeta && (envMeta.extractedAt || envMeta.extractedAtUnix);
+  const envRawVal = envVar && process.env[envVar];
+  const envMeta = envRawVal ? loadEnvMeta(envVar) : null;
 
-  if (hasBundleMeta && hasEnvMeta) {
-    return selectFresherCookieTier(bundleMeta, envMeta) === 'env'
-      ? { ...envMeta, source: 'env' }
-      : { ...bundleMeta, source: 'bundle' };
+  let selectedTier = null;
+  if (bundleCookies && envRawVal) {
+    selectedTier = selectFresherCookieTier(bundleMeta, envMeta);
+  } else if (bundleCookies) {
+    selectedTier = 'bundle';
+  } else if (envRawVal) {
+    selectedTier = 'env';
   }
-  if (hasBundleMeta) {
+
+  if (selectedTier === 'bundle' && bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix)) {
     return { ...bundleMeta, source: 'bundle' };
   }
-  if (hasEnvMeta) {
+  if (selectedTier === 'env' && envMeta && (envMeta.extractedAt || envMeta.extractedAtUnix)) {
     return { ...envMeta, source: 'env' };
   }
+
   const fileMeta = loadFileMeta()[fileKey];
   if (fileMeta && (fileMeta.extractedAt || fileMeta.extractedAtUnix)) {
     return { ...fileMeta, source: 'file' };
