@@ -17,8 +17,17 @@
 // Occasionally preceded by junk ("19 Views", or the article title).
 const PI_LOCATION =
   "(?:the\\s+)?(?:[Nn]orth|[Ss]outh|[Ee]ast|[Ww]est)\\s+London|the\\s+West\\s+End|the\\s+South\\s+Bank";
+// Unicode-aware (accented names like Nilgün) and tolerant of lowercase
+// particles (van/der/de/von/le/al) inside a name.
+const PI_NAME_TOKEN = "[\\p{L}'’.-]+";
 const PI_BYLINE_RE = new RegExp(
-  "([A-Z][\\w'’.-]*(?:\\s+[A-Z][\\w'’.-]*){1,2})\\s+(?:in|on)\\s+(?:" + PI_LOCATION + ")"
+  "(\\p{Lu}" +
+    PI_NAME_TOKEN +
+    "(?:\\s+(?:van|von|der|de|le|al|el|da|di)\\s+" + PI_NAME_TOKEN + "|\\s+\\p{Lu}" + PI_NAME_TOKEN + "){1,3})" +
+    "\\s+(?:in|on)\\s+(?:" +
+    PI_LOCATION +
+    ")",
+  "u"
 );
 
 // Critics observed writing for Plays International — used to trim leading junk
@@ -51,11 +60,11 @@ function extractPlaysInternationalByline(text) {
       return { name: critic, known: true };
     }
   }
-  // Unknown critic: keep the trailing two tokens (leading tokens are more
-  // likely junk than a rarely-used middle name).
-  const tokens = captured.split(" ");
-  const name = tokens.slice(-2).join(" ");
-  return { name, known: false };
+  // Unknown critic: return the full capture unaltered (it may contain leading
+  // junk like "19 Views ..."). Consumers only auto-apply known:true names, so
+  // this is a report-for-manual-verify path — don't guess-trim, it mangles
+  // particle names ("Jan van der Berg" → "der Berg").
+  return { name: captured, known: false };
 }
 
 const BYLINE_EXTRACTORS = {

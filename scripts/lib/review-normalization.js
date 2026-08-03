@@ -450,7 +450,7 @@ function normalizeCritic(criticName) {
   // Mapping to 'unknown' routes these through the Unknown-byline guards instead.
   const JUNK_BYLINES = new Set([
     'posted by', 'written by', 'by', 'staff', 'staff writer', 'staff reports',
-    'admin', 'administrator', 'editor', 'editorial staff', 'contributor',
+    'admin', 'administrator', 'ri-admin', 'editor', 'editorial staff', 'contributor',
     'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
   ]);
   if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
