@@ -462,6 +462,13 @@ on:
       - 'scripts/merge-worktree-to-main.sh'
       - 'scripts/lib/push-mutex.sh'
       - 'scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'
+      # Task #888: restore_stash()'s stash-pop-conflict fallback must never
+      # blindly `checkout HEAD -- .` over a path that's the REAL subject of a
+      # `git merge $BRANCH` conflict — proves the fallback only auto-resolves
+      # known daemon-churn paths and leaves genuine conflicts visible instead
+      # of silently discarding the incoming branch's fix. Path-listed so a
+      # solo edit to the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
       # Card #835: shared range-scoped push-audit dispatch — extracted from
       # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
       # below) so scripts/merge-worktree-to-main.sh can call the same runner.
@@ -2502,6 +2509,31 @@ jobs:
         # catches it (script proceeds past the abort and prints a bogus ✅).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
+
+      - name: Run merge-worktree-to-main conflict-resolution regression test (task #888)
+        # Task #888 (2026-08-02): while landing #732, restore_stash()'s
+        # stash-pop-conflict fallback silently `checkout HEAD -- .`-ed OVER a
+        # genuine `git merge $BRANCH` conflict on a normal scripts/ path,
+        # discarding the incoming branch's real fix while the script's own
+        # "resolve manually" message implied nothing had been auto-resolved
+        # yet. The fix distinguishes "real merge conflict in progress" from
+        # "ordinary stash-pop conflict" via MERGE_HEAD presence — not a
+        # static safe-path allowlist, which an adversarial review found would
+        # be too narrow (this repo's local daemon churns far more paths than
+        # cloud-memory/, data/audit/, public/data/admin/, e.g.
+        # public/data/shows/ is merge-coverage=exempt and among the
+        # highest-churn dirs) and would wedge the shared main worktree for
+        # every session on routine churn. Two cases: (1) genuine merge
+        # conflict — main and the worktree branch both commit different
+        # content to the same normal path, plus a dirty edit to that path
+        # gets stashed first — asserts the script exits non-zero and leaves
+        # the real conflict/stash intact rather than resolving to main's
+        # stale content; (2) ordinary churn with NO merge conflict — a
+        # concurrent push moves a file's content between stash-push and
+        # stash-pop with no branch-merge conflict involved — asserts the
+        # script does NOT wedge and completes normally.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`

@@ -102,13 +102,66 @@ fi
 restore_stash() {
   [ "$STASHED" = 1 ] || return 0
   if ! g stash pop >/dev/null 2>&1; then
-    # Conflicts are only ever in auto-generated state files — take the committed
-    # version (the daemon regenerates them) and drop the stash. Discarding
-    # cloud-memory/ is safe: it's a mirror of local memory, regenerated and
-    # committed by session-stop's sync-memory-to-repo.sh --commit.
-    log "stash pop conflicted on auto-gen files — taking committed version"
-    g checkout HEAD -- cloud-memory/ data/audit/ public/data/admin/ >/dev/null 2>&1 || true
-    g checkout HEAD -- . >/dev/null 2>&1 || true
+    # This fallback used to assume stash-pop conflicts are ALWAYS in auto-
+    # generated state files and blindly `checkout HEAD -- .` across the WHOLE
+    # working tree. That's wrong whenever this fires while `git merge $BRANCH`
+    # (above) is itself mid-conflict: the conflicted path is then the branch's
+    # REAL change, and `checkout HEAD -- .` silently overwrites it with main's
+    # stale content — merge reports "resolve manually" but the file has
+    # already been wrongly "resolved" underneath that message (task #888,
+    # 2026-08-02: scripts/lib/sync-audit-checkout.sh's real fix was discarded
+    # this way).
+    #
+    # The real signal for "is there branch content at risk here" is whether a
+    # `git merge` is actually mid-conflict (MERGE_HEAD present), NOT a static
+    # path allowlist — this repo's local daemon churns far more than
+    # cloud-memory/, data/audit/, public/data/admin/ (e.g. public/data/shows/
+    # is `merge-coverage=exempt` in .gitattributes and among the highest-churn
+    # dirs in the repo). A path-allowlist that's too narrow would make
+    # ORDINARY daemon churn take the "leave it alone" branch below and wedge
+    # the shared main worktree for every session until an operator manually
+    # intervenes — trading one silent-wrong-content bug for a
+    # blocks-everyone-on-routine-churn bug. So: no MERGE_HEAD means nothing
+    # here is a genuine branch merge conflict, and a full reset is lossless
+    # (the stash pop failed, so git never dropped the stash entry — it's
+    # still recoverable via `git stash list` if the discarded churn mattered).
+    if ! g rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+      log "stash pop conflicted with no merge in progress — discarding stashed churn (reset --hard HEAD)"
+      g reset --hard HEAD >/dev/null 2>&1 || true
+      g stash drop >/dev/null 2>&1 || true
+      return 0
+    fi
+    # MERGE_HEAD is set: `git merge $BRANCH` above is genuinely mid-conflict
+    # and the stash-pop conflict landed on top of it. Only auto-resolve paths
+    # we can PROVE are the known daemon-churn set; anything else, leave
+    # untouched and fail loudly so the genuine merge conflict stays visible
+    # instead of being papered over.
+    local unmerged unsafe
+    unmerged=$(g diff --name-only --diff-filter=U 2>/dev/null)
+    if [ -z "$unmerged" ]; then
+      # Nothing actually unmerged — stash pop failed for some other reason.
+      # Nothing to auto-resolve; drop the stash and move on.
+      g stash drop >/dev/null 2>&1 || true
+      return 0
+    fi
+    unsafe=""
+    while IFS= read -r f; do
+      [ -n "$f" ] || continue
+      case "$f" in
+        cloud-memory/*|data/audit/*|public/data/admin/*) ;;
+        *) unsafe+="$f"$'\n' ;;
+      esac
+    done <<< "$unmerged"
+    if [ -n "$unsafe" ]; then
+      log "⚠ stash pop conflicted on non-auto-gen path(s) mid-merge — NOT auto-resolving (would risk silently discarding the real merge conflict, see task #888):"
+      echo "$unsafe" | sed 's/^/    /' >&2
+      return 1
+    fi
+    log "stash pop conflicted on auto-gen files only — taking committed version for those paths"
+    while IFS= read -r f; do
+      [ -n "$f" ] || continue
+      g checkout HEAD -- "$f" >/dev/null 2>&1 || true
+    done <<< "$unmerged"
     g stash drop >/dev/null 2>&1 || true
   fi
 }
@@ -246,7 +299,7 @@ else
   log "pushed"
 fi
 
-restore_stash
+restore_stash || die "push succeeded but the pre-merge stash left unresolved conflicts on non-auto-gen path(s) — check working tree in $MAIN_DIR and resolve manually"
 
 # --- VERIFY the files actually landed on origin (the step the incident skipped) ---
 if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]} )) -gt 0 ]; then
