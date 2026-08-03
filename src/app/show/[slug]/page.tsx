@@ -625,7 +625,23 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
                 )}
                 {show.status === 'previews' || show.status === 'upcoming' ? (
-                  formatDate(show.openingDate) ? <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span> : null
+                  /* openingDate is routinely null Off-Broadway (many OB runs have no
+                     separate press night), and this branch used to render nothing at
+                     all in that case — a show with a known first-preview AND closing
+                     date showed neither. Falls back to previewsStartDate, and shows
+                     the closing date here too (it was previously only reachable via
+                     the non-previews branches). Owner report on The Pass, 2026-08-02.
+                     Mirrors DateLine in ShowHeroRedesign.tsx — keep the two in sync. */
+                  <>
+                    {formatDate(show.openingDate) ? (
+                      <span> <span className="text-gray-500">·</span> Opens {formatDate(show.openingDate)}</span>
+                    ) : formatDate(show.previewsStartDate) ? (
+                      <span> <span className="text-gray-500">·</span> Previews from {formatDate(show.previewsStartDate)}</span>
+                    ) : null}
+                    {formatDate(show.closingDate) && (
+                      <span> <span className="text-gray-500">·</span> <span className="text-amber-400">Closes {formatDate(show.closingDate)}</span></span>
+                    )}
+                  </>
                 ) : show.closingDate ? (
                   <>
                     {formatDate(show.openingDate) && <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>}
