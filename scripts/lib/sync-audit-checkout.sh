@@ -47,7 +47,34 @@ source "$SCRIPT_DIR/push-mutex.sh"
 push_mutex_acquire
 trap 'push_mutex_release' EXIT
 
-if ! git fetch origin main --quiet; then
+# Depth-bound the fetch when the checkout is shallow. From a `fetch-depth: 1`
+# clone an unbounded `git fetch origin main` asks upload-pack for the ref's
+# whole history and the server answers with the ENTIRE repo (~2.1 GB / 165k
+# commits, measured in run 30218025467), so the job stalls until timeout. This
+# helper is reachable from 166 shallow workflows. Same computation as
+# push-with-retry.sh — never hand-roll --depth=1, which makes the fetched tip a
+# parentless shallow root and destroys ancestry (task #466).
+FETCH_DEPTH_ARGS=()
+if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+  # `|| true` is load-bearing: an unborn HEAD must not abort the caller.
+  _shallow_base_sha=$(git rev-list HEAD 2>/dev/null | tail -1 || true)
+  _shallow_base_epoch=$(git log -1 --format=%ct "${_shallow_base_sha:-HEAD}" 2>/dev/null || echo "")
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/shallow-fetch-args.js" ]; then
+    # shellcheck disable=SC2207
+    FETCH_DEPTH_ARGS=($(node "$SCRIPT_DIR/shallow-fetch-args.js" \
+      --is-shallow=true \
+      --oldest-epoch="${_shallow_base_epoch:-}" \
+      --slack-sec="${SHALLOW_SINCE_SLACK_SEC:-1800}" 2>/dev/null || true))
+  fi
+  # Fail CLOSED: an empty array would silently restore the unbounded fetch.
+  if [ ${#FETCH_DEPTH_ARGS[@]} -eq 0 ]; then
+    FETCH_DEPTH_ARGS=(--deepen=200)
+  fi
+fi
+
+# unbounded-fetch-ok: depth is bounded by FETCH_DEPTH_ARGS above whenever the
+# checkout is shallow; on a full clone no bound is needed or wanted.
+if ! git fetch origin main --quiet "${FETCH_DEPTH_ARGS[@]+"${FETCH_DEPTH_ARGS[@]}"}"; then
   echo "::error::[$TAG] git fetch origin main failed"
   exit 1
 fi
