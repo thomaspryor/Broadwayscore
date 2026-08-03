@@ -61,6 +61,7 @@ const MANAGED_BASENAMES = [
   'audit/bww-roundup-miss-ledger.jsonl',
   'audit/scraper-spend-ledger.jsonl',
   'audit/owner-email-log.jsonl',
+  'audit/census-recall-trend.jsonl',
 ];
 
 const PUSH_SH_RE = /push-with-retry\.sh\b/;

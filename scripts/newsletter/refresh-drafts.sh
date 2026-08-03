@@ -62,9 +62,42 @@ git -C data/review-texts pull --rebase --quiet 2>/dev/null || true
 # and create-broadcast-draft's staleness guard only covers the core-data repo —
 # nothing downstream catches stale per-show files. So a failed pull is a hard
 # abort, not a warning.
+# Commit any local, uncommitted gap-audit stamps BEFORE pulling. The
+# newsletter completeness gate's own remediation instructions
+# (scripts/lib/newsletter-preflight.js) tell the operator to run
+# `audit-show-review-gap.js --show=ID --checkpoint` and THEN re-run this
+# script — that writes directly to the tracked
+# data/audit/{show-review-gap,gap-audit-checkpoint,unknown-aggregator-outlets}.json
+# files without committing. On send day the hourly gap-audit cron has
+# usually ALSO committed to those same files in the interim, so the plain
+# `git pull --rebase --autostash` below stashes the local stamps, rebases
+# onto CI's newer commit, and then tries to reapply them — if that pop
+# conflicts (near-guaranteed: both sides touch the same generatedAt/counts
+# header), the working tree silently ends up on CI's committed checkpoint
+# and the local stamps are stranded in an unpopped stash (#893). Turning
+# them into a real commit first means a conflict rebases LOUDLY (caught by
+# the `if ! git pull` below) instead of vanishing quietly.
+git add data/audit/show-review-gap.json data/audit/gap-audit-checkpoint.json data/audit/unknown-aggregator-outlets.json 2>/dev/null || true
+if ! git diff --cached --quiet -- data/audit/show-review-gap.json data/audit/gap-audit-checkpoint.json data/audit/unknown-aggregator-outlets.json 2>/dev/null; then
+  echo "== Committing + pushing local gap-audit stamps before pull"
+  git commit -m "chore: local gap-audit stamps (pre-refresh)" --quiet
+  # Push immediately rather than leaving the commit local-only: an unpushed
+  # commit here would silently diverge this checkout's main from origin on
+  # every send-day run (ship-check finding). push-with-retry.sh already
+  # encodes the right conflict policy for this exact file class ("audit/
+  # files: keep local run's data") so a real CI-vs-local race resolves the
+  # same way it would from any other caller of this script.
+  bash scripts/lib/push-with-retry.sh 3 main
+fi
+
 echo "== Pulling main repo (per-show score JSONs)"
 if ! git pull --rebase --autostash --quiet; then
-  echo "ERROR: main repo pull failed — public/data/shows would be stale (24-vs-23 incident class). Resolve and re-run." >&2
+  # A conflicted rebase leaves the working tree mid-rebase with conflict
+  # markers — abort so the repo is clean for the next operator/run instead of
+  # stranded (ship-check finding: this failure path bypasses the ERR trap
+  # above, since the `if !` guard means `set -e` never sees a bare failure).
+  git rebase --abort 2>/dev/null || true
+  echo "ERROR: main repo pull failed — public/data/shows would be stale (24-vs-23 incident class), or the just-pushed gap-audit stamps conflicted with a concurrent CI commit. Resolve and re-run." >&2
   exit 1
 fi
 

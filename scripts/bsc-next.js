@@ -137,6 +137,7 @@ const { evaluateVerifiability } = require('./lib/verify-gate.js');
 // dispatched session to remember the CLI exists.
 const { extractCiRedTarget } = require('./lib/ci-red-dispatch-heuristic.js');
 const { appendClaim } = require('./lib/ci-red-claims.js');
+const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
@@ -447,6 +448,29 @@ function main(argv = process.argv.slice(2), deps = {}) {
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
+  // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
+  // catches a SECOND dispatch of THIS SAME task id. It has no way to catch
+  // two DIFFERENT task ids whose notes describe the same underlying work —
+  // confirmed twice in one session's task list: #893/#902 both independently
+  // fixed the identical bug in scripts/audit-show-review-gap.js (found only
+  // at merge time via a git conflict), and #897/#911 are literally
+  // duplicate-titled cards dispatched separately. Runs before the dry-run
+  // bail below (so --dry-run previews it too) and against the task-mirror
+  // description only (no Notion fetch dependency — same truncated text every
+  // in_progress candidate is compared with). Non-blocking first cut — a
+  // shared scripts/ path or near-identical title is suggestive, not proof
+  // (two cards can legitimately touch the same file for unrelated reasons).
+  try {
+    const inProgressCards = tasks
+      .filter(t => t.status === 'in_progress' && String(t.id) !== String(task.id))
+      .map(t => ({ id: t.id, subject: t.subject, notes: t.description }));
+    const overlaps = findOverlappingCards({ id: task.id, subject: task.subject, notes: task.description }, inProgressCards);
+    overlaps.forEach(o => {
+      const why = o.reason === 'shared-file-path' ? `shares file(s) ${o.sharedPaths.join(', ')}` : 'has a near-identical title';
+      console.error(`[bsc-next] WARNING: task #${task.id} ${why} with in_progress task #${o.card.id} ("${o.card.subject}") — check it isn't already being worked before dispatching a duplicate.`);
+    });
+  } catch (e) { console.error(`[bsc-next] WARN overlap check failed (continuing): ${e.message}`); }
+
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
   // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
@@ -687,6 +711,19 @@ function main(argv = process.argv.slice(2), deps = {}) {
         failedEntries.forEach(e => appendLedgerEntryFn(e));
         console.error(`  journaled ${stillBooting ? 'unverified (not dead)' : 'dead'} dispatch for #${task.id} → ${res.workspaceRef} (dispatch-ledger.jsonl)`);
       } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger dead write failed (non-fatal): ${e.message}`); }
+      // Cross-task outage check (card #900): a single dead launch is this
+      // task's problem; the SAME injection-never-ran signature across
+      // several DIFFERENT tasks in a short window is cmux's problem, and
+      // until now nothing ever looked across tasks to say so — each one
+      // silently ate a dead-attempt and the pattern only surfaced days
+      // later from ledger forensics. Best-effort: an outage-check failure
+      // must never block reporting the launch failure itself.
+      try {
+        const outage = dispatchLedger.detectLauncherOutage(readLedgerEntriesFn(), { now: Date.now() });
+        if (outage.outage) {
+          console.error(`[bsc-next] \u{1F534} CMUX LAUNCHER OUTAGE — ${outage.count} launch(es) across ${outage.taskIds.length} different tasks (#${outage.taskIds.join(', #')}) failed with 'injection never ran' since ${outage.sinceTs}. This is not specific to #${task.id} — cmux itself is not accepting new-workspace commands. Bring cmux to the foreground (or restart it) before dispatching anything else.`);
+        }
+      } catch (e) { console.error(`[bsc-next] WARN launcher-outage check failed (non-fatal): ${e.message}`); }
     }
     if (res.workspaceRef) {
       console.error(stillBooting

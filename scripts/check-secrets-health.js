@@ -206,9 +206,13 @@ async function createNewBrightDataZone(token, oldZoneName) {
 }
 
 async function updateGitHubSecret(secretName, value) {
-  const { execSync } = require('child_process');
+  const { execFileSync } = require('child_process');
   try {
-    execSync(`gh secret set ${secretName} --body "${value}"`, { stdio: 'pipe', timeout: 15000 });
+    // argv array, not a shell string — secretName/value are self-generated
+    // today (e.g. web_unlocker3), but this is the same injection class fixed
+    // in scripts/lib/otp-login-helpers.js (task #897); mirroring the fix here
+    // since a shell string is one careless future caller away from exploitable.
+    execFileSync('gh', ['secret', 'set', secretName, '--body', value], { stdio: 'pipe', timeout: 15000 });
     return true;
   } catch {
     return false;

@@ -42,6 +42,18 @@ on:
       # that existence-based readers counted as art (2026-08-02).
       - 'scripts/lib/show-image-coverage.js'
       - 'scripts/lib/show-image-coverage.test.mjs'
+      # SERP-census recall metric + its weekly cadence (Coverage Verdict S1,
+      # tasks #872/#898). The whole point of the sprint is that a regression in
+      # a discovery arm must stop being invisible; a change to the metric or the
+      # harness that skipped CI would reopen exactly that hole. The colocated
+      # census-recall.test.mjs runs in the scripts/lib/*.test.mjs glob and the
+      # digest renderer's test is in tests/unit-test-manifest.txt — these are
+      # path-listed so a solo edit to either triggers CI.
+      - 'scripts/lib/census-recall.js'
+      - 'scripts/lib/census-recall.test.mjs'
+      - 'scripts/audit-serp-census-recall.js'
+      - '.github/workflows/audit-census-recall.yml'
+      - 'scripts/health-check.js'
       - 'scripts/fetch-show-images-auto.js'
       - 'scripts/audit-images-llm.js'
       - 'scripts/process-feedback.js'
@@ -802,6 +814,26 @@ on:
       # isRetrieved / blocksRediscovery predicates. Colocated test runs in the
       # lib-test glob; path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/review-guards.test.mjs'
+      # Coverage Verdict S0 (task #902): explainExclusion() is the single
+      # implementation of the includability decision and isIncludableForRebuild
+      # is a wrapper over it. This test's structural check fails the moment
+      # someone re-forks them. Colocated test runs in the lib-test glob;
+      # path-listed so a solo edit triggers CI (allow-list gate).
+      - 'scripts/lib/review-guards.explain.test.mjs'
+      # Coverage-gate kill switch + blast-radius guard shared by every verdict
+      # consumer. A silent regression here disarms the guard for all of them.
+      - 'scripts/lib/coverage-gate.js'
+      - 'scripts/lib/coverage-gate.test.mjs'
+      # Per-show merge for data/audit/show-review-gap.json (#893). Without it a
+      # `--show=X` run wipes every other show's audited state.
+      - 'scripts/lib/gap-audit-merge.js'
+      - 'scripts/lib/gap-audit-merge.test.mjs'
+      # Spawns real concurrent processes to prove the write lock actually
+      # serializes the read-modify-write (without it, 7 of 8 updates are lost).
+      - 'scripts/lib/gap-audit-merge.concurrent.test.mjs'
+      # Retention is derived from MAX_FRESHNESS_SKIP_MS here — an edit to the
+      # freshness windows changes how long gap entries are retained.
+      - 'scripts/lib/gap-audit-freshness.js'
       # Market label injected into every LLM scoring/classifier prompt. A bare
       # `: 'Broadway'` fallback here told the ensemble a regional tryout was a
       # Broadway show, so both legs rejected the review as wrong_production
@@ -2796,6 +2828,25 @@ jobs:
       # pattern on the contamination/text-quality/provisional-venue steps.
       # Setup steps (checkout, npm ci, freshness canary) and the auto-close
       # MUTATION stay fail-fast above — downstream is meaningless if they break.
+      - name: Run explainExclusion corpus parity (needs review-texts)
+        # Coverage Verdict S0 (task #902) shipped review-guards.explain.test.mjs
+        # with a three-layer design whose top layer sweeps the whole review-texts
+        # corpus asserting explainExclusion()===null <=> isIncludableForRebuild().
+        # That layer never ran in CI: the scripts/lib/*.test.mjs glob lives in the
+        # unit-tests job, and unit-tests only runs checkout-core-data, which copies
+        # /tmp/core-data-checkout/*.json into data/ and NEVER data/review-texts/.
+        # The corpus comes from checkout-review-texts, used only by data-validation
+        # / e2e-tests / visual-regression — so the parity test hit its
+        # corpus-missing branch and t.skip()'d on every run while reporting green.
+        # Re-running the same file HERE, after checkout-review-texts, is what makes
+        # the parity claim real; REQUIRE_REVIEW_CORPUS=1 turns a missing corpus into
+        # a hard failure so a silently-broken checkout can never restore the skip.
+        # Layers 1-2 re-run cheaply (~ms); the corpus layer is the ~8s cost.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/review-guards.explain.test.mjs
+
       - name: Run data validation
         if: always()
         run: node scripts/validate-data.js

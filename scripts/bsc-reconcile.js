@@ -59,7 +59,7 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
-const { setAppFocus } = require('./lib/cmux-launch.js');
+const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 
@@ -124,7 +124,7 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     claudeAliveInFn = cmuxws.claudeAliveIn,
     surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
     readLedgerEntriesFn = ledger.readEntries,
-    wakeFn = () => setAppFocus('active'),
+    wakeFn = () => { osActivateCmuxApp(); return setAppFocus('active'); },
     clearWakeFn = () => setAppFocus('clear'),
     sleepFn = sleepMs,
     // --force is REQUIRED here, not a shortcut (self-review catch,

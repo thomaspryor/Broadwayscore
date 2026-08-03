@@ -126,6 +126,12 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
+  // Coverage Verdict S1 (#872/#898). Without an explicit entry this would fall
+  // through to the generic route and be described as a scored-review-percentage
+  // problem, which is not what it measures.
+  { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
+    humanAction: 'The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Open Claude Code and say: "Check the census recall regression — run audit-serp-census-recall.js and find which arm dropped."' },
+
   // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
     humanAction: 'A paywall cookie needs refreshing. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."',
@@ -894,7 +900,112 @@ function checkQuality() {
       }
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
     }),
+
+    // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
+    // once, after four owner spot-checks in a row found published reviews the
+    // census reported absent — then nothing measured it again, so the next arm
+    // regression would be invisible exactly the way the last four were. The
+    // weekly audit-census-recall.yml cron writes the verdict here; this is what
+    // makes it something the owner sees rather than a file nobody opens.
+    //
+    // A regression is a warn, not an error: recall is a measurement, and the
+    // gate it feeds (S2+) is fail-open by design. An error is reserved for the
+    // DETECTOR being broken — no data, or stale data, which means the cadence
+    // itself has stopped and the blindness is back.
+    runCheck(CENSUS_RECALL_CHECK, () => {
+      const statusFile = path.join(AUDIT_DIR, 'census-recall-status.json');
+      if (!fs.existsSync(statusFile)) return censusRecallResult(null);
+      let data;
+      try {
+        data = readJSON(statusFile);
+      } catch (err) {
+        return { name: CENSUS_RECALL_CHECK, status: 'warn', message: `Unparseable census-recall-status.json: ${err.message}` };
+      }
+      return censusRecallResult(data);
+    }),
   ];
+}
+
+const CENSUS_RECALL_CHECK = 'Coverage: SERP census recall';
+/** Weekly cron; past this the detector has missed a run outright. */
+const CENSUS_RECALL_MAX_AGE_HOURS = 24 * 9;
+
+/**
+ * Render the census-recall verdict as a digest check (Coverage Verdict S1,
+ * tasks #872 + #898).
+ *
+ * Severity, and why it is not the other way round:
+ *   · a REGRESSION is a warn. Recall is a measurement, and the gate it
+ *     eventually feeds (S2+) is fail-open by design — an error here would page
+ *     the owner over a number that suppresses nothing.
+ *   · MISSING or STALE data is also surfaced rather than skipped, because that
+ *     means the cadence itself has stopped and the #898 blindness is back. A
+ *     detector that goes quiet must never read as health (the #647 lesson).
+ *
+ * Pure so it can be tested against fixtures without a live audit file
+ * (CLAUDE.md rule 15); checkQuality() supplies the I/O.
+ *
+ * @param {object|null} data parsed data/audit/census-recall-status.json
+ * @param {object} [opts] {nowMs} for deterministic age in tests
+ */
+function censusRecallResult(data, opts = {}) {
+  const name = CENSUS_RECALL_CHECK;
+  if (!data) {
+    return { name, status: 'warn', message: 'No census-recall data (audit-census-recall.yml may not have run yet)', hint: 'Run `gh workflow run "Audit Census Recall"`' };
+  }
+  const now = opts.nowMs === undefined ? Date.now() : opts.nowMs;
+  const ts = data.generatedAt ? Date.parse(data.generatedAt) : NaN;
+  const age = Number.isFinite(ts) ? (now - ts) / 3600000 : Infinity;
+  if (age > CENSUS_RECALL_MAX_AGE_HOURS) {
+    return {
+      name, status: 'warn',
+      message: `Recall last measured ${formatAge(age)} ago (weekly cron, >${CENSUS_RECALL_MAX_AGE_HOURS / 24}d)`,
+      hint: 'audit-census-recall.yml may be stale or disabled — the regression detector is blind while it is.',
+    };
+  }
+
+  const latest = data.latest || {};
+  const summary = Object.entries(latest.families || {})
+    .map(([f, r]) => `${SEARCH_METHOD_LABELS[f] || f} found ${pctOf(r)}`)
+    .join(', ');
+  const scope = `across ${latest.shows ?? 0} recent opening(s); ${latest.truthUrls ?? 0} review pages any of our searches could find`;
+
+  if (data.verdict === 'regressed') {
+    const worst = (data.regressions || [])
+      .map(r => `${SEARCH_METHOD_LABELS[r.arm] || r.arm} ${r.current === null ? 'stopped reporting' : `now finds ${pctOf(r.current)} vs ${pctOf(r.baseline)} recently`}`)
+      .join('; ');
+    return {
+      name, status: 'warn',
+      message: `Review coverage dropped — ${worst} (${scope}). New shows may be going live with published reviews missing.`,
+      hint: 'Run `node scripts/audit-serp-census-recall.js --sample=10` and compare per-arm recall; a dead query slot or a provider outage is the usual cause.',
+    };
+  }
+  if (data.verdict === 'blind' || data.verdict === 'insufficient-sample') {
+    return {
+      name, status: 'warn',
+      message: `Review coverage not judgeable yet: ${data.reason || data.verdict}`,
+      hint: 'Needs more weekly runs on record before a drop can be detected.',
+    };
+  }
+  return {
+    name, status: 'pass',
+    message: `${summary || 'no search methods recorded'} — ${scope}; ${data.comparedArms ?? 0} search method(s) steady vs recent weeks (${formatAge(age)} ago)`,
+  };
+}
+
+// The owner reads this line in a morning email among ~30 others. "scoped",
+// "naive", "onDisk", "arm" and "recall 0.28" are internal vocabulary; a
+// fresh-eyes review (2026-08-02) confirmed every one of them stops a
+// non-engineer reader, and that a bare ratio invites a wrong conclusion
+// because nothing says whether 0.28 is normal.
+const SEARCH_METHOD_LABELS = {
+  scoped: 'our targeted searches',
+  naive: 'a plain Google search',
+  onDisk: 'reviews already collected',
+};
+/** 0.283 -> "28%". The percentage is what a reader actually parses. */
+function pctOf(r) {
+  return typeof r === 'number' && Number.isFinite(r) ? `${Math.round(r * 100)}%` : 'n/a';
 }
 
 // --- Outlet health signals (card #641) ---
@@ -3078,6 +3189,7 @@ async function main() {
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
+
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
       allResults.push(...reverseDiscoveryBacklogResults(rdReport));
@@ -3196,4 +3308,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { buildObCandidatesHtml, censusRecallResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };

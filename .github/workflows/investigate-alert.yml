@@ -21,10 +21,39 @@ on:
 jobs:
   investigate:
     runs-on: ubuntu-latest
+    # Explicit rather than repo-default: the failed-steps fetch needs
+    # actions:read, and a future tightening of default token permissions
+    # would otherwise silently regress it to empty output (fail-open hides it).
+    permissions:
+      contents: read
+      actions: read
     steps:
       # Required for the local notify-failure action below
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Fetch failed steps from the source run
+        id: failedsteps
+        # Ground the diagnosis in what ACTUALLY failed. Dispatchers pass
+        # run_url but historically no context, so the LLM guessed causes from
+        # the alert-type description — 2026-08-03 it blamed "credit exhaustion"
+        # for what was a git push race in "Commit new review files". Failed
+        # step names are cheap (1 API call) and available even while the source
+        # run is still finishing (its failed steps are already concluded).
+        # Fail open to empty: a fetch error must not block the investigation.
+        if: github.event.inputs.run_url != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.event.inputs.run_url }}
+        run: |
+          RUN_ID=$(echo "$RUN_URL" | grep -oE '[0-9]+$' || echo "")
+          FAILED=""
+          if [ -n "$RUN_ID" ]; then
+            FAILED=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/jobs" \
+              --jq '[.jobs[] | .name as $j | (.steps // [])[] | select(.conclusion == "failure" or .conclusion == "cancelled") | "\($j) → \(.name) (\(.conclusion))"] | unique | join("; ")' 2>/dev/null || echo "")
+          fi
+          echo "failed_steps=$FAILED" >> "$GITHUB_OUTPUT"
+          echo "Failed steps in source run ${RUN_ID:-unknown}: ${FAILED:-none found}"
 
       - name: Investigate with Claude and send email
         env:
@@ -36,6 +65,7 @@ jobs:
           ALERT_TITLE: ${{ github.event.inputs.alert_title }}
           ALERT_CONTEXT: ${{ github.event.inputs.alert_context }}
           RUN_URL: ${{ github.event.inputs.run_url }}
+          FAILED_STEPS: ${{ steps.failedsteps.outputs.failed_steps }}
         run: |
           node << 'SCRIPT'
           // ESM imports (not require) — the script uses top-level await, and
@@ -47,6 +77,7 @@ jobs:
           const alertTitle = process.env.ALERT_TITLE || '';
           const alertContext = process.env.ALERT_CONTEXT || '{}';
           const runUrl = process.env.RUN_URL || '';
+          const failedSteps = process.env.FAILED_STEPS || '';
 
           // --- Step 1: Call Claude API for diagnosis ---
 
@@ -61,7 +92,7 @@ jobs:
             '',
             'Alert type guidance:',
             '- vercel_deploy_fail: Build failures (TypeScript error, missing env var) need no-auto-fix. Transient failures (exit code 1 with no code changes, Vercel timeout) can use redeploy.',
-            '- poller_fail: Opening-night review poller. Causes: ScrapingBee/BrightData credit exhaustion, cookie invalidation, network timeout. Always no-auto-fix.',
+            '- poller_fail: Opening-night review poller. If the failed step is a git commit/push step, the cause is push contention between concurrent runs, NOT scrapers. Scraper causes (credit exhaustion, cookie invalidation, network timeout) apply only when a scraping/collection step failed. Always no-auto-fix.',
             '- data_health_fail: Daily data health check. Almost always no-auto-fix — requires investigation.',
             '- opening_night_broadcast_fail: Email broadcast workflow failed. Always no-auto-fix — never auto-retry broadcasts.',
             '',
@@ -79,6 +110,10 @@ jobs:
             'Alert title: ' + alertTitle,
             'Run URL: ' + runUrl,
             'Additional context: ' + alertContext,
+            failedSteps
+              ? 'Failed step(s) in the source run (job → step): ' + failedSteps + '\n' +
+                'Anchor your diagnosis on the named failed step(s). Do NOT list generic possible causes that the failed step name rules out.'
+              : 'Failed step names unavailable — state clearly that the diagnosis is a guess from the alert type alone.',
             '',
             'Diagnose this alert and recommend a fix.',
           ].join('\n');

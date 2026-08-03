@@ -92,6 +92,20 @@ function isProvisional(show) {
   // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
   // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
   if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return false;
+  // Free outdoor/park productions with no Playbill /production/ page at all
+  // (not tracked by Playbill's commercial-production database) are exempt.
+  // Without this, the SERP query in findPlaybillUrl() falls back to a
+  // same-titled but unrelated production (e.g. two different "Othello"s in
+  // the same year — a commercial Broadway revival WITH a Playbill page, and
+  // a free Classical Theatre of Harlem outdoor run WITHOUT one) and reports
+  // a false-positive venue/date mismatch. Requires a substantive
+  // statusBackfillSource recording the independent cross-validation actually
+  // done — the flag alone is not honored, so it can't become a silent
+  // stub-from-memory bypass of CLAUDE.md §3 (second-opinion review, task
+  // #814).
+  if (show.noPlaybillProductionPage === true
+      && typeof show.statusBackfillSource === 'string'
+      && show.statusBackfillSource.length > 50) return false;
   if (show.provisional === true) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
