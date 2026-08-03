@@ -50,6 +50,18 @@ const HIDDEN_PLATFORMS: Set<string> = new Set([
   'Telecharge',
 ]);
 
+// Ticketmaster un-hidden 2026-08-03 for the TodayTix-gap backfill (task #956):
+// the 2026-06-29 hide was scoped to 11 evergreen shows that ALL kept
+// TodayTix + Official Site — TM was pure redundancy there, hence 0
+// conversions. The ~52 shows with no TodayTix link at all are a different
+// population: TM is often the only real affiliate-tracked buy path they
+// have. getVisibleTicketLinks() now renders Ticketmaster whenever a show
+// has no TodayTix link, regardless of what else is present (Venue Box
+// Office / SeatPlan / OvationTix links don't carry affiliate tracking, so
+// they don't compete with TM for the same revenue). Ticketmaster stays
+// hidden as before on any show that DOES carry TodayTix.
+const HIDDEN_UNLESS_NO_TODAYTIX: Set<string> = new Set(['Ticketmaster']);
+
 export interface TicketLinkData {
   platform: string;
   url: string;
@@ -79,7 +91,11 @@ export interface TicketLinkData {
  * (the exact class behind the Les Mis zero-button incident).
  */
 export function getVisibleTicketLinks(links: TicketLinkData[]): TicketLinkData[] {
-  const visible = links.filter(l => !HIDDEN_PLATFORMS.has(l.platform));
+  const hasTodayTix = links.some(l => l.platform === 'TodayTix');
+  const effectiveHidden = hasTodayTix
+    ? HIDDEN_PLATFORMS
+    : new Set(Array.from(HIDDEN_PLATFORMS).filter(p => !HIDDEN_UNLESS_NO_TODAYTIX.has(p)));
+  const visible = links.filter(l => !effectiveHidden.has(l.platform));
   return visible.length > 0 ? visible : links.filter(l => l.platform !== 'StubHub');
 }
 
@@ -94,7 +110,14 @@ export function sortTicketLinks(links: TicketLinkData[], overrideFirstPlatform?:
     });
 }
 
-/** Is this platform currently hidden from rendering? Exposed for analytics/debug. */
+/**
+ * Is this platform hidden by DEFAULT (i.e. when a show also carries TodayTix)?
+ * Ticketmaster's real hidden status is link-set-dependent — see
+ * getVisibleTicketLinks — so this answers "hidden in the common case," not
+ * "hidden on every show." Exposed for analytics/debug only; nothing in this
+ * repo calls it as of 2026-08-03. Prefer getVisibleTicketLinks/sortTicketLinks
+ * for anything that decides real per-show visibility.
+ */
 export function isPlatformHidden(platform: string): boolean {
   return HIDDEN_PLATFORMS.has(platform);
 }
