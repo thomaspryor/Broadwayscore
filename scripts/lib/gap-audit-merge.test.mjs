@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeGapAudit, countsFor, gapStateFor, stateMap } = require('./gap-audit-merge.js');
+const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor } = require('./gap-audit-merge.js');
 
 const result = (showId, over = {}) => ({
   showId,
@@ -154,4 +154,54 @@ test('countsFor tolerates missing arrays on legacy rows', () => {
   assert.strictEqual(c.totalMissing, 1);
   assert.strictEqual(c.totalRecoverable, 1);
   assert.strictEqual(c.totalRecovered, 0);
+});
+
+// #906 follow-up: candidates are URL-level, not host-level. Two reviewed URLs
+// from the SAME outlet each owe a state — deduping by host left the sibling URL
+// stateless, which report-stateless-candidates.js caught on real data
+// (tao-of-glass: timeout.com + londontheatre.co.uk; les-miserables-arena).
+test('censusVerdictFor: sibling URLs from one outlet each get their own candidate', () => {
+  const v = censusVerdictFor(result('a', {
+    aggregatorListedUrls: ['https://timeout.com/a', 'https://timeout.com/b', 'https://other.com/c'],
+  }), { now: '2026-08-03T00:00:00.000Z' });
+  assert.strictEqual(v.candidates.length, 3);
+  assert.deepStrictEqual(v.candidates.map((c) => c.url).sort(),
+    ['https://other.com/c', 'https://timeout.com/a', 'https://timeout.com/b']);
+  assert.ok(v.candidates.every((c) => c.state === 'live'));
+  // The PUBLIC pair stays OUTLET-level (2 outlets, not 3 URLs): the audit
+  // resolves coverage per host, so publishing "3 of 3 reviews live" off one
+  // review file per host would claim more than we can vouch for.
+  assert.strictEqual(v.liveCount, 2);
+  assert.strictEqual(v.candidateCount, 2);
+  // and the verdict itself is unchanged by the extra sibling
+  assert.strictEqual(v.verdict, 'complete');
+});
+
+test('censusVerdictFor: an identical repeated URL still collapses to one candidate', () => {
+  const v = censusVerdictFor(result('a', {
+    aggregatorListedUrls: ['https://timeout.com/a', 'https://timeout.com/a'],
+  }), { now: '2026-08-03T00:00:00.000Z' });
+  assert.strictEqual(v.candidates.length, 1);
+  assert.strictEqual(v.candidateCount, 1);
+});
+
+test('censusVerdictFor: liveCount excludes non-live candidates', () => {
+  const v = censusVerdictFor(result('a', {
+    aggregatorListedUrls: ['https://ok.com/1'],
+    missing: [{ host: 'gone.com', url: 'https://gone.com/2' }],
+  }), { now: '2026-08-03T00:00:00.000Z' });
+  assert.strictEqual(v.candidateCount, 2);
+  assert.strictEqual(v.liveCount, 1);
+  assert.strictEqual(v.verdict, 'incomplete');
+});
+
+test('censusVerdictFor: public counts are outlet-level even as candidates stay URL-level', () => {
+  const v = censusVerdictFor(result('a', {
+    aggregatorListedUrls: ['https://timeout.com/listing', 'https://timeout.com/review'],
+    missing: [{ host: 'gone.com', url: 'https://gone.com/1' }, { host: 'gone.com', url: 'https://gone.com/2' }],
+  }), { now: '2026-08-03T00:00:00.000Z' });
+  assert.strictEqual(v.candidates.length, 4);   // private detail: one row per URL
+  assert.strictEqual(v.candidateCount, 2);      // public: timeout.com + gone.com
+  assert.strictEqual(v.liveCount, 1);           // public: only timeout.com is covered
+  assert.ok(v.liveCount <= v.candidateCount);
 });

@@ -832,6 +832,13 @@ on:
       # censusVerdictFor producer adapter. Colocated test runs in the tests/unit
       # node --test batch (not globbed); path-listed so a solo edit triggers CI.
       - 'tests/unit/coverage-verdict.test.mjs'
+      # Coverage Verdict S2 (#906) scope item 4: the WARN-ONLY monitor that
+      # checks every known review URL on a recently-opened show carries exactly
+      # one candidate state. It never fails a job itself, so its own test is the
+      # only thing that can catch it regressing into silence.
+      - 'scripts/lib/stateless-candidates.js'
+      - 'scripts/report-stateless-candidates.js'
+      - 'tests/unit/stateless-candidates.test.mjs'
       # Spawns real concurrent processes to prove the write lock actually
       # serializes the read-modify-write (without it, 7 of 8 updates are lost).
       - 'scripts/lib/gap-audit-merge.concurrent.test.mjs'
