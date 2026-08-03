@@ -413,6 +413,86 @@ test('pruneDone: non-🤖 ✅ tab mid-turn stays skipped', () => {
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
 });
 
+// ── Ledger-trust fallback for a lost 🤖 glyph (card #971) ───────────────────
+// A dispatched session that renames its tab mid-work (common: status-
+// reflecting renames) drops the 🤖 marker. Before this fix, pruneDone read
+// isAutoDispatched from the title alone, so such a tab was misclassified as
+// owner-opened and never auto-closed even after it ✅-marked and went
+// idle/dead (owner incident 2026-08-03, task #950's workspace). pruneDone
+// must now also trust an unreconciled dispatch-ledger launch record.
+test('pruneDone: closes a ✅ tab with no 🤖 glyph when the dispatch ledger has an unreconciled launch for its ref', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:117', title: '✅⚡ Infra·visual-qa is feature-flag blind' }],
+    claudeAliveIn: () => true, // idle at the prompt
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [
+      { event: 'launch', taskId: '950', subject: 'visual-qa is feature-flag blind', workspaceRef: 'workspace:117', ts: '2026-08-03T14:41:00.000Z' },
+    ],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:117']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:117']);
+  assert.deepEqual(skipped, []);
+});
+
+test('pruneDone: a ✅ tab with neither the 🤖 glyph nor a ledger launch stays hands-off', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Recycled-ref safety (card 3b1637c5): a reconciled (terminal-event-closed)
+// launch record must NOT make an unrelated owner-opened tab under the same
+// recycled ref closeable.
+test('pruneDone: a reconciled ledger launch (terminal event recorded) does not make an un-glyphed ✅ tab closeable', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:5', title: '✅ Owner-opened after a ref recycle' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [
+      { event: 'launch', taskId: '1', subject: 'old task', workspaceRef: 'workspace:5', ts: '2026-08-01T00:00:00.000Z' },
+      { event: 'dead', taskId: '1', workspaceRef: 'workspace:5', ts: '2026-08-01T01:00:00.000Z' },
+    ],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:5']);
+});
+
+// A ledger read failure must fail closed to title-only detection, never
+// throw the whole sweep.
+test('pruneDone: a readLedgerEntries failure fails closed (title-only detection, sweep still completes)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => { throw new Error('ledger file busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
 test('hasRunningClaude: column-exact — no substring false positives', () => {
   // Status other than exactly "Running" on the tag row
   const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;

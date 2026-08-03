@@ -39,11 +39,19 @@ function hasAutoDispatchMarker(title) {
 // isRunning: whether the live claude is mid-turn (true) vs idle-at-prompt
 // (false) — irrelevant when hasLiveClaude is false, so callers may pass
 // anything (or omit it) in that case.
-// ACCEPTED LIMITATION: "auto-dispatched" is inferred from the 🤖 title glyph,
-// not from interaction history — cmux exposes no "has the owner typed here"
-// signal. If the owner reclaims a 🤖 tab and works in it, the marker still
-// makes it closeable once idle/dead. Mitigations: the SELECTED tab is never
-// closed (covers actively-in-use), and owners can rename the tab to drop 🤖.
+// ACCEPTED LIMITATION: "auto-dispatched" is inferred from the 🤖 title glyph
+// OR an unreconciled dispatch-ledger launch record for the ref (card #971 —
+// see dispatchLedger.isLedgerAutoDispatched, which pruneDone ORs in before
+// calling isCloseable here), not from interaction history — cmux exposes no
+// "has the owner typed here" signal. If the owner reclaims a 🤖 tab and works
+// in it, either signal still makes it closeable once idle/dead; renaming away
+// the 🤖 glyph no longer opts a tab out on its own, since the ledger still
+// remembers the dispatch until a dead/vanished/remapped event reconciles
+// that ref (isLedgerAutoDispatched deliberately excludes 'prune-closed' from
+// that set — it is written speculatively for every ✅ tab, including ones
+// pruneDone skips, so it cannot serve as evidence the ref is really gone).
+// The SELECTED tab is never closed (covers actively-in-use) — that is now
+// the only reclaim mitigation.
 //
 // 2026-08-02 owner rule #3 (supersedes same-day escalation #2): auto-close
 // is limited to 🤖 auto-dispatched tabs, full stop — "closing sessions that

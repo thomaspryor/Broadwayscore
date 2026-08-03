@@ -168,7 +168,13 @@ function mainLocked({ dryRun, deps }) {
     }
   }
 
-  const { closed, skipped, disagreements = [] } = pruneDoneFn({ dryRun });
+  // readLedgerEntries threaded through (Codex adversarial review, 2026-08-03,
+  // card #971): pruneDone's own ledger-trust check (isLedgerAutoDispatched)
+  // needs the SAME injectable read this file already uses for the
+  // prune-closed pre-write above — leaving it defaulted meant a real run read
+  // the ledger file twice (harmless but wasteful) and a test injecting a fake
+  // readLedgerEntriesFn here silently would NOT reach pruneDone's own check.
+  const { closed, skipped, disagreements = [] } = pruneDoneFn({ dryRun, readLedgerEntries: readLedgerEntriesFn });
   if (closed.length) {
     console.log(`${dryRun ? '[dry-run] would close' : 'Closed'} ${closed.length} ✅ workspace(s):`);
     closed.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
