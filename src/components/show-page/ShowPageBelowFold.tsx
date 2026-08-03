@@ -13,6 +13,7 @@ import BoxOfficeStats from '@/components/BoxOfficeStats';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
 import ShowtimesCard from '@/components/ShowtimesCard';
+import ShowFAQSection, { type ShowFAQ } from '@/components/show-page/ShowFAQSection';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
@@ -83,6 +84,9 @@ export interface ShowPageBelowFoldProps {
   isCuratedHistoricalShow: boolean;
   lastUpdated: string | null;
   score: number | undefined;
+  /** Computed server-side by getShowFAQs() in page.tsx and passed down so the
+      Q&A block can sit below Showtimes while staying 1:1 with faqSchema. */
+  faqs: ShowFAQ[];
 }
 
 function formatDate(dateStr: string | null | undefined): string {
@@ -147,6 +151,7 @@ export default function ShowPageBelowFold({
   isCuratedHistoricalShow,
   lastUpdated,
   score,
+  faqs,
 }: ShowPageBelowFoldProps) {
   return (
     <>
@@ -254,6 +259,13 @@ export default function ShowPageBelowFold({
           market={show.category}
         />
       )}
+
+      {/* PAA-style Q&A block — sits below Showtimes per owner, 2026-08-02 (it
+          used to render directly under the Critic Scorecard, which pushed the
+          actual scorecards down the page). Component lives in its own module so
+          the loader's ErrorBoundary can render it standalone when this chunk
+          fails — see ShowFAQSection.tsx for why that matters. */}
+      <ShowFAQSection faqs={faqs} />
 
       {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
       <div id="social-buzz" className="scroll-mt-20" />

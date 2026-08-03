@@ -885,8 +885,18 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
               <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">tbd</span>
             </header>
+            {/* openingDate is often null Off-Broadway — without the guard this
+                rendered a dangling "Reviews coming after opening night:" with
+                nothing after the colon (owner report on The Pass, 2026-08-02). */}
             <p className="text-gray-400 text-sm">
-              Reviews coming after {isWestEnd ? 'press night' : 'opening night'}: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+              {show.openingDate ? (
+                <>
+                  Reviews coming after {isWestEnd ? 'press night' : 'opening night'}:{' '}
+                  <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
+                </>
+              ) : (
+                <>Reviews coming after {isWestEnd ? 'press night' : 'opening night'}.</>
+              )}
             </p>
           </section>
         ) : (
@@ -900,39 +910,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </section>
         )}
 
-        {/* PAA-style Q&A block — visible counterpart to faqSchema above (Google
-            discounts FAQPage schema with no matching on-page content). Native
-            <details>/<summary> so it works without JS and stays crawlable.
-            Renders every FAQ getShowFAQs() returns (max 7, native accordion
-            collapses them) — must match faqSchema above 1:1, not a subset,
-            or the schema advertises Q&As Google can't find on the page. */}
-        {(() => {
-          const showFAQs = getShowFAQs(show, consensus?.text ?? null);
-          if (showFAQs.length === 0) return null;
-          return (
-            <section className="card p-5 sm:p-6 mb-5 sm:mb-8" aria-labelledby="show-faq-heading">
-              <h2 id="show-faq-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none mb-4">
-                Frequently Asked Questions
-              </h2>
-              <div className="space-y-3" data-testid="show-faq-block">
-                {showFAQs.map((faq, i) => (
-                  <details key={i} className="group border-b border-white/5 pb-3 last:border-0 last:pb-0">
-                    <summary className="text-sm font-medium text-gray-200 cursor-pointer list-none flex items-start justify-between gap-3 marker:content-none [&::-webkit-details-marker]:hidden">
-                      <span>{faq.question}</span>
-                      <span aria-hidden="true" className="text-gray-500 group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
-                    </summary>
-                    <p className="text-sm text-gray-400 leading-relaxed mt-2">{faq.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </section>
-          );
-        })()}
-
         {/* === SECTION ORDERING ===
             ABOVE FOLD (server component):
               1. Critic Reviews
-              1.5. FAQ / PAA block
             BELOW FOLD (ShowPageBelowFold lazy chunk):
               2. Video Reviews
               3. Audience Scorecard
@@ -941,6 +921,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               6. Commercial Scorecard
               7. Where it ranks
               8. Showtimes
+              8.5. FAQ / PAA block (owner move, 2026-08-02 — was 1.5)
               9. Socials Scorecard
              10. Theater Scorecard
              11. Seating Scorecard
@@ -990,6 +971,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}
+          faqs={getShowFAQs(show, consensus?.text ?? null)}
         />
 
       </div>
