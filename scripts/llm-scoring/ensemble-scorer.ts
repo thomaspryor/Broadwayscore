@@ -515,6 +515,13 @@ export class EnsembleReviewScorer {
       // Off-Broadway theater. (2026-05-17 root fix for Onegin Haiku-fallback
       // incident — see Notion 363637c5-416f-81cc-8240-c48df8b4cfd2.)
       type: (reviewFile as any).type,
+      // priorRuns must be propagated so input-builder can tell the model that
+      // declared tour legs ARE this production. Without this the scoreability
+      // check rejects every tour-venue review as wrong_production (The Car Man
+      // 2026-08-02: 5 legit tour reviews rejected against "Sadler's Wells").
+      // Third instance of the allowlist-omission class (category/venue
+      // 2026-04-23, type 2026-05-17) — the parity unit test now guards it.
+      priorRuns: (reviewFile as any).priorRuns,
       fullText: reviewFile.fullText,
       ...excerptData,
       bwwThumb: reviewFile.bwwThumb,
