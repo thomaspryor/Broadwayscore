@@ -1,126 +1,114 @@
 {
-  "generatedAt": "2026-08-03T03:41:15.812Z",
-  "naivePages": 3,
+  "generatedAt": "2026-08-03T12:11:45.917Z",
+  "naivePages": 2,
   "settlingHours": 24,
   "totals": {
-    "shows": 10,
+    "shows": 5,
     "excluded": [],
     "undatedCandidates": 2,
-    "truthUrls": 234,
-    "scopedUrls": 66,
-    "naiveUrls": 129,
-    "onDiskUrls": 151,
-    "newFromNaive": 65,
+    "truthUrls": 81,
+    "scopedUrls": 33,
+    "naiveUrls": 40,
+    "onDiskUrls": 63,
+    "newFromNaive": 13,
     "perArm": {
       "naive-p0": {
-        "found": 47,
-        "queries": 10,
+        "found": 20,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.201
+        "recall": 0.247
       },
       "naive-p1": {
-        "found": 48,
-        "queries": 10,
+        "found": 22,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.205
-      },
-      "naive-p2": {
-        "found": 41,
-        "queries": 10,
-        "failed": 0,
-        "recall": 0.175
+        "recall": 0.272
       },
       "onDisk": {
-        "found": 151,
-        "queries": 10,
+        "found": 63,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.645
+        "recall": 0.778
       },
       "scoped-q0": {
-        "found": 50,
-        "queries": 10,
+        "found": 24,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.214
+        "recall": 0.296
       },
       "scoped-q1": {
-        "found": 33,
-        "queries": 9,
+        "found": 21,
+        "queries": 5,
         "failed": 0,
-        "recall": 0.141
-      },
-      "scoped-q2": {
-        "found": 10,
-        "queries": 3,
-        "failed": 0,
-        "recall": 0.043
+        "recall": 0.259
       }
     },
     "perFamily": {
       "naive": {
-        "found": 129,
-        "arms": 3,
+        "found": 40,
+        "arms": 2,
         "failed": 0,
-        "recall": 0.551
+        "recall": 0.494
       },
       "onDisk": {
-        "found": 151,
+        "found": 63,
         "arms": 1,
         "failed": 0,
-        "recall": 0.645
+        "recall": 0.778
       },
       "scoped": {
-        "found": 66,
-        "arms": 3,
+        "found": 33,
+        "arms": 2,
         "failed": 0,
-        "recall": 0.282
+        "recall": 0.407
       }
     },
     "byCategory": {
       "off-broadway": {
-        "shows": 3,
-        "truthUrls": 40,
+        "shows": 1,
+        "truthUrls": 7,
         "families": {
           "naive": {
-            "found": 22,
-            "arms": 3,
+            "found": 5,
+            "arms": 2,
             "failed": 0,
-            "recall": 0.55
+            "recall": 0.714
           },
           "onDisk": {
-            "found": 24,
+            "found": 0,
             "arms": 1,
             "failed": 0,
-            "recall": 0.6
+            "recall": 0
           },
           "scoped": {
-            "found": 11,
-            "arms": 3,
+            "found": 2,
+            "arms": 2,
             "failed": 0,
-            "recall": 0.275
+            "recall": 0.286
           }
         }
       },
       "off-west-end": {
-        "shows": 5,
-        "truthUrls": 145,
+        "shows": 2,
+        "truthUrls": 25,
         "families": {
           "naive": {
-            "found": 79,
-            "arms": 3,
+            "found": 16,
+            "arms": 2,
             "failed": 0,
-            "recall": 0.545
+            "recall": 0.64
           },
           "onDisk": {
-            "found": 89,
+            "found": 22,
             "arms": 1,
             "failed": 0,
-            "recall": 0.614
+            "recall": 0.88
           },
           "scoped": {
-            "found": 37,
-            "arms": 3,
+            "found": 12,
+            "arms": 2,
             "failed": 0,
-            "recall": 0.255
+            "recall": 0.48
           }
         }
       },
@@ -129,68 +117,174 @@
         "truthUrls": 49,
         "families": {
           "naive": {
-            "found": 28,
-            "arms": 3,
-            "failed": 0,
-            "recall": 0.571
-          },
-          "onDisk": {
-            "found": 38,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.776
-          },
-          "scoped": {
-            "found": 18,
+            "found": 19,
             "arms": 2,
             "failed": 0,
-            "recall": 0.367
+            "recall": 0.388
+          },
+          "onDisk": {
+            "found": 41,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.837
+          },
+          "scoped": {
+            "found": 19,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.388
           }
         }
       }
     },
-    "scopedRecall": 0.282,
-    "naiveRecall": 0.551
+    "scopedRecall": 0.407,
+    "naiveRecall": 0.494
   },
   "shows": [
+    {
+      "showId": "dinosaur-world-live-off-west-end-2026",
+      "title": "Dinosaur World Live",
+      "market": "off-west-end",
+      "openingDate": "2026-08-01",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+      "counts": {
+        "truth": 9,
+        "scoped": 3,
+        "naive": 7,
+        "onDisk": 6
+      },
+      "recall": {
+        "scoped": 0.333,
+        "naive": 0.778,
+        "onDisk": 0.667,
+        "censusPlusDisk": 0.778
+      },
+      "newFromNaive": [
+        "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/"
+      ],
+      "missedByCensus": [
+        "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+        "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+        "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+        "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
+        "https://www.whatsonstage.com/news/dinosaur-world-live-at-regents-park-open-air-theatre-review_1518283/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Dinosaur World Live\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 8,
+          "accepted": 2,
+          "urls": [
+            "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+            "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Dinosaur World Live\" review troubadour",
+          "page": 0,
+          "geo": null,
+          "raw": 8,
+          "accepted": 3,
+          "urls": [
+            "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+            "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 3,
+          "urls": [
+            "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+            "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+            "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+            "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+            "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 6,
+          "accepted": 6,
+          "urls": [
+            "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
+            "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+            "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+            "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+            "https://www.whatsonstage.com/news/dinosaur-world-live-at-regents-park-open-air-theatre-review_1518283/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
     {
       "showId": "space-dogs-off-west-end-2026",
       "title": "Space Dogs",
       "market": "off-west-end",
       "openingDate": "2026-07-31",
       "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
+      "sampleReason": "opened 4d ago",
       "geo": "gb",
       "naiveQuery": "Space Dogs The Other Palace - Studio review",
       "counts": {
-        "truth": 18,
-        "scoped": 8,
-        "naive": 14,
-        "onDisk": 14
+        "truth": 16,
+        "scoped": 9,
+        "naive": 9,
+        "onDisk": 16
       },
       "recall": {
-        "scoped": 0.444,
-        "naive": 0.778,
-        "onDisk": 0.778,
-        "censusPlusDisk": 0.778
+        "scoped": 0.563,
+        "naive": 0.563,
+        "onDisk": 1,
+        "censusPlusDisk": 1
       },
-      "newFromNaive": [
-        "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
-        "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
-      ],
+      "newFromNaive": [],
       "missedByCensus": [
         "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
         "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
         "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
-        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
-        "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
         "https://www.incluvie.com/movie/space-dogs-2-260310",
         "https://www.londontheatrereviews.co.uk/post.cfm",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre"
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
       ],
       "arms": [
         {
@@ -201,13 +295,13 @@
           "raw": 9,
           "accepted": 7,
           "urls": [
+            "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
             "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
-            "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
             "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
             "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+            "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
             "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
-            "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
-            "https://www.operationlivetheatre.com/post/space-dogs-the-musical"
+            "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/"
           ],
           "ok": true,
           "error": null
@@ -233,12 +327,11 @@
           "page": 0,
           "geo": "gb",
           "raw": 9,
-          "accepted": 5,
+          "accepted": 4,
           "urls": [
             "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
             "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
             "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
-            "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
             "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/"
           ],
           "ok": true,
@@ -250,29 +343,13 @@
           "page": 1,
           "geo": "gb",
           "raw": 10,
-          "accepted": 6,
+          "accepted": 5,
           "urls": [
-            "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
+            "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
             "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
-            "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
             "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
             "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
             "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "Space Dogs The Other Palace - Studio review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
-            "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-            "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
           ],
           "ok": true,
           "error": null
@@ -282,9 +359,10 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 14,
-          "accepted": 14,
+          "raw": 16,
+          "accepted": 16,
           "urls": [
+            "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
             "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
             "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
             "https://www.incluvie.com/movie/space-dogs-2-260310",
@@ -298,7 +376,8 @@
             "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
             "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
             "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
-            "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london"
+            "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+            "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
           ],
           "ok": true,
           "error": null
@@ -311,38 +390,34 @@
       "market": "off-broadway",
       "openingDate": "2026-07-30",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
+      "sampleReason": "opened 5d ago",
       "geo": "us",
       "naiveQuery": "The Vessel Midtown E review",
       "counts": {
-        "truth": 8,
-        "scoped": 1,
-        "naive": 7,
+        "truth": 7,
+        "scoped": 2,
+        "naive": 5,
         "onDisk": 0
       },
       "recall": {
-        "scoped": 0.125,
-        "naive": 0.875,
+        "scoped": 0.286,
+        "naive": 0.714,
         "onDisk": 0,
-        "censusPlusDisk": 0.125
+        "censusPlusDisk": 0.286
       },
       "newFromNaive": [
-        "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
         "https://www.hudsonyardsnewyork.com/discover/vessel",
-        "https://gracefkim.com/the-vessel-nyc/",
-        "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-        "https://www.baltimoremagazine.com/section/fooddrink/vessel-baltimore-peninsula-roost-bar-review-worldly-cocktails-snacks/"
+        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
+        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
+        "https://nyra.nyc/articles/the-thing-about-the-vessel",
+        "https://gracefkim.com/the-vessel-nyc/"
       ],
       "missedByCensus": [
-        "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
         "https://www.hudsonyardsnewyork.com/discover/vessel",
-        "https://gracefkim.com/the-vessel-nyc/",
-        "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-        "https://www.baltimoremagazine.com/section/fooddrink/vessel-baltimore-peninsula-roost-bar-review-worldly-cocktails-snacks/"
+        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
+        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
+        "https://nyra.nyc/articles/the-thing-about-the-vessel",
+        "https://gracefkim.com/the-vessel-nyc/"
       ],
       "arms": [
         {
@@ -351,8 +426,10 @@
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 0,
-          "urls": [],
+          "accepted": 1,
+          "urls": [
+            "https://www.tripster.com/travelguide/the-vessel-nyc-tickets/"
+          ],
           "ok": true,
           "error": null
         },
@@ -375,9 +452,10 @@
           "page": 0,
           "geo": "us",
           "raw": 10,
-          "accepted": 1,
+          "accepted": 2,
           "urls": [
-            "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards"
+            "https://www.hudsonyardsnewyork.com/discover/vessel",
+            "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/"
           ],
           "ok": true,
           "error": null
@@ -393,21 +471,8 @@
             "https://www.travelingwithaga.com/the-vessel-in-nyc/",
             "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
             "https://www.hudsonyardsnewyork.com/discover/vessel",
-            "https://gracefkim.com/the-vessel-nyc/",
-            "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "The Vessel Midtown E review",
-          "page": 2,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.baltimoremagazine.com/section/fooddrink/vessel-baltimore-peninsula-roost-bar-review-worldly-cocktails-snacks/"
+            "https://nyra.nyc/articles/the-thing-about-the-vessel",
+            "https://gracefkim.com/the-vessel-nyc/"
           ],
           "ok": true,
           "error": null
@@ -431,49 +496,45 @@
       "market": "west-end",
       "openingDate": "2026-07-30",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
+      "sampleReason": "opened 5d ago",
       "geo": "gb",
       "naiveQuery": "Tao of Glass Soho Place review",
       "counts": {
-        "truth": 30,
-        "scoped": 9,
-        "naive": 18,
-        "onDisk": 26
+        "truth": 29,
+        "scoped": 10,
+        "naive": 11,
+        "onDisk": 27
       },
       "recall": {
-        "scoped": 0.3,
-        "naive": 0.6,
-        "onDisk": 0.867,
-        "censusPlusDisk": 0.867
+        "scoped": 0.345,
+        "naive": 0.379,
+        "onDisk": 0.931,
+        "censusPlusDisk": 0.931
       },
       "newFromNaive": [
         "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-        "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-        "https://www.timeout.com/london/theatre/tao-of-glass",
-        "https://www.londontheatre.co.uk/show/46333-tao-of-glass"
+        "https://www.timeout.com/london/theatre/tao-of-glass"
       ],
       "missedByCensus": [
-        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
         "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-        "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-        "https://www.timeout.com/london/theatre/tao-of-glass",
-        "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
         "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-        "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-        "https://www.londontheatre.co.uk/show/46333-tao-of-glass",
-        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
-        "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
-        "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/",
+        "https://www.timeout.com/london/theatre/tao-of-glass",
         "https://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
         "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
         "https://www.londontheatre1.com/reviews/tao-of-glass-sohoplace/",
         "https://northwestend.com/tao-of-glass-sohoplace-theatre/",
+        "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+        "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
         "https://staybook.in/activities/tao-of-glass",
         "https://www.telegraph.co.uk/music/classical-music/this-love-letter-to-philip-glass/",
         "https://club.spectator.co.uk/competitions/win-a-five-star-west-end-trip-to-see-tao-of-glass-sohoplace-plus-an-overnight-stay-at-broadwick-soho",
-        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+        "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/",
+        "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
+        "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+        "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace"
       ],
       "arms": [
         {
@@ -482,11 +543,12 @@
           "page": 0,
           "geo": null,
           "raw": 9,
-          "accepted": 7,
+          "accepted": 8,
           "urls": [
             "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
             "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
             "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
+            "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
             "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
             "https://www.timeout.com/london/theatre/tao-of-glass-review",
             "https://www.london-unattached.com/tao-of-glass-soho-place/",
@@ -501,15 +563,16 @@
           "page": 0,
           "geo": null,
           "raw": 9,
-          "accepted": 7,
+          "accepted": 8,
           "urls": [
             "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
             "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
             "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
             "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
             "https://www.timeout.com/london/theatre/tao-of-glass-review",
+            "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
             "https://www.london-unattached.com/tao-of-glass-soho-place/",
-            "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/"
+            "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
           ],
           "ok": true,
           "error": null
@@ -520,13 +583,14 @@
           "page": 0,
           "geo": "gb",
           "raw": 9,
-          "accepted": 5,
+          "accepted": 6,
           "urls": [
+            "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
             "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
             "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
             "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
             "https://www.london-unattached.com/tao-of-glass-soho-place/",
-            "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
+            "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/"
           ],
           "ok": true,
           "error": null
@@ -537,35 +601,13 @@
           "page": 1,
           "geo": "gb",
           "raw": 10,
-          "accepted": 7,
+          "accepted": 5,
           "urls": [
-            "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-            "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
             "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
-            "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-            "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-            "https://www.timeout.com/london/theatre/tao-of-glass",
-            "https://playstosee.com/reviews/uk-reviews/tao-of-glass/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "Tao of Glass Soho Place review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 8,
-          "urls": [
-            "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
             "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-            "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-            "https://www.londontheatre.co.uk/show/46333-tao-of-glass",
-            "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-            "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html",
-            "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
-            "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/"
+            "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+            "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
+            "https://www.timeout.com/london/theatre/tao-of-glass"
           ],
           "ok": true,
           "error": null
@@ -575,8 +617,8 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 26,
-          "accepted": 26,
+          "raw": 27,
+          "accepted": 27,
           "urls": [
             "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
             "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
@@ -600,6 +642,7 @@
             "https://theatreweekly.com/review-tao-of-glass-at-sohoplace/",
             "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
             "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
+            "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
             "https://www.timeout.com/london/theatre/tao-of-glass-review",
             "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
             "https://www.westendbestfriend.co.uk/news/review-tao-of-glass-sohoplace",
@@ -616,37 +659,39 @@
       "market": "west-end",
       "openingDate": "2026-07-29",
       "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
+      "sampleReason": "opened 6d ago",
       "geo": "gb",
       "naiveQuery": "Brainiac Live Garrick Theatre review",
       "counts": {
-        "truth": 19,
+        "truth": 20,
         "scoped": 9,
-        "naive": 10,
-        "onDisk": 12
+        "naive": 8,
+        "onDisk": 14
       },
       "recall": {
-        "scoped": 0.474,
-        "naive": 0.526,
-        "onDisk": 0.632,
-        "censusPlusDisk": 0.842
+        "scoped": 0.45,
+        "naive": 0.4,
+        "onDisk": 0.7,
+        "censusPlusDisk": 0.8
       },
       "newFromNaive": [
         "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
         "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
+        "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
         "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun"
       ],
       "missedByCensus": [
         "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
         "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
+        "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
         "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
-        "https://www.westendtheatre.com/64763/shows/brainiac-live/",
         "https://www.londontheatrereviews.co.uk/post.cfm",
         "https://www.londontheatre1.com/theatre-news/brainiac-live-uk-tour-2026-commencing-march/",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
         "https://www.dailyecho.co.uk/news/26140862.daily-echo-review-brainiac-live-mayflower-studios/",
         "https://thespyinthestalls.com/2026/07/brainiac/",
-        "https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/"
+        "https://theatreweekly.com/brainiac-live-to-tour-the-uk-in-2026-following-olivier-award-win/",
+        "https://www.westendtheatre.com/64763/shows/brainiac-live/"
       ],
       "arms": [
         {
@@ -655,12 +700,13 @@
           "page": 0,
           "geo": null,
           "raw": 9,
-          "accepted": 5,
+          "accepted": 6,
           "urls": [
             "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
             "https://www.timeout.com/london/kids/brainiac-live",
-            "https://fairypoweredproductions.com/brainiac-live-review-2/",
             "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
+            "https://fairypoweredproductions.com/brainiac-live-review-2/",
+            "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
             "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-"
           ],
           "ok": true,
@@ -696,7 +742,7 @@
             "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
             "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
             "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
-            "https://fairypoweredproductions.com/brainiac-live-review-2/"
+            "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre"
           ],
           "ok": true,
           "error": null
@@ -717,30 +763,17 @@
           "error": null
         },
         {
-          "arm": "naive-p2",
-          "query": "Brainiac Live Garrick Theatre review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
-            "https://www.westendtheatre.com/64763/shows/brainiac-live/",
-            "https://www.timeout.com/london/kids/brainiac-live"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
           "arm": "onDisk",
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 12,
-          "accepted": 12,
+          "raw": 14,
+          "accepted": 14,
           "urls": [
+            "https://www.adventuresintheatreland.com/post/brainiac-live-garrick-theatre",
             "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
             "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
+            "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
             "https://fairypoweredproductions.com/brainiac-live-review-2/",
             "https://www.londontheatrereviews.co.uk/post.cfm",
             "https://www.londontheatre1.com/theatre-news/brainiac-live-uk-tour-2026-commencing-march/",
@@ -756,1036 +789,6 @@
           "error": null
         }
       ]
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "title": "The Importance of Being Oscar",
-      "market": "off-west-end",
-      "openingDate": "2026-07-29",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "gb",
-      "naiveQuery": "The Importance of Being Oscar Park Theatre review",
-      "counts": {
-        "truth": 33,
-        "scoped": 8,
-        "naive": 22,
-        "onDisk": 19
-      },
-      "recall": {
-        "scoped": 0.242,
-        "naive": 0.667,
-        "onDisk": 0.576,
-        "censusPlusDisk": 0.636
-      },
-      "newFromNaive": [
-        "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
-        "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-        "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/",
-        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-        "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-        "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
-        "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-        "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-        "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/play/the-importance-of-being-oscar-6247",
-        "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/"
-      ],
-      "missedByCensus": [
-        "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
-        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-        "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-        "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-        "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-        "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/",
-        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-        "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-        "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
-        "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-        "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-        "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/play/the-importance-of-being-oscar-6247",
-        "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
-        "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-        "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
-        "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
-        "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
-        "https://www.hamhigh.co.uk/news/26417237.david-winskill---importance-oscar-review/",
-        "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre",
-        "https://therecs.co.uk/the-importance-of-being-oscar/",
-        "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Importance of Being Oscar\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 8,
-          "urls": [
-            "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-            "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-            "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-            "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
-            "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-            "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
-            "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
-            "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Importance of Being Oscar Park Theatre review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 9,
-          "accepted": 8,
-          "urls": [
-            "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
-            "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-            "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-            "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-            "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-            "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-            "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Importance of Being Oscar Park Theatre review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 7,
-          "urls": [
-            "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-            "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-            "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-            "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-            "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
-            "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-            "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "The Importance of Being Oscar Park Theatre review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 7,
-          "urls": [
-            "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
-            "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
-            "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
-            "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-            "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/play/the-importance-of-being-oscar-6247",
-            "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
-            "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 19,
-          "accepted": 19,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-            "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
-            "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-            "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
-            "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-            "https://www.ft.com/content/7a361e38-eac1-414e-a064-f856be54b788",
-            "https://www.hamhigh.co.uk/news/26417237.david-winskill---importance-oscar-review/",
-            "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
-            "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre",
-            "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-            "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-            "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
-            "https://therecs.co.uk/the-importance-of-being-oscar/",
-            "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
-            "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
-            "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-            "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
-            "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "dog-man-the-musical-west-end-2026",
-      "title": "Dog Man - The Musical",
-      "market": "off-west-end",
-      "openingDate": "2026-07-29",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "gb",
-      "naiveQuery": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-      "counts": {
-        "truth": 17,
-        "scoped": 1,
-        "naive": 15,
-        "onDisk": 2
-      },
-      "recall": {
-        "scoped": 0.059,
-        "naive": 0.882,
-        "onDisk": 0.118,
-        "censusPlusDisk": 0.176
-      },
-      "newFromNaive": [
-        "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
-        "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
-        "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
-        "https://www.showify.uk/shows/dog-man-the-musical",
-        "https://www.londontheatre.co.uk/show/46117-dog-man-the-musical",
-        "https://www.timeout.com/london/theatre/dog-man-the-musical",
-        "https://whattheredheadsaid.com/dog-man-the-musical-review/",
-        "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
-        "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-        "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
-        "https://www.visitlondon.com/things-to-do/event/51157787-dog-man-the-musical",
-        "https://thetheatreplaybook.co.uk/dog-man-the-musical-tunes-up-for-southbank-centre-debut/",
-        "https://theaterlife.com/dog-man-the-musical/",
-        "https://experiencegifts.com/uk/london/central-london/london-theatre-dog-man-the-musical/p/uk-10710-0087"
-      ],
-      "missedByCensus": [
-        "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
-        "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
-        "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
-        "https://www.showify.uk/shows/dog-man-the-musical",
-        "https://www.londontheatre.co.uk/show/46117-dog-man-the-musical",
-        "https://www.timeout.com/london/theatre/dog-man-the-musical",
-        "https://whattheredheadsaid.com/dog-man-the-musical-review/",
-        "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
-        "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-        "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
-        "https://www.visitlondon.com/things-to-do/event/51157787-dog-man-the-musical",
-        "https://thetheatreplaybook.co.uk/dog-man-the-musical-tunes-up-for-southbank-centre-debut/",
-        "https://theaterlife.com/dog-man-the-musical/",
-        "https://experiencegifts.com/uk/london/central-london/london-theatre-dog-man-the-musical/p/uk-10710-0087",
-        "https://www.dailyecho.co.uk/news/26295787.stage-spectacular-dog-man-musical-coming-hampshire/",
-        "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Dog Man - The Musical\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Dog Man - The Musical\" review queen",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 6,
-          "urls": [
-            "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
-            "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
-            "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
-            "https://www.showify.uk/shows/dog-man-the-musical",
-            "https://www.londontheatre.co.uk/show/46117-dog-man-the-musical",
-            "https://www.timeout.com/london/theatre/dog-man-the-musical"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://whattheredheadsaid.com/dog-man-the-musical-review/",
-            "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
-            "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-            "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
-            "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 6,
-          "urls": [
-            "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-            "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
-            "https://www.visitlondon.com/things-to-do/event/51157787-dog-man-the-musical",
-            "https://thetheatreplaybook.co.uk/dog-man-the-musical-tunes-up-for-southbank-centre-debut/",
-            "https://theaterlife.com/dog-man-the-musical/",
-            "https://experiencegifts.com/uk/london/central-london/london-theatre-dog-man-the-musical/p/uk-10710-0087"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 2,
-          "accepted": 2,
-          "urls": [
-            "https://www.dailyecho.co.uk/news/26295787.stage-spectacular-dog-man-musical-coming-hampshire/",
-            "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "market": "off-broadway",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 6d ago",
-      "geo": "us",
-      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-      "counts": {
-        "truth": 15,
-        "scoped": 4,
-        "naive": 7,
-        "onDisk": 11
-      },
-      "recall": {
-        "scoped": 0.267,
-        "naive": 0.467,
-        "onDisk": 0.733,
-        "censusPlusDisk": 0.8
-      },
-      "newFromNaive": [
-        "https://www.theatermania.com/shows/new-york-city-theater/les-miserables-the-arena-concert-spectacular_1832919/",
-        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-        "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html"
-      ],
-      "missedByCensus": [
-        "https://www.theatermania.com/shows/new-york-city-theater/les-miserables-the-arena-concert-spectacular_1832919/",
-        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-        "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
-        "https://www.amny.com/entertainment/theater/review-les-miz-sounds-glorious-radio-city/",
-        "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-        "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/",
-        "https://nypost.com/2026/07/28/entertainment/les-miserables-review-musical-returns-to-nyc-in-massive-radio-city-concert/",
-        "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-        "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html",
-        "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Les Misérables: The Arena Concert Spectacular\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-            "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-            "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Les Misérables: The Arena Concert Spectacular\" review radio",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
-            "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-            "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Les Misérables: The Arena Concert Spectacular\" Boublil review",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 2,
-          "urls": [
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-            "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-          "page": 0,
-          "geo": "us",
-          "raw": 9,
-          "accepted": 4,
-          "urls": [
-            "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-            "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-            "https://www.theatermania.com/shows/new-york-city-theater/les-miserables-the-arena-concert-spectacular_1832919/",
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
-            "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-          "page": 2,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 11,
-          "accepted": 11,
-          "urls": [
-            "https://www.amny.com/entertainment/theater/review-les-miz-sounds-glorious-radio-city/",
-            "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-            "https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388",
-            "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/",
-            "https://nypost.com/2026/07/28/entertainment/les-miserables-review-musical-returns-to-nyc-in-massive-radio-city-concert/",
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
-            "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
-            "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-            "https://www.nytimes.com/2026/07/28/theater/lilly-yokoi-dead.html",
-            "https://1minutecritic.com/les-miserables-arena-concert-spectacular-review/",
-            "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "market": "off-west-end",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 6d ago",
-      "geo": "gb",
-      "naiveQuery": "The Car Man Sadler's Wells review",
-      "counts": {
-        "truth": 51,
-        "scoped": 10,
-        "naive": 12,
-        "onDisk": 42
-      },
-      "recall": {
-        "scoped": 0.196,
-        "naive": 0.235,
-        "onDisk": 0.824,
-        "censusPlusDisk": 0.902
-      },
-      "newFromNaive": [
-        "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
-        "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
-        "https://redbuslondinium.uk/2026/07/31/review-matthew-bournes-the-car-man-sadlers-wells/",
-        "https://www.westendtheatre.com/121387/news/reviews/matthew-bournes-the-car-man-reviews-royal-albert-hall/",
-        "https://www.thereviewshub.com/the-car-man-the-lowry-salford-quays/"
-      ],
-      "missedByCensus": [
-        "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
-        "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
-        "https://redbuslondinium.uk/2026/07/31/review-matthew-bournes-the-car-man-sadlers-wells/",
-        "https://www.westendtheatre.com/121387/news/reviews/matthew-bournes-the-car-man-reviews-royal-albert-hall/",
-        "https://www.thereviewshub.com/the-car-man-the-lowry-salford-quays/",
-        "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
-        "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
-        "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
-        "https://www.ayoungertheatre.com/the-car-man-sadlers-wells/",
-        "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
-        "http://theartsdesk.com/dance/car-man-royal-albert-hall-review-grand-scale-drama-and-decadence",
-        "https://www.attitude.co.uk/culture/film-tv/the-car-man-review-a-revved-up-version-of-bizets-carmen-full-of-sex-sensuality-and-edge-of-the-seat-403675/",
-        "https://www.britishtheatre.com/posts/london-theatre-picks-this-week-hot-mess-the-truth-much-ado-and-the-car-man",
-        "https://www.britishtheatreguide.info/reviews/the-car-man-sheffield-lyceu-25762",
-        "https://www.dailyecho.co.uk/news/25609300.matthew-bournes-car-man-mayflower-theatre-2026/",
-        "https://www.express.co.uk/entertainment/theatre/1625466/The-Car-Man-review-Matthew-Bourne-Royal-Albert-Hall-tickets-dates-dance-theatre",
-        "https://fairypoweredproductions.com/matthew-bournes-the-car-man-review-2/",
-        "https://www.theguardian.com/stage/2022/jun/12/matthew-bournes-the-car-man-review-steamy-dance-thriller-with-a-supercharged-engine",
-        "https://www.harrytheatrelife.co.uk/post/review-matthew-bourne-s-the-car-man-uk-ireland-tour-the-lowry-salford",
-        "https://www.heraldscotland.com/life_style/arts_ents/13412353.dance-review-matthew-bournes-car-man-festival-theatre-edinburgh/",
-        "https://inews.co.uk/culture/arts/matthew-bourne-car-man-henry-moore-glyndebournes-la-boheme-review-1688622",
-        "https://www.independent.co.uk/independentpremium/culture/the-car-man-review-royal-albert-hall-b2098818.html",
-        "https://www.liftedleg.com/2026/08/matthew-bournes-new-adventures-the-car-man-review",
-        "https://www.londontheatre1.com/reviews/review-matthew-bournes-the-car-man-at-new-wimbledon-theatre/",
-        "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/review-car-man--lowry-9336528",
-        "https://northwestend.com/matthew-bournes-the-car-man-sheffield-lyceum/",
-        "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum",
-        "https://www.nytimes.com/2015/07/24/arts/international/review-suspense-and-charisma-in-the-car-man-in-london.html",
-        "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-sheffield/",
-        "https://www.seeingdance.com/matthew-bournes-the-car-man-260803/",
-        "https://www.standard.co.uk/culture/theatre/the-car-man-sadlers-wells-review-a-steamy-melodrama-that-s-just-right-for-sultry-summer-nights-10401810.html",
-        "https://www.telegraph.co.uk/culture/theatre/dance/11747488/The-Car-Man-Sadlers-Wells-review-masterful.html",
-        "https://www.thejc.com/life/dance-review-the-car-man-you-can-always-rely-on-matthew-bourne-to-deliver-dance-spectacle-on-another-level-up1w7tqi",
-        "https://list.co.uk/news/12302/dance-review-matthew-bournes-the-car-man",
-        "https://theatreweekly.com/matthew-bournes-the-car-man-returns-for-2026-uk-tour-and-sadlers-wells-summer-season/",
-        "https://www.theupcoming.co.uk/2022/06/13/the-car-man-at-the-royal-albert-hall-theatre-review/",
-        "https://variety.com/2001/legit/reviews/the-car-man-2-1200469271/",
-        "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
-        "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-the-royal-albert-hall-review_56708/",
-        "https://www.whatsonstage.com/news/the-car-man-to-return-for-major-uk-tour_1701487/",
-        "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Car Man\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 8,
-          "urls": [
-            "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-hull/",
-            "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
-            "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
-            "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
-            "https://www.thereviewshub.com/the-car-man-lyceum-theatre-sheffield/",
-            "https://www.timeout.com/london/dance/the-car-man",
-            "https://fairypoweredproductions.com/the-car-man-review/",
-            "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The Car Man\" review sadler",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
-            "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
-            "https://www.timeout.com/london/dance/the-car-man",
-            "https://www.flickermagazine.art/post/matthew-bourne-car-man-sadlers-wells-2026"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"The Car Man\" Bourne review",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 2,
-          "urls": [
-            "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-            "https://www.timeout.com/london/dance/the-car-man"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Car Man Sadler's Wells review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 8,
-          "accepted": 4,
-          "urls": [
-            "https://www.timeout.com/london/dance/the-car-man",
-            "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-            "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
-            "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Car Man Sadler's Wells review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
-            "https://redbuslondinium.uk/2026/07/31/review-matthew-bournes-the-car-man-sadlers-wells/",
-            "https://www.westendtheatre.com/121387/news/reviews/matthew-bournes-the-car-man-reviews-royal-albert-hall/",
-            "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-hull/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "The Car Man Sadler's Wells review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://www.westendtheatre.com/121387/news/reviews/matthew-bournes-the-car-man-reviews-royal-albert-hall/",
-            "https://www.thereviewshub.com/the-car-man-the-lowry-salford-quays/",
-            "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
-            "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
-            "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 42,
-          "accepted": 42,
-          "urls": [
-            "https://www.ayoungertheatre.com/the-car-man-sadlers-wells/",
-            "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
-            "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
-            "http://theartsdesk.com/dance/car-man-royal-albert-hall-review-grand-scale-drama-and-decadence",
-            "https://www.attitude.co.uk/culture/film-tv/the-car-man-review-a-revved-up-version-of-bizets-carmen-full-of-sex-sensuality-and-edge-of-the-seat-403675/",
-            "https://www.britishtheatre.com/posts/london-theatre-picks-this-week-hot-mess-the-truth-much-ado-and-the-car-man",
-            "https://www.britishtheatreguide.info/reviews/the-car-man-sheffield-lyceu-25762",
-            "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
-            "https://www.dailyecho.co.uk/news/25609300.matthew-bournes-car-man-mayflower-theatre-2026/",
-            "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
-            "https://www.express.co.uk/entertainment/theatre/1625466/The-Car-Man-review-Matthew-Bourne-Royal-Albert-Hall-tickets-dates-dance-theatre",
-            "https://fairypoweredproductions.com/matthew-bournes-the-car-man-review-2/",
-            "https://www.theguardian.com/stage/2022/jun/12/matthew-bournes-the-car-man-review-steamy-dance-thriller-with-a-supercharged-engine",
-            "https://www.harrytheatrelife.co.uk/post/review-matthew-bourne-s-the-car-man-uk-ireland-tour-the-lowry-salford",
-            "https://www.heraldscotland.com/life_style/arts_ents/13412353.dance-review-matthew-bournes-car-man-festival-theatre-edinburgh/",
-            "https://inews.co.uk/culture/arts/matthew-bourne-car-man-henry-moore-glyndebournes-la-boheme-review-1688622",
-            "https://www.independent.co.uk/independentpremium/culture/the-car-man-review-royal-albert-hall-b2098818.html",
-            "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
-            "https://www.liftedleg.com/2026/08/matthew-bournes-new-adventures-the-car-man-review",
-            "https://www.londontheatre.co.uk/reviews/the-car-man-review-sadlers-wells",
-            "https://www.londontheatre1.com/reviews/review-matthew-bournes-the-car-man-at-new-wimbledon-theatre/",
-            "https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/review-car-man--lowry-9336528",
-            "https://northwestend.com/matthew-bournes-the-car-man-sheffield-lyceum/",
-            "https://nowthenmagazine.com/live-reviews/2026/a-phenomenal-piece-of-theatre-matthew-bournes-the-car-man-at-the-lyceum",
-            "https://www.nytimes.com/2015/07/24/arts/international/review-suspense-and-charisma-in-the-car-man-in-london.html",
-            "https://www.on-magazine.co.uk/arts/yorkshire-theatre/matthew-bourne-car-man-review-sheffield/",
-            "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
-            "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
-            "https://www.seeingdance.com/matthew-bournes-the-car-man-260803/",
-            "https://www.standard.co.uk/culture/theatre/the-car-man-sadlers-wells-review-a-steamy-melodrama-that-s-just-right-for-sultry-summer-nights-10401810.html",
-            "https://www.telegraph.co.uk/culture/theatre/dance/11747488/The-Car-Man-Sadlers-Wells-review-masterful.html",
-            "https://www.thejc.com/life/dance-review-the-car-man-you-can-always-rely-on-matthew-bourne-to-deliver-dance-spectacle-on-another-level-up1w7tqi",
-            "https://list.co.uk/news/12302/dance-review-matthew-bournes-the-car-man",
-            "https://theatreweekly.com/matthew-bournes-the-car-man-returns-for-2026-uk-tour-and-sadlers-wells-summer-season/",
-            "https://www.thereviewshub.com/the-car-man-lyceum-theatre-sheffield/",
-            "https://www.theupcoming.co.uk/2022/06/13/the-car-man-at-the-royal-albert-hall-theatre-review/",
-            "https://www.timeout.com/london/dance/the-car-man",
-            "https://variety.com/2001/legit/reviews/the-car-man-2-1200469271/",
-            "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
-            "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-the-royal-albert-hall-review_56708/",
-            "https://www.whatsonstage.com/news/the-car-man-to-return-for-major-uk-tour_1701487/",
-            "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "title": "The Enormous Crocodile",
-      "market": "off-west-end",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 6d ago",
-      "geo": "gb",
-      "naiveQuery": "The Enormous Crocodile Lyric Hammersmith review",
-      "counts": {
-        "truth": 26,
-        "scoped": 10,
-        "naive": 16,
-        "onDisk": 12
-      },
-      "recall": {
-        "scoped": 0.385,
-        "naive": 0.615,
-        "onDisk": 0.462,
-        "censusPlusDisk": 0.615
-      },
-      "newFromNaive": [
-        "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-        "https://lyric.co.uk/shows/the-enormous-crocodile/",
-        "https://www.latheatrix.com/post/review-family-fun-with-the-enormous-crocodile-at-kirk-douglas-theatre",
-        "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
-        "https://whatsgoodtodo.com/the-enormous-crocodile-the-musical-at-aylesbury-waterside-theatre-review/",
-        "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
-        "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
-        "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-        "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-        "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical"
-      ],
-      "missedByCensus": [
-        "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-        "https://lyric.co.uk/shows/the-enormous-crocodile/",
-        "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre",
-        "https://www.latheatrix.com/post/review-family-fun-with-the-enormous-crocodile-at-kirk-douglas-theatre",
-        "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
-        "https://whatsgoodtodo.com/the-enormous-crocodile-the-musical-at-aylesbury-waterside-theatre-review/",
-        "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
-        "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
-        "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-        "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-        "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-        "https://www.westendbestfriend.co.uk/news/review-the-enormous-crocodile-regents-park-open-air-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-the-enormous-crocodile-the-musical-regent-s-park-open-air-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-THE-ENORMOUS-CROCODILE-Regents-Park-Open-Air-Theatre-20250820",
-        "https://chiswickcalendar.co.uk/event/the-enormous-crocodile-lyric-theatre/2026-08-03/",
-        "https://www.whatsonstage.com/tours/the-enormous-crocodile-the-musical-tour/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Enormous Crocodile\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 7,
-          "urls": [
-            "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
-            "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
-            "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
-            "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
-            "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
-            "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
-            "https://www.whatsonstage.com/news/the-enormous-crocodile-musical-announces-2026-uk-tour_1686246/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The Enormous Crocodile\" review lyric",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
-            "https://www.londontheatre.co.uk/show/46222-the-enormous-crocodile",
-            "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
-            "https://www.timeout.com/london/theatre/the-enormous-crocodile-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Enormous Crocodile Lyric Hammersmith review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
-            "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-            "https://lyric.co.uk/shows/the-enormous-crocodile/",
-            "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre",
-            "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Enormous Crocodile Lyric Hammersmith review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 6,
-          "urls": [
-            "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
-            "https://www.latheatrix.com/post/review-family-fun-with-the-enormous-crocodile-at-kirk-douglas-theatre",
-            "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
-            "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
-            "https://whatsgoodtodo.com/the-enormous-crocodile-the-musical-at-aylesbury-waterside-theatre-review/",
-            "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "The Enormous Crocodile Lyric Hammersmith review",
-          "page": 2,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
-            "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-            "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-            "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-            "https://www.westendbestfriend.co.uk/news/review-the-enormous-crocodile-regents-park-open-air-theatre"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 12,
-          "accepted": 12,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-the-enormous-crocodile-the-musical-regent-s-park-open-air-theatre",
-            "https://www.broadwayworld.com/westend/article/Review-THE-ENORMOUS-CROCODILE-Regents-Park-Open-Air-Theatre-20250820",
-            "https://chiswickcalendar.co.uk/event/the-enormous-crocodile-lyric-theatre/2026-08-03/",
-            "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
-            "https://www.londontheatre.co.uk/reviews/the-enormous-crocodile-review-regents-park-open-air-theatre",
-            "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
-            "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
-            "https://www.thereviewshub.com/the-enormous-crocodile-the-lowry-salford/",
-            "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-            "https://www.westendbestfriend.co.uk/news/review-the-enormous-crocodile-regents-park-open-air-theatre",
-            "https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/",
-            "https://www.whatsonstage.com/tours/the-enormous-crocodile-the-musical-tour/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "market": "off-broadway",
-      "openingDate": "2026-07-27",
-      "sampleState": "measured",
-      "sampleReason": "opened 7d ago",
-      "geo": "us",
-      "naiveQuery": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
-      "counts": {
-        "truth": 17,
-        "scoped": 6,
-        "naive": 8,
-        "onDisk": 13
-      },
-      "recall": {
-        "scoped": 0.353,
-        "naive": 0.471,
-        "onDisk": 0.765,
-        "censusPlusDisk": 0.824
-      },
-      "newFromNaive": [
-        "https://www.newyorkcitytheatre.com/shows/lucillelorteltheater/cat-cohen-broad-strokes",
-        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-        "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720"
-      ],
-      "missedByCensus": [
-        "https://www.newyorkcitytheatre.com/shows/lucillelorteltheater/cat-cohen-broad-strokes",
-        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-        "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720",
-        "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-        "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
-        "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
-        "https://nypost.com/2026/07/28/entertainment/broad-strokes-review-a-scary-stroke-at-30-becomes-a-hilarious-off-broadway-show/",
-        "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
-        "https://nystagereview.com/2026/07/27/broad-strokes-death-defying-laughter/",
-        "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
-        "https://1minutecritic.com/cat-cohen-broad-strokes-review/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Cat Cohen: Broad Strokes\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-            "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-            "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Cat Cohen: Broad Strokes\" review lucille",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-            "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Cat Cohen: Broad Strokes\" Cohen review",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 6,
-          "urls": [
-            "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-            "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-            "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cat-cohen-broad-strokes_1847158/",
-            "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
-          "page": 0,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-            "https://www.newyorkcitytheatre.com/shows/lucillelorteltheater/cat-cohen-broad-strokes",
-            "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-            "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-            "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p2",
-          "query": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
-          "page": 2,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-            "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 13,
-          "accepted": 13,
-          "urls": [
-            "https://culturesauce.com/cat-cohen-broad-strokes-off-broadway-review/",
-            "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
-            "https://nypost.com/2026/07/28/entertainment/broad-strokes-review-a-scary-stroke-at-30-becomes-a-hilarious-off-broadway-show/",
-            "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
-            "https://nystagereview.com/2026/07/27/broad-strokes-death-defying-laughter/",
-            "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
-            "https://www.newyorktheatreguide.com/reviews/cat-cohen-broad-strokes-off-broadway-review",
-            "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-            "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
-            "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
-            "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
-            "https://www.thewrap.com/creative-content/theater/broad-strokes-off-broadway-review-cat-cohen/",
-            "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
     }
   ],
   "providerOutage": false,
@@ -1793,91 +796,81 @@
   "trend": {
     "entry": {
       "date": "2026-08-03",
-      "generatedAt": "2026-08-03T03:41:15.812Z",
-      "naivePages": 3,
-      "shows": 10,
+      "generatedAt": "2026-08-03T12:11:45.917Z",
+      "naivePages": 2,
+      "shows": 5,
       "excluded": {},
-      "truthUrls": 234,
-      "onDiskUrls": 151,
-      "newFromNaive": 65,
+      "truthUrls": 81,
+      "onDiskUrls": 63,
+      "newFromNaive": 13,
       "families": {
-        "naive": 0.551,
-        "onDisk": 0.645,
-        "scoped": 0.282
+        "naive": 0.494,
+        "onDisk": 0.778,
+        "scoped": 0.407
       },
       "arms": {
-        "naive-p0": 0.201,
-        "naive-p1": 0.205,
-        "naive-p2": 0.175,
-        "onDisk": 0.645,
-        "scoped-q0": 0.214,
-        "scoped-q1": 0.141,
-        "scoped-q2": 0.043
+        "naive-p0": 0.247,
+        "naive-p1": 0.272,
+        "onDisk": 0.778,
+        "scoped-q0": 0.296,
+        "scoped-q1": 0.259
       },
+      "combinedRecall": 0.84,
       "familyYield": {
-        "naive": 12.9,
-        "onDisk": 15.1,
+        "naive": 8,
+        "onDisk": 12.6,
         "scoped": 6.6
       },
       "armYield": {
-        "naive-p0": 4.7,
-        "naive-p1": 4.8,
-        "naive-p2": 4.1,
-        "onDisk": 15.1,
-        "scoped-q0": 5,
-        "scoped-q1": 3.3,
-        "scoped-q2": 1
+        "naive-p0": 4,
+        "naive-p1": 4.4,
+        "onDisk": 12.6,
+        "scoped-q0": 4.8,
+        "scoped-q1": 4.2
       },
       "armsFailed": {
         "naive-p0": 0,
         "naive-p1": 0,
-        "naive-p2": 0,
         "onDisk": 0,
         "scoped-q0": 0,
-        "scoped-q1": 0,
-        "scoped-q2": 0
+        "scoped-q1": 0
       },
       "unavailableArms": [],
       "byCategory": {
         "off-broadway": {
-          "shows": 3,
-          "truthUrls": 40,
+          "shows": 1,
+          "truthUrls": 7,
           "families": {
-            "naive": 0.55,
-            "onDisk": 0.6,
-            "scoped": 0.275
+            "naive": 0.714,
+            "onDisk": 0,
+            "scoped": 0.286
           }
         },
         "off-west-end": {
-          "shows": 5,
-          "truthUrls": 145,
+          "shows": 2,
+          "truthUrls": 25,
           "families": {
-            "naive": 0.545,
-            "onDisk": 0.614,
-            "scoped": 0.255
+            "naive": 0.64,
+            "onDisk": 0.88,
+            "scoped": 0.48
           }
         },
         "west-end": {
           "shows": 2,
           "truthUrls": 49,
           "families": {
-            "naive": 0.571,
-            "onDisk": 0.776,
-            "scoped": 0.367
+            "naive": 0.388,
+            "onDisk": 0.837,
+            "scoped": 0.388
           }
         }
       },
       "sampleIds": [
+        "dinosaur-world-live-off-west-end-2026",
         "space-dogs-off-west-end-2026",
         "the-vessel-off-broadway-2026",
         "tao-of-glass-west-end-2026",
-        "brainiac-live-west-end-2026",
-        "the-importance-of-being-oscar-off-west-end-2026",
-        "dog-man-the-musical-west-end-2026",
-        "les-miserables-arena-concert-spectacular-off-broadway-2026",
-        "the-car-man-west-end-2026",
-        "the-enormous-crocodile-west-end-2026",
-        "cat-cohen-broad-strokes-off-broadway-2026"
+        "brainiac-live-west-end-2026"
       ]
     },
     "judgement": {
