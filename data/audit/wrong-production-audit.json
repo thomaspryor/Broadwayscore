@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T00:49:02.283Z",
+  "timestamp": "2026-08-03T01:03:13.001Z",
   "stats": {
-    "totalReviews": 41326,
-    "alreadyFlagged": 18077,
-    "dateGuardCatches": 96,
+    "totalReviews": 41329,
+    "alreadyFlagged": 18064,
+    "dateGuardCatches": 101,
     "directorMismatch": 944,
     "tvFilmSignals": 1136,
     "londonSignals": 788,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3388
+    "noPublishDate": 3392
   },
   "findings": [
     {
@@ -3538,6 +3538,41 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+      "publishDate": "2024-01-06",
+      "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 661d before show (2024-01-06 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "financialtimes--george-grella.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 665d before show (2024-01-02 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "wsj--justin-davidson.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 665d before show (2024-01-02 vs 2025-10-28)"
         }
       ]
     },
@@ -42190,9 +42225,35 @@
     },
     {
       "showId": "the-car-man-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-06-25",
+      "url": "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 33d before show (2026-06-25 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
       "file": "cheeky-little-matinee--cheekylittlematinee.json",
       "publishDate": "2026-06-17",
       "url": "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 41d before show (2026-06-17 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "east-midlands-theatre--unknown.json",
+      "publishDate": "2026-06-17",
+      "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
       "findings": [
         {
           "type": "DATE_GUARD",
