@@ -118,7 +118,36 @@ if [ -n "$_PUSH_REF" ] && [ "$_PUSH_REF" != "HEAD" ]; then
     DIFF_REF="$_PUSH_REF"
   fi
 fi
-UI_FILES_CHANGED=$(cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E '^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src/app/.*\.(tsx|jsx|ts|js)$)' | head -5)
+# task #879: a plain `origin/main...$DIFF_REF` diff has the same shared-
+# checkout diff-scoping bug task #828 fixed for the review gate — with ~20
+# parallel worktree sessions sharing one local main, that range includes
+# every OTHER session's already-merged-but-unpushed commits, not just this
+# push's own. Route through review-gate.mjs's own-merge-scoped changed-files
+# query (shared with pre-push-review-gate.sh's diff-hash/push-allowed) so a
+# pure backend/data push doesn't get falsely flagged as "UI files changed"
+# by an unrelated .tsx/.css commit sitting on shared local main.
+UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src/app/.*\.(tsx|jsx|ts|js)$)'
+GATE_LIB="$CANONICAL_ROOT/scripts/lib/review-gate.mjs"
+_UNSCOPED_UI_DIFF() {
+  cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E "$UI_PATTERN" | head -5
+}
+if [ -f "$GATE_LIB" ]; then
+  CHANGED_RESULT=$(node "$GATE_LIB" --query=changed-files --repo="$SESSION_ROOT" --ref="$DIFF_REF" --pattern="$UI_PATTERN" 2>/dev/null)
+  # Only trust a well-formed {files:[...]} response with no error — a query
+  # this hook doesn't recognize (stale review-gate.mjs), a resolveBase
+  # failure, or a node crash all print no valid `.files` array, and jq's
+  # `.files[]? // empty` would otherwise silently read that as "no UI files"
+  # (push allowed) instead of falling back to the safer unscoped diff below.
+  if echo "$CHANGED_RESULT" | jq -e 'has("files") and (has("error") | not)' >/dev/null 2>&1; then
+    UI_FILES_CHANGED=$(echo "$CHANGED_RESULT" | jq -r '.files[]? // empty' 2>/dev/null | head -5)
+  else
+    UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
+  fi
+else
+  # Checkout without review-gate.mjs (e.g. a pre-#828 worktree branch or a
+  # partial copy) — fall back to the old unscoped diff rather than fail closed.
+  UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
+fi
 if [ -z "$UI_FILES_CHANGED" ]; then
   # No UI files changed in this branch — push freely.
   exit 0

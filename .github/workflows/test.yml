@@ -20,6 +20,14 @@ on:
       # lib-test glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/creative-team-verify.js'
       - 'scripts/lib/creative-team-verify.test.mjs'
+      # Cookie loader: single source of truth for 35 outlets' auth cookies
+      # across every scraping script. Was NOT in this allow-list at all before
+      # task #881 (Tier-1/Tier-2 freshness comparison fix) — colocated
+      # *.test.mjs runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI.
+      - 'scripts/lib/cookie-loader.js'
+      - 'scripts/lib/cookie-loader.test.mjs'
+      - 'scripts/wsj-otp-login.js'
       # Show-image verification prompt: was hardcoded Broadway, so correct West
       # End / Off-Broadway / regional key art was rejected [non_broadway] and 26
       # open/upcoming shows shipped imageless (2026-08-02). Colocated *.test.mjs
@@ -941,6 +949,11 @@ on:
       - 'scripts/lib/review-gate.mjs'
       - 'tests/unit/review-gate.test.mjs'
       - 'tests/unit/review-gate-scope.test.mjs'
+      # pre-push-visual-gate.sh's own-merge-scoped UI-file query (task #879)
+      # reuses review-gate.mjs's scopedChangedFiles — path-listed so a solo
+      # edit to the hook or its test still triggers CI.
+      - '.claude/hooks/pre-push-visual-gate.sh'
+      - 'tests/unit/pre-push-visual-gate-scope.test.mjs'
       # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
       # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
       - 'scripts/audit-workflow-hygiene.js'

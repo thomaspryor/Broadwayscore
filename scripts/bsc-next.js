@@ -66,22 +66,24 @@ function parseArgs(argv) {
 // Card #854: completed tasks >48h old are moved to a sibling archive/ dir
 // (scripts/archive-completed-tasks.js) so the harness's injected task-list
 // reminder — one line per file in this directory — stops scaling with the
-// full history of every task ever completed. mergeWithArchive() folds
-// archive/ back in so `--id <archived id>` and any completed-task lookup
-// (completedLaunchGuard, findLiveWorkspaceForTask) keep working exactly as
-// before; actionable() only ever returns pending/in_progress tasks, which
-// are never archived, so the default dispatch path never touches archive/.
-const { mergeWithArchive } = require('./lib/task-store-archive.js');
+// full history of every task ever completed. loadTasks() deliberately stays
+// live-dir-only (ship-check finding 2026-08-02: an eager archive/ merge here
+// meant every `--list`/actionable() call re-read the entire archive — 400+
+// files and growing — even though actionable() immediately filters archived
+// tasks out, since they're always status:'completed'). pickTask()'s --id
+// branch does a cheap point lookup into archive/ instead, only on a live
+// miss — the one call site that actually needs to reach an archived task
+// (completedLaunchGuard's --dry-run inspection path).
+const { readArchivedTask } = require('./lib/task-store-archive.js');
 
 // ── pure logic (exported for tests) ────────────────────────────────────────
 function loadTasks(dir) {
   let files;
   try { files = fs.readdirSync(dir); } catch { return []; }
-  const live = files
+  return files
     .filter(f => /^\d+\.json$/.test(f))
     .map(f => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
-    .filter(Boolean);
-  return mergeWithArchive(dir, live)
+    .filter(Boolean)
     .sort((x, y) => parseInt(x.id, 10) - parseInt(y.id, 10)); // id order == mirror/priority order
 }
 
@@ -150,8 +152,17 @@ function actionable(tasks, includeExcluded = false) {
       parseInt(a.id, 10) - parseInt(b.id, 10));
 }
 
-function pickTask(tasks, opts) {
-  if (opts.id) return tasks.find(t => String(t.id) === String(opts.id)) || null;
+// `dir`, when passed, is used only as a fallback for a `--id` miss against
+// the live tasks array — see loadTasks()'s docstring above for why this is
+// a point lookup rather than a merge. Omitting it (as the existing pure
+// unit tests do) just means an archived --id isn't found, matching pickTask's
+// pre-#854 behavior.
+function pickTask(tasks, opts, dir) {
+  if (opts.id) {
+    const live = tasks.find(t => String(t.id) === String(opts.id));
+    if (live) return live;
+    return dir ? readArchivedTask(dir, String(opts.id)) : null;
+  }
   const list = actionable(tasks);
   // `--pick` with no value (=== true) or non-numeric → default to the top task.
   const parsed = parseInt(opts.pick, 10);
@@ -434,7 +445,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     return;
   }
 
-  const task = pickTask(tasks, args);
+  const task = pickTask(tasks, args, TASKS_DIR);
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
