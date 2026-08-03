@@ -23,22 +23,13 @@
  */
 
 const { Client } = require('@notionhq/client');
-const path = require('path');
-const fs = require('fs');
 
 // ── Load .env ───────────────────────────────────────────────────────────
-const envPath = path.join(__dirname, '..', '.env');
-if (fs.existsSync(envPath)) {
-  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eq = trimmed.indexOf('=');
-    if (eq === -1) continue;
-    const key = trimmed.slice(0, eq);
-    const val = trimmed.slice(eq + 1);
-    if (!process.env[key]) process.env[key] = val;
-  }
-}
+// This script runs on every commit via the mandatory notion-card-required
+// hook, so every worktree session hits it — load-env.js handles the
+// worktree-fragile fallback (no .env in a worktree; falls back to the
+// canonical repo path).
+require('./lib/load-env').loadEnv();
 
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 

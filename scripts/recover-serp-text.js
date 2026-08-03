@@ -14,6 +14,12 @@
  * URL 404s or the re-fetch is still thin, SERP rediscovery finds the article's
  * current URL and that gets fetched instead.
  *
+ * INTENTIONALLY NOT SCHEDULED (audit #982): SERP rediscovery has a real
+ * wrong-show contamination failure mode (task #947, P0 — validateShowMentioned
+ * Check-2 generic idWords) — each --domain/--outlet sweep needs an operator
+ * to pick the target and review the dry-run diff before --apply, not a cron
+ * running unattended. Dispatched by hand per outlet/domain (see #914/#943).
+ *
  * Usage:
  *   node scripts/recover-serp-text.js --domain=newyorker.com [options]
  *   node scripts/recover-serp-text.js --outlet=ap [options]

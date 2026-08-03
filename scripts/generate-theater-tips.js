@@ -33,16 +33,7 @@ const {
 } = require('./lib/theater-tips-validators');
 const { GEMINI_FLASH } = require('./lib/models');
 
-const GEMINI_KEY = process.env.GEMINI_API_KEY;
-if (!GEMINI_KEY) {
-  // Try loading from .env
-  const envFile = path.join(__dirname, '..', '.env');
-  if (fs.existsSync(envFile)) {
-    const envContent = fs.readFileSync(envFile, 'utf8');
-    const match = envContent.match(/GEMINI_API_KEY=(.+)/);
-    if (match) process.env.GEMINI_API_KEY = match[1].trim();
-  }
-}
+if (!process.env.GEMINI_API_KEY) require('./lib/load-env').loadEnv();
 
 const API_KEY = process.env.GEMINI_API_KEY;
 if (!API_KEY) {

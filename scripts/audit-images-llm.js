@@ -708,15 +708,7 @@ async function main() {
   // Load API key
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    // Try loading from .env
-    const envPath = path.join(__dirname, '..', '.env');
-    if (fs.existsSync(envPath)) {
-      const envContent = fs.readFileSync(envPath, 'utf8');
-      const match = envContent.match(/GEMINI_API_KEY=(.+)/);
-      if (match) {
-        process.env.GEMINI_API_KEY = match[1].trim();
-      }
-    }
+    require('./lib/load-env').loadEnv();
     if (!process.env.GEMINI_API_KEY) {
       console.error('ERROR: GEMINI_API_KEY not found in environment or .env file');
       process.exit(1);
