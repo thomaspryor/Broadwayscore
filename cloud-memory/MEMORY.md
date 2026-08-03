@@ -61,10 +61,10 @@
 - [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list
 
 ## 📋 Open work
+- [Coverage Verdict APPROVED](project_coverage_verdict_plan.md) — FULL S0-S5 approved 2026-08-02, runs without owner; tasks #901-906; don't re-ask, dispatch stalled cards
 - [Session-system v2 overhaul](project_session_system_v2_overhaul.md) — APPROVED 2026-08-02; plan in claude-outputs; tasks #853-857/#867-869; don't re-ask
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards point at claude-outputs/repo paths; scratchpad dies
 - [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET; cron map valid
-- [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
 
