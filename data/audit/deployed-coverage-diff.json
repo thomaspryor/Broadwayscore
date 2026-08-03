@@ -1,11 +1,44 @@
 {
-  "generatedAt": "2026-08-03T19:31:31.559Z",
+  "generatedAt": "2026-08-03T20:15:29.552Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 146,
-  "clean": 146,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 144,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "title": "The Enormous Crocodile",
+      "openingDate": "2026-07-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.72 vs local 78.22 (Δ0.5)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "title": "The Smile Of Her",
+      "openingDate": "2026-07-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.18 vs local 72.25 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13
+    }
+  ]
 }
