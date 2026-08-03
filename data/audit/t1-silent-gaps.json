@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-08-03T14:45:02.163Z",
+  "generatedAt": "2026-08-03T15:54:33.827Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "file": "guardian--arifa-akbar.json",
-      "outletId": "guardian",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.theguardian.com/music/2026/jul/31/boy-george-pulls-out-of-jesus-christ-superstar-after-releasing-pro-israel-song",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 --url=https://www.theguardian.com/music/2026/jul/31/boy-george-pulls-out-of-jesus-christ-superstar-after-releasing-pro-israel-song --outlet=guardian --critic=\"Arifa Akbar\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-03T13:53:02.186Z",
-      "nonTerminalAgeHours": 0.8666602777777778
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -33,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 265.5570963888889,
+      "fileAgeHours": 266.71588583333335,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 224.86006305555554
+      "nonTerminalAgeHours": 226.0188586111111
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -52,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 27.29808277777778
+      "nonTerminalAgeHours": 28.456878333333332
     }
   ],
   "contradictions": []

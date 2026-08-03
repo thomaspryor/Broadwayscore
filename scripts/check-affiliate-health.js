@@ -81,15 +81,23 @@ function parseArgs(argv) {
     const hit = argv.find((a) => a.startsWith(`--${name}=`));
     return hit ? hit.slice(name.length + 3) : null;
   };
-  // Judge as of YESTERDAY (UTC), the last COMPLETE day, by default. The cron
-  // fires 06:45 UTC when "today" is a sliver everywhere (and Impact's
-  // reporting day, US-anchored, has barely started) — trailing windows that
-  // include a partial day systematically undercount and skew every threshold.
-  const yesterday = toDayKey(Date.parse(`${todayKey()}T00:00:00Z`) - 24 * 60 * 60 * 1000);
+  // Judge as of TWO days back (UTC) by default. The cron fires 06:45 UTC:
+  // "today" is a sliver, and "yesterday UTC" is still an OPEN day on Impact's
+  // US-anchored reporting calendar (their date_display labels are relabeled,
+  // not converted — Codex ship-check finding 2026-08-03). Two days back is
+  // complete on BOTH providers' calendars regardless of timezone, at the cost
+  // of ~1 extra day of detection latency the thresholds already tolerate.
+  const asOfDefault = toDayKey(Date.parse(`${todayKey()}T00:00:00Z`) - 2 * 24 * 60 * 60 * 1000);
+  const asOfArg = get('as-of');
+  if (asOfArg && !/^\d{4}-\d{2}-\d{2}$/.test(asOfArg)) {
+    // Malformed asOf would silently flip shadow mode (string compare) and
+    // make every date function read the series as empty.
+    throw new Error(`--as-of must be YYYY-MM-DD, got "${asOfArg}"`);
+  }
   return {
     dryRun: argv.includes('--dry-run'),
     json: argv.includes('--json'),
-    asOf: get('as-of') || yesterday,
+    asOf: asOfArg || asOfDefault,
     fixture: get('fixture'),
   };
 }
