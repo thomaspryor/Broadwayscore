@@ -204,7 +204,12 @@ function audit() {
       const seen = new Set([file]);
       let cursor = data.duplicateOf;
       let cycleFound = false;
-      for (let hop = 0; hop < 20 && cursor; hop++) {
+      // Bound by the show dir's own file count, not a fixed constant — a cycle
+      // can't be longer than the number of files that could participate in it,
+      // and a fixed cap (e.g. 20) would silently MISS longer cycles by falling
+      // off the loop before revisiting the start (caught by a 30-file stress
+      // test in duplicate-of-url-mismatch.test.mjs).
+      for (let hop = 0; hop < files.length && cursor; hop++) {
         if (seen.has(cursor)) { chain.push(cursor); cycleFound = true; break; }
         const cursorData = load(cursor);
         if (!cursorData || typeof cursorData.duplicateOf !== 'string' || !cursorData.duplicateOf.endsWith('.json')) break;
@@ -289,10 +294,18 @@ function main() {
   }
 
   const cycles = mismatches.filter(m => m.reason === 'duplicateOf-cycle');
+  // Cycles never self-heal (fix() explicitly refuses them — picking the canonical
+  // member needs human judgment) and their count scales with cycle SIZE, not
+  // incident count (one 7-file cycle = 7 entries). Mixing them into the surge/gate
+  // floor below — designed around self-healing, one-mismatch-per-incident churn —
+  // would let a single uncleared cycle permanently eat headroom off the 25-item
+  // floor, eventually blocking --fix or reddening --gate for unrelated, genuinely
+  // auto-healable stale flags. Count only the auto-healable reasons against it.
+  const autoHealable = mismatches.filter(m => m.reason !== 'duplicateOf-cycle');
 
   if (FIX) {
-    if (mismatches.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
-      console.error(`::error::Refusing to auto-clear ${mismatches.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
+    if (autoHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      console.error(`::error::Refusing to auto-clear ${autoHealable.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
       process.exit(1);
     }
     const cleared = fix(mismatches);
@@ -303,16 +316,17 @@ function main() {
     process.exit(0);
   }
 
-  // --gate: catastrophe floor only. Every mismatch is auto-healable by
-  // clear-stale-duplicate-of.yml --fix, so a sub-floor count is surfaced above but
-  // does NOT block the trunk. A spike past FIX_SURGE_THRESHOLD is a producer
-  // regression where auto-clearing would flood scoring — that blocks.
+  // --gate: catastrophe floor only. Every AUTO-HEALABLE mismatch (i.e. excluding
+  // duplicateOf-cycle, which never self-heals — see autoHealable above) is
+  // auto-healable by clear-stale-duplicate-of.yml --fix, so a sub-floor count is
+  // surfaced above but does NOT block the trunk. A spike past FIX_SURGE_THRESHOLD
+  // is a producer regression where auto-clearing would flood scoring — that blocks.
   if (GATE) {
-    if (shouldBlockDuplicateOfGate({ mismatchCount: mismatches.length, floor: FIX_SURGE_THRESHOLD })) {
-      console.error(`\n❌ GATE: ${mismatches.length} duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
+    if (shouldBlockDuplicateOfGate({ mismatchCount: autoHealable.length, floor: FIX_SURGE_THRESHOLD })) {
+      console.error(`\n❌ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
       process.exit(1);
     }
-    console.log(`\n✅ GATE: ${mismatches.length} duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
+    console.log(`\n✅ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}${cycles.length > 0 ? ` (+ ${cycles.length} duplicateOf-cycle, excluded — needs manual triage, never auto-clears)` : ''}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
     process.exit(0);
   }
 
