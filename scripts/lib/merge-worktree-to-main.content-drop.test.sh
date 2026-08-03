@@ -105,6 +105,21 @@ if echo "$OUT" | grep -q "content-survival check"; then
 else
   bad "content-survival check never ran — the test would be vacuous"; echo "$OUT" | tail -20
 fi
+# "ran" is not "compared something". The first production run of this check
+# printed "OK — no modified files to check" on a 5-file merge, because the base
+# was a merge-base recomputed AFTER the branch had already become an ancestor of
+# origin. A guard that compares nothing must never read as a guard that passed,
+# so assert a real file was actually compared.
+# Assert the EXACT count, not just the phrase. "confirmed surviving" alone is an
+# output-text proxy: it would also pass on a set that happened to be non-empty
+# for the wrong reason. This fixture changes exactly one file (target.txt), so
+# the guard must report 1/1 — that pins "compared the file we actually changed",
+# which is the property the vacuous-base bug violated.
+if echo "$OUT" | grep -qE "1/1 modified file\(s\) confirmed surviving"; then
+  ok "check compared exactly the 1 file this merge changed (1/1)"
+else
+  bad "check did not report 1/1 — vacuous or wrong-scope base"; echo "$OUT" | grep -A2 "content-survival"
+fi
 LIVE="$(git -C "$TMP/clean/origin.git" show main:target.txt 2>/dev/null)"
 [ "$LIVE" = "THE FIX LINE" ] && ok "origin really holds the fix" || bad "origin content wrong: '$LIVE'"
 

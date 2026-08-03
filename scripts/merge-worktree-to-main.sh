@@ -63,8 +63,19 @@ log "integrating branch: $BRANCH → $DEFAULT_BRANCH"
 # fact landed (observed 2026-08-01 removing scripts/verify-we-backfill.test.mjs),
 # which trains the operator to ignore the one alarm that exists to catch #619/#668.
 DELETED_FILES=()
+# Fork point, captured HERE and reused by the content-survival check at the end
+# of this script. It MUST be computed before any merging: once we merge $BRANCH
+# into $DEFAULT_BRANCH (and especially once another session pushes our local
+# main to origin, which happens constantly at this concurrency), $BRANCH becomes
+# an ancestor of both, every merge-base against them collapses to $BRANCH's own
+# tip, and a diff from there is empty — the check would silently compare NOTHING
+# and still print OK. Observed live on the very first production run of that
+# check (2026-08-02): "OK — no modified files to check" on a merge that changed
+# 5 files. Computed unconditionally (not only when VERIFY_FILES is empty) so an
+# explicit `-- file...` caller list doesn't leave it unset.
+CONTENT_FORK_BASE=$(g merge-base "$DEFAULT_BRANCH" "$BRANCH" 2>/dev/null || true)
 if [ ${#VERIFY_FILES[@]} -eq 0 ]; then
-  MB=$(g merge-base "$DEFAULT_BRANCH" "$BRANCH" 2>/dev/null)
+  MB="$CONTENT_FORK_BASE"
   if [ -n "$MB" ]; then
     while IFS= read -r f; do [ -n "$f" ] && VERIFY_FILES+=("$f"); done \
       < <(g diff --name-only --diff-filter=d "$MB" "$BRANCH" 2>/dev/null)
@@ -426,7 +437,11 @@ if [ "${DRY_RUN:-0}" != "1" ] \
     g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null && break
     sleep 2
   done
-  CS_BASE="$(g merge-base "$BRANCH" "${ORIGIN_BASE_SHA:-HEAD}" 2>/dev/null || true)"
+  # $CONTENT_FORK_BASE, NOT a merge-base recomputed here: by this point $BRANCH
+  # has been merged into $DEFAULT_BRANCH and is very likely already on origin
+  # (another session pushes our shared local main constantly), so any merge-base
+  # taken now collapses to $BRANCH's own tip and the comparison goes vacuous.
+  CS_BASE="${CONTENT_FORK_BASE:-}"
   CS_TIP="$(g rev-parse "$BRANCH" 2>/dev/null || true)"
   if [ -n "$CS_BASE" ] && [ -n "$CS_TIP" ]; then
     echo "── content-survival check vs origin/$DEFAULT_BRANCH ──"
@@ -440,6 +455,19 @@ if [ "${DRY_RUN:-0}" != "1" ] \
       --check-ref="origin/$DEFAULT_BRANCH" 2>&1)"
     CS_RC=$?
     [ -n "$CS_OUT" ] && echo "$CS_OUT"
+    # A guard that compares nothing must not read as a guard that passed — that
+    # is the exact vacuous-guard shape as #766/#782. If the helper found no
+    # modified files while this run is verifying files on origin, say so.
+    case "$CS_OUT" in
+      *"no modified files to check"*|*"SKIP"*)
+        if [ ${#VERIFY_FILES[@]} -gt 0 ]; then
+          echo "  ⚠ content-survival compared NOTHING (fork base $CS_BASE .. $BRANCH is empty)" >&2
+          echo "    while ${#VERIFY_FILES[@]} file(s) were verified present. Those files' CONTENT is" >&2
+          echo "    UNVERIFIED on this run — check by hand:" >&2
+          echo "      git -C $MAIN_DIR show origin/$DEFAULT_BRANCH:<file>" >&2
+        fi
+        ;;
+    esac
     if [ "$CS_RC" = 1 ]; then
       # Recovery guidance matters here and is easy to get wrong: re-running
       # this script does NOT restore the content. $BRANCH is already merged
