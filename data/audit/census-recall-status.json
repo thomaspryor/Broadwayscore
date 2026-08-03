@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T12:11:45.917Z",
+  "generatedAt": "2026-08-03T12:46:58.226Z",
   "verdict": "blind",
   "reason": "only 0 prior run(s) on record (need 2) — no baseline to judge against yet",
   "regressions": [],
@@ -7,36 +7,36 @@
   "trendEntries": 1,
   "latest": {
     "date": "2026-08-03",
-    "generatedAt": "2026-08-03T12:11:45.917Z",
+    "generatedAt": "2026-08-03T12:46:58.226Z",
     "naivePages": 2,
     "shows": 5,
     "excluded": {},
-    "truthUrls": 81,
-    "onDiskUrls": 63,
-    "newFromNaive": 13,
+    "truthUrls": 85,
+    "onDiskUrls": 64,
+    "newFromNaive": 16,
     "families": {
-      "naive": 0.494,
-      "onDisk": 0.778,
-      "scoped": 0.407
+      "naive": 0.506,
+      "onDisk": 0.753,
+      "scoped": 0.365
     },
     "arms": {
-      "naive-p0": 0.247,
-      "naive-p1": 0.272,
-      "onDisk": 0.778,
-      "scoped-q0": 0.296,
-      "scoped-q1": 0.259
+      "naive-p0": 0.235,
+      "naive-p1": 0.318,
+      "onDisk": 0.753,
+      "scoped-q0": 0.259,
+      "scoped-q1": 0.247
     },
-    "combinedRecall": 0.84,
+    "combinedRecall": 0.812,
     "familyYield": {
-      "naive": 8,
-      "onDisk": 12.6,
-      "scoped": 6.6
+      "naive": 8.6,
+      "onDisk": 12.8,
+      "scoped": 6.2
     },
     "armYield": {
       "naive-p0": 4,
-      "naive-p1": 4.4,
-      "onDisk": 12.6,
-      "scoped-q0": 4.8,
+      "naive-p1": 5.4,
+      "onDisk": 12.8,
+      "scoped-q0": 4.4,
       "scoped-q1": 4.2
     },
     "armsFailed": {
@@ -50,29 +50,29 @@
     "byCategory": {
       "off-broadway": {
         "shows": 1,
-        "truthUrls": 7,
+        "truthUrls": 8,
         "families": {
-          "naive": 0.714,
+          "naive": 0.75,
           "onDisk": 0,
-          "scoped": 0.286
+          "scoped": 0.25
         }
       },
       "off-west-end": {
         "shows": 2,
-        "truthUrls": 25,
+        "truthUrls": 26,
         "families": {
-          "naive": 0.64,
-          "onDisk": 0.88,
-          "scoped": 0.48
+          "naive": 0.654,
+          "onDisk": 0.846,
+          "scoped": 0.385
         }
       },
       "west-end": {
         "shows": 2,
-        "truthUrls": 49,
+        "truthUrls": 51,
         "families": {
-          "naive": 0.388,
-          "onDisk": 0.837,
-          "scoped": 0.388
+          "naive": 0.392,
+          "onDisk": 0.824,
+          "scoped": 0.373
         }
       }
     },
