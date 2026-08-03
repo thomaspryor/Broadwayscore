@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T04:27:59.714Z",
+  "timestamp": "2026-08-03T04:50:14.455Z",
   "stats": {
-    "totalReviews": 41343,
-    "alreadyFlagged": 18078,
+    "totalReviews": 41345,
+    "alreadyFlagged": 18079,
     "dateGuardCatches": 103,
-    "directorMismatch": 944,
-    "tvFilmSignals": 1136,
-    "londonSignals": 789,
+    "directorMismatch": 948,
+    "tvFilmSignals": 1145,
+    "londonSignals": 802,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3395
+    "noPublishDate": 3394
   },
   "findings": [
     {
@@ -23,6 +23,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": null,
+      "publishDate": "2026-05-13",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -921,6 +935,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 80,
+      "publishDate": "2025-11-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h?gaa_at=eafs&gaa_n=AWEtsqfFnBFpz4gC0YZASK60aMD7uDMt0EMDinjujNrDWcrH4r_-jugH6yFd&gaa_ts=699a6327&gaa_sig=cSv7xT4pBprtsRUKW6lbVIzEY8qOvNZNDunNWhGLW3Dy0SN_q2PxLQjZVv-QwuC1z2Nr2jOqJlmrj7FVHmBmXA%3D%3D",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -4610,6 +4643,19 @@
     },
     {
       "showId": "chess-2025",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/article/theatre-and-dance-review-nine-night-windrush-movement-of-the-people-present-laughter-absolute-hell-chess-zgqr5d9kf?shareToken=9ada00cc7b840ca715b0d246329885c1&srsltid=AfmBOorFkcrkQp3LXYfM9vZOfgvQte12dNtTGdl9awjkYBrgsBJzaEKW",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "chess-2025",
       "file": "variety--christian-lewis.json",
       "score": 73,
       "publishDate": "November 16, 2025",
@@ -5908,6 +5954,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-death-of-a-salesman-shook-when-the-crows-visit-mjhtddks7",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
@@ -8673,6 +8732,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -8800,6 +8864,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 82,
+      "publishDate": "2025-05-02",
+      "url": "https://www.thetimes.com/article/ecd0bc1e-6fb8-4627-9884-bbc6e6f8768c",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -11998,6 +12086,20 @@
       ]
     },
     {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 62,
+      "publishDate": "2026-02-13",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-sorry-prime-minister-review-vqrcn0xmp",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "in-the-heights-2008",
       "file": "nypost--unknown.json",
       "score": 49,
@@ -12979,6 +13081,19 @@
       "score": 98,
       "publishDate": "2025-12-11",
       "url": "https://www.timeout.com/london/theatre/into-the-woods-5",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -16038,6 +16153,33 @@
       ]
     },
     {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-interview-songwriter-golden-kpop-demon-hunters-midnight-never-get-sr8x7pg5t",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "file": "times-uk--will-hodgkinson.json",
+      "score": null,
+      "publishDate": "2026-07-13",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mark-sonnenblick-interview-songwriter-golden-kpop-demon-hunters-midnight-never-get-sr8x7pg5t",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
       "file": "amny--matt-windman.json",
       "score": 83,
@@ -16909,6 +17051,8 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "publishDate": "2022-10-24",
+      "url": "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -22033,6 +22177,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -22947,11 +23096,18 @@
       "showId": "sylvia-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 60,
+      "publishDate": "2023-02-15",
+      "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -24931,6 +25087,19 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 88,
       "publishDate": "2026-07-01",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-guilty-review-russell-tovey-donmar-rnsp5c2gd",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-guilty-review-russell-tovey-donmar-rnsp5c2gd",
       "findings": [
         {
@@ -29458,6 +29627,19 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/whos-afraid-of-virginia-woolf-review-fine-revival-packs-a-considerable-punch-3sxppxwbh",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 57,
@@ -29687,6 +29869,20 @@
       "score": 93,
       "publishDate": "2026-05-13",
       "url": "https://www.timeout.com/london/theatre/1536-review-1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "file": "times-uk--laura-hackett-fiction-editor.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/ava-pickett-margot-robbie-1536-play-r77xl7h7v",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -32320,6 +32516,33 @@
       "score": 99,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/care-review-play-young-vic-dementia-drama-quietly-heartbreaking-wwhzbd0bl",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/care-review-play-young-vic-dementia-drama-quietly-heartbreaking-wwhzbd0bl",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -36120,6 +36343,20 @@
       ]
     },
     {
+      "showId": "jesus-christ-superstar-2000",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "jesus-christ-superstar-west-end-2026",
       "file": "loureviews--louise-penn.json",
       "score": 89,
@@ -37644,6 +37881,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-2010",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 58,
+      "publishDate": "2011-02-28",
+      "url": "http://www.thetimes.co.uk/tto/arts/stage/theatre/article2928930.ece",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -41738,6 +41989,20 @@
       ]
     },
     {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 66,
+      "publishDate": "2026-03-28",
+      "url": "https://www.thetimes.com/article/e3368f7f-d81b-46f9-8bde-85e8b63e3285",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "tender-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
       "score": 79,
@@ -41995,6 +42260,20 @@
       "score": 79,
       "publishDate": "2026-04-07",
       "url": "https://northwestend.com/the-authenticator-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 41,
+      "publishDate": "2026-04-03",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-authenticator-review-an-over-the-top-state-of-the-nation-farce-hchpx7736",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -43849,6 +44128,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2024-07-19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-hot-wing-king-review-dorfman-national-theatre-cmp663bfr",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -45972,6 +46265,20 @@
       "score": 94,
       "publishDate": "2026-06-03",
       "url": "https://www.theupcoming.co.uk/2026/06/03/warhorse-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "times-uk--chris-bennion.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/review-war-horse-at-the-lyttelton-national-theatre-zdqmbr32p",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
