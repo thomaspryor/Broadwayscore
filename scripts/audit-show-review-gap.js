@@ -52,7 +52,7 @@ const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
-const { buildCensusPlan, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
+const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -213,8 +213,16 @@ const NON_REVIEW_HOST_PATTERNS = [
   /(^|\.)broadwayscorecard\.com$/,
   // Book/consumer-review sites: a naive "<title> review" for a title that is
   // also a book ("The Gruffalo") pulls these in wholesale.
-  /(^|\.)goodreads\.com$/, /^www\.thebookbag\.co\.uk$/, /^thebookbag\.co\.uk$/,
+  // (hostOf/registrableHost strips "www." before these run — never add a
+  // www-prefixed pattern, it can only ever be dead.)
+  /(^|\.)goodreads\.com$/, /(^|\.)thebookbag\.co\.uk$/,
   /(^|\.)fantasybookreview\.co\.uk$/,
+  // Remaining chaff measured in the first full recall run's newFromNaive
+  // (data/audit/serp-census-recall.json, 2026-08-02): social, resellers,
+  // experience marketplaces and venue own-sites.
+  /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
+  /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
+  /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([
@@ -528,7 +536,10 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   // year in its path is cheap, reliable evidence — if that year predates this
   // production's window (and no priorRuns claim it), it is a different
   // production and does not belong in this show's gap list.
-  const urlYear = (String(u).match(/\/((?:19|20)\d{2})[\/-]/) || [])[1];
+  // Same delimiter set as isUrlYearInPriorRun (the readmission below) — if the
+  // two regexes disagree, a dash-form URL trips the guard while being invisible
+  // to the priorRuns escape hatch, dropping a declared prior run's reviews.
+  const urlYear = (String(u).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
   if (urlYear && !isUrlYearInPriorRun(u, show.priorRuns)) {
     const starts = [show.previewsStartDate, show.openingDate]
       .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
@@ -816,19 +827,31 @@ async function auditShow(show, opts = {}) {
           }
         }
         const okCount = queryStatus.filter(q => q.ok).length;
-        // `complete` (ALL queries executed) gates the checkpoint cooldown in
-        // main(): a partial or total provider outage must NOT burn the
-        // cooldown, or a dead/flaky provider silently sleeps the census
-        // through the whole opening window (ship-check 2026-07-25 — the
-        // first cut stamped off "any query ran", which let one surviving
-        // low-value query mask a failed primary for 6h). `ran` stays "did
-        // any census work happen" for reporting.
+        // Which failures may burn the cooldown? The scoped arms are the census's
+        // floor — if any of those failed, the pass was not a census. The naive
+        // arm is deeper and more pages, so it is the likeliest to flake; before
+        // #872 there were 1-3 arms and "all must succeed" was cheap, but with 6
+        // arms an "all" rule means one chronically-failing deep page pins
+        // complete:false forever, the cooldown never stamps, and the census
+        // re-fires every cycle on every in-window show (~4,000 calls/day for a
+        // single bad show — ship-check 2026-08-02). So: all scoped arms must
+        // succeed AND the naive arm must have produced at least one good page.
+        const censusComplete = isCensusPassComplete(queryStatus);
+        // `complete` gates the checkpoint cooldown in main(): a partial or
+        // total provider outage must NOT burn the cooldown, or a dead/flaky
+        // provider silently sleeps the census through the whole opening
+        // window (ship-check 2026-07-25 — the first cut stamped off "any
+        // query ran", which let one surviving low-value query mask a failed
+        // primary for 6h). `ran` stays "did any census work happen" for
+        // reporting; `queriesOk`/`queryStatus` keep per-arm truth so a
+        // partially-degraded pass is still visible even when it stamps.
         result.serpCensus = {
           ran: okCount > 0,
-          complete: okCount === plan.length,
+          complete: censusComplete,
           query: plan[0].query,
           queryStatus,
           queriesOk: okCount,
+          queriesTotal: plan.length,
           resultCount: serpCensusUrls.size,
           error: okCount === plan.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
         };

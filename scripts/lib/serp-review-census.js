@@ -211,6 +211,31 @@ function buildCensusPlan(show, opts = {}) {
 }
 
 /**
+ * Did this census pass do enough to burn the cooldown?
+ *
+ * `complete` gates the checkpoint stamp: an incomplete pass must NOT sleep the
+ * census for the cooldown window, or a flaky provider silently skips a show's
+ * whole opening window (#444). But "every arm succeeded" stops being the right
+ * rule once the plan has 6 arms instead of 1-3: the naive arm is the deepest
+ * and flakiest, so one chronically-failing page-3 fetch would pin the stamp
+ * off forever and re-fire the whole census every cycle for every in-window
+ * show (ship-check 2026-08-02, #872). The floor is therefore: every scoped arm
+ * succeeded, AND the naive arm returned at least one good page.
+ *
+ * @param {Array<{arm: string, ok: boolean}>} queryStatus per-arm outcomes
+ * @returns {boolean}
+ */
+function isCensusPassComplete(queryStatus) {
+  const arms = Array.isArray(queryStatus) ? queryStatus : [];
+  if (arms.length === 0) return false;
+  const isNaive = (a) => String(a && a.arm || '').startsWith('naive');
+  const scoped = arms.filter(a => !isNaive(a));
+  const naive = arms.filter(isNaive);
+  if (!scoped.every(a => a.ok)) return false;
+  return naive.length === 0 || naive.some(a => a.ok);
+}
+
+/**
  * Should the census run for this show right now? Pure gate combining the
  * opening-window scope with a per-show cooldown so the source fires a
  * handful of times across the window, not every hourly audit cycle.
@@ -240,6 +265,7 @@ module.exports = {
   buildNaiveCensusQuery,
   buildCensusPlan,
   censusGeoFor,
+  isCensusPassComplete,
   venueQueryToken,
   shouldRunSerpCensus,
 };

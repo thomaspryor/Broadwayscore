@@ -10,8 +10,12 @@
  * answer doesn't change every 30 minutes — a 24h cache cuts duplicates with
  * zero reliability impact.
  *
- * Storage: /tmp/bd-serp-cache/{sha1}.json. In CI, persisted across runs via
- * actions/cache@v4 with the same path. Local dev: persists until /tmp clears.
+ * Storage: /tmp/bd-serp-cache/{sha1}.json. Local dev: persists until /tmp
+ * clears. NOT persisted across CI runs today — no workflow restores this path
+ * with actions/cache (verified 2026-08-02, audit-aggregator-gap.yml has no
+ * cache step), so on a GitHub runner every run starts cold and the TTL bounds
+ * nothing cross-run. Treat the cache as a within-run/local dedupe only when
+ * reasoning about spend.
  *
  * Cached: result arrays including empty arrays (no organic results IS a valid
  * answer). Not cached: nulls (provider failures — retry next time).

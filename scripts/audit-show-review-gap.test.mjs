@@ -247,3 +247,14 @@ test('acceptSerpCensusResult drops the ticketing/listings layer the deep-page ar
     );
   }
 });
+
+test('stale-year guard and the priorRuns readmission read the SAME year delimiters', () => {
+  // Slug-style permalinks put the year between dashes, not slashes. If the
+  // guard's regex is wider than isUrlYearInPriorRun's, a declared prior run's
+  // dash-form reviews get dropped with no way back (ship-check 2026-08-02).
+  const dashOld = { url: 'https://example.com/2015-the-car-man-review/', title: 'The Car Man review', snippet: '' };
+  assert.equal(acceptSerpCensusResult(dashOld, { show: CAR_MAN_SHOW, showInfo: CAR_MAN_INFO }), null);
+
+  const withPrior = { ...CAR_MAN_SHOW, priorRuns: [{ openingDate: '2015-07-01', closingDate: '2015-08-09' }] };
+  assert.ok(acceptSerpCensusResult(dashOld, { show: withPrior, showInfo: CAR_MAN_INFO }));
+});

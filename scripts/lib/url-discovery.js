@@ -1244,7 +1244,13 @@ function earliestPriorRunStart(show) {
  */
 function isUrlYearInPriorRun(url, priorRuns) {
   if (!url || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
-  const m = String(url).match(/\/((?:19|20)\d{2})\//);
+  // Year as a standalone path token, delimited by "/" OR "-": WordPress dates
+  // give /2015/07/29/, but slug-style permalinks give -2015- or /2015-the-car-
+  // man-review/. The slash-only form left 481 dash-form URLs on disk invisible
+  // to this readmission — including one on a show that DOES declare the run
+  // (ship-check 2026-08-02, #872). Anchored on both sides so an article ID
+  // like /a12019x/ can't be read as a year.
+  const m = String(url).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/);
   if (!m) return false;
   const urlYear = parseInt(m[1], 10);
   for (const run of priorRuns) {

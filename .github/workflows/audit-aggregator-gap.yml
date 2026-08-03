@@ -132,6 +132,13 @@ jobs:
           SERP_CENSUS_INGEST: ${{ vars.SERP_CENSUS_INGEST || '' }}
           # WE-only kill switch (leaves the Broadway audit untouched):
           WE_GAP_REFERENCE_DISABLED: ${{ vars.WE_GAP_REFERENCE_DISABLED || '' }}
+          # SERP-census throttles (#872). Without these lines the knobs exist in
+          # code but are unreachable from the cron that actually spends the
+          # credits: SERP_CENSUS_NAIVE_PAGES trims the naive arm's depth
+          # (3 → 1, or 0 to drop the arm) and SERP_GAP_CENSUS_DISABLED kills
+          # the whole census. Both default to unset = current behavior.
+          SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
+          SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           # Default window widened to 3y + include-closed so the cron grinds the
