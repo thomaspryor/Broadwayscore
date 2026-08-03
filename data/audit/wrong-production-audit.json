@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-03T06:13:25.578Z",
+  "timestamp": "2026-08-03T08:42:24.921Z",
   "stats": {
-    "totalReviews": 41350,
-    "alreadyFlagged": 18080,
-    "dateGuardCatches": 103,
-    "directorMismatch": 948,
-    "tvFilmSignals": 1145,
-    "londonSignals": 802,
+    "totalReviews": 41360,
+    "alreadyFlagged": 18086,
+    "dateGuardCatches": 108,
+    "directorMismatch": 947,
+    "tvFilmSignals": 1144,
+    "londonSignals": 801,
     "offBroadwaySignals": 479,
     "yearMismatch": 86,
-    "noPublishDate": 3392
+    "noPublishDate": 3387
   },
   "findings": [
     {
@@ -29,7 +29,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb",
       "findings": [
@@ -3577,6 +3577,7 @@
     {
       "showId": "carmen-off-broadway-2025",
       "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+      "score": 66,
       "publishDate": "2024-01-06",
       "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
       "findings": [
@@ -4638,19 +4639,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from chess-1988"
-        }
-      ]
-    },
-    {
-      "showId": "chess-2025",
-      "file": "times-uk--unknown.json",
-      "publishDate": null,
-      "url": "https://www.thetimes.com/article/theatre-and-dance-review-nine-night-windrush-movement-of-the-people-present-laughter-absolute-hell-chess-zgqr5d9kf?shareToken=9ada00cc7b840ca715b0d246329885c1&srsltid=AfmBOorFkcrkQp3LXYfM9vZOfgvQte12dNtTGdl9awjkYBrgsBJzaEKW",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -17038,6 +17026,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "telegraph--marianka-swain.json",
+      "score": 78,
       "publishDate": "2022-10-24",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/sons-queer-what-can-do-garrick-theatre-review-rob-madges-bittersweet/",
       "findings": [
@@ -17051,6 +17040,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 60,
       "publishDate": "2022-10-24",
       "url": "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
       "findings": [
@@ -24631,7 +24621,7 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "everything-theatre--mary-pollard.json",
-      "score": 94,
+      "score": 100,
       "publishDate": "2024-05-27",
       "url": "https://everything-theatre.co.uk/2024/05/review-the-enormous-crocodile-regents-park-open-air-theatre/",
       "findings": [
@@ -24639,6 +24629,32 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 792d before show (2024-05-27 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2023-12-07",
+      "url": "https://www.theguardian.com/stage/2023/dec/07/the-enormous-crocodile-review-roald-dahl-leeds-playhouse",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 964d before show (2023-12-07 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "show-score--unknown.json",
+      "publishDate": "2024-05-28",
+      "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 791d before show (2024-05-28 vs 2026-07-28)"
         }
       ]
     },
@@ -24898,7 +24914,7 @@
     {
       "showId": "the-gin-game-2026",
       "file": "wsj--charles-isherwood.json",
-      "score": 39,
+      "score": 41,
       "publishDate": "2026-07-23",
       "url": "https://www.wsj.com/articles/the-gin-game-review-debra-winger-and-arliss-howards-bad-hand-59068784",
       "findings": [
@@ -25099,6 +25115,7 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "times-uk--unknown.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-guilty-review-russell-tovey-donmar-rnsp5c2gd",
       "findings": [
@@ -27706,7 +27723,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2022-04-01",
       "url": "https://www.thetimes.co.uk/article/to-kill-a-mockingbird-review-rafe-spall-is-stunning-in-new-take-on-classic-70smwnd0z",
       "findings": [
@@ -29627,19 +29644,6 @@
       ]
     },
     {
-      "showId": "whos-afraid-of-virginia-woolf-2020",
-      "file": "times-uk--unknown.json",
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/whos-afraid-of-virginia-woolf-review-fine-revival-packs-a-considerable-punch-3sxppxwbh",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
       "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 57,
@@ -29880,7 +29884,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "times-uk--laura-hackett-fiction-editor.json",
-      "score": null,
+      "score": 85,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/ava-pickett-margot-robbie-1536-play-r77xl7h7v",
       "findings": [
@@ -30844,7 +30848,7 @@
     {
       "showId": "and-juliet-2022",
       "file": "wsj--charles-isherwood.json",
-      "score": 75,
+      "score": 32,
       "publishDate": "November 3, 2022",
       "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
       "findings": [
@@ -33097,6 +33101,17 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 248d before show (2025-10-08 vs 2026-06-13)"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
       "score": 89,
       "publishDate": "2026-06-26",
@@ -33123,7 +33138,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 92,
+      "score": 97,
       "publishDate": "2025-10-08",
       "url": "https://www.whatsonstage.com/news/cyrano-de-bergerac-with-adrian-lester-at-the-rscs-swan-theatre-review_1697511/",
       "findings": [
@@ -36343,20 +36358,6 @@
       ]
     },
     {
-      "showId": "jesus-christ-superstar-2000",
-      "file": "times-uk--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "jesus-christ-superstar-west-end-2026",
       "file": "loureviews--louise-penn.json",
       "score": 89,
@@ -36444,6 +36445,20 @@
       "score": 59,
       "publishDate": "2026-07-07",
       "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -37225,7 +37240,7 @@
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2026-04-02",
       "url": "https://www.thetimes.com/article/24f78977-1a2a-491a-bd9e-ced1dc5821b9",
       "findings": [
@@ -40781,6 +40796,19 @@
       ]
     },
     {
+      "showId": "space-dogs-off-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2026-06-09",
+      "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 52d before show (2026-06-09 vs 2026-07-31)"
+        }
+      ]
+    },
+    {
       "showId": "spongebob-squarepants-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
@@ -42271,7 +42299,7 @@
     {
       "showId": "the-authenticator-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 41,
+      "score": 39,
       "publishDate": "2026-04-03",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-authenticator-review-an-over-the-top-state-of-the-nation-farce-hchpx7736",
       "findings": [
@@ -42614,6 +42642,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 35d before show (2026-06-23 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "westendtheatre--luke-dillon.json",
+      "publishDate": "2026-03-24",
+      "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
         }
       ]
     },
@@ -46265,20 +46306,6 @@
       "score": 94,
       "publishDate": "2026-06-03",
       "url": "https://www.theupcoming.co.uk/2026/06/03/warhorse-at-the-national-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "war-horse-west-end-2026",
-      "file": "times-uk--chris-bennion.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/review-war-horse-at-the-lyttelton-national-theatre-zdqmbr32p",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

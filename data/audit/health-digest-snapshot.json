@@ -1,16 +1,12 @@
 {
-  "generatedAt": "2026-08-02T21:53:34.133Z",
-  "subject": "BSC Daily: 2 errors need attention",
-  "bannerText": "2 errors, 16 warnings",
-  "consecutiveErrorDays": 1,
+  "generatedAt": "2026-08-03T07:58:10.316Z",
+  "subject": "BSC Daily: ACTION NEEDED — Workflow repeat-failure: Test Suite",
+  "bannerText": "1 error, 20 warnings",
+  "consecutiveErrorDays": 2,
   "errors": [
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 45 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "message": "Rebuild Reviews Data failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -19,8 +15,20 @@
       "message": "1 open show(s) have audience data on a source that didn't link — Theatr: The Jonathan Larson Project (150 ratings ↔ The Jonathan Larson Project)"
     },
     {
+      "name": "Sync: baseline drift",
+      "message": "Reviews dropped: 19418 vs baseline 19422"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: sylvia-off-west-end-2026 The Guardian 5/5 stars→100 vs LLM 67, gap 33)"
+    },
+    {
       "name": "Quality: corpus drift",
       "message": "8 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+    },
+    {
+      "name": "Coverage: SERP census recall",
+      "message": "Review coverage not judgeable yet: only 0 prior run(s) on record (need 2) — no baseline to judge against yet"
     },
     {
       "name": "Commercial model drift",
@@ -31,20 +39,24 @@
       "message": "1 SEO warning(s): Lighthouse score below 70 on /show/hamilton: 69/100 (lab only — field CWV healthy)"
     },
     {
+      "name": "Cron failed: Test Suite",
+      "message": "Last run inconclusive: cancelled (1h ago), no success in 48h"
+    },
+    {
       "name": "Credits: ScrapingBee",
       "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5 — acknowledged: Monthly API limit exhausted (1M credits) — tracked in card #224, resets on billing cycle. [expires 2026-08-05]"
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "298k credits left (30%) · 70k/day burn · renews in 20d · exhausts in ~4d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
-    },
-    {
-      "name": "Stuck work: paused P0/P1 cards",
-      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: Brainiac Live 2025 Olivier-winning Marylebone run entire (0d); Review completeness: Death Note / Dog Man / Crocodile 0 revi (0d) (8 awaiting recheck, earliest due 2026-08-03 — not counted)"
+      "message": "3267k credits left (82%) · 733k/day burn · renews in 31d · exhausts in ~4d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "38 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (10d); Trainspotting: only 4 reviews on site + email said 7 (invest (10d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (10d)"
+      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (11d); Trainspotting: only 4 reviews on site + email said 7 (invest (11d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (10d)"
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
+      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
@@ -69,37 +81,13 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget: browserbase $11.5 > $4 (115 sessions); brightdata $6.16 > $2.5 (1358 serp + 2746 unlocker reqs); scrapingdog 104074 credits > 45000",
-      "description": "Day 2026-08-01. 2026-08-01 · Browserbase: $11.5 (115 sessions) · 2026-08-01 · Bright Data: $6.16 (1358 serp / 2746 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 104074 credits (633180 this cycle). Verification streak reset to 0.",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/145 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nThe Car Man: score-drift",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80% (453/566)\noff-broadway: 48.5% (161/332)\nwest-end: 71.5% (391/547)\n\nOldest gaps:\n1536 — guardian (251h)\n1536 — independent (251h)\nA Midsummer Night's Dream - Globe — financialtimes (251h)\nA Midsummer Night's Dream - Globe — telegraph (251h)\nA Midsummer Night's Dream — financialtimes (251h)\n… 204 more open gap(s)",
-      "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-      "severity": "error",
-      "url": null
-    },
-    {
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
       "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30763909671"
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30784165332"
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 51,
-  "totalCount": 72
+  "autoFixedCount": 2,
+  "passedCount": 49,
+  "totalCount": 73
 }
