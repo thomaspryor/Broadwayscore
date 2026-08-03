@@ -43,7 +43,7 @@ async function main() {
     return;
   }
 
-  const { window, impact, partnerize, posthog, errors, funnel, unitEconomics, perPlatform, wowDelta } = stats;
+  const { window, impact, partnerize, posthog, errors, funnel, unitEconomics, perPlatform, wowDelta, context } = stats;
 
   console.log(`\n📊 Affiliate Performance Report (${window.startDate} to ${window.endDate})\n`);
   console.log('='.repeat(60));
@@ -55,6 +55,30 @@ async function main() {
     console.log(`  Commission   : ${arrow(wowDelta.commissionPct) || 'n/a'}    (prior $${wowDelta.priorCommission.toFixed(2)})`);
     console.log(`  Conversions  : ${arrow(wowDelta.conversionsPct) || 'n/a'}    (prior ${wowDelta.priorConversions})`);
     console.log(`  Attrib sales : ${arrow(wowDelta.revenuePct) || 'n/a'}    (prior $${wowDelta.priorRevenue.toFixed(2)})`);
+  }
+
+  // ── Context (baseline + outlier annotations — affiliate hardening 2026-08-03) ──
+  if (context) {
+    console.log('\n── Context ──');
+    if (context.partial) {
+      console.log('  PARTIAL DATA — baseline/outlier context unavailable; treat deltas with caution.');
+    } else {
+      if (context.baseline && context.baseline.payoutVsBaselinePct != null) {
+        const b = context.baseline;
+        const sign = context.baseline.payoutVsBaselinePct >= 0 ? '+' : '';
+        console.log(`  vs trailing ${b.baseline.days}d baseline: ${sign}${context.baseline.payoutVsBaselinePct.toFixed(1)}%/day` +
+          ` ($${(b.windowPerDay?.payout || 0).toFixed(2)}/day now vs $${(b.baselinePerDay?.payout || 0).toFixed(2)}/day)`);
+      }
+      for (const d of context.outlierDays || []) {
+        console.log(`  Outlier day: ${d.day} contributed ${Math.round(d.shareOfWindow * 100)}% of window commission ($${d.payout.toFixed(2)})`);
+      }
+      for (const b of context.repeatBuyers || []) {
+        console.log(`  Repeat buyer: one customer placed ${b.conversions} orders ($${b.sales.toFixed(2)} sales)`);
+      }
+      if (context.clickDivergenceRatio != null && context.clickDivergenceRatio > 2) {
+        console.log(`  Bot note: Impact recorded ${context.impactClicks} clicks vs ${funnel?.ticketClicks} on-site (${context.clickDivergenceRatio.toFixed(1)}x) — EPC diluted`);
+      }
+    }
   }
 
   // ── Funnel ──

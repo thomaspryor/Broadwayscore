@@ -51,6 +51,19 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   'alert-router:deadman', // health-check.js: disposition='auto' has been silently failing for 7 days
   'e2e-canary:chain-broken', // e2e-canary-alert-chain.js: the real (unmocked) alert→card→dispatch chain is broken
 
+  // Category (owner-approved 2026-08-03, affiliate hardening session — "it's
+  // our only revenue stream, I do want it really strong"): affiliate revenue
+  // pipeline BROKEN. Only the checks that mean money is actively being lost
+  // page; softer anomalies (bot divergence, payout drift, collapses) stay
+  // digest-tier. check-affiliate-health.js additionally runs a 14-day shadow
+  // burn-in during which even these route to the digest.
+  'affiliate:dead-man', // both click signals near-zero — shared-fate tracking/site breakage
+  'affiliate:zero-conversions', // 0 conversions for 7 straight days, beyond any observed variance
+  'affiliate:conversions-flatline', // conversions silent beyond own baseline WHILE clicks flow
+  'affiliate:handoff-break', // site clicks flowing but Impact stopped recording them
+  'affiliate:provider-auth:impact', // Impact API/credentials failing — monitor is blind
+  'affiliate:provider-auth:posthog', // PostHog API/credentials failing — monitor is blind
+
   // Category 2: opening-night-sla-dispatch.js only runs against the active
   // opening-night checklist window (activeShowIds) — reviews stuck ≥60min
   // during a live opening-night operation IS the pipeline stalling on an

@@ -132,12 +132,11 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
     humanAction: 'The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Open Claude Code and say: "Check the census recall regression — run audit-serp-census-recall.js and find which arm dropped."' },
 
-  // Coverage Verdict S5 (#903, the final sprint). A found gap is a real,
-  // current review the pipeline missed on a show the operator did not pick —
-  // this-week, not fix-now, because the plan is explicit that probe findings
-  // surface here (never as email spam or a blocking CI run).
-  { match: /^Coverage: adversarial probe$/, urgency: 'this-week',
-    humanAction: 'The weekly seeded probe found a review URL that is neither live on the site nor named as excluded. Open Claude Code and say: "Check the coverage adversarial probe findings in data/audit/coverage-adversarial-probe.json and ingest or explain the missing review(s)."' },
+  // Affiliate revenue monitor (affiliate hardening 2026-08-03). fix-now: this
+  // is the site's only revenue stream, and check-affiliate-health.js already
+  // filtered out Poisson noise before writing anything non-pass.
+  { match: /^Revenue: affiliate health$/, urgency: 'fix-now',
+    humanAction: 'The affiliate ticket-revenue monitor flagged a problem (or the monitor itself stopped running). Open Claude Code and say: "Run check-affiliate-health.js --dry-run and investigate the failing layer — the check output names it (site clicks, Impact handoff, conversions, or payouts)."' },
 
   // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
@@ -906,6 +905,37 @@ function checkQuality() {
         return { name: 'Quality: corpus drift', status: 'warn', message: `${drifted.length} audit(s) drifting: ${drifted.map(a => a.label || a.name).join(', ')}`, hint: 'Non-blocking corpus drift — review data/audit/corpus-drift.json' };
       }
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
+    }),
+
+    // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
+    // check-affiliate-health.js runs earlier in the same data-health-check.yml
+    // job and writes this snapshot; this line is (a) the digest surface for
+    // its findings and (b) the monitor's own dead-man — a monitor that stops
+    // writing its snapshot looks exactly like a healthy pipeline to any check
+    // that only reads the last row (the arm-yield 'unobserved' lesson). This
+    // is the site's ONLY revenue stream: a stale/broken monitor is an error,
+    // not a warn.
+    runCheck('Revenue: affiliate health', () => {
+      const snapFile = path.join(AUDIT_DIR, 'affiliate-health.json');
+      if (!fs.existsSync(snapFile)) {
+        return { name: 'Revenue: affiliate health', status: 'warn', message: 'No affiliate-health snapshot yet (monitor not yet run)', hint: 'node scripts/check-affiliate-health.js --dry-run' };
+      }
+      const snap = readJSON(snapFile);
+      const age = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
+      if (age > 48) {
+        return { name: 'Revenue: affiliate health', status: 'error', message: `Affiliate monitor snapshot is ${formatAge(age)} old (>48h) — the revenue-stream monitor itself is dead`, hint: 'Check the "Affiliate health monitor" step in data-health-check.yml' };
+      }
+      const checks = Array.isArray(snap?.checks) ? snap.checks : [];
+      const criticals = checks.filter(c => c.verdict === 'critical');
+      const warns = checks.filter(c => c.verdict === 'warn');
+      const shadowTag = snap.shadow ? ' [shadow burn-in]' : '';
+      if (criticals.length > 0) {
+        return { name: 'Revenue: affiliate health', status: 'error', message: `${criticals.length} critical: ${criticals.map(c => c.label).join(', ')}${shadowTag}`, hint: criticals[0].reason };
+      }
+      if (warns.length > 0) {
+        return { name: 'Revenue: affiliate health', status: 'warn', message: `${warns.length} anomaly: ${warns.map(c => c.label).join(', ')}${shadowTag}`, hint: warns[0].reason };
+      }
+      return { name: 'Revenue: affiliate health', status: 'pass', message: `${checks.length} checks healthy (${formatAge(age)} ago)${shadowTag}` };
     }),
 
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall

@@ -1,12 +1,17 @@
 // ─── Affiliate configuration ─────────────────────────────
-// Each platform can use a different affiliate network.
-// Flip `enabled` to true as each approval comes through.
+// src/config/affiliate-platforms.json is the single source of truth, shared
+// with scripts/lib/affiliate-stats.js (revenue reporting) and
+// scripts/verify-affiliate-links.js (link integrity probe). Edit the JSON,
+// not this file, when a platform's IDs or enabled state change.
+import affiliatePlatforms from '@/config/affiliate-platforms.json';
 
 type AffiliateType = 'utm' | 'impact' | 'partnerize';
 
 interface AffiliateConfig {
   type: AffiliateType;
   enabled: boolean;
+  /** Counts as an affiliate row in revenue reports even when link rendering is off (StubHub history). */
+  revenueReporting?: boolean;
   // UTM-based (simple param append)
   params?: Record<string, string>;
   // Impact — deep link format: https://{domain}/c/{publisherId}/{campaignId}/{programId}?u={encodedUrl}
@@ -19,54 +24,8 @@ interface AffiliateConfig {
   partnerizeCampaignRef?: string;
 }
 
-export const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
-  TodayTix: {
-    type: 'impact',
-    impactDomain: 'todaytix.pxf.io',
-    impactPublisherId: '6999278',
-    impactCampaignId: '3855163',
-    impactProgramId: '20944',
-    enabled: true,
-  },
-  Ticketmaster: {
-    type: 'impact',
-    impactDomain: 'ticketmaster.evyy.net',
-    impactPublisherId: '6999278',
-    impactCampaignId: '264167',
-    impactProgramId: '4272',
-    enabled: true,
-  },
-  StubHub: {
-    type: 'partnerize',
-    partnerizeDomain: 'stubhub.prf.hn',
-    partnerizeCampaignRef: '1011l5DmFu',
-    enabled: true,
-  },
-  SeatGeek: {
-    type: 'impact',
-    impactDomain: '',
-    impactPublisherId: '',
-    impactCampaignId: '',
-    impactProgramId: '',
-    enabled: false,
-  },
-  'Vivid Seats': {
-    type: 'impact',
-    impactDomain: 'vivid-seats.pxf.io',
-    impactPublisherId: '6999278',
-    impactCampaignId: '952533',
-    impactProgramId: '12730',
-    enabled: true,
-  },
-  SeatPlan: {
-    type: 'impact',
-    impactDomain: 'seatplan.sjv.io',
-    impactPublisherId: '6999278',
-    impactCampaignId: '2219054',
-    impactProgramId: '28679',
-    enabled: true,
-  },
-};
+export const AFFILIATE_CONFIG: Record<string, AffiliateConfig> =
+  affiliatePlatforms.platforms as Record<string, AffiliateConfig>;
 
 /**
  * Optional click-time tracking forwarded to Impact via subId1/subId2.

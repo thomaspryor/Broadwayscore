@@ -1,0 +1,57 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for affiliate platform config. Consumed by src/lib/affiliate-utils.ts (link building), scripts/lib/affiliate-stats.js (revenue reporting), scripts/verify-affiliate-links.js (link integrity probe), and scripts/lib/affiliate-link-contract.js (tests). Replaces the two hand-maintained copies (AFFILIATE_CONFIG + AFFILIATE_PLATFORMS) whose 'keep in sync' comment was the bug (affiliate hardening plan, 2026-08-03). revenueReporting keeps a platform in the weekly report's affiliate rows even when rendering is off — StubHub links were hidden 2026-04-11 but its historical clicks must still display as affiliate traffic.",
+  "platforms": {
+    "TodayTix": {
+      "type": "impact",
+      "impactDomain": "todaytix.pxf.io",
+      "impactPublisherId": "6999278",
+      "impactCampaignId": "3855163",
+      "impactProgramId": "20944",
+      "enabled": true,
+      "revenueReporting": true
+    },
+    "Ticketmaster": {
+      "type": "impact",
+      "impactDomain": "ticketmaster.evyy.net",
+      "impactPublisherId": "6999278",
+      "impactCampaignId": "264167",
+      "impactProgramId": "4272",
+      "enabled": true,
+      "revenueReporting": true
+    },
+    "StubHub": {
+      "type": "partnerize",
+      "partnerizeDomain": "stubhub.prf.hn",
+      "partnerizeCampaignRef": "1011l5DmFu",
+      "enabled": true,
+      "revenueReporting": true
+    },
+    "SeatGeek": {
+      "type": "impact",
+      "impactDomain": "",
+      "impactPublisherId": "",
+      "impactCampaignId": "",
+      "impactProgramId": "",
+      "enabled": false,
+      "revenueReporting": false
+    },
+    "Vivid Seats": {
+      "type": "impact",
+      "impactDomain": "vivid-seats.pxf.io",
+      "impactPublisherId": "6999278",
+      "impactCampaignId": "952533",
+      "impactProgramId": "12730",
+      "enabled": true,
+      "revenueReporting": true
+    },
+    "SeatPlan": {
+      "type": "impact",
+      "impactDomain": "seatplan.sjv.io",
+      "impactPublisherId": "6999278",
+      "impactCampaignId": "2219054",
+      "impactProgramId": "28679",
+      "enabled": true,
+      "revenueReporting": true
+    }
+  }
+}
