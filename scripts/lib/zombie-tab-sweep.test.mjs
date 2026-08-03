@@ -245,15 +245,44 @@ test('sweepZombieTabs: guard runs before the cap — guarded tasks never burn ca
   assert.ok(calls.closed.includes('workspace:80'), 'guarded husk must still close');
 });
 
-test('latestLaunchByRef returns the LAST launch for a recycled ref, not the first', () => {
-  const prune = require('../bsc-prune.js');
+test('sweepZombieTabs feeds classifyZombieTabs the LAST launch for a recycled ref, not the first (card #960)', () => {
+  const dispatchLedger = require('./dispatch-ledger.js');
   const entries = [
     { event: 'launch', workspaceRef: 'workspace:12', taskId: 100, ts: '2026-08-01T00:00:00Z' },
     { event: 'dead', workspaceRef: 'workspace:12', taskId: 100, ts: '2026-08-01T01:00:00Z' },
     { event: 'launch', workspaceRef: 'workspace:12', taskId: 200, ts: '2026-08-03T00:00:00Z' },
   ];
-  assert.equal(prune.latestLaunchByRef('workspace:12', entries).taskId, 200);
-  assert.equal(prune.latestLaunchByRef('workspace:99', entries), null);
+  assert.equal(dispatchLedger.launchByRef('workspace:12', entries).taskId, 200);
+  assert.equal(dispatchLedger.launchByRef('workspace:99', entries), null);
+});
+
+test('sweepZombieTabs end-to-end: a recycled ref classifies against the CURRENT task, not the ref\'s original occupant (card #960)', () => {
+  const prune = require('../bsc-prune.js');
+  const calls = { closed: [], ledger: [], redispatched: [], paged: 0 };
+  prune.sweepZombieTabs({
+    all: [{ ref: 'workspace:12', title: '🤖⚡ Data·current task' }],
+    idle: [{ ref: 'workspace:12', title: '🤖⚡ Data·current task' }],
+    dryRun: false,
+    closeWorkspaceFn: (ref) => calls.closed.push(ref),
+    appendLedgerEntryFn: (e) => calls.ledger.push(e),
+    // workspace:12's FIRST occupant (task 100) died and completed long ago;
+    // cmux then recycled the ref onto task 200, which is still pending
+    // (never booted). Routing through dispatchLedger.launchByRef (last-match)
+    // must classify this as task 200's never-booted husk, not task 100's
+    // already-reconciled corpse.
+    readLedgerEntriesFn: () => [
+      { event: 'launch', workspaceRef: 'workspace:12', taskId: 100, subject: 'old task', ts: '2026-07-01T00:00:00Z' },
+      { event: 'dead', workspaceRef: 'workspace:12', taskId: 100, ts: '2026-07-01T01:00:00Z' },
+      { event: 'launch', workspaceRef: 'workspace:12', taskId: 200, subject: 'current task', ts: '2026-08-03T00:00:00Z' },
+    ],
+    taskStatusByIdFn: (id) => ({ 100: 'completed', 200: 'pending' })[id] || null,
+    redispatchFn: (id) => calls.redispatched.push(id),
+    pageFn: () => calls.paged++,
+  });
+  assert.deepEqual(calls.closed, ['workspace:12']);
+  // Before the fix, first-match would have read task 100 (completed) here
+  // and closed the tab as a corpse instead of reviving task 200.
+  assert.deepEqual(calls.redispatched, ['200']);
 });
 
 test('sweepZombieTabs kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 does nothing', () => {

@@ -214,68 +214,15 @@ const {
 const loadCheckpoint = () => loadCheckpointFile(CHECKPOINT_PATH);
 const { blastRadiusCheck } = require('./lib/coverage-gate');
 
-// Non-review domains we ignore inside aggregator articles (platform widgets,
-// social, navigation, store links, internal Playbill/BWW article navigation).
-const NON_REVIEW_HOST_PATTERNS = [
-  /^facebook\.com$/, /^instagram\.com$/, /^twitter\.com$/, /^x\.com$/,
-  /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^linkedin\.com$/,
-  /^pinterest\./, /^reddit\.com$/, /^t\.me$/, /^whatsapp\./,
-  /^playbillder\.com$/, /^playbillstore\.com$/, /^playbilltravel\.com$/,
-  /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,
-  /^forum\.broadwayworld\.com$/, /^data\.broadwayworld\.com$/,
-  /^wisdomdigital\.com$/, /^cur8\.com$/, /^jt-pr-dot-yamm-track\.appspot\.com$/,
-  // venue & box-office (not reviews)
-  /\.org$/, // catches many venue domains; allow-list known critic .orgs below
-  /^ci\.ovationtix\.com$/,
-  // ticketing / box-office hosts — aggregator "Get Tickets" links, never reviews.
-  // Before 2026-06-05 these were skipped only because their unknown outlet was
-  // skipped; with auto-onboard they would be ingested as bogus "telecharge" /
-  // "todaytix" provisional outlets, so they must be filtered at the source.
-  /^telecharge\.com$/, /^ticketmaster\.com$/, /(^|\.)todaytix\.com$/,
-  /^seatgeek\.com$/, /^stubhub\.com$/, /^broadwaydirect\.com$/,
-  /(^|\.)ticketmaster\./, /^ovationtix\.com$/, /^web\.ovationtix\.com$/,
-  /^tickets\./, /^boxoffice\./,
-  // Second wave, measured 2026-08-02 (task #872): the naive un-scoped census
-  // arm reaches deeper into the SERP than the site:-scoped arms ever did, so
-  // it surfaces the ticketing/listing/reference layer that sits between the
-  // real reviews. Every host here was an accepted "gap" in the recall harness
-  // on The Car Man / Brainiac Live / Tao of Glass and is never a review.
-  // (londontheatre.co.uk is deliberately NOT here — it publishes real reviews
-  // under /reviews/.)
-  /^seatplan\.com$/, /^lovetheatre\.com$/, /^lovetovisit\.com$/,
-  /^comparetheticketprice\.com$/, /^skiddle\.com$/, /^ticketsource\./,
-  /^nimaxtheatres\.com$/, /(^|\.)londontheatres\.co\.uk$/,
-  /^sadlerswells\.com$/, /^improbable\.co\.uk$/,
-  /^imdb\.com$/, /(^|\.)wikipedia\.org$/, /(^|\.)tripadvisor\./,
-  /^theatreboard\.com$/, /^officiallondontheatre\.com$/,
-  /(^|\.)london-theatreland\.co\.uk$/, /^ma\.to$/,
-  // Our own site is never a source for our own gap list.
-  /(^|\.)broadwayscorecard\.com$/,
-  // Book/consumer-review sites: a naive "<title> review" for a title that is
-  // also a book ("The Gruffalo") pulls these in wholesale.
-  // (hostOf/registrableHost strips "www." before these run — never add a
-  // www-prefixed pattern, it can only ever be dead.)
-  /(^|\.)goodreads\.com$/, /(^|\.)thebookbag\.co\.uk$/,
-  /(^|\.)fantasybookreview\.co\.uk$/,
-  // Remaining chaff measured in the first full recall run's newFromNaive
-  // (data/audit/serp-census-recall.json, 2026-08-02): social, resellers,
-  // experience marketplaces and venue own-sites.
-  /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
-  /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
-  /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
-];
-
-const ALLOWED_ORG_HOSTS = new Set([
-  'artsfuse.org', 'npr.org', 'exeuntnyc.org', // edge cases that ARE review outlets
-]);
-
-const NON_REVIEW_PATH_PATTERNS = [
-  /^\/article(\/|$)/, // playbill article nav
-  /^\/reviews\/?$/,   // BWW landing
-  /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
-  /^\/newsroom/, /^\/newsletter/,
-  /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
-];
+// Non-review host/path patterns — canonical copy lives in
+// scripts/lib/non-review-url-patterns.js (task #907 ship-check finding:
+// this file and the S5 adversarial probe each hand-maintained their own
+// list, which drifts). namedNonReviewReason() covers the newer
+// ticketing/venue/listing class (newyorkcitytheatre.com,
+// nationaltheatre.org.uk/productions/, etc.) that also needs filtering here
+// so it never becomes a "gap" candidate for ANY isReviewUrl consumer, not
+// just the probe's own post-lookup fallback.
+const { NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS, NON_REVIEW_PATH_PATTERNS, namedNonReviewReason } = require('./lib/non-review-url-patterns');
 
 // Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
 // or mobile host is the same outlet as its bare domain. Strip so amp.theguardian.com
@@ -345,6 +292,11 @@ function isReviewUrl(href) {
   const h = hostOf(href);
   if (!h) return false;
   if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) return false;
+  // Ticketing/venue-production-page/event-listing class (task #907 day-one
+  // triage): newyorkcitytheatre.com, nationaltheatre.org.uk/productions/,
+  // etc. — filtered here too (not just the S5 probe's post-lookup fallback)
+  // so they never become a "gap" candidate for ANY discovery consumer.
+  if (namedNonReviewReason(href)) return false;
   // Lighting & Sound America: the bare /news/story.asp (no ?ID=) is the news
   // index, not a review. Show Score links it as a generic "more from LSA" promo
   // on many show pages; without this guard it surfaces as an uncaptured gap in

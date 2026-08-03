@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-03T18:55:58.546Z",
+  "generatedAt": "2026-08-03T19:53:44.338Z",
   "date": "2026-08-03",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 273650,
+  "entryCount": 279655,
   "shows": [
     {
       "showId": "brainiac-live-west-end-2026",
@@ -351,7 +351,7 @@
     },
     {
       "showId": "hit-machine-off-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -472,8 +472,8 @@
     {
       "showId": "11-to-midnight-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 119024593,
-      "p90_e2e_ms": 119024593,
+      "median_e2e_ms": 122516593,
+      "p90_e2e_ms": 122516593,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -485,7 +485,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "one-minute-critic:ryan-leeds:https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
-          "e2e_ms": 119024593,
+          "e2e_ms": 122516593,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -493,8 +493,8 @@
     {
       "showId": "a-chorus-line-2006",
       "reviewCount": 7,
-      "median_e2e_ms": 119024106,
-      "p90_e2e_ms": 119024106,
+      "median_e2e_ms": 122516106,
+      "p90_e2e_ms": 122516106,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -506,7 +506,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:tim-bano:https://www.timeout.com/london/theatre/a-chorus-line-1-review",
-          "e2e_ms": 119024106,
+          "e2e_ms": 122516106,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -514,8 +514,8 @@
     {
       "showId": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 119016915,
-      "p90_e2e_ms": 119016915,
+      "median_e2e_ms": 122508915,
+      "p90_e2e_ms": 122508915,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -527,7 +527,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "stagebiz:jacquelyn-claire:http://stagebiz.com/entangled-at-jeffrey-and-paula-gural-theatre-a-r-t-new-york-theatres/",
-          "e2e_ms": 119016915,
+          "e2e_ms": 122508915,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -535,8 +535,8 @@
     {
       "showId": "every-brilliant-thing-2026",
       "reviewCount": 30,
-      "median_e2e_ms": 119016653,
-      "p90_e2e_ms": 119016653,
+      "median_e2e_ms": 122508653,
+      "p90_e2e_ms": 122508653,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -548,7 +548,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout:adam-feldman:https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
-          "e2e_ms": 119016653,
+          "e2e_ms": 122508653,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -556,8 +556,8 @@
     {
       "showId": "faith-healer-2006",
       "reviewCount": 4,
-      "median_e2e_ms": 119016615,
-      "p90_e2e_ms": 119016615,
+      "median_e2e_ms": 122508615,
+      "p90_e2e_ms": 122508615,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -569,7 +569,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/faith-healer-2-review",
-          "e2e_ms": 119016615,
+          "e2e_ms": 122508615,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -577,8 +577,8 @@
     {
       "showId": "hadestown-2019",
       "reviewCount": 47,
-      "median_e2e_ms": 119005071,
-      "p90_e2e_ms": 119005071,
+      "median_e2e_ms": 122497071,
+      "p90_e2e_ms": 122497071,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -590,7 +590,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "dc-metro-theater-arts:deb-miller:https://dcmetrotheaterarts.com/2019/04/22/review-hadestown-at-the-walter-kerr-theatre/",
-          "e2e_ms": 119005071,
+          "e2e_ms": 122497071,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -598,8 +598,8 @@
     {
       "showId": "how-to-succeed-in-business-without-really-trying-2011",
       "reviewCount": 20,
-      "median_e2e_ms": 119002159,
-      "p90_e2e_ms": 119002159,
+      "median_e2e_ms": 122494159,
+      "p90_e2e_ms": 122494159,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -611,7 +611,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:alice-saville:https://www.timeout.com/london/theatre/how-to-succeed-in-business-without-really-trying-review",
-          "e2e_ms": 119002159,
+          "e2e_ms": 122494159,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -619,8 +619,8 @@
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
       "reviewCount": 5,
-      "median_e2e_ms": 118989294,
-      "p90_e2e_ms": 118989294,
+      "median_e2e_ms": 122481294,
+      "p90_e2e_ms": 122481294,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -632,7 +632,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/showstopper-the-improvised-musical",
-          "e2e_ms": 118989294,
+          "e2e_ms": 122481294,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -640,8 +640,8 @@
     {
       "showId": "spring-awakening-2015",
       "reviewCount": 42,
-      "median_e2e_ms": 118988293,
-      "p90_e2e_ms": 118988293,
+      "median_e2e_ms": 122480293,
+      "p90_e2e_ms": 122480293,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -653,7 +653,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "washington-times:mark-kennedy:http://www.washingtontimes.com/news/2015/sep/27/review-new-spring-awakening-opens-its-arms-to-all/",
-          "e2e_ms": 118988293,
+          "e2e_ms": 122480293,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -661,8 +661,8 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "reviewCount": 7,
-      "median_e2e_ms": 118983716,
-      "p90_e2e_ms": 118983716,
+      "median_e2e_ms": 122475716,
+      "p90_e2e_ms": 122475716,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -674,7 +674,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
-          "e2e_ms": 118983716,
+          "e2e_ms": 122475716,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -682,8 +682,8 @@
     {
       "showId": "the-lion-king-1997",
       "reviewCount": 29,
-      "median_e2e_ms": 118981812,
-      "p90_e2e_ms": 118981877,
+      "median_e2e_ms": 122473812,
+      "p90_e2e_ms": 122473877,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -695,17 +695,17 @@
       "slowest_reviews": [
         {
           "reviewKey": "jasonraize:frank-scheck:http://www.jasonraize.net/pr_tlk_spt112197.html",
-          "e2e_ms": 118981877,
+          "e2e_ms": 122473877,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-sommers:http://www.jasonraize.net/pr_tlk_njsl111497.html",
-          "e2e_ms": 118981812,
+          "e2e_ms": 122473812,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "jasonraize:michael-kuchwara:http://www.jasonraize.net/pr_tlk_ftu112397.html",
-          "e2e_ms": 118981749,
+          "e2e_ms": 122473749,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -713,8 +713,8 @@
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 118979150,
-      "p90_e2e_ms": 118979150,
+      "median_e2e_ms": 122471150,
+      "p90_e2e_ms": 122471150,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -726,7 +726,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "theater-life:lauren-yarger:http://theaterlife.com/the-peculiar-patriot-1-2/",
-          "e2e_ms": 118979150,
+          "e2e_ms": 122471150,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -794,8 +794,8 @@
     {
       "showId": "a-christmas-carol-the-musical-off-broadway-2026",
       "reviewCount": 3,
-      "median_e2e_ms": 96852746,
-      "p90_e2e_ms": 96852748,
+      "median_e2e_ms": 100344746,
+      "p90_e2e_ms": 100344748,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -807,17 +807,17 @@
       "slowest_reviews": [
         {
           "reviewKey": "stagebiz:db-frick:http://stagebiz.com/a-christmas-carol-at-the-players-theater/?fbclid=IwY2xjawHOkaBleHRuA2FlbQIxMQABHUew7pWzERAJavSSIkQYCsd1bq6kJffE8Rv-zw45IZZj340EQuAyVMyLdA_aem_7gQGGv_lz2sJ8Fmw4Ajtpw",
-          "e2e_ms": 96852748,
+          "e2e_ms": 100344748,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "nytimes:laurel-graeber:http://www.nytimes.com/2009/12/11/arts/11bkids.html?_r=0",
-          "e2e_ms": 96852746,
+          "e2e_ms": 100344746,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "theater-scene:darryl-reilly:http://www.theaterscene.net/musicals/a-christmas-carol-players-theatre/darryl-reilly/",
-          "e2e_ms": 96852745,
+          "e2e_ms": 100344745,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -825,8 +825,8 @@
     {
       "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 96830330,
-      "p90_e2e_ms": 96830330,
+      "median_e2e_ms": 100322330,
+      "p90_e2e_ms": 100322330,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -838,7 +838,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "theatermania:pete-hempstead:https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
-          "e2e_ms": 96830330,
+          "e2e_ms": 100322330,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -890,7 +890,7 @@
     },
     {
       "showId": "the-saviors-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1056,8 +1056,8 @@
     {
       "showId": "__test-createreviewfile-816",
       "reviewCount": 1,
-      "median_e2e_ms": 74016250,
-      "p90_e2e_ms": 74016250,
+      "median_e2e_ms": 77508250,
+      "p90_e2e_ms": 77508250,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1069,7 +1069,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "broadwayworld:some-critic:",
-          "e2e_ms": 74016250,
+          "e2e_ms": 77508250,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -1182,8 +1182,8 @@
     {
       "showId": "some-west-end-show-2026",
       "reviewCount": 2,
-      "median_e2e_ms": 54325905,
-      "p90_e2e_ms": 54325906,
+      "median_e2e_ms": 57817905,
+      "p90_e2e_ms": 57817906,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1195,12 +1195,12 @@
       "slowest_reviews": [
         {
           "reviewKey": "the-herald:some-critic:https://www.facebook.com/some/post",
-          "e2e_ms": 54325906,
+          "e2e_ms": 57817906,
           "stuck_at_stage": "review-first-seen"
         },
         {
           "reviewKey": "telegraph:some-critic:https://www.telegraph.co.uk/theatre/some-review/",
-          "e2e_ms": 54325903,
+          "e2e_ms": 57817903,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -1223,8 +1223,8 @@
     {
       "showId": "an-act-of-god-2016",
       "reviewCount": 3,
-      "median_e2e_ms": 52369546,
-      "p90_e2e_ms": 52369546,
+      "median_e2e_ms": 55861546,
+      "p90_e2e_ms": 55861546,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -1236,7 +1236,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "variety:marilyn-stasio:http://variety.com/2015/legit/reviews/broadway-review-jim-parsons-in-an-act-of-god-1201506483/",
-          "e2e_ms": 52369546,
+          "e2e_ms": 55861546,
           "stuck_at_stage": "review-first-seen"
         }
       ]
