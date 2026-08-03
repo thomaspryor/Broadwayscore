@@ -179,16 +179,13 @@ describe('NYT cookie-authenticated fetch (task #6)', () => {
     }
   });
 
-  test('no NYT cookies available → buildCookieHeaderForUrl returns null (baseline sanity)', () => {
-    const prevEnv = process.env.NYT_COOKIES;
-    delete process.env.NYT_COOKIES;
+  test('a domain with no cookie config → buildCookieHeaderForUrl returns null (baseline sanity)', () => {
+    // Deliberately NOT nytimes.com: this machine may have a real local
+    // data/cookies/nytimes.json (that's the whole point of task #6), so
+    // asserting "no cookies" there would be environment-dependent. An
+    // unmapped domain has no cookie source under any tier, in any environment.
     clearCache();
-    try {
-      const header = buildCookieHeaderForUrl('https://www.nytimes.com/2026/07/14/theater/example-review.html');
-      assert.equal(header, null);
-    } finally {
-      if (prevEnv !== undefined) process.env.NYT_COOKIES = prevEnv;
-      clearCache();
-    }
+    const header = buildCookieHeaderForUrl('https://www.some-outlet-not-in-cookie-domain-map.example/article');
+    assert.equal(header, null);
   });
 });
