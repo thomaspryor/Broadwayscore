@@ -259,9 +259,84 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   }
 
   const liveRefs = new Set(all.map(w => w.ref));
-  const vanished = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs });
-  if (!vanished.length) return;
+  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs });
+  if (!candidates.length) return;
 
+  // Task #883: a cmux restart renumbers every open workspace ref at once, so
+  // "not in the current listing" cannot by itself tell a renumbering apart
+  // from the owner closing every one of those tabs by hand in the same
+  // 5-minute tick (owner report 2026-08-03 — #853 was parked this way and
+  // needed --force). First defense: the SAME session is often still listed,
+  // just under a new ref — find it by title and remap instead of parking.
+  const claimedRefs = new Set();
+  const renumbered = [];
+  const unmatched = [];
+  for (const v of candidates) {
+    const match = dispatchLedger.findRenumberedWorkspace(v, all, claimedRefs);
+    if (match) { claimedRefs.add(match.ref); renumbered.push({ v, match }); }
+    else unmatched.push(v);
+  }
+
+  if (renumbered.length) {
+    console.log(`\nRenumbered (cmux restart, same session under a new ref) — remapping ${renumbered.length}, not parking:`);
+    for (const { v, match } of renumbered) {
+      console.log(`  ${v.workspaceRef} → ${match.ref}  task #${v.taskId} "${v.subject}"`);
+      if (dryRun) continue;
+      // Carry forward model/verifyCmd/verifyReason from the ORIGINAL launch
+      // (ship-check catch, 2026-08-03) — vanishedBreadcrumbs' candidate
+      // shape drops those fields, and without them the nightly acceptance
+      // recheck silently treats a remapped card as unverifiable.
+      const orig = dispatchLedger.launchByRef(v.workspaceRef, entries);
+      const [oldTerminal, newLaunch] = dispatchLedger.remapEntries({
+        taskId: v.taskId, subject: v.subject, oldRef: v.workspaceRef, newRef: match.ref,
+        notionId: v.notionId || null,
+        model: (orig && orig.model) || null,
+        verifyCmd: (orig && orig.verifyCmd) || null,
+        verifyReason: (orig && orig.verifyReason) || null,
+      });
+      // Old ref's terminal entry FIRST (see remapEntries' header comment for
+      // why order matters here, same as failedLaunchEntries above).
+      try { appendLedgerEntryFn(oldTerminal); appendLedgerEntryFn(newLaunch); }
+      catch (e) { console.error(`[bsc-prune] WARN remap write failed for ${v.workspaceRef}→${match.ref}: ${e.message}`); }
+    }
+  }
+
+  if (!unmatched.length) return;
+
+  // Second defense: even with no title hit (a mid-render surface at the
+  // exact sweep moment, a manual rename), a large fraction of currently-
+  // tracked launches vanishing in the SAME sweep is a renumbering event
+  // still stabilizing, never that many individual owner closes landing in
+  // one 5-minute tick. Ratio uses the ORIGINAL candidate count (not the
+  // post-remap remainder) — that's the true churn magnitude for this sweep.
+  const totalOpen = dispatchLedger.openWorkspaceLaunchCount(entries, { epochTs });
+  if (dispatchLedger.looksLikeRestart(candidates.length, totalOpen)) {
+    // Bounded hold (ship-check P0 catch, 2026-08-03): a GENUINE mass-close
+    // (the owner closes 3+ tabs in one pass, none renumbered) never shrinks
+    // this ratio on its own — without a cap this branch would withhold
+    // parking on every future sweep forever, regressing #578 for exactly
+    // the cards it exists to park. "sameIncident" (any overlap with the
+    // LAST hold's recorded refs) is what lets a fresh, unrelated restart
+    // start its own 15-min clock instead of inheriting a stale timestamp
+    // from an incident that resolved days ago; the hold entry is written
+    // only ONCE per incident (age is measured from first detection, not
+    // re-stamped every tick, or it would never expire).
+    const unmatchedRefs = unmatched.map(v => v.workspaceRef);
+    const hold = dispatchLedger.lastRestartHold(entries);
+    const sameIncident = !!(hold && Array.isArray(hold.refs) && hold.refs.some(r => unmatchedRefs.includes(r)));
+    const holdAgeMs = sameIncident && hold.ts ? Date.now() - Date.parse(hold.ts) : 0;
+    if (!sameIncident || holdAgeMs < dispatchLedger.RESTART_HOLD_MAX_MS) {
+      if (!sameIncident && !dryRun) {
+        try { appendLedgerEntryFn(dispatchLedger.restartHoldEntry(unmatchedRefs)); }
+        catch (e) { console.error(`[bsc-prune] WARN restart-hold write failed (non-fatal): ${e.message}`); }
+      }
+      console.log(`\n[vanished] ${candidates.length}/${totalOpen} tracked tab(s) vanished in one sweep — looks like a cmux restart, not ${candidates.length} individual closes. Holding off on parking ${unmatched.length} unmatched card(s) this tick (up to ${Math.round(dispatchLedger.RESTART_HOLD_MAX_MS / 60000)}min); will re-check next sweep.`);
+      return;
+    }
+    console.log(`\n[vanished] restart-hold window (${Math.round(holdAgeMs / 60000)}min) elapsed with no resolution — proceeding to park ${unmatched.length} card(s) despite the mass-vanish ratio (likely a genuine mass-close, not a restart).`);
+  }
+
+  const vanished = unmatched;
   console.log(`\nClosed by you — parking ${vanished.length} card(s) so nothing re-dispatches them:`);
   vanished.forEach(v => console.log(`  ${v.workspaceRef}  task #${v.taskId} "${v.subject}"`));
   if (dryRun) { console.log('  [dry-run] no ledger write, no Notion update'); return; }
