@@ -15,6 +15,9 @@ const require = createRequire(import.meta.url);
 const { isWithinTourLeg, hasDeclaredTourLegs } = require('../../scripts/lib/wrong-production-autoclear');
 const {
   tourLegMissingCorroboration,
+  tourLegMissingVenue,
+  tourLegMissingStartDate,
+  tourLegHasReversedRange,
   tourLegOverlapsPriorRun,
   validateShowTourLegs,
 } = require('../../scripts/lib/tour-legs-validation');
@@ -154,6 +157,47 @@ describe('tourLegOverlapsPriorRun', () => {
   });
 });
 
+describe('tourLegMissingVenue', () => {
+  it('true when venue is absent, empty, or whitespace', () => {
+    assert.strictEqual(tourLegMissingVenue({ startDate: '2026-01-10' }), true);
+    assert.strictEqual(tourLegMissingVenue({ startDate: '2026-01-10', venue: '' }), true);
+    assert.strictEqual(tourLegMissingVenue({ startDate: '2026-01-10', venue: '   ' }), true);
+    assert.strictEqual(tourLegMissingVenue(null), true);
+  });
+
+  it('false when a non-empty venue is present', () => {
+    assert.strictEqual(tourLegMissingVenue({ venue: 'Ahmanson Theatre' }), false);
+  });
+});
+
+describe('tourLegMissingStartDate', () => {
+  it('true when startDate is absent or unparseable', () => {
+    assert.strictEqual(tourLegMissingStartDate({ venue: 'X' }), true);
+    assert.strictEqual(tourLegMissingStartDate({ venue: 'X', startDate: 'not-a-date' }), true);
+    assert.strictEqual(tourLegMissingStartDate(null), true);
+  });
+
+  it('false when startDate parses', () => {
+    assert.strictEqual(tourLegMissingStartDate({ venue: 'X', startDate: '2026-01-10' }), false);
+  });
+});
+
+describe('tourLegHasReversedRange', () => {
+  it('true when endDate is before startDate', () => {
+    assert.strictEqual(
+      tourLegHasReversedRange({ startDate: '2026-02-14', endDate: '2026-01-10' }),
+      true
+    );
+  });
+
+  it('false when endDate is on/after startDate, or either date is missing/unparseable', () => {
+    assert.strictEqual(tourLegHasReversedRange({ startDate: '2026-01-10', endDate: '2026-02-14' }), false);
+    assert.strictEqual(tourLegHasReversedRange({ startDate: '2026-01-10', endDate: '2026-01-10' }), false);
+    assert.strictEqual(tourLegHasReversedRange({ startDate: '2026-01-10' }), false);
+    assert.strictEqual(tourLegHasReversedRange({ endDate: '2026-01-10' }), false);
+  });
+});
+
 describe('validateShowTourLegs', () => {
   it('clean show with no tourLegs returns no issues', () => {
     assert.deepStrictEqual(validateShowTourLegs({ id: 'x', tourLegs: [] }), []);
@@ -202,6 +246,36 @@ describe('validateShowTourLegs', () => {
     };
     const issues = validateShowTourLegs(show);
     assert.strictEqual(issues.length, 2);
+  });
+
+  it('rejects a leg missing venue', () => {
+    const show = {
+      id: 'some-tour-2026',
+      tourLegs: [{ startDate: '2026-01-10', endDate: '2026-02-14', corroborationUrl: 'https://playbill.com/a' }],
+    };
+    const issues = validateShowTourLegs(show);
+    assert.strictEqual(issues.length, 1);
+    assert.match(issues[0], /missing a venue/);
+  });
+
+  it('rejects a leg missing startDate', () => {
+    const show = {
+      id: 'some-tour-2026',
+      tourLegs: [{ venue: 'Ahmanson Theatre', corroborationUrl: 'https://playbill.com/a' }],
+    };
+    const issues = validateShowTourLegs(show);
+    assert.strictEqual(issues.length, 1);
+    assert.match(issues[0], /missing a parseable startDate/);
+  });
+
+  it('rejects a leg with a reversed date range', () => {
+    const show = {
+      id: 'some-tour-2026',
+      tourLegs: [{ venue: 'Ahmanson Theatre', startDate: '2026-02-14', endDate: '2026-01-10', corroborationUrl: 'https://playbill.com/a' }],
+    };
+    const issues = validateShowTourLegs(show);
+    assert.strictEqual(issues.length, 1);
+    assert.match(issues[0], /endDate before startDate/);
   });
 
   it('multiple legs are each validated independently', () => {

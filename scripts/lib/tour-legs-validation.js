@@ -3,9 +3,16 @@
  * protocol). Pure decision functions used by validate-data.js and unit-tested
  * directly (tests/unit/tour-legs-validation.test.mjs).
  *
- * Two rejections, per the plan (§S4):
+ * Rejections, per the plan (§S4) plus ship-check hardening (2026-08-03):
  *   1. A leg must carry a corroborationUrl — no leg declared from memory.
- *   2. A leg cannot overlap a declared priorRuns window at the SAME venue —
+ *   2. A leg must carry a venue and a parseable startDate — the tourLeg
+ *      exemption in wrong-production-autoclear.js is a no-op without both
+ *      (isWithinTourLeg skips any leg missing a startDate), so a leg missing
+ *      either field is corroborated-but-useless and must be caught here
+ *      rather than silently passing validation while doing nothing.
+ *   3. A leg's endDate, when present, must not be before its startDate — a
+ *      reversed range is never satisfiable and silently disables the leg.
+ *   4. A leg cannot overlap a declared priorRuns window at the SAME venue —
  *      tourLegs describe stops of the CURRENT production; an overlapping
  *      window at the same venue means the data is describing two different
  *      things at once (a past distinct production AND a current tour leg,
@@ -67,6 +74,48 @@ function tourLegMissingCorroboration(leg) {
 }
 
 /**
+ * True when `leg` is missing a non-empty venue. Without one, the tourLeg
+ * exemption (isWithinTourLeg / tourLegOverlapsPriorRun) can never match —
+ * the leg would corroborate cleanly but do nothing.
+ *
+ * @param {{ venue?: string }} leg
+ * @returns {boolean}
+ */
+function tourLegMissingVenue(leg) {
+  return !leg || typeof leg.venue !== 'string' || leg.venue.trim().length === 0;
+}
+
+/**
+ * True when `leg` is missing a parseable startDate. Same rationale as
+ * tourLegMissingVenue — wrong-production-autoclear.js's isWithinTourLeg
+ * silently skips any leg without one.
+ *
+ * @param {{ startDate?: string }} leg
+ * @returns {boolean}
+ */
+function tourLegMissingStartDate(leg) {
+  if (!leg || !leg.startDate) return true;
+  const d = parseDate(leg.startDate);
+  return !d || isNaN(d.getTime());
+}
+
+/**
+ * True when `leg` declares an endDate that parses to a date strictly before
+ * its startDate. A reversed range is never satisfiable by any review date,
+ * so the leg silently grants no exemption at all.
+ *
+ * @param {{ startDate?: string, endDate?: string }} leg
+ * @returns {boolean}
+ */
+function tourLegHasReversedRange(leg) {
+  if (!leg || !leg.startDate || !leg.endDate) return false;
+  const start = parseDate(leg.startDate);
+  const end = parseDate(leg.endDate);
+  if (!start || isNaN(start.getTime()) || !end || isNaN(end.getTime())) return false;
+  return end.getTime() < start.getTime();
+}
+
+/**
  * True when `leg`'s date window overlaps any of `priorRuns` at the SAME venue
  * (case/whitespace-insensitive match). A leg or run missing a usable venue or
  * date window never overlaps (nothing to compare).
@@ -109,6 +158,15 @@ function validateShowTourLegs(show) {
     if (tourLegMissingCorroboration(leg)) {
       issues.push(`${label} is missing a corroborationUrl — tourLegs cannot be declared from memory`);
     }
+    if (tourLegMissingVenue(leg)) {
+      issues.push(`${label} is missing a venue — the tourLeg exemption never matches without one`);
+    }
+    if (tourLegMissingStartDate(leg)) {
+      issues.push(`${label} is missing a parseable startDate — the tourLeg exemption never matches without one`);
+    }
+    if (tourLegHasReversedRange(leg)) {
+      issues.push(`${label} has endDate before startDate — this range can never match any review date`);
+    }
     if (tourLegOverlapsPriorRun(leg, show.priorRuns)) {
       issues.push(`${label} overlaps a declared priorRuns window at the same venue — a venue stop can't be both a past distinct production and a current tour leg at the same time`);
     }
@@ -119,6 +177,9 @@ function validateShowTourLegs(show) {
 
 module.exports = {
   tourLegMissingCorroboration,
+  tourLegMissingVenue,
+  tourLegMissingStartDate,
+  tourLegHasReversedRange,
   tourLegOverlapsPriorRun,
   validateShowTourLegs,
 };

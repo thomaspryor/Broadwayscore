@@ -126,7 +126,7 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
-const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
@@ -4330,16 +4330,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   {
     let showOpeningDate = null;
     let showPriorRuns = null;
+    let showTourLegs = null;
     let showCategory = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
       showOpeningDate = showMeta?.openingDate || null;
       showPriorRuns = showMeta?.priorRuns || null;
+      showTourLegs = showMeta?.tourLegs || null;
       showCategory = showMeta?.category || null;
     } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
 
-    const inPriorRun = isWithinPriorRun(data.publishDate, showPriorRuns);
+    const inPriorRun = isWithinPriorRun(data.publishDate, showPriorRuns) || isWithinTourLeg(data.publishDate, showTourLegs);
     const anticip = inPriorRun
       ? { rejected: false }
       : isAnticipatoryPreviewPost(
