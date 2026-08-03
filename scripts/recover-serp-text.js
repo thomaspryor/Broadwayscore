@@ -38,7 +38,7 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
-const { discoverCorrectUrl } = require('./lib/url-discovery');
+const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl } = require('./lib/scraper');
 
@@ -158,6 +158,18 @@ function loadCandidates() {
   const showDirs = fs.readdirSync(CONFIG.reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory()).map(d => d.name);
 
+  // Which outletIds actually resolve to CONFIG.domain — used to vet urlless
+  // candidates below. Built from the canonical OUTLET_DOMAINS map (same one
+  // discoverCorrectUrl() reads) rather than string-matching the outletId
+  // against the domain: outletIds are frequently hyphenated in ways that
+  // don't literally contain the domain's slug (hollywood-reporter vs
+  // hollywoodreporter.com), and a bare substring match in the other
+  // direction produces false positives across unrelated outlets (boston.com
+  // matching boston-globe, boston-herald, edge-boston, ...).
+  const domainOutletIds = CONFIG.outlet ? null : new Set(
+    Object.keys(OUTLET_DOMAINS).filter(id => OUTLET_DOMAINS[id] === CONFIG.domain)
+  );
+
   for (const showDir of showDirs) {
     if (CONFIG.showFilter && showDir !== CONFIG.showFilter) continue;
     const showPath = path.join(CONFIG.reviewTextsDir, showDir);
@@ -184,12 +196,10 @@ function loadCandidates() {
         try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
         if (domain !== CONFIG.domain) { skippedWrongDomain++; continue; }
       } else {
-        // No url to check a domain against — fall back to outletId, since
-        // that's the same signal discoverCorrectUrl() will use to resolve
-        // OUTLET_DOMAINS. Guards against a --domain=telegraph.co.uk run
-        // accidentally picking up a urlless file from an unrelated outlet.
-        const domainSlug = CONFIG.domain.replace(/\.[a-z.]+$/, '').replace(/[^a-z0-9]/gi, '');
-        if (!(data.outletId || '').toLowerCase().includes(domainSlug)) { skippedWrongDomain++; continue; }
+        // No url to check a domain against — fall back to the outletId ->
+        // domain reverse lookup, since that's the exact signal
+        // discoverCorrectUrl() will use to resolve OUTLET_DOMAINS.
+        if (!domainOutletIds.has((data.outletId || '').toLowerCase())) { skippedWrongDomain++; continue; }
       }
 
       if (data.contentTier === 'complete') { skippedComplete++; continue; }
