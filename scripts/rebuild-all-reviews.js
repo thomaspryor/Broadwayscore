@@ -72,6 +72,7 @@ const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `rebuild-all-reviews.js — rebuild reviews.json from data/review-texts.
@@ -1882,6 +1883,20 @@ showDirs.forEach(showId => {
   const showDir = path.join(reviewTextsDir, showId);
   const allJsonFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
 
+  // Memoized sibling loader for the duplicateOf cycle walk below — one read per
+  // basename per rebuild pass, shared across every file's circular-tiebreak check
+  // in this show dir (mirrors the audit script's per-showDir `load` cache).
+  const _dupCycleCache = {};
+  const _loadDupCycleSibling = (name) => {
+    if (Object.prototype.hasOwnProperty.call(_dupCycleCache, name)) return _dupCycleCache[name];
+    try {
+      _dupCycleCache[name] = JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8'));
+    } catch {
+      _dupCycleCache[name] = null;
+    }
+    return _dupCycleCache[name];
+  };
+
   // Pre-read sort metadata once per file (avoids O(N log N) repeated reads in comparator)
   const sortMeta = new Map();
   for (const f of allJsonFiles) {
@@ -2075,6 +2090,21 @@ showDirs.forEach(showId => {
         let refExcluded = false;
         let isCircular = false;
         let circularSameText = false;
+        // N-node cycle detection (Notion #967, write-time cousin of #941): the
+        // isCircular check below only looks ONE hop back (refData.duplicateOf
+        // === file). A longer chain — A->B->C->A — never finds a terminal
+        // non-duplicate node this way, so EVERY member fell through the
+        // `!refAlsoDupe && !refExcluded` skip and ALL of them landed in
+        // reviews.json as same-URL duplicates (the washpost 3-cycle:
+        // andor-brodeur -> justin-davidson -> michael-andor-brodeur ->
+        // andor-brodeur, caught only by the post-hoc
+        // audit-duplicate-of-url-mismatch.js, never here). These stay separate
+        // from isCircular/circularSameText (kept exactly as before) so the
+        // pre-existing 2-node tiebreak below is untouched; nCycle* only fires
+        // when the 1-hop check misses.
+        let nCycleFound = false;
+        let nCycleSameText = false;
+        let nCycleExcludeFile = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
@@ -2086,6 +2116,21 @@ showDirs.forEach(showId => {
             const a = computeContentFingerprint(data.fullText);
             const b = computeContentFingerprint(refData.fullText);
             circularSameText = !!(a && b && a === b);
+          }
+          // Walk with the same shared helper the write-time guard and the
+          // audit use, so all three call sites agree on what counts as a cycle.
+          if (!isCircular) {
+            const walk = findDuplicateOfCycle(file, _loadDupCycleSibling, allJsonFiles.length);
+            if (walk.cycleFound) {
+              nCycleFound = true;
+              // chain's last entry duplicates an earlier one (the loop-closing
+              // hop) — drop it so `members` lists each cycle participant once.
+              const members = walk.chain.slice(0, -1);
+              const loadForTiebreak = (m) => (m === file ? data : _loadDupCycleSibling(m));
+              const { sameText, survivor } = resolveCycleTiebreak(members, loadForTiebreak, computeContentFingerprint);
+              nCycleSameText = sameText;
+              nCycleExcludeFile = file !== survivor;
+            }
           }
           // Check if reference would be excluded by later guards
           refExcluded = !isIncludableForRebuild(refData, showById[showId]);
@@ -2115,7 +2160,12 @@ showDirs.forEach(showId => {
         // both files would be double-counted. Exclude the lexicographically-greater filename;
         // the other side keeps itself. Only applied when content fingerprints match —
         // otherwise duplicateOf is wrongly set and we keep both to avoid regressing real reviews.
-        if (isCircular && circularSameText && !refExcluded && file > data.duplicateOf) {
+        // The nCycle* branch is the N-node generalization (3+ members): same
+        // "only tiebreak on true duplicates, keep exactly one" rule, extended
+        // from a pair to the full cycle via the lexicographic-minimum survivor.
+        const oneHopTiebreakExclude = isCircular && circularSameText && !refExcluded && file > data.duplicateOf;
+        const nHopTiebreakExclude = nCycleFound && nCycleSameText && !refExcluded && nCycleExcludeFile;
+        if (oneHopTiebreakExclude || nHopTiebreakExclude) {
           logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
           stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
           return;
