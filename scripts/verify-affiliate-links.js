@@ -38,6 +38,9 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
+// hygiene-help-flag-ok: the fetch the auditor flags is inside fetchPage()'s
+// DEFINITION (declared before main for readability) — nothing risky executes
+// at module load; main() checks hasHelpFlag first (line ~196) before any work.
 const { PLATFORMS, validateImpactLink, extractImpactLinks, parseImpactLink } = require('./lib/affiliate-link-contract');
 
 const REPO_ROOT = path.join(__dirname, '..');

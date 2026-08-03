@@ -26,6 +26,20 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv)) {
+  console.log(`fix-plays-international-bylines.js — repair Plays International critic attributions.
+
+Usage:
+  node scripts/fix-plays-international-bylines.js           dry run (report only)
+  node scripts/fix-plays-international-bylines.js --apply   write corrections
+  node scripts/fix-plays-international-bylines.js --fetch   also fetch og:description for text-less files
+
+Run from the repo root that owns the canonical data/review-texts store.`);
+  process.exit(0);
+}
+
 const { extractPlaysInternationalByline } = require('./lib/byline-from-text');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
