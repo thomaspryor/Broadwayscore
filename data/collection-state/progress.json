@@ -15,7 +15,12 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
-    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json"
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -101,7 +106,52 @@
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
-    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json",
+    "medea-off-broadway-2026/times-uk--quentin-letts.json",
+    "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
+    "king-of-the-yees-off-broadway-2026/theatermania--jonas-schwartz.json",
+    "the-unbelievers-off-broadway-2026/timeout--andrzej-lukowski.json",
+    "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
+    "the-unbelievers-off-broadway-2026/standard--nick-curtis.json",
+    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "magic-mike-live-new-york-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "magic-mike-live-new-york-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "magic-mike-live-new-york-off-broadway-2026/nysr--david-finkle.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "macbeth-off-broadway-2026/abc-news--peter-travers.json",
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "macbeth-off-broadway-2026/newsday--linda-winer.json",
+    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
+    "macbeth-off-broadway-2026/amny--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
+    "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
+    "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
+    "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
+    "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "othello-off-broadway-2026/wsj--unknown.json",
+    "othello-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,21 +168,49 @@
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "amaze-off-broadway-2026/timeout--adam-feldman.json"
+      "amaze-off-broadway-2026/timeout--adam-feldman.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
       "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json"
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/othello-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/othello-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-08-03T10:59:00.526Z",
-  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-  "log": []
+  "lastProcessed": "othello-off-broadway-2026/broadwayworld--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-03T11:08:51.215Z",
+      "event": "bb-session",
+      "session": "e1a0a43e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-03T11:11:20.308Z",
+      "event": "bb-session",
+      "session": "af6007b9",
+      "url": "https://www.wsj.com/articles/othello-review-shakespeares-battle-scarred-hero-com"
+    },
+    {
+      "t": "2026-08-03T11:11:21.068Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
