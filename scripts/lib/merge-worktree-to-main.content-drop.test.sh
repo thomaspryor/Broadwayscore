@@ -109,6 +109,11 @@ LIVE="$(git -C "$TMP/clean/origin.git" show main:target.txt 2>/dev/null)"
 [ "$LIVE" = "THE FIX LINE" ] && ok "origin really holds the fix" || bad "origin content wrong: '$LIVE'"
 
 echo "── case 2: concurrent writer reverts our lines (must FAIL loudly) ──"
+# NOT timing-dependent, despite looking like a race: git runs post-receive
+# server-side and the client's `git push` does not return until the hook has
+# finished, so the injected revert is guaranteed to be on origin BEFORE the
+# merge script reaches its verify step. And if it ever were not, the
+# non-vacuity assertions below fail loudly rather than passing quietly.
 setup drop
 # Hook the injection into the window between the script's push and its verify.
 # GIT_SSH_COMMAND etc. aren't available here, so use the reference-transaction
