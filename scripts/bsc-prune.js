@@ -398,17 +398,6 @@ function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
   return (archived && archived.status) || null;
 }
 
-// LATEST launch for a ref — cmux recycles workspace refs across restarts, so
-// dispatchLedger.launchByRef's first-match semantics can attribute a recycled
-// ref to a long-gone task and close/redispatch the wrong one (Codex catch).
-function latestLaunchByRef(workspaceRef, entries) {
-  for (let i = entries.length - 1; i >= 0; i--) {
-    const e = entries[i];
-    if (e.event === 'launch' && e.workspaceRef === workspaceRef) return e;
-  }
-  return null;
-}
-
 function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep }) {
   if (process.env.ZOMBIE_TAB_SWEEP_DISABLED === '1') return;
 
@@ -418,10 +407,13 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
 
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
+  // dispatchLedger.launchByRef is last-match (card #960) — cmux recycles
+  // workspace refs across restarts, so first-match could close/redispatch
+  // the wrong, long-gone task's tab.
   const { corpses, revive, report } = classifyZombieTabs({
     deadAutoTabs,
     liveWorkspaces: all.filter(w => !idleRefs.has(w.ref)),
-    launchByRef: (ref) => latestLaunchByRef(ref, entries),
+    launchByRef: (ref) => dispatchLedger.launchByRef(ref, entries),
     taskStatusById: taskStatusByIdFn,
     hasAutoDispatchMarker,
   });
@@ -592,7 +584,11 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
       // Carry forward model/verifyCmd/verifyReason from the ORIGINAL launch
       // (ship-check catch, 2026-08-03) — vanishedBreadcrumbs' candidate
       // shape drops those fields, and without them the nightly acceptance
-      // recheck silently treats a remapped card as unverifiable.
+      // recheck silently treats a remapped card as unverifiable. Card #960:
+      // launchByRef is last-match, and `entries` hasn't gained a newer launch
+      // for this ref since vanishedBreadcrumbs computed `v` (also last-match)
+      // above, so this resolves to the SAME launch record `v` came from —
+      // not some earlier, recycled-ref occupant of v.workspaceRef.
       const orig = dispatchLedger.launchByRef(v.workspaceRef, entries);
       const [oldTerminal, newLaunch] = dispatchLedger.remapEntries({
         taskId: v.taskId, subject: v.subject, oldRef: v.workspaceRef, newRef: match.ref,
@@ -704,4 +700,4 @@ function parkCard(vanished) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById, latestLaunchByRef };
+module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById };
