@@ -68,9 +68,12 @@ function isBotQueryRow(row) {
 /**
  * Summarise the bot-shaped share of a set of GSC query rows.
  *
+ * `organicImpressions` is the important one: it is the impressions we can SEE
+ * that a human plausibly generated. Comparing it week over week is what
+ * distinguishes "a scraper left" from "we lost rankings", without extrapolating
+ * to the queries Google refuses to name.
+ *
  * @param {Array<object>} rows GSC searchAnalytics rows dimensioned by query
- * @returns {{botImpressions: number, botQueries: number, totalImpressions: number,
- *            totalQueries: number, botShare: number, examples: string[]}}
  */
 function summarizeBotQueries(rows) {
   const list = Array.isArray(rows) ? rows : [];
@@ -93,57 +96,90 @@ function summarizeBotQueries(rows) {
     botImpressions,
     botQueries,
     totalImpressions,
+    organicImpressions: totalImpressions - botImpressions,
     totalQueries: list.length,
     botShare: totalImpressions > 0 ? botImpressions / totalImpressions : 0,
     examples,
   };
 }
 
-// Below this, the named-query sample is too thin to extrapolate from and we fall
-// back to treating the raw observed delta as-is rather than amplifying noise.
-const MIN_QUERY_COVERAGE = 0.05;
+// How far organic (human-shaped) impressions may slip and still be called
+// "flat". In the 2026-07 event organic named impressions GREW 18%; a genuine
+// ranking loss drags them down hard, which is exactly what must NOT be
+// suppressed.
+const ORGANIC_FLAT_TOLERANCE = 0.05;
+
+// The bot retreat must be a material share of the decline it claims to explain.
+// Without this, `botDropExplains` is easiest to satisfy when the decline is
+// TINY — 200 departing bot impressions could "explain" a 1,000-impression dip
+// and, because the same flag also gates the position warning, silence an 8-spot
+// ranking collapse alongside it (ship-check reviewer scenario S1b).
+const MIN_BOT_SHARE_OF_DECLINE = 0.2;
+
+// ...and it must be more than noise in absolute terms. The share test alone is
+// scale-free, so on a 1,000-impression dip a 200-impression bot flicker clears
+// it — and because the same flag gates the position warning, that flicker would
+// silence an 8-spot ranking collapse. The real event moved 11,894.
+const MIN_BOT_ABSOLUTE_DECLINE = 1000;
 
 /**
- * Does a fall in bot-shaped impressions account for (most of) a site-wide
- * impressions decline? Used to suppress the impressions_drop alert.
+ * Is a site-wide impressions decline explained by bot-query churn rather than a
+ * ranking loss?
  *
- * The delta has to be scaled before it can be compared. GSC's `query` dimension
- * only NAMES about 30% of a site's impressions — Google anonymises rare queries,
- * and machine-generated queries are rare almost by construction — so the bot
- * impressions we can see are a fraction of the ones that actually happened. In
- * the 2026-07 event the visible bot decline was 11,894 against a site-wide
- * decline of 40,462 (29%), which looks unconvincing until you divide by the
- * 30.3% query coverage in the same window: ~39,254, i.e. essentially all of it.
+ * DESIGN NOTE (rewritten after ship-check, task #530). The first version scaled
+ * the observed bot delta by 1/coverage, where coverage was namedImpressions /
+ * totalImpressions, to "correct" for the ~70% of impressions Google anonymises.
+ * That was unsound and adversarial review produced three concrete scenarios
+ * where it silenced a real catastrophe: the numerator was a CROSS-window delta
+ * while the denominator came from ONE window, both were computed from a
+ * possibly-truncated row set, and a 0.05 coverage floor permitted 20x
+ * amplification — enough for a 2K bot blip to "explain" an 80K organic collapse.
  *
- * Scaling by 1/coverage assumes bot queries are anonymised at the same rate as
- * everything else. They are almost certainly anonymised MORE (they are rarer),
- * so this is the conservative direction.
+ * This version extrapolates nothing. It asks two questions, both answerable
+ * entirely within the sample we can actually see:
+ *
+ *   1. Did bot-shaped impressions actually fall?
+ *   2. Did ORGANIC impressions hold up?
+ *
+ * If human-shaped queries did not lose ground, the decline did not come from
+ * losing rankings, whatever the anonymised tail did. Every suppression scenario
+ * the reviewers constructed involved real organic loss, and all of them now fail
+ * question 2.
  *
  * @param {object} args
- * @param {number} args.impressionsDelta    site-wide impressions LOST (positive when down)
- * @param {number} args.botImpressionsDelta bot-shaped impressions LOST (positive when down)
- * @param {number} [args.namedImpressions]  impressions the query dimension named
- * @param {number} [args.totalImpressions]  site-wide impressions in the same window
- * @param {number} [args.threshold]         share of the decline the bot fall must cover
+ * @param {number} args.botImpressionsDelta      bot impressions LOST (positive when down)
+ * @param {number} args.organicImpressionsDelta  organic impressions LOST (positive when down)
+ * @param {number} args.priorOrganicImpressions  organic impressions in the prior window
+ * @param {number} args.impressionsDelta         site-wide impressions LOST — a
+ *                                    materiality denominator only; it is never
+ *                                    used to scale or extrapolate anything
+ * @param {boolean} [args.truncated]  true if either row set hit the API row cap,
+ *                                    which makes both figures artefacts of
+ *                                    WHICH rows came back rather than of traffic
  * @returns {boolean}
  */
 function botDropExplainsDecline({
-  impressionsDelta,
   botImpressionsDelta,
-  namedImpressions,
-  totalImpressions,
-  threshold = 0.5,
+  organicImpressionsDelta,
+  priorOrganicImpressions,
+  impressionsDelta,
+  truncated = false,
 }) {
-  if (!(impressionsDelta > 0)) return false;
+  // A truncated census measures the row cap, not the traffic. Never suppress on it.
+  if (truncated) return false;
+  // No measurable bot retreat -> nothing for it to explain.
   if (!(botImpressionsDelta > 0)) return false;
+  // No organic baseline -> we cannot show organic held, so we do not claim it.
+  if (!(priorOrganicImpressions > 0)) return false;
+  // Nothing actually declined -> there is no decline to attribute.
+  if (!(impressionsDelta > 0)) return false;
+  // The bot retreat has to be big enough to be the story — both relative to the
+  // decline and in absolute terms.
+  if (botImpressionsDelta < MIN_BOT_ABSOLUTE_DECLINE) return false;
+  if (botImpressionsDelta < impressionsDelta * MIN_BOT_SHARE_OF_DECLINE) return false;
 
-  let coverage = 1;
-  if (namedImpressions > 0 && totalImpressions > 0) {
-    coverage = Math.min(1, Math.max(MIN_QUERY_COVERAGE, namedImpressions / totalImpressions));
-  }
-  const scaledBotDelta = botImpressionsDelta / coverage;
-
-  return scaledBotDelta >= impressionsDelta * threshold;
+  const organicLossShare = organicImpressionsDelta / priorOrganicImpressions;
+  return organicLossShare <= ORGANIC_FLAT_TOLERANCE;
 }
 
 module.exports = {
@@ -152,4 +188,7 @@ module.exports = {
   summarizeBotQueries,
   botDropExplainsDecline,
   quotedPhraseCount,
+  ORGANIC_FLAT_TOLERANCE,
+  MIN_BOT_SHARE_OF_DECLINE,
+  MIN_BOT_ABSOLUTE_DECLINE,
 };
