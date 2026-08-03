@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-03T03:41:15.812Z",
+  "generatedAt": "2026-08-03T12:11:45.917Z",
   "verdict": "blind",
   "reason": "only 0 prior run(s) on record (need 2) — no baseline to judge against yet",
   "regressions": [],
@@ -7,91 +7,81 @@
   "trendEntries": 1,
   "latest": {
     "date": "2026-08-03",
-    "generatedAt": "2026-08-03T03:41:15.812Z",
-    "naivePages": 3,
-    "shows": 10,
+    "generatedAt": "2026-08-03T12:11:45.917Z",
+    "naivePages": 2,
+    "shows": 5,
     "excluded": {},
-    "truthUrls": 234,
-    "onDiskUrls": 151,
-    "newFromNaive": 65,
+    "truthUrls": 81,
+    "onDiskUrls": 63,
+    "newFromNaive": 13,
     "families": {
-      "naive": 0.551,
-      "onDisk": 0.645,
-      "scoped": 0.282
+      "naive": 0.494,
+      "onDisk": 0.778,
+      "scoped": 0.407
     },
     "arms": {
-      "naive-p0": 0.201,
-      "naive-p1": 0.205,
-      "naive-p2": 0.175,
-      "onDisk": 0.645,
-      "scoped-q0": 0.214,
-      "scoped-q1": 0.141,
-      "scoped-q2": 0.043
+      "naive-p0": 0.247,
+      "naive-p1": 0.272,
+      "onDisk": 0.778,
+      "scoped-q0": 0.296,
+      "scoped-q1": 0.259
     },
+    "combinedRecall": 0.84,
     "familyYield": {
-      "naive": 12.9,
-      "onDisk": 15.1,
+      "naive": 8,
+      "onDisk": 12.6,
       "scoped": 6.6
     },
     "armYield": {
-      "naive-p0": 4.7,
-      "naive-p1": 4.8,
-      "naive-p2": 4.1,
-      "onDisk": 15.1,
-      "scoped-q0": 5,
-      "scoped-q1": 3.3,
-      "scoped-q2": 1
+      "naive-p0": 4,
+      "naive-p1": 4.4,
+      "onDisk": 12.6,
+      "scoped-q0": 4.8,
+      "scoped-q1": 4.2
     },
     "armsFailed": {
       "naive-p0": 0,
       "naive-p1": 0,
-      "naive-p2": 0,
       "onDisk": 0,
       "scoped-q0": 0,
-      "scoped-q1": 0,
-      "scoped-q2": 0
+      "scoped-q1": 0
     },
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 3,
-        "truthUrls": 40,
+        "shows": 1,
+        "truthUrls": 7,
         "families": {
-          "naive": 0.55,
-          "onDisk": 0.6,
-          "scoped": 0.275
+          "naive": 0.714,
+          "onDisk": 0,
+          "scoped": 0.286
         }
       },
       "off-west-end": {
-        "shows": 5,
-        "truthUrls": 145,
+        "shows": 2,
+        "truthUrls": 25,
         "families": {
-          "naive": 0.545,
-          "onDisk": 0.614,
-          "scoped": 0.255
+          "naive": 0.64,
+          "onDisk": 0.88,
+          "scoped": 0.48
         }
       },
       "west-end": {
         "shows": 2,
         "truthUrls": 49,
         "families": {
-          "naive": 0.571,
-          "onDisk": 0.776,
-          "scoped": 0.367
+          "naive": 0.388,
+          "onDisk": 0.837,
+          "scoped": 0.388
         }
       }
     },
     "sampleIds": [
+      "dinosaur-world-live-off-west-end-2026",
       "space-dogs-off-west-end-2026",
       "the-vessel-off-broadway-2026",
       "tao-of-glass-west-end-2026",
-      "brainiac-live-west-end-2026",
-      "the-importance-of-being-oscar-off-west-end-2026",
-      "dog-man-the-musical-west-end-2026",
-      "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "the-car-man-west-end-2026",
-      "the-enormous-crocodile-west-end-2026",
-      "cat-cohen-broad-strokes-off-broadway-2026"
+      "brainiac-live-west-end-2026"
     ]
   }
 }
