@@ -234,11 +234,11 @@
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-03T22:02:16.826Z",
+      "lastSeen": "2026-08-03T23:19:33.424Z",
       "lastNotifiedAt": "2026-08-03T12:09:34.340Z",
       "notifyCount": 6,
       "cardId": null,
-      "silentRefires": 21
+      "silentRefires": 23
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -373,6 +373,17 @@
       "lastNotifiedAt": "2026-08-03T15:53:49.106Z",
       "notifyCount": 1,
       "cardId": "3b1637c5-416f-81f5-8f9e-e020fe179921"
+    },
+    "review-gap:blast-radius-refused": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Review-gap audit refused to write — 16.7% of shows changed coverage state",
+      "firstSeen": "2026-08-03T23:19:26.609Z",
+      "lastSeen": "2026-08-03T23:19:26.609Z",
+      "lastNotifiedAt": "2026-08-03T23:19:26.609Z",
+      "notifyCount": 1,
+      "cardId": null
     }
   }
 }
