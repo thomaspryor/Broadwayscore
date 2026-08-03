@@ -105,6 +105,16 @@ if echo "$OUT" | grep -q "content-survival check"; then
 else
   bad "content-survival check never ran — the test would be vacuous"; echo "$OUT" | tail -20
 fi
+# "ran" is not "compared something". The first production run of this check
+# printed "OK — no modified files to check" on a 5-file merge, because the base
+# was a merge-base recomputed AFTER the branch had already become an ancestor of
+# origin. A guard that compares nothing must never read as a guard that passed,
+# so assert a real file was actually compared.
+if echo "$OUT" | grep -qE "confirmed surviving"; then
+  ok "check compared a real file (not the vacuous 'no modified files' path)"
+else
+  bad "check ran but compared NOTHING — vacuous-base regression"; echo "$OUT" | grep -A2 "content-survival"
+fi
 LIVE="$(git -C "$TMP/clean/origin.git" show main:target.txt 2>/dev/null)"
 [ "$LIVE" = "THE FIX LINE" ] && ok "origin really holds the fix" || bad "origin content wrong: '$LIVE'"
 
