@@ -452,6 +452,13 @@ on:
       - 'scripts/lib/push-content-survival.js'
       - 'scripts/lib/push-content-survival.test.mjs'
       - 'scripts/lib/push-with-retry.content-drop.test.sh'
+      # Card 3b1637c5: merge-worktree-to-main.sh verified file EXISTENCE, not
+      # content, so a concurrent writer that reverted our lines (leaving the
+      # path in place) passed every check and the script reported success —
+      # reproduced twice on task #684's T12 fix. Path-listed so a solo edit to
+      # the merge script or its fault-injection test triggers CI.
+      - 'scripts/merge-worktree-to-main.sh'
+      - 'scripts/lib/merge-worktree-to-main.content-drop.test.sh'
       # Task #819: merge-worktree-to-main.sh checkout-fail regression guard —
       # proves die() actually terminates the process (non-zero exit, no
       # leaked stash) on both the "stash succeeded, checkout still blocked"
@@ -2495,6 +2502,22 @@ jobs:
         # scripts/lib/push-content-survival.test.mjs run above.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.content-drop.test.sh
+
+      - name: Run merge-worktree-to-main content-drop test (bash integration)
+        # Notion card 3b1637c5416f81b4a1e9d8be7786445f. The merge script's
+        # per-file verify was `git cat-file -e origin/main:$f` — EXISTENCE
+        # only. A concurrent session that reverted our lines while leaving the
+        # path in place satisfied every check it made (our merge commit really
+        # was an ancestor of origin's tip; the file really did exist), so it
+        # printed "✓" and exited 0 with the pushed content already gone. Task
+        # #684's T12 fix was lost that way twice inside 24h. Fault-injects the
+        # revert from a second clone via a one-shot post-receive hook and
+        # asserts three things the pre-fix script fails: the check actually
+        # runs, a reverted push exits non-zero and names the revert, and the
+        # PUSH_SKIP_CONTENT_SURVIVAL_CHECK kill switch still suppresses it.
+        # Verified 3/9 failing against the pre-fix script, 9/9 after.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.content-drop.test.sh
 
       - name: Run merge-worktree-to-main checkout-fail regression test (task #819)
         # Notion card 3b0637c5416f819fb6f8d4565acc7760: "merge-worktree-to-main.sh
