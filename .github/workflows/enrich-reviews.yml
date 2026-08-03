@@ -17,10 +17,12 @@
 name: Enrich Reviews
 
 concurrency:
-  # Per-run group so two enrichment runs can queue rather than cancel each other.
-  # Same pattern as rebuild-fast.yml — cancellation here would just lose progress
-  # on long-running scraper passes (backfill-unknown-critics) for no gain.
-  # See memory/feedback_gha_concurrency_queue_limit.md.
+  # per-run group intended: NOT queueing (run_id is unique per run, so this
+  # never serializes) — the goal is letting concurrent runs proceed rather
+  # than a shared group's queue-depth-1 cancelling one and losing progress on
+  # long-running scraper passes (backfill-unknown-critics). Same pattern as
+  # rebuild-fast.yml. See memory/feedback_gha_concurrency_queue_limit.md.
+  # (task #922 audit, 2026-08-03)
   group: enrich-reviews-${{ github.run_id }}
   cancel-in-progress: false
 

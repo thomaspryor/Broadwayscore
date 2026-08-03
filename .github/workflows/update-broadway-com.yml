@@ -33,10 +33,11 @@ on:
         default: false
 
 concurrency:
-  # Per-run concurrency prevents the orchestrator's back-to-back dispatches from
+  # per-run group intended: prevents the orchestrator's back-to-back dispatches from
   # dropping each other at GitHub's 1-pending-queue limit. This workflow is
   # dispatched in a loop (once per show) during opening-night audience refresh,
   # so a shared group would lose the middle dispatches. See Cats 2026-04-07 postmortem.
+  # (task #922 audit, 2026-08-03)
   group: broadway-com-${{ github.run_id }}
   cancel-in-progress: false
 

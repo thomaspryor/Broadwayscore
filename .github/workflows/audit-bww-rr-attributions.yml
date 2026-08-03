@@ -28,6 +28,10 @@ permissions:
   contents: read
 
 concurrency:
+  # per-run group intended: single weekly cron + rare manual dispatch, no
+  # external dispatcher can stack triggers. This is a read-mostly audit that
+  # writes an advisory report (task #922 audit, 2026-08-03) — even a rare
+  # overlap just double-writes the same conclusions via push-with-retry.sh.
   group: audit-bww-rr-attributions-${{ github.run_id }}
   cancel-in-progress: false
 

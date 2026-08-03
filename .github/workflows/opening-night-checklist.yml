@@ -24,7 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
-      # Per-run group: adjacent cron invocations don't cancel each other
+      # per-run group intended: adjacent hourly cron invocations don't cancel
+      # each other at GitHub's queue-depth-1 limit. This does NOT serialize —
+      # duplicate-alert protection lives at the application layer instead
+      # (opening-night-sla-state.json + owner-alert-router cooldown/dedup in
+      # scripts/lib/opening-night-sla.js), so an overlapping run can't double-page
+      # (task #922 audit, 2026-08-03).
       group: opening-night-checklist-${{ github.run_id }}
       cancel-in-progress: false
 
