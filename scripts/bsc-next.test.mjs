@@ -378,6 +378,16 @@ function runSuccessionHarness() {
     // data/audit/alert-digest-queue.json (it did, before this seam existed
     // — see pageSuccessionCapExceeded's injection comment in bsc-next.js).
     pageSuccessionCapExceeded: (task, depth) => paged.push({ task, depth }),
+    // Injected (CI-red catch, 2026-08-03): without this, runSuccessionDispatch
+    // falls back to the REAL file-based lock at data/audit/succession-locks/
+    // using this test's real taskId — on this repo's shared/self-hosted
+    // runner, a concurrent CI job for another push can hold that exact lock
+    // path at the exact moment this test's dispatch 1 tries to acquire it,
+    // making the test flake red for a reason that has nothing to do with the
+    // depth-cap logic it's actually verifying. An in-memory stub isolates
+    // this test from that filesystem race entirely.
+    acquireSuccessionLock: () => true,
+    releaseSuccessionLock: () => {},
   };
   const dispatchOnce = (task, args) => {
     process.exit = (code) => { exitCode = code; throw new Error('__EXIT__'); };
