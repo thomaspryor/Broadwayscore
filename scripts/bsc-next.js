@@ -137,6 +137,7 @@ const { evaluateVerifiability } = require('./lib/verify-gate.js');
 // dispatched session to remember the CLI exists.
 const { extractCiRedTarget } = require('./lib/ci-red-dispatch-heuristic.js');
 const { appendClaim } = require('./lib/ci-red-claims.js');
+const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
@@ -446,6 +447,29 @@ function main(argv = process.argv.slice(2), deps = {}) {
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
+
+  // Cross-task overlap check (task #917): findLiveWorkspaceForTask below only
+  // catches a SECOND dispatch of THIS SAME task id. It has no way to catch
+  // two DIFFERENT task ids whose notes describe the same underlying work —
+  // confirmed twice in one session's task list: #893/#902 both independently
+  // fixed the identical bug in scripts/audit-show-review-gap.js (found only
+  // at merge time via a git conflict), and #897/#911 are literally
+  // duplicate-titled cards dispatched separately. Runs before the dry-run
+  // bail below (so --dry-run previews it too) and against the task-mirror
+  // description only (no Notion fetch dependency — same truncated text every
+  // in_progress candidate is compared with). Non-blocking first cut — a
+  // shared scripts/ path or near-identical title is suggestive, not proof
+  // (two cards can legitimately touch the same file for unrelated reasons).
+  try {
+    const inProgressCards = tasks
+      .filter(t => t.status === 'in_progress' && String(t.id) !== String(task.id))
+      .map(t => ({ id: t.id, subject: t.subject, notes: t.description }));
+    const overlaps = findOverlappingCards({ id: task.id, subject: task.subject, notes: task.description }, inProgressCards);
+    overlaps.forEach(o => {
+      const why = o.reason === 'shared-file-path' ? `shares file(s) ${o.sharedPaths.join(', ')}` : 'has a near-identical title';
+      console.error(`[bsc-next] WARNING: task #${task.id} ${why} with in_progress task #${o.card.id} ("${o.card.subject}") — check it isn't already being worked before dispatching a duplicate.`);
+    });
+  } catch (e) { console.error(`[bsc-next] WARN overlap check failed (continuing): ${e.message}`); }
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
