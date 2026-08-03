@@ -24,7 +24,7 @@ const {
   SCOPE_INDEXING, SCOPE_WEBMASTERS, SITE_HOST, SITE_URL_GSC,
 } = require('./submit-google-indexing');
 const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
-const { summarizeBotQueries, botDropExplainsDecline } = require('./lib/seo-bot-query-signature');
+const { summarizeBotQueries, botDropExplainsDecline, isBotQueryRow } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
@@ -698,9 +698,19 @@ async function checkReviewIntentRankings(token) {
     return null;
   }
 
+  // Exclude bot-shaped zero-click queries before averaging. This is the metric
+  // memory/feedback_seo_site_avg_position_is_brand_skewed.md says to trust for
+  // ranking quality, precisely because the site-wide average is junk — so it is
+  // the one number that must not be quietly corrupted the way the site average
+  // was in 2026-07 (task #530). Today's scraper queries carry "show score", not
+  // "review", so nothing is filtered out yet; this keeps it that way if the next
+  // one uses review-intent phrasing.
+  const botRows = rows.filter(isBotQueryRow).length;
   const reviewRows = rows
     .filter(r => /\breviews?\b/i.test(r.keys[0]))
+    .filter(r => !isBotQueryRow(r))
     .map(r => ({ query: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position }));
+  if (botRows > 0) console.log(`  (excluded ${botRows} bot-shaped zero-click quer${botRows === 1 ? 'y' : 'ies'} from the corpus before filtering)`);
 
   if (reviewRows.length === 0) {
     console.log('  No review-intent queries found');
