@@ -4,7 +4,7 @@ import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
 import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
@@ -82,9 +82,9 @@ function PriceCell({ price, url, platform, color, bgColor, market }: { price: nu
   );
 
   if (url) {
-    const href = buildAffiliateUrl(ensureHttps(url)!, platform || '', 'discount-tickets').url;
+    const { url: href, isAffiliate } = buildAffiliateUrl(ensureHttps(url)!, platform || '', 'discount-tickets');
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className="hover:brightness-125 transition-all">
+      <a href={href} target="_blank" rel={affiliateRel(isAffiliate)} className="hover:brightness-125 transition-all">
         {badge}
       </a>
     );
@@ -135,7 +135,7 @@ function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMark
                 <a
                   href={buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -168,7 +168,7 @@ function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMark
                 <a
                   href={buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush').url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush').isAffiliate)}
                   className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >

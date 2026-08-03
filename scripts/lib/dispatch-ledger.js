@@ -103,8 +103,19 @@ function deadAttemptsForTask(taskId, entries) {
   return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
 }
 
+// LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
+// restarts/renumberings — a ref last launched onto task A months ago can be
+// re-issued onto task B today. First-match would attribute every consumer
+// (deadBreadcrumbs, pruneClosedEntry, bsc-status display, the no-payload
+// reaper, sweepVanished's remap) to the wrong, long-dead task, most
+// damagingly poisoning deadAttemptsForTask counts: a healthy task inherits a
+// stranger's death count while the actually-dying task's count stays clean.
 function launchByRef(workspaceRef, entries) {
-  return entries.find(e => e.event === 'launch' && e.workspaceRef === workspaceRef) || null;
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const e = entries[i];
+    if (e.event === 'launch' && e.workspaceRef === workspaceRef) return e;
+  }
+  return null;
 }
 
 // Cross-reference bsc-prune's idle (no live claude, un-✅-marked) workspaces
@@ -113,15 +124,22 @@ function launchByRef(workspaceRef, entries) {
 // bsc-next.js and (b) doesn't already have a recorded death. Idempotent
 // across repeated bsc-prune runs: a workspace only ever contributes one dead
 // breadcrumb, however many times the sweep re-scans it.
+//
+// Idempotency is scoped to the CURRENT launch, not the ref (card #960): a
+// ref-only alreadyDead set would let one stale 'dead' entry from an EARLIER,
+// recycled occupant of this ref permanently suppress every future breadcrumb
+// for it — the opposite failure from first-match, but just as poisonous,
+// since a genuinely dying later task would then never trip
+// deadAttemptsForTask at all.
 function deadBreadcrumbs(idleWorkspaces, entries) {
-  const alreadyDead = new Set(
-    entries.filter(e => e.event === 'dead').map(e => e.workspaceRef)
-  );
   const out = [];
   for (const w of idleWorkspaces) {
-    if (alreadyDead.has(w.ref)) continue;
     const launch = launchByRef(w.ref, entries);
     if (!launch) continue; // not a bsc-next auto-dispatch — not ours to journal
+    const alreadyDead = entries.some(e =>
+      e.event === 'dead' && e.workspaceRef === w.ref && (!e.ts || !launch.ts || e.ts >= launch.ts)
+    );
+    if (alreadyDead) continue;
     out.push({ event: 'dead', taskId: launch.taskId, subject: launch.subject, workspaceRef: w.ref, title: w.title });
   }
   return out;
@@ -198,10 +216,12 @@ function isWorkspaceRef(ref) {
   return typeof ref === 'string' && WORKSPACE_REF_RE.test(ref);
 }
 
-// Last entry per workspaceRef matching `pred`. Last-wins (not launchByRef's
-// first-wins) because cmux refs are only monotonic until someone reinstalls
-// it — after a counter reset, workspace:12 can belong to a 2026-07 task and a
-// 2026-09 one, and the recent launch is the one a sweep is reconciling.
+// Last entry per workspaceRef matching `pred`, restricted to workspace:N refs
+// (unlike launchByRef, which also matches headless:N and ref-less launches).
+// Last-wins, same as launchByRef, because cmux refs are only monotonic until
+// someone reinstalls it — after a counter reset, workspace:12 can belong to a
+// 2026-07 task and a 2026-09 one, and the recent launch is the one a sweep is
+// reconciling.
 function lastByRef(entries, pred) {
   const m = new Map();
   for (const e of entries) {
@@ -279,6 +299,65 @@ function pruneClosedEntry(workspace, entries) {
     workspaceRef: workspace.ref,
     title: workspace.title || null,
   };
+}
+
+// Reconciling events for isLedgerAutoDispatched, DELIBERATELY narrower than
+// TERMINAL_LAUNCH_EVENTS — excludes 'prune-closed'. Verified live against
+// production data (2026-08-03): mainLocked (bsc-prune.js) writes a
+// 'prune-closed' entry for EVERY ✅-marked workspace BEFORE pruneDone even
+// evaluates it, including ones pruneDone goes on to SKIP (its own header
+// comment: "Entries are written for ✅ workspaces pruneDone may go on to
+// SKIP... that is the safe direction"). workspace:124 in production had a
+// same-tick 'prune-closed' entry for a tab that was still open with its 🤖
+// glyph already gone — treating 'prune-closed' as reconciling here would
+// have self-defeated this exact function on the FIRST sweep after every
+// glyph-loss, since the write always lands in the ledger before this read.
+// 'dead' (idle-unmarked bucket), 'vanished' (absent-from-listing sweep), and
+// 'remapped' (renumber) are never written for a ref that is CURRENTLY ✅ and
+// listed — the only bucket pruneDone calls this for — so none of them share
+// prune-closed's same-tick self-defeat risk.
+const LEDGER_DISPATCH_RECONCILED_EVENTS = new Set(['dead', 'vanished', 'remapped']);
+
+// The unreconciled launch record for `workspaceRef`, or null. Uses lastByRef
+// (same last-match semantics as launchByRef — see card #960/3b1637c5: cmux
+// recycles workspace refs across restarts, so first-match can attribute a
+// recycled ref to a long-dead task) AND requires the launch to be
+// UNRECONCILED against LEDGER_DISPATCH_RECONCILED_EVENTS.
+function findLedgerAutoDispatchLaunch(workspaceRef, entries) {
+  if (!isWorkspaceRef(workspaceRef)) return null;
+  const launch = lastByRef(entries, e => e.event === 'launch').get(workspaceRef);
+  if (!launch) return null;
+  const term = lastByRef(entries, e => LEDGER_DISPATCH_RECONCILED_EVENTS.has(e.event)).get(workspaceRef);
+  if (term && launch.ts && term.ts && term.ts >= launch.ts) return null; // reconciled — not ours anymore
+  return launch;
+}
+
+// Whether the CURRENT occupant of `workspaceRef` (identified by its LIVE
+// title) is a 🤖 auto-dispatch according to the ledger — the fallback
+// pruneDone's isAutoDispatched check falls back to when the 🤖 title glyph
+// is gone (card #971: a dispatched session that renames its tab mid-work —
+// common for status-reflecting renames — drops the glyph, so the title-only
+// check misreads it as owner-opened and it never auto-closes, even after it
+// ✅-marks and goes idle/dead).
+//
+// Requires TWO independent signals to agree, not just an unreconciled ledger
+// launch (Codex adversarial review, 2026-08-03, P0 catch): 'prune-closed' is
+// deliberately excluded from LEDGER_DISPATCH_RECONCILED_EVENTS above (see its
+// header comment — it self-defeats on every still-open skip), which means a
+// ref that was GENUINELY closed via a real prune-closed close, then recycled
+// by cmux to an unrelated owner-opened tab, has no reconciling event left for
+// findLedgerAutoDispatchLaunch to see — that stale launch would otherwise
+// read as "still open." titleMatchesSubject (used elsewhere in this file for
+// exactly this "does the same session still occupy this ref" question, in
+// findRenumberedWorkspace) is the second signal: an owner's unrelated tab
+// will not share a >=20-char prefix with a launch subject it has never seen,
+// while a genuine status-reflecting rename preserves the original title as a
+// prefix by convention (dispatch instructions require appending, never
+// replacing, the title). Same dual-signal doctrine as checkLiveness in
+// cmux-workspaces.js (never trust one registry alone for a close decision).
+function isLedgerAutoDispatched(workspaceRef, title, entries) {
+  const launch = findLedgerAutoDispatchLaunch(workspaceRef, entries);
+  return Boolean(launch) && titleMatchesSubject(title, launch.subject);
 }
 
 // ── Restart-vs-close disambiguation (task #883) ────────────────────────────
@@ -540,7 +619,7 @@ module.exports = {
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
-  pruneClosedEntry, parkedTasks, unparkEntry, selectParkedCardsForDigest,
+  pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
   looksLikeRestart, RESTART_MIN_COUNT, RESTART_FRACTION,
   RESTART_HOLD_MAX_MS, restartHoldEntry, lastRestartHold,

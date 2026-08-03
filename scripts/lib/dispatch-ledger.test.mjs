@@ -92,6 +92,18 @@ test('launchByRef finds the launch entry that produced a given workspace ref', (
   assert.equal(launchByRef('workspace:404', entries), null);
 });
 
+test('launchByRef is LAST-match, not first — a recycled ref attributes to the CURRENT task (card #960)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // cmux restarted and re-issued workspace:12 to an unrelated later task.
+    { event: 'launch', taskId: '640', subject: 'Rage clicks sweep', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const launch = launchByRef('workspace:12', entries);
+  assert.equal(launch.taskId, '640');
+  assert.equal(launch.subject, 'Rage clicks sweep');
+});
+
 test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells existed before the 3rd)', () => {
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
 });
@@ -128,6 +140,39 @@ test('deadBreadcrumbs across repeated sweeps: second sweep sees the first sweep\
   const afterWrite = [...entries, ...firstSweep];
   const secondSweep = deadBreadcrumbs(idle, afterWrite);
   assert.equal(secondSweep.length, 0);
+});
+
+test('deadBreadcrumbs attributes a recycled ref to the CURRENT task, not the long-dead one (card #960)', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', subject: 'old task, long gone', workspaceRef: 'workspace:12', ts: '2026-07-01T00:00:00Z' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:12', ts: '2026-07-01T01:00:00Z' },
+    // cmux recycled workspace:12 onto a fresh, healthy task's dispatch.
+    { event: 'launch', taskId: '640', subject: 'current healthy task', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const idle = [{ ref: 'workspace:12', title: 'current healthy task' }];
+  const bc = deadBreadcrumbs(idle, entries);
+  assert.equal(bc.length, 1);
+  // Before the fix (first-match + ref-only idempotency), this would poison
+  // task 297's count a second time and never touch 640 — the healthy task's
+  // death would stay hidden forever, since the OLD 'dead' entry for this ref
+  // would look like it already covers the new launch too.
+  assert.equal(bc[0].taskId, '640');
+  assert.equal(bc[0].subject, 'current healthy task');
+});
+
+test('deadBreadcrumbs: a dead entry stamped at the SAME instant as the current launch still suppresses (fail-safe direction)', () => {
+  // Real appendEntry() writes are monotonically increasing ISO timestamps
+  // from separate lifecycle events, so an exact tie is a contrived edge —
+  // but the >= comparison must resolve it toward "don't re-flag" (matching
+  // every other ts-reconciled function in this file: vanishedBreadcrumbs,
+  // pruneClosedEntry, findLedgerAutoDispatchLaunch), not toward emitting a
+  // duplicate breadcrumb for a launch that already has one.
+  const entries = [
+    { event: 'launch', taskId: '640', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+    { event: 'dead', taskId: '640', workspaceRef: 'workspace:12', ts: '2026-08-03T00:00:00Z' },
+  ];
+  const idle = [{ ref: 'workspace:12', title: 'current healthy task' }];
+  assert.deepEqual(deadBreadcrumbs(idle, entries), []);
 });
 
 // ── Task #503: the guard above shipped armed and STILL let 10 orphan auto-
@@ -429,6 +474,79 @@ test('pruneClosedEntry: already-terminal ref journals nothing; a re-dispatch aft
   // Same launch, terminal already recorded → dedup to null
   const withTerminal = base.concat([{ ...first, ts: new Date(Date.parse(AFTER) + 1000).toISOString() }]);
   assert.equal(pruneClosedEntry({ ref: 'workspace:1', title: '✅ done' }, withTerminal), null);
+});
+
+// ── isLedgerAutoDispatched (card #971) ──────────────────────────────────────
+const { isLedgerAutoDispatched, findLedgerAutoDispatchLaunch } = require('./dispatch-ledger.js');
+
+const LONG_SUBJECT = 'Homepage/list-page RSC payload duplicates criticScore objects ~10-50x per unique show';
+const glyphLostTitle = '✅ ' + LONG_SUBJECT.slice(0, 40); // status-reflecting rename: prefix preserved, glyph gone
+
+test('isLedgerAutoDispatched: true for a ref with an unreconciled launch record whose title still matches the subject', () => {
+  const entries = [launch({ workspaceRef: 'workspace:5', subject: LONG_SUBJECT, ts: AFTER })];
+  assert.equal(isLedgerAutoDispatched('workspace:5', glyphLostTitle, entries), true);
+});
+
+test('isLedgerAutoDispatched: false when no launch record exists for the ref at all', () => {
+  const entries = [launch({ workspaceRef: 'workspace:5', subject: LONG_SUBJECT, ts: AFTER })];
+  assert.equal(isLedgerAutoDispatched('workspace:9', glyphLostTitle, entries), false);
+  assert.equal(isLedgerAutoDispatched('workspace:9', glyphLostTitle, []), false);
+});
+
+// Second-signal requirement (Codex adversarial review P0, 2026-08-03): an
+// unreconciled ledger launch alone is not enough — the live title must still
+// resemble the launch's own subject. Otherwise a ref that was genuinely
+// closed (real 'prune-closed', no dead/vanished/remapped left to see) and
+// recycled to a totally unrelated owner-opened ✅ tab would inherit the old
+// launch's auto-dispatch status.
+test('isLedgerAutoDispatched: false when the ledger has an unreconciled launch but the title is unrelated (recycled-ref safety)', () => {
+  const entries = [launch({ workspaceRef: 'workspace:5', subject: LONG_SUBJECT, ts: AFTER })];
+  assert.equal(isLedgerAutoDispatched('workspace:5', '✅ Some completely different owner-opened tab', entries), false);
+});
+
+// The recycled-ref hazard (card 3b1637c5): once the ledger's own terminal
+// event says this ref's launch story is over, the ref's CURRENT occupant may
+// be an unrelated owner-opened tab after a recycle — must not be trusted,
+// even if the title happens to still match (belt-and-suspenders).
+test('findLedgerAutoDispatchLaunch: null once dead/vanished/remapped reconciles the launch (recycled-ref safety)', () => {
+  for (const ev of ['dead', 'vanished', 'remapped']) {
+    const entries = [
+      launch({ workspaceRef: 'workspace:5', subject: LONG_SUBJECT, ts: AFTER }),
+      { event: ev, taskId: '1', workspaceRef: 'workspace:5', ts: '2026-08-02T13:00:00.000Z' },
+    ];
+    assert.equal(findLedgerAutoDispatchLaunch('workspace:5', entries), null, `${ev} should reconcile the launch`);
+    assert.equal(isLedgerAutoDispatched('workspace:5', glyphLostTitle, entries), false, `${ev} should reconcile the launch`);
+  }
+});
+
+// 'prune-closed' is DELIBERATELY excluded here (unlike TERMINAL_LAUNCH_EVENTS'
+// other three) — see LEDGER_DISPATCH_RECONCILED_EVENTS' header comment: it is
+// written for EVERY ✅ tab before pruneDone even runs, including ones it goes
+// on to skip, so treating it as reconciling would self-defeat this exact
+// function on the first sweep after every glyph loss (reproduced live against
+// production data 2026-08-03, workspace:124).
+test('isLedgerAutoDispatched: a same-tick prune-closed pre-write does NOT reconcile the launch (self-defeat guard)', () => {
+  const entries = [
+    launch({ workspaceRef: 'workspace:124', subject: LONG_SUBJECT, ts: '2026-08-03T15:28:02.196Z' }),
+    { event: 'prune-closed', taskId: '551', workspaceRef: 'workspace:124', ts: '2026-08-03T15:51:42.544Z' },
+  ];
+  const liveTitle = '✅ Homepage/list-page RSC payload duplicates criticSc'; // captured live, 2026-08-03
+  assert.equal(isLedgerAutoDispatched('workspace:124', liveTitle, entries), true, 'still-open tab must stay auto-dispatched despite the speculative prune-closed write');
+});
+
+test('isLedgerAutoDispatched: a re-dispatch after the terminal event is trusted again', () => {
+  const entries = [
+    launch({ workspaceRef: 'workspace:5', subject: 'an old unrelated task nobody cares about anymore', ts: BEFORE }),
+    { event: 'dead', taskId: '1', workspaceRef: 'workspace:5', ts: AFTER },
+    launch({ taskId: '2', workspaceRef: 'workspace:5', subject: LONG_SUBJECT, ts: '2026-08-02T14:00:00.000Z' }),
+  ];
+  assert.equal(isLedgerAutoDispatched('workspace:5', glyphLostTitle, entries), true);
+});
+
+test('isLedgerAutoDispatched: never true for non-workspace-shaped refs (headless/undefined)', () => {
+  const entries = [launch({ workspaceRef: 'headless:5', subject: LONG_SUBJECT, ts: AFTER })];
+  assert.equal(isLedgerAutoDispatched('headless:5', glyphLostTitle, entries), false);
+  assert.equal(isLedgerAutoDispatched(undefined, glyphLostTitle, entries), false);
 });
 
 test('parkedTasks: vanished parks, unpark and a later launch both clear it', () => {
