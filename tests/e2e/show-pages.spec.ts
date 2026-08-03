@@ -110,6 +110,40 @@ test.describe('Show Detail Pages', () => {
     expect(hasScore || hasNoScoreIndicator).toBeTruthy();
   });
 
+  // Regression guard for card #419. The show page hands several props to
+  // ShowPageBelowFoldLoader ('use client'), and anything crossing that boundary is
+  // serialized verbatim into the inlined RSC flight payload. Twice now a prop has
+  // been a full ComputedShow/Theater carrying OTHER shows' entire criticScore.reviews
+  // arrays (related shows, other productions, the venue's back catalogue) — 645KB of
+  // the 781KB /show/hamilton document, none of it rendered, and it fell straight onto
+  // LCP for mobile visitors.
+  //
+  // The invariant: the only review objects a show page may inline are its own. Foreign
+  // showIds in the flight payload mean a fat object crossed the boundary again. The
+  // TypeScript prop types (ShowCardShow / Pick<Theater,...>) are the first line of
+  // defence; this catches whatever the types don't, on the page as actually served.
+  test('does not inline other shows\' review objects in the RSC payload', async ({ page }) => {
+    const show = sampleShows[0];
+    const response = await page.goto(`/show/${show.slug}`);
+    const html = (await response?.text()) ?? '';
+
+    // Flight payload is emitted as self.__next_f.push([1,"...escaped JSON..."]) chunks.
+    const flight = (html.match(/self\.__next_f\.push\(\[1,"(?:[^"\\]|\\.)*"\]\)/g) || []).join('');
+    // Review objects are the only place a bare "showId" key appears in the payload.
+    const showIds = new Set(
+      [...flight.matchAll(/\\"showId\\":\\"([a-z0-9-]+)\\"/g)].map(m => m[1]),
+    );
+    showIds.delete(show.id);
+
+    expect(
+      [...showIds],
+      `Show page for ${show.slug} inlined review objects belonging to other shows. `
+        + 'Something is passing a full ComputedShow/Theater across the '
+        + 'ShowPageBelowFoldLoader client boundary again — card-shape it with '
+        + 'serializeShowForClient() (see src/app/show/[slug]/page.tsx).',
+    ).toEqual([]);
+  });
+
   test('external links open correctly', async ({ page, context }) => {
     const show = sampleShows[0];
     await page.goto(`/show/${show.slug}`);

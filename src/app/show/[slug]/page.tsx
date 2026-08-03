@@ -41,6 +41,7 @@ import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
+import { serializeShowForClient } from '@/lib/serialize-show';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
@@ -331,9 +332,18 @@ export default async function ShowPage({ params }: { params: { slug: string } })
     }
   }
   const blogReview = await getBlogReviewByShowSlug(show.slug);
-  const relatedShowsOpen = getRelatedShowsOpen(show);
-  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
-  const otherProductions = getOtherProductions(show);
+  // Card-shape these before they cross the client boundary. getRelatedShows*/
+  // getOtherProductions return full ComputedShow objects, each carrying its own
+  // criticScore.reviews array — passing them raw to ShowPageBelowFoldLoader
+  // ('use client') serialized ~20 shows' entire review corpora into the inlined
+  // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
+  // 643 review objects, none of which any card renders (the cards read only
+  // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
+  const relatedShowsOpen = getRelatedShowsOpen(show).map(s => serializeShowForClient(s));
+  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end')
+    ? getRelatedShowsClosed(show).map(s => serializeShowForClient(s))
+    : [];
+  const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
 
@@ -967,7 +977,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           showtimeIds={showtimeIds}
           sortedTicketLinks={sortedTicketLinks}
           socialPulse={socialPulse}
-          theater={theater}
+          theater={theater && {
+            name: theater.name,
+            slug: theater.slug,
+            venueScores: theater.venueScores,
+            accessibility: theater.accessibility,
+            externalLinks: theater.externalLinks,
+            structuredTips: theater.structuredTips,
+          }}
           lotteryRush={lotteryRush}
           castChangesData={castChangesData}
           castFile={castFile}
