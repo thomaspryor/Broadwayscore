@@ -3,7 +3,7 @@
   "showId": "the-play-that-goes-wrong-west-end-2021",
   "showTitle": "The Play That Goes Wrong",
   "market": "West End",
-  "fetchedAt": "2026-07-27T07:47:04.836Z",
+  "fetchedAt": "2026-08-03T07:47:30.179Z",
   "tier": "Hidden",
   "volume": 0,
   "effectiveVolume": 0,
@@ -25,25 +25,30 @@
   },
   "topQuotes": [],
   "counters": {
-    "reddit": 0,
+    "reddit": null,
     "bluesky": 0,
     "x": 0,
-    "wikipedia": 1992
+    "wikipedia": 2107
   },
   "wikipediaTitle": "The Play That Goes Wrong",
   "baseline": {
     "mean": 0,
-    "weeksOfHistory": 3
+    "weeksOfHistory": 4
   },
   "rawCounts": {
     "reddit": 0,
     "bluesky": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 46,
-    "total": 48,
-    "text": "46/48 West End"
+    "position": 49,
+    "total": 52,
+    "text": "49/52 West End"
   },
   "compositeScore": 0
 }

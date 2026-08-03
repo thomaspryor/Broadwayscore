@@ -3,67 +3,57 @@
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-07-27T07:21:57.760Z",
-  "tier": "Hidden",
-  "volume": 11,
-  "effectiveVolume": 4.5,
+  "fetchedAt": "2026-08-03T07:21:22.041Z",
+  "tier": "Steady",
+  "volume": 23,
+  "effectiveVolume": 3.7,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 0.8
+      "reddit": 0.5,
+      "bluesky": 0.3333333333333333
     },
-    "overall": 0.8,
-    "classified": 5
+    "overall": 0.46153846153846156,
+    "classified": 13
   },
   "positivePct": 100,
-  "opinionSample": 2,
-  "weekOverWeekPct": -45,
-  "baselineMultiple": 0.51,
+  "opinionSample": 1,
+  "weekOverWeekPct": 109,
+  "baselineMultiple": 1.28,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 4
+    "reddit": 5,
+    "bluesky": 1
   },
   "topQuotes": [
     {
-      "text": "I have played “Rafiki” in two different professional musicals - neither of which were The Lion King and one of which…",
-      "platform": "bluesky",
-      "author": "@shauntelleb.bsky.social",
-      "url": "https://bsky.app/profile/shauntelleb.bsky.social/post/3mrbaokomg22l"
-    },
-    {
-      "text": "Thrilled to announce that India Bolds-Browne will be an instructor at our CFA Broadway Studio Intensive! India…",
-      "platform": "bluesky",
-      "author": "@cfaarts.bsky.social",
-      "url": "https://bsky.app/profile/cfaarts.bsky.social/post/3mrfoq5hrzp2p"
+      "text": "Blerd Birthday of the Day — Leon Thomas III (August 1) Happy birthday to Leon Thomas III (born August 1, 1993)! 🎉…",
+      "platform": "reddit",
+      "author": "u/Haunting-Map-3475",
+      "url": "https://www.reddit.com/r/blerdcon/comments/1vd5q59/blerd_birthday_of_the_day_leon_thomas_iii_august_1/"
     }
   ],
   "counters": {
-    "reddit": null,
-    "bluesky": 5,
-    "x": 6,
-    "wikipedia": 3374
+    "reddit": 10,
+    "bluesky": 3,
+    "x": 10,
+    "wikipedia": null
   },
   "wikipediaTitle": "The Lion King (musical)",
   "baseline": {
-    "mean": 18,
-    "weeksOfHistory": 3
+    "mean": 19.25,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 5
+    "reddit": 10,
+    "bluesky": 3
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
     "position": 20,
     "total": 30,
     "text": "20/30 Broadway"
   },
-  "compositeScore": 2.25
+  "compositeScore": 1.85
 }

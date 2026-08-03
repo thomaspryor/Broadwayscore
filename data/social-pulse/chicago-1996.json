@@ -3,63 +3,67 @@
   "showId": "chicago-1996",
   "showTitle": "Chicago",
   "market": "Broadway",
-  "fetchedAt": "2026-07-27T07:10:30.981Z",
+  "fetchedAt": "2026-08-03T07:08:59.151Z",
   "tier": "Rising",
-  "volume": 243,
-  "effectiveVolume": 17.1,
+  "volume": 221,
+  "effectiveVolume": 44.5,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.21621621621621623,
-      "bluesky": 0.2692307692307692
+      "bluesky": 0.4074074074074074
     },
-    "overall": 0.23809523809523808,
-    "classified": 63
+    "overall": 0.4074074074074074,
+    "classified": 27
   },
-  "positivePct": 63,
-  "opinionSample": 8,
-  "weekOverWeekPct": 10,
-  "baselineMultiple": 1.07,
+  "positivePct": 60,
+  "opinionSample": 5,
+  "weekOverWeekPct": -9,
+  "baselineMultiple": 0.95,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 8,
-    "bluesky": 7
+    "reddit": 0,
+    "bluesky": 11
   },
   "topQuotes": [
     {
-      "text": "God Chicago is so damn good, I still think it’s the best broadway movie adaptation!",
+      "text": "Tony Yazbeck and Michael Berresse doing \"Nowadays/Hot Honey Rag\" from Chicago. The unison on \"Hot Honey Rag\" is…",
       "platform": "bluesky",
-      "author": "@speremint.bsky.social",
-      "url": "https://bsky.app/profile/speremint.bsky.social/post/3mr3uo3aass2t"
+      "author": "@madamehardy.bsky.social",
+      "url": "https://bsky.app/profile/madamehardy.bsky.social/post/3mroja62eps2b"
     },
     {
-      "text": "Whitney Leavitt Teases Return to Broadway 2 Months After Record-Breaking Run in ‘Chicago’ https://t.co/HtIZfFsu9B —…",
+      "text": "gosto mto do anime de monster mas nunca li o manga inteiro pra comparar. zola melhor adaptação de thread do twitter.…",
       "platform": "bluesky",
-      "author": "@bradporcellato.bsky.social",
-      "url": "https://bsky.app/profile/bradporcellato.bsky.social/post/3mrmcct3xoi2n"
+      "author": "@mollymaukery.bsky.social",
+      "url": "https://bsky.app/profile/mollymaukery.bsky.social/post/3mrvqhmfjps2d"
     }
   ],
   "counters": {
-    "reddit": 37,
-    "bluesky": 29,
-    "x": 177,
-    "wikipedia": 7961
+    "reddit": null,
+    "bluesky": 30,
+    "x": 191,
+    "wikipedia": 7815
   },
   "wikipediaTitle": "Chicago (musical)",
   "baseline": {
-    "mean": 232.33333333333334,
-    "weeksOfHistory": 3
+    "mean": 229.5,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
-    "reddit": 37,
-    "bluesky": 29
+    "reddit": 0,
+    "bluesky": 30
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "reddit",
+      "error": "all providers down (see log)"
+    }
+  ],
   "rank": {
-    "position": 7,
+    "position": 4,
     "total": 30,
-    "text": "7/30 Broadway"
+    "text": "4/30 Broadway"
   },
-  "compositeScore": 8.55
+  "compositeScore": 22.25
 }

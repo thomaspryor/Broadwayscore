@@ -3,44 +3,51 @@
   "showId": "harry-potter-2021",
   "showTitle": "Harry Potter and the Cursed Child",
   "market": "Broadway",
-  "fetchedAt": "2026-07-27T07:14:29.423Z",
+  "fetchedAt": "2026-08-03T07:13:48.129Z",
   "tier": "Hidden",
-  "volume": 9,
-  "effectiveVolume": 2.7,
+  "volume": 15,
+  "effectiveVolume": 3.1,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 1,
+      "reddit": 0.4,
       "bluesky": 1
     },
-    "overall": 1,
-    "classified": 2
+    "overall": 0.625,
+    "classified": 8
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -18,
-  "baselineMultiple": 0.95,
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": 67,
+  "baselineMultiple": 1.61,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 1,
-    "bluesky": 1
+    "reddit": 2,
+    "bluesky": 3
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Longtime fan Nick Dillenburg revels in playing title role in \"Harry Potter and the Cursed Child,\" which stages at…",
+      "platform": "bluesky",
+      "author": "@orartswatch.org",
+      "url": "https://bsky.app/profile/orartswatch.org/post/3mruuyenwz22a"
+    }
+  ],
   "counters": {
-    "reddit": 1,
-    "bluesky": 1,
+    "reddit": 5,
+    "bluesky": 3,
     "x": 7,
-    "wikipedia": 11823
+    "wikipedia": 11764
   },
   "wikipediaTitle": "Harry Potter and the Cursed Child",
   "baseline": {
-    "mean": 9.333333333333334,
-    "weeksOfHistory": 3
+    "mean": 10.75,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
-    "reddit": 1,
-    "bluesky": 1
+    "reddit": 5,
+    "bluesky": 3
   },
   "errors": [],
   "rank": {
@@ -48,5 +55,5 @@
     "total": 30,
     "text": "25/30 Broadway"
   },
-  "compositeScore": 1.35
+  "compositeScore": 1.55
 }

@@ -3,47 +3,56 @@
   "showId": "allegra-west-end-2026",
   "showTitle": "Allegra",
   "market": "West End",
-  "fetchedAt": "2026-07-27T07:26:28.405Z",
+  "fetchedAt": "2026-08-03T07:25:14.709Z",
   "tier": "Hidden",
-  "volume": 2,
-  "effectiveVolume": 0.2,
+  "volume": 7,
+  "effectiveVolume": 1.8,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "bluesky": 1
+    },
+    "overall": 1,
+    "classified": 1
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -50,
-  "baselineMultiple": 0.29,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 250,
+  "baselineMultiple": 1.31,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "🌈 Maureen Lipman lights up the West End in Allegra, a joyful new comedy with music at the Harold Pinter Theatre. A…",
+      "platform": "bluesky",
+      "author": "@tickadoo.bsky.social",
+      "url": "https://bsky.app/profile/tickadoo.bsky.social/post/3mrxlk3mp3u2x"
+    }
+  ],
   "counters": {
     "reddit": 0,
-    "bluesky": 0,
-    "x": 2,
+    "bluesky": 1,
+    "x": 6,
     "wikipedia": null
   },
   "wikipediaTitle": null,
   "baseline": {
-    "mean": 5.333333333333333,
-    "weeksOfHistory": 3
+    "mean": 5.75,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 28,
-    "total": 48,
-    "text": "28/48 West End"
+    "position": 7,
+    "total": 52,
+    "text": "7/52 West End"
   },
-  "compositeScore": 0.1
+  "compositeScore": 0.9
 }

@@ -3,44 +3,51 @@
   "showId": "stranger-things-2024",
   "showTitle": "Stranger Things: The First Shadow",
   "market": "Broadway",
-  "fetchedAt": "2026-07-27T07:21:04.875Z",
+  "fetchedAt": "2026-08-03T07:20:02.024Z",
   "tier": "Hidden",
   "volume": 4,
-  "effectiveVolume": 0.6,
+  "effectiveVolume": 0.7,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0,
+      "reddit": 0.6666666666666666,
       "bluesky": 1
     },
-    "overall": 0.6666666666666666,
-    "classified": 3
+    "overall": 0.75,
+    "classified": 4
   },
-  "positivePct": null,
-  "opinionSample": 0,
+  "positivePct": 100,
+  "opinionSample": 1,
   "weekOverWeekPct": 0,
-  "baselineMultiple": 0.62,
+  "baselineMultiple": 0.71,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 2
+    "reddit": 2,
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "A two show day review I finally finished up my work and have one day off. So I decided to drive to NYC for one day to…",
+      "platform": "reddit",
+      "author": "u/oversleepalways",
+      "url": "https://www.reddit.com/r/Broadway/comments/1ve2q7n/a_two_show_day_review/"
+    }
+  ],
   "counters": {
-    "reddit": 1,
-    "bluesky": 2,
-    "x": 1,
-    "wikipedia": 2570
+    "reddit": 3,
+    "bluesky": 1,
+    "x": 0,
+    "wikipedia": null
   },
   "wikipediaTitle": "Stranger Things: The First Shadow",
   "baseline": {
-    "mean": 5.666666666666667,
-    "weeksOfHistory": 3
+    "mean": 5.25,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
-    "reddit": 1,
-    "bluesky": 2
+    "reddit": 3,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
@@ -48,5 +55,5 @@
     "total": 30,
     "text": "29/30 Broadway"
   },
-  "compositeScore": 0.3
+  "compositeScore": 0.35
 }
