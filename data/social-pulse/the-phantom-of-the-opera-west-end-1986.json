@@ -3,47 +3,56 @@
   "showId": "the-phantom-of-the-opera-west-end-1986",
   "showTitle": "The Phantom of the Opera",
   "market": "West End",
-  "fetchedAt": "2026-07-27T07:46:24.864Z",
+  "fetchedAt": "2026-08-03T07:46:10.534Z",
   "tier": "Hidden",
   "volume": 3,
-  "effectiveVolume": 0.2,
+  "effectiveVolume": 0.5,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 0.5
+    },
+    "overall": 0.5,
+    "classified": 2
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -25,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 0,
   "baselineMultiple": 1,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 0
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Rising star Anna Zavelson on making her West End debut in 'The Phantom of the Opera' At 22 years of age, this talented…",
+      "platform": "reddit",
+      "author": "u/londontheatrecouk",
+      "url": "https://www.reddit.com/r/LondonTheatreCoUK/comments/1vard5d/rising_star_anna_zavelson_on_making_her_west_end/"
+    }
+  ],
   "counters": {
-    "reddit": 0,
+    "reddit": 2,
     "bluesky": 0,
-    "x": 3,
-    "wikipedia": 16108
+    "x": 1,
+    "wikipedia": 16857
   },
   "wikipediaTitle": "The Phantom of the Opera (1986 musical)",
   "baseline": {
     "mean": 3,
-    "weeksOfHistory": 3
+    "weeksOfHistory": 4
   },
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 2,
     "bluesky": 0
   },
   "errors": [],
   "rank": {
-    "position": 27,
-    "total": 48,
-    "text": "27/48 West End"
+    "position": 21,
+    "total": 52,
+    "text": "21/52 West End"
   },
-  "compositeScore": 0.1
+  "compositeScore": 0.25
 }
