@@ -91,13 +91,14 @@ jobs:
     # catches a hung run quickly.
     timeout-minutes: 25
     concurrency:
-      # Per-run group: GH concurrency queue depth is 1, so a shared
+      # per-run group intended: GH concurrency queue depth is 1, so a shared
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
       # and Rocky Horror opening nights. Vercel itself queues deploys server-side
       # (latest wins), so letting multiple runs proceed in parallel is safe.
       # See memory/feedback_gha_concurrency_queue_limit.md. With the cron change
       # (2026-05-16, see on: schedule above), simultaneous deploys are now rare —
       # most cron ticks self-skip in the should-deploy preflight.
+      # (task #922 audit, 2026-08-03)
       group: vercel-production-deploy-${{ github.run_id }}
       cancel-in-progress: false
     steps:
