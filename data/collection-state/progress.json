@@ -57,7 +57,10 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -495,7 +498,14 @@
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
     "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
-    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json"
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -534,12 +544,16 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "space-dogs-off-west-end-2026/whatsonstage--unknown.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/crazysexycool-regional-2026/washpost--thomas-floyd.json",
-      "crazysexycool-regional-2026/washpost--thomas-floyd.json"
+      "crazysexycool-regional-2026/washpost--thomas-floyd.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--dominic-maxwell.json",
@@ -584,7 +598,7 @@
     ]
   },
   "startTime": "2026-08-03T18:49:40.714Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-03T19:46:45.850Z",
@@ -596,6 +610,12 @@
       "t": "2026-08-03T19:46:46.608Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-08-03T21:02:28.464Z",
+      "event": "bb-session",
+      "session": "f85b5e8e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     }
   ]
 }
