@@ -185,6 +185,21 @@ function perArmRecall(rows) {
     for (const [fam, urls] of familyUrls) families.get(fam).found += urls.size;
   }
 
+  // Union of the scoped arms and onDisk, per show, then pooled. This is #872's
+  // headline — "would we have missed this review?" — which no single family
+  // answers alone (naive is a reference arm, not part of the pipeline).
+  // Ported from the parallel #901 implementation that landed on main.
+  let combinedFound = 0;
+  for (const row of list) {
+    const u = new Set();
+    for (const rec of (row && row.arms) || []) {
+      const fam = armFamily(String(rec.arm || ''));
+      if (fam !== 'scoped' && fam !== 'onDisk') continue;
+      for (const url of armUrls(rec)) u.add(url);
+    }
+    combinedFound += u.size;
+  }
+
   const recallOf = (found) => (truthUrls === 0 ? null : round3(found / truthUrls));
   const armOut = {};
   for (const [label, a] of [...arms].sort((x, y) => x[0].localeCompare(y[0]))) {
@@ -194,7 +209,14 @@ function perArmRecall(rows) {
   for (const [fam, f] of [...families].sort((x, y) => x[0].localeCompare(y[0]))) {
     famOut[fam] = { found: f.found, arms: f.arms.size, failed: f.failed, recall: recallOf(f.found) };
   }
-  return { truthUrls, shows: list.length, arms: armOut, families: famOut };
+  return {
+    truthUrls,
+    shows: list.length,
+    arms: armOut,
+    families: famOut,
+    combinedRecall: recallOf(combinedFound),
+    combinedFound,
+  };
 }
 
 /**
@@ -255,6 +277,7 @@ function summarizeRun(report, opts = {}) {
     // recall. detectRecallRegression() requires BOTH to fall before it alerts,
     // so a week where ground truth simply grew cannot masquerade as a
     // regression.
+    combinedRecall: agg.combinedRecall,
     familyYield: mapValues(agg.families, v => (agg.shows ? round3(v.found / agg.shows) : null)),
     armYield: mapValues(agg.arms, v => (agg.shows ? round3(v.found / agg.shows) : null)),
     armsFailed: mapValues(agg.arms, v => v.failed),
