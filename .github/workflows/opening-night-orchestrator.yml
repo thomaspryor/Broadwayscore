@@ -1,4 +1,9 @@
 name: Opening Night Orchestrator
+# Market in the run title so the Redundancy guard in OTHER runs can tell what a
+# dispatched run covers ("(broadway)" / "(west-end)"); "(auto)" = all markets.
+# Scheduled runs always render "(auto)" — the guard derives their market from
+# the cron hour instead.
+run-name: 'Opening Night Orchestrator (${{ inputs.market || ''auto'' }})'
 
 # Sustained polling for opening nights. Dispatches the single-shot poller
 # every N minutes for up to M iterations. Each poller run gets a fresh
@@ -68,10 +73,11 @@ permissions:
   contents: read
   actions: write
 
-# Per-run concurrency so BW and WE orchestrators can run in parallel
-concurrency:
-  group: opening-night-orch-${{ github.run_id }}
-  cancel-in-progress: false
+# No workflow-level concurrency group: a group keyed on github.run_id (the old
+# setup) is unique per run and serializes NOTHING, and a shared group can't be
+# market-aware (scheduled runs only resolve their market mid-run). Same-market
+# dedup is handled by the "Redundancy guard" step below; BW and WE orchestrators
+# still run in parallel.
 
 jobs:
   orchestrate:
@@ -121,9 +127,83 @@ jobs:
             echo "Manual dispatch without market — polling all markets"
           fi
 
+      - name: Redundancy guard
+        id: guard
+        # 2026-08-03 alert storm: the 23:00 cron, the 00:00 backup cron, and the
+        # launchd backup trigger all fired for the same night and stacked FOUR
+        # concurrent multi-hour orchestrator loops. Each loop dispatched its own
+        # pollers; the overlapping pollers raced the review-texts push and the
+        # losers paged the owner (4 emails in 1h). Redundant triggers exist BY
+        # DESIGN (GitHub crons can be hours late), so the dedup belongs here: if
+        # an earlier-started orchestrator covering the same market is still
+        # running, this run bows out quietly. Targeted dispatches (show_id set)
+        # and manual all-market dispatches (market resolves empty) are exempt —
+        # those are explicit owner intent. Fails open: if the API call errors,
+        # we proceed rather than risk skipping real opening-night coverage.
+        if: inputs.show_id == '' && steps.market.outputs.market != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MY_MARKET: ${{ steps.market.outputs.market }}
+          MY_ID: ${{ github.run_id }}
+        run: |
+          # Same hour→market mapping as the "Determine market" step above.
+          hour_to_market() {
+            local H=$((10#$1))
+            if [ "$H" -ge 22 ] || [ "$H" -le 4 ]; then echo broadway
+            elif [ "$H" -ge 5 ] && [ "$H" -le 7 ]; then echo west-end
+            elif [ "$H" -ge 8 ] && [ "$H" -le 13 ]; then echo broadway
+            elif [ "$H" -ge 17 ] && [ "$H" -le 21 ]; then echo west-end
+            else echo broadway; fi
+          }
+
+          RUNS=$(gh run list --workflow=opening-night-orchestrator.yml \
+            --status=in_progress --limit=20 \
+            --json databaseId,event,displayTitle,startedAt \
+            --jq '.[] | [.databaseId, .event, .startedAt, .displayTitle] | @tsv' 2>/dev/null || echo "")
+
+          MY_START=$(printf '%s\n' "$RUNS" | awk -F'\t' -v id="$MY_ID" '$1==id {print $3}')
+          [ -z "$MY_START" ] && MY_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          REDUNDANT=false
+          while IFS=$'\t' read -r ID EVENT START TITLE; do
+            [ -z "$ID" ] && continue
+            [ "$ID" = "$MY_ID" ] && continue
+            # Only defer to runs that started earlier (same-second tie broken by
+            # run id, so two runs can never both skip in each other's favor).
+            if [[ "$START" > "$MY_START" ]]; then continue; fi
+            if [ "$START" = "$MY_START" ] && [ "$ID" -gt "$MY_ID" ]; then continue; fi
+            if [ "$EVENT" = "schedule" ]; then
+              OTHER_MARKET=$(hour_to_market "${START:11:2}")
+            else
+              case "$TITLE" in
+                *"(broadway)"*) OTHER_MARKET=broadway ;;
+                *"(west-end)"*) OTHER_MARKET=west-end ;;
+                *) OTHER_MARKET=all ;;
+              esac
+            fi
+            if [ "$OTHER_MARKET" = "$MY_MARKET" ] || [ "$OTHER_MARKET" = "all" ]; then
+              echo "Earlier orchestrator run $ID (started $START, market=$OTHER_MARKET) already covers market=$MY_MARKET."
+              REDUNDANT=true
+              break
+            fi
+          done <<< "$RUNS"
+
+          echo "redundant=$REDUNDANT" >> $GITHUB_OUTPUT
+          if [ "$REDUNDANT" = "true" ]; then
+            echo "::notice::Redundant trigger — an earlier orchestrator already covers market=$MY_MARKET; exiting quietly."
+          else
+            echo "No earlier in-progress orchestrator covers market=$MY_MARKET — proceeding."
+          fi
+
       - name: Find shows to poll
         id: find
         run: |
+          if [ "${{ steps.guard.outputs.redundant }}" = "true" ]; then
+            echo "Redundant trigger — an earlier orchestrator for this market is already running. Exiting."
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           INPUT_SHOW="${{ inputs.show_id }}"
           MARKET="${{ steps.market.outputs.market }}"
 

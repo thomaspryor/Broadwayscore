@@ -96,10 +96,17 @@ runs:
               });
               // Cancelled/skipped runs say nothing about health — they neither
               // extend nor reset the streak.
+              // Sort by COMPLETION time (updated_at), not created_at: runs of
+              // high-frequency crons overlap, and in creation order an
+              // interleaved success keeps resetting the streak to exactly the
+              // threshold, re-paging on every failure pair (2026-08-03 storm:
+              // two "streak 2" pages in 28 min). In completion order a recent
+              // success correctly suppresses transient races, while a real
+              // outage — nothing but failures completing — still pages.
               const prior = (recent.data.workflow_runs || [])
                 .filter(r => r.id !== context.runId)
                 .filter(r => !['cancelled', 'skipped'].includes(r.conclusion))
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
               let streak = 1; // this run
               for (const r of prior) {
                 if (r.conclusion === 'failure') streak++;

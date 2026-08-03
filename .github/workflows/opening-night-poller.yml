@@ -69,15 +69,19 @@ permissions:
   actions: write
 
 concurrency:
-  # Per-show concurrency when show_id is set, otherwise per-run. This serializes
-  # multiple targeted dispatches for the SAME show (watcher + orchestrator +
-  # update-show-status all converging during opening night) without falling back
-  # to the old shared `opening-night-poller` group that hit GitHub's 1-pending
-  # queue limit and cancelled 30% of runs (Cats postmortem 2026-04-07). Auto-
-  # discovery dispatches (no show_id) still get unique per-run groups so they
-  # never collide with each other. Backstop for Tonight #7 push race —
-  # the watcher does its own idempotency check; this group catches the rest.
-  group: opening-night-poller-${{ inputs.show_id || github.run_id }}
+  # Per-show concurrency when show_id is set, otherwise a single shared
+  # auto-discovery group. Per-show groups serialize multiple targeted dispatches
+  # for the SAME show (watcher + orchestrator + update-show-status all converging
+  # during opening night) without a global group cancelling unrelated per-show
+  # runs (Cats postmortem 2026-04-07). Auto-discovery dispatches previously got
+  # unique per-run groups (github.run_id) — that let stacked orchestrators run
+  # 3-4 pollers concurrently, and every run commits to the same repos, so the
+  # losers died in "Commit new review files" push races and paged the owner
+  # (2026-08-03 alert storm: 4 emails/hr). Auto-discovery runs poll the same
+  # show set every time, so serializing them loses nothing: one runs, one
+  # queues, and GitHub superseding an older pending dispatch is harmless
+  # (cancelled runs never alert and don't count toward failure streaks).
+  group: opening-night-poller-${{ inputs.show_id || 'auto-discovery' }}
   cancel-in-progress: false
 
 jobs:
