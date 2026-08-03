@@ -1239,9 +1239,11 @@ const OUTLET_EXTRACTORS = {
  * @param {string} html - Raw HTML of the review page
  * @param {string} text - Extracted text content
  * @param {string} outletId - Normalized outlet ID
+ * @param {string} [showTitle] - this review's show title, used to disambiguate
+ *   combined multi-show roundup columns (see KNOWN_STAR_OUTLETS branch below)
  * @returns {object|null} - { originalScore, normalizedScore, source } or null
  */
-function extractScore(html, text, outletId) {
+function extractScore(html, text, outletId, showTitle) {
   html = html || '';
   text = text || '';
   outletId = (outletId || '').toLowerCase();
@@ -1277,10 +1279,39 @@ function extractScore(html, text, outletId) {
     const matches = [...text.matchAll(/([★☆]{3,5})/g)];
     if (matches.length > 0) {
       const len = text.length;
-      const anchoredMatch = matches.find(m => {
+      const anchoredMatches = matches.filter(m => {
         const pos = m.index;
         return pos <= len * 0.15 || pos >= len * 0.85;
       });
+      // 2+ anchored star groups = a combined multi-show roundup column with a
+      // per-show rating list (e.g. Guardian "Star ratings (out of five):
+      // Phaedra ***** Sylvia *** Standing at the Sky's Edge ****"). Blindly
+      // taking the FIRST anchored group attaches the WRONG show's rating
+      // whenever this review's show isn't first in the list — card #935
+      // (sylvia-off-west-end-2026 got Phaedra's 5 stars, not its own 3).
+      // Only trust a group whose immediately preceding text names THIS show;
+      // otherwise abstain rather than guess.
+      let anchoredMatch = null;
+      if (anchoredMatches.length === 1) {
+        anchoredMatch = anchoredMatches[0];
+      } else if (anchoredMatches.length > 1 && showTitle) {
+        const { normalizeTitle } = require('./title-match');
+        const wantedTitle = normalizeTitle(showTitle);
+        if (wantedTitle) {
+          // Bound each label window to the text BETWEEN this group and the
+          // previous star group (any match, not just anchored ones) — a fixed
+          // lookback bleeds across adjacent show names when a rating list packs
+          // them tightly ("Phaedra ***** Sylvia *** Standing..."), making both
+          // Sylvia's AND Phaedra's groups look "named" for Sylvia.
+          const named = anchoredMatches.filter(m => {
+            const idx = matches.indexOf(m);
+            const segStart = idx > 0 ? matches[idx - 1].index + matches[idx - 1][0].length : Math.max(0, m.index - 80);
+            const before = text.slice(segStart, m.index);
+            return normalizeTitle(before).includes(wantedTitle);
+          });
+          if (named.length === 1) anchoredMatch = named[0];
+        }
+      }
       if (anchoredMatch) {
         const filled = (anchoredMatch[1].match(/★/g) || []).length;
         const hasEmpty = anchoredMatch[1].includes('☆');
@@ -1292,7 +1323,8 @@ function extractScore(html, text, outletId) {
           outlet: outletId
         };
       }
-      // Found stars but all in middle 70% — likely pull-quote or ad. Do not recover.
+      // Found stars but all in middle 70% (likely pull-quote/ad), or 2+
+      // anchored groups we couldn't attribute to this show — do not recover.
     }
   }
 
