@@ -43,7 +43,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { screenLooksNoPayload, noPayloadReaperTick, QUARANTINE_LIMIT } = require('./lib/no-payload-reaper.js');
-const { classifyZombieTabs, REVIVE_CAP_PER_TICK } = require('./lib/zombie-tab-sweep.js');
+const { classifyZombieTabs } = require('./lib/zombie-tab-sweep.js');
 
 const USAGE = `bsc-prune — close finished Cmux workspaces.
 
@@ -258,9 +258,8 @@ function mainLocked({ dryRun, deps }) {
   // where surface attachment cannot bite). in_progress stays with the #883
   // reconciler; unmapped tabs are report-only. The idle bucket's dead
   // breadcrumbs above are terminal ledger entries, so these closes can never
-  // be mistaken for owner closes by sweepVanished; revival recurrence is
-  // capped by an explicit deadAttemptsForTask check inside the sweep (the
-  // --headless path never reaches bsc-next's own deadDispatchGuard).
+  // be mistaken for owner closes by sweepVanished, and bsc-next's
+  // deadDispatchGuard (2 recorded deaths) caps revival recurrence.
   sweepZombieTabs({
     all, idle, dryRun,
     closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn,
@@ -381,26 +380,9 @@ function sweepNoPayload({ all, closedRefs, idleRefs, dryRun, isDoneTitleFn, read
 // Kill switch: ZOMBIE_TAB_SWEEP_DISABLED=1 (DEPLOY_GATE_DISABLED pattern).
 const ZOMBIE_TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore');
 
-// Live dir first, archive/ fallback — completed tasks get archived (task
-// #854), and without the fallback an archived-completed corpse would read as
-// "unmapped" and sit in the sidebar forever (Codex catch).
 function taskStatusById(taskId, dir = ZOMBIE_TASKS_DIR) {
   try { return JSON.parse(fs.readFileSync(path.join(dir, `${taskId}.json`), 'utf8')).status || null; }
-  catch { /* fall through to archive */ }
-  const { readArchivedTask } = require('./lib/task-store-archive.js');
-  const archived = readArchivedTask(dir, taskId);
-  return (archived && archived.status) || null;
-}
-
-// LATEST launch for a ref — cmux recycles workspace refs across restarts, so
-// dispatchLedger.launchByRef's first-match semantics can attribute a recycled
-// ref to a long-gone task and close/redispatch the wrong one (Codex catch).
-function latestLaunchByRef(workspaceRef, entries) {
-  for (let i = entries.length - 1; i >= 0; i--) {
-    const e = entries[i];
-    if (e.event === 'launch' && e.workspaceRef === workspaceRef) return e;
-  }
-  return null;
+  catch { return null; }
 }
 
 function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntryFn, readLedgerEntriesFn, taskStatusByIdFn = taskStatusById, redispatchFn = redispatchHeadless, pageFn = pageZombieSweep }) {
@@ -412,10 +394,10 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
 
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
-  const { corpses, revive, report } = classifyZombieTabs({
+  const { corpses, revive, reviveDeferred, report } = classifyZombieTabs({
     deadAutoTabs,
     liveWorkspaces: all.filter(w => !idleRefs.has(w.ref)),
-    launchByRef: (ref) => latestLaunchByRef(ref, entries),
+    launchByRef: (ref) => dispatchLedger.launchByRef(ref, entries),
     taskStatusById: taskStatusByIdFn,
     hasAutoDispatchMarker,
   });
@@ -425,111 +407,56 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
   }
   if (!corpses.length && !revive.length) return;
 
-  // Recurrence guard BEFORE the fan-out cap (ship-check catch: a guarded
-  // task in a cap slot starved a revivable one for a tick). The guard must
-  // live HERE: bsc-next's --headless branch returns before its own
-  // deadDispatchGuard ever runs (second-opinion catch — the guard is only
-  // wired into the cmux dispatch path). The idle bucket wrote this tick's
-  // 'dead' breadcrumbs before this point, so the fresh count already
-  // includes this death: a tab that zombies twice stops being revived.
-  const freshEntries = entriesAfterBreadcrumbs(readLedgerEntriesFn, entries);
-  const guarded = [];
-  const revivable = [];
-  for (const r of revive) {
-    const priorDeaths = dispatchLedger.deadAttemptsForTask(r.taskId, freshEntries);
-    (priorDeaths.length >= dispatchLedger.DEAD_ATTEMPT_LIMIT ? guarded : revivable).push({ ...r, deaths: priorDeaths.length });
-  }
-  const toRevive = revivable.slice(0, REVIVE_CAP_PER_TICK);
-  const deferred = revivable.slice(REVIVE_CAP_PER_TICK);
-
   if (dryRun) {
     corpses.forEach(c => console.log(`[dry-run][zombie-sweep] would close corpse ${c.ref} "${c.title}" (${c.reason})`));
-    guarded.forEach(g => console.log(`[dry-run][zombie-sweep] would close guarded husk ${g.ref} task #${g.taskId} (died ${g.deaths}x, no re-dispatch)`));
-    toRevive.forEach(r => console.log(`[dry-run][zombie-sweep] would close + re-dispatch headless ${r.ref} task #${r.taskId}`));
+    revive.forEach(r => console.log(`[dry-run][zombie-sweep] would close + re-dispatch headless ${r.ref} task #${r.taskId}`));
     return;
   }
 
   for (const c of corpses) {
     console.log(`[zombie-sweep] closing corpse ${c.ref} "${c.title}" (${c.reason})`);
     try { closeWorkspaceFn(c.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${c.ref}: ${e.message}`); continue; }
-    try { appendLedgerEntryFn({ event: 'prune-closed', taskId: c.taskId || 'unknown', subject: c.subject || null, title: c.title, workspaceRef: c.ref, reason: `zombie-${c.reason}` }); }
+    try { appendLedgerEntryFn({ event: 'prune-closed', taskId: c.taskId || 'unknown', workspaceRef: c.ref, reason: `zombie-${c.reason}` }); }
     catch (e) { console.error(`[zombie-sweep] WARN ledger write failed for ${c.ref}: ${e.message}`); }
   }
 
-  const guardedClosed = [];
-  for (const g of guarded) {
-    console.log(`[zombie-sweep] task #${g.taskId} has died ${g.deaths}x — closing husk ${g.ref} but NOT re-dispatching (deadDispatchGuard threshold); paged to digest`);
-    try { closeWorkspaceFn(g.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${g.ref}: ${e.message}`); continue; }
-    guardedClosed.push(g);
-  }
-
-  const revived = [];
-  for (const r of toRevive) {
+  for (const r of revive) {
     console.log(`[zombie-sweep] never-booted launch ${r.ref} task #${r.taskId} — closing husk and re-dispatching headless`);
-    // Close must succeed BEFORE the re-dispatch: a transient close failure
-    // with a dispatch anyway runs the task twice concurrently (QA + Codex
-    // catch — the exact failure class this feature routes around).
-    try { closeWorkspaceFn(r.ref); }
-    catch (e) { console.error(`[zombie-sweep] WARN close failed for ${r.ref} — NOT re-dispatching this tick: ${e.message}`); continue; }
+    try { closeWorkspaceFn(r.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${r.ref}: ${e.message}`); }
+    // Ledger 'dead' for this ref was already written by the idle bucket this
+    // tick; only the re-dispatch remains. bsc-next re-checks eligibility,
+    // duplicate guards, and the 2-death refusal itself.
     redispatchFn(r.taskId);
-    revived.push(r);
   }
-  if (deferred.length) console.log(`[zombie-sweep] ${deferred.length} more never-booted tab(s) deferred to the next tick (per-tick cap)`);
+  if (reviveDeferred.length) console.log(`[zombie-sweep] ${reviveDeferred.length} more never-booted tab(s) deferred to the next tick (per-tick cap)`);
 
-  pageFn({ corpses, revive: revived, guarded: guardedClosed });
+  pageFn({ corpses, revive });
 }
 
-// Fresh entries so the death count includes THIS tick's idle-bucket
-// breadcrumbs; falls back to the sweep's earlier snapshot on read failure.
-function entriesAfterBreadcrumbs(readLedgerEntriesFn, snapshot) {
-  try { return readLedgerEntriesFn(); } catch { return snapshot; }
-}
-
-// Fire-and-forget: the sweep runs under the 4-min-stale run lock, so a
-// synchronous wait here (2 revives x 120s worst case, second-opinion catch)
-// could outlive the lock and let the next tick start a concurrent sweep.
-// bsc-next --headless hands off to bsc-runner and exits on its own; output
-// goes to a per-task log under data/audit/headless-logs/ for the audit trail.
 function redispatchHeadless(taskId) {
-  const { spawn } = require('child_process');
-  const logDir = path.join(__dirname, '..', 'data', 'audit', 'headless-logs');
-  let out = 'ignore';
-  try { fs.mkdirSync(logDir, { recursive: true }); out = fs.openSync(path.join(logDir, `zombie-redispatch-${taskId}.log`), 'a'); } catch { /* log loss never blocks the dispatch */ }
-  const child = spawn('node', [path.join(__dirname, 'bsc-next.js'), '--id', String(taskId), '--headless'], { detached: true, stdio: ['ignore', out, out] });
-  child.on('error', (e) => console.error(`[zombie-sweep] re-dispatch #${taskId} spawn error: ${e.message} — task stays pending, surfaces via bsc-next --list`));
-  child.unref();
-  if (out !== 'ignore') { try { fs.closeSync(out); } catch { /* child holds its own fd */ } }
-  console.log(`[zombie-sweep] re-dispatch #${taskId} spawned detached (log: data/audit/headless-logs/zombie-redispatch-${taskId}.log)`);
+  const { spawnSync } = require('child_process');
+  const res = spawnSync('node', [path.join(__dirname, 'bsc-next.js'), '--id', String(taskId), '--headless'], { encoding: 'utf8', timeout: 120_000 });
+  const tail = ((res.stdout || '') + (res.stderr || '')).trim().split('\n').slice(-2).join(' | ');
+  console.log(`[zombie-sweep] re-dispatch #${taskId} → exit=${res.status} ${tail}`);
 }
 
-// Digest page — every auto-close of an unmarked tab must be loud and
-// auditable, same doctrine as pageNoPayloadClose. Per-event conditionKeys
-// (matching that sibling), NOT one static key: a static key's 1h cooldown
-// would silently swallow the second batch of closes during exactly the
-// mass-outage scenario this sweep exists for (second-opinion catch). The
-// taskId is in the key because cmux recycles refs — a recycled ref's fresh
-// incident within the cooldown must not be swallowed either (Codex catch).
-function pageZombieSweep({ corpses, revive, guarded = [] }) {
+// Digest page (aggregate, once per tick) — every auto-close of an unmarked
+// tab must be loud and auditable, same doctrine as pageNoPayloadClose.
+function pageZombieSweep({ corpses, revive }) {
   try {
     const { routeAlert } = require('./lib/owner-alert-router.js');
-    const events = [
-      ...corpses.map(c => ({ ref: c.ref, taskId: c.taskId, severity: 'info', line: `closed corpse ${c.ref} "${c.title}" (${c.reason})` })),
-      ...revive.map(r => ({ ref: r.ref, taskId: r.taskId, severity: 'info', line: `closed never-booted ${r.ref}, re-dispatched task #${r.taskId} headless` })),
-      // Guard-threshold closes are the one bucket that NEEDS a human — a
-      // task that keeps dying with no more automatic retries (QA catch:
-      // these were console-only before). Warning severity, not info.
-      ...guarded.map(g => ({ ref: g.ref, taskId: g.taskId, severity: 'warning', line: `closed ${g.ref} for task #${g.taskId} which has died ${g.deaths}x — automatic revival stopped (deadDispatchGuard threshold). Investigate, then re-dispatch with: node scripts/bsc-next.js --id ${g.taskId} --force` })),
+    const lines = [
+      ...corpses.map(c => `closed corpse ${c.ref} "${c.title}" (${c.reason})`),
+      ...revive.map(r => `closed never-booted ${r.ref}, re-dispatched task #${r.taskId} headless`),
     ];
-    for (const e of events) {
-      routeAlert({
-        conditionKey: `bsc-prune:zombie-sweep:${e.ref}:${e.taskId || 'unknown'}`,
-        title: `Zombie-tab sweep closed ${e.ref}`,
-        description: e.line,
-        severity: e.severity,
-        disposition: 'digest',
-        cooldownHours: 1,
-      }).catch(() => {});
-    }
+    routeAlert({
+      conditionKey: 'bsc-prune:zombie-sweep',
+      title: `Zombie-tab sweep: closed ${corpses.length + revive.length} dead 🤖 tab(s)`,
+      description: lines.join('\n'),
+      severity: 'info',
+      disposition: 'digest',
+      cooldownHours: 1,
+    }).catch(() => {});
   } catch { /* alerting must never block the sweep */ }
 }
 
@@ -698,4 +625,4 @@ function parkCard(vanished) {
 
 if (require.main === module) main();
 
-module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById, latestLaunchByRef };
+module.exports = { main, USAGE, sweepVanished, parkCard, acquireRunLock, releaseRunLock, sweepNoPayload, loadNoPayloadState, saveNoPayloadState, pageNoPayloadClose, NO_PAYLOAD_STATE_PATH, sweepZombieTabs, taskStatusById };
