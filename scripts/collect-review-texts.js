@@ -451,7 +451,8 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 })();
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
+const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -5508,14 +5509,13 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const count = f.failureCount || 1;
-        const reason = f.failureReason || '';
-        // Permanently skip if: confirmed dead URL with 3+ failures, other reasons with 5+ failures,
-        // or garbage_content with 3+ failures (site returns content but not the review — won't improve)
-        const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
-        const isExhaustedGarbage = reason === 'garbage_content' && count >= 3;
-        const threshold = isConfirmedDead ? 3 : 5;
-        if ((reason !== 'garbage_content' && count >= threshold) || isExhaustedGarbage) {
+        // Shared with recordFailedFetch's write-side threshold via
+        // lib/failed-fetch-policy.js — the two used to be separate copies of
+        // the same rule with a comment asserting they matched (S2-T6).
+        // budget_capped entries are excluded here as well as at write time:
+        // belt-and-braces, so a ledger written before this fix still can't
+        // retire a URL the breaker merely deferred.
+        if (isPermanentlyFailed({ failureReason: f.failureReason || '', failureCount: f.failureCount || 1 })) {
           permanentlyFailed.add(id);
           permanentSkipCount++;
         } else if (CONFIG.retryFailed) {
@@ -6004,6 +6004,13 @@ function recordFailedFetch(review, reason, details = {}) {
   const existing = existingIdx >= 0 ? failedFetches[existingIdx] : null;
   const prevCount = existing?.failureCount || 0;
 
+  // budget_capped does NOT increment failureCount (S2-T5). We chose not to pay
+  // for this fetch; that is not evidence the URL is dead, and four capped
+  // attempts plus one transient failure would otherwise retire it permanently.
+  // Excluded at the COUNTER, not merely at the read threshold — a write-time
+  // increment is damage a read-time filter can no longer undo once the reason
+  // field is overwritten by the next, genuine failure.
+  const counts = shouldCountFailure(reason);
   const entry = {
     reviewId: review.reviewId,
     showId: review.showId,
@@ -6011,9 +6018,10 @@ function recordFailedFetch(review, reason, details = {}) {
     critic: review.critic,
     url: review.url,
     failureReason: reason,
-    failureCount: prevCount + 1,
+    failureCount: counts ? prevCount + 1 : prevCount,
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
+    ...(counts ? {} : { lastCappedAt: new Date().toISOString() }),
     ...details,
   };
 
@@ -6049,10 +6057,10 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal
   }
 
-  const isConfirmedDead = reason === 'url_dead_404' || reason === 'url_dead_410';
-  const threshold = isConfirmedDead ? 3 : 5;
-  if (reason !== 'garbage_content' && entry.failureCount >= threshold) {
+  if (isPermanentlyFailed(entry)) {
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
+  } else if (!counts) {
+    console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
   }
 }
 
@@ -6199,6 +6207,12 @@ async function processReview(review) {
     stats.totalFailed++;
     return { success: false, error: 'no_url' };
   }
+
+  // Bright Data cap accounting (S2-T5): snapshot the withheld-request counter
+  // so the catch below can tell "this URL is dead" from "we chose not to pay
+  // for it right now". Sampled per review rather than per run — a run that hits
+  // the breaker midway must not retroactively excuse earlier genuine failures.
+  const bdBlockedBefore = getScraperStats().bdBlocked || 0;
 
   try {
     const result = await fetchReviewText(review);
@@ -6541,7 +6555,16 @@ async function processReview(review) {
     const is404 = error.message.includes('404');
     const isTimeout = error.message.includes('timeout') || error.message.includes('TIMEOUT');
     const allTiersFailed = error.message.includes('All tiers failed');
-    const failReason = is404 ? 'url_dead_404' : isTimeout ? 'all_tiers_timeout' : allTiersFailed ? 'all_tiers_failed' : 'fetch_error';
+    // A Bright Data request withheld by the daily breaker or per-run budget is
+    // not evidence about the URL. A confirmed 404 still wins — that IS evidence
+    // — but any other failure that happened while BD was capped is recorded as
+    // budget_capped so it never counts toward permanent retirement (S2-T5).
+    const bdWasCapped = (getScraperStats().bdBlocked || 0) > bdBlockedBefore;
+    const failReason = is404 ? 'url_dead_404'
+      : bdWasCapped ? 'budget_capped'
+      : isTimeout ? 'all_tiers_timeout'
+      : allTiersFailed ? 'all_tiers_failed'
+      : 'fetch_error';
     recordFailedFetch(review, failReason, {
       errorMessage: error.message.slice(0, 200),
     });

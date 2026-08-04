@@ -166,9 +166,12 @@ async function main() {
   });
 
   await test('LLM dollar blocker fires when total > daily cap (cap-based, no live API)', async () => {
-    const r = await checkBudget(200, { liveUsage: plentyUsage() });
+    // 300, not 200: the anthropic daily cap was raised 50 → 100 (owner
+    // 2026-07-22) and this case silently went red, since 200 × $0.40 = $80 no
+    // longer exceeds it. 300 × $0.40 = $120 restores the case's intent.
+    const r = await checkBudget(300, { liveUsage: plentyUsage() });
     const a = r.blockers.find(b => b.resource === 'anthropic');
-    assert(a, 'anthropic should hard-block at 200 shows');
+    assert(a, 'anthropic should hard-block at 300 shows');
     assert(a.message.includes('$'), `expected $ formatting, got: ${a.message}`);
   });
 
