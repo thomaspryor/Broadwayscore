@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-04T18:04:25.170Z",
+  "timestamp": "2026-08-04T18:35:27.801Z",
   "stats": {
-    "totalReviews": 41582,
-    "alreadyFlagged": 18108,
-    "dateGuardCatches": 116,
+    "totalReviews": 41584,
+    "alreadyFlagged": 18110,
+    "dateGuardCatches": 115,
     "directorMismatch": 944,
     "tvFilmSignals": 1151,
     "londonSignals": 813,
@@ -24769,19 +24769,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 964d before show (2023-12-07 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "show-score--unknown.json",
-      "publishDate": "2024-05-28",
-      "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 791d before show (2024-05-28 vs 2026-07-28)"
         }
       ]
     },

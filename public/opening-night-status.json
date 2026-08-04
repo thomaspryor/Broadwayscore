@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T18:04:31.401Z",
+  "generatedAt": "2026-08-04T18:35:34.199Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -777,23 +777,23 @@
       "status": "open",
       "slug": "now-you-see-me-live-west-end",
       "thumbnail": "/images/shows/now-you-see-me-live-west-end-2026/thumbnail.jpg",
-      "siteScore": 71.18,
+      "siteScore": 70.68,
       "liveScore": 71,
-      "scoreDrift": -0.18000000000000682,
+      "scoreDrift": 0.3199999999999932,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 2,
+      "total": 16,
+      "t1": 3,
       "t2": 5,
-      "t3": 7,
-      "positive": 8,
-      "mixed": 4,
+      "t3": 8,
+      "positive": 9,
+      "mixed": 5,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3"
+          "T1:2/3"
         ],
         "highConfidence": 8,
         "thresholds": {
@@ -949,6 +949,18 @@
           "t3": 7,
           "p": 8,
           "m": 4,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-04T18:35:34.199Z",
+          "rc": 16,
+          "s": 70.68,
+          "t1": 3,
+          "t2": 5,
+          "t3": 8,
+          "p": 9,
+          "m": 5,
           "n": 2,
           "bc": "waiting"
         }
