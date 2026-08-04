@@ -132,6 +132,7 @@ jobs:
       # never staged before this twice-weekly cron (Sprint 3, card 3b1637c5).
       - name: Commit scraper-spend ledger
         if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
