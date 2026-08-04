@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T19:29:58.021Z",
+  "generatedAt": "2026-08-04T20:17:30.124Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 294.30596444444444,
+      "fileAgeHours": 295.0982158333333,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 253.6089125
+      "nonTerminalAgeHours": 254.40116333333333
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 56.046932222222225
+      "nonTerminalAgeHours": 56.83918305555556
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -50,26 +50,9 @@
       "recoveryCount": 3,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazysexycool-regional-2026",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 27.506998333333332,
+      "fileAgeHours": 28.299249444444445,
       "gapSeenAt": "2026-08-04T07:51:56.703Z",
-      "nonTerminalAgeHours": 11.633699444444444
-    },
-    {
-      "showId": "othello-off-broadway-2026",
-      "title": "Othello",
-      "openingDate": "2026-07-05",
-      "file": "wsj--unknown.json",
-      "outletId": "wsj",
-      "tier": 1,
-      "type": "unscored",
-      "url": "https://www.wsj.com/articles/othello-review-shakespeares-battle-scarred-hero-comes-to-harlem-4ff83be7",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=othello-off-broadway-2026",
-      "firstSeen": "2026-08-03T04:15:10.873Z",
-      "fileAgeHours": 39.24643,
-      "gapSeenAt": "2026-08-03T18:28:48.681Z",
-      "nonTerminalAgeHours": 25.01926111111111
+      "nonTerminalAgeHours": 12.425950277777778
     }
   ],
   "contradictions": []
