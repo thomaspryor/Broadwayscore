@@ -566,6 +566,10 @@ on:
       - 'scripts/lib/commercial-scope.test.mjs'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
+      # Guard + its pin: an edit to either must run CI, or the floor could move
+      # in a push whose paths never trigger the job that checks it (#1002).
+      - 'scripts/audit-duplicate-of-floor.js'
+      - 'scripts/.duplicate-of-floor.json'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -1997,6 +2001,23 @@ jobs:
         # fix opportunistically). Exempt a reviewed false positive with
         # // hygiene-help-flag-ok: <reason> in the script.
         run: node scripts/audit-help-flag-safety.js
+
+      - name: Audit — duplicateOf gate floor not raised without evidence
+        # Task #1002. `audit-duplicate-of-url-mismatch.js --gate` blocks the
+        # trunk only on a mass SPIKE of stale duplicateOf pointers, because a
+        # spike means a producer regression and auto-healing it would flood
+        # scoring with double-counted reviews. Raising FIX_SURGE_THRESHOLD is
+        # therefore the ONLY way to turn that failure green without fixing
+        # anything — which makes it exactly what a time-pressured session
+        # reaches for, silencing live data corruption. A six-reviewer
+        # plan-review named it the most likely catastrophic outcome of the
+        # card that produced this step, so the rule is mechanical, not prose:
+        # the floor may only move if scripts/.duplicate-of-floor.json is
+        # updated in the same change AND names an evidence file that exists.
+        # Fixing the false-positive SOURCE (what #1002 did — excluding
+        # archive/tombstone dirs from the scan) moves no floor and trips this
+        # step not at all.
+        run: node scripts/audit-duplicate-of-floor.js
 
       - name: Audit — unbounded git fetch on shallow-checkout paths
         # Prevents the #420/#466 bug class recurring. actions/checkout defaults

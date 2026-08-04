@@ -11,21 +11,102 @@
 // Known ticketing platforms — host suffix → display platform name.
 // Order matters: first match wins when scanning SERP results, so put
 // primary-sale platforms before anything resale-adjacent.
+//
+// `region` marks hosts that only ever sell in ONE market: ticketmaster.com is
+// the US storefront and ticketmaster.co.uk the UK one, and a title that runs on
+// both sides of the Atlantic has a live event page on each. Without this, SERP
+// title-matching alone happily attached the US "A Christmas Carol (NY)"
+// Ticketmaster artist page to the Old Vic's West End production (shipped by
+// task #956, reddened the trunk 20/20 runs until task #1002). Omit `region` for
+// genuinely multi-market hosts (todaytix.com serves /nyc and /london from one
+// domain; eventbrite/universe/showclix are global).
 const TICKETING_PLATFORMS = [
   { host: 'todaytix.com', platform: 'TodayTix' },
-  { host: 'ticketmaster.com', platform: 'Ticketmaster' },
-  { host: 'ticketmaster.co.uk', platform: 'Ticketmaster' },
-  { host: 'telecharge.com', platform: 'Telecharge' },
+  { host: 'ticketmaster.com', platform: 'Ticketmaster', region: 'us' },
+  { host: 'ticketmaster.co.uk', platform: 'Ticketmaster', region: 'uk' },
+  { host: 'telecharge.com', platform: 'Telecharge', region: 'us' },
   { host: 'ovationtix.com', platform: 'OvationTix' },
   { host: 'eventbrite.com', platform: 'Eventbrite' },
-  { host: 'smarttix.com', platform: 'SmartTix' },
-  { host: 'ticketcentral.com', platform: 'Ticket Central' },
+  { host: 'smarttix.com', platform: 'SmartTix', region: 'us' },
+  { host: 'ticketcentral.com', platform: 'Ticket Central', region: 'us' },
   { host: 'universe.com', platform: 'Universe' },
   { host: 'showclix.com', platform: 'ShowClix' },
   { host: 'ticketleap.com', platform: 'TicketLeap' },
   { host: 'seetickets.com', platform: 'See Tickets' },
-  { host: 'ticketsource.co.uk', platform: 'TicketSource' },
+  { host: 'ticketsource.co.uk', platform: 'TicketSource', region: 'uk' },
 ];
+
+// Known-region markets/categories in shows.json. Deliberately NOT exhaustive:
+// `regional` covers both US regional houses (Arena Stage, La Jolla) and any
+// future UK regional (Chichester, Manchester), so it stays unknown rather than
+// defaulting to 'us' and falsely rejecting a legitimate ticketsource.co.uk
+// link. Same for a market this list has not learned yet.
+const UK_MARKETS = new Set(['west-end', 'off-west-end']);
+const US_MARKETS = new Set(['broadway', 'off-broadway']);
+
+/**
+ * 'uk' | 'us' | null for a shows.json entry — market first, category as
+ * fallback. null means "not confidently known", which imposes no constraint.
+ */
+function showRegion(show) {
+  const market = String((show && show.market) || '').toLowerCase();
+  const category = String((show && show.category) || '').toLowerCase();
+  // market genuinely wins: category is consulted only when market says nothing,
+  // so a corrupt {market:'broadway', category:'west-end'} resolves to 'us'
+  // rather than letting the weaker field override the stronger one.
+  if (UK_MARKETS.has(market)) return 'uk';
+  if (US_MARKETS.has(market)) return 'us';
+  if (UK_MARKETS.has(category)) return 'uk';
+  if (US_MARKETS.has(category)) return 'us';
+  return null;
+}
+
+// TodayTix serves every market from one domain but partitions by the first
+// path segment (/london/shows/…, /nyc/shows/…). Without this a /nyc link on a
+// West End show passes the host check untouched — the same failure shape as the
+// Ticketmaster one, just hidden behind a multi-market host.
+const TODAYTIX_UK_CITIES = new Set(['london']);
+
+// TodayTix US city segments seen in the corpus. Kept as an allow-list so an
+// unfamiliar segment reads as "unknown" (no constraint) instead of "US".
+const TODAYTIX_US_CITIES = new Set([
+  'nyc', 'chicago', 'sf', 'la', 'boston', 'dc', 'philadelphia', 'seattle',
+  'houston', 'atlanta', 'dallas', 'san-diego', 'denver', 'nj',
+]);
+
+/**
+ * Region a URL is locked to, or null when it can serve either market.
+ * Host-level first, then per-platform path partitions.
+ */
+function urlRegion(url) {
+  const host = hostOf(url);
+  if (!host) return null;
+  const platform = TICKETING_PLATFORMS.find((p) => hostMatches(host, p.host));
+  if (platform && platform.region) return platform.region;
+  if (platform && platform.host === 'todaytix.com') {
+    const city = ((String(url).match(/todaytix\.com\/([a-z-]+)\//i) || [])[1] || '').toLowerCase();
+    if (TODAYTIX_UK_CITIES.has(city)) return 'uk';
+    if (TODAYTIX_US_CITIES.has(city)) return 'us';
+    return null; // unrecognised segment → unknown, never a guess
+  }
+  return null;
+}
+
+/**
+ * True when a ticket URL is on a storefront that cannot sell this show's
+ * market — a West End show on ticketmaster.com, a Broadway show on
+ * ticketmaster.co.uk. Pure; exported so both the SERP picker and the
+ * corpus-wide CI assertion (scripts/tests/tm-gap-links.test.mjs) share one
+ * definition rather than re-deriving it.
+ */
+function isRegionMismatch(url, show) {
+  const linkRegion = urlRegion(url);
+  const region = showRegion(show);
+  // Either side unknown → no constraint. Only a positive us-vs-uk conflict
+  // rejects, so the guard can never refuse a link it merely fails to classify.
+  if (!linkRegion || !region) return false;
+  return linkRegion !== region;
+}
 
 // Institutional venues that sell first-party from their own domain. Extend as
 // gaps surface (the freshness digest's missing_tickets line names the shows).
@@ -177,6 +258,11 @@ function pickTicketUrl(results, show) {
     if (LISTING_PATH_FRAGMENTS.some((f) => url.includes(f))) continue;
     const platform = platformForUrl(url);
     if (!platform) continue;
+    // A same-title production runs on both sides of the Atlantic more often
+    // than not at Christmas; title-matching alone cannot tell the storefronts
+    // apart. Reject before the title check so a US artist page can never be
+    // attached to a West End show (task #1002).
+    if (isRegionMismatch(url, show)) continue;
     if (!titleMatches(r.title || '', show.title, show.venue || '')) continue;
     return { url: url.replace(/^http:/, 'https:'), platform };
   }
@@ -208,6 +294,9 @@ module.exports = {
   titleMatches,
   buildTicketQuery,
   foldTitle,
+  isRegionMismatch,
+  showRegion,
+  urlRegion,
   TICKETING_PLATFORMS,
   VENUE_SITES,
   RESALE_HOSTS,
