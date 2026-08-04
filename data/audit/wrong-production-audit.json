@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T18:58:10.210Z",
+  "timestamp": "2026-08-04T19:31:56.557Z",
   "stats": {
     "totalReviews": 41584,
-    "alreadyFlagged": 18112,
+    "alreadyFlagged": 18098,
     "dateGuardCatches": 115,
     "directorMismatch": 944,
     "tvFilmSignals": 1151,
     "londonSignals": 813,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3505
+    "noPublishDate": 3506
   },
   "findings": [
     {
@@ -38676,20 +38676,6 @@
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
-      "file": "jonathan-baz--unknown.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "now-you-see-me-live-west-end-2026",
       "file": "london-theatre--unknown.json",
       "score": 71,
       "publishDate": "2026-08-03",
@@ -44196,6 +44182,19 @@
       "score": 92,
       "publishDate": "2026-07-19",
       "url": "https://www.jewishnews.co.uk/review-the-jonathan-larson-project/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-west-end-2026",
+      "file": "matineemouse--oviya.json",
+      "publishDate": "2026-07-17",
+      "url": "https://matineemouse.substack.com/p/the-jonathan-larson-project-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
