@@ -33,12 +33,13 @@
  * staleMs makes that window small in practice.
  *
  * BREAKING a stale lock is itself racy across processes (task #1024): a
- * stat+pid read is stale the instant another process acts on it, so a
- * "rename it away" claim can grab a lock that was live a moment ago and
- * briefly leave lockPath absent — exactly the window a completely unrelated
- * waiter's normal `wx` create can slip into, producing two simultaneous
- * holders. See breakStaleLock()'s docstring for how the steal gate closes
- * that window.
+ * stat+pid read is stale the instant another process acts on it, so a naive
+ * "rename it away" claim can grab a lock that was live a moment ago — and
+ * doing that necessarily leaves lockPath briefly ABSENT, exactly the window
+ * a completely unrelated waiter's normal `wx` create can slip into, producing
+ * two simultaneous holders. See claimStaleLockInPlace()'s docstring for why
+ * the fix claims in place (never unlinks/renames lockPath) instead of trying
+ * to patch that window shut.
  *
  * @param {string} lockPath
  * @param {() => any} fn                 executed while holding the lock
@@ -66,71 +67,57 @@ function readLockPid(lockPath) {
 }
 
 /**
- * Breaks lockPath ONLY if it is still genuinely stale at the moment of the
- * break, not merely at the moment the caller's stat/pid check ran, AND
- * without ever letting an unrelated waiter's `wx` create observe lockPath as
- * absent while a live lock legitimately exists (task #1024's actual
- * ~12%-repro two-holders bug).
+ * Claims lockPath in place when it is still genuinely stale at the moment of
+ * the claim (not merely at the moment the caller's stat/pid check ran),
+ * WITHOUT ever unlinking or renaming lockPath — so lockPath is never
+ * observably absent to anyone (task #1024's actual ~12%-repro two-holders
+ * bug: a rename-away steal briefly emptied lockPath, and a totally unrelated
+ * waiter's plain `wx` create landed in that gap and became a second
+ * simultaneous holder — no gate or re-check on the rename side closes that,
+ * because the absence itself is the hazard, not what's judged before it).
  *
- * A stat+pid read is out of date the instant something else acts on it.
- * Renaming lockPath away based on that read can grab a lock that was live a
- * moment ago (the real holder finished and a brand-new process claimed a
- * fresh one in the gap); the code below already detects that mismatch and
- * puts the live lock back rather than deleting it. But "rename away, look,
- * maybe rename back" necessarily has lockPath briefly ABSENT between the two
- * renames — and that absence is externally visible: any of the other waiters
- * in withFileLock's main loop is independently retrying a plain `wx` create
- * on lockPath every `waitMs`, with no idea a steal is in flight, and a `wx`
- * create landing in that gap succeeds (nothing exists there yet), producing
- * a second, simultaneous holder while the original is still running.
+ * Two things make this safe:
  *
- * `stealGatePath` closes that: withFileLock's main loop refuses to attempt
- * its `wx` create while the gate file exists (see the check there), and this
- * function holds the gate for the ENTIRE duration of the risky
- * rename-then-maybe-restore sequence, releasing it only once lockPath is
- * back in a stable state. The gate itself is acquired with `wx` (exclusive),
- * so at most one process is ever mid-steal at a time — steals are
- * serialized, which is fine since a steal is rare and fast; only the fast,
- * uncontended acquire path needs to stay lock-free.
+ * 1. `stealGatePath` (acquired with `wx`, exclusive) serializes stealers, so
+ *    at most one process is ever mid-claim at a time. Without it, two
+ *    processes could each judge the lock stale, each overwrite lockPath in
+ *    place, and each read back a match against ITS OWN write if the reads
+ *    happen to interleave with the writes just wrong — "write then read
+ *    back" alone is not enough; the whole write+verify must be one
+ *    process's exclusive turn. withFileLock's main loop also refuses its
+ *    own `wx` create while the gate exists, purely to avoid wasted spins —
+ *    NOT for correctness, since lockPath is never absent during a claim
+ *    (see below).
+ * 2. The claim overwrites lockPath's CONTENT in place (`fs.writeFileSync`
+ *    with no `wx`/`ax` flag — open+truncate+write, never unlink+recreate),
+ *    so the directory entry exists continuously throughout. Any other
+ *    process's `wx` create — gate-aware or not — requires lockPath to be
+ *    ABSENT to succeed; since it never is, no interleaving can let a second
+ *    process in, unlike the earlier rename-based version of this fix.
  *
- * Returns true iff it actually removed a stale lock (caller should retry the
- * `wx` create immediately); false means lockPath is untouched (caller should
- * wait and recheck).
+ * Returns true iff this process now legitimately holds the lock (caller
+ * should treat this exactly like a successful `wx` create); false means
+ * lockPath is untouched (caller should wait and recheck).
  */
-function breakStaleLock(lockPath, stealGatePath, staleMs) {
+function claimStaleLockInPlace(lockPath, stealGatePath, staleMs) {
   try {
     fs.writeFileSync(stealGatePath, `${process.pid}\n`, { flag: 'wx' });
   } catch {
-    return false; // someone else is already mid-steal — let them finish
+    return false; // someone else is already mid-claim — let them finish
   }
   try {
     const st = fs.statSync(lockPath);
     const staleByAge = Date.now() - st.mtimeMs > staleMs;
     if (!staleByAge || pidAlive(readLockPid(lockPath))) return false; // no longer stale
 
-    const stealPath = `${lockPath}.stale-${process.pid}-${st.mtimeMs}`;
-    let stolenMtimeMs, stolenContents;
-    try {
-      fs.renameSync(lockPath, stealPath); // throws ENOENT if someone else claimed it first
-      stolenMtimeMs = fs.statSync(stealPath).mtimeMs;
-      stolenContents = fs.readFileSync(stealPath, 'utf8');
-    } catch {
-      return false;
-    }
-    // Re-judge staleness from what we actually grabbed, not the earlier
-    // read — a holder that renewed its own lock between our stat and our
-    // rename must not be judged by a mtime/pid that's no longer even its own.
-    const stillStale = Date.now() - stolenMtimeMs > staleMs && !pidAlive(parsePid(stolenContents));
-    if (stillStale) {
-      try { fs.unlinkSync(stealPath); } catch { /* best-effort */ }
-      return true; // genuinely won the steal
-    }
-    // What we grabbed is live (a new process claimed a fresh lock in the gap
-    // between our stat and our rename) — put it back. No other waiter could
-    // have wx-created into the gap while we held the gate, so this restore
-    // always lands on an empty path.
-    try { fs.renameSync(stealPath, lockPath); } catch { /* best-effort */ }
-    return false;
+    const claim = `${process.pid} ${new Date().toISOString()}\n`;
+    fs.writeFileSync(lockPath, claim);
+    // Confirm our write landed last. While we hold the gate, no other
+    // stealer can be mid-claim, and a legitimate holder never overwrites its
+    // own lock file in place, so this can only mismatch in a scenario this
+    // helper already treats as acceptable risk (pidAlive false negative —
+    // see the file docstring); it costs one read to verify anyway.
+    return fs.readFileSync(lockPath, 'utf8') === claim;
   } finally {
     try { fs.unlinkSync(stealGatePath); } catch { /* best-effort */ }
   }
@@ -143,8 +130,26 @@ function withFileLock(lockPath, fn, opts = {}) {
   let held = false;
   while (Date.now() < deadline) {
     if (fs.existsSync(stealGatePath)) {
-      // Someone else is mid-steal, which means lockPath may be transiently
-      // absent — don't race a `wx` create into that window (task #1024).
+      // Someone else is mid-claim. This is purely to avoid a wasted `wx`
+      // attempt while that's happening — lockPath itself is never absent
+      // during a claim (see claimStaleLockInPlace's docstring), so this
+      // check is an optimization, not a correctness requirement.
+      //
+      // Deliberately NOT self-healing an abandoned gate here: a stat-then-act
+      // cleanup (age+pid check, then unlink) has the exact same TOCTOU shape
+      // as the original bug — between the check and the unlink, the real
+      // holder can release the gate normally and a brand-new claimer can
+      // acquire it via `wx`, and the cleanup would then delete that live
+      // gate, letting a second claimer in. Fencing that properly means
+      // reimplementing the same rename-and-verify dance this fix removed in
+      // favor of the simpler in-place claim — not worth it for a window this
+      // narrow: the gate is only ever held for a handful of synchronous fs
+      // calls (no work happens while holding it), so a crash exactly there is
+      // far rarer than a crash during the real critical section, which this
+      // helper already only guards with a timeout, not a lock-specific
+      // self-heal. An abandoned gate degrades to the SAME fail-open path as
+      // any other unavailability here: callers wait out `timeoutMs` and then
+      // run with held=false (see the docstring's fail-open philosophy).
       const until = Date.now() + waitMs;
       while (Date.now() < until) { /* spin */ }
       continue;
@@ -160,9 +165,9 @@ function withFileLock(lockPath, fn, opts = {}) {
         const staleByAge = Date.now() - st.mtimeMs > staleMs;
         // Both signals must agree — see docstring above.
         if (staleByAge && !pidAlive(readLockPid(lockPath))) {
-          if (breakStaleLock(lockPath, stealGatePath, staleMs)) continue; // retry the wx create immediately
+          if (claimStaleLockInPlace(lockPath, stealGatePath, staleMs)) { held = true; break; }
         }
-      } catch { /* vanished or lost the steal race — fall through and retry */ }
+      } catch { /* vanished or lost the claim race — fall through and retry */ }
       // Busy-wait: this runs at most once per lock acquisition on a
       // millisecond-scale critical section, so a short synchronous spin is
       // simpler than making the whole write path async.
@@ -173,8 +178,9 @@ function withFileLock(lockPath, fn, opts = {}) {
   try {
     return fn(held);
   } finally {
-    // Only ever released when THIS process won the `wx` create above, so this
-    // can't remove a lock belonging to someone else.
+    // held is only ever true when THIS process itself just won the lock —
+    // either the `wx` create above, or claimStaleLockInPlace()'s in-place
+    // overwrite — so this can't remove a lock belonging to someone else.
     if (held) { try { fs.unlinkSync(lockPath); } catch { /* best-effort */ } }
   }
 }
