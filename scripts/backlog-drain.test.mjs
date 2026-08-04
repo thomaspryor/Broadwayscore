@@ -103,3 +103,103 @@ test('reconcileOutcomes: skips a taskId already resolved (idempotent across tick
   const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries, new Date('2026-07-30T11:30:00Z'));
   assert.equal(out.length, 0);
 });
+
+// ── card-stranded (task #1004) ──────────────────────────────────────────────
+// 2026-08-04: two of four drain sessions did all the work, hit a gate only the
+// owner could clear, and were scored card-fail. The ledger then read "$14.74,
+// zero completions", which sent the next session hunting a red trunk that did
+// not exist. A finished session that left commits on its job branch is now
+// recorded as its own outcome, so the money and the diagnosis stay honest.
+
+test('reconcileOutcomes: job-done + card open + commits on the job branch is card-stranded, not card-fail', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '30', jobId: '30-msdaql3v' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '30', jobId: '30-msdaql3v', costUSD: 9.34 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '30', subject: 'Rage clicks', contentHash: 'abc' },
+  ];
+  const tasksById = new Map([['30', { id: '30', status: 'in_progress' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 2 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'card-stranded');
+  assert.equal(out[0].usd, 9.34);
+  assert.equal(out[0].strandedCommits, 2);
+  assert.equal(out[0].strandedBranch, 'job/30-msdaql3v');
+  assert.match(out[0].note, /blocked at the landing gate/);
+});
+
+test('reconcileOutcomes: a finished session with NO commits is still a plain card-fail', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '31', jobId: '31-x' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '31', jobId: '31-x', costUSD: 1.2 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '31', subject: 'x', contentHash: 'abc' },
+  ];
+  const tasksById = new Map([['31', { id: '31', status: 'pending' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 0 });
+  assert.equal(out[0].event, 'card-fail');
+  assert.equal(out[0].strandedCommits, undefined);
+});
+
+test('reconcileOutcomes: a card already resolved as card-stranded is not re-reconciled', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '30', jobId: '30-msdaql3v' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '30', jobId: '30-msdaql3v', costUSD: 9.34 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '30', subject: 'x', contentHash: 'abc' },
+    { ts: '2026-08-04T12:00:00Z', event: 'card-stranded', cardId: '30', contentHash: 'abc', usd: 9.34 },
+  ];
+  const tasksById = new Map([['30', { id: '30', status: 'in_progress' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T13:00:00Z'), { strandedCommits: () => 2 });
+  assert.equal(out.length, 0);
+});
+
+// ── re-dispatch accounting (ship-check, Codex 2026-08-04) ───────────────────
+// An outcome resolves the dispatch it FOLLOWS, not the card forever. The old
+// card-id Set meant a second dispatch of the same card produced no outcome at
+// all — no spend accounting, no attempt memory, no retry ceiling.
+
+test('reconcileOutcomes: a SECOND dispatch after an earlier outcome still reconciles', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '7', jobId: '7-a' },
+    { ts: '2026-08-04T11:30:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '7', jobId: '7-a', costUSD: 2 },
+    { ts: '2026-08-04T15:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '7', jobId: '7-b' },
+    { ts: '2026-08-04T15:30:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '7', jobId: '7-b', costUSD: 3 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '7', subject: 'x', contentHash: 'h1' },
+    { ts: '2026-08-04T11:35:00Z', event: 'card-fail', cardId: '7', contentHash: 'h1', usd: 2 },
+    // owner edited the card, it re-entered the pool, drain dispatched again
+    { ts: '2026-08-04T15:00:00Z', event: 'drain-dispatch', taskId: '7', subject: 'x', contentHash: 'h2' },
+  ];
+  const tasksById = new Map([['7', { id: '7', status: 'completed' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T16:00:00Z'), { strandedCommits: () => 0 });
+  assert.equal(out.length, 1, 'the second dispatch must produce its own outcome');
+  assert.equal(out[0].event, 'card-pass');
+  assert.equal(out[0].usd, 3);
+  assert.equal(out[0].contentHash, 'h2');
+});
+
+test('reconcileOutcomes: two unresolved dispatches of the same card in one tick emit one outcome each, not one total', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '8', jobId: '8-a' },
+    { ts: '2026-08-04T11:30:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '8', jobId: '8-a', costUSD: 1 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '8', subject: 'x', contentHash: 'h1' },
+    { ts: '2026-08-04T11:00:01Z', event: 'drain-dispatch', taskId: '8', subject: 'x', contentHash: 'h1' },
+  ];
+  const tasksById = new Map([['8', { id: '8', status: 'pending' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 0 });
+  // Both dispatches correlate to the same single job, so exactly one outcome —
+  // the in-pass `emitted` guard stops the second from double-charging it.
+  assert.equal(out.length, 1);
+});

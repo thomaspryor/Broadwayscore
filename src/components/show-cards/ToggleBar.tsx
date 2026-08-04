@@ -3,6 +3,8 @@
 interface ToggleBarOption<T extends string> {
   value: T;
   label: string;
+  /** Tooltip explaining what clicking this option does (esp. sort direction toggles) */
+  title?: string;
 }
 
 interface ToggleBarProps<T extends string> {
@@ -43,7 +45,8 @@ export function ToggleBar<T extends string>({
             key={option.value}
             onClick={() => onChange(option.value)}
             aria-pressed={value === option.value}
-            className={`${pillSize} rounded-full transition-all ${
+            title={option.title}
+            className={`${pillSize} rounded-full cursor-pointer transition-all active:scale-95 ${
               value === option.value
                 ? 'bg-brand text-gray-900 shadow-glow-sm'
                 : 'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
@@ -75,10 +78,11 @@ export function ToggleBar<T extends string>({
           key={option.value}
           onClick={() => onChange(option.value)}
           aria-pressed={value === option.value}
-          className={`${btnSize} rounded text-[11px] font-medium uppercase tracking-wider transition-colors whitespace-nowrap ${
+          title={option.title}
+          className={`${btnSize} rounded text-[11px] font-medium uppercase tracking-wider cursor-pointer transition-colors active:scale-95 whitespace-nowrap ${
             value === option.value
-              ? 'text-brand bg-brand/10 sm:bg-transparent'
-              : 'text-gray-300 hover:text-white'
+              ? 'text-brand bg-brand/10 sm:bg-transparent underline decoration-dotted decoration-brand/60'
+              : 'text-gray-300 hover:text-white hover:underline hover:decoration-dotted'
           }`}
         >
           {option.label}

@@ -1,4 +1,5 @@
 scripts/audit-alert-senders.test.mjs
+scripts/audit-audience-buzz-contamination.test.mjs
 scripts/audit-card-verifiability.test.mjs
 scripts/audit-cross-outlet-attributions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
@@ -52,6 +53,7 @@ tests/unit/atomic-shows-write.test.mjs
 tests/unit/audience-buzz-write-guard.test.mjs
 tests/unit/audience-coverage-gaps.test.mjs
 tests/unit/audience-full-snapshot.test.mjs
+tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
@@ -230,7 +232,6 @@ tests/unit/nyt-review-extraction.test.mjs
 tests/unit/nytheater-openings.test.mjs
 tests/unit/ob-candidates-digest.test.mjs
 tests/unit/ob-cross-validation.test.mjs
-tests/unit/critic-listing-promotion.test.mjs
 tests/unit/off-broadway-venue-fallback.test.mjs
 tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
