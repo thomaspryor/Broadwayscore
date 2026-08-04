@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-28T06:07:41.373Z",
+    "generatedAt": "2026-08-04T06:10:59.663Z",
     "threshold": 40,
-    "showsScanned": 1747,
-    "reviewsScanned": 34029,
-    "duplicatesFound": 78,
+    "showsScanned": 1771,
+    "reviewsScanned": 34104,
+    "duplicatesFound": 73,
     "byMethod": {
       "similarity": [
         {
@@ -248,21 +248,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "funny-girl-2022",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "collider--maggie-lovitt.json",
-          "secondaryOutlet": "Collider",
-          "secondaryCritic": "Maggie Lovitt",
-          "primaryScore": 79,
-          "secondaryScore": 40,
-          "scoreDiff": 39,
-          "textSource": "fullText"
-        },
-        {
           "showId": "ghost-the-musical-2012",
           "method": "similarity",
           "similarity": 77,
@@ -320,6 +305,21 @@
           "primaryScore": 66,
           "secondaryScore": 73,
           "scoreDiff": 7,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "gypsy-2024",
+          "method": "similarity",
+          "similarity": 97,
+          "primaryFile": "usatoday--charles-isherwood.json",
+          "primaryOutlet": "USA Today",
+          "primaryCritic": "Charles Isherwood",
+          "secondaryFile": "tennessean--patrick-ryan.json",
+          "secondaryOutlet": "The Tennessean",
+          "secondaryCritic": "Patrick Ryan",
+          "primaryScore": 89,
+          "secondaryScore": 89,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -788,21 +788,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
-          "method": "similarity",
-          "similarity": 77,
-          "primaryFile": "whatsonstage--alex-wood.json",
-          "primaryOutlet": "WhatsOnStage",
-          "primaryCritic": "Alex Wood",
-          "secondaryFile": "theatermania--pete-hempstead.json",
-          "secondaryOutlet": "TheaterMania",
-          "secondaryCritic": "Pete Hempstead",
-          "primaryScore": 92,
-          "secondaryScore": 84,
-          "scoreDiff": 8,
-          "textSource": "fullText"
-        },
-        {
           "showId": "sylvia-2015",
           "method": "similarity",
           "similarity": 89,
@@ -906,21 +891,6 @@
           "secondaryScore": 76,
           "scoreDiff": 1,
           "textSource": "fullText"
-        },
-        {
-          "showId": "the-waverly-gallery-2018",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "chicagotribune--matt-windman.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Matt Windman",
-          "secondaryFile": "nydailynews--chris-jones.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 87,
-          "secondaryScore": 84,
-          "scoreDiff": 3,
-          "textSource": "fullText"
         }
       ],
       "similarity+llm": [
@@ -1015,6 +985,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "jitney-2017",
+          "method": "similarity+llm",
+          "similarity": 60,
+          "primaryFile": "front-row-center--tulis-mccall.json",
+          "primaryOutlet": "Front Row Center",
+          "primaryCritic": "Tulis McCall",
+          "secondaryFile": "nytg--unknown.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 67,
+          "secondaryScore": 60,
+          "scoreDiff": 7,
+          "textSource": "fullText"
+        },
+        {
           "showId": "lobby-hero-2018",
           "method": "similarity+llm",
           "similarity": 57,
@@ -1033,14 +1018,14 @@
           "showId": "oh-mary-west-end-2025",
           "method": "similarity+llm",
           "similarity": 45,
-          "primaryFile": "standard--nick-curtis.json",
-          "primaryOutlet": "Evening Standard",
-          "primaryCritic": "Nick Curtis",
-          "secondaryFile": "guardian-uk--unknown.json",
-          "secondaryOutlet": "Guardian Uk",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 87,
-          "secondaryScore": 90,
+          "primaryFile": "guardian-uk--unknown.json",
+          "primaryOutlet": "Guardian Uk",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "standard--nick-curtis.json",
+          "secondaryOutlet": "Evening Standard",
+          "secondaryCritic": "Nick Curtis",
+          "primaryScore": 90,
+          "secondaryScore": 87,
           "scoreDiff": 3,
           "textSource": "fullText"
         },
@@ -1092,21 +1077,6 @@
       ],
       "fingerprint": [
         {
-          "showId": "glengarry-glen-ross-west-end-2026",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "wsj--unknown.json",
-          "primaryOutlet": "The Wall Street Journal",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "british-theatre--susan-novak.json",
-          "secondaryOutlet": "British Theatre Guide",
-          "secondaryCritic": "Susan Novak",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "next-fall-2010",
           "method": "fingerprint",
           "similarity": 100,
@@ -1135,51 +1105,6 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "latimes--unknown.json",
-          "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "broadwayworld--harlan-alexander-cohen.json",
-          "secondaryOutlet": "BroadwayWorld",
-          "secondaryCritic": "Harlan     Alexander Cohen",
-          "primaryScore": null,
-          "secondaryScore": 84,
-          "scoreDiff": 84,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "stranger-things-the-first-shadow-west-end-2023",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "timeout--adam-feldman.json",
-          "primaryOutlet": "Time Out New York",
-          "primaryCritic": "Adam Feldman",
-          "secondaryFile": "timeout-london--adam-feldman.json",
-          "secondaryOutlet": "Time Out London",
-          "secondaryCritic": "Adam Feldman",
-          "primaryScore": null,
-          "secondaryScore": 59,
-          "scoreDiff": 59,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-producers-west-end-2025",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "timeout--andrzej-lukowski.json",
-          "primaryOutlet": "TimeOut",
-          "primaryCritic": "Andrzej Lukowski",
-          "secondaryFile": "timeout-london--andrzej-lukowski.json",
-          "secondaryOutlet": "Time Out London",
-          "secondaryCritic": "Andrzej Lukowski",
-          "primaryScore": null,
-          "secondaryScore": 74,
-          "scoreDiff": 74,
-          "textSource": "fullText"
         }
       ]
     }
@@ -1516,21 +1441,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "funny-girl-2022",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "collider--maggie-lovitt.json",
-      "secondaryOutlet": "Collider",
-      "secondaryCritic": "Maggie Lovitt",
-      "primaryScore": 79,
-      "secondaryScore": 40,
-      "scoreDiff": 39,
-      "textSource": "fullText"
-    },
-    {
       "showId": "ghost-the-musical-2012",
       "method": "similarity",
       "similarity": 77,
@@ -1561,21 +1471,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "wsj--unknown.json",
-      "primaryOutlet": "The Wall Street Journal",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "british-theatre--susan-novak.json",
-      "secondaryOutlet": "British Theatre Guide",
-      "secondaryCritic": "Susan Novak",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "grand-horizons-2020",
       "method": "similarity",
       "similarity": 71,
@@ -1603,6 +1498,21 @@
       "primaryScore": 66,
       "secondaryScore": 73,
       "scoreDiff": 7,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "gypsy-2024",
+      "method": "similarity",
+      "similarity": 97,
+      "primaryFile": "usatoday--charles-isherwood.json",
+      "primaryOutlet": "USA Today",
+      "primaryCritic": "Charles Isherwood",
+      "secondaryFile": "tennessean--patrick-ryan.json",
+      "secondaryOutlet": "The Tennessean",
+      "secondaryCritic": "Patrick Ryan",
+      "primaryScore": 89,
+      "secondaryScore": 89,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -1708,6 +1618,21 @@
       "primaryScore": 44,
       "secondaryScore": 43,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "jitney-2017",
+      "method": "similarity+llm",
+      "similarity": 60,
+      "primaryFile": "front-row-center--tulis-mccall.json",
+      "primaryOutlet": "Front Row Center",
+      "primaryCritic": "Tulis McCall",
+      "secondaryFile": "nytg--unknown.json",
+      "secondaryOutlet": "New York Theatre Guide",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 67,
+      "secondaryScore": 60,
+      "scoreDiff": 7,
       "textSource": "fullText"
     },
     {
@@ -1924,14 +1849,14 @@
       "showId": "oh-mary-west-end-2025",
       "method": "similarity+llm",
       "similarity": 45,
-      "primaryFile": "standard--nick-curtis.json",
-      "primaryOutlet": "Evening Standard",
-      "primaryCritic": "Nick Curtis",
-      "secondaryFile": "guardian-uk--unknown.json",
-      "secondaryOutlet": "Guardian Uk",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 87,
-      "secondaryScore": 90,
+      "primaryFile": "guardian-uk--unknown.json",
+      "primaryOutlet": "Guardian Uk",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "standard--nick-curtis.json",
+      "secondaryOutlet": "Evening Standard",
+      "secondaryCritic": "Nick Curtis",
+      "primaryScore": 90,
+      "secondaryScore": 87,
       "scoreDiff": 3,
       "textSource": "fullText"
     },
@@ -2131,51 +2056,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "latimes--unknown.json",
-      "primaryOutlet": "Los Angeles Times (Charles McNulty)*",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "broadwayworld--harlan-alexander-cohen.json",
-      "secondaryOutlet": "BroadwayWorld",
-      "secondaryCritic": "Harlan     Alexander Cohen",
-      "primaryScore": null,
-      "secondaryScore": 84,
-      "scoreDiff": 84,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "timeout--adam-feldman.json",
-      "primaryOutlet": "Time Out New York",
-      "primaryCritic": "Adam Feldman",
-      "secondaryFile": "timeout-london--adam-feldman.json",
-      "secondaryOutlet": "Time Out London",
-      "secondaryCritic": "Adam Feldman",
-      "primaryScore": null,
-      "secondaryScore": 59,
-      "scoreDiff": 59,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "method": "similarity",
-      "similarity": 77,
-      "primaryFile": "whatsonstage--alex-wood.json",
-      "primaryOutlet": "WhatsOnStage",
-      "primaryCritic": "Alex Wood",
-      "secondaryFile": "theatermania--pete-hempstead.json",
-      "secondaryOutlet": "TheaterMania",
-      "secondaryCritic": "Pete Hempstead",
-      "primaryScore": 92,
-      "secondaryScore": 84,
-      "scoreDiff": 8,
-      "textSource": "fullText"
-    },
-    {
       "showId": "sylvia-2015",
       "method": "similarity",
       "similarity": 89,
@@ -2293,36 +2173,6 @@
       "primaryScore": 56,
       "secondaryScore": 62,
       "scoreDiff": 6,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "timeout--andrzej-lukowski.json",
-      "primaryOutlet": "TimeOut",
-      "primaryCritic": "Andrzej Lukowski",
-      "secondaryFile": "timeout-london--andrzej-lukowski.json",
-      "secondaryOutlet": "Time Out London",
-      "secondaryCritic": "Andrzej Lukowski",
-      "primaryScore": null,
-      "secondaryScore": 74,
-      "scoreDiff": 74,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-waverly-gallery-2018",
-      "method": "similarity",
-      "similarity": 79,
-      "primaryFile": "chicagotribune--matt-windman.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Matt Windman",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "Chris Jones",
-      "primaryScore": 87,
-      "secondaryScore": 84,
-      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
