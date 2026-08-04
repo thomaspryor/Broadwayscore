@@ -96,13 +96,17 @@ test('buildTicketQuery uses real venues but not neighborhood placeholders', () =
 // Task #1002 — the live regression: a West End show (Old Vic) carried the US
 // ticketmaster.com "A Christmas Carol (NY)" artist page. Title-matching alone
 // accepts it; only the storefront's region tells the two productions apart.
-test('showRegion reads market first, category as fallback', () => {
+test('showRegion reads market first, category as fallback, and stays null when not confidently known', () => {
   assert.equal(showRegion({ market: 'west-end' }), 'uk');
   assert.equal(showRegion({ market: 'off-west-end' }), 'uk');
   assert.equal(showRegion({ category: 'west-end' }), 'uk');
   assert.equal(showRegion({ market: 'broadway' }), 'us');
   assert.equal(showRegion({ category: 'off-broadway' }), 'us');
-  assert.equal(showRegion({}), 'us');
+  // `regional` spans US houses (Arena Stage) AND any future UK regional, so it
+  // must NOT default to 'us' — that would reject a legitimate .co.uk link.
+  assert.equal(showRegion({ market: 'regional', category: 'regional' }), null);
+  assert.equal(showRegion({ market: 'some-market-we-have-not-learned-yet' }), null);
+  assert.equal(showRegion({}), null);
 });
 
 test('isRegionMismatch rejects cross-Atlantic storefronts, allows same-market and global hosts', () => {
@@ -116,11 +120,21 @@ test('isRegionMismatch rejects cross-Atlantic storefronts, allows same-market an
   assert.equal(isRegionMismatch(ukTm, weShow), false);
   assert.equal(isRegionMismatch(usTm, bwShow), false);
   assert.equal(isRegionMismatch('https://www.telecharge.com/x', weShow), true);
-  // Global / multi-market hosts carry no region and must never be rejected.
+  // TodayTix is one domain per market, partitioned by path — same failure
+  // shape as Ticketmaster, just hidden behind a multi-market host.
   assert.equal(isRegionMismatch('https://www.todaytix.com/london/shows/1-x', weShow), false);
   assert.equal(isRegionMismatch('https://www.todaytix.com/nyc/shows/1-x', bwShow), false);
+  assert.equal(isRegionMismatch('https://www.todaytix.com/nyc/shows/1-x', weShow), true);
+  assert.equal(isRegionMismatch('https://www.todaytix.com/london/shows/1-x', bwShow), true);
+  // Unrecognised city segment → unknown, not a guess.
+  assert.equal(isRegionMismatch('https://www.todaytix.com/tokyo/shows/1-x', weShow), false);
+  // Genuinely global hosts carry no region and must never be rejected.
   assert.equal(isRegionMismatch('https://www.eventbrite.com/e/1', weShow), false);
   assert.equal(isRegionMismatch('not a url', weShow), false);
+  // Unknown-region show → no constraint in either direction.
+  const regional = { market: 'regional', category: 'regional' };
+  assert.equal(isRegionMismatch(usTm, regional), false);
+  assert.equal(isRegionMismatch(ukTm, regional), false);
 });
 
 test('pickTicketUrl skips a wrong-region result and takes the right-region one', () => {
@@ -141,4 +155,12 @@ test('pickTicketUrl returns null when the only match is on the wrong storefront'
     { url: 'https://www.ticketmaster.com/a-christmas-carol-ny-tickets/artist/2923062', title: 'A Christmas Carol Tickets' },
   ];
   assert.equal(pickTicketUrl(results, show), null);
+});
+
+test('market wins over a conflicting category (the "market first" contract, not just documented)', () => {
+  // Corrupt/disagreeing pair: market says Broadway, category says West End.
+  // The stronger field must decide, or a data-entry slip silently flips the
+  // region and starts rejecting correct links.
+  assert.equal(showRegion({ market: 'broadway', category: 'west-end' }), 'us');
+  assert.equal(showRegion({ market: 'west-end', category: 'broadway' }), 'uk');
 });

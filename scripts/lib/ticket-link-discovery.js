@@ -36,23 +36,60 @@ const TICKETING_PLATFORMS = [
   { host: 'ticketsource.co.uk', platform: 'TicketSource', region: 'uk' },
 ];
 
-// UK markets/categories in shows.json. Everything else (broadway,
-// off-broadway, regional US) is treated as 'us'.
+// Known-region markets/categories in shows.json. Deliberately NOT exhaustive:
+// `regional` covers both US regional houses (Arena Stage, La Jolla) and any
+// future UK regional (Chichester, Manchester), so it stays unknown rather than
+// defaulting to 'us' and falsely rejecting a legitimate ticketsource.co.uk
+// link. Same for a market this list has not learned yet.
 const UK_MARKETS = new Set(['west-end', 'off-west-end']);
+const US_MARKETS = new Set(['broadway', 'off-broadway']);
 
-/** 'uk' | 'us' for a shows.json entry — market first, category as fallback. */
+/**
+ * 'uk' | 'us' | null for a shows.json entry — market first, category as
+ * fallback. null means "not confidently known", which imposes no constraint.
+ */
 function showRegion(show) {
   const market = String((show && show.market) || '').toLowerCase();
   const category = String((show && show.category) || '').toLowerCase();
-  return UK_MARKETS.has(market) || UK_MARKETS.has(category) ? 'uk' : 'us';
+  // market genuinely wins: category is consulted only when market says nothing,
+  // so a corrupt {market:'broadway', category:'west-end'} resolves to 'us'
+  // rather than letting the weaker field override the stronger one.
+  if (UK_MARKETS.has(market)) return 'uk';
+  if (US_MARKETS.has(market)) return 'us';
+  if (UK_MARKETS.has(category)) return 'uk';
+  if (US_MARKETS.has(category)) return 'us';
+  return null;
 }
 
-/** Region-locked host for a URL, or null when the host serves both markets. */
+// TodayTix serves every market from one domain but partitions by the first
+// path segment (/london/shows/…, /nyc/shows/…). Without this a /nyc link on a
+// West End show passes the host check untouched — the same failure shape as the
+// Ticketmaster one, just hidden behind a multi-market host.
+const TODAYTIX_UK_CITIES = new Set(['london']);
+
+// TodayTix US city segments seen in the corpus. Kept as an allow-list so an
+// unfamiliar segment reads as "unknown" (no constraint) instead of "US".
+const TODAYTIX_US_CITIES = new Set([
+  'nyc', 'chicago', 'sf', 'la', 'boston', 'dc', 'philadelphia', 'seattle',
+  'houston', 'atlanta', 'dallas', 'san-diego', 'denver', 'nj',
+]);
+
+/**
+ * Region a URL is locked to, or null when it can serve either market.
+ * Host-level first, then per-platform path partitions.
+ */
 function urlRegion(url) {
   const host = hostOf(url);
   if (!host) return null;
   const platform = TICKETING_PLATFORMS.find((p) => hostMatches(host, p.host));
-  return (platform && platform.region) || null;
+  if (platform && platform.region) return platform.region;
+  if (platform && platform.host === 'todaytix.com') {
+    const city = ((String(url).match(/todaytix\.com\/([a-z-]+)\//i) || [])[1] || '').toLowerCase();
+    if (TODAYTIX_UK_CITIES.has(city)) return 'uk';
+    if (TODAYTIX_US_CITIES.has(city)) return 'us';
+    return null; // unrecognised segment → unknown, never a guess
+  }
+  return null;
 }
 
 /**
@@ -64,8 +101,11 @@ function urlRegion(url) {
  */
 function isRegionMismatch(url, show) {
   const linkRegion = urlRegion(url);
-  if (!linkRegion) return false;
-  return linkRegion !== showRegion(show);
+  const region = showRegion(show);
+  // Either side unknown → no constraint. Only a positive us-vs-uk conflict
+  // rejects, so the guard can never refuse a link it merely fails to classify.
+  if (!linkRegion || !region) return false;
+  return linkRegion !== region;
 }
 
 // Institutional venues that sell first-party from their own domain. Extend as

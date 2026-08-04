@@ -70,24 +70,33 @@ function stripTrivial(u) {
 }
 
 /**
- * Only real show directories. `_`-prefixed top-level dirs are the corpus's
- * non-show buckets (`_pending/` quarantine, `_superseded-misattributed/`
- * tombstones) — the same convention locks-index.js SHOW_DIR_SKIPLIST and
- * review-write-guard.js already encode, and rebuild-all-reviews.js enforces
- * from the other side by skipping any dir absent from shows.json. Nothing in
- * them reaches scoring.
+ * Non-show buckets under review-texts/ that this audit must not scan.
  *
- * They must be skipped here because a duplicateOf pointer inside a tombstone
- * is a HISTORICAL record: its sibling lives back in the real show dir, so it
- * reads as `sibling-missing` forever and never self-heals. On 2026-08-04 the
- * 27 files task #988 archived into `_superseded-misattributed/` alone pushed
- * the auto-healable count to 32, past the 25 floor, reddening the trunk for
- * every unrelated push — a false spike, not the producer regression the gate
- * exists to catch. Flat-file entries (`show-id--outlet--critic.json`) in a
- * tombstone dir also have no meaningful sibling namespace at all.
+ * `_superseded-misattributed/` is a TOMBSTONE dir: a duplicateOf pointer inside
+ * it is a historical record whose sibling stayed behind in the real show dir,
+ * so it reads as `sibling-missing` forever and never self-heals. On 2026-08-04
+ * the 27 files task #988 archived there pushed the auto-healable count to 32,
+ * past the 25 floor, and reddened the trunk for every unrelated push — a false
+ * spike, not the producer regression this gate exists to catch. Its entries are
+ * also flat (`show-id--outlet--critic.json`), so they have no sibling namespace
+ * to resolve a pointer against in the first place. rebuild-all-reviews.js
+ * already ignores it from the other side (not in shows.json), so nothing in it
+ * reaches scoring.
+ *
+ * `_pending/` is listed for honesty, not effect: it nests one level deeper
+ * (`_pending/<showId>/<file>.json`), so this audit's flat per-dir scan has
+ * always found zero files there. Naming it documents that _pending duplicateOf
+ * pointers are UNCOVERED by this gate rather than implying they were checked.
+ *
+ * Deliberately an explicit list, not a `_`-prefix rule: a future bucket
+ * (`_quarantine/`) should show up as noise here and force a decision, not be
+ * silently exempted. Note locks-index.js SHOW_DIR_SKIPLIST is a DIFFERENT,
+ * narrower list (`_pending` + `.git`) — this is not a shared constant.
  */
+const NON_SHOW_DIRS = new Set(['_pending', '_superseded-misattributed']);
+
 function isShowDir(name) {
-  return !name.startsWith('_') && !name.startsWith('.');
+  return !name.startsWith('.') && !NON_SHOW_DIRS.has(name);
 }
 
 function walkShowDirs(root) {
