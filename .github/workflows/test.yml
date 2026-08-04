@@ -15,6 +15,15 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # Placeholder-venue guard (card 3b2637c5/#994): sanitizeVenueForWrite
+      # (venue-classification.js) reuses isPlaceholderVenue (the census script)
+      # to fail closed on ShowScore neighbourhood-blob venues at write time.
+      # Colocated test lives in tests/unit/ (globbed already); the two .js
+      # source files need explicit listing (no scripts/lib/** broad glob) —
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/venue-classification.js'
+      - 'scripts/audit-placeholder-venues.js'
+      - 'scripts/lib/show-score-status.js'
       # Creative-team SERP verification: shared by the auto-fix write guard and
       # audit-creative-team-serp.js retro-audit. Colocated *.test.mjs runs in the
       # lib-test glob; path-listed so a solo edit triggers CI.

@@ -13,6 +13,7 @@
 
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
+const { isPlaceholderVenue } = require('../audit-placeholder-venues');
 const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
 const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
 
@@ -100,6 +101,27 @@ function isBroadwayCategory(show) {
 /** Off-Broadway category predicate. */
 function isOffBroadwayCategory(show) {
   return !!show && show.category === 'off-broadway';
+}
+
+/**
+ * Write-time guard for the `venue` field (S0-T3, card 3b2637c5/#994).
+ *
+ * ShowScore's `.show-page-v2__info-top-line` element sometimes puts its
+ * neighbourhood-filter link ("Midtown E", "Soho/Tribeca") first instead of
+ * the venue link (scripts/lib/show-score-status.js, scripts/discover-new-shows.js
+ * fetchShowScoreStatus) — that scraped text was flowing straight into
+ * `show.venue`, producing 63 off-broadway shows with a neighbourhood blob or
+ * "TBA" instead of a real venue (scripts/audit-placeholder-venues.js census).
+ *
+ * Fails closed: any value `isPlaceholderVenue` rejects is refused here too —
+ * reuses that predicate rather than re-deriving it (CLAUDE.md §15).
+ *
+ * @param {string|null|undefined} rawVenue
+ * @returns {string|null} the trimmed venue, or null if it's a placeholder/blob
+ */
+function sanitizeVenueForWrite(rawVenue) {
+  if (isPlaceholderVenue(rawVenue).placeholder) return null;
+  return rawVenue.trim();
 }
 
 /**
@@ -230,4 +252,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

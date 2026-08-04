@@ -8,6 +8,7 @@
  */
 
 const { JSDOM } = require('jsdom');
+const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
 
@@ -65,10 +66,13 @@ function extractStatusFromHtml(html) {
     return null;
   }
 
-  // Extract venue
+  // Extract venue. The first <a> in this element is sometimes ShowScore's
+  // neighbourhood-filter link ("Midtown E", "Soho/Tribeca") rather than the
+  // venue link — sanitizeVenueForWrite fails closed on those (card #994).
   const venueLink = topLine.querySelector('a');
   const venueFull = venueLink?.textContent?.trim() || '';
-  const venue = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
+  const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
+  const venue = sanitizeVenueForWrite(venueRaw);
 
   let ssStatus = null;
   let openingDate = null;
