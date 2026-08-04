@@ -366,7 +366,7 @@ function cmdPush(args) {
   if (!release) { console.error('[sync] a sync holds the lock; skipping push'); return { skipped: true }; }
   try {
     const map = readMap(dir);
-    const done = [], skipped = [];
+    const done = [], skipped = [], refused = [];
     for (const [pageId, entry] of Object.entries(map)) {
       if (entry.pushed) continue;
       const task = readTask(dir, entry.taskId);
@@ -378,14 +378,23 @@ function cmdPush(args) {
       // must stay retryable, never be recorded as a completed close
       // (ship-check finding: the sweep would report "marked Done" for a card
       // that is still open, and never try again).
-      if (!dry) { entry.pushed = markCardDone(pageId); }
+      if (!dry) {
+        entry.pushed = markCardDone(pageId);
+        // A refused close is NOT a close: it must not be counted, printed as
+        // "✓ marked Done", or returned in `done` — the operator would read a
+        // still-open card as closed and never look again (second review pass:
+        // the earlier fix set entry.pushed correctly but left this push
+        // unconditional).
+        if (!entry.pushed) { refused.push({ taskId: entry.taskId, name: entry.name, pageId }); continue; }
+      }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
     if (!dry && done.length) writeMap(dir, map);
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by the trunk close gate (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
-    return { listId: listId(args), done, skipped, dry };
+    for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);
+    return { listId: listId(args), done, skipped, refused, dry };
   } finally { release(); }
 }
 

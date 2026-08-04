@@ -160,7 +160,12 @@ const TAP_NOT_OK_RE = /^\s*not ok \d+/;
 // previous `not ok` diagnostic block is over.
 // node --test's own diagnostic fields: `location: '/abs/file.mjs:55:1'`,
 // `stack: |-` frames (`file:///abs/file.mjs:67:12`), `failureType`, etc.
-const TAP_LOCATION_RE = /^\s*(?:location|stack|at\b)|file:\/\//;
+// Anchored on purpose: an unanchored `file://` alternative also matched any
+// assertion payload that happened to contain a repo file URI, which is exactly
+// the false attribution this restriction exists to prevent (second review
+// pass). `location:` alone names the failing test file, which is what a card
+// is answerable for.
+const TAP_LOCATION_RE = /^\s*(?:location|stack|at)\b/;
 const TAP_BLOCK_END_RE = /^\s*(?:ok \d+|# Subtest:|1\.\.\d+|# (?:tests|pass|fail|duration_ms)\b)/;
 
 /**
@@ -187,6 +192,13 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
     });
   };
 
+  // Whether this dump carries gh's "<job>\t<step>\t<ts> msg" framing at all.
+  // When it does, an untabbed line is stray output that belongs to no job, and
+  // must not be read under the previous job's failure scope (second review
+  // pass: a truncated tabbed block followed by an untabbed `location:` line
+  // could otherwise attribute an innocent file). A raw, tab-less log (local
+  // `node --test` output piped in by hand) still parses as before.
+  const hasJobFraming = lines.some((l) => l.job !== null);
   let prevScope = null;
   for (const entry of lines) {
     const msg = entry.message;
@@ -221,10 +233,10 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
     // finding). Marker windows (❌ / ##[error]) stay line-based: those tools
     // print the offending path as prose, not as a field.
     if (inTapFailure) {
-      if (TAP_LOCATION_RE.test(msg)) {
+      if ((entry.job !== null || !hasJobFraming) && TAP_LOCATION_RE.test(msg)) {
         for (const p of pathsInLine(msg)) record(p, entry, context || msg);
       }
-    } else if (markerCountdown > 0) {
+    } else if (markerCountdown > 0 && (entry.job !== null || !hasJobFraming)) {
       for (const p of pathsInLine(msg)) record(p, entry, context || msg);
     }
     if (markerCountdown > 0) markerCountdown--;
@@ -264,6 +276,9 @@ function collectOwnedPaths({ keyFiles = '', changedFiles = [] } = {}) {
 // notion-tasks-sync.js) must be able to tell "the gate said no" apart from
 // "the Notion API broke", and handle only the former gracefully.
 const CLOSE_REFUSED_EXIT_CODE = 5;
+
+// How far ahead of now a snapshot's generatedAt may sit and still be trusted.
+const FUTURE_SKEW_TOLERANCE_H = 5 / 60;
 
 const GATE_REASONS = {
   DISABLED: 'gate-disabled',
@@ -310,7 +325,11 @@ function evaluateCloseGate({
   if (ageH > maxSnapshotAgeH) {
     return allow(GATE_REASONS.STALE_SNAPSHOT, `trunk snapshot is stale (${ageH.toFixed(1)}h old) — closing without a trunk check`);
   }
-  if (ageH < -1) {
+  // 5 minutes of tolerance covers ordinary CI-vs-Mac clock skew; beyond that
+  // the timestamp is not trustworthy, and an untrustworthy timestamp may not
+  // be the basis for BLOCKING a close (second review pass: the old -1h
+  // tolerance let a snapshot up to an hour in the future still refuse).
+  if (ageH < -FUTURE_SKEW_TOLERANCE_H) {
     return allow(GATE_REASONS.STALE_SNAPSHOT, 'trunk snapshot is dated in the future (producer clock bug) — closing without a trunk check');
   }
   if (trunk.state !== 'RED') {
