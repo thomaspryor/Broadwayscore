@@ -1,0 +1,7 @@
+{
+  "_comment": "Ceiling on review-text files whose url is an aggregator listing page while outletId names a real outlet AND which are hidden from validate-review-texts.js by an exclusion flag. Enforced by scripts/audit-aggregator-url-latent.js in test.yml (Lint Workflows). These files are invisible to the zero-tolerance gate until an auto-clear (e.g. wrongProductionAutoCleared) promotes one into the validated population — which is exactly how main went red on 2026-08-04 with no human push involved. See the file header of the audit script.",
+  "latentCeiling": 10,
+  "_measuredAt": "2026-08-04",
+  "_measuredBy": "node scripts/audit-aggregator-url-latent.js --json",
+  "_ratchetNote": "This number may only go DOWN. Growth means a producer just wrote an aggregator listing URL under a real outletId — fix the producer and the file. Raising the ceiling to turn CI green re-arms the trunk failure this guard exists to stop. When files are fixed, lower latentCeiling to the new count (the audit prints a ::notice:: telling you the value)."
+}

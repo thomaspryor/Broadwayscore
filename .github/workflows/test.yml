@@ -583,6 +583,13 @@ on:
       # in a push whose paths never trigger the job that checks it (#1002).
       - 'scripts/audit-duplicate-of-floor.js'
       - 'scripts/.duplicate-of-floor.json'
+      # Same reasoning for the latent aggregator-URL ratchet: guard, its pin, and
+      # the shared predicate the validator also consumes (#1002). A solo edit to
+      # any of the three must run CI or the ceiling could move unchecked.
+      - 'scripts/audit-aggregator-url-latent.js'
+      - 'scripts/.aggregator-url-latent.json'
+      - 'scripts/lib/aggregator-url-latent.js'
+      - 'scripts/validate-review-texts.js'
       - 'scripts/fix-circular-duplicate-pairs.js'
       - 'scripts/dedupe-same-url-bylines.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -3371,6 +3378,29 @@ jobs:
       # still gated: CLAUDE.md §12.8 requires `audit-regex-patterns.js --full`
       # to be run before pushing pattern-array changes (the real-FP guard for
       # the edit itself, which is the case that actually matters).
+
+      - name: Audit — latent aggregator-URL population must not grow
+        # Runs HERE, not in Lint Workflows, because it needs the review-texts
+        # corpus and only this job checks it out.
+        #
+        # On 2026-08-04 main went red with nobody having pushed a bad file.
+        # witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json had
+        # stored the stagedoor.com LISTING url under outletId 'artsdesk' for
+        # months — the zero-tolerance aggregator_url_mismatch error checked by
+        # the step below, which never saw it: the validator skips every review
+        # carrying an exclusion flag, and that file was flagged wrongProduction.
+        # Task #1017's sweep auto-cleared the flag, the file joined the
+        # validated population, and a months-old defect became a trunk failure
+        # with no human in the loop. A corpus scan found 10 MORE files in
+        # exactly that state — 10 unexploded copies of the same incident.
+        # This step ratchets that latent population: it may shrink, never grow.
+        # Growth means a producer just wrote an aggregator listing URL under a
+        # real outletId — fix the producer, not the ceiling.
+        #
+        # if: always() so a preceding data gate failing does not mask it (the
+        # first-failure-masks-the-rest pattern this job has been bitten by).
+        if: always()
+        run: node scripts/audit-aggregator-url-latent.js
 
       - name: Validate review-text files
         if: always()
