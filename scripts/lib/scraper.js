@@ -488,6 +488,28 @@ async function fetchWithScrapingdog(url, options = {}) {
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
   recordSdCall({ host: hostname, fn: stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page')), success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
+
+  // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
+  // (scraping cost v3, S1-T2). Live parity retest (2026-08-03, 30 URLs) found
+  // this exact signature accounted for ~1/3 of didtheylikeit.com's failures,
+  // and every one of them succeeded on a stealth_mode retry — production was
+  // treating this 400 as terminal (§ "4xx is NOT transient" above, which is
+  // true for STRUCTURAL 4xx like DTLI's "URL does not exist", but this one
+  // is SD explicitly telling the caller how to fix it) and falling straight
+  // through to a Bright Data call ~17x the cost. One extra attempt, only when
+  // not already in stealth_mode, so premium/stealth callers can't recurse.
+  // throwOn400 is deliberately dropped on the recursive call (ship-check
+  // finding): fetchJSON's own SD block already does its own "plain 400 ->
+  // try stealth_mode" escalation via that flag. Without stripping it here, a
+  // stealth attempt that ALSO 400s would throw sdStatus=400 back up through
+  // this same call chain, and fetchJSON's catch would think it just saw the
+  // PLAIN tier fail and fire a second, redundant stealth_mode attempt —
+  // ~40 credits on one URL instead of the intended ~11. Returning null lets
+  // fetchJSON's `if (raw && raw.content)` fall through without a throw, so
+  // its manual escalation never redundantly re-fires.
+  if (!stealthMode && !premium && /stealth_mode\s*=\s*true/i.test(lastError.message || '')) {
+    return fetchWithScrapingdog(url, { ...options, stealthMode: true, throwOn400: false });
+  }
   // Reactive quota latch (mirrors _scrapingBeePageExhausted): the /account
   // pre-check is memoized once per process, so credits hitting 0 MID-RUN would
   // otherwise leave every later call paying a doomed SD round-trip (up to 45s)
@@ -517,6 +539,21 @@ async function fetchWithScrapingdog(url, options = {}) {
  */
 async function fetchWithScrapingBee(url, options = {}) {
   if (!SCRAPINGBEE_KEY || _scrapingBeePageExhausted) {
+    return null;
+  }
+
+  // Fire-and-forget (not awaited): mirrors _checkScrapingdogQuotaOnce (SD) —
+  // a live /usage HTTP round-trip must never add latency to the scraping hot
+  // path. checkScrapingBeeCredits() was previously only invoked by scripts
+  // that opted in explicitly (most don't), so _sbCreditsLow stayed false for
+  // the whole process even with the account genuinely exhausted at the
+  // monthly-plan level — every call paid a full doomed round-trip until the
+  // reactive 401/403/429 latch (_scrapingBeePageExhausted) happened to trip
+  // (2026-08-03 cost investigation: SB attempted 86 times at 0% success).
+  // The very first SB call in a process may still proceed before this
+  // resolves — acceptable, matches the SD pattern exactly.
+  checkScrapingBeeCredits();
+  if (_sbCreditsLow) {
     return null;
   }
 

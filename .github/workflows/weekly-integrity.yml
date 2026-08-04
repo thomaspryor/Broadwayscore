@@ -192,6 +192,30 @@ jobs:
           node scripts/check-score-integrity.js
           echo "score_issues=$(cat data/audit/score-integrity.json | jq '.totalIssues')" >> $GITHUB_OUTPUT
 
+      - name: Tier-skip drift audit (scraping cost v3, S1-T4)
+        # continue-on-error (ship-check finding): this step does LIVE network
+        # recovery probes against external domains — a single SD outage or
+        # timeout must not skip the rest of this workflow's unconditional
+        # steps (integrity report, history commit, issue creation).
+        continue-on-error: true
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: |
+          node scripts/audit-tier-skip-drift.js
+
+      - name: Commit tier-skip drift alert state (only if a verdict alerted)
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No drift alert state to commit"
+          else
+            git commit -m "chore: Tier-skip drift audit alert state"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Run integrity check
         id: check
         run: |

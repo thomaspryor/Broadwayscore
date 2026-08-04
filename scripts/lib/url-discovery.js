@@ -387,6 +387,11 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
 }
 
 async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
+  // Fire-and-forget: a process that only ever calls the SERP path (never the
+  // page-fetch fetchWithScrapingBee) would otherwise never trigger the
+  // proactive /usage check, leaving scraper.sbCreditsLow false all run even
+  // with the account genuinely exhausted (task S1-T6, scraping cost v3).
+  if (apiKey) scraper.checkScrapingBeeCredits();
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
   if (_sbSerpCallCount >= SERP_SB_MAX_CALLS_PER_RUN) {
     if (!_sbSerpCapLogged) {
