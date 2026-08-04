@@ -133,7 +133,8 @@ jobs:
         run: |
           for f in data/audit/coverage-adversarial-probe.json \
                    data/audit/coverage-adversarial-probe-trend.jsonl \
-                   data/audit/coverage-adversarial-probe-status.json; do
+                   data/audit/coverage-adversarial-probe-status.json \
+                   data/audit/scraper-spend-ledger.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

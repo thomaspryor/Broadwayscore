@@ -24,6 +24,21 @@ data/audit/stage-latency.jsonl merge=union
 # picking one, so a race between two callers loses zero rows at the git
 # level (each JSON line is independent; duplicates are harmless to read).
 data/audit/alert-router-attempts.jsonl merge=union
+# Bot-only append log (task #784/#752), written by scripts/lib/provider-
+# telemetry.js's recordProviderCall() from many separate CI runners/checkouts
+# (collect-review-texts.yml matrix, gather-reviews.js, opening-night-poller.js,
+# sweep-we-aggregators.js, scrape-thestage-roundups.js, and worktree sessions'
+# own local scraping runs merged in via merge-worktree-to-main.sh's plain `git
+# merge`). Card 3b1637c5 Sprint 3 finding: without a merge driver, two sides
+# independently appending rows is a REAL conflict under plain `git merge`
+# (verified: appending different lines past a common ancestor produces
+# <<<<<<< markers, not a silent merge) — reconcile-merged-json.js only helps
+# the opt-in `git rebase -X theirs` CI path, never a worktree session's bare
+# merge, so a session's own ledger rows either block the merge outright or
+# get silently dropped by whoever resolves the conflict without knowing the
+# union semantics. merge=union concatenates both sides losslessly, same as
+# the other append-only ledgers above.
+data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours
 data/audit/opening-night-completeness-state.json merge=ours

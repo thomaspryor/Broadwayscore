@@ -335,6 +335,28 @@ jobs:
           if [ "${{ inputs.alert_only || 'false' }}" = "true" ]; then DISPATCH_FLAG=""; fi
           node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert $DISPATCH_FLAG
 
+      # discover-opening-night-reviews.js (SERP step above) and scrape-london-
+      # box-office-roundups.js (census refresh step above) both call
+      # url-discovery.js's SERP path, which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784). This job never checked that file out for push before —
+      # every tick (up to 8x/day) discarded its SERP telemetry (Sprint 3,
+      # card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (opening-night-reviews)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
