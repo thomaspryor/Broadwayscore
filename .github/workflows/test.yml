@@ -2546,7 +2546,28 @@ jobs:
     # via resolveJsonModule and breaks without them. Same pattern as unit-tests.
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 15, raised from 5 on 2026-08-04 (task #1002) because 5 was silently
+    # cancelling main.
+    #
+    # THIS IS WHY THE TRUNK LOOKED CHRONICALLY UN-GREEN. A job that hits its
+    # timeout reports `cancelled`, NOT `failure`. GitHub then marks the whole
+    # RUN `cancelled` even when every other job succeeded — and the
+    # consecutive-failure pager only looks at failures, so these runs are
+    # invisible to it. That is the "~17% of main runs end cancelled" class.
+    #
+    # Measured, not guessed: run 30955416405 on merge SHA bdf8c62e41a had
+    # Unit Tests, Data Validation, Lint Workflows, E2E Tests, Design Token
+    # Drift Guard and Test Summary ALL succeed, and was still reported
+    # `cancelled` — solely because this job was killed at 5m17s. The run
+    # before it (30953715470) cancelled this same job too.
+    #
+    # 5 minutes never fit the work: checkout + npm ci + a private core-data
+    # checkout + two generated manifests + TWO tsc passes + next lint + two
+    # audits. unit-tests does strictly less and already gets 10.
+    # Timeouts only bound the worst case — a job that finishes in 4 minutes
+    # still finishes in 4 minutes — so headroom is free and a too-tight bound
+    # costs exactly what it cost here.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
