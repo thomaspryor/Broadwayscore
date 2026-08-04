@@ -2734,6 +2734,19 @@ jobs:
           [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
           node --test "${tests[@]}"
 
+      - name: Repeat file-lock race test 20x (stale-break regression guard)
+        # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test
+        # spawns 6 real child processes; the mutual-exclusion violation it
+        # catches (task #1024) reproduced at ~12% per run, so a single pass
+        # above proves nothing about a regression. Repeat the file standalone
+        # (not the whole scripts/lib/*.test.mjs glob) so a future change to
+        # withFileLock's steal path can't hide behind one lucky run.
+        if: always()
+        run: |
+          for i in $(seq 1 20); do
+            node --test scripts/lib/file-lock.test.mjs || { echo "::error::file-lock race test failed on repeat $i/20"; exit 1; }
+          done
+
       - name: Run pre-push conflict-marker guard test (bash integration)
         # Asserts push-with-retry.sh ABORTS before pushing when a staged file carries
         # a git conflict marker (root-cause fix for the committed-marker corruption
