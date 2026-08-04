@@ -1,21 +1,36 @@
 {
-  "processed": [],
+  "processed": [
+    "now-you-see-me-live-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "now-you-see-me-live-west-end-2026/theatreandtonic--unknown.json",
+    "now-you-see-me-live-west-end-2026/west-end-best-friend--unknown.json"
+  ],
   "failed": [
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "now-you-see-me-live-west-end-2026/guardian--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "now-you-see-me-live-west-end-2026/london-box-office--stuart-king.json",
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "now-you-see-me-live-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "now-you-see-me-live-west-end-2026/theatreandtonic--unknown.json",
+      "now-you-see-me-live-west-end-2026/west-end-best-friend--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-08-04T09:37:59.067Z",
-  "lastProcessed": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+  "lastProcessed": "now-you-see-me-live-west-end-2026/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-08-04T09:38:18.794Z",
@@ -36,6 +51,28 @@
     },
     {
       "t": "2026-08-04T09:38:36.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T09:45:41.051Z",
+      "event": "bb-session",
+      "session": "a1b82411",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T09:45:41.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T09:45:57.735Z",
+      "event": "bb-session",
+      "session": "33597dee",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T09:45:58.388Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

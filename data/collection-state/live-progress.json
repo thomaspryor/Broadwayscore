@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-04T09:39:12.871Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-08-04T09:48:46.644Z",
+  "processed": 3,
+  "failed": 6,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "browserbaseSessions": 2,
@@ -34,6 +34,28 @@
     },
     {
       "t": "2026-08-04T09:38:36.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T09:45:41.051Z",
+      "event": "bb-session",
+      "session": "a1b82411",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T09:45:41.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T09:45:57.735Z",
+      "event": "bb-session",
+      "session": "33597dee",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T09:45:58.388Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
