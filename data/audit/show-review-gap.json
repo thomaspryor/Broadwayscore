@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-04T04:06:25.454Z",
+  "generatedAt": "2026-08-04T07:51:56.021Z",
   "windowDays": 1095,
-  "targets": 23,
-  "auditedThisRun": 13,
-  "carriedForward": 143,
+  "targets": 63,
+  "auditedThisRun": 8,
+  "carriedForward": 148,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 122,
-    "totalMissing": 838,
+    "totalMissing": 853,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 728,
+    "totalFlaggedMisses": 734,
     "totalRecoverable": 16,
     "totalRecovered": 0
   },
@@ -6376,129 +6376,13 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
-        "https://www.timeout.com/london/kids/brainiac-live",
-        "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
-        "https://fairypoweredproductions.com/brainiac-live-review-2/",
-        "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
-        "https://www.pinkprincetheatre.com/post/review-brainiac-live-garrick-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
-        "https://www.adventuresintheatreland.com/post/brainiac-live-garrick-theatre",
-        "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
-        "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
-        "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
-        "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-        "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre"
-      ],
-      "dirFiles": 15,
-      "dirClean": 9,
-      "inReviewsJson": 8,
-      "missing": [
-        {
-          "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
-          "host": "primarytimes.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
-          "host": "minitravellers.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
-          "host": "eastendkids.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thespyinthestalls.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--west-end-theatre.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/64763/shows/brainiac-live/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/kids/brainiac-live",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/kids/brainiac-live"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatre1--london-theatre-1.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre1.com/theatre-news/brainiac-live-uk-tour-2026-commencing-march/"
-            },
-            {
-              "file": "londontheatre1--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre1.com/theatre-news/brainiac-live-uk-tour-2026-commencing-march/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -6532,280 +6416,21 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Brainiac Live\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Brainiac Live\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Brainiac Live\" review garrick",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Brainiac Live Garrick Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Brainiac Live Garrick Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Brainiac Live Garrick Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 15,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
-      "ingestResults": [
-        {
-          "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
-          "host": "primarytimes.co.uk",
-          "outletId": "primarytimes",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803419/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        },
-        {
-          "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
-          "host": "minitravellers.co.uk",
-          "outletId": "minitravellers",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803605/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        },
-        {
-          "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
-          "host": "eastendkids.co.uk",
-          "outletId": "eastendkids",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803616/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "primarytimes.co.uk",
-            "outlet": "primarytimes.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-"
-          },
-          {
-            "outletId": "minitravellers.co.uk",
-            "outlet": "minitravellers.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun"
-          },
-          {
-            "outletId": "eastendkids.co.uk",
-            "outlet": "eastendkids.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/kids/brainiac-live"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
-            "outletId": "chelmsfordtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://fairypoweredproductions.com/brainiac-live-review-2/",
-            "outletId": "fairypoweredproductions.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.pinkprincetheatre.com/post/review-brainiac-live-garrick-theatre",
-            "outletId": "pinkprincetheatre.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.adventuresintheatreland.com/post/brainiac-live-garrick-theatre",
-            "outletId": "adventuresintheatreland.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
-            "outletId": "primarytimes.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
-            "outletId": "minitravellers.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
-            "outletId": "eastendkids.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/kids/brainiac-live",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          }
-        ],
-        "liveCount": 7,
-        "candidateCount": 15
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -16037,13 +15662,106 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
+      "aggregatorListedUrls": [
+        "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+        "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
+        "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
+        "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/",
+        "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
+        "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+        "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+        "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+        "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+        "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
+        "http://www.stagetopage.co.uk/2026/08/dinosaur-world-live-review.html"
+      ],
+      "dirFiles": 9,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
+          "host": "seetickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+          "host": "suburban-mum.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+          "host": "kensingtonmums.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+          "host": "stagedoor.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+          "host": "troubadourtheatres.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "serpCensus": true
+        },
+        {
+          "url": "http://www.stagetopage.co.uk/2026/08/dinosaur-world-live-review.html",
+          "host": "stagetopage.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--west-end-theatre.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+          "host": "wembleypark.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wembleypark--wembley-park.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -16077,21 +15795,281 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dinosaur World Live\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dinosaur World Live\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dinosaur World Live\" review troubadour",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dinosaur World Live Troubadour Wembley Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
+      "ingestResults": [
+        {
+          "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
+          "host": "seetickets.com",
+          "outletId": "seetickets",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+          "host": "suburban-mum.com",
+          "outletId": "suburban-mum",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+          "host": "kensingtonmums.co.uk",
+          "outletId": "kensingtonmums",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+          "host": "stagedoor.com",
+          "outletId": "stagedoor",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~816262/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+          "host": "troubadourtheatres.com",
+          "outletId": "troubadourtheatres",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~816608/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
+          "host": "fairypoweredproductions.com",
+          "outletId": "fairypoweredproductions"
+        },
+        {
+          "url": "http://www.stagetopage.co.uk/2026/08/dinosaur-world-live-review.html",
+          "host": "stagetopage.co.uk",
+          "outletId": "stagetopage"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "seetickets.com",
+            "outlet": "seetickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865"
+          },
+          {
+            "outletId": "suburban-mum.com",
+            "outlet": "suburban-mum.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/"
+          },
+          {
+            "outletId": "kensingtonmums.co.uk",
+            "outlet": "kensingtonmums.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/"
+          },
+          {
+            "outletId": "stagedoor.com",
+            "outlet": "stagedoor.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews"
+          },
+          {
+            "outletId": "troubadourtheatres.com",
+            "outlet": "troubadourtheatres.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr"
+          },
+          {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/"
+          },
+          {
+            "outletId": "stagetopage.co.uk",
+            "outlet": "stagetopage.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.stagetopage.co.uk/2026/08/dinosaur-world-live-review.html"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/"
+          },
+          {
+            "outletId": "wembleypark.com",
+            "outlet": "wembleypark.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
+            "outletId": "seetickets.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
+            "outletId": "suburban-mum.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+            "outletId": "kensingtonmums.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+            "outletId": "stagedoor.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+            "outletId": "troubadourtheatres.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
+            "outletId": "fairypoweredproductions",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "http://www.stagetopage.co.uk/2026/08/dinosaur-world-live-review.html",
+            "outletId": "stagetopage.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
+            "outletId": "wembleypark.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          }
+        ],
+        "liveCount": 3,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "dog-man-the-musical-west-end-2026",
@@ -16101,6 +16079,18 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+        "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
+        "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
+        "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
+        "https://www.showify.uk/shows/dog-man-the-musical",
+        "https://southbank.london/whats-on/dog-man-the-musical",
+        "https://www.timeout.com/london/theatre/dog-man-the-musical",
+        "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+        "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+        "https://www.londonboxoffice.co.uk/dog-man-tickets",
+        "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
+        "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
         "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
         "https://www.timeout.com/london/theatre/the-truth-review",
         "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
@@ -16111,6 +16101,60 @@
       "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+          "host": "bookitplease.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
+          "host": "showpass.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.showify.uk/shows/dog-man-the-musical",
+          "host": "showify.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+          "host": "whattheredheadsaid.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "serpCensus": true
+        },
+        {
+          "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
+          "host": "muddystilettos.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
+          "host": "southlondon.co.uk",
+          "knownOutletId": "south-london",
+          "serpCensus": true
+        },
         {
           "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
           "host": "theguardian.com",
@@ -16163,6 +16207,60 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
+          "host": "southbankcentre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "southbankcentre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://southbank.london/whats-on/dog-man-the-musical",
+          "host": "southbank.london",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "southbank--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://southbank.london/whats-on/dog-man-the-musical"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dog-man-the-musical",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/theatre/the-truth-review",
           "host": "timeout.com",
@@ -16241,47 +16339,216 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dog Man - The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dog Man - The Musical\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dog Man - The Musical\" review queen",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dog Man - The Musical Queen Elizabeth Hall - Southbank Centre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "ingestResults": [
         {
-          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
+          "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+          "host": "bookitplease.com",
+          "outletId": "bookitplease",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~815639/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
           "provisional": false,
           "ok": true,
           "reason": null
+        },
+        {
+          "url": "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
+          "host": "showpass.com",
+          "outletId": "showpass",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~815666/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.showify.uk/shows/dog-man-the-musical",
+          "host": "showify.uk",
+          "outletId": "showify",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~815672/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+          "host": "whattheredheadsaid.com",
+          "outletId": "whattheredheadsaid",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect"
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office"
+        },
+        {
+          "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
+          "host": "muddystilettos.co.uk",
+          "outletId": "muddystilettos"
+        },
+        {
+          "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
+          "host": "southlondon.co.uk",
+          "outletId": "south-london"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian"
         },
         {
           "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
           "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "outletId": "standard"
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
           "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "outletId": "london-theatre"
         },
         {
           "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner",
           "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803985/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "outletId": "thestage"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "bookitplease.com",
+            "outlet": "bookitplease.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/"
+          },
+          {
+            "outletId": "showpass.com",
+            "outlet": "showpass.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/"
+          },
+          {
+            "outletId": "showify.uk",
+            "outlet": "showify.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.showify.uk/shows/dog-man-the-musical"
+          },
+          {
+            "outletId": "whattheredheadsaid.com",
+            "outlet": "whattheredheadsaid.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/"
+          },
+          {
+            "outletId": "londontheatredirect.com",
+            "outlet": "londontheatredirect.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets"
+          },
+          {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/dog-man-tickets"
+          },
+          {
+            "outletId": "muddystilettos.co.uk",
+            "outlet": "muddystilettos.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/"
+          },
+          {
+            "outletId": "south-london",
+            "outlet": "south-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/"
+          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
@@ -16311,6 +16578,27 @@
             "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
           },
           {
+            "outletId": "southbankcentre.co.uk",
+            "outlet": "southbankcentre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/"
+          },
+          {
+            "outletId": "southbank.london",
+            "outlet": "southbank.london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://southbank.london/whats-on/dog-man-the-musical"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/dog-man-the-musical"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -16327,6 +16615,69 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.bookitplease.com/shows/united-kingdom/greater-london/london/musical/dog-man-the-musical-6046",
+            "outletId": "bookitplease.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.showpass.com/dog-man-the-musical-at-queen-elizabeth-hall-southbank-centre-affp3/",
+            "outletId": "showpass.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.showify.uk/shows/dog-man-the-musical",
+            "outletId": "showify.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+            "outletId": "whattheredheadsaid.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+            "outletId": "londontheatredirect.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
+            "outletId": "london-box-office",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
+            "outletId": "muddystilettos.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
+            "outletId": "south-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
             "outletId": "guardian",
@@ -16356,6 +16707,27 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
+            "url": "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
+            "outletId": "southbankcentre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://southbank.london/whats-on/dog-man-the-musical",
+            "outletId": "southbank.london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/dog-man-the-musical",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/the-truth-review",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -16371,9 +16743,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 17
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -48724,7 +49096,23 @@
         "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
         "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
         "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
+        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+        "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
+        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+        "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+        "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+        "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+        "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+        "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+        "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+        "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+        "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+        "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
+        "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/"
       ],
       "dirFiles": 18,
       "dirClean": 14,
@@ -48764,67 +49152,61 @@
           "knownOutletId": "timeout-london",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+          "host": "thetheatreflyer.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+          "host": "uktw.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "adventuresintheatreland.com",
-          "count": 1
-        },
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
         {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "onin.london",
-          "count": 1
-        },
-        {
           "host": "operationlivetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tanyel-gumushan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
+            },
+            {
+              "file": "whatsonstage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -48864,8 +49246,65 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Space Dogs\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Space Dogs\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Space Dogs\" review other",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 16,
+        "error": null
       },
       "priorRunArticles": [
         {
@@ -48905,7 +49344,32 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+          "host": "thetheatreflyer.co.uk",
+          "outletId": "thetheatreflyer",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~814359/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~814360/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -48944,10 +49408,110 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
+          },
+          {
+            "outletId": "thetheatreflyer.co.uk",
+            "outlet": "thetheatreflyer.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026"
+          },
+          {
+            "outletId": "uktw.co.uk",
+            "outlet": "uktw.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+            "outletId": "onin.london",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.adventuresintheatreland.com/post/space-dogs-the-other-palace-studio",
+            "outletId": "adventuresintheatreland.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
           {
             "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
             "outletId": "nysr",
@@ -48982,12 +49546,40 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
+          {
+            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+            "outletId": "thetheatreflyer.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+            "outletId": "uktw.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 12,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "stereophonic-off-broadway-2023",
@@ -53032,167 +53624,13 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
-        "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
-        "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
-        "https://www.timeout.com/london/theatre/tao-of-glass-review",
-        "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-        "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-        "https://www.london-unattached.com/tao-of-glass-soho-place/",
-        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
-        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-        "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-        "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-        "https://www.timeout.com/london/theatre/tao-of-glass",
-        "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-        "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
-        "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-        "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/"
-      ],
-      "dirFiles": 40,
-      "dirClean": 24,
-      "inReviewsJson": 20,
-      "missing": [
-        {
-          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-          "host": "totaltheatre.org.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "northwestend.com",
-          "count": 1
-        },
-        {
-          "host": "playstosee.com",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-          "host": "liamodell.com",
-          "knownOutletId": "liamodell",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "liamodell--liam-odell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--west-end-theatre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--franco-milazzo.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -53226,250 +53664,21 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tao of Glass\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tao of Glass\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 8,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tao of Glass\" review soho",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tao of Glass Soho Place review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tao of Glass Soho Place review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tao of Glass Soho Place review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 18,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
-      "ingestResults": [
-        {
-          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-          "host": "totaltheatre.org.uk",
-          "outletId": "totaltheatre",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "totaltheatre.org.uk",
-            "outlet": "totaltheatre.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
-          },
-          {
-            "outletId": "liamodell",
-            "outlet": "liamodell",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tao-of-glass-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
-            "outletId": "london-unattached.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tao-of-glass",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-            "outletId": "totaltheatre.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-            "outletId": "liamodell",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/337020/shows/tao-of-glass-tickets/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-TAO-OF-GLASS-at-Sohoplace-20260731",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          }
-        ],
-        "liveCount": 11,
-        "candidateCount": 16
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
@@ -57474,6 +57683,32 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
+        "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
+        "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
+        "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
+        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+        "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
+        "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
+        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
+        "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
+        "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
+        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+        "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
+        "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+        "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/",
+        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
+        "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
+        "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236",
+        "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
+        "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
+        "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
+        "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
+        "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
+        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+        "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+        "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
         "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
         "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
         "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
@@ -57490,6 +57725,60 @@
       "dirClean": 15,
       "inReviewsJson": 12,
       "missing": [
+        {
+          "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
+          "host": "londonpubtheatres.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+          "host": "theatreandartreviews.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236",
+          "host": "seetickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
+          "host": "thesetheatrethoughts.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+          "host": "reviewsgate.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+          "host": "northernartsreview.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+          "host": "unknownkentandsussex.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
           "host": "telegraph.co.uk",
@@ -57549,47 +57838,141 @@
       ],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
           "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "fringereview.co.uk",
           "count": 1
         },
         {
           "host": "hamhigh.co.uk",
           "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
-          "host": "shinylife.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fairypoweredproductions--fairypoweredproductions.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--west-end-theatre.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
+          "host": "parktheatre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "parktheatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://parktheatre.co.uk/events/the-importance-of-being-oscar/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lovelondonloveculture--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fairypoweredproductions--fairypoweredproductions.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
+          "host": "liamodell.com",
+          "knownOutletId": "liamodell",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "liamodell--liam-odell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
           "host": "dailymail.co.uk",
@@ -57722,8 +58105,55 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Importance of Being Oscar\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Importance of Being Oscar\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Importance of Being Oscar Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Importance of Being Oscar Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Importance of Being Oscar Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 7,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 26,
+        "error": null
       },
       "weIngestBlocked": [
         {
@@ -57757,11 +58187,136 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
+          "host": "londonpubtheatres.com",
+          "outletId": "londonpubtheatres",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~816871/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+          "host": "theatreandartreviews.com",
+          "outletId": "theatreandartreviews",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~816877/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
+          "outletId": "redbuslondinium",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~816878/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        },
+        {
+          "url": "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236",
+          "host": "seetickets.com",
+          "outletId": "seetickets",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
+          "host": "thesetheatrethoughts.co.uk",
+          "outletId": "thesetheatrethoughts"
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+          "host": "reviewsgate.co.uk",
+          "outletId": "reviewsgate"
+        },
+        {
+          "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+          "host": "northernartsreview.co.uk",
+          "outletId": "northernartsreview"
+        },
+        {
+          "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+          "host": "unknownkentandsussex.co.uk",
+          "outletId": "unknownkentandsussex"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "londonpubtheatres.com",
+            "outlet": "londonpubtheatres.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026"
+          },
+          {
+            "outletId": "theatreandartreviews.com",
+            "outlet": "theatreandartreviews.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/"
+          },
+          {
+            "outletId": "redbuslondinium.uk",
+            "outlet": "redbuslondinium.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
+          },
+          {
+            "outletId": "seetickets.com",
+            "outlet": "seetickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review"
+          },
+          {
+            "outletId": "thesetheatrethoughts.co.uk",
+            "outlet": "thesetheatrethoughts.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/"
+          },
+          {
+            "outletId": "reviewsgate.co.uk",
+            "outlet": "reviewsgate.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park"
+          },
+          {
+            "outletId": "northernartsreview.co.uk",
+            "outlet": "northernartsreview.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/"
+          },
+          {
+            "outletId": "unknownkentandsussex.co.uk",
+            "outlet": "unknownkentandsussex.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/"
+          },
           {
             "outletId": "sunday-telegraph",
             "outlet": "sunday-telegraph",
@@ -57798,6 +58353,55 @@
             "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde"
           },
           {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/"
+          },
+          {
+            "outletId": "parktheatre.co.uk",
+            "outlet": "parktheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parktheatre.co.uk/events/the-importance-of-being-oscar/"
+          },
+          {
+            "outletId": "lovelondonloveculture.com",
+            "outlet": "lovelondonloveculture.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/"
+          },
+          {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/"
+          },
+          {
+            "outletId": "liamodell",
+            "outlet": "liamodell",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/"
+          },
+          {
+            "outletId": "londontheatredirect.com",
+            "outlet": "londontheatredirect.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets"
+          },
+          {
             "outletId": "daily-mail",
             "outlet": "daily-mail",
             "critic": "Unknown",
@@ -57829,6 +58433,66 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
+            "outletId": "shinylife.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
             "url": "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
             "outletId": "whatsonstage.com",
             "state": "live",
@@ -57839,6 +58503,69 @@
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+            "outletId": "theatreandartreviews.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+            "outletId": "redbuslondinium.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236",
+            "outletId": "seetickets.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
+            "outletId": "thesetheatrethoughts.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+            "outletId": "reviewsgate.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+            "outletId": "northernartsreview.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+            "outletId": "unknownkentandsussex.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
@@ -57876,6 +58603,55 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
+            "outletId": "fairypoweredproductions",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
+            "outletId": "parktheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
+            "outletId": "lovelondonloveculture.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-3/",
+            "outletId": "fairypoweredproductions",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
+            "outletId": "liamodell",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/the-importance-of-being-oscar-tickets",
+            "outletId": "londontheatredirect.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          },
+          {
             "url": "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
             "outletId": "daily-mail",
             "state": "GAP",
@@ -57904,10 +58680,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 2,
-        "candidateCount": 11
+        "liveCount": 10,
+        "candidateCount": 34
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -62826,14 +63602,7 @@
         "https://fonts.googleapis.com/css2",
         "https://maps.google.com/",
         "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-        "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-        "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-        "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-        "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-        "https://www.hudsonyardsnewyork.com/discover/vessel",
-        "https://nyra.nyc/articles/the-thing-about-the-vessel",
-        "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/"
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
       ],
       "dirFiles": 1,
       "dirClean": 1,
@@ -62868,48 +63637,6 @@
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
           "knownOutletId": null
-        },
-        {
-          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-          "host": "empirehotelnyc.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-          "host": "travelingwithaga.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-          "host": "travelforaliving.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
-          "host": "hudsonyardsnewyork.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
-          "host": "nyra.nyc",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-          "host": "lauraperuchi.nyc",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -62922,65 +63649,8 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Vessel\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Vessel\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Vessel\" review midtown",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Vessel Midtown E review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Vessel Midtown E review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Vessel Midtown E review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "ingestResults": [
         {
@@ -62989,7 +63659,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803897/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~814830/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -62997,7 +63667,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803907/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~815022/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -63005,7 +63675,7 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803908/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~815104/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://maps.google.com/",
@@ -63021,7 +63691,7 @@
           "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~803918/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~815199/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [
@@ -63029,41 +63699,6 @@
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
           "outletId": "google"
-        },
-        {
-          "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-          "host": "empirehotelnyc.com",
-          "outletId": "empirehotelnyc"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-          "host": "travelingwithaga.com",
-          "outletId": "travelingwithaga"
-        },
-        {
-          "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-          "host": "travelforaliving.co.uk",
-          "outletId": "travelforaliving"
-        },
-        {
-          "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
-          "host": "hudsonyardsnewyork.com",
-          "outletId": "hudsonyardsnewyork"
-        },
-        {
-          "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
-          "host": "nyra.nyc",
-          "outletId": "nyra"
-        },
-        {
-          "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-          "host": "lauraperuchi.nyc",
-          "outletId": "lauraperuchi"
         }
       ],
       "censusVerdict": {
@@ -63110,55 +63745,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-          },
-          {
-            "outletId": "empirehotelnyc.com",
-            "outlet": "empirehotelnyc.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards"
-          },
-          {
-            "outletId": "travelingwithaga.com",
-            "outlet": "travelingwithaga.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/"
-          },
-          {
-            "outletId": "travelforaliving.co.uk",
-            "outlet": "travelforaliving.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/"
-          },
-          {
-            "outletId": "hudsonyardsnewyork.com",
-            "outlet": "hudsonyardsnewyork.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hudsonyardsnewyork.com/discover/vessel"
-          },
-          {
-            "outletId": "nyra.nyc",
-            "outlet": "nyra.nyc",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nyra.nyc/articles/the-thing-about-the-vessel"
-          },
-          {
-            "outletId": "lauraperuchi.nyc",
-            "outlet": "lauraperuchi.nyc",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/"
           }
         ],
         "suppressedMissing": [],
@@ -63204,61 +63790,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.empirehotelnyc.com/things-to-do/vessel-at-hudson-yards",
-            "outletId": "empirehotelnyc.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/attractions/vessel-at-hudson-yards",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.travelingwithaga.com/the-vessel-in-nyc/",
-            "outletId": "travelingwithaga.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.travelforaliving.co.uk/sightseeing/vessel-worth-visit/",
-            "outletId": "travelforaliving.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://www.hudsonyardsnewyork.com/discover/vessel",
-            "outletId": "hudsonyardsnewyork.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://nyra.nyc/articles/the-thing-about-the-vessel",
-            "outletId": "nyra.nyc",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
-          },
-          {
-            "url": "https://lauraperuchi.nyc/everything-you-need-to-know-about-the-vessel-at-hudson-yards/",
-            "outletId": "lauraperuchi.nyc",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T04:06:25.454Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 12
+        "candidateCount": 5
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",
@@ -68657,28 +69194,122 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"We've Been Here Before: A One Woman Musical\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"We've Been Here Before: A One Woman Musical\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"We've Been Here Before: A One Woman Musical\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse",
+            "outletId": "theatrely",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T07:51:56.021Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-08-04T04:06:25.454Z"
+      "computedAt": "2026-08-04T07:51:56.021Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
