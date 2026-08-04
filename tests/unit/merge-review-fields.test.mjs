@@ -165,8 +165,24 @@ describe('wiring', () => {
     assert.match(htmlOverride, /isTransferableField\s*\(/);
   });
   test('validator skips rejection-flagged tombstones (no duplicate_review accumulation)', () => {
+    // Asserts the BEHAVIOUR, not the source text. This used to grep for the literal
+    // inline chain `data.rejectionReason || data.suspectedMisattribution`, which broke
+    // the moment that chain was extracted into the shared canonical predicate (#1002)
+    // even though the behaviour was unchanged — a source-shape assertion that fails on
+    // a legitimate refactor while proving nothing about what the validator actually
+    // does. The predicate check below is strictly stronger, and the wiring check keeps
+    // the guarantee that the validator still consults it.
+    const { isSkippedByValidator } = require(resolve(ROOT, 'scripts/lib/aggregator-url-latent.js'));
+
+    assert.equal(isSkippedByValidator({ rejectionReason: 'not_a_review' }), true,
+      'rejection-flagged tombstones must be skipped — the consolidation passes leave them in place');
+    assert.equal(isSkippedByValidator({ suspectedMisattribution: true }), true,
+      'suspected-misattribution tombstones must be skipped for the same reason');
+    assert.equal(isSkippedByValidator({}), false,
+      'a clean review must still be validated');
+
     const validator = readFileSync(resolve(ROOT, 'scripts/validate-review-texts.js'), 'utf8');
-    assert.match(validator, /data\.rejectionReason \|\| data\.suspectedMisattribution/,
-      'validate-review-texts must skip rejection-flagged files — the consolidation passes leave them in place as tombstones');
+    assert.match(validator, /isSkippedByValidator\(data\)/,
+      'validate-review-texts must route its skip decision through the canonical predicate');
   });
 });
