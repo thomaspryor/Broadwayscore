@@ -25,7 +25,8 @@
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
-    "allegra-west-end-2026/londongrip--julia-pascal.json"
+    "allegra-west-end-2026/londongrip--julia-pascal.json",
+    "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -141,7 +142,16 @@
     "jesus-christ-superstar-west-end-2026/oxfordshire-guardian--samuel-macgregor.json",
     "jesus-christ-superstar-west-end-2026/theatre-reviews-limited--unknown.json",
     "jesus-christ-superstar-west-end-2026/wwwandrewlloydwebbercomshowjesus-christ-superstar--unknown.json",
-    "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json"
+    "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json",
+    "jesus-christ-superstar-west-end-2026/ap--mark-kennedy.json",
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "jesus-christ-superstar-west-end-2026/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -164,7 +174,10 @@
       "allegra-west-end-2026/londongrip--julia-pascal.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
+      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -194,7 +207,7 @@
     ]
   },
   "startTime": "2026-08-04T05:05:16.896Z",
-  "lastProcessed": "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json",
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
   "log": [
     {
       "t": "2026-08-04T05:08:09.863Z",
@@ -207,6 +220,12 @@
       "event": "bb-session",
       "session": "337d2fa7",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-04T06:07:01.890Z",
+      "event": "bb-session",
+      "session": "df427310",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/julia-garner-true-crime-drama-guilt"
     }
   ]
 }
