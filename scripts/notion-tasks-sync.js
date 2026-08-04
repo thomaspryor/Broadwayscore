@@ -278,8 +278,22 @@ function markCardDone(pageId) {
   const today = new Date().toISOString().slice(0, 10);
   // --outcome leaves an audit line (the --force reason string is discarded by
   // updateCard, so it would otherwise be a silent bot mutation).
-  notionBrain(['update', pageId, '--status', 'Done', '--completed-date', today,
-    '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
+  try {
+    notionBrain(['update', pageId, '--status', 'Done', '--completed-date', today,
+      '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
+    return true;
+  } catch (err) {
+    // The close-time trunk gate (task #1003) refused this ONE card because a
+    // file it owns is failing on main. That must not abort the whole sweep —
+    // every other completed task still deserves its card closed (ship-check
+    // finding). Any other failure still propagates.
+    const { CLOSE_REFUSED_EXIT_CODE } = require('./lib/trunk-close-gate.js');
+    if (err && err.status === CLOSE_REFUSED_EXIT_CODE) {
+      console.error(`[sync] card ${pageId} left open: trunk close gate refused it (a file it owns is failing on main)`);
+      return false;
+    }
+    throw err;
+  }
 }
 
 // ── commands ───────────────────────────────────────────────────────────────
@@ -360,7 +374,11 @@ function cmdPush(args) {
       // The integer id may have been reused by a live session for unrelated
       // work. Only close the card if this file still carries our marker.
       if (!taskBelongsTo(dir, entry.taskId, pageId)) { skipped.push({ taskId: entry.taskId, name: entry.name }); continue; }
-      if (!dry) { markCardDone(pageId); entry.pushed = true; }
+      // pushed only when the card ACTUALLY closed — a trunk-gate refusal
+      // must stay retryable, never be recorded as a completed close
+      // (ship-check finding: the sweep would report "marked Done" for a card
+      // that is still open, and never try again).
+      if (!dry) { entry.pushed = markCardDone(pageId); }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
     if (!dry && done.length) writeMap(dir, map);

@@ -191,6 +191,21 @@ jobs:
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
         run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 3
 
+      # Trunk status snapshot (task #1003) — is test.yml green on main, for
+      # how long has it been red, and which files are named in the failures.
+      # Feeds the morning digest's standing trunk line AND the close-time
+      # attribution gate in notion-brain.js. Runs here because this job
+      # already commits data/audit snapshots the Mac Studio pulls.
+      # continue-on-error + a hard timeout: a gh hiccup must never block the
+      # health commit, and a missing snapshot fails the close gate OPEN.
+      - name: Trunk status snapshot
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/produce-trunk-snapshot.js
+
       - name: Commit health check + triage data
         if: always()
         run: |
@@ -219,6 +234,10 @@ jobs:
           git add data/audit/affiliate-health.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # Trunk status (task #1003) — same reason as health-digest-snapshot
+          # above: the Mac Studio renders the morning digest and runs the
+          # close gate, so the snapshot has to leave the runner.
+          git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No health check data changes"
           else
