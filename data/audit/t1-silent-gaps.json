@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-08-04T09:52:10.591Z",
+  "generatedAt": "2026-08-04T10:50:18.927Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
+    {
+      "showId": "tao-of-glass-west-end-2026",
+      "title": "Tao of Glass",
+      "openingDate": "2026-07-30",
+      "file": "financialtimes--sarah-hemming.json",
+      "outletId": "financialtimes",
+      "tier": 1,
+      "type": "unscored",
+      "url": "https://www.ft.com/content/eeefae1a-ea0e-4042-bba3-e900b249023c?syn-25a6b1a6=1",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=tao-of-glass-west-end-2026",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-08-04T10:50:18.926Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +33,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 284.67610666666667,
+      "fileAgeHours": 285.6450738888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 243.97907055555555
+      "nonTerminalAgeHours": 244.94805277777778
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +52,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 46.41709027777778
+      "nonTerminalAgeHours": 47.3860725
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -50,9 +67,9 @@
       "recoveryCount": 3,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazysexycool-regional-2026",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 17.877157222222223,
+      "fileAgeHours": 18.846139166666667,
       "gapSeenAt": "2026-08-04T07:51:56.703Z",
-      "nonTerminalAgeHours": 2.0038575
+      "nonTerminalAgeHours": 2.972839722222222
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -67,9 +84,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=othello-off-broadway-2026",
       "firstSeen": "2026-08-03T04:15:10.873Z",
-      "fileAgeHours": 29.616588055555557,
+      "fileAgeHours": 30.585570277777776,
       "gapSeenAt": "2026-08-03T18:28:48.681Z",
-      "nonTerminalAgeHours": 15.389419166666666
+      "nonTerminalAgeHours": 16.35840138888889
     }
   ],
   "contradictions": []
