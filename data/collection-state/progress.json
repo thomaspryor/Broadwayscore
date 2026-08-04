@@ -54,7 +54,8 @@
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
     "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json"
+    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
+    "the-car-man-west-end-2026/financialtimes--unknown.json"
   ],
   "failed": [
     "space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -371,7 +372,16 @@
     "the-importance-of-being-oscar-off-west-end-2026/financialtimes--sarah-hemming.json",
     "the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json",
     "the-car-man-west-end-2026/nytimes--unknown.json",
-    "the-car-man-west-end-2026/variety--unknown.json"
+    "the-car-man-west-end-2026/variety--unknown.json",
+    "the-car-man-west-end-2026/manchester-evening-news--natalie-anglesey.json",
+    "the-car-man-west-end-2026/the-jewish-chronicle--joy-sable.json",
+    "the-enormous-crocodile-west-end-2026/third-coast-review--unknown.json",
+    "the-car-man-west-end-2026/a-younger-theatre--rebekah-ellerby.json",
+    "the-car-man-west-end-2026/attitude--alastair-james.json",
+    "the-car-man-west-end-2026/british-theatre--susan-novak.json",
+    "the-car-man-west-end-2026/cheeky-little-matinee--cheekylittlematinee.json",
+    "the-car-man-west-end-2026/express-uk--stefan-kyriazis.json",
+    "the-car-man-west-end-2026/herald--mary-brennan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -418,7 +428,9 @@
       "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
       "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json"
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/the-car-man-west-end-2026/financialtimes--unknown.json",
+      "the-car-man-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -465,7 +477,7 @@
     ]
   },
   "startTime": "2026-08-04T05:05:16.896Z",
-  "lastProcessed": "the-car-man-west-end-2026/variety--unknown.json",
+  "lastProcessed": "the-car-man-west-end-2026/herald--mary-brennan.json",
   "log": [
     {
       "t": "2026-08-04T05:08:09.863Z",
@@ -520,6 +532,17 @@
       "event": "bb-session",
       "session": "7138096e",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-04T06:47:44.165Z",
+      "event": "bb-session",
+      "session": "02e69add",
+      "url": "https://www.ft.com/content/e3dbb189-aa0e-4046-a960-df69154abfe8"
+    },
+    {
+      "t": "2026-08-04T06:47:45.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
