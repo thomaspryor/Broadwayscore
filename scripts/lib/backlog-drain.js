@@ -131,7 +131,21 @@ function computeSpendCircuitBreaker(drainLedgerEntries, opts = {}) {
   const now = opts.now || Date.now();
   const cutoff = now - windowH * 3600e3;
   const windowed = (drainLedgerEntries || []).filter(e => e && e.ts && new Date(e.ts).getTime() >= cutoff);
-  return spendCircuitBreakerStatus(windowed, { thresholdUSD });
+  const status = spendCircuitBreakerStatus(windowed, { thresholdUSD });
+  // Task #1004: the halt itself stays correct (nothing LANDED, so keep the
+  // money off), but "zero cards completed+verified" was the whole diagnosis
+  // on 2026-08-04 and it sent the next session hunting a red trunk that
+  // wasn't there. A card-stranded entry means the session DID finish
+  // verified work and only the landing gate stopped it — say so in the
+  // reason the operator actually reads.
+  const stranded = windowed.filter(e => e && e.event === 'card-stranded').length;
+  return {
+    ...status,
+    stranded,
+    reason: status.halt && stranded
+      ? `${status.reason} — NOTE: ${stranded} of those session(s) finished verified work that could not LAND (card-stranded); the blocker is the landing gate, not the work`
+      : status.reason,
+  };
 }
 
 // Metric math for the digest row. priorHistory is the trailing daily

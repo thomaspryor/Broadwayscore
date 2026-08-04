@@ -51,6 +51,7 @@ const TASKS_DIR = path.join(os.homedir(), '.claude', 'tasks', LIST_ID);
 const { loadTasks, notionIdOf } = require('./bsc-next.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+const { classifyHeadlessDispatchability } = require('./lib/headless-dispatchability.js');
 const {
   DEFAULT_CONCURRENCY_CAP,
   DEFAULT_SPEND_THRESHOLD_USD,
@@ -184,9 +185,27 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
 // drain-dispatch entry would sit unresolved forever, permanently occupying
 // a concurrency slot while the digest keeps showing "Dispatched #N" for
 // work that never actually started.
-function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date()) {
+// Commits sitting on a finished job's branch that never reached origin/main.
+// A non-zero count is the difference between "this session produced nothing"
+// and "this session produced verified work the landing gate refused" — the
+// distinction the 2026-08-04 drain postmortem got wrong (task #1004).
+function countStrandedCommits(jobId) {
+  if (!jobId) return 0;
+  try {
+    const out = execFileSync('git', ['-C', REPO, 'rev-list', '--count', `origin/main..job/${jobId}`],
+      { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' });
+    return parseInt(String(out).trim(), 10) || 0;
+  } catch {
+    return 0; // branch already deleted/merged, or git unavailable — not stranded
+  }
+}
+
+function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date(), opts = {}) {
+  const strandedCommitsFn = opts.strandedCommits || countStrandedCommits;
   const resolvedTaskIds = new Set(
-    drainLedgerEntries.filter(e => e.event === 'card-pass' || e.event === 'card-fail').map(e => String(e.cardId)));
+    drainLedgerEntries
+      .filter(e => e.event === 'card-pass' || e.event === 'card-fail' || e.event === 'card-stranded')
+      .map(e => String(e.cardId)));
   const dispatches = drainLedgerEntries.filter(e => e.event === 'drain-dispatch');
   const newEntries = [];
   for (const d of dispatches) {
@@ -207,15 +226,29 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     const task = tasksById.get(taskId);
     const completed = !!(task && task.status === 'completed');
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
-    const outcome = (sessionOk && completed) ? 'card-pass' : 'card-fail';
+    // card-stranded (task #1004): the session finished cleanly and left real
+    // commits on its job branch, but the card never closed — the work exists
+    // and only the landing gate stopped it. Scoring that as card-fail is what
+    // produced the "0-for-4, $14.74, zero completions" reading on 2026-08-04
+    // when two of the four sessions had in fact produced finished, verified
+    // work. It is deliberately NEITHER a pass (nothing landed, so the spend
+    // breaker still halts) NOR a fail (attempt-memory must not park a card
+    // whose only problem was the gate).
+    const stranded = (sessionOk && !completed) ? strandedCommitsFn(job.jobId) : 0;
+    const outcome = (sessionOk && completed) ? 'card-pass' : (stranded > 0 ? 'card-stranded' : 'card-fail');
+    const notes = {
+      'card-pass': 'session finished, task marked completed',
+      'card-stranded': `session finished with ${stranded} unmerged commit(s) on job/${job.jobId} but the card never closed — verified work blocked at the landing gate, not lost`,
+      'card-fail': sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
+    };
     newEntries.push({
       event: outcome,
       cardId: taskId,
       contentHash: d.contentHash,
       usd: Number(job.costUSD) || 0,
-      note: outcome === 'card-pass'
-        ? 'session finished, task marked completed'
-        : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
+      note: notes[outcome],
+      strandedCommits: stranded || undefined,
+      strandedBranch: stranded ? `job/${job.jobId}` : undefined,
     });
     resolvedTaskIds.add(taskId);
   }
@@ -283,6 +316,7 @@ async function main(argv = process.argv.slice(2)) {
       inFlightIds: new Set(concurrency.aliveTaskIds),
     });
     let scanned = 0;
+    let humanGated = 0;
     for (const t of order) {
       if (scanned >= MAX_CANDIDATE_SCAN) break;
       scanned++;
@@ -292,12 +326,24 @@ async function main(argv = process.argv.slice(2)) {
       if (!card || !card.notes) continue;
       const gate = evaluateVerifiability(card.notes);
       if (!gate.cmd) continue; // owner-judgment-only or genuinely unarmed — never unattended-dispatched
+      // Task #1004: armed is not the same as finishable. A card whose PUSH
+      // needs the owner's visual-qa affirmative, or whose completion waits on
+      // a cron/workflow that outlives the session, burns a full session and
+      // still scores card-fail. Skip it here rather than pay for it.
+      const hg = classifyHeadlessDispatchability(
+        { subject: t.subject, notes: card.notes }, { verifyCmd: gate.cmd });
+      if (!hg.dispatchable) {
+        humanGated++;
+        console.log(`[backlog-drain] skipping #${t.id} (needs a human to finish): ${hg.reason}`);
+        continue;
+      }
       dispatchedTask = t;
       break;
     }
     if (!dispatchedTask) {
+      const gatedNote = humanGated ? `, ${humanGated} needed a human to finish` : '';
       skipReason = order.length
-        ? `scanned ${scanned} candidate(s), none had a machine-runnable verify command`
+        ? `scanned ${scanned} candidate(s), none dispatchable unattended${gatedNote}`
         : 'no eligible pending cards (all human/parked/in-flight/enrichment-flagged)';
     }
   }

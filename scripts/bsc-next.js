@@ -46,6 +46,9 @@ Usage:
   bsc-next --force         bypass the completed-task / duplicate-workspace guards
   bsc-next --allow-unverifiable  dispatch a card with no runnable verify command
                            (recorded in the dispatch ledger; recheck lists it as unverifiable)
+  bsc-next --allow-human-gated   dispatch --headless even when the card needs a human
+                           to finish it (owner visual-qa approval, an owner decision,
+                           a long external wait). Refused by default — see task #1004.
   bsc-next --id N --succession --handoff <path>
                            context-limit succession: relaunch task N's IN-FLIGHT
                            work with a fresh context window, seeded from a
@@ -135,6 +138,7 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 // workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./lib/headless-dispatchability.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
 // (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
@@ -816,6 +820,24 @@ function main(argv = process.argv.slice(2), deps = {}) {
     if (process.env.BSC_RUNNER_DISABLED === '1') {
       console.error('[bsc-next] BSC_RUNNER_DISABLED=1 — headless runner is switched off; rerun without --headless for a cmux tab.');
       process.exit(1);
+    }
+    // Human-gate refusal (task #1004). The verify gate above asks "can this
+    // card's outcome be CHECKED by a machine?"; this asks the other half,
+    // "can an unattended session FINISH it?" On 2026-08-04 two headless jobs
+    // did all the work and then stopped dead at gates only the owner can
+    // clear (pre-push visual-qa approval; a workflow run that outlived the
+    // session) — $14.74 charged, two verified commits stranded in worktrees.
+    // Refusing here costs nothing and leaves the card for an attended tab.
+    if (!args['allow-human-gated']) {
+      const gateText = (card && card.notes) || task.description || '';
+      const hg = classifyHeadlessDispatchability({ subject: task.subject, notes: gateText }, { verifyCmd: verifyGate.cmd });
+      if (!hg.dispatchable && hg.blockers.some(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD)) {
+        console.error(`[bsc-next] REFUSING headless dispatch of #${task.id}: an unattended session cannot finish this card.`);
+        for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
+        console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
+        console.error(`  or re-run with --allow-human-gated if you know the gate does not apply.`);
+        process.exit(1);
+      }
     }
     // The runner's lease only sees other HEADLESS jobs — a live cmux tab on
     // the same task is invisible to it. Keep the cross-dispatcher duplicate

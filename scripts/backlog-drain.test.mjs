@@ -103,3 +103,59 @@ test('reconcileOutcomes: skips a taskId already resolved (idempotent across tick
   const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries, new Date('2026-07-30T11:30:00Z'));
   assert.equal(out.length, 0);
 });
+
+// ── card-stranded (task #1004) ──────────────────────────────────────────────
+// 2026-08-04: two of four drain sessions did all the work, hit a gate only the
+// owner could clear, and were scored card-fail. The ledger then read "$14.74,
+// zero completions", which sent the next session hunting a red trunk that did
+// not exist. A finished session that left commits on its job branch is now
+// recorded as its own outcome, so the money and the diagnosis stay honest.
+
+test('reconcileOutcomes: job-done + card open + commits on the job branch is card-stranded, not card-fail', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '30', jobId: '30-msdaql3v' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '30', jobId: '30-msdaql3v', costUSD: 9.34 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '30', subject: 'Rage clicks', contentHash: 'abc' },
+  ];
+  const tasksById = new Map([['30', { id: '30', status: 'in_progress' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 2 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'card-stranded');
+  assert.equal(out[0].usd, 9.34);
+  assert.equal(out[0].strandedCommits, 2);
+  assert.equal(out[0].strandedBranch, 'job/30-msdaql3v');
+  assert.match(out[0].note, /blocked at the landing gate/);
+});
+
+test('reconcileOutcomes: a finished session with NO commits is still a plain card-fail', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '31', jobId: '31-x' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '31', jobId: '31-x', costUSD: 1.2 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '31', subject: 'x', contentHash: 'abc' },
+  ];
+  const tasksById = new Map([['31', { id: '31', status: 'pending' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T12:00:00Z'), { strandedCommits: () => 0 });
+  assert.equal(out[0].event, 'card-fail');
+  assert.equal(out[0].strandedCommits, undefined);
+});
+
+test('reconcileOutcomes: a card already resolved as card-stranded is not re-reconciled', () => {
+  const dispatchEntries = [
+    { ts: '2026-08-04T11:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '30', jobId: '30-msdaql3v' },
+    { ts: '2026-08-04T11:40:00Z', event: dispatchLedger.JOB_EVENTS.DONE, taskId: '30', jobId: '30-msdaql3v', costUSD: 9.34 },
+  ];
+  const drainLedgerEntries = [
+    { ts: '2026-08-04T11:00:00Z', event: 'drain-dispatch', taskId: '30', subject: 'x', contentHash: 'abc' },
+    { ts: '2026-08-04T12:00:00Z', event: 'card-stranded', cardId: '30', contentHash: 'abc', usd: 9.34 },
+  ];
+  const tasksById = new Map([['30', { id: '30', status: 'in_progress' }]]);
+  const out = reconcileOutcomes(drainLedgerEntries, tasksById, dispatchEntries,
+    new Date('2026-08-04T13:00:00Z'), { strandedCommits: () => 2 });
+  assert.equal(out.length, 0);
+});

@@ -183,3 +183,27 @@ test('formatBannerText omits empty buckets and a positive net drain shows a + si
   const text = formatBannerText({ pending: 20, netDrainWeek: 3, parked: 0, awaitingEnrichment: 0, humanWaiting: 5 });
   assert.equal(text, '20 pending (net +3 this week, 5 waiting on owner)');
 });
+
+// ── spend breaker reason names stranded work (task #1004) ───────────────────
+
+test('computeSpendCircuitBreaker: halt reason names stranded work so the diagnosis is not "produced nothing"', () => {
+  const now = new Date('2026-08-04T20:00:00Z').getTime();
+  const entries = [
+    { ts: '2026-08-04T12:00:00Z', event: 'card-stranded', cardId: '30', contentHash: 'a', usd: 9.34 },
+    { ts: '2026-08-04T14:00:00Z', event: 'card-stranded', cardId: '57', contentHash: 'b', usd: 5.40 },
+  ];
+  const b = computeSpendCircuitBreaker(entries, { thresholdUSD: 12, now });
+  assert.equal(b.halt, true, 'nothing landed, so the breaker must still halt');
+  assert.equal(b.completions, 0);
+  assert.equal(b.stranded, 2);
+  assert.match(b.reason, /could not LAND/);
+});
+
+test('computeSpendCircuitBreaker: no stranded entries leaves the original reason untouched', () => {
+  const now = new Date('2026-08-04T20:00:00Z').getTime();
+  const entries = [{ ts: '2026-08-04T12:00:00Z', event: 'card-fail', cardId: '9', contentHash: 'a', usd: 20 }];
+  const b = computeSpendCircuitBreaker(entries, { thresholdUSD: 12, now });
+  assert.equal(b.halt, true);
+  assert.equal(b.stranded, 0);
+  assert.doesNotMatch(b.reason, /could not LAND/);
+});
