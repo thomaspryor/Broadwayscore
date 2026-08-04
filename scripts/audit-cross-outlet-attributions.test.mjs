@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -111,5 +111,54 @@ test('no unreviewed playbill-verdict byline-bleed groups remain', (t) => {
     count,
     0,
     `unreviewed playbill-verdict byline-bleed groups remain: ${JSON.stringify((groups || []).slice(0, 5), null, 2)}`
+  );
+});
+
+// Acceptance test for task #1023: crossOutletVerified:true + wrongAttribution:true
+// together on a file that's otherwise live-scoring (has an assignedScore and
+// isn't already excluded via wrongProduction/wrongShow) means a fix script's
+// "clear the flag" write was silently reverted — review-write-guard.js's
+// PROTECTED_FIELDS preserve loop only honors a wrongAttribution delete when the
+// write carries the wrongArticleManualClear breadcrumb; without it the delete
+// is dropped and the review stays excluded from scoring despite the byline fix
+// (ship-check adversarial finding, task #1008). NOT flagged: files where BOTH
+// flags are a deliberate dual annotation on content already excluded for other
+// reasons (wrongProduction/wrongShow) or never scored (no assignedScore) —
+// e.g. "Roy Berko is a real regional critic in general, but this specific file
+// can't be confirmed" is a legitimate hybrid note, not a reverted clear.
+test('no live-scoring review-text file has a reverted wrongAttribution clear', (t) => {
+  const reviewTexts = path.join(repoRoot, 'data', 'review-texts');
+  if (!existsSync(reviewTexts)) {
+    t.skip('data/review-texts not present in this checkout — run from the main checkout');
+    return;
+  }
+  const contradictions = [];
+  for (const showId of readdirSync(reviewTexts)) {
+    if (showId.startsWith('_') || showId.startsWith('.')) continue;
+    const dir = path.join(reviewTexts, showId);
+    if (!statSync(dir).isDirectory()) continue;
+    for (const file of readdirSync(dir)) {
+      if (!file.endsWith('.json')) continue;
+      let d;
+      try {
+        d = JSON.parse(readFileSync(path.join(dir, file), 'utf8'));
+      } catch {
+        continue;
+      }
+      if (
+        d.crossOutletVerified === true &&
+        d.wrongAttribution === true &&
+        d.assignedScore != null &&
+        d.wrongProduction !== true &&
+        d.wrongShow !== true
+      ) {
+        contradictions.push(`${showId}/${file}`);
+      }
+    }
+  }
+  assert.strictEqual(
+    contradictions.length,
+    0,
+    `live-scoring files with a reverted wrongAttribution clear remain: ${JSON.stringify(contradictions, null, 2)}`
   );
 });
