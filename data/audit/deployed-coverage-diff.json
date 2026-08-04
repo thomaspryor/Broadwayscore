@@ -1,72 +1,11 @@
 {
-  "generatedAt": "2026-08-04T09:52:20.273Z",
+  "generatedAt": "2026-08-04T10:50:30.546Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 146,
-  "clean": 143,
-  "defective": 3,
-  "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "now-you-see-me-live-west-end-2026",
-      "title": "Now You See Me Live",
-      "openingDate": "2026-08-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: timeout-london"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 71.32)"
-        }
-      ],
-      "missingFromProd": [
-        "timeout-london"
-      ],
-      "localCount": 4,
-      "deployedCount": 3
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "title": "The Producers",
-      "openingDate": "2025-09-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: timeout-london"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.4 vs local 86.4 (Δ1)"
-        }
-      ],
-      "missingFromProd": [
-        "timeout-london"
-      ],
-      "localCount": 20,
-      "deployedCount": 19
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "title": "The Importance of Being Oscar",
-      "openingDate": "2026-07-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.52 vs local 74.82 (Δ0.7)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13
-    }
-  ]
+  "clean": 146,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
