@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T03:43:23.027Z",
+  "timestamp": "2026-08-04T04:15:23.131Z",
   "stats": {
-    "totalReviews": 41445,
-    "alreadyFlagged": 18113,
+    "totalReviews": 41447,
+    "alreadyFlagged": 18116,
     "dateGuardCatches": 111,
-    "directorMismatch": 948,
+    "directorMismatch": 945,
     "tvFilmSignals": 1148,
-    "londonSignals": 805,
+    "londonSignals": 806,
     "offBroadwaySignals": 482,
     "yearMismatch": 86,
-    "noPublishDate": 3440
+    "noPublishDate": 3439
   },
   "findings": [
     {
@@ -14507,30 +14507,6 @@
     },
     {
       "showId": "les-miserables-2006",
-      "file": "musical-theatre-review--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://musicaltheatrereview.com/les-miserables-imperia-theatre-new-york/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james powell\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-2006",
       "file": "talkinbroadway--unknown.json",
       "score": 42,
       "publishDate": "2006-11-09",
@@ -17050,6 +17026,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
+      "score": 76,
       "publishDate": "2022-10-24",
       "url": "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
       "findings": [
@@ -17063,6 +17040,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "london-theatre-reviews--matt-wolf.json",
+      "score": 91,
       "publishDate": "2022-10-24",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=13406",
       "findings": [
@@ -35702,6 +35680,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hit-machine-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 79,
+      "publishDate": "2026-07-15",
+      "url": "https://theatreandtonic.co.uk/blog/hit-machine-soho-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
