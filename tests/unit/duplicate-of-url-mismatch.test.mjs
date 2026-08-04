@@ -245,3 +245,41 @@ test('non-filename duplicateOf sentinel values are ignored (report-only conserva
   const mismatches = audit().filter(m => m.showId === 'sentinel-2026');
   assert.equal(mismatches.length, 0, 'sentinel-valued pointers are not auto-clearable');
 });
+
+test('non-show buckets (_pending, _superseded-misattributed) are NOT scanned — their pointers are historical and never self-heal', () => {
+  // Task #1002: 27 files task #988 archived into _superseded-misattributed/
+  // pointed at siblings that stayed behind in the real show dirs, so each read
+  // as `sibling-missing` forever. That pushed the auto-healable count to 32,
+  // past the 25 floor, and reddened main for every unrelated push — a false
+  // spike, not the producer regression the gate exists to catch. rebuild-all-
+  // reviews.js already ignores these dirs (not in shows.json), so nothing in
+  // them can reach scoring.
+  writeShow('_superseded-misattributed', {
+    'archived-show-2026--outlet--critic.json': {
+      url: 'https://example.com/a-review',
+      duplicateOf: 'outlet--someone-else.json', // sibling lives in the real show dir
+    },
+  });
+  writeShow('_pending', {
+    'outlet--unknown.json': {
+      url: 'https://example.com/b-review',
+      duplicateOf: 'outlet--never-written.json',
+    },
+  });
+  const flagged = audit().filter(
+    m => m.showId === '_superseded-misattributed' || m.showId === '_pending'
+  );
+  assert.deepEqual(flagged, [], 'non-show buckets must not contribute mismatches');
+
+  // Control: the identical dangling pointer in a REAL show dir is still caught,
+  // so the skip is scoped to the buckets and did not blunt the audit.
+  writeShow('real-show-2026', {
+    'outlet--critic.json': {
+      url: 'https://example.com/c-review',
+      duplicateOf: 'outlet--never-written.json',
+    },
+  });
+  const real = audit().filter(m => m.showId === 'real-show-2026');
+  assert.equal(real.length, 1, 'a dangling pointer in a real show dir is still flagged');
+  assert.equal(real[0].reason, 'sibling-missing');
+});

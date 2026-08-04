@@ -22,6 +22,7 @@ import { createRequire } from 'node:module';
 import { getVisibleTicketLinks } from '../../src/lib/ticket-utils.ts';
 
 const require = createRequire(import.meta.url);
+const { isRegionMismatch } = require('../lib/ticket-link-discovery.js');
 const showsData = require('../../data/shows.json');
 const shows = showsData.shows;
 
@@ -50,6 +51,25 @@ test('every live/upcoming show Ticketmaster link points at ticketmaster.com or t
     }
   }
   assert.deepEqual(bad, [], `Ticketmaster links with invalid host:\n${bad.join('\n')}`);
+});
+
+// Corpus gate for the market/storefront class, not just Ticketmaster: the
+// original failure was a West End show (Old Vic) carrying the US
+// ticketmaster.com "A Christmas Carol (NY)" artist page — a valid host, wrong
+// country, unbuyable for the user (task #1002). pickTicketUrl() now refuses
+// these at write time, but that only covers the SERP fallback writer; this
+// assertion covers ANY producer, including a hand-edited backfill (which is
+// how the bad link got in).
+test('no live/upcoming show links to a ticket storefront that cannot sell its market', () => {
+  const bad = [];
+  for (const show of liveShows) {
+    for (const link of show.ticketLinks || []) {
+      if (isRegionMismatch(link.url, show)) {
+        bad.push(`${show.id} (${show.market || show.category}): ${link.platform} ${link.url}`);
+      }
+    }
+  }
+  assert.deepEqual(bad, [], `ticket links on the wrong regional storefront:\n${bad.join('\n')}`);
 });
 
 test('verified TodayTix-gap shows carry a real Ticketmaster link', () => {

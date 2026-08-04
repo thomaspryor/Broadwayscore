@@ -117,4 +117,7 @@ if (process.argv.includes('--json')) {
   }
   console.log(`${suspects.length} unreviewed cross-outlet suspect(s)`);
 }
-process.exit(suspects.length > 0 ? 1 : 0);
+// process.exitCode (not process.exit()) lets Node drain the stdout pipe
+// before exiting — execFileSync callers piping large --json payloads saw
+// truncated/empty stdout when this called process.exit() directly.
+process.exitCode = suspects.length > 0 ? 1 : 0;
