@@ -27,19 +27,43 @@
  * count is machine-checkable:
  *   node scripts/audit-cross-outlet-attributions.js            report + exit code
  *   node scripts/audit-cross-outlet-attributions.js --json     JSON to stdout
+ *
+ * --include-fulltext (card 3b2637c5-416f-81e6, 2026-08-04): the base scan
+ * above explicitly skips files WITH stored fullText on the assumption that a
+ * directly-scraped page is less likely to carry an aggregator's wrong byline.
+ * A full-corpus query found that assumption false at scale — 5,094 of 6,234
+ * criticName-vs-registry mismatches HAVE fullText. This flag scans that
+ * population, scoped to T1/T2 (the file's outletId OR the critic's
+ * registered home is tier 1/2 per the canonical getTier() lookup — NOT the
+ * data/outlet-registry.json tier field alone, see outlet-tiers.js) since
+ * that's the highest-value slice. It drops the AGG source-allowlist (this
+ * population's sources are far more varied than the original 5) and instead
+ * verifies inline: does the stored fullText actually contain the critic's
+ * name (normalized, diacritic/punctuation-insensitive)? A match means the
+ * byline is confirmed in the text itself and the file is NOT a suspect. The
+ * repeat-appearance exclusion (>1 occurrence of this outletId+criticName pair
+ * in reviews.json) still applies — it's the single strongest signal that a
+ * "mismatch" is actually a critic's real, long-standing home that the
+ * registry's defaultCritic annotation just isn't recorded against (e.g.
+ * Matt Windman has 345 reviews at amny, but defaultCritic is recorded on the
+ * near-empty duplicate outletId "amnewyorkcom" instead — a registry gap, not
+ * a misattribution).
  */
 
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { getTier } = require('./lib/outlet-tiers');
+const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 
 if (hasHelpFlag(process.argv)) {
   console.log(
     'audit-cross-outlet-attributions.js — list files plausibly credited to another outlet\'s critic.\n\n' +
-      'Usage: node scripts/audit-cross-outlet-attributions.js [--json]\n' +
+      'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
       'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
-      'Clear an unverifiable row by setting wrongAttribution: true in the file.'
+      'Clear an unverifiable row by setting wrongAttribution: true in the file.\n' +
+      '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).'
   );
   process.exit(0);
 }
@@ -75,6 +99,8 @@ for (const r of reviews) {
   perOutletCritic.set(key, (perOutletCritic.get(key) || 0) + 1);
 }
 
+const INCLUDE_FULLTEXT = process.argv.includes('--include-fulltext');
+
 const reviewTexts = path.join(ROOT, 'data', 'review-texts');
 const suspects = [];
 for (const showId of fs.readdirSync(reviewTexts)) {
@@ -95,10 +121,28 @@ for (const showId of fs.readdirSync(reviewTexts)) {
     if (d.wrongAttribution === true) continue;
     const homes = defaultOf.get(criticName) || [];
     if (!homes.length || homes.includes(outletId)) continue;
+    if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;
+
+    if (INCLUDE_FULLTEXT) {
+      if (!d.fullText) continue;
+      const inT1T2 = getTier(outletId) <= 2 || homes.some((h) => getTier(h) <= 2);
+      if (!inT1T2) continue;
+      const normCritic = normalizeCriticForCoverage(criticName);
+      if (normCritic && normalizeCriticForCoverage(d.fullText).includes(normCritic)) continue;
+      suspects.push({
+        file: `${showId}/${file}`,
+        criticName,
+        defaultCriticOf: homes,
+        source: String(d.source || ''),
+        url: d.url || null,
+        mode: 'fulltext',
+      });
+      continue;
+    }
+
     const src = String(d.source || '');
     if (!AGG.some((a) => src.includes(a))) continue;
     if (d.fullText) continue;
-    if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;
     suspects.push({
       file: `${showId}/${file}`,
       criticName,
