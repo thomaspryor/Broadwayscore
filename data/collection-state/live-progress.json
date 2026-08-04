@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-08-04T07:53:39.682Z",
-  "processed": 62,
-  "failed": 778,
-  "successRate": "7.4%",
+  "updatedAt": "2026-08-04T08:52:10.510Z",
+  "processed": 90,
+  "failed": 1410,
+  "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 46,
     "amp": 0,
     "browserbase": 13,
-    "directCookies": 4,
+    "directCookies": 5,
     "scrapingbee": 0,
-    "brightdata": 11,
-    "archiveToday": 15,
-    "archive": 9
+    "brightdata": 19,
+    "archiveToday": 9,
+    "archive": 16
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -92,16 +92,26 @@
       "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
     },
     {
-      "t": "2026-08-04T07:44:01.902Z",
+      "t": "2026-08-04T08:21:05.809Z",
       "event": "bb-session",
-      "session": "19b53014",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "f91fd0d1",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
     },
     {
-      "t": "2026-08-04T07:44:18.627Z",
+      "t": "2026-08-04T08:21:06.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T08:21:22.358Z",
       "event": "bb-session",
-      "session": "10fe4620",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "82ca7736",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T08:21:23.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
