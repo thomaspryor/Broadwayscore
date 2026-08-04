@@ -172,6 +172,13 @@ function main() {
     if (entry.action === 'verify') {
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      // wrongAttribution/wrongAttributionReason are PROTECTED_FIELDS
+      // (review-write-guard.js) whose clear is only honored with this
+      // breadcrumb — a plain delete is silently reverted by safeWriteReview's
+      // preserve loop when a pre-existing wrongAttribution:true is on disk
+      // (same bug class found and fixed in fix-cross-outlet-attributions-
+      // fulltext.js and fix-playbill-bleed-attributions.js, task #1008/#1023).
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'rename') {
@@ -179,6 +186,7 @@ function main() {
       data.criticName = entry.criticName;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'retag') {
@@ -186,6 +194,7 @@ function main() {
       data.outletId = entry.outletId;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {

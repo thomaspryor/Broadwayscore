@@ -271,6 +271,14 @@ function main() {
     if (entry.action === 'verify') {
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      // wrongAttribution/wrongAttributionReason are PROTECTED_FIELDS
+      // (review-write-guard.js) whose clear is only honored with this
+      // breadcrumb — a plain delete is silently reverted by safeWriteReview's
+      // preserve loop when a pre-existing wrongAttribution:true is on disk,
+      // leaving a self-contradictory crossOutletVerified:true +
+      // wrongAttribution:true state that stays excluded from scoring
+      // (ship-check adversarial finding, task #1008/#1023).
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'rename') {
@@ -278,6 +286,7 @@ function main() {
       data.criticName = entry.criticName;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
