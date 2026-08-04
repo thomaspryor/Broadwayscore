@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T00:13:41.938Z",
+  "timestamp": "2026-08-04T00:32:12.867Z",
   "stats": {
-    "totalReviews": 41437,
-    "alreadyFlagged": 18109,
+    "totalReviews": 41442,
+    "alreadyFlagged": 18111,
     "dateGuardCatches": 111,
     "directorMismatch": 948,
-    "tvFilmSignals": 1146,
+    "tvFilmSignals": 1148,
     "londonSignals": 805,
     "offBroadwaySignals": 482,
     "yearMismatch": 86,
-    "noPublishDate": 3437
+    "noPublishDate": 3439
   },
   "findings": [
     {
@@ -3958,6 +3958,20 @@
       "score": 63,
       "publishDate": null,
       "url": "https://newyorktheater.me/2026/07/27/broad-strokes-review-cat-cohens-sick-humor/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "off-off-online--adrienne-onofri.json",
+      "score": 62,
+      "publishDate": "2026-08-01",
+      "url": "https://www.offoffonline.com/offoffonline/2026/7/27/broad-strokes",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15460,6 +15474,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from long-days-journey-into-night-2003"
+        }
+      ]
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-08-03",
+      "url": "https://www.standard.co.uk/culture/theatre/loves-labours-lost-at-the-globe-review-b1292222.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
