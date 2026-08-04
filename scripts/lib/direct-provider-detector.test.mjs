@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { scanSourceForDirectProviderCalls } = require('./direct-provider-detector.js');
+const { scanSourceForDirectProviderCalls, computeNewViolators } = require('./direct-provider-detector.js');
 
 test('flags a direct ScrapingBee content-fetch call', () => {
   const src = `const apiUrl = \`https://app.scrapingbee.com/api/v1/?api_key=\${key}&url=\${encodeURIComponent(url)}\`;`;
@@ -18,9 +18,43 @@ test('does not flag the ScrapingBee usage/credit-check endpoint', () => {
   assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
 });
 
-test('does not flag the ScrapingBee Google-search endpoint', () => {
-  const src = `\`https://app.scrapingbee.com/api/v1/store/google?api_key=\${key}&search=\${q}\`;`;
-  assert.equal(scanSourceForDirectProviderCalls(src).length, 0);
+test('does not flag the ScrapingBee Google-search endpoint under the content-fetch pattern', () => {
+  // The base /api/v1 pattern excludes store/google on purpose — it's a
+  // different capability (SERP), caught by its own dedicated pattern below.
+  const src = `const apiUrl = \`https://app.scrapingbee.com/api/v1/store/google?api_key=\${key}&search=\${q}\`;`;
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.deepEqual(hits.map(h => h.provider), ['scrapingbee-serp']);
+});
+
+test('flags a direct ScrapingBee store/google SERP call (task #1005)', () => {
+  const src = `\`https://app.scrapingbee.com/api/v1/store/google?api_key=\${key}&search=\${q}&search_type=news\`;`;
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'scrapingbee-serp');
+  assert.equal(hits[0].line, 1);
+});
+
+test('flags direct Bright Data SERP calls (serp/req and serp/get_result), not billing', () => {
+  const src = [
+    `fetch('https://api.brightdata.com/serp/req?customer=x&zone=y', opts);`,
+    `fetch('https://api.brightdata.com/serp/get_result?response_id=1', opts);`,
+    `fetch('https://api.brightdata.com/zone/cost?zone=x');`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 2);
+  assert.ok(hits.every(h => h.provider === 'brightdata-serp'));
+  assert.deepEqual(hits.map(h => h.line), [1, 2]);
+});
+
+test('flags a direct Scrapingdog google/ SERP call, not /account', () => {
+  const src = [
+    `axios.get('https://api.scrapingdog.com/google/', { params });`,
+    `axios.get('https://api.scrapingdog.com/account', { params });`,
+  ].join('\n');
+  const hits = scanSourceForDirectProviderCalls(src);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].provider, 'scrapingdog-serp');
+  assert.equal(hits[0].line, 1);
 });
 
 test('flags a direct Bright Data /request page-fetch call', () => {
@@ -126,12 +160,13 @@ test('flags a bare-host constant for scrapingbee/brightdata/scrapingdog (same sp
   }
 });
 
-test('bare-host patterns do NOT re-flag the intentionally-exempt billing/SERP endpoints', () => {
-  // These are excluded by path on purpose; a literal carrying any path must not
-  // match the bare-host patterns, or the billing exemptions silently die.
+test('bare-host patterns do NOT re-flag the intentionally-exempt billing endpoints', () => {
+  // These are excluded by path on purpose (billing/usage — not store/google,
+  // which now has its own dedicated SERP pattern and is no longer blanket-exempt);
+  // a literal carrying any path must not match the bare-host patterns, or the
+  // billing exemptions silently die.
   const exempt = [
     `httpsGet('https://app.scrapingbee.com/api/v1/usage?api_key=' + k);`,
-    `const u = 'https://app.scrapingbee.com/api/v1/store/google?search=' + q;`,
     `const c = 'https://api.brightdata.com/zone/cost?zone=x';`,
     `httpsGet('https://api.scrapingdog.com/account?api_key=' + k);`,
     `console.log('https://www.browserbase.com/sessions/' + id);`,
@@ -150,4 +185,43 @@ test('reports correct line numbers for multiple hits across lines', () => {
   ].join('\n');
   const hits = scanSourceForDirectProviderCalls(src);
   assert.deepEqual(hits.map(h => h.line), [2, 4]);
+});
+
+// computeNewViolators() — the --strict CI gate's diff logic (task #1005).
+// Fixture proving the guard fires on the exact bug class both #998 and #1005
+// are about: a script already baselined for a content-fetch violation grows
+// a NEW, different-capability SERP violation on the SAME file.
+
+test('computeNewViolators: fires on a sibling SERP hit added to an already-baselined file', () => {
+  // fetch-square-images.js shape: baselined for its content-fetch 'scrapingbee'
+  // hit (task #66 debt), then regresses a raw store/google SERP call too.
+  const violators = [
+    { file: 'scripts/fetch-square-images.js', providers: ['scrapingbee', 'scrapingbee-serp'] },
+  ];
+  const baselineFiles = {
+    'scripts/fetch-square-images.js': { providers: ['scrapingbee'], cronReachable: false },
+  };
+  const result = computeNewViolators(violators, baselineFiles);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].file, 'scripts/fetch-square-images.js');
+  assert.deepEqual(result[0].providers, ['scrapingbee-serp']);
+});
+
+test('computeNewViolators: stays silent when a file only repeats already-baselined providers', () => {
+  const violators = [
+    { file: 'scripts/fetch-square-images.js', providers: ['scrapingbee'] },
+  ];
+  const baselineFiles = {
+    'scripts/fetch-square-images.js': { providers: ['scrapingbee'], cronReachable: false },
+  };
+  assert.deepEqual(computeNewViolators(violators, baselineFiles), []);
+});
+
+test('computeNewViolators: flags a brand-new file with all its providers', () => {
+  const violators = [
+    { file: 'scripts/new-script.js', providers: ['scrapingbee-serp'] },
+  ];
+  assert.deepEqual(computeNewViolators(violators, {}), [
+    { file: 'scripts/new-script.js', providers: ['scrapingbee-serp'] },
+  ]);
 });

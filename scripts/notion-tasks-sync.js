@@ -278,8 +278,22 @@ function markCardDone(pageId) {
   const today = new Date().toISOString().slice(0, 10);
   // --outcome leaves an audit line (the --force reason string is discarded by
   // updateCard, so it would otherwise be a silent bot mutation).
-  notionBrain(['update', pageId, '--status', 'Done', '--completed-date', today,
-    '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
+  try {
+    notionBrain(['update', pageId, '--status', 'Done', '--completed-date', today,
+      '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
+    return true;
+  } catch (err) {
+    // The close-time trunk gate (task #1003) refused this ONE card because a
+    // file it owns is failing on main. That must not abort the whole sweep —
+    // every other completed task still deserves its card closed (ship-check
+    // finding). Any other failure still propagates.
+    const { CLOSE_REFUSED_EXIT_CODE } = require('./lib/trunk-close-gate.js');
+    if (err && err.status === CLOSE_REFUSED_EXIT_CODE) {
+      console.error(`[sync] card ${pageId} left open: trunk close gate refused it (a file it owns is failing on main)`);
+      return false;
+    }
+    throw err;
+  }
 }
 
 // ── commands ───────────────────────────────────────────────────────────────
@@ -352,7 +366,7 @@ function cmdPush(args) {
   if (!release) { console.error('[sync] a sync holds the lock; skipping push'); return { skipped: true }; }
   try {
     const map = readMap(dir);
-    const done = [], skipped = [];
+    const done = [], skipped = [], refused = [];
     for (const [pageId, entry] of Object.entries(map)) {
       if (entry.pushed) continue;
       const task = readTask(dir, entry.taskId);
@@ -360,14 +374,27 @@ function cmdPush(args) {
       // The integer id may have been reused by a live session for unrelated
       // work. Only close the card if this file still carries our marker.
       if (!taskBelongsTo(dir, entry.taskId, pageId)) { skipped.push({ taskId: entry.taskId, name: entry.name }); continue; }
-      if (!dry) { markCardDone(pageId); entry.pushed = true; }
+      // pushed only when the card ACTUALLY closed — a trunk-gate refusal
+      // must stay retryable, never be recorded as a completed close
+      // (ship-check finding: the sweep would report "marked Done" for a card
+      // that is still open, and never try again).
+      if (!dry) {
+        entry.pushed = markCardDone(pageId);
+        // A refused close is NOT a close: it must not be counted, printed as
+        // "✓ marked Done", or returned in `done` — the operator would read a
+        // still-open card as closed and never look again (second review pass:
+        // the earlier fix set entry.pushed correctly but left this push
+        // unconditional).
+        if (!entry.pushed) { refused.push({ taskId: entry.taskId, name: entry.name, pageId }); continue; }
+      }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
     if (!dry && done.length) writeMap(dir, map);
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by the trunk close gate (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
-    return { listId: listId(args), done, skipped, dry };
+    for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);
+    return { listId: listId(args), done, skipped, refused, dry };
   } finally { release(); }
 }
 

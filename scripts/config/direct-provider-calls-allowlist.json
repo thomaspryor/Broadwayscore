@@ -46,5 +46,9 @@
   "scripts/newspapers-browserbase-login.js": {
     "reason": "interactive one-time newspapers.com login tool; its session CREATE now routes through createBbSession() (task #752), and its remaining raw /v1 calls are context create + session debug/release — per-session operations with no chokepoint equivalent",
     "addedAt": "2026-08-02"
+  },
+  "scripts/evaluate-brightdata-serp.js": {
+    "reason": "explicit provider bake-off/comparison eval tool (ScrapingBee vs Bright Data SERP quality) — by design calls both SERP endpoints directly to compare raw results, same category as scrapingdog-bakeoff.js",
+    "addedAt": "2026-08-04"
   }
 }

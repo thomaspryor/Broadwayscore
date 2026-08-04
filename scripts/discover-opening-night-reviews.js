@@ -24,7 +24,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -101,13 +101,12 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 // could answer at all (both keys missing, or every provider in the chain
 // failed). Strategy 2b's own SERP-provider gate reads this — see T7 note below.
 let _serpUnavailable = false;
-// Strategy 2 (Google News) still hand-rolls its own direct ScrapingBee call
-// (serpQuery has no news search_type) and sets this independently on a 401/
-// 403/429 from THAT call. It no longer reflects Strategy 1/2b exhaustion —
-// those now route through the shared chain in url-discovery.js, which
-// doesn't expose per-provider exhaustion state. Acceptable narrowing per the
-// T7 scope (routing change only): Strategy 2 still self-detects its own
-// SB exhaustion; it just can't see Strategy 1's anymore.
+// Strategy 2 (Google News) routes through url-discovery.js's serpNewsQuery()
+// (task #1005) and sets this from that call's own `exhausted` flag. It no
+// longer reflects Strategy 1/2b exhaustion — those route through the shared
+// organic chain, which doesn't expose per-provider exhaustion state.
+// Acceptable narrowing per the T7 scope (routing change only): Strategy 2
+// still self-latches on its own SB exhaustion; it just can't see Strategy 1's.
 let _scrapingBeeExhausted = false;
 
 // Per-run SERP call budget. searchGoogle() and the inline news query hit
@@ -461,35 +460,25 @@ async function main() {
   const newsQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
   _serpCallsUsed++;
   try {
-    let newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
-
-    let results = [];
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        const res = await fetch(newsUrl, { signal: AbortSignal.timeout(30000) });
-        if (!res.ok) {
-          if (res.status === 401 || res.status === 403 || res.status === 429) {
-            console.log(`    ⚠ ScrapingBee exhausted (${res.status}) — skipping news search`);
-            _scrapingBeeExhausted = true;
-            break;
-          }
-          if (res.status >= 500 && attempt < 2) {
-            await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
-            continue;
-          }
-          throw new Error(`SERP ${res.status}`);
-        }
-        const data = await res.json();
-        results = data.organic_results || data.news_results || data.results || [];
-        break;
-      } catch (err) {
-        if (attempt < 2 && (err.name === 'TimeoutError' || err.message.includes('timeout'))) {
-          await new Promise(r => setTimeout(r, (attempt + 1) * 5000));
-          continue;
-        }
-        throw err;
-      }
+    // Routed through url-discovery.js's serpNewsQuery() (task #1005) so this
+    // call's spend lands in data/audit/scraper-spend-ledger.jsonl — was a raw
+    // store/google fetch that never called recordSbCall().
+    const newsResult = await serpNewsQuery(newsQuery, { nbResults: 10 });
+    if (newsResult === null) {
+      console.log('    ⚠ No ScrapingBee key — skipping news search');
+      throw new Error('SERP unavailable');
     }
+    if (newsResult.exhausted) _scrapingBeeExhausted = true;
+    // A transient failure (timeout, 5xx after retries) is NOT the same as a
+    // genuine zero-result search — old hand-rolled retry loop threw here too,
+    // which the outer catch logs and (unlike a real empty search) does NOT
+    // count toward `searched`. Only exhaustion (no fallback provider for
+    // news) proceeds to the empty-results path below (ship-check finding,
+    // task #1005 — parity with prior per-caller retry behavior).
+    if (newsResult.failed && !newsResult.exhausted) {
+      throw new Error('News SERP call failed (non-exhaustion)');
+    }
+    const results = newsResult.results;
     searched++;
 
     for (const result of results) {

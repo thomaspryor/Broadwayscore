@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates } = require('./lib/venue-listing-discover');
-const { isCandidateConfirmed } = require('./lib/ob-cross-validation');
+const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
@@ -320,6 +320,14 @@ async function main() {
       confirmed = true; reason = '--admin-promote-all'; source = 'admin';
     } else if (adminForceArgs.includes(titleLower)) {
       confirmed = true; reason = `--admin-force="${c.title}"`; source = 'admin-force';
+    } else if (c.source === 'nyt-theater') {
+      // Critic-listing candidates (newyorktheater.me — Sprint 1, task #997)
+      // can never be corroborated by isCandidateConfirmed's Playbill/Lortel
+      // check (Lortel is dead; Playbill's OB schedule carries none of these
+      // shows — task #987). decideCriticListingPromotion is self-sufficient
+      // instead; see scripts/lib/ob-cross-validation.js header (task #995).
+      const r = decideCriticListingPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source;
     } else {
       const r = isCandidateConfirmed(c, { playbillEntries, lortelEntries });
       confirmed = r.confirmed; reason = r.reason; source = r.source;

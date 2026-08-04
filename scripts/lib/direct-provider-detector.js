@@ -9,6 +9,18 @@
  * api.scrapingdog.com/account) are a different capability (health/spend
  * checks) and are intentionally not flagged.
  *
+ * SEPARATELY (task #1005, sibling of #998), the SERP endpoints — ScrapingBee
+ * store/google, Bright Data serp/req+get_result, Scrapingdog google/ — get
+ * their own `*-serp` provider patterns below. These were excluded from the
+ * content-fetch patterns above on purpose (SERP is a different capability),
+ * but that exclusion left NO detector at all for a script that calls the
+ * SERP endpoint directly and bypasses url-discovery.js's serpQuery()/
+ * serpNewsQuery()/serpImagesQuery() — exactly the scraper-spend-ledger-bypass
+ * bug class task #998 fixed for discover-outlet-reviews-serp.js. A caller
+ * legitimately needing the raw provider response (bake-off/diagnostic tools)
+ * goes in scripts/config/direct-provider-calls-allowlist.json, same as the
+ * content-fetch carve-outs.
+ *
  * Pure detection logic lives here so both the CLI (audit-direct-provider-calls.js)
  * and unit tests can call scanSourceForDirectProviderCalls() directly.
  */
@@ -75,6 +87,24 @@ const PROVIDER_ENDPOINT_PATTERNS = [
   { provider: 'brightdata', regex: /['"`]https?:\/\/api\.brightdata\.com['"`]/gi },
   { provider: 'scrapingdog', regex: /['"`]https?:\/\/api\.scrapingdog\.com['"`]/gi },
   { provider: 'browserbase', regex: /['"`]https?:\/\/www\.browserbase\.com['"`]/gi },
+
+  // KNOWN GAP (ship-check finding, task #1005): the bare-host patterns above
+  // label a split-URL SERP call (`const SB = '...scrapingbee.com'; SB +
+  // '/api/v1/store/google'`) as generic 'scrapingbee', not 'scrapingbee-serp'
+  // — same collapse for BD/SD. If a file is ALSO already baselined for
+  // generic 'scrapingbee' (a bare-host content-fetch split), this specific
+  // combination could re-escape computeNewViolators' provider diff. Same
+  // residual class the bare-host patterns already accept as prospective
+  // (zero files trip them today); a path-aware bare-host rewrite would close
+  // it fully but wasn't warranted for this pass — revisit if it's ever
+  // actually exploited.
+  // SERP endpoints (task #1005) — deliberately the exact siblings excluded
+  // above. url-discovery.js is the canonical chokepoint (allowlisted in
+  // scripts/config/direct-provider-calls-allowlist.json) — a hit anywhere
+  // else means a script is spending SERP credits outside the ledger.
+  { provider: 'scrapingbee-serp', regex: /https?:\/\/app\.scrapingbee\.com\/api\/v1\/store\/google\b/gi },
+  { provider: 'brightdata-serp', regex: /https?:\/\/api\.brightdata\.com\/serp\/(?:req|get_result)\b/gi },
+  { provider: 'scrapingdog-serp', regex: /https?:\/\/api\.scrapingdog\.com\/google\/?\b/gi },
 ];
 
 /**
@@ -103,4 +133,25 @@ function scanSourceForDirectProviderCalls(source) {
   return hits;
 }
 
-module.exports = { scanSourceForDirectProviderCalls, PROVIDER_ENDPOINT_PATTERNS };
+/**
+ * Diff a fresh scanRepo() result against the frozen baseline, provider-aware
+ * (task #1005). A file already baselined for one provider must still trip on
+ * a NEW, different provider — file-level-only diffing let a file's first
+ * violation blanket-forgive every future provider on that same file, which
+ * is exactly the "sibling call, same file, different endpoint" shape both
+ * task #998 (discover-outlet-reviews-serp.js) and #1005 are about.
+ * @param {Array<{file: string, providers: string[]}>} violators - current scanRepo() output
+ * @param {Object} baselineFiles - baseline.files (file -> {providers, cronReachable})
+ * @returns {Array<{file: string, providers: string[]}>} violators with only the NOT-yet-baselined providers, entries with zero new providers dropped
+ */
+function computeNewViolators(violators, baselineFiles) {
+  return violators
+    .map(v => {
+      const baselinedProviders = new Set(baselineFiles[v.file]?.providers || []);
+      const newProviders = v.providers.filter(p => !baselinedProviders.has(p));
+      return newProviders.length ? { ...v, providers: newProviders } : null;
+    })
+    .filter(Boolean);
+}
+
+module.exports = { scanSourceForDirectProviderCalls, PROVIDER_ENDPOINT_PATTERNS, computeNewViolators };

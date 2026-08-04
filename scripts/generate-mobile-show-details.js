@@ -23,13 +23,16 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
+const { computeSiteAwardScore } = require('./snapshot-award-scores');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
 
 // Schema version — bump when per-show detail format changes
 // v2 (task #906): added `cov` (Coverage Verdict public summary)
-const DETAIL_SCHEMA_VERSION = 2;
+// v3 (card parity): added `aw` (award score/tier/Pulitzer/other ceremonies),
+//   `vs.sum`, `acc`, `tlk`; vr thumbnails absolutized + numeric scores
+const DETAIL_SCHEMA_VERSION = 3;
 
 // ===========================================
 // HASH-GATE (two-layer, per-show)
@@ -111,6 +114,7 @@ function computePerShowHash(show, globalHash, ctx) {
   hash.update(JSON.stringify(ctx.reviewsByShow[show.id] ?? null));
   hash.update(JSON.stringify(ctx.audienceBuzz[show.id] ?? null));
   hash.update(JSON.stringify(ctx.tonyByShow[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.awardsShows[show.id] ?? null));
   hash.update(JSON.stringify(ctx.criticConsensus[show.id] ?? null));
   hash.update(JSON.stringify(ctx.showSchedules[show.id] ?? null));
   hash.update(JSON.stringify(ctx.grossesData[show.slug] ?? null));
@@ -209,6 +213,43 @@ try {
   console.log(`✓ Tony nominations: ${tonyShows} shows`);
 } catch (err) {
   console.warn('⚠ tony-nominations.json not found — Tony data will be skipped');
+}
+
+// Full awards data (all ceremonies) — feeds the mobile Awards Scorecard
+// so it can match the site: award score, tier, Pulitzer, other ceremonies.
+let awardsShows = {};
+try {
+  awardsShows = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf-8')).shows || {};
+  console.log(`✓ Awards data: ${Object.keys(awardsShows).length} shows`);
+} catch (err) {
+  console.warn('⚠ awards.json not found — award score will be skipped');
+}
+
+// Display labels for non-Tony ceremonies, mirroring the site's
+// OTHER_CEREMONY_CONFIGS order/naming in AwardScoreCard.tsx.
+const OTHER_CEREMONY_LABELS = [
+  ['lortel', 'Lortel Award'],
+  ['dramadesk', 'Drama Desk'],
+  ['outerCriticsCircle', 'Outer Critics'],
+  ['dramaLeague', 'Drama League'],
+  ['nyDramaCritics', 'NY Drama Critics'],
+  ['obie', 'Obie Award'],
+  ['olivier', 'Olivier'],
+];
+
+// Marquee-first sublabel, e.g. "Won Best Musical + 10 more".
+function awardSublabel(entry) {
+  const wins = entry?.tony?.wins ?? [];
+  const noms = entry?.tony?.nominatedFor ?? [];
+  if (wins.length > 0) {
+    const marquee = wins.find(w => /best (musical|play|revival)/i.test(w)) || wins[0];
+    const others = wins.length - 1;
+    return `Won ${marquee}${others > 0 ? ` + ${others} more` : ''}`;
+  }
+  if (noms.length > 0) {
+    return `${noms.length} Tony nomination${noms.length === 1 ? '' : 's'}`;
+  }
+  return null;
 }
 
 // Critic consensus — keyed by showId
@@ -355,7 +396,7 @@ if (SHOW_ARG) {
 // them into a context object so the helper doesn't depend on hoisted
 // globals (and is unit-testable later if we want).
 const HASH_CTX = {
-  reviewsByShow, audienceBuzz, tonyByShow, criticConsensus,
+  reviewsByShow, audienceBuzz, tonyByShow, awardsShows, criticConsensus,
   showSchedules, grossesData, lotteryRush, theaterMeta, videoReviewsByShow,
   coverageVerdictByShow,
 };
@@ -560,6 +601,45 @@ for (const show of visibleShows) {
     detail.tn = sorted.slice(0, 25);
   }
 
+  // Awards Scorecard parity: award score + tier + Pulitzer + other ceremonies.
+  const awardsEntry = awardsShows[show.id];
+  if (awardsEntry) {
+    // 'broadway' for every market: the site's AwardScoreCard hard-codes it
+    // (AwardScoreCard.tsx:338), and the mobile score must match the site.
+    const scoreResult = computeSiteAwardScore(show.id, awardsShows, 'broadway');
+    const oth = [];
+    for (const [key, label] of OTHER_CEREMONY_LABELS) {
+      const c = awardsEntry[key];
+      if (!c) continue;
+      const w = (c.wins || []).length;
+      const nm = c.nominations ?? (c.nominatedFor || []).length;
+      if (w === 0 && nm === 0) continue;
+      oth.push({ n: label, w, nm });
+    }
+    oth.sort((a, b) => b.w - a.w);
+    let pz = null;
+    if (awardsEntry.pulitzer?.wins?.includes('Drama')) {
+      pz = { r: 'Winner', y: awardsEntry.pulitzer.year ?? null };
+    } else if (awardsEntry.pulitzer?.finalist?.length || awardsEntry.pulitzerFinalist) {
+      pz = { r: 'Finalist', y: awardsEntry.pulitzer?.year ?? null };
+    }
+    if (scoreResult.displayScore > 0 || oth.length > 0 || pz) {
+      detail.aw = {
+        s: scoreResult.displayScore,
+        b: scoreResult.badge,          // eligible|nominated|honored|decorated|sweeper
+        ip: scoreResult.inProgress || undefined,
+        sub: awardSublabel(awardsEntry),
+        sea: awardsEntry.tony?.season ?? null,
+        // Category-level counts, matching the site's Tony panel display
+        // ("11 wins of 13 noms" — unique categories, co-nominees counted once)
+        tw: awardsEntry.tony ? new Set(awardsEntry.tony.wins || []).size : undefined,
+        tn: awardsEntry.tony ? new Set(awardsEntry.tony.nominatedFor || []).size : undefined,
+        pz,
+        oth: oth.length > 0 ? oth : undefined,
+      };
+    }
+  }
+
   // Critics' Take consensus paragraph
   const consensus = criticConsensus[show.id];
   if (consensus && consensus.text) {
@@ -657,6 +737,24 @@ for (const show of visibleShows) {
         co: raw.comfort ?? null,
         am: raw.ambiance ?? null,
         fa: raw.facilities ?? null,
+        sum: raw.summary || null,      // editorial venue summary (site parity)
+      };
+    }
+    // Verified accessibility + find-your-seat links (site Theater Scorecard parity)
+    if (theater.accessibility?.verified) {
+      const a = theater.accessibility;
+      detail.acc = {
+        wc: a.wheelchair || undefined,
+        el: a.elevator || undefined,
+        hl: a.hearingLoop || undefined,
+        al: a.assistiveListening || undefined,
+        note: a.notes || null,
+      };
+    }
+    if (theater.externalLinks?.seatplan || theater.externalLinks?.aviewfrommyseat) {
+      detail.tlk = {
+        sp: theater.externalLinks.seatplan || undefined,
+        avs: theater.externalLinks.aviewfrommyseat || undefined,
       };
     }
   }
@@ -664,17 +762,24 @@ for (const show of visibleShows) {
   // Video reviews
   const showVideoReviews = videoReviewsByShow[show.id];
   if (showVideoReviews?.length > 0) {
-    detail.vr = showVideoReviews.slice(0, 8).map(r => ({
-      ch: r.creatorName || null,       // channel/creator name
-      hd: r.handle || null,            // @handle
-      pl: r.platform || null,          // platform (tiktok/youtube/etc)
-      u: r.videoUrl,                   // video URL
-      s: r.score ?? null,              // score 0-100
-      bk: r.bucket || null,            // Rave/Positive/Mixed/Negative
-      q: r.keyQuote || null,           // pull quote
-      th: r.thumbnail || null,         // thumbnail URL
-      pd: r.publishedAt || null,       // publish date
-    }));
+    detail.vr = showVideoReviews.slice(0, 8).map(r => {
+      // Site-relative thumbnails (TikTok stills live in /images/) must be
+      // absolute for the app's <Image>, which has no base URL.
+      let th = r.thumbnail || null;
+      if (th && th.startsWith('/')) th = `https://broadwayscorecard.com${th}`;
+      const score = r.score != null && !Number.isNaN(Number(r.score)) ? Number(r.score) : null;
+      return {
+        ch: r.creatorName || null,       // channel/creator name
+        hd: r.handle || null,            // @handle
+        pl: r.platform || null,          // platform (tiktok/youtube/etc)
+        u: r.videoUrl,                   // video URL
+        s: score,                        // score 0-100 (numeric)
+        bk: r.bucket || null,            // Rave/Positive/Mixed/Negative
+        q: r.keyQuote || null,           // pull quote
+        th,                              // absolute thumbnail URL
+        pd: r.publishedAt || null,       // publish date
+      };
+    });
   }
 
   // Previews start date

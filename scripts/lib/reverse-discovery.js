@@ -161,6 +161,143 @@ function extractShowTitleFromPlaybillRoundup(rawTitle) {
 }
 
 /**
+ * newyorktheater.me's monthly "New York Theater Openings" post (WP REST API
+ * content.rendered) lists shows under per-day <h2>Month Day</h2> headers.
+ * Each show is its own <p class="wp-block-paragraph">: an emoji marker (no
+ * ASCII letters — 🟩, 🟦, 🌙 🆓, 🟧🇺🇸, ⬜️, 🎶, …; a 🇺🇸 flag marks a
+ * touring/regional entry outside the five boroughs — see isNytheaterOutOfTown),
+ * then a <a href> around the title (sometimes wrapped in <strong> — "The
+ * Festival", 2026-08-14), then
+ * "&nbsp;(Venue)" before a <br> and description text. Interspersed <figure>
+ * image blocks between headers and paragraphs are ignored by the <h2>-split.
+ */
+const NYT_MONTH_HEADER_RE = /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})$/i;
+const NYT_TITLE_LINK_RE = /^([\s\S]*?)(?:<strong>)?<a\s+href="([^"]+)"[^>]*>([^<]*)<\/a>(?:<\/strong>)?/;
+
+/**
+ * newyorktheater.me marks touring/regional entries (outside the five
+ * boroughs) with a 🇺🇸 flag alongside the color-code emoji in the lead
+ * marker — e.g. "The Festival" at Hutton Brickyards in Kingston, N.Y.
+ * (verified live, 2026-08 post; would otherwise false-alarm as a missing
+ * NYC show — ship-check finding, task #997). Unlike BWW/Playbill, which
+ * filter on title-text keywords, this source's own emoji lead already
+ * carries the market signal the parser reads for title detection anyway.
+ */
+function isNytheaterOutOfTown(leadMarker) {
+  return /🇺🇸/.test(leadMarker || '');
+}
+
+/**
+ * Parse one show paragraph's inner HTML. Returns null when the paragraph
+ * isn't a title paragraph at all (plain description/date text — these never
+ * open with a link). Returns { title, url, venue: null } when a title link
+ * WAS found but the venue parenthetical couldn't be — the caller treats a
+ * matched title with a null venue as drift (see extractOpeningsFromNytheaterPost).
+ * outOfTown is true when the lead marker carries the 🇺🇸 non-NYC flag — the
+ * caller drops these from results without counting them as drift.
+ */
+function parseNytheaterEntryParagraph(pInner) {
+  const m = String(pInner || '').match(NYT_TITLE_LINK_RE);
+  if (!m) return null;
+  const lead = decodeEntities(m[1]).trim();
+  // A genuine title paragraph's lead-in is emoji/whitespace only. Prose
+  // lead-ins (rare, but body paragraphs never start with a link at all in
+  // this format) would carry ASCII letters — treat those as "not a title
+  // paragraph" rather than mis-parsing narrative text as a show entry.
+  if (!lead || /[A-Za-z]/.test(lead)) return null;
+  const url = m[2];
+  const title = decodeEntities(m[3]).trim();
+  if (!title) return null;
+  const rest = String(pInner).slice(m[0].length);
+  // Venue is expected immediately after the title link, separated only by
+  // whitespace/entities (&nbsp;) — never by another tag. A tag intervening
+  // here (the Gutenberg-drift shape: venue moved into a nested <em>/<span>)
+  // fails this match, surfacing as venue: null.
+  const venueMatch = rest.match(/^[^(<]{0,20}\(([^()<]*)\)/);
+  const venue = venueMatch ? decodeEntities(venueMatch[1]).trim() : null;
+  return { title, url, venue: venue || null, outOfTown: isNytheaterOutOfTown(lead) };
+}
+
+/**
+ * Structural fingerprint of the post's content.rendered — counts of the tags
+ * the parser depends on. Independent of parseNytheaterEntryParagraph's own
+ * matching, so a drift fixture whose <p class="wp-block-paragraph"> entries
+ * moved into a <ul>/<li> shape produces a visibly different signature even
+ * in cases the per-entry null-venue check doesn't catch.
+ *
+ * NOT wired as a runtime guard (ship-check finding, task #997) — it exists
+ * so tests can pin the real fixture's shape and assert a drift fixture's
+ * differs, matching this card's S1-T3 spec. A PARTIAL structural change (one
+ * entry's <p> converted to <li>, others untouched) still passes silently at
+ * runtime: totalMatched stays >0 from the surviving entries, so the
+ * "0 parsed" throw in extractOpeningsFromNytheaterPost doesn't fire. This is
+ * the same accepted "known limit" the WET/BWW comments already call out —
+ * only a FULL format change alarms.
+ */
+function nytheaterOpeningsTagSignature(contentHtml) {
+  const html = String(contentHtml || '');
+  const h2 = (html.match(/<h2[^>]*>/g) || []).length;
+  const para = (html.match(/<p class="wp-block-paragraph">/g) || []).length;
+  const anchors = (html.match(/<a\s+href="/g) || []).length;
+  const li = (html.match(/<li[^>]*>/g) || []).length;
+  return `h2:${h2}|p:${para}|a:${anchors}|li:${li}`;
+}
+
+/**
+ * Parse a newyorktheater.me openings post (WP REST API post object: { date,
+ * content: { rendered } }) into show entries: [{ title, venue, url, month,
+ * day, date }]. date is an ISO YYYY-MM-DD resolved against post.date via
+ * resolveDate (post.date is always same-month-ish as its own headers, so the
+ * default closest-year window is sufficient), or null when post.date is absent.
+ *
+ * THROWS (not filters) on format drift, mirroring audit-reverse-discovery.js's
+ * WET/BWW/Playbill sources — a silently-empty result here would read as "a
+ * quiet month" instead of "the parser broke":
+ *   - a matched title paragraph with no extractable venue (nested-tag drift)
+ *   - at least one date header found but zero entries parsed at all (full
+ *     structure change — the WET/BWW "known limit" applies here too: a
+ *     PARTIAL drift where some entries still parse will not alarm)
+ */
+function extractOpeningsFromNytheaterPost(post) {
+  const html = (post && post.content && post.content.rendered) || '';
+  const referenceDate = post && post.date;
+  const parts = html.split(/<h2[^>]*>([\s\S]*?)<\/h2>/);
+  const entries = [];
+  let datePatternMatches = 0;
+  // Counts every matched title paragraph, NYC or out-of-town — the drift
+  // guard below needs this (not entries.length) so a month whose only
+  // openings happen to be out-of-town doesn't false-alarm as "0 parsed".
+  let totalMatched = 0;
+  for (let i = 1; i < parts.length - 1; i += 2) {
+    const header = decodeEntities(parts[i]).trim();
+    const hm = header.match(NYT_MONTH_HEADER_RE);
+    if (!hm) continue; // e.g. the trailing "*Opening Night" key header
+    datePatternMatches++;
+    const month = hm[1];
+    const day = parseInt(hm[2], 10);
+    const body = parts[i + 1];
+    const ps = [...body.matchAll(/<p class="wp-block-paragraph">([\s\S]*?)<\/p>/g)];
+    for (const [, pInner] of ps) {
+      const parsed = parseNytheaterEntryParagraph(pInner);
+      if (!parsed) continue; // not a title paragraph — description/date text
+      if (!parsed.venue) {
+        throw new Error(
+          `newyorktheater.me openings drift: matched title "${parsed.title}" (${month} ${day}) with no venue parenthetical — venue likely moved into a nested tag`
+        );
+      }
+      totalMatched++;
+      if (parsed.outOfTown) continue; // deliberately filtered, not drift — see isNytheaterOutOfTown
+      const date = referenceDate ? resolveDate(`${month} ${day}`, referenceDate) : null;
+      entries.push({ title: parsed.title, venue: parsed.venue, url: parsed.url, month, day, date });
+    }
+  }
+  if (datePatternMatches > 0 && totalMatched === 0) {
+    throw new Error(`newyorktheater.me openings drift: ${datePatternMatches} date header(s) found, 0 show entries parsed — post structure changed`);
+  }
+  return entries;
+}
+
+/**
  * Match-candidate strings for a source-derived title. Adds a
  * possessive-stripped variant ("Cat Cohen's Broad Strokes" → "Cat Cohens…" is
  * handled by normalizeTitle, but "Cohen's" vs the catalogued "Cohen:" needs
@@ -479,6 +616,9 @@ module.exports = {
   isBwwNonStageTieIn,
   isBwwNonNycRoundup,
   titleFromDtliSlug,
+  extractOpeningsFromNytheaterPost,
+  nytheaterOpeningsTagSignature,
+  isNytheaterOutOfTown,
   titleVariants,
   buildShowTitleIndex,
   titleMatchesIndex,

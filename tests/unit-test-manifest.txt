@@ -1,4 +1,5 @@
 scripts/audit-alert-senders.test.mjs
+scripts/audit-audience-buzz-contamination.test.mjs
 scripts/audit-card-verifiability.test.mjs
 scripts/audit-cross-outlet-attributions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
@@ -39,6 +40,8 @@ scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/tests/headless-dispatchability.test.mjs
+scripts/tests/trunk-close-gate.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/alert-email-policy.test.mjs
 tests/unit/anchored-precedence.test.mjs
@@ -50,6 +53,7 @@ tests/unit/atomic-shows-write.test.mjs
 tests/unit/audience-buzz-write-guard.test.mjs
 tests/unit/audience-coverage-gaps.test.mjs
 tests/unit/audience-full-snapshot.test.mjs
+tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
@@ -126,6 +130,7 @@ tests/unit/corpus-determinism.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/creative-team-validator.test.mjs
 tests/unit/critic-fill-rules.test.mjs
+tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
 tests/unit/cross-market-contamination.test.mjs
 tests/unit/cross-production-guards.test.mjs
@@ -224,6 +229,7 @@ tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
+tests/unit/nytheater-openings.test.mjs
 tests/unit/ob-candidates-digest.test.mjs
 tests/unit/ob-cross-validation.test.mjs
 tests/unit/off-broadway-venue-fallback.test.mjs
@@ -260,6 +266,7 @@ tests/unit/pending-promote-validation.test.mjs
 tests/unit/pending-strand-routing.test.mjs
 tests/unit/per-category-precursor-warnings.test.mjs
 tests/unit/placeholder-images.test.mjs
+tests/unit/placeholder-venue-guard.test.mjs
 tests/unit/plan-ready.test.mjs
 tests/unit/playbill-ob-schedule.test.mjs
 tests/unit/playbill-verdict-discover.test.mjs

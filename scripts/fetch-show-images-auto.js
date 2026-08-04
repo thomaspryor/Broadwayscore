@@ -23,7 +23,7 @@
 
 const https = require('https');
 const fs = require('fs');
-const { serpQuery } = require('./lib/url-discovery');
+const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -1494,30 +1494,28 @@ function extractDirectImageUrl(url) {
   return url;
 }
 
-function searchGoogleImagesSB(query) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY not set'));
-      return;
-    }
-
-    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}&search_type=images&nb_results=10`;
-    https.get(serpUrl, (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`Google Images SERP HTTP ${response.statusCode}`));
-        return;
-      }
-      let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          resolve(parsed.image_results || parsed.images || []);
-        } catch { reject(new Error('Failed to parse image search results')); }
-      });
-      response.on('error', reject);
-    }).on('error', reject);
-  });
+// Routed through url-discovery.js's serpImagesQuery() (task #1005) so this
+// call's spend lands in data/audit/scraper-spend-ledger.jsonl — was a raw
+// store/google fetch that never called recordSbCall(). Keeps the throw-based
+// contract searchGoogleImages() below expects (exhaustion → `.status` set on
+// the thrown Error, checked to decide whether to fall back to Bright Data).
+async function searchGoogleImagesSB(query) {
+  const result = await serpImagesQuery(query, { nbResults: 10 });
+  if (result === null) {
+    throw new Error('SCRAPINGBEE_API_KEY not set');
+  }
+  // Throw on ANY failure (not just exhaustion) — a transient timeout/5xx must
+  // still reach searchGoogleImages()'s catch below so it falls back to Bright
+  // Data. Collapsing `failed` into `exhausted` here silently returned an
+  // empty result as if the search genuinely had zero hits, defeating the BD
+  // fallback (ship-check finding, task #1005 — reproduced live: a "socket
+  // hang up" from the real endpoint took this exact silent path).
+  if (result.failed) {
+    const err = new Error(result.exhausted ? 'Google Images SERP exhausted' : 'Google Images SERP failed');
+    if (result.exhausted) err.status = 401;
+    throw err;
+  }
+  return result.results;
 }
 
 // Search Google Images via the shared fallback chain (fallback — returns
@@ -1558,7 +1556,7 @@ async function searchGoogleImages(query) {
     try {
       return await searchGoogleImagesSB(query);
     } catch (sbErr) {
-      const status = /HTTP (\d+)/.exec(sbErr.message)?.[1];
+      const status = sbErr.status || /HTTP (\d+)/.exec(sbErr.message)?.[1];
       if ([401, 403, 429].includes(Number(status))) {
         _sbImagesExhausted = true;
         console.log(`   ⚠ ScrapingBee Images exhausted (HTTP ${status}) — skipping SB Images for the rest of this run`);

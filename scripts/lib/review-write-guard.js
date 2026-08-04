@@ -67,6 +67,15 @@ function _setShowsCacheForTest(map) { _showsByIdCache = map; }
 const PROTECTED_FIELDS = [
   'assignedScore',
   'crossOutletVerified',
+  // Audit-trail fields for the crossOutlet triage (audit-cross-outlet-
+  // attributions.js / fix-cross-outlet-attributions*.js). The boolean flags
+  // (crossOutletVerified, wrongAttribution below) were already protected,
+  // but the notes/rename-history weren't — a rebase could silently drop WHY
+  // a file was verified/renamed while the flag itself survived, defeating
+  // the undo/audit trail (ship-check adversarial finding, task #991).
+  'crossOutletVerifiedNote',
+  'crossOutletOriginalCritic',
+  'crossOutletOriginalOutletId',
   'humanReviewScore',
   'adjudicatedScore',
   'adjudicationNote',
@@ -125,6 +134,7 @@ const PROTECTED_FIELDS = [
   // rebase would let the restore resurrect old-URL-derived flags/scores.
   '_urlChangedClear',
   'wrongAttribution',
+  'wrongAttributionReason',
   'manualContentTier',
   'designation',
   'isCriticsPick',

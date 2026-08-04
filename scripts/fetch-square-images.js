@@ -21,6 +21,7 @@ const https = require('https');
 const http = require('http');
 const { execSync } = require('child_process');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { serpImagesQuery } = require('./lib/url-discovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -101,13 +102,12 @@ function getImageDimensions(buffer) {
   }
 }
 
-// Search Google Images via ScrapingBee
+// Search Google Images via url-discovery.js's serpImagesQuery() (task #1005)
+// so this call's spend lands in data/audit/scraper-spend-ledger.jsonl — was a
+// raw store/google fetch that never called recordSbCall().
 async function searchGoogleImages(query) {
-  const url = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}&search_type=images&nb_results=20`;
-
-  const buffer = await downloadUrl(url, 30000);
-  const data = JSON.parse(buffer.toString());
-  return data.images || data.image_results || [];
+  const result = await serpImagesQuery(query, { nbResults: 20 });
+  return result ? result.results : [];
 }
 
 // Try to get the original full-size image URL from a source page

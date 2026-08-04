@@ -13,7 +13,7 @@
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
 #         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
-#         | snapshot-overwrite | alert-ledger-commit | reset-soft-partial-commit
+#         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | reset-soft-partial-commit
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -354,6 +354,81 @@ check_alert_ledger_commit() {
   fi
 }
 
+check_ledger_coverage() {
+  # Card 3b1637c5 / task #996: any workflow job that runs a script calling
+  # url-discovery.js's serpQuery()/discoverCorrectUrl() (SERP path) must also
+  # stage data/audit/scraper-spend-ledger.jsonl for commit in the SAME job,
+  # or that job's SERP telemetry is silently discarded when the runner exits
+  # (19/~40 SERP-calling workflows had this gap; 18 fixed by hand in
+  # 436f4a24092/943bd4a9327). Logic lives in scripts/lib/ledger-coverage-
+  # check.js (real acorn AST walk — not text regex — because "requires
+  # url-discovery.js" != "calls its SERP function"; see that file's header
+  # comment for the false-positive it avoids). A single Node process handles
+  # every workflow file — the AST walk over scripts/**/*.js is the expensive
+  # part and must run once, not once per workflow.
+  #
+  # scripts/lib/ledger-coverage-exemptions.js lists 40 pre-existing gaps this
+  # check's more-thorough (transitive) analysis found beyond the 19 the
+  # original manual audit covered — out of scope for #996 itself, tracked in
+  # a follow-up card. Remove an entry there the moment its workflow is fixed
+  # — a STALE exemption (one that no longer matches a real violation) is
+  # itself a failure below, so fixing a workflow without removing its
+  # exemption entry doesn't silently rot forever (ship-check finding,
+  # 2026-08-04).
+  #
+  # Fails loudly (not silently-clean) if acorn is unavailable — ledgerScripts
+  # would otherwise come back empty and every workflow would read as
+  # violation-free, which is the wrong failure mode for a cost-control gate.
+  local OUT
+  OUT=$(node -e "
+    let acorn;
+    try { acorn = require('acorn'); } catch { acorn = null; }
+    if (!acorn) {
+      console.log('__ACORN_MISSING__');
+      process.exit(0);
+    }
+    const fs = require('fs');
+    const path = require('path');
+    const { findLedgerScripts, findMissingLedgerCommits } = require('./scripts/lib/ledger-coverage-check.js');
+    const { EXEMPTIONS, isExempt } = require('./scripts/lib/ledger-coverage-exemptions.js');
+    const ledgerScripts = findLedgerScripts('scripts');
+    const dir = '.github/workflows';
+    const usedExemptions = new Set();
+    let any = false;
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findMissingLedgerCommits(text, ledgerScripts)) {
+        if (isExempt(name, v.job)) {
+          usedExemptions.add(name + '#' + v.job);
+        } else {
+          any = true;
+          console.log(name + ': ' + v.message);
+        }
+      }
+    }
+    for (const e of EXEMPTIONS) {
+      if (!usedExemptions.has(e.file + '#' + e.job)) {
+        any = true;
+        console.log('STALE EXEMPTION: ' + e.file + \" job '\" + e.job + \"' is listed in ledger-coverage-exemptions.js but is no longer a violation — remove the entry.\");
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if echo "$OUT" | grep -qF '__ACORN_MISSING__'; then
+    echo "::error::ledger-coverage check could not run — acorn is not installed (run 'npm ci' first). This gate fails closed rather than silently reporting clean."
+    FAILED=1
+  elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+    echo "All SERP-calling (url-discovery.js serpQuery/discoverCorrectUrl) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
+  else
+    echo "::error::Workflows call url-discovery.js's serpQuery()/discoverCorrectUrl() but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: add a 'Commit scraper-spend ledger' step (see audit-closing-dates.yml for the pattern) to the violating job."
+    echo "If this is a known, tracked gap, add it to scripts/lib/ledger-coverage-exemptions.js with a dated reason."
+    echo "If a STALE EXEMPTION is listed, remove that entry from ledger-coverage-exemptions.js — its workflow is already fixed."
+    FAILED=1
+  fi
+}
+
 check_dry_run_flag_setter() {
   # Task #653 ship-check finding: scripts/flag-wrong-production-by-date.js is
   # DRY_RUN unless --apply (flag-wrong-production-by-date.js:43). rebuild-fast.yml
@@ -432,18 +507,19 @@ run_check() {
     demo-flags)        check_demo_flags ;;
     snapshot-overwrite) check_snapshot_overwrite ;;
     alert-ledger-commit) check_alert_ledger_commit ;;
+    ledger-coverage)    check_ledger_coverage ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     dry-run-flag-setter) check_dry_run_flag_setter ;;
     workflows)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
-      check_snapshot_overwrite; check_alert_ledger_commit; check_dry_run_flag_setter ;;
+      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_dry_run_flag_setter ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
-      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit
+      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
       check_reset_soft_partial_commit; check_dry_run_flag_setter ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|reset-soft-partial-commit|dry-run-flag-setter|workflows|all>[,...]" >&2; exit 2 ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|reset-soft-partial-commit|dry-run-flag-setter|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

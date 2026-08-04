@@ -15,6 +15,15 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # Placeholder-venue guard (card 3b2637c5/#994): sanitizeVenueForWrite
+      # (venue-classification.js) reuses isPlaceholderVenue (the census script)
+      # to fail closed on ShowScore neighbourhood-blob venues at write time.
+      # Colocated test lives in tests/unit/ (globbed already); the two .js
+      # source files need explicit listing (no scripts/lib/** broad glob) —
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/venue-classification.js'
+      - 'scripts/audit-placeholder-venues.js'
+      - 'scripts/lib/show-score-status.js'
       # Creative-team SERP verification: shared by the auto-fix write guard and
       # audit-creative-team-serp.js retro-audit. Colocated *.test.mjs runs in the
       # lib-test glob; path-listed so a solo edit triggers CI.
@@ -546,6 +555,10 @@ on:
       - 'scripts/audit-cast-contamination.js'
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
+      # Colocated test (task #57, title-collision sibling divergence). Registered
+      # explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+      # files are NOT globbed) — path-listed so a solo edit triggers CI.
+      - 'scripts/audit-audience-buzz-contamination.test.mjs'
       - 'scripts/audit-critic-consensus-contamination.js'
       # The four contamination audits gated to a --gate catastrophe floor (2026-06-30,
       # Notion 38f637c5). Each pure block/pass decision lives in scripts/lib/*-
@@ -1155,6 +1168,15 @@ on:
       - 'scripts/lib/digest-snapshots.js'
       - 'scripts/lib/digest-snapshots.test.mjs'
       - 'scripts/send-morning-digest.js'
+      # Close-time trunk attribution gate (task #1003) — the decision lib, its
+      # gh producer, and the test that runs against the real 2026-08-04
+      # failure log. Not covered by any broader glob (scripts/tests/ is not
+      # scripts/lib/), so without these entries a push touching only them
+      # would trigger ZERO CI — the "non-listed scripts/ = ZERO CI" class.
+      - 'scripts/lib/trunk-close-gate.js'
+      - 'scripts/produce-trunk-snapshot.js'
+      - 'scripts/tests/trunk-close-gate.test.mjs'
+      - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send
@@ -1177,6 +1199,16 @@ on:
       - 'scripts/lib/backlog-drain.test.mjs'
       - 'scripts/backlog-drain.js'
       - 'scripts/backlog-drain.test.mjs'
+      # Headless dispatchability gate (task #1004) — "can an unattended session
+      # FINISH this card?", asked at selection time by both backlog-drain.js and
+      # bsc-next.js --headless. Its test lives under scripts/tests/ (registered
+      # in tests/unit-test-manifest.txt, since neither the scripts/lib/*.test.mjs
+      # glob nor the scripts/ root listing reaches that directory) and asserts
+      # UI_PATH_RE still matches pre-push-visual-gate.sh's UI_PATTERN — so the
+      # hook is path-listed too, or a hook-only widening lands unchecked.
+      - 'scripts/lib/headless-dispatchability.js'
+      - 'scripts/tests/headless-dispatchability.test.mjs'
+      - '.claude/hooks/pre-push-visual-gate.sh'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/email-gate-funnel-rules.js'
@@ -1432,6 +1464,15 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/alert-ledger-commit-check.js'
       - 'scripts/lib/alert-ledger-commit-check.test.mjs'
+      # Lint guard: scripts that call url-discovery.js's serpQuery()/
+      # discoverCorrectUrl() (SERP path) must commit
+      # data/audit/scraper-spend-ledger.jsonl in the same job (task #996,
+      # card 3b1637c5 — 19 workflows found silently discarding SERP spend
+      # telemetry). Colocated *.test.mjs runs via the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/ledger-coverage-check.js'
+      - 'scripts/lib/ledger-coverage-check.test.mjs'
+      - 'scripts/lib/ledger-coverage-exemptions.js'
       # Cross-run dead-arm detector (card #647) — the class behind all three
       # arms the 2026-07-30 pipeline audit found dead with zero alarms.
       # Colocated *.test.mjs run via the scripts/lib/*.test.mjs glob;
@@ -2301,6 +2342,17 @@ jobs:
           # fixed in audit-aggregator-gap.yml/test-ugc-roundtrip.yml/
           # ux-walkthrough.yml/check-cron-health.yml (card #618).
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
+
+      - name: Check SERP-calling workflows commit scraper-spend ledger
+        run: |
+          # Structural guard for card 3b1637c5's finding: 19 workflows whose
+          # scripts call url-discovery.js's serpQuery()/discoverCorrectUrl()
+          # never staged data/audit/scraper-spend-ledger.jsonl, so SERP spend
+          # telemetry was silently discarded every run (18 fixed by hand in
+          # 436f4a24092/943bd4a9327; task #996 is this permanent guard).
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook.
+          bash scripts/lint-workflow-guards.sh ledger-coverage
 
       - name: Check scripts avoid reset --soft + scoped-add + commit
         run: |

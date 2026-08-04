@@ -74,6 +74,8 @@ const REPO = path.join(__dirname, '..');
 // one definition (scripts/lib/autonomous-checks.js), never a second literal.
 const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
 const MAX_MERGE_ATTEMPTS = 2;
+// notion-brain.js's close-gate refusal (task #1003) — handled, never fatal.
+const { CLOSE_REFUSED_EXIT_CODE: TRUNK_GATE_REFUSED_EXIT } = require('./lib/trunk-close-gate.js');
 
 const USAGE = `autonomous-merge.js — CI-side merge/revert executor for the autonomous nightly loop.
 
@@ -176,10 +178,46 @@ function notionBrain(args) {
   return JSON.parse(out);
 }
 
-function notionUpdate(id, flags) {
+function notionUpdate(id, flags, { mergedFiles = null } = {}) {
+  // Attribution for the close-time trunk gate (task #1003): by now the merge
+  // is pushed, so notion-brain's own branch diff is empty — hand it the exact
+  // file list this merge landed.
+  const env = mergedFiles && mergedFiles.length
+    ? { ...process.env, TRUNK_CLOSE_GATE_FILES: mergedFiles.join(',') }
+    : process.env;
   execFileSync('node', [path.join(__dirname, 'notion-brain.js'), 'update', id, ...flags], {
-    cwd: REPO, stdio: ['ignore', 'ignore', 'inherit'], env: process.env,
+    cwd: REPO, stdio: ['ignore', 'ignore', 'inherit'], env,
   });
+}
+
+// The code is ALREADY merged and pushed by the time we get here. If the trunk
+// close gate refuses the Done write (exit 5 — a file this merge landed is
+// failing on main), crashing would leave git and Notion permanently out of
+// sync: merged code, and a card still claiming to be mid-flight with no
+// record of why. Retry the SAME update minus `--status Done`, so the outcome
+// note and Auto=merged still land and the card stays open on purpose
+// (ship-check P0).
+function notionUpdateAfterMerge(id, flags, mergedFiles) {
+  try {
+    notionUpdate(id, flags, { mergedFiles });
+    return true;
+  } catch (err) {
+    if (err && err.status === TRUNK_GATE_REFUSED_EXIT) {
+      console.error(`[merge] card ${id} NOT closed: the trunk close gate refused it (a file this merge landed is failing on main). Code IS merged; leaving the card open.`);
+      const withoutDone = [];
+      for (let i = 0; i < flags.length; i++) {
+        if (flags[i] === '--status') { i++; continue; }
+        withoutDone.push(flags[i]);
+      }
+      try {
+        notionUpdate(id, [...withoutDone, '--force', 'trunk close gate refused Done; recording merge outcome only'], { mergedFiles: null });
+      } catch (e2) {
+        console.error(`[merge] follow-up card update ALSO failed for ${id}: ${String(e2.message).slice(0, 200)}`);
+      }
+      return false;
+    }
+    throw err;
+  }
 }
 
 function httpsJson(method, hostname, apiPath, headers, body) {
@@ -430,7 +468,7 @@ async function approve(cardId, branch) {
 
     pushMain();
     transition('approved', 'merge.success');
-    notionUpdate(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })]);
+    notionUpdateAfterMerge(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })], verified.files);
     console.log(`[merge] MERGED card ${cardId} (${sha}) from ${branch}`);
     return;
   }
@@ -577,7 +615,7 @@ async function approveDataCard(cardId, branch, card, evidence) {
     }
 
     transition('approved', 'merge.success');
-    notionUpdate(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })]);
+    notionUpdateAfterMerge(cardId, ['--auto', 'merged', '--status', 'Done', '--outcome', buildMergeOutcomeNote({ sha, branch, files: verified.files })], verified.files);
     console.log(`[merge] MERGED card ${cardId} (${sha}) from ${branch} → ${repoKey}`);
     if (repoKey === 'review-texts') dispatchRebuildFast(cardId);
     return;

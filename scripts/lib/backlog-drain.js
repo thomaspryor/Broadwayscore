@@ -68,9 +68,17 @@ function isAwaitingEnrichment(task, refusedNotionIds, notionIdOfFn) {
 // Map<taskId(string), reason>.
 function computeParkedMap(tasks, ledgerEntries, opts = {}) {
   const parked = new Map();
+  // attempt-memory's vocabulary predates card-stranded and counts only
+  // card-fail/card-pass/auto-approve, so a card that strands on every attempt
+  // would re-dispatch forever (ship-check finding, task #1004). Present each
+  // stranded attempt to checkPark as the failed attempt it is — the ledger keeps
+  // the honest event, the retry ceiling still applies. Done here rather than in
+  // attempt-memory.js because the nightly loop's ledger has no such event.
+  const forPark = (ledgerEntries || []).map(e =>
+    (e && e.event === 'card-stranded') ? { ...e, event: 'card-fail' } : e);
   for (const t of tasks || []) {
     const hash = taskContentHash(t);
-    const r = checkPark(ledgerEntries, String(t.id), hash, opts);
+    const r = checkPark(forPark, String(t.id), hash, opts);
     if (r.parked) parked.set(String(t.id), r.reason);
   }
   return parked;
@@ -131,7 +139,21 @@ function computeSpendCircuitBreaker(drainLedgerEntries, opts = {}) {
   const now = opts.now || Date.now();
   const cutoff = now - windowH * 3600e3;
   const windowed = (drainLedgerEntries || []).filter(e => e && e.ts && new Date(e.ts).getTime() >= cutoff);
-  return spendCircuitBreakerStatus(windowed, { thresholdUSD });
+  const status = spendCircuitBreakerStatus(windowed, { thresholdUSD });
+  // Task #1004: the halt itself stays correct (nothing LANDED, so keep the
+  // money off), but "zero cards completed+verified" was the whole diagnosis
+  // on 2026-08-04 and it sent the next session hunting a red trunk that
+  // wasn't there. A card-stranded entry means the session DID finish
+  // verified work and only the landing gate stopped it — say so in the
+  // reason the operator actually reads.
+  const stranded = windowed.filter(e => e && e.event === 'card-stranded').length;
+  return {
+    ...status,
+    stranded,
+    reason: status.halt && stranded
+      ? `${status.reason} — NOTE: ${stranded} of those session(s) finished verified work that could not LAND (card-stranded); the blocker is the landing gate, not the work`
+      : status.reason,
+  };
 }
 
 // Metric math for the digest row. priorHistory is the trailing daily
