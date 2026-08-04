@@ -948,3 +948,77 @@ describe('isRoundupUrl — Playbill read-the-reviews-of slug (audit 2026-08-02)'
     );
   });
 });
+
+describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017)', () => {
+  // The 2026-08-04 self-heal (rebuild-all-reviews.js) deletes wrongProduction/
+  // wrongProductionNote and stamps wrongProductionAutoCleared, but never sets
+  // wrongProductionManualClear/wrongProductionOverride/humanReviewedWrongProduction.
+  // Three copy-pasted wpCleared checks in isIncludableForRebuild only recognized
+  // those three flags, so a registry region:'london' backfill cleared the
+  // wrongProduction flag itself but the file stayed permanently excluded by its
+  // own stale contentTier/rejectedAt/incompleteReason side effects — the fix
+  // (region:london on 10 outlets, task #1017) landed inert until this bypass
+  // was added. Reproduced live on balletcoforum/diva-magazine/modishmale/
+  // therealchrisparkle/rolandcat files post-rebuild.
+
+  test('contentTier=invalid stays excluded without any clear flag', () => {
+    const data = { contentTier: 'invalid', fullText: 'x'.repeat(900) };
+    assert.strictEqual(_isIncludable(data), false);
+  });
+
+  test('contentTier=invalid + wrongProductionAutoCleared → includable', () => {
+    const data = {
+      contentTier: 'invalid',
+      wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show (balletcoforum)",
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), true);
+  });
+
+  // rejectedAt is tested decoupled from rejectionReason: line ~2782's separate
+  // rejectionReason gate has no wrongProductionAutoCleared escape (rejectionReason
+  // is conventionally deleted, not overridden, on a real clear — see the
+  // Dinosaur World Time Out precedent, 2026-08-04). The rejectedAt gate's own
+  // wpCleared documents real historical cases (giant-2026, heart-wall-we,
+  // shedevil-we, authenticator-we, Notion 34b637c5-416f-81ff) where rejectedAt
+  // persisted without rejectionReason.
+  test('rejectedAt gate stays excluded without any clear flag', () => {
+    const data = {
+      rejectedAt: '2026-08-01T00:00:00.000Z',
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), false);
+  });
+
+  test('rejectedAt gate + wrongProductionAutoCleared → includable', () => {
+    const data = {
+      rejectedAt: '2026-08-01T00:00:00.000Z',
+      wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), true);
+  });
+
+  test("incompleteReason='wrong_content' + wrongProduction:true stays excluded without a clear flag", () => {
+    const data = {
+      incompleteReason: 'wrong_content',
+      wrongProduction: true,
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), false);
+  });
+
+  // Real self-heal writes always delete wrongProduction when stamping
+  // wrongProductionAutoCleared (rebuild-all-reviews.js `delete data.wrongProduction`),
+  // so wpBlocking is already false via the field's absence — this asserts the
+  // wpCleared fallback still holds if wrongProduction were ever left truthy
+  // alongside a stamped auto-clear (defensive, not the primary code path).
+  test("incompleteReason='wrong_content' + wrongProductionAutoCleared (wrongProduction absent) → includable", () => {
+    const data = {
+      incompleteReason: 'wrong_content',
+      wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), true);
+  });
+});
