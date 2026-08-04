@@ -77,13 +77,13 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' }
   // truncate a full clone into a shallow one.
   let isShallow = false;
   try {
-    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repo, encoding: 'utf8' }).trim() === 'true';
+    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim() === 'true';
   } catch { /* fail open — treat as complete */ }
   let oldestCommitEpoch = 0;
   if (isShallow) {
     try {
-      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: repo, encoding: 'utf8' }).trim().split('\n').pop();
-      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: repo, encoding: 'utf8' }).trim());
+      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim().split('\n').pop();
+      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim());
     } catch { /* helper falls back to a bounded --deepen */ }
   }
   const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
@@ -119,6 +119,10 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' }
   // real assertion failure — which at close time refuses an innocent card
   // (Codex ship-check P1). Report the state instead of hiding it; runVerify
   // downgrades to unverifiable.
+  // node_modules only. prepareCheckWorkdir also copies core data and swallows
+  // ITS failures, so a checkout can be prepared:true and still be missing a
+  // data file a command needs — that residual case still reads as FAIL
+  // (Codex, second pass). node_modules is the one that breaks EVERY command.
   const prepared = fs.existsSync(path.join(wt, 'node_modules'));
   return { dir, wt, repo, sha, prepared };
 }
@@ -127,7 +131,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' }
 function removeCheckout(co) {
   if (!co) return;
   const repo = co.repo || DEFAULT_REPO;
-  try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, stdio: ['ignore', 'pipe', 'pipe'] }); }
+  try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }); }
   catch { /* leave for git worktree prune */ }
   try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
 }
