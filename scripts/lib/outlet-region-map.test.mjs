@@ -59,3 +59,29 @@ test('empty / missing registry does not throw', () => {
   assert.doesNotThrow(() => buildOutletMaps(null));
   assert.equal(Object.keys(buildOutletMaps(null).outletRegionMap).length, 0);
 });
+
+// ── inferOutletRegionFromCategories (task #817) ──────────────────────────────
+const { inferOutletRegionFromCategories } = require('./outlet-region-map.js');
+const isLondonMarket = (c) => c === 'west-end' || c === 'off-west-end';
+
+test('infer: outlet seen only on London-market shows gets region london', () => {
+  assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket), 'london');
+  assert.equal(inferOutletRegionFromCategories(['west-end', 'off-west-end'], isLondonMarket), 'london');
+});
+
+test('infer: outlet seen only on NYC-market shows gets region us', () => {
+  assert.equal(inferOutletRegionFromCategories(['broadway'], isLondonMarket), 'us');
+  assert.equal(inferOutletRegionFromCategories(['broadway', 'off-broadway'], isLondonMarket), 'us');
+});
+
+test('infer: mixed or empty market evidence leaves region unset', () => {
+  assert.equal(inferOutletRegionFromCategories(['west-end', 'broadway'], isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories([], isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories(null, isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories([null, undefined], isLondonMarket), null);
+});
+
+test('infer: regional/unknown categories do not force a region', () => {
+  assert.equal(inferOutletRegionFromCategories(['regional'], isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories(['broadway', 'regional'], isLondonMarket), null);
+});

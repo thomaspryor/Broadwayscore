@@ -58,4 +58,26 @@ function buildOutletMaps(reg) {
   return { outletRegionMap, dualMarket, tier12Outlets, outletTierMap, canonicalOutletId };
 }
 
-module.exports = { buildOutletMaps };
+/**
+ * Infer a region for a NEWLY auto-registered outlet from the market categories
+ * of the shows its reviews appear on. Registering without a region makes the
+ * rebuild's cross-market guard treat the outlet as US and flag its genuine
+ * reviews wrongProduction on the very London shows it was discovered from
+ * (task #817: liamodell/jonathan-baz on Now You See Me Live, 2026-08-04).
+ *
+ * Only returns a region when the market evidence is unanimous; mixed or empty
+ * evidence returns null (leave region unset — same behavior as before).
+ *
+ * @param {string[]} categories - show categories the outlet's reviews are filed under
+ * @param {(cat: string) => boolean} isLondonMarket - venue-classification.js's predicate
+ * @returns {'london'|'us'|null}
+ */
+function inferOutletRegionFromCategories(categories, isLondonMarket) {
+  const cats = [...new Set((categories || []).filter(Boolean))];
+  if (cats.length === 0) return null;
+  if (cats.every(c => isLondonMarket(c))) return 'london';
+  if (cats.every(c => c === 'broadway' || c === 'off-broadway')) return 'us';
+  return null;
+}
+
+module.exports = { buildOutletMaps, inferOutletRegionFromCategories };

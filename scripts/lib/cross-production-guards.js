@@ -31,7 +31,12 @@ function isEvergreenListingUrl(url) {
     /\/box-office\b/.test(u) ||
     /\/whats-on\//.test(u) ||
     /\/listings?\//.test(u) ||                     // nymag.com/listings/theater/...
-    /\/shows?\/[^\/?#]*-tickets\b/.test(u)
+    /\/shows?\/[^\/?#]*-tickets\b/.test(u) ||
+    // westendtheatre.com show pages (/56719/shows/dinosaur-world-live/) are venue/
+    // booking listings, not reviews — the -tickets suffix is inconsistent, so match
+    // the numeric-id /shows/ path shape directly (2026-08-04: three WET listing
+    // pages ingested as unflagged "reviews" on NYSM/Dinosaur World/Crocodile).
+    /westendtheatre\.com\/\d+\/shows?\//.test(u)
   );
 }
 
