@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-04T15:48:01.636Z",
+  "generatedAt": "2026-08-04T16:42:46.829Z",
   "windowDays": 1095,
-  "targets": 48,
-  "auditedThisRun": 11,
-  "carriedForward": 149,
+  "targets": 42,
+  "auditedThisRun": 33,
+  "carriedForward": 127,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 124,
     "totalMissing": 833,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 751,
+    "totalFlaggedMisses": 754,
     "totalRecoverable": 16,
     "totalRecovered": 2
   },
@@ -1688,7 +1688,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-04T00:27:00.462Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -1921,7 +1921,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "amaze-magic-off-broadway-2025",
@@ -2899,7 +2899,7 @@
           "outletId": "the-interested-bystander",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~796970/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852168/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -2969,7 +2969,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-04T00:27:00.462Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -3075,9 +3075,15 @@
         "https://theartsdesk.com/theatre/avenue-q-shaftesbury-theatre-review-we-need-puppet-sex-now-and-rest"
       ],
       "dirFiles": 58,
-      "dirClean": 30,
-      "inReviewsJson": 30,
-      "missing": [],
+      "dirClean": 31,
+      "inReviewsJson": 29,
+      "missing": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent"
+        }
+      ],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -3089,6 +3095,10 @@
         },
         {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
           "count": 1
         },
         {
@@ -3135,23 +3145,6 @@
               "file": "1883-magazine--nick-barr.json",
               "flag": "wrongProduction",
               "urlInDir": "https://1883magazine.com/avenue-q-review-london/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--louis-chilton.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html"
             }
           ]
         },
@@ -3247,22 +3240,33 @@
         "ran": false,
         "reason": "out-of-window"
       },
+      "ingestResults": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "host": "the-independent.com",
+          "outletId": "independent",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "1883magazine.com",
-            "outlet": "1883magazine.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1883magazine.com/avenue-q-review-london/"
-          },
           {
             "outletId": "independent",
             "outlet": "independent",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html"
+          },
+          {
+            "outletId": "1883magazine.com",
+            "outlet": "1883magazine.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1883magazine.com/avenue-q-review-london/"
           },
           {
             "outletId": "thereviewshub",
@@ -3417,15 +3421,15 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://1883magazine.com/avenue-q-review-london/",
-            "outletId": "1883magazine.com",
+            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+            "outletId": "independent",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-            "outletId": "independent",
+            "url": "https://1883magazine.com/avenue-q-review-london/",
+            "outletId": "1883magazine.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -3469,7 +3473,7 @@
         "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "beetlejuice-west-end-2026",
@@ -6869,7 +6873,7 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -8444,17 +8448,17 @@
         "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
         "https://www.nytimes.com/2026/07/20/theater/cat-cohen-broad-strokes-comedy.html",
         "https://www.newyorktheatreguide.com/show/46802-cat-cohen-broad-strokes",
-        "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
+        "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
         "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720"
       ],
-      "dirFiles": 20,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirFiles": 21,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [
         {
-          "url": "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
+          "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
+          "host": "nyctheatreaddict.com",
+          "knownOutletId": "nyc-theatre-addict",
           "serpCensus": true
         }
       ],
@@ -8472,26 +8476,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--rebecca-rubin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -8506,7 +8491,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -8546,7 +8531,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -8556,20 +8541,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 9,
         "error": null
       },
       "ingestResults": [
         {
-          "url": "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby",
+          "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
+          "host": "nyctheatreaddict.com",
+          "outletId": "nyc-theatre-addict",
           "provisional": false,
           "ok": true,
           "reason": null
@@ -8580,18 +8565,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
+            "outletId": "nyc-theatre-addict",
+            "outlet": "nyc-theatre-addict",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720"
-          },
-          {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/"
+            "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/"
           }
         ],
         "suppressedMissing": [],
@@ -8664,23 +8642,22 @@
           },
           {
             "url": "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720",
-            "outletId": "broadway-baby",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "broadwaybaby.com",
+            "state": "live",
             "firstSeenAt": "2026-08-03T15:13:06.915Z"
           },
           {
-            "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
-            "outletId": "variety",
+            "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
+            "outletId": "nyc-theatre-addict",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           }
         ],
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -10557,9 +10534,9 @@
         "https://playbill.com/article/read-reviews-for-the-cats-movie",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-Hits-The-Big-Screen-See-What-The-Critics-Are-Saying-20191218",
-        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
@@ -10633,9 +10610,6 @@
         "https://www.irishtimes.com/culture/film/cats-review-the-biggest-problem-is-the-disturbing-digital-fur-technology-1.4119068",
         "https://time.com/5752569/cats-movie-review/",
         "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/",
-        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-        "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-        "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
         "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html",
         "https://www.theguardian.com/stage/2016/jul/31/cats-review-broadway-leona-lewis-andrew-lloyd-weber",
         "http://www.timeout.com/newyork/blog/broadway-review-cats-at-the-neil-simon-theatre-073116",
@@ -10660,6 +10634,9 @@
         "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away",
         "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html",
         "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
+        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+        "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+        "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
         "http://www.wsj.com/articles/cats-review-frisky-and-fragmented-1470336422"
       ],
       "dirFiles": 29,
@@ -10877,27 +10854,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
@@ -10992,6 +10948,27 @@
           "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
           "host": "thewestfieldnews.com",
           "knownOutletId": "westfield-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -12001,16 +11978,16 @@
           "publishDate": "2019-12-18"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
-          "publishDate": "2014-12-11"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
           "publishDate": "2016-07-31"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
           "publishDate": "2019-10-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
+          "publishDate": "2014-12-11"
         }
       ],
       "weIngestBlocked": [
@@ -12195,24 +12172,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
           "host": "washingtonpost.com",
           "priorRun": true,
@@ -12293,6 +12252,24 @@
         {
           "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
           "host": "thewestfieldnews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+          "host": "londontheatre1.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -12515,27 +12492,6 @@
             "url": "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/"
           },
           {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html"
-          },
-          {
-            "outletId": "daily-mail",
-            "outlet": "daily-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/"
-          },
-          {
             "outletId": "washpost",
             "outlet": "washpost",
             "critic": "Unknown",
@@ -12632,6 +12588,27 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html"
+          },
+          {
+            "outletId": "daily-mail",
+            "outlet": "daily-mail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html"
+          },
+          {
+            "outletId": "londontheatre1",
+            "outlet": "londontheatre1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/"
           },
           {
             "outletId": "one-minute-critic",
@@ -13219,27 +13196,6 @@
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-            "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-            "outletId": "daily-mail",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-            "outletId": "londontheatre1",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
             "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
             "outletId": "washpost",
             "state": "IN_FLIGHT",
@@ -13333,6 +13289,27 @@
           {
             "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
             "outletId": "westfield-news",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+            "outletId": "daily-mail",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+            "outletId": "londontheatre1",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
@@ -13705,7 +13682,7 @@
         "liveCount": 0,
         "candidateCount": 65
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -13793,7 +13770,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
@@ -25652,7 +25629,7 @@
         "liveCount": 13,
         "candidateCount": 31
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
@@ -28689,17 +28666,19 @@
         "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
         "https://pagesonstages.com/2026/07/25/hungry-women/",
         "https://www.broadwayworld.com/reviews/hungry-women",
+        "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
         "https://www.sohoplayhouse.com/see-a-show/hungry-women",
         "https://www.theatrely.com/post/julia-lester-to-star-in-hungry-women-at-soho-playhouse-this-summer",
-        "https://www.melissamaney.com/hungry-women",
-        "https://www.show-score.com/off-broadway-shows/hungry-women",
-        "https://donyc.com/events/2026/8/9/hungry-women-tickets",
         "https://www.newyorktheatreguide.com/theatre-news/news/julia-lester-to-star-in-hungry-women-off-broadway",
+        "https://www.show-score.com/off-broadway-shows/hungry-women",
+        "https://www.melissamaney.com/hungry-women",
+        "https://donyc.com/events/2026/8/9/hungry-women-tickets",
+        "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
         "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
         "https://www.borninthecity.com/product/hungry-women-off-broadway/"
       ],
-      "dirFiles": 9,
-      "dirClean": 7,
+      "dirFiles": 10,
+      "dirClean": 6,
       "inReviewsJson": 4,
       "missing": [
         {
@@ -28709,9 +28688,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
+          "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+          "host": "iloveny.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -28742,6 +28721,42 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/julia-lester-to-star-in-hungry-women-at-soho-playhouse-this-summer",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.show-score.com/off-broadway-shows/hungry-women",
           "host": "show-score.com",
           "knownOutletId": null,
@@ -28755,6 +28770,24 @@
               "file": "show-score--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.show-score.com/off-broadway-shows/hungry-women"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "this-week-in-new-york--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
             }
           ],
           "serpCensus": true
@@ -28774,7 +28807,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -28804,7 +28837,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -28820,7 +28853,7 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 13,
         "error": null
       },
       "ingestResults": [
@@ -28830,13 +28863,13 @@
           "outletId": "donyc",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801074/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852660/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
-          "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york",
-          "provisional": false,
+          "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+          "host": "iloveny.com",
+          "outletId": "iloveny",
+          "provisional": true,
           "ok": true,
           "reason": null
         },
@@ -28846,7 +28879,7 @@
           "outletId": "borninthecity",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801076/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852662/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -28861,11 +28894,11 @@
             "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets"
           },
           {
-            "outletId": "this-week-in-new-york",
-            "outlet": "this-week-in-new-york",
+            "outletId": "iloveny.com",
+            "outlet": "iloveny.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
+            "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/"
           },
           {
             "outletId": "borninthecity.com",
@@ -28882,11 +28915,32 @@
             "url": "https://www.broadwayworld.com/reviews/hungry-women"
           },
           {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/julia-lester-to-star-in-hungry-women-at-soho-playhouse-this-summer"
+          },
+          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/hungry-women"
+          },
+          {
+            "outletId": "this-week-in-new-york",
+            "outlet": "this-week-in-new-york",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
           }
         ],
         "suppressedMissing": [],
@@ -28922,22 +28976,16 @@
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
-            "url": "https://www.theatrely.com/post/julia-lester-to-star-in-hungry-women-at-soho-playhouse-this-summer",
-            "outletId": "theatrely.com",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/julia-lester-to-star-in-hungry-women-off-broadway",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T15:24:39.294Z"
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
             "url": "https://www.melissamaney.com/hungry-women",
             "outletId": "melissamaney.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/theatre-news/news/julia-lester-to-star-in-hungry-women-off-broadway",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
             "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets",
@@ -28947,11 +28995,11 @@
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
           },
           {
-            "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
-            "outletId": "this-week-in-new-york",
+            "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+            "outletId": "iloveny.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:24:39.294Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://www.borninthecity.com/product/hungry-women-off-broadway/",
@@ -28968,17 +29016,38 @@
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
           },
           {
+            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/julia-lester-to-star-in-hungry-women-at-soho-playhouse-this-summer",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:24:39.294Z"
+          },
+          {
             "url": "https://www.show-score.com/off-broadway-shows/hungry-women",
             "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
+          },
+          {
+            "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
+            "outletId": "this-week-in-new-york",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:24:39.294Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 12
+        "liveCount": 6,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "iceboy-regional-2026",
@@ -29008,7 +29077,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "im-almost-there-off-broadway-2026",
@@ -31274,7 +31343,7 @@
         "liveCount": 20,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-04T00:27:00.462Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -31690,7 +31759,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
@@ -31972,7 +32041,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -32653,7 +32722,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801427/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852904/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -32661,7 +32730,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801465/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852904/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -32669,7 +32738,7 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801467/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://maps.google.com/",
@@ -32677,7 +32746,7 @@
           "outletId": "google",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801494/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://www.todaytixgroup.com/careers",
@@ -32685,7 +32754,7 @@
           "outletId": "todaytixgroup",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801494/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [
@@ -32789,7 +32858,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
@@ -32819,7 +32888,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -32859,8 +32928,8 @@
         "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
       ],
       "dirFiles": 51,
-      "dirClean": 37,
-      "inReviewsJson": 35,
+      "dirClean": 36,
+      "inReviewsJson": 34,
       "missing": [
         {
           "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
@@ -32997,7 +33066,7 @@
           "outletId": "cititour",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~798465/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852420/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
@@ -33005,7 +33074,7 @@
           "outletId": "today",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~798476/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852421/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -33209,7 +33278,7 @@
         "liveCount": 19,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
@@ -33985,7 +34054,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -35254,7 +35323,7 @@
         {
           "url": "https://www.londontheatredirect.com/news/oh-mary-review",
           "host": "londontheatredirect.com",
-          "knownOutletId": null,
+          "knownOutletId": "londontheatredirect",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -35694,8 +35763,8 @@
             "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre"
           },
           {
-            "outletId": "londontheatredirect.com",
-            "outlet": "londontheatredirect.com",
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatredirect.com/news/oh-mary-review"
@@ -36100,7 +36169,7 @@
           },
           {
             "url": "https://www.londontheatredirect.com/news/oh-mary-review",
-            "outletId": "londontheatredirect.com",
+            "outletId": "londontheatredirect",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -36221,7 +36290,7 @@
         "liveCount": 25,
         "candidateCount": 47
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -39935,7 +40004,7 @@
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
       "dirFiles": 52,
-      "dirClean": 10,
+      "dirClean": 9,
       "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
@@ -40035,6 +40104,38 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--gareth-carr.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/oliver-at-chichester-festival-theatre-review-revival-glorious-revival_1616946/"
+            },
+            {
+              "file": "whatsonstage--rachel-agyekum.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/"
+            },
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/"
+            },
+            {
+              "file": "whatsonstage--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/"
+            }
+          ]
+        },
+        {
           "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
@@ -40115,6 +40216,13 @@
             "url": "https://www.theatermania.com/news/reviewing-the-situation-benjamin-pajak-raul-esparza-and-lilli-cooper-in-oliver-at-encores_1701245/"
           },
           {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/"
+          },
+          {
             "outletId": "thestage",
             "outlet": "thestage",
             "critic": "Unknown",
@@ -40139,12 +40247,6 @@
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
             "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -40195,6 +40297,13 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
             "outletId": "thestage",
             "state": "GAP",
@@ -40202,10 +40311,10 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
-        "liveCount": 7,
+        "liveCount": 6,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -40494,7 +40603,7 @@
         "liveCount": 19,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -44031,7 +44140,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -44075,7 +44184,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "porgy-and-bess-off-broadway-2025",
@@ -45411,6 +45520,7 @@
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
+        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
         "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
         "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031"
       ],
@@ -45438,11 +45548,14 @@
         "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
         "https://www.washingtonpost.com/entertainment/theater/2025/10/16/ragtime-broadway-review/",
         "https://www.thewrap.com/ragtime-broadway-review/",
-        "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
-        "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
-        "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
+        "https://theaterpizzazz.com/make-time-to-see-this-ragtime/",
+        "https://culturesauce.com/2024/11/01/ragtime-musical-2024-off-broadway-review/",
         "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
-        "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/"
+        "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
+        "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
+        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
+        "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
+        "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/"
       ],
       "dirFiles": 48,
       "dirClean": 32,
@@ -45519,6 +45632,10 @@
       },
       "priorRunArticles": [
         {
+          "url": "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
+          "publishDate": "2024-10-31"
+        },
+        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031",
           "publishDate": "2024-10-31"
         }
@@ -45530,7 +45647,7 @@
           "outletId": "open",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~797047/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852212/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -45681,22 +45798,16 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
-            "outletId": "chicagotribune.com",
+            "url": "https://theaterpizzazz.com/make-time-to-see-this-ragtime/",
+            "outletId": "theaterpizzazz.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
-            "url": "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
-            "outletId": "nypost.com",
+            "url": "https://culturesauce.com/2024/11/01/ragtime-musical-2024-off-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
@@ -45707,6 +45818,30 @@
           {
             "url": "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
             "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
+            "outletId": "nypost.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -45728,7 +45863,7 @@
         "liveCount": 22,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-04T00:27:00.462Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -46117,7 +46252,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
@@ -52760,7 +52895,7 @@
         "liveCount": 18,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -55046,7 +55181,7 @@
       "showId": "the-comedy-about-spies-west-end-2026",
       "title": "The Comedy About Spies",
       "openingDate": "2026-08-06",
-      "status": "open",
+      "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -55059,7 +55194,7 @@
         "https://www.theguardian.com/stage/2025/may/14/the-comedy-about-spies-review-rapid-fire-gags-in-a-delightfully-silly-show",
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
-      "dirFiles": 31,
+      "dirFiles": 33,
       "dirClean": 16,
       "inReviewsJson": 19,
       "missing": [],
@@ -55161,7 +55296,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -56572,12 +56707,11 @@
         "https://stagebuddy.com/theater/theater-feature/the-gin-game",
         "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
         "https://www.tickpick.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-29-26-7pm/8129311/",
-        "https://www.eventticketscenter.com/the-gin-game-new-york-08-08-2026/8129320/t",
+        "https://www.eventticketscenter.com/the-gin-game-new-york-07-31-2026/8129313/t",
         "https://www.boxofficeticketsales.com/8156122/the-gin-game-tickets-wed-8-12-2026-housing-works-bookstore-cafe",
-        "https://www.promotix.com/event-discovery/l/the-gin-game-housing-works-bookstore-cafe-tickets/6a6c7f5d-278e-4430-a94a-2b681cc09298",
-        "https://www.barrystickets.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-19-26-6pm/8129307/"
+        "https://www.stuborder.com/the-gin-game-august-2-2026-tickets/8129315"
       ],
-      "dirFiles": 14,
+      "dirFiles": 15,
       "dirClean": 7,
       "inReviewsJson": 4,
       "missing": [
@@ -56588,26 +56722,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
-          "host": "eventbrite.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.boxofficeticketsales.com/8156122/the-gin-game-tickets-wed-8-12-2026-housing-works-bookstore-cafe",
           "host": "boxofficeticketsales.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.promotix.com/event-discovery/l/the-gin-game-housing-works-bookstore-cafe-tickets/6a6c7f5d-278e-4430-a94a-2b681cc09298",
-          "host": "promotix.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.barrystickets.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-19-26-6pm/8129307/",
-          "host": "barrystickets.com",
+          "url": "https://www.stuborder.com/the-gin-game-august-2-2026-tickets/8129315",
+          "host": "stuborder.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -56655,6 +56777,24 @@
               "file": "broadwayworld--unknown.json",
               "flag": "roundup",
               "urlInDir": "https://www.broadwayworld.com/reviews/the-gin-game"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
+          "host": "eventbrite.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "eventbrite--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698"
             }
           ],
           "serpCensus": true
@@ -56721,7 +56861,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           },
@@ -56742,13 +56882,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 11,
         "error": null
       },
       "ingestResults": [
@@ -56761,36 +56901,20 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
-          "host": "eventbrite.com",
-          "outletId": "eventbrite",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
           "url": "https://www.boxofficeticketsales.com/8156122/the-gin-game-tickets-wed-8-12-2026-housing-works-bookstore-cafe",
           "host": "boxofficeticketsales.com",
           "outletId": "boxofficeticketsales",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801144/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~852709/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
-          "url": "https://www.promotix.com/event-discovery/l/the-gin-game-housing-works-bookstore-cafe-tickets/6a6c7f5d-278e-4430-a94a-2b681cc09298",
-          "host": "promotix.com",
-          "outletId": "promotix",
+          "url": "https://www.stuborder.com/the-gin-game-august-2-2026-tickets/8129315",
+          "host": "stuborder.com",
+          "outletId": "stuborder",
           "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801145/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        },
-        {
-          "url": "https://www.barrystickets.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-19-26-6pm/8129307/",
-          "host": "barrystickets.com",
-          "outletId": "barrystickets",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~801146/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "ok": true,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -56805,13 +56929,6 @@
             "url": "https://stagebuddy.com/theater/theater-feature/the-gin-game"
           },
           {
-            "outletId": "eventbrite.com",
-            "outlet": "eventbrite.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698"
-          },
-          {
             "outletId": "boxofficeticketsales.com",
             "outlet": "boxofficeticketsales.com",
             "critic": "Unknown",
@@ -56819,18 +56936,11 @@
             "url": "https://www.boxofficeticketsales.com/8156122/the-gin-game-tickets-wed-8-12-2026-housing-works-bookstore-cafe"
           },
           {
-            "outletId": "promotix.com",
-            "outlet": "promotix.com",
+            "outletId": "stuborder.com",
+            "outlet": "stuborder.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.promotix.com/event-discovery/l/the-gin-game-housing-works-bookstore-cafe-tickets/6a6c7f5d-278e-4430-a94a-2b681cc09298"
-          },
-          {
-            "outletId": "barrystickets.com",
-            "outlet": "barrystickets.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.barrystickets.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-19-26-6pm/8129307/"
+            "url": "https://www.stuborder.com/the-gin-game-august-2-2026-tickets/8129315"
           },
           {
             "outletId": "nytimes",
@@ -56845,6 +56955,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.broadwayworld.com/reviews/the-gin-game"
+          },
+          {
+            "outletId": "eventbrite.com",
+            "outlet": "eventbrite.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698"
           },
           {
             "outletId": "tickpick.com",
@@ -56875,21 +56992,14 @@
             "firstSeenAt": "2026-08-03T15:28:59.855Z"
           },
           {
-            "url": "https://www.eventticketscenter.com/the-gin-game-new-york-08-08-2026/8129320/t",
+            "url": "https://www.eventticketscenter.com/the-gin-game-new-york-07-31-2026/8129313/t",
             "outletId": "eventticketscenter.com",
             "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://stagebuddy.com/theater/theater-feature/the-gin-game",
             "outletId": "stagebuddy",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:28:59.855Z"
-          },
-          {
-            "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
-            "outletId": "eventbrite.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:28:59.855Z"
@@ -56902,18 +57012,11 @@
             "firstSeenAt": "2026-08-03T15:28:59.855Z"
           },
           {
-            "url": "https://www.promotix.com/event-discovery/l/the-gin-game-housing-works-bookstore-cafe-tickets/6a6c7f5d-278e-4430-a94a-2b681cc09298",
-            "outletId": "promotix.com",
+            "url": "https://www.stuborder.com/the-gin-game-august-2-2026-tickets/8129315",
+            "outletId": "stuborder.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.barrystickets.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-19-26-6pm/8129307/",
-            "outletId": "barrystickets.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://www.nytimes.com/2026/07/24/theater/debra-winger-arliss-howard-gin-game.html",
@@ -56930,6 +57033,13 @@
             "firstSeenAt": "2026-08-03T15:28:59.855Z"
           },
           {
+            "url": "https://www.eventbrite.com/e/the-gin-game-tickets-1992435995698",
+            "outletId": "eventbrite.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T15:28:59.855Z"
+          },
+          {
             "url": "https://www.tickpick.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-7-29-26-7pm/8129311/",
             "outletId": "tickpick.com",
             "state": "GAP",
@@ -56938,9 +57048,9 @@
           }
         ],
         "liveCount": 4,
-        "candidateCount": 12
+        "candidateCount": 11
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-great-gatsby-2024",
@@ -58233,7 +58343,7 @@
         "liveCount": 24,
         "candidateCount": 49
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -60085,7 +60195,7 @@
         "liveCount": 0,
         "candidateCount": 12
       },
-      "computedAt": "2026-08-04T00:27:00.462Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-lonely-few-off-broadway-2024",
@@ -63012,7 +63122,7 @@
         "liveCount": 24,
         "candidateCount": 38
       },
-      "computedAt": "2026-08-04T01:16:24.880Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-potluck-off-broadway-2026",
@@ -63611,13 +63721,24 @@
         "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
         "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
-        "https://acsntn.substack.com/p/theater-the-saviors-at-atlantic-theatre"
+        "https://broadwayradio.com/blog/2026/08/02/this-week-on-broadway-for-august-2-2026-the-saviors-atlantic-theater-company/"
       ],
       "dirFiles": 26,
       "dirClean": 17,
       "inReviewsJson": 17,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://broadwayradio.com/blog/2026/08/02/this-week-on-broadway-for-august-2-2026-the-saviors-atlantic-theater-company/",
+          "host": "broadwayradio.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
+        {
+          "host": "acsntn.substack.com",
+          "count": 1
+        },
         {
           "host": "nysun.com",
           "count": 1
@@ -63681,7 +63802,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -63741,9 +63862,27 @@
         "resultCount": 7,
         "error": null
       },
+      "ingestResults": [
+        {
+          "url": "https://broadwayradio.com/blog/2026/08/02/this-week-on-broadway-for-august-2-2026-the-saviors-atlantic-theater-company/",
+          "host": "broadwayradio.com",
+          "outletId": "broadwayradio",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~852763/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "broadwayradio.com",
+            "outlet": "broadwayradio.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwayradio.com/blog/2026/08/02/this-week-on-broadway-for-august-2-2026-the-saviors-atlantic-theater-company/"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -63846,10 +63985,11 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
-            "url": "https://acsntn.substack.com/p/theater-the-saviors-at-atlantic-theatre",
-            "outletId": "acsntn.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+            "url": "https://broadwayradio.com/blog/2026/08/02/this-week-on-broadway-for-august-2-2026-the-saviors-atlantic-theater-company/",
+            "outletId": "broadwayradio.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
@@ -63866,10 +64006,10 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           }
         ],
-        "liveCount": 14,
+        "liveCount": 13,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -64498,7 +64638,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T02:43:14.416Z"
+      "computedAt": "2026-08-04T16:42:46.829Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
