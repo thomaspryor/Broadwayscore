@@ -459,6 +459,12 @@ jobs:
         # not another deadline bump.
         env:
           PUSH_DEADLINE_SEC: '1200'
+          # scraper-spend-ledger.jsonl is now in this step's git add list
+          # (Sprint 3, card 3b1637c5): discover-new-shows.js/enrich-ticket-
+          # platform-links.js/discover-playbill-urls.js call url-discovery.js's
+          # SERP path, which writes rows to it on the runner's local disk —
+          # never staged before, so daily SERP telemetry was lost every run.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -470,6 +476,7 @@ jobs:
           git add data/show-score-candidates.json 2>/dev/null || true
           git add data/off-broadway-venues.json 2>/dev/null || true
           git add data/audit/pipeline-health/ 2>/dev/null || true
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
 
           # Only commit if there are staged changes
           if git diff --staged --quiet; then

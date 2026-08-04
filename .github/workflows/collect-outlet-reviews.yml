@@ -109,6 +109,28 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Collect outlet reviews via SERP (${{ matrix.market }})"
 
+      # collect-outlet-reviews.js's discoverCorrectUrl calls url-discovery.js's
+      # serpQuery (150 searches/market), which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784) — never staged before this weekly cron (Sprint 3, card
+      # 3b1637c5). 3 markets run concurrently and can race on this file;
+      # merge=union in .gitattributes + the reconcile opt-in below both cover it.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-outlet-reviews ${{ matrix.market }})"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
   # After all markets finish, trigger a single rebuild
   rebuild:
     needs: collect-market
@@ -183,6 +205,22 @@ jobs:
           gh workflow run rebuild-reviews.yml -f reason="Post outlet SERP collection (manual)"
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-outlet-reviews manual)"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Notify on failure
         if: failure()

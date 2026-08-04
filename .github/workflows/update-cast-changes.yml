@@ -126,6 +126,26 @@ jobs:
           Co-Authored-By: GitHub Action <action@github.com>"
           bash scripts/lib/push-with-retry.sh
 
+      # scrape-cast-changes.js's serpQuery calls write attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784), independent of whether cast-changes.json itself changed —
+      # never staged before this twice-weekly cron (Sprint 3, card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (update-cast-changes)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

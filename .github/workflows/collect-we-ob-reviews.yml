@@ -208,6 +208,28 @@ jobs:
           gh workflow run rebuild-reviews.yml \
             -f reason="Post ${{ steps.market.outputs.market }} collection"
 
+      # collect-review-texts.js's discoverCorrectUrl path calls url-discovery.js
+      # (SERP), which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784). This workflow is a separate daily entry point from
+      # collect-review-texts.yml (which already stages data/audit/ broadly) and
+      # never staged the ledger before (Sprint 3, card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-we-ob-reviews)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
