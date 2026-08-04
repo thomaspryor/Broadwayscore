@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T07:18:08.016Z",
+  "timestamp": "2026-08-04T07:59:37.926Z",
   "stats": {
-    "totalReviews": 41451,
-    "alreadyFlagged": 18116,
+    "totalReviews": 41453,
+    "alreadyFlagged": 18117,
     "dateGuardCatches": 111,
     "directorMismatch": 945,
     "tvFilmSignals": 1147,
-    "londonSignals": 806,
+    "londonSignals": 807,
     "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3438
+    "noPublishDate": 3440
   },
   "findings": [
     {
@@ -43866,6 +43866,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "file": "seetickets--unknown.json",
+      "publishDate": null,
+      "url": "https://everythingculture.seetickets.com/c2/event/the-importance-of-being-oscar/park-theatre/s-545236",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
