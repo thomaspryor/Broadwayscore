@@ -1,0 +1,12 @@
+{
+  "_comment": "Ceiling on review-text files whose url is an aggregator listing page while outletId names a real outlet AND which are hidden from validate-review-texts.js by an exclusion flag. Enforced by scripts/audit-aggregator-url-latent.js in test.yml (Data Validation). These files are invisible to the zero-tolerance gate until an auto-clear (e.g. wrongProductionAutoCleared) promotes one into the validated population — which is exactly how main went red on 2026-08-04 with no human push involved. See the file header of the audit script.",
+  "latentCeiling": 10,
+  "graceBand": 3,
+  "minScanned": 30000,
+  "maxScanErrors": 50,
+  "_measuredAt": "2026-08-04",
+  "_measuredBy": "node scripts/audit-aggregator-url-latent.js --json",
+  "_graceBandNote": "CI checks out the review-texts repo's moving main HEAD, not a revision pinned to the triggering commit, and bots write to it every ~2min. An exact ceiling would therefore fail unrelated merges whenever a bot landed one bad file mid-run — the trunk-reddening pathology this guard exists to end. So drift within the band annotates (::warning::) and passes; only a spike (a producer regression — historically 27 and 32 files at once) blocks. Same block-on-spikes design as the duplicateOf gate.",
+  "_scanIntegrityNote": "minScanned/maxScanErrors stop a HALF-SCANNED corpus from reporting a smaller latent count and being read as 'improved'. The corpus is ~41.9K files as of 2026-08-04; 30000 is a deliberately loose floor that still catches a missing or truncated checkout.",
+  "_ratchetNote": "latentCeiling may only go DOWN. Growth past the band means a producer just wrote aggregator listing URLs under real outletIds — fix the producer and the files. Raising the ceiling to turn CI green re-arms the trunk failure this guard exists to stop. When files are fixed, lower latentCeiling to the new count (the audit prints a ::notice:: with the value)."
+}
