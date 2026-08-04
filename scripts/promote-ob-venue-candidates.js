@@ -217,12 +217,22 @@ async function main() {
   // The bug: this exact pair shipped a duplicate to production on 2026-05-27.
   // Fix: jaccard >= DEDUP_JACCARD_THRESHOLD on titleTokens collapses them.
   const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./lib/title-match');
+  // Subtitle-stripped compare, same venue: title-match's normalizeTitle keeps
+  // colon/dash subtitles as tokens, so jaccard undercounts a base-title-only
+  // listing against a subtitled one ("Ectoplasm" vs "Ectoplasm: Spit and
+  // Vigor" → 0.33; "Bone Wars" vs "Bone Wars: A New Musical" → 0.67 — both
+  // below the 0.80 gate). deduplication.js's normalizeTitle strips everything
+  // after a colon/dash/paren, which is exactly the collapse this needs.
+  // These two pairs shipped as duplicates to shows.json and blocked a
+  // Vercel deploy until merged by hand (task #1011, 2026-08-04) — this check
+  // is the fix for the class, not just those two shows.
+  const { normalizeTitle: subtitleStrippedTitle } = require('./lib/deduplication');
   // 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
   // unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
   // keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
   // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
   const DEDUP_JACCARD_THRESHOLD = 0.80;
-  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
+  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized, subtitleStripped }]
   // Include 'regional' alongside 'off-broadway': regional candidates are added
   // to shows.json manually (runbook), and without them in this index a staged
   // regional entry never matches → never drops → re-hits validation weekly
@@ -234,19 +244,24 @@ async function main() {
       id: s.id, title: s.title,
       tokens: titleTokens(s.title),
       normalized: normalizeTitle(s.title),
+      subtitleStripped: subtitleStrippedTitle(s.title),
     });
   }
 
   /** Return the existing show that matches `c` by canonical venue +
-   *  (normalized title OR jaccard ≥ threshold). Else null. */
+   *  (normalized title OR subtitle-stripped title OR jaccard ≥ threshold). Else null. */
   function findExistingMatch(c) {
     const venueKey = canonicalVenue(c.venue);
     const cands = existingByVenue.get(venueKey) || [];
     if (cands.length === 0) return null;
     const cNorm = normalizeTitle(c.title);
     const cTokens = titleTokens(c.title);
+    const cSubtitleStripped = subtitleStrippedTitle(c.title);
     for (const e of cands) {
       if (e.normalized === cNorm) return { match: e, reason: 'normalized-equal' };
+      if (cSubtitleStripped.length >= 3 && cSubtitleStripped === e.subtitleStripped) {
+        return { match: e, reason: `subtitle-stripped-equal: "${cSubtitleStripped}"` };
+      }
       if (cTokens.size > 0 && e.tokens.size > 0) {
         const sim = jaccard(cTokens, e.tokens);
         if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
