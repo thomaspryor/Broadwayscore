@@ -59,3 +59,29 @@ test('no unreviewed cross-outlet attribution suspects remain', (t) => {
     `unreviewed cross-outlet suspects remain (first 5): ${JSON.stringify((suspects || []).slice(0, 5), null, 2)}`
   );
 });
+
+// Acceptance test for task #991 (card 3b2637c5-416f-81e6): the fullText-present
+// T1/T2 population the base scan above explicitly skips (`if (d.fullText) continue`)
+// must also be triaged, via `--include-fulltext`.
+test('no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain', (t) => {
+  let out;
+  try {
+    out = execFileSync(
+      process.execPath,
+      [path.join(repoRoot, 'scripts', 'audit-cross-outlet-attributions.js'), '--include-fulltext', '--json'],
+      { cwd: repoRoot, encoding: 'utf8' }
+    );
+  } catch (err) {
+    if (err.status === 3) {
+      t.skip('data/review-texts not present in this checkout — run from the main checkout');
+      return;
+    }
+    out = err.stdout;
+  }
+  const { count, suspects } = JSON.parse(out);
+  assert.strictEqual(
+    count,
+    0,
+    `unreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): ${JSON.stringify((suspects || []).slice(0, 5), null, 2)}`
+  );
+});
