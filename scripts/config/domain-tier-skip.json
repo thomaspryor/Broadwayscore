@@ -242,8 +242,8 @@
   "didtheylikeit.com": {
     "scrapingdog": {
       "skip": false,
-      "reason": "Live parity test passed 2026-07-31 (Scraping v2 Sprint 1 T10): 2/3 sample pages fetched cleanly via dynamic=false with content matching the stored BD/SB-extracted text; 1/3 (a-strange-loop) returned SD 400/500 even with stealth_mode=true (not charged) — comparable to normal single-URL failure rates on other tiers, not a domain-wide block.",
-      "addedAt": "2026-07-31"
+      "reason": "Scraping cost v3 S1-T2 (2026-08-03): 30-URL live parity retest = 30/30 (100%) via plain+stealth_mode escalation, despite the production ledger showing 6% success/647 calls over the prior 7d — the gap was NOT domain support, it was scraper.js not auto-retrying SD's own '400 Oops...try Stealth Mode' response before falling through to Bright Data. Fixed at the param level in fetchWithScrapingdog() (auto-escalates to stealth_mode on that exact 400 signature) rather than by flipping this flag — the ≥80%-with-param-fix branch of the approved decision bar. Superseded the stale 2026-07-31 3-URL conclusion, which correctly kept skip:false but for the wrong reason (never observed the 400 rate at scale).",
+      "addedAt": "2026-08-03"
     }
   },
   "dramaqueennyc.com": {
@@ -681,9 +681,9 @@
   },
   "theatre.reviews": {
     "scrapingdog": {
-      "skip": false,
-      "reason": "Live parity test passed 2026-07-31 (Scraping v2 Sprint 1 T10): sample page fetched cleanly via dynamic=false with content matching the stored BD/SB-extracted text.",
-      "addedAt": "2026-07-31"
+      "skip": true,
+      "reason": "Scraping cost v3 S1-T2 (2026-08-03): production ledger showed 22% success/301 calls over the prior 7d, below the approved <30% skip:true bar. Unlike didtheylikeit.com, no param fix rescues this — theatre.reviews' bounded-URL-construction discovery (scripts/lib/tr-roundup-discover.js) guesses a roundup URL per show and most shows never got one, so SD's '404 URL does not exist' is a genuine miss, not a provider block. Live retest (2026-08-03) confirmed Bright Data independently finds real content on URLs SD 404s (e.g. reviews-roundup/ivanov-reviews/), so BD stays in the chain unaffected — this flag only removes SD's guaranteed-wasted first hop on this domain, cutting the double-hop the card was filed for. Superseded the stale 2026-07-31 1-URL conclusion, which never saw production's real guess-heavy traffic mix.",
+      "addedAt": "2026-08-03"
     }
   },
   "theatreartsdaily.com": {
