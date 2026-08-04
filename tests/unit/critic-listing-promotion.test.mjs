@@ -67,6 +67,32 @@ test('decideCriticListingPromotion: missing sourceUrl is rejected (nothing to au
   assert.match(r.reason, /persisted source URL/);
 });
 
+test('decideCriticListingPromotion: wrong source is rejected — not a general-purpose gate', () => {
+  // Ship-check adversarial finding (task #995): without a source allowlist, a
+  // venue-page-scrape bug that mints a phantom title at a real venue (the
+  // "Spring Gala 2026" incident this file's header describes) would sail
+  // through on a real venue + real-looking dates. This gate must ONLY ever
+  // confirm 'nyt-theater'-sourced candidates.
+  const r = decideCriticListingPromotion({ ...BASE, source: 'venue-page:atlantic' }, { isKnownVenue: knownVenue });
+  assert.equal(r.confirmed, false);
+  assert.match(r.reason, /not a critic-listing source/);
+});
+
+test('decideCriticListingPromotion: throwing isKnownVenue fails closed, does not confirm', () => {
+  const r = decideCriticListingPromotion(BASE, {
+    isKnownVenue: () => { throw new Error('boom'); },
+  });
+  assert.equal(r.confirmed, false);
+});
+
+test('decideCriticListingPromotion: throwing venueDirectoryAvailable fails closed, does not confirm', () => {
+  const r = decideCriticListingPromotion(BASE, {
+    isKnownVenue: knownVenue,
+    venueDirectoryAvailable: () => { throw new Error('boom'); },
+  });
+  assert.equal(r.confirmed, false);
+});
+
 test('decideCriticListingPromotion: missing title is rejected', () => {
   const r = decideCriticListingPromotion({ ...BASE, title: '' }, { isKnownVenue: knownVenue });
   assert.equal(r.confirmed, false);
