@@ -189,10 +189,14 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
 // A non-zero count is the difference between "this session produced nothing"
 // and "this session produced verified work the landing gate refused" — the
 // distinction the 2026-08-04 drain postmortem got wrong (task #1004).
+// Excludes anything reachable from EITHER origin/main or local main (ship-check
+// finding): the local origin/main ref goes stale between fetches, and a session
+// that merged its branch into local main but hasn't pushed yet would otherwise
+// be reported as stranded work that is in fact already landed.
 function countStrandedCommits(jobId) {
   if (!jobId) return 0;
   try {
-    const out = execFileSync('git', ['-C', REPO, 'rev-list', '--count', `origin/main..job/${jobId}`],
+    const out = execFileSync('git', ['-C', REPO, 'rev-list', '--count', `job/${jobId}`, '--not', 'origin/main', 'main'],
       { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' });
     return parseInt(String(out).trim(), 10) || 0;
   } catch {
@@ -200,17 +204,31 @@ function countStrandedCommits(jobId) {
   }
 }
 
+// A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
+// card has an outcome somewhere in history" (ship-check finding, Codex
+// 2026-08-04). The old card-id Set meant a card dispatched a SECOND time — after
+// the owner edited it, or after a park cleared — never produced another
+// card-pass/card-fail/card-stranded at all: no spend accounting, no attempt
+// memory, no retry ceiling. That was already true for card-fail before this
+// change; card-stranded would have inherited it.
+function isDispatchResolved(drainLedgerEntries, taskId, dispatchTs) {
+  const at = new Date(dispatchTs).getTime();
+  return drainLedgerEntries.some(e =>
+    e && String(e.cardId) === String(taskId) && e.ts &&
+    (e.event === 'card-pass' || e.event === 'card-fail' || e.event === 'card-stranded') &&
+    new Date(e.ts).getTime() >= at);
+}
+
 function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date(), opts = {}) {
   const strandedCommitsFn = opts.strandedCommits || countStrandedCommits;
-  const resolvedTaskIds = new Set(
-    drainLedgerEntries
-      .filter(e => e.event === 'card-pass' || e.event === 'card-fail' || e.event === 'card-stranded')
-      .map(e => String(e.cardId)));
+  // Outcomes appended during THIS pass, so two dispatches of the same card in
+  // one tick don't both emit an outcome.
+  const emitted = [];
   const dispatches = drainLedgerEntries.filter(e => e.event === 'drain-dispatch');
   const newEntries = [];
   for (const d of dispatches) {
     const taskId = String(d.taskId);
-    if (resolvedTaskIds.has(taskId)) continue;
+    if (isDispatchResolved(drainLedgerEntries.concat(emitted), taskId, d.ts)) continue;
     const job = findMyJob(dispatchLedgerEntries, taskId, d.ts);
     if (!job) {
       const ageH = (now.getTime() - new Date(d.ts).getTime()) / 3600e3;
@@ -219,7 +237,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
-      resolvedTaskIds.add(taskId);
+      emitted.push({ cardId: taskId, ts: now.toISOString(), event: 'card-fail' });
       continue;
     }
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
@@ -232,8 +250,10 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     // produced the "0-for-4, $14.74, zero completions" reading on 2026-08-04
     // when two of the four sessions had in fact produced finished, verified
     // work. It is deliberately NEITHER a pass (nothing landed, so the spend
-    // breaker still halts) NOR a fail (attempt-memory must not park a card
-    // whose only problem was the gate).
+    // breaker still halts) NOR a plain fail. It DOES still feed attempt-memory
+    // as a failed attempt (see computeParkedMap in lib/backlog-drain.js): a card
+    // that strands twice on unchanged content is burning money without landing
+    // and must park, whatever the reason.
     const stranded = (sessionOk && !completed) ? strandedCommitsFn(job.jobId) : 0;
     const outcome = (sessionOk && completed) ? 'card-pass' : (stranded > 0 ? 'card-stranded' : 'card-fail');
     const notes = {
@@ -250,7 +270,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
       strandedCommits: stranded || undefined,
       strandedBranch: stranded ? `job/${job.jobId}` : undefined,
     });
-    resolvedTaskIds.add(taskId);
+    emitted.push({ cardId: taskId, ts: now.toISOString(), event: outcome });
   }
   return newEntries;
 }
@@ -305,6 +325,7 @@ async function main(argv = process.argv.slice(2)) {
 
   let dispatchedTask = null;
   let skipReason = null;
+  const humanGatedSkips = [];
 
   if (concurrency.atCap) {
     skipReason = `at concurrency cap (${concurrency.alive}/${cap} drain jobs alive: ${concurrency.aliveTaskIds.join(', ')})`;
@@ -316,7 +337,6 @@ async function main(argv = process.argv.slice(2)) {
       inFlightIds: new Set(concurrency.aliveTaskIds),
     });
     let scanned = 0;
-    let humanGated = 0;
     for (const t of order) {
       if (scanned >= MAX_CANDIDATE_SCAN) break;
       scanned++;
@@ -333,7 +353,13 @@ async function main(argv = process.argv.slice(2)) {
       const hg = classifyHeadlessDispatchability(
         { subject: t.subject, notes: card.notes }, { verifyCmd: gate.cmd });
       if (!hg.dispatchable) {
-        humanGated++;
+        // Recorded, not just logged (ship-check finding): a wrongly-refused card
+        // would otherwise be skipped silently on every tick forever, with the
+        // only trace in a launchd log nobody reads. These ids ride the metric
+        // snapshot into the daily digest, so a bad classification is visible and
+        // the owner can dispatch it to a tab (or run bsc-next
+        // --headless --allow-human-gated) instead of it just vanishing.
+        humanGatedSkips.push({ id: String(t.id), codes: hg.blockers.map(b => b.code) });
         console.log(`[backlog-drain] skipping #${t.id} (needs a human to finish): ${hg.reason}`);
         continue;
       }
@@ -341,7 +367,7 @@ async function main(argv = process.argv.slice(2)) {
       break;
     }
     if (!dispatchedTask) {
-      const gatedNote = humanGated ? `, ${humanGated} needed a human to finish` : '';
+      const gatedNote = humanGatedSkips.length ? `, ${humanGatedSkips.length} needed a human to finish` : '';
       skipReason = order.length
         ? `scanned ${scanned} candidate(s), none dispatchable unattended${gatedNote}`
         : 'no eligible pending cards (all human/parked/in-flight/enrichment-flagged)';
@@ -390,6 +416,7 @@ async function main(argv = process.argv.slice(2)) {
     humanWaiting: metric.humanWaiting,
     parked: metric.parked,
     awaitingEnrichment: metric.awaitingEnrichment,
+    humanGatedSkips,
     netDrainWeek: metric.netDrainWeek,
     history: metric.history,
   };

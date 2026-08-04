@@ -66,10 +66,16 @@ const UI_PATH_RE = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\
 const PATH_TOKEN_RE = /(?:[\w.@*-]+\/)+[\w.*{},[\]-]+|(?:tailwind|postcss)\.config\.\w+/g;
 
 // Card classes whose remit is UI by construction, so they trip the visual
-// gate even when the card names no file. Both are machine-generated title
-// prefixes (PostHog rage-click cards, the mobile/desktop UX audit sweep), so
-// matching the prefix is precise, not a keyword guess.
-const UI_CARD_CLASS_RE = /^\s*(?:\[[^\]]*\]\s*)?(?:P\d:\s*)?(?:rage[- ]clicks?\b|ux audit\s*:|visual qa\b)/i;
+// gate even when the card names no file. Both are machine-generated card
+// families (PostHog rage-click cards, the mobile/desktop UX audit sweep), so
+// matching the phrase is precise, not a keyword guess.
+//
+// Matched anywhere in the SUBJECT, not anchored to its start (ship-check
+// finding, Codex 2026-08-04): an anchored version let pending #63 "Homepage
+// rage clicks persist beyond known labeled issues" through — same card
+// family, phrase just isn't first. Subject-scoped, never notes: a backend
+// card that merely cites a rage-click card as context must stay dispatchable.
+const UI_CARD_CLASS_RE = /(?:rage[- ]clicks?\b|\bux audit\s*:|\bvisual qa\b)/i;
 
 // An explicit instruction to run the visual-QA ritual is the same gate.
 const VISUAL_QA_MENTION_RE = /(?:^|[^\w-])(?:\/visual-qa\b|visual[- ]qa\b|VISUAL-OK\b)/i;
@@ -80,7 +86,10 @@ const VISUAL_QA_MENTION_RE = /(?:^|[^\w-])(?:\/visual-qa\b|visual[- ]qa\b|VISUAL
 // session can only sit on them until it dies.
 const ASYNC_WAIT_RES = [
   /RECHECK[- ]AFTER\s*:/i,
-  /^\s*after\s+\d{4}-\d{2}-\d{2}\b/i,
+  // /m so it fires on a deferral line anywhere in the notes, not only when it
+  // opens the subject (ship-check finding: without /m, `^` anchored to the
+  // very start of the joined subject+notes string).
+  /^\s*after\s+\d{4}-\d{2}-\d{2}\b/im,
   /\bwait(?:s|ing)?\s+for\s+(?:the\s+)?(?:next\s+)?(?:cron|nightly|scheduled\s+run|workflow\s+run)\b/i,
   /\b(?:verify|confirm|prove|recheck)[^.\n]{0,80}\b(?:after|once)\b[^.\n]{0,80}\b(?:the\s+)?(?:next\s+)?(?:cron|nightly\s+run|next\s+run|tomorrow|overnight|next\s+opening\s+night)\b/i,
   /\b\d+\s+(?:consecutive\s+)?clean\s+(?:runs?|weeks?|days?|nights?)\b/i,

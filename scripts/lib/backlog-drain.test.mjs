@@ -207,3 +207,21 @@ test('computeSpendCircuitBreaker: no stranded entries leaves the original reason
   assert.equal(b.stranded, 0);
   assert.doesNotMatch(b.reason, /could not LAND/);
 });
+
+test('computeParkedMap: two stranded attempts on unchanged content park the card', () => {
+  const task = { id: '30', subject: 'Rage clicks', description: 'body' };
+  const hash = taskContentHash(task);
+  const entries = [
+    { ts: '2026-08-03T12:00:00Z', event: 'card-stranded', cardId: '30', contentHash: hash, usd: 9.34 },
+    { ts: '2026-08-04T12:00:00Z', event: 'card-stranded', cardId: '30', contentHash: hash, usd: 9.34 },
+  ];
+  const parked = computeParkedMap([task], entries);
+  assert.ok(parked.has('30'), 'a card that strands twice unchanged must park, not retry forever');
+});
+
+test('computeParkedMap: a single stranded attempt does NOT park', () => {
+  const task = { id: '31', subject: 'x', description: 'y' };
+  const hash = taskContentHash(task);
+  const entries = [{ ts: '2026-08-04T12:00:00Z', event: 'card-stranded', cardId: '31', contentHash: hash, usd: 1 }];
+  assert.equal(computeParkedMap([task], entries).has('31'), false);
+});

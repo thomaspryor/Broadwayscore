@@ -59,6 +59,24 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
     assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
+  test('task #63 — the rage-click phrase is not always the title prefix', () => {
+    // Real pending subject Codex found slipping through an anchored regex.
+    const r = classifyHeadlessDispatchability({
+      subject: 'Homepage rage clicks persist beyond known labeled issues',
+      notes: '## Acceptance criteria\n`node --test tests/unit/x.test.mjs`',
+    });
+    assert.strictEqual(r.dispatchable, false);
+    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+  });
+
+  test('the card-class match is SUBJECT-scoped — a backend card citing a rage-click card stays dispatchable', () => {
+    const r = classifyHeadlessDispatchability({
+      subject: 'Wire WET + The Stage roundups into review-census.js',
+      notes: 'Context: the rage clicks card #63 is unrelated.\n\n## Acceptance criteria\n`node --test scripts/lib/x.test.mjs`',
+    });
+    assert.strictEqual(r.dispatchable, true, r.reason || '');
+  });
+
   test('UX audit cards are the same class', () => {
     const r = classifyHeadlessDispatchability({
       subject: "UX audit: Dead end on 'desktop__lists_tab'. No obvious next action.",

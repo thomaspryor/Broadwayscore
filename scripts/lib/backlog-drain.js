@@ -68,9 +68,17 @@ function isAwaitingEnrichment(task, refusedNotionIds, notionIdOfFn) {
 // Map<taskId(string), reason>.
 function computeParkedMap(tasks, ledgerEntries, opts = {}) {
   const parked = new Map();
+  // attempt-memory's vocabulary predates card-stranded and counts only
+  // card-fail/card-pass/auto-approve, so a card that strands on every attempt
+  // would re-dispatch forever (ship-check finding, task #1004). Present each
+  // stranded attempt to checkPark as the failed attempt it is — the ledger keeps
+  // the honest event, the retry ceiling still applies. Done here rather than in
+  // attempt-memory.js because the nightly loop's ledger has no such event.
+  const forPark = (ledgerEntries || []).map(e =>
+    (e && e.event === 'card-stranded') ? { ...e, event: 'card-fail' } : e);
   for (const t of tasks || []) {
     const hash = taskContentHash(t);
-    const r = checkPark(ledgerEntries, String(t.id), hash, opts);
+    const r = checkPark(forPark, String(t.id), hash, opts);
     if (r.parked) parked.set(String(t.id), r.reason);
   }
   return parked;
