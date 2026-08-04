@@ -273,6 +273,26 @@ const _wrongProductionCleared = (d) =>
   d.humanReviewedWrongProduction === false ||
   _rediscoveredWrongProduction(d);
 
+// FRESH rebuild-time auto-clear breadcrumb (2026-08-04). The rebuild's
+// wrongProduction self-heal passes DELETE the flag and stamp
+// wrongProductionAutoCleared(+At) — but the push-time restore treated that
+// deletion as data loss and resurrected the flag from HEAD in the SAME run
+// ("Protected: …liamodell--liam-odell.json (wrongProduction,
+// wrongProductionNote)"), making every auto-clear a no-op forever. This is a
+// RESTORE-scope breadcrumb only: it is deliberately NOT added to
+// _wrongProductionCleared (which mirrors the canonical is-cleared triplet used
+// by scoring/guards — see comment above). Freshness-gated so a years-old stamp
+// on a legitimately re-flagged file can never suppress a real data-loss
+// restore: only clears stamped within the last 7 days count, and all rebuild
+// clear paths stamp wrongProductionAutoClearedAt.
+const AUTO_CLEAR_FRESH_DAYS = 7;
+const _freshWrongProductionAutoClear = (d) => {
+  if (!d || !d.wrongProductionAutoCleared || !d.wrongProductionAutoClearedAt) return false;
+  const at = Date.parse(String(d.wrongProductionAutoClearedAt));
+  if (Number.isNaN(at)) return false;
+  return (Date.now() - at) <= AUTO_CLEAR_FRESH_DAYS * 86400000;
+};
+
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
@@ -296,8 +316,8 @@ const _wrongArticleCleared = (d) =>
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
-  wrongProduction: _wrongProductionCleared,
-  wrongProductionNote: _wrongProductionCleared,
+  wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
+  wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,
   wrongShow: _wrongShowCleared,
   wrongShowReason: _wrongShowCleared,

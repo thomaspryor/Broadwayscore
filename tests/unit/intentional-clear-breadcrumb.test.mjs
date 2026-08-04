@@ -154,3 +154,51 @@ test('every CLEAR_BREADCRUMBS key is an actual PROTECTED_FIELD', () => {
       `CLEAR_BREADCRUMBS has '${field}' but it is not in PROTECTED_FIELDS`);
   }
 });
+
+// ── FRESH rebuild auto-clear breadcrumb (2026-08-04, cross-market FP ping-pong) ──
+// The rebuild's self-heal deletes wrongProduction and stamps
+// wrongProductionAutoCleared(+At); the push-time restore resurrected the flag in
+// the SAME run ("Protected: …liamodell--liam-odell.json"), so no auto-clear
+// could ever stick. Fresh (≤7d) stamped clears must suppress the restore;
+// stale or At-less stamps must NOT (data-loss protection wins).
+const today = new Date().toISOString().split('T')[0];
+const committedFlagged = {
+  wrongProduction: true,
+  wrongProductionNote: 'Cross-market: US outlet "liamodell" reviewing London show',
+};
+
+test('fresh auto-clear (stamped today) suppresses wrongProduction restore', () => {
+  const local = {
+    wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show (liamodell)",
+    wrongProductionAutoClearedAt: today,
+  };
+  assert.equal(wouldRestore('wrongProduction', local, committedFlagged), false);
+  assert.equal(wouldRestore('wrongProductionNote', local, committedFlagged), false);
+});
+
+test('boolean-true merge-path stamp with fresh At also suppresses restore', () => {
+  const local = { wrongProductionAutoCleared: true, wrongProductionAutoClearedAt: today };
+  assert.equal(wouldRestore('wrongProduction', local, committedFlagged), false);
+});
+
+test('STALE auto-clear stamp (30d old) does NOT suppress restore', () => {
+  const local = {
+    wrongProductionAutoCleared: 'rebuild: UK URL on London show (example.co.uk)',
+    wrongProductionAutoClearedAt: new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0],
+  };
+  assert.equal(wouldRestore('wrongProduction', local, committedFlagged), true);
+});
+
+test('auto-clear stamp WITHOUT an At date does NOT suppress restore', () => {
+  const local = { wrongProductionAutoCleared: 'rebuild: UK URL on London show (x.co.uk)' };
+  assert.equal(wouldRestore('wrongProduction', local, committedFlagged), true);
+});
+
+test('fresh auto-clear does NOT extend to wrongProductionReason (manual-reason clears stay human-only)', () => {
+  const local = {
+    wrongProductionAutoCleared: 'rebuild: whatever',
+    wrongProductionAutoClearedAt: today,
+  };
+  const committed = { wrongProductionReason: 'manually flagged: tour listing page' };
+  assert.equal(wouldRestore('wrongProductionReason', local, committed), true);
+});

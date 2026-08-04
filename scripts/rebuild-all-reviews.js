@@ -174,6 +174,14 @@ for (const [id, info] of Object.entries(outletRegistry.outlets)) {
     }
   }
 }
+// All registered outlet ids + aliases (lowercased) — lets the cross-market guard
+// distinguish "registered but region-less" (US nationals; keep flagging) from
+// "not in the registry at all" (brand-new outlet; bootstrap exemption, task #817).
+const REGISTERED_OUTLET_IDS = new Set();
+for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+  REGISTERED_OUTLET_IDS.add(id.toLowerCase());
+  if (info.aliases) for (const a of info.aliases) REGISTERED_OUTLET_IDS.add(String(a).toLowerCase());
+}
 // Outlets that genuinely cover BOTH Broadway and West End markets.
 // Derived from `isDualMarket: true` in outlet-registry.json — single source of truth.
 // Used by the REVERSE guard (London→Broadway), so only truly dual-market outlets belong here.
@@ -2507,6 +2515,9 @@ showDirs.forEach(showId => {
                 data.wrongProductionAutoCleared = isUkUrl
                   ? `rebuild: UK URL on London show (${hostname})`
                   : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
+                // At-stamp required: the push-time restore only honors FRESH
+                // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
+                data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
                 try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
                 stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
               }
@@ -2524,6 +2535,7 @@ showDirs.forEach(showId => {
         delete data.wrongProductionNote;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
         data.wrongProductionAutoCleared = `rebuild: ${reason} bypasses wrongProduction`;
+        data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
@@ -2704,6 +2716,19 @@ showDirs.forEach(showId => {
         }
       }
 
+      // Evergreen listing / tickets / venue pages are NOT reviews — exclude them
+      // from reviews.json regardless of flags. Previously isEvergreenListingUrl
+      // only gated the wrongProduction AUTO-CLEAR paths, so an unflagged listing
+      // page with scraped booking copy (westendtheatre.com show pages on
+      // NYSM/Dinosaur World/Crocodile, WOS /shows/ aggregate stubs) sat as a
+      // scoreable "review". Manual overrides win: a human-scored file is trusted.
+      if (data.url && !data.humanReviewScore && !data.manualContentTier
+          && require('./lib/cross-production-guards').isEvergreenListingUrl(data.url)) {
+        logExclusion("skippedListingPage", showId, file, data);
+        stats.skippedListingPage = (stats.skippedListingPage || 0) + 1;
+        return;
+      }
+
       // Cross-market guard: skip reviews where outlet market doesn't match show market
       // Only isDualMarket outlets (NYT, Variety, Guardian, FT, etc.) and London-region
       // outlets can score West End shows. T1/T2 exemption was removed because US T1/T2
@@ -2756,7 +2781,19 @@ showDirs.forEach(showId => {
           const cv = data.contentVerification;
           const cvSaysCorrect = cv && cv.isValid === true
             && cv.wrongProduction === false && cv.confidence === 'high';
-          if (cvSaysCorrect) {
+          // Bootstrap exemption for COMPLETELY unregistered outlets (task #817).
+          // A flagged review returns before allReviews.push, so a brand-new
+          // outlet whose first-ever review is on a London show would never reach
+          // auto-registration — the region inference can't run and the outlet
+          // stays flagged-as-US forever (liamodell/jonathan-baz on NYSM Live
+          // needed a manual registry patch). Letting the FIRST run's review
+          // through registers the outlet with region inferred from unanimous
+          // market evidence; subsequent runs use the real region. Registered
+          // region-less outlets (US nationals like WSJ/EW) keep current
+          // behavior — this only applies when the registry has NO entry at all.
+          const outletIsUnregistered = !REGISTERED_OUTLET_IDS.has(canonicalOutlet)
+            && !REGISTERED_OUTLET_IDS.has(rawOutlet);
+          if (cvSaysCorrect || outletIsUnregistered) {
             // skip the flag + skip the exclusion — let downstream pipeline use it
           } else {
             // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk

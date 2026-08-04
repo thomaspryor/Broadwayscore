@@ -69,9 +69,9 @@ test('infer: outlet seen only on London-market shows gets region london', () => 
   assert.equal(inferOutletRegionFromCategories(['west-end', 'off-west-end'], isLondonMarket), 'london');
 });
 
-test('infer: outlet seen only on NYC-market shows gets region us', () => {
-  assert.equal(inferOutletRegionFromCategories(['broadway'], isLondonMarket), 'us');
-  assert.equal(inferOutletRegionFromCategories(['broadway', 'off-broadway'], isLondonMarket), 'us');
+test('infer: NYC-market evidence deliberately does NOT stamp a region (would disable urlIsUK fallback)', () => {
+  assert.equal(inferOutletRegionFromCategories(['broadway'], isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories(['broadway', 'off-broadway'], isLondonMarket), null);
 });
 
 test('infer: mixed or empty market evidence leaves region unset', () => {
