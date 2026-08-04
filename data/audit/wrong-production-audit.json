@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T07:59:37.926Z",
+  "timestamp": "2026-08-04T09:23:01.914Z",
   "stats": {
-    "totalReviews": 41453,
-    "alreadyFlagged": 18117,
+    "totalReviews": 41525,
+    "alreadyFlagged": 18137,
     "dateGuardCatches": 111,
-    "directorMismatch": 945,
+    "directorMismatch": 944,
     "tvFilmSignals": 1147,
     "londonSignals": 807,
     "offBroadwaySignals": 480,
-    "yearMismatch": 86,
-    "noPublishDate": 3440
+    "yearMismatch": 87,
+    "noPublishDate": 3486
   },
   "findings": [
     {
@@ -21833,6 +21833,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "stagezine--scott-harrah.json",
+      "score": 63,
+      "publishDate": "October 5th, 2015",
+      "url": "http://www.stagezine.com/spring-awakening-returns-to-broadway/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (3x) more than 2015 (2x). 2006 matches production: spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 66,
       "publishDate": "2015-09-27",
@@ -25261,20 +25275,6 @@
       "score": 41,
       "publishDate": null,
       "url": "https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3ie4c135759f4c42e797d48d31bc19f674",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from the-house-of-blue-leaves-1986"
-        }
-      ]
-    },
-    {
-      "showId": "the-house-of-blue-leaves-2011",
-      "file": "nytimes--ben-brantley.json",
-      "score": 45,
-      "publishDate": "April 25, 2011",
-      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html?adxnnl=1&amp;ref=theater&amp;adxnnlx=1303784480-tY77evBC2AGZ/4XBamyPLg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
