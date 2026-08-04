@@ -1,18 +1,24 @@
 #!/usr/bin/env node
 /**
- * Advisory guard (Scraping v2 Sprint 2, T12): flag scripts that construct a
- * raw HTTP call to a scraping provider's content-fetch endpoint instead of
- * routing through fetchPage()/fetchJSON() in scripts/lib/scraper.js.
+ * Advisory guard (Scraping v2 Sprint 2, T12; extended task #1005): flag
+ * scripts that construct a raw HTTP call to a scraping provider's
+ * content-fetch OR SERP endpoint instead of routing through
+ * fetchPage()/fetchJSON() (scripts/lib/scraper.js) or
+ * serpQuery()/serpNewsQuery()/serpImagesQuery() (scripts/lib/url-discovery.js).
  *
  * A direct call bypasses every fallback tier, cost guard, URL-verification
- * check, and domain-skip rule that lives in scraper.js — each direct-SB/BD/SD
- * caller is its own unmaintained mini-scraper.js. See scripts/lib/CLAUDE.md
- * scraping rule + memory/scraper-reference.
+ * check, and domain-skip rule that lives in those chokepoints — each
+ * direct-SB/BD/SD caller is its own unmaintained mini-scraper.js, and for the
+ * SERP endpoints specifically, its spend never reaches
+ * data/audit/scraper-spend-ledger.jsonl (task #998's bug class). See
+ * scripts/lib/CLAUDE.md scraping rule + memory/scraper-reference.
  *
  * Advisory-first (per task #684 T12): pre-existing debt is frozen in the
  * baseline (data/audit/direct-provider-calls-baseline.json) and never fails
  * CI. Only a NEW direct-provider-call site (not in the baseline, not in the
- * allowlist) fails under --strict. Default mode always exits 0 (report only).
+ * allowlist) fails under --strict — provider-aware, not just file-aware, so a
+ * file already baselined for one provider still trips on a newly-added,
+ * different-provider hit. Default mode always exits 0 (report only).
  *
  * Two carve-outs, both tracked in scripts/config/direct-provider-calls-allowlist.json:
  *   - scraper.js itself, and a handful of libs providing a genuinely different
@@ -33,7 +39,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { scanSourceForDirectProviderCalls } = require('./lib/direct-provider-detector');
+const { scanSourceForDirectProviderCalls, computeNewViolators } = require('./lib/direct-provider-detector');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-direct-provider-calls.js — flag scripts bypassing fetchPage()/fetchJSON() with raw provider HTTP calls.
@@ -153,11 +159,13 @@ function main() {
   }
 
   const baseline = loadJson(BASELINE_PATH, { files: {} });
-  const baselineFiles = new Set(Object.keys(baseline.files || {}));
-  const newViolators = violators.filter(v => !baselineFiles.has(v.file));
+  // Provider-aware, not just file-aware (task #1005) — see computeNewViolators()
+  // doc comment for why (fetch-square-images.js's existing content-fetch
+  // baseline entry must not blanket-forgive a future scrapingbee-serp hit).
+  const newViolators = computeNewViolators(violators, baseline.files || {});
   const cronReachableCount = violators.filter(v => v.cronReachable).length;
 
-  console.log(`Direct-provider-call audit: ${violators.length} file(s) call BD/SB/SD content-fetch endpoints directly (bypassing fetchPage()).`);
+  console.log(`Direct-provider-call audit: ${violators.length} file(s) call BD/SB/SD content-fetch/SERP endpoints directly (bypassing fetchPage()/serpQuery()).`);
   console.log(`  Baselined (tracked debt): ${violators.length - newViolators.length}`);
   console.log(`  Cron-reachable: ${cronReachableCount}`);
   if (newViolators.length > 0) {

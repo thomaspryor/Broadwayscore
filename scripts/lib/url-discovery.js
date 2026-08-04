@@ -1505,6 +1505,123 @@ async function serpQuery(query, options = {}) {
   return results.slice(0, nbResults);
 }
 
+/**
+ * ScrapingBee store/google search_type=news|images call, shared by
+ * serpNewsQuery()/serpImagesQuery() below. ScrapingBee is the only provider
+ * in the chain that supports these search types (BD/SD SERP products here
+ * are organic-only) — same retry/exhaustion shape as _serpViaScrapingBee's
+ * organic path, minus the fallback tiers there's nothing to fall back to.
+ * Returns the RAW parsed response body (not normalized) — callers each
+ * expect a different shape (news: organic_results/news_results with
+ * url/title/snippet; images: images/image_results with base64 `.image`
+ * inline thumbnails) that predates this shared chokepoint and downstream
+ * code already depends on.
+ */
+async function _serpTypedViaScrapingBee(query, apiKey, searchType, nbResults, log) {
+  const axios = require('axios');
+  const RETRYABLE_STATUSES = new Set([500, 502, 503]);
+  const MAX_ATTEMPTS = 2;
+  const RETRY_DELAY_MS = 3000;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const params = { api_key: apiKey, search: query, search_type: searchType };
+      if (nbResults) params.nb_results = nbResults;
+      const response = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
+        params,
+        timeout: 30000,
+      });
+      recordSbCall({ host: `serp.scrapingbee.${searchType}`, fn: 'serp', success: true, status: 200, credits: SB_SERP_CREDITS_PER_CALL });
+      return { ok: true, exhausted: false, data: response.data };
+    } catch (error) {
+      const status = error.response?.status;
+      recordSbCall({ host: `serp.scrapingbee.${searchType}`, fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: 0 });
+      if (status === 401 || status === 403 || status === 429) {
+        log(`    ⚠ ScrapingBee ${searchType} SERP exhausted (${status})`);
+        return { ok: false, exhausted: true, failed: true, data: null };
+      }
+      if (RETRYABLE_STATUSES.has(status) && attempt < MAX_ATTEMPTS) {
+        log(`    ↻ ScrapingBee ${searchType} SERP ${status}, retrying in ${RETRY_DELAY_MS / 1000}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
+        await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
+        continue;
+      }
+      // Non-auth failure (timeout, DNS/reset, non-retryable 4xx, exhausted
+      // 5xx retries) — NOT the same as "call succeeded, zero results".
+      // ship-check (Codex) caught this collapsing into a silent empty
+      // response in the first pass: fetch-show-images-auto.js's BD fallback
+      // and discover-opening-night-reviews.js's error logging both keyed off
+      // `ok`/`exhausted` alone and never fired. Callers below check `failed`.
+      log(`    ✗ ScrapingBee ${searchType} SERP error: ${error.message}`);
+      return { ok: false, exhausted: false, failed: true, data: null };
+    }
+  }
+  return { ok: false, exhausted: false, failed: true, data: null };
+}
+
+/**
+ * Google News SERP via ScrapingBee (ledger-instrumented — task #1005, sibling
+ * of #998). Was previously hand-rolled per-caller with a raw store/google
+ * fetch that never called recordSbCall(), leaving news-search spend invisible
+ * to data/audit/scraper-spend-ledger.jsonl regardless of which script called it.
+ * @param {string} query
+ * @param {Object} [options]
+ * @param {string} [options.scrapingBeeKey] - default: env SCRAPINGBEE_API_KEY
+ * @param {number} [options.nbResults] - default 10
+ * @param {Function} [options.log] - default console.log
+ * @returns {{exhausted: boolean, failed: boolean, results: Array<{url: string, title: string, description: string}>}|null}
+ *   null when no ScrapingBee key is configured at all. `failed:true` means the
+ *   call itself broke (network/HTTP error, incl. exhaustion) — distinct from
+ *   a genuine zero-result search (`failed:false, results:[]`). Callers that
+ *   used to `throw`/fall back on ANY error must check `failed`, not just
+ *   `exhausted` — see _serpTypedViaScrapingBee's doc comment.
+ */
+async function serpNewsQuery(query, options = {}) {
+  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const log = options.log || console.log;
+  const nbResults = options.nbResults || 10;
+  if (!sbKey) {
+    log('    ⚠ No ScrapingBee API key available for news SERP');
+    return null;
+  }
+  const res = await _serpTypedViaScrapingBee(query, sbKey, 'news', nbResults, log);
+  if (!res.ok) return { exhausted: res.exhausted, failed: true, results: [] };
+  const data = res.data || {};
+  const results = (data.organic_results || data.news_results || data.results || []).map(r => ({
+    url: r.url || r.link,
+    title: r.title || '',
+    description: r.description || r.snippet || '',
+  })).filter(r => r.url);
+  return { exhausted: false, failed: false, results };
+}
+
+/**
+ * Google Images SERP via ScrapingBee (ledger-instrumented — task #1005,
+ * sibling of #998). Returns the RAW provider result array (`.image` base64
+ * thumbnail, `.url` source page) unmapped — fetch-square-images.js and
+ * fetch-show-images-auto.js both key their downstream candidate filtering
+ * off that exact ScrapingBee response shape.
+ * @param {string} query
+ * @param {Object} [options]
+ * @param {string} [options.scrapingBeeKey] - default: env SCRAPINGBEE_API_KEY
+ * @param {number} [options.nbResults] - default 20
+ * @param {Function} [options.log] - default console.log
+ * @returns {{exhausted: boolean, failed: boolean, results: Array}|null} null when no key configured.
+ *   `failed:true` means the call itself broke — see serpNewsQuery's doc comment.
+ */
+async function serpImagesQuery(query, options = {}) {
+  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const log = options.log || console.log;
+  const nbResults = options.nbResults || 20;
+  if (!sbKey) {
+    log('    ⚠ No ScrapingBee API key available for images SERP');
+    return null;
+  }
+  const res = await _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log);
+  if (!res.ok) return { exhausted: res.exhausted, failed: true, results: [] };
+  const data = res.data || {};
+  return { exhausted: false, failed: false, results: data.images || data.image_results || [] };
+}
+
 module.exports = {
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
@@ -1516,6 +1633,8 @@ module.exports = {
   canDisambiguateGenericTitle,
   discoverCorrectUrl,
   serpQuery,
+  serpNewsQuery,
+  serpImagesQuery,
   serpChainOrder,
   shouldAcceptEmptyScrapingdogSerp,
   getShowInfo,
