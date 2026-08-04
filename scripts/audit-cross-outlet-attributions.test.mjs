@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-test('no unreviewed cross-outlet attribution suspects remain', () => {
+test('no unreviewed cross-outlet attribution suspects remain', (t) => {
   let out;
   try {
     out = execFileSync(
@@ -20,7 +20,16 @@ test('no unreviewed cross-outlet attribution suspects remain', () => {
       { cwd: repoRoot, encoding: 'utf8' }
     );
   } catch (err) {
-    // Scanner exits 1 while suspects remain; its stdout still carries the JSON.
+    if (err.status === 3) {
+      // Scanner's "cannot verify here" exit: this checkout has no
+      // data/review-texts (e.g. autonomous-acceptance-recheck's disposable
+      // worktree). Skip rather than fail — the recheck is shadow-mode and a
+      // human flips the card only after running this test from the MAIN
+      // checkout, so a skip here never silently completes the card.
+      t.skip('data/review-texts not present in this checkout — run from the main checkout');
+      return;
+    }
+    // Exit 1 = suspects remain; stdout still carries the JSON report.
     out = err.stdout;
   }
   const { count, suspects } = JSON.parse(out);

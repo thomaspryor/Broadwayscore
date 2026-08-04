@@ -41,7 +41,17 @@ if (hasHelpFlag(process.argv)) {
 
 // cwd, not __dirname: the canonical (gitignored) data/review-texts store only
 // exists in the main checkout — run from the repo root that owns it.
+// Disposable worktrees (autonomous-acceptance-recheck's prepareCheckWorkdir
+// copies only flat data/*.json, never the review-texts tree) exit 3 — the
+// repo's "cannot verify here" convention (see check-health-row-absent.js) —
+// instead of crashing with ENOENT and masquerading as a real failure.
 const ROOT = process.cwd();
+for (const required of ['data/review-texts', 'data/reviews.json', 'data/outlet-registry.json']) {
+  if (!fs.existsSync(path.join(ROOT, required))) {
+    console.error(`cannot verify: ${required} not present under ${ROOT} — run from the main checkout`);
+    process.exit(3);
+  }
+}
 const AGG = ['playbill-verdict', 'show-score', 'bww-roundup', 'dtli', 'outlet-listing-poller'];
 
 const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8')).outlets;
