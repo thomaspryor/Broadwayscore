@@ -510480,18 +510480,24 @@
     ]
   },
   {
-    "startedAt": "2026-08-04T21:33:14.091Z",
-    "completedAt": "2026-08-04T21:33:28.191Z",
-    "totalReviews": 88,
-    "processed": 3,
-    "skipped": 85,
-    "errors": 0,
+    "startedAt": "2026-08-04T21:56:22.441Z",
+    "completedAt": "2026-08-04T21:56:22.646Z",
+    "totalReviews": 60,
+    "processed": 0,
+    "skipped": 59,
+    "errors": 1,
     "tokensUsed": {
-      "input": 15856,
-      "output": 900,
-      "total": 41332
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "errorDetails": [],
+    "errorDetails": [
+      {
+        "showId": "the-car-man-west-end-2026",
+        "outletId": "balletcoforum",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",

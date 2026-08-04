@@ -55,7 +55,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 }
 
 const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } = require('./lib/digest-snapshots.js');
-const { renderTrunkDigestLine } = require('./lib/trunk-close-gate.js');
+const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
   renderHealthDigestBlock,

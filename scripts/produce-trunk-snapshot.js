@@ -4,10 +4,14 @@
  * is test.yml green on main right now, for how long has it been red, and
  * which FILES are named in the failures (task #1003).
  *
- * Two consumers, both in scripts/lib/trunk-close-gate.js:
- *   - the close-time gate in notion-brain.js (a card cannot go Done while a
- *     file IT owns is failing on main)
- *   - the standing "trunk: GREEN/RED" line in the morning digest
+ * Consumer, via scripts/lib/trunk-status.js:
+ *   - the standing "trunk: GREEN/RED (N consecutive)" line in the morning
+ *     digest, which becomes the email HEADLINE once trunk has been red >24h.
+ *
+ * Nothing here gates a card close. The rejected v1 of task #1003 refused a
+ * close when a file the card owned appeared in this snapshot's failures; the
+ * close-time check now asks the card's OWN acceptance command instead
+ * (scripts/lib/close-time-verify.js), and never reads this file.
  *
  * gh CLI, not the REST API via fetch: `gh run view --log-failed` is the only
  * cheap way to get the failure text, and gh already carries this machine's
@@ -17,9 +21,9 @@
  *   node scripts/produce-trunk-snapshot.js              write the snapshot
  *   node scripts/produce-trunk-snapshot.js --dry-run    print, don't write
  *   node scripts/produce-trunk-snapshot.js --max-age-min=60
- *       no-op if the existing snapshot is younger than N minutes (the
- *       close-time gate uses this so a card close costs zero gh calls when a
- *       recent snapshot already exists)
+ *       no-op if the existing snapshot is younger than N minutes, so a caller
+ *       that runs opportunistically costs zero gh calls when a recent snapshot
+ *       already exists
  */
 'use strict';
 
@@ -27,7 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { summarizeTrunkRuns, extractFailingPaths } = require('./lib/trunk-close-gate.js');
+const { summarizeTrunkRuns, extractFailingPaths } = require('./lib/trunk-status.js');
 
 const REPO = path.join(__dirname, '..');
 const SNAPSHOT_PATH = path.join(REPO, 'data', 'audit', 'trunk-status-snapshot.json');

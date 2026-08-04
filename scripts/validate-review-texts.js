@@ -39,6 +39,7 @@ const { shouldBlockReviewTextsGate, HEALABLE_CHECKS } = require('./lib/review-te
 // shared with the ingest-side guard in gather-reviews.js so the validator and the writer
 // agree by construction. See that file for the contamination-class rationale.
 const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
+const { isSkippedByValidator } = require('./lib/aggregator-url-latent');
 
 // Startup assertion — prevent silent no-ops if import breaks
 if (!AGGREGATOR_SCORE_SOURCES || AGGREGATOR_SCORE_SOURCES.size === 0) {
@@ -180,17 +181,12 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     }
   }
 
-  // Skip files excluded from rebuild (duplicates, wrong production, etc.)
-  // duplicateTextOf is a fingerprint-based dedup respected by rebuild-all-reviews.js
-  // and audit-review-duplicates.js — validator must match or it errors on legitimate
-  // duplicate-text flags (e.g. a Variety review filed under two critic names after
-  // criticEnrichedFrom: html-override:jsonld-person updates criticName post-ingest).
-  if (data.duplicateOf || data.duplicateTextOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle
-      // rejection-flagged files are exclusion tombstones — they can't double-count,
-      // so sharing outlet+critic with their canonical sibling is not a duplicate
-      // (the consolidation passes now deliberately leave them in place rather than
-      // folding their flags into the live file — merge-review-fields.js).
-      || data.rejectionReason || data.suspectedMisattribution) {
+  // Skip files excluded from rebuild (duplicates, wrong production, etc.).
+  // The flag list lives in scripts/lib/aggregator-url-latent.js because
+  // audit-aggregator-url-latent.js ratchets the population this predicate hides;
+  // a second copy that drifted would report a clean number while the real latent
+  // population grew (task #1002).
+  if (isSkippedByValidator(data)) {
     return { errors, warnings, skipped: true };
   }
 
