@@ -1,35 +1,28 @@
 {
-  "generatedAt": "2026-08-04T04:14:41.925Z",
+  "generatedAt": "2026-08-04T05:09:59.347Z",
   "workflow": "test.yml",
   "branch": "main",
+  "latestRunHeadSha": "a62b8d0c1f4d1f5f22a0b849bba050c65bab5cb4",
   "state": "RED",
-  "consecutiveFailures": 42,
-  "redSince": "2026-08-03T14:45:43Z",
-  "redForHours": 13.483034722222222,
+  "consecutiveFailures": 4,
+  "redSince": "2026-08-04T04:32:28Z",
+  "redForHours": 0.6253741666666667,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-03T14:44:35Z",
-  "latestFailedRunId": "30876289257",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30876289257",
-  "decidedRuns": 80,
+  "lastSuccessAt": "2026-08-04T04:23:14Z",
+  "latestFailedRunId": "30878814251",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30878814251",
+  "decidedRuns": 79,
   "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)",
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Lint Workflows",
-      "steps": [
-        "Audit — no orphan unit tests"
-      ]
-    },
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation",
-        "Audit stale duplicateOf flags"
+        "Run data validation"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
       ]
     },
     {
@@ -41,35 +34,11 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/tests/tm-gap-links.test.mjs",
+      "path": "tests/unit/validate-data-push-refusal-sentinel.test.mjs",
       "job": "Unit Tests",
       "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 2 - verified TodayTix-gap shows carry a real Ticketmaster link"
-    },
-    {
-      "path": "scripts/lib/file-lock.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 1291 - racing stale-lock breakers: only ONE wins, and a live successor lock is never deleted"
-    },
-    {
-      "path": "scripts/audit-cross-outlet-attributions.test.mjs",
-      "job": "Lint Workflows",
-      "step": "Audit — no orphan unit tests",
-      "evidence": "❌ 1 orphan test file(s) — not referenced in any .github/workflows/*.yml:"
-    },
-    {
-      "path": "scripts/validate-data.js",
-      "job": "Data Validation",
-      "step": "Run data validation",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-duplicate-of-url-mismatch.js",
-      "job": "Data Validation",
-      "step": "Audit stale duplicateOf flags",
-      "evidence": "##[error]Process completed with exit code 1."
+      "evidence": "not ok 1 - clean shows.json → exit 0, no sentinel written"
     }
   ],
-  "topFailingJob": "Unit Tests"
+  "topFailingJob": "Data Validation"
 }
