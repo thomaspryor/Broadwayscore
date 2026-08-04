@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-08-04T04:14:41.925Z",
+  "workflow": "test.yml",
+  "branch": "main",
+  "state": "RED",
+  "consecutiveFailures": 42,
+  "redSince": "2026-08-03T14:45:43Z",
+  "redForHours": 13.483034722222222,
+  "redDurationIsFloor": false,
+  "lastSuccessAt": "2026-08-03T14:44:35Z",
+  "latestFailedRunId": "30876289257",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30876289257",
+  "decidedRuns": 80,
+  "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)",
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Lint Workflows",
+      "steps": [
+        "Audit — no orphan unit tests"
+      ]
+    },
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Run data validation",
+        "Audit stale duplicateOf flags"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/tests/tm-gap-links.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 2 - verified TodayTix-gap shows carry a real Ticketmaster link"
+    },
+    {
+      "path": "scripts/lib/file-lock.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 1291 - racing stale-lock breakers: only ONE wins, and a live successor lock is never deleted"
+    },
+    {
+      "path": "scripts/audit-cross-outlet-attributions.test.mjs",
+      "job": "Lint Workflows",
+      "step": "Audit — no orphan unit tests",
+      "evidence": "❌ 1 orphan test file(s) — not referenced in any .github/workflows/*.yml:"
+    },
+    {
+      "path": "scripts/validate-data.js",
+      "job": "Data Validation",
+      "step": "Run data validation",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/audit-duplicate-of-url-mismatch.js",
+      "job": "Data Validation",
+      "step": "Audit stale duplicateOf flags",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
+  "topFailingJob": "Unit Tests"
+}

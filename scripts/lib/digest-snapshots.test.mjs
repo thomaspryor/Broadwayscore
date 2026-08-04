@@ -88,8 +88,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654; coverageVerdict added #905)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'coverageVerdict', 'dailyDigest', 'health', 'providerSpend', 'redditDigest']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654; coverageVerdict added #905; trunk added #1003)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'coverageVerdict', 'dailyDigest', 'health', 'providerSpend', 'redditDigest', 'trunk']);
 });
 
 // The contract the plan review flagged as a P0: the monitor's classifier and

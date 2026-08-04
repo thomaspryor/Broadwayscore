@@ -55,6 +55,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 }
 
 const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon } = require('./lib/digest-snapshots.js');
+const { renderTrunkDigestLine } = require('./lib/trunk-close-gate.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -159,6 +160,19 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
   parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
 
+  // Trunk status (task #1003) — a standing line, always rendered when the
+  // snapshot exists, so aggregate CI redness can never again sit unnoticed
+  // for days (2026-08-04: red on ~96% of main runs, four separate causes).
+  // Past 24h red it takes the HEADLINE slot, above the site-health verdict:
+  // at that point it is the most important thing in the email.
+  const trunkLine = (() => {
+    try { return renderTrunkDigestLine(sections.trunk); }
+    catch { return null; }
+  })();
+  if (trunkLine && trunkLine.headline) {
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#b91c1c;margin:0 0 10px;">${esc(trunkLine.text)}</p>`);
+  }
+
   // The 2-second verdict (owner feedback 2026-07-30: "so hard to read and
   // understand … very unactionable"): NAME what needs attention instead of
   // just counting it, and say plainly that warnings are routine watch items.
@@ -215,6 +229,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // "Needs You" tab triage (card #870) — the owner's own pending decisions,
   // not a health/pipeline issue. Placed first among the named blocks since
   // it's the most personally actionable: only the owner can resolve these.
+  // Trunk status block (task #1003). When it isn't the headline it still
+  // renders here as a one-line row — the point of the fix is that the state
+  // is ALWAYS visible, green or red, not only when someone goes looking.
+  if (trunkLine) {
+    blocks.push(trunkLine.level === 'critical'
+      ? renderNamedDigestBlock('Trunk (main CI)', trunkLine)
+      : `<p style="font-size:12px;color:#15803d;margin:0 0 12px;">${esc(trunkLine.text)}</p>`);
+  }
   if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
