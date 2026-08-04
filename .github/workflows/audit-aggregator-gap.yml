@@ -313,6 +313,11 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # scraper-spend-ledger.jsonl is now in the file list below (Sprint 3,
+          # card 3b1637c5) — opt into the post-rebase union reconcile so a
+          # concurrent writer's rows survive `git rebase -X theirs` instead of
+          # being silently dropped (see reconcile-merged-json.js).
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -350,7 +355,14 @@ jobs:
           # workflow a committer of the file; the keep-local interaction that
           # implies is tracked in task #537 and is not made worse by ALSO
           # persisting here (the alternative is losing the line outright).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          # scraper-spend-ledger.jsonl: this job's serpQuery/site-search/brand-
+          # mention SERP calls (via url-discovery.js) write attribution rows to
+          # data/audit/scraper-spend-ledger.jsonl on the runner's local disk
+          # (task #752/#784). This is an HOURLY cron — without staging it here
+          # those rows never reach the public repo and are lost every run,
+          # which is why attributedPct read near-zero for BD's SERP zone
+          # (Sprint 3, card 3b1637c5).
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

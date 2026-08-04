@@ -127,7 +127,8 @@ jobs:
         run: |
           for f in data/audit/serp-census-recall.json \
                    data/audit/census-recall-trend.jsonl \
-                   data/audit/census-recall-status.json; do
+                   data/audit/census-recall-status.json \
+                   data/audit/scraper-spend-ledger.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then
