@@ -56,7 +56,10 @@
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
     "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-    "two-strangers-bway-2025/new-york-city-theatre--unknown.json"
+    "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -371,7 +374,14 @@
     "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
-    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json"
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--stacey-tyler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -410,7 +420,9 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-      "two-strangers-bway-2025/new-york-city-theatre--unknown.json"
+      "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
     ],
     "amp": [],
     "browserbase": [
@@ -426,7 +438,8 @@
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -454,7 +467,7 @@
     ]
   },
   "startTime": "2026-08-04T10:45:51.620Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+  "lastProcessed": "murder-she-didnt-write-west-end-2025/london-box-office--stacey-tyler.json",
   "log": [
     {
       "t": "2026-08-04T13:15:03.113Z",
@@ -495,6 +508,17 @@
       "event": "bb-session",
       "session": "9f386d36",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-04T13:43:47.520Z",
+      "event": "bb-session",
+      "session": "6a315ade",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-04T13:43:48.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

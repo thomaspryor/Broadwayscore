@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-04T13:42:53.147Z",
-  "processed": 57,
-  "failed": 313,
-  "successRate": "15.4%",
+  "updatedAt": "2026-08-04T13:44:50.832Z",
+  "processed": 60,
+  "failed": 320,
+  "successRate": "15.8%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 37,
     "amp": 0,
     "browserbase": 6,
-    "directCookies": 5,
+    "directCookies": 6,
     "scrapingbee": 0,
     "brightdata": 11,
     "archiveToday": 2,
     "archive": 4
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-08-04T13:15:03.113Z",
@@ -54,6 +54,17 @@
       "event": "bb-session",
       "session": "9f386d36",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-04T13:43:47.520Z",
+      "event": "bb-session",
+      "session": "6a315ade",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-08-04T13:43:48.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
