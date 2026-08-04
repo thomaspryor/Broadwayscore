@@ -35,6 +35,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
+const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -300,13 +301,42 @@ const _scraperStats = {
   pwSuccess: 0,
 };
 
-function getScraperStats() { return { ..._scraperStats }; }
+function getScraperStats() {
+  const bd = getBrightDataRunStats();
+  return {
+    ..._scraperStats,
+    // Bright Data cap telemetry (S2-T3). bdBlocked > 0 means at least one BD
+    // request was withheld by the daily breaker or the per-run budget — the
+    // collector reads this to record such a miss as budget_capped rather than
+    // as a failure that counts toward permanent retirement.
+    bdBlocked: bd.blocked,
+    bdBlockedByBreaker: bd.blockedByBreaker,
+    bdBlockedByBudget: bd.blockedByBudget,
+  };
+}
 
 /**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
 async function fetchWithBrightData(url) {
   if (!BRIGHTDATA_TOKEN) {
+    return null;
+  }
+
+  // Daily circuit breaker + per-run request budget (Scraping cost v3 S2-T3).
+  // This helper is the ONLY place a Web Unlocker request is issued, which is
+  // why the check lives here rather than at fetchPage()/fetchJSON(): outer-gate
+  // placement is what left BD SERP spend 99% unattributed, and it would let
+  // every direct caller bypass the cap. Blocking returns null so the tier
+  // simply falls through, exactly like the domain-tier-skip path above.
+  const bdVerdict = consultBrightData({ zone: BRIGHTDATA_ZONE });
+  if (!bdVerdict.allowed) {
+    // One ledger row per process, not per withheld call: a capped backfill can
+    // attempt thousands, and each row would push a genuine spend row out of the
+    // rotating ledger. Per-call totals live in getScraperStats().bdBlocked.
+    if (bdVerdict.firstBlock) {
+      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped' });
+    }
     return null;
   }
 

@@ -239,7 +239,8 @@ jobs:
             -f parallel_jobs=1 \
             -f max_tier=3 \
             -f aggregators_only=false \
-            -f validate_urls=true
+            -f validate_urls=true \
+            -f opening_night=true
           echo "Full gather triggered for: $GATHER_SHOWS"
 
       # Day 0: aggregators-only. SERP hasn't indexed opening-night reviews yet
@@ -257,7 +258,8 @@ jobs:
             -f parallel_jobs=1 \
             -f max_tier=3 \
             -f aggregators_only=true \
-            -f validate_urls=true
+            -f validate_urls=true \
+            -f opening_night=true
           echo "Aggregators-only gather triggered for: $GATHER_SHOWS"
 
       - name: Trigger Reddit sentiment for recently opened shows
