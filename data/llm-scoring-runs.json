@@ -467086,18 +467086,24 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-08-04T20:09:37.732Z",
-    "completedAt": "2026-08-04T20:09:47.737Z",
-    "totalReviews": 37,
+    "startedAt": "2026-08-04T20:12:58.086Z",
+    "completedAt": "2026-08-04T20:13:08.399Z",
+    "totalReviews": 36,
     "processed": 2,
-    "skipped": 35,
-    "errors": 0,
+    "skipped": 33,
+    "errors": 1,
     "tokensUsed": {
-      "input": 11660,
-      "output": 638,
-      "total": 29108
+      "input": 10846,
+      "output": 611,
+      "total": 28024
     },
-    "errorDetails": [],
+    "errorDetails": [
+      {
+        "showId": "tender-off-west-end-2026",
+        "outletId": "khambayswordswordswords",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -467466,10 +467472,10 @@
       {
         "showId": "sinatra-the-musical-west-end-2026",
         "ourDistribution": {
-          "up": 18,
-          "flat": 15,
+          "up": 19,
+          "flat": 16,
           "down": 6,
-          "total": 40
+          "total": 42
         },
         "hasDisagreement": false
       },
@@ -467522,10 +467528,10 @@
       {
         "showId": "tender-off-west-end-2026",
         "ourDistribution": {
-          "up": 9,
+          "up": 11,
           "flat": 6,
           "down": 1,
-          "total": 16
+          "total": 18
         },
         "hasDisagreement": false
       },
@@ -483682,10 +483688,10 @@
       {
         "showId": "the-car-man-west-end-2026",
         "ourDistribution": {
-          "up": 25,
+          "up": 26,
           "flat": 0,
           "down": 0,
-          "total": 25
+          "total": 26
         },
         "hasDisagreement": false
       },
@@ -485858,10 +485864,10 @@
       {
         "showId": "the-oresteia-west-end-2026",
         "ourDistribution": {
-          "up": 19,
-          "flat": 8,
+          "up": 20,
+          "flat": 9,
           "down": 3,
-          "total": 30
+          "total": 32
         },
         "hasDisagreement": false
       },
