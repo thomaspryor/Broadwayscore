@@ -61,6 +61,11 @@ const CRITIC_CANONICAL_MAP = {
     // duplicateTextOf link), and the outlet signs him "The Recs RDC".
     [normalizeCriticKey('David Cook')]: 'Randall David Cook',
   },
+  // City A.M.'s culture editor is Steve Dinneen (double-n) — one gathered
+  // review carried the single-n misspelling as a distinct critic.
+  'city-am': {
+    [normalizeCriticKey('Steve Dineen')]: 'Steve Dinneen',
+  },
   'jks-theatre-scene': {
     [normalizeCriticKey('JK')]: 'Jeff Kyler',
     [normalizeCriticKey('Jk')]: 'Jeff Kyler',
