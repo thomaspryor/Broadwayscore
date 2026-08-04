@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-03T23:53:55.079Z",
+    "generatedAt": "2026-08-04T00:10:13.437Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 80,
+    "totalFlagged": 83,
     "highConfidence": 4,
-    "mediumConfidence": 76,
+    "mediumConfidence": 79,
     "lowConfidence": 0,
-    "reassignable": 32
+    "reassignable": 34
   },
   "results": [
     {
@@ -913,6 +913,40 @@
       "showId": "mamma-mia-2001",
       "showTitle": "Mamma Mia!",
       "showYear": 2001,
+      "file": "amny--unknown.json",
+      "outlet": "amNewYork",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "mamma-mia-2025",
+      "signals": [
+        "year 2025 in text matches revival mamma-mia-2025",
+        "modern references: pandemic"
+      ],
+      "textSnippet": "When “Mamma Mia!” first landed on Broadway in October 2001, just weeks after 9/11, it was dismissed by many as a lightweight jukebox musical designed for tourists. But that didn’t matter. The ABBA-fue"
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "showTitle": "Mamma Mia!",
+      "showYear": 2001,
+      "file": "newsday--unknown.json",
+      "outlet": "Newsday",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "mamma-mia-west-end-2021",
+      "signals": [
+        "revival text signals: revival, returns to broadway",
+        "year 1999 in text matches revival mamma-mia-west-end-2021",
+        "modern references: pandemic",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Jalynn Steele, left, Christine Sherrill and Carly Sakolove are the dancing queens in “Mamma Mia!,\" which returns to Broadway Aug. 13. Credit: Joan Marcus\n\nOn Saturday, \"Mamma Mia!,\" the beloved ABBA m"
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "showTitle": "Mamma Mia!",
+      "showYear": 2001,
       "file": "nytimes--anita-gates.json",
       "outlet": "The New York Times",
       "criticName": "Anita Gates",
@@ -1216,6 +1250,21 @@
         "year 1972 in text matches revival jesus-christ-superstar-1971"
       ],
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
+    },
+    {
+      "showId": "our-town-1988",
+      "showTitle": "Our Town",
+      "showYear": 1988,
+      "file": "broadwayworld--unknown.json",
+      "outlet": "BroadwayWorld",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING UNITED STATES BROADWAY NATIONAL TOURS OFF-BROADWAY ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZONA -"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",
