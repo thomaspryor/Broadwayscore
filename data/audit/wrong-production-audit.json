@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T05:07:33.398Z",
+  "timestamp": "2026-08-04T06:18:01.748Z",
   "stats": {
-    "totalReviews": 41446,
-    "alreadyFlagged": 18116,
+    "totalReviews": 41449,
+    "alreadyFlagged": 18115,
     "dateGuardCatches": 111,
     "directorMismatch": 945,
-    "tvFilmSignals": 1148,
+    "tvFilmSignals": 1147,
     "londonSignals": 806,
-    "offBroadwaySignals": 481,
+    "offBroadwaySignals": 480,
     "yearMismatch": 86,
-    "noPublishDate": 3438
+    "noPublishDate": 3441
   },
   "findings": [
     {
@@ -8708,7 +8708,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 96,
+      "score": 99,
       "publishDate": "2024-09-26",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
       "findings": [
@@ -8840,7 +8840,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 96,
+      "score": 100,
       "publishDate": "2025-05-02",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
       "findings": [
@@ -8859,7 +8859,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 82,
+      "score": 96,
       "publishDate": "2025-05-02",
       "url": "https://www.thetimes.com/article/ecd0bc1e-6fb8-4627-9884-bbc6e6f8768c",
       "findings": [
@@ -17970,25 +17970,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
-        }
-      ]
-    },
-    {
-      "showId": "our-town-1988",
-      "file": "broadwayworld--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/Our-Town-11495.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -31066,7 +31047,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 87,
+      "score": 79,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/arcadia-duke-yorks-theatre-review-reaching-stars",
       "findings": [
@@ -46208,7 +46189,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "nytimes--jesse-green.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2025-03-19",
       "url": "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
       "findings": [
