@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T08:50:22.311Z",
+  "generatedAt": "2026-08-04T09:52:10.591Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 283.64602777777776,
+      "fileAgeHours": 284.67610666666667,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 242.9489927777778
+      "nonTerminalAgeHours": 243.97907055555555
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 45.3870125
+      "nonTerminalAgeHours": 46.41709027777778
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazysexycool-regional-2026",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 16.847079722222222,
+      "fileAgeHours": 17.877157222222223,
       "gapSeenAt": "2026-08-04T07:51:56.703Z",
-      "nonTerminalAgeHours": 0.9737797222222222
+      "nonTerminalAgeHours": 2.0038575
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=othello-off-broadway-2026",
       "firstSeen": "2026-08-03T04:15:10.873Z",
-      "fileAgeHours": 28.586510277777776,
+      "fileAgeHours": 29.616588055555557,
       "gapSeenAt": "2026-08-03T18:28:48.681Z",
-      "nonTerminalAgeHours": 14.35934138888889
+      "nonTerminalAgeHours": 15.389419166666666
     }
   ],
   "contradictions": []
