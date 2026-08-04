@@ -9,6 +9,8 @@ const {
   titleMatches,
   buildTicketQuery,
   foldTitle,
+  isRegionMismatch,
+  showRegion,
 } = require('./ticket-link-discovery.js');
 
 test('foldTitle strips diacritics and punctuation (Les Misérables lesson)', () => {
@@ -89,4 +91,54 @@ test('buildTicketQuery uses real venues but not neighborhood placeholders', () =
     buildTicketQuery({ title: 'Milk and Honey (AMT Theater)', venue: 'Midtown W', category: 'off-broadway' }),
     '"Milk and Honey" off broadway new york tickets'
   );
+});
+
+// Task #1002 — the live regression: a West End show (Old Vic) carried the US
+// ticketmaster.com "A Christmas Carol (NY)" artist page. Title-matching alone
+// accepts it; only the storefront's region tells the two productions apart.
+test('showRegion reads market first, category as fallback', () => {
+  assert.equal(showRegion({ market: 'west-end' }), 'uk');
+  assert.equal(showRegion({ market: 'off-west-end' }), 'uk');
+  assert.equal(showRegion({ category: 'west-end' }), 'uk');
+  assert.equal(showRegion({ market: 'broadway' }), 'us');
+  assert.equal(showRegion({ category: 'off-broadway' }), 'us');
+  assert.equal(showRegion({}), 'us');
+});
+
+test('isRegionMismatch rejects cross-Atlantic storefronts, allows same-market and global hosts', () => {
+  const weShow = { market: 'west-end', category: 'west-end' };
+  const bwShow = { market: 'broadway', category: 'broadway' };
+  const usTm = 'https://www.ticketmaster.com/a-christmas-carol-ny-tickets/artist/2923062';
+  const ukTm = 'https://www.ticketmaster.co.uk/a-christmas-carol-tickets/artist/890378';
+
+  assert.equal(isRegionMismatch(usTm, weShow), true);
+  assert.equal(isRegionMismatch(ukTm, bwShow), true);
+  assert.equal(isRegionMismatch(ukTm, weShow), false);
+  assert.equal(isRegionMismatch(usTm, bwShow), false);
+  assert.equal(isRegionMismatch('https://www.telecharge.com/x', weShow), true);
+  // Global / multi-market hosts carry no region and must never be rejected.
+  assert.equal(isRegionMismatch('https://www.todaytix.com/london/shows/1-x', weShow), false);
+  assert.equal(isRegionMismatch('https://www.todaytix.com/nyc/shows/1-x', bwShow), false);
+  assert.equal(isRegionMismatch('https://www.eventbrite.com/e/1', weShow), false);
+  assert.equal(isRegionMismatch('not a url', weShow), false);
+});
+
+test('pickTicketUrl skips a wrong-region result and takes the right-region one', () => {
+  const show = { title: 'A Christmas Carol', venue: 'Old Vic', market: 'west-end', category: 'west-end' };
+  const results = [
+    { url: 'https://www.ticketmaster.com/a-christmas-carol-ny-tickets/artist/2923062', title: 'A Christmas Carol Tickets' },
+    { url: 'https://www.ticketmaster.co.uk/a-christmas-carol-tickets/artist/890378', title: 'A Christmas Carol Tickets' },
+  ];
+  assert.deepEqual(pickTicketUrl(results, show), {
+    url: 'https://www.ticketmaster.co.uk/a-christmas-carol-tickets/artist/890378',
+    platform: 'Ticketmaster',
+  });
+});
+
+test('pickTicketUrl returns null when the only match is on the wrong storefront', () => {
+  const show = { title: 'A Christmas Carol', venue: 'Old Vic', market: 'west-end', category: 'west-end' };
+  const results = [
+    { url: 'https://www.ticketmaster.com/a-christmas-carol-ny-tickets/artist/2923062', title: 'A Christmas Carol Tickets' },
+  ];
+  assert.equal(pickTicketUrl(results, show), null);
 });

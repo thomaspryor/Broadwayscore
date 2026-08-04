@@ -69,10 +69,31 @@ function stripTrivial(u) {
   return u.split('?')[0].replace(/(?:%20|\s|\/)+$/gi, '');
 }
 
+/**
+ * Only real show directories. `_`-prefixed top-level dirs are the corpus's
+ * non-show buckets (`_pending/` quarantine, `_superseded-misattributed/`
+ * tombstones) — the same convention locks-index.js SHOW_DIR_SKIPLIST and
+ * review-write-guard.js already encode, and rebuild-all-reviews.js enforces
+ * from the other side by skipping any dir absent from shows.json. Nothing in
+ * them reaches scoring.
+ *
+ * They must be skipped here because a duplicateOf pointer inside a tombstone
+ * is a HISTORICAL record: its sibling lives back in the real show dir, so it
+ * reads as `sibling-missing` forever and never self-heals. On 2026-08-04 the
+ * 27 files task #988 archived into `_superseded-misattributed/` alone pushed
+ * the auto-healable count to 32, past the 25 floor, reddening the trunk for
+ * every unrelated push — a false spike, not the producer regression the gate
+ * exists to catch. Flat-file entries (`show-id--outlet--critic.json`) in a
+ * tombstone dir also have no meaningful sibling namespace at all.
+ */
+function isShowDir(name) {
+  return !name.startsWith('_') && !name.startsWith('.');
+}
+
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
   return fs.readdirSync(root, { withFileTypes: true })
-    .filter(e => e.isDirectory())
+    .filter(e => e.isDirectory() && isShowDir(e.name))
     .map(e => path.join(root, e.name));
 }
 
