@@ -42,11 +42,12 @@ const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const ledger = require('./lib/autonomous-ledger.js');
-const { shallowFetchArgs } = require('./lib/shallow-fetch-args.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
-const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 const { findClaimedTask } = require('./lib/autonomous-triage-core.js');
-const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
+const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
+// ONE implementation of "check out origin/main and run the card's command",
+// shared with notion-brain.js's close-time verify (task #1003, CLAUDE.md §15).
+const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
 
 const REPO = path.join(__dirname, '..');
@@ -123,67 +124,12 @@ function loadSharedTaskState() {
   return { notionMap, tasksById };
 }
 
-// ONE disposable worktree for the whole run: every card verifies against the
-// same origin/main, so N checkouts would be N copies of one tree. Detached —
-// it creates no branch and cannot disturb the main checkout's state.
+// One disposable worktree for the whole run, pinned to THIS script's repo
+// root: every card verifies against the same origin/main, so N checkouts
+// would be N copies of one tree. The body lives in
+// scripts/lib/acceptance-check-core.js — see the note on its import above.
 function makeFreshCheckout() {
-  // Depth-bound the fetch when REPO is a SHALLOW clone (task #420/#466). This
-  // runs from the nightly loop, which is reachable from shallow-checkout
-  // workflows; there an unbounded fetch makes upload-pack send the whole
-  // ~2.1 GB / 165k-commit repo instead of the delta. Anchor the window on the
-  // local boundary commit so `worktree add origin/main` below still resolves.
-  // A complete clone (the owner's Mac, the usual case here) gets no extra
-  // flags — bounding it would truncate a full clone into a shallow one.
-  let isShallow = false;
-  try {
-    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: REPO, encoding: 'utf8' }).trim() === 'true';
-  } catch { /* fail open — treat as complete */ }
-  let oldestCommitEpoch = 0;
-  if (isShallow) {
-    try {
-      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: REPO, encoding: 'utf8' }).trim().split('\n').pop();
-      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: REPO, encoding: 'utf8' }).trim());
-    } catch { /* helper falls back to a bounded --deepen */ }
-  }
-  const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
-  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-recheck-'));
-  const wt = path.join(dir, 'main');
-  execFileSync('git', ['worktree', 'add', '--detach', wt, 'origin/main'], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] });
-  prepareCheckWorkdir(wt, REPO);
-  return { dir, wt };
-}
-
-function removeCheckout(co) {
-  try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'] }); }
-  catch { /* leave for git worktree prune */ }
-  try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
-}
-
-// One retry, then believe the failure. A transient flake that reported a
-// finished card as broken would cost more trust than it saves.
-function runVerify(cwd, cmd) {
-  const argv = cardCheckArgv(cmd, isSafeCheckCommand);
-  if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
-  const env = checksEnv();
-  let last = null;
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    try {
-      execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
-      return { status: 'pass', detail: attempt > 1 ? 'passed on retry (first run flaked)' : null };
-    } catch (err) {
-      // Exit 3 is the repo convention for "cannot verify" (infrastructure
-      // missing/stale — e.g. check-health-row-absent.js with a stale
-      // snapshot). Reporting it as FAIL would claim finished work broke when
-      // the evidence merely wasn't available (Codex finding, 2026-08-02).
-      if (err.status === 3) {
-        return { status: 'unverifiable', detail: `check exited 3 (cannot verify — evidence unavailable): ${String(err.stderr || err.stdout || '').slice(0, 200)}` };
-      }
-      last = String(err.stderr || err.stdout || err.message).slice(0, 400);
-    }
-  }
-  return { status: 'fail', detail: last };
+  return freshCheckout({ repo: REPO, prefix: 'auto-recheck-' });
 }
 
 // ── Enforcement gate (S3-T5) ────────────────────────────────────────────────

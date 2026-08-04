@@ -1,5 +1,5 @@
 /**
- * trunk-close-gate.test.mjs — task #1003.
+ * trunk-status.test.mjs — task #1003.
  *
  * Every case runs against the REAL 2026-08-04 trunk failure:
  * tests/fixtures/trunk-failed-log-2026-08-04.txt is a verbatim excerpt of
@@ -20,9 +20,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const {
-  summarizeTrunkRuns, extractFailingPaths, collectOwnedPaths,
-  evaluateCloseGate, renderTrunkDigestLine, GATE_REASONS,
-} = require(path.join(REPO, 'scripts/lib/trunk-close-gate.js'));
+  summarizeTrunkRuns, extractFailingPaths, renderTrunkDigestLine,
+} = require(path.join(REPO, 'scripts/lib/trunk-status.js'));
 
 const REAL_LOG = fs.readFileSync(
   path.join(REPO, 'tests/fixtures/trunk-failed-log-2026-08-04.txt'), 'utf8'
@@ -120,99 +119,6 @@ test('a truncated failure block does not leak attribution into the next job', ()
   ].join('\n');
   const names = extractFailingPaths(log).map((p) => p.path);
   assert.deepEqual(names, ['scripts/tests/tm-gap-links.test.mjs']);
-});
-
-test('(a) card #956, whose OWN test is failing on main, is refused closure', () => {
-  const res = evaluateCloseGate({
-    trunk: redSnapshot(),
-    // Verbatim shape of a Key Files field.
-    keyFiles: 'scripts/tests/tm-gap-links.test.mjs — new invariant test\nscripts/enrich-fallback-ticket-links.js',
-    changedFiles: ['data/shows.json'],
-    now: NOW,
-  });
-  assert.equal(res.allowed, false);
-  assert.equal(res.reason, GATE_REASONS.OWN_FAILURE);
-  assert.deepEqual(res.blocking.map((b) => b.path), ['scripts/tests/tm-gap-links.test.mjs']);
-  assert.match(res.message, /cannot close/);
-  assert.match(res.message, /tm-gap-links\.test\.mjs/);
-  assert.match(res.message, /Unit Tests/);
-});
-
-test('(a2) the orphaned-test card (#990/#993) is refused via its branch diff alone', () => {
-  const res = evaluateCloseGate({
-    trunk: redSnapshot(),
-    keyFiles: '',
-    changedFiles: ['scripts/audit-cross-outlet-attributions.js', 'scripts/audit-cross-outlet-attributions.test.mjs'],
-    now: NOW,
-  });
-  assert.equal(res.allowed, false);
-  assert.deepEqual(res.blocking.map((b) => b.path), ['scripts/audit-cross-outlet-attributions.test.mjs']);
-});
-
-test('(b) an unrelated card closes normally while trunk is red', () => {
-  const res = evaluateCloseGate({
-    trunk: redSnapshot(),
-    keyFiles: 'scripts/lib/scraper.js — SB exhaustion latch\nscripts/lib/scraper.test.mjs',
-    changedFiles: ['scripts/lib/url-discovery.js'],
-    now: NOW,
-  });
-  assert.equal(res.allowed, true);
-  assert.equal(res.reason, GATE_REASONS.UNRELATED);
-  assert.equal(res.trunkState, 'RED');
-  assert.deepEqual(res.blocking, []);
-});
-
-test('gate fails OPEN: no snapshot, stale snapshot, unattributable red, no owned files', () => {
-  const base = { keyFiles: 'scripts/tests/tm-gap-links.test.mjs', now: NOW };
-  assert.equal(evaluateCloseGate({ ...base, trunk: null }).reason, GATE_REASONS.NO_SNAPSHOT);
-  assert.equal(
-    evaluateCloseGate({ ...base, trunk: redSnapshot({ generatedAt: new Date(NOW - 9 * 3600e3).toISOString() }) }).reason,
-    GATE_REASONS.STALE_SNAPSHOT
-  );
-  // Log download failed → no attribution → must not block anyone.
-  assert.equal(evaluateCloseGate({ ...base, trunk: redSnapshot({ failingPaths: [] }) }).reason, GATE_REASONS.UNATTRIBUTABLE);
-  assert.equal(
-    evaluateCloseGate({ trunk: redSnapshot(), keyFiles: '', changedFiles: [], now: NOW }).reason,
-    GATE_REASONS.NO_OWNED_PATHS
-  );
-  assert.equal(evaluateCloseGate({ ...base, trunk: redSnapshot(), disabled: true }).reason, GATE_REASONS.DISABLED);
-  for (const r of [null, redSnapshot({ generatedAt: new Date(NOW - 9 * 3600e3).toISOString() }), redSnapshot({ failingPaths: [] })]) {
-    assert.equal(evaluateCloseGate({ ...base, trunk: r }).allowed, true);
-  }
-});
-
-test('an undateable or future-dated snapshot can never block', () => {
-  const base = { keyFiles: 'scripts/tests/tm-gap-links.test.mjs', now: NOW };
-  for (const generatedAt of [undefined, null, 'not-a-date', new Date(NOW + 6 * 3600e3).toISOString()]) {
-    const res = evaluateCloseGate({ ...base, trunk: redSnapshot({ generatedAt }) });
-    assert.equal(res.allowed, true, `generatedAt=${String(generatedAt)} must fail open`);
-    assert.equal(res.reason, GATE_REASONS.STALE_SNAPSHOT);
-  }
-});
-
-test('malformed failingPaths entries are ignored, never used to refuse', () => {
-  const res = evaluateCloseGate({
-    trunk: redSnapshot({ failingPaths: [null, {}, { path: 42 }, 'scripts/tests/tm-gap-links.test.mjs'] }),
-    keyFiles: 'scripts/tests/tm-gap-links.test.mjs',
-    now: NOW,
-  });
-  assert.equal(res.allowed, true);
-  assert.equal(res.reason, GATE_REASONS.UNRELATED);
-});
-
-test('a green trunk never blocks', () => {
-  const green = { generatedAt: new Date(NOW).toISOString(), state: 'GREEN', failingPaths: [] };
-  const res = evaluateCloseGate({ trunk: green, keyFiles: 'scripts/tests/tm-gap-links.test.mjs', now: NOW });
-  assert.equal(res.allowed, true);
-  assert.equal(res.reason, GATE_REASONS.GREEN);
-});
-
-test('collectOwnedPaths: Key Files prose + diff, data files excluded', () => {
-  const owned = collectOwnedPaths({
-    keyFiles: '`scripts/lib/trunk-close-gate.js` (new), tests/fixtures/x.json, data/shows.json',
-    changedFiles: ['scripts/produce-trunk-snapshot.js', 'data/reviews.json', ''],
-  });
-  assert.deepEqual(owned.sort(), ['scripts/lib/trunk-close-gate.js', 'scripts/produce-trunk-snapshot.js']);
 });
 
 test('(c) digest line renders RED with the consecutive-failure count, and is the headline past 24h', () => {
