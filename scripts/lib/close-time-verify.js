@@ -26,6 +26,13 @@
  * them, which is the failure mode this repo was actually in the day this was
  * written.
  *
+ * What this does NOT prove (be honest about the ceiling): a passing command
+ * means the card's acceptance PREDICATE holds on origin/main — not that this
+ * card's branch is what made it hold. A card whose check passed before it
+ * started still closes. The check catches the case that actually bit this
+ * repo — a card closing while the test it shipped is red — and is not a
+ * merge-verifier.
+ *
  * Pure module — no fs, no exec, no network. The caller reads the ledger
  * (dispatch-ledger.js) and runs the command (acceptance-check-core.js); this
  * file only decides. CLAUDE.md §15: the test require()s these functions.

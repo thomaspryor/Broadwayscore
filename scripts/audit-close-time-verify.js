@@ -28,7 +28,7 @@ const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
-const { findCardDispatch, decideClose, summarizeDryRun, VERDICTS } = require('./lib/close-time-verify.js');
+const { findCardDispatch, decideClose, summarizeDryRun } = require('./lib/close-time-verify.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 
 const REPO = path.join(__dirname, '..');
@@ -96,7 +96,9 @@ function main() {
         console.error('[dry-run] preparing one detached checkout of origin/main…');
         checkout = makeFreshCheckout({ repo: REPO, prefix: 'close-verify-dryrun-' });
       }
-      const verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, { attempts: 1, timeoutMs: PER_CARD_TIMEOUT_MS });
+      const verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, {
+        attempts: 1, timeoutMs: PER_CARD_TIMEOUT_MS, prepared: checkout.prepared,
+      });
       const decision = decideClose({ dispatch, verifyResult });
       results.push({ cardId: card.id, subject: card.name, taskId: dispatch.taskId, decision });
       console.error(`[dry-run] ${decision.allowed ? 'close' : 'REFUSE'}  ${decision.verdict.padEnd(24)} ${String(card.name).slice(0, 70)}`);
@@ -123,8 +125,10 @@ function main() {
       for (const b of summary.blockedCards) console.log(`  - ${b.subject || b.cardId}\n      ${b.verifyCmd}`);
     }
   }
-  // Report-only: a blocked card is the FINDING, not a failure of this script.
-  return summary.counts[VERDICTS.NOT_RUN] && !results.length ? 1 : 0;
+  // Report-only, ALWAYS exit 0: a blocked card is this script's FINDING, not
+  // its failure. (An earlier version had an exit-code branch its own call
+  // pattern could never reach — dead code that read as a real gate.)
+  return 0;
 }
 
 if (require.main === module) process.exit(main());

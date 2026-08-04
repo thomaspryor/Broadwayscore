@@ -630,13 +630,27 @@ async function createCard(args) {
 // recheck's per-card budget: a person or a sync loop is waiting on this, and a
 // check that cannot answer in two minutes must fail OPEN rather than hold a
 // close hostage.
-const CLOSE_VERIFY_TIMEOUT_MS = Number(process.env.CLOSE_VERIFY_TIMEOUT_MS || 120000);
+// Clamped, not trusted: an unset/typo'd/enormous env value would silently turn
+// the promised bound into an unbounded wait on the one code path a person is
+// synchronously blocked on (Codex ship-check P0). Worst case per close is
+// roughly one checkout (git calls are separately time-boxed at 120s each) plus
+// 2 x this.
+const CLOSE_VERIFY_TIMEOUT_MS = (() => {
+  const n = Number(process.env.CLOSE_VERIFY_TIMEOUT_MS);
+  return Number.isFinite(n) && n > 0 ? Math.min(Math.max(n, 10000), 300000) : 90000;
+})();
 
 async function enforceCloseTimeVerify(pageId, args) {
   if (process.env.CLOSE_VERIFY_DISABLED === '1' || process.env.TRUNK_CLOSE_GATE_DISABLED === '1') return;
 
   const bypassReason = (args.force && typeof args.force === 'string' && args.force.length >= 10)
     ? args.force : null;
+  // A --force too short to count used to vanish silently, so a caller who
+  // thought they had bypassed the check got refused with no idea why
+  // (ship-check finding).
+  if (args.force && !bypassReason) {
+    console.error('⚠️  --force ignored by close-time verify: the reason must be a string of ≥10 characters.');
+  }
 
   let decision;
   let VERDICTS;
@@ -658,7 +672,14 @@ async function enforceCloseTimeVerify(pageId, args) {
       let checkout = null;
       try {
         checkout = makeFreshCheckout({ repo: nodePath.join(__dirname, '..'), prefix: 'close-verify-' });
-        verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, { timeoutMs: CLOSE_VERIFY_TIMEOUT_MS });
+        verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, {
+          timeoutMs: CLOSE_VERIFY_TIMEOUT_MS,
+          // An unprepared checkout (no node_modules) would fail the command on
+          // the environment and read as a real failure — runVerify reports it
+          // as unverifiable instead, which fails open (Codex ship-check P1).
+          prepared: checkout.prepared,
+        });
+        if (checkout.sha) console.error(`ℹ️  close-time verify: against origin/main @ ${checkout.sha.slice(0, 9)}`);
       } finally {
         removeCheckout(checkout);
       }

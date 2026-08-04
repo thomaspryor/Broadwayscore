@@ -390,7 +390,7 @@ function cmdPush(args) {
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
     if (!dry && done.length) writeMap(dir, map);
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by the trunk close gate (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
     for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);

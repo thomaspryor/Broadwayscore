@@ -190,6 +190,12 @@ test('runVerify returns pass/fail/unverifiable against real commands', () => {
     // must not be refused because someone wrote prose in Acceptance criteria.
     assert.equal(runVerify(dir, 'rm -rf /', { attempts: 1 }).status, 'unverifiable');
     assert.equal(runVerify(dir, '', { attempts: 1 }).status, 'unverifiable');
+    // A command that never STARTS (missing test file is a run failure, but a
+    // missing BINARY is a spawn failure) must also be unverifiable — reading a
+    // spawn error as FAIL would refuse a card over a typo (ship-check finding).
+    const spawnFail = runVerify('/definitely/not/a/directory-ctv', 'node --test scripts/tests/ctv-green.test.mjs', { attempts: 1 });
+    assert.equal(spawnFail.status, 'unverifiable', `spawn failure must fail open, got ${spawnFail.status}`);
+    assert.match(String(spawnFail.detail), /could not be started/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

@@ -39,6 +39,27 @@ const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
+// Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
+// short enough that a synchronous caller can promise a bound.
+const GIT_TIMEOUT_MS = 120000;
+
+// Where node_modules and the gitignored core data actually live. A caller
+// running from a git WORKTREE (every code session in this repo does — CLAUDE.md
+// makes worktrees mandatory) has no node_modules of its own: node resolves them
+// by walking up to the canonical checkout, which a fresh /tmp worktree cannot
+// do. Linking from the worktree root would hand every close an unprepared
+// checkout (measured: prepared=false on the first real run), so resolve the
+// canonical checkout via git's common dir and link from there.
+function resolveInstallRoot(repo) {
+  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
+  try {
+    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
+      { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+    const mainRoot = path.dirname(common);
+    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
+  } catch { /* not a worktree, or old git — fall through */ }
+  return repo;
+}
 
 /**
  * ONE disposable worktree per run: every card verifies against the same
@@ -66,13 +87,40 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' }
     } catch { /* helper falls back to a bounded --deepen */ }
   }
   const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  // Every git call here is TIME-BOXED. A synchronous caller (notion-brain's
+  // close-time check) is holding a person or a sync sweep hostage while this
+  // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
+  // contended lock or a stalled remote — a hang is worse than a failure,
+  // because a failure fails OPEN and a hang does not (Codex ship-check P0).
   // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, stdio: ['ignore', 'pipe', 'pipe'] });
+  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  // Pin to the SHA we just fetched, not the moving ref: between this fetch and
+  // the worktree add, a parallel session's push can advance origin/main, and
+  // the card would then be judged against a commit that landed after it
+  // (Codex ship-check P1). The pinned sha is returned so callers can report it.
+  const sha = execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
-  execFileSync('git', ['worktree', 'add', '--detach', wt, 'origin/main'], { cwd: repo, stdio: ['ignore', 'pipe', 'pipe'] });
-  prepareCheckWorkdir(wt, repo);
-  return { dir, wt, repo };
+  try {
+    execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    prepareCheckWorkdir(wt, resolveInstallRoot(repo));
+  } catch (err) {
+    // Clean up our OWN tempdir before rethrowing. The caller's `finally` can
+    // only remove a checkout it was handed, and it was never handed this one —
+    // so without this, every failed `worktree add` (a lock contended by another
+    // session, a full disk) leaks a directory. Once per night was tolerable;
+    // once per card close is not (ship-check finding).
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw err;
+  }
+  // prepareCheckWorkdir is best-effort by design (it swallows link failures),
+  // so a checkout can come back without node_modules. Running `node --test` or
+  // `npx tsc` there fails on the ENVIRONMENT, exit 1, indistinguishable from a
+  // real assertion failure — which at close time refuses an innocent card
+  // (Codex ship-check P1). Report the state instead of hiding it; runVerify
+  // downgrades to unverifiable.
+  const prepared = fs.existsSync(path.join(wt, 'node_modules'));
+  return { dir, wt, repo, sha, prepared };
 }
 
 /** Best effort: a leftover worktree is picked up by `git worktree prune`. */
@@ -91,9 +139,12 @@ function removeCheckout(co) {
  * @param {{attempts?:number, timeoutMs?:number}} o
  * @returns {{status:'pass'|'fail'|'unverifiable', detail:string|null}}
  */
-function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS } = {}) {
+function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepared = true } = {}) {
   const argv = cardCheckArgv(cmd, isSafeCheckCommand);
   if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
+  if (!prepared) {
+    return { status: 'unverifiable', detail: 'checkout has no node_modules — any result would measure the environment, not the card' };
+  }
   const env = checksEnv();
   const maxAttempts = Math.max(1, attempts);
   let last = null;
@@ -112,8 +163,19 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS } = {}
       // A timeout kill (SIGTERM, no exit status) is infrastructure, not a
       // verdict: at close time it would refuse a card because the machine was
       // busy. Report it as unverifiable so every caller fails OPEN.
+      // (Behaviour change vs the recheck's pre-extraction copy, which counted a
+      // timeout as a FAIL and fed it to shouldExitShadow. A timeout is the
+      // absence of an answer, not a failing answer, in both callers.)
       if (err.signal && err.status == null) {
         return { status: 'unverifiable', detail: `check killed by ${err.signal} after ${timeoutMs}ms (timeout — no verdict)` };
+      }
+      // The command never STARTED (binary missing, bad interpreter, permission
+      // denied). Node reports these as spawn errors with no exit status. That
+      // is not evidence the work is broken, and a close-time caller that read
+      // it as FAIL would refuse a card over a typo in its own verify string
+      // (ship-check finding — it violated this module's fail-open contract).
+      if (err.status == null && err.code) {
+        return { status: 'unverifiable', detail: `command could not be started (${err.code}): ${argv[0]}` };
       }
       last = String(err.stderr || err.stdout || err.message).slice(0, 400);
     }
