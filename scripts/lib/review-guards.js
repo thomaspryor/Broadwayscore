@@ -2565,6 +2565,20 @@ function buildMultiProdYearGuard(shows) {
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
+  // Freshness-bounded auto-clear check, shared by the 3 wpCleared sites below.
+  // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
+  // is deliberately freshness-gated: a years-old stamp on a file that was
+  // legitimately re-flagged later must not keep suppressing exclusion forever.
+  // Lazy require avoids a load-order cycle — review-write-guard.js lazy-requires
+  // this file for wrongShowCleared.
+  const isFreshWpAutoCleared = (d) => {
+    try {
+      return !!require('./review-write-guard').isFreshWrongProductionAutoClear(d);
+    } catch {
+      return false;
+    }
+  };
+
   // S3-T6: CV-promotion-deferred reviews are explicitly includable.
   //
   // The defer mechanism (S3-T5, scripts/rebuild-all-reviews.js) sets
@@ -2819,7 +2833,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
     // from a known star outlet clears the rejectedAt gate as well.
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
@@ -2839,7 +2854,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     const wpBlocking = data.wrongProduction === true && !wpCleared;
     if (data.wrongShow || wpBlocking) return 'wrongContentFlagsUncleared';
     // If no substantial text, also correct to exclude
@@ -2855,7 +2871,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      isFreshWpAutoCleared(data);
     if (!wpCleared) return 'contentTierInvalid';
     // Cleared — fall through and let text/signal check decide
   }
