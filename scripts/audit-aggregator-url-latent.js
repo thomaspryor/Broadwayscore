@@ -58,7 +58,12 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 }
 
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { classifyReview, evaluateLatentPopulation } = require('./lib/aggregator-url-latent');
+const {
+  classifyReview,
+  evaluateLatentPopulation,
+  evaluateScanIntegrity,
+  DEFAULT_GRACE_BAND,
+} = require('./lib/aggregator-url-latent');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -75,6 +80,10 @@ function scanCorpus() {
   const live = [];
   const latent = [];
   let scanned = 0;
+  // Every swallowed read failure shrinks the denominator and therefore the latent
+  // count. Counting them is what lets evaluateScanIntegrity refuse to call a blind
+  // scan a pass (#1002).
+  let scanErrors = 0;
 
   for (const showId of listShowDirs(REVIEW_TEXTS_DIR, { silent: true })) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -82,6 +91,7 @@ function scanCorpus() {
     try {
       files = fs.readdirSync(showDir);
     } catch {
+      scanErrors++;
       continue;
     }
     for (const file of files) {
@@ -90,7 +100,9 @@ function scanCorpus() {
       try {
         data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8'));
       } catch {
-        // Corrupt/unreadable JSON is validate-review-texts.js's problem, not ours.
+        // Corrupt/unreadable JSON is validate-review-texts.js's problem to REPORT,
+        // but it is ours to COUNT — see above.
+        scanErrors++;
         continue;
       }
       scanned++;
@@ -99,12 +111,16 @@ function scanCorpus() {
       else if (verdict === 'latent') latent.push(`${showId}/${file}`);
     }
   }
-  return { scanned, live, latent };
+  return { scanned, scanErrors, live, latent };
 }
 
 function main() {
+  // A missing corpus means the review-texts checkout did not happen. That step reports
+  // its own failure; this one runs under if: always(), so exiting 1 here would just
+  // stack a second, misleading red on top of the real cause. Warn and stand down
+  // (Codex adversarial finding, #1002).
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
-    fail(`review-texts not found at ${path.relative(REPO_ROOT, REVIEW_TEXTS_DIR)} — run scripts/setup-local-data.sh`);
+    console.log(`::warning::review-texts not found at ${path.relative(REPO_ROOT, REVIEW_TEXTS_DIR)} — skipping the latent aggregator-URL ratchet. If this is CI, the checkout-review-texts step failed and is the real error; locally, run scripts/setup-local-data.sh.`);
     return;
   }
 
@@ -116,25 +132,34 @@ function main() {
     return;
   }
 
-  const { scanned, live, latent } = scanCorpus();
-  const verdict = evaluateLatentPopulation(latent.length, pin.latentCeiling);
+  const graceBand = Number.isInteger(pin.graceBand) ? pin.graceBand : DEFAULT_GRACE_BAND;
+  const { scanned, scanErrors, live, latent } = scanCorpus();
+
+  const integrity = evaluateScanIntegrity(scanned, scanErrors, {
+    minScanned: pin.minScanned,
+    maxScanErrors: pin.maxScanErrors,
+  });
+  const verdict = evaluateLatentPopulation(latent.length, pin.latentCeiling, graceBand);
 
   if (asJson) {
     console.log(JSON.stringify({
       scanned,
+      scanErrors,
       live: live.length,
       latent: latent.length,
       latentCeiling: pin.latentCeiling,
-      ok: verdict.ok,
-      reason: verdict.reason,
-      ratchetTo: verdict.ratchetTo,
+      graceBand,
+      scanIntegrityOk: integrity.ok,
+      ok: integrity.ok && verdict.ok,
+      reason: integrity.ok ? verdict.reason : integrity.reason,
+      ratchetTo: integrity.ok ? verdict.ratchetTo : null,
       liveFiles: live,
       latentFiles: latent,
     }, null, 2));
   } else {
-    console.log(`Scanned ${scanned} review-text files`);
+    console.log(`Scanned ${scanned} review-text files (${scanErrors} unreadable/skipped)`);
     console.log(`  live aggregator-URL mismatches:   ${live.length}`);
-    console.log(`  latent (behind exclusion flags):  ${latent.length} (ceiling ${pin.latentCeiling})`);
+    console.log(`  latent (behind exclusion flags):  ${latent.length} (ceiling ${pin.latentCeiling}, grace +${graceBand})`);
     if (live.length) {
       // Not this guard's failure to own — validate-review-texts.js --gate fails the
       // trunk on these. Printed so one command gives the whole picture.
@@ -148,15 +173,23 @@ function main() {
     console.log('');
   }
 
+  // Integrity first: a count from a blind scan must never be reported as a pass.
+  if (!integrity.ok) {
+    fail(integrity.reason);
+    return;
+  }
+
   if (!verdict.ok) {
     fail(verdict.reason);
-    if (latent.length > pin.latentCeiling && !asJson) {
-      console.error('::error::Fix the new file(s) and the producer that wrote them. Raising latentCeiling to go green re-arms the exact trunk failure this guard exists to stop.');
+    if (!asJson) {
+      console.error('::error::Fix the new files and the producer that wrote them. Raising latentCeiling to go green re-arms the exact trunk failure this guard exists to stop.');
     }
     return;
   }
 
-  if (verdict.ratchetTo !== null) {
+  if (verdict.warn) {
+    console.log(`::warning::${verdict.reason}`);
+  } else if (verdict.ratchetTo !== null) {
     console.log(`::notice::${verdict.reason} Set "latentCeiling" to ${verdict.ratchetTo} in ${path.relative(REPO_ROOT, PIN_PATH)}.`);
   } else if (!asJson) {
     console.log(`✅ ${verdict.reason}`);

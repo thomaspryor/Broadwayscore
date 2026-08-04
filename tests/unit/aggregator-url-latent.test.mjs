@@ -11,12 +11,19 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 // require() the REAL functions — no reimplementation. If production logic changes,
 // these fail. That is the point (CLAUDE.md §15).
 const {
+  DEFAULT_GRACE_BAND,
   VALIDATOR_EXCLUSION_FLAGS,
+  resolveOutletId,
   isSkippedByValidator,
   hasAggregatorUrlMismatch,
   classifyReview,
   evaluateLatentPopulation,
+  evaluateScanIntegrity,
 } = require(path.join(REPO_ROOT, 'scripts/lib/aggregator-url-latent.js'));
+
+// The validator's own resolution, imported separately so a change to EITHER side
+// breaks this test rather than silently diverging.
+const { normalizeOutlet } = require(path.join(REPO_ROOT, 'scripts/lib/review-normalization.js'));
 
 // ---------------------------------------------------------------------------
 // hasAggregatorUrlMismatch
@@ -126,10 +133,35 @@ test('the incident transition: clearing wrongProduction flips latent -> live', (
 // evaluateLatentPopulation — the ratchet
 // ---------------------------------------------------------------------------
 
-test('growth fails', () => {
+test('drift of one file does NOT fail — that would be the churn pathology, not a fix', () => {
+  // CI checks out review-texts' moving main HEAD; a bot landing one bad file mid-run
+  // must not fail an unrelated merge. This is the single most important behavior here.
   const v = evaluateLatentPopulation(11, 10);
+  assert.equal(v.ok, true, 'one extra file must not redden the trunk');
+  assert.equal(v.warn, true, 'but it must be loudly annotated');
+});
+
+test('drift at the edge of the band still passes', () => {
+  const v = evaluateLatentPopulation(10 + DEFAULT_GRACE_BAND, 10);
+  assert.equal(v.ok, true);
+  assert.equal(v.warn, true);
+});
+
+test('a spike one past the band fails', () => {
+  const v = evaluateLatentPopulation(10 + DEFAULT_GRACE_BAND + 1, 10);
   assert.equal(v.ok, false);
-  assert.match(v.reason, /grew/);
+  assert.match(v.reason, /SPIKED/);
+});
+
+test('a producer-regression-sized spike fails hard', () => {
+  // The historical shape: 27 and 32 files appearing at once.
+  const v = evaluateLatentPopulation(32, 10);
+  assert.equal(v.ok, false);
+});
+
+test('a negative or non-integer grace band fails closed', () => {
+  assert.equal(evaluateLatentPopulation(10, 10, -1).ok, false);
+  assert.equal(evaluateLatentPopulation(10, 10, 1.5).ok, false);
 });
 
 test('steady passes without a ratchet hint', () => {
@@ -168,4 +200,66 @@ test('the pinned ceiling file is present and well-formed', () => {
   const pin = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'scripts/.aggregator-url-latent.json'), 'utf-8'));
   assert.equal(Number.isInteger(pin.latentCeiling), true, 'latentCeiling must be an integer');
   assert.ok(pin.latentCeiling >= 0, 'latentCeiling must be non-negative');
+  assert.equal(Number.isInteger(pin.graceBand), true, 'graceBand must be an integer');
+  assert.equal(Number.isInteger(pin.minScanned), true, 'minScanned must be an integer');
+  assert.ok(pin.minScanned > 1000, 'minScanned must be a real floor, not a rubber stamp');
+});
+
+// ---------------------------------------------------------------------------
+// outletId resolution parity with the validator
+// ---------------------------------------------------------------------------
+
+test('resolveOutletId matches the validator\'s normalizeOutletId exactly', () => {
+  // validate-review-texts.js:136 is `if (!id) return null; return normalizeOutlet(id);`
+  for (const id of ['artsdesk', 'The Arts Desk', 'ARTSDESK', 'times-uk', '', null, undefined]) {
+    const expected = id ? normalizeOutlet(id) : null;
+    assert.deepEqual(resolveOutletId(id), expected, `divergence on ${JSON.stringify(id)}`);
+  }
+});
+
+test('an `outlet`-only record IS counted, because that is what the validator does', () => {
+  // The validator reads normalizeOutletId(data.outletId) ONLY — it never falls back to
+  // data.outlet. With no outletId that resolves to null, null is not in
+  // AGGREGATOR_OUTLET_IDS, so the aggregator URL trips the mismatch. Matching that
+  // exactly is the point; an `outlet` fallback here would have made the ratchet count
+  // a DIFFERENT population than the gate it protects (Codex finding, #1002).
+  assert.equal(hasAggregatorUrlMismatch({
+    outlet: 'The Arts Desk',
+    url: 'https://stagedoor.com/plays/1/critic-reviews',
+  }), true);
+  // And an outlet-only record naming the aggregator itself is still counted, for the
+  // same reason — the validator cannot see `outlet` either. This is deliberate parity,
+  // not a judgement that the behavior is ideal.
+  assert.equal(hasAggregatorUrlMismatch({
+    outlet: 'Stagedoor',
+    url: 'https://stagedoor.com/plays/1/critic-reviews',
+  }), true);
+});
+
+// ---------------------------------------------------------------------------
+// scan integrity — a blind scan must never read as "improved"
+// ---------------------------------------------------------------------------
+
+test('a scan that saw almost nothing cannot report a pass', () => {
+  const v = evaluateScanIntegrity(12, 0, { minScanned: 30000 });
+  assert.equal(v.ok, false);
+  assert.match(v.reason, /below the floor/);
+});
+
+test('a scan with too many unreadable entries cannot report a pass', () => {
+  const v = evaluateScanIntegrity(40000, 500, { minScanned: 30000, maxScanErrors: 50 });
+  assert.equal(v.ok, false);
+  assert.match(v.reason, /unreadable/);
+});
+
+test('a healthy full scan passes integrity', () => {
+  const v = evaluateScanIntegrity(41884, 0, { minScanned: 30000, maxScanErrors: 50 });
+  assert.equal(v.ok, true);
+});
+
+test('the wiped-corpus trap: 0 files scanned must never look like a clean corpus', () => {
+  // Without this, an empty/failed checkout yields latent=0, which evaluateLatentPopulation
+  // would happily call "shrank to 0 — tighten the pin".
+  assert.equal(evaluateLatentPopulation(0, 10).ok, true, 'population check alone is fooled');
+  assert.equal(evaluateScanIntegrity(0, 0, { minScanned: 30000 }).ok, false, 'integrity check catches it');
 });

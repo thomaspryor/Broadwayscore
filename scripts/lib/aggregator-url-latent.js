@@ -31,9 +31,25 @@
  */
 
 const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS } = require('./aggregator-domains');
+const { normalizeOutlet } = require('./review-normalization');
 
 if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_IDS || AGGREGATOR_OUTLET_IDS.size === 0) {
   throw new Error('aggregator-url-latent: AGGREGATOR_DOMAINS/AGGREGATOR_OUTLET_IDS failed to load from aggregator-domains.js');
+}
+if (typeof normalizeOutlet !== 'function') {
+  throw new Error('aggregator-url-latent: normalizeOutlet failed to load from review-normalization.js');
+}
+
+/**
+ * Exactly validate-review-texts.js's outletId resolution (null-in/null-out around
+ * the canonical normalizeOutlet). Deliberately does NOT fall back to `data.outlet`:
+ * the validator's aggregator_url_mismatch check reads only normalizeOutletId(data.outletId),
+ * and a ratchet that resolved outletId differently would count a different population
+ * than the gate it exists to protect (Codex adversarial finding, task #1002).
+ */
+function resolveOutletId(id) {
+  if (!id) return null;
+  return normalizeOutlet(id);
 }
 
 /**
@@ -48,6 +64,12 @@ if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_I
  * canonical sibling is not a duplicate (merge-review-fields.js deliberately leaves them
  * in place rather than folding their flags into the live file).
  */
+/**
+ * How far above the pinned ceiling the latent count may drift before the gate blocks.
+ * See evaluateLatentPopulation for why this is not zero.
+ */
+const DEFAULT_GRACE_BAND = 3;
+
 const VALIDATOR_EXCLUSION_FLAGS = Object.freeze([
   'duplicateOf',
   'duplicateTextOf',
@@ -88,7 +110,7 @@ function hasAggregatorUrlMismatch(data) {
   } catch {
     return false;
   }
-  const outletId = data.outletId || data.outlet || '';
+  const outletId = resolveOutletId(data.outletId);
   return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(outletId);
 }
 
@@ -113,30 +135,54 @@ function classifyReview(data) {
 /**
  * Decide whether the observed latent count is acceptable against its pin.
  *
- * Growth fails. Shrinkage does NOT fail: review-texts is a separate repo that bots
- * mutate every ~2min, and a gate that fires when the number IMPROVES would redden the
- * trunk for unrelated pushes — the exact pathology that forced validate-review-texts.js
- * onto a --gate floor in the first place. Shrinkage returns a ratchet hint instead, so
- * the pin gets tightened deliberately rather than by a flapping bot commit.
+ * WHY THERE IS A GRACE BAND AND NOT A HAIR TRIGGER (Codex adversarial finding, #1002):
+ * review-texts is a separate repo that bots mutate every ~2 minutes, and CI checks out
+ * its `main` HEAD rather than a revision pinned to the triggering commit. A single bot
+ * write between "PR queued" and "runner reaches checkout" would therefore fail an
+ * unrelated merge under an exact ceiling — which is precisely the trunk-reddening
+ * pathology this whole card exists to end. Adding a gate with that property would have
+ * made the cure the disease.
+ *
+ * So this mirrors the duplicateOf gate the card explicitly praises: block on SPIKES,
+ * not on ones and twos. A drift of a few files annotates loudly (::warning::) and
+ * passes; a producer regression — historically 27 and 32 files at once — blows past the
+ * band and fails. Zero enforcement would be worse; hair-trigger enforcement would be
+ * worse still.
+ *
+ * Shrinkage never fails: a gate that fires when the number IMPROVES is pure churn.
  *
  * @param {number} observed - latent files found by the scan
  * @param {number} pinned - ceiling from scripts/.aggregator-url-latent.json
- * @returns {{ok: boolean, reason: string, ratchetTo: number|null}}
+ * @param {number} [graceBand=3] - how far above the ceiling drift may go before failing
+ * @returns {{ok: boolean, reason: string, ratchetTo: number|null, warn: boolean}}
  */
-function evaluateLatentPopulation(observed, pinned) {
+function evaluateLatentPopulation(observed, pinned, graceBand = DEFAULT_GRACE_BAND) {
   if (!Number.isInteger(observed) || observed < 0) {
-    return { ok: false, reason: `observed count is not a non-negative integer: ${observed}`, ratchetTo: null };
+    return { ok: false, reason: `observed count is not a non-negative integer: ${observed}`, ratchetTo: null, warn: false };
   }
   if (!Number.isInteger(pinned) || pinned < 0) {
-    return { ok: false, reason: `pinned ceiling is not a non-negative integer: ${pinned}`, ratchetTo: null };
+    return { ok: false, reason: `pinned ceiling is not a non-negative integer: ${pinned}`, ratchetTo: null, warn: false };
+  }
+  if (!Number.isInteger(graceBand) || graceBand < 0) {
+    return { ok: false, reason: `grace band is not a non-negative integer: ${graceBand}`, ratchetTo: null, warn: false };
+  }
+  if (observed > pinned + graceBand) {
+    return {
+      ok: false,
+      reason: `latent aggregator-URL population SPIKED: ${observed} > ceiling ${pinned} + grace ${graceBand}. `
+        + 'That is a producer regression writing aggregator listing URLs under real outletIds, '
+        + 'not bot churn. Fix the producer and the files — do NOT raise the ceiling to go green.',
+      ratchetTo: null,
+      warn: false,
+    };
   }
   if (observed > pinned) {
     return {
-      ok: false,
-      reason: `latent aggregator-URL population grew: ${observed} > ceiling ${pinned}. `
-        + 'A new review was written with an aggregator listing URL under a real outletId. '
-        + 'Fix the producer and the file — do NOT raise the ceiling to go green.',
+      ok: true,
+      reason: `latent population drifted to ${observed} (ceiling ${pinned}, grace ${graceBand}) — `
+        + 'within the bot-churn band, so not blocking, but a new bad file exists. Triage it before it spikes.',
       ratchetTo: null,
+      warn: true,
     };
   }
   if (observed < pinned) {
@@ -144,15 +190,60 @@ function evaluateLatentPopulation(observed, pinned) {
       ok: true,
       reason: `latent population shrank to ${observed} (ceiling ${pinned}) — tighten the pin.`,
       ratchetTo: observed,
+      warn: false,
     };
   }
-  return { ok: true, reason: `latent population steady at ${observed} (ceiling ${pinned}).`, ratchetTo: null };
+  return { ok: true, reason: `latent population steady at ${observed} (ceiling ${pinned}).`, ratchetTo: null, warn: false };
+}
+
+/**
+ * Was the scan complete enough for its count to mean anything?
+ *
+ * WHY (Codex adversarial finding, #1002): every read failure in the scanner is
+ * swallowed by design — an unreadable dir, a dangling symlink, a corrupt JSON, a file
+ * a bot replaced mid-scan. Each swallowed failure removes a file from the denominator,
+ * so a HALF-SCANNED corpus reports a SMALLER latent count, which the ratchet would
+ * otherwise read as "improved" and pass. A guard that turns green when it stops being
+ * able to see is worse than no guard.
+ *
+ * So a pass requires the scan to have actually looked at the corpus: at least
+ * `minScanned` files parsed, and read errors under `maxScanErrors`.
+ *
+ * @param {number} scanned - files successfully parsed
+ * @param {number} scanErrors - files/dirs skipped due to read or parse failure
+ * @param {{minScanned?: number, maxScanErrors?: number}} [limits]
+ * @returns {{ok: boolean, reason: string}}
+ */
+function evaluateScanIntegrity(scanned, scanErrors, limits = {}) {
+  const { minScanned = 0, maxScanErrors = 50 } = limits;
+  if (!Number.isInteger(scanned) || scanned < 0) {
+    return { ok: false, reason: `scanned count is not a non-negative integer: ${scanned}` };
+  }
+  if (scanned < minScanned) {
+    return {
+      ok: false,
+      reason: `scan covered only ${scanned} files, below the floor of ${minScanned} — the corpus is `
+        + 'missing or partially checked out, so the latent count is not trustworthy. '
+        + 'Refusing to report a pass on a blind scan.',
+    };
+  }
+  if (scanErrors > maxScanErrors) {
+    return {
+      ok: false,
+      reason: `scan hit ${scanErrors} unreadable/unparseable entries (max ${maxScanErrors}) — `
+        + 'too much of the corpus was invisible for the count to mean anything.',
+    };
+  }
+  return { ok: true, reason: `scan integrity OK (${scanned} files, ${scanErrors} skipped).` };
 }
 
 module.exports = {
+  DEFAULT_GRACE_BAND,
   VALIDATOR_EXCLUSION_FLAGS,
+  resolveOutletId,
   isSkippedByValidator,
   hasAggregatorUrlMismatch,
   classifyReview,
   evaluateLatentPopulation,
+  evaluateScanIntegrity,
 };
