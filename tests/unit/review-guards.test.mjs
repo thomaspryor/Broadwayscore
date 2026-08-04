@@ -966,13 +966,37 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     assert.strictEqual(_isIncludable(data), false);
   });
 
-  test('contentTier=invalid + wrongProductionAutoCleared → includable', () => {
+  test('contentTier=invalid + fresh wrongProductionAutoCleared → includable', () => {
     const data = {
       contentTier: 'invalid',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show (balletcoforum)",
+      wrongProductionAutoClearedAt: '2026-08-04',
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);
+  });
+
+  // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
+  // is freshness-gated to 7 days — a years-old stamp on a file re-flagged for an
+  // unrelated reason later must not suppress exclusion forever. isIncludableForRebuild
+  // must honor the same bound (second-opinion review, task #1017).
+  test('contentTier=invalid + STALE (>7d) wrongProductionAutoCleared → still excluded', () => {
+    const data = {
+      contentTier: 'invalid',
+      wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      wrongProductionAutoClearedAt: '2026-01-01',
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), false);
+  });
+
+  test('contentTier=invalid + wrongProductionAutoCleared with NO timestamp → still excluded', () => {
+    const data = {
+      contentTier: 'invalid',
+      wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      fullText: 'x'.repeat(900),
+    };
+    assert.strictEqual(_isIncludable(data), false);
   });
 
   // rejectedAt is tested decoupled from rejectionReason: line ~2782's separate
@@ -990,10 +1014,11 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     assert.strictEqual(_isIncludable(data), false);
   });
 
-  test('rejectedAt gate + wrongProductionAutoCleared → includable', () => {
+  test('rejectedAt gate + fresh wrongProductionAutoCleared → includable', () => {
     const data = {
       rejectedAt: '2026-08-01T00:00:00.000Z',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      wrongProductionAutoClearedAt: '2026-08-04',
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);
@@ -1013,10 +1038,11 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
   // so wpBlocking is already false via the field's absence — this asserts the
   // wpCleared fallback still holds if wrongProduction were ever left truthy
   // alongside a stamped auto-clear (defensive, not the primary code path).
-  test("incompleteReason='wrong_content' + wrongProductionAutoCleared (wrongProduction absent) → includable", () => {
+  test("incompleteReason='wrong_content' + fresh wrongProductionAutoCleared (wrongProduction absent) → includable", () => {
     const data = {
       incompleteReason: 'wrong_content',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
+      wrongProductionAutoClearedAt: '2026-08-04',
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);
