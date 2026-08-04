@@ -322,3 +322,38 @@ test('progressWatchResults: an oversized lastSummary is truncated in the alert m
   assert.equal(results.length, 1);
   assert.match(results[0].message, /Context: .{500}…$/);
 });
+
+// ── cards the drain cannot finish unattended (task #1004) ──────────────────
+// backlog-drain writes humanGatedSkips into its metric; without a digest row
+// that field is write-only and a MISCLASSIFIED card is skipped silently every
+// tick forever (the #689/#690 write-only class).
+
+test('cardVerifiabilityBacklogResults surfaces human-gated drain skips as their own row', () => {
+  const rows = cardVerifiabilityBacklogResults(
+    { total: 200, refused: [{ name: 'X', priority: 'P2' }] },
+    { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }, { id: '63', codes: ['VISUAL_QA_GATE'] }] },
+  );
+  assert.equal(rows.length, 2);
+  const gated = rows.find(r => r.name === 'Data: cards the drain cannot finish unattended');
+  assert.ok(gated, `expected the gated row, got ${rows.map(r => r.name).join(' | ')}`);
+  assert.match(gated.message, /#61, #63/);
+  assert.match(gated.message, /VISUAL_QA_GATE/);
+  assert.equal(gated.status, 'warn');
+});
+
+test('cardVerifiabilityBacklogResults stays back-compatible when the drain metric is absent', () => {
+  const rows = cardVerifiabilityBacklogResults({ total: 200, refused: [{ name: 'X', priority: 'P2' }] }, null);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].name, 'Data: undispatchable backlog cards');
+});
+
+test('cardVerifiabilityBacklogResults emits the gated row even when the verifiability report is missing', () => {
+  const rows = cardVerifiabilityBacklogResults(null, { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }] });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].name, 'Data: cards the drain cannot finish unattended');
+});
+
+test('cardVerifiabilityBacklogResults is silent when both buckets are empty', () => {
+  assert.equal(cardVerifiabilityBacklogResults(null, null).length, 0);
+  assert.equal(cardVerifiabilityBacklogResults({ total: 5, refused: [] }, { humanGatedSkips: [] }).length, 0);
+});

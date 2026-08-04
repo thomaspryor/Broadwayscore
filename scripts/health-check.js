@@ -2302,16 +2302,36 @@ function silentGapBacklogResults(report) {
 // a card can sit stuck indefinitely with nobody noticing. enrich-card-
 // acceptance.js is the fix; this warn row is the visibility that was missing
 // before it existed (#116 sat refused until a human hand-enriched it).
-function cardVerifiabilityBacklogResults(report) {
-  if (!report || !Array.isArray(report.refused) || report.refused.length === 0) return [];
-  const refused = report.refused;
-  const first = refused[0];
-  return [{
-    name: 'Data: undispatchable backlog cards',
-    status: 'warn',
-    message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}`,
-    hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
-  }];
+function cardVerifiabilityBacklogResults(report, drainMetric) {
+  const results = [];
+  if (report && Array.isArray(report.refused) && report.refused.length > 0) {
+    const refused = report.refused;
+    const first = refused[0];
+    results.push({
+      name: 'Data: undispatchable backlog cards',
+      status: 'warn',
+      message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}`,
+      hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
+    });
+  }
+  // Task #1004's sibling bucket: cards the drain scanned and skipped because an
+  // UNATTENDED session structurally cannot finish them (owner visual-qa
+  // approval, an owner decision, a completion deferred past the session). The
+  // classifier writes humanGatedSkips into the drain metric; without this row
+  // that field is write-only and a MISCLASSIFIED card would be skipped silently
+  // on every tick forever, its only trace a launchd log nobody reads — the exact
+  // #689/#690 write-only class.
+  const gated = (drainMetric && Array.isArray(drainMetric.humanGatedSkips)) ? drainMetric.humanGatedSkips : [];
+  if (gated.length > 0) {
+    const codes = [...new Set(gated.flatMap(g => g.codes || []))].join(', ');
+    results.push({
+      name: 'Data: cards the drain cannot finish unattended',
+      status: 'warn',
+      message: `backlog-drain skipped ${gated.length} card(s) needing a human to finish (#${gated.map(g => g.id).join(', #')}) — blockers: ${codes || 'unspecified'}. These will never drain headlessly.`,
+      hint: 'Dispatch them to a cmux tab (node scripts/bsc-next.js --id <n>, no --headless) where you can clear the gate. If a card is MISCLASSIFIED, check it against node scripts/lib/headless-dispatchability.js --subject="..." --notes="..." and fix the classifier, not the card.',
+    });
+  }
+  return results;
 }
 
 // Daily-digest surfacing for stalled pipeline surfaces (data/audit/
@@ -3309,7 +3329,12 @@ async function main() {
 
     try {
       const cvReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability.json'), 'utf8'));
-      allResults.push(...cardVerifiabilityBacklogResults(cvReport));
+      // Drain metric read separately so a missing/!corrupt one still lets the
+      // verifiability row through (and vice versa) — one absent report must not
+      // silence the other bucket.
+      let drainMetric = null;
+      try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
+      allResults.push(...cardVerifiabilityBacklogResults(cvReport, drainMetric));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
     try {
