@@ -286,6 +286,22 @@ const _wrongProductionCleared = (d) =>
 // restore: only clears stamped within the last 7 days count, and all rebuild
 // clear paths stamp wrongProductionAutoClearedAt.
 const AUTO_CLEAR_FRESH_DAYS = 7;
+
+/**
+ * Invalidate the auto-clear breadcrumb when a writer RE-FLAGS wrongProduction.
+ * Without this, a legitimate re-flag within AUTO_CLEAR_FRESH_DAYS could be
+ * suppressed by the still-fresh stamp if a stale checkout (carrying the cleared
+ * state) races the push — the inverted ping-pong (ship-check 2026-08-04).
+ * Every `wrongProduction = true` writer should call this.
+ *
+ * @param {object} d - review record being flagged (mutated in place)
+ */
+function invalidateWrongProductionAutoClear(d) {
+  if (!d) return;
+  delete d.wrongProductionAutoCleared;
+  delete d.wrongProductionAutoClearedAt;
+}
+
 const _freshWrongProductionAutoClear = (d) => {
   if (!d || !d.wrongProductionAutoCleared || !d.wrongProductionAutoClearedAt) return false;
   const at = Date.parse(String(d.wrongProductionAutoClearedAt));
@@ -1584,4 +1600,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, _setShowsCacheForTest };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, _setShowsCacheForTest };

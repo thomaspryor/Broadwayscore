@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
@@ -133,6 +133,7 @@ function run() {
           flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
           if (!DRY_RUN) {
             data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
             data.wrongProductionReason = 'dateless-revival';
             data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
             const r = safeWriteReview(filePath, data);
@@ -198,6 +199,7 @@ function run() {
 
       if (!DRY_RUN) {
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = note;
         const result = safeWriteReview(filePath, data);
         if (result.lockedSkipped) lockedSkipCount++;

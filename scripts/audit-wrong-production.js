@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const FIX_MODE = process.argv.includes('--fix');
 const SHOW_FILTER = process.argv.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -558,6 +559,7 @@ for (const [showId, showFindings] of Object.entries(byShow).sort((a, b) => a[0].
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Auto-flagged by audit: ${f.findings.map(ff => ff.type + ': ' + ff.detail).join('; ')}`;
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         fixCount++;
