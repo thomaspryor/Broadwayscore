@@ -632,9 +632,12 @@ async function createCard(args) {
 // close hostage.
 // Clamped, not trusted: an unset/typo'd/enormous env value would silently turn
 // the promised bound into an unbounded wait on the one code path a person is
-// synchronously blocked on (Codex ship-check P0). Worst case per close is
-// roughly one checkout (git calls are separately time-boxed at 120s each) plus
-// 2 x this.
+// synchronously blocked on (Codex ship-check P0). The honest bound, stated
+// exactly (Codex second pass caught the first version overstating it): one
+// checkout, whose git calls are individually time-boxed at 120s, plus TWO runs
+// of the command at this timeout — runVerify retries once before believing a
+// failure. Default 90s => ~3 min of command time worst case; the 300s ceiling
+// => 10 min, which is why the ceiling is the ceiling and not the default.
 const CLOSE_VERIFY_TIMEOUT_MS = (() => {
   const n = Number(process.env.CLOSE_VERIFY_TIMEOUT_MS);
   return Number.isFinite(n) && n > 0 ? Math.min(Math.max(n, 10000), 300000) : 90000;

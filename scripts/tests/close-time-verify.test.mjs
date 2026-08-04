@@ -190,9 +190,13 @@ test('runVerify returns pass/fail/unverifiable against real commands', () => {
     // must not be refused because someone wrote prose in Acceptance criteria.
     assert.equal(runVerify(dir, 'rm -rf /', { attempts: 1 }).status, 'unverifiable');
     assert.equal(runVerify(dir, '', { attempts: 1 }).status, 'unverifiable');
-    // A command that never STARTS (missing test file is a run failure, but a
-    // missing BINARY is a spawn failure) must also be unverifiable — reading a
-    // spawn error as FAIL would refuse a card over a typo (ship-check finding).
+    // A command that never STARTS must also be unverifiable — reading a spawn
+    // error as FAIL would refuse a card over a broken environment (ship-check
+    // finding). Provoked here with an unusable cwd, which is a spawn-level
+    // failure (status null + errno code), the same shape as a missing binary;
+    // isSafeCheckCommand only admits node/npx/test, so a missing binary cannot
+    // be expressed as a card command at all (Codex second pass: the old
+    // comment claimed this test used a missing binary — it never did).
     const spawnFail = runVerify('/definitely/not/a/directory-ctv', 'node --test scripts/tests/ctv-green.test.mjs', { attempts: 1 });
     assert.equal(spawnFail.status, 'unverifiable', `spawn failure must fail open, got ${spawnFail.status}`);
     assert.match(String(spawnFail.detail), /could not be started/);
