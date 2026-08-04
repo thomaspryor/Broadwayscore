@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T15:54:38.623Z",
+  "timestamp": "2026-08-04T17:04:09.453Z",
   "stats": {
-    "totalReviews": 41573,
-    "alreadyFlagged": 18145,
-    "dateGuardCatches": 112,
+    "totalReviews": 41576,
+    "alreadyFlagged": 18108,
+    "dateGuardCatches": 116,
     "directorMismatch": 944,
-    "tvFilmSignals": 1147,
-    "londonSignals": 810,
+    "tvFilmSignals": 1150,
+    "londonSignals": 813,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3497
+    "noPublishDate": 3505
   },
   "findings": [
     {
@@ -2937,6 +2937,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "score": null,
+      "publishDate": "2026-06-07",
+      "url": "https://www.timeout.com/london/kids/brainiac-live",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 49d before show (2026-06-07 vs 2026-07-26)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -11790,6 +11809,19 @@
     },
     {
       "showId": "hungry-women-off-broadway-2026",
+      "file": "iloveny--unknown.json",
+      "publishDate": "2026-07-07",
+      "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
       "file": "talkinbroadway--howard-miller.json",
       "score": 76,
       "publishDate": "2026-07-25",
@@ -19264,6 +19296,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/pride-national-theatre-review-full-musical-aims-heart",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -33460,6 +33505,19 @@
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-06-07",
+      "url": "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-06-07 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "dinosaur-world-live-off-west-end-2026",
       "file": "westendtheatre--west-end-theatre.json",
       "publishDate": null,
       "url": "https://www.westendtheatre.com/56719/shows/dinosaur-world-live/",
@@ -36222,6 +36280,19 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2026-08-02",
+      "url": "https://loureviews.blog/2026/08/02/theatre-review-inter-alia-nt-at-home/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
       "publishDate": null,
@@ -38599,6 +38670,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "publishDate": null,
+      "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -43939,6 +44023,19 @@
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-yorkshire-and-north-east.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 42d before show (2026-06-10 vs 2026-07-22)"
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "file": "westendtheatre--west-end-theatre.json",
       "publishDate": "2026-07-01",
       "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
@@ -45444,6 +45541,19 @@
       ]
     },
     {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "publishDate": null,
+      "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-snow-geese-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 80,
@@ -45678,6 +45788,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-06-07",
+      "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 41d before show (2026-06-07 vs 2026-07-18)"
         }
       ]
     },
