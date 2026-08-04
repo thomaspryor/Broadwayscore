@@ -283,13 +283,13 @@ function markCardDone(pageId) {
       '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
     return true;
   } catch (err) {
-    // The close-time trunk gate (task #1003) refused this ONE card because a
-    // file it owns is failing on main. That must not abort the whole sweep —
-    // every other completed task still deserves its card closed (ship-check
-    // finding). Any other failure still propagates.
-    const { CLOSE_REFUSED_EXIT_CODE } = require('./lib/trunk-close-gate.js');
+    // The close-time acceptance verify (task #1003) refused this ONE card
+    // because its own acceptance command fails on origin/main. That must not
+    // abort the whole sweep — every other completed task still deserves its
+    // card closed (ship-check finding). Any other failure still propagates.
+    const { CLOSE_REFUSED_EXIT_CODE } = require('./lib/close-time-verify.js');
     if (err && err.status === CLOSE_REFUSED_EXIT_CODE) {
-      console.error(`[sync] card ${pageId} left open: trunk close gate refused it (a file it owns is failing on main)`);
+      console.error(`[sync] card ${pageId} left open: close-time verify refused it (its own acceptance command fails on origin/main)`);
       return false;
     }
     throw err;
@@ -390,7 +390,7 @@ function cmdPush(args) {
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
     if (!dry && done.length) writeMap(dir, map);
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by the trunk close gate (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
     for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);

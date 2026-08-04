@@ -92,6 +92,26 @@ test('registry covers exactly the folded digests (opening digest is standalone a
   assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'coverageVerdict', 'dailyDigest', 'health', 'providerSpend', 'redditDigest', 'trunk']);
 });
 
+// The half-wired case the #1003 pre-mortem named: a SNAPSHOTS row lands, the
+// renderer mapping never does, and the line silently never appears in any
+// email — a producer running nightly for nobody. Adding a digest is TWO edits
+// (registry row + renderer), and this is the assertion that says so.
+test('every SNAPSHOTS entry has a matching renderer in send-morning-digest.js', () => {
+  const sender = fs.readFileSync(new URL('../send-morning-digest.js', import.meta.url), 'utf8');
+  const missing = SNAPSHOTS
+    .filter((s) => !s.bannerOnly)
+    .map((s) => s.key)
+    .filter((key) => !new RegExp(`sections\\.${key}\\b`).test(sender));
+  assert.deepEqual(missing, [], `SNAPSHOTS keys with no renderer: ${missing.join(', ')}`);
+  // bannerOnly is not a dumping ground: a key marked quiet that DOES have a
+  // renderer is a stale flag, and a stale flag would hide the next real gap.
+  const contradictory = SNAPSHOTS
+    .filter((s) => s.bannerOnly)
+    .map((s) => s.key)
+    .filter((key) => new RegExp(`sections\\.${key}\\b`).test(sender));
+  assert.deepEqual(contradictory, [], `bannerOnly keys that are actually rendered: ${contradictory.join(', ')}`);
+});
+
 // The contract the plan review flagged as a P0: the monitor's classifier and
 // the sender's subject builder must never drift apart, or the one-email-per-
 // day guard silently stops guarding.
