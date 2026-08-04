@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T11:58:17.496Z",
+  "timestamp": "2026-08-04T12:45:52.662Z",
   "stats": {
     "totalReviews": 41564,
-    "alreadyFlagged": 18146,
+    "alreadyFlagged": 18144,
     "dateGuardCatches": 111,
     "directorMismatch": 944,
     "tvFilmSignals": 1147,
     "londonSignals": 810,
     "offBroadwaySignals": 480,
-    "yearMismatch": 87,
-    "noPublishDate": 3493
+    "yearMismatch": 88,
+    "noPublishDate": 3494
   },
   "findings": [
     {
@@ -15604,6 +15604,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "amny--unknown.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.amny.com/news/mamma-mia-here-we-go-again/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2001 (3x) more than 2025 (1x). 2001 matches production: mamma-mia-2001"
         }
       ]
     },
