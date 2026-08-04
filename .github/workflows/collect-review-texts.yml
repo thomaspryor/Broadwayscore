@@ -25,6 +25,11 @@ on:
     # WE/OB collection moved to collect-we-ob-reviews.yml (separate concurrency group)
   workflow_dispatch:
     inputs:
+      opening_night:
+        description: 'This run is part of the opening-night chain — exempt from the Bright Data daily breaker (Scraping cost v3)'
+        required: false
+        type: boolean
+        default: false
       batch_size:
         description: 'Number of reviews to process per batch'
         required: false
@@ -113,6 +118,15 @@ on:
 ## PARALLEL RUNS: Max 5 simultaneous runs recommended.
 ## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
 ## Launching >5 runs will cause Browserbase 429 rate limits.
+
+env:
+  # Opening-night provenance for the Bright Data daily breaker (Scraping cost
+  # v3 S2, ship-check finding). This workflow is dispatched BOTH by bulk crons
+  # and by the opening-night chain; by the time the chain reaches here,
+  # GITHUB_WORKFLOW no longer says "Opening Night", so the breaker's
+  # workflow-name exemption has already been lost. The explicit flag is what
+  # survives a dispatch hop — see scripts/lib/brightdata-caps.js isExemptCaller.
+  BD_OPENING_NIGHT: ${{ inputs.opening_night && '1' || '' }}
 
 jobs:
   # Sequential single-job mode (default)

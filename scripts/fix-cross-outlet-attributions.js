@@ -61,8 +61,8 @@ const MANIFEST = [
     note: 'Byline confirmed on sfchronicle.com article body.' },
   { file: 'a-time-to-kill-2013/abc-news--mark-kennedy.json', action: 'verify',
     note: 'AP wire "wireStory" URL; AP theater critic Mark Kennedy, confirmed via sibling Washington Times AP byline.' },
-  { file: 'an-american-in-paris-2015/broadwayworld--roy-berko.json', action: 'verify',
-    note: 'Roy Berko is a real Cleveland-based BWW regional critic; already wrongShow:true (Cleveland tour, excluded from scoring).' },
+  { file: 'an-american-in-paris-2015/broadwayworld--roy-berko.json', action: 'flag',
+    note: 'Roy Berko is a real Cleveland-based BWW critic in general, but search only turned up his 2017 PlayhouseSquare (touring) review, not a 2015 Broadway-specific piece — could not confirm this specific file. Already wrongShow:true (excluded from scoring either way).' },
   { file: 'beetlejuice-2022/broadwayworld--roy-berko.json', action: 'verify',
     note: 'Byline content confirmed via search (Cleveland Connor Palace review); already wrongProduction:true (tour, excluded).' },
   { file: 'beetlejuice-2022/san-francisco-chronicle--lily-janiak.json', action: 'verify',
@@ -95,8 +95,8 @@ const MANIFEST = [
   { file: 'in-the-heights-2008/washpost--nelson-pressley.json', action: 'rename',
     criticName: 'Naveen Kumar',
     note: 'Nelson Pressley left the Post in 2019 and could not have written this Feb 2025 review. Real byline is Naveen Kumar (confirmed via search).' },
-  { file: 'kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json', action: 'verify',
-    note: 'Already wrongProduction:true; Roy Berko pattern consistent with other confirmed BWW-regional rows.' },
+  { file: 'kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json', action: 'flag',
+    note: 'Stored URL is a royberkinfo.blogspot.com search-results page, not an article; search found no Roy Berko review of this 2026 revival. Already wrongProduction:true (excluded from scoring either way).' },
   { file: 'life-of-pi-2023/broadwayworld--roy-berko.json', action: 'verify',
     note: 'Byline "Roy Berko" confirmed present on the stored broadwayworld.com/cleveland URL; already wrongProduction:true.' },
   { file: 'macbeth-off-broadway-2026/timeout--naveen-kumar.json', action: 'rename',
@@ -113,7 +113,7 @@ const MANIFEST = [
   { file: 'parade-2023/broadwayworld--roy-berko.json', action: 'verify',
     note: 'Byline "Roy Berko" confirmed present on the stored broadwayworld.com/cleveland URL; already wrongProduction:true.' },
   { file: 'patriots-2024/dtli--frank-scheck.json', action: 'flag',
-    note: 'Stored URL is a didtheylikeit.com wp-admin post-editor link, not a public page — unverifiable and outletId "dtli" is the aggregator itself, not a real outlet. Not currently excluded (assignedScore 81 live).' },
+    note: 'Stored URL is a didtheylikeit.com wp-admin post-editor link, not a public page — unverifiable and outletId "dtli" is the aggregator itself, not a real outlet. Frank Scheck is a real critic and DID review Patriots (confirmed via search — for New York Stage Review, nystagereview.com), but with no stored URL/fullText there is no way to confirm this specific file is that piece rather than a different mismatch. Was live-scoring (assignedScore 81) before this flag.' },
   { file: 'pretty-woman-the-musical-2018/broadwayworld--roy-berko.json', action: 'rename',
     criticName: 'Jay Pateakos',
     note: 'WebFetch confirmed the BWW Rhode Island byline is Jay Pateakos ("BWW Rhode Island since fall 2021"), not Roy Berko. Already wrongProduction:true.' },
@@ -132,8 +132,9 @@ const MANIFEST = [
     note: 'No stored URL; could not corroborate William Wolf as the author. Not currently excluded — not live-scored (no assignedScore) so low impact.' },
   { file: 'the-humans-2016/whatsonstage--scott-mitchell.json', action: 'flag',
     note: 'Search found no Scott Mitchell byline for this review; stored URL (whatsonoffbroadway.com) doesn\'t match his registered home (reviewsoffbroadway.com). Already wrongProduction:true.' },
-  { file: 'the-iceman-cometh-2018/dailybeast--william-wolf.json', action: 'flag',
-    note: 'The Daily Beast Iceman Cometh review was by Tim Teeman, not William Wolf. No stored URL for this file; not live-scored.' },
+  { file: 'the-iceman-cometh-2018/dailybeast--william-wolf.json', action: 'rename',
+    criticName: 'Tim Teeman',
+    note: 'The Daily Beast Iceman Cometh review was by Tim Teeman, not William Wolf (confirmed via search — his review is archived on timteeman.com, originally Daily Beast). No stored URL to attach, but the correct byline is known.' },
   { file: 'the-importance-of-being-earnest-1977/theater-news-online--matt-windman.json', action: 'flag',
     note: 'Shares the exact same URL (COMEDYOFMANNERS.cfm) as the unrelated -2011 sibling file — stale/generic placeholder URL, unverifiable. Already wrongProduction:true.' },
   { file: 'the-importance-of-being-earnest-2011/theater-news-online--matt-windman.json', action: 'flag',
@@ -143,7 +144,7 @@ const MANIFEST = [
   { file: 'the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json', action: 'verify',
     note: 'Real Mark Kennedy AP content; already wrongShow:true (cross-show URL collision with the-other-place-2013, excluded from scoring).' },
   { file: 'the-peewee-herman-show-2010/canadian-press--mark-kennedy.json', action: 'verify',
-    note: 'Canadian Press syndicates AP wire content; consistent with the confirmed Mark Kennedy AP-wire pattern (dead googlehostednews link, but plausible).' },
+    note: 'Confirmed via search: "Mark Kennedy wrote for the Associated Press on November 11, 2010, covering Paul Reubens\' Broadway debut" — matches this file\'s show/date exactly. Canadian Press syndicates AP wire content under the original byline; stored googlehostednews.com link is dead (Google retired hosted news ~2013) but the AP-wire pattern is independently confirmed by two other Mark Kennedy rows via direct page-body grep (Washington Times, Hamilton).' },
   { file: 'the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json', action: 'verify',
     note: 'Search confirmed Robert Massimi published a review of this exact show (Geeks.media, his registered home); outletId/URL point to a legit cross-post, not a different critic.' },
   { file: 'the-skin-of-our-teeth-2022/observer--tim-teeman.json', action: 'rename',
@@ -171,19 +172,27 @@ function main() {
     if (entry.action === 'verify') {
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      delete data.wrongAttribution;
+      delete data.wrongAttributionReason;
     } else if (entry.action === 'rename') {
-      data.crossOutletOriginalCritic = data.criticName;
+      if (!data.crossOutletOriginalCritic) data.crossOutletOriginalCritic = data.criticName;
       data.criticName = entry.criticName;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      delete data.wrongAttribution;
+      delete data.wrongAttributionReason;
     } else if (entry.action === 'retag') {
-      data.crossOutletOriginalOutletId = data.outletId;
+      if (!data.crossOutletOriginalOutletId) data.crossOutletOriginalOutletId = data.outletId;
       data.outletId = entry.outletId;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      delete data.wrongAttribution;
+      delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
       data.wrongAttribution = true;
       data.wrongAttributionReason = entry.note;
+      delete data.crossOutletVerified;
+      delete data.crossOutletVerifiedNote;
     }
 
     results[entry.action].push(entry.file);

@@ -23,6 +23,7 @@ const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
+const { consultBrightData } = require('./brightdata-caps');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
 // 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default ON (see scraper.js for
@@ -471,6 +472,23 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange, page = 0) {
 async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) {
   if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
+  // Daily circuit breaker + per-run budget (S2-T4). This is the single BD SERP
+  // dispatcher — both sub-paths below (serp-api and serp-unlocker) bill the
+  // SAME zone (_BD_SERP_ZONE), so one consult here covers both. Returning null
+  // is the established "provider unavailable" signal: the chain falls through
+  // to ScrapingBee, and an emptyAuthoritative:false caller still gets its
+  // fallback rather than a cached empty answer.
+  const bdVerdict = consultBrightData({ zone: _BD_SERP_ZONE });
+  if (!bdVerdict.allowed) {
+    log(`    ⏭ BD SERP skipped — ${bdVerdict.reason === 'breaker' ? 'daily circuit breaker tripped' : 'per-run BD budget exhausted'}`);
+    // First withheld call only — see the same note in scraper.js: one row per
+    // process, so a capped run can't flush real spend rows out of the ledger.
+    if (bdVerdict.firstBlock) {
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'budget_capped', purpose: 'budget_capped' });
+    }
+    return null;
+  }
+
   const fmtD = d => d.toISOString().split('T')[0];
   const dateQuery = dateRange ? ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}` : '';
   const fullQuery = query + dateQuery;
@@ -478,6 +496,17 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   // Try synchronous SERP API first (fastest, returns structured JSON directly)
   const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page);
   if (syncResult !== null) return syncResult;
+
+  // Second consult before the async fallback (ship-check finding). These two
+  // sub-paths are SEPARATE billed requests, so one consult per _serpViaBrightData
+  // call would let a budget of N permit up to 2N billed requests. Consulting
+  // again here keeps the counter honest — and lets the budget stop the retry
+  // even when the first attempt was admitted.
+  const retryVerdict = consultBrightData({ zone: _BD_SERP_ZONE });
+  if (!retryVerdict.allowed) {
+    log('    ⏭ BD SERP async fallback skipped — Bright Data cap reached');
+    return null;
+  }
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
   return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page);
@@ -1499,4 +1528,8 @@ module.exports = {
   validateUrlDomain,
   getTryoutRejectionStats,
   resetTryoutRejectionStats,
+  // Exported for tests only (S2-T4): lets the cap check at the BD SERP
+  // dispatcher be exercised directly, instead of inferring it from a full
+  // discoverCorrectUrl() run that would spend real SD/SB/BD calls.
+  _serpViaBrightData,
 };
