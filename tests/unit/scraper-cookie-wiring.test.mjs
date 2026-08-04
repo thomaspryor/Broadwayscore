@@ -45,6 +45,15 @@ const origRequest = https.request;
 const origDispatcher = getGlobalDispatcher();
 
 let capturedGets = [];           // https.get stub (SB path)
+// The SB *scrape* GETs only. Sprint 1 of the scraping-cost work (commit
+// 6625731b034) made fetchWithScrapingBee fire checkScrapingBeeCredits() as a
+// fire-and-forget proactive exhaustion check, which issues its own https.get to
+// .../api/v1/usage. These assertions were written before that existed and
+// counted "exactly one GET", so they broke on a behavior change that is
+// correct. Filter to the scrape endpoint instead of counting every GET —
+// counting raw dispatches made this test brittle to any new side-channel call.
+const scrapeGets = () => capturedGets.filter((g) => !/\/api\/v1\/usage/.test(g.url));
+
 let capturedRequests = [];        // https.request stub (BD path)
 let capturedUndiciRequests = []; // undici/fetch MockAgent (plain path)
 let mockAgent = null;
@@ -182,7 +191,7 @@ describe('scraper cookie wiring', () => {
       const result = await scraper.fetchWithCookiesPlain('https://example.com/any');
       assert.equal(result, null);
       // Should not have dispatched any request (neither https.get nor undici)
-      assert.equal(capturedGets.length, 0);
+      assert.equal(scrapeGets().length, 0);
       assert.equal(capturedUndiciRequests.length, 0);
     });
 
@@ -243,8 +252,8 @@ describe('scraper cookie wiring', () => {
 
       await scraper.fetchWithScrapingBee('https://www.wsj.com/articles/proof-review');
 
-      assert.equal(capturedGets.length, 1);
-      const sbUrl = capturedGets[0].url;
+      assert.equal(scrapeGets().length, 1);
+      const sbUrl = scrapeGets()[0].url;
       assert.ok(/[?&]cookies=/.test(sbUrl), `SB URL should include cookies param (got: ${sbUrl})`);
       // cookie header value is URL-encoded in the param
       const match = sbUrl.match(/[?&]cookies=([^&]+)/);
@@ -258,8 +267,8 @@ describe('scraper cookie wiring', () => {
 
       await scraper.fetchWithScrapingBee('https://example.com/any');
 
-      assert.equal(capturedGets.length, 1);
-      const sbUrl = capturedGets[0].url;
+      assert.equal(scrapeGets().length, 1);
+      const sbUrl = scrapeGets()[0].url;
       assert.equal(/[?&]cookies=/.test(sbUrl), false, 'SB URL should not include cookies param');
     });
   });

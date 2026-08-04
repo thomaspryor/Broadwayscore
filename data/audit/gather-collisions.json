@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-07-29T21:19:34.197Z",
-    "showId": "tender-off-west-end-2026",
-    "newFile": "artsdesk--aleks-sierz.json",
-    "ok": false,
-    "file": "artsdesk--unknown.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://theartsdesk.com/theatre/tender-bush-theatre-review-haunting-blood-relations",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "May 1st, 2026",
-      "incomingUrl": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-07-29T21:19:34.964Z",
     "showId": "tender-off-west-end-2026",
     "newFile": "times-uk--unknown.json",
@@ -9469,6 +9450,21 @@
       "existingPublishDate": "2026-08-01",
       "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-oscar-wilde-the-importance-of-being-earnest-vaudeville-theatre-london-6q2829fjm",
       "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-08-04T03:23:03.337Z",
+    "showId": "hadestown-2019",
+    "newFile": "nytimes--unknown.json",
+    "ok": false,
+    "file": "nytimes--ben-brantley.json",
+    "reason": "publish-date-gap-exceeds-365-days",
+    "detail": {
+      "existingPublishDate": "2019-04-17T20:11:26-04:00",
+      "incomingPublishDate": "2026-08-03",
+      "diffDays": 2664,
+      "existingUrl": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html?smtyp=cur&smid=tw-nytimesarts",
+      "incomingUrl": "https://www.nytimes.com/2026/08/02/arts/hadestown-geno-segers-transgender-departs.html"
     }
   }
 ]
