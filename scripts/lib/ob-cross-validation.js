@@ -111,20 +111,33 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
 const CRITIC_LISTING_MAX_STALENESS_DAYS = 400;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+// Source keys this gate is willing to confirm. Deliberately an ALLOWLIST, not
+// "anything with a title/venue/URL/dates" — this gate skips the second-source
+// corroboration isCandidateConfirmed relies on, so it MUST NOT be reachable
+// for other candidate classes (venue-page:*, bww-roundup, ...). Without this,
+// a venue-page-scrape bug that mints a phantom title at a real venue (the
+// "Spring Gala 2026" incident this file's header describes) would sail
+// through on a real venue + a real-looking discoveredAt (ship-check
+// adversarial review finding, task #995).
+const CRITIC_LISTING_SOURCES = new Set(['nyt-theater']);
+
 /**
  * @param {Object} candidate - the aggregator-candidate-extract.js shape:
- *   { title, venue, sourceUrl, articlePublishedAt, discoveredAt, ... }
+ *   { title, venue, source, sourceUrl, articlePublishedAt, discoveredAt, ... }
  * @param {Object} options
  * @param {(venue: string) => boolean} [options.isKnownVenue] - injectable
  *   canonical-venue check, defaults to the real Off-Broadway venue list.
  *   Tests use this to simulate a normal "venue not on the list" rejection.
+ *   Wrapped in try/catch — a throwing check fails CLOSED (not confirmed),
+ *   never crashes the caller's promotion loop.
  * @param {() => boolean} [options.venueDirectoryAvailable] - injectable
  *   liveness check for the canonical venue directory this gate depends on.
  *   Defaults to "the real, committed list loaded". Tests set this to `false`
  *   to exercise the "required source is unavailable" refusal path — distinct
  *   from an ordinary "venue not found" rejection: the directory itself
  *   couldn't be consulted, so this gate REFUSES to confirm rather than
- *   guessing either way (fetched-zero-results vs fetch-failed).
+ *   guessing either way (fetched-zero-results vs fetch-failed). Also wrapped
+ *   in try/catch, fails closed.
  * @returns {{ confirmed: boolean, source: string|null, reason: string }}
  */
 function decideCriticListingPromotion(candidate, options = {}) {
@@ -136,6 +149,9 @@ function decideCriticListingPromotion(candidate, options = {}) {
   if (!candidate || !candidate.title || !normalizeTitle(candidate.title)) {
     return { confirmed: false, source: null, reason: 'candidate missing title' };
   }
+  if (!CRITIC_LISTING_SOURCES.has(candidate.source)) {
+    return { confirmed: false, source: null, reason: `source "${candidate.source}" is not a critic-listing source — this gate only confirms ${[...CRITIC_LISTING_SOURCES].join(', ')}` };
+  }
   if (!candidate.sourceUrl) {
     return { confirmed: false, source: null, reason: 'no persisted source URL — nothing to audit against later' };
   }
@@ -146,14 +162,19 @@ function decideCriticListingPromotion(candidate, options = {}) {
   // "Required source unavailable" — the canonical venue directory itself
   // couldn't be consulted (fetch-failed class). REFUSE to confirm rather
   // than treat an outage as either a pass or a normal not-found reject.
-  if (!venueDirectoryAvailable()) {
+  // A throwing check is treated the same way — fail closed, never crash.
+  let directoryAvailable;
+  try { directoryAvailable = venueDirectoryAvailable(); } catch { directoryAvailable = false; }
+  if (!directoryAvailable) {
     return {
       confirmed: false, source: null,
       reason: 'canonical Off-Broadway venue directory unavailable — refusing to confirm (not a venue rejection)',
     };
   }
   // Directory was consulted fine; venue just isn't on it (fetched-zero-results).
-  if (!isKnownVenue(candidate.venue)) {
+  let venueKnown;
+  try { venueKnown = isKnownVenue(candidate.venue); } catch { venueKnown = false; }
+  if (!venueKnown) {
     return { confirmed: false, source: null, reason: `venue "${candidate.venue}" not in canonical Off-Broadway venue list` };
   }
 
