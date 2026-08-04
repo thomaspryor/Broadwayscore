@@ -98,6 +98,13 @@ function main() {
     if (entry.action === 'verify') {
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      // wrongAttribution/wrongAttributionReason are PROTECTED_FIELDS
+      // (review-write-guard.js) whose clear is only honored with this
+      // breadcrumb — a plain delete here is silently reverted by
+      // safeWriteReview's preserve loop when a pre-existing wrongAttribution:true
+      // is on disk (thestage--chris-jones.json had one from a prior sweep;
+      // ship-check adversarial finding, task #1008).
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'rename') {
@@ -105,6 +112,7 @@ function main() {
       data.criticName = entry.criticName;
       data.crossOutletVerified = true;
       data.crossOutletVerifiedNote = entry.note;
+      data.wrongArticleManualClear = true;
       delete data.wrongAttribution;
       delete data.wrongAttributionReason;
     } else if (entry.action === 'flag') {
