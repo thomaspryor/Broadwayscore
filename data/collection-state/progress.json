@@ -16,7 +16,12 @@
     "allegra-west-end-2026/londongrip--julia-pascal.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "the-vessel-off-broadway-2026/talkinbroadway--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -151,7 +156,12 @@
     "pride-west-end-2026/people--unknown.json",
     "pride-west-end-2026/seattle-times--misha-berson.json",
     "pride-west-end-2026/talkinbroadway--unknown.json",
-    "pride-west-end-2026/times-uk--lucy-sweet.json"
+    "pride-west-end-2026/times-uk--lucy-sweet.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -162,7 +172,9 @@
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
       "allegra-west-end-2026/londongrip--julia-pascal.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -177,7 +189,10 @@
     "brightdata": [
       "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
-      "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json"
+      "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+      "the-vessel-off-broadway-2026/talkinbroadway--unknown.json",
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
     ],
     "archiveToday": [
       "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json",
@@ -189,6 +204,29 @@
     ]
   },
   "startTime": "2026-08-04T10:45:51.620Z",
-  "lastProcessed": "pride-west-end-2026/times-uk--lucy-sweet.json",
-  "log": []
+  "lastProcessed": "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+  "log": [
+    {
+      "t": "2026-08-04T11:58:21.017Z",
+      "event": "bb-session",
+      "session": "cac38793",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T11:58:21.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T11:58:36.916Z",
+      "event": "bb-session",
+      "session": "c43fadcc",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-04T11:58:37.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
