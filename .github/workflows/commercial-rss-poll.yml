@@ -108,6 +108,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/check-bd-blacklist.js
 
+      - name: Bright Data daily circuit-breaker check
+        # Scraping cost v3 S2-T2 (card 3b1637c5). Asks BD's billing API how many
+        # requests each zone billed today and writes/clears
+        # data/audit/bd-circuit-breaker.json, which scripts/lib/brightdata-caps.js
+        # consults inside the two BD chokepoints. Hosted here for the same reason
+        # as the blacklist step above: this is the hourly cron that already
+        # carries the BD token, and the plan forbids adding a new cron.
+        # Must run BEFORE the commit step so the state file (and any digest-queue
+        # alert) reaches main within the hour — a breaker that never lands on
+        # main is a breaker no other workflow can see.
+        # continue-on-error: a billing-API blip must not red this CRITICAL data
+        # cron. The script already fails open on unknown billing, so a skipped
+        # run means "no new decision", never "cap lifted".
+        # hygiene-run-budget-ok: 2 bounded billing API reads (one per zone), each
+        # with an AbortSignal timeout — no per-item fetch loop to budget.
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BRIGHTDATA_SERP_ZONE: ${{ secrets.BRIGHTDATA_SERP_ZONE }}
+        run: node scripts/check-bd-breaker.js
+
       - name: Commit data changes
         if: always() && inputs.dry_run != true
         # Task #574: commits commercial-pending-review.json (union-merged
@@ -120,7 +143,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "data: RSS poller — recoupment scan
+            git commit -m "data: hourly poll — recoupment scan + BD breaker state
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             bash scripts/lib/push-with-retry.sh

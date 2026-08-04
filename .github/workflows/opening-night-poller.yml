@@ -438,6 +438,9 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          # Explicit opening-night marker for the BD breaker — this step runs a
+          # general-purpose collector that must NOT be exempt for bulk runs.
+          BD_OPENING_NIGHT: '1'
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
         timeout-minutes: 10

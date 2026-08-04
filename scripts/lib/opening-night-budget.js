@@ -10,6 +10,7 @@
  *
  * Resources:
  *   scrapingbee   credits   live remaining via SB usage API
+ *   brightdata    requests  live spent-today via BD zone/cost billing API
  *   browserbase   sessions  cap-based (no public per-day usage endpoint)
  *   anthropic     dollars   cap-based (no live spend API)
  *   openai        dollars   cap-based (no live spend API)
@@ -24,6 +25,15 @@ const https = require('https');
 // Per-show resource consumption defaults. See memory/opening-night-budget-tuning.md.
 const DEFAULT_PER_SHOW = Object.freeze({
   scrapingbee: 50000,
+  // Bright Data requests per show (Scraping cost v3 S2-T7). ~250 is the
+  // observed poller cost of one opening night: the 2026-08-02 ledger attributed
+  // 554 unlocker calls to a half-day covering two shows, plus SERP. This is the
+  // opening-night pool ONLY — bulk flows have their own per-run budget and are
+  // subject to the daily circuit breaker, from which opening night is exempt
+  // (see scripts/lib/brightdata-caps.js). A shared pool was explicitly rejected
+  // in plan review: bulk traffic must never be able to drain what the poller
+  // needs on the one night it matters.
+  brightdata: 250,
   browserbase: 5,
   anthropic: 0.40,
   openai: 0.30,
@@ -35,6 +45,11 @@ const DEFAULT_PER_SHOW = Object.freeze({
 // upper bound when no live remaining is available.
 const DEFAULT_CAPS = Object.freeze({
   scrapingbee: { totalCap: 5350000, softFloorPct: 0.5 }, // soft floor used as informational threshold
+  // Opening night's own daily Bright Data allowance, independent of the bulk
+  // ceiling in brightdata-caps.js (3,500/zone). 3,000 covers ~12 shows on the
+  // busiest observed night with room to spare; exceeding it means something is
+  // looping, not that a night is unusually large.
+  brightdata: { dailyCap: 3000 },
   browserbase: { dailyCap: 30, hardCap: 200 },
   anthropic: { dailyDollarCap: 100 }, // raised 50→100 (owner 2026-07-22: $60/night autonomous loop must pass checkSharedDailyCap; sustained spend bounded by the loop's weeklyUSD, not this)
   openai: { dailyDollarCap: 30 },
@@ -58,6 +73,11 @@ function estimateBudget(numShows, perShow = DEFAULT_PER_SHOW, caps = DEFAULT_CAP
       perShow: perShow.scrapingbee,
       total: numShows * perShow.scrapingbee,
       threshold: Math.round(caps.scrapingbee.softFloorPct * caps.scrapingbee.totalCap),
+    },
+    brightdata: {
+      perShow: perShow.brightdata,
+      total: numShows * perShow.brightdata,
+      threshold: caps.brightdata.dailyCap,
     },
     browserbase: {
       perShow: perShow.browserbase,
@@ -132,6 +152,38 @@ async function fetchScrapingBeeRemaining() {
   };
 }
 
+/**
+ * Bright Data requests still available to opening night today (S2-T7).
+ *
+ * "Spent" comes from BD's own zone/cost billing API, summed across both zones —
+ * the same ground truth the circuit breaker uses, and for the same reason: our
+ * ledger under-attributes BD badly enough that a ledger-derived number would
+ * report a comfortable margin on a day we had already blown through it.
+ *
+ * Note this counts ALL BD spend today, not just opening night's. That is
+ * deliberate for a PRE-FLIGHT: the question it answers is "can tonight's shift
+ * actually get its requests through", and a bulk backfill that already spent
+ * the day's budget is exactly the situation the owner needs flagged before the
+ * shift starts, even though enforcement itself keeps the two pools separate.
+ */
+async function fetchBrightDataRemaining(caps = DEFAULT_CAPS) {
+  const token = process.env.BRIGHTDATA_TOKEN;
+  if (!token) return { remaining: null, reason: 'no-token' };
+  const { fetchBdZoneCostDay } = require('./provider-billing');
+  const day = new Date().toISOString().slice(0, 10);
+  const zones = [
+    process.env.BRIGHTDATA_ZONE || 'web_unlocker2',
+    process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1',
+  ];
+  const results = await Promise.all(zones.map((z) => fetchBdZoneCostDay(z, day, token).catch(() => null)));
+  // Any unreadable zone makes the total unknown — a partial sum would understate
+  // spend and read as "plenty left" (provider-billing.js's fail-closed rule).
+  if (results.some((r) => r == null)) return { remaining: null, reason: 'api-error' };
+  const used = results.reduce((sum, r) => sum + r.reqs, 0);
+  const max = caps.brightdata.dailyCap;
+  return { remaining: Math.max(0, max - used), used, max };
+}
+
 async function fetchGhaMinutesRemaining() {
   // The /users/{owner}/settings/billing/actions endpoint requires a PAT with
   // the `user` scope. The auto-issued GITHUB_TOKEN does NOT have that scope,
@@ -166,12 +218,14 @@ async function fetchGhaMinutesRemaining() {
  * live API return remaining: null and the cap is used as the comparison.
  */
 async function fetchLiveUsage() {
-  const [sb, gha] = await Promise.all([
+  const [sb, bd, gha] = await Promise.all([
     fetchScrapingBeeRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
+    fetchBrightDataRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
     fetchGhaMinutesRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
   ]);
   return {
     scrapingbee: sb,
+    brightdata: bd,
     browserbase: { remaining: null, reason: 'no-api' },
     anthropic: { remaining: null, reason: 'no-api' },
     openai: { remaining: null, reason: 'no-api' },
@@ -251,6 +305,7 @@ async function checkBudget(numShows, opts = {}) {
 
   const dollars = (n) => `$${n.toFixed(2)}`;
   evaluate('scrapingbee', 'credits');
+  evaluate('brightdata', 'requests');
   evaluate('browserbase', 'sessions');
   evaluate('anthropic', '', dollars);
   evaluate('openai', '', dollars);
@@ -272,6 +327,7 @@ module.exports = {
   checkBudget,
   fetchLiveUsage,
   fetchScrapingBeeRemaining,
+  fetchBrightDataRemaining,
   fetchGhaMinutesRemaining,
   DEFAULT_PER_SHOW,
   DEFAULT_CAPS,

@@ -810,6 +810,18 @@ on:
       # must be path-listed BEFORE edits land, or those edits ship with ZERO CI
       # (allow-list gate, feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/scraper.js'
+      # Scraping cost v3 S2 — Bright Data daily breaker + per-run budget, and
+      # the failed-fetch policy that keeps a budget_capped miss from retiring a
+      # live review URL. Both have colocated *.test.mjs that run in the
+      # scripts/lib glob; path-listed here so a solo edit to any of them still
+      # triggers CI (allow-list gate, feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/brightdata-caps.js'
+      - 'scripts/lib/brightdata-caps.test.mjs'
+      - 'scripts/lib/failed-fetch-policy.js'
+      - 'scripts/lib/failed-fetch-policy.test.mjs'
+      - 'scripts/check-bd-breaker.js'
+      - 'scripts/lib/opening-night-budget.js'
+      - 'scripts/test-opening-night-budget.js'
       # TodayTix runtime extraction (page CMS field is authoritative, API is
       # stale) — parser covered by tests/unit/todaytix-runtime.test.mjs.
       - 'scripts/lib/todaytix-runtime.js'

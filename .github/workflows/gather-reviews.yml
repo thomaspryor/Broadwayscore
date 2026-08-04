@@ -8,6 +8,11 @@ on:
   # Triggered by update-shows workflow when new shows are discovered
   workflow_dispatch:
     inputs:
+      opening_night:
+        description: 'This run is part of the opening-night chain — exempt from the Bright Data daily breaker (Scraping cost v3)'
+        required: false
+        type: boolean
+        default: false
       shows:
         description: 'Comma-separated list of show slugs to gather reviews for'
         required: true
@@ -42,6 +47,15 @@ permissions:
   contents: write
   issues: write
   actions: write
+
+env:
+  # Opening-night provenance for the Bright Data daily breaker (Scraping cost
+  # v3 S2, ship-check finding). This workflow is dispatched BOTH by bulk crons
+  # and by the opening-night chain; by the time the chain reaches here,
+  # GITHUB_WORKFLOW no longer says "Opening Night", so the breaker's
+  # workflow-name exemption has already been lost. The explicit flag is what
+  # survives a dispatch hop — see scripts/lib/brightdata-caps.js isExemptCaller.
+  BD_OPENING_NIGHT: ${{ inputs.opening_night && '1' || '' }}
 
 concurrency:
   group: review-texts-backfill-write
@@ -610,7 +624,8 @@ jobs:
             -f browserbase_enabled=true \
             -f retry_failed=true \
             -f archive_first=true \
-            -f chain=false
+            -f chain=false \
+            -f opening_night=${{ inputs.opening_night && 'true' || 'false' }}
 
           echo "Text collection auto-triggered successfully."
 

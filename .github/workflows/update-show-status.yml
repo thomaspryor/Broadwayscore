@@ -796,7 +796,13 @@ jobs:
                 ref: 'main',
                 inputs: {
                   shows: '${{ steps.filter.outputs.opened_shows }}',
-                  max_tier: '3'
+                  max_tier: '3',
+                  // This fires the moment a show flips to 'open' — it IS the
+                  // first opening-night discovery pass, so it must be exempt
+                  // from the Bright Data daily breaker (Scraping cost v3 S2).
+                  // Without the flag the run reaches gather-reviews.yml as
+                  // "Gather Review Data" and loses the workflow-name carve-out.
+                  opening_night: 'true'
                 }
               });
               console.log('Triggered gather-reviews workflow for opened shows (max_tier=3)');
