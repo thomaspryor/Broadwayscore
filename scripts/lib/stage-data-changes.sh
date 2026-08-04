@@ -30,12 +30,32 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Paths that must NEVER be committed to the public repo.
 EXCLUDE_PATHS=(
   ':!data/aggregator-archive/'
   ':!data/review-texts/'
   ':!data/finances/'
 )
+
+# Dual-tracked core-data files (task #989): gitignored + private-repo-owned,
+# but stray-tracked in the public repo's git index too. checkout-core-data
+# always overwrites data/$f with the private repo's checkout-time copy,
+# regardless of whether THIS workflow touches it — so a blind `git add data/`
+# can stage and commit that copy as a "change," reverting a fix that landed
+# only in the public repo (confirmed: two same-day multiAuthor:true
+# corrections to outlet-registry.json reverted by unrelated poller commits).
+# Exclude any of them that this run's snapshot-identity check shows were
+# NOT actually modified during this workflow (see core-data-public-stage-
+# exclusions.js — mirrors push-core-data's opposite-direction check).
+# Escape hatch for a script that intentionally edits one of these directly:
+# REGISTRY_CHANGE_INTENDED=1.
+if [ "${REGISTRY_CHANGE_INTENDED:-}" != "1" ] && command -v node >/dev/null 2>&1; then
+  while IFS= read -r f; do
+    [ -n "$f" ] && EXCLUDE_PATHS+=(":!$f")
+  done < <(node "$SCRIPT_DIR/core-data-public-stage-exclusions.js" 2>/dev/null || true)
+fi
 
 # Default to data/ if no arguments provided
 if [ $# -eq 0 ]; then
