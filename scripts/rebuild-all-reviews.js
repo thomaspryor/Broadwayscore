@@ -68,7 +68,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
@@ -1248,6 +1248,7 @@ const crossShowFingerprints = new Map();
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
               d.wrongProduction = true;
+              invalidateWrongProductionAutoClear(d);
               d.wrongProductionReason = 'ob-broadway-transfer';
               d.wrongProductionNote = `OB review superseded by Broadway transfer ${bw.id} (shared URL)`;
               safeWriteReview(fp, d);
@@ -1438,6 +1439,7 @@ const crossShowFingerprints = new Map();
             } else {
               console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show ${showEarliest.toISOString().split('T')[0]}${corrob.strength === 'weak' ? ` (weak corroboration: ${corrob.signals.join(', ')} — verify live date if this outlet matters)` : ''}`);
               d.wrongProduction = true;
+              invalidateWrongProductionAutoClear(d);
               d.wrongProductionNote = `Pre-opening guard: pre-window date — review dated ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
               safeWriteReview(fp, d);
               preOpenFlagged++;
@@ -1461,6 +1463,7 @@ const crossShowFingerprints = new Map();
           if (verdict.flag) {
             console.log(`  [DATELESS-REVIVAL] ${sid}/${f}: no usable date on not-yet-opened multi-production title`);
             d.wrongProduction = true;
+            invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = 'dateless-revival';
             d.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${showEarliest.toISOString().split('T')[0]})`;
             safeWriteReview(fp, d);
@@ -1717,6 +1720,7 @@ const crossShowFingerprints = new Map();
             && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
+          invalidateWrongProductionAutoClear(d);
           const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
           d.wrongProductionReason = d.wrongProductionReason || `${promotionPath}: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
@@ -1837,6 +1841,7 @@ showDirs.forEach(showId => {
           if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
+            invalidateWrongProductionAutoClear(ud);
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           } else if (ucv.wrongProduction === true && (uInPriorRun || uInTourLeg)) {
@@ -2354,6 +2359,7 @@ showDirs.forEach(showId => {
               && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
             const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
             data.wrongProductionReason = `${promotionPath}: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -2692,6 +2698,7 @@ showDirs.forEach(showId => {
                 logExclusion("skippedCrossShowUrl", showId, file, data);
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
                 data.wrongProduction = true;
+                invalidateWrongProductionAutoClear(data);
                 data.wrongProductionNote = `Same URL exists in ${other.showId} which is closer to review year ${reviewYear}`;
                 safeWriteReview(path.join(showDir, file), data);
                 return;
@@ -2708,6 +2715,7 @@ showDirs.forEach(showId => {
               logExclusion("skippedCrossShowUrl", showId, file, data);
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `Dateless show — same URL exists in dated show ${other.showId} (${other.showYear})`;
               safeWriteReview(path.join(showDir, file), data);
               return;
@@ -2800,6 +2808,7 @@ showDirs.forEach(showId => {
             if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
               // [GUARD:CROSS-MARKET-US-ON-LONDON]
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
               try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
             }
@@ -2855,6 +2864,7 @@ showDirs.forEach(showId => {
             if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
               // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
               try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
             }
@@ -2882,6 +2892,7 @@ showDirs.forEach(showId => {
             if (/[-/](broadway-review|on-broadway|broadway[-/])/.test(urlPath)
                 || /\/(chicago|national-tour)[-/]/.test(urlPath)) {
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains Broadway/tour indicator on London show`;
               try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
@@ -2893,6 +2904,7 @@ showDirs.forEach(showId => {
             // Broadway show but URL path contains West End production indicators
             if (/[-/](west-end-review|london-review|london[-/])/.test(urlPath)) {
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `URL-path cross-market: "${urlPath}" contains London indicator on Broadway show`;
               try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
               logExclusion("skippedUrlPathCrossMarket", showId, file, data);
@@ -2957,6 +2969,7 @@ showDirs.forEach(showId => {
             if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
               // [GUARD:DAYS-BEFORE-OPENED]
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
               safeWriteReview(path.join(showDir, file), data);
             }
@@ -3281,6 +3294,7 @@ showDirs.forEach(showId => {
               logExclusion("skippedUrlYearStandalone", showId, file, data);
               stats.skippedUrlYearStandalone = (stats.skippedUrlYearStandalone || 0) + 1;
               data.wrongProduction = true;
+              invalidateWrongProductionAutoClear(data);
               data.wrongProductionNote = `URL contains year ${closestYear} but show opens in ${showYear} — likely review of different production`;
               safeWriteReview(path.join(showDir, file), data);
               return;

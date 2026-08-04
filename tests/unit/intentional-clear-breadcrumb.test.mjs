@@ -202,3 +202,22 @@ test('fresh auto-clear does NOT extend to wrongProductionReason (manual-reason c
   const committed = { wrongProductionReason: 'manually flagged: tour listing page' };
   assert.equal(wouldRestore('wrongProductionReason', local, committed), true);
 });
+
+test('re-flagging invalidates the auto-clear stamp (inverted-ping-pong guard, ship-check 2026-08-04)', async () => {
+  const { invalidateWrongProductionAutoClear } =
+    require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
+  const d = {
+    wrongProductionAutoCleared: 'rebuild: registry region london outlet on London show (x)',
+    wrongProductionAutoClearedAt: new Date().toISOString().split('T')[0],
+  };
+  // fresh stamp suppresses restore…
+  assert.equal(wouldRestore('wrongProduction', d, { wrongProduction: true }), false);
+  // …until a writer re-flags and invalidates it
+  d.wrongProduction = true;
+  invalidateWrongProductionAutoClear(d);
+  assert.equal(d.wrongProductionAutoCleared, undefined);
+  assert.equal(d.wrongProductionAutoClearedAt, undefined);
+  // a later stale-checkout copy WITHOUT the flag now restores normally
+  const staleLocal = {};
+  assert.equal(wouldRestore('wrongProduction', staleLocal, { wrongProduction: true }), true);
+});
