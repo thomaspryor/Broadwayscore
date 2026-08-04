@@ -28,6 +28,13 @@
  *     regional roundups share the same headline shape, so
  *     extractShowTitleFromBwwRoundup filters them out before this source
  *     ever stamps market: 'nyc' on an item.
+ *   - BW/OB:  newyorktheater.me's monthly "New York Theater Openings" post
+ *     (WP-API search, outlet id 'nyt-theater' — same as WP_API_CONFIG in
+ *     outlet-listing-poller.js). Unlike the other three sources this is an
+ *     openings CALENDAR, not a review roundup, so it is not evidence-anchored
+ *     (EVIDENCE_SOURCES below). Origin: task #997/#987 — the NYT Aug 2026
+ *     roundup showed 9 of 15 shows missing, and 8 of those 9 were sitting in
+ *     this same outlet's own openings post the whole time.
  *
  * NEVER writes shows.json. Writes data/audit/reverse-discovery-candidates.json
  * (full current view) + data/audit/reverse-discovery-state.json (per-candidate
@@ -46,7 +53,7 @@ Usage:
 Options:
   --dry-run     Print candidates; skip state/audit writes and Discord alert
   --days=N      Recency window for source items (default 45)
-  --source=X    Limit to one source (default all)
+  --source=X    Limit to one source (wet|dtli|bww|playbill|nyt-theater|all)
   --help, -h    Show this help
 
 Exit codes: 0 = ran (candidates or not); 1 = every source fetch failed.
@@ -69,7 +76,7 @@ async function main(argv = process.argv.slice(2)) {
   const {
     extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
     extractShowTitleFromPlaybillRoundup, isPlaybillNonNycRoundup, resolveMatchedShowId,
-    isBwwNonStageTieIn, isBwwNonNycRoundup,
+    isBwwNonStageTieIn, isBwwNonNycRoundup, extractOpeningsFromNytheaterPost,
     buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
   } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
@@ -251,6 +258,55 @@ async function main(argv = process.argv.slice(2)) {
       sourcesOk++;
     } catch (e) {
       console.error(`Playbill source failed: ${e.message}`);
+    }
+  }
+
+  // ── Source 5: newyorktheater.me monthly openings post (BW/OB) ──
+  // A calendar of that month's NYC theater openings (title, venue, ticket
+  // link per show) — NOT a review roundup, so unlike WET/BWW/Playbill this
+  // is not wired into EVIDENCE_SOURCES below. Origin: the NYT Aug 2026
+  // roundup showed 9 of 15 shows missing from shows.json, and 8 of those 9
+  // were sitting in this same outlet's own openings post (task #997/#987).
+  // Same outlet id as WP_API_CONFIG['nyt-theater'] (outlet-listing-poller.js)
+  // — not a new spelling. Search is fuzzy (WP relevance ranking, not an
+  // exact-title filter), so results are filtered client-side to genuine
+  // "... New York Theater Openings ..." posts and the most recent one wins.
+  if (sourceFilter === 'all' || sourceFilter === 'nyt-theater') {
+    sourcesTried++;
+    try {
+      const posts = await fetchJSON(
+        'https://newyorktheater.me/wp-json/wp/v2/posts?search=New+York+Theater+Openings&_fields=title,link,date,content&per_page=10'
+      );
+      if (!Array.isArray(posts)) throw new Error('nyt-theater API returned non-array');
+      const openingsPost = posts
+        .filter(p => /new york theater openings/i.test((p.title && p.title.rendered) || ''))
+        .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))[0];
+      if (!openingsPost) {
+        console.log('nyt-theater: no "New York Theater Openings" post found in recent search results');
+      } else {
+        // extractOpeningsFromNytheaterPost already throws on per-entry
+        // nested-tag venue drift or on "date headers found, 0 entries
+        // parsed". This catches the remaining case it can't see itself: the
+        // <h2> date-header shape disappearing entirely (datePatternMatches
+        // would be 0, so the lib's own guard can't fire) while the post
+        // still has substantial body content.
+        const htmlLen = ((openingsPost.content && openingsPost.content.rendered) || '').length;
+        const openings = extractOpeningsFromNytheaterPost(openingsPost);
+        if (htmlLen > 500 && openings.length === 0) {
+          throw new Error('nyt-theater openings drift: post fetched with substantial content, 0 entries parsed — date-header structure likely changed');
+        }
+        let parsed = 0;
+        for (const e of openings) {
+          const ts = e.date ? Date.parse(e.date) : NaN;
+          if (!Number.isFinite(ts) || ts < cutoff) continue;
+          parsed++;
+          items.push({ title: e.title, source: 'nyt-theater', url: e.url, date: e.date, market: 'nyc' });
+        }
+        console.log(`nyt-theater: ${parsed} openings within ${days}d (of ${openings.length} total in "${openingsPost.title.rendered}")`);
+      }
+      sourcesOk++;
+    } catch (e) {
+      console.error(`nyt-theater source failed: ${e.message}`);
     }
   }
 
