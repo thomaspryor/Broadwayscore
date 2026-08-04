@@ -19,7 +19,11 @@
  *
  * Files annotated with `crossOutletVerified: true` (set after a human/agent
  * checked the page byline) are skipped — that is how triaged legit rows are
- * cleared. Exit code 1 when unreviewed suspects remain, 0 when clean, so the
+ * cleared. Files annotated with `wrongAttribution: true` (unverifiable —
+ * broken/missing source URL, byline points to neither the stored critic nor
+ * any confirmed replacement) are also skipped — review-guards.js and
+ * rebuild-all-reviews.js already exclude wrongAttribution:true from scoring.
+ * Exit code 1 when unreviewed suspects remain, 0 when clean, so the
  * count is machine-checkable:
  *   node scripts/audit-cross-outlet-attributions.js            report + exit code
  *   node scripts/audit-cross-outlet-attributions.js --json     JSON to stdout
@@ -34,7 +38,8 @@ if (hasHelpFlag(process.argv)) {
     'audit-cross-outlet-attributions.js — list files plausibly credited to another outlet\'s critic.\n\n' +
       'Usage: node scripts/audit-cross-outlet-attributions.js [--json]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
-      'Clear a verified-legit row by setting crossOutletVerified: true in the file.'
+      'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
+      'Clear an unverifiable row by setting wrongAttribution: true in the file.'
   );
   process.exit(0);
 }
@@ -87,6 +92,7 @@ for (const showId of fs.readdirSync(reviewTexts)) {
     const { criticName, outletId } = d;
     if (!criticName || !outletId || criticName === 'Unknown') continue;
     if (d.crossOutletVerified === true) continue;
+    if (d.wrongAttribution === true) continue;
     const homes = defaultOf.get(criticName) || [];
     if (!homes.length || homes.includes(outletId)) continue;
     const src = String(d.source || '');
