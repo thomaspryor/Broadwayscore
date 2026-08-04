@@ -1,25 +1,24 @@
 /**
- * trunk-close-gate.js — decides whether a Notion card may move to Done given
- * the CURRENT state of test.yml on main, and renders the standing trunk line
- * the morning digest carries (task #1003).
+ * trunk-status.js — is test.yml green on main, and what is failing?
  *
- * Why (2026-08-04): cards close when their change MERGES, never when main is
- * green. That day main was red on ~96% of runs from four independent
- * failures, two of them shipped by cards already marked Done:
- *   - #956 shipped scripts/tests/tm-gap-links.test.mjs, red on 20/20 runs
- *   - #990/#993 left scripts/audit-cross-outlet-attributions.test.mjs
- *     orphaned, tripping the "no orphan unit tests" audit
- * Three sessions "fixed test.yml" and it stayed red: each fixed the one
- * failure it happened to look at, pushed, and closed its card with no signal
- * that main was still red from the other three.
+ * Two consumers, neither of which decides anything about a card:
+ *   - scripts/produce-trunk-snapshot.js folds `gh run list` + `gh run view
+ *     --log-failed` into data/audit/trunk-status-snapshot.json.
+ *   - scripts/send-morning-digest.js renders the standing trunk line, which
+ *     becomes the email HEADLINE once trunk has been red more than 24h.
  *
- * The gate is deliberately NARROW. It refuses a close only when a file THAT
- * CARD owns (its Key Files, or its branch diff) is named in the failure
- * output currently on main. Blocking every close while trunk is red would
- * deadlock every unrelated card — which is exactly the state the repo was in
- * when this was written. Every ambiguity fails OPEN (no snapshot, stale
- * snapshot, unparseable failure, card with no owned paths): a gate that
- * cannot attribute must not block.
+ * Why the standing line (2026-08-04): main was red on ~96% of test.yml runs
+ * from four independent failures and nobody saw the aggregate — three sessions
+ * each fixed the one failure they happened to look at, pushed, and left main
+ * red. A number in the daily email is the cheapest thing that makes an
+ * aggregate visible.
+ *
+ * This file used to also decide whether a card could close, by matching the
+ * failing paths against the card's Key Files. That design was rejected in
+ * plan-review (the attribution question was mis-posed: a card is answerable
+ * for its OWN acceptance command, not for whichever file it happens to name)
+ * and now lives in scripts/lib/close-time-verify.js, which asks the ledger,
+ * not the failure log. Nothing here blocks anything.
  *
  * Pure module — the only I/O is readTrunkSnapshot's single fs read, same
  * contract as scripts/lib/digest-snapshots.js (CLAUDE.md §15: the test
@@ -245,146 +244,6 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
   return [...byPath.values()];
 }
 
-// ── card ownership ──────────────────────────────────────────────────────────
-
-/** Repo-relative ownable paths named anywhere in a blob of text (Key Files). */
-function ownedPathsFromText(text) {
-  const out = new Set();
-  for (const line of String(text || '').split('\n')) {
-    for (const p of pathsInLine(line)) out.add(p);
-  }
-  return [...out];
-}
-
-/**
- * Everything a card is answerable for: its Key Files field plus the files its
- * branch actually changed.
- */
-function collectOwnedPaths({ keyFiles = '', changedFiles = [] } = {}) {
-  const out = new Set(ownedPathsFromText(keyFiles));
-  for (const f of Array.isArray(changedFiles) ? changedFiles : []) {
-    const norm = String(f || '').trim().replace(/^\.\//, '');
-    if (norm && pathsInLine(` ${norm}`).length) out.add(norm);
-  }
-  return [...out];
-}
-
-// ── the gate ────────────────────────────────────────────────────────────────
-
-// notion-brain.js exits with this when it refuses a close. Shared, not a
-// literal in three files: automated closers (autonomous-merge.js,
-// notion-tasks-sync.js) must be able to tell "the gate said no" apart from
-// "the Notion API broke", and handle only the former gracefully.
-const CLOSE_REFUSED_EXIT_CODE = 5;
-
-// How far ahead of now a snapshot's generatedAt may sit and still be trusted.
-const FUTURE_SKEW_TOLERANCE_H = 5 / 60;
-
-const GATE_REASONS = {
-  DISABLED: 'gate-disabled',
-  NO_SNAPSHOT: 'no-trunk-snapshot',
-  STALE_SNAPSHOT: 'stale-trunk-snapshot',
-  GREEN: 'trunk-green',
-  UNATTRIBUTABLE: 'trunk-red-unattributable',
-  NO_OWNED_PATHS: 'card-owns-no-files',
-  UNRELATED: 'trunk-red-unrelated',
-  OWN_FAILURE: 'own-file-failing-on-main',
-};
-
-/**
- * @param {{trunk:object|null, keyFiles?:string, changedFiles?:string[],
- *   now?:number, maxSnapshotAgeH?:number, disabled?:boolean}} o
- * @returns {{allowed:boolean, reason:string, message:string,
- *   blocking:Array<object>, ownedPaths:string[], trunkState:string}}
- */
-function evaluateCloseGate({
-  trunk = null, keyFiles = '', changedFiles = [], now = Date.now(),
-  maxSnapshotAgeH = 2, disabled = false,
-} = {}) {
-  const ownedPaths = collectOwnedPaths({ keyFiles, changedFiles });
-  const allow = (reason, message, trunkState = trunk && trunk.state ? trunk.state : 'UNKNOWN') =>
-    ({ allowed: true, reason, message, blocking: [], ownedPaths, trunkState });
-
-  if (disabled) return allow(GATE_REASONS.DISABLED, 'trunk close gate disabled by env');
-  if (!trunk || typeof trunk !== 'object') {
-    return allow(GATE_REASONS.NO_SNAPSHOT, 'no trunk snapshot — closing without a trunk check', 'UNKNOWN');
-  }
-
-  // A snapshot may only BLOCK on a timestamp we can actually read. Missing,
-  // unparseable, or future-dated generatedAt used to be trusted forever —
-  // a RED snapshot from a producer with a broken clock could then refuse
-  // closes indefinitely (ship-check finding). Anything we can't date is
-  // treated as stale, which fails open.
-  const gen = (() => {
-    try { return new Date(trunk.generatedAt).getTime(); } catch { return NaN; }
-  })();
-  const ageH = Number.isFinite(gen) ? (now - gen) / 3600e3 : null;
-  if (ageH === null) {
-    return allow(GATE_REASONS.STALE_SNAPSHOT, 'trunk snapshot has no readable timestamp — closing without a trunk check');
-  }
-  if (ageH > maxSnapshotAgeH) {
-    return allow(GATE_REASONS.STALE_SNAPSHOT, `trunk snapshot is stale (${ageH.toFixed(1)}h old) — closing without a trunk check`);
-  }
-  // 5 minutes of tolerance covers ordinary CI-vs-Mac clock skew; beyond that
-  // the timestamp is not trustworthy, and an untrustworthy timestamp may not
-  // be the basis for BLOCKING a close (second review pass: the old -1h
-  // tolerance let a snapshot up to an hour in the future still refuse).
-  if (ageH < -FUTURE_SKEW_TOLERANCE_H) {
-    return allow(GATE_REASONS.STALE_SNAPSHOT, 'trunk snapshot is dated in the future (producer clock bug) — closing without a trunk check');
-  }
-  if (trunk.state !== 'RED') {
-    return allow(GATE_REASONS.GREEN, `trunk is ${trunk.state || 'UNKNOWN'}`);
-  }
-
-  const failing = Array.isArray(trunk.failingPaths) ? trunk.failingPaths : [];
-  if (!failing.length) {
-    return allow(
-      GATE_REASONS.UNATTRIBUTABLE,
-      'trunk is RED but no failing file could be attributed — not blocking this close'
-    );
-  }
-  if (!ownedPaths.length) {
-    return allow(
-      GATE_REASONS.NO_OWNED_PATHS,
-      'trunk is RED but this card names no files (no Key Files, no branch diff) — not blocking this close'
-    );
-  }
-
-  const owned = new Set(ownedPaths);
-  // Only a well-formed entry may block. A malformed producer row (null,
-  // non-string path) must never reach the refusal message, let alone decide
-  // it (ship-check finding).
-  const blocking = failing.filter(
-    (f) => f && typeof f === 'object' && typeof f.path === 'string' && owned.has(f.path)
-  );
-  if (!blocking.length) {
-    return allow(
-      GATE_REASONS.UNRELATED,
-      `trunk is RED (${trunk.consecutiveFailures || 0} consecutive) but none of this card's files are in the failure — closing normally`
-    );
-  }
-
-  const lines = blocking.map(
-    (b) => `  - ${b.path} — failing in "${b.job || 'unknown job'}" / "${b.step || 'unknown step'}"` +
-      (b.evidence ? `\n      ${b.evidence}` : '')
-  );
-  return {
-    allowed: false,
-    reason: GATE_REASONS.OWN_FAILURE,
-    trunkState: 'RED',
-    ownedPaths,
-    blocking,
-    message:
-      `This card cannot close: ${blocking.length} file${blocking.length === 1 ? '' : 's'} it owns ` +
-      `${blocking.length === 1 ? 'is' : 'are'} currently failing on main.\n` +
-      `${lines.join('\n')}\n` +
-      `Trunk has been red for ${trunk.consecutiveFailures || 0} consecutive test.yml run${trunk.consecutiveFailures === 1 ? '' : 's'}` +
-      `${trunk.latestFailedRunUrl ? ` (${trunk.latestFailedRunUrl})` : ''}.\n` +
-      `Fix the failure on main, or hand the card off — do not mark it Done.\n` +
-      `Unrelated trunk redness does NOT block a close; this one is yours.`,
-  };
-}
-
 // ── digest line ─────────────────────────────────────────────────────────────
 
 /**
@@ -455,8 +314,7 @@ function readTrunkSnapshot(snapshotPath = DEFAULT_SNAPSHOT_PATH) {
 }
 
 module.exports = {
-  DEFAULT_SNAPSHOT_PATH, GATE_REASONS, CLOSE_REFUSED_EXIT_CODE,
+  DEFAULT_SNAPSHOT_PATH,
   summarizeTrunkRuns, parseFailedLog, extractFailingPaths,
-  ownedPathsFromText, collectOwnedPaths, evaluateCloseGate,
   renderTrunkDigestLine, readTrunkSnapshot,
 };

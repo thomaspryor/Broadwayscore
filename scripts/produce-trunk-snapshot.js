@@ -4,7 +4,7 @@
  * is test.yml green on main right now, for how long has it been red, and
  * which FILES are named in the failures (task #1003).
  *
- * Two consumers, both in scripts/lib/trunk-close-gate.js:
+ * Consumers, both in scripts/lib/trunk-status.js:
  *   - the close-time gate in notion-brain.js (a card cannot go Done while a
  *     file IT owns is failing on main)
  *   - the standing "trunk: GREEN/RED" line in the morning digest
@@ -27,7 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { summarizeTrunkRuns, extractFailingPaths } = require('./lib/trunk-close-gate.js');
+const { summarizeTrunkRuns, extractFailingPaths } = require('./lib/trunk-status.js');
 
 const REPO = path.join(__dirname, '..');
 const SNAPSHOT_PATH = path.join(REPO, 'data', 'audit', 'trunk-status-snapshot.json');

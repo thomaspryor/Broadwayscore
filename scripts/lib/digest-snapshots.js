@@ -15,8 +15,16 @@
  * its own standalone daily email again and no longer writes a snapshot.
  *
  * Adding a digest = one row in SNAPSHOTS plus a renderer mapping in
- * send-morning-digest.js. Pure module, no I/O beyond readSnapshot's fs read
- * (CLAUDE.md §15: tests require() these functions directly).
+ * send-morning-digest.js. BOTH, always: a row with no renderer is a producer
+ * running nightly for nobody, and it fails silently — the file is fresh, the
+ * banner says nothing, and the line never appears. digest-snapshots.test.mjs
+ * asserts every row has a `sections.<key>` consumer in the sender, so the
+ * half-wired case cannot ship. A row that is deliberately banner-only (read
+ * for the "didn't update overnight" warning, never rendered as a block) must
+ * say so with bannerOnly: true.
+ *
+ * Pure module, no I/O beyond readSnapshot's fs read (CLAUDE.md §15: tests
+ * require() these functions directly).
  */
 'use strict';
 
@@ -32,10 +40,17 @@ const DEFAULT_DATA_DIR = path.join(REPO, 'data');
 // say so rather than pass off stale data as this morning's (and never
 // silently omit it: plan-review finding, a delayed snapshot used to vanish
 // without a trace).
+// bannerOnly (task #1003): read for the staleness banner, deliberately NOT
+// rendered as a block. dailyDigest/redditDigest/backlogDrain lost their blocks
+// in the Digest v3 subtraction (owner mandate 2026-08-02, which cut the "What
+// changed" section down to one sentence); their producers still run and their
+// staleness still warns. The flag exists so the renderer assertion in
+// digest-snapshots.test.mjs can tell "intentionally quiet" from "someone
+// forgot the second edit".
 const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
-  { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36 },
-  { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36 },
+  { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
+  { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
   // scripts/backlog-drain.js (task #654) — Mac-local, NOT committed (unlike
   // the three above, which are CI-produced and pulled via git): both the
   // producer and this consumer run on the same Mac via launchd, so there is
@@ -48,7 +63,7 @@ const SNAPSHOTS = [
   // 'missing' is suppressed for this entry only; 'stale'/'invalid' still
   // report — those mean the producer EXISTED and then broke, which is real
   // signal worth flagging.
-  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36, optionalIfMissing: true },
+  { key: 'backlogDrain', label: 'backlog drain', file: 'backlog-drain-metric.json', maxAgeH: 36, optionalIfMissing: true, bannerOnly: true },
   // scripts/check-provider-spend.js (Scraping Cost System v2 Sprint 0) —
   // daily billing-API spend vs owner thresholds + 7-day verification streak.
   // CI-produced in data-health-check.yml and committed, like health above.

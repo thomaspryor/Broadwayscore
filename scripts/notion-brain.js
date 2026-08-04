@@ -601,115 +601,90 @@ async function createCard(args) {
   return card;
 }
 
-// ── close-time trunk attribution gate (task #1003) ──────────────────────────
+// ── close-time acceptance verify (task #1003) ───────────────────────────────
 //
-// Cards used to close when their change MERGED, never when main was green.
-// On 2026-08-04 main was red on ~96% of test.yml runs from four independent
-// failures, two of them shipped by cards already marked Done. The gate is
-// NARROW on purpose: only a file THIS card owns (Key Files + branch diff)
-// being named in the current failure blocks the close. Blocking every close
-// while trunk is red would deadlock every unrelated card.
+// Cards used to close when their change MERGED, never when their own check
+// passed. On 2026-08-04 main was red on ~96% of test.yml runs from four
+// independent failures, two of them shipped by cards already marked Done
+// (#956's scripts/tests/tm-gap-links.test.mjs had failed 20 of 20 runs).
 //
-// Escape hatches: TRUNK_CLOSE_GATE_DISABLED=1, or --force "<reason>" (the
-// same bypass the card-context validator already honours).
+// This function sits on the ONE write point that ever flips a card to Done —
+// the interactive path and notion-tasks-sync.js markCardDone both come through
+// updateCard — because a check that lives only in a library is a check the
+// next session forgets to call.
+//
+// It asks exactly one question: does THIS card's own acceptance command — the
+// one scripts/bsc-next.js captured, validated, and recorded in
+// data/audit/dispatch-ledger.jsonl at dispatch — still pass on a fresh
+// checkout of origin/main? No git blame, no Key Files, no branch diff.
+// Unrelated trunk redness NEVER blocks a close: with ~90 cards in flight, a
+// broader rule would deadlock all of them, which is the state this repo was
+// actually in the day this was written. Everything ambiguous (no ledger entry,
+// no command, unrunnable command, timeout) warns and closes.
+//
+// Escape hatches: CLOSE_VERIFY_DISABLED=1 (TRUNK_CLOSE_GATE_DISABLED=1 is
+// still honoured — automation that already sets it must keep working), or
+// --force "<reason>", the same bypass the card-context validator honours.
 
-// Files this branch changed since it left main. Best effort — a detached
-// checkout, a shallow clone or no git at all yields [], and the gate then
-// attributes off Key Files alone.
-function branchChangedFiles() {
-  // Explicit attribution wins: an automated closer that already knows exactly
-  // which files it merged (autonomous-merge.js) passes them here, because by
-  // the time it closes the card the branch diff is EMPTY — the push moved
-  // origin/main to HEAD, so merge-base(origin/main, HEAD) === HEAD
-  // (ship-check finding: attribution silently degraded to Key Files on the
-  // single most important close path).
-  const declared = String(process.env.TRUNK_CLOSE_GATE_FILES || '')
-    .split(/[,\n]/).map((s) => s.trim()).filter(Boolean);
+// Wall clock for one close-time check. Deliberately below the nightly
+// recheck's per-card budget: a person or a sync loop is waiting on this, and a
+// check that cannot answer in two minutes must fail OPEN rather than hold a
+// close hostage.
+const CLOSE_VERIFY_TIMEOUT_MS = Number(process.env.CLOSE_VERIFY_TIMEOUT_MS || 120000);
 
-  let derived = [];
+async function enforceCloseTimeVerify(pageId, args) {
+  if (process.env.CLOSE_VERIFY_DISABLED === '1' || process.env.TRUNK_CLOSE_GATE_DISABLED === '1') return;
+
+  const bypassReason = (args.force && typeof args.force === 'string' && args.force.length >= 10)
+    ? args.force : null;
+
+  let decision;
+  let VERDICTS;
   try {
-    const { execFileSync } = require('child_process');
-    const run = (a) => execFileSync('git', a, { encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'ignore'] });
-    const base = run(['merge-base', 'origin/main', 'HEAD']).trim();
-    if (base) {
-      derived = [
-        ...run(['diff', '--name-only', base, 'HEAD']).split('\n'),
-        ...run(['diff', '--name-only', 'HEAD']).split('\n'),
-      ].map((s) => s.trim()).filter(Boolean);
-    }
-    // No HEAD^ fallback on purpose (ship-check finding): once the session has
-    // merged and pushed, the last commit on a SHARED main checkout may belong
-    // to a different session entirely — attributing it here would refuse an
-    // innocent card and tell it "this one is yours". Post-merge attribution
-    // comes from TRUNK_CLOSE_GATE_FILES (the merger knows its own file list)
-    // or from the card's Key Files, never from a guess.
-  } catch {
-    // no git, shallow clone, root commit: explicit attribution only
-  }
-  return [...new Set([...declared, ...derived])];
-}
+    const closeTimeVerify = require('./lib/close-time-verify.js');
+    VERDICTS = closeTimeVerify.VERDICTS;
+    const dispatchLedger = require('./lib/dispatch-ledger.js');
 
-// Refresh data/audit/trunk-status-snapshot.json when it's older than
-// maxAgeMin. Synchronous and time-boxed: a close should cost at most a few
-// seconds, and any failure leaves the old (or no) snapshot, which the gate
-// reads as fail-open.
-function refreshTrunkSnapshot({ maxAgeMin = 30 } = {}) {
-  try {
-    const { execFileSync } = require('child_process');
-    const path = require('path');
-    execFileSync('node', [
-      path.join(__dirname, 'produce-trunk-snapshot.js'), `--max-age-min=${maxAgeMin}`,
-    ], { encoding: 'utf8', timeout: 90000, stdio: ['ignore', 'pipe', 'pipe'] });
-  } catch (e) {
-    console.error(`⚠️  trunk snapshot refresh failed (closing without a fresh trunk check): ${String(e.message).slice(0, 140)}`);
-  }
-}
-
-async function enforceTrunkCloseGate(pageId, args) {
-  if (process.env.TRUNK_CLOSE_GATE_DISABLED === '1') return;
-  if (args.force && typeof args.force === 'string' && args.force.length >= 10) {
-    console.error(`⚠️  trunk close gate bypassed: ${args.force}`);
-    return;
-  }
-
-  let result;
-  try {
-    const { evaluateCloseGate, readTrunkSnapshot, GATE_REASONS } = require('./lib/trunk-close-gate.js');
-    refreshTrunkSnapshot();
-
-    // The card's own Key Files, plus whatever --key-files this same call is
-    // setting (a wrap-up usually writes Key Files and Done together, so the
-    // stored value alone would miss the files this session actually touched).
-    let keyFiles = typeof args['key-files'] === 'string' ? args['key-files'] : '';
-    try {
-      const existing = await notion.pages.retrieve({ page_id: pageId });
-      keyFiles += '\n' + getRichTextValue(existing.properties['Key Files']);
-    } catch { /* card unreadable → attribute off the diff alone */ }
-
-    result = evaluateCloseGate({
-      trunk: readTrunkSnapshot(),
-      keyFiles,
-      changedFiles: branchChangedFiles(),
+    const dispatch = closeTimeVerify.findCardDispatch({
+      entries: dispatchLedger.readEntries(),
+      notionId: pageId,
     });
-    if (result.allowed && result.reason !== GATE_REASONS.GREEN) {
-      console.error(`ℹ️  trunk close gate: ${result.message}`);
+
+    let verifyResult = null;
+    if (!bypassReason && dispatch.verifyCmd) {
+      console.error(`ℹ️  close-time verify: re-running \`${dispatch.verifyCmd}\` against origin/main…`);
+      const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
+      const nodePath = require('path');
+      let checkout = null;
+      try {
+        checkout = makeFreshCheckout({ repo: nodePath.join(__dirname, '..'), prefix: 'close-verify-' });
+        verifyResult = runVerify(checkout.wt, dispatch.verifyCmd, { timeoutMs: CLOSE_VERIFY_TIMEOUT_MS });
+      } finally {
+        removeCheckout(checkout);
+      }
     }
+
+    decision = closeTimeVerify.decideClose({ dispatch, verifyResult, bypassReason });
   } catch (e) {
-    // The gate's own tooling breaking must never block a close (same
+    // The check's own tooling breaking must never block a close (same
     // fail-open contract as armingWarning's validator-unavailable path).
-    console.error(`⚠️  trunk close gate skipped (${String(e.message).slice(0, 120)})`);
+    console.error(`⚠️  close-time verify skipped (${String(e.message).slice(0, 160)})`);
     return;
   }
 
-  if (!result.allowed) {
-    console.error(`\n❌ REFUSED (${result.reason}) — card not moved to Done\n`);
-    console.error(result.message);
-    console.error(
-      `\nTo close anyway, pass --force "<reason ≥10 chars>", ` +
-      `or set TRUNK_CLOSE_GATE_DISABLED=1 for automation that must not block.\n`
-    );
-    process.exit(require('./lib/trunk-close-gate.js').CLOSE_REFUSED_EXIT_CODE);
+  if (decision.allowed) {
+    if (decision.verdict === VERDICTS.PASS) console.error(`✅ close-time verify: ${decision.message}`);
+    else if (decision.warn) console.error(`⚠️  close-time verify: ${decision.message}`);
+    return;
   }
+
+  console.error(`\n❌ REFUSED (${decision.verdict}) — card not moved to Done\n`);
+  console.error(decision.message);
+  console.error(
+    `\nTo close anyway, pass --force "<reason ≥10 chars>", ` +
+    `or set CLOSE_VERIFY_DISABLED=1 for automation that must not block.\n`
+  );
+  process.exit(require('./lib/close-time-verify.js').CLOSE_REFUSED_EXIT_CODE);
 }
 
 async function updateCard(args) {
@@ -845,10 +820,10 @@ async function updateCard(args) {
     process.exit(1);
   }
 
-  // Close-time trunk attribution gate (task #1003). Runs BEFORE the write:
-  // a card that owns a file currently failing on main must not reach Done.
+  // Close-time acceptance verify (task #1003). Runs BEFORE the write: a card
+  // whose own acceptance command fails on origin/main must not reach Done.
   if (args.status === 'Done') {
-    await enforceTrunkCloseGate(pageId, args);
+    await enforceCloseTimeVerify(pageId, args);
   }
 
   const page = await notion.pages.update({
