@@ -56,6 +56,58 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 
+// Byline zone for the --include-fulltext inline-verify check. A plain
+// whole-body substring search (ship-check adversarial finding, 2026-08-04)
+// wrongly auto-cleared book-of-mormon-2011/guardian--david-cote.json: its
+// text merely CITES "David Cote is chief theatre critic of Time Out New
+// York" as an authority quote 2845 chars in, nowhere near an actual byline —
+// yet the loose match silently marked it verified-forever. Real bylines
+// cluster in two zones: a leading "By NAME" / "Review by NAME" line (most
+// outlets), or a trailing "--NAME OutletName, address" signature block
+// (confirmed pattern: lighting-sound-america). Restrict the match to those.
+const LEADING_BYLINE_CHARS = 400;
+function bylineConfirmedInFullText(criticName, fullText) {
+  const normCritic = normalizeCriticForCoverage(criticName);
+  if (!normCritic || !fullText) return false;
+  const text = String(fullText);
+  if (normalizeCriticForCoverage(text.slice(0, LEADING_BYLINE_CHARS)).includes(normCritic)) {
+    return true;
+  }
+  // Trailing/inline signature: "by NAME", "--NAME", or an em/en-dash before
+  // NAME, anywhere in the raw text. Built from the individual name tokens so
+  // punctuation/whitespace drift in scraped text (double spaces, curly
+  // apostrophes) doesn't break the match the way a literal-string search would.
+  const nameTokens = String(criticName)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  if (!nameTokens.length) return false;
+  const namePattern = nameTokens.join('[\\s.]+');
+  const signatureRe = new RegExp(`(?:\\bby\\s+|--\\s*|[\\u2013\\u2014]\\s*)${namePattern}\\b`, 'i');
+  return signatureRe.test(text);
+}
+
+// --include-fulltext tier scoping needs the show's market (NYC vs London)
+// — getTier() defaults to NYC when no showCategory is passed, which would
+// misclassify a London-tiered outlet (e.g. The Stage: NYC=2, London=1) for
+// West End shows. Load once; missing/legacy shows fall back to the NYC
+// default via getTier's own handling of an undefined showCategory.
+const showCategoryOf = new Map();
+{
+  const showsPath = path.join(process.cwd(), 'data', 'shows.json');
+  if (fs.existsSync(showsPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+      const arr = Array.isArray(raw) ? raw : raw.shows;
+      for (const s of arr || []) {
+        if (s && s.id) showCategoryOf.set(s.id, s.category);
+      }
+    } catch {
+      // best-effort — falls back to NYC default tier for every show
+    }
+  }
+}
+
 if (hasHelpFlag(process.argv)) {
   console.log(
     'audit-cross-outlet-attributions.js — list files plausibly credited to another outlet\'s critic.\n\n' +
@@ -125,10 +177,10 @@ for (const showId of fs.readdirSync(reviewTexts)) {
 
     if (INCLUDE_FULLTEXT) {
       if (!d.fullText) continue;
-      const inT1T2 = getTier(outletId) <= 2 || homes.some((h) => getTier(h) <= 2);
+      const tierOpts = { showCategory: showCategoryOf.get(showId) };
+      const inT1T2 = getTier(outletId, tierOpts) <= 2 || homes.some((h) => getTier(h, tierOpts) <= 2);
       if (!inT1T2) continue;
-      const normCritic = normalizeCriticForCoverage(criticName);
-      if (normCritic && normalizeCriticForCoverage(d.fullText).includes(normCritic)) continue;
+      if (bylineConfirmedInFullText(criticName, d.fullText)) continue;
       suspects.push({
         file: `${showId}/${file}`,
         criticName,

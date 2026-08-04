@@ -21,6 +21,19 @@
  * (auto-excluded by the scanner's --include-fulltext byline check), leaving
  * these 72.
  *
+ * ship-check adversarial finding (2026-08-04): the original byline check was
+ * a whole-body substring match, which wrongly auto-cleared
+ * book-of-mormon-2011/guardian--david-cote.json — its text merely CITES
+ * "David Cote is chief theatre critic of Time Out New York" as an authority
+ * quote, not a byline. The scanner's inline check was tightened to a
+ * leading/trailing byline zone (see bylineConfirmedInFullText in
+ * audit-cross-outlet-attributions.js), which re-surfaced 2 of the 12:
+ * book-of-mormon-2011/guardian--david-cote.json (flag, below) and
+ * noises-off-2016/broadwayworld--brooke-ashton.json (verify, below — a
+ * fictional character name incidentally matched, already wrongProduction).
+ * The other 10 were confirmed genuine leading/trailing bylines and remain
+ * correctly auto-cleared.
+ *
  * A second, genuine bug WAS found in this set: 16 files across three shows
  * (Sweat 2017, The Waverly Gallery 2018, Torch Song 2018) — all sourced via
  * playbill-verdict — carry Matt Windman's byline (his real amNY review) on
@@ -222,6 +235,13 @@ const MANIFEST = [
     note: 'Specific vulture.com URL matches the show; Naveen Kumar is a real, established Vulture contributing theater critic — the registry\'s defaultCritic recording his home as "towleroad" instead is the same registry-completeness gap behind most of this sweep\'s false positives, not a misattribution.' },
   { file: 'the-kite-runner-2022/vulture--naveen-kumar.json', action: 'verify',
     note: 'Specific vulture.com URL matches the show; same Naveen Kumar/Vulture pattern as the Leopoldstadt sibling file.' },
+
+  // --- ship-check adversarial-review findings (2026-08-04): re-surfaced by
+  // tightening the scanner's byline-zone check (see file header) ---
+  { file: 'book-of-mormon-2011/guardian--david-cote.json', action: 'flag',
+    note: 'fullText contains "David Cote is chief theatre critic of Time Out New York" as an authority citation ~2845 chars into the piece, not a byline — the Guardian article is not by David Cote. Guardian is unfetchable and WebSearch could not surface the actual byline. Was live-scoring (assignedScore 93) before this flag.' },
+  { file: 'noises-off-2016/broadwayworld--brooke-ashton.json', action: 'verify',
+    note: '"Brooke Ashton" is a fictional character in the play (mentioned deep in the review prose describing the performance), not a critic byline — the loose match was on the character name, not an author credit. Already wrongProduction:true (excluded from scoring either way).' },
   { file: 'driving-miss-daisy-2010/variety--joe-dziemianowicz.json', action: 'rename', criticName: 'Marilyn Stasio',
     note: 'WebSearch confirmed Variety\'s Oct 25, 2010 Driving Miss Daisy review byline is Marilyn Stasio (Variety\'s theater critic throughout this era), not Joe Dziemianowicz (NY Daily News).' },
   { file: 'dear-evan-hansen-2016/dailybeast--william-wolf.json', action: 'rename', criticName: 'Tim Teeman',
