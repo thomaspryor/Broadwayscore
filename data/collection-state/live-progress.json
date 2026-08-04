@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-04T13:36:39.872Z",
-  "processed": 52,
-  "failed": 258,
-  "successRate": "16.8%",
+  "updatedAt": "2026-08-04T13:38:17.329Z",
+  "processed": 56,
+  "failed": 264,
+  "successRate": "17.5%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 10,
     "archiveToday": 2,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-04T13:15:03.113Z",
@@ -36,6 +36,24 @@
       "t": "2026-08-04T13:15:21.176Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T13:36:43.598Z",
+      "event": "bb-session",
+      "session": "ed1789a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-04T13:37:36.610Z",
+      "event": "bb-session",
+      "session": "ddc1630c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-08-04T13:37:52.871Z",
+      "event": "bb-session",
+      "session": "9f386d36",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
     }
   ]
 }

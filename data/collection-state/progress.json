@@ -51,7 +51,11 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -311,7 +315,13 @@
     "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
     "music-city-off-broadway-2026/observer--unknown.json",
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
-    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json"
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -348,10 +358,18 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -384,7 +402,7 @@
     ]
   },
   "startTime": "2026-08-04T10:45:51.620Z",
-  "lastProcessed": "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+  "lastProcessed": "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-08-04T13:15:03.113Z",
@@ -407,6 +425,24 @@
       "t": "2026-08-04T13:15:21.176Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-04T13:36:43.598Z",
+      "event": "bb-session",
+      "session": "ed1789a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-08-04T13:37:36.610Z",
+      "event": "bb-session",
+      "session": "ddc1630c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-08-04T13:37:52.871Z",
+      "event": "bb-session",
+      "session": "9f386d36",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
     }
   ]
 }
