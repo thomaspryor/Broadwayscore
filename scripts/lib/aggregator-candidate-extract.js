@@ -560,6 +560,14 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
 
   // Shape matches a venue-listing-discover staging entry. The promoter recomputes
   // canonicalVenue(venue) itself, so we don't carry a (would-go-stale) copy.
+  //
+  // corroborations: other sources that also surfaced this same candidate
+  // (e.g. a critic-listing post AND a later BWW roundup for the same show).
+  // Provenance DATA on the record, not a property of a shared gate — a
+  // promotion rule can read it, but no rule REQUIRES it to be non-empty
+  // (S2, task #995: a rule whose corroborators nobody builds confirms
+  // nothing — see decideCriticListingPromotion in ob-cross-validation.js).
+  // Optional; defaults to [] so every existing caller/candidate is unaffected.
   const candidate = {
     title: fields.title,
     venue: fields.venue,
@@ -569,6 +577,7 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
     articlePublishedAt: fields.date,
     discoveredAt: record.firstSeen || fields.date || new Date().toISOString(),
     category: classifyVenueMarket(fields.venue),
+    corroborations: [],
   };
   return { status: 'accept', candidate };
 }
