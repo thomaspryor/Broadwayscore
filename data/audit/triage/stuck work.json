@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-03T07:57:59.090Z",
+  "lastChecked": "2026-08-04T07:41:59.124Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "pass",
-      "message": "No stuck paused P0/P1 cards (10 awaiting recheck, earliest due 2026-08-03; 2 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 893 --force)"
+      "message": "No stuck paused P0/P1 cards (12 awaiting recheck, earliest due 2026-08-03; 8 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (11d); Trainspotting: only 4 reviews on site + email said 7 (invest (11d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (10d)"
+      "message": "41 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (12d); Trainspotting: only 4 reviews on site + email said 7 (invest (12d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (11d)"
     }
   ]
 }

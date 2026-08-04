@@ -1,28 +1,22 @@
 {
-  "generatedAt": "2026-08-04T05:09:59.347Z",
+  "generatedAt": "2026-08-04T07:42:20.483Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a62b8d0c1f4d1f5f22a0b849bba050c65bab5cb4",
+  "latestRunHeadSha": "2511cbfda42d616abe71e63def391f5a25f03a14",
   "state": "RED",
-  "consecutiveFailures": 4,
-  "redSince": "2026-08-04T04:32:28Z",
-  "redForHours": 0.6253741666666667,
+  "consecutiveFailures": 1,
+  "redSince": "2026-08-04T06:57:37Z",
+  "redForHours": 0.7454119444444445,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-04T04:23:14Z",
-  "latestFailedRunId": "30878814251",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30878814251",
-  "decidedRuns": 79,
+  "lastSuccessAt": "2026-08-04T05:11:42Z",
+  "latestFailedRunId": "30885893492",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30885893492",
+  "decidedRuns": 81,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Audit orphan slim show files"
       ]
     },
     {
@@ -32,13 +26,6 @@
       ]
     }
   ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/validate-data-push-refusal-sentinel.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 1 - clean shows.json → exit 0, no sentinel written"
-    }
-  ],
+  "failingPaths": [],
   "topFailingJob": "Data Validation"
 }

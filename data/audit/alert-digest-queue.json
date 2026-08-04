@@ -1,90 +1,13 @@
 [
   {
     "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: browserbase $12.1 > $4 (121 sessions); brightdata $13.48 > $2.5 (4736 serp + 4252 unlocker reqs)",
-    "description": "Day 2026-08-02. 2026-08-02 · Browserbase: $12.1 (121 sessions) · 2026-08-02 · Bright Data: $13.48 (4736 serp / 4252 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 31380 credits (732945 this cycle) · Browserbase attribution: 0% attributed · Bright Data attribution: 1% attributed — top: opening-night-poller.js 46, recover-explicit-ratings.js 20 · ScrapingDog attribution: 1% attributed — top: recover-explicit-ratings.js 325, opening-night-poller.js 63, collect-review-texts.js 41. Verification streak reset to 0.",
+    "title": "Scraping spend over budget: browserbase $5.4 > $4 (54 sessions); brightdata $14.14 > $2.5 (5464 serp + 3966 unlocker reqs); scrapingdog 82608 credits > 45000",
+    "description": "Day 2026-08-03. 2026-08-03 · Browserbase: $5.4 (54 sessions) · 2026-08-03 · Bright Data: $14.14 (5464 serp / 3966 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 82608 credits (815553 this cycle) · Browserbase attribution: 19% attributed — top: collect-review-texts.js 10 · Bright Data attribution: 13% attributed — top: opening-night-poller.js 953, fetch-show-images-auto.js 201, audit-show-review-gap.js 27, audit-serp-census-recall.js 6, recover-serp-text.js 3 · ScrapingDog attribution: 4% attributed — top: opening-night-poller.js 1781, collect-review-texts.js 746, fetch-show-images-auto.js 515, recover-explicit-ratings.js 123, auto-fix-show-data.js 88. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-03T07:58:15.300Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 79.9% (452/566)\noff-broadway: 48.2% (157/326)\nwest-end: 71.7% (392/547)\n\nOldest gaps:\n1536 — guardian (272h)\n1536 — independent (272h)\nA Midsummer Night's Dream - Globe — financialtimes (272h)\nA Midsummer Night's Dream - Globe — telegraph (272h)\nA Midsummer Night's Dream — financialtimes (272h)\n… 205 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-03T12:09:34.340Z"
-  },
-  {
-    "conditionKey": "arm-yield:workflow:sweep-we-aggregators",
-    "title": "Sweep WE Aggregators has stopped updating (20 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-07-14, 20 days ago. It has never before gone quiet for more than 13 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 15d, from 3 productive day(s) / 3 item(s) between 2026-06-15 and 2026-07-14.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-03T13:05:40.013Z"
-  },
-  {
-    "conditionKey": "arm-yield:workflow:scoring-audit",
-    "title": "Scoring Audit has stopped updating (185 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 185 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-01-30 and 2026-08-03.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-03T13:05:40.014Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "2/146 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThe Enormous Crocodile: score-drift\nThe Smile Of Her: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-03T14:45:10.898Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-03T15:54:42.630Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30878814251",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-04T04:58:04.520Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 18.2% of shows changed coverage state",
-    "description": "review-gap blast radius 18.2% (4/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: birthright-off-broadway-2026, giulia-the-poison-queen-of-palermo-off-broadway-2026, much-ado-about-nothing-globe-off-west-end-2026, the-guilty-west-end-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-04T05:54:59.989Z"
+    "queuedAt": "2026-08-04T07:42:09.991Z"
   }
 ]
