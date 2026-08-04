@@ -31,13 +31,11 @@ const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { validateUrlDomain } = require('./lib/url-discovery');
+const { validateUrlDomain, serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // Outlet configurations: domain, SERP query, URL pattern for title extraction
 const OUTLET_CONFIGS = {
@@ -108,31 +106,22 @@ function saveDiscoveredReviewStub(filePath, reviewData) {
   safeWriteReview(filePath, preserved);
 }
 
-// SERP via ScrapingBee Google Search API (same endpoint as url-discovery.js)
+// SERP via the shared url-discovery.js provider chain (Scrapingdog → Bright
+// Data → SB) so every call is recorded into the scraper-spend-ledger via
+// provider-telemetry.js. This script used to hit SB's store/google endpoint
+// directly, which left its SERP spend invisible to the ledger regardless of
+// which workflow called it (task #998).
 async function serpSearch(query, numResults = 10) {
-  if (!SCRAPINGBEE_KEY) {
-    console.error('  ✗ SCRAPINGBEE_API_KEY required');
+  const results = await serpQuery(query, { nbResults: numResults });
+  if (!results) {
+    console.error('  ✗ SERP unavailable (no provider succeeded)');
     return [];
   }
-
-  const axios = require('axios');
-  try {
-    const params = { api_key: SCRAPINGBEE_KEY, search: query };
-    const resp = await axios.get('https://app.scrapingbee.com/api/v1/store/google', {
-      params,
-      timeout: 30000,
-    });
-    const data = resp.data;
-    const results = data.organic_results || data.results || [];
-    return results.map(r => ({
-      url: r.url || r.link,
-      title: r.title || '',
-      description: r.description || '',
-    }));
-  } catch (err) {
-    console.error(`  ✗ SERP error: ${err.response?.status || err.message}`);
-    return [];
-  }
+  return results.map(r => ({
+    url: r.url,
+    title: r.title || '',
+    description: r.snippet || '',
+  }));
 }
 
 // Parse CLI args
