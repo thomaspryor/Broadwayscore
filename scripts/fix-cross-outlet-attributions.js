@@ -1,0 +1,204 @@
+#!/usr/bin/env node
+/**
+ * fix-cross-outlet-attributions.js — triage the 47 Carmen-class suspects from
+ * scripts/audit-cross-outlet-attributions.js (Notion card 3b2637c5-416f-818f,
+ * 2026-08-03).
+ *
+ * Each suspect was checked against the live source page (WebFetch/curl byline,
+ * or a targeted web search when the page was unreachable/paywalled). Three
+ * outcomes:
+ *   - verify: byline confirmed correct (or organizationally equivalent, e.g.
+ *     SFGate/SF Chronicle share critic Lily Janiak) → crossOutletVerified:true
+ *   - rename: page byline is a DIFFERENT named critic than stored → correct
+ *     criticName (examples: Skin of Our Teeth/Observer is David Cote not Tim
+ *     Teeman; Macbeth/Time Out is Adam Feldman not Naveen Kumar; In the
+ *     Heights/WaPo is Naveen Kumar not Nelson Pressley — he left WaPo in 2019;
+ *     Pretty Woman/BWW-RI is Jay Pateakos not Roy Berko; Waverly Gallery/
+ *     Broadway News is Charles Isherwood not Matt Windman)
+ *   - retag: criticName confirmed correct but outletId is wrong (URL domain
+ *     doesn't match the stored outlet — Kevin Filipski's Sylvia review is on
+ *     filmfestivaltraveler.com, not slashfilm.com)
+ *   - flag: could not verify (no stored URL, dead/broken source link, or
+ *     evidence pointing away from the stored critic) → wrongAttribution:true,
+ *     which review-guards.js and rebuild-all-reviews.js already treat as an
+ *     exclusion (same family as wrongProduction/wrongShow)
+ *
+ * Idempotent. Dry-run by default; pass --apply to write.
+ * Run from the repo root that owns the canonical data/review-texts store.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv)) {
+  console.log(`fix-cross-outlet-attributions.js — triage Carmen-class cross-outlet suspects.
+
+Usage:
+  node scripts/fix-cross-outlet-attributions.js           dry run (report only)
+  node scripts/fix-cross-outlet-attributions.js --apply   write corrections
+
+Run from the repo root that owns the canonical data/review-texts store.`);
+  process.exit(0);
+}
+
+const { safeWriteReview } = require('./lib/review-write-guard');
+
+const APPLY = process.argv.includes('--apply');
+const ROOT = process.cwd();
+const REVIEW_TEXTS = path.join(ROOT, 'data', 'review-texts');
+
+if (!fs.existsSync(REVIEW_TEXTS)) {
+  console.error(`No data/review-texts under ${ROOT} — run from the main checkout.`);
+  process.exit(1);
+}
+
+// action: 'verify' | 'rename' | 'retag' | 'flag'
+const MANIFEST = [
+  { file: '9-to-5-2009/access-atlanta--wendell-brock.json', action: 'verify',
+    note: 'Access Atlanta was AJC\'s entertainment site; Wendell Brock is the AJC critic — same org.' },
+  { file: 'a-beautiful-noise-the-neil-diamond-musical-2022/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'Byline confirmed on sfchronicle.com article body.' },
+  { file: 'a-time-to-kill-2013/abc-news--mark-kennedy.json', action: 'verify',
+    note: 'AP wire "wireStory" URL; AP theater critic Mark Kennedy, confirmed via sibling Washington Times AP byline.' },
+  { file: 'an-american-in-paris-2015/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Roy Berko is a real Cleveland-based BWW regional critic; already wrongShow:true (Cleveland tour, excluded from scoring).' },
+  { file: 'beetlejuice-2022/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Byline content confirmed via search (Cleveland Connor Palace review); already wrongProduction:true (tour, excluded).' },
+  { file: 'beetlejuice-2022/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'Lily Janiak / SF Chronicle pattern confirmed; already wrongProduction:true (SF tour leg, excluded).' },
+  { file: 'beetlejuice-2022/the-daily-gazette--bill-kellert.json', action: 'verify',
+    note: 'Bill Kellert / Daily Gazette (Capital Region NY, nippertown-affiliated) confirmed; already wrongProduction:true.' },
+  { file: 'beetlejuice-2025/dc-metro-theater-arts--deb-miller.json', action: 'verify',
+    note: 'Deb Miller is a real dcmetrotheaterarts.com author; already wrongProduction:true (2019 Winter Garden review, excluded).' },
+  { file: 'chinglish-2011/sfgate--mark-kennedy.json', action: 'verify',
+    note: 'AP wire syndicated to SFGate under original AP byline — same pattern as other Mark Kennedy rows.' },
+  { file: 'data-2026/nytimes--tim-teeman.json', action: 'flag',
+    note: 'URL not indexed anywhere (likely fabricated/wrong); Tim Teeman has never been an NYT theater critic. Already wrongProduction:true.' },
+  { file: 'data-off-broadway-2026/nytimes--tim-teeman.json', action: 'flag',
+    note: 'Same fabricated-looking URL as data-2026 sibling; not a real NYT byline.' },
+  { file: 'death-of-a-salesman-2026/nytg--jonathan-mandell.json', action: 'flag',
+    note: 'Jonathan Mandell writes "New York Theater" (newyorktheater.me), not "New York Theatre Guide" (nytg) — different outlets, no stored URL to confirm.' },
+  { file: 'fool-for-love-2015/the-record-theater--bob-goepfert.json', action: 'retag',
+    outletId: 'troy-record',
+    note: 'URL is troyrecord.com; troy-record is Bob Goepfert\'s registered home. "the-record-theater" is a stray duplicate outletId.' },
+  { file: 'hadestown-west-end-2024/dc-metro-theater-arts--deb-miller.json', action: 'verify',
+    note: 'Deb Miller confirmed dcmetrotheaterarts.com author; already wrongProduction:true (2019 Walter Kerr review, excluded).' },
+  { file: 'hairspray-2002/broadwayworld--louise-penn.json', action: 'verify',
+    note: 'Already wrongProduction:true (West End Coliseum revival, excluded); Louise Penn class tracked separately under card #988.' },
+  { file: 'hamilton-2015/washington-times--mark-kennedy.json', action: 'verify',
+    note: 'Confirmed: "Mark Kennedy" + "Associated Press" both present in article body.' },
+  { file: 'hand-to-god-2015/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Roy Berko confirmed real critic for this show via search; already wrongShow:true (excluded).' },
+  { file: 'heisenberg-2016/abc-news--mark-kennedy.json', action: 'verify',
+    note: 'AP wire "wireStory" URL, same pattern as confirmed Mark Kennedy rows.' },
+  { file: 'in-the-heights-2008/washpost--nelson-pressley.json', action: 'rename',
+    criticName: 'Naveen Kumar',
+    note: 'Nelson Pressley left the Post in 2019 and could not have written this Feb 2025 review. Real byline is Naveen Kumar (confirmed via search).' },
+  { file: 'kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Already wrongProduction:true; Roy Berko pattern consistent with other confirmed BWW-regional rows.' },
+  { file: 'life-of-pi-2023/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Byline "Roy Berko" confirmed present on the stored broadwayworld.com/cleveland URL; already wrongProduction:true.' },
+  { file: 'macbeth-off-broadway-2026/timeout--naveen-kumar.json', action: 'rename',
+    criticName: 'Adam Feldman',
+    note: 'WebFetch confirmed the Time Out byline is Adam Feldman ("Theater review by Adam Feldman"), not Naveen Kumar. Already wrongProduction:true.' },
+  { file: 'misery-2015/abc-news--mark-kennedy.json', action: 'verify',
+    note: 'AP wire "wireStory" URL, same pattern as confirmed Mark Kennedy rows.' },
+  { file: 'miss-saigon-2017/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'Byline confirmed on sfchronicle.com article body; already wrongProduction:true.' },
+  { file: 'moulin-rouge-the-musical-west-end-2021/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Review content (Austin Durant "scene-stealer" quote) confirmed as Roy Berko\'s via search; already wrongProduction:true.' },
+  { file: 'moulin-rouge-the-musical-west-end-2021/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'Lily Janiak / SF Chronicle (datebook subdomain) pattern; already wrongProduction:true.' },
+  { file: 'parade-2023/broadwayworld--roy-berko.json', action: 'verify',
+    note: 'Byline "Roy Berko" confirmed present on the stored broadwayworld.com/cleveland URL; already wrongProduction:true.' },
+  { file: 'patriots-2024/dtli--frank-scheck.json', action: 'flag',
+    note: 'Stored URL is a didtheylikeit.com wp-admin post-editor link, not a public page — unverifiable and outletId "dtli" is the aggregator itself, not a real outlet. Not currently excluded (assignedScore 81 live).' },
+  { file: 'pretty-woman-the-musical-2018/broadwayworld--roy-berko.json', action: 'rename',
+    criticName: 'Jay Pateakos',
+    note: 'WebFetch confirmed the BWW Rhode Island byline is Jay Pateakos ("BWW Rhode Island since fall 2021"), not Roy Berko. Already wrongProduction:true.' },
+  { file: 'pretty-woman-the-musical-2018/the-austin-chronicle--bob-abelman.json', action: 'verify',
+    note: 'Bob Abelman confirmed real Austin Chronicle author (author archive page + matching review quote); already wrongProduction:true.' },
+  { file: 'shucked-2023/san-francisco-chronicle--lily-janiak.json', action: 'verify',
+    note: 'Lily Janiak / SF Chronicle pattern; already wrongProduction:true.' },
+  { file: 'six-the-musical-west-end-2021/patriot-ledger--iris-fanger.json', action: 'verify',
+    note: 'Iris Fanger is a real Boston-area freelance critic (edge-boston home); already wrongProduction:true (excluded either way).' },
+  { file: 'sweat-2017/artsfuse--iris-fanger.json', action: 'verify',
+    note: 'Iris Fanger confirmed regular ArtsFuse contributor; already wrongProduction:true (excluded either way).' },
+  { file: 'sylvia-2015/slash-film--kevin-filipski.json', action: 'retag',
+    outletId: 'film-festival-traveler',
+    note: 'WebFetch confirmed byline "Kevin Filipski"; URL is filmfestivaltraveler.com, not slashfilm.com — outletId was wrong, critic was right.' },
+  { file: 'the-children-2017/this-week-in-new-york--william-wolf.json', action: 'flag',
+    note: 'No stored URL; could not corroborate William Wolf as the author. Not currently excluded — not live-scored (no assignedScore) so low impact.' },
+  { file: 'the-humans-2016/whatsonstage--scott-mitchell.json', action: 'flag',
+    note: 'Search found no Scott Mitchell byline for this review; stored URL (whatsonoffbroadway.com) doesn\'t match his registered home (reviewsoffbroadway.com). Already wrongProduction:true.' },
+  { file: 'the-iceman-cometh-2018/dailybeast--william-wolf.json', action: 'flag',
+    note: 'The Daily Beast Iceman Cometh review was by Tim Teeman, not William Wolf. No stored URL for this file; not live-scored.' },
+  { file: 'the-importance-of-being-earnest-1977/theater-news-online--matt-windman.json', action: 'flag',
+    note: 'Shares the exact same URL (COMEDYOFMANNERS.cfm) as the unrelated -2011 sibling file — stale/generic placeholder URL, unverifiable. Already wrongProduction:true.' },
+  { file: 'the-importance-of-being-earnest-2011/theater-news-online--matt-windman.json', action: 'flag',
+    note: 'Shares the exact same URL (COMEDYOFMANNERS.cfm) as the unrelated -1977 sibling file — stale/generic placeholder URL, unverifiable. Already wrongProduction:true.' },
+  { file: 'the-nap-2018/blogcritics--william-wolf.json', action: 'flag',
+    note: 'No stored URL; could not corroborate. Not live-scored.' },
+  { file: 'the-other-place-2026/minneapolis-star-tribune--mark-kennedy.json', action: 'verify',
+    note: 'Real Mark Kennedy AP content; already wrongShow:true (cross-show URL collision with the-other-place-2013, excluded from scoring).' },
+  { file: 'the-peewee-herman-show-2010/canadian-press--mark-kennedy.json', action: 'verify',
+    note: 'Canadian Press syndicates AP wire content; consistent with the confirmed Mark Kennedy AP-wire pattern (dead googlehostednews link, but plausible).' },
+  { file: 'the-play-that-goes-wrong-off-broadway-2019/paste-magazine--robert-massimi.json', action: 'verify',
+    note: 'Search confirmed Robert Massimi published a review of this exact show (Geeks.media, his registered home); outletId/URL point to a legit cross-post, not a different critic.' },
+  { file: 'the-skin-of-our-teeth-2022/observer--tim-teeman.json', action: 'rename',
+    criticName: 'David Cote',
+    note: 'Observer article:author meta tag confirms David Cote. Tim Teeman\'s own review of this show ran on his personal site, not Observer. Already wrongProduction:true.' },
+  { file: 'the-waverly-gallery-2018/broadwaynews--matt-windman.json', action: 'rename',
+    criticName: 'Charles Isherwood',
+    note: 'Search confirmed Broadway News\'s Waverly Gallery review was by Charles Isherwood; Matt Windman\'s own review ran on amNY.' },
+  { file: 'the-waverly-gallery-2018/theater-news-online--matt-windman.json', action: 'flag',
+    note: 'Stored URL (INTOTHEABYSS.cfm) is a generic theaternewsonline.com page unrelated in name to this show — unverifiable.' },
+  { file: 'travesties-2018/dailybeast--william-wolf.json', action: 'flag',
+    note: 'No stored URL; could not corroborate. Not live-scored.' },
+];
+
+function main() {
+  const results = { verify: [], rename: [], retag: [], flag: [], missing: [] };
+  for (const entry of MANIFEST) {
+    const filePath = path.join(REVIEW_TEXTS, entry.file);
+    if (!fs.existsSync(filePath)) {
+      results.missing.push(entry.file);
+      continue;
+    }
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    if (entry.action === 'verify') {
+      data.crossOutletVerified = true;
+      data.crossOutletVerifiedNote = entry.note;
+    } else if (entry.action === 'rename') {
+      data.crossOutletOriginalCritic = data.criticName;
+      data.criticName = entry.criticName;
+      data.crossOutletVerified = true;
+      data.crossOutletVerifiedNote = entry.note;
+    } else if (entry.action === 'retag') {
+      data.crossOutletOriginalOutletId = data.outletId;
+      data.outletId = entry.outletId;
+      data.crossOutletVerified = true;
+      data.crossOutletVerifiedNote = entry.note;
+    } else if (entry.action === 'flag') {
+      data.wrongAttribution = true;
+      data.wrongAttributionReason = entry.note;
+    }
+
+    results[entry.action].push(entry.file);
+    if (APPLY) safeWriteReview(filePath, data);
+  }
+
+  console.log(`${APPLY ? 'APPLIED' : 'DRY RUN'} — ${MANIFEST.length} suspects triaged:`);
+  console.log(`  verify: ${results.verify.length}`);
+  console.log(`  rename: ${results.rename.length}`);
+  console.log(`  retag:  ${results.retag.length}`);
+  console.log(`  flag:   ${results.flag.length}`);
+  if (results.missing.length) {
+    console.log(`  MISSING (not found on disk): ${results.missing.length}`);
+    for (const f of results.missing) console.log(`    ${f}`);
+  }
+}
+
+main();

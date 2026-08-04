@@ -66,6 +66,7 @@ function _setShowsCacheForTest(map) { _showsByIdCache = map; }
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
   'assignedScore',
+  'crossOutletVerified',
   'humanReviewScore',
   'adjudicatedScore',
   'adjudicationNote',
