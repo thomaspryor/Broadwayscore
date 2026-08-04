@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T16:42:47.541Z",
+  "generatedAt": "2026-08-04T17:28:30.599Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 291.51970222222224,
+      "fileAgeHours": 292.2816697222222,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 250.82266805555557
+      "nonTerminalAgeHours": 251.5846286111111
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 53.260687777777775
+      "nonTerminalAgeHours": 54.022648333333336
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazysexycool-regional-2026",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 24.72075472222222,
+      "fileAgeHours": 25.48271611111111,
       "gapSeenAt": "2026-08-04T07:51:56.703Z",
-      "nonTerminalAgeHours": 8.847455
+      "nonTerminalAgeHours": 9.609415555555556
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=othello-off-broadway-2026",
       "firstSeen": "2026-08-03T04:15:10.873Z",
-      "fileAgeHours": 36.460185277777775,
+      "fileAgeHours": 37.22214611111111,
       "gapSeenAt": "2026-08-03T18:28:48.681Z",
-      "nonTerminalAgeHours": 22.233016666666668
+      "nonTerminalAgeHours": 22.99497722222222
     }
   ],
   "contradictions": []
