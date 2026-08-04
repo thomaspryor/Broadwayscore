@@ -85,3 +85,31 @@ test('no unreviewed T1/T2 fullText-present cross-outlet attribution suspects rem
     `unreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): ${JSON.stringify((suspects || []).slice(0, 5), null, 2)}`
   );
 });
+
+// Acceptance test for task #1008 (card 3b2637c5-416f-81da): the
+// registry-mismatch-gated scans above miss a repeated instance of the same
+// playbill-verdict byline-bleed bug when the critic's registry defaultCritic
+// happens to resolve correctly at one outlet in the bleed group. --playbill-bleed
+// groups by (showId, criticName) instead and must find zero unreviewed groups.
+test('no unreviewed playbill-verdict byline-bleed groups remain', (t) => {
+  let out;
+  try {
+    out = execFileSync(
+      process.execPath,
+      [path.join(repoRoot, 'scripts', 'audit-cross-outlet-attributions.js'), '--playbill-bleed', '--json'],
+      { cwd: repoRoot, encoding: 'utf8' }
+    );
+  } catch (err) {
+    if (err.status === 3) {
+      t.skip('data/review-texts not present in this checkout — run from the main checkout');
+      return;
+    }
+    out = err.stdout;
+  }
+  const { count, groups } = JSON.parse(out);
+  assert.strictEqual(
+    count,
+    0,
+    `unreviewed playbill-verdict byline-bleed groups remain: ${JSON.stringify((groups || []).slice(0, 5), null, 2)}`
+  );
+});

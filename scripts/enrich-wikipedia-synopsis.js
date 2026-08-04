@@ -122,7 +122,7 @@ function fetchJson(url, attempt = 1) {
             return;
           }
           const retryAfterHeader = parseInt(res.headers['retry-after'], 10);
-          const waitMs = Number.isFinite(retryAfterHeader) ? retryAfterHeader * 1000 : attempt * 3000;
+          const waitMs = Number.isFinite(retryAfterHeader) ? Math.min(retryAfterHeader, 30) * 1000 : attempt * 3000;
           setTimeout(() => {
             fetchJson(url, attempt + 1).then(resolve, reject);
           }, waitMs);
@@ -132,8 +132,16 @@ function fetchJson(url, attempt = 1) {
           reject(new Error(`HTTP ${res.statusCode}`));
           return;
         }
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(new Error(`JSON parse error: ${data.slice(0, 150)}`)); }
+        let parsed;
+        try { parsed = JSON.parse(data); }
+        catch (e) { reject(new Error(`JSON parse error: ${data.slice(0, 150)}`)); return; }
+        // MediaWiki returns some failures (maxlag, malformed params) as HTTP 200
+        // with a {"error": {...}} body instead of a non-200 status — without this
+        // check that body's absent `query` key reads as an empty result set
+        // (every title "not found"), the exact silent-swallow shape task #68 fixed
+        // one layer up at the HTTP-status level.
+        if (parsed.error) { reject(new Error(`MediaWiki API error: ${parsed.error.info || parsed.error.code || JSON.stringify(parsed.error).slice(0, 150)}`)); return; }
+        resolve(parsed);
       });
     }).on('error', reject);
   });
