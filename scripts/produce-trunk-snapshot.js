@@ -106,6 +106,9 @@ function buildSnapshot({ now = Date.now() } = {}) {
     generatedAt: new Date(now).toISOString(),
     workflow: WORKFLOW,
     branch: BRANCH,
+    // Which commit the newest decided run tested — so a stale-looking refusal
+    // can be traced to an actual sha instead of just a timestamp.
+    latestRunHeadSha: (runs.find((r) => r && r.conclusion) || {}).headSha || null,
     ...trunk,
     failingJobs: [],
     failingPaths: [],

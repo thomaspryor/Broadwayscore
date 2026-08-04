@@ -108,6 +108,20 @@ test('extractFailingPaths: real log yields exactly the implicated files, not rem
   assert.equal(orphan.job, 'Lint Workflows');
 });
 
+test('a truncated failure block does not leak attribution into the next job', () => {
+  // Real shape when a step dies mid-diagnostic: the `not ok` YAML block never
+  // closes, and the next job's lines follow immediately. Latching across that
+  // boundary would blame an innocent card for someone else's failure.
+  const log = [
+    'Unit Tests\tRun unit tests\t2026-08-04T03:54:50.5Z not ok 2 - verified TodayTix-gap shows carry a real Ticketmaster link',
+    "Unit Tests\tRun unit tests\t2026-08-04T03:54:50.5Z   location: '/home/runner/work/Broadwayscore/Broadwayscore/scripts/tests/tm-gap-links.test.mjs:55:1'",
+    'Lint Workflows\tCheck workflow lint\t2026-08-04T03:51:48.4Z reading scripts/lib/innocent-helper.js',
+    'Lint Workflows\tCheck workflow lint\t2026-08-04T03:51:48.4Z scanned src/components/Innocent.tsx',
+  ].join('\n');
+  const names = extractFailingPaths(log).map((p) => p.path);
+  assert.deepEqual(names, ['scripts/tests/tm-gap-links.test.mjs']);
+});
+
 test('(a) card #956, whose OWN test is failing on main, is refused closure', () => {
   const res = evaluateCloseGate({
     trunk: redSnapshot(),
@@ -165,6 +179,25 @@ test('gate fails OPEN: no snapshot, stale snapshot, unattributable red, no owned
   for (const r of [null, redSnapshot({ generatedAt: new Date(NOW - 9 * 3600e3).toISOString() }), redSnapshot({ failingPaths: [] })]) {
     assert.equal(evaluateCloseGate({ ...base, trunk: r }).allowed, true);
   }
+});
+
+test('an undateable or future-dated snapshot can never block', () => {
+  const base = { keyFiles: 'scripts/tests/tm-gap-links.test.mjs', now: NOW };
+  for (const generatedAt of [undefined, null, 'not-a-date', new Date(NOW + 6 * 3600e3).toISOString()]) {
+    const res = evaluateCloseGate({ ...base, trunk: redSnapshot({ generatedAt }) });
+    assert.equal(res.allowed, true, `generatedAt=${String(generatedAt)} must fail open`);
+    assert.equal(res.reason, GATE_REASONS.STALE_SNAPSHOT);
+  }
+});
+
+test('malformed failingPaths entries are ignored, never used to refuse', () => {
+  const res = evaluateCloseGate({
+    trunk: redSnapshot({ failingPaths: [null, {}, { path: 42 }, 'scripts/tests/tm-gap-links.test.mjs'] }),
+    keyFiles: 'scripts/tests/tm-gap-links.test.mjs',
+    now: NOW,
+  });
+  assert.equal(res.allowed, true);
+  assert.equal(res.reason, GATE_REASONS.UNRELATED);
 });
 
 test('a green trunk never blocks', () => {

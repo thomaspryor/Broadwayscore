@@ -617,31 +617,49 @@ async function createCard(args) {
 // checkout, a shallow clone or no git at all yields [], and the gate then
 // attributes off Key Files alone.
 function branchChangedFiles() {
+  // Explicit attribution wins: an automated closer that already knows exactly
+  // which files it merged (autonomous-merge.js) passes them here, because by
+  // the time it closes the card the branch diff is EMPTY — the push moved
+  // origin/main to HEAD, so merge-base(origin/main, HEAD) === HEAD
+  // (ship-check finding: attribution silently degraded to Key Files on the
+  // single most important close path).
+  const declared = String(process.env.TRUNK_CLOSE_GATE_FILES || '')
+    .split(/[,\n]/).map((s) => s.trim()).filter(Boolean);
+
+  let derived = [];
   try {
     const { execFileSync } = require('child_process');
     const run = (a) => execFileSync('git', a, { encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'ignore'] });
     const base = run(['merge-base', 'origin/main', 'HEAD']).trim();
-    if (!base) return [];
-    return [
-      ...run(['diff', '--name-only', base, 'HEAD']).split('\n'),
-      ...run(['diff', '--name-only', 'HEAD']).split('\n'),
-    ].map((s) => s.trim()).filter(Boolean);
+    if (base) {
+      derived = [
+        ...run(['diff', '--name-only', base, 'HEAD']).split('\n'),
+        ...run(['diff', '--name-only', 'HEAD']).split('\n'),
+      ].map((s) => s.trim()).filter(Boolean);
+    }
+    // No HEAD^ fallback on purpose (ship-check finding): once the session has
+    // merged and pushed, the last commit on a SHARED main checkout may belong
+    // to a different session entirely — attributing it here would refuse an
+    // innocent card and tell it "this one is yours". Post-merge attribution
+    // comes from TRUNK_CLOSE_GATE_FILES (the merger knows its own file list)
+    // or from the card's Key Files, never from a guess.
   } catch {
-    return [];
+    // no git, shallow clone, root commit: explicit attribution only
   }
+  return [...new Set([...declared, ...derived])];
 }
 
 // Refresh data/audit/trunk-status-snapshot.json when it's older than
 // maxAgeMin. Synchronous and time-boxed: a close should cost at most a few
 // seconds, and any failure leaves the old (or no) snapshot, which the gate
 // reads as fail-open.
-function refreshTrunkSnapshot({ maxAgeMin = 60 } = {}) {
+function refreshTrunkSnapshot({ maxAgeMin = 30 } = {}) {
   try {
     const { execFileSync } = require('child_process');
     const path = require('path');
     execFileSync('node', [
       path.join(__dirname, 'produce-trunk-snapshot.js'), `--max-age-min=${maxAgeMin}`,
-    ], { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'pipe'] });
+    ], { encoding: 'utf8', timeout: 90000, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (e) {
     console.error(`⚠️  trunk snapshot refresh failed (closing without a fresh trunk check): ${String(e.message).slice(0, 140)}`);
   }
@@ -690,7 +708,7 @@ async function enforceTrunkCloseGate(pageId, args) {
       `\nTo close anyway, pass --force "<reason ≥10 chars>", ` +
       `or set TRUNK_CLOSE_GATE_DISABLED=1 for automation that must not block.\n`
     );
-    process.exit(5);
+    process.exit(require('./lib/trunk-close-gate.js').CLOSE_REFUSED_EXIT_CODE);
   }
 }
 
@@ -1232,8 +1250,13 @@ async function main() {
   // (help-flag safety Rule B, task #498 — the close gate below shells out to
   // git and the snapshot producer, which is exactly the risky work that rule
   // exists to keep off the --help path).
+  // Scoped to argv[0] ON PURPOSE (ship-check finding): every other flag here
+  // carries arbitrary user/automation text — `--notes "-h"`, an email-derived
+  // `--outcome`, a card title containing "--help=" — and a whole-argv scan
+  // would turn a real card write into a silent no-op that prints usage and
+  // exits 0. Help is only help when it's the first thing you typed.
   const { hasHelpFlag } = require('./lib/cli-help.js');
-  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  if (hasHelpFlag(argv.slice(0, 1))) { console.log(USAGE); return; }
 
   const args = parseArgs(argv);
   const command = args._positional[0];

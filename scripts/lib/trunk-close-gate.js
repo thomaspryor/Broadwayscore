@@ -158,6 +158,9 @@ const FAILURE_MARKER_RE = /(?:^|\s)(?:❌|✖|✗|##\[error\])/;
 const TAP_NOT_OK_RE = /^\s*not ok \d+/;
 // A passing assertion, a new subtest header, or the plan line all mean the
 // previous `not ok` diagnostic block is over.
+// node --test's own diagnostic fields: `location: '/abs/file.mjs:55:1'`,
+// `stack: |-` frames (`file:///abs/file.mjs:67:12`), `failureType`, etc.
+const TAP_LOCATION_RE = /^\s*(?:location|stack|at\b)|file:\/\//;
 const TAP_BLOCK_END_RE = /^\s*(?:ok \d+|# Subtest:|1\.\.\d+|# (?:tests|pass|fail|duration_ms)\b)/;
 
 /**
@@ -184,8 +187,22 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
     });
   };
 
+  let prevScope = null;
   for (const entry of lines) {
     const msg = entry.message;
+    // A `not ok` block never spans two jobs/steps. Without this reset a
+    // truncated diagnostic (log cut mid-block, a step that dies before its
+    // closing `...`) leaves inTapFailure latched, and the NEXT job's file
+    // mentions get attributed to a failure they had nothing to do with —
+    // blocking innocent cards, the one thing this gate must never do
+    // (ship-check finding).
+    const scope = `${entry.job || ''} ${entry.step || ''}`;
+    if (entry.job !== null && scope !== prevScope) {
+      inTapFailure = false;
+      markerCountdown = 0;
+      context = null;
+      prevScope = scope;
+    }
     if (TAP_NOT_OK_RE.test(msg)) {
       inTapFailure = true;
       context = msg;
@@ -197,7 +214,17 @@ function extractFailingPaths(logText, { maxPaths = 40, markerWindow = MARKER_WIN
       context = msg;
     }
 
-    if (inTapFailure || markerCountdown > 0) {
+    // Inside a `not ok` block, only node's STRUCTURED failure fields name the
+    // file that failed. Scanning the whole diagnostic would also pick up paths
+    // that merely appear in an assertion's expected/actual payload — an
+    // innocent file, refused a close it had nothing to do with (ship-check
+    // finding). Marker windows (❌ / ##[error]) stay line-based: those tools
+    // print the offending path as prose, not as a field.
+    if (inTapFailure) {
+      if (TAP_LOCATION_RE.test(msg)) {
+        for (const p of pathsInLine(msg)) record(p, entry, context || msg);
+      }
+    } else if (markerCountdown > 0) {
       for (const p of pathsInLine(msg)) record(p, entry, context || msg);
     }
     if (markerCountdown > 0) markerCountdown--;
@@ -232,6 +259,12 @@ function collectOwnedPaths({ keyFiles = '', changedFiles = [] } = {}) {
 
 // ── the gate ────────────────────────────────────────────────────────────────
 
+// notion-brain.js exits with this when it refuses a close. Shared, not a
+// literal in three files: automated closers (autonomous-merge.js,
+// notion-tasks-sync.js) must be able to tell "the gate said no" apart from
+// "the Notion API broke", and handle only the former gracefully.
+const CLOSE_REFUSED_EXIT_CODE = 5;
+
 const GATE_REASONS = {
   DISABLED: 'gate-disabled',
   NO_SNAPSHOT: 'no-trunk-snapshot',
@@ -251,7 +284,7 @@ const GATE_REASONS = {
  */
 function evaluateCloseGate({
   trunk = null, keyFiles = '', changedFiles = [], now = Date.now(),
-  maxSnapshotAgeH = 6, disabled = false,
+  maxSnapshotAgeH = 2, disabled = false,
 } = {}) {
   const ownedPaths = collectOwnedPaths({ keyFiles, changedFiles });
   const allow = (reason, message, trunkState = trunk && trunk.state ? trunk.state : 'UNKNOWN') =>
@@ -262,12 +295,23 @@ function evaluateCloseGate({
     return allow(GATE_REASONS.NO_SNAPSHOT, 'no trunk snapshot — closing without a trunk check', 'UNKNOWN');
   }
 
-  const gen = new Date(trunk.generatedAt).getTime();
-  if (Number.isFinite(gen) && (now - gen) / 3600e3 > maxSnapshotAgeH) {
-    return allow(
-      GATE_REASONS.STALE_SNAPSHOT,
-      `trunk snapshot is stale (${((now - gen) / 3600e3).toFixed(1)}h old) — closing without a trunk check`
-    );
+  // A snapshot may only BLOCK on a timestamp we can actually read. Missing,
+  // unparseable, or future-dated generatedAt used to be trusted forever —
+  // a RED snapshot from a producer with a broken clock could then refuse
+  // closes indefinitely (ship-check finding). Anything we can't date is
+  // treated as stale, which fails open.
+  const gen = (() => {
+    try { return new Date(trunk.generatedAt).getTime(); } catch { return NaN; }
+  })();
+  const ageH = Number.isFinite(gen) ? (now - gen) / 3600e3 : null;
+  if (ageH === null) {
+    return allow(GATE_REASONS.STALE_SNAPSHOT, 'trunk snapshot has no readable timestamp — closing without a trunk check');
+  }
+  if (ageH > maxSnapshotAgeH) {
+    return allow(GATE_REASONS.STALE_SNAPSHOT, `trunk snapshot is stale (${ageH.toFixed(1)}h old) — closing without a trunk check`);
+  }
+  if (ageH < -1) {
+    return allow(GATE_REASONS.STALE_SNAPSHOT, 'trunk snapshot is dated in the future (producer clock bug) — closing without a trunk check');
   }
   if (trunk.state !== 'RED') {
     return allow(GATE_REASONS.GREEN, `trunk is ${trunk.state || 'UNKNOWN'}`);
@@ -288,7 +332,12 @@ function evaluateCloseGate({
   }
 
   const owned = new Set(ownedPaths);
-  const blocking = failing.filter((f) => f && owned.has(f.path));
+  // Only a well-formed entry may block. A malformed producer row (null,
+  // non-string path) must never reach the refusal message, let alone decide
+  // it (ship-check finding).
+  const blocking = failing.filter(
+    (f) => f && typeof f === 'object' && typeof f.path === 'string' && owned.has(f.path)
+  );
   if (!blocking.length) {
     return allow(
       GATE_REASONS.UNRELATED,
@@ -387,7 +436,7 @@ function readTrunkSnapshot(snapshotPath = DEFAULT_SNAPSHOT_PATH) {
 }
 
 module.exports = {
-  DEFAULT_SNAPSHOT_PATH, GATE_REASONS,
+  DEFAULT_SNAPSHOT_PATH, GATE_REASONS, CLOSE_REFUSED_EXIT_CODE,
   summarizeTrunkRuns, parseFailedLog, extractFailingPaths,
   ownedPathsFromText, collectOwnedPaths, evaluateCloseGate,
   renderTrunkDigestLine, readTrunkSnapshot,
