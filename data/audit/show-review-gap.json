@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-04T11:48:45.134Z",
+  "generatedAt": "2026-08-04T12:40:15.327Z",
   "windowDays": 1095,
-  "targets": 51,
-  "auditedThisRun": 12,
-  "carriedForward": 148,
+  "targets": 39,
+  "auditedThisRun": 28,
+  "carriedForward": 132,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 121,
-    "totalMissing": 790,
+    "totalMissing": 788,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 721,
-    "totalRecoverable": 16,
+    "totalFlaggedMisses": 724,
+    "totalRecoverable": 15,
     "totalRecovered": 3
   },
   "results": [
@@ -2009,7 +2009,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "archduke-west-end-2026",
@@ -2685,21 +2685,12 @@
       "aggregatorListedUrls": [
         "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
         "https://www.broadwayworld.com/reviews/are-you-mad-at-me",
-        "https://www.theatermania.com/news/review-bryan-safi-cares-about-what-you-think-of-him-in-are-you-mad-at-me_1846312/",
-        "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/are-you-mad-at-me_1837938/",
-        "https://www.newyorkcitytheatre.com/reviews/customer-reviews/are-you-mad-at-me"
+        "https://www.theatermania.com/news/review-bryan-safi-cares-about-what-you-think-of-him-in-are-you-mad-at-me_1846312/"
       ],
       "dirFiles": 4,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [
-        {
-          "url": "https://www.newyorkcitytheatre.com/reviews/customer-reviews/are-you-mad-at-me",
-          "host": "newyorkcitytheatre.com",
-          "knownOutletId": "new-york-city-theatre",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -2788,7 +2779,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2798,36 +2789,18 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 3,
         "error": null
       },
-      "ingestResults": [
-        {
-          "url": "https://www.newyorkcitytheatre.com/reviews/customer-reviews/are-you-mad-at-me",
-          "host": "newyorkcitytheatre.com",
-          "outletId": "new-york-city-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~774036/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "new-york-city-theatre",
-            "outlet": "new-york-city-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorkcitytheatre.com/reviews/customer-reviews/are-you-mad-at-me"
-          },
           {
             "outletId": "one-minute-critic",
             "outlet": "one-minute-critic",
@@ -2852,19 +2825,6 @@
             "firstSeenAt": "2026-08-03T15:24:27.480Z"
           },
           {
-            "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/are-you-mad-at-me_1837938/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
-          },
-          {
-            "url": "https://www.newyorkcitytheatre.com/reviews/customer-reviews/are-you-mad-at-me",
-            "outletId": "new-york-city-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
-          },
-          {
             "url": "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
             "outletId": "one-minute-critic",
             "state": "GAP",
@@ -2880,9 +2840,9 @@
           }
         ],
         "liveCount": 1,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
@@ -7667,7 +7627,7 @@
         "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
         "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
       ],
-      "dirFiles": 30,
+      "dirFiles": 31,
       "dirClean": 15,
       "inReviewsJson": 17,
       "missing": [],
@@ -7865,7 +7825,7 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "camping-off-broadway-2026",
@@ -14123,7 +14083,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -14215,7 +14175,7 @@
         "https://www.whatsonstage.com/news/cyrano-de-bergerac-in-the-west-end-review_1726277/",
         "https://everything-theatre.co.uk/2026/06/review-cyrano-de-bergerac-the-noel-coward-theatre/"
       ],
-      "dirFiles": 74,
+      "dirFiles": 73,
       "dirClean": 32,
       "inReviewsJson": 31,
       "missing": [
@@ -14663,7 +14623,7 @@
         "liveCount": 10,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -14959,7 +14919,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -15274,7 +15234,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -16093,7 +16053,7 @@
         "liveCount": 29,
         "candidateCount": 38
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -21812,7 +21772,7 @@
             {
               "file": "ew--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/hadestown-parts-ways-actor-geno-segers-over-transphobic-posts-12032397?srsltid=AfmBOoqwsoz8qWohzHuVBXVSMOvXF1iK_nt_rKt73P7AAz8u_MhrFotq"
+              "urlInDir": "https://ew.com/hadestown-parts-ways-actor-geno-segers-over-transphobic-posts-12032397?srsltid=AfmBOoryYm_O3TRR7aenkAggWIdhuzpG31UQPote4bchfu-p9UAnClzi"
             }
           ],
           "priorRun": true,
@@ -24312,7 +24272,7 @@
         "liveCount": 8,
         "candidateCount": 98
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -24441,7 +24401,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
@@ -27284,7 +27244,7 @@
         "liveCount": 15,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
@@ -31405,9 +31365,9 @@
         "https://www.timeout.com/london/theatre/loves-labours-lost-7-review",
         "https://www.thetimes.com/culture/theatre-dance/article/loves-labours-lost-review-shakespeare-ruined-by-puerile-knob-gags-wtr9x5xl9"
       ],
-      "dirFiles": 26,
-      "dirClean": 17,
-      "inReviewsJson": 14,
+      "dirFiles": 27,
+      "dirClean": 18,
+      "inReviewsJson": 15,
       "missing": [],
       "dirOnly": [
         {
@@ -31424,6 +31384,10 @@
         },
         {
           "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
           "count": 1
         },
         {
@@ -31505,7 +31469,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -31515,7 +31479,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -31525,7 +31489,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -31631,7 +31595,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2026",
@@ -32643,20 +32607,22 @@
         "https://www.thetimes.com/culture/theatre-dance/article/midnight-at-the-never-get-review-menier-chocolate-factory-jskrl77l9",
         "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
-        "https://everything-theatre.co.uk/2026/07/review-midnight-at-the-never-get-menier-chocolate-factory/",
+        "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
         "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
-        "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+        "https://everything-theatre.co.uk/2026/07/review-midnight-at-the-never-get-menier-chocolate-factory/",
         "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+        "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
         "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
         "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
+        "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
+        "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
         "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
         "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/",
         "https://southlondon.co.uk/area/southwark/review-midnight-at-the-never-get-at-menier/",
         "https://www.londonboxoffice.co.uk/news/post/midnight-at-the-never-get-menier-chocolate-factory-review"
       ],
-      "dirFiles": 36,
+      "dirFiles": 37,
       "dirClean": 24,
       "inReviewsJson": 24,
       "missing": [],
@@ -32683,6 +32649,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
+          "host": "therealchrisparkle.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "therealchrisparkle--therealchrisparkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
           "host": "monstagigz.com",
@@ -32715,6 +32699,24 @@
               "file": "lovelondonloveculture--unknown.json",
               "flag": "clean",
               "urlInDir": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
+          "host": "therealchrisparkle.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "therealchrisparkle--therealchrisparkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
             }
           ],
           "serpCensus": true
@@ -32811,7 +32813,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 8,
             "error": null
           },
           {
@@ -32820,7 +32822,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -32840,8 +32842,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -32851,7 +32853,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           },
           {
@@ -32867,12 +32869,19 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 18,
+        "resultCount": 20,
         "error": null
       },
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "therealchrisparkle.com",
+            "outlet": "therealchrisparkle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
+          },
           {
             "outletId": "monstagigz",
             "outlet": "monstagigz",
@@ -32886,6 +32895,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
+          },
+          {
+            "outletId": "therealchrisparkle.com",
+            "outlet": "therealchrisparkle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/"
           },
           {
             "outletId": "theatre.reviews",
@@ -32977,14 +32993,14 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
@@ -32995,14 +33011,14 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
-            "outletId": "musicaltheatrereview.com",
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
+            "outletId": "stagedtheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
-            "outletId": "stagedtheatre.co.uk",
+            "url": "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
+            "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
@@ -33019,6 +33035,13 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
+            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
+            "outletId": "therealchrisparkle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
             "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
             "outletId": "monstagigz",
             "state": "GAP",
@@ -33031,6 +33054,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
+          },
+          {
+            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
+            "outletId": "therealchrisparkle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
             "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
@@ -33048,9 +33078,9 @@
           }
         ],
         "liveCount": 19,
-        "candidateCount": 23
+        "candidateCount": 24
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -33535,7 +33565,7 @@
         "https://www.barbican.org.uk/whats-on/2022/event/royal-shakespeare-company-my-neighbour-totoro",
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
-      "dirFiles": 48,
+      "dirFiles": 52,
       "dirClean": 12,
       "inReviewsJson": 16,
       "missing": [
@@ -33727,7 +33757,7 @@
         "liveCount": 4,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -37104,9 +37134,9 @@
         "https://www.thetimes.com/culture/theatre-dance/article/oh-mary-review-west-end-6f6nt9v9f",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html"
       ],
-      "dirFiles": 87,
-      "dirClean": 25,
-      "inReviewsJson": 29,
+      "dirFiles": 88,
+      "dirClean": 24,
+      "inReviewsJson": 28,
       "missing": [
         {
           "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
@@ -37371,6 +37401,11 @@
               "file": "broadwayworld--httpswwwbroadwayworldcomauthoraliya-al-hassan.json",
               "flag": "duplicate",
               "urlInDir": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219"
+            },
+            {
+              "file": "broadwayworld--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219"
             }
           ]
         },
@@ -37512,7 +37547,7 @@
             {
               "file": "deadline--greg-evans.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+              "urlInDir": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
             },
             {
               "file": "deadline--unknown.json",
@@ -37893,6 +37928,23 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "clean",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html"
+            }
+          ]
+        },
+        {
           "url": "https://www.thetimes.com/culture/theatre-dance/article/oh-mary-review-west-end-6f6nt9v9f",
           "host": "thetimes.com",
           "knownOutletId": "times-uk",
@@ -38253,6 +38305,13 @@
             "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/"
           },
           {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html"
+          },
+          {
             "outletId": "times-uk",
             "outlet": "times-uk",
             "critic": "Unknown",
@@ -38399,12 +38458,6 @@
           {
             "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
             "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
-            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -38688,6 +38741,13 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/oh-mary-review-west-end-6f6nt9v9f",
             "outletId": "times-uk",
             "state": "GAP",
@@ -38695,10 +38755,10 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           }
         ],
-        "liveCount": 20,
+        "liveCount": 19,
         "candidateCount": 50
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -46623,7 +46683,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -47349,7 +47409,7 @@
         "liveCount": 23,
         "candidateCount": 35
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "shifters-off-broadway-2026",
@@ -53018,7 +53078,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-car-man-west-end-2026",
@@ -53492,9 +53552,9 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/devil-wears-prada-musical-vanessa-williams-b2658819.html",
         "https://theatreweekly.com/review-the-devil-wears-prada-at-the-dominion-theatre-london/"
       ],
-      "dirFiles": 52,
+      "dirFiles": 53,
       "dirClean": 24,
-      "inReviewsJson": 29,
+      "inReviewsJson": 28,
       "missing": [
         {
           "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-devil-wears-prada-musical-chicago-review-20220808-y6nxcuksa5byvp25obrbonuiza-story.html",
@@ -53792,7 +53852,7 @@
         "liveCount": 8,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -53866,15 +53926,15 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance/",
+        "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
         "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
-        "https://www.sandiegoreader.com/events/2026/aug/02/the-family-album/",
+        "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
+        "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
         "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/",
-        "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t",
-        "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
         "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-        "https://www.theatermania.com/shows/california-theater/the-family-album_1838608/",
+        "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
         "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/"
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
       ],
       "dirFiles": 6,
       "dirClean": 2,
@@ -53887,13 +53947,13 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/02/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
           "host": "sandiegoreader.com",
           "knownOutletId": "san-diego-reader",
           "serpCensus": true
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
           "host": "sandiegoreader.com",
           "knownOutletId": "san-diego-reader",
           "serpCensus": true
@@ -53905,24 +53965,13 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theatermania.com/shows/california-theater/the-family-album_1838608/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
           "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
           "host": "lajolla.ca",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/",
@@ -53943,7 +53992,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t",
+          "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
           "host": "eventticketscenter.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -53961,7 +54010,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/",
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
           "host": "tickpick.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -53992,8 +54041,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -54013,7 +54062,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -54033,7 +54082,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -54043,7 +54092,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -54059,23 +54108,23 @@
           "outletId": "musicconnection",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778471/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~846437/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/02/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
           "host": "sandiegoreader.com",
           "outletId": "san-diego-reader",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778502/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~846438/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
           "host": "sandiegoreader.com",
           "outletId": "san-diego-reader",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778503/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~846439/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
         {
           "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
@@ -54083,24 +54132,18 @@
           "outletId": "vividseats",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778504/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~846440/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         },
-        {
-          "url": "https://www.theatermania.com/shows/california-theater/the-family-album_1838608/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778545/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [
         {
           "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
           "host": "lajolla.ca",
-          "outletId": "lajolla"
+          "outletId": "lajolla",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~846441/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -54116,14 +54159,14 @@
             "outlet": "san-diego-reader",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.sandiegoreader.com/events/2026/aug/02/the-family-album/"
+            "url": "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/"
           },
           {
             "outletId": "san-diego-reader",
             "outlet": "san-diego-reader",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/"
+            "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/"
           },
           {
             "outletId": "vividseats.com",
@@ -54131,13 +54174,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/shows/california-theater/the-family-album_1838608/"
           },
           {
             "outletId": "lajolla.ca",
@@ -54158,14 +54194,14 @@
             "outlet": "eventticketscenter.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t"
+            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e"
           },
           {
             "outletId": "tickpick.com",
             "outlet": "tickpick.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/"
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
           }
         ],
         "suppressedMissing": [],
@@ -54177,6 +54213,12 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
             "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
             "outletId": "musicconnection.com",
             "state": "GAP",
@@ -54184,29 +54226,22 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.sandiegoreader.com/events/2026/aug/02/the-family-album/",
+            "url": "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
             "outletId": "san-diego-reader",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T18:28:47.011Z"
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
-            "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+            "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
             "outletId": "san-diego-reader",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
             "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
             "outletId": "vividseats.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.theatermania.com/shows/california-theater/the-family-album_1838608/",
-            "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
@@ -54226,24 +54261,24 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-08-08-2026/7860273/t",
+            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
             "outletId": "eventticketscenter.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/",
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
             "outletId": "tickpick.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           }
         ],
-        "liveCount": 1,
+        "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-gin-game-2026",
@@ -56396,7 +56431,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -58050,7 +58085,7 @@
         "liveCount": 26,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -60360,7 +60395,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -60635,7 +60670,7 @@
             {
               "file": "ew--dalton-ross.json",
               "flag": "wrongShow",
-              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopW2S2_2TffWbfG4GLXSeUpyNYqoe3b96TJrCLWpztzWjdq-Lso"
+              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOorugpquG3VlSGeJGsTiQdYxSC1yR8yqJl6uEOtlSRytMh4NL6K4"
             }
           ]
         },
@@ -60643,11 +60678,11 @@
           "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
           "host": "criterionticketing.com",
           "knownOutletId": null,
-          "recoverable": true,
-          "recoverableFile": "criterionticketing--unknown.json",
-          "recoverableOutletId": "criterionticketing",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 1,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "criterionticketing--unknown.json",
@@ -60663,19 +60698,6 @@
         "ran": false,
         "reason": "out-of-window"
       },
-      "recoveryResults": [
-        {
-          "url": "https://criterionticketing.com/richard-o-brien-s-the-rocky-horror-show-1/promo/IC0ZG82B",
-          "host": "criterionticketing.com",
-          "file": "criterionticketing--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~774548/day) projects exhaustion in ~4d, before the 31d-out renewal — still us",
-          "recoveryCount": 2
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -60866,7 +60888,7 @@
         "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-03T17:36:20.225Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "the-saviors-off-broadway-2026",
@@ -63055,7 +63077,7 @@
           "outletId": "yahoo",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~778290/day) projects exhaustion in ~4d, before the 31d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~846286/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -63308,7 +63330,7 @@
         "liveCount": 17,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -64344,7 +64366,7 @@
         "liveCount": 4,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
@@ -66258,23 +66280,22 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
+        "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
+        "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
+        "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
+        "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
         "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
-        "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.standard.co.uk/culture/theatre/trainspotting-the-musical-review-b1290870.html",
         "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
         "https://www.whatsonstage.com/news/trainspotting-the-musical-review-signal-failure_1727899/",
         "https://www.timeout.com/london/news/review-trainspotting-the-musical-at-theatre-royal-haymarket-072326"
       ],
       "dirFiles": 50,
-      "dirClean": 27,
-      "inReviewsJson": 27,
+      "dirClean": 28,
+      "inReviewsJson": 28,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
         {
           "host": "theartsdesk.com",
           "count": 2
@@ -66340,10 +66361,6 @@
           "count": 1
         },
         {
-          "host": "voicemag.uk",
-          "count": 1
-        },
-        {
           "host": "westendbestfriend.co.uk",
           "count": 1
         }
@@ -66403,8 +66420,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -66424,7 +66441,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -66450,7 +66467,7 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 5,
         "error": null
       },
       "censusVerdict": {
@@ -66465,6 +66482,30 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
+            "url": "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
+            "outletId": "voicemag.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -66473,12 +66514,6 @@
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
             "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
-            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -66507,10 +66542,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 7
+        "liveCount": 10,
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-03T18:28:47.011Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -67252,7 +67287,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-03T16:48:58.521Z"
+      "computedAt": "2026-08-04T12:40:15.327Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
