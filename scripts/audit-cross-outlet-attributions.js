@@ -48,6 +48,24 @@
  * Matt Windman has 345 reviews at amny, but defaultCritic is recorded on the
  * near-empty duplicate outletId "amnewyorkcom" instead — a registry gap, not
  * a misattribution).
+ *
+ * --playbill-bleed (task #1008, card 3b2637c5-416f-81da, 2026-08-04):
+ * generalizes the playbill-verdict byline-bleed bug fixed for Matt Windman
+ * in task #991 (fix-cross-outlet-attributions-fulltext.js) beyond that fix's
+ * scope. That fix only found the bug via the base scanner's registry-mismatch
+ * gate PLUS its >1-appearance exclusion — both of which a REPEATED instance
+ * of the exact same scraper bug slips past: a repeat-offender critic whose
+ * registry defaultCritic happens to resolve at one of the outlets in the
+ * bleed group never trips the mismatch condition there, and appearing at
+ * many outlets (the >1 exclusion's legit-freelancer signal) hides the rest.
+ * Confirmed live instance: the-price-2017 credits 'Chris Jones' (Chicago
+ * Tribune's real chief critic) across 7 outlets — chicagotribune (correct)
+ * plus 6 others whose real bylines got overwritten during playbill-verdict's
+ * roundup parse. This mode groups review-texts by (showId, criticName)
+ * regardless of registry-mismatch status, scoped to source containing
+ * 'playbill-verdict', and flags any group spanning 3+ distinct outletIds —
+ * the threshold a single legitimate syndicated/freelance critic essentially
+ * never crosses in this corpus, but a roundup-parse bleed reliably does.
  */
 
 const fs = require('fs');
@@ -111,11 +129,12 @@ const showCategoryOf = new Map();
 if (hasHelpFlag(process.argv)) {
   console.log(
     'audit-cross-outlet-attributions.js — list files plausibly credited to another outlet\'s critic.\n\n' +
-      'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext]\n' +
+      'Usage: node scripts/audit-cross-outlet-attributions.js [--json] [--include-fulltext] [--playbill-bleed]\n' +
       'Exit 1 when unreviewed suspects remain, 0 when clean.\n' +
       'Clear a verified-legit row by setting crossOutletVerified: true in the file.\n' +
       'Clear an unverifiable row by setting wrongAttribution: true in the file.\n' +
-      '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).'
+      '--include-fulltext scans T1/T2 fullText-present reviews the base scan skips (card 3b2637c5-416f-81e6).\n' +
+      '--playbill-bleed groups by (showId, criticName) for playbill-verdict sources and flags 3+ outlet spans (task #1008).'
   );
   process.exit(0);
 }
@@ -152,68 +171,118 @@ for (const r of reviews) {
 }
 
 const INCLUDE_FULLTEXT = process.argv.includes('--include-fulltext');
+const PLAYBILL_BLEED = process.argv.includes('--playbill-bleed');
+const PLAYBILL_BLEED_MIN_OUTLETS = 3;
 
 const reviewTexts = path.join(ROOT, 'data', 'review-texts');
-const suspects = [];
-for (const showId of fs.readdirSync(reviewTexts)) {
-  if (showId.startsWith('_') || showId.startsWith('.')) continue;
-  const dir = path.join(reviewTexts, showId);
-  if (!fs.statSync(dir).isDirectory()) continue;
-  for (const file of fs.readdirSync(dir)) {
-    if (!file.endsWith('.json')) continue;
-    let d;
-    try {
-      d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
-    } catch {
-      continue;
-    }
-    const { criticName, outletId } = d;
-    if (!criticName || !outletId || criticName === 'Unknown') continue;
-    if (d.crossOutletVerified === true) continue;
-    if (d.wrongAttribution === true) continue;
-    const homes = defaultOf.get(criticName) || [];
-    if (!homes.length || homes.includes(outletId)) continue;
-    if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;
 
-    if (INCLUDE_FULLTEXT) {
-      if (!d.fullText) continue;
-      const tierOpts = { showCategory: showCategoryOf.get(showId) };
-      const inT1T2 = getTier(outletId, tierOpts) <= 2 || homes.some((h) => getTier(h, tierOpts) <= 2);
-      if (!inT1T2) continue;
-      if (bylineConfirmedInFullText(criticName, d.fullText)) continue;
+if (PLAYBILL_BLEED) {
+  // Group by (showId, criticName) regardless of registry-mismatch status —
+  // the whole point is to catch groups the registry-mismatch gate misses
+  // because one member (the critic's real home) resolves correctly.
+  const groups = new Map();
+  for (const showId of fs.readdirSync(reviewTexts)) {
+    if (showId.startsWith('_') || showId.startsWith('.')) continue;
+    const dir = path.join(reviewTexts, showId);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.json')) continue;
+      let d;
+      try {
+        d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      } catch {
+        continue;
+      }
+      const { criticName, outletId } = d;
+      if (!criticName || !outletId || criticName === 'Unknown') continue;
+      if (d.crossOutletVerified === true) continue;
+      if (d.wrongAttribution === true) continue;
+      if (d.wrongProduction === true || d.wrongShow === true) continue;
+      if (!String(d.source || '').includes('playbill-verdict')) continue;
+      const key = `${showId}||${criticName}`;
+      if (!groups.has(key)) groups.set(key, { showId, criticName, entries: [] });
+      groups.get(key).entries.push({ file: `${showId}/${file}`, outletId, url: d.url || null });
+    }
+  }
+
+  const bleedGroups = [];
+  for (const { showId, criticName, entries } of groups.values()) {
+    const outletIds = [...new Set(entries.map((e) => e.outletId))];
+    if (outletIds.length < PLAYBILL_BLEED_MIN_OUTLETS) continue;
+    bleedGroups.push({ showId, criticName, outletIds, files: entries });
+  }
+
+  if (process.argv.includes('--json')) {
+    console.log(JSON.stringify({ count: bleedGroups.length, groups: bleedGroups }, null, 2));
+  } else {
+    for (const g of bleedGroups) {
+      console.log(`  ${g.showId} | ${g.criticName} | ${g.outletIds.length} outlets: ${g.outletIds.join(',')}`);
+    }
+    console.log(`${bleedGroups.length} unreviewed playbill-verdict byline-bleed group(s)`);
+  }
+  process.exitCode = bleedGroups.length > 0 ? 1 : 0;
+} else {
+  const suspects = [];
+  for (const showId of fs.readdirSync(reviewTexts)) {
+    if (showId.startsWith('_') || showId.startsWith('.')) continue;
+    const dir = path.join(reviewTexts, showId);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.json')) continue;
+      let d;
+      try {
+        d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      } catch {
+        continue;
+      }
+      const { criticName, outletId } = d;
+      if (!criticName || !outletId || criticName === 'Unknown') continue;
+      if (d.crossOutletVerified === true) continue;
+      if (d.wrongAttribution === true) continue;
+      const homes = defaultOf.get(criticName) || [];
+      if (!homes.length || homes.includes(outletId)) continue;
+      if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;
+
+      if (INCLUDE_FULLTEXT) {
+        if (!d.fullText) continue;
+        const tierOpts = { showCategory: showCategoryOf.get(showId) };
+        const inT1T2 = getTier(outletId, tierOpts) <= 2 || homes.some((h) => getTier(h, tierOpts) <= 2);
+        if (!inT1T2) continue;
+        if (bylineConfirmedInFullText(criticName, d.fullText)) continue;
+        suspects.push({
+          file: `${showId}/${file}`,
+          criticName,
+          defaultCriticOf: homes,
+          source: String(d.source || ''),
+          url: d.url || null,
+          mode: 'fulltext',
+        });
+        continue;
+      }
+
+      const src = String(d.source || '');
+      if (!AGG.some((a) => src.includes(a))) continue;
+      if (d.fullText) continue;
       suspects.push({
         file: `${showId}/${file}`,
         criticName,
         defaultCriticOf: homes,
-        source: String(d.source || ''),
+        source: src,
         url: d.url || null,
-        mode: 'fulltext',
       });
-      continue;
     }
-
-    const src = String(d.source || '');
-    if (!AGG.some((a) => src.includes(a))) continue;
-    if (d.fullText) continue;
-    suspects.push({
-      file: `${showId}/${file}`,
-      criticName,
-      defaultCriticOf: homes,
-      source: src,
-      url: d.url || null,
-    });
   }
-}
 
-if (process.argv.includes('--json')) {
-  console.log(JSON.stringify({ count: suspects.length, suspects }, null, 2));
-} else {
-  for (const s of suspects) {
-    console.log(`  ${s.file} | ${s.criticName} (default of ${s.defaultCriticOf.join(',')}) | ${s.source} | ${s.url || 'no url'}`);
+  if (process.argv.includes('--json')) {
+    console.log(JSON.stringify({ count: suspects.length, suspects }, null, 2));
+  } else {
+    for (const s of suspects) {
+      console.log(`  ${s.file} | ${s.criticName} (default of ${s.defaultCriticOf.join(',')}) | ${s.source} | ${s.url || 'no url'}`);
+    }
+    console.log(`${suspects.length} unreviewed cross-outlet suspect(s)`);
   }
-  console.log(`${suspects.length} unreviewed cross-outlet suspect(s)`);
+  // process.exitCode (not process.exit()) lets Node drain the stdout pipe
+  // before exiting — execFileSync callers piping large --json payloads saw
+  // truncated/empty stdout when this called process.exit() directly.
+  process.exitCode = suspects.length > 0 ? 1 : 0;
 }
-// process.exitCode (not process.exit()) lets Node drain the stdout pipe
-// before exiting — execFileSync callers piping large --json payloads saw
-// truncated/empty stdout when this called process.exit() directly.
-process.exitCode = suspects.length > 0 ? 1 : 0;
