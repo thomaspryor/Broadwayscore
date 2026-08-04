@@ -257,10 +257,23 @@ async function main() {
     const cNorm = normalizeTitle(c.title);
     const cTokens = titleTokens(c.title);
     const cSubtitleStripped = subtitleStrippedTitle(c.title);
+    // Same carve-out deduplication.js's checkForDuplicate applies right after this
+    // exact normalized-equality check: if BOTH titles carry a subtitle marker but
+    // their full titles differ, don't collapse — that's the Angels in
+    // America: Millennium Approaches / Perestroika shape (distinct works sharing a
+    // base title), not a listing-source variant of the same show. Porting the
+    // strip without this guard would silently and permanently drop a real second
+    // production at the same venue (no retry path — matched candidates never
+    // re-enter staging).
+    const hasSubtitleMarker = (t) => /[:\-–—[]/.test(t);
     for (const e of cands) {
       if (e.normalized === cNorm) return { match: e, reason: 'normalized-equal' };
       if (cSubtitleStripped.length >= 3 && cSubtitleStripped === e.subtitleStripped) {
-        return { match: e, reason: `subtitle-stripped-equal: "${cSubtitleStripped}"` };
+        const bothHaveSubtitles = hasSubtitleMarker(c.title) && hasSubtitleMarker(e.title);
+        const fullTitlesDiffer = c.title.toLowerCase().trim() !== e.title.toLowerCase().trim();
+        if (!(bothHaveSubtitles && fullTitlesDiffer)) {
+          return { match: e, reason: `subtitle-stripped-equal: "${cSubtitleStripped}"` };
+        }
       }
       if (cTokens.size > 0 && e.tokens.size > 0) {
         const sim = jaccard(cTokens, e.tokens);
@@ -371,7 +384,7 @@ async function main() {
     // ids — hits findExistingMatch instead of minting a duplicate show.
     for (const vk of new Set([canonicalVenue(c.venue), canonicalVenue(entry.venue)])) {
       if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
-      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title) });
+      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title), subtitleStripped: subtitleStrippedTitle(entry.title) });
     }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
   }
