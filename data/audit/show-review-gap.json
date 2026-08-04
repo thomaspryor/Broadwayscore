@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-04T17:28:30.029Z",
+  "generatedAt": "2026-08-04T18:18:51.434Z",
   "windowDays": 1095,
-  "targets": 12,
-  "auditedThisRun": 12,
-  "carriedForward": 149,
+  "targets": 3,
+  "auditedThisRun": 3,
+  "carriedForward": 158,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 124,
-    "totalMissing": 830,
+    "withGap": 123,
+    "totalMissing": 825,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 749,
+    "totalFlaggedMisses": 748,
     "totalRecoverable": 15,
     "totalRecovered": 2
   },
@@ -34545,8 +34545,8 @@
         "https://www.broadwayworld.com/westend/article/Review-NOW-YOU-SEE-ME-LIVE-London-Coliseum-20260803"
       ],
       "dirFiles": 28,
-      "dirClean": 13,
-      "inReviewsJson": 12,
+      "dirClean": 15,
+      "inReviewsJson": 14,
       "missing": [],
       "dirOnly": [
         {
@@ -34555,6 +34555,14 @@
         },
         {
           "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "jonathanbaz.com",
+          "count": 1
+        },
+        {
+          "host": "liamodell.com",
           "count": 1
         },
         {
@@ -34609,34 +34617,6 @@
           ],
           "weRefStars": 5,
           "weRefStarsSource": "westendtheatre"
-        },
-        {
-          "url": "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/comedy/now-you-see-me-live-review"
-            },
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://timeout.com/london/comedy/now-you-see-me-live-review"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre"
         }
       ],
       "citedNoUrl": [],
@@ -34674,11 +34654,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 4,
-        "corroborated": 2,
+        "corroborated": 3,
         "perSource": {
           "westendtheatre": {
             "cited": 4,
-            "corroborated": 2
+            "corroborated": 3
           }
         }
       },
@@ -34695,8 +34675,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Scrapingdog pace (~853084/day) projects exhaustion in ~4d, before the 30d-out renewal — still us",
-          "recoveryCount": 1,
+          "reason": "⚠️  Scrapingdog pace (~855517/day) projects exhaustion in ~4d, before the 30d-out renewal — still us",
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -34709,17 +34689,16 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/comedy/now-you-see-me-live-review"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T15:48:01.636Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
             "outletId": "theguardian.com",
@@ -34738,19 +34717,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T15:48:01.636Z"
           }
         ],
-        "liveCount": 2,
+        "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-04T17:28:30.029Z"
+      "computedAt": "2026-08-04T18:18:51.434Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -62699,233 +62671,53 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
         "https://culturesauce.com/the-pass-off-broadway-review/",
-        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-        "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-        "https://www.borninthecity.com/product/the-pass-off-broadway/"
+        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
-        {
-          "url": "https://culturesauce.com/the-pass-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "serpCensus": true
-        },
-        {
-          "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
           "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-          "host": "borninthecity.com",
-          "knownOutletId": null,
-          "serpCensus": true
+          "count": 1
         }
       ],
-      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Pass\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Pass\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Pass\" review ellen",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://culturesauce.com/the-pass-off-broadway-review/",
-          "host": "culturesauce.com",
-          "outletId": "culturesauce",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-          "host": "newyorktheater.me",
-          "outletId": "nyt-theater",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-          "host": "theatrely.com",
-          "outletId": "theatrely",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-          "host": "borninthecity.com",
-          "outletId": "borninthecity",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~853054/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/"
-          },
-          {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturesauce.com/the-pass-off-broadway-review/"
-          },
-          {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
-          },
-          {
-            "outletId": "borninthecity.com",
-            "outlet": "borninthecity.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.borninthecity.com/product/the-pass-off-broadway/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "theatermania.com",
+            "state": "live",
             "firstSeenAt": "2026-08-04T17:28:30.029Z"
           },
           {
             "url": "https://culturesauce.com/the-pass-off-broadway-review/",
-            "outletId": "culturesauce",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "culturesauce.com",
+            "state": "live",
             "firstSeenAt": "2026-08-04T17:28:30.029Z"
           },
           {
             "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-            "outletId": "nyt-theater",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T17:28:30.029Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-            "outletId": "theatrely",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T17:28:30.029Z"
-          },
-          {
-            "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-            "outletId": "borninthecity.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "newyorktheater.me",
+            "state": "live",
             "firstSeenAt": "2026-08-04T17:28:30.029Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-04T17:28:30.029Z"
+      "computedAt": "2026-08-04T18:18:51.434Z"
     },
     {
       "showId": "the-potluck-off-broadway-2026",
@@ -69851,7 +69643,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T17:28:30.029Z"
+      "computedAt": "2026-08-04T18:18:51.434Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
