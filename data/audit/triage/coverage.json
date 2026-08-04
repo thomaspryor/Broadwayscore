@@ -1,7 +1,7 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-08-03T07:57:59.089Z",
+  "lastChecked": "2026-08-04T07:41:59.123Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,6 +10,11 @@
       "name": "Coverage: SERP census recall",
       "status": "warn",
       "message": "Review coverage not judgeable yet: only 0 prior run(s) on record (need 2) — no baseline to judge against yet"
+    },
+    {
+      "name": "Coverage: adversarial probe",
+      "status": "warn",
+      "message": "The naive search found 9 review URL(s) this pipeline hasn't discovered yet: cat-cohen-broad-strokes-off-broadway-2026, the-car-man-west-end-2026, the-misanthrope-west-end-2026, spamalot-off-broadway-2026, sinatra-the-musical-west-end-2026"
     }
   ]
 }

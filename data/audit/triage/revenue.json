@@ -1,5 +1,5 @@
 {
-  "system": "scoring",
+  "system": "revenue",
   "status": "pass",
   "lastChecked": "2026-08-04T07:41:59.123Z",
   "lastAlertTimestamp": null,
@@ -7,9 +7,9 @@
   "escalationState": "resolved",
   "details": [
     {
-      "name": "Scoring: batch state",
+      "name": "Revenue: affiliate health",
       "status": "pass",
-      "message": "No batch in flight"
+      "message": "10 checks healthy (0h ago) [shadow burn-in]"
     }
   ]
 }
