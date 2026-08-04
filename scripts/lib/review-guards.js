@@ -2819,7 +2819,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      !!data.wrongProductionAutoCleared;
     // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
     // from a known star outlet clears the rejectedAt gate as well.
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
@@ -2839,7 +2840,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      !!data.wrongProductionAutoCleared;
     const wpBlocking = data.wrongProduction === true && !wpCleared;
     if (data.wrongShow || wpBlocking) return 'wrongContentFlagsUncleared';
     // If no substantial text, also correct to exclude
@@ -2855,7 +2857,8 @@ function explainExclusion(data, show, filePath) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
+      data.humanReviewedWrongProduction === false ||
+      !!data.wrongProductionAutoCleared;
     if (!wpCleared) return 'contentTierInvalid';
     // Cleared — fall through and let text/signal check decide
   }
