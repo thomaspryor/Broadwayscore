@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T10:02:53.531Z",
+  "timestamp": "2026-08-04T11:15:11.246Z",
   "stats": {
-    "totalReviews": 41533,
-    "alreadyFlagged": 18138,
+    "totalReviews": 41549,
+    "alreadyFlagged": 18142,
     "dateGuardCatches": 111,
     "directorMismatch": 944,
     "tvFilmSignals": 1147,
-    "londonSignals": 809,
+    "londonSignals": 810,
     "offBroadwaySignals": 480,
     "yearMismatch": 87,
-    "noPublishDate": 3487
+    "noPublishDate": 3483
   },
   "findings": [
     {
@@ -38591,6 +38591,7 @@
     {
       "showId": "now-you-see-me-live-west-end-2026",
       "file": "london-theatre--unknown.json",
+      "score": 71,
       "publishDate": "2026-08-03",
       "url": "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
       "findings": [
@@ -46041,6 +46042,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "file": "theatreandtonic--penny-walshe.json",
+      "publishDate": "2026-07-24",
+      "url": "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
