@@ -65,18 +65,22 @@ function buildOutletMaps(reg) {
  * reviews wrongProduction on the very London shows it was discovered from
  * (task #817: liamodell/jonathan-baz on Now You See Me Live, 2026-08-04).
  *
- * Only returns a region when the market evidence is unanimous; mixed or empty
- * evidence returns null (leave region unset — same behavior as before).
+ * Only returns 'london' when the market evidence is unanimously London; anything
+ * else returns null (leave region unset — same behavior as before). A 'us'
+ * inference is deliberately NOT made: the cross-market guard's US-side behavior
+ * is already the default for region-less outlets, and stamping region:'us'
+ * would disable the guard's urlIsUK domain fallback for that outlet's future
+ * reviews — a net safety-net loss with no consumer (the self-heal only checks
+ * 'london').
  *
  * @param {string[]} categories - show categories the outlet's reviews are filed under
  * @param {(cat: string) => boolean} isLondonMarket - venue-classification.js's predicate
- * @returns {'london'|'us'|null}
+ * @returns {'london'|null}
  */
 function inferOutletRegionFromCategories(categories, isLondonMarket) {
   const cats = [...new Set((categories || []).filter(Boolean))];
   if (cats.length === 0) return null;
   if (cats.every(c => isLondonMarket(c))) return 'london';
-  if (cats.every(c => c === 'broadway' || c === 'off-broadway')) return 'us';
   return null;
 }
 
