@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T02:43:15.111Z",
+  "generatedAt": "2026-08-04T04:06:26.054Z",
   "windowDays": 45,
   "showsScanned": 60,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 277.5273602777778,
+      "fileAgeHours": 278.9137352777778,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 236.8303263888889
+      "nonTerminalAgeHours": 238.21669944444446
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 39.268346111111114
+      "nonTerminalAgeHours": 40.654719166666666
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=othello-off-broadway-2026",
       "firstSeen": "2026-08-03T04:15:10.873Z",
-      "fileAgeHours": 22.46784388888889,
+      "fileAgeHours": 23.854216944444445,
       "gapSeenAt": "2026-08-03T18:28:48.681Z",
-      "nonTerminalAgeHours": 8.240675
+      "nonTerminalAgeHours": 9.627048055555555
     }
   ],
   "contradictions": []
