@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-04T07:42:20.483Z",
+  "generatedAt": "2026-08-04T13:13:20.342Z",
   "workflow": "test.yml",
   "branch": "main",
   "latestRunHeadSha": "2511cbfda42d616abe71e63def391f5a25f03a14",
   "state": "RED",
   "consecutiveFailures": 1,
   "redSince": "2026-08-04T06:57:37Z",
-  "redForHours": 0.7454119444444445,
+  "redForHours": 6.2620394444444445,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-04T05:11:42Z",
   "latestFailedRunId": "30885893492",
@@ -26,6 +26,25 @@
       ]
     }
   ],
-  "failingPaths": [],
+  "failingPaths": [
+    {
+      "path": "scripts/validate-market-expansion.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "tests/star-rating-extractors.test.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/validate-show-venue.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
   "topFailingJob": "Data Validation"
 }
