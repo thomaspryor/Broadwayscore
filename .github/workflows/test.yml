@@ -546,6 +546,10 @@ on:
       - 'scripts/audit-cast-contamination.js'
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
+      # Colocated test (task #57, title-collision sibling divergence). Registered
+      # explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+      # files are NOT globbed) — path-listed so a solo edit triggers CI.
+      - 'scripts/audit-audience-buzz-contamination.test.mjs'
       - 'scripts/audit-critic-consensus-contamination.js'
       # The four contamination audits gated to a --gate catastrophe floor (2026-06-30,
       # Notion 38f637c5). Each pure block/pass decision lives in scripts/lib/*-
