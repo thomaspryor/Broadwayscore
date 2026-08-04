@@ -1441,6 +1441,15 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/alert-ledger-commit-check.js'
       - 'scripts/lib/alert-ledger-commit-check.test.mjs'
+      # Lint guard: scripts that call url-discovery.js's serpQuery()/
+      # discoverCorrectUrl() (SERP path) must commit
+      # data/audit/scraper-spend-ledger.jsonl in the same job (task #996,
+      # card 3b1637c5 — 19 workflows found silently discarding SERP spend
+      # telemetry). Colocated *.test.mjs runs via the lib-test glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/ledger-coverage-check.js'
+      - 'scripts/lib/ledger-coverage-check.test.mjs'
+      - 'scripts/lib/ledger-coverage-exemptions.js'
       # Cross-run dead-arm detector (card #647) — the class behind all three
       # arms the 2026-07-30 pipeline audit found dead with zero alarms.
       # Colocated *.test.mjs run via the scripts/lib/*.test.mjs glob;
@@ -2310,6 +2319,17 @@ jobs:
           # fixed in audit-aggregator-gap.yml/test-ugc-roundtrip.yml/
           # ux-walkthrough.yml/check-cron-health.yml (card #618).
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
+
+      - name: Check SERP-calling workflows commit scraper-spend ledger
+        run: |
+          # Structural guard for card 3b1637c5's finding: 19 workflows whose
+          # scripts call url-discovery.js's serpQuery()/discoverCorrectUrl()
+          # never staged data/audit/scraper-spend-ledger.jsonl, so SERP spend
+          # telemetry was silently discarded every run (18 fixed by hand in
+          # 436f4a24092/943bd4a9327; task #996 is this permanent guard).
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook.
+          bash scripts/lint-workflow-guards.sh ledger-coverage
 
       - name: Check scripts avoid reset --soft + scoped-add + commit
         run: |
