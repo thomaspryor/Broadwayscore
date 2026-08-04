@@ -11,7 +11,7 @@ import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractOpeningsFromNytheaterPost, nytheaterOpeningsTagSignature } = require('../../scripts/lib/reverse-discovery.js');
+const { extractOpeningsFromNytheaterPost, nytheaterOpeningsTagSignature, isNytheaterOutOfTown } = require('../../scripts/lib/reverse-discovery.js');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = join(__dirname, '..', 'fixtures', 'ob-discovery');
@@ -39,6 +39,18 @@ test('extractOpeningsFromNytheaterPost: real Aug 2026 fixture yields >=14 entrie
   // Spot-check a couple of real entries survive verbatim.
   assert.ok(entries.some(e => e.title === 'The Vessel' && e.venue === 'Tollbooth Co at 59e59'));
   assert.ok(entries.some(e => e.title === 'The Real Ivanov' && e.venue === 'at CSC Theater'));
+  // "The Festival" (Hutton Brickyards in Kingston, N.Y.) is marked 🇺🇸 —
+  // out-of-town, not a missing NYC show — and must be filtered, not just
+  // matched-with-a-venue (ship-check finding: it was false-alarming as a
+  // missing-show candidate in the live dry-run before this filter existed).
+  assert.ok(!entries.some(e => e.title === 'The Festival'));
+});
+
+test('isNytheaterOutOfTown: flags only the 🇺🇸 marker', () => {
+  assert.equal(isNytheaterOutOfTown('🟧🇺🇸'), true);
+  assert.equal(isNytheaterOutOfTown('🟩'), false);
+  assert.equal(isNytheaterOutOfTown(''), false);
+  assert.equal(isNytheaterOutOfTown(null), false);
 });
 
 test('extractOpeningsFromNytheaterPost: Gutenberg drift fixture (nested-tag venue) throws', () => {
