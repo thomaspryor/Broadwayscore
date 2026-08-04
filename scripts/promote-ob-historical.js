@@ -32,6 +32,18 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
+// Cousin fix of scripts/promote-ob-venue-candidates.js (task: subtitle-variant
+// dedup gap, 2026-08-04). title-match.js's normalizeTitle does NOT strip
+// colon/dash subtitles ("Ectoplasm" vs "Ectoplasm: Spit and Vigor" produce
+// different keys here), so this script's exact title+venue key can miss a
+// same-venue subtitle variant entirely -- worse than the jaccard fallback the
+// venue-candidates script had, since there's no fallback at all here.
+// deduplication.js's normalizeTitle strips the subtitle; reuse it the same way,
+// with the same both-subtitled-but-differ carve-out (Angels in America:
+// Millennium Approaches vs : Perestroika shape) so two genuinely distinct
+// works sharing a base title at the same venue aren't silently collapsed.
+const { normalizeTitle: subtitleStrippedTitle } = require('./lib/deduplication');
+const hasSubtitleMarker = (t) => /[:\-–—[]/.test(t);
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -102,17 +114,43 @@ function main() {
   const showsData = loadShows();
   const existingKeys = new Set(showsData.shows.map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
   const existingIds = new Set(showsData.shows.map(s => s.id));
+  // subtitle-stripped-key → list of original titles at that venue, so the
+  // carve-out below can compare full titles before deciding to collapse.
+  const existingBySubtitleKey = new Map();
+  for (const s of showsData.shows) {
+    const k = `${subtitleStrippedTitle(s.title)}|${canonicalVenue(s.venue)}`;
+    if (!existingBySubtitleKey.has(k)) existingBySubtitleKey.set(k, []);
+    existingBySubtitleKey.get(k).push(s.title);
+  }
+
+  function findSubtitleDuplicateTitle(candidateTitle, venueKey) {
+    const subKey = `${subtitleStrippedTitle(candidateTitle)}|${venueKey}`;
+    const titles = existingBySubtitleKey.get(subKey);
+    if (!titles) return null;
+    for (const existingTitle of titles) {
+      const bothHaveSubtitles = hasSubtitleMarker(candidateTitle) && hasSubtitleMarker(existingTitle);
+      const fullTitlesDiffer = candidateTitle.toLowerCase().trim() !== existingTitle.toLowerCase().trim();
+      if (!(bothHaveSubtitles && fullTitlesDiffer)) return existingTitle;
+    }
+    return null;
+  }
 
   const toPromote = [];
   const skipped = [];
   for (const r of matches) {
     const entry = buildShowEntry(r);
     const key = `${normalizeTitle(entry.title)}|${canonicalVenue(entry.venue)}`;
+    const venueKey = canonicalVenue(entry.venue);
+    const subtitleDup = findSubtitleDuplicateTitle(entry.title, venueKey);
     if (existingKeys.has(key)) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
+    if (subtitleDup) { skipped.push({ entry, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     toPromote.push(entry);
     existingKeys.add(key);
+    const subKey = `${subtitleStrippedTitle(entry.title)}|${venueKey}`;
+    if (!existingBySubtitleKey.has(subKey)) existingBySubtitleKey.set(subKey, []);
+    existingBySubtitleKey.get(subKey).push(entry.title);
     existingIds.add(entry.id);
   }
 
