@@ -32,7 +32,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -1223,11 +1223,15 @@ async function fetchShowScoreStatus(showScoreUrl) {
     const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
     if (!statusText) return null;
 
-    // Extract venue from the link in info-top-line
+    // Extract venue from the link in info-top-line. The first <a> here is
+    // sometimes ShowScore's neighbourhood-filter link ("Midtown E",
+    // "Soho/Tribeca") rather than the venue link — sanitizeVenueForWrite
+    // fails closed on those rather than writing the blob (card #994).
     const venueLink = topLine.querySelector('a');
     const venueFull = venueLink?.textContent?.trim() || '';
     // Strip "NYC: " or "London: " prefix
-    const venue = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || 'TBA';
+    const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
+    const venue = sanitizeVenueForWrite(venueRaw) || 'TBA';
 
     // Extract runtime from second segment (between delimiters)
     const delimiters = topLine.querySelectorAll('.show-page-v2__info-top-line-delimiter');
