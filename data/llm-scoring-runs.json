@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-01T22:01:42.711Z",
-    "completedAt": "2026-08-01T22:01:42.923Z",
-    "totalReviews": 34,
-    "processed": 0,
-    "skipped": 33,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "tao-of-glass-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-01T22:38:08.460Z",
     "completedAt": "2026-08-01T22:38:12.184Z",
     "totalReviews": 1,
@@ -554370,6 +554350,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-04T23:35:09.249Z",
+    "completedAt": "2026-08-04T23:35:09.459Z",
+    "totalReviews": 41886,
+    "processed": 0,
+    "skipped": 41885,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
       }
     ]
   }
