@@ -317,7 +317,79 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   return { modified, notes };
 }
 
-module.exports = { reconcileProtectedFields, MANUAL_FIELDS, CONTENT_FIELDS, SCORE_FIELDS };
+// Fields within data/outlet-registry.json's `outlets[id]` objects that are
+// human-curated (byline-attribution corrections, critic overrides, alias
+// additions) and must survive a CI rebase the same way MANUAL_FIELDS does
+// for review files. Task #989: two multiAuthor:true corrections were
+// silently reverted by same-day RSS-poller commits before this existed.
+//
+// SCOPE (confirmed by adversarial review): the actual #989 incidents were
+// clean fast-forward pushes with no conflict at all — push-with-retry.sh
+// only calls restore_protected_fields() (which routes here) inside its
+// rebase/merge conflict branches, never on a successful first-try `git
+// push`. The real fix for that path is stage-data-changes.sh excluding
+// untouched dual-tracked core files at STAGE time. This reconciler is a
+// narrower second layer: it only helps if a registry-touching commit
+// genuinely conflicts with a concurrent one and reaches a rebase.
+const REGISTRY_SCALAR_FIELDS = ['multiAuthor', 'defaultCritic'];
+
+/**
+ * Pure reconciliation for data/outlet-registry.json after a rebase. Mutates
+ * and returns `local`. Scalar fields (multiAuthor, defaultCritic) restore
+ * only when local is missing the value (never override an explicit local
+ * edit); aliases union both sides so a rebase can't drop an alias either
+ * side added.
+ *
+ * Deliberately does NOT restore an outlet id that exists only on `remote`
+ * (only on `local`): outlet deletion is itself a legitimate manual op here
+ * (duplicate-outlet merges cascade-delete the loser id — see
+ * memory/feedback_outlet_merge_no_flag_and_keep.md), so blindly re-adding a
+ * remote-only outlet on rebase could resurrect one a human just removed.
+ *
+ * @param {object} local  post-rebase working-tree registry (mutated)
+ * @param {object} remote the remote ref's registry
+ * @returns {{ modified: boolean, notes: string[] }}
+ */
+function reconcileOutletRegistry(local, remote) {
+  let modified = false;
+  const notes = [];
+  if (!remote || !remote.outlets || !local || !local.outlets) return { modified, notes };
+
+  for (const [id, remoteOutlet] of Object.entries(remote.outlets)) {
+    const localOutlet = local.outlets[id];
+    if (!localOutlet || !remoteOutlet) continue; // see doc comment above — no cross-add
+
+    for (const field of REGISTRY_SCALAR_FIELDS) {
+      const remoteVal = remoteOutlet[field];
+      if (remoteVal === undefined || remoteVal === null) continue;
+      if (localOutlet[field] === undefined || localOutlet[field] === null) {
+        localOutlet[field] = remoteVal;
+        modified = true;
+        notes.push(`Restored outlets.${id}.${field}`);
+      }
+    }
+
+    if (Array.isArray(remoteOutlet.aliases)) {
+      const localAliases = Array.isArray(localOutlet.aliases) ? localOutlet.aliases : [];
+      const missing = remoteOutlet.aliases.filter((a) => !localAliases.includes(a));
+      if (missing.length > 0) {
+        localOutlet.aliases = [...localAliases, ...missing];
+        modified = true;
+        notes.push(`Restored ${missing.length} alias(es) for outlets.${id}`);
+      }
+    }
+  }
+
+  return { modified, notes };
+}
+
+module.exports = {
+  reconcileProtectedFields,
+  reconcileOutletRegistry,
+  MANUAL_FIELDS,
+  CONTENT_FIELDS,
+  SCORE_FIELDS,
+};
 
 if (require.main === module) {
   const remoteRef = process.argv[2];
@@ -366,23 +438,31 @@ if (require.main === module) {
         }
         const remote = JSON.parse(remoteContent);
 
-        // Pre-rebase HEAD version, when available
-        let ours = null;
-        try {
-          ours = JSON.parse(execSync(`git show ORIG_HEAD:${f}`, {
-            encoding: 'utf8',
-            stdio: ['pipe', 'pipe', 'pipe'],
-          }));
-        } catch {
-          // ORIG_HEAD not available or file didn't exist — skip
-        }
+        // data/outlet-registry.json isn't shaped like a review file (no
+        // top-level MANUAL_FIELDS, no fullText) — it's { outlets: { id: {} } }.
+        // Route it through the dedicated per-outlet reconciler instead.
+        let modified, notes;
+        if (/(^|\/)outlet-registry\.json$/.test(f)) {
+          ({ modified, notes } = reconcileOutletRegistry(local, remote));
+        } else {
+          // Pre-rebase HEAD version, when available
+          let ours = null;
+          try {
+            ours = JSON.parse(execSync(`git show ORIG_HEAD:${f}`, {
+              encoding: 'utf8',
+              stdio: ['pipe', 'pipe', 'pipe'],
+            }));
+          } catch {
+            // ORIG_HEAD not available or file didn't exist — skip
+          }
 
-        // The remote-richer (stale-checkout) direction is only meaningful when
-        // the diff ref is a genuine remote-tracking ref. batch-correct-reviews.js
-        // passes ORIG_HEAD — there "remote" is the pre-correction local state
-        // and the guard would resurrect what the correction removed.
-        const staleCheckoutGuard = /^(origin|refs\/remotes)\//.test(remoteRef);
-        const { modified, notes } = reconcileProtectedFields(local, remote, ours, { staleCheckoutGuard });
+          // The remote-richer (stale-checkout) direction is only meaningful
+          // when the diff ref is a genuine remote-tracking ref. batch-correct-
+          // reviews.js passes ORIG_HEAD — there "remote" is the pre-correction
+          // local state and the guard would resurrect what the correction removed.
+          const staleCheckoutGuard = /^(origin|refs\/remotes)\//.test(remoteRef);
+          ({ modified, notes } = reconcileProtectedFields(local, remote, ours, { staleCheckoutGuard }));
+        }
         for (const n of notes) process.stderr.write(`  ${n} in ${f}\n`);
 
         if (modified) {

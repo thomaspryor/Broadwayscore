@@ -119,6 +119,7 @@ tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
+tests/unit/core-data-public-stage-exclusions.test.mjs
 tests/unit/core-data-sync-decision.test.mjs
 tests/unit/corpus-determinism.test.mjs
 tests/unit/coverage-verdict.test.mjs
@@ -296,6 +297,7 @@ tests/unit/rescore-actionable-depth.test.mjs
 tests/unit/rescore-queue-depth.test.mjs
 tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs
+tests/unit/restore-protected-fields-outlet-registry.test.mjs
 tests/unit/restore-protected-fields-stale-checkout.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs
 tests/unit/review-gate-scope.test.mjs
