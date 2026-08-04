@@ -344,7 +344,7 @@
       "cardId": "3b1637c5-416f-8181-b2fd-fe33560c3654"
     },
     "arm-yield:workflow:sweep-we-aggregators": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Sweep WE Aggregators has stopped updating (20 days)",
       "firstSeen": "2026-08-03T13:05:40.013Z",
@@ -352,18 +352,19 @@
       "lastNotifiedAt": "2026-08-03T13:05:40.013Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-04T13:07:42.297Z"
     },
     "arm-yield:workflow:scoring-audit": {
       "status": "open",
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (185 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-03T13:25:13.091Z",
+      "lastSeen": "2026-08-04T13:07:42.295Z",
       "lastNotifiedAt": "2026-08-03T13:05:40.014Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
