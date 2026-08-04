@@ -71,6 +71,12 @@ const DEFAULT_EXEMPT_SCRIPTS = Object.freeze([
   'opening-night-poller.js',
   'discover-opening-night-reviews.js',
   'check-opening-night-completeness.js',
+  // Every-5-minutes fast-discovery loop that exists ONLY to catch reviews in
+  // the first 30-60 minutes of an opening (aggregator-url-watcher.yml). Its
+  // workflow is named "Aggregator URL Watcher", so the name prefix does not
+  // save it, and unlike gather-reviews.js it has no bulk mode — the whole
+  // script is opening-night work, so a basename exemption is exactly right.
+  'watch-aggregator-urls.js',
 ]);
 
 /** GITHUB_WORKFLOW values that make every step of the run exempt. */
@@ -148,11 +154,29 @@ function shouldTripBreaker({ billedReqs, ceiling }) {
 
 /**
  * Is this caller exempt from the breaker + bulk budget?
+ *
+ * Three signals, in priority order:
+ *   1. BD_OPENING_NIGHT=1 — an EXPLICIT marker the dispatching workflow sets.
+ *      This is the authoritative one, and the only one that survives a
+ *      dispatch chain. Opening Night Reviews dispatches gather-reviews.yml,
+ *      which dispatches collect-review-texts.yml; by then GITHUB_WORKFLOW is
+ *      "Collect Review Texts" and signal 3 no longer fires, so a tripped
+ *      breaker would silently starve opening-night collection (ship-check
+ *      finding — the exact regression this carve-out exists to prevent).
+ *   2. script basename allowlist — for direct/local invocation.
+ *   3. GITHUB_WORKFLOW prefix — belt-and-braces for steps inside the
+ *      opening-night workflows themselves, including the ones that run
+ *      general-purpose scripts (opening-night-poller.yml runs
+ *      collect-review-texts.js --aggressive, which must NOT be exempt when a
+ *      bulk backfill is what invoked it).
+ *
  * @param {string|null} scriptName - basename of process.argv[1]
  * @param {string[]} allowlist
  * @param {string|null} [workflowName] - GITHUB_WORKFLOW
+ * @param {string|null} [openingNightFlag] - BD_OPENING_NIGHT
  */
-function isExemptCaller(scriptName, allowlist, workflowName = null) {
+function isExemptCaller(scriptName, allowlist, workflowName = null, openingNightFlag = null) {
+  if (openingNightFlag === '1' || openingNightFlag === 'true') return true;
   if (typeof workflowName === 'string'
       && workflowName.trim().toLowerCase().startsWith(EXEMPT_WORKFLOW_PREFIX)) {
     return true;
@@ -273,7 +297,12 @@ function consultBrightData({ zone, env = process.env, now = new Date() }) {
   const scriptName = (() => {
     try { return process.argv[1] ? path.basename(process.argv[1]) : null; } catch { return null; }
   })();
-  const exempt = isExemptCaller(scriptName, resolveExemptScripts(env), env.GITHUB_WORKFLOW || null);
+  const exempt = isExemptCaller(
+    scriptName,
+    resolveExemptScripts(env),
+    env.GITHUB_WORKFLOW || null,
+    env.BD_OPENING_NIGHT || null,
+  );
 
   if (!exempt) {
     const state = readBreakerState(env, Date.now());

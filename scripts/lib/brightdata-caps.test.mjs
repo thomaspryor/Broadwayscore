@@ -282,3 +282,43 @@ test('consultBrightData: firstBlock is true once, then false — one ledger row 
   assert.equal(consultBrightData({ zone: 'web_unlocker2', env }).firstBlock, false);
   assert.equal(getBrightDataRunStats().blocked, 3, 'every withheld call still counts');
 });
+
+// ---------- ship-check regressions: dispatch-chain exemption ----------
+
+test('BD_OPENING_NIGHT=1 exempts even when script + workflow name both miss', () => {
+  // The dispatch chain (Opening Night Reviews → gather-reviews.yml →
+  // collect-review-texts.yml) arrives with GITHUB_WORKFLOW="Collect Review
+  // Texts". Without the explicit flag a tripped breaker starved it.
+  assert.equal(isExemptCaller('collect-review-texts.js', [], 'Collect Review Texts', '1'), true);
+  assert.equal(isExemptCaller('gather-reviews.js', [], 'Gather Review Data', 'true'), true);
+});
+
+test('BD_OPENING_NIGHT absent/false/empty does NOT exempt a bulk run', () => {
+  for (const flag of [null, undefined, '', '0', 'false', 'no']) {
+    assert.equal(isExemptCaller('collect-review-texts.js', [], 'Collect Review Texts', flag), false, `flag ${String(flag)}`);
+  }
+});
+
+test('consultBrightData honors BD_OPENING_NIGHT through the env', () => {
+  _resetForTests();
+  const day = utcDay(new Date());
+  const env = { BD_BREAKER_STATE_PATH: withStateFile(TRIPPED(day)), BD_OPENING_NIGHT: '1' };
+  const v = consultBrightData({ zone: 'web_unlocker2', env });
+  assert.equal(v.allowed, true);
+  assert.equal(v.exempt, true);
+});
+
+test('the opening-night fast-discovery watcher is exempt by script name', () => {
+  // aggregator-url-watcher.yml runs every 5 min during opening windows and is
+  // NOT named "Opening Night" — basename exemption is the only thing covering it.
+  const list = resolveExemptScripts({});
+  assert.ok(list.includes('watch-aggregator-urls.js'));
+  assert.equal(isExemptCaller('watch-aggregator-urls.js', list, 'Aggregator URL Watcher'), true);
+});
+
+test('bulk scrapers are still NOT exempt by script name', () => {
+  const list = resolveExemptScripts({});
+  for (const s of ['gather-reviews.js', 'collect-review-texts.js', 'recover-serp-text.js']) {
+    assert.equal(isExemptCaller(s, list, 'Gather Review Data'), false, s);
+  }
+});

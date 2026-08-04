@@ -497,6 +497,17 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page);
   if (syncResult !== null) return syncResult;
 
+  // Second consult before the async fallback (ship-check finding). These two
+  // sub-paths are SEPARATE billed requests, so one consult per _serpViaBrightData
+  // call would let a budget of N permit up to 2N billed requests. Consulting
+  // again here keeps the counter honest — and lets the budget stop the retry
+  // even when the first attempt was admitted.
+  const retryVerdict = consultBrightData({ zone: _BD_SERP_ZONE });
+  if (!retryVerdict.allowed) {
+    log('    ⏭ BD SERP async fallback skipped — Bright Data cap reached');
+    return null;
+  }
+
   // Fallback: async SERP API (polling-based, slower but more reliable)
   return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page);
 }

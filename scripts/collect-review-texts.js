@@ -453,6 +453,8 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
 const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
+const { consultBrightData } = require('./lib/brightdata-caps');
+const { recordBdCall } = require('./lib/bd-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
@@ -2545,6 +2547,25 @@ async function fetchWithDirectCookies(url) {
 async function fetchWithBrightData(url) {
   if (!CONFIG.brightDataKey || !axios) {
     throw new Error('Bright Data not configured');
+  }
+
+  // THIRD chokepoint (ship-check finding). This file has its own axios-based
+  // Web Unlocker tier — it does NOT go through scripts/lib/scraper.js — and it
+  // is the single largest Bright Data spender in the system. Capping only the
+  // lib's two helpers would have left the daily breaker decorative: the
+  // hourly job would trip, the alert would fire, and this collector would keep
+  // billing. Any future direct api.brightdata.com/request call must consult
+  // here too; scripts/lib/brightdata-caps.js is the one place that decides.
+  const bdVerdict = consultBrightData({ zone: process.env.BRIGHTDATA_ZONE || 'web_unlocker2' });
+  if (!bdVerdict.allowed) {
+    if (bdVerdict.firstBlock) {
+      recordBdCall({ url, fn: 'collector-tier3', success: false, status: 'budget_capped', purpose: 'budget_capped' });
+    }
+    // Throw (not return null): this tier's contract with its callers is
+    // throw-on-failure, and the outer handler already turns a thrown tier into
+    // "try the next tier / record the failure" — where getScraperStats().
+    // bdBlocked then classifies it as budget_capped rather than a dead URL.
+    throw new Error('Bright Data skipped — daily budget cap');
   }
 
   stats.tier3Attempts++;
