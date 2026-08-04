@@ -2491,10 +2491,22 @@ showDirs.forEach(showId => {
               // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
               const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
                 || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
-              if (isUkUrl && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
+              // Registry region 'london' is as strong a signal as a UK URL: the cross-market
+              // flagger only fires when region !== 'london', so a london-region outlet carrying
+              // this flag means the region was backfilled AFTER flagging (or the flag is a
+              // dangling remnant of an interrupted clear). UK blogs on .com domains
+              // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
+              // so without this the flag can never self-heal. Dual-market outlets are
+              // deliberately NOT included — their wrongProduction flags can be genuine
+              // same-title other-market reviews.
+              const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
+                || outletRegionMap[earlyRawOutlet] === 'london';
+              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
-                data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
+                data.wrongProductionAutoCleared = isUkUrl
+                  ? `rebuild: UK URL on London show (${hostname})`
+                  : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
                 try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
                 stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
               }
@@ -5312,18 +5324,35 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       }
     }
 
+    // Infer region from the markets of the shows this outlet reviews (task #817:
+    // region-less registration made the cross-market guard flag new UK blogs' genuine
+    // reviews as wrongProduction). Unanimous market evidence only — see
+    // inferOutletRegionFromCategories in lib/outlet-region-map.js.
+    const { inferOutletRegionFromCategories } = require('./lib/outlet-region-map');
+    const outletShowCategories = {};
+    for (const r of allReviews) {
+      if (!r.outletId || !r.showId) continue;
+      const cat = showCategoryMap[r.showId];
+      if (!cat) continue;
+      (outletShowCategories[r.outletId] = outletShowCategories[r.outletId] || new Set()).add(cat);
+    }
+
     // Auto-add missing outlets with tier 3
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
-      outletRegistry.outlets[outletId] = {
+      const entry = {
         displayName,
         tier: 3,
         aliases: [outletId],
         domain: outletDomainHints[outletId] || null
       };
+      const inferredRegion = inferOutletRegionFromCategories(
+        [...(outletShowCategories[outletId] || [])], isLondonMarket);
+      if (inferredRegion) entry.region = inferredRegion;
+      outletRegistry.outlets[outletId] = entry;
     }
     if (outletRegistry._meta) {
       outletRegistry._meta.lastUpdated = new Date().toISOString();

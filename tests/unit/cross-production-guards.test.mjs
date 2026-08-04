@@ -15,9 +15,19 @@ test('evergreen: tickets/listing pages are detected (date heuristic must skip th
   assert.equal(isEvergreenListingUrl('https://venue.com/buy-tickets'), true);
 });
 
+test('evergreen: westendtheatre.com show pages are listings even without a -tickets suffix', () => {
+  // 2026-08-04: three WET listing pages sat as unflagged "reviews" on NYSM /
+  // Dinosaur World / Crocodile. The -tickets suffix is inconsistent on WET.
+  assert.equal(isEvergreenListingUrl('https://www.westendtheatre.com/56719/shows/dinosaur-world-live/'), true);
+  assert.equal(isEvergreenListingUrl('https://www.westendtheatre.com/346267/shows/now-you-see-me-live-tickets/'), true);
+  assert.equal(isEvergreenListingUrl('https://www.westendtheatre.com/208183/shows/the-enormous-crocodile-the-musical-tickets/'), true);
+});
+
 test('evergreen: real dated review URLs are NOT flagged', () => {
   assert.equal(isEvergreenListingUrl('https://www.nytimes.com/2024/04/12/theater/titanique-review.html'), false);
   assert.equal(isEvergreenListingUrl('https://www.thestage.co.uk/reviews/giant-review-royal-court'), false);
+  // westendtheatre.com NEWS articles (no numeric-id /shows/ path) stay unflagged
+  assert.equal(isEvergreenListingUrl('https://www.westendtheatre.com/352331/news/dinosaur-world-live-to-play-the-troubadour-wembley-park-theatre-in-london/'), false);
   assert.equal(isEvergreenListingUrl(''), false);
   assert.equal(isEvergreenListingUrl(null), false);
 });
