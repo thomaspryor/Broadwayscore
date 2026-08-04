@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T17:27:40.897Z",
+  "timestamp": "2026-08-04T17:34:59.035Z",
   "stats": {
-    "totalReviews": 41576,
+    "totalReviews": 41581,
     "alreadyFlagged": 18108,
     "dateGuardCatches": 116,
     "directorMismatch": 944,
-    "tvFilmSignals": 1150,
+    "tvFilmSignals": 1151,
     "londonSignals": 813,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3505
+    "noPublishDate": 3506
   },
   "findings": [
     {
@@ -26334,6 +26334,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "file": "nyt-theater--jonathan.json",
+      "publishDate": "2026-08-04",
+      "url": "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
