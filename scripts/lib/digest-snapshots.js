@@ -60,6 +60,17 @@ const SNAPSHOTS = [
   // scripts/lib/coverage-digest.js. optionalIfMissing: a quiet day (nothing
   // incomplete) is the common case, not a producer failure.
   { key: 'coverageVerdict', label: 'coverage verdict', file: 'coverage-digest-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/produce-trunk-snapshot.js (task #1003) — is test.yml green on
+  // main, how long has it been red, which files are named in the failures.
+  // The standing line exists because on 2026-08-04 main was red on ~96% of
+  // runs from four independent failures and NOBODY noticed the aggregate:
+  // three sessions each fixed the one failure they happened to see. Rendered
+  // by send-morning-digest.js via renderTrunkDigestLine, and promoted to the
+  // email HEADLINE once trunk has been red more than 24h.
+  // optionalIfMissing: the producer needs gh auth, which CI runners and the
+  // Mac both have but a partial checkout may not — a missing file must not
+  // become a permanent false "didn't update overnight" banner.
+  { key: 'trunk', label: 'trunk status', file: 'trunk-status-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
 ];
 
 /**

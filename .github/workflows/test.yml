@@ -1151,6 +1151,15 @@ on:
       - 'scripts/lib/digest-snapshots.js'
       - 'scripts/lib/digest-snapshots.test.mjs'
       - 'scripts/send-morning-digest.js'
+      # Close-time trunk attribution gate (task #1003) — the decision lib, its
+      # gh producer, and the test that runs against the real 2026-08-04
+      # failure log. Not covered by any broader glob (scripts/tests/ is not
+      # scripts/lib/), so without these entries a push touching only them
+      # would trigger ZERO CI — the "non-listed scripts/ = ZERO CI" class.
+      - 'scripts/lib/trunk-close-gate.js'
+      - 'scripts/produce-trunk-snapshot.js'
+      - 'scripts/tests/trunk-close-gate.test.mjs'
+      - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send

@@ -601,6 +601,99 @@ async function createCard(args) {
   return card;
 }
 
+// ── close-time trunk attribution gate (task #1003) ──────────────────────────
+//
+// Cards used to close when their change MERGED, never when main was green.
+// On 2026-08-04 main was red on ~96% of test.yml runs from four independent
+// failures, two of them shipped by cards already marked Done. The gate is
+// NARROW on purpose: only a file THIS card owns (Key Files + branch diff)
+// being named in the current failure blocks the close. Blocking every close
+// while trunk is red would deadlock every unrelated card.
+//
+// Escape hatches: TRUNK_CLOSE_GATE_DISABLED=1, or --force "<reason>" (the
+// same bypass the card-context validator already honours).
+
+// Files this branch changed since it left main. Best effort — a detached
+// checkout, a shallow clone or no git at all yields [], and the gate then
+// attributes off Key Files alone.
+function branchChangedFiles() {
+  try {
+    const { execFileSync } = require('child_process');
+    const run = (a) => execFileSync('git', a, { encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'ignore'] });
+    const base = run(['merge-base', 'origin/main', 'HEAD']).trim();
+    if (!base) return [];
+    return [
+      ...run(['diff', '--name-only', base, 'HEAD']).split('\n'),
+      ...run(['diff', '--name-only', 'HEAD']).split('\n'),
+    ].map((s) => s.trim()).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+// Refresh data/audit/trunk-status-snapshot.json when it's older than
+// maxAgeMin. Synchronous and time-boxed: a close should cost at most a few
+// seconds, and any failure leaves the old (or no) snapshot, which the gate
+// reads as fail-open.
+function refreshTrunkSnapshot({ maxAgeMin = 60 } = {}) {
+  try {
+    const { execFileSync } = require('child_process');
+    const path = require('path');
+    execFileSync('node', [
+      path.join(__dirname, 'produce-trunk-snapshot.js'), `--max-age-min=${maxAgeMin}`,
+    ], { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (e) {
+    console.error(`⚠️  trunk snapshot refresh failed (closing without a fresh trunk check): ${String(e.message).slice(0, 140)}`);
+  }
+}
+
+async function enforceTrunkCloseGate(pageId, args) {
+  if (process.env.TRUNK_CLOSE_GATE_DISABLED === '1') return;
+  if (args.force && typeof args.force === 'string' && args.force.length >= 10) {
+    console.error(`⚠️  trunk close gate bypassed: ${args.force}`);
+    return;
+  }
+
+  let result;
+  try {
+    const { evaluateCloseGate, readTrunkSnapshot, GATE_REASONS } = require('./lib/trunk-close-gate.js');
+    refreshTrunkSnapshot();
+
+    // The card's own Key Files, plus whatever --key-files this same call is
+    // setting (a wrap-up usually writes Key Files and Done together, so the
+    // stored value alone would miss the files this session actually touched).
+    let keyFiles = typeof args['key-files'] === 'string' ? args['key-files'] : '';
+    try {
+      const existing = await notion.pages.retrieve({ page_id: pageId });
+      keyFiles += '\n' + getRichTextValue(existing.properties['Key Files']);
+    } catch { /* card unreadable → attribute off the diff alone */ }
+
+    result = evaluateCloseGate({
+      trunk: readTrunkSnapshot(),
+      keyFiles,
+      changedFiles: branchChangedFiles(),
+    });
+    if (result.allowed && result.reason !== GATE_REASONS.GREEN) {
+      console.error(`ℹ️  trunk close gate: ${result.message}`);
+    }
+  } catch (e) {
+    // The gate's own tooling breaking must never block a close (same
+    // fail-open contract as armingWarning's validator-unavailable path).
+    console.error(`⚠️  trunk close gate skipped (${String(e.message).slice(0, 120)})`);
+    return;
+  }
+
+  if (!result.allowed) {
+    console.error(`\n❌ REFUSED (${result.reason}) — card not moved to Done\n`);
+    console.error(result.message);
+    console.error(
+      `\nTo close anyway, pass --force "<reason ≥10 chars>", ` +
+      `or set TRUNK_CLOSE_GATE_DISABLED=1 for automation that must not block.\n`
+    );
+    process.exit(5);
+  }
+}
+
 async function updateCard(args) {
   const pageId = args._positional[1];
   if (!pageId) {
@@ -732,6 +825,12 @@ async function updateCard(args) {
   if (Object.keys(properties).length === 0) {
     console.error('No properties to update. Pass --status, --outcome, --tags, etc.');
     process.exit(1);
+  }
+
+  // Close-time trunk attribution gate (task #1003). Runs BEFORE the write:
+  // a card that owns a file currently failing on main must not reach Done.
+  if (args.status === 'Done') {
+    await enforceTrunkCloseGate(pageId, args);
   }
 
   const page = await notion.pages.update({
@@ -1075,12 +1174,7 @@ async function archiveCard(args) {
 
 // ── Main ────────────────────────────────────────────────────────────────
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const command = args._positional[0];
-
-  if (!command) {
-    console.error(`notion-brain — Direct Notion API for Claude Code sessions
+const USAGE = `notion-brain — Direct Notion API for Claude Code sessions
 
 Commands:
   create "Title"       Create a new card (default: In progress)
@@ -1130,7 +1224,22 @@ Options (search/list):
   --due WHEN                (list only) Filter by Due Date. WHEN is one of:
                             today, tomorrow, overdue, this-week, upcoming,
                             none, any, or an explicit YYYY-MM-DD.
-                            Sorts results by Due Date ascending when set.`);
+                            Sorts results by Due Date ascending when set.`;
+
+async function main() {
+  const argv = process.argv.slice(2);
+  // --help/-h BEFORE any Notion call, git/child_process work, or card write
+  // (help-flag safety Rule B, task #498 — the close gate below shells out to
+  // git and the snapshot producer, which is exactly the risky work that rule
+  // exists to keep off the --help path).
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  const args = parseArgs(argv);
+  const command = args._positional[0];
+
+  if (!command) {
+    console.error(USAGE);
     process.exit(1);
   }
 
