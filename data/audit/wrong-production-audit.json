@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-03T23:57:05.888Z",
+  "timestamp": "2026-08-04T00:13:41.938Z",
   "stats": {
     "totalReviews": 41437,
     "alreadyFlagged": 18109,
     "dateGuardCatches": 111,
-    "directorMismatch": 944,
-    "tvFilmSignals": 1143,
-    "londonSignals": 804,
-    "offBroadwaySignals": 481,
+    "directorMismatch": 948,
+    "tvFilmSignals": 1146,
+    "londonSignals": 805,
+    "offBroadwaySignals": 482,
     "yearMismatch": 86,
     "noPublishDate": 3437
   },
@@ -14474,6 +14474,49 @@
     },
     {
       "showId": "les-miserables-2006",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/article/Photo-Coverage-Les-Miserables-Opening-Night-Arrivals-20061110",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-2006",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/les-miserables-imperia-theatre-new-york/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-2006",
       "file": "talkinbroadway--unknown.json",
       "score": 42,
       "publishDate": "2006-11-09",
@@ -16930,6 +16973,24 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "nytimes--unknown.json",
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "observer--susannah-clapp.json",
       "score": 91,
       "publishDate": "2022-10-23",
@@ -17903,6 +17964,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "our-town-1988",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Our-Town-11495.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
