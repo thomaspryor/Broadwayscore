@@ -244,6 +244,9 @@ async function main() {
     process.exit(1);
   }
 
+  // A downgraded result.action === 'digest' (page-worthy gate, card #611) is
+  // NOT a delivery failure — the owner WILL see it in the next daily digest,
+  // same as a delivered 'human'. Only a genuinely undelivered 'human' aborts.
   if (result.action === 'human' && result.delivered === false) {
     console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was told these went live.`);
     process.exit(1);

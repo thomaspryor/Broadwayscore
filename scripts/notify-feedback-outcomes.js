@@ -247,7 +247,10 @@ async function main() {
 
   // routeAlert returns without recording when delivery actually failed (Resend
   // down, etc). Treat that as the send failure it is, so the workflow's
-  // notify-failure step fires instead of the run looking clean.
+  // notify-failure step fires instead of the run looking clean. A downgraded
+  // result.action === 'digest' (page-worthy gate, card #611) is NOT a failure —
+  // the owner WILL see it in the next daily digest, same as a delivered 'human',
+  // so it falls through to the "Owner notified" log below.
   if (result.action === 'human' && result.delivered === false) {
     console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was notified.`);
     process.exit(1);
