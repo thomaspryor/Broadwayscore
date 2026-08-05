@@ -22,6 +22,17 @@ const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 // module originally hand-duplicated a subset of these; two independently
 // maintained copies of the same policy will drift).
 const { namedNonReviewReason } = require('./non-review-url-patterns');
+// Ingest-time's own canonical "never a review" block-list (social/ticket/
+// aggregator-roundup/reference domains + feature/interview paths) — the SAME
+// list explainExclusion() already stamps 'blockedReviewUrl' against once a
+// candidate is on disk. Before this, a not-yet-captured URL on one of these
+// domains (lovelondonloveculture.com, westendtheatre.com, etc.) fell through
+// classifyNonReviewUrl() to 'gap' — the exact drift this module's own header
+// warns two independently-maintained "is this a review" lists will produce
+// (task #1036: the-car-man-west-end-2026's Love London Love Culture round-up
+// read as an undiscovered gap for 2 days although review-guards.js already
+// knows the domain is never a review).
+const { isBlockedReviewUrl } = require('./domain-filters');
 
 /**
  * coverage-adversarial-probe.js — pure decision layer for the Coverage
@@ -97,7 +108,12 @@ function classifyNonReviewUrl(url) {
   let u;
   try { u = new URL(url); } catch { return null; }
   const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  // Checked before the general block-list below: star-rating aggregator own-
+  // pages get their own distinct 'aggregator-own-page' label (see the header
+  // comment on AGGREGATOR_DOMAINS above) even though domain-filters.js's
+  // isBlockedReviewUrl() would also catch several of these same hosts.
   if (AGGREGATOR_DOMAINS.has(host)) return 'aggregator-own-page';
+  if (isBlockedReviewUrl(url)) return 'blockedReviewUrl';
   return null;
 }
 
