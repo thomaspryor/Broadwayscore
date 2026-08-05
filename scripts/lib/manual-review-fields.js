@@ -191,6 +191,7 @@ function detectIngestCollision(opts = {}) {
   if (!outletId) return { ok: true };
 
   const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
+  const { hasClearBreadcrumbValue } = require('./flag-contradiction');
   const normalizedOutlet = normalizeOutlet(outletId);
   const normalizedCritic = criticName && criticName.toLowerCase() !== 'unknown'
     ? normalizeCritic(criticName)
@@ -238,10 +239,13 @@ function detectIngestCollision(opts = {}) {
     catch { continue; }
 
     // Stale flag on existing file + different URL = the Beaches failure mode.
+    // wrongProductionAutoCleared is written as a STRING by every rebuild path
+    // and as a boolean by older writers (283 vs 445 in corpus), so `=== true`
+    // silently missed the string majority — use the canonical predicate (#1020).
     const urlMatches = url && data.url && _normUrl(url) === _normUrl(data.url);
     const hasStaleFlag = data.wrongProduction === true
       || data.wrongShow === true
-      || data.wrongProductionAutoCleared === true;
+      || hasClearBreadcrumbValue(data.wrongProductionAutoCleared);
     if (hasStaleFlag && !urlMatches && !forceClearStale && !incomingIsCurrentProduction) {
       return {
         ok: false,
@@ -252,7 +256,7 @@ function detectIngestCollision(opts = {}) {
           existingFlags: {
             wrongProduction: data.wrongProduction === true,
             wrongShow: data.wrongShow === true,
-            wrongProductionAutoCleared: data.wrongProductionAutoCleared === true,
+            wrongProductionAutoCleared: hasClearBreadcrumbValue(data.wrongProductionAutoCleared),
           },
           existingPublishDate: data.publishDate || null,
           incomingUrl: url || null,
