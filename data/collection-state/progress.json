@@ -27,7 +27,8 @@
     "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
     "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
     "medea-off-broadway-2026/timeout--adam-feldman.json",
-    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json"
+    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
+    "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -151,7 +152,16 @@
     "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
     "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
     "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
-    "macbeth-off-broadway-2026/huffpost--gazelle-emami.json"
+    "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,15 +200,18 @@
       "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+      "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/disruption-off-broadway-2026/wsj--unknown.json"
+    ],
     "archive": [
       "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json"
     ]
   },
   "startTime": "2026-08-05T10:46:59.550Z",
-  "lastProcessed": "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
+  "lastProcessed": "disruption-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-08-05T10:47:23.873Z",
@@ -227,6 +240,39 @@
       "event": "bb-session",
       "session": "66a66d8f",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-05T11:20:33.133Z",
+      "event": "bb-session",
+      "session": "d383a18d",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T11:20:33.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T11:20:49.123Z",
+      "event": "bb-session",
+      "session": "7204dee7",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T11:20:49.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T11:21:37.428Z",
+      "event": "bb-session",
+      "session": "80383032",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-05T11:21:37.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
