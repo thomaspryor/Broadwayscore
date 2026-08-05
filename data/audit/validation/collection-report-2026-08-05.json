@@ -1,80 +1,67 @@
 {
-  "runDate": "2026-08-05T01:17:52.961Z",
+  "runDate": "2026-08-05T01:47:02.751Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "now-you-see-me-live-west-end-2026,weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+    "showFilter": "dinosaur-world-live-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 3,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
+    "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 5,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
-    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-      "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
-    ],
+    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
