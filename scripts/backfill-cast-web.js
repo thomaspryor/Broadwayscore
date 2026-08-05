@@ -31,6 +31,7 @@ const {
   SERP_MIN_SCORE,
 } = require('./lib/cast-extraction-guards');
 const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
+const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -284,6 +285,12 @@ function parseJsonFromLLM(text) {
 // Main
 // ============================================================================
 
+// Returns { fetchFailed, cast, sourceUrl? }. fetchFailed distinguishes a
+// transient failure (SERP error, page fetch error, LLM error, or a blocked/
+// too-short page we can't actually read) from a genuine empty (search
+// succeeded and every candidate page was read and cleanly rejected, or 0
+// search results came back) — mirrors backfill-cast.js's IBDB fix (#712).
+// Only genuine empties should be tombstoned; shouldTombstone() reads this.
 async function processShow(show) {
   const year = show.openingDate ? show.openingDate.split('-')[0] :
     show.previewsStartDate ? show.previewsStartDate.split('-')[0] : null;
@@ -295,16 +302,17 @@ async function processShow(show) {
     searchResults = await searchCast(show.title, year, show.category);
   } catch (e) {
     console.log(`  SERP error: ${e.message}`);
-    return null;
+    return { fetchFailed: true, cast: [] };
   }
 
   if (searchResults.length === 0) {
     console.log(`  No search results found`);
-    return null;
+    return { fetchFailed: false, cast: [] };
   }
 
   // Step 2: Fetch page text and extract cast
   const showIsOpera = /\bopera\b|the met\b/.test(String(show.title || '').toLowerCase());
+  let anyTransientFailure = false;
 
   for (const sr of searchResults) {
     // Skip opera-publication domains for non-opera shows entirely — saves
@@ -324,11 +332,16 @@ async function processShow(show) {
       pageText = await fetchPageText(sr.url);
     } catch (e) {
       console.log(`  Fetch error: ${e.message}`);
+      anyTransientFailure = true;
       continue;
     }
 
+    // fetchPageText also returns null on a non-200 (blocked/rate-limited)
+    // response without throwing — treat that the same as a fetch error, not
+    // as "page confirmed empty."
     if (!pageText || pageText.length < 100) {
-      console.log(`  Page too short (${(pageText || '').length} chars)`);
+      console.log(`  Page too short or blocked (${(pageText || '').length} chars)`);
+      anyTransientFailure = true;
       continue;
     }
 
@@ -341,6 +354,7 @@ async function processShow(show) {
       cast = await extractCastWithLLM(pageText, show.title, year, deriveVenueLabel(show.category));
     } catch (e) {
       console.log(`  LLM error: ${e.message}`);
+      anyTransientFailure = true;
       continue;
     }
 
@@ -356,6 +370,7 @@ async function processShow(show) {
     if (cleaned.length >= 2) {
       console.log(`  Found ${cleaned.length} cast members`);
       return {
+        fetchFailed: false,
         cast: cleaned,
         sourceUrl: sr.url,
       };
@@ -363,7 +378,7 @@ async function processShow(show) {
     console.log(`  Only ${cleaned.length} members found, trying next page...`);
   }
 
-  return null;
+  return { fetchFailed: anyTransientFailure, cast: [] };
 }
 
 async function main() {
@@ -398,14 +413,28 @@ async function main() {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (shows.length === 0) { console.error(`No show found: ${showFilter}`); process.exit(1); }
   } else {
-    // Default: OB + WE shows without cast files
+    // Default: OB + WE shows
     shows = shows.filter(s => {
       const cat = s.category || 'broadway';
       if (categoryFilter && cat !== categoryFilter) return false;
       if (!categoryFilter && cat === 'broadway') return false; // Skip Broadway (use IBDB)
-      if (!force && fs.existsSync(path.join(CAST_DIR, `${s.id}.json`))) return false;
       return true;
     });
+  }
+
+  // Skip shows that already have a cast file unless --force — applies even
+  // under --show-filter, matching backfill-cast.js's pattern. Without this,
+  // `--show-filter=X` (no --force) on a show with a populated cast file would
+  // reprocess and could tombstone it with no backup and no circuit-breaker
+  // check (both are gated on `force` below) — undercutting this fix's whole
+  // purpose for the single-show retry case an operator is most likely to hit.
+  if (!force) {
+    const beforeExisting = shows.length;
+    shows = shows.filter(s => !fs.existsSync(path.join(CAST_DIR, `${s.id}.json`)));
+    const skippedExisting = beforeExisting - shows.length;
+    if (skippedExisting > 0) {
+      console.log(`  Skipping ${skippedExisting} show(s) with existing cast file (use --force to reprocess)`);
+    }
   }
 
   if (limit > 0) shows = shows.slice(0, limit);
@@ -419,6 +448,20 @@ async function main() {
     return;
   }
 
+  // Mass-wipe circuit breaker (--force only): count how many shows about to
+  // be reprocessed currently have a populated cast file, mirroring
+  // backfill-cast.js's guard (task #712 — the same bug class).
+  let populatedBefore = 0;
+  if (force) {
+    for (const s of shows) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${s.id}.json`), 'utf8'));
+        if (Array.isArray(existing.openingNightCast) && existing.openingNightCast.length > 0) populatedBefore++;
+      } catch { /* no existing file or unreadable — not "populated" */ }
+    }
+  }
+  const wipedBackups = [];
+
   // Process shows
   let success = 0, failed = 0, skipped = 0;
 
@@ -429,9 +472,36 @@ async function main() {
     try {
       const result = await processShow(show);
 
-      if (!result || result.cast.length < 2) {
+      if (!result.cast || result.cast.length < 2) {
+        // A transient failure (SERP/fetch/LLM error, blocked page) must NOT
+        // be tombstoned — a tombstone permanently blocks re-scraping (default
+        // runs skip shows with an existing cast file), so one bad run would
+        // empty a show forever. Same class as the IBDB Hamilton incident.
+        if (!shouldTombstone(result)) {
+          console.log(`  Transient search/fetch failure — NOT tombstoning; will retry next run`);
+          failed++;
+          continue;
+        }
+
         console.log(`  No usable cast data found`);
-        // Write tombstone to prevent re-processing
+
+        // Back up the existing file before overwriting IF it was populated —
+        // the mass-wipe circuit breaker below needs to be able to restore it.
+        const existingPath = path.join(CAST_DIR, `${show.id}.json`);
+        let wasPopulated = false;
+        if (force && fs.existsSync(existingPath)) {
+          try {
+            const existingRaw = fs.readFileSync(existingPath, 'utf8');
+            const existingParsed = JSON.parse(existingRaw);
+            if (Array.isArray(existingParsed.openingNightCast) && existingParsed.openingNightCast.length > 0) {
+              wasPopulated = true;
+              wipedBackups.push({ path: existingPath, content: existingRaw });
+            }
+          } catch { /* unreadable existing file — nothing to back up */ }
+        }
+
+        // Genuine empty (search/pages checked, nothing usable found): write
+        // an empty tombstone so we don't re-process a show that truly has none.
         const tombstone = {
           showId: show.id,
           source: 'web-search',
@@ -444,6 +514,13 @@ async function main() {
           JSON.stringify(tombstone, null, 2) + '\n'
         );
         skipped++;
+
+        if (wasPopulated && shouldAbortMassWipe(populatedBefore, wipedBackups.length)) {
+          console.error(`\nMASS-WIPE CIRCUIT BREAKER: ${wipedBackups.length}/${populatedBefore} previously-populated cast files came back empty this run.`);
+          console.error(`   Restoring all ${wipedBackups.length} and aborting before more damage.`);
+          for (const b of wipedBackups) fs.writeFileSync(b.path, b.content);
+          process.exit(1);
+        }
         continue;
       }
 
