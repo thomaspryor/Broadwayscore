@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-04T23:55:15.646Z",
+  "generatedAt": "2026-08-05T01:22:45.376Z",
   "windowDays": 1095,
-  "targets": 10,
-  "auditedThisRun": 10,
-  "carriedForward": 151,
+  "targets": 37,
+  "auditedThisRun": 22,
+  "carriedForward": 139,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 124,
-    "totalMissing": 830,
+    "withGap": 123,
+    "totalMissing": 822,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 750,
+    "totalFlaggedMisses": 745,
     "totalRecoverable": 16,
     "totalRecovered": 0
   },
@@ -391,7 +391,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T11:48:45.134Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
@@ -2009,7 +2009,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "archduke-west-end-2026",
@@ -2684,13 +2684,21 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
-        "https://www.broadwayworld.com/reviews/are-you-mad-at-me",
-        "https://www.theatermania.com/news/review-bryan-safi-cares-about-what-you-think-of-him-in-are-you-mad-at-me_1846312/"
+        "https://www.theatermania.com/news/review-bryan-safi-cares-about-what-you-think-of-him-in-are-you-mad-at-me_1846312/",
+        "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
+        "https://www.broadwayworld.com/reviews/are-you-mad-at-me"
       ],
       "dirFiles": 4,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
+          "host": "1minutecritic.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -2749,7 +2757,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -2769,7 +2777,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -2779,7 +2787,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -2795,12 +2803,30 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
+          "host": "1minutecritic.substack.com",
+          "outletId": "1minutecritic",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "1minutecritic.substack.com",
+            "outlet": "1minutecritic.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review"
+          },
           {
             "outletId": "one-minute-critic",
             "outlet": "one-minute-critic",
@@ -2825,6 +2851,13 @@
             "firstSeenAt": "2026-08-03T15:24:27.480Z"
           },
           {
+            "url": "https://1minutecritic.substack.com/p/bryan-safi-are-you-mad-at-me-review",
+            "outletId": "1minutecritic.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T01:22:45.376Z"
+          },
+          {
             "url": "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
             "outletId": "one-minute-critic",
             "state": "GAP",
@@ -2840,9 +2873,9 @@
           }
         ],
         "liveCount": 1,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
@@ -7481,7 +7514,7 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "camping-off-broadway-2026",
@@ -10534,9 +10567,8 @@
         "https://playbill.com/article/read-reviews-for-the-cats-movie",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-Hits-The-Big-Screen-See-What-The-Critics-Are-Saying-20191218",
-        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
-        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211"
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
@@ -10610,6 +10642,9 @@
         "https://www.irishtimes.com/culture/film/cats-review-the-biggest-problem-is-the-disturbing-digital-fur-technology-1.4119068",
         "https://time.com/5752569/cats-movie-review/",
         "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/",
+        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+        "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+        "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
         "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html",
         "https://www.theguardian.com/stage/2016/jul/31/cats-review-broadway-leona-lewis-andrew-lloyd-weber",
         "http://www.timeout.com/newyork/blog/broadway-review-cats-at-the-neil-simon-theatre-073116",
@@ -10624,19 +10659,6 @@
         "http://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-but-not-better-1.12116008",
         "http://www.telegraph.co.uk/theatre/what-to-see/cats-leona-lewis-brings-glitz-but-no-grit-to-her-broadway-debut/",
         "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339",
-        "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/",
-        "https://www.tulsaworld.com/entertainment/review-oklahoma-native-shines-in-cats/article_32107b95-b48a-5563-a826-176658ad13eb.html",
-        "https://www.uhclthesignal.com/wordpress/2019/10/23/review-the-memory-of-cats-is-reborn/",
-        "https://www.hollywoodreporter.com/review/cats-theater-1191508",
-        "https://www.dailynews.com/2019/02/28/theater-review-for-cats-two-lives-is-more-than-enough/",
-        "http://lapostexaminer.com/cats-is-as-spectacular-as-it-is-unique/2019/03/03",
-        "https://dailybruin.com/2019/02/28/theater-review-webbers-cats-displays-visual-excellence-mired-in-plot-confusion/",
-        "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away",
-        "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html",
-        "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
-        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-        "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-        "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
         "http://www.wsj.com/articles/cats-review-frisky-and-fragmented-1470336422"
       ],
       "dirFiles": 29,
@@ -10854,6 +10876,27 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
@@ -10885,90 +10928,6 @@
           "url": "http://www.telegraph.co.uk/theatre/what-to-see/cats-leona-lewis-brings-glitz-but-no-grit-to-her-broadway-debut/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/",
-          "host": "thesunflower.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.tulsaworld.com/entertainment/review-oklahoma-native-shines-in-cats/article_32107b95-b48a-5563-a826-176658ad13eb.html",
-          "host": "tulsaworld.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.uhclthesignal.com/wordpress/2019/10/23/review-the-memory-of-cats-is-reborn/",
-          "host": "uhclthesignal.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.dailynews.com/2019/02/28/theater-review-for-cats-two-lives-is-more-than-enough/",
-          "host": "dailynews.com",
-          "knownOutletId": "los-angeles-daily-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://lapostexaminer.com/cats-is-as-spectacular-as-it-is-unique/2019/03/03",
-          "host": "lapostexaminer.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://dailybruin.com/2019/02/28/theater-review-webbers-cats-displays-visual-excellence-mired-in-plot-confusion/",
-          "host": "dailybruin.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away",
-          "host": "providencejournal.com",
-          "knownOutletId": "providence-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html",
-          "host": "courant.com",
-          "knownOutletId": "hartford-courant",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
-          "host": "thewestfieldnews.com",
-          "knownOutletId": "westfield-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -11929,25 +11888,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/cats-theater-1191508",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--frank-scheck.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -11978,16 +11918,12 @@
           "publishDate": "2019-12-18"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
-          "publishDate": "2016-07-31"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
-          "publishDate": "2019-10-30"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
           "publishDate": "2014-12-11"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
+          "publishDate": "2016-07-31"
         }
       ],
       "weIngestBlocked": [
@@ -12172,6 +12108,24 @@
           "reason": "prior-run"
         },
         {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
           "host": "washingtonpost.com",
           "priorRun": true,
@@ -12200,78 +12154,6 @@
           "host": "telegraph.co.uk",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/",
-          "host": "thesunflower.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.tulsaworld.com/entertainment/review-oklahoma-native-shines-in-cats/article_32107b95-b48a-5563-a826-176658ad13eb.html",
-          "host": "tulsaworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.uhclthesignal.com/wordpress/2019/10/23/review-the-memory-of-cats-is-reborn/",
-          "host": "uhclthesignal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.dailynews.com/2019/02/28/theater-review-for-cats-two-lives-is-more-than-enough/",
-          "host": "dailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://lapostexaminer.com/cats-is-as-spectacular-as-it-is-unique/2019/03/03",
-          "host": "lapostexaminer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://dailybruin.com/2019/02/28/theater-review-webbers-cats-displays-visual-excellence-mired-in-plot-confusion/",
-          "host": "dailybruin.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away",
-          "host": "providencejournal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html",
-          "host": "courant.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
-          "host": "thewestfieldnews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
@@ -12280,8 +12162,8 @@
           "host": "wsj.com",
           "outletId": "wsj",
           "provisional": false,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~875189/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -12492,6 +12374,27 @@
             "url": "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/"
           },
           {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html"
+          },
+          {
+            "outletId": "daily-mail",
+            "outlet": "daily-mail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html"
+          },
+          {
+            "outletId": "londontheatre1",
+            "outlet": "londontheatre1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/"
+          },
+          {
             "outletId": "washpost",
             "outlet": "washpost",
             "critic": "Unknown",
@@ -12525,90 +12428,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.telegraph.co.uk/theatre/what-to-see/cats-leona-lewis-brings-glitz-but-no-grit-to-her-broadway-debut/"
-          },
-          {
-            "outletId": "thesunflower.com",
-            "outlet": "thesunflower.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/"
-          },
-          {
-            "outletId": "tulsaworld.com",
-            "outlet": "tulsaworld.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tulsaworld.com/entertainment/review-oklahoma-native-shines-in-cats/article_32107b95-b48a-5563-a826-176658ad13eb.html"
-          },
-          {
-            "outletId": "uhclthesignal.com",
-            "outlet": "uhclthesignal.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uhclthesignal.com/wordpress/2019/10/23/review-the-memory-of-cats-is-reborn/"
-          },
-          {
-            "outletId": "los-angeles-daily-news",
-            "outlet": "los-angeles-daily-news",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.dailynews.com/2019/02/28/theater-review-for-cats-two-lives-is-more-than-enough/"
-          },
-          {
-            "outletId": "lapostexaminer.com",
-            "outlet": "lapostexaminer.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://lapostexaminer.com/cats-is-as-spectacular-as-it-is-unique/2019/03/03"
-          },
-          {
-            "outletId": "dailybruin.com",
-            "outlet": "dailybruin.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://dailybruin.com/2019/02/28/theater-review-webbers-cats-displays-visual-excellence-mired-in-plot-confusion/"
-          },
-          {
-            "outletId": "providence-journal",
-            "outlet": "providence-journal",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away"
-          },
-          {
-            "outletId": "hartford-courant",
-            "outlet": "hartford-courant",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html"
-          },
-          {
-            "outletId": "westfield-news",
-            "outlet": "westfield-news",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/"
-          },
-          {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html"
-          },
-          {
-            "outletId": "daily-mail",
-            "outlet": "daily-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/"
           },
           {
             "outletId": "one-minute-critic",
@@ -12959,13 +12778,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hollywoodreporter.com/review/cats-theater-1191508"
           }
         ],
         "suppressedMissing": [
@@ -13196,6 +13008,27 @@
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
+            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
+            "outletId": "daily-mail",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
+            "outletId": "londontheatre1",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-04T02:43:14.416Z"
+          },
+          {
             "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
             "outletId": "washpost",
             "state": "IN_FLIGHT",
@@ -13226,90 +13059,6 @@
           {
             "url": "http://www.telegraph.co.uk/theatre/what-to-see/cats-leona-lewis-brings-glitz-but-no-grit-to-her-broadway-debut/",
             "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://thesunflower.com/45810/lifestyle/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/",
-            "outletId": "thesunflower.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.tulsaworld.com/entertainment/review-oklahoma-native-shines-in-cats/article_32107b95-b48a-5563-a826-176658ad13eb.html",
-            "outletId": "tulsaworld.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.uhclthesignal.com/wordpress/2019/10/23/review-the-memory-of-cats-is-reborn/",
-            "outletId": "uhclthesignal.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.dailynews.com/2019/02/28/theater-review-for-cats-two-lives-is-more-than-enough/",
-            "outletId": "los-angeles-daily-news",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "http://lapostexaminer.com/cats-is-as-spectacular-as-it-is-unique/2019/03/03",
-            "outletId": "lapostexaminer.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://dailybruin.com/2019/02/28/theater-review-webbers-cats-displays-visual-excellence-mired-in-plot-confusion/",
-            "outletId": "dailybruin.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.providencejournal.com/news/20190125/last-day-cats-choreography-will-take-your-breath-away",
-            "outletId": "providence-journal",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.courant.com/ctnow/arts-theater/hc-ctnow-review-cats-bushnell-20190130-t34hdujgbndj3kldp7beel4p3e-story.html",
-            "outletId": "hartford-courant",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://thewestfieldnews.com/review-cats-at-the-bushnell/",
-            "outletId": "westfield-news",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-            "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-            "outletId": "daily-mail",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-            "outletId": "londontheatre1",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
@@ -13670,19 +13419,12 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/review/cats-theater-1191508",
-            "outletId": "hollywood-reporter",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T02:43:14.416Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 65
+        "candidateCount": 57
       },
-      "computedAt": "2026-08-04T16:42:46.829Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -13712,7 +13454,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -14548,7 +14290,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -14863,7 +14605,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -26972,7 +26714,7 @@
       ],
       "dirFiles": 38,
       "dirClean": 22,
-      "inReviewsJson": 23,
+      "inReviewsJson": 22,
       "missing": [
         {
           "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
@@ -27724,7 +27466,7 @@
         "liveCount": 15,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
@@ -32666,6 +32408,7 @@
         "https://dalyklerwhmui.cloudfront.net",
         "https://fonts.gstatic.com",
         "https://fonts.googleapis.com/css2",
+        "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202608040101/gpt",
         "https://maps.google.com/",
         "https://www.todaytixgroup.com/careers",
         "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
@@ -32687,6 +32430,11 @@
         {
           "url": "https://fonts.googleapis.com/css2",
           "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202608040101/gpt",
+          "host": "doubleclick.net",
           "knownOutletId": null
         },
         {
@@ -32720,7 +32468,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~852904/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~875511/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://fonts.gstatic.com",
@@ -32728,7 +32476,7 @@
           "outletId": "gstatic",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~852904/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~875672/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://fonts.googleapis.com/css2",
@@ -32736,7 +32484,15 @@
           "outletId": "googleapis",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~875678/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
+        },
+        {
+          "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202608040101/gpt",
+          "host": "doubleclick.net",
+          "outletId": "doubleclick",
+          "provisional": true,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~875741/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://maps.google.com/",
@@ -32744,18 +32500,15 @@
           "outletId": "google",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~852905/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "Fetch returned no usable HTML (got 442 chars)"
         }
       ],
       "ingestSkippedByCap": [
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
         {
           "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
           "host": "google.com",
@@ -32785,6 +32538,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://fonts.googleapis.com/css2"
+          },
+          {
+            "outletId": "doubleclick.net",
+            "outlet": "doubleclick.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202608040101/gpt"
           },
           {
             "outletId": "google.com",
@@ -32832,6 +32592,13 @@
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
+            "url": "https://securepubads.g.doubleclick.net/pagead/managed/dict/m202608040101/gpt",
+            "outletId": "doubleclick.net",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-05T01:22:45.376Z"
+          },
+          {
             "url": "https://maps.google.com/",
             "outletId": "google.com",
             "state": "IN_FLIGHT",
@@ -32854,9 +32621,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-08-04T16:42:46.829Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
@@ -32886,7 +32653,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T16:42:46.829Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -33300,24 +33067,23 @@
         "https://www.thetimes.com/culture/theatre-dance/article/midnight-at-the-never-get-review-menier-chocolate-factory-jskrl77l9",
         "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
-        "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
-        "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
         "https://everything-theatre.co.uk/2026/07/review-midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+        "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
         "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+        "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
         "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
+        "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
         "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-        "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
         "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
         "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
         "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/",
         "https://southlondon.co.uk/area/southwark/review-midnight-at-the-never-get-at-menier/",
         "https://www.londonboxoffice.co.uk/news/post/midnight-at-the-never-get-menier-chocolate-factory-review"
       ],
       "dirFiles": 37,
-      "dirClean": 24,
-      "inReviewsJson": 24,
+      "dirClean": 27,
+      "inReviewsJson": 27,
       "missing": [],
       "dirOnly": [
         {
@@ -33343,45 +33109,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
-          "host": "therealchrisparkle.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "therealchrisparkle--therealchrisparkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "monstagigz--neil.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
           "host": "lovelondonloveculture.com",
-          "knownOutletId": null,
+          "knownOutletId": "lovelondonloveculture",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -33392,24 +33122,6 @@
               "file": "lovelondonloveculture--unknown.json",
               "flag": "clean",
               "urlInDir": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
-          "host": "therealchrisparkle.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "therealchrisparkle--therealchrisparkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
             }
           ],
           "serpCensus": true
@@ -33428,24 +33140,6 @@
               "file": "theatre--paul-lewis.json",
               "flag": "roundup",
               "urlInDir": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": "readaboutstuff",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "readaboutstuff--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/"
             }
           ],
           "serpCensus": true
@@ -33506,7 +33200,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 8,
+            "accepted": 9,
             "error": null
           },
           {
@@ -33516,7 +33210,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -33525,7 +33219,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -33536,7 +33230,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -33546,7 +33240,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 5,
             "error": null
           },
           {
@@ -33562,39 +33256,18 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 20,
+        "resultCount": 19,
         "error": null
       },
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "therealchrisparkle.com",
-            "outlet": "therealchrisparkle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/"
-          },
-          {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/"
-          },
-          {
-            "outletId": "lovelondonloveculture.com",
-            "outlet": "lovelondonloveculture.com",
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
-          },
-          {
-            "outletId": "therealchrisparkle.com",
-            "outlet": "therealchrisparkle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/"
           },
           {
             "outletId": "theatre.reviews",
@@ -33602,13 +33275,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/"
-          },
-          {
-            "outletId": "readaboutstuff",
-            "outlet": "readaboutstuff",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/"
           }
         ],
         "suppressedMissing": [],
@@ -33686,14 +33352,20 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
+            "outletId": "therealchrisparkle.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T15:27:35.083Z"
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
             "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:27:35.083Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
@@ -33704,8 +33376,8 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
-            "outletId": "stagedtheatre.co.uk",
+            "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
+            "outletId": "monstagigz.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
@@ -33714,6 +33386,18 @@
             "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:27:35.083Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T16:48:58.521Z"
           },
           {
             "url": "https://southlondon.co.uk/area/southwark/review-midnight-at-the-never-get-at-menier/",
@@ -33728,32 +33412,11 @@
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
-            "outletId": "therealchrisparkle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
-            "outletId": "monstagigz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:27:35.083Z"
-          },
-          {
             "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
-            "outletId": "lovelondonloveculture.com",
+            "outletId": "lovelondonloveculture",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
-          },
-          {
-            "url": "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/amp/",
-            "outletId": "therealchrisparkle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
             "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
@@ -33761,19 +33424,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/07/29/review-midnight-at-the-never-get-menier-chocolate-factory-london/",
-            "outletId": "readaboutstuff",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
           }
         ],
-        "liveCount": 19,
+        "liveCount": 22,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -33974,7 +33630,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T11:48:45.134Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "music-city-off-broadway-2026",
@@ -47569,7 +47225,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -52907,7 +52563,7 @@
           "outletId": "ustimespost",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~843929/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~875926/day) projects exhaustion in ~4d, before the 29d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -53268,7 +52924,7 @@
         "liveCount": 13,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-04T11:48:45.134Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "sukkot-off-broadway-2026",
@@ -53975,7 +53631,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "the-car-man-west-end-2026",
@@ -54878,7 +54534,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-04T16:42:46.829Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -58368,7 +58024,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -62669,21 +62325,17 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
         "https://culturesauce.com/the-pass-off-broadway-review/",
-        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-        "https://1minutecritic.com/the-pass-la-mama-review-2026/"
+        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/"
       ],
-      "dirFiles": 4,
-      "dirClean": 4,
+      "dirFiles": 5,
+      "dirClean": 5,
       "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://1minutecritic.com/the-pass-la-mama-review-2026/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
         {
           "host": "theatrely.com",
           "count": 1
@@ -62693,88 +62345,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Pass\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Pass\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Pass\" review ellen",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
-      "ingestResults": [
-        {
-          "url": "https://1minutecritic.com/the-pass-la-mama-review-2026/",
-          "host": "1minutecritic.com",
-          "outletId": "one-minute-critic",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.com/the-pass-la-mama-review-2026/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -62794,19 +62370,12 @@
             "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-04T17:28:30.029Z"
-          },
-          {
-            "url": "https://1minutecritic.com/the-pass-la-mama-review-2026/",
-            "outletId": "one-minute-critic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
           }
         ],
         "liveCount": 3,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-04T23:55:15.646Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "the-potluck-off-broadway-2026",
@@ -66836,7 +66405,7 @@
         "liveCount": 4,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
@@ -69941,7 +69510,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T23:55:15.646Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -69971,7 +69540,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T01:22:45.376Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
