@@ -164,7 +164,17 @@
     "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json",
     "the-enormous-crocodile-west-end-2026/raring2go--unknown.json",
     "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/timeout-london--unknown.json",
-    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json"
+    "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -223,7 +233,9 @@
       "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json",
       "data/review-texts/the-car-man-west-end-2026/jonathan-baz--unknown.json",
       "data/review-texts/the-car-man-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json"
+      "data/review-texts/trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -232,7 +244,7 @@
     ]
   },
   "startTime": "2026-08-05T00:28:43.809Z",
-  "lastProcessed": "trainspotting-the-musical-west-end-2026/chichester-observer--unknown.json",
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-08-05T01:15:57.048Z",
@@ -301,6 +313,28 @@
       "event": "bb-session",
       "session": "7ffe9bbd",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T03:31:11.685Z",
+      "event": "bb-session",
+      "session": "43c7f437",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T03:31:12.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T03:31:28.799Z",
+      "event": "bb-session",
+      "session": "bef21c8b",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T03:31:29.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
