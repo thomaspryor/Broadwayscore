@@ -1,19 +1,25 @@
 {
   "processed": [
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
   ],
   "failed": [
+    "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json",
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
-    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-      "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -21,34 +27,35 @@
       "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "brightdata": [
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
     ],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-08-05T01:12:03.462Z",
-  "lastProcessed": "now-you-see-me-live-west-end-2026/times-uk--unknown.json",
+  "startTime": "2026-08-05T00:28:43.809Z",
+  "lastProcessed": "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
   "log": [
     {
-      "t": "2026-08-05T01:12:23.168Z",
+      "t": "2026-08-05T01:15:57.048Z",
       "event": "bb-session",
-      "session": "7592e8b4",
+      "session": "e73df328",
       "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
     },
     {
-      "t": "2026-08-05T01:12:23.635Z",
+      "t": "2026-08-05T01:15:58.016Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-05T01:12:39.238Z",
+      "t": "2026-08-05T01:16:14.119Z",
       "event": "bb-session",
-      "session": "59693e03",
+      "session": "11ae5d89",
       "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
     },
     {
-      "t": "2026-08-05T01:12:39.620Z",
+      "t": "2026-08-05T01:16:14.940Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
