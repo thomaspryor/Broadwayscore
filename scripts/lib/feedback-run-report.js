@@ -78,4 +78,40 @@ function recordDispatch(report, submission, action, ok, error) {
   return true;
 }
 
-module.exports = { submissionId, findReportItem, recordIssue, recordDispatch };
+/**
+ * The planner's actions for one pending entry.
+ *
+ * WHY THIS IS A FUNCTION AND NOT AN INLINE PROPERTY READ (2026-08-05):
+ * process-feedback.js pushes `{ item, submission, diagnosis, contentActions }`,
+ * so the actions live on the ENTRY. The workflow YAML read
+ * `item.contentActions` instead, which is always undefined — so from the day
+ * content routing shipped (2026-08-04) it dispatched exactly nothing. Every
+ * content request was labelled needs-review and parked, indistinguishable from
+ * the pre-routing behaviour it was built to replace. GH #542 died that way, and
+ * so did #546, a verbatim resubmission, even though the planner logged
+ * "2 action(s) will be dispatched".
+ *
+ * The shape now lives in one tested place instead of being restated in YAML,
+ * where no test could ever reach it. The `item` fallback keeps pending entries
+ * written by the old code readable.
+ */
+function readContentActions(entry) {
+  if (!entry) return [];
+  if (Array.isArray(entry.contentActions)) return entry.contentActions;
+  if (entry.item && Array.isArray(entry.item.contentActions)) return entry.item.contentActions;
+  return [];
+}
+
+/** Actions that name a workflow, i.e. the ones that can actually be dispatched. */
+function dispatchableActions(entry) {
+  return readContentActions(entry).filter((a) => a && a.workflow);
+}
+
+module.exports = {
+  submissionId,
+  findReportItem,
+  recordIssue,
+  recordDispatch,
+  readContentActions,
+  dispatchableActions,
+};

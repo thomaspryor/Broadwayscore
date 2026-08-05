@@ -11,6 +11,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { isPlaceholderVenue, NEIGHBOURHOOD_BLOBS } = require('../../scripts/audit-placeholder-venues.js');
 const { sanitizeVenueForWrite } = require('../../scripts/lib/venue-classification.js');
+const { resolveTodayTixVenue } = require('../../scripts/discover-new-shows.js');
 
 test('isPlaceholderVenue rejects TBA/unknown markers', () => {
   for (const v of ['TBA', 'tba', 'TBD', 'N/A', 'na', 'unknown', '', '-', '  TBA  ']) {
@@ -77,4 +78,25 @@ test('sanitizeVenueForWrite fails closed on missing values', () => {
   assert.equal(sanitizeVenueForWrite(null), null);
   assert.equal(sanitizeVenueForWrite(undefined), null);
   assert.equal(sanitizeVenueForWrite(''), null);
+});
+
+// S0 remainder (card #994): resolveTodayTixVenue is the previously-leaking
+// write path — discover-new-shows.js's consumeShowScoreCandidatesFile
+// ttConfirmed branch and the raw off-broadway TodayTix listing loop both
+// wrote `ttShow.venue` / `show.venue` straight through with NO guard call
+// at all, unlike the ShowScore-scrape path traced in S0-T2. That's exactly
+// how jest-to-impress-off-broadway-2026 landed with venue:"Soho/Tribeca" —
+// TodayTix's own venue field returned a neighbourhood blob. Both call
+// sites now route through this shared helper.
+test('resolveTodayTixVenue (the leaking write path) rejects the exact blob that leaked', () => {
+  assert.equal(resolveTodayTixVenue({ venue: 'Soho/Tribeca' }), null);
+  assert.equal(resolveTodayTixVenue({ venue: { name: 'Soho/Tribeca' } }), null);
+  assert.equal(resolveTodayTixVenue({ venue: 'TBA' }), null);
+  assert.equal(resolveTodayTixVenue({ venue: null }), null);
+  assert.equal(resolveTodayTixVenue({}), null);
+});
+
+test('resolveTodayTixVenue accepts real venues in either TodayTix shape', () => {
+  assert.equal(resolveTodayTixVenue({ venue: "St. Ann's Warehouse" }), "St. Ann's Warehouse");
+  assert.equal(resolveTodayTixVenue({ venue: { name: 'The Public Theater' } }), 'The Public Theater');
 });
