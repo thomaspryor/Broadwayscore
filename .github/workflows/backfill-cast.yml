@@ -33,6 +33,14 @@ on:
 permissions:
   contents: write
 
+# Queued, not cancelled — a manual dispatch overlapping the weekly scheduled
+# run (or two manual dispatches) would otherwise race-write the same
+# data/cast/{id}.json files with no lock (ship-check adversarial review,
+# task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
+concurrency:
+  group: backfill-cast
+  cancel-in-progress: false
+
 jobs:
   backfill-cast:
     runs-on: ubuntu-latest

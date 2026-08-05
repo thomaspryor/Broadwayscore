@@ -29,8 +29,8 @@ const https = require('https');
  */
 
 const { JSDOM } = require('jsdom');
-const { fetchPage } = require('./scraper');
-const { isLondonMarket } = require('./venue-classification');
+const { fetchPage, isChallengeOrGarbage } = require('./scraper');
+const { isBroadwayCategory } = require('./venue-classification');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 const RATE_LIMIT_MS = 1500;
@@ -58,13 +58,20 @@ async function fetchIBDBPageHTML(url) {
       const resp = await fetch(apiUrl);
       if (resp.ok) {
         content = await resp.text();
-        if (content && content.includes('OpeningNightCast')) {
+        if (content && isChallengeOrGarbage(content)) {
+          // Cloudflare (or similar) challenge page — same detection scraper.js
+          // uses for every other tier (task #712). Discard so the fallback
+          // path below runs instead of returning challenge HTML as "content".
+          console.log(`  ⚠️  ScrapingBee returned challenge/garbage (${content.length} bytes)`);
+          content = null;
+        } else if (content && content.includes('OpeningNightCast')) {
           return content;
-        }
-        // If page loaded but no cast tabs, may be wrong page or redirected
-        if (content && !content.includes('broadway-cast-staff')) {
+        } else if (content && !content.includes('broadway-cast-staff')) {
+          // If page loaded but no cast tabs, may be wrong page or redirected
           console.log(`  ⚠️  Page loaded but no cast data found (may be redirected)`);
         }
+      } else {
+        console.log(`  ⚠️  ScrapingBee HTTP ${resp.status}`);
       }
     }
   } catch (e) {
@@ -219,8 +226,21 @@ async function extractCastFromIBDBPage(url) {
   const titleEl = doc.querySelector('h1.iblock');
   result.pageTitle = titleEl ? titleEl.textContent.trim() : null;
 
-  // Parse Opening Night Cast
   const oncSection = doc.getElementById('OpeningNightCast');
+
+  // No page title AND no cast section: this is what a challenge/interstitial
+  // page looks like (valid HTML, zero real content) — not a genuine
+  // cast-less production (those still render the page shell with an empty
+  // OpeningNightCast div, or lack the div but keep the title). scraper.js's
+  // challenge detection is the primary guard; this is the parse-time
+  // backstop for anything that slips past it (task #712).
+  if (!result.pageTitle && !oncSection) {
+    console.log(`  ⚠️  No page title and no cast section — likely a challenge/error page, not a genuine empty`);
+    result.fetchFailed = true;
+    return result;
+  }
+
+  // Parse Opening Night Cast
   if (oncSection) {
     result.openingNightCast = parseCastSection(oncSection);
     console.log(`  ✅ Opening Night Cast: ${result.openingNightCast.length} member(s)`);
@@ -363,10 +383,13 @@ async function lookupIBDBCast(title, options = {}) {
     fetchFailed: false
   };
 
-  // IBDB is Broadway-only — skip for off-broadway and west-end shows
-  if (options.category && (options.category === 'off-broadway' || isLondonMarket(options.category))) {
+  // IBDB is Broadway-only — skip for off-broadway and west-end shows.
+  // skipped:true tells the caller this is "not applicable," not a genuine
+  // empty — a market skip must never tombstone independently-sourced
+  // (manual/web-search) cast data for a non-Broadway show (task #712).
+  if (options.category && !isBroadwayCategory({ category: options.category })) {
     console.log(`  ⏭️  Skipping IBDB lookup for ${options.category} show "${title}" (IBDB is Broadway-only)`);
-    return notFound;
+    return { ...notFound, skipped: true };
   }
 
   try {

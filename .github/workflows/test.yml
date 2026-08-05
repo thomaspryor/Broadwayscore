@@ -861,6 +861,14 @@ on:
       - 'scripts/recollect-for-scores.js'
       - 'scripts/lib/ibdb-dates.js'
       - 'scripts/lib/ibdb-cast.js'
+      # Cast backfill mass-wipe circuit breaker + Broadway-only pre-filter
+      # (task #712) — cast-tombstone.js's colocated test lives in tests/unit/
+      # (globbed via tests/** above); backfill-cast.js's own test.mjs is a
+      # root-level scripts/*.test.mjs, NOT globbed, so both the script and its
+      # test need explicit listing here for a solo edit to trigger CI.
+      - 'scripts/backfill-cast.js'
+      - 'scripts/backfill-cast.test.mjs'
+      - 'scripts/lib/cast-tombstone.js'
       - 'scripts/probe-scrapingdog-billing.js'
       # Task #213 A2/A3: SD structural-failure skip list + live confirmation
       # probe for the empty-authoritative SERP fix. opening-night-poller.js
