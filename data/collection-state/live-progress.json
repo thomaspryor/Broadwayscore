@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-05T09:00:29.058Z",
-  "processed": 62,
-  "failed": 479,
+  "updatedAt": "2026-08-05T09:06:22.887Z",
+  "processed": 68,
+  "failed": 523,
   "successRate": "11.5%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 23,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 8,
     "archiveToday": 10,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-08-05T06:16:24.809Z",
@@ -73,16 +73,44 @@
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     },
     {
-      "t": "2026-08-05T08:47:40.028Z",
+      "t": "2026-08-05T08:45:35.946Z",
       "event": "bb-session",
-      "session": "29f41235",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "e5749edf",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
     },
     {
-      "t": "2026-08-05T08:47:57.268Z",
+      "t": "2026-08-05T08:45:36.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T08:45:52.683Z",
       "event": "bb-session",
-      "session": "4db93932",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "5d5be420",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T08:45:53.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T09:02:02.286Z",
+      "event": "bb-session",
+      "session": "2b847180",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-08-05T09:02:38.738Z",
+      "event": "bb-session",
+      "session": "1714f950",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-08-05T09:02:54.485Z",
+      "event": "bb-session",
+      "session": "1e269134",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
     }
   ]
 }
