@@ -1,29 +1,44 @@
 {
   "processed": [
     "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json",
+    "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json",
+    "space-dogs-off-west-end-2026/thestage--the-stage.json",
+    "space-dogs-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "space-dogs-off-west-end-2026/whatsonstage--unknown.json",
+    "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json",
+    "tao-of-glass-west-end-2026/bachtrack--unknown.json",
+    "tao-of-glass-west-end-2026/click-liverpool--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-      "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+      "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "space-dogs-off-west-end-2026/london-theatre-reviews--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
+      "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
+      "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-08-05T06:16:06.471Z",
-  "lastProcessed": "now-you-see-me-live-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
   "log": [
     {
       "t": "2026-08-05T06:16:24.809Z",
@@ -46,6 +61,18 @@
       "t": "2026-08-05T06:16:41.557Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T06:32:30.011Z",
+      "event": "bb-session",
+      "session": "ccabe62f",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T06:32:46.892Z",
+      "event": "bb-session",
+      "session": "c9f53bdd",
+      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }
