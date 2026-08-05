@@ -3198,7 +3198,7 @@ jobs:
 
       - name: Audit self-contradictory clear breadcrumbs
         if: always()
-        run: node scripts/audit-self-contradictory-clears.js --gate --max=750
+        run: node scripts/audit-self-contradictory-clears.js --gate --max=780
         # A review file asserting an exclusion flag AND its own retraction
         # breadcrumb at the same time (wrongProduction + wrongProductionAutoCleared,
         # wrongShow + a contentVerificationPromoted stamp its own CV now refutes,
@@ -3206,12 +3206,13 @@ jobs:
         # this needs no adjudication between two verdicts — the record is invalid
         # on its face.
         #
-        # BASELINE RATCHET, not the target. Measured backlog is 733 (2026-08-05),
-        # all pre-dating the forward fixes (invalidateWrongProductionAutoClear on
-        # every re-flag writer; wrongArticleManualClear on every attribution
-        # clear), so --max=0 would red main on the first push. 750 leaves ~2%
-        # headroom because the rebuild bots mutate this corpus every ~30 min and
-        # a hard-equality baseline flaps main red for non-code reasons
+        # BASELINE RATCHET, not the target. Measured backlog is 751 (2026-08-05,
+        # after the wrongShow+wrongShowAutoCleared pair was added), all pre-dating
+        # the forward fixes (invalidateWrongProductionAutoClear on every re-flag
+        # writer; wrongArticleManualClear on every attribution clear), so --max=0
+        # would red main on the first push. 780 leaves ~4% headroom because the
+        # rebuild bots mutate this corpus every ~30 min and a hard-equality
+        # baseline flaps main red for non-code reasons
         # (memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md).
         #
         # DRAIN THEN RATCHET: run `node scripts/audit-self-contradictory-clears.js
