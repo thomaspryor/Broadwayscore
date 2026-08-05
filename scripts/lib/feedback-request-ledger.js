@@ -23,6 +23,9 @@
 /** Days after which an unsatisfied request is surfaced as stuck, not silently kept. */
 const STALE_AFTER_DAYS = 3;
 
+/** Cap on submitter free text copied into this committed, public-repo file. */
+const MAX_STORED_MESSAGE = 500;
+
 function entryKey(action, submissionId) {
   const subject = action.showId || action.title || 'unknown';
   return `${action.kind}:${String(subject).toLowerCase()}:${submissionId || 'nosub'}`;
@@ -48,7 +51,13 @@ function buildEntry(action, { submissionId, issueNumber, requestedAt, message, s
     issueNumber: issueNumber || null,
     submissionId: submissionId || null,
     requestedShowField: show || null,
-    requestedMessage: message || null,
+    // Capped. This file is committed to a PUBLIC repo, and a submitter can type
+    // anything into a free-text box. The same message is already posted verbatim
+    // into a public GitHub issue by the issue-creation step, so the incremental
+    // exposure here is nil — but an unbounded free-text field copied into git
+    // history is worth bounding regardless (ship-check, 2026-08-05). Name and
+    // email are deliberately never stored here at all.
+    requestedMessage: message ? String(message).slice(0, MAX_STORED_MESSAGE) : null,
     requestedAt: requestedAt || new Date().toISOString(),
     status: 'open',
     satisfiedAt: null,
@@ -135,6 +144,7 @@ function mergeEntries(ledger, newEntries) {
 
 module.exports = {
   STALE_AFTER_DAYS,
+  MAX_STORED_MESSAGE,
   entryKey,
   buildEntry,
   evaluateEntry,
