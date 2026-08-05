@@ -313,10 +313,10 @@ for (const showId of showDirs) {
   catch { continue; }
 
   for (const f of files) {
-    filesScanned++;
     let d;
     try { d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8')); }
     catch { continue; }
+    filesScanned++;
 
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
