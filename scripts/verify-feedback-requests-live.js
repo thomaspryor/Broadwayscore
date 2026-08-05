@@ -153,7 +153,9 @@ function buildAlert(nowLive, stale) {
   const staleKeys = stale.map((e) => `stale:${e.key || e.showId}`);
 
   return {
-    conditionKey: `feedback-requests:${[...liveKeys, ...staleKeys].sort().join(',')}`,
+    // Deduped, then sorted — a repeated entry must not change the key and slip
+    // past the router's cooldown as a fresh incident.
+    conditionKey: `feedback-requests:${[...new Set([...liveKeys, ...staleKeys])].sort().join(',')}`,
     title,
     description: [...liveLines, ...staleLines].join('\n\n'),
     // A stuck request means a workflow silently failed — that is the condition

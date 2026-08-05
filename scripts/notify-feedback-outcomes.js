@@ -51,6 +51,7 @@
 const fs = require('fs');
 const path = require('path');
 const { routeAlert } = require('./lib/owner-alert-router.js');
+const { MAX_STORED_MESSAGE } = require('./lib/feedback-request-ledger.js');
 
 const REPORT_PATH = path.join(__dirname, '../data/audit/feedback-run-report.json');
 
@@ -157,16 +158,25 @@ function buildAlert(report, pipelineStatus, runUrl) {
     ? `Feedback: ${needsYou} of ${items.length} need${needsYou === 1 ? 's' : ''} you`
     : `Feedback: ${items.length} submission(s), all handled automatically`;
 
+  // NOTE: this description is queued into data/audit/alert-digest-queue.json,
+  // which the workflow COMMITS to a PUBLIC repo. So it carries no submitter
+  // name and no submitter email, ever, and the free-text message is capped —
+  // exactly the rule scripts/lib/feedback-request-ledger.js already follows for
+  // the sibling public ledger (the message itself is already verbatim in the
+  // public GitHub issue, so the cap is belt-and-braces; identity is not).
+  // The issue link is where the owner goes for who-sent-it.
   const lines = rows.map(({ item, outcome }) => {
-    const who = `${item.name || 'Anonymous'}${item.email ? ` (${item.email})` : ' (no email)'}`;
     const issue = item.issueNumber
       ? ` — https://github.com/thomaspryor/Broadwayscore/issues/${item.issueNumber}`
       : '';
+    const message = item.message
+      ? String(item.message).slice(0, MAX_STORED_MESSAGE)
+      : '(no message)';
     return [
       `[${outcome.state}] ${item.show || 'No show given'}`,
-      `  "${item.message || '(no message)'}"`,
+      `  "${message}"`,
       `  What happened: ${outcome.detail || '—'}`,
-      `  ${item.category || 'Uncategorized'}${item.priority ? ` · ${item.priority} priority` : ''} · from ${who}${issue}`,
+      `  ${item.category || 'Uncategorized'}${item.priority ? ` · ${item.priority} priority` : ''}${issue}`,
     ].join('\n');
   });
 
@@ -183,7 +193,10 @@ function buildAlert(report, pipelineStatus, runUrl) {
     .join(' ');
 
   return {
-    conditionKey: `feedback-outcomes:${items.map(itemKey).sort().join(',')}`,
+    // Deduped, then sorted: a report that lists the same submission twice must
+    // produce the SAME key as one that lists it once, or the duplicate silently
+    // slips past the router's cooldown as a "new" incident.
+    conditionKey: `feedback-outcomes:${[...new Set(items.map(itemKey))].sort().join(',')}`,
     title,
     description: [header, ...lines].join('\n\n'),
     // Anything needing the owner, or a run that did not finish, is an error —
