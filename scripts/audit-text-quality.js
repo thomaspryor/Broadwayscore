@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
@@ -119,11 +120,20 @@ function auditTextQuality() {
     }
   }
 
-  // Zero reviews with fullText = the corpus is missing/empty, not a quality
-  // failure. Exit 2 ("could not run") so the monitor flags a CRASH, not drift —
-  // otherwise an empty checkout reads as 0% full → exit 1 → swallowed as drift.
-  if (stats.hasFullText === 0) {
-    console.error(`❌ No reviews with fullText found under ${REVIEW_TEXTS_DIR} (scanned ${stats.total} files) — cannot audit quality.`);
+  // Zero reviews with fullText = the corpus is missing/empty (0 show dirs, or
+  // dirs with no fullText-bearing files), not a quality failure. Without this,
+  // truncatedPercent/unknownPercent below compute as (0/0*100) = NaN, and
+  // parseFloat('NaN') > threshold is always false — both checks silently pass
+  // and print "AUDIT PASSED" (task #1066, same class as #1063/#1065 but via a
+  // NaN-comparison mechanism instead of an empty-array one). Shared guard so
+  // this stays enforced in BOTH the digest (no --gate) and blocking --gate
+  // runs — check-corpus-drift.js needs exit 2 from the digest run too, to
+  // classify this as a CRASH rather than swallow it as drift.
+  try {
+    assertCorpusScanned(stats.hasFullText, { gate: true, label: REVIEW_TEXTS_DIR });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`❌ ${e.message} (${stats.total} total files seen, 0 had usable fullText) — cannot audit quality.`);
     process.exit(2);
   }
 
