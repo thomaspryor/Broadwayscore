@@ -45,4 +45,25 @@ function parseRecheckAfterFromCard(card) {
   return null;
 }
 
-module.exports = { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard };
+/**
+ * Ensure a RECHECK-AFTER stamp present anywhere in `text` also appears at
+ * the very front. notion-brain's Outcome property is truncated to a preview
+ * (see notion-brain.js PROP_CHUNK) before it's stored — content past that
+ * cut lives only in the page body, which stuck-work.js's classifier never
+ * reads. A stamp written mid-paragraph or at the tail of a long wrap-up
+ * outcome silently falls past that cut, so the daily digest can never see
+ * it even though the card plainly has one (task #802: 5 of 6 stuck P0/P1
+ * cards had exactly this bug). Call this on the final text right before
+ * building the property value. Duplicating the stamp at the head is
+ * harmless — a preview convenience; the original text is preserved after.
+ * @param {string} text
+ * @returns {string}
+ */
+function hoistRecheckAfterStamp(text) {
+  const s = String(text || '');
+  const m = RECHECK_AFTER_RE.exec(s);
+  if (!m || m.index === 0) return s;
+  return `RECHECK-AFTER: ${m[1]}\n\n${s}`;
+}
+
+module.exports = { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard, hoistRecheckAfterStamp };
