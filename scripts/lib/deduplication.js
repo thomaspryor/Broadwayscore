@@ -680,10 +680,18 @@ function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
  * Vigor" — the 2026-08-04 Deploy-to-Vercel-Failed incident, task #1011).
  * False if they're likely two distinct works sharing a base title (both
  * carry a subtitle marker AND their full titles differ — the Angels in
- * America: Millennium Approaches / Perestroika shape). Mirrors the carve-out
- * checkForDuplicate's Check 5 applies right after its own normalized-title
- * match, so a caller that already has a (candidate, existing) pair doesn't
- * have to re-derive it.
+ * America: Millennium Approaches / Perestroika shape). Reuses the same
+ * carve-out checkForDuplicate's Check 5 applies right after its own
+ * normalized-title match, so a caller that already has a (candidate,
+ * existing) pair doesn't have to re-derive it.
+ *
+ * This is titles-only — unlike checkForDuplicate, it does NOT run
+ * isMultiProduction's protections (differing IBDB URLs, closed-vs-announced,
+ * cross-season opera gaps). It is not a drop-in replacement for
+ * checkForDuplicate; it is the specific subtitle-variant check that
+ * checkForDuplicate ALSO carries, extracted for callers (like the two
+ * OB promotion scripts) that already venue-scope their own candidate list
+ * and don't want the full duplicate-detection stack.
  *
  * Caller must already have narrowed the comparison to same-venue candidates
  * (or otherwise be certain both titles could plausibly be the same show) —
