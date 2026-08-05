@@ -1,20 +1,56 @@
 {
-  "processed": [],
+  "processed": [
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
+  ],
   "failed": [
-    "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json"
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+    ],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "now-you-see-me-live-west-end-2026/times-uk--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-08-05T00:28:43.809Z",
-  "lastProcessed": "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json",
-  "log": []
+  "startTime": "2026-08-05T01:12:03.462Z",
+  "lastProcessed": "now-you-see-me-live-west-end-2026/times-uk--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-05T01:12:23.168Z",
+      "event": "bb-session",
+      "session": "7592e8b4",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T01:12:23.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T01:12:39.238Z",
+      "event": "bb-session",
+      "session": "59693e03",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T01:12:39.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
