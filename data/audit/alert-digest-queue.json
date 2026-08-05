@@ -53,5 +53,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-04T18:01:15.638Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "5/147 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nAvenue Q: score-drift\nJust in Time: score-drift\nThe Devil Wears Prada: score-drift\nABBA Voyage: score-drift\nThe Lion King: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-04T23:57:26.648Z"
   }
 ]
