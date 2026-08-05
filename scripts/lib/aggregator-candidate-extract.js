@@ -348,11 +348,54 @@ function titleCaseIfShout(s) {
  * edit distance (1..3). 0 == clean match. >3 == genuinely different strings
  * (slug abbreviation, wrong article) — that's a 'title-mismatch', not a typo.
  */
+/**
+ * Same normalization, but with parenthesised text UNWRAPPED rather than
+ * dropped: "Two Strangers (Carry a Cake Across New York)" -> "two strangers
+ * carry a cake across new york".
+ *
+ * normalizeTitle() strips parentheticals on purpose — they are usually venue or
+ * composer noise ("Cable Street (59e59)"). But some shows carry a parenthesised
+ * SUBTITLE that is genuinely part of the name, and sources disagree on whether
+ * to include the brackets. BWW's slug spells it out while its body keeps the
+ * brackets, so the two normalized to "two strangers carry a cake across new
+ * york" vs "two strangers at a r t" — a 30-char edit distance on what is in
+ * fact the same show (observed live, run 31029032996: the CORRECT roundup was
+ * rejected as title-mismatch, so the show could not be auto-added).
+ */
+function unwrapParenTitle(s) {
+  return String(s || '').replace(/[()[\]]/g, ' ');
+}
+
+/**
+ * Drop a trailing " at <venue>" clause: BWW body titles are headline-shaped
+ * ("TWO STRANGERS (...) at A.R.T.") while the slug carries the bare title.
+ * Applied only to the loosened comparison below, never to the strict one, and
+ * only to the TRAILING clause — a title with "at" mid-string is untouched.
+ */
+function stripTrailingVenueClause(s) {
+  return String(s || '').replace(/\s+at\s+[^,;]*$/i, '');
+}
+
 function classifyTitleDelta(refTitle, bodyTitle) {
   const a = normalizeTitle(refTitle || '');
   const b = normalizeTitle(bodyTitle || '');
   if (!a || !b) return 'unknown';
   if (a === b) return 'match';
+
+  // Second opinion with parenthesised subtitles unwrapped. This can only ever
+  // turn a mismatch/typo into a closer verdict, never reject something the
+  // primary comparison accepted — the strict check above already returned.
+  // EXACT equality only — deliberately NOT fed into the edit-distance branch
+  // below. Stripping a venue clause shortens both strings, and on short titles
+  // that turns a clear mismatch into a "typo": "Cats" vs "Dogs at the Palace"
+  // collapses to "cats" vs "dogs", distance 3, which add-requested-show.js
+  // accepts (it rejects only on 'mismatch'). Loosening is safe when it demands
+  // the two titles be identical, and unsafe the moment it feeds a threshold.
+  const loosen = (s) => normalizeTitle(stripTrailingVenueClause(unwrapParenTitle(s)));
+  const au = loosen(refTitle);
+  const bu = loosen(bodyTitle);
+  if (au && bu && au === bu) return 'match';
+
   const d = levenshteinDistance(a, b);
   if (d >= 1 && d <= 3) return 'typo';
   return 'mismatch';
