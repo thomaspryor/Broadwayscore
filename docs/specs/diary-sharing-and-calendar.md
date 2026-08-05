@@ -1,21 +1,33 @@
 # Spec: Diary Show Sharing (Outings) + Add to Calendar
 
-**Status:** Proposed — not yet implemented
+**Status:** Proposed — not yet implemented. Revised after `/right-problem` (§0) and `/plan-review` (6 reviewers; changes annotated `[CHANGED: …]`).
 **Author:** Claude (session 2026-08-05), from owner request
 **Scope:** Web (Next.js/Vercel) first, iOS (Expo) second
-**Feature flags:** `userAccounts` (existing) + new `diarySharing`
+**Feature flags:** calendar under existing `userAccounts`; invites under new `diarySharing` (see §7)
+
+---
+
+## 0. Validation verdict (/right-problem, 2026-08-05)
+
+Two independent reviewers (GPT challenger + Claude judge) evaluated this spec's direction. Convergent findings, baked into the phasing in §7:
+
+1. **Calendar-first, sharing second.** The only confirmed users today are the owner + partner; the calendar/showtime feature serves them every booking and has zero dependency on sharing. It ships first, standalone (Phase 0).
+2. **A viral loop can't land on a disabled feature.** `userAccounts` is off in production (demo-only). Invite pages whose CTA is "create an account" are a dead end until accounts ship to prod — so the invite flow (Phase 1) is *sequenced after* the accounts prod launch, and every invite page must deliver value without an account (score + Add to Calendar work anonymously).
+3. **The .ics is itself a sharing mechanism.** A calendar event is already a shareable, multi-person, reschedule-propagating object. Embedding the show URL in the event description gives "Joanna gets the plan + a link back" with zero backend — shipped in Phase 0. (Phase 0 is standalone in *implementation*; this is a free side-door, not a dependency.)
+4. **Start invites stateless.** A `/join` page that renders entirely from URL params delivers ~90% of the invite experience with no tables, tokens, RLS, or sync. The full shared-membership "outing" object (§3.1) is the *upgrade path*, built only on evidence (§7 Phase 2 trigger). Reviewer verbatim: "the shared outing object is probably overengineering with a growth costume on it." §1's companions display is the Phase 2 end-state, not the Phase 1 deliverable.
+5. **Kept from the challenger:** a shareable "theater night card" OG image (people forward images more readily than they join systems) — the Phase 1 link preview is a hard prerequisite for the invite flow's effectiveness, not polish.
+
+A subsequent `/plan-review` (GPT production, Claude structure + pre-mortem + user-impact + codebase-grounded design, Gemini consistency) drove these major revisions: signed invite params (§4.3), ICS UID/DST fixes (§4.4), `PerformanceEvent` shape + shared param codec (§4.4), universal-link claim moved to the iOS phase (§7), single `curtain_time` name (§3.0), and reuse of existing picker/schedule components (§4.2).
 
 ---
 
 ## 1. What we're building
 
-Two user-facing features that share one new data model:
+Two user-facing features that ultimately share one data model:
 
-1. **Invite friends to a diary entry.** "I have Broad Strokes on my diary for Sep 11 — add Joanna." The owner shares a link (iOS share sheet / copy link / email); Joanna opens it, sees a rich invite page, signs in (or creates an account gracefully), and the show lands in *her* diary too, with both people shown as companions. This doubles as a viral growth loop: every invite link is an acquisition page with the show's score, an account-creation prompt, and an app-download nudge.
+1. **Invite friends to a diary entry.** "I have Broad Strokes on my diary for Sep 11 — add Joanna." The owner shares a link (iOS share sheet / copy link / email); Joanna opens it, sees a rich invite page, signs in (or creates an account gracefully), and the show lands in *her* diary too — with companions shown once Phase 2 lands. This doubles as a viral growth loop: every invite link is an acquisition page with the show's score, an account-creation prompt, and an app-download nudge.
 
 2. **Add to Calendar (Google + Apple).** From a diary entry, add the performance to your calendar with the real curtain time. Because diary entries today only store a *date*, this introduces a **showtime picker** (matinee vs. evening, e.g. 2:00 PM / 8:00 PM, with manual override for unusual times like 5:30).
-
-Both features hang off a new concept: an **Outing** — "a plan to attend a specific performance (show + date + time), possibly with other people."
 
 ---
 
@@ -25,33 +37,48 @@ Both features hang off a new concept: an **Outing** — "a plan to attend a spec
 |---|---|
 | An "upcoming diary entry" = a `watchlist` row (`planned_date DATE`, `UNIQUE(user_id, show_id)`); reviews are `reviews` rows (`date_seen DATE`). No time-of-day column anywhere (`supabase-schema.sql:16-36`) | Time must live somewhere new; the unique constraint means a user can't have two planned dates for one show |
 | `reviews`/`watchlist` RLS is strictly owner-only (`supabase-schema.sql:93-125`) | Sharing needs a new object + policies, not a loosening of existing ones |
-| Proven share pattern exists: Lists — `share_slug` (random), anon read policy, `/list/[slug]` page with OG image (`useUserLists.ts:284-318`, `src/app/list/[slug]/page.tsx`) | Reuse the shape; but diary invites should use an RPC-scoped read, not a blanket anon SELECT (PII lesson from `20260422b` — see §5.3) |
-| Post-sign-in resume hook exists: `deferred-auth.ts` + `PendingAction` union (`src/types/user.ts:76-87`) | "Accept invite → sign in → auto-join" is an extension of an existing mechanism, not new plumbing |
+| Proven share pattern exists: Lists — `share_slug` (random), anon read policy, `/list/[slug]` page with OG image (`useUserLists.ts:284-318`, `src/app/list/[slug]/page.tsx`) | Reuse the shape; but diary invites use an RPC-scoped read, not a blanket anon SELECT (PII lesson from `20260422b` — §5.3) |
+| Post-sign-in resume hook exists: `deferred-auth.ts` + `PendingAction` (`src/types/user.ts:76-87`) — note it's an optional-fields bag today, not a discriminated union | "Accept invite → sign in → auto-join" extends an existing mechanism; convert `PendingAction` to a discriminated union while adding the variant (cheap at 4 variants) `[CHANGED: match real type shape — design review]` |
 | Auth = Supabase, **Google + Apple OAuth only**; no email magic link, no phone auth | "Add by phone number" as an *auth* method is out of scope v1; phone-based invites go through the share sheet (iMessage) instead |
-| Email infra exists (Resend, `noreply@broadwayscorecard.com`, `api/beat-the-critics/send-picks/route.ts`); **no SMS provider** | Email invites are cheap to add (Phase 3); SMS (Twilio + A2P registration + cost) is deferred — share sheet → Messages covers the same need free |
-| Showtime data exists: `data/show-schedules.json` (42 Broadway shows, weekly matinee/evening grid with clock times, e.g. `{"m":"14:00","e":"20:00"}`) + `data/todaytix-showtimes.json` (142 BW/OB/WE shows, per-date m/e slot existence, no clock times) | The picker can be smart (real times, real slots) for covered shows, with a manual fallback for everything else |
+| Email infra exists (Resend, `noreply@broadwayscorecard.com`); **no SMS provider** | Email invites are cheap to add (Phase 3); SMS deferred — share sheet → Messages covers the same need free |
+| Showtime data exists: `data/show-schedules.json` (42 Broadway shows, weekly matinee/evening grid with clock times) + `data/todaytix-showtimes.json` (142 BW/OB/WE shows, per-date m/e slot existence, no clock times) | The picker can be smart for covered shows, with a manual fallback for everything else |
+| `ShowtimesCard.tsx:25-71` already implements `formatTime`, `parseMonday`, `getMondayPlusDayDate` privately; `DatePickerButton.tsx:50-95` carries hard-won iOS-wheel logic | Extract and reuse, don't duplicate (§4.2) `[CHANGED: design review]` |
 | Site is a hybrid Next.js app on Vercel with 23 live API routes (incl. edge OG image) — *not* a static export | Server-generated `.ics` and invite metadata pages are straightforward |
-| Universal Links claim only `/show/*` and `/auth/callback` (`public/.well-known/apple-app-site-association`) | Add `/join/*` so invite links open the app when installed |
-| iOS app is Expo/RN; pure shared logic is vendored from `src/lib/stats/` with checksum drift detection | Calendar/ICS/time logic should be written as pure functions in that style so iOS reuses it |
-| Everything user-account-related is gated by `featureFlags.userAccounts` (demo-only in prod) | New features gate behind `userAccounts && diarySharing`; ship to demo.broadwayscorecard.com first |
+| Universal Links claim only `/show/*` and `/auth/callback` | `/join` claim ships **with the app's join handler** (iOS phase), never before — else installed-app users tap into a handler-less app `[CHANGED: was Phase 1 — structure review]` |
+| iOS app is Expo/RN; pure shared logic is vendored from `src/lib/stats/` per-directory with checksum drift detection | Calendar logic = self-contained pure module taking pre-parsed inputs (no cross-directory imports) (§4.4) |
+| Everything user-account-related is gated by `featureFlags.userAccounts` (demo-only in prod) | Calendar gates on `userAccounts` alone; `diarySharing` additionally gates invites — so a future "hold sharing for a launch beat" decision can't hold the calendar hostage `[CHANGED: flag split — structure review]` |
 
 ---
 
 ## 3. Data model
 
-### 3.1 New tables
+### 3.0 Phase 0 — time-of-day without any new object
+
+Calendar export only needs a time on the user's own entry. Add two nullable columns to `watchlist` (owner-only RLS unchanged, existing diary queries unaffected):
 
 ```sql
--- An outing: a plan to attend a specific performance, alone or with others.
+ALTER TABLE watchlist ADD COLUMN time_slot TEXT CHECK (time_slot IN ('matinee','evening','custom'));
+ALTER TABLE watchlist ADD COLUMN curtain_time TIME;  -- local wall-clock; same name Phase 2 uses on outings
+ALTER TABLE watchlist ADD CONSTRAINT curtain_time_requires_slot
+  CHECK (curtain_time IS NULL OR time_slot IS NOT NULL);  -- no orphan times
+```
+
+`[CHANGED: one name (`curtain_time`) across watchlist/outings/types/events + cross-column CHECK — design review]`
+
+A real column, not client-side state: the iOS app vendors the diary data logic, so time must live in the one shared store. **Rollback:** both columns are additive + nullable — `DROP COLUMN` is safe at any point; no backfill exists to lose. `[CHANGED: rollback stated — GPT/Gemini]`
+
+### 3.1 Phase 2 (conditional) — shared-outing tables
+
+```sql
 CREATE TABLE outings (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   show_id       TEXT NOT NULL,               -- shows.json id OR diary-catalog id (same convention as watchlist.show_id)
   show_date     DATE NOT NULL,
-  time_slot     TEXT CHECK (time_slot IN ('matinee','evening','custom')),  -- NULL = time not chosen yet
-  curtain_time  TIME,                        -- local wall-clock, e.g. '19:00'; NULL until chosen
-  tz            TEXT,                        -- IANA, derived from show market at creation ('America/New_York', 'Europe/London'); NULL = floating
+  time_slot     TEXT CHECK (time_slot IN ('matinee','evening','custom')),
+  curtain_time  TIME,
+  tz            TEXT,                        -- IANA, from the market→tz map in src/lib/calendar/ (single source, §4.4)
   created_by    UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  invite_token  TEXT UNIQUE NOT NULL,        -- 21-char nanoid / 16+ bytes entropy, minted at creation
+  invite_token  TEXT UNIQUE NOT NULL,        -- 21-char nanoid, minted at creation
   status        TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','cancelled')),
   created_at    TIMESTAMPTZ DEFAULT now(),
   updated_at    TIMESTAMPTZ DEFAULT now()
@@ -65,153 +92,174 @@ CREATE TABLE outing_members (
   PRIMARY KEY (outing_id, user_id)
 );
 
--- Link each member's own diary row to the outing.
 ALTER TABLE watchlist ADD COLUMN outing_id UUID REFERENCES outings(id) ON DELETE SET NULL;
 ```
 
-**Why a separate object instead of columns on `watchlist`:**
-- `watchlist` is owner-only under RLS and consumed by existing diary/stats code on web *and* iOS (vendored reducers). Leaving its shape and policies untouched means zero regression risk for the existing diary.
-- The outing is the natural unit for both features: **Add-to-Calendar needs (date + time); sharing needs (date + time + members)**. A solo user who just wants a calendar entry creates a single-member outing — same code path, no special case.
-- Copy-on-join semantics (each member keeps their own `watchlist` row, pointed at the outing) mean a member's diary survives the owner deleting the outing, and each member independently rates/reviews later — reviews stay per-person and private, exactly as today.
+**Why a separate object instead of columns on `watchlist`:** `watchlist` is owner-only under RLS and consumed by existing diary/stats code on web *and* iOS. The outing is the natural unit for group semantics; copy-on-join means each member keeps their own `watchlist` row (diary survives outing deletion; reviews stay per-person and private).
 
-**Sync semantics (recommendation): owner-editable, propagated.** Only the owner can change `show_date`/`curtain_time`. A Postgres trigger on `outings` UPDATE syncs every member's linked `watchlist.planned_date` — so the existing diary queries (which read `planned_date`) stay correct without any read-path change. Guests can *leave* an outing (membership row deleted; their watchlist row keeps its date but drops `outing_id`).
+**Sync semantics: owner-editable, propagated.** Only the owner edits `show_date`/`curtain_time`/`time_slot`. A trigger on `outings` UPDATE syncs every member's linked `watchlist` row — **all three of `planned_date`, `time_slot`, `curtain_time`** — via a **SECURITY DEFINER trigger function** (it writes other users' owner-only-RLS rows; a plain trigger would fail RLS). `[CHANGED: time columns + DEFINER explicitly — structure review]` Guests can leave (membership deleted; their watchlist row keeps its values, drops `outing_id`).
 
-### 3.2 RLS + access functions
+### 3.2 RLS + access functions (Phase 2)
 
-Members read their outings via a normal policy; **anonymous invite preview goes through a SECURITY DEFINER RPC, not an anon SELECT policy** (per the `20260422b` PII incident pattern — a blanket policy would expose `created_by`, member list, and token via PostgREST):
+Members read their outings via a normal policy; **anonymous invite preview goes through a SECURITY DEFINER RPC, not an anon SELECT policy** (per the `20260422b` PII incident pattern):
 
 ```sql
--- Members (and only members) can read the outing + membership.
 CREATE POLICY "members read outings" ON outings FOR SELECT TO authenticated
   USING (EXISTS (SELECT 1 FROM outing_members m WHERE m.outing_id = id AND m.user_id = auth.uid()));
 -- Owner-only UPDATE/DELETE; INSERT with created_by = auth.uid().
 -- outing_members: members read; owner or self delete; inserts ONLY via join_outing().
 
--- Anon-safe invite preview: token in → safe fields out. No table exposure.
 CREATE FUNCTION get_outing_invite(p_token TEXT)
 RETURNS TABLE (show_id TEXT, show_date DATE, time_slot TEXT, curtain_time TIME, tz TEXT,
                inviter_name TEXT,            -- profiles.display_name only, never email
                member_count INT, status TEXT)
 SECURITY DEFINER SET search_path = '' ...;
+-- Returns zero rows identically for unknown, expired, and cancelled tokens — no existence oracle.
 
--- Authenticated join: validates token + status='active', inserts membership,
--- upserts the caller's watchlist row (see §3.3), returns the outing id.
 CREATE FUNCTION join_outing(p_token TEXT) RETURNS UUID SECURITY DEFINER ...;
 ```
 
-Rate limiting mirrors the `mezzanine_search_log` convention: cap outing creation (e.g. 30/day/user) and `get_outing_invite` lookups per IP at the API layer to blunt token scanning (the real defense is 128-bit token entropy).
+`[CHANGED: uniform empty result for all invalid-token cases — GPT]`
 
-### 3.3 Join edge cases
+Rate limiting: outing creation capped (e.g. 30/day/user, `mezzanine_search_log` convention). The `/join/[token]` page is a server component with no API layer in front — its per-IP throttle lives in the page's server code (small in-memory/KV counter, same shape as `send-picks`'s IP limiter), while the real defense stays 128-bit token entropy. `[CHANGED: named where the limiter actually lives — structure review]`
 
-- **Invitee already has the show on their watchlist** (`UNIQUE(user_id, show_id)`): `join_outing` upserts — sets that row's `planned_date` to the outing date and links `outing_id`. (Their old solo plan is superseded; this matches user intent — they're going *with* the group.)
-- **Invitee already reviewed the show:** still joins; the show appears in Upcoming again for the new date. (Seeing a show twice is currently unrepresentable in `watchlist` — the upsert rule above is the pragmatic v1 answer; a `seen-again` model is explicitly out of scope.)
-- **Owner deletes the diary entry / outing:** outing → `status='cancelled'` (soft) or row delete; members' watchlist rows persist with `outing_id` nulled (`ON DELETE SET NULL`). v1: no push notification; the entry simply shows as no longer shared. (Notifying members is Phase 3.)
-- **Duplicate join:** PK on `(outing_id, user_id)` — RPC is idempotent, returns success.
-- **Token lifetime:** valid while `status='active'` and until `show_date + 30 days`. Owner can revoke by regenerating the token ("Reset invite link").
+### 3.3 Join semantics (Phase 1 stateless AND Phase 2 — same rules)
+
+`[CHANGED: rules now cover Phase 1's PendingAction path, which hits the same constraint — structure review]`
+
+- **Invitee already has the show on their watchlist** (`UNIQUE(user_id, show_id)`): upsert — set `planned_date`, `time_slot`, `curtain_time` (all three) to the invite's values and, in Phase 2, link `outing_id`. **The UI confirms before overwriting a differing existing date** ("You had this planned for Oct 3 — switch to Sep 11 with Tom?"). `[CHANGED: confirm-before-clobber — GPT/user-impact]`
+- **Invitee already reviewed the show:** still joins; the show appears in Upcoming for the new date. (Seeing a show twice remains unrepresentable in `watchlist`; accepted v1 limit.)
+- **Owner deletes the entry / outing (Phase 2):** outing → `status='cancelled'`; members' watchlist rows persist (`ON DELETE SET NULL`). No notification in v1.
+- **Duplicate join:** idempotent (PK / upsert).
+- **Token lifetime (Phase 2):** valid while `active` and until `show_date + 30 days`; owner "Reset invite link" (in the share modal) regenerates. Phase 1 signed links (§4.3) stop *rendering as invites* once `show_date` passes — the page switches to "This performance has passed" + show link.
 
 ---
 
 ## 4. UX flows
 
-### 4.1 Creating/upgrading an entry → outing (web, diary tab)
+### 4.1 Diary entry actions (web, diary tab)
 
 Entry cards in **Upcoming** gain two actions (icon row, mobile-first):
 
-- **🕐 Set time** → showtime picker (§4.2). First use silently creates the outing (members = just you) and stores slot + curtain time.
-- **👥 Invite** → creates the outing if needed, then opens the share modal:
-  - **Primary: "Share invite link"** → `navigator.share({ title, text, url })` (iOS/Android share sheet: iMessage, WhatsApp, Mail, …). Desktop fallback: copy-to-clipboard (same pattern as `ListsTab.tsx:185`).
-  - Secondary: **"Email an invite"** (Phase 3, Resend) — input an email address, we send a branded invite.
-  - "Add by phone number" is intentionally **not** a form field: with no SMS provider and no phone auth, the honest implementation *is* the share sheet → Messages. The share modal copy acknowledges it: "Send via iMessage, WhatsApp, email — anywhere."
-- Card shows companions once shared: avatar stack + "With Joanna" (display names only).
+- **🕐 Set time** → showtime picker (§4.2). Phase 0: writes `time_slot` + `curtain_time` on the user's watchlist row. Phase 2: creates/updates the outing, trigger-synced back to those columns.
+- **👥 Invite** (Phase 1) → share modal: primary **"Share invite link"** via `navigator.share({ title, text, url })` (share sheet: iMessage, WhatsApp, Mail…); desktop fallback copy-to-clipboard (`ListsTab.tsx:185` pattern). Phase 1 links are signed params URLs (§4.3); Phase 2 upgrades to outing tokens. "Add by phone number" is deliberately not a form field — the share sheet → Messages *is* that feature, and the modal copy says so.
+- Companions display ("With Joanna", avatar stack) arrives with Phase 2.
 
-Same actions appear on the show page's diary widget and on `/diary-show/[id]` for catalog shows.
+Same actions on the show page's diary widget and `/diary-show/[id]` for catalog shows.
 
 ### 4.2 Showtime picker
 
 Given `show_id` + `planned_date`, resolve in order:
 
-1. **`show-schedules.json` weekly grid** (42 BW shows): exact chips — e.g. **"2:00 PM Matinee" / "8:00 PM Evening"** for that weekday. Days with one performance show one chip.
-2. **`todaytix-showtimes.json` per-date slots** (142 shows): slot existence (m/e) is real for the *specific date*; clock time from the weekly grid if available, else market-default label ("Matinee (~2 PM)" / "Evening (~7:30 PM)").
-3. **Fallback (everything else, incl. 32k catalog shows):** manual picker — quick chips `2:00 · 3:00 · 5:30 · 7:00 · 7:30 · 8:00` + native time input for anything else (`time_slot='custom'`).
+1. **`show-schedules.json` weekly grid** (42 BW shows): exact chips — "2:00 PM Matinee" / "8:00 PM Evening" for that weekday.
+2. **`todaytix-showtimes.json` per-date slots** (142 shows): slot existence for the specific date; clock time from the grid if available, else market-default label ("Evening (~7:30 PM)").
+3. **Fallback (everything else, incl. 32k catalog shows):** manual — quick chips `2:00 · 3:00 · 5:30 · 7:00 · 7:30 · 8:00` + native time input (`time_slot='custom'`).
 
-Always show **"Other time…"** even when the grid matches — schedules change and special performances exist. Picker UI sits beside the existing `DatePickerButton` in the entry editor (it already handles the iOS-wheel quirks; the time input follows the same hidden-native-input pattern).
+Always show **"Other time…"** even when the grid matches. Schedule data is *advisory*: it prefills chips but never blocks manual entry, so staleness degrades gracefully. `[CHANGED: advisory framing — structure review]`
 
-**Data plumbing:** both JSONs currently live only in the server bundle (`src/lib/data-showtimes.ts`). Add a prebuild fan-out (extend `scripts/generate-diary-data.js` or a sibling script) emitting one compact `public/data/showtimes-index.json` (~142 shows × slots ≈ small) that the client fetches lazily when the picker opens. The 10-day staleness heuristic from `ShowtimesCard.tsx:106` applies — stale grid ⇒ fall back to tier 3.
+**Component reuse (mandatory):** `[CHANGED: design review P1s]`
+- Extract `formatTime`, `parseMonday`, `getMondayPlusDayDate` from `ShowtimesCard.tsx` into the shared pure lib; ShowtimesCard consumes the extracted versions (CLAUDE.md §15 extract→export→wire-back). Do not re-implement.
+- The time input **generalizes `DatePickerButton`** (`inputType: 'date' | 'time'` on one shared core) rather than copying its hidden-native-input pattern — that component encodes three owner-reported iOS wheel bugs a sibling copy would re-fight.
 
-### 4.3 Invite landing page — `/join/[token]`
+**Data plumbing:** prebuild fan-out (extend `scripts/generate-diary-data.js` or sibling) emits one compact `public/data/showtimes-index.json`, fetched lazily when the picker opens. **Staleness reality:** the index refreshes only on deploy; `todaytix-showtimes.json` updates on a CI cron. Verify `scripts/lib/should-deploy-gate.js` counts the index among site-relevant paths; regardless, tier-3 fallback + the 10-day staleness heuristic (`ShowtimesCard.tsx:106`) bound the damage. `[CHANGED: deploy-gate interaction flagged — structure review]`
 
-Server component (Node runtime): calls `get_outing_invite` via the anon server client (`supabase-server.ts` pattern), 404s on unknown/expired token.
+### 4.3 Invite landing page — `/join` (Phase 1) / `/join/[token]` (Phase 2)
 
-- **`generateMetadata`:** OG image via new `type=invite` in `/api/og` — show poster + "**Tom invited you** · Broad Strokes · Thu Sep 11 · 8:00 PM". This preview *is* the viral hook in iMessage.
-- **Page content (anon):** show hero (poster, ScoreBadge, venue — standard design-system components), "Tom invited you to join them", date + time, member avatars/count, and:
-  - **Primary CTA: "Join this outing"** → `SignInModal` with invite-specific context copy ("Create a free account to add this to your diary — takes 10 seconds with Google or Apple"). New `PendingAction` variant `{ type: 'join-outing', token }` in `deferred-auth.ts`; after OAuth returns, the pending action fires `join_outing(token)` → redirect to `/my-shows` (diary tab) with a success toast "You're going with Tom! 🎭".
-  - **Secondary CTA: "Add to calendar"** — works **without an account** (date/time/venue are already on the page). Zero-friction value for invitees who won't sign up, and the calendar entry carries the join URL so they can convert later.
-  - Tertiary: link to the show page ("See reviews · 87 Critic Score").
-- **Signed-in visitor:** one-tap "Join" (no modal). Already a member → "You're going! View in your diary."
-- **App download encouragement:**
-  - `apple-itunes-app` smart-banner meta on `/join/*` (new — doesn't exist anywhere yet; needs the App Store id in `src/config/`).
-  - Add `/join/*` to `apple-app-site-association` `components` so the link opens the installed app directly.
-  - Post-join success screen includes a "Get the iOS app" card (dismissible; suppressed inside the app's webview/UA).
-- `robots: noindex` (same as `/diary-show/*`); tokens must not be crawlable.
+Phase 1 renders from URL params — **signed**: `/join?s=showId&d=YYYY-MM-DD&t=1930&from=Tom&sig=<hmac>`.
+
+**Abuse hardening (Phase 1 ships with ALL of these — the pre-mortem's primary incident is this page weaponized as a phishing-card generator):** `[CHANGED: pre-mortem P0]`
+- `sig` = HMAC-SHA256 (server secret) over the canonical params. Links are mintable **only** by our share modal (a tiny authed API route signs them). Invalid/absent sig → generic show page redirect, no invite framing, no OG invite card. Stateless *and* forgery-proof (~20 lines).
+- `from` display name: ≤30 chars, letters/spaces/hyphens only, stripped of URLs and brand-impersonation keywords at *mint* time (it's inside the HMAC, so it can't be altered after). Render fallback: "A friend invited you."
+- `/api/og?type=invite`: only rendered for valid-sig requests; per-IP rate limit + long `Cache-Control` (same image for same link).
+- Past `d` → "This performance has passed" state (no invite CTA). Unknown `s` → 404. Catalog shows (no poster/score) → text-hero variant, generic OG card — specified, not accidental. `[CHANGED: past-date/catalog states specified — structure/user-impact]`
+- `robots: noindex`; analytics `invite_page_viewed` fires on human interaction (first scroll/tap), not page load — link-preview crawlers (iMessage fetches every share) would otherwise inflate the funnel and could trip the Phase 2 evidence trigger on bot traffic. `[CHANGED: bot filtering — structure review "dumbest failure"]`
+
+**Page content (anon):** show hero (poster, ScoreBadge, venue — design-system components), "Tom invited you", date + time, and:
+- **Primary CTA "Join this outing"** → `SignInModal` with invite context copy; `PendingAction` discriminated-union variant `{ type: 'join-outing', payload }`; after OAuth, apply §3.3 join semantics → `/my-shows` with success toast.
+- **Secondary CTA "Add to calendar"** — no account needed (§4.4); the event carries the join link for later conversion.
+- Tertiary: show page link ("See reviews · 87 Critic Score").
+- **Signed-in visitor:** one-tap Join. Already joined → "You're going! View in your diary."
+- **App download:** post-join success card "Get the iOS app" (dismissible, suppressed in-app). Smart banner + AASA claim wait for the iOS phase (§7).
+
+Phase 2 swaps params for `get_outing_invite(token)` — same page shell, same states.
 
 ### 4.4 Add to Calendar
 
-Placement: entry card overflow + entry editor + join page + post-join success screen. If no time is set yet, the button opens the showtime picker first, then proceeds.
+Placement: entry card + entry editor + join page + post-join screen. No time set yet → picker opens first.
 
-Two options presented (auto-ordered by platform):
+**Implementation shape `[CHANGED: design review P1 — minimal-shape API, shared codec]`:** one pure module `src/lib/calendar/` (no I/O, no React, `node:test`, vendorable standalone — **no imports from `stats/`**; duration arrives pre-parsed):
 
-1. **Apple / Outlook / everything — `.ics` download.** New route `GET /api/calendar/[outingId].ics?token=…` (token = invite token, so it works for anon invitees; also works signed-in via outing id + auth). Response `text/calendar`:
-   - `DTSTART;TZID=America/New_York:20260911T200000` with an embedded static `VTIMEZONE` block for the two supported zones (`America/New_York`, `Europe/London`, from `outings.tz` via a market→tz map). Shows with unknown market/tz emit **floating** local time — correct for the dominant case (attendee is local to the show).
-   - `DURATION` from the show's `runtime` field parsed with the existing helper (`src/lib/stats/parse.ts:80`; defaults 2h30m musical / 2h play) + 15 min buffer.
-   - `SUMMARY: 🎭 Broad Strokes`, `LOCATION` from `theaterAddress` (741 shows) falling back to `venue + market city`, `DESCRIPTION` with companions ("With Tom, Joanna"), the show page URL, and the join link.
-   - Stable `UID: outing-{id}@broadwayscorecard.com` + `SEQUENCE` bumped on outing updates, so re-downloading after a time change updates rather than duplicates.
-   - On iOS Safari, tapping a `.ics` opens the native "Add to Calendar" sheet — this **is** the Apple Calendar integration; no EventKit needed on web.
-2. **Google Calendar — template URL** (no API, no OAuth): `https://calendar.google.com/calendar/render?action=TEMPLATE&text=…&dates=20260911T200000/20260911T223000&ctz=America/New_York&details=…&location=…`.
+```ts
+interface PerformanceEvent {  // the one event shape; DB rows, outings, and URLs all map into it
+  title: string; date: string;            // YYYY-MM-DD
+  time: string | null;                    // HH:MM, null = all-day fallback
+  tz: string | null;                      // IANA from the market→tz map (lives here, single source)
+  durationMin: number;                    // caller pre-parses runtime (default 150 + 15 buffer)
+  location: string; showUrl: string; joinUrl?: string; companions?: string[];
+}
+buildIcs(ev: PerformanceEvent): string
+buildGoogleCalendarUrl(ev: PerformanceEvent): string
+encodeEventParams(ev)/decodeEventParams(qs)  // shared codec — /join, /api/calendar.ics, share modal all use it; Phase 2 token swap touches one file
+```
 
-**Implementation shape:** pure functions in `src/lib/calendar/` — `buildIcs(outing, show): string`, `buildGoogleCalendarUrl(outing, show): string`, `resolveEventWindow(date, time, runtime, tz)` — no I/O, no React, `node:test` unit tests (`tests/unit/calendar-*.test.mjs`), written to the `src/lib/stats/` vendoring standard so the iOS app can reuse the Google-URL/ICS builders even though it will prefer `expo-calendar` natively. No npm dependency needed (hand-rolled ICS is ~80 lines; escaping rules are the only subtlety — cover with tests: commas/semicolons/newlines in titles like *Romeo + Juliet*, 75-octet line folding).
+Buttons (ordered by platform: iOS/macOS → Apple first; Android → Google first `[CHANGED: user-impact]`):
 
-### 4.5 iOS app (Phase 2, `BroadwayScorecard-app` repo)
+1. **Apple / Outlook — `.ics`.** Served by `GET /api/calendar.ics?<signed params>` from **Phase 0** (route calls the pure lib; client-side Blob download of `.ics` is historically flaky on iOS Safari — a served `text/calendar` response reliably opens the native add sheet). `[CHANGED: route in Phase 0, not Blob — user-impact/pre-mortem]`
+   - `DTSTART;TZID=…` with `VTIMEZONE` blocks **copied byte-for-byte from tzdata reference ICS** for `America/New_York` and `Europe/London` — never hand-written RRULEs. Unknown market → floating local time.
+   - **DST is a named test fixture:** unit tests assert resolved UTC instants for dates straddling both transitions (Mar/Nov US, Mar/Oct UK), and Phase 0 exit criteria include a *Google Calendar* import check — Google parses VTIMEZONE strictly where Apple silently substitutes its own tz db, so Apple-only testing masks DST bugs. `[CHANGED: pre-mortem secondary]`
+   - `UID: bsc-{showId}@broadwayscorecard.com` — **date excluded**, so a reschedule + re-export *updates* the event; `SEQUENCE` = generation unix-timestamp (monotonic without stored state). Phase 2 keeps the same UID for continuity. `[CHANGED: UID embedded the date → duplicates on reschedule; SEQUENCE had no state to bump from — structure review]`
+   - `SUMMARY: 🎭 {title}`, `LOCATION` from `theaterAddress` (741 shows) falling back to venue + city, `DESCRIPTION` with companions, show URL, join URL. Escaping + 75-octet folding covered by tests (*& Juliet*, *Romeo + Juliet*); `resolveEventWindow` handles past-midnight end times (11 PM curtain + 2h30).
+2. **Google Calendar — template URL** (no API): `calendar.google.com/render?action=TEMPLATE&dates=…&ctz=…`. Caveat surfaced in UI copy: requires a Google session; each open creates a *new* event (no UID semantics) — the UI labels it "opens Google Calendar" and leans Apple-first on iOS.
 
-- **Receive invites:** `/join/*` universal link → in-app join screen (same RPCs via the app's Supabase client). Signed-out → native Apple/Google sign-in → resume join (mirror `PendingAction`).
-- **Send invites:** RN `Share.share({ url })` from the diary entry — the exact "share sheet" moment the owner described.
-- **Calendar:** `expo-calendar` (native EventKit) for one-tap add; fall back to opening the `.ics` URL.
-- Vendor `src/lib/calendar/` alongside the existing `stats` vendoring (checksum-drift pattern already established).
+### 4.5 iOS app (later phase, `BroadwayScorecard-app` repo)
+
+- `/join` universal link → in-app join screen (same join semantics via the app's Supabase client; mirror PendingAction). **AASA `/join*` claim ships in the same release as this handler** — never earlier. Note the Phase 1 URL is query-based (`/join?...`), so the AASA component entry must match `/join` with query, not just `/join/*`.
+- Send invites: RN `Share.share({ url })` from the diary entry.
+- Calendar: `expo-calendar` (native EventKit); fall back to opening the `.ics` route URL.
+- Vendor `src/lib/calendar/` alongside `stats/` (it's self-contained by design, §4.4).
 
 ---
 
 ## 5. Growth & analytics
 
-- **Events (dual-fire `track()` + `captureEvent()`, existing convention):** `outing_time_set`, `outing_invite_created`, `outing_invite_shared` (method: share-sheet/copy/email), `invite_page_viewed` (anon vs authed), `invite_joined`, `signup_via_invite`, `calendar_added` (google/ics, authed/anon), `app_banner_shown/tapped`.
-- **Attribution:** invite URLs carry no extra params (token is enough); `signup_via_invite` fires when a `join-outing` pending action completes on a account younger than 5 minutes. PostHog funnel: viewed → joined → signed up → (later) invited someone themselves = the K-factor loop.
-- **The loop:** booking tickets is inherently multi-person; every real-world booking seeds 1–3 invite sends into iMessage with a rich OG card. Invitees get immediate anon value (score + calendar), then a 10-second OAuth join. Post-join, the product prompts the *new* user to set up their own diary — each join is a new potential inviter.
+- **Events (dual-fire `track()` + `captureEvent()`), trimmed to what gates decisions** `[CHANGED: was 10+, GPT]`: Phase 0 — `outing_time_set`, `calendar_added` (method, authed/anon). Phase 1 adds — `invite_shared` (method), `invite_page_viewed` (human-interaction-gated, §4.3), `invite_joined`, `signup_via_invite`. Everything else waits for Phase 2 evidence needs.
+- **Attribution:** `signup_via_invite` = `join-outing` PendingAction completing on an account <5 min old. Funnel: shared → viewed → joined → signed up → later invited someone = the K-factor loop. **This funnel is the Phase 2 evidence source — measure it, don't assume it.**
 
 ## 6. Security & privacy
 
-- Tokens: 21-char nanoid (~126 bits); unguessable is the primary control. Expiry `show_date + 30d`; owner reset regenerates.
-- Anon surface is exactly one RPC returning: show fields, date/time, inviter **display name**, member count. Never emails, never user ids, never the member list by name (members see names; anon sees a count).
-- No new PII classes: no phone numbers stored (SMS deferred), email invites (Phase 3) go through the existing Resend route conventions with per-IP + per-user rate limits and the `resend-webhook` bounce handling.
-- Existing `reviews.visibility` untouched — sharing a plan never shares ratings or review text.
-- Migration must pass the Supabase security advisor (no `security_definer_view` regressions; RPCs use `SET search_path = ''`).
+- Phase 1: HMAC-signed params (§4.3) — no tokens to store, nothing forgeable, no PII in links (first name only, sanitized at mint, sig-protected).
+- Phase 2: 21-char nanoid tokens (~126 bits); expiry `show_date + 30d`; owner reset. Anon surface = one RPC returning show fields, date/time, inviter display name, member *count* (never the member list, never emails/user ids); identical empty result for unknown/expired/cancelled tokens.
+- No new PII classes: no phone numbers stored; email invites (Phase 3) ride existing Resend conventions + `resend-webhook` bounce handling.
+- `reviews.visibility` untouched — sharing a plan never shares ratings or review text.
+- Migrations must pass the Supabase security advisor; RPCs and the sync trigger function use `SET search_path = ''`.
+- OG invite renderer: sig-gated + rate-limited + cached (§4.3) — it must never be a free branded-image API.
 
-## 7. Rollout plan
+## 7. Rollout plan (revised per §0 + plan-review)
 
-**Phase 1 — Web MVP (behind `userAccounts && diarySharing`, demo first):**
-1. Migration `2026xxxx_outings.sql` (tables, RLS, RPCs, trigger, rate-limit log) — test via CI round-trip like `test-ugc-roundtrip.yml`, not locally (sandbox can't resolve `*.supabase.co`).
-2. `src/lib/calendar/` pure lib + unit tests; showtimes fan-out to `public/data/showtimes-index.json`.
-3. Showtime picker + outing creation in diary tab; share modal with `navigator.share`/copy.
-4. `/join/[token]` page + `join-outing` PendingAction + OG `type=invite`.
-5. `/api/calendar/[outingId].ics` + Google URL buttons.
-6. Playwright: extend the `?mock=1` mock mode (`tests/e2e/my-shows-mock.spec.ts`) with outing fixtures; visual QA per CLAUDE.md §5.
-   - **Exit criteria:** full loop works on demo — create → set time → share → join from a second account → both diaries linked → both calendar paths verified in real Google/Apple Calendar.
+**Phase 0 — Calendar + showtime, standalone (~1-2 sessions; behind `userAccounts` only — demo now, prod when accounts ship):**
+1. Migration: `watchlist.time_slot` + `curtain_time` (§3.0; additive/nullable, rollback = drop). Verify via CI round-trip (local sandbox can't reach Supabase; `test-ugc-roundtrip.yml` pattern).
+2. `src/lib/calendar/` pure module (`PerformanceEvent`, builders, codec, market→tz map, tzdata VTIMEZONE fixtures) + DST/escaping/midnight-rollover unit tests. Extract ShowtimesCard time helpers into it (wire ShowtimesCard back).
+3. Showtime picker (generalized `DatePickerButton` core) + showtimes-index fan-out.
+4. Add-to-Calendar buttons + `GET /api/calendar.ics` route.
+5. Playwright `?mock=1` fixtures + visual QA (CLAUDE.md §5).
+   - **Exit criteria (owner-verified on device, stated because it isn't CI-verifiable):** an 8:00 PM entry lands correctly in **Apple Calendar (iPhone)** AND **Google Calendar** (strict VTIMEZONE parser) including one date on the far side of a DST transition; duration/venue correct. `[CHANGED: who verifies + Google + DST made explicit — structure/pre-mortem]`
 
-**Phase 2 — iOS:** AASA `/join/*` entry (web repo) + app-side join screen, native share, `expo-calendar`, smart app banner + App Store id config (web repo).
+**Phase 1 — Stateless signed invites (~1-2 sessions; precondition: `userAccounts` live in prod; flag: `diarySharing`):**
+1. Sign+mint API route; `/join` page with all §4.3 hardening (sig check, sanitized `from`, past-date/catalog states, bot-gated analytics).
+2. "Add to my diary" via `PendingAction` union variant, applying §3.3 join semantics (upsert incl. time columns, confirm-before-overwrite).
+3. Share modal (`navigator.share`/copy) + OG `type=invite` card (sig-gated, rate-limited, cached).
+4. Analytics per §5.
+   - **Exit criteria:** full loop on prod — share → rich card in iMessage → invitee adds to calendar anonymously OR one-tap-signs-up and the entry (with time) lands in their diary; a tampered link renders no invite framing.
+   - **Accepted gaps:** no companions display; links are snapshots (reschedule doesn't propagate — the .ics UID mitigates for calendar users); no revocation (mitigated by sig + past-date cutoff).
 
-**Phase 3 — Growth polish:** email invites (Resend), cancellation/change notifications to members, post-join "invite someone else" prompt, K-factor dashboard. SMS only if share-sheet data shows demand.
+**Phase 2 — Shared outings (§3.1-3.3), CONDITIONAL:** build on evidence from the §5 funnel — e.g. sustained human joins (~20/month) or explicit "who else is coming?"/reschedule-propagation asks. Adds: tables, token links (same page shell), companions UI, owner-reschedule propagation via SECURITY DEFINER trigger, revocation. Phase 0/1 upgrade in place; params links keep working until expiry.
 
-**Deliberately out of scope:** friend graph/follows, group chat, multiple performances of one show per user, seat/ticket integration, Android app links (no Android app), editing rights for guests.
+**Phase 3 — iOS + growth polish:** app join screen + AASA claim (together, §4.5), native share, `expo-calendar`; email invites (Resend); post-join "invite someone else"; K-factor dashboard. SMS only if share-sheet data shows demand.
+
+**Deliberately out of scope:** friend graph/follows, group chat, multiple performances of one show per user, seat/ticket integration, Android app links, guest edit rights.
 
 ## 8. Open questions (owner input, non-blocking — recommendations inline)
 
-1. **Guest edit rights:** v1 recommendation is owner-only edits with trigger-synced dates. OK? (Alternative — any member edits — invites conflict handling complexity.)
-2. **App Store id** for the smart banner + universal-link testing: is the iOS app live/TestFlight-only? Phase 2 gate.
-3. **`diarySharing` flag to prod:** ship with `userAccounts` whenever that flag ships, or hold for a separate launch beat? (It's a strong launch-week hook: "plan shows with friends.")
+1. **Guest edit rights (Phase 2):** recommend owner-only edits with trigger-synced dates.
+2. **App Store id** for the smart banner + universal-link testing: needed at the iOS phase. Is the app live/TestFlight-only?
+3. **Flag sequencing:** calendar rides `userAccounts` to prod automatically (recommended); `diarySharing` can launch same-day or as its own beat ("plan shows with friends") — owner's call.
