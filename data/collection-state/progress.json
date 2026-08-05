@@ -87,7 +87,34 @@
     "the-car-man-west-end-2026/independent--zoe-anderson.json",
     "the-car-man-west-end-2026/jonathan-baz--unknown.json",
     "the-car-man-west-end-2026/london-box-office--stuart-king.json",
-    "the-car-man-west-end-2026/london-unattached--unknown.json"
+    "the-car-man-west-end-2026/london-unattached--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
+    "the-gin-game-2026/american-theater-web--andy-propst.json",
+    "the-gin-game-2026/ap--mark-kennedy.json",
+    "the-gin-game-2026/bookevents--book-events-nyc.json",
+    "the-gin-game-2026/center-on-the-aisle--steve-schonberg.json",
+    "the-gin-game-2026/eventbrite--unknown.json",
+    "the-gin-game-2026/eventticketscenter--unknown.json",
+    "the-gin-game-2026/northjerseycom--robert-feldberg.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,7 +159,11 @@
       "data/review-texts/tao-of-glass-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/tao-of-glass-west-end-2026/thestage--the-stage.json",
       "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
-      "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/the-gin-game-2026/bookevents--book-events-nyc.json",
+      "data/review-texts/the-gin-game-2026/eventticketscenter--unknown.json"
     ],
     "archive": [
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -140,7 +171,7 @@
     ]
   },
   "startTime": "2026-08-05T00:28:43.809Z",
-  "lastProcessed": "the-car-man-west-end-2026/london-unattached--unknown.json",
+  "lastProcessed": "the-gin-game-2026/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-08-05T01:15:57.048Z",
@@ -175,6 +206,28 @@
       "event": "bb-session",
       "session": "fb04a136",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T02:32:52.904Z",
+      "event": "bb-session",
+      "session": "5f6269ba",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T02:32:53.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T02:33:09.967Z",
+      "event": "bb-session",
+      "session": "1c71072e",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T02:33:10.863Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
