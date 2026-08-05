@@ -417,6 +417,18 @@ on:
       # consumed. Path-listed so a solo edit triggers CI.
       - 'scripts/lib/content-request-routing.js'
       - 'tests/unit/content-request-routing.test.mjs'
+      # Owner-visibility path (2026-08-05, GH #542/#543): run-report enrichment
+      # and the live-on-site verification rules. Both were parked-and-forgotten
+      # bugs whose failure mode is silence, so their tests must actually run —
+      # content-request-routing.test.mjs was path-listed here from 2026-08-04 but
+      # missing from tests/unit-test-manifest.txt, so it never executed in CI.
+      # All three are now in the manifest.
+      - 'scripts/lib/feedback-run-report.js'
+      - 'tests/unit/feedback-run-report.test.mjs'
+      - 'scripts/lib/feedback-request-ledger.js'
+      - 'tests/unit/feedback-request-ledger.test.mjs'
+      - 'scripts/notify-feedback-outcomes.js'
+      - 'scripts/verify-feedback-requests-live.js'
       - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'
@@ -1688,6 +1700,11 @@ on:
       # (no --gate) in the data-validation job below until the companion
       # triage card drains the baseline under --threshold=4.
       - 'scripts/audit-cv-flag-contradiction.js'
+      # Self-contradictory clear breadcrumbs (#1020/#1022/#1023) — gates at zero
+      # in the data-validation job. Path-listed so a solo edit to either the
+      # auditor or its unit test triggers CI.
+      - 'scripts/audit-self-contradictory-clears.js'
+      - 'tests/unit/self-contradictory-clear.test.mjs'
       # S3-T4: auto-clear shadow mode (would-clear decision + 48h/≥3-candidate
       # evidence gate) and its report CLI. Colocated *.test.mjs runs via the
       # lib-test glob; path-listed so a solo edit triggers CI.
@@ -3178,6 +3195,32 @@ jobs:
         # `continue-on-error: true` and add `--gate` to make this blocking, per
         # #676's acceptance criteria. Script + threshold: scripts/audit-cv-flag-
         # contradiction.js; detector: scripts/lib/flag-contradiction.js.
+
+      - name: Audit self-contradictory clear breadcrumbs
+        if: always()
+        run: node scripts/audit-self-contradictory-clears.js --gate --max=750
+        # A review file asserting an exclusion flag AND its own retraction
+        # breadcrumb at the same time (wrongProduction + wrongProductionAutoCleared,
+        # wrongShow + a contentVerificationPromoted stamp its own CV now refutes,
+        # wrongAttribution + crossOutletVerified). Unlike the flag-vs-CV step above
+        # this needs no adjudication between two verdicts — the record is invalid
+        # on its face.
+        #
+        # BASELINE RATCHET, not the target. Measured backlog is 733 (2026-08-05),
+        # all pre-dating the forward fixes (invalidateWrongProductionAutoClear on
+        # every re-flag writer; wrongArticleManualClear on every attribution
+        # clear), so --max=0 would red main on the first push. 750 leaves ~2%
+        # headroom because the rebuild bots mutate this corpus every ~30 min and
+        # a hard-equality baseline flaps main red for non-code reasons
+        # (memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md).
+        #
+        # DRAIN THEN RATCHET: run `node scripts/audit-self-contradictory-clears.js
+        # --fix` from the main checkout (it writes review-texts, so it must commit
+        # to the private repo in the same breath), then lower --max toward 0. The
+        # retraction stamps clearBreadcrumbRetracted so the push-time restore does
+        # not resurrect what --fix removed — that contract is pinned by
+        # tests/unit/self-contradictory-clear.test.mjs, not assumed.
+        # Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
 
       - name: Audit cast contamination
         if: always()

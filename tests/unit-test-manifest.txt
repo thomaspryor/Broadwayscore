@@ -164,7 +164,12 @@ tests/unit/exclusion-logger.test.mjs
 tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
+tests/unit/content-request-routing.test.mjs
+tests/unit/feedback-run-report.test.mjs
+tests/unit/feedback-request-ledger.test.mjs
 tests/unit/feedback-dedup.test.mjs
+tests/unit/feedback-request-ledger.test.mjs
+tests/unit/feedback-run-report.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
@@ -342,6 +347,7 @@ tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs
+tests/unit/self-contradictory-clear.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
 tests/unit/seo-cwv-field-scope.test.mjs
 tests/unit/serp-burst-caps.test.mjs

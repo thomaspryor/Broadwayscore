@@ -14,6 +14,9 @@ const { generateReviewFilename, normalizeCritic, normalizeOutlet } = cjsRequire(
   normalizeCritic: (name: string) => string;
   normalizeOutlet: (outlet: string) => string;
 };
+const { hasClearBreadcrumbValue } = cjsRequire('../../../../../scripts/lib/flag-contradiction') as {
+  hasClearBreadcrumbValue: (v: unknown) => boolean;
+};
 const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manual-review-fields') as {
   buildManualReviewFields: (opts: {
     humanScore?: number | null;
@@ -346,10 +349,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   // Collision check — Beaches 2026-04-22 failure mode. Stale wrongProduction flag
   // on existing file + different URL means the new review will be silently dropped.
   if (existingData && !forceClearStale) {
+    // wrongProductionAutoCleared is a STRING from every rebuild path and a
+    // boolean from older writers. `=== true` here while the CLI ingest path
+    // (scripts/lib/manual-review-fields.js) uses the canonical predicate would
+    // mean the same record is blocked in one entry point and accepted in the
+    // other — so both use hasClearBreadcrumbValue (#1020).
     const hasStaleFlag =
       existingData.wrongProduction === true ||
       existingData.wrongShow === true ||
-      existingData.wrongProductionAutoCleared === true;
+      hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared);
     const existingUrl = typeof existingData.url === 'string' ? existingData.url : null;
     const urlsDiffer = existingUrl && normalizeUrl(existingUrl) !== normalizeUrl(url);
     if (hasStaleFlag && urlsDiffer) {
@@ -365,7 +373,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
             existingFlags: {
               wrongProduction: existingData.wrongProduction === true,
               wrongShow: existingData.wrongShow === true,
-              wrongProductionAutoCleared: existingData.wrongProductionAutoCleared === true,
+              wrongProductionAutoCleared: hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared),
             },
             existingPublishDate: existingData.publishDate || null,
           },
