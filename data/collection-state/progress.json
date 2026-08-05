@@ -87,7 +87,9 @@
     "now-you-see-me-live-west-end-2026/guardian--unknown.json",
     "the-importance-of-being-oscar-off-west-end-2026/british-theatre--unknown.json",
     "the-enormous-crocodile-west-end-2026/guardian--chris-wiegand.json",
-    "the-enormous-crocodile-west-end-2026/guardian--unknown.json"
+    "the-enormous-crocodile-west-end-2026/guardian--unknown.json",
+    "the-vessel-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "dinosaur-world-live-off-west-end-2026/seetickets--unknown.json",
@@ -1052,7 +1054,15 @@
     "the-car-man-west-end-2026/theupcoming--unknown.json",
     "the-car-man-west-end-2026/west-end-best-friend--unknown.json",
     "the-car-man-west-end-2026/whatsonstage--unknown.json",
-    "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json"
+    "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1106,7 +1116,9 @@
       "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
       "the-enormous-crocodile-west-end-2026/raring2go--unknown.json",
       "the-guilty-west-end-2026/monstagigz--unknown.json",
-      "the-importance-of-being-oscar-off-west-end-2026/british-theatre--unknown.json"
+      "the-importance-of-being-oscar-off-west-end-2026/british-theatre--unknown.json",
+      "the-vessel-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1154,7 +1166,8 @@
       "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
       "data/review-texts/the-importance-of-being-oscar-off-west-end-2026/the-recs--unknown.json",
       "data/review-texts/the-car-man-west-end-2026/jonathan-baz--unknown.json",
-      "data/review-texts/the-car-man-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/hungry-women-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -1175,7 +1188,7 @@
     ]
   },
   "startTime": "2026-08-04T15:17:29.271Z",
-  "lastProcessed": "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json",
+  "lastProcessed": "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-08-04T20:46:59.457Z",
@@ -1212,6 +1225,28 @@
       "event": "bb-session",
       "session": "0745cd7e",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T00:20:17.415Z",
+      "event": "bb-session",
+      "session": "dada1bed",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T00:20:18.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T00:20:34.239Z",
+      "event": "bb-session",
+      "session": "3eefc70e",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T00:20:34.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
