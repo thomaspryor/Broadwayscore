@@ -14,6 +14,8 @@ const {
   findReportItem,
   recordIssue,
   recordDispatch,
+  readContentActions,
+  dispatchableActions,
 } = require('../../scripts/lib/feedback-run-report.js');
 
 // Formspree's real shape: `_date`, not `_id`/`id`/`createdAt`.
@@ -102,4 +104,44 @@ test('a missing report degrades to no-op instead of throwing', () => {
   assert.equal(recordIssue(null, SUB, 1), false);
   assert.equal(recordDispatch(undefined, SUB, { workflow: 'w' }, true), false);
   assert.equal(findReportItem({ items: 'not-an-array' }, SUB), null);
+});
+
+// --- the bug that made routing a no-op for its entire life ------------------
+// process-feedback.js pushes { item, submission, diagnosis, contentActions }.
+// The workflow read `item.contentActions`, which is always undefined, so every
+// content request parked and NOTHING was ever dispatched — indistinguishable
+// from the pre-routing behaviour the layer was built to replace.
+
+test('contentActions are read from the entry, which is where they are written', () => {
+  // Exactly the shape process-feedback.js pushes.
+  const entry = {
+    item: { summary: 'add two shows', contentRequest: true },
+    submission: { _date: 'd', message: 'm' },
+    diagnosis: null,
+    contentActions: [
+      { kind: 'missing-show', title: 'The Outsiders', workflow: 'add-requested-show.yml', inputs: { title: 'The Outsiders' } },
+      { kind: 'missing-show', title: 'Two Strangers', workflow: 'add-requested-show.yml', inputs: { title: 'Two Strangers' } },
+    ],
+  };
+  assert.equal(readContentActions(entry).length, 2,
+    'reading item.contentActions here yields [] — the bug that parked GH #542 and #546');
+  assert.equal(dispatchableActions(entry).length, 2);
+});
+
+test('unroutable actions are never dispatchable', () => {
+  const entry = { contentActions: [{ kind: 'unroutable', reason: 'no route' }] };
+  assert.equal(readContentActions(entry).length, 1, 'still reported, so the ask is not lost');
+  assert.equal(dispatchableActions(entry).length, 0, 'but nothing to fire');
+});
+
+test('entries written by the old code still read', () => {
+  const legacy = { item: { contentActions: [{ kind: 'missing-image', workflow: 'fetch-all-image-formats.yml' }] } };
+  assert.equal(dispatchableActions(legacy).length, 1);
+});
+
+test('a missing or malformed entry yields no actions rather than throwing', () => {
+  assert.deepEqual(readContentActions(null), []);
+  assert.deepEqual(readContentActions({}), []);
+  assert.deepEqual(readContentActions({ contentActions: 'nope' }), []);
+  assert.deepEqual(dispatchableActions(undefined), []);
 });

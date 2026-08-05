@@ -175,7 +175,16 @@ jobs:
                 // an array of {kind, workflow?, inputs?, reason?}. Dispatchable
                 // actions carry a `workflow` — unroutable ones don't and still
                 // park below exactly as before task #722.
-                const contentActions = Array.isArray(item.contentActions) ? item.contentActions : [];
+                // Reads the ENTRY, not `item`. This used to be an inline
+                // `item.contentActions` read, which is always undefined — so
+                // from the day routing shipped (2026-08-04) nothing was ever
+                // dispatched and every content request parked exactly as it had
+                // before the routing layer existed. GH #542 died that way; so
+                // did #546, a verbatim resubmission, while the planner logged
+                // "2 action(s) will be dispatched". The shape now lives in one
+                // unit-tested function instead of being restated in YAML where
+                // no test can reach it.
+                const contentActions = runReportLib.readContentActions(entry);
                 const dispatchable = contentActions.filter((a) => a && a.workflow);
                 const willAutoDispatch = isContentRequest && dispatchable.length > 0;
 
