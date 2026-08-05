@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T16:26:05.033Z",
+  "generatedAt": "2026-08-05T18:27:49.074Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,23 +392,23 @@
       "status": "open",
       "slug": "the-pass-off-broadway",
       "thumbnail": "/images/shows/the-pass-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 64.48,
-      "liveScore": 64,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 69.51,
+      "liveScore": 70,
+      "scoreDrift": 0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 3,
+      "t2": 4,
       "t3": 2,
-      "positive": 1,
+      "positive": 2,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
           "hi-conf:3/8"
         ],
@@ -500,10 +500,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -565,10 +561,6 @@
         },
         {
           "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
           "isDualMarket": false
         },
         {
@@ -773,6 +765,18 @@
           "t2": 3,
           "t3": 2,
           "p": 1,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-05T18:27:49.074Z",
+          "rc": 6,
+          "s": 69.51,
+          "t1": 0,
+          "t2": 4,
+          "t3": 2,
+          "p": 2,
           "m": 3,
           "n": 1,
           "bc": "waiting"
@@ -1048,9 +1052,9 @@
       "status": "open",
       "slug": "disruption-off-broadway",
       "thumbnail": "/images/shows/disruption-off-broadway-2026/thumbnail.webp",
-      "siteScore": 61.19,
+      "siteScore": 61.46,
       "liveScore": 61,
-      "scoreDrift": -0.18999999999999773,
+      "scoreDrift": -0.46000000000000085,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1144,6 +1148,10 @@
           "isDualMarket": false
         },
         {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1166,10 +1174,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -1452,6 +1456,18 @@
           "m": 7,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-05T18:27:49.074Z",
+          "rc": 11,
+          "s": 61.46,
+          "t1": 2,
+          "t2": 7,
+          "t3": 2,
+          "p": 1,
+          "m": 7,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     }
@@ -1557,6 +1573,45 @@
       "slug": "masticate-off-broadway",
       "thumbnail": "/images/shows/masticate-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "isla-off-broadway-2026",
+      "title": "ISLA",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-08-08",
+      "status": "announced",
+      "slug": "isla-off-broadway",
+      "thumbnail": null,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,

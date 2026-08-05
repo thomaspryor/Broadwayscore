@@ -19,17 +19,26 @@
  * Usage:
  *   node scripts/verify-feedback-requests-live.js [--dry-run] [--base=URL]
  *
- * Env: RESEND_API_KEY, OWNER_EMAIL (required unless --dry-run)
- *      GH_TOKEN / GITHUB_TOKEN (optional — closes the tracking issue when live)
+ * Env: GH_TOKEN / GITHUB_TOKEN (optional — closes the tracking issue when live).
+ *      RESEND_API_KEY / OWNER_EMAIL are only consulted if the router pages.
  *
- * Exit 0 when there is nothing to report. Exit 1 only on a send failure: an
+ * DELIVERY (2026-08-05): reported via routeAlert(), not a direct Resend call.
+ * Card #611 is the owner's standing mandate that senders do not email them
+ * directly unless their conditionKey is listed in scripts/lib/page-worthy-
+ * alerts.js; everything else reaches them through the daily digest. "A request
+ * went live" / "a request is stuck" is not site-down, opening-night-dead, or
+ * data-loss, so it is digest-tier — the owner is still told, within a day.
+ * Promoting either to an immediate email is one line in page-worthy-alerts.js.
+ *
+ * Exit 0 when there is nothing to report. Exit 1 only on a delivery failure: an
  * alerting path that fails silently is the thing this replaces.
  */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { postJSON } = require('./lib/email-templates.js');
+const { postJSON } = require('./lib/email-templates.js'); // GitHub issue comments only
+const { routeAlert } = require('./lib/owner-alert-router.js');
 const {
   evaluateEntry,
   staleEntries,
@@ -47,11 +56,11 @@ const USAGE = `verify-feedback-requests-live.js — confirm open content request
 Usage:
   node scripts/verify-feedback-requests-live.js [--dry-run] [--base=URL]
 
-  --dry-run    evaluate + print, never email and never close a tracking issue
+  --dry-run    evaluate + print, never report and never close a tracking issue
   --base=URL   site to check against (default https://broadwayscorecard.com)
 
-Env: RESEND_API_KEY, OWNER_EMAIL (required unless --dry-run)
-     GH_TOKEN / GITHUB_TOKEN (optional — closes the tracking issue when live)
+Reports through routeAlert() (digest-tier by default — see the header).
+Env: GH_TOKEN / GITHUB_TOKEN (optional — closes the tracking issue when live)
 `;
 
 const args = process.argv.slice(2);
@@ -112,56 +121,51 @@ function showUrl(entry, showId, shows) {
   return `${BASE}/shows/${slug}`;
 }
 
-function escapeHtml(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+/**
+ * Build the routeAlert() payload for one verification pass.
+ *
+ * conditionKey names the exact requests being reported, so a request going live
+ * (or newly going stale) is always a new incident that notifies, while a
+ * re-run that finds the same state is silenced by the router's ledger.
+ */
+function buildAlert(nowLive, stale) {
+  const liveLines = nowLive.map((r) => [
+    `[NOW LIVE ON THE SITE] ${r.entry.title || r.showId}`,
+    `  They asked: "${r.entry.requestedMessage || '(no message)'}"`,
+    `  Verified live: ${r.evidence} — ${r.url}`,
+    `  Systematic fix: ${r.entry.systematicFix?.note || 'One-off — no standing route for this ask shape yet.'}`,
+    `  Requested ${Math.round(daysSince(r.entry.requestedAt) * 10) / 10} day(s) ago${r.entry.issueNumber ? ` — https://github.com/${REPO}/issues/${r.entry.issueNumber}` : ''}`,
+  ].join('\n'));
 
-function buildEmail(nowLive, stale) {
-  const liveCards = nowLive.map((r) => `
-    <div style="border:1px solid #e5e5e5;border-left:4px solid #15803d;border-radius:6px;padding:14px 16px;margin:0 0 12px;">
-      <div style="font:600 12px/1.4 -apple-system,Segoe UI,sans-serif;color:#15803d;letter-spacing:.04em;">NOW LIVE ON THE SITE</div>
-      <div style="font:600 16px/1.4 -apple-system,Segoe UI,sans-serif;color:#171717;margin:6px 0 2px;">${escapeHtml(r.entry.title || r.showId)}</div>
-      <div style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#404040;">
-        They asked: &ldquo;${escapeHtml(r.entry.requestedMessage || '(no message)')}&rdquo;
-      </div>
-      <div style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#404040;margin-top:8px;">
-        <strong>Verified live:</strong> ${escapeHtml(r.evidence)} &middot;
-        <a href="${escapeHtml(r.url)}" style="color:#0a7ea4;">see the page</a>
-      </div>
-      <div style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#404040;margin-top:6px;">
-        <strong>Systematic fix:</strong> ${escapeHtml(r.entry.systematicFix?.note || 'One-off — no standing route for this ask shape yet.')}
-      </div>
-      <div style="font:400 12px/1.5 -apple-system,Segoe UI,sans-serif;color:#737373;margin-top:8px;">
-        Requested ${escapeHtml(String(Math.round(daysSince(r.entry.requestedAt) * 10) / 10))} day(s) ago${r.entry.issueNumber ? ` &middot; <a href="https://github.com/${REPO}/issues/${r.entry.issueNumber}" style="color:#0a7ea4;">issue #${escapeHtml(r.entry.issueNumber)}</a>` : ''}
-      </div>
-    </div>`).join('');
+  const staleLines = stale.map((e) => [
+    `[STILL NOT LIVE AFTER ${Math.round(daysSince(e.requestedAt))} DAY(S)] ${e.title || e.showId}`,
+    `  Routed to ${e.workflow || 'nothing'} but the change has not reached production. The workflow likely failed.`,
+    e.issueNumber ? `  https://github.com/${REPO}/issues/${e.issueNumber}` : '',
+  ].filter(Boolean).join('\n'));
 
-  const staleCards = stale.map((e) => `
-    <div style="border:1px solid #e5e5e5;border-left:4px solid #b45309;border-radius:6px;padding:14px 16px;margin:0 0 12px;">
-      <div style="font:600 12px/1.4 -apple-system,Segoe UI,sans-serif;color:#b45309;letter-spacing:.04em;">STILL NOT LIVE AFTER ${escapeHtml(Math.round(daysSince(e.requestedAt)))} DAY(S)</div>
-      <div style="font:600 16px/1.4 -apple-system,Segoe UI,sans-serif;color:#171717;margin:6px 0 2px;">${escapeHtml(e.title || e.showId)}</div>
-      <div style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#404040;">
-        Routed to <code>${escapeHtml(e.workflow || 'nothing')}</code> but the change has not reached production. The workflow likely failed.
-      </div>
-      ${e.issueNumber ? `<div style="font:400 12px/1.5 -apple-system,Segoe UI,sans-serif;color:#737373;margin-top:8px;"><a href="https://github.com/${REPO}/issues/${e.issueNumber}" style="color:#0a7ea4;">issue #${escapeHtml(e.issueNumber)}</a></div>` : ''}
-    </div>`).join('');
-
-  const subject = nowLive.length > 0 && stale.length > 0
+  const title = nowLive.length > 0 && stale.length > 0
     ? `${nowLive.length} user request(s) now live, ${stale.length} stuck`
     : nowLive.length > 0
     ? `${nowLive.length} user request(s) now live on the site`
     : `${stale.length} user request(s) stuck — not live after ${STALE_AFTER_DAYS} days`;
 
-  const html = `
-    <div style="max-width:640px;margin:0 auto;padding:24px 16px;background:#ffffff;">
-      <h1 style="font:700 20px/1.3 -apple-system,Segoe UI,sans-serif;color:#171717;margin:0 0 16px;">User requests: shipped &amp; stuck</h1>
-      ${liveCards}
-      ${staleCards}
-    </div>`;
+  const liveKeys = nowLive.map((r) => `live:${r.entry.key || r.showId}`);
+  const staleKeys = stale.map((e) => `stale:${e.key || e.showId}`);
 
-  return { subject, html };
+  return {
+    // Deduped, then sorted — a repeated entry must not change the key and slip
+    // past the router's cooldown as a fresh incident.
+    conditionKey: `feedback-requests:${[...new Set([...liveKeys, ...staleKeys])].sort().join(',')}`,
+    title,
+    description: [...liveLines, ...staleLines].join('\n\n'),
+    // A stuck request means a workflow silently failed — that is the condition
+    // worth surfacing. All-live is good news, not an error.
+    severity: stale.length > 0 ? 'error' : 'info',
+    fields: [
+      { name: 'Now live', value: String(nowLive.length) },
+      { name: 'Stuck', value: String(stale.length) },
+    ],
+  };
 }
 
 async function closeIssue(issueNumber, evidence, url) {
@@ -221,43 +225,42 @@ async function main() {
     return;
   }
 
-  const { subject, html } = buildEmail(nowLive, stale);
+  const alert = buildAlert(nowLive, stale);
 
   if (DRY_RUN) {
-    console.log(`[dry-run] would send: "${subject}"`);
+    console.log(`[dry-run] would report: "${alert.title}"`);
     console.log(`[dry-run] ${nowLive.length} live, ${stale.length} stale`);
     return; // deliberately does NOT persist — a dry run must not mark things notified
   }
 
-  const resendKey = process.env.RESEND_API_KEY;
-  const ownerEmail = process.env.OWNER_EMAIL;
-  if (!resendKey || !ownerEmail) {
-    console.error('::error::RESEND_API_KEY or OWNER_EMAIL missing — owner NOT told that requests went live.');
+  let result;
+  try {
+    // See the header: routed, not sent directly (card #611). Do NOT persist the
+    // status flip if routing threw — an unreported flip must be retried next
+    // run, not silently marked delivered.
+    result = await routeAlert({ ...alert, disposition: 'human' });
+  } catch (err) {
+    console.error(`::error::Failed to report live-request confirmations: ${err.message}`);
     process.exit(1);
   }
 
-  try {
-    await postJSON('https://api.resend.com/emails', {
-      from: 'Broadway Scorecard Pipeline <updates@broadwayscorecard.com>',
-      to: [ownerEmail],
-      subject,
-      html,
-    }, { Authorization: `Bearer ${resendKey}` });
-    console.log(`Owner notified: "${subject}"`);
-  } catch (err) {
-    // Do NOT persist the status flip — an unsent notification must be retried
-    // next run, not silently marked delivered.
-    console.error(`::error::Failed to email live-request confirmations: ${err.message}`);
+  if (result.action === 'human' && result.delivered === false) {
+    console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was told these went live.`);
     process.exit(1);
   }
 
   for (const r of nowLive) await closeIssue(r.entry.issueNumber, r.evidence, r.url);
 
   saveLedger(ledger);
+  console.log(
+    result.action === 'silent'
+      ? `Already reported, not repeating: "${alert.title}"`
+      : `Owner notified (${result.action}): "${alert.title}"`
+  );
   console.log(`Ledger updated: ${nowLive.length} marked live, ${stale.length} still stuck.`);
 }
 
-module.exports = { buildEmail, resolveEntryShowId };
+module.exports = { buildAlert, resolveEntryShowId };
 
 if (require.main === module) {
   // --help must short-circuit BEFORE main() does any network calls, ledger

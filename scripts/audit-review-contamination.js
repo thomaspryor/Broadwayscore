@@ -95,6 +95,7 @@ const {
   classifyClassAContamination,
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
 const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
@@ -277,10 +278,13 @@ const hits = {
 let filesScanned = 0;
 let showsScanned = 0;
 
-const showDirs = fs.readdirSync(REVIEW_DIR).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); }
-  catch { return false; }
-});
+let showDirs = [];
+try {
+  showDirs = fs.readdirSync(REVIEW_DIR).filter(d => {
+    try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); }
+    catch { return false; }
+  });
+} catch { /* missing checkout — showDirs stays [], corpus guard below catches it */ }
 
 for (const showId of showDirs) {
   const show = showById.get(showId);
@@ -309,10 +313,10 @@ for (const showId of showDirs) {
   catch { continue; }
 
   for (const f of files) {
-    filesScanned++;
     let d;
     try { d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8')); }
     catch { continue; }
+    filesScanned++;
 
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
@@ -594,6 +598,18 @@ const strictHits = Object.entries(hits)
 // reviews shown to users) ALWAYS blocks; otherwise block only on a mass spike past
 // GATE_FLOOR. Single-file C/E/F drift is printed above but does NOT fail the trunk.
 if (GATE) {
+  // FAIL LOUD on an empty corpus (task #1067, sibling of #1063/#1065) — a missing
+  // or empty data/review-texts checkout scans 0 files, leaving crossMarketLeaks
+  // and strictHits at 0 and this live blocking gate would otherwise print
+  // "0 cross-market leaks... Non-catastrophic" and exit 0, a vacuous PASS.
+  try {
+    assertCorpusScanned(filesScanned, { gate: GATE });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\n❌ GATE: ${e.message}`);
+    process.exit(1);
+  }
+
   const { shouldBlockContaminationGate } = require('./lib/contamination-gate');
   const crossMarketLeaks = hits.A_cross_market.length;
   if (shouldBlockContaminationGate({ crossMarketLeaks, strictHits, floor: GATE_FLOOR })) {
