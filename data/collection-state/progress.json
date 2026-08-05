@@ -28,7 +28,11 @@
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+    "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -111,7 +115,13 @@
     "miles-for-mary-off-broadway-2026/timeout--helen-shaw.json",
     "miles-for-mary-off-broadway-2026/broadwayselect--peter-filichia.json",
     "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json",
-    "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json"
+    "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
+    "miles-for-mary-off-broadway-2026/playbill--olivia-clement.json",
+    "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
+    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -137,10 +147,14 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -149,7 +163,9 @@
       "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json",
       "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -157,7 +173,7 @@
     ]
   },
   "startTime": "2026-08-05T10:02:11.879Z",
-  "lastProcessed": "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
+  "lastProcessed": "medea-off-broadway-2026/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-08-05T10:02:37.355Z",
@@ -180,6 +196,12 @@
       "t": "2026-08-05T10:02:53.852Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T10:19:57.222Z",
+      "event": "bb-session",
+      "session": "30387b65",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
