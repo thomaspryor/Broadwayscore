@@ -54,6 +54,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // version adds the wrong-page newspaper-OCR signals (weather/sports/listings).
 const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('./lib/non-review-patterns');
 const { GEMINI_FLASH } = require('./lib/models');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -161,6 +162,7 @@ async function main() {
   const flagged = [];
 
   let filesProcessed = 0;
+  let filesExamined = 0;
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -174,6 +176,7 @@ async function main() {
       try {
         data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       } catch { continue; }
+      filesExamined++;
 
       // Only audit scored reviews (files that made it into reviews.json)
       if (!data.llmScore && !data.assignedScore) continue;
@@ -295,6 +298,17 @@ async function main() {
   }
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
   console.log(`\nAudit report: ${reportPath}`);
+
+  // FAIL LOUD on an empty corpus. review-texts is a private-repo checkout; when
+  // it is missing or empty, `shows` is [] and every downstream check reports a
+  // vacuous clean pass — see scripts/lib/corpus-scan-guard.js (#1063/#1068).
+  try {
+    assertCorpusScanned(filesExamined, { gate: STRICT || GATE });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\nFAIL: ${e.message}`);
+    process.exit(1);
+  }
 
   // CI gate: fail only on DEFINITIVE wrong-page / junk classes — these never have
   // legit false positives (verified 0 across 34k scored reviews). Soft heuristics
