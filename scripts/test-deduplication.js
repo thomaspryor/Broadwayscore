@@ -612,6 +612,30 @@ test('isSubtitleVariantOf: KNOWN LIMITATION — one side subtitled, one bare, sa
   );
 });
 
+test('isSubtitleVariantOf: intra-run collision — second same-batch candidate correctly collapses (both orders)', () => {
+  // Mirrors the actual usage pattern in both promote-ob-venue-candidates.js and
+  // promote-ob-historical.js: a promoted candidate's title is pushed into the
+  // per-venue candidate list, then the NEXT candidate in the same run is
+  // checked against that updated list. This is the exact scenario the
+  // second-opinion review of commit 829cd8efbea flagged as untested for
+  // promote-ob-historical.js (venue-candidates.js's version was already
+  // covered by a live --dry-run run with two staged candidates).
+  const venueList = ['Bone Wars']; // first candidate already accepted this run
+  assertEqual(
+    venueList.some(existing => isSubtitleVariantOf('Bone Wars: A New Musical', existing)),
+    true,
+    'second candidate (subtitled) vs first (bare), same run → collapses'
+  );
+  // Order shouldn't matter: bare-first-then-subtitled and subtitled-first-then-bare
+  // must both collapse, since a discovery source can list either form first.
+  const venueListReversed = ['Bone Wars: A New Musical'];
+  assertEqual(
+    venueListReversed.some(existing => isSubtitleVariantOf('Bone Wars', existing)),
+    true,
+    'second candidate (bare) vs first (subtitled), same run → collapses'
+  );
+});
+
 // ---------- run ----------
 
 console.log('Running deduplication tests...\n');

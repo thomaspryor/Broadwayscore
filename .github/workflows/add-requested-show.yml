@@ -67,7 +67,20 @@ concurrency:
   # sitting in the lane means a real user-request dispatch has to queue, and
   # a third run queuing behind it would silently cancel that real request.
   # A smoke test must never be able to drop a real user's content request.
-  group: add-requested-show${{ inputs.dry_run == true && '-dry-run' || '' }}
+  # PER-TITLE, not one global lane (2026-08-05). One submission can now ask for
+  # several shows (GH #542 asked for two), which means several dispatches ~10s
+  # apart. With a single shared group GitHub keeps only ONE queued run: the
+  # second show's dispatch sat queued and was silently CANCELLED the moment a
+  # third run arrived — observed live on run 31028164530, which lost
+  # Two Strangers while The Outsiders ran. That is precisely the silent-drop
+  # this comment block was already written to prevent, reintroduced one level
+  # down by multi-show requests.
+  #
+  # Two different shows have no reason to serialize against each other: the
+  # shows.json write race is already closed by --only-hash plus push-core-data's
+  # rebase+retry, as described below. Same title dispatched twice still
+  # serializes, which is the only case that ever needed it.
+  group: add-requested-show-${{ inputs.dry_run == true && 'dry-run-' || '' }}${{ inputs.title }}
   cancel-in-progress: false
 
 jobs:
