@@ -1,59 +1,41 @@
 {
-  "updatedAt": "2026-08-05T09:45:56.228Z",
-  "processed": 30,
-  "failed": 492,
-  "successRate": "5.7%",
+  "updatedAt": "2026-08-05T10:04:29.179Z",
+  "processed": 6,
+  "failed": 4,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 2,
-    "directCookies": 1,
+    "browserbase": 0,
+    "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 6,
-    "archiveToday": 13,
-    "archive": 1
+    "brightdata": 3,
+    "archiveToday": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-08-05T09:16:03.112Z",
+      "t": "2026-08-05T10:02:37.355Z",
       "event": "bb-session",
-      "session": "14beb9ee",
+      "session": "7476bca7",
       "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
     },
     {
-      "t": "2026-08-05T09:16:03.516Z",
+      "t": "2026-08-05T10:02:37.864Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-05T09:16:19.146Z",
+      "t": "2026-08-05T10:02:53.431Z",
       "event": "bb-session",
-      "session": "6b79a8a9",
+      "session": "2db495fb",
       "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
     },
     {
-      "t": "2026-08-05T09:16:19.468Z",
+      "t": "2026-08-05T10:02:53.852Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-05T09:34:38.877Z",
-      "event": "bb-session",
-      "session": "f51eeb2b",
-      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
-    },
-    {
-      "t": "2026-08-05T09:46:43.385Z",
-      "event": "bb-session",
-      "session": "0a164100",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
-    },
-    {
-      "t": "2026-08-05T09:47:01.223Z",
-      "event": "bb-session",
-      "session": "94d0273e",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
     }
   ]
 }
