@@ -55,19 +55,23 @@ test('namedNonReviewReason: an unparseable URL returns null, never throws', () =
   assert.equal(namedNonReviewReason(null), null);
 });
 
-test('NON_REVIEW_HOST_PATTERNS: page-asset and aggregator-own-domain chaff is blocked (task #71)', () => {
+test('NON_REVIEW_HOST_PATTERNS: page-asset chaff is blocked (task #71)', () => {
   // Measured in data/audit/show-review-gap.json's "missing" lists across
   // ~150 audited shows: fonts/CDN/maps/forms embedded in an aggregator
-  // article's HTML, and Show Score's own catalogue pages (never an outlet).
+  // article's HTML.
   assert.equal(isHostBlocked('https://dalyklerwhmui.cloudfront.net'), true);
   assert.equal(isHostBlocked('https://fonts.gstatic.com'), true);
   assert.equal(isHostBlocked('https://fonts.googleapis.com/css2'), true);
   assert.equal(isHostBlocked('https://maps.google.com/'), true);
   assert.equal(isHostBlocked('https://docs.google.com/forms/d/e/abc/viewform'), true);
   assert.equal(isHostBlocked('https://www.todaytixgroup.com/careers'), true);
-  assert.equal(isHostBlocked('https://www.show-score.com/off-broadway-shows/bone-wars'), true);
   // A real outlet is never blocked by this wave.
   assert.equal(isHostBlocked('https://www.nytimes.com/2026/01/01/theater/some-review.html'), false);
+  // show-score.com is deliberately NOT blocked despite its own catalog links
+  // leaking through the same way — coverage-adversarial-probe.js's
+  // onDiskByUrlFor() depends on isReviewUrl() to index legitimately-captured
+  // Show Score star-stub files by URL (see aggregator-domains.js).
+  assert.equal(isHostBlocked('https://www.show-score.com/off-broadway-shows/bone-wars'), false);
 });
 
 test('NON_REVIEW_HOST_PATTERNS: UK ticketing/tourism-listing chaff is blocked (task #71 fifth wave)', () => {
@@ -77,10 +81,14 @@ test('NON_REVIEW_HOST_PATTERNS: UK ticketing/tourism-listing chaff is blocked (t
   assert.equal(isHostBlocked('https://showtours.co.uk/book/dog-man-the-musical-london/'), true);
   assert.equal(isHostBlocked('https://www.bookitplease.com/shows/united-kingdom/dog-man-6046'), true);
   assert.equal(isHostBlocked('https://www.visitlondon.com/things-to-do/event/51157787-dog-man'), true);
-  assert.equal(isHostBlocked('https://southlondon.co.uk/area/southwark/dog-man-the-musical/'), true);
   // londontheatredirect.com is deliberately NOT blocked — it also publishes
   // /news/*-review posts alongside its ticketing pages.
   assert.equal(isHostBlocked('https://www.londontheatredirect.com/news/oh-mary-review'), false);
+  // southlondon.co.uk is ALSO deliberately NOT blocked — it's a registered
+  // Tier 4 outlet ("south-london") with real reviews under /lifestyle/review-*;
+  // its /area/ listing pages are a different section of the same site.
+  assert.equal(isHostBlocked('https://southlondon.co.uk/area/southwark/dog-man-the-musical/'), false);
+  assert.equal(isHostBlocked('https://southlondon.co.uk/lifestyle/review-cyrano-de-bergerac-at-noel-coward-theatre/'), false);
 });
 
 test('NAMED_NON_REVIEW_URL_PATTERNS: every entry has a host regex and a reason string', () => {

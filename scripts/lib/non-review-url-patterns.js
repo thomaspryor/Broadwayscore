@@ -74,21 +74,31 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
   /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
   /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
-  // Fourth wave (task #71 residual-gap triage, 2026-08-05): page-asset and
-  // aggregator-own-domain chaff measured in data/audit/show-review-gap.json's
-  // "missing" lists across ~150 audited shows — fonts/CDN/maps/forms embedded
-  // in an aggregator article's HTML, and Show Score's OWN show pages (never an
-  // outlet, only ever a discovery source — see show-score-discover.js) leaking
-  // through as "missing" gaps because they carry no distinguishing path.
+  // Fourth wave (task #71 residual-gap triage, 2026-08-05): page-asset
+  // chaff measured in data/audit/show-review-gap.json's "missing" lists
+  // across ~150 audited shows — fonts/CDN/maps/forms embedded in an
+  // aggregator article's HTML. show-score.com is DELIBERATELY NOT added
+  // here despite its own catalog/nav links leaking through the same way —
+  // ship-check adversarial review caught that coverage-adversarial-probe.js's
+  // onDiskByUrlFor() relies on isReviewUrl() to index legitimately-captured
+  // Show Score star-stub review files by URL (aggregator-domains.js's
+  // AGGREGATOR_DOMAINS carries show-score.com as a valid outlet-URL pair);
+  // blocking the whole host here would make the S5 probe stop recognizing
+  // those on-disk records and misreport them as gaps. See the header comment
+  // on classifyNonReviewUrl() in coverage-adversarial-probe.js.
   /(^|\.)cloudfront\.net$/, /(^|\.)gstatic\.com$/, /(^|\.)googleapis\.com$/,
-  /(^|\.)google\.com$/, /(^|\.)show-score\.com$/, /(^|\.)todaytixgroup\.com$/,
+  /(^|\.)google\.com$/, /(^|\.)todaytixgroup\.com$/,
   // Fifth wave (task #71): UK ticketing/tourism-listing platforms and ad-tech,
   // measured on WE family/kids shows (Dog Man - The Musical, A Midsummer
   // Night's Dream) — never review outlets, unlike londontheatredirect.com
   // (deliberately NOT added here — it also publishes /news/*-review posts).
+  // southlondon.co.uk is ALSO deliberately excluded from this wave — ship-check
+  // adversarial review caught that it's a registered Tier 4 outlet
+  // ("south-london" in outlet-registry.json) with 7 real scored reviews under
+  // /lifestyle/review-*; the sampled dog-man URL was its unrelated /area/
+  // listing section, not evidence the whole host is non-review.
   /^doubleclick\.net$/, /^showify\.uk$/, /^showpass\.com$/,
   /^showtours\.co\.uk$/, /^bookitplease\.com$/, /^visitlondon\.com$/,
-  /^southlondon\.co\.uk$/,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([
