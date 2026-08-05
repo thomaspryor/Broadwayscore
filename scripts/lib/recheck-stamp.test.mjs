@@ -64,3 +64,12 @@ test('hoistRecheckAfterStamp is a no-op with no stamp present', () => {
   assert.equal(hoistRecheckAfterStamp('no stamp here'), 'no stamp here');
   assert.equal(hoistRecheckAfterStamp(''), '');
 });
+
+// Codex ship-check catch (task #802): hoisting a stamp in front of a head
+// `## Parked <date>` marker knocks it off index 0, so park-marker.js's
+// head-anchored parseParkedDate() stops recognizing it — a parked card
+// would silently misclassify as awaiting-recheck/critical instead of parked.
+test('hoistRecheckAfterStamp never hoists past a head Parked marker', () => {
+  const parked = '## Parked 2026-08-03\nOwner closed its workspace. Resume with `--id 1 --force`.\n\n---\n\nRECHECK-AFTER: 2026-08-01 (old, buried)';
+  assert.equal(hoistRecheckAfterStamp(parked), parked);
+});
