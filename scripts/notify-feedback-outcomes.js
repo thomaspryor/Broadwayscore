@@ -29,28 +29,31 @@
  * Input:  data/audit/feedback-run-report.json, written by process-feedback.js
  *         and enriched with issue numbers + dispatch results by the workflow's
  *         github-script step.
- * Env:    RESEND_API_KEY, OWNER_EMAIL. Optional: GITHUB_RUN_URL, PIPELINE_STATUS
- *         ('success' | 'failure' | 'cancelled') so a crashed run still reports.
+ * Env:    Optional: GITHUB_RUN_URL, PIPELINE_STATUS ('success' | 'failure' |
+ *         'cancelled') so a crashed run still reports. RESEND_API_KEY /
+ *         OWNER_EMAIL are only consulted if the router actually pages.
+ *
+ * DELIVERY (2026-08-05): this goes through routeAlert(), not a direct Resend
+ * call. The owner's standing mandate (card #611) is that no sender emails them
+ * directly unless its conditionKey is on the page-worthy allowlist in
+ * scripts/lib/page-worthy-alerts.js; everything else lands in the daily digest.
+ * "Feedback was processed" is not site-down / opening-night-dead / data-loss,
+ * so it is digest-tier by default and the owner still hears about every
+ * submission within a day. Promoting it to an immediate email is one line in
+ * page-worthy-alerts.js if they ever want that.
  *
  * Exit code is ALWAYS 0 for a missing/empty report: "no new feedback this run"
  * is the overwhelmingly common case and must not paint the workflow red.
- * A genuine send failure exits 1 so the workflow's notify-failure step fires —
- * an alerting system that can fail silently is the thing this replaces.
+ * A genuine delivery failure exits 1 so the workflow's notify-failure step
+ * fires — an alerting system that can fail silently is what this replaces.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { postJSON } = require('./lib/email-templates.js');
+const { routeAlert } = require('./lib/owner-alert-router.js');
+const { MAX_STORED_MESSAGE } = require('./lib/feedback-request-ledger.js');
 
 const REPORT_PATH = path.join(__dirname, '../data/audit/feedback-run-report.json');
-
-function escapeHtml(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 /**
  * One line per submission saying, in plain terms, what happened to it.
@@ -118,51 +121,95 @@ function describeOutcome(item) {
   };
 }
 
-function buildEmail(report, pipelineStatus, runUrl) {
+/**
+ * A submission's identity for dedup purposes. submissionId() is what
+ * feedback-run-report.js keys items on; the issue number and the show/message
+ * pair are fallbacks so an item that never got an id still contributes
+ * something stable rather than collapsing every run onto one key.
+ */
+function itemKey(item) {
+  return String(
+    (item && (item.submissionId || item.issueNumber)) ||
+      `${(item && item.show) || ''}|${(item && item.message) || ''}`
+  );
+}
+
+/**
+ * Build the routeAlert() payload for one pipeline run.
+ *
+ * conditionKey is the SET of submissions this run saw, not the run itself: two
+ * runs over the same submissions are the same incident (the router silences the
+ * second), while a genuinely new submission produces a new key and notifies
+ * immediately. Keying on the run id instead would defeat the ledger entirely;
+ * keying on a constant would silence every submission after the first.
+ */
+function buildAlert(report, pipelineStatus, runUrl) {
   const items = Array.isArray(report.items) ? report.items : [];
   const rows = items
     .map((item) => ({ item, outcome: describeOutcome(item) }))
     .sort((a, b) => a.outcome.rank - b.outcome.rank);
 
   const needsYou = rows.filter((r) => r.outcome.needsYou).length;
-  const failedRun = pipelineStatus && pipelineStatus !== 'success';
+  const failedRun = Boolean(pipelineStatus && pipelineStatus !== 'success');
 
-  const subject = failedRun
+  const title = failedRun
     ? `Feedback pipeline ${pipelineStatus} — ${items.length} submission(s) may be unprocessed`
     : needsYou > 0
     ? `Feedback: ${needsYou} of ${items.length} need${needsYou === 1 ? 's' : ''} you`
     : `Feedback: ${items.length} submission(s), all handled automatically`;
 
-  const cards = rows
-    .map(({ item, outcome }) => `
-      <div style="border:1px solid #e5e5e5;border-left:4px solid ${outcome.color};border-radius:6px;padding:14px 16px;margin:0 0 12px;">
-        <div style="font:600 12px/1.4 -apple-system,Segoe UI,sans-serif;color:${outcome.color};letter-spacing:.04em;">${escapeHtml(outcome.state)}</div>
-        <div style="font:600 16px/1.4 -apple-system,Segoe UI,sans-serif;color:#171717;margin:6px 0 2px;">${escapeHtml(item.show || 'No show given')}</div>
-        <div style="font:400 14px/1.5 -apple-system,Segoe UI,sans-serif;color:#404040;margin:0 0 8px;">&ldquo;${escapeHtml(item.message || '(no message)')}&rdquo;</div>
-        <div style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#525252;">
-          <strong>What happened:</strong> ${escapeHtml(outcome.detail || '—')}
-        </div>
-        <div style="font:400 12px/1.5 -apple-system,Segoe UI,sans-serif;color:#737373;margin-top:8px;">
-          ${escapeHtml(item.category || 'Uncategorized')}${item.priority ? ` &middot; ${escapeHtml(item.priority)} priority` : ''}
-          &middot; from ${escapeHtml(item.name || 'Anonymous')}${item.email ? ` (${escapeHtml(item.email)})` : ' (no email)'}
-          ${item.issueNumber ? `&middot; <a href="https://github.com/thomaspryor/Broadwayscore/issues/${item.issueNumber}" style="color:#0a7ea4;">issue #${escapeHtml(item.issueNumber)}</a>` : ''}
-        </div>
-      </div>`)
-    .join('');
+  // NOTE: this description is queued into data/audit/alert-digest-queue.json,
+  // which the workflow COMMITS to a PUBLIC repo. So it carries no submitter
+  // name and no submitter email, ever, and the free-text message is capped —
+  // exactly the rule scripts/lib/feedback-request-ledger.js already follows for
+  // the sibling public ledger (the message itself is already verbatim in the
+  // public GitHub issue, so the cap is belt-and-braces; identity is not).
+  // The issue link is where the owner goes for who-sent-it.
+  const lines = rows.map(({ item, outcome }) => {
+    const issue = item.issueNumber
+      ? ` — https://github.com/thomaspryor/Broadwayscore/issues/${item.issueNumber}`
+      : '';
+    const message = item.message
+      ? String(item.message).slice(0, MAX_STORED_MESSAGE)
+      : '(no message)';
+    return [
+      `[${outcome.state}] ${item.show || 'No show given'}`,
+      `  "${message}"`,
+      `  What happened: ${outcome.detail || '—'}`,
+      `  ${item.category || 'Uncategorized'}${item.priority ? ` · ${item.priority} priority` : ''}${issue}`,
+    ].join('\n');
+  });
 
-  const html = `
-    <div style="max-width:640px;margin:0 auto;padding:24px 16px;background:#ffffff;">
-      <h1 style="font:700 20px/1.3 -apple-system,Segoe UI,sans-serif;color:#171717;margin:0 0 4px;">Feedback pipeline run</h1>
-      <p style="font:400 14px/1.5 -apple-system,Segoe UI,sans-serif;color:#525252;margin:0 0 20px;">
-        ${escapeHtml(items.length)} submission(s) processed${report.spamFlaggedCount ? `, ${escapeHtml(report.spamFlaggedCount)} spam-flagged` : ''}.
-        ${needsYou > 0 ? `<strong style="color:#b45309;">${escapeHtml(needsYou)} need${needsYou === 1 ? 's' : ''} your attention.</strong>` : 'Nothing needs you.'}
-      </p>
-      ${failedRun ? `<p style="font:600 14px/1.5 -apple-system,Segoe UI,sans-serif;color:#b91c1c;background:#fef2f2;border-radius:6px;padding:12px 14px;margin:0 0 16px;">The pipeline run itself ended in "${escapeHtml(pipelineStatus)}" — outcomes below may be incomplete.</p>` : ''}
-      ${cards || '<p style="font:400 14px -apple-system,sans-serif;color:#525252;">No categorized submissions in this run.</p>'}
-      ${runUrl ? `<p style="font:400 13px/1.5 -apple-system,Segoe UI,sans-serif;color:#737373;margin-top:20px;"><a href="${escapeHtml(runUrl)}" style="color:#0a7ea4;">View the workflow run</a></p>` : ''}
-    </div>`;
+  const header = [
+    `${items.length} submission(s) processed${report.spamFlaggedCount ? `, ${report.spamFlaggedCount} spam-flagged` : ''}.`,
+    needsYou > 0
+      ? `${needsYou} need${needsYou === 1 ? 's' : ''} your attention.`
+      : 'Nothing needs you.',
+    failedRun
+      ? `The pipeline run itself ended in "${pipelineStatus}" — outcomes below may be incomplete.`
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  return { subject, html };
+  return {
+    // Deduped, then sorted: a report that lists the same submission twice must
+    // produce the SAME key as one that lists it once, or the duplicate silently
+    // slips past the router's cooldown as a "new" incident.
+    conditionKey: `feedback-outcomes:${[...new Set(items.map(itemKey))].sort().join(',')}`,
+    title,
+    description: [header, ...lines].join('\n\n'),
+    // Anything needing the owner, or a run that did not finish, is an error —
+    // that is what decides the digest's severity ordering. A fully-automated
+    // run is informational.
+    severity: failedRun || needsYou > 0 ? 'error' : 'info',
+    url: runUrl || undefined,
+    fields: [
+      { name: 'Submissions', value: String(items.length) },
+      { name: 'Need you', value: String(needsYou) },
+      { name: 'Pipeline status', value: pipelineStatus || 'success' },
+    ],
+  };
 }
 
 async function main() {
@@ -180,36 +227,40 @@ async function main() {
     return;
   }
 
-  const resendKey = process.env.RESEND_API_KEY;
-  const ownerEmail = process.env.OWNER_EMAIL;
-  if (!resendKey || !ownerEmail) {
-    // Loud, and non-zero: a missing secret here means the owner silently stops
-    // hearing about feedback — the exact failure mode this script exists to end.
-    console.error('::error::RESEND_API_KEY or OWNER_EMAIL missing — owner NOT notified about this feedback run.');
-    process.exit(1);
-  }
-
-  const { subject, html } = buildEmail(
+  const alert = buildAlert(
     report,
     process.env.PIPELINE_STATUS || 'success',
     process.env.GITHUB_RUN_URL || ''
   );
 
+  let result;
   try {
-    await postJSON('https://api.resend.com/emails', {
-      from: 'Broadway Scorecard Pipeline <updates@broadwayscorecard.com>',
-      to: [ownerEmail],
-      subject,
-      html,
-    }, { Authorization: `Bearer ${resendKey}` });
-    console.log(`Owner notified: "${subject}"`);
+    // 'human' is the honest request — the owner asked to be told about every
+    // submission. The router's page-worthy gate (card #611) decides whether
+    // that means an immediate email or a line in the next daily digest; either
+    // way the owner IS told, which is the guarantee this script exists for.
+    result = await routeAlert({ ...alert, disposition: 'human' });
   } catch (err) {
-    console.error(`::error::Failed to email feedback outcomes: ${err.message}`);
+    console.error(`::error::Failed to route feedback outcomes to the owner: ${err.message}`);
     process.exit(1);
   }
+
+  // routeAlert returns without recording when delivery actually failed (Resend
+  // down, etc). Treat that as the send failure it is, so the workflow's
+  // notify-failure step fires instead of the run looking clean.
+  if (result.action === 'human' && result.delivered === false) {
+    console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was notified.`);
+    process.exit(1);
+  }
+
+  console.log(
+    result.action === 'silent'
+      ? `Already reported, not repeating: "${alert.title}"`
+      : `Owner notified (${result.action}): "${alert.title}"`
+  );
 }
 
-module.exports = { buildEmail, describeOutcome };
+module.exports = { buildAlert, describeOutcome, itemKey };
 
 if (require.main === module) {
   main().catch((err) => {
