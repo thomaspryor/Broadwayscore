@@ -1,30 +1,30 @@
 {
   "system": "credits",
-  "status": "warn",
-  "lastChecked": "2026-08-04T07:41:59.124Z",
+  "status": "error",
+  "lastChecked": "2026-08-05T07:41:40.304Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Credits: ScrapingBee",
-      "status": "warn",
-      "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5 — acknowledged: Monthly API limit exhausted (1M credits) — tracked in card #224, resets on billing cycle. [expires 2026-08-05]"
+      "status": "error",
+      "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5"
     },
     {
       "name": "Credits: ScrapingDog",
       "status": "warn",
-      "message": "3184k credits left (80%) · 816k/day burn · renews in 30d · exhausts in ~4d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
+      "message": "3111k credits left (78%) · 889k/day burn · renews in 29d · exhausts in ~3d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $40.23 · pending invoice $35.51 · month-to-date $33.78 (serp+unlocker)"
+      "message": "balance $35.26 · pending invoice $40.48 · month-to-date $39.45 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "242 browser minutes used (cumulative)"
+      "message": "347 browser minutes used (cumulative)"
     }
   ]
 }

@@ -1,50 +1,18 @@
 {
-  "generatedAt": "2026-08-04T13:13:20.342Z",
+  "generatedAt": "2026-08-05T07:41:56.855Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "2511cbfda42d616abe71e63def391f5a25f03a14",
-  "state": "RED",
-  "consecutiveFailures": 1,
-  "redSince": "2026-08-04T06:57:37Z",
-  "redForHours": 6.2620394444444445,
+  "latestRunHeadSha": "3ca185465d570f41b1821c506533536e4be0c51a",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-04T05:11:42Z",
-  "latestFailedRunId": "30885893492",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30885893492",
-  "decidedRuns": 81,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit orphan slim show files"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/validate-market-expansion.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "tests/star-rating-extractors.test.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/validate-show-venue.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    }
-  ],
-  "topFailingJob": "Data Validation"
+  "lastSuccessAt": "2026-08-04T23:54:19Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 76,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
