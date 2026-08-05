@@ -351,6 +351,8 @@ const CLEAR_BREADCRUMBS = {
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
   wrongProductionAutoCleared: _clearBreadcrumbRetracted('wrongProductionAutoCleared'),
   wrongProductionAutoClearedAt: _clearBreadcrumbRetracted('wrongProductionAutoClearedAt'),
+  wrongShowAutoCleared: _clearBreadcrumbRetracted('wrongShowAutoCleared'),
+  wrongShowAutoClearedAt: _clearBreadcrumbRetracted('wrongShowAutoClearedAt'),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),

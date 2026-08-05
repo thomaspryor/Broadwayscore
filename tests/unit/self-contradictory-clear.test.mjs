@@ -113,6 +113,20 @@ test('wrongShow promotion only contradicts when its own CV now affirms the revie
   }), null);
 });
 
+test('wrongShow + wrongShowAutoCleared is a contradiction (the wrongProduction twin)', () => {
+  // Written ONLY as a string (rebuild-all-reviews ~2607/2619,
+  // reverify-promoted-reviews ~130) and read by nothing, which is why it
+  // survived the first sweep — 25 uncovered corpus files incl. Times UK,
+  // The Stage, Independent.
+  const hit = detectSelfContradictoryClear({
+    wrongShow: true,
+    wrongShowAutoCleared: 'rebuild: UK/major outlet URL on London show',
+  });
+  assert.ok(hit, 'string-valued wrongShowAutoCleared must fire');
+  assert.equal(hit.flag, 'wrongShow');
+  assert.equal(hit.breadcrumb, 'wrongShowAutoCleared');
+});
+
 test('wrongAttribution + crossOutletVerified is a contradiction (#1023)', () => {
   const hit = detectSelfContradictoryClear({
     wrongAttribution: true,
