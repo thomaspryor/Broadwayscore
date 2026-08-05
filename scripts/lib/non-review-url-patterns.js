@@ -74,6 +74,21 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
   /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
   /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
+  // Fourth wave (task #71 residual-gap triage, 2026-08-05): page-asset and
+  // aggregator-own-domain chaff measured in data/audit/show-review-gap.json's
+  // "missing" lists across ~150 audited shows — fonts/CDN/maps/forms embedded
+  // in an aggregator article's HTML, and Show Score's OWN show pages (never an
+  // outlet, only ever a discovery source — see show-score-discover.js) leaking
+  // through as "missing" gaps because they carry no distinguishing path.
+  /(^|\.)cloudfront\.net$/, /(^|\.)gstatic\.com$/, /(^|\.)googleapis\.com$/,
+  /(^|\.)google\.com$/, /(^|\.)show-score\.com$/, /(^|\.)todaytixgroup\.com$/,
+  // Fifth wave (task #71): UK ticketing/tourism-listing platforms and ad-tech,
+  // measured on WE family/kids shows (Dog Man - The Musical, A Midsummer
+  // Night's Dream) — never review outlets, unlike londontheatredirect.com
+  // (deliberately NOT added here — it also publishes /news/*-review posts).
+  /^doubleclick\.net$/, /^showify\.uk$/, /^showpass\.com$/,
+  /^showtours\.co\.uk$/, /^bookitplease\.com$/, /^visitlondon\.com$/,
+  /^southlondon\.co\.uk$/,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([

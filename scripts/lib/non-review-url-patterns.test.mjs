@@ -7,7 +7,20 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS } = require('./non-review-url-patterns.js');
+const { namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS } = require('./non-review-url-patterns.js');
+
+// Mirrors audit-show-review-gap.js's registrableHost() collapse for a plain
+// host-pattern check (task #71 residual-gap triage additions) — including its
+// multi-part public-suffix list, so a .co.uk host collapses to 3 labels, not 2.
+const MULTIPART_SUFFIXES = ['co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk', 'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br'];
+function isHostBlocked(url) {
+  let host;
+  try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return false; }
+  const parts = host.split('.').filter(Boolean);
+  const keep = MULTIPART_SUFFIXES.some(s => host.endsWith('.' + s)) ? 3 : 2;
+  const registrable = parts.length > keep ? parts.slice(-keep).join('.') : host;
+  return NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(registrable)) && !ALLOWED_ORG_HOSTS.has(registrable);
+}
 
 test('namedNonReviewReason: ticketing reseller hosts are named', () => {
   assert.equal(namedNonReviewReason('https://www.newyorkcitytheatre.com/some-show'), 'ticketing-reseller');
@@ -40,6 +53,34 @@ test('namedNonReviewReason: an unparseable URL returns null, never throws', () =
   assert.equal(namedNonReviewReason('not-a-url'), null);
   assert.equal(namedNonReviewReason(''), null);
   assert.equal(namedNonReviewReason(null), null);
+});
+
+test('NON_REVIEW_HOST_PATTERNS: page-asset and aggregator-own-domain chaff is blocked (task #71)', () => {
+  // Measured in data/audit/show-review-gap.json's "missing" lists across
+  // ~150 audited shows: fonts/CDN/maps/forms embedded in an aggregator
+  // article's HTML, and Show Score's own catalogue pages (never an outlet).
+  assert.equal(isHostBlocked('https://dalyklerwhmui.cloudfront.net'), true);
+  assert.equal(isHostBlocked('https://fonts.gstatic.com'), true);
+  assert.equal(isHostBlocked('https://fonts.googleapis.com/css2'), true);
+  assert.equal(isHostBlocked('https://maps.google.com/'), true);
+  assert.equal(isHostBlocked('https://docs.google.com/forms/d/e/abc/viewform'), true);
+  assert.equal(isHostBlocked('https://www.todaytixgroup.com/careers'), true);
+  assert.equal(isHostBlocked('https://www.show-score.com/off-broadway-shows/bone-wars'), true);
+  // A real outlet is never blocked by this wave.
+  assert.equal(isHostBlocked('https://www.nytimes.com/2026/01/01/theater/some-review.html'), false);
+});
+
+test('NON_REVIEW_HOST_PATTERNS: UK ticketing/tourism-listing chaff is blocked (task #71 fifth wave)', () => {
+  assert.equal(isHostBlocked('https://securepubads.g.doubleclick.net/pagead/managed/dict/m1/gpt'), true);
+  assert.equal(isHostBlocked('https://www.showify.uk/shows/dog-man-the-musical'), true);
+  assert.equal(isHostBlocked('https://www.showpass.com/dog-man-the-musical-affp3/'), true);
+  assert.equal(isHostBlocked('https://showtours.co.uk/book/dog-man-the-musical-london/'), true);
+  assert.equal(isHostBlocked('https://www.bookitplease.com/shows/united-kingdom/dog-man-6046'), true);
+  assert.equal(isHostBlocked('https://www.visitlondon.com/things-to-do/event/51157787-dog-man'), true);
+  assert.equal(isHostBlocked('https://southlondon.co.uk/area/southwark/dog-man-the-musical/'), true);
+  // londontheatredirect.com is deliberately NOT blocked — it also publishes
+  // /news/*-review posts alongside its ticketing pages.
+  assert.equal(isHostBlocked('https://www.londontheatredirect.com/news/oh-mary-review'), false);
 });
 
 test('NAMED_NON_REVIEW_URL_PATTERNS: every entry has a host regex and a reason string', () => {
