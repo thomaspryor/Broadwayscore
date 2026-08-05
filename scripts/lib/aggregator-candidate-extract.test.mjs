@@ -313,8 +313,23 @@ test('a parenthesised subtitle plus a headline venue clause still matches', () =
     ),
     'match'
   );
-  assert.equal(classifyTitleDelta('Gypsy', 'Gypsy at the Majestic'), 'match');
   assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James'), 'match');
+});
+
+test('a one-word stem never matches through a venue strip — "Dinner" is not "Dinner at Eight"', () => {
+  // stripTrailingVenueClause() cannot tell a venue from a title: "Dinner at
+  // Eight" and "Meet Me at the Fair" are real shows whose "at" clause is part
+  // of the NAME. Without a substantiality floor, a request for "Dinner" matched
+  // the "Dinner at Eight" roundup and would have written the WRONG show into
+  // shows.json — the exact failure the guard exists to prevent (found by
+  // ship-check adversarial review, 2026-08-05; the first cut of this feature
+  // shipped with it).
+  assert.equal(classifyTitleDelta('Dinner', 'Dinner at Eight'), 'mismatch');
+  assert.equal(classifyTitleDelta('Meet Me', 'Meet Me at the Fair'), 'mismatch');
+  // Collateral, and accepted: a genuine one-word title plus a real venue no
+  // longer auto-matches either. Rejecting costs a manual add; a false accept
+  // corrupts the catalog.
+  assert.equal(classifyTitleDelta('Gypsy', 'Gypsy at the Majestic'), 'mismatch');
 });
 
 test('loosening never rescues a genuinely different show', () => {
