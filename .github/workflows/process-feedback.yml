@@ -70,6 +70,72 @@ jobs:
           script: |
             const fs = require('fs');
             const PENDING_PATH = 'data/audit/pending-bug-diagnoses.json';
+            const RUN_REPORT_PATH = 'data/audit/feedback-run-report.json';
+
+            // --- Owner run-report enrichment (2026-08-05, GH #543) ---------
+            // process-feedback.js writes what it knows before dispatch; only
+            // THIS step knows the issue numbers and whether each dispatch
+            // actually landed. scripts/notify-feedback-outcomes.js emails the
+            // merged result, so the owner sees "auto-dispatched" vs "dispatch
+            // failed" vs "parked" rather than nothing at all — which is what
+            // they got for #505 and #543.
+            //
+            // Every write is best-effort and individually guarded: enriching a
+            // report must never be able to sink issue creation. A report that
+            // fails to update degrades to a less specific email, not a lost
+            // submission.
+            // Matching + enrichment live in a unit-tested module: an entry that
+            // fails to match would email the owner "no action taken" for work
+            // that actually ran — a quieter replay of the bug this report exists
+            // to end. See scripts/lib/feedback-run-report.js.
+            const runReportLib = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-run-report.js`);
+
+            let runReport = null;
+            try {
+              runReport = JSON.parse(fs.readFileSync(RUN_REPORT_PATH, 'utf8'));
+            } catch { /* no report (e.g. resumed pending-only run) — email step handles absence */ }
+
+            const recordIssue = (submission, issueNumber) =>
+              runReportLib.recordIssue(runReport, submission, issueNumber);
+            const recordDispatch = (submission, action, ok, error) =>
+              runReportLib.recordDispatch(runReport, submission, action, ok, error);
+
+            function saveRunReport() {
+              if (!runReport) return;
+              try {
+                fs.writeFileSync(RUN_REPORT_PATH, JSON.stringify(runReport, null, 2) + '\n');
+              } catch (err) {
+                console.log(`Could not persist run report: ${err.message}`);
+              }
+            }
+
+            // The request ledger is written by process-feedback.js BEFORE any
+            // issue exists, so the issue number can only be backfilled here.
+            // Without it the "now live" email cannot link to (or close) the
+            // tracking issue.
+            const LEDGER_PATH = 'data/audit/feedback-request-ledger.json';
+            let requestLedger = null;
+            try {
+              requestLedger = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+            } catch { /* no tracked requests this run */ }
+
+            function recordLedgerIssue(submission, issueNumber) {
+              if (!requestLedger || !Array.isArray(requestLedger.entries)) return;
+              const id = runReportLib.submissionId(submission);
+              if (!id) return;
+              for (const e of requestLedger.entries) {
+                if (e && e.submissionId === id && !e.issueNumber) e.issueNumber = issueNumber;
+              }
+            }
+
+            function saveLedger() {
+              if (!requestLedger) return;
+              try {
+                fs.writeFileSync(LEDGER_PATH, JSON.stringify(requestLedger, null, 2) + '\n');
+              } catch (err) {
+                console.log(`Could not persist request ledger: ${err.message}`);
+              }
+            }
 
             let diagnoses = [];
             try {
@@ -147,6 +213,8 @@ jobs:
                     ? `Created auto-dispatched issue #${issue.data.number}`
                     : `Created needs-review issue #${issue.data.number} for undiagnosed report`
                 );
+                recordIssue(submission, issue.data.number);
+                recordLedgerIssue(submission, issue.data.number);
 
                 // Dispatch each routable action. One failed dispatch must not
                 // sink the others or the issue itself — the issue (with its
@@ -161,8 +229,10 @@ jobs:
                       inputs: action.inputs || {},
                     });
                     console.log(`  Dispatched ${action.workflow} for #${issue.data.number} (${action.kind})`);
+                    recordDispatch(submission, action, true, null);
                   } catch (err) {
                     console.log(`  Failed to dispatch ${action.workflow} for #${issue.data.number}: ${err.message}`);
+                    recordDispatch(submission, action, false, err.message);
                     try {
                       await github.rest.issues.createComment({
                         owner: context.repo.owner,
@@ -184,6 +254,8 @@ jobs:
 
             if (diagnosed.length === 0) {
               console.log('No bugs diagnosed');
+              saveRunReport();
+              saveLedger();
               fs.writeFileSync(PENDING_PATH, JSON.stringify(failedUndiagnosed, null, 2) + '\n');
               if (failedUndiagnosed.length > 0) {
                 console.log(`${failedUndiagnosed.length} undiagnosed entr(ies) NOT issued — left for the next run`);
@@ -314,6 +386,8 @@ jobs:
                 });
 
                 console.log(`Created issue #${issue.data.number}: ${title}`);
+                recordIssue(submission, issue.data.number);
+                recordLedgerIssue(submission, issue.data.number);
                 remaining.delete(entry);
 
                 // Make this new issue dedup-able for the rest of this run (two
@@ -330,14 +404,18 @@ jobs:
                     inputs: { issue_number: String(issue.data.number) }
                   });
                   console.log(`  Dispatched auto-fix for #${issue.data.number}`);
+                  recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'auto-fix', inputs: { issue_number: String(issue.data.number) } }, true, null);
                 } catch (err) {
                   console.log(`  Failed to dispatch auto-fix: ${err.message}`);
+                  recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'auto-fix', inputs: { issue_number: String(issue.data.number) } }, false, err.message);
                 }
 
                 // 10s spacing between dispatches
                 await new Promise(r => setTimeout(r, 10000));
               }
             } finally {
+              saveRunReport();
+              saveLedger();
               const leftover = [...remaining, ...failedUndiagnosed];
               fs.writeFileSync(PENDING_PATH, JSON.stringify(leftover, null, 2) + '\n');
               if (leftover.length > 0) {
@@ -374,11 +452,52 @@ jobs:
               labels: ['feedback-digest', 'needs-review']
             });
 
+      # THE visibility guarantee (2026-08-05, GH #543). Runs on success AND on
+      # failure/cancellation, deliberately: the owner's complaint was not "the
+      # pipeline broke", it was "something happened and nobody told me". A run
+      # that crashes mid-way must still say which submissions it saw and what
+      # state it left them in.
+      #
+      # Placed BEFORE the tracking commit for the same reason issue creation is:
+      # push-with-retry can burn ~15 min under main-branch contention and has
+      # timed this job out before (run 28876301784). Notification must not sit
+      # behind a git push.
+      #
+      # No-op when there is no run report (the common "no new feedback" case) —
+      # exits 0 without sending, so this does not become its own noise source.
+      - name: Email feedback outcomes to owner
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          PIPELINE_STATUS: ${{ job.status }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/notify-feedback-outcomes.js
+
+      # "Auto-dispatched" is not "fixed". This checks every open request against
+      # what broadwayscorecard.com actually serves and emails the owner when the
+      # show/reviews/image are genuinely live — and separately when a request has
+      # been stuck for days, which is how a silently-failed workflow surfaces
+      # instead of the request just never happening.
+      #
+      # Runs every cycle, not only when there is new feedback: a request lands
+      # one day and goes live hours later, so the check has to keep running long
+      # after the submission that created it. Cheap — a handful of HTTPS GETs,
+      # and it exits immediately when no requests are open.
+      - name: Verify user requests are live on the site
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/verify-feedback-requests-live.js
+
       - name: Commit tracking file
         if: always()
         run: |
           git add data/audit/processed-feedback.json
           git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
+          git add data/audit/feedback-request-ledger.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No tracking changes"
           else

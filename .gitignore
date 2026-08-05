@@ -314,3 +314,7 @@ supabase/.temp/
 # Autonomous loop UI screenshot evidence (S2-T6) — attached to the morning
 # email, never committed (binary, per-branch, regenerated every attempt).
 data/audit/autonomous-ui/
+
+# Per-run feedback outcome report (owner email input). Ephemeral, and holds
+# submitter names/emails/message text — must never land in this public repo.
+/data/audit/feedback-run-report.json

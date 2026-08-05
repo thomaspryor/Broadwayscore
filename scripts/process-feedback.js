@@ -20,6 +20,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
 const { planContentRequestActions } = require('./lib/content-request-routing.js');
+const { buildEntry: buildLedgerEntry, mergeEntries: mergeLedgerEntries } = require('./lib/feedback-request-ledger.js');
 const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +33,14 @@ const TRACKING_FILE = path.join(__dirname, '../data/audit/processed-feedback.jso
 // (Erik Andersen's homepage-filter bug, run 28876301784, 2026-07-07). The
 // workflow drains this file after creating issues.
 const PENDING_DIAGNOSES_FILE = path.join(__dirname, '../data/audit/pending-bug-diagnoses.json');
+// One run's per-submission outcomes, for the owner email. Ephemeral (gitignored):
+// it describes a single run, and committing it would put submitter names,
+// emails and message text into a public repo.
+const RUN_REPORT_FILE = path.join(__dirname, '../data/audit/feedback-run-report.json');
+// Open user requests, tracked until they are visible on the live site.
+// Committed: it must outlive the run that created it. Carries no submitter
+// name/email — only what is needed to verify and describe the ask.
+const REQUEST_LEDGER_FILE = path.join(__dirname, '../data/audit/feedback-request-ledger.json');
 const MAX_SUBMISSIONS_PER_RUN = 20; // Spam cap
 const MAX_DIAGNOSES = 5;
 
@@ -417,6 +426,7 @@ async function main() {
     // the budget (five "add my show" rows would otherwise starve every real
     // bug in the batch into silent oblivion).
     const bugDiagnoses = [];
+    const newLedgerEntries = [];
     let diagnosisAttempts = 0;
 
     // Catalog + on-disk image evidence for content-request routing. Loaded
@@ -426,6 +436,7 @@ async function main() {
     // never crash the run and strand the whole batch.
     let shows = [];
     let showIdsMissingImages = null;
+    let reviewCountsByShowId = null;
     if (categorized.some((c) => c.contentRequest)) {
       try {
         const showsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
@@ -455,6 +466,30 @@ async function main() {
         // unknown — degrading to an empty covered-set would declare every show
         // in the catalogue imageless.
         console.error(`Could not read image dirs for content routing: ${err.message} — image absence stays UNVERIFIED for this run.`);
+      }
+      try {
+        // Per-show review counts gate the missing-reviews route: gather-reviews
+        // spends scraping credits, so "you're missing reviews for X" only
+        // auto-dispatches when X is genuinely thin (see
+        // REVIEW_COUNT_AUTOGATHER_CEILING). reviews.json is core data, checked
+        // out by the workflow's checkout-core-data step alongside shows.json.
+        const reviewsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/reviews.json'), 'utf8'));
+        const allReviews = reviewsRaw.reviews || reviewsRaw;
+        reviewCountsByShowId = new Map();
+        for (const r of allReviews) {
+          const id = r && (r.showId || r.show_id);
+          if (!id) continue;
+          reviewCountsByShowId.set(id, (reviewCountsByShowId.get(id) || 0) + 1);
+        }
+      } catch (err) {
+        // Stays null = "unknown", which the router treats as "route it anyway"
+        // (absent evidence must not silently park a real request). Say so
+        // loudly: the credit-spend ceiling is not enforced this run.
+        console.error(
+          `::warning::Could not load reviews.json for content routing (${err.message}) — ` +
+          `review-gap asks will route WITHOUT the review-count ceiling this run.`
+        );
+        reviewCountsByShowId = null;
       }
     }
 
@@ -487,6 +522,7 @@ async function main() {
             show: sub.show,
             shows,
             showIdsMissingImages,
+            reviewCountsByShowId,
           });
         } catch (err) {
           // A planner crash must never eat the user's report.
@@ -506,6 +542,21 @@ async function main() {
             ? ` → ${dispatchable.length} action(s) will be dispatched by the workflow step`
             : ' → parking for review')
         );
+
+        // Track every dispatchable ask through to "live on the site". A
+        // dispatch is intent, not a fix — scripts/verify-feedback-requests-live.js
+        // checks production and emails the owner when the show/reviews/image
+        // actually appear, or when a request has been stuck for days.
+        for (const action of dispatchable) {
+          newLedgerEntries.push(buildLedgerEntry(action, {
+            submissionId: submissionId(sub),
+            issueNumber: null, // set later by the workflow step, which creates it
+            requestedAt: new Date().toISOString(),
+            message: sub.message,
+            show: sub.show,
+          }));
+        }
+
         bugDiagnoses.push({ item, submission: sub, diagnosis: null, contentActions });
         continue;
       }
@@ -535,6 +586,68 @@ async function main() {
     fs.writeFileSync(PENDING_DIAGNOSES_FILE, JSON.stringify(merged, null, 2) + '\n');
     if (process.env.GITHUB_OUTPUT && merged.some(d => d && d.submission && d.item)) {
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=true\n`);
+    }
+
+    // Persist the request ledger. Committed (unlike the run report) because it
+    // has to survive across runs — the whole point is checking days later
+    // whether the request reached production. It carries no submitter name or
+    // email for that reason; the message text is kept because the "now live"
+    // email quotes what they actually asked for.
+    if (newLedgerEntries.length > 0) {
+      let existingLedger = { entries: [] };
+      try {
+        existingLedger = JSON.parse(fs.readFileSync(REQUEST_LEDGER_FILE, 'utf8'));
+      } catch { /* first run — start empty */ }
+      const { ledger: mergedLedger, added } = mergeLedgerEntries(existingLedger, newLedgerEntries);
+      fs.mkdirSync(path.dirname(REQUEST_LEDGER_FILE), { recursive: true });
+      fs.writeFileSync(REQUEST_LEDGER_FILE, JSON.stringify(mergedLedger, null, 2) + '\n');
+      console.log(`Request ledger: +${added} tracked to live-on-site verification`);
+    }
+
+    // --- Owner-visible run report (2026-08-05) ---------------------------
+    // The owner must be told what happened to EVERY submission, routed or not.
+    // Until now the only outcomes that reached a human were: a thank-you to the
+    // submitter (skipped entirely when they leave the email field blank) and a
+    // GitHub issue in a repo this same workflow deliberately un-watches. A
+    // request could therefore be fetched, categorized, issued and parked with
+    // zero notification to anyone — which is exactly what happened to GH #543
+    // ("Please finish the reviews for 3 Summers of Lincoln", 2026-08-05) and to
+    // #505 before it.
+    //
+    // This file is the script's half of the report: everything knowable before
+    // dispatch. process-feedback.yml's issue step appends the half only it
+    // knows (issue numbers, per-dispatch success/failure), then
+    // scripts/notify-feedback-outcomes.js emails the merged result. Ephemeral
+    // by design — it describes one run, so it is never committed.
+    const runReport = categorized.map((cat) => {
+      const sub = submissions[cat.submissionNumber - 1] || {};
+      const planned = bugDiagnoses.find((d) => d.submission === sub);
+      return {
+        submissionId: submissionId(sub) || null,
+        name: sub.name || null,
+        email: sub.email || null,
+        show: sub.show || null,
+        message: sub.message || null,
+        category: cat.category || null,
+        contentRequest: cat.contentRequest === true,
+        priority: cat.priority || null,
+        summary: cat.summary || null,
+        plannedActions: planned?.contentActions || [],
+        diagnosed: Boolean(planned?.diagnosis),
+        // Filled in by the workflow step; absent here means "not yet known".
+        issueNumber: null,
+        dispatches: [],
+      };
+    });
+    fs.mkdirSync(path.dirname(RUN_REPORT_FILE), { recursive: true });
+    fs.writeFileSync(RUN_REPORT_FILE, JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      inboxCount: submissions.length,
+      spamFlaggedCount: spamFlagged.length,
+      items: runReport,
+    }, null, 2) + '\n');
+    if (process.env.GITHUB_OUTPUT) {
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_run_report=true\n`);
     }
 
     const summary = generateSummary(submissions, categorized, bugDiagnoses, spamFlagged);
