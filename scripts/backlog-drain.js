@@ -244,6 +244,16 @@ function jobBranchLanded(jobId) {
 // the over-crediting the plan-review flagged as able to suppress the spend
 // breaker. Callers record WHICH signal fired so a strict metric can ignore this
 // one; it is evidence, not proof.
+// TWO TRAPS, both verified empirically — do not "clean up" without re-testing:
+// 1. The \b below relies on git's DEFAULT basic-regex mode honouring GNU's
+//    word-boundary extension. Adding --extended-regexp/-E SILENTLY BREAKS IT
+//    (produces zero matches), which would turn every late-landing card into
+//    completion-unattributed. Verified on Apple Git 2.50.1: "task #7" correctly
+//    does NOT match a "task #70" commit as written.
+// 2. Deliberately origin/main only, unlike jobBranchLanded/countStrandedCommits
+//    which also consult local main. An unpushed-but-merged commit is therefore
+//    missed — undercounting, never over-crediting. That asymmetry is the safe
+//    direction for a signal that gates the spend breaker.
 function taskCommitLandedInWindow(taskId, fromTs, toTs) {
   if (!taskId || !fromTs) return false;
   try {
@@ -325,7 +335,11 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     let attribution = null;
     if (completed && !sessionOk) {
       if (landedFn(job.jobId)) attribution = 'branch-ancestor';
-      else if (commitRefFn(taskId, job.spawnedTs || d.ts, job.ts)) attribution = 'commit-ref';
+      // Window = drain-dispatch ts -> job's terminal ts. NOT job.spawnedTs:
+      // foldJobs never sets such a field (grep: zero producers), so referencing it
+      // would be dead code masquerading as a real per-job spawn time. d.ts precedes
+      // the actual spawn by seconds — the same slack findMyJob's 5s buffer allows.
+      else if (commitRefFn(taskId, d.ts, job.ts)) attribution = 'commit-ref';
     }
     const landedLate = attribution !== null;
     let outcome;

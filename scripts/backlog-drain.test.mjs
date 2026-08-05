@@ -269,3 +269,19 @@ test('reconcileOutcomes: branch deleted but a commit referencing the task landed
   assert.equal(out[0].event, 'card-pass');
   assert.equal(out[0].attribution, 'commit-ref');
 });
+
+test('reconcileOutcomes: passes the job\'s OWN window to the commit-ref lookup, not an open-ended range', () => {
+  // Review finding: every other attribution test stubs the lookup as ()=>true/false,
+  // so nothing asserted WHAT window it receives. A widened window would credit the
+  // drain for an interactive session that touched the same card later.
+  const seen = [];
+  reconcileOutcomes(...RECON_ARGS('completed', dispatchLedger.JOB_EVENTS.FAILED), {
+    jobBranchLanded: () => false,
+    taskCommitLandedInWindow: (taskId, fromTs, toTs) => { seen.push({ taskId, fromTs, toTs }); return false; },
+    strandedCommits: () => 0,
+  });
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0].taskId, '68');
+  assert.equal(seen[0].fromTs, '2026-08-04T22:00:00Z', 'window opens at the drain-dispatch, not epoch');
+  assert.equal(seen[0].toTs, '2026-08-05T14:00:00Z', 'window closes at the job\'s terminal event');
+});
