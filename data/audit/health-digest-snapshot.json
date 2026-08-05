@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-05T07:41:43.739Z",
-  "subject": "BSC Daily: ACTION NEEDED — Sync: cast coverage",
-  "bannerText": "2 errors, 19 warnings",
-  "consecutiveErrorDays": 4,
+  "generatedAt": "2026-08-05T16:22:48.311Z",
+  "subject": "BSC URGENT (day 5): 3 unresolved errors",
+  "bannerText": "3 errors, 21 warnings",
+  "consecutiveErrorDays": 5,
   "errors": [
     {
       "name": "Sync: cast coverage",
@@ -11,6 +11,10 @@
     {
       "name": "Credits: ScrapingBee",
       "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5"
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
+      "message": "Opening Night Poller — auto failed 3 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -20,7 +24,7 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19490 vs baseline 19498"
+      "message": "Reviews dropped: 19503 vs baseline 19511"
     },
     {
       "name": "Quality: corpus drift",
@@ -44,19 +48,19 @@
     },
     {
       "name": "Credits: ScrapingDog",
-      "message": "3111k credits left (78%) · 889k/day burn · renews in 29d · exhausts in ~3d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
-    },
-    {
-      "name": "Stuck work: paused P0/P1 cards",
-      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: Brainiac Live 2025 Olivier-winning Marylebone run entire (3d); Review completeness: Death Note / Dog Man / Crocodile 0 revi (2d) (13 awaiting recheck, earliest due 2026-08-03; 8 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force — not counted)"
+      "message": "3069k credits left (77%) · 931k/day burn · renews in 29d · exhausts in ~3d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "58 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (12d)"
+      "message": "66 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (13d)"
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
-      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 4d). Newest: #504 Bug Diagnosis: User reports that Gotta Dance (Off-Broadway) has an inc"
+      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 5d). Newest: #504 Bug Diagnosis: User reports that Gotta Dance (Off-Broadway) has an inc"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -72,7 +76,7 @@
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "12 aggregator-reviewed show(s) not in the catalogue. First: \"We’ve Been Here Before\" (nyt-theater)"
+      "message": "11 aggregator-reviewed show(s) not in the catalogue. First: \"We’ve Been Here Before\" (nyt-theater)"
     },
     {
       "name": "Data: undispatchable backlog cards",
@@ -81,43 +85,19 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget: browserbase $5.4 > $4 (54 sessions); brightdata $14.14 > $2.5 (5464 serp + 3966 unlocker reqs); scrapingdog 82608 credits > 45000",
-      "description": "Day 2026-08-03. 2026-08-03 · Browserbase: $5.4 (54 sessions) · 2026-08-03 · Bright Data: $14.14 (5464 serp / 3966 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 82608 credits (815553 this cycle) · Browserbase attribution: 19% attributed — top: collect-review-texts.js 10 · Bright Data attribution: 13% attributed — top: opening-night-poller.js 953, fetch-show-images-auto.js 201, audit-show-review-gap.js 27, audit-serp-census-recall.js 6, recover-serp-text.js 3 · ScrapingDog attribution: 4% attributed — top: opening-night-poller.js 1781, collect-review-texts.js 746, fetch-show-images-auto.js 515, recover-explicit-ratings.js 123, auto-fix-show-data.js 88. Verification streak reset to 0.",
+      "title": "Scraping spend over budget: browserbase $5.5 > $4 (55 sessions); brightdata $5.67 > $2.5 (1205 serp + 2574 unlocker reqs); scrapingdog 73437 credits > 45000",
+      "description": "Day 2026-08-04. 2026-08-04 · Browserbase: $5.5 (55 sessions) · 2026-08-04 · Bright Data: $5.67 (1205 serp / 2574 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 73437 credits (888990 this cycle) · Browserbase attribution: 9% attributed — top: collect-review-texts.js 2, scrape-stagedoor-critics.js 1, scrape-thestage-roundups.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 39% attributed — top: opening-night-poller.js 854, audit-show-review-gap.js 350, fetch-show-images-auto.js 203, ingest-review-from-url.js 67, enrich-stubhub-prices.js 9 · ScrapingDog attribution: 7% attributed — top: audit-show-review-gap.js 1935, opening-night-poller.js 1373, collect-review-texts.js 575, fetch-show-images-auto.js 515, ingest-review-from-url.js 291. Verification streak reset to 0.",
       "severity": "error",
       "url": null
     },
     {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
+      "title": "Review-gap audit refused to write — 9.5% of shows changed coverage state",
+      "description": "review-gap blast radius 9.5% (2/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
       "severity": "error",
-      "url": null
-    },
-    {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/30934954418"
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "5/147 show(s) differ between internal state and what prod serves.\nscore-drift: 5\nAvenue Q: score-drift\nJust in Time: score-drift\nThe Devil Wears Prada: score-drift\nABBA Voyage: score-drift\nThe Lion King: score-drift",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Review-gap audit refused to write — 15.0% of shows changed coverage state",
-      "description": "review-gap blast radius 15.0% (3/20 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: dinosaur-world-live-off-west-end-2026, tao-of-glass-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80% (453/566)\noff-broadway: 48.6% (157/323)\nwest-end: 72% (402/558)\n\nOldest gaps:\n1536 — guardian (313h)\n1536 — independent (313h)\nA Midsummer Night's Dream - Globe — financialtimes (313h)\nA Midsummer Night's Dream - Globe — telegraph (313h)\nA Midsummer Night's Dream — financialtimes (313h)\n… 205 more open gap(s)",
-      "severity": "warning",
       "url": null
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 50,
-  "totalCount": 74
+  "autoFixedCount": 2,
+  "passedCount": 49,
+  "totalCount": 76
 }
