@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-05T18:17:07.923Z",
+  "runDate": "2026-08-05T19:16:57.946Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -12,42 +12,42 @@
   },
   "summary": {
     "processed": 6,
-    "failed": 18,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "24.0%"
   },
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 3,
+    "scrapingbee": 3,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 8,
-    "tier1Success": 7,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 7,
-    "tier3Success": 7,
-    "tier3_6Attempts": 2,
+    "tier2Attempts": 6,
+    "tier2Success": 5,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 18,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 19,
+    "scrapingBeePageCredits": 23,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 2.4,
-    "urlDiscoveryAttempts": 11,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 12,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -72,6 +72,7 @@
     "disruption-off-broadway-2026/everything-theatre--dave-b.json",
     "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
     "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/show-score--unknown.json",
     "disruption-off-broadway-2026/standard--nick-curtis.json",
     "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
     "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
@@ -87,21 +88,34 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [
+    "scrapingbee": [
       "disruption-off-broadway-2026/nytimes--tim-teeman.json",
       "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json",
       "disruption-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": [
     {
-      "reviewId": "disruption-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "reviewId": "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json",
       "oldUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803",
-      "newUrl": "https://www.broadwayworld.com/off-broadway/article/DISRUPTION-to-Extend-Off-Broadway-Through-Early-October-20260803"
+      "newUrl": "https://www.broadwayworld.com/reviews/disruption"
+    },
+    {
+      "reviewId": "disruption-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "oldUrl": "https://www.broadwayworld.com/off-broadway/article/DISRUPTION-to-Extend-Off-Broadway-Through-Early-October-20260803",
+      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Steins-DISRUPTION-Opens-Off-Broadway-20260803"
     }
   ]
 }
