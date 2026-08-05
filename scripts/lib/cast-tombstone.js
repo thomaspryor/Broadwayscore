@@ -15,4 +15,16 @@ function shouldTombstone(result) {
   return !(result && result.fetchFailed);
 }
 
-module.exports = { shouldTombstone };
+// Mass-wipe circuit breaker for --force backfill runs. A scraper regression
+// that makes every fetch look like a genuine empty (the exact Cloudflare
+// class above) would otherwise sail through shouldTombstone() one show at a
+// time with no aggregate check. Trips when the wiped share of previously-
+// populated cast files this run crosses `threshold` — the caller restores
+// its backed-up files and aborts (task #712, wiped 29-30 shows twice: Jul 29
+// and again Aug 5 when the fix hadn't landed yet).
+function shouldAbortMassWipe(populatedBefore, wipedCount, threshold = 0.3) {
+  if (!populatedBefore || populatedBefore <= 0) return false;
+  return (wipedCount / populatedBefore) > threshold;
+}
+
+module.exports = { shouldTombstone, shouldAbortMassWipe };

@@ -130,6 +130,21 @@ test('classifyNonReviewUrl: aggregator own-site show pages (show-score.com etc.,
   assert.equal(classifyNonReviewUrl('https://stagedoor.com/shows/some-show'), 'aggregator-own-page');
 });
 
+// task #1036: a roundup-aggregator domain (domain-filters.js's OWN
+// AGGREGATOR_DOMAINS list — a different, larger set than aggregator-
+// domains.js's star-rating list above) fell through to 'gap' for 2 days
+// because classifyNonReviewUrl() never consulted the ingest-time block-list
+// review-guards.js already uses. lovelondonloveculture.com's real-world
+// "review round-up" URL for the-car-man-west-end-2026 read as an
+// undiscovered gap even though isIncludableForRebuild() would reject it as
+// 'blockedReviewUrl' the moment it was captured.
+test('classifyNonReviewUrl: a domain-filters.js blocked-review-url domain not on disk is named, not a gap', () => {
+  assert.equal(
+    classifyNonReviewUrl('https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/'),
+    'blockedReviewUrl'
+  );
+});
+
 test('classifyCandidate: a ticketing/venue/listing URL not on disk is excluded (named), not a gap', () => {
   const onDisk = new Map();
   const r = classifyCandidate('https://www.nationaltheatre.org.uk/productions/the-car-man', SHOW, onDisk, guardsFor({ includable: false }));

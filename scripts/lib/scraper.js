@@ -79,7 +79,11 @@ for (const group of DOMAIN_ALIAS_GROUPS) {
 // Only includes domains that actually flow through scraper.js's fetchPage().
 // BWW already has separate Playwright-first handling (line ~203).
 const PLAYWRIGHT_FIRST_DOMAINS = new Set([
-  'ibdb.com',           // Public theater database — simple HTML, no anti-bot
+  // ibdb.com REMOVED 2026-08-05 — IBDB is now behind Cloudflare (task #712).
+  // Playwright can't solve the challenge and _checkAndReturn had no challenge
+  // detection on the Playwright path, so a 4.3KB "Attention Required!" page
+  // was accepted as Success and wiped all 29 open-show casts twice (Jul 29 +
+  // Aug 5 cron). BD web_unlocker2 fetches IBDB fine — let it go straight there.
   'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
   'broadway.org',       // Playbill/closing dates — public HTML
   'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
@@ -102,6 +106,23 @@ const JS_REQUIRED_DOMAINS = new Set([
   'theatermania.com',   // Dynamic content loading
   'timeout.com',        // Star ratings rendered via client-side SVG (_ratingStars_ CSS classes)
 ]);
+
+/**
+ * Detect a Cloudflare (or similar) challenge/interstitial page that a scraper
+ * tier accepted as a normal 200 response. Shared by every tier's success check
+ * — Scrapingdog/Bright Data had this already; Playwright didn't (task #712:
+ * a valid-but-content-free "Attention Required!" IBDB page was returned as
+ * Success and wiped 29 shows' cast data twice).
+ */
+function _isChallengeOrGarbage(content) {
+  return !!content && content.length < 10000 && (
+    content.includes('Just a moment...') ||
+    content.includes('cf_chl_opt') ||
+    content.includes('challenge-platform') ||
+    content.includes('Enable JavaScript and cookies to continue') ||
+    content.includes('Attention Required!')
+  );
+}
 
 function _isJsRequiredDomain(url) {
   try {
@@ -867,7 +888,9 @@ async function fetchPage(url, options = {}) {
         fast: isPublicSite,
         playwrightWaitForSelector: options.playwrightWaitForSelector,
       });
-      if (raw) {
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+      } else if (raw) {
         const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
       }
@@ -882,13 +905,7 @@ async function fetchPage(url, options = {}) {
     console.log('  → Trying Scrapingdog...');
     const raw = await fetchWithScrapingdog(url, options);
     if (raw && raw.content && raw.content.length > 0) {
-      const isChallengeOrGarbage = raw.content.length < 10000 && (
-        raw.content.includes('Just a moment...') ||
-        raw.content.includes('cf_chl_opt') ||
-        raw.content.includes('challenge-platform') ||
-        raw.content.includes('Enable JavaScript and cookies to continue')
-      );
-      if (isChallengeOrGarbage) {
+      if (_isChallengeOrGarbage(raw.content)) {
         console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
       } else {
         const checked = _checkAndReturn(raw, 'Scrapingdog');
@@ -904,13 +921,7 @@ async function fetchPage(url, options = {}) {
     if (raw && raw.content && raw.content.length > 0) {
       // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge HTML
       // that passes length > 0 but isn't real content. Fall through to ScrapingBee.
-      const isChallengeOrGarbage = raw.content.length < 10000 && (
-        raw.content.includes('Just a moment...') ||
-        raw.content.includes('cf_chl_opt') ||
-        raw.content.includes('challenge-platform') ||
-        raw.content.includes('Enable JavaScript and cookies to continue')
-      );
-      if (isChallengeOrGarbage) {
+      if (_isChallengeOrGarbage(raw.content)) {
         console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
       } else {
         const checked = _checkAndReturn(raw, 'Bright Data');
@@ -938,7 +949,9 @@ async function fetchPage(url, options = {}) {
     // this branch is "everything else failed" fallback, no specific selector.)
     console.log('  → Trying Playwright (last resort)...');
     const raw = await fetchWithPlaywright(url);
-    if (raw) {
+    if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+      console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
+    } else if (raw) {
       const checked = _checkAndReturn(raw, 'Playwright');
       if (checked) return checked;
     }
@@ -1350,6 +1363,7 @@ module.exports = {
   fetchWithScrapingBee,
   fetchWithScrapingdog,
   fetchWithPlaywright,
+  isChallengeOrGarbage: _isChallengeOrGarbage,
   cleanup,
   domainMatchesExpected,
   setRegistryDomainAliases,
