@@ -232,6 +232,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # docs/experiments/README.md's setup contract) and must be committed for
 # other sessions to find them — not scratch/local like the rest of /docs/.
 !/docs/experiments/
+# Feature specs are cross-session deliverables (Notion cards + PRs point at
+# them) — durable-path rule, same rationale as /docs/experiments/ above.
+!/docs/specs/
 /memory/
 /data/deep-research/
 /data/theater-research/
