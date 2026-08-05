@@ -225,21 +225,22 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-04T16:42:55.773Z",
+      "lastSeen": "2026-08-05T08:26:35.454Z",
       "lastNotifiedAt": "2026-08-04T16:42:55.773Z",
       "notifyCount": 7,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-05T05:07:30.809Z",
+      "lastSeen": "2026-08-05T08:26:35.528Z",
       "lastNotifiedAt": "2026-08-05T05:07:28.375Z",
       "notifyCount": 8,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 3
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -418,6 +419,16 @@
       "lastNotifiedAt": "2026-08-05T07:41:41.804Z",
       "notifyCount": 1,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b"
+    },
+    "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 review stuck >24h: CrazySexyCool: The TLC Musical — washpost",
+      "firstSeen": "2026-08-05T08:26:26.659Z",
+      "lastSeen": "2026-08-05T08:26:26.659Z",
+      "lastNotifiedAt": "2026-08-05T08:26:26.659Z",
+      "notifyCount": 1,
+      "cardId": "3b3637c5-416f-816f-a51f-f5b8162b1ba6"
     }
   }
 }

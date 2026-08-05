@@ -1,51 +1,11 @@
 {
-  "generatedAt": "2026-08-05T05:07:30.661Z",
+  "generatedAt": "2026-08-05T08:26:35.373Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 147,
-  "clean": 145,
-  "defective": 2,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: timeout"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.31 vs local 79.48 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [
-        "timeout"
-      ],
-      "localCount": 31,
-      "deployedCount": 30
-    },
-    {
-      "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "title": "Showstopper! The Improvised Musical",
-      "openingDate": "2015-09-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.35 vs local 85.1 (Δ0.75)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 5
-    }
-  ]
+  "checked": 149,
+  "clean": 149,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
