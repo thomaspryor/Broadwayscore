@@ -52,7 +52,8 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "disruption-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
@@ -312,7 +313,16 @@
     "cats-west-end-2026/huffpost--david-finkle.json",
     "cats-west-end-2026/nbcny--robert-kahn.json",
     "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
-    "cats-west-end-2026/one-minute-critic--matthew-wexler.json"
+    "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cats-west-end-2026/slantmagazine--dan-rubins.json",
+    "cats-west-end-2026/usatoday--patrick-ryan.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "cats-west-end-2026/london-box-office--daniel-perks.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -348,7 +358,8 @@
       "disruption-off-broadway-2026/nytimes--tim-teeman.json",
       "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
-      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+      "disruption-off-broadway-2026/nytimes--tim-teeman.json"
     ],
     "archiveToday": [
       "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
@@ -369,7 +380,7 @@
     ]
   },
   "startTime": "2026-08-05T06:16:06.471Z",
-  "lastProcessed": "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "disruption-off-broadway-2026/nytimes--tim-teeman.json",
   "log": [
     {
       "t": "2026-08-05T06:16:24.809Z",
@@ -427,6 +438,28 @@
       "event": "bb-session",
       "session": "09233875",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T08:45:35.946Z",
+      "event": "bb-session",
+      "session": "e5749edf",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T08:45:36.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T08:45:52.683Z",
+      "event": "bb-session",
+      "session": "5d5be420",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T08:45:53.419Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
