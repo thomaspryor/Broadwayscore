@@ -240,8 +240,9 @@ Buttons (ordered by platform: iOS/macOS → Apple first; Android → Google firs
 1. Migration: `watchlist.time_slot` + `curtain_time` (§3.0; additive/nullable, rollback = drop). Verify via CI round-trip (local sandbox can't reach Supabase; `test-ugc-roundtrip.yml` pattern).
 2. `src/lib/calendar/` pure module (`PerformanceEvent`, builders, codec, market→tz map, tzdata VTIMEZONE fixtures) + DST/escaping/midnight-rollover unit tests. Extract ShowtimesCard time helpers into it (wire ShowtimesCard back).
 3. Showtime picker (generalized `DatePickerButton` core) + showtimes-index fan-out.
-4. Add-to-Calendar buttons + `GET /api/calendar.ics` route.
-5. Playwright `?mock=1` fixtures + visual QA (CLAUDE.md §5).
+4. Add-to-Calendar buttons + `GET /api/calendar.ics` route; "Get directions" row (Maps URL from `theaterAddress`, §8).
+5. Countdown timer on upcoming entry cards (client-side, §8).
+6. Playwright `?mock=1` fixtures + visual QA (CLAUDE.md §5).
    - **Exit criteria (owner-verified on device, stated because it isn't CI-verifiable):** an 8:00 PM entry lands correctly in **Apple Calendar (iPhone)** AND **Google Calendar** (strict VTIMEZONE parser) including one date on the far side of a DST transition; duration/venue correct. `[CHANGED: who verifies + Google + DST made explicit — structure/pre-mortem]`
 
 **Phase 1 — Stateless signed invites (~1-2 sessions; precondition: `userAccounts` live in prod; flag: `diarySharing`):**
@@ -258,7 +259,20 @@ Buttons (ordered by platform: iOS/macOS → Apple first; Android → Google firs
 
 **Deliberately out of scope:** friend graph/follows, group chat, multiple performances of one show per user, seat/ticket integration, Android app links, guest edit rights.
 
-## 8. Open questions (owner input, non-blocking — recommendations inline)
+## 8. Design inspiration (owner-supplied + research, 2026-08-05)
+
+Owner shared TodayTix's post-purchase order screen as the reference vibe: show card (poster / date+time / venue), "Share your tickets securely" with an avatar stack + "＋ Invite" circle, "Add to calendar" row, share-sheet handoff. Two cheap patterns from those screens adopted into scope:
+- **Countdown timer** on upcoming diary entries ("37 days : 0 hrs : 52 min") — pure client-side, high delight; add to the Phase 0 entry card.
+- **"Get directions" row** next to Add to Calendar — `theaterAddress` exists for 741 shows; Apple/Google Maps URL, zero backend. Phase 0.
+
+Reference apps by feature area:
+- **Invite/join page & viral loop:** Partiful (rich event page from a text link, near-zero-friction RSVP, guest avatars, every-guest-becomes-a-host loop), Apple Invites (full-bleed cards, RSVP **without an account** — matches our anon-value principle), Luma (cleanest add-to-calendar/event-page mechanics).
+- **Ticket-holder mechanics:** Ticketmaster/AXS (canonical transfer flows — also the friction cautionary tale our one-tap OAuth join should beat), Dice (minimal mobile ticket UX, friends-going layer), GameTime (show value before asking anything).
+- **Showtime picking:** Fandango/AMC (date strip + time chips — the mental model for §4.2), Resy/OpenTable (add guests to a specific reservation, calendar holds, day-of reminders).
+- **Shared-plan propagation (Phase 2):** Airbnb Trips/TripIt (owner edits propagate to companions), Bandsintown ("I'm going/Interested" + friends-going social proof as a lighter middle ground).
+- **North star for the diary itself:** Letterboxd — which has no "go together" feature; this is a differentiator.
+
+## 9. Open questions (owner input, non-blocking — recommendations inline)
 
 1. **Guest edit rights (Phase 2):** recommend owner-only edits with trigger-synced dates.
 2. **App Store id** for the smart banner + universal-link testing: needed at the iOS phase. Is the app live/TestFlight-only?
