@@ -143,7 +143,7 @@ Entry cards in **Upcoming** gain two actions (icon row, mobile-first):
 
 - **🕐 Set time** → showtime picker (§4.2). Phase 0: writes `time_slot` + `curtain_time` on the user's watchlist row. Phase 2: creates/updates the outing, trigger-synced back to those columns.
 - **👥 Invite** (Phase 1) → share modal: primary **"Share invite link"** via `navigator.share({ title, text, url })` (share sheet: iMessage, WhatsApp, Mail…); desktop fallback copy-to-clipboard (`ListsTab.tsx:185` pattern). Phase 1 links are signed params URLs (§4.3); Phase 2 upgrades to outing tokens. "Add by phone number" is deliberately not a form field — the share sheet → Messages *is* that feature, and the modal copy says so.
-- Companions display ("With Joanna", avatar stack) arrives with Phase 2.
+- Companions display ("With Joanna", avatar stack) arrives with Phase 2. Per the Beli/Untappd pattern (§8): companion tagging should live *inside* the log/rating editor too, not only as a standalone share action — and Phase 2's `outing_members` supports a **name-only placeholder** ("ghost tag": `display_name` set, `user_id` NULL) that a later invite-join claims, so tagging a friend who isn't on the product yet is itself the invite.
 
 Same actions on the show page's diary widget and `/diary-show/[id]` for catalog shows.
 
@@ -265,12 +265,13 @@ Owner shared TodayTix's post-purchase order screen as the reference vibe: show c
 - **Countdown timer** on upcoming diary entries ("37 days : 0 hrs : 52 min") — pure client-side, high delight; add to the Phase 0 entry card.
 - **"Get directions" row** next to Add to Calendar — `theaterAddress` exists for 741 shows; Apple/Google Maps URL, zero backend. Phase 0.
 
-Reference apps by feature area:
-- **Invite/join page & viral loop:** Partiful (rich event page from a text link, near-zero-friction RSVP, guest avatars, every-guest-becomes-a-host loop), Apple Invites (full-bleed cards, RSVP **without an account** — matches our anon-value principle), Luma (cleanest add-to-calendar/event-page mechanics).
-- **Ticket-holder mechanics:** Ticketmaster/AXS (canonical transfer flows — also the friction cautionary tale our one-tap OAuth join should beat), Dice (minimal mobile ticket UX, friends-going layer), GameTime (show value before asking anything).
-- **Showtime picking:** Fandango/AMC (date strip + time chips — the mental model for §4.2), Resy/OpenTable (add guests to a specific reservation, calendar holds, day-of reminders).
-- **Shared-plan propagation (Phase 2):** Airbnb Trips/TripIt (owner edits propagate to companions), Bandsintown ("I'm going/Interested" + friends-going social proof as a lighter middle ground).
-- **North star for the diary itself:** Letterboxd — which has no "go together" feature; this is a differentiator.
+Reference apps — **the owner's framing (2026-08-05): the right comparison set is social *trackers* where a diary entry carries companions, not event-invite apps** (Partiful/Apple Invites explicitly ruled out):
+- **Beli** (restaurant tracker) — closest 1:1 analog: personal diary + rankings where you **tag the friends you ate with** at log time; the visit connects on their side; tagging + leaderboards ARE the growth engine. Proof the mechanic drives viral growth in a niche vertical.
+- **Strava** — the data-model reference: same run auto-groups into one shared event, but each person keeps their own record/stats/notes. Validates §3's copy-on-join (shared outing, separate diary entries, ratings stay individual).
+- **Untappd / Swarm** — the check-in gesture: companion tagging lives *inside the log flow* (same screen as the rating, not a separate share step), and you can tag someone **not yet on the app** — the "ghost tag → invite" pattern: tag Joanna by name now, she gets the link, the tag resolves to her account when she joins. Adopt for §4.1: the Invite action should also be reachable from the rating/log editor, and Phase 2 membership should support a name-only placeholder that an invite later claims.
+- **StoryGraph buddy reads / Fable book clubs** — a shared "we're doing this together" object inside a personal tracker; shared progress, individual reviews. Analog for the *upcoming* shared state.
+- **Letterboxd** (the diary's north star) — has **no "watched with" feature**, one of its most-requested. TodayTix owns the upcoming half, Beli the past half; spanning both for theater is the differentiator.
+- Secondary UX references (mechanics only): Fandango/AMC (date strip + time chips for §4.2), Resy/OpenTable (guests on a reservation, day-of reminders), Ticketmaster (transfer-flow friction as the cautionary tale our one-tap join should beat).
 
 ## 9. Open questions (owner input, non-blocking — recommendations inline)
 
