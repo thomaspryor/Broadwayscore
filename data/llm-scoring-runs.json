@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T03:48:45.367Z",
-    "completedAt": "2026-08-02T03:48:45.582Z",
-    "totalReviews": 34,
-    "processed": 0,
-    "skipped": 33,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "tao-of-glass-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T04:27:38.688Z",
     "completedAt": "2026-08-02T04:28:04.275Z",
     "totalReviews": 41459,
@@ -554022,6 +554002,26 @@
       {
         "showId": "disruption-off-broadway-2026",
         "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-05T08:54:04.851Z",
+    "completedAt": "2026-08-05T08:54:05.058Z",
+    "totalReviews": 11,
+    "processed": 0,
+    "skipped": 10,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "dinosaur-world-live-off-west-end-2026",
+        "outletId": "inyougo",
         "error": "input_validation_failed:body_too_short"
       }
     ]
