@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T09:13:46.147Z",
+  "generatedAt": "2026-08-05T09:45:58.349Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1048,24 +1048,24 @@
       "status": "open",
       "slug": "disruption-off-broadway",
       "thumbnail": "/images/shows/disruption-off-broadway-2026/thumbnail.webp",
-      "siteScore": 52.18,
-      "liveScore": 52,
-      "scoreDrift": -0.17999999999999972,
+      "siteScore": 61.68,
+      "liveScore": 62,
+      "scoreDrift": 0.3200000000000003,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 0,
-      "t2": 2,
-      "t3": 1,
-      "positive": 0,
-      "mixed": 2,
+      "total": 6,
+      "t1": 1,
+      "t2": 3,
+      "t3": 2,
+      "positive": 1,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
-          "T1:0/3",
+          "6/12 total",
+          "T1:1/3",
           "T2:2/3",
           "hi-conf:0/8"
         ],
@@ -1185,10 +1185,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
           "isDualMarket": false
         },
@@ -1198,10 +1194,6 @@
         },
         {
           "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -1321,10 +1313,6 @@
           "isDualMarket": false
         },
         {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
           "name": "The Arts Desk",
           "isDualMarket": false
         },
@@ -1409,6 +1397,18 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-08-05T09:45:58.349Z",
+          "rc": 6,
+          "s": 61.68,
+          "t1": 1,
+          "t2": 3,
+          "t3": 2,
+          "p": 1,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     }
@@ -1446,7 +1446,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-08-06",
-      "status": "open",
+      "status": "previews",
       "slug": "the-comedy-about-spies-west-end",
       "thumbnail": "/images/shows/the-comedy-about-spies-west-end-2026/thumbnail.webp",
       "daysUntil": 1,

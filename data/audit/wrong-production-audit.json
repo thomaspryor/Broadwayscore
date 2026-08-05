@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-05T09:13:40.063Z",
+  "timestamp": "2026-08-05T09:45:52.300Z",
   "stats": {
-    "totalReviews": 41595,
-    "alreadyFlagged": 18105,
+    "totalReviews": 41641,
+    "alreadyFlagged": 18110,
     "dateGuardCatches": 114,
-    "directorMismatch": 944,
+    "directorMismatch": 945,
     "tvFilmSignals": 1152,
     "londonSignals": 813,
     "offBroadwaySignals": 479,
     "yearMismatch": 88,
-    "noPublishDate": 3493
+    "noPublishDate": 3525
   },
   "findings": [
     {
@@ -12335,6 +12335,20 @@
       "score": 85,
       "publishDate": null,
       "url": "https://www.theaterpizzazz.com/into-the-woods-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "file": "washpost--peter-marks.json",
+      "score": 81,
+      "publishDate": "1997-11-09",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/07/29/into-the-woods-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
