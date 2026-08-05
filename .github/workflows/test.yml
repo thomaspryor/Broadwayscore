@@ -417,6 +417,18 @@ on:
       # consumed. Path-listed so a solo edit triggers CI.
       - 'scripts/lib/content-request-routing.js'
       - 'tests/unit/content-request-routing.test.mjs'
+      # Owner-visibility path (2026-08-05, GH #542/#543): run-report enrichment
+      # and the live-on-site verification rules. Both were parked-and-forgotten
+      # bugs whose failure mode is silence, so their tests must actually run —
+      # content-request-routing.test.mjs was path-listed here from 2026-08-04 but
+      # missing from tests/unit-test-manifest.txt, so it never executed in CI.
+      # All three are now in the manifest.
+      - 'scripts/lib/feedback-run-report.js'
+      - 'tests/unit/feedback-run-report.test.mjs'
+      - 'scripts/lib/feedback-request-ledger.js'
+      - 'tests/unit/feedback-request-ledger.test.mjs'
+      - 'scripts/notify-feedback-outcomes.js'
+      - 'scripts/verify-feedback-requests-live.js'
       - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'
