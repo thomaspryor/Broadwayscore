@@ -62,7 +62,10 @@
     "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
     "loves-labours-lost-globe-west-end-2026/broadwayworld--debbie-gilpin.json",
     "iceboy-regional-2026/talkinbroadway--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
@@ -596,7 +599,14 @@
     "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
     "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
-    "music-city-off-broadway-2026/observer--unknown.json"
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -642,10 +652,15 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -680,7 +695,7 @@
     ]
   },
   "startTime": "2026-08-05T19:10:34.470Z",
-  "lastProcessed": "music-city-off-broadway-2026/observer--unknown.json",
+  "lastProcessed": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
   "log": [
     {
       "t": "2026-08-05T19:12:20.885Z",
@@ -692,6 +707,12 @@
       "t": "2026-08-05T19:12:21.682Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-05T21:44:55.619Z",
+      "event": "bb-session",
+      "session": "f8450fd6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
     }
   ]
 }
