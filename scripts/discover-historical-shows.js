@@ -25,6 +25,7 @@ const { JSDOM } = require('jsdom');
 const https = require('https');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { isTourProduction } = require('./lib/tour-detection');
@@ -325,11 +326,21 @@ async function fetchShowsFromIBDB(season) {
 
       const openingDate = parseIBDBDateString(dateText);
 
+      // IBDB's theater column can be blank/malformed on some historical rows
+      // (missing <div class=col> entirely) — same #994/#1060-class leak,
+      // guarded instead of resurrected via `|| 'TBA'`. Skip the row rather
+      // than write a placeholder; IBDB seasons are re-scraped on later runs.
+      const sanitizedVenue = sanitizeVenueForWrite(venue);
+      if (!sanitizedVenue) {
+        console.log(`  [SKIP] "${title}" — IBDB venue "${venue || ''}" is a placeholder/blob, deferring to next run (card #1060 follow-up)`);
+        continue;
+      }
+
       showsList.push({
         title,
         ibdbUrl,
         openingDate,
-        venue: venue || 'TBA',
+        venue: sanitizedVenue,
         type: parsedType.type,
         isRevival: parsedType.isRevival,
         ibdbTypeText: ibdbTypeText || 'unknown',
