@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-05T12:47:39.176Z",
+  "timestamp": "2026-08-05T14:14:00.034Z",
   "stats": {
-    "totalReviews": 41652,
-    "alreadyFlagged": 18117,
-    "dateGuardCatches": 114,
+    "totalReviews": 41650,
+    "alreadyFlagged": 18116,
+    "dateGuardCatches": 115,
     "directorMismatch": 945,
     "tvFilmSignals": 1152,
     "londonSignals": 813,
     "offBroadwaySignals": 479,
     "yearMismatch": 88,
-    "noPublishDate": 3531
+    "noPublishDate": 3530
   },
   "findings": [
     {
@@ -24483,6 +24483,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "i-paper--unknown.json",
+      "score": null,
+      "publishDate": "2025-05-13",
+      "url": "https://inews.co.uk/culture/the-comedy-about-spies-review-latest-west-end-hot-ticket-3688604?srsltid=AfmBOoqtSl0i9HRQiMAqBRfEPNRYBCZFe5qlz99UT_wugGzgtJ6l8jhF",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
