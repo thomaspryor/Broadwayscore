@@ -11,28 +11,6 @@
     "queuedAt": "2026-08-04T07:42:09.991Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 80% (453/566)\noff-broadway: 48.6% (157/323)\nwest-end: 71.5% (391/547)\n\nOldest gaps:\n1536 — guardian (293h)\n1536 — independent (293h)\nA Midsummer Night's Dream - Globe — financialtimes (293h)\nA Midsummer Night's Dream - Globe — telegraph (293h)\nA Midsummer Night's Dream — financialtimes (293h)\n… 205 more open gap(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-04T08:50:26.809Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 7.7% of shows changed coverage state",
-    "description": "review-gap blast radius 7.7% (2/26 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: now-you-see-me-live-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-04T14:48:33.835Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "3 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -64,5 +42,27 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-04T23:57:26.648Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 15.0% of shows changed coverage state",
+    "description": "review-gap blast radius 15.0% (3/20 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: dinosaur-world-live-off-west-end-2026, tao-of-glass-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-05T05:07:21.612Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 80% (453/566)\noff-broadway: 48.6% (157/323)\nwest-end: 72% (402/558)\n\nOldest gaps:\n1536 — guardian (313h)\n1536 — independent (313h)\nA Midsummer Night's Dream - Globe — financialtimes (313h)\nA Midsummer Night's Dream - Globe — telegraph (313h)\nA Midsummer Night's Dream — financialtimes (313h)\n… 205 more open gap(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-05T05:07:28.376Z"
   }
 ]
