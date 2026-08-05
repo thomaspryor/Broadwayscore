@@ -204,6 +204,59 @@ function countStrandedCommits(jobId) {
   }
 }
 
+// Did THIS job's own branch land? The tip of job/<jobId> being an ancestor of
+// origin/main (or local main, which countStrandedCommits already treats as
+// equally authoritative) is proof the drain's own session produced the work —
+// as opposed to the card merely being `completed` in the shared task mirror,
+// which ANY writer can do: a human clicking Done in Notion, notion-tasks-sync's
+// pull, or a parallel Cmux session that picked the same card up.
+// That distinction is the whole point (plan-review 2026-08-05, unanimous across
+// Codex/Gemini/pre-mortem/structure/design): crediting an unattributed
+// completion as card-pass would feed spendCircuitBreakerStatus a completion it
+// did not earn, and since that breaker only halts while completions === 0, ONE
+// false pass suppresses every real card-fail in the same 24h window — i.e. it
+// silently disables the only cost guard the drain has.
+// Fails CLOSED: a missing/deleted branch, or git being unavailable, is "not
+// attributable", never "attributed".
+// Branch-ancestor is the STRONG signal, but it evaporates: worktree-gc deletes
+// merged job branches, so a card whose work landed days ago has no branch left.
+// Verified on the real #68: its work IS on main (6042f5ae27a "repair dead
+// Wikipedia synopsis matcher") but job/68-msf7br29 no longer exists, so the
+// ancestor check alone scored the exact case this fix exists for as
+// unattributed. Hence the second, weaker path below.
+function jobBranchLanded(jobId) {
+  if (!jobId) return false;
+  for (const ref of ['origin/main', 'main']) {
+    try {
+      execFileSync('git', ['-C', REPO, 'merge-base', '--is-ancestor', `job/${jobId}`, ref],
+        { stdio: ['ignore', 'ignore', 'ignore'] });
+      return true;
+    } catch { /* not an ancestor of this ref — try the next */ }
+  }
+  return false;
+}
+
+// WEAKER fallback: a commit referencing this task landed on main DURING the
+// job's own lifetime. Commit bodies carry "(task #N)" by repo convention and
+// survive branch deletion. Deliberately windowed to [spawn, terminal] rather
+// than "since dispatch" — the wider window would credit the drain for an
+// interactive session that happened to work the same card, which is precisely
+// the over-crediting the plan-review flagged as able to suppress the spend
+// breaker. Callers record WHICH signal fired so a strict metric can ignore this
+// one; it is evidence, not proof.
+function taskCommitLandedInWindow(taskId, fromTs, toTs) {
+  if (!taskId || !fromTs) return false;
+  try {
+    const out = execFileSync('git', ['-C', REPO, 'log', 'origin/main', '--since', new Date(fromTs).toISOString(),
+      ...(toTs ? ['--until', new Date(toTs).toISOString()] : []),
+      '--format=%s%n%b', '--regexp-ignore-case', '--grep', `task #${taskId}\\b`],
+      { stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' });
+    return String(out).trim().length > 0;
+  } catch {
+    return false;
+  }
+}
+
 // A dispatch is resolved by an outcome recorded AT OR AFTER it, not by "this
 // card has an outcome somewhere in history" (ship-check finding, Codex
 // 2026-08-04). The old card-id Set meant a card dispatched a SECOND time — after
@@ -211,16 +264,22 @@ function countStrandedCommits(jobId) {
 // card-pass/card-fail/card-stranded at all: no spend accounting, no attempt
 // memory, no retry ceiling. That was already true for card-fail before this
 // change; card-stranded would have inherited it.
+// completion-unattributed resolves a dispatch too: the card IS done, so
+// re-dispatching it would burn money on finished work. It is deliberately not a
+// pass — see jobBranchLanded above for why that separation matters.
+const RESOLVING_EVENTS = new Set(['card-pass', 'card-fail', 'card-stranded', 'completion-unattributed']);
 function isDispatchResolved(drainLedgerEntries, taskId, dispatchTs) {
   const at = new Date(dispatchTs).getTime();
   return drainLedgerEntries.some(e =>
     e && String(e.cardId) === String(taskId) && e.ts &&
-    (e.event === 'card-pass' || e.event === 'card-fail' || e.event === 'card-stranded') &&
+    RESOLVING_EVENTS.has(e.event) &&
     new Date(e.ts).getTime() >= at);
 }
 
 function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries, now = new Date(), opts = {}) {
   const strandedCommitsFn = opts.strandedCommits || countStrandedCommits;
+  const landedFn = opts.jobBranchLanded || jobBranchLanded;
+  const commitRefFn = opts.taskCommitLandedInWindow || taskCommitLandedInWindow;
   // Outcomes appended during THIS pass, so two dispatches of the same card in
   // one tick don't both emit an outcome.
   const emitted = [];
@@ -254,10 +313,31 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     // as a failed attempt (see computeParkedMap in lib/backlog-drain.js): a card
     // that strands twice on unchanged content is burning money without landing
     // and must park, whatever the reason.
-    const stranded = (sessionOk && !completed) ? strandedCommitsFn(job.jobId) : 0;
-    const outcome = (sessionOk && completed) ? 'card-pass' : (stranded > 0 ? 'card-stranded' : 'card-fail');
+    // Stranded inspection must NOT be gated on sessionOk: a job that timed out
+    // can still have left real commits on its branch, and suppressing the check
+    // for exactly that case is what let a timed-out-but-productive session be
+    // scored a plain failure (task #68, 2026-08-05).
+    const stranded = !completed ? strandedCommitsFn(job.jobId) : 0;
+    // Attribution, not just completion. `completed` alone is the shared mirror's
+    // status, writable by anyone (see jobBranchLanded). A pass requires either
+    // the drain's own job exiting cleanly, or — for the timed-out case — proof
+    // that this job's own branch actually landed.
+    let attribution = null;
+    if (completed && !sessionOk) {
+      if (landedFn(job.jobId)) attribution = 'branch-ancestor';
+      else if (commitRefFn(taskId, job.spawnedTs || d.ts, job.ts)) attribution = 'commit-ref';
+    }
+    const landedLate = attribution !== null;
+    let outcome;
+    if (completed && (sessionOk || landedLate)) outcome = 'card-pass';
+    else if (completed) outcome = 'completion-unattributed';
+    else if (stranded > 0) outcome = 'card-stranded';
+    else outcome = 'card-fail';
     const notes = {
-      'card-pass': 'session finished, task marked completed',
+      'card-pass': landedLate
+        ? `job ${job.event} (timed out) but its work landed on main via ${attribution} — the drain's own work completed late`
+        : 'session finished, task marked completed',
+      'completion-unattributed': `card is completed but job/${job.jobId} never landed and the job did not finish (${job.event}) — closed by another writer, NOT credited to the drain`,
       'card-stranded': `session finished with ${stranded} unmerged commit(s) on job/${job.jobId} but the card never closed — verified work blocked at the landing gate, not lost`,
       'card-fail': sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`,
     };
@@ -269,6 +349,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
       note: notes[outcome],
       strandedCommits: stranded || undefined,
       strandedBranch: stranded ? `job/${job.jobId}` : undefined,
+      attribution: attribution || undefined,
     });
     emitted.push({ cardId: taskId, ts: now.toISOString(), event: outcome });
   }
@@ -432,7 +513,7 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs, readLedger, appendLedger, readJson, writeJsonAtomic, fetchCard,
-  findMyJob, reconcileOutcomes, main, USAGE,
+  findMyJob, reconcileOutcomes, main, USAGE, jobBranchLanded, taskCommitLandedInWindow, RESOLVING_EVENTS,
   AUDIT_DIR, DRAIN_LEDGER_PATH, METRIC_PATH, VERIFIABILITY_REPORT_PATH, LOG_DIR,
   MAX_CANDIDATE_SCAN, ORPHAN_TIMEOUT_H,
 };

@@ -203,3 +203,69 @@ test('reconcileOutcomes: two unresolved dispatches of the same card in one tick 
   // the in-pass `emitted` guard stops the second from double-charging it.
   assert.equal(out.length, 1);
 });
+
+// ── attribution: `completed` alone is NOT proof the drain did the work ──────
+// Real incident 2026-08-05 (task #68): the ledger recorded
+//   {"event":"card-fail","cardId":"68","note":"job job-failed: timeout"}
+// while ~/.claude/tasks/broadwayscore/68.json said status "completed". The
+// session had finished the work; only its job wrapper timed out. Scoring that a
+// failure fed a phantom failure into both the spend breaker and attempt-memory.
+// The fix must credit it — but ONLY when the drain's own branch actually landed,
+// because task.status is a shared mirror any writer can flip (a human clicking
+// Done in Notion, notion-tasks-sync's pull, or a parallel Cmux session).
+// Crediting an unattributed completion would be worse than the original bug:
+// spendCircuitBreakerStatus only halts while completions === 0, so one false
+// pass suppresses every real card-fail in that 24h window.
+
+const RECON_ARGS = (taskStatus, jobEvent) => [
+  [{ ts: '2026-08-04T22:00:00Z', event: 'drain-dispatch', taskId: '68', contentHash: 'h68' }],
+  new Map([['68', { id: '68', status: taskStatus }]]),
+  [
+    { ts: '2026-08-04T22:00:05Z', event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: '68', jobId: 'j68' },
+    { ts: '2026-08-05T14:00:00Z', event: jobEvent, taskId: '68', jobId: 'j68', costUSD: 0, stage: 'timeout' },
+  ],
+  new Date('2026-08-05T14:00:01Z'),
+];
+
+test('reconcileOutcomes: job TIMED OUT but the card completed AND job branch landed → card-pass (task #68)', () => {
+  const out = reconcileOutcomes(...RECON_ARGS('completed', dispatchLedger.JOB_EVENTS.FAILED),
+    { jobBranchLanded: () => true, taskCommitLandedInWindow: () => false, strandedCommits: () => 0 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'card-pass', 'a timed-out job whose own branch landed is a real completion');
+  assert.match(out[0].note, /landed on main/);
+});
+
+test('reconcileOutcomes: card completed but job branch did NOT land → completion-unattributed, never card-pass', () => {
+  const out = reconcileOutcomes(...RECON_ARGS('completed', dispatchLedger.JOB_EVENTS.FAILED),
+    { jobBranchLanded: () => false, taskCommitLandedInWindow: () => false, strandedCommits: () => 0 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].event, 'completion-unattributed',
+    'someone else closed the card — crediting it would suppress the spend breaker');
+  assert.notEqual(out[0].event, 'card-pass');
+});
+
+test('reconcileOutcomes: stranded commits are inspected even when the job did NOT finish cleanly', () => {
+  // Pre-fix this was gated on sessionOk, so a timed-out job that left real work
+  // was scored a plain card-fail and its commits were never even counted.
+  const out = reconcileOutcomes(...RECON_ARGS('pending', dispatchLedger.JOB_EVENTS.FAILED),
+    { jobBranchLanded: () => false, taskCommitLandedInWindow: () => false, strandedCommits: () => 3 });
+  assert.equal(out[0].event, 'card-stranded');
+  assert.equal(out[0].strandedCommits, 3);
+});
+
+test('reconcileOutcomes: clean job + completed card is still a plain card-pass (no regression)', () => {
+  const out = reconcileOutcomes(...RECON_ARGS('completed', dispatchLedger.JOB_EVENTS.DONE),
+    { jobBranchLanded: () => false, taskCommitLandedInWindow: () => false, strandedCommits: () => 0 });
+  assert.equal(out[0].event, 'card-pass');
+  assert.equal(out[0].note, 'session finished, task marked completed');
+});
+
+test('reconcileOutcomes: branch deleted but a commit referencing the task landed in-window → card-pass via commit-ref', () => {
+  // The REAL #68: work landed as 6042f5ae27a ("...(task #68)...") but
+  // worktree-gc deleted job/68-msf7br29, so branch-ancestor alone said "not
+  // attributable" — a false negative on the exact case this fix exists for.
+  const out = reconcileOutcomes(...RECON_ARGS('completed', dispatchLedger.JOB_EVENTS.FAILED),
+    { jobBranchLanded: () => false, taskCommitLandedInWindow: () => true, strandedCommits: () => 0 });
+  assert.equal(out[0].event, 'card-pass');
+  assert.equal(out[0].attribution, 'commit-ref');
+});
