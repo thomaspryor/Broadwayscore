@@ -1,20 +1,20 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-05T07:41:40.304Z",
+  "lastChecked": "2026-08-05T16:22:45.117Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "status": "warn",
-      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: Brainiac Live 2025 Olivier-winning Marylebone run entire (3d); Review completeness: Death Note / Dog Man / Crocodile 0 revi (2d) (13 awaiting recheck, earliest due 2026-08-03; 8 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force — not counted)"
+      "status": "pass",
+      "message": "No stuck paused P0/P1 cards (17 awaiting recheck, earliest due 2026-08-03; 8 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "58 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (12d)"
+      "message": "66 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Trainspotting: only 4 reviews on site + email said 7 (invest (13d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (13d)"
     }
   ]
 }
