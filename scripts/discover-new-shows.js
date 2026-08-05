@@ -1415,8 +1415,10 @@ async function consumeShowScoreCandidatesFile() {
       let openingDate = null;
       let openingDateSource = null;
       let previewsStartDate = ttShow.startDate || null;
+      // Hoisted so the venue fallback below can reuse this fetch instead of
+      // discarding it — see the venueName resolution just after this block.
+      let ssData = null;
       if (isLondonMarket(candidate.category) || candidate.category === 'off-broadway') {
-        let ssData = null;
         try {
           ssData = await fetchShowScoreStatus(candidate.showScoreUrl);
           await new Promise(r => setTimeout(r, 500));
@@ -1440,9 +1442,18 @@ async function consumeShowScoreCandidatesFile() {
       // jest-to-impress-off-broadway-2026 landed with venue:"Soho/Tribeca"
       // (card #994 S0 remainder). Route through the same guard and defer
       // (don't consume the candidate) rather than write a placeholder.
-      const venueName = resolveTodayTixVenue(ttShow);
+      //
+      // Fall back to the ShowScore venue (already fetched above for the
+      // opening date, and already guard-clean via fetchShowScoreStatus) when
+      // TodayTix's own field is the one that's bad — otherwise a show whose
+      // TodayTix venue is PERMANENTLY a blob (not a transient scrape glitch;
+      // that's TodayTix's own stored data) re-enters this exact branch every
+      // day, resolveTodayTixVenue(ttShow) rejects it every time, and it
+      // skip-loops forever instead of the "deferred, retried next run" the
+      // comment above promises (ship-check finding).
+      const venueName = resolveTodayTixVenue(ttShow) || sanitizeVenueForWrite(ssData?.venue);
       if (!venueName) {
-        console.log(`  [SKIP] "${candidate.title}" — TodayTix venue "${(typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || ''}" is a placeholder/blob, deferring to next run (card #994)`);
+        console.log(`  [SKIP] "${candidate.title}" — no verified venue from TodayTix or ShowScore, deferring to next run (card #994)`);
         continue;
       }
       // Genre: tag non-play/musical performance types (dance/magic/comedy/cabaret/
