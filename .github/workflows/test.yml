@@ -1145,6 +1145,13 @@ on:
       # Run-budget coverage guard (#425) — advisory scan for BD/SB cron scripts
       # missing scripts/lib/run-budget.js. Without this path entry, edits get ZERO CI.
       - 'scripts/audit-run-budget-coverage.js'
+      # Gate corpus-guard coverage (#1069) — blocking meta-lint: every --gate-wired
+      # audit-*.js that walks data/review-texts must call assertCorpusScanned
+      # (the #1063 vacuous-gate class). Colocated *.test.mjs runs via the
+      # scripts/lib glob; path-listed so a solo edit triggers CI.
+      - 'scripts/audit-gate-corpus-guard-coverage.js'
+      - 'scripts/lib/gate-corpus-guard-coverage.js'
+      - 'scripts/lib/gate-corpus-guard-coverage.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
@@ -2059,6 +2066,19 @@ jobs:
         # always exits 0 (see script header for why). Exempt a workflow with
         # # hygiene-run-budget-ok: <reason>.
         run: node scripts/audit-run-budget-coverage.js
+
+      - name: Audit — gate corpus-guard coverage
+        # Task #1069. Blocking, unlike the advisory audits around it: every
+        # `node scripts/audit-*.js --gate` step below (in the data-validation
+        # job) whose script walks data/review-texts (readdirSync) must call
+        # assertCorpusScanned from scripts/lib/corpus-scan-guard.js — the fix
+        # applied reactively 6 times across #1063/#1065/#1066/#1067/#1068 (10
+        # scripts, 5+ sessions) for the vacuous-gate class: a missing/empty
+        # review-texts checkout scans 0 files and reports a false-clean pass.
+        # Mechanical source-grep, not a loop-shape heuristic, so false
+        # positives should be rare — fix by adding the guard, no exemption
+        # escape hatch.
+        run: node scripts/audit-gate-corpus-guard-coverage.js
 
       - name: Audit — direct provider calls bypassing fetchPage() (advisory)
         # Task #684 T12: flags scripts constructing a raw HTTP call to a BD/SB/SD
