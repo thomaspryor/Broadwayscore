@@ -573,11 +573,15 @@ async function fetchShowsFromTodayTixLondon() {
 
   console.log(`TodayTix London API: ${allShows.length} total London shows, ${westEndShows.length} West End-filtered, ${showsList.length} unique`);
 
-  // GUARD: If TodayTix returned shows but our filter dropped them all, something is wrong
-  if (allShows.length > 20 && westEndShows.length === 0) {
+  // GUARD: If TodayTix returned shows but our filter (category + venue guard,
+  // card #1060) dropped them all, something is wrong. Checks showsList, not
+  // westEndShows — westEndShows is pre-venue-guard, so a TodayTix venue-field
+  // regression (the exact class of bug #1060 defends against) would silently
+  // empty showsList while westEndShows stayed healthy and this warning never fired.
+  if (allShows.length > 20 && showsList.length === 0) {
     console.error(`⚠️  WARNING: TodayTix returned ${allShows.length} London shows but 0 passed WE filter — API may have changed`);
-  } else if (allShows.length > 50 && westEndShows.length < 10) {
-    console.error(`⚠️  WARNING: Only ${westEndShows.length}/${allShows.length} London shows passed WE filter — unusually low`);
+  } else if (allShows.length > 50 && showsList.length < 10) {
+    console.error(`⚠️  WARNING: Only ${showsList.length}/${allShows.length} London shows passed WE filter — unusually low`);
   }
 
   return showsList;
@@ -634,8 +638,13 @@ async function fetchShowsFromTheatremonkey() {
     }
 
     console.log(`Theatremonkey: ${showsList.length} shows on index`);
-    if (html.length > 10000 && showsList.length === 0) {
-      console.error('⚠️  WARNING: Theatremonkey page loaded but 0 shows parsed — HTML structure may have changed');
+    // showsList is always empty now (card #1060 — TM has no venue data, so
+    // every candidate is skipped, never pushed). The old "0 shows parsed"
+    // check would fire on every successful run. seen.size === 0 means the
+    // /show/ link selector itself matched nothing — the real HTML-structure
+    // regression this warning exists to catch.
+    if (html.length > 10000 && seen.size === 0) {
+      console.error('⚠️  WARNING: Theatremonkey page loaded but 0 candidates found — HTML structure may have changed');
     }
     return showsList;
   } catch (err) {
