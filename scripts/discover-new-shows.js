@@ -335,9 +335,19 @@ async function fetchShowsFromTodayTix() {
     // fills in the real openingDate.
     const previewsStart = sanitizeTodayTixDate(show.startDate, title);
 
+    // Same leak as the OB loop below: TodayTix's venue field can be a
+    // placeholder/blob, not just missing (card #1060, Broadway/WE sibling
+    // of #994). Defer rather than write TBA — TodayTix is polled fresh
+    // each run, so nothing is lost, only delayed.
+    const bwayVenue = resolveTodayTixVenue(show);
+    if (!bwayVenue) {
+      if (verbose) console.log(`  [SKIP] "${title}" — TodayTix venue "${(typeof show.venue === 'string' ? show.venue : show.venue?.name) || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+      continue;
+    }
+
     showsList.push({
       title,
-      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
+      venue: bwayVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
       previewsStartDate: previewsStart,
@@ -535,18 +545,26 @@ async function fetchShowsFromTodayTixLondon() {
     if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
 
     seen.add(title);
+
+    // Same class as the Broadway/OB loops: TodayTix's venue field can be a
+    // placeholder/blob (card #1060, Broadway/WE sibling of #994). Defer
+    // rather than write TBA — TodayTix is polled fresh each run.
+    const weVenue = resolveTodayTixVenue(show);
+    if (!weVenue) {
+      if (verbose) console.log(`  [SKIP] "${title}" — TodayTix venue "${(typeof show.venue === 'string' ? show.venue : show.venue?.name) || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+      continue;
+    }
+
     // TodayTix startDate is first preview for WE shows, NOT press night.
     // Treat as previewsStartDate; openingDate set later by ShowScore or enrichment.
     showsList.push({
       title,
-      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
+      venue: weVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
       previewsStartDate: sanitizeTodayTixDate(show.startDate, title),
       closingDate: show.endDate === 'null' ? null : show.endDate || null,
-      category: isOffWestEndVenue(
-        (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA'
-      ) ? 'off-west-end' : 'west-end',
+      category: isOffWestEndVenue(weVenue) ? 'off-west-end' : 'west-end',
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
@@ -585,6 +603,7 @@ async function fetchShowsFromTheatremonkey() {
     const $ = cheerio.load(html);
     const seen = new Set();
     const showsList = [];
+    let skippedNoVenue = 0;
 
     $('a[href*="/show/"]').each((_, el) => {
       const href = $(el).attr('href') || '';
@@ -598,16 +617,21 @@ async function fetchShowsFromTheatremonkey() {
 
       // Clean Disney's prefix for consistency
       const cleanedTitle = title.replace(/^Disney's\s+/i, '');
-      showsList.push({
-        title: cleanedTitle,
-        venue: 'TBA', // TM index doesn't include venue
-        slug: cleanedTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: null, // Dates are on individual pages, not the index
-        closingDate: null,
-        category: 'west-end', // TM only lists WE shows; dedup pipeline handles classification
-        description: '',
-      });
+      // The TM index genuinely carries no venue data (it's on each show's own
+      // page, which this scraper doesn't fetch) — unlike every other source
+      // in this file, there is no real value to fall back to here, only a
+      // fabricated one. Writing 'TBA' was exactly the #994-class leak this
+      // card (#1060) exists to close, so skip instead of writing a
+      // placeholder. This makes TM contribute 0 shows going forward — an
+      // accepted coverage tradeoff (design decision, not a guess): TM is a
+      // supplementary source layered under TodayTix/OLT in the dedup
+      // priority order, so titles it alone would have caught are lost until
+      // someone adds a per-show-page fetch for venue.
+      skippedNoVenue++;
     });
+    if (skippedNoVenue > 0) {
+      console.log(`  Theatremonkey: skipped ${skippedNoVenue} candidates — index has no venue data (card #1060)`);
+    }
 
     console.log(`Theatremonkey: ${showsList.length} shows on index`);
     if (html.length > 10000 && showsList.length === 0) {
@@ -691,7 +715,15 @@ async function fetchShowsFromOfficialLondonTheatre() {
       if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
       if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
 
-      const venue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
+      // OLT's JSON-LD location can be missing/blank on a malformed entry —
+      // same #994-class leak, guarded here rather than resurrected via
+      // `|| 'TBA'` (card #1060).
+      const rawVenue = typeof data.location === 'object' ? data.location.name : data.location;
+      const venue = sanitizeVenueForWrite(rawVenue);
+      if (!venue) {
+        if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${rawVenue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+        continue;
+      }
       const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
       seen.add(titleLower);
@@ -796,8 +828,16 @@ async function fetchShowsFromLondonTheatre() {
         if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
         if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
 
-        const rawVenue = (typeof data.location === 'object' ? data.location.name : data.location) || 'TBA';
-        const venue = rawVenue.replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+        // Same #994-class leak as OLT above: LT's JSON-LD location can be
+        // missing/blank on a malformed entry — guard instead of resurrecting
+        // via `|| 'TBA'` (card #1060).
+        const rawLocation = typeof data.location === 'object' ? data.location.name : data.location;
+        const decodedVenue = rawLocation ? rawLocation.replace(/&apos;/g, "'").replace(/&amp;/g, '&') : rawLocation;
+        const venue = sanitizeVenueForWrite(decodedVenue);
+        if (!venue) {
+          if (verbose) console.log(`  [SKIP] "${title}" — LT venue "${rawLocation || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+          continue;
+        }
         const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
         // Venue-based classification: most are OWE, but reclassify if at a WE venue
@@ -1594,7 +1634,15 @@ async function fetchShowsFromBroadwayOrg() {
 
       const text = container?.textContent || '';
       const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
-      const venue = venueLink?.textContent?.trim() || 'TBA';
+      // Broadway.org's venue link is sometimes absent from the container —
+      // same #994-class leak, guarded instead of resurrected via `|| 'TBA'`
+      // (card #1060). This fallback path only runs when TodayTix returns
+      // nothing, so deferring is the same "polled fresh next run" story.
+      const venue = sanitizeVenueForWrite(venueLink?.textContent?.trim());
+      if (!venue) {
+        if (verbose) console.log(`  [SKIP] "${title}" — Broadway.org has no resolvable venue, deferring to next run (card #1060)`);
+        return;
+      }
 
       // Extract dates from text
       const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);
@@ -1632,7 +1680,13 @@ async function fetchShowsFromBroadwayOrg() {
       }
 
       const venueLink = container?.querySelector('a[href*="/broadway-theatres/"]');
-      const venue = venueLink?.textContent?.trim() || 'TBA';
+      // Same #994-class leak as the h4-heading branch above — guard instead
+      // of `|| 'TBA'` (card #1060).
+      const venue = sanitizeVenueForWrite(venueLink?.textContent?.trim());
+      if (!venue) {
+        if (verbose) console.log(`  [SKIP] "${title}" — Broadway.org has no resolvable venue, deferring to next run (card #1060)`);
+        continue;
+      }
       const text = container?.textContent || '';
 
       const beginsMatch = text.match(/Begins:\s*([A-Z][a-z]+\s+\d{1,2},\s*\d{4})/);

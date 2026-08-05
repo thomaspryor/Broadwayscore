@@ -100,3 +100,33 @@ test('resolveTodayTixVenue accepts real venues in either TodayTix shape', () => 
   assert.equal(resolveTodayTixVenue({ venue: "St. Ann's Warehouse" }), "St. Ann's Warehouse");
   assert.equal(resolveTodayTixVenue({ venue: { name: 'The Public Theater' } }), 'The Public Theater');
 });
+
+// Card #1060: same class as #994, but for the Broadway and West End write
+// sites in discover-new-shows.js — fetchShowsFromTodayTix's Broadway loop
+// and fetchShowsFromTodayTixLondon's WE loop both wrote `show.venue` straight
+// through with `|| 'TBA'`, no guard at all. Both loops now route through
+// this same resolveTodayTixVenue helper (already covered above), so these
+// cases just confirm it behaves identically regardless of which loop calls
+// it — Broadway/WE shows aren't a special case the guard could miss.
+test('resolveTodayTixVenue (Broadway/WE write sites, card #1060) rejects placeholder venues', () => {
+  assert.equal(resolveTodayTixVenue({ venue: 'TBA' }), null);
+  assert.equal(resolveTodayTixVenue({ venue: { name: 'TBA' } }), null);
+  assert.equal(resolveTodayTixVenue({ venue: 'Midtown W' }), null);
+});
+
+test('resolveTodayTixVenue (Broadway/WE write sites, card #1060) accepts real Broadway/WE houses', () => {
+  assert.equal(resolveTodayTixVenue({ venue: 'Hudson Theatre' }), 'Hudson Theatre');
+  assert.equal(resolveTodayTixVenue({ venue: { name: 'Trafalgar Theatre' } }), 'Trafalgar Theatre');
+});
+
+// The OLT/LT JSON-LD scrapers and the Broadway.org HTML fallback (card #1060)
+// don't go through resolveTodayTixVenue (they're not TodayTix-shaped), but
+// they all route their raw scraped venue through sanitizeVenueForWrite
+// directly — already exercised above (line 61-81). These cases confirm the
+// specific values those sites can produce (a bare JSON-LD location object's
+// `.name`, or a missing `<a>` link that .textContent?.trim()s to '') fail
+// closed the same way.
+test('sanitizeVenueForWrite (OLT/LT/Broadway.org write sites, card #1060) rejects blank/placeholder scrape results', () => {
+  assert.equal(sanitizeVenueForWrite(undefined), null); // no venueLink found on the page
+  assert.equal(sanitizeVenueForWrite('TBA'), null); // JSON-LD location missing, old code did `|| 'TBA'`
+});
