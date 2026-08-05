@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-05T03:04:12.635Z",
+  "updatedAt": "2026-08-05T03:36:30.952Z",
   "processed": 23,
-  "failed": 140,
-  "successRate": "14.1%",
+  "failed": 167,
+  "successRate": "12.1%",
   "tierBreakdown": {
     "playwright": 15,
     "amp": 0,
@@ -10,7 +10,7 @@
     "directCookies": 2,
     "scrapingbee": 0,
     "brightdata": 4,
-    "archiveToday": 25,
+    "archiveToday": 29,
     "archive": 3
   },
   "browserbaseSessions": 2,
@@ -82,6 +82,28 @@
       "event": "bb-session",
       "session": "7ffe9bbd",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T03:31:11.685Z",
+      "event": "bb-session",
+      "session": "43c7f437",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T03:31:12.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T03:31:28.799Z",
+      "event": "bb-session",
+      "session": "bef21c8b",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T03:31:29.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
