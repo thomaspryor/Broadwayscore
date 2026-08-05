@@ -674,6 +674,36 @@ function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
   ) || null;
 }
 
+/**
+ * True if `candidateTitle` and `existingTitle` should be treated as the same
+ * show once subtitles are stripped (e.g. "Ectoplasm" vs "Ectoplasm: Spit and
+ * Vigor" — the 2026-08-04 Deploy-to-Vercel-Failed incident, task #1011).
+ * False if they're likely two distinct works sharing a base title (both
+ * carry a subtitle marker AND their full titles differ — the Angels in
+ * America: Millennium Approaches / Perestroika shape). Mirrors the carve-out
+ * checkForDuplicate's Check 5 applies right after its own normalized-title
+ * match, so a caller that already has a (candidate, existing) pair doesn't
+ * have to re-derive it.
+ *
+ * Caller must already have narrowed the comparison to same-venue candidates
+ * (or otherwise be certain both titles could plausibly be the same show) —
+ * this function only judges titles, not venue.
+ *
+ * Shared by scripts/promote-ob-venue-candidates.js and
+ * scripts/promote-ob-historical.js, which each hand-rolled this logic
+ * independently before extraction (2026-08-05) — see scripts/test-deduplication.js
+ * for the regression coverage that would have caught both prior bugs.
+ */
+function isSubtitleVariantOf(candidateTitle, existingTitle) {
+  const cStripped = normalizeTitle(candidateTitle);
+  const eStripped = normalizeTitle(existingTitle);
+  if (cStripped.length < 3 || cStripped !== eStripped) return false;
+  const hasSubtitleMarker = (t) => /[:\-–—[]/.test(t);
+  const bothHaveSubtitles = hasSubtitleMarker(candidateTitle) && hasSubtitleMarker(existingTitle);
+  const fullTitlesDiffer = candidateTitle.toLowerCase().trim() !== existingTitle.toLowerCase().trim();
+  return !(bothHaveSubtitles && fullTitlesDiffer);
+}
+
 module.exports = {
   slugify,
   normalizeTitle,
@@ -687,5 +717,6 @@ module.exports = {
   isSlugContainmentDuplicate,
   findSameTitleTwinIfNoOpeningDate,
   isLongClosedTwin,
+  isSubtitleVariantOf,
   KNOWN_DUPLICATES
 };

@@ -12,6 +12,7 @@
 const {
   normalizeTitle,
   checkForDuplicate,
+  isSubtitleVariantOf,
 } = require('./lib/deduplication');
 
 const tests = [];
@@ -527,6 +528,88 @@ test('Closed twin with no dates at all → still a twin (conservative)', () => {
   };
   const twin = findSameTitleTwinIfNoOpeningDate(candidate, [undatable]);
   assertEqual(twin?.id, undatable.id, 'undatable closed show → conservative, still twin');
+});
+
+// ---------- regression: isSubtitleVariantOf (2026-08-04/05 incident) ----------
+//
+// promote-ob-venue-candidates.js and promote-ob-historical.js each maintained
+// their own duplicate check using title-match.js's normalizeTitle, which does
+// NOT strip colon/dash subtitles. Same-venue subtitle variants ("Ectoplasm"
+// vs "Ectoplasm: Spit and Vigor") slipped through both, shipped as duplicate
+// shows.json entries, and blocked a Vercel deploy (task #1011). The fix
+// (isSubtitleVariantOf, shared by both scripts as of 2026-08-05) strips
+// subtitles the same way checkForDuplicate's Check 5 does, with the same
+// carve-out for two distinct works that happen to share a base title.
+
+test('isSubtitleVariantOf: real incident pair — Ectoplasm', () => {
+  assertEqual(
+    isSubtitleVariantOf('Ectoplasm', 'Ectoplasm: Spit and Vigor'),
+    true,
+    'Ectoplasm vs Ectoplasm: Spit and Vigor → variant (must collapse)'
+  );
+});
+
+test('isSubtitleVariantOf: real incident pair — Bone Wars', () => {
+  assertEqual(
+    isSubtitleVariantOf('Bone Wars', 'Bone Wars: A New Musical'),
+    true,
+    'Bone Wars vs Bone Wars: A New Musical → variant (must collapse)'
+  );
+});
+
+test('isSubtitleVariantOf: is symmetric (order of arguments does not matter)', () => {
+  assertEqual(
+    isSubtitleVariantOf('Ectoplasm: Spit and Vigor', 'Ectoplasm'),
+    true,
+    'reversed argument order still collapses'
+  );
+});
+
+test('isSubtitleVariantOf: carve-out — both subtitled, different works (Angels in America)', () => {
+  assertEqual(
+    isSubtitleVariantOf('Angels in America: Millennium Approaches', 'Angels in America: Perestroika'),
+    false,
+    'both sides carry a subtitle and differ → must NOT collapse (distinct works)'
+  );
+});
+
+test('isSubtitleVariantOf: carve-out — both subtitled, different works (Coast of Utopia)', () => {
+  assertEqual(
+    isSubtitleVariantOf('The Coast of Utopia: Voyage', 'The Coast of Utopia: Shipwreck'),
+    false,
+    'both sides carry a subtitle and differ → must NOT collapse (distinct works)'
+  );
+});
+
+test('isSubtitleVariantOf: identical titles collapse', () => {
+  assertEqual(
+    isSubtitleVariantOf('Music City', 'Music City'),
+    true,
+    'identical titles → variant'
+  );
+});
+
+test('isSubtitleVariantOf: unrelated titles never collapse', () => {
+  assertEqual(
+    isSubtitleVariantOf('Ectoplasm', 'Bone Wars'),
+    false,
+    'unrelated titles → not a variant'
+  );
+});
+
+test('isSubtitleVariantOf: KNOWN LIMITATION — one side subtitled, one bare, same base title', () => {
+  // Documents an accepted, pre-existing gap (also present in checkForDuplicate's
+  // own Check 5, which only carves out when BOTH sides have a subtitle marker):
+  // when only one side has a subtitle, the carve-out does not fire and the pair
+  // collapses. This is the "Hamlet" vs "Hamlet: Hail to the Thief" shape. Callers
+  // mitigate by scoping comparisons to the same venue before calling this
+  // function — a real false positive additionally requires an identical base
+  // title AND the same venue for two truly distinct productions.
+  assertEqual(
+    isSubtitleVariantOf('Hamlet', 'Hamlet: Hail to the Thief'),
+    true,
+    'accepted limitation: collapses when only one side has a subtitle'
+  );
 });
 
 // ---------- run ----------

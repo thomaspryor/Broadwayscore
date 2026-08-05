@@ -221,18 +221,22 @@ async function main() {
   // colon/dash subtitles as tokens, so jaccard undercounts a base-title-only
   // listing against a subtitled one ("Ectoplasm" vs "Ectoplasm: Spit and
   // Vigor" → 0.33; "Bone Wars" vs "Bone Wars: A New Musical" → 0.67 — both
-  // below the 0.80 gate). deduplication.js's normalizeTitle strips everything
-  // after a colon/dash/paren, which is exactly the collapse this needs.
-  // These two pairs shipped as duplicates to shows.json and blocked a
-  // Vercel deploy until merged by hand (task #1011, 2026-08-04) — this check
-  // is the fix for the class, not just those two shows.
-  const { normalizeTitle: subtitleStrippedTitle } = require('./lib/deduplication');
+  // below the 0.80 gate). isSubtitleVariantOf (deduplication.js) strips
+  // everything after a colon/dash/paren and applies the both-subtitled-but-
+  // differ carve-out, which is exactly the collapse this needs. These two
+  // pairs shipped as duplicates to shows.json and blocked a Vercel deploy
+  // until merged by hand (task #1011, 2026-08-04) — this check is the fix
+  // for the class, not just those two shows. Deriving straight from `.title`
+  // (not a cached normalized copy) means there's no separate field to keep in
+  // sync at the feedback-loop push below — the bug that shipped in the first
+  // cut of this fix (26cb6d34ceb) structurally can't recur.
+  const { isSubtitleVariantOf } = require('./lib/deduplication');
   // 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
   // unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
   // keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
   // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
   const DEDUP_JACCARD_THRESHOLD = 0.80;
-  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized, subtitleStripped }]
+  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
   // Include 'regional' alongside 'off-broadway': regional candidates are added
   // to shows.json manually (runbook), and without them in this index a staged
   // regional entry never matches → never drops → re-hits validation weekly
@@ -244,7 +248,6 @@ async function main() {
       id: s.id, title: s.title,
       tokens: titleTokens(s.title),
       normalized: normalizeTitle(s.title),
-      subtitleStripped: subtitleStrippedTitle(s.title),
     });
   }
 
@@ -256,24 +259,10 @@ async function main() {
     if (cands.length === 0) return null;
     const cNorm = normalizeTitle(c.title);
     const cTokens = titleTokens(c.title);
-    const cSubtitleStripped = subtitleStrippedTitle(c.title);
-    // Same carve-out deduplication.js's checkForDuplicate applies right after this
-    // exact normalized-equality check: if BOTH titles carry a subtitle marker but
-    // their full titles differ, don't collapse — that's the Angels in
-    // America: Millennium Approaches / Perestroika shape (distinct works sharing a
-    // base title), not a listing-source variant of the same show. Porting the
-    // strip without this guard would silently and permanently drop a real second
-    // production at the same venue (no retry path — matched candidates never
-    // re-enter staging).
-    const hasSubtitleMarker = (t) => /[:\-–—[]/.test(t);
     for (const e of cands) {
       if (e.normalized === cNorm) return { match: e, reason: 'normalized-equal' };
-      if (cSubtitleStripped.length >= 3 && cSubtitleStripped === e.subtitleStripped) {
-        const bothHaveSubtitles = hasSubtitleMarker(c.title) && hasSubtitleMarker(e.title);
-        const fullTitlesDiffer = c.title.toLowerCase().trim() !== e.title.toLowerCase().trim();
-        if (!(bothHaveSubtitles && fullTitlesDiffer)) {
-          return { match: e, reason: `subtitle-stripped-equal: "${cSubtitleStripped}"` };
-        }
+      if (isSubtitleVariantOf(c.title, e.title)) {
+        return { match: e, reason: `subtitle-variant-of: "${e.title}"` };
       }
       if (cTokens.size > 0 && e.tokens.size > 0) {
         const sim = jaccard(cTokens, e.tokens);
@@ -384,7 +373,7 @@ async function main() {
     // ids — hits findExistingMatch instead of minting a duplicate show.
     for (const vk of new Set([canonicalVenue(c.venue), canonicalVenue(entry.venue)])) {
       if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
-      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title), subtitleStripped: subtitleStrippedTitle(entry.title) });
+      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title) });
     }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
   }
