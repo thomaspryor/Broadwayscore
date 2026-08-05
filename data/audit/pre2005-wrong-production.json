@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-04T22:46:20.417Z",
+    "generatedAt": "2026-08-05T00:51:42.016Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 85,
+    "totalFlagged": 89,
     "highConfidence": 5,
-    "mediumConfidence": 80,
+    "mediumConfidence": 84,
     "lowConfidence": 0,
-    "reassignable": 34
+    "reassignable": 36
   },
   "results": [
     {
@@ -913,6 +913,21 @@
       "showId": "mamma-mia-2001",
       "showTitle": "Mamma Mia!",
       "showYear": 2001,
+      "file": "hollywood-reporter--unknown.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "mamma-mia-west-end-2021",
+      "signals": [
+        "year 1999 in text matches revival mamma-mia-west-end-2021"
+      ],
+      "textSnippet": "One of the longest-running shows in Broadway history, Mamma Mia!, will wrap its New York production at the Broadhurst Theatre on Sept. 5 this year, global producer Judy Craymer announced on Thursday.\n"
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "showTitle": "Mamma Mia!",
+      "showYear": 2001,
       "file": "nytimes--anita-gates.json",
       "outlet": "The New York Times",
       "criticName": "Anita Gates",
@@ -923,6 +938,24 @@
         "publishDate 2014 is 13 years after original opening 2001"
       ],
       "textSnippet": "They’re not dancing in the aisles at “Mamma Mia!” anymore. When this jukebox musical, about a wedding weekend on a Greek island, opened at the Winter Garden Theater back in the fall of 2001 (five week"
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "showTitle": "Mamma Mia!",
+      "showYear": 2001,
+      "file": "theatrely--unknown.json",
+      "outlet": "Theatrely",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "mamma-mia-west-end-2021",
+      "signals": [
+        "revival text signals: back on broadway, this production",
+        "year 1999 in text matches revival mamma-mia-west-end-2021",
+        "year 2026 in text matches revival mamma-mia-2025",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The company of Mamma Mia! | Photo: Joan Marcus\n\nWhen no less than 40 pink boas are lined up outside the Winter Garden, it can really only mean one thing. Mamma Mia! is officially back on Broadway, and"
     },
     {
       "showId": "noises-off-2001",
@@ -1062,6 +1095,38 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "showTitle": "Pacific Overtures",
+      "showYear": 1976,
+      "file": "nytg--unknown.json",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Review by Michael Hillyer May 5, 2017\n\nPacific Overtures, originally mounted on Broadway in 1976 by Harold Prince as a full-blown Kabuki spectacle, opened then to mixed critical reception in the press"
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "showTitle": "Pacific Overtures",
+      "showYear": 1976,
+      "file": "plays-to-see--unknown.json",
+      "outlet": "Plays To See",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "‘Pacific Overtures’ was written in 1976, during Sondheim’s golden years, just after ‘A Little Night Music’ and before ‘Sweeney Todd’. However it could not be more different from its predecessor or suc"
     },
     {
       "showId": "democracy-2004",

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-04T22:49:39.394Z",
+  "timestamp": "2026-08-05T00:54:49.360Z",
   "stats": {
-    "totalReviews": 41585,
-    "alreadyFlagged": 18097,
+    "totalReviews": 41589,
+    "alreadyFlagged": 18098,
     "dateGuardCatches": 115,
     "directorMismatch": 944,
-    "tvFilmSignals": 1151,
+    "tvFilmSignals": 1152,
     "londonSignals": 813,
-    "offBroadwaySignals": 480,
+    "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3504
+    "noPublishDate": 3502
   },
   "findings": [
     {
@@ -6902,6 +6902,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "dog-man-the-musical-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": null,
+      "publishDate": "2026-08-04",
+      "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -39400,6 +39414,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"mitzi newhouse\""
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/what-do-critics-think-of-john-doyles-pacific-overtures-revival",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
