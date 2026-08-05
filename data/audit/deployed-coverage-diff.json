@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-08-05T11:23:25.613Z",
+  "generatedAt": "2026-08-05T13:39:01.308Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 148,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 147,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "dinosaur-world-live-off-west-end-2026",
+      "title": "Dinosaur World Live",
+      "openingDate": "2026-08-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: inyougo"
+        }
+      ],
+      "missingFromProd": [
+        "inyougo"
+      ],
+      "localCount": 5,
+      "deployedCount": 4
+    }
+  ]
 }
