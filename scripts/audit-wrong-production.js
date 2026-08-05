@@ -281,12 +281,11 @@ for (const showDir of showDirs) {
   const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.json'));
 
   for (const file of files) {
-    stats.totalReviews++;
-
     let data;
     try {
       data = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
     } catch (e) { continue; }
+    stats.totalReviews++;
 
     // Skip already flagged
     if (data.wrongProduction || data.wrongShow) {
