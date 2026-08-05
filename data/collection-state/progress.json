@@ -1,11 +1,7 @@
 {
   "processed": [
     "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-    "disruption-off-broadway-2026/nytimes--tim-teeman.json",
-    "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json",
-    "disruption-off-broadway-2026/broadwayworld--nicole-rosky.json",
-    "disruption-off-broadway-2026/off-off-online--stanford-friedman.json",
-    "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
+    "disruption-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
@@ -15,92 +11,34 @@
     "now-you-see-me-live-west-end-2026/thestage--unknown.json",
     "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
     "disruption-off-broadway-2026/timeout-london--unknown.json",
-    "disruption-off-broadway-2026/wsj--unknown.json",
-    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
-    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
-    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
-    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
-    "disruption-off-broadway-2026/playbill--unknown.json",
-    "disruption-off-broadway-2026/standard--nick-curtis.json",
-    "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
-    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
-    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
-    "disruption-off-broadway-2026/whatsonstage--alun-hood.json"
+    "disruption-off-broadway-2026/wsj--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-      "disruption-off-broadway-2026/off-off-online--stanford-friedman.json",
-      "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json"
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "disruption-off-broadway-2026/nytimes--tim-teeman.json",
-      "disruption-off-broadway-2026/broadwayworld--cindy-marcolina.json",
-      "disruption-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "scrapingbee": [
+      "disruption-off-broadway-2026/nytimes--tim-teeman.json"
     ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-08-05T18:08:35.977Z",
-  "lastProcessed": "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+  "startTime": "2026-08-05T19:10:34.470Z",
+  "lastProcessed": "disruption-off-broadway-2026/wsj--unknown.json",
   "log": [
     {
-      "t": "2026-08-05T18:08:46.105Z",
+      "t": "2026-08-05T19:12:20.885Z",
       "event": "bb-session",
-      "session": "455e08a1",
-      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
-    },
-    {
-      "t": "2026-08-05T18:08:46.797Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-05T18:09:02.633Z",
-      "event": "bb-session",
-      "session": "abbe1437",
-      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
-    },
-    {
-      "t": "2026-08-05T18:09:03.289Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-05T18:12:38.108Z",
-      "event": "bb-session",
-      "session": "75b0be6e",
-      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
-    },
-    {
-      "t": "2026-08-05T18:12:38.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-05T18:12:54.637Z",
-      "event": "bb-session",
-      "session": "b9b13031",
-      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
-    },
-    {
-      "t": "2026-08-05T18:12:55.261Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-08-05T18:13:55.016Z",
-      "event": "bb-session",
-      "session": "4579d7ad",
+      "session": "807f92fb",
       "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-08-05T18:13:55.697Z",
+      "t": "2026-08-05T19:12:21.682Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
