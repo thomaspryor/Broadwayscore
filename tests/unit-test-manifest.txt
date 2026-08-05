@@ -128,6 +128,7 @@ tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
+tests/unit/content-request-routing.test.mjs
 tests/unit/core-data-public-stage-exclusions.test.mjs
 tests/unit/core-data-sync-decision.test.mjs
 tests/unit/corpus-determinism.test.mjs
@@ -164,10 +165,9 @@ tests/unit/exclusion-logger.test.mjs
 tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
-tests/unit/content-request-routing.test.mjs
-tests/unit/feedback-run-report.test.mjs
-tests/unit/feedback-request-ledger.test.mjs
 tests/unit/feedback-dedup.test.mjs
+tests/unit/feedback-request-ledger.test.mjs
+tests/unit/feedback-run-report.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
