@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { detectCvFlagContradiction } = require('./lib/flag-contradiction');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const USAGE = `audit-cv-flag-contradiction.js — flag-vs-CV contradiction detector (#651)
 
@@ -57,6 +58,22 @@ function parseArgs(argv) {
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
+
+  // Corpus presence, checked independent of the date window below (#1063
+  // ship-check finding): gating on the window-filtered per-file `scanned`
+  // count conflated "corpus missing" with "0 shows opened in this window" —
+  // a real, if rare, false-FAIL on a quiet window. A raw top-level listing
+  // of REVIEW_TEXTS_DIR answers "is the checkout here at all" without
+  // depending on which shows happen to fall inside --window.
+  let corpusEntries = 0;
+  try { corpusEntries = fs.readdirSync(REVIEW_TEXTS_DIR).length; } catch { corpusEntries = 0; }
+  try {
+    assertCorpusScanned(corpusEntries, { gate: args.gate });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\nFAIL: ${e.message}`);
+    process.exit(1);
+  }
 
   const showsFile = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
   const shows = Array.isArray(showsFile) ? showsFile : showsFile.shows;

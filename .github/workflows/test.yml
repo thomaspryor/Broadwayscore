@@ -1705,6 +1705,14 @@ on:
       # auditor or its unit test triggers CI.
       - 'scripts/audit-self-contradictory-clears.js'
       - 'tests/unit/self-contradictory-clear.test.mjs'
+      # Vacuous-gate class fix (#1063) — shared corpus-scan guard used by all 4
+      # audits above plus these two, which aren't covered by any other
+      # path-listed entry or the scripts/lib/** glob (there isn't one) or
+      # tests/** (corpus-scan-guard.test.mjs already is; these script files
+      # are not). Path-listed so a solo edit triggers CI.
+      - 'scripts/lib/corpus-scan-guard.js'
+      - 'scripts/audit-cross-outlet-attributions.js'
+      - 'scripts/audit-wrong-production.js'
       # S3-T4: auto-clear shadow mode (would-clear decision + 48h/≥3-candidate
       # evidence gate) and its report CLI. Colocated *.test.mjs runs via the
       # lib-test glob; path-listed so a solo edit triggers CI.

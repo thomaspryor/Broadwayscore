@@ -17,8 +17,10 @@ const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const FIX_MODE = process.argv.includes('--fix');
+const GATE_MODE = process.argv.includes('--gate');
 const SHOW_FILTER = process.argv.find(a => a.startsWith('--show='))?.split('=')[1];
 
 // Load shows data
@@ -216,11 +218,17 @@ const LONDON_VENUES = [
   'dorfman', 'lyttelton',
 ];
 
-// Review-text directory
+// Review-text directory. A totally-missing checkout (vs. present-but-empty)
+// must reach the corpus guard below with the same scanned===0 signal as
+// every sibling audit — not crash with a raw ENOENT stack trace, which is a
+// different, uncontrolled failure mode than the intended fail-loud message.
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
-const showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
-  fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
-);
+let showDirs = [];
+try {
+  showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
+    fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
+  );
+} catch { /* missing checkout — showDirs stays [], corpus guard catches it */ }
 
 const findings = [];
 const stats = {
@@ -533,6 +541,18 @@ console.log(`  London/West End signals: ${stats.londonSignals}`);
 console.log(`  Off-Broadway signals: ${stats.offBroadwaySignals}`);
 console.log(`  Year mismatches: ${stats.yearMismatch}`);
 console.log(`\nTotal suspected wrong-production reviews: ${findings.length}`);
+
+// FAIL LOUD on an empty corpus (task #1063) — a missing/empty data/review-texts
+// checkout scans 0 review files and would otherwise finish with an empty
+// findings list, a vacuous clean report. Opt-in via --gate so the default
+// report-only invocation (rebuild-reviews.yml) is unaffected.
+try {
+  assertCorpusScanned(stats.totalReviews, { gate: GATE_MODE });
+} catch (e) {
+  if (!(e instanceof CorpusNotScannedError)) throw e;
+  console.error(`\nFAIL: ${e.message}`);
+  process.exit(1);
+}
 
 // Group by show for readability
 const byShow = {};
