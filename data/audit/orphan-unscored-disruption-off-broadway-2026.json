@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "disruption-off-broadway-2026",
   "openingDate": "2026-08-02",
-  "detectedAt": "2026-08-05T18:30:08.719Z",
+  "detectedAt": "2026-08-05T18:36:16.256Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,20 +11,6 @@
       "criticName": "Stanford Friedman",
       "url": "https://www.offoffonline.com/offoffonline/tag/Disruption",
       "fullTextLen": 633,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "one-minute-critic--lindsay-b-davis.json",
-      "outletId": "one-minute-critic",
-      "criticName": "Lindsay B. Davis",
-      "url": "https://1minutecritic.com/disruption-off-broadway-review/",
-      "fullTextLen": 2505,
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -48,6 +34,20 @@
       "eligibilityReason": null
     },
     {
+      "file": "tickpick--tickpick.json",
+      "outletId": "tickpick",
+      "criticName": "TickPick",
+      "url": "https://www.tickpick.com/buy-disruption-tickets-the-romulus-linney-courtyard-theatre-at-signature-theatre-8-19-26-7pm/8172172/",
+      "fullTextLen": 1833,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "wsj--unknown.json",
       "outletId": "wsj",
       "criticName": "Unknown",
@@ -64,6 +64,6 @@
   ],
   "orphanCount": 4,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-05T18:30:08.719Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
