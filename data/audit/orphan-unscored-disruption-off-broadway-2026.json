@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "disruption-off-broadway-2026",
   "openingDate": "2026-08-02",
-  "detectedAt": "2026-08-05T10:39:27.156Z",
+  "detectedAt": "2026-08-05T11:11:13.778Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "nytimes--tim-teeman.json",
+      "outletId": "nytimes",
+      "criticName": "Tim Teeman",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washington.html",
+      "fullTextLen": 2402,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "off-off-online--stanford-friedman.json",
       "outletId": "off-off-online",
@@ -20,7 +34,7 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
