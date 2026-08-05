@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-05T13:23:33.368Z",
+  "updatedAt": "2026-08-05T13:33:14.430Z",
   "processed": 61,
-  "failed": 261,
-  "successRate": "18.9%",
+  "failed": 271,
+  "successRate": "18.4%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 11,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-05T12:08:13.978Z",
@@ -67,6 +67,39 @@
     },
     {
       "t": "2026-08-05T12:12:16.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-05T13:31:11.843Z",
+      "event": "bb-session",
+      "session": "08c2561a",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T13:31:12.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T13:31:27.769Z",
+      "event": "bb-session",
+      "session": "b047abc3",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T13:31:28.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T13:32:13.090Z",
+      "event": "bb-session",
+      "session": "66da53db",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-05T13:32:13.445Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

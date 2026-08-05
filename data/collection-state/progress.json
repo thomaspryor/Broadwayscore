@@ -323,7 +323,17 @@
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json"
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -393,6 +403,7 @@
     ],
     "archiveToday": [
       "data/review-texts/now-you-see-me-live-west-end-2026/thestage--unknown.json",
+      "data/review-texts/disruption-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/disruption-off-broadway-2026/wsj--unknown.json"
     ],
     "archive": [
@@ -405,7 +416,7 @@
     ]
   },
   "startTime": "2026-08-05T12:07:59.257Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+  "lastProcessed": "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
   "log": [
     {
       "t": "2026-08-05T12:08:13.978Z",
@@ -459,6 +470,39 @@
     },
     {
       "t": "2026-08-05T12:12:16.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-05T13:31:11.843Z",
+      "event": "bb-session",
+      "session": "08c2561a",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T13:31:12.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T13:31:27.769Z",
+      "event": "bb-session",
+      "session": "b047abc3",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T13:31:28.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T13:32:13.090Z",
+      "event": "bb-session",
+      "session": "66da53db",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-05T13:32:13.445Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
