@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: browserbase $5.5 > $4 (55 sessions); brightdata $5.67 > $2.5 (1205 serp + 2574 unlocker reqs); scrapingdog 73437 credits > 45000",
+    "description": "Day 2026-08-04. 2026-08-04 · Browserbase: $5.5 (55 sessions) · 2026-08-04 · Bright Data: $5.67 (1205 serp / 2574 unlocker) · ScrapingBee: 0 credits (1000012 this cycle) · ScrapingDog: 73437 credits (888990 this cycle) · Browserbase attribution: 9% attributed — top: collect-review-texts.js 2, scrape-stagedoor-critics.js 1, scrape-thestage-roundups.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 39% attributed — top: opening-night-poller.js 854, audit-show-review-gap.js 350, fetch-show-images-auto.js 203, ingest-review-from-url.js 67, enrich-stubhub-prices.js 9 · ScrapingDog attribution: 7% attributed — top: audit-show-review-gap.js 1935, opening-night-poller.js 1373, collect-review-texts.js 575, fetch-show-images-auto.js 515, ingest-review-from-url.js 291. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-05T07:41:49.358Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 9.5% of shows changed coverage state",
+    "description": "review-gap blast radius 9.5% (2/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-05T11:23:09.641Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31024363008",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-05T16:43:04.760Z"
+  }
+]
