@@ -280,6 +280,17 @@ const SELF_CLEAR_PAIRS = [
     breadcrumb: 'crossOutletVerified',
     task: '#1023',
   },
+  {
+    // The wrongProduction pair's exact twin: rebuild-all-reviews.js (~2607/2619)
+    // and reverify-promoted-reviews.js delete wrongShow and stamp this, so flag
+    // + stamp together is the same self-contradiction. Found by the /what-else
+    // pattern lens after the first three shipped — 25 files, incl. Times UK,
+    // The Stage and Independent. Written ONLY as a string and read by nothing,
+    // which is why it survived the original sweep.
+    flag: 'wrongShow',
+    breadcrumb: 'wrongShowAutoCleared',
+    task: '#1020',
+  },
 ];
 
 /**
