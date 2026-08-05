@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T13:38:48.951Z",
+  "generatedAt": "2026-08-05T16:10:00.710Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,26 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 312.4393563888889,
+      "fileAgeHours": 314.9733772222222,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 271.7563930555556
-    },
-    {
-      "showId": "disruption-off-broadway-2026",
-      "title": "Disruption",
-      "openingDate": "2026-08-02",
-      "file": "nytimes--tim-teeman.json",
-      "outletId": "nytimes",
-      "tier": 1,
-      "type": "rejected-unscoreable",
-      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washington.html",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washington.html --outlet=nytimes --critic=\"Tim Teeman\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-05T12:12:08.419Z",
-      "fileAgeHours": 1.4318077777777778,
-      "gapSeenAt": "2026-08-05T13:38:48.951Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 274.27632611111113
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -46,17 +29,13 @@
       "tier": 1,
       "type": "empty-body",
       "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  ScrapingBee credits low: -12 remaining (-0.0"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 2.8966430555555553,
+      "fileAgeHours": 5.416574444444445,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 2.2585769444444446
+      "nonTerminalAgeHours": 4.77851
     }
   ],
   "contradictions": []
