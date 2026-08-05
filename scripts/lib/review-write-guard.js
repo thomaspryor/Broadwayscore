@@ -329,9 +329,22 @@ const _wrongArticleCleared = (d) =>
   d.wrongArticleManualClear === true ||
   d.humanReviewedWrongArticle === false;
 
+// Retraction of a stale CLEAR breadcrumb (#1020/#1022/#1023). The inverse
+// direction of everything else in this table: here the deleted field IS a clear
+// breadcrumb, removed because it contradicted an exclusion flag that is still
+// live (audit-self-contradictory-clears.js --fix). Without this exception the
+// restore resurrects the very breadcrumb the sweep removed and --fix is a
+// permanent no-op — the exact shape of the stale-duplicateOf incident above.
+// Keyed on a durable stamp so only a deliberate retraction qualifies; an
+// ordinary run that never wrote the stamp still gets full data-loss protection.
+const _clearBreadcrumbRetracted = (d) => !_isEmptyValue(d.clearBreadcrumbRetracted);
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
+  wrongProductionAutoCleared: _clearBreadcrumbRetracted,
+  wrongProductionAutoClearedAt: _clearBreadcrumbRetracted,
+  crossOutletVerified: _clearBreadcrumbRetracted,
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,

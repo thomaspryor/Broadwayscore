@@ -206,13 +206,154 @@ function detectCvFlagContradiction(file) {
   return { contradicted: true, flag, cvReasoning: String(reasoning), wordCount };
 }
 
+/**
+ * SELF-CONTRADICTORY CLEAR (tasks #1020 / #1022 / #1023).
+ *
+ * The two detectors above adjudicate between two DIFFERENT verdicts (a flag vs a
+ * contentVerification pass) and therefore need care about which is authoritative
+ * and which landed first. This third detector needs neither: it fires when a
+ * single file simultaneously asserts an exclusion flag AND its own retraction
+ * breadcrumb — "this review is wrong" and "the wrong-ness was cleared" in the
+ * same record. That state is invalid on its face regardless of which verdict is
+ * correct, so it is a structural invariant, not a judgement call.
+ *
+ * Observed instances (corpus scan 2026-08-05):
+ *   - wrongProduction:true + wrongProductionAutoCleared          — 738 files (#1020)
+ *   - wrongShow:true + contentVerificationPromoted + a CV block
+ *     that now affirms the review                                —  28 files (#1022)
+ *   - wrongAttribution:true + crossOutletVerified:true           —   3 files (#1023)
+ *
+ * All three arise the same way: a clear ran, then a later pass re-applied the
+ * flag WITHOUT retracting the clear breadcrumb (or vice versa). The forward fix
+ * for the wrongProduction pair already exists — every re-flag writer now calls
+ * review-write-guard.invalidateWrongProductionAutoClear() — but nothing detects
+ * the state, so the pre-fix backlog is invisible and a future pair can regress
+ * silently. Adding a pair here is one table row.
+ *
+ * NOT a judgement about which side is stale. Callers decide: the auditor
+ * escalates, --fix retracts the breadcrumb (the flag is the live verdict, since
+ * the flag setters are the ones that run last).
+ */
+
+/**
+ * Canonical truthiness for a clear breadcrumb. The wrongProduction auto-clear
+ * stamp is written as a STRING by every rebuild path
+ * ("rebuild: allowEarlyDate bypasses wrongProduction") but as a BOOLEAN by older
+ * writers — 283 string / 445 boolean in corpus. Readers that test `=== true`
+ * silently miss the string majority (that was the live bug in
+ * scripts/lib/manual-review-fields.js). Every reader must use this.
+ *
+ * @param {*} v - breadcrumb field value
+ * @returns {boolean} true when the breadcrumb is present in any written shape
+ */
+function hasClearBreadcrumbValue(v) {
+  if (v === true) return true;
+  if (typeof v === 'string') return v.trim() !== '';
+  return false;
+}
+
+/**
+ * (flag, breadcrumb) pairs that must never both be asserted on one record.
+ * `extra` is an optional additional condition — used where the breadcrumb alone
+ * is not self-refuting and needs corroboration from the record.
+ */
+const SELF_CLEAR_PAIRS = [
+  {
+    flag: 'wrongProduction',
+    breadcrumb: 'wrongProductionAutoCleared',
+    task: '#1020',
+  },
+  {
+    flag: 'wrongShow',
+    breadcrumb: 'contentVerificationPromoted',
+    task: '#1022',
+    // The promotion stamp only contradicts the flag when the CV it was promoted
+    // FROM now affirms the review. Without this the stamp is just provenance.
+    extra: (f) => {
+      const cv = f.contentVerification;
+      return !!cv && cv.isValid === true
+        && cv.wrongArticle === false && cv.wrongProduction === false;
+    },
+  },
+  {
+    flag: 'wrongAttribution',
+    breadcrumb: 'crossOutletVerified',
+    task: '#1023',
+  },
+];
+
+/**
+ * Detect a record asserting an exclusion flag alongside its own retraction.
+ * Human-decided files are exempt: a human ruling legitimately overrides a
+ * machine breadcrumb, and re-litigating it is noise.
+ *
+ * @param {object} file - parsed review-text JSON
+ * @returns {null | {selfContradictory: true, flag: string, breadcrumb: string,
+ *                   breadcrumbValue: *, task: string}}
+ */
+function detectSelfContradictoryClear(file) {
+  if (!file || typeof file !== 'object') return null;
+  if (isHumanDecided(file)) return null;
+
+  for (const pair of SELF_CLEAR_PAIRS) {
+    if (file[pair.flag] !== true) continue;
+    if (!hasClearBreadcrumbValue(file[pair.breadcrumb])) continue;
+    if (pair.extra && !pair.extra(file)) continue;
+    return {
+      selfContradictory: true,
+      flag: pair.flag,
+      breadcrumb: pair.breadcrumb,
+      breadcrumbValue: file[pair.breadcrumb],
+      task: pair.task,
+    };
+  }
+  return null;
+}
+
+/**
+ * Resolve a self-contradiction by retracting the stale CLEAR breadcrumb, leaving
+ * the flag (and its own provenance) intact. The flag wins because the writers
+ * that set exclusion flags are the ones that ran last in every observed case —
+ * the breadcrumb is the leftover. Mutates in place; returns the fields removed.
+ *
+ * @param {object} file - parsed review-text JSON (mutated)
+ * @param {object} contradiction - the detectSelfContradictoryClear() result
+ * @returns {string[]} field names deleted
+ */
+function retractStaleClearBreadcrumb(file, contradiction, now = new Date()) {
+  if (!file || !contradiction) return [];
+  const removed = [];
+  for (const field of [contradiction.breadcrumb, `${contradiction.breadcrumb}At`]) {
+    if (Object.prototype.hasOwnProperty.call(file, field)) {
+      delete file[field];
+      removed.push(field);
+    }
+  }
+  if (!removed.length) return removed;
+
+  // Durable proof the deletion was deliberate. Several of these breadcrumbs
+  // (wrongProductionAutoCleared, wrongProductionAutoClearedAt,
+  // crossOutletVerified) sit in review-write-guard.js PROTECTED_FIELDS, so the
+  // push-time restore would treat the removal as data loss and resurrect them —
+  // making this a permanent no-op. CLEAR_BREADCRUMBS keys the exception on this
+  // stamp, so it MUST be written whenever a breadcrumb is retracted.
+  file.clearBreadcrumbRetracted =
+    `retracted stale ${contradiction.breadcrumb}: contradicted live ${contradiction.flag} (${contradiction.task})`;
+  file.clearBreadcrumbRetractedAt = now.toISOString().split('T')[0];
+  return removed;
+}
+
 module.exports = {
   detectFlagContradiction,
   detectCvFlagContradiction,
+  detectSelfContradictoryClear,
+  retractStaleClearBreadcrumb,
+  hasClearBreadcrumbValue,
   contradictionFixCommand,
   shouldAlertContradiction,
   isHumanDecided,
   flagTimestamp,
   cvIsNewerThanFlag,
+  SELF_CLEAR_PAIRS,
   CONTRADICTION_REALERT_DAYS,
 };
