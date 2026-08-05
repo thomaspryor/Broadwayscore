@@ -35,6 +35,7 @@ const { normalizeUrl } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -109,6 +110,7 @@ function walkShowDirs(root) {
 function audit() {
   const mismatches = [];
   const showDirs = walkShowDirs(REVIEW_TEXTS_DIR);
+  let scanned = 0;
 
   for (const showDir of showDirs) {
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -123,6 +125,7 @@ function audit() {
     for (const file of files) {
       const data = load(file);
       if (!data) continue;
+      scanned++;
 
       // duplicateTextOf: content-fingerprint dedup. A URL mismatch against the
       // sibling is EXPECTED (same text syndicated at different URLs), so only
@@ -252,7 +255,7 @@ function audit() {
     }
   }
 
-  return mismatches;
+  return { mismatches, scanned };
 }
 
 function fix(mismatches) {
@@ -291,7 +294,15 @@ function fix(mismatches) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const mismatches = audit();
+  const { mismatches, scanned } = audit();
+
+  try {
+    assertCorpusScanned(scanned, { gate: GATE });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\nFAIL: ${e.message}`);
+    process.exit(1);
+  }
 
   if (JSON_OUT) {
     console.log(JSON.stringify({ count: mismatches.length, mismatches }, null, 2));
