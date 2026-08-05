@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T06:09:48.618Z",
-    "completedAt": "2026-08-02T06:13:13.144Z",
-    "totalReviews": 41458,
-    "processed": 20,
-    "skipped": 41288,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 274390,
-      "output": 9551,
-      "total": 689345
-    },
-    "errorDetails": [
-      {
-        "showId": "dead-accounts-2012",
-        "outletId": "northjerseycom",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T06:34:53.138Z",
     "completedAt": "2026-08-02T06:35:03.653Z",
     "totalReviews": 41456,
@@ -551810,6 +551790,26 @@
         "outletId": "melissamaney",
         "error": "input_validation_failed:body_too_short"
       },
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-05T10:47:46.683Z",
+    "completedAt": "2026-08-05T10:47:46.942Z",
+    "totalReviews": 41946,
+    "processed": 0,
+    "skipped": 41945,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
       {
         "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
         "outletId": "london-theatre",
