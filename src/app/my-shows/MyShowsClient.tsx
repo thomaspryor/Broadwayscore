@@ -1647,6 +1647,13 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
   const isFutureDated = !!entry.planned_date && entry.planned_date >= localToday();
+  // Rate stars require a PAST planned_date (the user has actually seen the
+  // show) — not just "not future-dated". Entries with no date at all ("not
+  // yet booked") also satisfy !isFutureDated, so that check alone offered a
+  // star control for shows the user hasn't attended yet (dedupe of
+  // #600/#615/#629/#716). Only reachable via the alphabetical flat-list view;
+  // the booked/unbooked split routes past-dated entries to ToBeRatedCard.
+  const canRate = !!entry.planned_date && !isFutureDated;
   const rateHref = href ? `${href}?rate=1` : null;
   const handleRateStars = (stars: number) => {
     if (rateHref) window.location.href = `${rateHref}&stars=${stars}`;
@@ -1690,7 +1697,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove, onRate }: {
             ?rate=1&stars=N; diary-only shows open the inline editor. The old
             centered-on-hover stars + mobile lone-star "Rate" pill read as
             inconsistent/confusing (owner, 2026-07-19). */}
-        {!isFutureDated && (
+        {canRate && (
         <div
           className="absolute inset-x-0 bottom-0 z-[1] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-within:opacity-100 transition-opacity"
           // Scoped to star clicks — an unconditional preventDefault made the
@@ -1846,6 +1853,9 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
   const isFutureDated = !!entry.planned_date && entry.planned_date >= localToday();
+  // See WatchlistCard's canRate comment — !isFutureDated alone also matches
+  // "no date at all" (not yet booked), which incorrectly showed rate stars.
+  const canRate = !!entry.planned_date && !isFutureDated;
 
   const isClosingSoon = show?.closingDate && (() => {
     const closing = new Date(show.closingDate!);
@@ -1893,11 +1903,12 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
         {/* Rate + Remove row — same tappable 5-star affordance as the grid
             strip and To-Be-Rated rows; the old '☆ Rate' text link was a
             second visual treatment for the identical action (flagged by the
-            UX walkthrough panel, 2026-07-20). HIDDEN for future-dated
-            (Upcoming) entries — rate stars on a show the user hasn't seen
-            yet made no sense (owner, 2026-07-20). */}
+            UX walkthrough panel, 2026-07-20). HIDDEN unless the entry has a
+            PAST planned_date (Upcoming AND not-yet-booked entries hide it —
+            rate stars on a show the user hasn't seen yet made no sense;
+            owner, 2026-07-20; dedupe #600/#615/#629/#716). */}
         <div className="flex items-center gap-2">
-          {!isFutureDated && (
+          {canRate && (
           <span className="relative z-[1] star-compact">
             <StarRating
               rating={null}
