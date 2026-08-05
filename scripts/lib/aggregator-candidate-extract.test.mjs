@@ -296,3 +296,41 @@ test('collisionSlugSet: title-derived and suffix-stripped slugs both collide (da
   assert.equal(slugCollidesWith('Iceboy!', set), true, 'suffix-stripped slug must collide');
   assert.equal(slugCollidesWith('Some Unrelated Show', set), false);
 });
+
+// --- parenthesised subtitles vs headline venue clauses (2026-08-05) ---------
+// normalizeTitle() DROPS parentheticals (right for "(59e59)" venue noise), but
+// some titles carry a parenthesised subtitle that is genuinely part of the
+// name, and BWW's slug spells it out while its body keeps the brackets and
+// appends " at <venue>". That normalized to "two strangers carry a cake across
+// new york" vs "two strangers at a r t" — 30 edits apart — so the CORRECT
+// roundup was rejected and the show could not be auto-added (run 31029032996,
+// GH #542/#548).
+test('a parenthesised subtitle plus a headline venue clause still matches', () => {
+  assert.equal(
+    classifyTitleDelta(
+      'Two Strangers Carry A Cake Across New York',
+      'TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T.'
+    ),
+    'match'
+  );
+  assert.equal(classifyTitleDelta('Gypsy', 'Gypsy at the Majestic'), 'match');
+  assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James'), 'match');
+});
+
+test('loosening never rescues a genuinely different show', () => {
+  assert.equal(classifyTitleDelta('The Outsiders', 'GATSBY Makes its World Premiere at ART'), 'mismatch');
+  assert.equal(classifyTitleDelta('Wicked', 'Hamilton at the Richard Rodgers'), 'mismatch');
+  // The trap the loosened form must NOT create: stripping a venue clause
+  // shortens both sides, and on short titles "Cats"/"Dogs" collapses to edit
+  // distance 3 — which add-requested-show.js would ACCEPT, since it rejects
+  // only on 'mismatch'. The loosened comparison is therefore exact-equality
+  // only and is never fed into the distance threshold.
+  assert.equal(classifyTitleDelta('Cats', 'Dogs at the Palace'), 'mismatch');
+});
+
+test('pre-existing venue-parenthetical and typo behaviour is unchanged', () => {
+  assert.equal(classifyTitleDelta('Cable Street', 'Cable Street (59e59)'), 'match');
+  assert.equal(classifyTitleDelta('Hamilton', 'Hamilton'), 'match');
+  assert.equal(classifyTitleDelta('Hamilton', 'Hamiltone'), 'typo');
+  assert.equal(classifyTitleDelta('Hamilton', 'Wicked'), 'mismatch');
+});
