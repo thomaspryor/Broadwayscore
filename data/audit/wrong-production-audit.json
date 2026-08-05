@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-05T06:27:30.814Z",
+  "timestamp": "2026-08-05T08:32:28.036Z",
   "stats": {
-    "totalReviews": 41590,
-    "alreadyFlagged": 18103,
-    "dateGuardCatches": 115,
+    "totalReviews": 41595,
+    "alreadyFlagged": 18105,
+    "dateGuardCatches": 114,
     "directorMismatch": 944,
     "tvFilmSignals": 1152,
     "londonSignals": 813,
@@ -43536,19 +43536,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 342d before show (2025-08-20 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "raring2go--unknown.json",
-      "publishDate": "2026-06-22",
-      "url": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 36d before show (2026-06-22 vs 2026-07-28)"
         }
       ]
     },
