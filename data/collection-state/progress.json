@@ -8,7 +8,9 @@
     "the-importance-of-being-oscar-off-west-end-2026/british-theatre--unknown.json",
     "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
-    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json"
+    "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
+    "disruption-off-broadway-2026/nytimes--tim-teeman.json",
+    "disruption-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
@@ -56,7 +58,15 @@
     "cats-west-end-2026/huffpost--david-finkle.json",
     "cats-west-end-2026/nbcny--robert-kahn.json",
     "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
-    "cats-west-end-2026/one-minute-critic--matthew-wexler.json"
+    "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cats-west-end-2026/slantmagazine--dan-rubins.json",
+    "cats-west-end-2026/usatoday--patrick-ryan.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
+    "the-comedy-about-spies-west-end-2026/soundsandstage--tim-todd.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "cats-west-end-2026/london-box-office--daniel-perks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -67,7 +77,8 @@
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "the-importance-of-being-oscar-off-west-end-2026/british-theatre--keith-mckenna.json",
       "the-importance-of-being-oscar-off-west-end-2026/british-theatre--unknown.json",
-      "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json"
+      "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
+      "disruption-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -75,7 +86,9 @@
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "disruption-off-broadway-2026/nytimes--tim-teeman.json"
+    ],
     "archiveToday": [
       "data/review-texts/space-dogs-off-west-end-2026/thestage--the-stage.json",
       "data/review-texts/tao-of-glass-west-end-2026/bachtrack--unknown.json",
@@ -89,7 +102,7 @@
     ]
   },
   "startTime": "2026-08-05T06:16:06.471Z",
-  "lastProcessed": "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "disruption-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-08-05T06:16:24.809Z",
@@ -124,6 +137,28 @@
       "event": "bb-session",
       "session": "c9f53bdd",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T07:32:24.192Z",
+      "event": "bb-session",
+      "session": "1f8c1fae",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T07:32:25.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T07:32:41.232Z",
+      "event": "bb-session",
+      "session": "2c04e9d8",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T07:32:42.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

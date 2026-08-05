@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-05T07:31:38.090Z",
-  "processed": 9,
-  "failed": 46,
-  "successRate": "16.4%",
+  "updatedAt": "2026-08-05T07:33:44.514Z",
+  "processed": 11,
+  "failed": 54,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 6,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-05T06:16:24.809Z",
@@ -48,6 +48,28 @@
       "event": "bb-session",
       "session": "c9f53bdd",
       "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+    },
+    {
+      "t": "2026-08-05T07:32:24.192Z",
+      "event": "bb-session",
+      "session": "1f8c1fae",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T07:32:25.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T07:32:41.232Z",
+      "event": "bb-session",
+      "session": "2c04e9d8",
+      "url": "https://www.nytimes.com/2026/08/04/theater/disruption-review-john-david-washingt"
+    },
+    {
+      "t": "2026-08-05T07:32:42.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
