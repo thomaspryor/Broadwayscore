@@ -22,7 +22,9 @@
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -111,7 +113,15 @@
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
-    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,10 +142,14 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -154,7 +168,7 @@
     ]
   },
   "startTime": "2026-08-05T09:15:38.773Z",
-  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-08-05T09:16:03.112Z",
@@ -179,22 +193,10 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-08-05T09:02:02.286Z",
+      "t": "2026-08-05T09:34:38.877Z",
       "event": "bb-session",
-      "session": "2b847180",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
-    },
-    {
-      "t": "2026-08-05T09:02:38.738Z",
-      "event": "bb-session",
-      "session": "1714f950",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
-    },
-    {
-      "t": "2026-08-05T09:02:54.485Z",
-      "event": "bb-session",
-      "session": "1e269134",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+      "session": "f51eeb2b",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
