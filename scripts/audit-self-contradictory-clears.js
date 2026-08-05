@@ -34,6 +34,7 @@ const {
   detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
 } = require('./lib/flag-contradiction');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
 
@@ -158,10 +159,13 @@ function main() {
   // it is missing the sweep finds zero contradictions and a naive gate reports
   // PASS — a vacuous guard that would go green for every CI run that forgot the
   // checkout, exactly when it is least able to see a regression. Caught by
-  // running the gate with the corpus symlink removed (2026-08-05).
-  if (args.gate && scanned === 0) {
-    console.error('\nFAIL: scanned 0 review files — data/review-texts is missing or empty.');
-    console.error('The gate cannot pass vacuously; check out the review-texts private repo first.');
+  // running the gate with the corpus symlink removed (2026-08-05). Shared
+  // across all corpus audits — see scripts/lib/corpus-scan-guard.js (#1063).
+  try {
+    assertCorpusScanned(scanned, { gate: args.gate });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\nFAIL: ${e.message}`);
     process.exit(1);
   }
 
