@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-05T14:03:48.904Z",
-  "processed": 64,
-  "failed": 518,
-  "successRate": "11.0%",
+  "updatedAt": "2026-08-05T14:04:37.486Z",
+  "processed": 66,
+  "failed": 526,
+  "successRate": "11.1%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 41,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 5,
     "scrapingbee": 0,
     "brightdata": 13,
     "archiveToday": 2,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-05T12:08:13.978Z",
@@ -69,6 +69,12 @@
       "t": "2026-08-05T12:12:16.757Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-05T14:03:58.605Z",
+      "event": "bb-session",
+      "session": "86368ee1",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     }
   ]
 }
