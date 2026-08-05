@@ -32,6 +32,7 @@ const { Client } = require('@notionhq/client');
 require('./lib/load-env').loadEnv();
 
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
+const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -812,6 +813,8 @@ async function updateCard(args) {
         // If we can't read existing, just use new content
       }
     }
+
+    outcomeText = hoistRecheckAfterStamp(outcomeText);
 
     const { propertyValue, bodyText } = buildRichTextWithOverflow(outcomeText);
     properties.Outcome = propertyValue;
