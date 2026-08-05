@@ -391,10 +391,22 @@ function classifyTitleDelta(refTitle, bodyTitle) {
   // collapses to "cats" vs "dogs", distance 3, which add-requested-show.js
   // accepts (it rejects only on 'mismatch'). Loosening is safe when it demands
   // the two titles be identical, and unsafe the moment it feeds a threshold.
+  //
+  // AND the surviving stem must be substantial. stripTrailingVenueClause()
+  // cannot tell a venue from a title: "Dinner at Eight" and "Meet Me at the
+  // Fair" are real shows whose "at" clause is part of the NAME. Without this
+  // guard a request for "Dinner" matched the roundup for "Dinner at Eight" —
+  // a false accept that would write the WRONG show into shows.json, which is
+  // the exact failure this guard exists to prevent (ship-check adversarial
+  // review, 2026-08-05). Two words and ten characters is enough to keep the
+  // real case ("two strangers carry a cake across new york", "sunset blvd")
+  // while refusing every one-word stem. Erring toward rejection is right here:
+  // a refused add costs a manual entry, a false accept corrupts the catalog.
+  const substantial = (s) => s.split(' ').filter(Boolean).length >= 2 && s.length >= 10;
   const loosen = (s) => normalizeTitle(stripTrailingVenueClause(unwrapParenTitle(s)));
   const au = loosen(refTitle);
   const bu = loosen(bodyTitle);
-  if (au && bu && au === bu) return 'match';
+  if (au && bu && au === bu && substantial(au)) return 'match';
 
   const d = levenshteinDistance(a, b);
   if (d >= 1 && d <= 3) return 'typo';
