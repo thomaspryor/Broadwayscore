@@ -1,89 +1,11 @@
 {
-  "generatedAt": "2026-08-04T23:57:26.644Z",
+  "generatedAt": "2026-08-05T01:22:53.413Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 147,
-  "clean": 142,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "avenue-q-west-end-2026",
-      "title": "Avenue Q",
-      "openingDate": "2026-04-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.86 vs local 84.68 (Δ0.18)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
-    },
-    {
-      "showId": "just-in-time-2025",
-      "title": "Just in Time",
-      "openingDate": "2025-04-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.48 vs local 79.31 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.29 vs local 61.25 (Δ0.96)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "abba-voyage-off-west-end-2026",
-      "title": "ABBA Voyage",
-      "openingDate": "2022-05-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.74 vs local 85.9 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "title": "The Lion King",
-      "openingDate": "1999-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.79 vs local 82.27 (Δ0.48)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14
-    }
-  ]
+  "clean": 147,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
