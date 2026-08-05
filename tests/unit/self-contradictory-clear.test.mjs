@@ -12,10 +12,53 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   detectSelfContradictoryClear,
+  detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   hasClearBreadcrumbValue,
   SELF_CLEAR_PAIRS,
 } = require('../../scripts/lib/flag-contradiction.js');
+
+test('a record with two contradictions is fully resolved in ONE pass', () => {
+  // Returning only the first pair would make --fix need repeated runs to
+  // converge while reporting partial progress in between.
+  const file = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: 'rebuild: allowEarlyDate bypasses wrongProduction',
+    wrongAttribution: true,
+    crossOutletVerified: true,
+  };
+  const hits = detectAllSelfContradictoryClears(file);
+  assert.equal(hits.length, 2, 'both pairs must be reported');
+
+  for (const hit of hits) retractStaleClearBreadcrumb(file, hit);
+  assert.deepEqual(detectAllSelfContradictoryClears(file), [], 'one pass must converge');
+  assert.equal(file.wrongProduction, true);
+  assert.equal(file.wrongAttribution, true);
+  assert.deepEqual(
+    file.clearBreadcrumbRetractedFields,
+    ['crossOutletVerified', 'wrongProductionAutoCleared'],
+    'the stamp lists exactly the fields actually removed, across both pairs',
+  );
+});
+
+test('the retraction stamp does NOT authorize deleting a field it does not name', () => {
+  // A blanket "stamp exists" exception would be a standing bypass: one
+  // retraction would thereafter bless losing any other protected field.
+  const { isIntentionalClear } = require('../../scripts/lib/review-write-guard.js');
+
+  const file = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: 'rebuild: allowEarlyDate bypasses wrongProduction',
+  };
+  const committed = { ...file, crossOutletVerified: true };
+  retractStaleClearBreadcrumb(file, detectSelfContradictoryClear(file));
+
+  assert.equal(isIntentionalClear('wrongProductionAutoCleared', file, committed), true);
+  assert.equal(
+    isIntentionalClear('crossOutletVerified', file, committed), false,
+    'a wrongProduction retraction must not bless losing crossOutletVerified',
+  );
+});
 
 test('hasClearBreadcrumbValue accepts both written shapes', () => {
   // The corpus carries 445 boolean and 283 string stamps. A reader testing

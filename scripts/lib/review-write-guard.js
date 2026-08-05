@@ -335,16 +335,23 @@ const _wrongArticleCleared = (d) =>
 // live (audit-self-contradictory-clears.js --fix). Without this exception the
 // restore resurrects the very breadcrumb the sweep removed and --fix is a
 // permanent no-op — the exact shape of the stale-duplicateOf incident above.
-// Keyed on a durable stamp so only a deliberate retraction qualifies; an
-// ordinary run that never wrote the stamp still gets full data-loss protection.
-const _clearBreadcrumbRetracted = (d) => !_isEmptyValue(d.clearBreadcrumbRetracted);
+// FIELD-SCOPED: the stamp lists exactly which fields the retraction covers, and
+// this checks membership. A bare "stamp is non-empty" test would be a standing
+// bypass — one retraction of wrongProductionAutoCleared would thereafter
+// authorize losing crossOutletVerified to any unrelated bad write. An ordinary
+// run that never wrote the stamp still gets full data-loss protection.
+const _clearBreadcrumbRetracted = (field) => (d) => {
+  if (_isEmptyValue(d.clearBreadcrumbRetracted)) return false;
+  const fields = d.clearBreadcrumbRetractedFields;
+  return Array.isArray(fields) && fields.includes(field);
+};
 
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
-  wrongProductionAutoCleared: _clearBreadcrumbRetracted,
-  wrongProductionAutoClearedAt: _clearBreadcrumbRetracted,
-  crossOutletVerified: _clearBreadcrumbRetracted,
+  wrongProductionAutoCleared: _clearBreadcrumbRetracted('wrongProductionAutoCleared'),
+  wrongProductionAutoClearedAt: _clearBreadcrumbRetracted('wrongProductionAutoClearedAt'),
+  crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,

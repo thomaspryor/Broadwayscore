@@ -31,7 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  detectSelfContradictoryClear,
+  detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
 } = require('./lib/flag-contradiction');
 
@@ -110,16 +110,26 @@ function main() {
       catch { continue; }
       scanned++;
 
-      const contradiction = detectSelfContradictoryClear(data);
-      if (!contradiction) continue;
-      hits.push({ showId, file, ...contradiction });
+      // ALL contradictions on this record, not just the first — a file can
+      // carry more than one pair, and fixing one per pass would need repeated
+      // runs to converge while reporting itself clean-ish in between.
+      const contradictions = detectAllSelfContradictoryClears(data);
+      if (!contradictions.length) continue;
+      for (const c of contradictions) hits.push({ showId, file, ...c });
 
       if (args.fix) {
-        const removed = retractStaleClearBreadcrumb(data, contradiction);
-        if (removed.length) {
+        let removedAny = false;
+        for (const c of contradictions) {
+          if (retractStaleClearBreadcrumb(data, c).length) removedAny = true;
+        }
+        if (removedAny) {
           // Deliberately a plain write, not safeWriteReview(): the whole point
-          // is to REMOVE a breadcrumb that safeWriteReview's isIntentionalClear
-          // machinery would treat as protected and restore.
+          // is to REMOVE breadcrumbs that safeWriteReview's isIntentionalClear
+          // machinery would otherwise treat as protected and restore. Listed in
+          // .review-write-guard-exempt.txt so the write-routing lint records
+          // this as a reviewed exemption rather than passing by accident (the
+          // lint's import check is textual and the word safeWriteReview appears
+          // in this very comment).
           fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
           fixed++;
         }
@@ -142,6 +152,17 @@ function main() {
       if (list.length > 5) console.log(`         … and ${list.length - 5} more`);
     }
     if (args.fix) console.log(`\nRetracted stale breadcrumbs on ${fixed} file(s).`);
+  }
+
+  // FAIL LOUD on an empty corpus. review-texts is a private-repo checkout; when
+  // it is missing the sweep finds zero contradictions and a naive gate reports
+  // PASS — a vacuous guard that would go green for every CI run that forgot the
+  // checkout, exactly when it is least able to see a regression. Caught by
+  // running the gate with the corpus symlink removed (2026-08-05).
+  if (args.gate && scanned === 0) {
+    console.error('\nFAIL: scanned 0 review files — data/review-texts is missing or empty.');
+    console.error('The gate cannot pass vacuously; check out the review-texts private repo first.');
+    process.exit(1);
   }
 
   if (args.gate && hits.length > args.max) {

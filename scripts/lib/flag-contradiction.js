@@ -292,22 +292,39 @@ const SELF_CLEAR_PAIRS = [
  *                   breadcrumbValue: *, task: string}}
  */
 function detectSelfContradictoryClear(file) {
-  if (!file || typeof file !== 'object') return null;
-  if (isHumanDecided(file)) return null;
+  const all = detectAllSelfContradictoryClears(file);
+  return all.length ? all[0] : null;
+}
 
+/**
+ * Every self-contradiction on one record, not just the first. A file can carry
+ * more than one (e.g. wrongProduction+autoClear AND wrongAttribution+
+ * crossOutletVerified), and a fixer that only ever sees the first would need
+ * repeated passes to converge — silently leaving contradictions behind on a
+ * single run.
+ *
+ * @param {object} file - parsed review-text JSON
+ * @returns {Array<{selfContradictory: true, flag: string, breadcrumb: string,
+ *                  breadcrumbValue: *, task: string}>}
+ */
+function detectAllSelfContradictoryClears(file) {
+  if (!file || typeof file !== 'object') return [];
+  if (isHumanDecided(file)) return [];
+
+  const hits = [];
   for (const pair of SELF_CLEAR_PAIRS) {
     if (file[pair.flag] !== true) continue;
     if (!hasClearBreadcrumbValue(file[pair.breadcrumb])) continue;
     if (pair.extra && !pair.extra(file)) continue;
-    return {
+    hits.push({
       selfContradictory: true,
       flag: pair.flag,
       breadcrumb: pair.breadcrumb,
       breadcrumbValue: file[pair.breadcrumb],
       task: pair.task,
-    };
+    });
   }
-  return null;
+  return hits;
 }
 
 /**
@@ -337,6 +354,17 @@ function retractStaleClearBreadcrumb(file, contradiction, now = new Date()) {
   // push-time restore would treat the removal as data loss and resurrect them —
   // making this a permanent no-op. CLEAR_BREADCRUMBS keys the exception on this
   // stamp, so it MUST be written whenever a breadcrumb is retracted.
+  //
+  // FIELD-SCOPED on purpose. An "any non-empty string authorizes any deletion"
+  // stamp would be a standing bypass: a record retracted once for
+  // wrongProductionAutoCleared could later lose an unrelated protected field
+  // (crossOutletVerified) to a bad write and the restore would bless it. The
+  // stamp lists exactly which fields it covers, and the guard checks membership.
+  const covered = new Set([
+    ...(Array.isArray(file.clearBreadcrumbRetractedFields) ? file.clearBreadcrumbRetractedFields : []),
+    ...removed,
+  ]);
+  file.clearBreadcrumbRetractedFields = [...covered].sort();
   file.clearBreadcrumbRetracted =
     `retracted stale ${contradiction.breadcrumb}: contradicted live ${contradiction.flag} (${contradiction.task})`;
   file.clearBreadcrumbRetractedAt = now.toISOString().split('T')[0];
@@ -347,6 +375,7 @@ module.exports = {
   detectFlagContradiction,
   detectCvFlagContradiction,
   detectSelfContradictoryClear,
+  detectAllSelfContradictoryClears,
   retractStaleClearBreadcrumb,
   hasClearBreadcrumbValue,
   contradictionFixCommand,
