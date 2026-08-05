@@ -57,7 +57,7 @@ test('trivial %20-only URL diff is NOT flagged (real dup stays deduped)', () => 
     },
     'thewrap--jane-doe.json': { url: 'https://www.thewrap.com/the-maids-review/' },
   });
-  const mismatches = audit().filter(m => m.showId === 'trivial-diff-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'trivial-diff-2026');
   assert.equal(mismatches.length, 0, 'trivial %20 diff must not be a mismatch');
 });
 
@@ -70,7 +70,7 @@ test('different-article (path) diff IS flagged and --fix clears it', () => {
     },
     'guardian--arifa-akbar.json': { url: 'https://www.theguardian.com/2025/feb/19/royal-much-ado' },
   });
-  const mismatches = audit().filter(m => m.showId === 'stale-flag-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'stale-flag-2026');
   assert.equal(mismatches.length, 1);
   assert.equal(mismatches[0].reason, 'url-mismatch');
 
@@ -87,7 +87,7 @@ test('self-referential duplicateTextOf IS flagged and --fix clears only that fie
       duplicateTextOf: 'timeout-london--andrzej-lukowski.json',
     },
   });
-  const mismatches = audit().filter(m => m.showId === 'self-ref-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'self-ref-2026');
   assert.equal(mismatches.length, 1);
   assert.equal(mismatches[0].reason, 'self-reference');
   assert.equal(mismatches[0].field, 'duplicateTextOf');
@@ -106,7 +106,7 @@ test('self-referential duplicateOf IS flagged', () => {
       duplicateOf: 'wsj--charles-isherwood.json',
     },
   });
-  const mismatches = audit().filter(m => m.showId === 'self-ref-of-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'self-ref-of-2026');
   assert.equal(mismatches.length, 1);
   assert.equal(mismatches[0].reason, 'self-reference');
   assert.equal(mismatches[0].field, 'duplicateOf');
@@ -128,7 +128,7 @@ test('dangling duplicateTextOf (target deleted) IS flagged; valid pointer is NOT
     },
     'guardian--arifa-akbar.json': { url: 'https://theguardian.example/jcs-akbar' },
   });
-  const mismatches = audit().filter(m => m.showId === 'dangling-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'dangling-2026');
   assert.equal(mismatches.length, 1, 'only the dangling pointer is flagged');
   assert.equal(mismatches[0].file, 'cambridge--louise-penn.json');
   assert.equal(mismatches[0].reason, 'sibling-missing');
@@ -143,7 +143,7 @@ test('duplicateTextOf URL mismatch vs existing sibling is NOT flagged (syndicati
     },
     'record--robert-feldberg.json': { url: 'https://record.example/totally-different-path' },
   });
-  const mismatches = audit().filter(m => m.showId === 'synd-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'synd-2026');
   assert.equal(mismatches.length, 0);
 });
 
@@ -158,7 +158,7 @@ test('3-node duplicateOf cycle IS flagged for every member and --fix does NOT au
     'washpost--b.json': { url, duplicateOf: 'washpost--c.json' },
     'washpost--c.json': { url, duplicateOf: 'washpost--a.json' },
   });
-  const mismatches = audit().filter(m => m.showId === 'cycle-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'cycle-2026');
   assert.equal(mismatches.length, 3, 'all three cycle members are flagged');
   for (const m of mismatches) {
     assert.equal(m.reason, 'duplicateOf-cycle');
@@ -179,7 +179,7 @@ test('2-node duplicateOf cycle IS flagged (defense-in-depth alongside rebuild ci
     'outlet--a.json': { url, duplicateOf: 'outlet--b.json' },
     'outlet--b.json': { url, duplicateOf: 'outlet--a.json' },
   });
-  const mismatches = audit().filter(m => m.showId === 'cycle-2-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'cycle-2-2026');
   assert.equal(mismatches.length, 2);
   assert.ok(mismatches.every(m => m.reason === 'duplicateOf-cycle'));
 });
@@ -191,7 +191,7 @@ test('non-circular duplicateOf chain (terminates at a canonical file) is NOT fla
     'outlet--b.json': { url, duplicateOf: 'outlet--canonical.json' },
     'outlet--canonical.json': { url },
   });
-  const mismatches = audit().filter(m => m.showId === 'chain-ok-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'chain-ok-2026');
   assert.equal(mismatches.length, 0, 'a terminating chain is legitimate, not a cycle');
 });
 
@@ -242,7 +242,7 @@ test('non-filename duplicateOf sentinel values are ignored (report-only conserva
       duplicateOf: 'northjerseycom',
     },
   });
-  const mismatches = audit().filter(m => m.showId === 'sentinel-2026');
+  const mismatches = audit().mismatches.filter(m => m.showId === 'sentinel-2026');
   assert.equal(mismatches.length, 0, 'sentinel-valued pointers are not auto-clearable');
 });
 
@@ -266,7 +266,7 @@ test('non-show buckets (_pending, _superseded-misattributed) are NOT scanned —
       duplicateOf: 'outlet--never-written.json',
     },
   });
-  const flagged = audit().filter(
+  const flagged = audit().mismatches.filter(
     m => m.showId === '_superseded-misattributed' || m.showId === '_pending'
   );
   assert.deepEqual(flagged, [], 'non-show buckets must not contribute mismatches');
@@ -279,7 +279,7 @@ test('non-show buckets (_pending, _superseded-misattributed) are NOT scanned —
       duplicateOf: 'outlet--never-written.json',
     },
   });
-  const real = audit().filter(m => m.showId === 'real-show-2026');
+  const real = audit().mismatches.filter(m => m.showId === 'real-show-2026');
   assert.equal(real.length, 1, 'a dangling pointer in a real show dir is still flagged');
   assert.equal(real[0].reason, 'sibling-missing');
 });
