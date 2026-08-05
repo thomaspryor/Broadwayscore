@@ -73,6 +73,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -181,6 +182,7 @@ if (PLAYBILL_BLEED) {
   // the whole point is to catch groups the registry-mismatch gate misses
   // because one member (the critic's real home) resolves correctly.
   const groups = new Map();
+  let scanned = 0;
   for (const showId of fs.readdirSync(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
@@ -193,6 +195,7 @@ if (PLAYBILL_BLEED) {
       } catch {
         continue;
       }
+      scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
       if (d.crossOutletVerified === true) continue;
@@ -212,6 +215,17 @@ if (PLAYBILL_BLEED) {
     bleedGroups.push({ showId, criticName, outletIds, files: entries });
   }
 
+  // FAIL LOUD (exit 3, this script's own "cannot verify" convention above) on
+  // an empty corpus (task #1063) — a review-texts checkout present but empty
+  // scans 0 files and would otherwise report a vacuous clean PASS.
+  try {
+    assertCorpusScanned(scanned, { gate: true });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`cannot verify: ${e.message}`);
+    process.exit(3);
+  }
+
   if (process.argv.includes('--json')) {
     console.log(JSON.stringify({ count: bleedGroups.length, groups: bleedGroups }, null, 2));
   } else {
@@ -223,6 +237,7 @@ if (PLAYBILL_BLEED) {
   process.exitCode = bleedGroups.length > 0 ? 1 : 0;
 } else {
   const suspects = [];
+  let scanned = 0;
   for (const showId of fs.readdirSync(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
@@ -235,6 +250,7 @@ if (PLAYBILL_BLEED) {
       } catch {
         continue;
       }
+      scanned++;
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
       if (d.crossOutletVerified === true) continue;
@@ -271,6 +287,17 @@ if (PLAYBILL_BLEED) {
         url: d.url || null,
       });
     }
+  }
+
+  // FAIL LOUD (exit 3, this script's own "cannot verify" convention above) on
+  // an empty corpus (task #1063) — a review-texts checkout present but empty
+  // scans 0 files and would otherwise report a vacuous clean PASS.
+  try {
+    assertCorpusScanned(scanned, { gate: true });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`cannot verify: ${e.message}`);
+    process.exit(3);
   }
 
   if (process.argv.includes('--json')) {

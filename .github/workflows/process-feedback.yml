@@ -501,12 +501,22 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-feedback-requests-live.js
 
+      # Both notification steps above call routeAlert() (via
+      # scripts/notify-feedback-outcomes.js and
+      # scripts/verify-feedback-requests-live.js), so the alert ledger and the
+      # digest queue they write only exist on THIS job's runner disk. Staging
+      # them here is what keeps the cooldown/dedup state — without it every run
+      # looks like a brand-new incident. Enforced by
+      # scripts/lib/alert-ledger-commit-check.js, which only sees this job
+      # because of the routeAlert() mention in this comment; do not remove it.
       - name: Commit tracking file
         if: always()
         run: |
           git add data/audit/processed-feedback.json
           git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
           git add data/audit/feedback-request-ledger.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No tracking changes"
           else
