@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-05T18:30:44.177Z",
+  "generatedAt": "2026-08-05T20:33:15.309Z",
   "windowDays": 1095,
-  "targets": 108,
-  "auditedThisRun": 13,
-  "carriedForward": 151,
+  "targets": 97,
+  "auditedThisRun": 19,
+  "carriedForward": 145,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 129,
-    "totalMissing": 851,
+    "withGap": 128,
+    "totalMissing": 860,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 762,
-    "totalRecoverable": 18,
+    "totalFlaggedMisses": 759,
+    "totalRecoverable": 20,
     "totalRecovered": 0
   },
   "results": [
@@ -14285,7 +14285,7 @@
         "liveCount": 10,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -15715,7 +15715,7 @@
         "liveCount": 29,
         "candidateCount": 38
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -22817,7 +22817,7 @@
             {
               "file": "ew--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/hadestown-parts-ways-actor-geno-segers-over-transphobic-posts-12032397?srsltid=AfmBOoryYm_O3TRR7aenkAggWIdhuzpG31UQPote4bchfu-p9UAnClzi"
+              "urlInDir": "https://ew.com/hadestown-parts-ways-actor-geno-segers-over-transphobic-posts-12032397?srsltid=AfmBOooEBMUflal4QcnL8apJETt86bF7TdXk5b40mJPTskK8ALYzc-pU"
             }
           ],
           "priorRun": true,
@@ -25317,7 +25317,7 @@
         "liveCount": 8,
         "candidateCount": 98
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -30307,8 +30307,8 @@
         "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html"
       ],
       "dirFiles": 81,
-      "dirClean": 33,
-      "inReviewsJson": 31,
+      "dirClean": 34,
+      "inReviewsJson": 32,
       "missing": [
         {
           "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
@@ -30577,6 +30577,10 @@
         },
         {
           "host": "radiotimes.com",
+          "count": 1
+        },
+        {
+          "host": "rolandcat.substack.com",
           "count": 1
         },
         {
@@ -31834,7 +31838,7 @@
         "liveCount": 1,
         "candidateCount": 36
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "just-in-time-2025",
@@ -32550,7 +32554,7 @@
         "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
         "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
         "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CAA51425",
         "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html"
       ],
       "dirFiles": 15,
@@ -32564,7 +32568,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CAA51425",
           "host": "msg.com",
           "knownOutletId": null,
           "serpCensus": true
@@ -32620,7 +32624,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -32630,7 +32634,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -32651,13 +32655,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "ingestResults": [
@@ -32670,12 +32674,12 @@
           "reason": null
         },
         {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CAA51425",
           "host": "msg.com",
           "outletId": "msg",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~847104/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942916/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
@@ -32683,7 +32687,7 @@
           "outletId": "recorderonline",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~847105/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942922/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -32702,7 +32706,7 @@
             "outlet": "msg.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417"
+            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CAA51425"
           },
           {
             "outletId": "recorderonline.com",
@@ -32764,11 +32768,11 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CAA51425",
             "outletId": "msg.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.recorderonline.com/features/entertainment_news/review-les-mis-rables-becomes-the-arena-concert-spectacular-and-what-other-musical-could/article_296b5549-9a65-50f9-9e80-c54fb42afcc4.html",
@@ -32781,7 +32785,7 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "los-soles-truncos-off-broadway-2025",
@@ -35130,13 +35134,13 @@
           "dirFlags": [
             {
               "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
+              "flag": "nonReview",
               "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-review-vital-power-surge-anglo-japanese/"
             },
             {
               "file": "telegraph--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-review-vital-power-surge-anglo-japanese/"
+              "flag": "wrongShow",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-can-rsc-make-best-animation-time-work/"
             }
           ],
           "priorRun": true,
@@ -35155,7 +35159,7 @@
             {
               "file": "timeout--tom-wicker.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/london/theatre/wendy-peter-pan-review"
+              "urlInDir": "https://www.timeout.com/london/theatre/we-made-a-different-cat-bus-a-day-for-five-days-inside-the-rscs-my-neighbour-totoro"
             },
             {
               "file": "timeout-london--andrzej-lukowski.json",
@@ -35271,7 +35275,7 @@
         "liveCount": 4,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -39040,8 +39044,8 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html"
       ],
       "dirFiles": 88,
-      "dirClean": 24,
-      "inReviewsJson": 28,
+      "dirClean": 27,
+      "inReviewsJson": 30,
       "missing": [
         {
           "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
@@ -39248,16 +39252,16 @@
           "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theatrely--emily-wyrwa.json",
+          "recoverableOutletId": "theatrely",
+          "recoverableCritic": "Emily Wyrwa",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "theatrely--emily-wyrwa.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrely.com/post/jinkx-monsoon-to-star-in-oh-mary-for-8-weeks"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatrely.com/post/bowen-yang-to-join-oh-mary-on-broadway"
             },
             {
               "file": "theatrely--nolan-boggess.json",
@@ -39311,57 +39315,6 @@
               "file": "broadwayworld--unknown.json",
               "flag": "duplicate",
               "urlInDir": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219"
-            }
-          ]
-        },
-        {
-          "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-          "host": "liamodell.com",
-          "knownOutletId": "liamodell",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "liamodell--liam-odell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "jonathan-baz--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html"
-            }
-          ]
-        },
-        {
-          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": "readaboutstuff",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "readaboutstuff--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/"
             }
           ]
         },
@@ -39519,7 +39472,7 @@
             {
               "file": "hollywood-reporter--david-rooney.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-oh-mary-1236528470/"
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary-1236451899/"
             }
           ],
           "priorRun": true,
@@ -39735,16 +39688,16 @@
           "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theatrely--emily-wyrwa.json",
+          "recoverableOutletId": "theatrely",
+          "recoverableCritic": "Emily Wyrwa",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "theatrely--emily-wyrwa.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrely.com/post/jinkx-monsoon-to-star-in-oh-mary-for-8-weeks"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatrely.com/post/bowen-yang-to-join-oh-mary-on-broadway"
             },
             {
               "file": "theatrely--nolan-boggess.json",
@@ -40049,27 +40002,6 @@
             "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219"
           },
           {
-            "outletId": "liamodell",
-            "outlet": "liamodell",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/"
-          },
-          {
-            "outletId": "jonathan-baz",
-            "outlet": "jonathan-baz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html"
-          },
-          {
-            "outletId": "readaboutstuff",
-            "outlet": "readaboutstuff",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/"
-          },
-          {
             "outletId": "theatre-weekly",
             "outlet": "theatre-weekly",
             "critic": "Unknown",
@@ -40265,8 +40197,20 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
+            "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
             "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
             "outletId": "huffingtonpost.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+            "outletId": "jonathanbaz.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -40309,6 +40253,12 @@
           {
             "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
             "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T17:36:20.225Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
@@ -40478,27 +40428,6 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           },
           {
-            "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-            "outletId": "liamodell",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
-            "outletId": "jonathan-baz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
-            "outletId": "readaboutstuff",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T17:36:20.225Z"
-          },
-          {
             "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
             "outletId": "theatre-weekly",
             "state": "GAP",
@@ -40660,10 +40589,10 @@
             "firstSeenAt": "2026-08-03T17:36:20.225Z"
           }
         ],
-        "liveCount": 19,
+        "liveCount": 22,
         "candidateCount": 50
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -44697,7 +44626,7 @@
         "liveCount": 15,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -45913,7 +45842,7 @@
           "dirFlags": [
             {
               "file": "artsdesk--unknown.json",
-              "flag": "wrongProduction",
+              "flag": "clean",
               "urlInDir": "https://theartsdesk.com/theatre/pride-national-theatre-review-full-musical-aims-heart"
             }
           ],
@@ -46196,7 +46125,7 @@
         "liveCount": 7,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "ragtime-2025",
@@ -49413,7 +49342,7 @@
         "liveCount": 23,
         "candidateCount": 35
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "shifters-off-broadway-2026",
@@ -49435,33 +49364,29 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR",
         "https://www.offoffonline.com/offoffonline/2026/7/14/shifters",
         "https://www.wsj.com/articles/shifters-review-a-circuitous-love-story-at-cherry-lane-theatre-a8097b0c",
-        "https://www.broadwayworld.com/reviews/shifters",
         "https://www.newyorktheatreguide.com/theatre-news/news/benedict-lombes-shifters-to-open-off-broadway",
-        "https://www.yahoo.com/entertainment/tv/articles/shifters-heather-agyepong-traverses-tumultuous-181438725.html",
-        "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/"
+        "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/",
+        "https://www.beautynewsnycofficial.com/city-pulse/art-culture/shifters-a-play-about-time-love-changes-and-chances/",
+        "https://theknockturnal.com/shifters-off-broadway-review/"
       ],
       "dirFiles": 29,
       "dirClean": 10,
       "inReviewsJson": 11,
       "missing": [
         {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/shifters-heather-agyepong-traverses-tumultuous-181438725.html",
-          "host": "yahoo.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/",
           "host": "theatreweekly.com",
           "knownOutletId": "theatre-weekly",
           "serpCensus": true
+        },
+        {
+          "url": "https://theknockturnal.com/shifters-off-broadway-review/",
+          "host": "theknockturnal.com",
+          "knownOutletId": "the-knockturnal",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "beautynewsnycofficial.com",
-          "count": 1
-        },
         {
           "host": "nysun.com",
           "count": 1
@@ -49507,24 +49432,6 @@
               "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR"
             }
           ]
-        },
-        {
-          "url": "https://www.broadwayworld.com/reviews/shifters",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--aa-cristi.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-SHIFTERSMakes-North-American-Premiere-at-Cherry-Lane-Theatre-20260715"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -49551,7 +49458,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -49591,7 +49498,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -49602,20 +49509,20 @@
       },
       "ingestResults": [
         {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/shifters-heather-agyepong-traverses-tumultuous-181438725.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846899/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
-        },
-        {
           "url": "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/",
           "host": "theatreweekly.com",
           "outletId": "theatre-weekly",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846920/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942738/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
+        },
+        {
+          "url": "https://theknockturnal.com/shifters-off-broadway-review/",
+          "host": "theknockturnal.com",
+          "outletId": "the-knockturnal",
+          "provisional": false,
+          "ok": true,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -49623,18 +49530,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "yahoo.com",
-            "outlet": "yahoo.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.yahoo.com/entertainment/tv/articles/shifters-heather-agyepong-traverses-tumultuous-181438725.html"
-          },
-          {
             "outletId": "theatre-weekly",
             "outlet": "theatre-weekly",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/"
+          },
+          {
+            "outletId": "the-knockturnal",
+            "outlet": "the-knockturnal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theknockturnal.com/shifters-off-broadway-review/"
           },
           {
             "outletId": "culturesauce",
@@ -49649,13 +49556,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-BMY7HR"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/reviews/shifters"
           }
         ],
         "suppressedMissing": [],
@@ -49715,11 +49615,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/tv/articles/shifters-heather-agyepong-traverses-tumultuous-181438725.html",
-            "outletId": "yahoo.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/shifters-a-play-about-time-love-changes-and-chances/",
+            "outletId": "beautynewsnycofficial.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://theatreweekly.com/shifters-comes-to-cherry-lane-theatre-for-north-american-premiere/",
@@ -49727,6 +49626,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://theknockturnal.com/shifters-off-broadway-review/",
+            "outletId": "the-knockturnal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://culturesauce.com/shifters-off-broadway-review/",
@@ -49741,19 +49647,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/reviews/shifters",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
           }
         ],
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -56582,7 +56481,7 @@
         "liveCount": 8,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -57297,12 +57196,13 @@
         "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
         "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
         "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
-        "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/",
-        "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-        "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
+        "https://www.sandiegoreader.com/events/2026/aug/21/the-family-album/",
+        "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/",
         "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+        "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
+        "https://folkalley.com/album-review-della-mae-family-reunion/"
       ],
       "dirFiles": 6,
       "dirClean": 2,
@@ -57321,15 +57221,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/aug/21/the-family-album/",
           "host": "sandiegoreader.com",
           "knownOutletId": "san-diego-reader",
           "serpCensus": true
         },
         {
-          "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-          "host": "vividseats.com",
-          "knownOutletId": null,
+          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+          "host": "sandiegoreader.com",
+          "knownOutletId": "san-diego-reader",
           "serpCensus": true
         },
         {
@@ -57337,12 +57237,36 @@
           "host": "lajolla.ca",
           "knownOutletId": null,
           "serpCensus": true
+        },
+        {
+          "url": "https://folkalley.com/album-review-della-mae-family-reunion/",
+          "host": "folkalley.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/",
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/",
+          "host": "tickpick.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tickpick--tickpick.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
           "host": "tickpick.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -57376,24 +57300,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -57420,7 +57326,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57430,7 +57336,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57440,7 +57346,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -57450,7 +57356,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -57460,13 +57366,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "ingestResults": [
@@ -57476,7 +57382,7 @@
           "outletId": "musicconnection",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846437/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942241/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://www.sandiegoreader.com/events/2026/jul/18/the-family-album/",
@@ -57484,23 +57390,23 @@
           "outletId": "san-diego-reader",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846438/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942242/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
-          "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
+          "url": "https://www.sandiegoreader.com/events/2026/aug/21/the-family-album/",
           "host": "sandiegoreader.com",
           "outletId": "san-diego-reader",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846439/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942243/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
-          "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-          "host": "vividseats.com",
-          "outletId": "vividseats",
-          "provisional": true,
+          "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+          "host": "sandiegoreader.com",
+          "outletId": "san-diego-reader",
+          "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846440/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942244/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
@@ -57508,10 +57414,16 @@
           "outletId": "lajolla",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846441/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942245/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://folkalley.com/album-review-della-mae-family-reunion/",
+          "host": "folkalley.com",
+          "outletId": "folkalley"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -57534,14 +57446,14 @@
             "outlet": "san-diego-reader",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/"
+            "url": "https://www.sandiegoreader.com/events/2026/aug/21/the-family-album/"
           },
           {
-            "outletId": "vividseats.com",
-            "outlet": "vividseats.com",
+            "outletId": "san-diego-reader",
+            "outlet": "san-diego-reader",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079"
+            "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/"
           },
           {
             "outletId": "lajolla.ca",
@@ -57551,18 +57463,18 @@
             "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/"
           },
           {
+            "outletId": "folkalley.com",
+            "outlet": "folkalley.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://folkalley.com/album-review-della-mae-family-reunion/"
+          },
+          {
             "outletId": "tickpick.com",
             "outlet": "tickpick.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/"
-          },
-          {
-            "outletId": "eventticketscenter.com",
-            "outlet": "eventticketscenter.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e"
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/"
           },
           {
             "outletId": "tickpick.com",
@@ -57570,6 +57482,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+          },
+          {
+            "outletId": "eventticketscenter.com",
+            "outlet": "eventticketscenter.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e"
           }
         ],
         "suppressedMissing": [],
@@ -57601,18 +57520,18 @@
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
-            "url": "https://www.sandiegoreader.com/events/2026/aug/04/the-family-album/",
+            "url": "https://www.sandiegoreader.com/events/2026/aug/21/the-family-album/",
             "outletId": "san-diego-reader",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
-            "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-            "outletId": "vividseats.com",
+            "url": "https://www.sandiegoreader.com/events/2026/aug/01/the-family-album/",
+            "outletId": "san-diego-reader",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
@@ -57622,22 +57541,29 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-15-26-8pm/7860282/",
+            "url": "https://folkalley.com/album-review-della-mae-family-reunion/",
+            "outletId": "folkalley.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-1-26-2pm/7860264/",
             "outletId": "tickpick.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
-            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
-            "outletId": "eventticketscenter.com",
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+            "outletId": "tickpick.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
-            "outletId": "tickpick.com",
+            "url": "https://www.eventticketscenter.com/the-family-album-la-jolla-tickets/1384525/e",
+            "outletId": "eventticketscenter.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
@@ -57646,7 +57572,7 @@
         "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "the-gin-game-2026",
@@ -59312,35 +59238,73 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.showify.uk/shows/the-gruffalo",
         "https://www.westend.com/shows/the-gruffalo/",
+        "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
         "https://www.britannica.com/topic/The-Gruffalo",
-        "https://www.afridiziak.com/reviews/the-gruffalo-by-julia-donaldson/",
-        "https://www.waterstones.com/book/the-gruffalo/julia-donaldson/axel-scheffler/9781509830398"
+        "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
+        "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
+        "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
+        "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
+        "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
+        "https://www.londontheatre1.com/reviews/childrenstheatre/review-the-gruffalo-lyric-theatre/",
+        "https://www.curtaincallreviews.co.uk/the-gruffalo",
+        "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
+        "https://www.ayoungertheatre.com/review-the-gruffalo/"
       ],
       "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 2,
       "missing": [
         {
-          "url": "https://www.showify.uk/shows/the-gruffalo",
-          "host": "showify.uk",
-          "knownOutletId": null,
+          "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "serpCensus": true
         },
         {
-          "url": "https://www.afridiziak.com/reviews/the-gruffalo-by-julia-donaldson/",
-          "host": "afridiziak.com",
-          "knownOutletId": "afridiziak-theatre-news",
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
+          "host": "londonmumsmagazine.com",
+          "knownOutletId": "londonmumsmagazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
+          "host": "curtaincallreviews.co.uk",
+          "knownOutletId": "curtain-call-reviews",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
+          "host": "britishtheatre.com",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.westend.com/shows/the-gruffalo/",
@@ -59379,9 +59343,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.waterstones.com/book/the-gruffalo/julia-donaldson/axel-scheffler/9781509830398",
-          "host": "waterstones.com",
-          "knownOutletId": null,
+          "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -59389,9 +59353,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "waterstones--unknown.json",
+              "file": "timeout-london--alex-plim.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.waterstones.com/book/the-gruffalo/julia-donaldson/axel-scheffler/9781509830398"
+              "urlInDir": "https://www.timeout.com/london/theatre/the-gruffalo-review-1"
             }
           ],
           "serpCensus": true
@@ -59447,90 +59411,182 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
             "arm": "scoped1",
-            "query": "\"The Gruffalo\" Scheffler review",
+            "query": "\"The Gruffalo\" review lyric",
             "page": 0,
             "geo": "gb",
             "ok": true,
             "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Gruffalo\" Scheffler review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
           {
             "arm": "naive-p0",
-            "query": "The Gruffalo TBA review",
+            "query": "The Gruffalo Lyric Theatre review",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
             "arm": "naive-p1",
-            "query": "The Gruffalo TBA review",
+            "query": "The Gruffalo Lyric Theatre review",
             "page": 1,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
             "arm": "naive-p2",
-            "query": "The Gruffalo TBA review",
+            "query": "The Gruffalo Lyric Theatre review",
             "page": 2,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           }
         ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 12,
         "error": null
       },
       "ingestResults": [
         {
-          "url": "https://www.showify.uk/shows/the-gruffalo",
-          "host": "showify.uk",
-          "outletId": "showify",
-          "provisional": true,
+          "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846851/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://www.afridiziak.com/reviews/the-gruffalo-by-julia-donaldson/",
-          "host": "afridiziak.com",
-          "outletId": "afridiziak-theatre-news",
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
           "provisional": false,
           "ok": true,
           "reason": null
+        },
+        {
+          "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
+          "host": "londonmumsmagazine.com",
+          "outletId": "londonmumsmagazine",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": false,
+          "reason": "⚠️  Scrapingdog pace (~942681/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
+          "host": "curtaincallreviews.co.uk",
+          "outletId": "curtain-call-reviews"
+        },
+        {
+          "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
+          "host": "britishtheatre.com",
+          "outletId": "british-theatre"
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
+          "host": "ayoungertheatre.com",
+          "outletId": "a-younger-theatre"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "showify.uk",
-            "outlet": "showify.uk",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.showify.uk/shows/the-gruffalo"
+            "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/"
           },
           {
-            "outletId": "afridiziak-theatre-news",
-            "outlet": "afridiziak-theatre-news",
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.afridiziak.com/reviews/the-gruffalo-by-julia-donaldson/"
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/"
+          },
+          {
+            "outletId": "londonmumsmagazine",
+            "outlet": "londonmumsmagazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/"
+          },
+          {
+            "outletId": "curtain-call-reviews",
+            "outlet": "curtain-call-reviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.curtaincallreviews.co.uk/the-gruffalo"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars"
+          },
+          {
+            "outletId": "a-younger-theatre",
+            "outlet": "a-younger-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ayoungertheatre.com/review-the-gruffalo/"
           },
           {
             "outletId": "westend.com",
@@ -59547,28 +59603,76 @@
             "url": "https://www.britannica.com/topic/The-Gruffalo"
           },
           {
-            "outletId": "waterstones.com",
-            "outlet": "waterstones.com",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.waterstones.com/book/the-gruffalo/julia-donaldson/axel-scheffler/9781509830398"
+            "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.showify.uk/shows/the-gruffalo",
-            "outletId": "showify.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "url": "https://www.londontheatre1.com/reviews/childrenstheatre/review-the-gruffalo-lyric-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
-            "url": "https://www.afridiziak.com/reviews/the-gruffalo-by-julia-donaldson/",
-            "outletId": "afridiziak-theatre-news",
+            "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
+            "outletId": "whatsonstage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
+            "outletId": "west-end-wilma",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
+            "outletId": "londonmumsmagazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
+            "outletId": "curtain-call-reviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
+            "outletId": "a-younger-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.westend.com/shows/the-gruffalo/",
@@ -59585,17 +59689,17 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.waterstones.com/book/the-gruffalo/julia-donaldson/axel-scheffler/9781509830398",
-            "outletId": "waterstones.com",
+            "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 1,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "the-guilty-west-end-2026",
@@ -64046,25 +64150,23 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-the-pass-is-not-the-heated-rivalry-we-want-but-the-one-we-deserve_1847996/",
         "https://culturesauce.com/the-pass-off-broadway-review/",
-        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/",
-        "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-        "https://1minutecritic.com/the-pass-la-mama-review-2026/",
-        "https://www.borninthecity.com/product/the-pass-off-broadway/"
+        "https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry-but-in-soccer-and-short-lived/"
       ],
       "dirFiles": 7,
       "dirClean": 6,
       "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-          "host": "borninthecity.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
           "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
           "count": 1
         }
       ],
@@ -64072,88 +64174,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Pass\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Pass\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Pass\" review ellen",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Pass Ellen Stewart Theatre at La MaMa review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
-      "ingestResults": [
-        {
-          "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-          "host": "borninthecity.com",
-          "outletId": "borninthecity",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~938110/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "borninthecity.com",
-            "outlet": "borninthecity.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.borninthecity.com/product/the-pass-off-broadway/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -64173,31 +64199,12 @@
             "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-04T17:28:30.029Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-05T18:30:44.177Z"
-          },
-          {
-            "url": "https://1minutecritic.com/the-pass-la-mama-review-2026/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-05T18:30:44.177Z"
-          },
-          {
-            "url": "https://www.borninthecity.com/product/the-pass-off-broadway/",
-            "outletId": "borninthecity.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T18:30:44.177Z"
           }
         ],
-        "liveCount": 5,
-        "candidateCount": 6
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-05T18:30:44.177Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "the-potluck-off-broadway-2026",
@@ -65091,22 +65098,22 @@
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/jul/17/the-smile-of-her-review-marylebone-theatre-london-christine-lahti",
         "https://www.londonpubtheatres.com/review-the-smile-of-her-at-marylebone-theatre-10th-july-29th-august",
-        "https://everything-theatre.co.uk/2026/07/review-the-smile-of-her-marylebone-theatre/",
-        "https://theatrevibe.co.uk/2026/07/18/review-the-smile-of-her-marylebone-theatre-2026/",
         "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
+        "https://www.westendtheatre.com/356091/shows/the-smile-of-her-tickets/",
+        "https://theatrevibe.co.uk/2026/07/18/review-the-smile-of-her-marylebone-theatre-2026/",
         "https://www.allthatdazzles.co.uk/post/review-the-smile-of-her-marylebone-theatre",
-        "https://playstosee.com/reviews/the-smile-of-her/",
-        "https://www.marylebonetheatre.com/productions/the-smile-of-her",
+        "https://everything-theatre.co.uk/2026/07/review-the-smile-of-her-marylebone-theatre/",
         "https://www.unmissabletheatre.co.uk/reviews/review-the-smile-of-her-at-marylebone-theatre",
-        "https://theatreandtonic.co.uk/blog/the-smile-of-her-marylebone-theatre-review",
+        "https://www.marylebonetheatre.com/productions/the-smile-of-her",
+        "https://playstosee.com/reviews/the-smile-of-her/",
         "https://www.pinkprincetheatre.com/post/review-the-smile-of-her-marylebone-theatre",
-        "https://www.showify.uk/shows/the-smile-of-her",
+        "https://theatreandtonic.co.uk/blog/the-smile-of-her-marylebone-theatre-review",
         "https://www.strandmagazine.co.uk/single-post/the-smile-of-her-a-beautiful-reflection-on-life-as-a-woman",
+        "http://boycottingtrends.blogspot.com/2026/08/theatre-review-smile-of-her-marleybone.html",
         "https://www.thestage.co.uk/reviews/the-smile-of-her-review-marylebone-theatre-london",
-        "https://www.kxtickets.com/whats-on/the-smile-of-her",
         "https://www.westendtheatre.com/356044/news/broadway-star-christine-lahti-brings-solo-play-the-smile-of-her-to-londons-marylebone-theatre/",
-        "https://www.whatsonstage.com/news/the-smile-of-her-at-marylebone-theatre-review_1727573/",
         "https://rhombusrota.co.uk/2026/07/24/the-smile-of-her-at-the-marylebone-theatre-review/",
+        "https://www.kxtickets.com/whats-on/the-smile-of-her",
         "https://www.thetimes.com/culture/theatre-dance/article/teeth-n-smiles-review-self-esteem-brings-jagged-drama-to-life-vrr7b0vz3",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/teeth-n-smiles-review-self-esteem-b2945628.html",
         "https://www.whatsonstage.com/news/teeth-n-smiles-with-rebecca-lucy-taylor-west-end-review_1716318/",
@@ -65118,8 +65125,8 @@
         "https://www.standard.co.uk/culture/theatre/teeth-n-smiles-duke-of-yorks-review-b1276552.html"
       ],
       "dirFiles": 22,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://www.londonpubtheatres.com/review-the-smile-of-her-at-marylebone-theatre-10th-july-29th-august",
@@ -65134,8 +65141,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.showify.uk/shows/the-smile-of-her",
-          "host": "showify.uk",
+          "url": "http://boycottingtrends.blogspot.com/2026/08/theatre-review-smile-of-her-marleybone.html",
+          "host": "boycottingtrends.blogspot.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -65202,9 +65209,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
+          "url": "https://www.westendtheatre.com/356091/shows/the-smile-of-her-tickets/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -65212,9 +65219,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "jonathan-baz--unknown.json",
+              "file": "westendtheatre--west-end-theatre.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html"
+              "urlInDir": "https://www.westendtheatre.com/356091/shows/the-smile-of-her-tickets/"
             }
           ],
           "serpCensus": true
@@ -65287,8 +65294,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 7,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -65298,7 +65305,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -65307,8 +65314,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -65318,7 +65325,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -65382,7 +65389,7 @@
           "outletId": "londonpubtheatres",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846775/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942577/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://www.marylebonetheatre.com/productions/the-smile-of-her",
@@ -65390,15 +65397,15 @@
           "outletId": "marylebonetheatre",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846776/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942578/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
-          "url": "https://www.showify.uk/shows/the-smile-of-her",
-          "host": "showify.uk",
-          "outletId": "showify",
+          "url": "http://boycottingtrends.blogspot.com/2026/08/theatre-review-smile-of-her-marleybone.html",
+          "host": "boycottingtrends.blogspot.com",
+          "outletId": "boycottingtrends",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846777/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942579/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         },
         {
           "url": "https://www.kxtickets.com/whats-on/the-smile-of-her",
@@ -65406,7 +65413,7 @@
           "outletId": "kxtickets",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846778/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942580/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -65428,11 +65435,11 @@
             "url": "https://www.marylebonetheatre.com/productions/the-smile-of-her"
           },
           {
-            "outletId": "showify.uk",
-            "outlet": "showify.uk",
+            "outletId": "boycottingtrends.blogspot.com",
+            "outlet": "boycottingtrends.blogspot.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.showify.uk/shows/the-smile-of-her"
+            "url": "http://boycottingtrends.blogspot.com/2026/08/theatre-review-smile-of-her-marleybone.html"
           },
           {
             "outletId": "kxtickets.com",
@@ -65484,11 +65491,11 @@
             "url": "https://www.standard.co.uk/culture/theatre/teeth-n-smiles-duke-of-yorks-review-b1276552.html"
           },
           {
-            "outletId": "jonathan-baz",
-            "outlet": "jonathan-baz",
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html"
+            "url": "https://www.westendtheatre.com/356091/shows/the-smile-of-her-tickets/"
           },
           {
             "outletId": "westendtheatre",
@@ -65507,8 +65514,8 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/07/review-the-smile-of-her-marylebone-theatre/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
+            "outletId": "jonathanbaz.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -65525,8 +65532,8 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://playstosee.com/reviews/the-smile-of-her/",
-            "outletId": "playstosee.com",
+            "url": "https://everything-theatre.co.uk/2026/07/review-the-smile-of-her-marylebone-theatre/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -65537,14 +65544,20 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-smile-of-her-marylebone-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://playstosee.com/reviews/the-smile-of-her/",
+            "outletId": "playstosee.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
             "url": "https://www.pinkprincetheatre.com/post/review-the-smile-of-her-marylebone-theatre",
             "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-smile-of-her-marylebone-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -65559,12 +65572,6 @@
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-smile-of-her-at-marylebone-theatre-review_1727573/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
             "url": "https://rhombusrota.co.uk/2026/07/24/the-smile-of-her-at-the-marylebone-theatre-review/",
@@ -65605,11 +65612,11 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.showify.uk/shows/the-smile-of-her",
-            "outletId": "showify.uk",
+            "url": "http://boycottingtrends.blogspot.com/2026/08/theatre-review-smile-of-her-marleybone.html",
+            "outletId": "boycottingtrends.blogspot.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.kxtickets.com/whats-on/the-smile-of-her",
@@ -65661,11 +65668,11 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
-            "outletId": "jonathan-baz",
+            "url": "https://www.westendtheatre.com/356091/shows/the-smile-of-her-tickets/",
+            "outletId": "westendtheatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.westendtheatre.com/356044/news/broadway-star-christine-lahti-brings-solo-play-the-smile-of-her-to-londons-marylebone-theatre/",
@@ -65675,10 +65682,10 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           }
         ],
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-04T13:35:42.946Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "the-traitors-live-experience-off-west-end-2026",
@@ -67085,7 +67092,7 @@
           "outletId": "yahoo",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~846286/day) projects exhaustion in ~4d, before the 30d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~942125/day) projects exhaustion in ~3d, before the 29d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
@@ -67338,7 +67345,7 @@
         "liveCount": 17,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -70501,27 +70508,53 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
+        "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
         "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
         "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
-        "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
+        "https://www.thereviewshub.com/trainspotting-the-musical-theatre-royal-haymarket-london/",
+        "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
+        "https://www.broadwayworld.com/westend/article/Review-TRAINSPOTTING-Theatre-Royal-Haymarket-20260723",
+        "https://www.nytimes.com/2026/07/23/arts/trainspotting-the-musical-review.html",
+        "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
+        "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
+        "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
+        "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
+        "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london",
+        "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
+        "https://www.westendbestfriend.co.uk/news/review-trainspotting-the-musical-theatre-royal-haymarket",
         "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
+        "https://www.londonboxoffice.co.uk/news/post/trainspotting-the-musical-theatre-royal-haymarket-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
         "https://www.standard.co.uk/culture/theatre/trainspotting-the-musical-review-b1290870.html",
-        "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
         "https://www.whatsonstage.com/news/trainspotting-the-musical-review-signal-failure_1727899/",
         "https://www.timeout.com/london/news/review-trainspotting-the-musical-at-theatre-royal-haymarket-072326"
       ],
-      "dirFiles": 50,
+      "dirFiles": 52,
       "dirClean": 28,
       "inReviewsJson": 28,
-      "missing": [],
-      "dirOnly": [
+      "missing": [
         {
-          "host": "theartsdesk.com",
-          "count": 2
+          "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
+          "host": "unmissabletheatre.co.uk",
+          "knownOutletId": "unmissabletheatre",
+          "serpCensus": true
         },
+        {
+          "url": "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london",
+          "host": "harrytheatrelife.co.uk",
+          "knownOutletId": "harry-theatre-life",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
+          "host": "crazychris.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
         {
           "host": "cityam.com",
           "count": 1
@@ -70532,22 +70565,6 @@
         },
         {
           "host": "independent.co.uk",
-          "count": 1
-        },
-        {
-          "host": "jonathanbaz.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "musicaltheatrereview.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
           "count": 1
         },
         {
@@ -70571,7 +70588,7 @@
           "count": 1
         },
         {
-          "host": "thereviewshub.com",
+          "host": "theatreandtonic.co.uk",
           "count": 1
         },
         {
@@ -70581,13 +70598,56 @@
         {
           "host": "thetimes.com",
           "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
+          "host": "theatre.reviews",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre--paul-lewis.json",
+              "flag": "roundup",
+              "urlInDir": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TRAINSPOTTING-Theatre-Royal-Haymarket-20260723",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--aliya-al-hassan.json",
+              "flag": "roundup",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-Roundup-Did-TRAINSPOTTING-THE-MUSICAL-Evoke-A-Lust-For-Life-20260723"
+            },
+            {
+              "file": "broadwayworld--gary-naylor.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-Roundup-Did-TRAINSPOTTING-THE-MUSICAL-Evoke-A-Lust-For-Life-20260723"
+            },
+            {
+              "file": "broadwayworld--team-bww.json",
+              "flag": "clean",
+              "urlInDir": "https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 7,
@@ -70643,11 +70703,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 6,
             "error": null
           },
           {
             "arm": "scoped1",
+            "query": "\"Trainspotting the musical\" review haymarket",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
             "query": "\"Trainspotting the musical\" Welsh review",
             "page": 0,
             "geo": "gb",
@@ -70658,51 +70728,108 @@
           },
           {
             "arm": "naive-p0",
-            "query": "Trainspotting the musical TBA review",
+            "query": "Trainspotting the musical Theatre Royal Haymarket review",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 2,
             "error": null
           },
           {
             "arm": "naive-p1",
-            "query": "Trainspotting the musical TBA review",
+            "query": "Trainspotting the musical Theatre Royal Haymarket review",
             "page": 1,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 4,
             "error": null
           },
           {
             "arm": "naive-p2",
-            "query": "Trainspotting the musical TBA review",
+            "query": "Trainspotting the musical Theatre Royal Haymarket review",
             "page": 2,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 5,
             "error": null
           }
         ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 18,
         "error": null
       },
+      "ingestResults": [
+        {
+          "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
+          "host": "unmissabletheatre.co.uk",
+          "outletId": "unmissabletheatre",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london",
+          "host": "harrytheatrelife.co.uk",
+          "outletId": "harry-theatre-life",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
+          "host": "crazychris.net",
+          "outletId": "crazychris",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "unmissabletheatre",
+            "outlet": "unmissabletheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket"
+          },
+          {
+            "outletId": "harry-theatre-life",
+            "outlet": "harry-theatre-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london"
+          },
+          {
+            "outletId": "crazychris.net",
+            "outlet": "crazychris.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket"
+          },
+          {
+            "outletId": "theatre.reviews",
+            "outlet": "theatre.reviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-TRAINSPOTTING-Theatre-Royal-Haymarket-20260723"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
           {
             "url": "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
             "outletId": "voicemag.uk",
@@ -70722,16 +70849,64 @@
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
+            "outletId": "telegraph.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/trainspotting-the-musical-theatre-royal-haymarket-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/07/23/arts/trainspotting-the-musical-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
+            "outletId": "jonathanbaz.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-trainspotting-the-musical-theatre-royal-haymarket",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/trainspotting-the-musical-theatre-royal-haymarket-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
@@ -70746,12 +70921,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.whatsonstage.com/news/trainspotting-the-musical-review-signal-failure_1727899/",
             "outletId": "whatsonstage.com",
             "state": "live",
@@ -70762,12 +70931,47 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
+            "outletId": "unmissabletheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london",
+            "outletId": "harry-theatre-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
+            "outletId": "crazychris.net",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
+            "outletId": "theatre.reviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-TRAINSPOTTING-Theatre-Royal-Haymarket-20260723",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 10
+        "liveCount": 16,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-04T12:40:15.327Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -71458,122 +71662,28 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--emily-wyrwa.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"We've Been Here Before: A One Woman Musical\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"We've Been Here Before: A One Woman Musical\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"We've Been Here Before: A One Woman Musical\" review soho",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "We've Been Here Before: A One Woman Musical SoHo Playhouse review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theatrely.com/post/lindsey-krafts-weve-been-here-before-a-one-woman-musical-to-premiere-this-summer-at-soho-playhouse",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T18:30:44.177Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-05T18:30:44.177Z"
+      "computedAt": "2026-08-05T20:33:15.309Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",

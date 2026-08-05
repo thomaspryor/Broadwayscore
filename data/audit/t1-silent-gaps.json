@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T18:31:21.003Z",
+  "generatedAt": "2026-08-05T20:33:16.049Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,9 +16,26 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 317.3290230555556,
+      "fileAgeHours": 319.3609788888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 276.63196305555556
+      "nonTerminalAgeHours": 278.6639202777778
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-08-03",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter",
+      "recovery": null,
+      "recoveryCount": 3,
+      "fix": "node scripts/ingest-review-from-url.js --show=now-you-see-me-live-west-end-2026 --url=https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-04T09:41:36.523Z",
+      "fileAgeHours": 34.86096083333333,
+      "gapSeenAt": "2026-08-05T20:33:16.049Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -33,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 7.772211666666666,
+      "fileAgeHours": 9.804168055555555,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 7.134146944444445
+      "nonTerminalAgeHours": 9.166104166666667
     }
   ],
   "contradictions": []
