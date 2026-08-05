@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-05T18:27:42.726Z",
+  "timestamp": "2026-08-05T19:25:52.705Z",
   "stats": {
-    "totalReviews": 41658,
-    "alreadyFlagged": 18116,
+    "totalReviews": 41662,
+    "alreadyFlagged": 18115,
     "dateGuardCatches": 115,
     "directorMismatch": 945,
     "tvFilmSignals": 1152,
-    "londonSignals": 813,
+    "londonSignals": 814,
     "offBroadwaySignals": 479,
     "yearMismatch": 88,
-    "noPublishDate": 3535
+    "noPublishDate": 3534
   },
   "findings": [
     {
@@ -38731,6 +38731,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "file": "visitlondon--unknown.json",
+      "publishDate": "2026-09-06",
+      "url": "https://www.visitlondon.com/things-to-do/event/51197213-now-you-see-me-live-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

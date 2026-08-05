@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T18:27:49.074Z",
+  "generatedAt": "2026-08-05T19:25:59.073Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1052,23 +1052,22 @@
       "status": "open",
       "slug": "disruption-off-broadway",
       "thumbnail": "/images/shows/disruption-off-broadway-2026/thumbnail.webp",
-      "siteScore": 61.46,
+      "siteScore": 61.32,
       "liveScore": 61,
-      "scoreDrift": -0.46000000000000085,
+      "scoreDrift": -0.3200000000000003,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 2,
       "t2": 7,
-      "t3": 2,
+      "t3": 3,
       "positive": 1,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "11/12 total",
           "T1:2/3",
           "hi-conf:1/8"
         ],
@@ -1146,10 +1145,6 @@
         {
           "name": "New York Post",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -1466,6 +1461,18 @@
           "t3": 2,
           "p": 1,
           "m": 7,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-05T19:25:59.073Z",
+          "rc": 12,
+          "s": 61.32,
+          "t1": 2,
+          "t2": 7,
+          "t3": 3,
+          "p": 1,
+          "m": 8,
           "n": 3,
           "bc": "waiting"
         }
