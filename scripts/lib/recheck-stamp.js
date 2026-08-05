@@ -13,6 +13,10 @@
 
 'use strict';
 
+// park-marker.js is also a zero-dependency leaf (no requires of its own), so
+// this stays cheap to load from the digest's path.
+const { PARK_MARKER_RE } = require('./park-marker');
+
 // `RECHECK-AFTER: 2026-08-08` — case-insensitive, date-only (parsed as
 // midnight UTC, i.e. the START of that day: the recheck becomes due the
 // instant that UTC day begins, not at its end — a deferred-effect claim like
@@ -56,11 +60,20 @@ function parseRecheckAfterFromCard(card) {
  * cards had exactly this bug). Call this on the final text right before
  * building the property value. Duplicating the stamp at the head is
  * harmless — a preview convenience; the original text is preserved after.
+ *
+ * Never hoists past an existing head `## Parked <date>` marker (park-marker.js):
+ * that marker's whole contract is being the literal first bytes of Outcome —
+ * classifyStuckCards checks it before ever looking for a stamp, and a stamp
+ * pushed in front of it would silently break the Parked exemption (a card
+ * parked via tab-close would misclassify as awaiting-recheck or critical
+ * instead of parked). A parked card's own Outcome is always short (see
+ * formatParkOutcome), so there's no legitimate need to hoist a stamp onto it.
  * @param {string} text
  * @returns {string}
  */
 function hoistRecheckAfterStamp(text) {
   const s = String(text || '');
+  if (PARK_MARKER_RE.test(s)) return s;
   const m = RECHECK_AFTER_RE.exec(s);
   if (!m || m.index === 0) return s;
   return `RECHECK-AFTER: ${m[1]}\n\n${s}`;

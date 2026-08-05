@@ -1,78 +1,56 @@
 {
-  "generatedAt": "2026-08-03T15:51:58.953Z",
+  "generatedAt": "2026-08-05T16:17:31.345Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "cat-cohen-broad-strokes-off-broadway-2026",
-    "the-car-man-west-end-2026",
-    "the-misanthrope-west-end-2026",
-    "spamalot-off-broadway-2026",
-    "sinatra-the-musical-west-end-2026"
+    "hit-machine-off-west-end-2026",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+    "tender-off-west-end-2026",
+    "rosie-odonnell-common-knowledge-off-broadway-2026",
+    "disruption-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
+      "showId": "hit-machine-off-west-end-2026",
+      "title": "Hit Machine",
+      "openingDate": "2026-07-15",
       "sampleState": "measured",
-      "sampleReason": "opened 8d ago",
-      "naiveQuery": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
+      "sampleReason": "opened 22d ago",
+      "naiveQuery": "Hit Machine Soho Theatre review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+          "url": "https://www.theguardian.com/stage/2026/jul/15/hit-machine-review-soho-theatre",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.newyorkcitytheatre.com/shows/lucillelorteltheater/cat-cohen-broad-strokes",
+          "url": "https://www.allthatdazzles.co.uk/post/review-hit-machine-soho-theatre",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.londonpubtheatres.com/review-hit-machine-by-jonathan-caren-at-soho-theatre-8-july-15-august-2026",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 14
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 7d ago",
-      "naiveQuery": "The Car Man Sadler's Wells review",
-      "candidates": [
-        {
-          "url": "https://www.timeout.com/london/dance/the-car-man",
+          "url": "https://www.harrytheatrelife.co.uk/post/review-hit-machine-soho-theatre-london",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
+          "url": "https://everything-theatre.co.uk/2026/07/review-hit-machine-soho-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://sohotheatre.com/events/hit-machine/",
+          "state": "excluded",
+          "reason": "rejectionReason"
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/hit-machine-by-jonathan-caren-soho-theatre",
           "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/show/45797-the-car-man",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
-          "state": "live",
           "reason": null
         }
       ],
@@ -82,24 +60,19 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 47
+      "onDiskCount": 15
     },
     {
-      "showId": "the-misanthrope-west-end-2026",
-      "title": "The Misanthrope",
-      "openingDate": "2026-06-23",
+      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+      "title": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse)",
+      "openingDate": "2026-07-08",
       "sampleState": "measured",
-      "sampleReason": "opened 42d ago",
-      "naiveQuery": "The Misanthrope National Theatre (Lyttelton) review",
+      "sampleReason": "opened 29d ago",
+      "naiveQuery": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse) Soho Playhouse review",
       "candidates": [
         {
-          "url": "https://www.nationaltheatre.org.uk/productions/the-misanthrope/",
+          "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
           "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.london-unattached.com/the-misanthrope-national-theatre/",
-          "state": "live",
           "reason": null
         }
       ],
@@ -109,28 +82,58 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 30
+      "onDiskCount": 11
     },
     {
-      "showId": "spamalot-off-broadway-2026",
-      "title": "Spamalot",
-      "openingDate": "2026-06-27",
+      "showId": "tender-off-west-end-2026",
+      "title": "Tender",
+      "openingDate": "2026-07-09",
       "sampleState": "measured",
-      "sampleReason": "opened 38d ago",
-      "naiveQuery": "Spamalot State Theatre New Jersey review",
+      "sampleReason": "opened 28d ago",
+      "naiveQuery": "Tender Bush Theatre review",
       "candidates": [
         {
-          "url": "https://www.newbrunswicktheater.com/shows/state-theatre/monty-pythons-spamalot",
+          "url": "https://www.theguardian.com/stage/2026/jul/15/tender-review-bush-theatre-london",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-tender-bush-theatre",
+          "state": "excluded",
+          "reason": "wrongShow"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/tender-review-bush-theatre-2026",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.thereviewshub.com/tender-bush-theatre-london/",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://www.towntopics.com/2026/06/03/monty-pythons-spamalot-comes-to-state-theatre-nj/",
-          "state": "gap",
+          "url": "https://lovelondonloveculture.com/2026/07/19/review-round-up-tender-bush-theatre/",
+          "state": "excluded",
+          "reason": "isRoundupArticle"
+        },
+        {
+          "url": "https://saltertonartsreview.com/2026/07/tender-bush-theatre-london/",
+          "state": "live",
           "reason": null
         },
         {
-          "url": "https://middlesexcountyculture.com/event/spamalot/",
+          "url": "https://www.londontheatre1.com/reviews/tender-bush-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/07/review-tender-bush-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.bushtheatre.co.uk/event/tender-2026/",
           "state": "gap",
           "reason": null
         }
@@ -138,64 +141,85 @@
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 9
         }
       ],
-      "onDiskCount": 38
+      "onDiskCount": 35
     },
     {
-      "showId": "sinatra-the-musical-west-end-2026",
-      "title": "Sinatra The Musical",
-      "openingDate": "2026-06-24",
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "title": "Rosie O'Donnell: Common Knowledge",
+      "openingDate": "2026-07-25",
       "sampleState": "measured",
-      "sampleReason": "opened 41d ago",
-      "naiveQuery": "Sinatra The Musical Aldwych Theatre review",
+      "sampleReason": "opened 12d ago",
+      "naiveQuery": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
       "candidates": [
         {
-          "url": "http://theartsdesk.com/theatre/sinatra-musical-aldwych-theatre-review-not-exactly-frank-about-frank",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://monstagigz.com/2026/06/07/theatre-review-sinatra-the-musical-starring-joel-harper-jackson-at-the-aldwych-theatre/",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://loureviews.blog/2026/06/25/musical-review-sinatra-the-musical-aldwych/",
+          "url": "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://musicaltheatrereview.com/sinatra-the-musical-aldwych-theatre/",
+          "url": "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.thereviewshub.com/sinatra-the-musical-aldwych-london/",
-          "state": "live",
-          "reason": null
+          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
+          "state": "excluded",
+          "reason": "wrongProduction"
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 10
+          "raw": 9
         }
       ],
-      "onDiskCount": 39
+      "onDiskCount": 10
+    },
+    {
+      "showId": "disruption-off-broadway-2026",
+      "title": "Disruption",
+      "openingDate": "2026-08-02",
+      "sampleState": "measured",
+      "sampleReason": "opened 4d ago",
+      "naiveQuery": "Disruption The Romulus Linney Courtyard Theatre at The Pershing Square Signature Center review",
+      "candidates": [
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-disruption-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-september-27-2026/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/show/47049-disruption",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center",
+          "state": "excluded",
+          "reason": "aggregator-own-page"
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 9
+        }
+      ],
+      "onDiskCount": 22
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 9,
+    "gapCount": 6,
     "gapShows": [
-      "cat-cohen-broad-strokes-off-broadway-2026",
-      "the-car-man-west-end-2026",
-      "the-misanthrope-west-end-2026",
-      "spamalot-off-broadway-2026",
-      "sinatra-the-musical-west-end-2026"
+      "hit-machine-off-west-end-2026",
+      "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+      "tender-off-west-end-2026",
+      "disruption-off-broadway-2026"
     ]
   }
 }

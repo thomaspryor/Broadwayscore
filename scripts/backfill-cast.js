@@ -22,7 +22,8 @@
 const fs = require('fs');
 const path = require('path');
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
-const { shouldTombstone } = require('./lib/cast-tombstone');
+const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -85,6 +86,23 @@ async function main() {
   let shows = loadShows();
   console.log(`Total shows in database: ${shows.length}`);
 
+  // IBDB is Broadway-only. Off-Broadway/West End cast files come from
+  // web-search or manual entry, not IBDB — lookupIBDBCast market-skips them
+  // (found:false, fetchFailed:false), which shouldTombstone() reads as a
+  // genuine empty. Filtering here means this script never touches
+  // independently-sourced non-Broadway cast data (task #712 — the crocodile
+  // wipe: an off-west-end show with real web-search cast data got tombstoned
+  // by this exact path). Exempted for --show-filter so a targeted test run
+  // can still probe a specific non-Broadway show.
+  if (!showFilter) {
+    const beforeMarket = shows.length;
+    shows = shows.filter(isBroadwayCategory);
+    const skippedMarket = beforeMarket - shows.length;
+    if (skippedMarket > 0) {
+      console.log(`Skipping ${skippedMarket} non-Broadway shows (IBDB is Broadway-only)`);
+    }
+  }
+
   // Apply filters
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -134,6 +152,21 @@ async function main() {
 
   console.log('');
 
+  // Mass-wipe circuit breaker (--force only): count how many shows about to
+  // be reprocessed currently have a populated cast file, so a scraper
+  // regression that empties everything can be caught mid-run instead of
+  // silently landing (task #712 — this exact class wiped 29-30 shows twice).
+  let populatedBefore = 0;
+  if (force) {
+    for (const s of shows) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${s.id}.json`), 'utf8'));
+        if (Array.isArray(existing.openingNightCast) && existing.openingNightCast.length > 0) populatedBefore++;
+      } catch { /* no existing file or unreadable — not "populated" */ }
+    }
+  }
+  const wipedBackups = [];
+
   // Process shows
   let success = 0;
   let failed = 0;
@@ -154,6 +187,15 @@ async function main() {
       });
 
       if (!result.found || result.openingNightCast.length === 0) {
+        // Market skip (off-broadway/west-end show slipped past the earlier
+        // filter, e.g. via --show-filter): IBDB was never even queried, so
+        // this is "not applicable," not an empty — never tombstone.
+        if (result.skipped) {
+          console.log(`  ⏭️  Not on IBDB (non-Broadway) — leaving existing cast file untouched`);
+          failed++;
+          continue;
+        }
+
         // A TRANSIENT scrape failure must NOT be tombstoned — a tombstone
         // permanently blocks re-scraping (default runs skip shows with an
         // existing cast file), so one bad scrape would empty a show forever.
@@ -169,6 +211,21 @@ async function main() {
         console.log(`  ⚠️  No cast data found`);
         empty++;
 
+        // Back up the existing file before overwriting IF it was populated —
+        // the mass-wipe circuit breaker below needs to be able to restore it.
+        const existingPath = path.join(CAST_DIR, `${show.id}.json`);
+        let wasPopulated = false;
+        if (force && fs.existsSync(existingPath)) {
+          try {
+            const existingRaw = fs.readFileSync(existingPath, 'utf8');
+            const existingParsed = JSON.parse(existingRaw);
+            if (Array.isArray(existingParsed.openingNightCast) && existingParsed.openingNightCast.length > 0) {
+              wasPopulated = true;
+              wipedBackups.push({ path: existingPath, content: existingRaw });
+            }
+          } catch { /* unreadable existing file — nothing to back up */ }
+        }
+
         // Genuine empty (page loaded fine, production has no IBDB cast): write an
         // empty tombstone so we don't re-scrape a production that truly has none.
         writeCastFile(show.id, {
@@ -178,6 +235,14 @@ async function main() {
           openingNightCast: [],
           currentCast: null
         });
+
+        if (wasPopulated && shouldAbortMassWipe(populatedBefore, wipedBackups.length)) {
+          console.error(`\n🛑 MASS-WIPE CIRCUIT BREAKER: ${wipedBackups.length}/${populatedBefore} previously-populated cast files came back empty this run.`);
+          console.error(`   Restoring all ${wipedBackups.length} and aborting before more damage.`);
+          for (const b of wipedBackups) fs.writeFileSync(b.path, b.content);
+          try { await cleanup(); } catch { /* best-effort */ }
+          process.exit(1);
+        }
         continue;
       }
 
