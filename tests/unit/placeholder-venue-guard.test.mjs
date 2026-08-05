@@ -7,6 +7,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { isPlaceholderVenue, NEIGHBOURHOOD_BLOBS } = require('../../scripts/audit-placeholder-venues.js');
@@ -129,4 +131,28 @@ test('resolveTodayTixVenue (Broadway/WE write sites, card #1060) accepts real Br
 test('sanitizeVenueForWrite (OLT/LT/Broadway.org write sites, card #1060) rejects blank/placeholder scrape results', () => {
   assert.equal(sanitizeVenueForWrite(undefined), null); // no venueLink found on the page
   assert.equal(sanitizeVenueForWrite('TBA'), null); // JSON-LD location missing, old code did `|| 'TBA'`
+});
+
+// Card #1060 follow-up (/what-else finding): scripts/discover-historical-shows.js
+// had the exact same `venue: venue || 'TBA'` leak in its IBDB season-table
+// scraper — a live CI writer (discover-historical-shows.yml), not covered by
+// #994 or the rest of #1060 since it's a wholly separate discovery pipeline.
+// The function isn't exported (no clean unit-test seam without a heavier
+// jsdom fixture), so this is a wiring test in the same spirit as
+// discover-historical-shows-category.test.mjs: verify the guard is actually
+// imported and called, and that the raw `|| 'TBA'` string is gone.
+test('discover-historical-shows.js routes its venue write through sanitizeVenueForWrite (card #1060 follow-up)', () => {
+  const src = readFileSync(join(import.meta.dirname, '../../scripts/discover-historical-shows.js'), 'utf8');
+  assert.ok(
+    /require\(['"]\.\/lib\/venue-classification['"]\)/.test(src),
+    'discover-historical-shows.js no longer imports scripts/lib/venue-classification — the venue guard was removed'
+  );
+  assert.ok(
+    /sanitizeVenueForWrite\(/.test(src),
+    'discover-historical-shows.js no longer calls sanitizeVenueForWrite — the venue write is unguarded again'
+  );
+  assert.ok(
+    !/venue:\s*venue\s*\|\|\s*'TBA'/.test(src),
+    'discover-historical-shows.js still has the raw `venue: venue || \'TBA\'` leak'
+  );
 });
