@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T01:22:46.107Z",
+  "generatedAt": "2026-08-05T05:07:22.256Z",
   "windowDays": 45,
   "showsScanned": 61,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 300.18598944444443,
+      "fileAgeHours": 303.9293638888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 259.4889363888889
+      "nonTerminalAgeHours": 263.23231111111113
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-02T11:27:09.065Z",
-      "nonTerminalAgeHours": 61.92695611111111
+      "nonTerminalAgeHours": 65.67033083333334
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazysexycool-regional-2026",
       "firstSeen": "2026-08-03T15:59:32.808Z",
-      "fileAgeHours": 33.38702277777778,
+      "fileAgeHours": 37.1303975,
       "gapSeenAt": "2026-08-04T07:51:56.703Z",
-      "nonTerminalAgeHours": 17.513723333333335
+      "nonTerminalAgeHours": 21.257098055555556
     }
   ],
   "contradictions": []
