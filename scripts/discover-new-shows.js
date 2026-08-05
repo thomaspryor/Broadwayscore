@@ -228,6 +228,18 @@ function obFallbackFlags(show) {
   return { provisional: true, discoverySource: 'todaytix-venue-fallback' };
 }
 
+// Resolves a TodayTix-shaped show object's venue (string or { name }) through
+// sanitizeVenueForWrite, returning null when it's a placeholder/neighbourhood
+// blob rather than resurrecting one via `|| 'TBA'`. TodayTix's venue field is
+// not guaranteed to be a real venue name — it returned "Soho/Tribeca" for
+// Jest to Impress, which every prior call site here wrote straight into
+// shows.json unguarded (card #994 S0 remainder: the guard must cover every
+// writer, not just the ShowScore-scrape path traced in S0-T2).
+function resolveTodayTixVenue(show) {
+  const raw = typeof show.venue === 'string' ? show.venue : show.venue?.name;
+  return sanitizeVenueForWrite(raw);
+}
+
 // True when a TodayTix venue (string or { name }) is one of the 41 official
 // Broadway houses. Lets discovery rescue Broadway shows TodayTix lists without
 // the "Broadway" subcat (e.g. Other Desert Cities @ Hudson Theatre, 2026-05-29).
@@ -345,9 +357,20 @@ async function fetchShowsFromTodayTix() {
 
     const previewsStart = sanitizeTodayTixDate(show.startDate, title);
 
+    // TodayTix's own venue field can be a neighbourhood blob ("Soho/Tribeca")
+    // rather than a real venue name — that's how jest-to-impress-off-broadway
+    // landed with a placeholder (card #994 S0 remainder). Defer this show to
+    // the next daily run rather than write a placeholder; TodayTix is polled
+    // live each run, so nothing is lost, only delayed.
+    const obVenue = resolveTodayTixVenue(show);
+    if (!obVenue) {
+      if (verbose) console.log(`  [SKIP] "${title}" — TodayTix venue "${(typeof show.venue === 'string' ? show.venue : show.venue?.name) || ''}" is a placeholder/blob, deferring to next run (card #994)`);
+      continue;
+    }
+
     showsList.push({
       title,
-      venue: (typeof show.venue === 'string' ? show.venue : show.venue?.name) || 'TBA',
+      venue: obVenue,
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: null,
       previewsStartDate: previewsStart,
@@ -406,12 +429,21 @@ async function fetchShowsFromPlaybillOB() {
   const dropped = gateShape.length - kept.length;
   console.log(`Playbill OB: ${gateShape.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
 
-  return kept.map(c => {
+  const transformed = kept.map(c => {
     const e = c._entry;
     const previewsStart = e.firstPreview || null;
+    // A curated Playbill listing rarely omits the venue, but when it does,
+    // don't write the placeholder — defer the entry to the next run instead
+    // (card #994 S0 remainder: every writer must route through the guard,
+    // not just the ones already traced).
+    const venue = sanitizeVenueForWrite(e.venue);
+    if (!venue) {
+      if (verbose) console.log(`  [SKIP] "${e.title}" — Playbill OB venue "${e.venue || ''}" is a placeholder/blob, deferring to next run (card #994)`);
+      return null;
+    }
     return {
       title: e.title,
-      venue: e.venue || VENUE_PLACEHOLDER,
+      venue,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: e.opening || null,
       previewsStartDate: previewsStart,
@@ -421,6 +453,7 @@ async function fetchShowsFromPlaybillOB() {
       source: 'playbill-ob',
     };
   });
+  return transformed.filter(Boolean);
 }
 
 // TodayTix London API - location=2 for London West End
@@ -1231,7 +1264,11 @@ async function fetchShowScoreStatus(showScoreUrl) {
     const venueFull = venueLink?.textContent?.trim() || '';
     // Strip "NYC: " or "London: " prefix
     const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
-    const venue = sanitizeVenueForWrite(venueRaw) || 'TBA';
+    // null (never the literal string 'TBA') when rejected — a caller that
+    // resurrects the placeholder via `|| 'TBA'` reopens the exact leak this
+    // guard exists to close (S0 remainder, card #994: isla-off-broadway-2026
+    // landed with venue:'TBA' via this exact `|| 'TBA'` fallback).
+    const venue = sanitizeVenueForWrite(venueRaw);
 
     // Extract runtime from second segment (between delimiters)
     const delimiters = topLine.querySelectorAll('.show-page-v2__info-top-line-delimiter');
@@ -1396,7 +1433,18 @@ async function consumeShowScoreCandidatesFile() {
         openingDateSource = openingDate ? 'todaytix' : null;
       }
 
-      const venueName = (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA';
+      // This branch previously wrote ttShow.venue straight through with no
+      // guard at all (unlike the ShowScore-only branch below, which already
+      // routed through sanitizeVenueForWrite). TodayTix's own venue field
+      // can be a neighbourhood blob too — that's exactly how
+      // jest-to-impress-off-broadway-2026 landed with venue:"Soho/Tribeca"
+      // (card #994 S0 remainder). Route through the same guard and defer
+      // (don't consume the candidate) rather than write a placeholder.
+      const venueName = resolveTodayTixVenue(ttShow);
+      if (!venueName) {
+        console.log(`  [SKIP] "${candidate.title}" — TodayTix venue "${(typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || ''}" is a placeholder/blob, deferring to next run (card #994)`);
+        continue;
+      }
       // Genre: tag non-play/musical performance types (dance/magic/comedy/cabaret/
       // concert/circus) so the WE/OWE routing keeps them off the West End
       // plays/musicals listing and on the Off-West End hub (see src/lib/genre.ts).
@@ -1436,7 +1484,17 @@ async function consumeShowScoreCandidatesFile() {
         continue;
       }
 
-      const venue = ssData?.venue || 'TBA';
+      // ssData.venue is already sanitized (null when unknown/placeholder —
+      // see fetchShowScoreStatus). Don't resurrect 'TBA' here: writing the
+      // show now with a placeholder venue is exactly the S0 leak (card
+      // #994, isla-off-broadway-2026). Defer instead — the candidate stays
+      // unconsumed in show-score-candidates.json and gets retried on the
+      // next daily run, once ShowScore/TodayTix can supply a real venue.
+      const venue = ssData?.venue || null;
+      if (!venue) {
+        console.log(`  [SKIP] "${candidate.title}" — no verified venue yet (ShowScore ${ssData ? 'venue is a placeholder/blob' : 'fetch failed'}), deferring to next run (card #994)`);
+        continue;
+      }
       const openingDate = ssData?.openingDate || null;
       const openingDateSource = openingDate ? 'showscore' : null;
       const closingDate = ssData?.closingDate || null;
@@ -2403,6 +2461,7 @@ module.exports = {
   obFallbackFlags,
   bwayFallbackFlags,
   isBroadwayHouse,
+  resolveTodayTixVenue,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
   VENUE_LISTING_PAGES,
