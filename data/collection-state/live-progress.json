@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-05T11:03:00.581Z",
-  "processed": 28,
-  "failed": 122,
-  "successRate": "18.7%",
+  "updatedAt": "2026-08-05T11:28:48.514Z",
+  "processed": 30,
+  "failed": 161,
+  "successRate": "15.7%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 21,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 6,
-    "archiveToday": 0,
+    "brightdata": 7,
+    "archiveToday": 6,
     "archive": 1
   },
   "browserbaseSessions": 3,
@@ -42,6 +42,39 @@
       "event": "bb-session",
       "session": "66a66d8f",
       "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    },
+    {
+      "t": "2026-08-05T11:20:33.133Z",
+      "event": "bb-session",
+      "session": "d383a18d",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T11:20:33.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T11:20:49.123Z",
+      "event": "bb-session",
+      "session": "7204dee7",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-05T11:20:49.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-05T11:21:37.428Z",
+      "event": "bb-session",
+      "session": "80383032",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-05T11:21:37.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
