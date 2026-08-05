@@ -1,18 +1,44 @@
 {
-  "generatedAt": "2026-08-05T07:41:56.855Z",
+  "generatedAt": "2026-08-05T16:23:06.017Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "3ca185465d570f41b1821c506533536e4be0c51a",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "redSince": null,
-  "redForHours": null,
+  "latestRunHeadSha": "efe7457d3188443a9785c53a456cca47483953a4",
+  "state": "RED",
+  "consecutiveFailures": 2,
+  "redSince": "2026-08-05T14:09:09Z",
+  "redForHours": 2.232504722222222,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-04T23:54:19Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 76,
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "latestFailedRunId": "31023760854",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31023760854",
+  "decidedRuns": 75,
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit review contamination"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "tests/unit/health-check-batch-state.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 1406 - batchStateResult: 24h boundary is still warn, 24.5h flips to error"
+    }
+  ],
+  "topFailingJob": "Data Validation"
 }

@@ -1,20 +1,15 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-04T07:41:59.124Z",
+  "lastChecked": "2026-08-05T16:22:45.118Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
       "status": "error",
-      "message": "Test Suite failed 10 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Deploy to Vercel",
-      "status": "warn",
-      "message": "Deploy to Vercel failed 5 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Opening Night Poller — auto failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
