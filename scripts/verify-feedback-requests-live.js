@@ -40,6 +40,20 @@ const {
 const LEDGER_PATH = path.join(__dirname, '../data/audit/feedback-request-ledger.json');
 const REPO = 'thomaspryor/Broadwayscore';
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `verify-feedback-requests-live.js — confirm open content requests are LIVE on the site
+
+Usage:
+  node scripts/verify-feedback-requests-live.js [--dry-run] [--base=URL]
+
+  --dry-run    evaluate + print, never email and never close a tracking issue
+  --base=URL   site to check against (default https://broadwayscorecard.com)
+
+Env: RESEND_API_KEY, OWNER_EMAIL (required unless --dry-run)
+     GH_TOKEN / GITHUB_TOKEN (optional — closes the tracking issue when live)
+`;
+
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const BASE = (args.find((a) => a.startsWith('--base=')) || '--base=https://broadwayscorecard.com').split('=')[1];
@@ -246,8 +260,14 @@ async function main() {
 module.exports = { buildEmail, resolveEntryShowId };
 
 if (require.main === module) {
-  main().catch((err) => {
-    console.error(`::error::verify-feedback-requests-live crashed: ${err.message}`);
-    process.exit(1);
-  });
+  // --help must short-circuit BEFORE main() does any network calls, ledger
+  // reads, email sends, or GitHub issue closes (task #498 class).
+  if (hasHelpFlag(args)) {
+    console.log(USAGE);
+  } else {
+    main().catch((err) => {
+      console.error(`::error::verify-feedback-requests-live crashed: ${err.message}`);
+      process.exit(1);
+    });
+  }
 }
