@@ -1810,6 +1810,95 @@ function checkPushRetryDeadman() {
   }];
 }
 
+// --- Category I3: Infra-review gate telemetry (task #1095) ---
+//
+// The #1079 gate (~/.claude/hooks/infra-plan-review-gate.sh,
+// scripts/lib/infra-review-scope.js) writes every warn/block to
+// data/audit/infra-review-gate.jsonl — gitignored, per-machine, read by
+// nothing until now. A session that ran a real /plan-review and one that
+// typed "NO-PLAN-REVIEW: whatever" both look like silence from the owner's
+// side. Card #672 named the honest observable: the ratio of real
+// pre-implementation reviews (phase:'plan' verdicts in
+// .claude/review-verdicts.jsonl) to bypasses. Pure counting logic lives in
+// scripts/lib/infra-review-digest.js (tested by
+// scripts/tests/infra-review-digest.test.mjs) — this just reads the two
+// ledgers and hands them over.
+
+function readJsonlBestEffort(absPath) {
+  let raw;
+  try {
+    raw = fs.readFileSync(absPath, 'utf8');
+  } catch {
+    return [];
+  }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* tolerate partial line */ }
+  }
+  return out;
+}
+
+// Both ledgers are written by ~/.claude/hooks/infra-plan-review-gate.sh /
+// scripts/lib/review-gate.mjs at the MAIN checkout root — resolved via
+// `git rev-parse --git-common-dir`, not the invoking script's own directory,
+// specifically so a worktree session's writes land somewhere every other
+// worktree (and this check) can see (infra-review-scope.js header, and
+// review-gate.mjs's canonicalRoot()). This file is __dirname-relative by
+// default (matching every other check here), which resolves to the WRONG
+// directory when health-check.js itself runs from inside a worktree — the
+// overwhelmingly common case per this repo's own worktree-first mandate.
+// Reading via __dirname alone would make this check see nothing even on the
+// same machine, in the same run, that just wrote real events.
+function infraReviewLedgerRoot() {
+  try {
+    const common = execSync('git rev-parse --git-common-dir', { cwd: __dirname, encoding: 'utf8' }).trim();
+    if (!common) return path.join(__dirname, '..');
+    // `common` is already relative to __dirname (git was invoked with
+    // cwd: __dirname) — joining it against __dirname alone resolves it
+    // correctly, matching review-gate.mjs's canonicalRoot(). An earlier
+    // version prepended an extra '..' here, which double-counted the
+    // "go up one level" already baked into a relative --git-common-dir
+    // result (e.g. "../.git") and landed one directory ABOVE the actual
+    // repo root for any plain (non-worktree) checkout — silently wrong
+    // only for the primary Mac Studio use case, since worktree common-dir
+    // happens to come back absolute and skip this branch entirely
+    // (caught by ship-check's adversarial review, task #1095).
+    const abs = path.isAbsolute(common) ? common : path.join(__dirname, common);
+    return path.dirname(abs);
+  } catch {
+    return path.join(__dirname, '..');
+  }
+}
+
+function checkInfraReviewGate() {
+  const ledgerRoot = infraReviewLedgerRoot();
+  const gatePath = path.join(ledgerRoot, 'data', 'audit', 'infra-review-gate.jsonl');
+  const verdictsPath = path.join(ledgerRoot, '.claude', 'review-verdicts.jsonl');
+  // Both ledgers are gitignored, per-machine files the local
+  // infra-plan-review-gate.sh hook writes only on a dev machine — a fresh CI
+  // checkout will never have them. Reporting the same "no edits observed"
+  // pass message in that case would be indistinguishable from a genuinely
+  // clean week: exactly the vacuous-gate failure class (task #1075, #1063-69)
+  // this file elsewhere insists on failing loud for. Say plainly that this
+  // environment can't see the telemetry instead of silently passing.
+  if (!fs.existsSync(gatePath) && !fs.existsSync(verdictsPath)) {
+    return [{
+      name: 'Infra-review: gate telemetry',
+      status: 'warn',
+      message: 'No local infra-review telemetry visible from this environment — data/audit/infra-review-gate.jsonl and .claude/review-verdicts.jsonl are gitignored, per-machine files the #1079 hook writes only where it runs. This check cannot confirm the plan-review gate is being used or bypassed from here.',
+      hint: 'Run `node scripts/health-check.js` on the machine where the hook actually fires to see real counts. A CI-visible rollup (so the scheduled digest sees this too) is tracked as a follow-up.',
+    }];
+  }
+  const { computeInfraReviewDigest } = require('./lib/infra-review-digest.js');
+  const gateEvents = readJsonlBestEffort(gatePath);
+  const planVerdicts = readJsonlBestEffort(verdictsPath);
+  return [runCheck('Infra-review: gate telemetry', () => computeInfraReviewDigest({
+    gateEvents, planVerdicts, now: Date.now(),
+  }))];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -3321,6 +3410,7 @@ async function main() {
     ...(await checkStuckWork()),
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
+    ...checkInfraReviewGate(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
