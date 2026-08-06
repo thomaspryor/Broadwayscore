@@ -120,6 +120,7 @@ const PROTECTED_FIELDS = [
   'wrongShowOverrideAt',
   'wrongShowNote',
   'wrongShowAutoCleared',
+  'wrongShowAutoClearedAt',
   'wrongProductionAutoCleared',
   'wrongProductionAutoClearedAt',
   'wrongProductionReason',

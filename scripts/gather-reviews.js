@@ -3239,10 +3239,59 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Load show metadata early — needed to auto-detect post-opening context BEFORE the
   // merge loop runs. Also reused by the date guard and placeholder marking below.
   let _showMeta = null;
+  let _allShows = null;
   try {
     const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
-    _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
+    _allShows = showsJSON.shows || [];
+    _showMeta = _allShows.find(s => s.id === showId) || null;
   } catch (e) {}
+
+  // CROSS-MARKET WRITE GUARD (class A, zero-tolerance).
+  //
+  // audit-review-contamination has always DETECTED this class; nothing blocked
+  // it at write time. On 2026-08-05 a gather for the La Jolla tryout
+  // 'the-outsiders-world-premiere-regional-2023' wrote three reviews of the
+  // BROADWAY production — each dated exactly on the Broadway opening
+  // (0 days from it, 401 from the tryout's) — so the tryout page would have
+  // shown a user another production's reviews. The three already existed on
+  // the-outsiders-2024; they were pure misattributed duplicates.
+  //
+  // Uses classifyClassAContamination(), the SAME predicate the audit flags on,
+  // so the detector and the preventer can never disagree about what class A is.
+  // Title-grouped via buildSiblingOpeningsMap, so it only ever considers
+  // same-title productions in other markets.
+  //
+  // This matters most for tryout/transfer pairs, which is exactly the shape the
+  // feedback pipeline now adds on request — a regional show and its Broadway
+  // transfer share a title, and roundup/SERP discovery for one readily surfaces
+  // the other's reviews.
+  if (_showMeta && _allShows && reviewData && reviewData.publishDate) {
+    try {
+      const { classifyClassAContamination, buildSiblingOpeningsMap } =
+        require('./lib/cross-market-contamination');
+      const sibMap = buildSiblingOpeningsMap(_allShows, (d) => (d ? new Date(d) : null));
+      const sibs = sibMap.get(showId) || [];
+      if (sibs.length) {
+        const v = classifyClassAContamination(
+          new Date(reviewData.publishDate),
+          _showMeta.openingDate ? new Date(_showMeta.openingDate) : null,
+          sibs.map((x) => (x && x.opening ? x.opening : x))
+        );
+        if (v.isClassA) {
+          console.log(
+            `    \u2717 Skipping ${filename}: cross-market contamination — published ` +
+            `${Math.round(v.sibDiff)}d from a same-title sibling's opening but ` +
+            `${Math.round(v.thisDiff)}d from this show's. Belongs to the sibling.`
+          );
+          return 'crossMarketContamination';
+        }
+      }
+    } catch (e) {
+      // Never let the guard's own failure block a legitimate write — the audit
+      // still catches class A after the fact, which is the pre-existing behaviour.
+      console.log(`    (cross-market guard skipped: ${e.message})`);
+    }
+  }
 
   // Auto-detect post-opening context: if caller didn't explicitly pass fromPostOpening
   // but the show has already opened, treat all merges as post-opening so placeholder

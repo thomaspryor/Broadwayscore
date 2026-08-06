@@ -1,3 +1,4 @@
+scripts/verify-contamination-gate.test.mjs
 scripts/audit-alert-senders.test.mjs
 scripts/audit-audience-buzz-contamination.test.mjs
 scripts/audit-card-verifiability.test.mjs
@@ -45,6 +46,7 @@ scripts/produce-coverage-digest-snapshot.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
 scripts/tests/headless-dispatchability.test.mjs
+scripts/tests/observable-before-absence.test.mjs
 scripts/tests/trunk-status.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
@@ -141,6 +143,7 @@ tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
 tests/unit/cross-market-contamination.test.mjs
+tests/unit/cross-market-write-guard.test.mjs
 tests/unit/cross-production-guards.test.mjs
 tests/unit/cross-show-url-cv-authority.test.mjs
 tests/unit/cross-show-url-reroute.test.mjs
@@ -150,6 +153,7 @@ tests/unit/date-utils.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
 tests/unit/digest-escalation.test.mjs
+tests/unit/digest-row-clip.test.mjs
 tests/unit/discover-historical-shows-category.test.mjs
 tests/unit/discover-new-shows-gates.test.mjs
 tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
@@ -215,6 +219,7 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/lint-committed-pii.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
 tests/unit/llm-scoring-rebuild-parity.test.mjs
