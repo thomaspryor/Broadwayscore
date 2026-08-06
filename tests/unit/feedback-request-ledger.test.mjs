@@ -6,15 +6,18 @@
 // "not satisfied" when the evidence is absent or unrecognised.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
   buildEntry,
   evaluateEntry,
+  describeReview,
   staleEntries,
   mergeEntries,
   STALE_AFTER_DAYS,
+  MAX_NAMED_REVIEWS,
 } = require('../../scripts/lib/feedback-request-ledger.js');
 
 // Real compact payload from broadwayscorecard.com/data/shows/{id}.json:
@@ -105,4 +108,70 @@ test('re-reporting the same request does not double-track it', () => {
 test('mergeEntries tolerates a missing or malformed ledger', () => {
   assert.equal(mergeEntries(null, []).ledger.entries.length, 0);
   assert.equal(mergeEntries({ entries: 'nope' }, []).ledger.entries.length, 0);
+});
+
+// ---------------------------------------------------------------------------
+// Reporting content (2026-08-05 owner feedback on the first real email: the
+// "see the page" link 404'd, the body named a count instead of a review, and a
+// stuck request gave them nothing to click).
+// ---------------------------------------------------------------------------
+
+// Real review row from broadwayscorecard.com/data/shows/{id}.json.
+const REVIEW = {
+  cn: 'Pam Kragen', o: 'San Diego Union-Tribune', s: 79, d: '2025-03-03',
+  u: 'https://www.sandiegouniontribune.com/2025/03/03/review-visceral/',
+};
+
+test('a satisfied review request names the review — critic, outlet, date', () => {
+  const entry = buildEntry({ kind: 'missing-reviews', showId: 'lincoln', reviewCountAtRequest: 0 }, { submissionId: 's' });
+  const { satisfied, reviews } = evaluateEntry(entry, { rv: [REVIEW] });
+  assert.equal(satisfied, true);
+  assert.equal(reviews.length, 1);
+  assert.match(reviews[0].text, /Pam Kragen/);
+  assert.match(reviews[0].text, /San Diego Union-Tribune/);
+  assert.match(reviews[0].text, /2025-03-03/);
+  assert.equal(reviews[0].url, REVIEW.u);
+});
+
+test('only the newly-added reviews are named, newest first', () => {
+  const entry = buildEntry({ kind: 'missing-reviews', showId: 'x', reviewCountAtRequest: 1 }, { submissionId: 's' });
+  const { reviews } = evaluateEntry(entry, { rv: [
+    { o: 'Old', d: '2025-01-01' },
+    { o: 'Newest', d: '2025-06-01' },
+    { o: 'Middle', d: '2025-03-01' },
+  ] });
+  assert.deepEqual(reviews.map((r) => r.text.split(' · ')[0]), ['Newest', 'Middle'],
+    'two were added on top of the one that existed — name those two, newest first');
+});
+
+test('naming is capped so a big backfill cannot produce an unreadable wall', () => {
+  const entry = buildEntry({ kind: 'missing-reviews', showId: 'x', reviewCountAtRequest: 0 }, { submissionId: 's' });
+  const rv = Array.from({ length: 20 }, (_, i) => ({ o: `Outlet ${i}`, d: `2025-01-${String(i + 1).padStart(2, '0')}` }));
+  assert.equal(evaluateEntry(entry, { rv }).reviews.length, MAX_NAMED_REVIEWS);
+});
+
+test('a review with no byline or date still renders, without printing undefined', () => {
+  const d = describeReview({ o: 'The Stage' });
+  assert.equal(d.text, 'The Stage');
+  assert.equal(d.url, null);
+  assert.equal(describeReview({ cn: 'Unknown', o: 'BWW' }).text, 'BWW',
+    '"Unknown" is the pipeline\'s placeholder byline, not a critic to name');
+  assert.equal(describeReview(null), null);
+});
+
+test('an unsatisfied request names no reviews — nothing to claim yet', () => {
+  const entry = buildEntry({ kind: 'missing-reviews', showId: 'x', reviewCountAtRequest: 3 }, { submissionId: 's' });
+  assert.deepEqual(evaluateEntry(entry, { rv: [REVIEW] }).reviews, []);
+  assert.deepEqual(evaluateEntry(entry, null).reviews, []);
+});
+
+test('no owner email address is ever written into this public-repo module', () => {
+  // The ledger file this module writes is committed to a PUBLIC repo, and the
+  // module itself once carried a derived `+claude` owner alias. Neither the
+  // address nor a way to reconstruct it belongs here (CLAUDE.md §11).
+  const src = fs.readFileSync(
+    new URL('../../scripts/lib/feedback-request-ledger.js', import.meta.url), 'utf8'
+  );
+  assert.doesNotMatch(src, /[\w.+-]+@(?:gmail|googlemail|outlook|yahoo)\./i,
+    'a personal email address must never be committed here');
 });

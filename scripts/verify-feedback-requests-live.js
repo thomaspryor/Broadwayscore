@@ -115,56 +115,255 @@ function resolveEntryShowId(entry, shows) {
   )[0].id;
 }
 
+/**
+ * The show's page on the live site.
+ *
+ * The route is /show/{slug} — SINGULAR. This said /shows/ until 2026-08-05 and
+ * every "see the page" link the owner was sent 404'd, which is worse than no
+ * link: it reads as "your fix didn't ship" for a request that had shipped.
+ * There is no /shows/[slug] route in src/app — only src/app/show/[slug].
+ */
 function showUrl(entry, showId, shows) {
   const show = (shows || []).find((s) => s && s.id === showId);
   const slug = show?.slug || showId;
-  return `${BASE}/shows/${slug}`;
+  return `${BASE}/show/${slug}`;
+}
+
+function githubJSON(apiPath) {
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  return new Promise((resolve) => {
+    const headers = {
+      'User-Agent': 'broadwayscorecard-feedback-verifier',
+      Accept: 'application/vnd.github+json',
+    };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const req = https.get(`https://api.github.com${apiPath}`, { headers, timeout: 20000 }, (res) => {
+      if (res.statusCode < 200 || res.statusCode >= 300) { res.resume(); return resolve(null); }
+      let body = '';
+      res.on('data', (c) => (body += c));
+      res.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve(null); } });
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+  });
 }
 
 /**
- * Build the routeAlert() payload for one verification pass.
+ * Recent runs of one workflow, newest first.
  *
- * conditionKey names the exact requests being reported, so a request going live
- * (or newly going stale) is always a new incident that notifies, while a
- * re-run that finds the same state is silenced by the router's ledger.
+ * The old report said "the workflow likely failed" — a guess the owner could
+ * not act on. Ask GitHub instead. One API call per distinct stuck workflow,
+ * so a handful per run at most.
+ *
+ * Returns {ok:false} when the workflow is unknown or GitHub was unreachable,
+ * and {ok:true, runs:[]} when it genuinely has never run. Those are different
+ * facts and the report says which one it is — collapsing both to null is how
+ * "we could not check" gets reported as "nothing happened".
  */
-function buildAlert(nowLive, stale) {
-  const liveLines = nowLive.map((r) => [
-    `[NOW LIVE ON THE SITE] ${r.entry.title || r.showId}`,
-    `  They asked: "${r.entry.requestedMessage || '(no message)'}"`,
-    `  Verified live: ${r.evidence} — ${r.url}`,
-    `  Systematic fix: ${r.entry.systematicFix?.note || 'One-off — no standing route for this ask shape yet.'}`,
-    `  Requested ${Math.round(daysSince(r.entry.requestedAt) * 10) / 10} day(s) ago${r.entry.issueNumber ? ` — https://github.com/${REPO}/issues/${r.entry.issueNumber}` : ''}`,
-  ].join('\n'));
+const RUNS_PAGE_SIZE = 20;
 
-  const staleLines = stale.map((e) => [
-    `[STILL NOT LIVE AFTER ${Math.round(daysSince(e.requestedAt))} DAY(S)] ${e.title || e.showId}`,
-    `  Routed to ${e.workflow || 'nothing'} but the change has not reached production. The workflow likely failed.`,
-    e.issueNumber ? `  https://github.com/${REPO}/issues/${e.issueNumber}` : '',
-  ].filter(Boolean).join('\n'));
+async function fetchWorkflowRuns(workflowFile) {
+  if (!workflowFile) return { ok: false };
+  const body = await githubJSON(
+    `/repos/${REPO}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=${RUNS_PAGE_SIZE}`
+  );
+  if (!body || !Array.isArray(body.workflow_runs)) return { ok: false };
+  return {
+    ok: true,
+    // A full page means there are probably older runs we did not fetch. That
+    // matters: on a busy shared workflow the run that served this request can
+    // sit past the page boundary, and without this flag the report would state
+    // a count and a verdict as if it had seen everything.
+    truncated: body.workflow_runs.length >= RUNS_PAGE_SIZE,
+    runs: body.workflow_runs.map((r) => ({
+      status: r.status,
+      conclusion: r.conclusion,
+      startedAt: r.run_started_at || r.created_at,
+      url: r.html_url,
+    })),
+  };
+}
 
-  const title = nowLive.length > 0 && stale.length > 0
-    ? `${nowLive.length} user request(s) now live, ${stale.length} stuck`
-    : nowLive.length > 0
-    ? `${nowLive.length} user request(s) now live on the site`
-    : `${stale.length} user request(s) stuck — not live after ${STALE_AFTER_DAYS} days`;
+/**
+ * The run that could plausibly have served THIS request.
+ *
+ * A shared workflow — add-requested-show.yml, gather-reviews.yml — runs for
+ * every request that routes to it, so "the workflow's most recent run" is
+ * usually somebody else's. Reporting that run's verdict as this request's is
+ * exactly the confident-but-wrong diagnosis this whole change exists to kill:
+ * on 2026-08-05 the two newest add-requested-show runs were green for other
+ * shows while The Outsiders' own run had failed hours earlier, so the naive
+ * version would have told the owner "it SUCCEEDED, re-running will not help".
+ *
+ * A run that started BEFORE the request cannot have served it, so only runs
+ * at-or-after requestedAt are considered. No such run is itself the finding:
+ * the dispatch never fired.
+ */
+function pickRunForRequest(fetched, requestedAt) {
+  if (!fetched || !fetched.ok) return { state: 'unknown' };
+  const asked = Date.parse(requestedAt);
+  // An unparseable requestedAt means we cannot tell which runs came after the
+  // request — and the ONLY safe answer is to say so. Falling back to "use all
+  // runs" here is precisely how the shared-workflow misattribution this
+  // function exists to prevent would sneak back in through a bad timestamp.
+  if (Number.isNaN(asked)) return { state: 'unknown' };
+  const candidates = fetched.runs.filter((r) => {
+    const started = Date.parse(r.startedAt);
+    return !Number.isNaN(started) && started >= asked;
+  });
+  // Every run we fetched is post-request AND the page was full: there are
+  // almost certainly more we never saw, so the count is a floor, not a total.
+  const partial = Boolean(fetched.truncated) && candidates.length === fetched.runs.length;
+  if (candidates.length === 0) {
+    // Only a NON-truncated page proves the workflow never ran. A full page of
+    // pre-request runs would mean we simply did not page back far enough.
+    return fetched.truncated ? { state: 'unknown' } : { state: 'never-ran' };
+  }
+  // Newest first is what GitHub returns; take the newest that qualifies.
+  return { state: 'ran', run: candidates[0], count: candidates.length, partial };
+}
 
-  const liveKeys = nowLive.map((r) => `live:${r.entry.key || r.showId}`);
-  const staleKeys = stale.map((e) => `stale:${e.key || e.showId}`);
+function describeRun(picked) {
+  if (!picked || picked.state === 'unknown') {
+    return 'We could not establish what its workflow did, so this is unexplained rather than diagnosed.';
+  }
+  if (picked.state === 'never-ran') {
+    // The most actionable verdict of the three: nothing was even attempted.
+    return 'That workflow has not run at all since the request came in — the job was never actually started.';
+  }
+  const { run, count, partial } = picked;
+  const when = run.startedAt ? ` on ${String(run.startedAt).slice(0, 10)}` : '';
+  const many = partial ? `at least ${count}` : String(count);
+  const scope = count > 1 ? ` (the most recent of ${many} runs since the request)` : '';
+  // Never "its last run" — see pickRunForRequest. This run is the newest that
+  // COULD have served the request; the workflow is shared, so it may have been
+  // doing something else entirely.
+  const status = run.status || 'in an unknown state';
+  if (status !== 'completed') return `Its most recent run since then${when}${scope} is still ${status}.`;
+  if (run.conclusion === 'success') {
+    // A green run that produced nothing is the WORSE case, and the one the old
+    // "likely failed" wording actively hid: the fault is in the script's own
+    // matching/gating, not in CI, so re-running it changes nothing.
+    return `Its most recent run since then${when}${scope} SUCCEEDED, and the change still is not live — so re-running it will not help; the fault is in what it decided to do, not in CI.`;
+  }
+  return `Its most recent run since then${when}${scope} ended as ${run.conclusion || 'an unreported conclusion'}.`;
+}
+
+/**
+ * Deduped + sorted conditionKey. A repeated entry must not reorder the key and
+ * slip past the router's cooldown as a fresh incident.
+ */
+function conditionKeyFor(prefix, keys) {
+  return `${prefix}:${[...new Set(keys)].sort().join(',')}`;
+}
+
+/**
+ * "These shipped" — good news, nothing for anyone to do.
+ *
+ * Named reviews (2026-08-05, owner request): the old body said "0 → 1
+ * review(s) live" and linked a 404. A count the owner cannot check is not
+ * evidence, so every report now names the reviews it is claiming — critic,
+ * outlet, date — and links the page they are on.
+ *
+ * `decision: true` keeps digest-autofix from spending a session on a row where
+ * nothing is broken; see queueDigestLine() in owner-alert-router.js.
+ */
+function buildLiveAlert(nowLive) {
+  const blocks = nowLive.map((r) => {
+    const named = r.reviews || [];
+    // Front-loaded: the digest clips a queued row's description at 200 chars,
+    // so the show, the verdict and the first named review all land inside them.
+    const lead = named.length
+      ? `"${r.entry.title || r.showId}" is now on the site — ${r.evidence}: ${named.map((x) => x.text).join('; ')}.`
+      : `"${r.entry.title || r.showId}" is now on the site — ${r.evidence}.`;
+    const lines = [lead, `  See it: ${r.url}`];
+    if (!named.length && r.entry.kind !== 'missing-image') {
+      // Never let a review request report a bare count again. If the reviews
+      // could not be read out of the live payload, say that outright — silence
+      // here is what made "0 → 1 review(s) live" unverifiable.
+      lines.push('  (no individual reviews to name — the live payload had no readable review rows)');
+    }
+    for (const rev of named) {
+      if (rev.url) lines.push(`  ${rev.text} — ${rev.url}`);
+    }
+    lines.push(`  They asked: "${r.entry.requestedMessage || '(no message)'}"`);
+    lines.push(`  ${r.entry.systematicFix?.note || 'One-off — no standing route for this ask shape yet.'}`);
+    lines.push(`  Asked ${Math.round(daysSince(r.entry.requestedAt) * 10) / 10} day(s) ago${r.entry.issueNumber ? ` — https://github.com/${REPO}/issues/${r.entry.issueNumber}` : ''}`);
+    return lines.join('\n');
+  });
 
   return {
-    // Deduped, then sorted — a repeated entry must not change the key and slip
-    // past the router's cooldown as a fresh incident.
-    conditionKey: `feedback-requests:${[...new Set([...liveKeys, ...staleKeys])].sort().join(',')}`,
-    title,
-    description: [...liveLines, ...staleLines].join('\n\n'),
-    // A stuck request means a workflow silently failed — that is the condition
-    // worth surfacing. All-live is good news, not an error.
-    severity: stale.length > 0 ? 'error' : 'info',
-    fields: [
-      { name: 'Now live', value: String(nowLive.length) },
-      { name: 'Stuck', value: String(stale.length) },
-    ],
+    conditionKey: conditionKeyFor('feedback-requests-live', nowLive.map((r) => r.entry.key || r.showId)),
+    title: `${nowLive.length} user request(s) now live on the site`,
+    description: blocks.join('\n\n'),
+    severity: 'info',
+    // `decision` here means only one thing to the machinery: do NOT auto-fix
+    // this row (digest-autofix.js spends a whole agent session on every queued
+    // row that lacks the flag). There is no "FYI" bucket in the digest, and a
+    // session spent on "the thing you asked for shipped" is pure waste — so the
+    // flag is set and decisionPrompt says outright that there is nothing to do,
+    // rather than leaving the owner to work out why good news has a button.
+    decision: true,
+    decisionPrompt: 'Nothing to do — this is a receipt. The request shipped and was checked against the live site.',
+    url: nowLive[0]?.url,
+    fields: [{ name: 'Now live', value: String(nowLive.length) }],
+  };
+}
+
+/**
+ * "These are stuck" — the half the owner called useless (2026-08-05): "the
+ * failed one has nothing actionable for me... it needs something for me to
+ * click to get an agent/session working on it".
+ *
+ * Two things make it actionable:
+ *
+ *   1. It says what the workflow ACTUALLY did, from the GitHub API — not "the
+ *      workflow likely failed", which was a guess the owner could not act on.
+ *      A run that went GREEN and still shipped nothing is called out as such,
+ *      because re-running it is then pointless.
+ *   2. The row carries NO `decision` flag, which is what makes it clickable —
+ *      digest-autofix.js auto-dispatches every non-decision queued row, so a
+ *      stuck request gets a card and a workspace with no click at all, and
+ *      send-morning-digest.js hangs its signed one-click "Dispatch a fix"
+ *      link on whatever is left. That is the owner's own standing mandate
+ *      (2026-08-02): "Why do I need to hit 'Fix this'... Just have a Claude
+ *      session fix them."
+ *
+ * FRONT-LOADED ON PURPOSE: the digest renders a queued row as
+ * `clip(description, 200)`. The first 200 characters are the whole message for
+ * most readers, so the show, the age and the verdict all land inside them —
+ * and a long mailto: or context dump would be sliced into unreadable noise,
+ * which is the exact failure being fixed here.
+ */
+function buildStuckAlert(stale, runsByWorkflow) {
+  const picks = new Map(
+    stale.map((e) => [e.key, pickRunForRequest(runsByWorkflow.get(e.workflow), e.requestedAt)])
+  );
+  const blocks = stale.map((e) => {
+    const days = Math.round(daysSince(e.requestedAt));
+    const issueUrl = e.issueNumber ? `https://github.com/${REPO}/issues/${e.issueNumber}` : null;
+    const picked = picks.get(e.key);
+    const lines = [
+      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${describeRun(picked)}`,
+      `  They asked: "${e.requestedMessage || '(no message)'}"`,
+    ];
+    if (picked?.run?.url) lines.push(`  That run: ${picked.run.url}`);
+    if (issueUrl) lines.push(`  Tracking issue: ${issueUrl}`);
+    return lines.join('\n');
+  });
+
+  // The digest's "view" link. Point it at the run when there is one — that is
+  // where the reason lives — and fall back to the tracking issue.
+  const firstRun = stale.map((e) => picks.get(e.key)?.run).find((r) => r && r.url);
+  const firstIssue = stale.find((e) => e.issueNumber);
+
+  return {
+    conditionKey: conditionKeyFor('feedback-requests-stuck', stale.map((e) => e.key || e.showId)),
+    title: `${stale.length} user request(s) stuck — not live after ${STALE_AFTER_DAYS} days`,
+    description: blocks.join('\n\n'),
+    severity: 'error',
+    url: firstRun?.url || (firstIssue ? `https://github.com/${REPO}/issues/${firstIssue.issueNumber}` : undefined),
+    fields: [{ name: 'Stuck', value: String(stale.length) }],
   };
 }
 
@@ -207,14 +406,14 @@ async function main() {
       continue;
     }
     const live = await getJSON(`${BASE}/data/shows/${showId}.json`);
-    const { satisfied, evidence } = evaluateEntry(entry, live);
+    const { satisfied, evidence, reviews } = evaluateEntry(entry, live);
     console.log(`  ${entry.key}: ${satisfied ? 'LIVE' : 'waiting'} — ${evidence}`);
     if (!satisfied) continue;
 
     entry.status = 'live';
     entry.satisfiedAt = new Date().toISOString();
     entry.showId = showId;
-    nowLive.push({ entry, showId, evidence, url: showUrl(entry, showId, shows) });
+    nowLive.push({ entry, showId, evidence, reviews, url: showUrl(entry, showId, shows) });
   }
 
   const stale = staleEntries(ledger);
@@ -225,42 +424,69 @@ async function main() {
     return;
   }
 
-  const alert = buildAlert(nowLive, stale);
+  // Shipped and stuck are reported SEPARATELY (2026-08-05). One combined alert
+  // forced one severity and one auto-dispatch decision onto two opposite
+  // things: good news that needs no session, and a failure that needs one.
+  // Split, the stuck row can be an auto-dispatchable error while the live row
+  // stays an FYI, and neither is silenced by the other's cooldown.
+  const alerts = [];
+  if (nowLive.length > 0) alerts.push(buildLiveAlert(nowLive));
+  if (stale.length > 0) {
+    // One API call per distinct workflow, not per entry — several stuck
+    // requests routinely share one workflow. The per-request pick then happens
+    // in memory, against each entry's own requestedAt.
+    const runsByWorkflow = new Map();
+    for (const wf of new Set(stale.map((e) => e.workflow).filter(Boolean))) {
+      runsByWorkflow.set(wf, await fetchWorkflowRuns(wf));
+    }
+    alerts.push(buildStuckAlert(stale, runsByWorkflow));
+  }
 
   if (DRY_RUN) {
-    console.log(`[dry-run] would report: "${alert.title}"`);
+    for (const a of alerts) {
+      console.log(`[dry-run] would report: "${a.title}"`);
+      console.log(a.description);
+    }
     console.log(`[dry-run] ${nowLive.length} live, ${stale.length} stale`);
     return; // deliberately does NOT persist — a dry run must not mark things notified
   }
 
-  let result;
-  try {
-    // See the header: routed, not sent directly (card #611). Do NOT persist the
-    // status flip if routing threw — an unreported flip must be retried next
-    // run, not silently marked delivered.
-    result = await routeAlert({ ...alert, disposition: 'human' });
-  } catch (err) {
-    console.error(`::error::Failed to report live-request confirmations: ${err.message}`);
-    process.exit(1);
-  }
-
-  if (result.action === 'human' && result.delivered === false) {
-    console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was told these went live.`);
-    process.exit(1);
+  for (const alert of alerts) {
+    let result;
+    try {
+      // See the header: routed, not sent directly (card #611). Do NOT persist
+      // the status flips if routing threw — an unreported flip must be retried
+      // next run, not silently marked delivered.
+      result = await routeAlert({ ...alert, disposition: 'human' });
+    } catch (err) {
+      console.error(`::error::Failed to report "${alert.title}": ${err.message}`);
+      process.exit(1);
+    }
+    if (result.action === 'human' && result.delivered === false) {
+      console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was told.`);
+      process.exit(1);
+    }
+    console.log(
+      result.action === 'silent'
+        ? `Already reported, not repeating: "${alert.title}"`
+        : `Owner notified (${result.action}): "${alert.title}"`
+    );
   }
 
   for (const r of nowLive) await closeIssue(r.entry.issueNumber, r.evidence, r.url);
 
   saveLedger(ledger);
-  console.log(
-    result.action === 'silent'
-      ? `Already reported, not repeating: "${alert.title}"`
-      : `Owner notified (${result.action}): "${alert.title}"`
-  );
   console.log(`Ledger updated: ${nowLive.length} marked live, ${stale.length} still stuck.`);
 }
 
-module.exports = { buildAlert, resolveEntryShowId };
+module.exports = {
+  buildLiveAlert,
+  buildStuckAlert,
+  describeRun,
+  pickRunForRequest,
+  showUrl,
+  resolveEntryShowId,
+};
 
 if (require.main === module) {
   // --help must short-circuit BEFORE main() does any network calls, ledger
