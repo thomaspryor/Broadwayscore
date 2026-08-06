@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T05:07:38.895Z",
+  "timestamp": "2026-08-06T05:18:58.835Z",
   "stats": {
-    "totalReviews": 41715,
-    "alreadyFlagged": 18129,
+    "totalReviews": 41714,
+    "alreadyFlagged": 18128,
     "dateGuardCatches": 119,
-    "directorMismatch": 949,
+    "directorMismatch": 952,
     "tvFilmSignals": 1153,
     "londonSignals": 816,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3552
+    "noPublishDate": 3551
   },
   "findings": [
     {
@@ -26100,6 +26100,32 @@
       ]
     },
     {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "theatrely--kobi-kassal.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "theatrely--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-pajama-game-2006",
       "file": "about-entertainment--ben-brantley.json",
       "score": 89,
@@ -28445,6 +28471,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2025-05-30",
+      "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
         }
       ]
     },
