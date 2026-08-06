@@ -2,9 +2,37 @@
   "version": 1,
   "showId": "twelfth-night-off-west-end-2026",
   "openingDate": "2026-08-01",
-  "detectedAt": "2026-08-06T12:03:14.590Z",
+  "detectedAt": "2026-08-06T12:24:23.784Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "artsdesk--helen-hawkins-sitting.json",
+      "outletId": "artsdesk",
+      "criticName": "Helen Hawkins sitting",
+      "url": "https://www.theartsdesk.com/theatre/twelfth-night-rsc-barbican-review-intelligent-inventive-and-genuinely-funny",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "excerpt",
+      "eligibilityReason": null
+    },
+    {
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "criticName": "Alice Saville",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "excerpt",
+      "eligibilityReason": null
+    },
     {
       "file": "ipswich24--unknown.json",
       "outletId": "ipswich24",
@@ -16,11 +44,11 @@
       "originalScore": null,
       "originalScoreNormalized": null,
       "llmScore": null,
-      "contentTier": "truncated",
+      "contentTier": "invalid",
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 3,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
