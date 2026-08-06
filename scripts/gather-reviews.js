@@ -2034,7 +2034,7 @@ async function searchBWWRoundup(show, year, options = {}) {
       : [];
     let bwwCloudflareGated = false;
     for (const searchResult of serpCandidates) {
-      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title)) {
+      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title, show.category)) {
         console.log(`    ✗ SERP result doesn't match title "${show.title}" — skipping: ${searchResult.substring(0, 80)}`);
         continue;
       }

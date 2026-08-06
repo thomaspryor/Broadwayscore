@@ -53,7 +53,7 @@ const MEMORY_DIR = path.join(__dirname, 'agent-memory');
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { shouldMarkPlanReady } = require('./lib/plan-ready.js');
+const { shouldMarkPlanReady, shouldEscalateToFix, parseVerifiedOutcomeLine } = require('./lib/plan-ready.js');
 const { preflightAuth, resolveAuthEnv } = require('./lib/claude-cli.js');
 const { filterCardsByCardId } = require('./lib/notion-action-poll-card-scope.js');
 
@@ -428,7 +428,25 @@ This is MANDATORY — do not skip.
     ? `\n## Domain Knowledge\nThe following operational knowledge has been accumulated from prior sessions. Follow these rules.\n\n${agentMemory}\n`
     : '';
 
+  // #1073 W1.3: task #695's "confident-unresolved-session" pattern — ten-plus
+  // prior sessions claimed a fix Done that never actually held, because a
+  // session assumed a background watcher or a human would double-check it
+  // later. A dispatched stage has neither: it is one of a CHAIN of separate
+  // one-shot processes (notion-action-poll.js runs each pipeline stage as its
+  // own fresh `claude --print` invocation and exits — there is no persistent
+  // process watching this card, and no human reads the terminal in real time).
+  const headlessContract = `## HEADLESS CONTRACT (read before doing anything)
+This run is ONE STAGE of a chained pipeline made of separate one-shot sessions — there is no background monitor and no human watching this terminal. Before you exit:
+- Never write "KEEP OPEN" or claim a background process/waiter will verify something later — nothing will. There is no "later" for this process; it exits the moment you stop.
+- If you dispatch anything async (a workflow run, a deploy, a background job), you must wait for it and re-run the relevant check command yourself, synchronously, before you finish — do not report success on the basis that you "started" it.
+- End your response (the last line inside the ACTION_RESULT markers below) with EXACTLY ONE of:
+  \`VERIFIED: <exact command you ran> — <one-line result that proves it>\`
+  \`UNVERIFIED: <why you could not verify — missing credential, needs a human decision, etc.>\`
+  The dispatcher parses this line mechanically. Missing it is treated the same as UNVERIFIED.`;
+
   return `You are an automated Claude session triggered by the Notion Action Queue.
+
+${headlessContract}
 
 ## Card Details
 - **Name:** ${card.name}
@@ -452,6 +470,9 @@ When done, output your findings in this exact format between markers:
 
 ===ACTION_RESULT_START===
 [Your structured findings/plan/implementation summary here]
+
+VERIFIED: <exact command> — <one-line result>
+(or UNVERIFIED: <why>, per the HEADLESS CONTRACT above)
 ===ACTION_RESULT_END===
 
 If you learned something durable that would help future automated sessions on this subsystem (gotchas, patterns that worked, things that broke), also output it between these markers. Only include reusable operational lessons, not session-specific details:
@@ -673,13 +694,30 @@ function runClaude(prompt, card, opts = {}) {
 
 // ── Retry helper for Notion API (handles network timeouts) ───────────
 
+// #1073: W1.2/W1.3 add several new writes per card (escalation Action update,
+// verification-gate Outcome/comment) on top of the existing setCardOutcome +
+// addComment + clearAction — more calls per poll cycle means more chances to
+// land on a transient Notion 429/502/503, which this function previously
+// treated as fatal (only 'fetch failed'/ETIMEDOUT network errors retried).
+// @notionhq/client's APIResponseError carries the HTTP status on `err.status`
+// (see node_modules/@notionhq/client/build/src/errors.js) — check that
+// directly rather than string-matching err.message, which for a 429 is
+// whatever prose Notion's API returned, not the status code itself.
+const RETRYABLE_HTTP_STATUSES = new Set([429, 502, 503]);
+
 async function withRetry(fn, label, retries = 2) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       return await fn();
     } catch (err) {
-      if (attempt < retries && (err.message.includes('fetch failed') || err.message.includes('ETIMEDOUT'))) {
-        log(`  Retry ${attempt + 1}/${retries} for ${label}: ${err.message}`);
+      const retryableNetwork = err.message.includes('fetch failed') || err.message.includes('ETIMEDOUT');
+      const retryableHttp = RETRYABLE_HTTP_STATUSES.has(err.status) || err.code === 'rate_limited';
+      if (attempt < retries && (retryableNetwork || retryableHttp)) {
+        // 429s get the same backoff as network retries — small and simple
+        // rather than parsing Notion's Retry-After (not always present, and
+        // this dispatcher's call volume is low enough that overshooting a
+        // few seconds costs nothing).
+        log(`  Retry ${attempt + 1}/${retries} for ${label}: ${err.message} (status=${err.status || 'n/a'})`);
         await new Promise(r => setTimeout(r, 3000 * (attempt + 1)));
       } else {
         throw err;
@@ -939,6 +977,17 @@ async function main() {
 
   log('Polling Notion Action Queue...');
   const state = loadState();
+  // #1073 W1.2: persisted once-per-card escalation record (shouldEscalateToFix
+  // guard (e)) and a per-cycle counter (guard (f)) reset every poll — a storm
+  // of eligible cards in ONE run must not spawn more than 2 unattended Fix
+  // pipelines, but a fresh cycle 5 minutes later is a fresh budget.
+  if (!Array.isArray(state.escalatedCardIds)) state.escalatedCardIds = [];
+  let escalatedThisCycle = 0;
+  // Kill switch: `touch ~/.claude-action-dispatcher/escalation-off` disables
+  // ALL auto-escalation immediately, no deploy needed. Checked once per run
+  // (not per card) — cheap fs.existsSync, and a mid-run toggle taking effect
+  // next cycle rather than mid-cycle is fine for a rate-limited safety valve.
+  const escalationKillSwitch = fs.existsSync(path.join(STATE_DIR, 'escalation-off'));
 
   // Reply loop FIRST: replies are quick and a Fix pipeline can hold this
   // process for hours — the owner's follow-up comments must not wait for it.
@@ -1066,6 +1115,35 @@ async function main() {
       }
     }
 
+    // #1073 W1.3(iii): verification gate. A Fix pipeline's final "Start" stage
+    // is the one that actually implements code — claiming it's done without
+    // the HEADLESS CONTRACT's VERIFIED proof is exactly the "confident-
+    // unresolved-session" pattern task #695 exists to kill (ten-plus prior
+    // sessions claimed Done that never held). Treat it as a stage failure so
+    // it reuses the EXISTING resume machinery below (same fields the genuine
+    // mid-loop failure path sets) instead of a parallel code path: Action
+    // stays "Fix", pipelineRemaining=['Start'] means only Start re-runs next
+    // cycle, and MAX_ATTEMPTS still caps it so a persistently-unverifiable
+    // Start can't loop forever. Scoped to Fix only (not Plan+Review, whose
+    // final stage is Review — a plan/critique, not an implementation) and
+    // only when the pipeline actually reached its last defined stage this run
+    // (a resumed partial run that stops short of Start doesn't apply here).
+    const lastStageRun = stagesToRun[stagesToRun.length - 1];
+    if (!run.failed && card.action === 'Fix' && lastStageRun === 'Start') {
+      const verifiedLine = parseVerifiedOutcomeLine(run.result);
+      if (!verifiedLine || verifiedLine.status !== 'VERIFIED') {
+        const note = verifiedLine
+          ? `⚠️ Verification gate: the final "Start" stage ended UNVERIFIED (${verifiedLine.detail}) — leaving Action="Fix" so Start retries next cycle instead of marking this card done.`
+          : `⚠️ Verification gate: the final "Start" stage produced no VERIFIED/UNVERIFIED line — leaving Action="Fix" so Start retries next cycle instead of marking this card done.`;
+        outcomeAccum = prependOutcome(outcomeAccum, 'verification-gate', note);
+        try { await setCardOutcome(card.id, outcomeAccum); } catch (err) { log(`  verification-gate outcome write failed (non-fatal): ${err.message}`); }
+        await addInfoComment(card.id, note, 'verificationGateComment');
+        log(`Verification gate blocked "${card.name}": ${note}`);
+        run.failed = true;
+        failedStage = 'Start';
+      }
+    }
+
     if (run.failed) {
       log(`Stage "${failedStage}" failed for "${card.name}".`);
       entry.attempts += 1;
@@ -1092,11 +1170,70 @@ async function main() {
       await setCardOutcome(card.id, outcomeAccum);
       log(`Updated Outcome for "${card.name}"`);
       await addComment(card, run.result);
-      await clearAction(card);
-      const planReadyEscalated = await markPlanReadyForDispatch(card, entry);
+
+      // #1073 W1.2 wiring: a completed, standalone Investigate stage (not a
+      // Fix/Plan+Review pipeline stage) normally just clears Action here —
+      // the finding sits in Outcome until a human notices and re-sets Action.
+      // shouldEscalateToFix() decides whether this specific card is safe to
+      // auto-escalate to Action="Fix" instead, so the recovery actually runs.
+      let escalated = false;
+      let planReadyEscalated = false;
+      if (card.action === 'Investigate' && !isPipeline) {
+        const escalationCtx = {
+          // Least invasive honest signal available with NO extra git calls:
+          // teardownActionWorktree() only KEEPS the worktree when it holds
+          // commits ahead of origin/main (`rev-list --count origin/main..HEAD`
+          // > 0) — i.e. the session durably committed something. Any
+          // uncommitted-but-dirty edit is force-removed by that same teardown
+          // regardless, so from the dispatcher's perspective nothing durable
+          // survives unless keptWorktree is true. An Investigate stage's own
+          // prompt contract ("Do NOT make any code changes") means this is
+          // normally false — which is exactly the common case this guard is
+          // meant to pass.
+          hadChanges: !!run.keptWorktree,
+          alreadyEscalated: state.escalatedCardIds.includes(card.id),
+          escalatedThisCycle,
+          killSwitch: escalationKillSwitch,
+        };
+        if (shouldEscalateToFix(card, escalationCtx)) {
+          const note = '🔧 Auto-escalated Investigate→Fix (T1-gap allowlist) — this card was auto-created by the alert router, is P0/P1, and the Investigate stage made no durable change, so nothing would ever have implemented the recovery command. Setting Action="Fix" to run it end-to-end. Clear the Priority (or touch ~/.claude-action-dispatcher/escalation-off) to stop future auto-escalations.';
+          // Record intent BEFORE mutating Notion (Codex ship-check): a crash
+          // after the Notion write but before persisting the once-per-card
+          // record would otherwise leave a live unattended Fix with no durable
+          // escalation breadcrumb. Ordering here fails CLOSED — a crash
+          // between persist and the Notion write leaves a card recorded as
+          // escalated that never was, which simply falls back to the normal
+          // clearAction dead-end (safe), never a double or untracked Fix.
+          state.escalatedCardIds = [...state.escalatedCardIds, card.id];
+          saveState(state);
+          try {
+            await withRetry(() => notion.pages.update({
+              page_id: card.id,
+              properties: { Action: { select: { name: 'Fix' } } },
+            }), 'escalateToFix');
+            outcomeAccum = prependOutcome(outcomeAccum, 'auto-escalation', note);
+            await setCardOutcome(card.id, outcomeAccum);
+            await addInfoComment(card.id, note, 'escalationComment');
+            log(`Auto-escalated "${card.name}" Investigate→Fix (T1-gap allowlist, ${escalatedThisCycle + 1}/2 this cycle).`);
+            escalatedThisCycle += 1;
+            escalated = true;
+          } catch (err) {
+            // Escalation write failed — compensate the intent record and fall
+            // through to the normal clearAction path so a transient Notion
+            // error doesn't permanently burn the card's one escalation.
+            state.escalatedCardIds = state.escalatedCardIds.filter(id => id !== card.id);
+            saveState(state);
+            log(`  escalation to Fix failed (non-fatal, falling back to clearAction): ${err.message}`);
+          }
+        }
+      }
+      if (!escalated) {
+        await clearAction(card);
+        planReadyEscalated = await markPlanReadyForDispatch(card, entry);
+      }
       state.cards[card.id] = {
         name: card.name,
-        action: card.action,
+        action: escalated ? 'Fix' : card.action, // reflects the live Notion Action after auto-escalation
         sessionId: run.sessionId,
         runDir: (run.keptWorktree || run.runDir === REPO_DIR) ? run.runDir : null,
         attempts: 0,

@@ -57,17 +57,24 @@ function extractReadMoreUrls(html) {
 }
 
 /**
- * Permissive fallback extractor (JSON-LD `url` + anchors). Kept for the initial
- * page when no "Read more" tiles are present; the caller still filters non-review
- * links. Prefer the paginated extractReadMoreUrls path.
+ * Fallback extractor (JSON-LD `url` + anchors) for the initial page when no
+ * "Read more" tiles are present. Previously grabbed EVERY href/JSON-LD url on
+ * the page — that harvested the page's own asset shell (cloudfront fonts,
+ * doubleclick ad slots, a Google Form, a merch page) as "review candidates"
+ * for The Vessel (task #1073, 2026-08-05). Now every URL must pass the
+ * canonical classifyReviewUrl shape filter at the harvest point — rejecting
+ * by URL/host SHAPE only, never by outlet-registry membership, so unknown
+ * new outlets still surface for onboarding.
  */
 function extractShowScoreReviewUrls(html) {
   if (!html || typeof html !== 'string') return [];
+  const { classifyReviewUrl } = require('./non-review-url-patterns');
   const urls = new Set();
   const add = (u) => {
     if (!u || !/^https?:\/\//i.test(u)) return;
     let host; try { host = new URL(u).hostname; } catch { return; }
     if (SS_HOSTS.test(host)) return;
+    if (!classifyReviewUrl(u).ok) return;
     urls.add(u.split('#')[0]);
   };
   for (const m of html.matchAll(/"url"\s*:\s*"(https?:\/\/[^"]+)"/gi)) add(m[1]);

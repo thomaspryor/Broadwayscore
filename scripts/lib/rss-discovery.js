@@ -238,6 +238,36 @@ function titleMatchesShow(itemTitle, showTitle) {
 }
 
 /**
+ * Check if a URL's path slug mentions the show (task #1073). Used as the
+ * identity fallback for openingWindow feeds whose RSS titles are stylized
+ * ("Review: A Heated Rivalry, but Short-Lived") while the URL slug carries
+ * the title (/theater/the-pass-review.html). Converts slug separators to
+ * spaces and reuses titleMatchesShow's word-boundary matching.
+ */
+function urlSlugMatchesShow(url, showTitle) {
+  if (!url) return false;
+  let pathname;
+  try { pathname = new URL(url).pathname; } catch { return false; }
+  const slugText = pathname.replace(/\.[a-z0-9]+$/i, '').replace(/[-_/]+/g, ' ');
+  const normalize = t => String(t || '').toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const significantWords = normalize(showTitle).split(' ')
+    .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
+    .filter(w => w.length > 1);
+  // Single-significant-word titles ("The Pass", "The Vessel"): a lone common
+  // token anywhere in a slug is not identity — "celebrity-sex-pass-review"
+  // would match The Pass (Codex ship-check finding). Require the FULL title
+  // (articles included) as a contiguous phrase in the slug instead:
+  // "the-pass-review-..." → "the pass review" contains "the pass" ✓;
+  // "...celebrity-sex-pass-review..." has "sex pass", not "the pass" ✗.
+  if (significantWords.length <= 1) {
+    const phrase = normalize(showTitle);
+    if (!phrase) return false;
+    return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
+  }
+  return titleMatchesShow(slugText, showTitle);
+}
+
+/**
  * Check if an item was published within the lookback window
  */
 function isRecent(pubDate, maxHoursAgo = 48) {
@@ -297,12 +327,18 @@ async function checkRSSFeeds(showTitle, options = {}) {
           // Entertainment feeds (THR, Deadline): always title-match — they cover everything
           if (!titleMatchesShow(item.title, showTitle)) continue;
         } else if (feed.openingWindow && openingDate) {
-          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): when openingDate is known,
-          // use a ±2-day date window instead of title matching. These feeds are topic-scoped to
-          // Broadway/theater, so date-windowing is safe and avoids title-match failures.
-          // WE feeds (WhatsOnStage, Standard) do NOT have openingWindow:true — they fall through
-          // to the else-branch and always title-match, even when openingDate is provided.
+          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): when openingDate is
+          // known, require the ±2-day date window AND an identity match (task #1073).
+          // The window used to REPLACE title matching entirely, which attributed every
+          // theater-section article published near an opening to that show — 8 NYT
+          // obituaries/news items landed in _pending/the-vessel-off-broadway-2026 and an
+          // Oh Mary piece in _pending/the-pass-off-broadway-2026 (2026-08-05). The date
+          // window is now an ADDITIONAL signal, never a substitute for identity: the item's
+          // title OR URL slug must mention the show. titleMatchesShow is word-boundary +
+          // diacritic-folded, so short titles ("The Pass") match safely.
           if (!isWithinOpeningWindow(item.pubDate, openingDate, 2)) continue;
+          const slugMatch = urlSlugMatchesShow(item.link, showTitle);
+          if (!titleMatchesShow(item.title, showTitle) && !slugMatch) continue;
         } else {
           // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
           if (!titleMatchesShow(item.title, showTitle)) continue;
@@ -359,4 +395,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

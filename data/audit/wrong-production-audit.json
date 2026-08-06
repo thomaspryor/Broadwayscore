@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T01:28:04.200Z",
+  "timestamp": "2026-08-06T04:09:09.418Z",
   "stats": {
-    "totalReviews": 41679,
-    "alreadyFlagged": 18115,
+    "totalReviews": 41708,
+    "alreadyFlagged": 18127,
     "dateGuardCatches": 119,
-    "directorMismatch": 946,
+    "directorMismatch": 950,
     "tvFilmSignals": 1153,
     "londonSignals": 816,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3534
+    "noPublishDate": 3547
   },
   "findings": [
     {
@@ -24427,6 +24427,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "amyleighchandler--amy.json",
+      "score": 86,
       "publishDate": "2025-05-11",
       "url": "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
       "findings": [
@@ -24542,6 +24543,19 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "london-theatre--aliya-al-hussan.json",
+      "publishDate": "2025-05-13",
+      "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-theatre--unknown.json",
       "publishDate": "2025-05-13",
       "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
@@ -24603,6 +24617,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "therealchrisparkle--therealchrisparkle.json",
+      "score": 95,
       "publishDate": "2025-05-14",
       "url": "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
       "findings": [
@@ -24619,19 +24634,6 @@
       "score": 90,
       "publishDate": "2025-05-14",
       "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "thereviewshub--reviewer-upload.json",
-      "publishDate": "2025-05-14",
-      "url": "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -26052,6 +26054,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2023-03-07",
+      "url": "https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "nytimes--alexis-soloski.json",
+      "publishDate": "2023-03-06",
+      "url": "https://www.nytimes.com/2023/03/06/theater/the-outsiders-review-la-jolla-playhouse.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2023-03-06",
+      "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2024-04-12",
+      "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
         }
       ]
     },

@@ -222,46 +222,10 @@ const { blastRadiusCheck } = require('./lib/coverage-gate');
 // nationaltheatre.org.uk/productions/, etc.) that also needs filtering here
 // so it never becomes a "gap" candidate for ANY isReviewUrl consumer, not
 // just the probe's own post-lookup fallback.
-const { NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS, NON_REVIEW_PATH_PATTERNS, namedNonReviewReason } = require('./lib/non-review-url-patterns');
-
-// Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
-// or mobile host is the same outlet as its bare domain. Strip so amp.theguardian.com
-// and m.nytimes.com resolve to guardian / nytimes instead of provisional-onboarding
-// as duplicate outlets.
-const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
-// Blog/newsletter platforms where the publication identity IS the subdomain
-// (pub.substack.com). These must NOT collapse — the registrable domain is the
-// platform, not the outlet. Mirrors PROVISIONAL_BLOG_PLATFORMS in
-// outlet-canonicalize.js so provisionalOutletIdFromHost still extracts "pub".
-const COLLAPSE_BLOG_PLATFORMS = [
-  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
-  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
-];
-// Multi-part public suffixes — registrable domain keeps 3 labels (foo.co.uk),
-// not 2 (co.uk). Mirrors PROVISIONAL_MULTIPART_SUFFIXES in outlet-canonicalize.js.
-const COLLAPSE_MULTIPART_SUFFIXES = [
-  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
-  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
-];
-
-// Collapse a hostname to its registrable domain so section subdomains
-// (theater.nytimes.com) and mirror hosts (amp.theguardian.com) look up the same
-// registry entry as the bare domain. Leaves blog-platform publication subdomains
-// intact so they keep their per-publication provisional identity.
-function registrableHost(host) {
-  if (!host || typeof host !== 'string') return host;
-  let h = host.replace(/^www\./, '').toLowerCase();
-  while (MIRROR_SUBDOMAIN_PREFIX.test(h)) h = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
-  if (COLLAPSE_BLOG_PLATFORMS.some(p => h.endsWith('.' + p))) return h;
-  const parts = h.split('.').filter(Boolean);
-  const keep = COLLAPSE_MULTIPART_SUFFIXES.some(s => h.endsWith('.' + s)) ? 3 : 2;
-  return parts.length > keep ? parts.slice(-keep).join('.') : h;
-}
-
-function hostOf(u) {
-  try { return registrableHost(new URL(u).hostname); }
-  catch { return null; }
-}
+// Host normalization + URL classification live in lib/non-review-url-patterns.js
+// (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
+// classifyReviewUrl and this audit share one implementation.
+const { classifyReviewUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
 // gap audit and its unit test share one implementation (CLAUDE.md §15).
@@ -287,38 +251,32 @@ function normalizeReviewUrl(href) {
   return href.split('?')[0].split('#')[0];
 }
 
-function isReviewUrl(href) {
-  if (!href || !href.startsWith('http')) return false;
-  const h = hostOf(href);
-  if (!h) return false;
-  if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) return false;
-  // Ticketing/venue-production-page/event-listing class (task #907 day-one
-  // triage): newyorkcitytheatre.com, nationaltheatre.org.uk/productions/,
-  // etc. — filtered here too (not just the S5 probe's post-lookup fallback)
-  // so they never become a "gap" candidate for ANY discovery consumer.
-  if (namedNonReviewReason(href)) return false;
-  // Lighting & Sound America: the bare /news/story.asp (no ?ID=) is the news
-  // index, not a review. Show Score links it as a generic "more from LSA" promo
-  // on many show pages; without this guard it surfaces as an uncaptured gap in
-  // every audited show (2026-06-21). A real LSA review always carries ?ID=.
-  if (h === 'lightingandsoundamerica.com') {
-    try {
-      const u = new URL(href);
-      if (/\/news\/story\.asp$/i.test(u.pathname) && !u.searchParams.get('ID')) return false;
-    } catch { return false; }
+// Candidate-URL gate: delegates to the CANONICAL classifier in
+// lib/non-review-url-patterns.js (task #1073) so this audit, the write path
+// (review-guards roundup policy), and the S5 probe can never drift apart
+// again — the exact split-brain that let BWW /reviews/ hub pages and cast
+// pages count as review candidates on Disruption / The Vessel (2026-08-05).
+// Rejections are tallied so censusVerdict can report filtering happened
+// instead of silently shrinking the candidate set.
+const candidateRejections = { count: 0, byReason: {} };
+
+// Fill result.candidatesRejected with this show's slice of the global tally
+// (delta since auditShow() started). Called at every auditShow return point.
+function tallyRejections(result, startCount, startByReason) {
+  result.candidatesRejected.count = candidateRejections.count - startCount;
+  for (const [reason, n] of Object.entries(candidateRejections.byReason)) {
+    const delta = n - (startByReason[reason] || 0);
+    if (delta > 0) result.candidatesRejected.byReason[reason] = delta;
   }
-  // Skip Playbill/BWW internal navigation (we WANT outlet URLs, not aggregator URLs)
-  if ((h === 'playbill.com' || h === 'broadwayworld.com') && !/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(href)) return false;
-  try {
-    const p = new URL(href).pathname;
-    if (NON_REVIEW_PATH_PATTERNS.some(rx => rx.test(p))) return false;
-    // Static assets: Show Score pages link CDN stylesheets/scripts (e.g.
-    // maxcdn.bootstrapcdn.com/bootstrap.min.css) which surfaced as "missing
-    // reviews" and, under --ingest-missing, would ingest as a provisional
-    // "bootstrapcdn" outlet (spamalot-off-broadway-2026, 2026-07-11).
-    if (/\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i.test(p)) return false;
-  } catch { return false; }
-  return true;
+}
+function isReviewUrl(href) {
+  const verdict = classifyReviewUrl(href);
+  if (!verdict.ok) {
+    candidateRejections.count++;
+    candidateRejections.byReason[verdict.reason] =
+      (candidateRejections.byReason[verdict.reason] || 0) + 1;
+  }
+  return verdict.ok;
 }
 
 function loadShows() {
@@ -701,7 +659,14 @@ async function auditShow(show, opts = {}) {
     citedNoUrl: [],      // WE reference rows with no URL (WET tables) whose outlet has no covered file — alert-only, never auto-ingestable
     weReference: null,   // WE reference source health ({sources, rowCount, allSourcesFailed})
     serpCensus: null,    // SERP review census health ({ran, query, resultCount, urlsFound} or {ran:false, reason})
+    // Per-show tally of candidate URLs the canonical classifier rejected (task
+    // #1073, W3.E defense-in-depth): makes filtering VISIBLE in the audit +
+    // digest instead of silently shrinking the candidate set. A junk-harvest
+    // regression shows up here as a spike, not as phantom "missing reviews".
+    candidatesRejected: { count: 0, byReason: {} },
   };
+  const rejStartCount = candidateRejections.count;
+  const rejStartByReason = { ...candidateRejections.byReason };
 
   const articles = await findAggregatorArticles(show);
   result.aggregatorArticles = articles;
@@ -931,7 +896,10 @@ async function auditShow(show, opts = {}) {
   }
 
   result.aggregatorListedUrls = [...aggUrls];
-  if (aggUrls.size === 0 && weRefNoUrlRows.length === 0) return result;
+  if (aggUrls.size === 0 && weRefNoUrlRows.length === 0) {
+    tallyRejections(result, rejStartCount, rejStartByReason);
+    return result;
+  }
 
   const dirData = loadDirFiles(show.id);
   result.dirFiles = dirData.length;
@@ -955,7 +923,16 @@ async function auditShow(show, opts = {}) {
     const aggHost = hostOf(aggUrl);
     if (!aggHost) continue;
     const knownOutletId = knownDomains.get(aggHost) || null;
-    const dirFiles = dirByHost.get(aggHost) || [];
+    // W3.D (task #1073): coverage is exact-URL first. Host-level fallback only
+    // counts dir files whose OWN url is itself a plausible review URL (or has
+    // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
+    // the BWW hub URL and hide a genuine gap (The Vessel, 2026-08-05).
+    const dirFilesAll = dirByHost.get(aggHost) || [];
+    const aggNorm = normalizeReviewUrl(aggUrl);
+    const exactMatches = dirFilesAll.filter(d => d.url && normalizeReviewUrl(d.url) === aggNorm);
+    const dirFiles = exactMatches.length > 0
+      ? exactMatches
+      : dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok);
     if (dirFiles.length === 0) {
       result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
     } else {
@@ -1113,6 +1090,7 @@ async function auditShow(show, opts = {}) {
     result.weReference.perSource = weRefPerSource;
   }
 
+  tallyRejections(result, rejStartCount, rejStartByReason);
   return result;
 }
 

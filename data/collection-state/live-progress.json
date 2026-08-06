@@ -1,42 +1,54 @@
 {
-  "updatedAt": "2026-08-06T03:14:33.140Z",
-  "processed": 23,
-  "failed": 84,
-  "successRate": "21.5%",
+  "updatedAt": "2026-08-06T04:19:54.073Z",
+  "processed": 26,
+  "failed": 37,
+  "successRate": "41.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 6,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-08-06T01:51:25.391Z",
+      "t": "2026-08-06T04:00:24.579Z",
       "event": "bb-session",
-      "session": "0d352519",
+      "session": "2add5a83",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-musical-open-broa"
+    },
+    {
+      "t": "2026-08-06T04:01:11.441Z",
+      "event": "bb-session",
+      "session": "cb6a1945",
+      "url": "https://deadline.com/2023/08/the-outsiders-broadway-musical-opening-date-1235523"
+    },
+    {
+      "t": "2026-08-06T04:11:22.396Z",
+      "event": "bb-session",
+      "session": "d7c83e32",
       "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
     },
     {
-      "t": "2026-08-06T01:51:25.977Z",
+      "t": "2026-08-06T04:11:23.512Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-06T03:09:56.965Z",
+      "t": "2026-08-06T04:17:57.340Z",
       "event": "bb-session",
-      "session": "308246ec",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "b7da8c4c",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
     },
     {
-      "t": "2026-08-06T03:10:14.363Z",
+      "t": "2026-08-06T04:18:12.062Z",
       "event": "bb-session",
-      "session": "7e0751d4",
-      "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-"
+      "session": "9d48ca2a",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
     }
   ]
 }
