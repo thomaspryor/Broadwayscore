@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-06T14:49:15.818Z",
+    "generatedAt": "2026-08-06T14:59:54.486Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,11 +16,11 @@
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 366
+      "churn": 365
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 173
+      "churn": 175
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -32,7 +32,7 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 55
+      "churn": 54
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
@@ -40,7 +40,7 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
@@ -86,15 +86,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 291
+      "churn": 290
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 291
+      "churn": 290
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 291
+      "churn": 290
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -106,7 +106,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 94
+      "churn": 93
     },
     {
       "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
@@ -117,12 +117,12 @@
       "churn": 88
     },
     {
-      "path": "public/data/shows/the-car-man-west-end-2026.json",
+      "path": "public/data/shows/the-oresteia-west-end-2026.json",
       "churn": 74
     },
     {
-      "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 74
+      "path": "public/data/shows/the-car-man-west-end-2026.json",
+      "churn": 73
     },
     {
       "path": "public/data/shows/tao-of-glass-west-end-2026.json",
@@ -169,7 +169,7 @@
       "churn": 40
     },
     {
-      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
+      "path": "data/show-score-urls.json",
       "churn": 39
     },
     {
@@ -181,7 +181,7 @@
       "churn": 39
     },
     {
-      "path": "data/show-score-urls.json",
+      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
       "churn": 38
     },
     {
@@ -234,7 +234,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 800,
+      "churn": 799,
       "mergeAttr": "union"
     },
     {
@@ -244,12 +244,12 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 366,
+      "churn": 365,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 366,
+      "churn": 365,
       "mergeAttr": "ours"
     },
     {
@@ -259,17 +259,17 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 326,
+      "churn": 325,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 291,
+      "churn": 290,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 146,
+      "churn": 145,
       "mergeAttr": "union"
     },
     {
@@ -279,17 +279,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 94,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 94,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 94,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
