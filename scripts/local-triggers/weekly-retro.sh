@@ -14,6 +14,23 @@ set +a
 LOG="/Users/tompryor/Library/Logs/bwsc-weekly-retro.log"
 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Running weekly retro..." >> "$LOG"
 
+# Auth preflight (task #1107): this job's plist used to embed a session OAuth
+# token snapshot that rotates out from under automation on the next `/login` —
+# the job kept firing on schedule and accomplishing nothing. Abort loudly
+# instead of spawning `claude` blind. Stdout is exactly one MODE= line on
+# success (diagnostics go to $LOG via stderr); on MODE=oauth, ANTHROPIC_API_KEY
+# from the `source .env` above must be unset before the real spawn below, or
+# claude silently switches from the free subscription to pay-per-token
+# (ship-check adversarial finding 2026-08-06 — see claude-auth-preflight.js header).
+if ! AUTH_MODE=$(node scripts/claude-auth-preflight.js 2>>"$LOG"); then
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ABORTING: claude auth preflight failed — see above" >> "$LOG"
+  exit 1
+fi
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] auth preflight: $AUTH_MODE" >> "$LOG"
+if [ "$AUTH_MODE" = "MODE=oauth" ]; then
+  unset ANTHROPIC_API_KEY
+fi
+
 # Pull latest
 git pull --ff-only origin main >> "$LOG" 2>&1 || true
 

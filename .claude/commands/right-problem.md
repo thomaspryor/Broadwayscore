@@ -31,8 +31,12 @@ If working in a codebase, use Glob/Grep/Read to understand what data and tools a
 
 **Generate unique temp files for this run (prevents cross-contamination in parallel sessions):**
 ```bash
-PROB_FILE=$(mktemp /tmp/gut-check-problem-XXXXXX.txt)
-PROB_ONLY_FILE=$(mktemp /tmp/gut-check-problem-only-XXXXXX.txt)
+# No suffix after the X's — BSD mktemp (macOS) silently returns the literal,
+# non-random template instead of erroring when a suffix follows the X's,
+# which defeats the whole point of a unique per-session path on a machine
+# that runs many parallel sessions (task #1081 finding).
+PROB_FILE=$(mktemp /tmp/gut-check-problem-XXXXXX)
+PROB_ONLY_FILE=$(mktemp /tmp/gut-check-problem-only-XXXXXX)
 echo "Problem files: $PROB_FILE  $PROB_ONLY_FILE"
 ```
 Use `$PROB_FILE` and `$PROB_ONLY_FILE` throughout all subsequent phases.

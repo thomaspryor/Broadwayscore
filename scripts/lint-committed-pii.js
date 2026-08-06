@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Task #1074. CI lint: no git-tracked data/audit/*.json file may carry
- * submitter PII (name/email). See scripts/lib/pii-scan.js for the detection
- * rules and why this exists.
+ * Task #1074 (+ #1092: extended to data/audit/*.jsonl). CI lint: no
+ * git-tracked data/audit/*.json or *.jsonl file may carry submitter PII
+ * (name/email). See scripts/lib/pii-scan.js for the detection rules and
+ * why this exists.
  *
  * Blocking by design — a committed PII leak in a PUBLIC repo is a real
  * exposure, not style debt. ALLOWLIST is an explicit inventory of files
@@ -26,7 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { scanJsonValue, formatPath } = require('./lib/pii-scan');
+const { scanJsonValue, scanJsonlValue, formatPath } = require('./lib/pii-scan');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -44,19 +45,30 @@ const ALLOWLIST = new Map([
   ],
 ]);
 
-function listTrackedAuditJson() {
-  const out = execFileSync('git', ['ls-files', '--', 'data/audit/*.json'], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-  });
+function listTrackedAuditFiles() {
+  const out = execFileSync(
+    'git',
+    ['ls-files', '--', 'data/audit/*.json', 'data/audit/*.jsonl'],
+    { cwd: REPO_ROOT, encoding: 'utf8' }
+  );
   return out.split('\n').filter(Boolean);
 }
 
 function scanFile(relPath) {
   const absPath = path.join(REPO_ROOT, relPath);
+  let text;
+  try {
+    text = fs.readFileSync(absPath, 'utf8');
+  } catch (err) {
+    return { error: err.message, findings: [] };
+  }
+  if (relPath.endsWith('.jsonl')) {
+    const findings = scanJsonlValue(text);
+    return { error: null, findings, badLineNumbers: findings.badLineNumbers };
+  }
   let parsed;
   try {
-    parsed = JSON.parse(fs.readFileSync(absPath, 'utf8'));
+    parsed = JSON.parse(text);
   } catch (err) {
     return { error: err.message, findings: [] };
   }
@@ -67,7 +79,7 @@ const USAGE = `lint-committed-pii.js — no git-tracked data/audit JSON may carr
 submitter PII (task #1074).
 
 Usage:
-  node scripts/lint-committed-pii.js   scan every tracked data/audit/*.json
+  node scripts/lint-committed-pii.js   scan every tracked data/audit/*.json[l]
   --help, -h                           show this message, do nothing else
 
 Blocking by design: a committed PII leak in a PUBLIC repo is a real exposure.
@@ -76,17 +88,21 @@ already-allowlisted file still fails.
 `;
 
 function main(argv = process.argv.slice(2)) {
-  // Before listTrackedAuditJson(), which shells out to git via execFileSync.
+  // Before listTrackedAuditFiles(), which shells out to git via execFileSync.
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
-  const files = listTrackedAuditJson();
+  const files = listTrackedAuditFiles();
   const violations = [];
   const parseErrors = [];
+  const badJsonlLines = [];
 
   for (const relPath of files) {
-    const { error, findings } = scanFile(relPath);
+    const { error, findings, badLineNumbers } = scanFile(relPath);
     if (error) {
       parseErrors.push({ relPath, error });
       continue;
+    }
+    if (badLineNumbers && badLineNumbers.length > 0) {
+      badJsonlLines.push({ relPath, badLineNumbers });
     }
     if (findings.length === 0) continue;
     const allowed = ALLOWLIST.get(relPath);
@@ -99,9 +115,19 @@ function main(argv = process.argv.slice(2)) {
     for (const p of parseErrors) console.log(`  • ${p.relPath}: ${p.error}`);
   }
 
+  if (badJsonlLines.length > 0) {
+    console.log(
+      '⚠️  Unparseable line(s) in tracked .jsonl (skipped from the PII scan — a blind spot, ' +
+        'not this lint\'s job to fix the data):'
+    );
+    for (const b of badJsonlLines) {
+      console.log(`  • ${b.relPath}: line(s) ${b.badLineNumbers.join(', ')}`);
+    }
+  }
+
   if (violations.length === 0) {
     console.log(
-      `✅ PII lint: ${files.length} committed data/audit/*.json file(s) checked ` +
+      `✅ PII lint: ${files.length} committed data/audit/*.json[l] file(s) checked ` +
         `(${ALLOWLIST.size} allowlisted), none carry submitter PII.`
     );
     process.exit(0);
@@ -139,4 +165,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) main();
 
-module.exports = { listTrackedAuditJson, scanFile, ALLOWLIST };
+module.exports = { listTrackedAuditFiles, scanFile, ALLOWLIST };

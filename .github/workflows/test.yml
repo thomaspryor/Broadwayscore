@@ -1253,6 +1253,12 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
+      # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
+      # scripts/lib/" gap as the block above: without these entries a push
+      # touching only them runs ZERO CI.
+      - 'scripts/claude-auth-preflight.js'
+      - 'scripts/tests/agent-auth-preflight.test.mjs'
       # Dispatch-card drift (card #1009) — the detector that answers "is this
       # running session executing the card Notion currently shows?", plus its
       # watcher. Same "scripts/tests/ is not scripts/lib/" gap as the block
@@ -1278,6 +1284,18 @@ on:
       - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
+      # Generalized hook liveness (task #1104) — the same vacuous-gate class
+      # applied to EVERY hook registered in settings.json, not just the
+      # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
+      # 2026-08-06 and only the #1079 one was caught, because only it had a
+      # dedicated check. New functions live in the SAME lib file already
+      # path-listed above; its test + runner are separate files needing
+      # their own entries — same "scripts/tests/ is not scripts/lib/" gap.
+      # scripts/tests/hook-liveness.test.mjs is also registered in
+      # tests/unit-test-manifest.txt (node --test only runs files literally
+      # listed there — no glob).
+      - 'scripts/tests/hook-liveness.test.mjs'
+      - 'scripts/check-hook-liveness.js'
       # Infra-review gate digest (card #1095) — turns the gitignored
       # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
       # ledgers into a health-check.js row. health-check.js is already
@@ -1560,6 +1578,15 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
+      # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
+      # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
+      # dir is NOT globbed); path-listed so a solo edit triggers CI.
+      - 'scripts/dispatch-watchdog.js'
+      - 'scripts/lib/dispatch-watchdog-core.js'
+      - 'scripts/tests/dispatch-watchdog-core.test.mjs'
+      - 'scripts/lib/dispatch-outcome.js'
+      - 'scripts/tests/dispatch-outcome.test.mjs'
       # No-payload reaper (card #856, Session-system overhaul S3) — colocated
       # test runs in the lib-test glob (scripts/lib/*.test.mjs); path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
@@ -1629,6 +1656,11 @@ on:
       # covered by 'tests/**' above; only the scripts/ sources need listing.
       - 'scripts/lint-committed-pii.js'
       - 'scripts/lib/pii-scan.js'
+      # wrongProduction provenance lint (#1109) — colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit to the lint
+      # or its lib triggers CI.
+      - 'scripts/lint-wrongproduction-provenance.js'
+      - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -2266,6 +2298,16 @@ jobs:
         # session can silently forget — same class as the 34 senders this
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
+
+      - name: Audit — wrongProduction writers must record provenance
+        # Task #1109, the P1 follow-up to the 2026-08-06 main-red (#1108):
+        # mergeReviews() treated a MISSING provenance breadcrumb as "URL-based,
+        # safe to auto-clear" and put a 2016 Broadway Cats review on the 2026
+        # West End show page. That specific gap was fixed directly
+        # (isUrlProvenanceWrongProduction), but nothing stopped the NEXT
+        # writer from being added with zero breadcrumb at all. Blocking — a
+        # writer with no provenance signal is exactly this bug's shape.
+        run: node scripts/lint-wrongproduction-provenance.js
 
       - name: Audit — digest description clip-safety (statically checkable fields)
         # Static, PR-time counterpart to headStandsAlone() (card #1078,
