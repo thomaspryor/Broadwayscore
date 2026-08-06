@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.join(__dirname, '..');
 const PENDING_DIR = path.join(ROOT, 'data', 'review-texts', '_pending');
@@ -34,7 +35,25 @@ const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const APPLY = process.argv.includes('--apply');
 const showArg = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
 
+const USAGE = `sweep-rss-pending-junk.js — Remove junk RSS review files from data/review-texts/_pending.
+
+Usage:
+  node scripts/sweep-rss-pending-junk.js [--apply] [--show=<showId>]
+  node scripts/sweep-rss-pending-junk.js --help, -h    print this usage and exit
+
+Dry-run by default; --apply performs the deletes/rewrites via safeWriteReview.
+`;
+
 function main() {
+  // --help must short-circuit BEFORE any filesystem work. This script deletes
+  // and rewrites review files, so `--help` on a machine without data/ must not
+  // exit(2) from the missing-dir check below, and must never reach a write.
+  // (Help-flag safety guard, Rule B — the audit flagged this after the script
+  // started routing writes through safeWriteReview.)
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    process.exit(0);
+  }
   if (!fs.existsSync(PENDING_DIR)) {
     console.error(`::error::_pending dir not found at ${PENDING_DIR} — run from a checkout with data/review-texts present`);
     process.exit(2);
