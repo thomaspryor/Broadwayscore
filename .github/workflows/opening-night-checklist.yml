@@ -44,15 +44,30 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      # W2.1 (task #1073): this used to be raw actions/setup-node@v5 with no
+      # install step at all — node_modules never existed on this job's runner,
+      # so any script this workflow runs that transitively requires a
+      # third-party package (e.g. opening-night-checklist.js's check plugins
+      # requiring 'cheerio' via gather-reviews.js/page-validator.js) crashed
+      # with MODULE_NOT_FOUND on every single run. That crash is the actual
+      # root cause of opening-night-history.json going silent from 2026-04-26
+      # onward — see the diagnosis comment above appendToHistory() in
+      # scripts/opening-night-checklist.js. Switching to the shared composite
+      # (used by every other workflow in this repo) runs `npm ci` so the
+      # require chain actually resolves.
+      - uses: ./.github/actions/setup-node
         with:
-          node-version: '20'
+          configure-git: 'true'
 
       - name: Run opening night checklist
         id: checklist
-        # exit 1 when a show has errors — expected, don't fail the workflow here
-        continue-on-error: true
+        # W2.1: continue-on-error + `|| true` used to swallow EVERY exit code
+        # this script could produce — including genuine crashes — as "expected,
+        # a show has errors". Explicit rc handling below distinguishes the two
+        # DESIGNED exit codes (0 = clean, 1 = shows have gaps — both fine, both
+        # produce a real JSON payload downstream steps consume) from anything
+        # else (crash, or exit 3 = the history-ledger append itself failed —
+        # see opening-night-checklist.js), which now fails this step loudly.
         run: |
           SHOW_ARG=""
           if [ -n "${{ inputs.show_id }}" ]; then
@@ -62,15 +77,31 @@ jobs:
           # Call]' telemetry from the remediation step) and stderr used to
           # merge into checklist.json, making it unparseable — which silently
           # un-scoped the SLA dispatcher on every real run since it shipped.
-          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json $SHOW_ARG 2>&1 || true
+          rc=0
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json $SHOW_ARG || rc=$?
           if [ -s /tmp/checklist.json ]; then
             echo "Checklist output written ($(wc -c < /tmp/checklist.json) bytes)"
           else
             echo '{"generatedAt":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","shows":[]}' > /tmp/checklist.json
             echo "Warning: checklist produced no output — wrote empty JSON"
           fi
+          echo "opening-night-checklist.js exit code: $rc"
+          if [ "$rc" -eq 0 ] || [ "$rc" -eq 1 ]; then
+            echo "Exit $rc is within the designed range (0=clean, 1=shows have gaps) — continuing."
+          else
+            echo "::error::opening-night-checklist.js exited $rc — NOT the designed 0/1 path (likely a crash, or exit 3 = history-ledger append failure). See the log above for the real error. Failing this step instead of silently continuing."
+            exit 1
+          fi
 
       - name: Run latency report
+        # lint-allow-swallow: out of scope for task #1073's W2.1 fix — this
+        # step is secondary/best-effort (per-stage SLA latency reporting, not
+        # the checklist result or the history ledger appendToHistory() writes
+        # W2.1 was scoped to). "Dispatch SLA alerts" already tolerates a
+        # missing $LATENCY_OUT (empty string interpolates fine into the CLI
+        # arg), and "Commit audit data" runs unconditionally either way. A
+        # dedicated fix for THIS step's swallowed failures is real follow-up
+        # work, not bundled into this incident's fix.
         continue-on-error: true
         run: |
           LATENCY_OUT="data/audit/opening-night-latency-$(date -u +%F).json"
@@ -80,7 +111,12 @@ jobs:
           echo "LATENCY_OUT=$LATENCY_OUT" >> $GITHUB_ENV
 
       - name: Dispatch SLA alerts
-        continue-on-error: true
+        # W2.1 (task #1073): this owner-paging step was fully swallowed by
+        # continue-on-error: true — a real failure here (Discord/email dispatch
+        # broken) produced a green workflow with no alert ever sent. Letting it
+        # fail the job now means "Notify on failure" below actually fires, and
+        # "Commit audit data" (if: always()) still persists whatever ledger
+        # state exists so a crash here doesn't also strand the audit trail.
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -91,9 +127,15 @@ jobs:
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json "$LATENCY_OUT"
 
       - name: Commit audit data
+        # W2.1 (task #1073): must run even when an earlier step now fails hard
+        # (checklist crash, or SLA dispatch no longer has continue-on-error) —
+        # otherwise a mid-run failure strands whatever ledger/history state was
+        # already written on the ephemeral runner instead of persisting it
+        # (this repo's §8 batch-script checkpoint rule: if: always() on
+        # commit/push). git identity is already configured by the
+        # ./.github/actions/setup-node step above (configure-git: true).
+        if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           # alert-ledger + sla-state + digest-queue MUST be committed here or the
           # SLA alert router incident state never persists across the hourly runs
           # — routeAlert would re-open + re-email every run, reintroducing the

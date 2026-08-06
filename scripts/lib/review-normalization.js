@@ -1563,6 +1563,13 @@ function isProfileUrl(url) {
   if (/^\/people\/[A-Z]/i.test(url)) return true;
   // TheaterMania /shows/ pages are listing pages, not reviews
   if (/theatermania\.com\/shows\//.test(lower)) return true;
+  // BWW /shows/{id}/{sub-page} (cast/synopsis/videos) pages are listing pages —
+  // a SERP-discovered cast page was ingested as a "review" for The Vessel
+  // (task #1073, 2026-08-05). Sub-path REQUIRED: the bare
+  // /shows/Title-123.html shape hosts 3 currently-scored real reviews
+  // (Oliver!/Something Rotten!/Titanique — QA ship-check 2026-08-06), so only
+  // sub-pages are blocked. Mirrors the TheaterMania line above.
+  if (/broadwayworld\.com\/shows?\/[^/]+\/.+/.test(lower)) return true;
   return false;
 }
 
