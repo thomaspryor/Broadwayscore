@@ -149,43 +149,104 @@ function githubJSON(apiPath) {
 }
 
 /**
- * What actually happened to a stuck request's workflow.
+ * Recent runs of one workflow, newest first.
  *
- * The old report said "the workflow likely failed" — a guess, and the owner
- * could not act on it. Ask GitHub instead: the most recent run of that
- * workflow, its conclusion, and a link straight to its log. One API call per
- * distinct stuck workflow, so a handful per run at most.
+ * The old report said "the workflow likely failed" — a guess the owner could
+ * not act on. Ask GitHub instead. One API call per distinct stuck workflow,
+ * so a handful per run at most.
  *
- * Returns null when the workflow is unknown, GitHub is unreachable, or the
- * workflow has never run — every one of which is reported as itself rather
- * than dressed up as a diagnosis.
+ * Returns {ok:false} when the workflow is unknown or GitHub was unreachable,
+ * and {ok:true, runs:[]} when it genuinely has never run. Those are different
+ * facts and the report says which one it is — collapsing both to null is how
+ * "we could not check" gets reported as "nothing happened".
  */
-async function diagnoseWorkflow(workflowFile) {
-  if (!workflowFile) return null;
-  const runs = await githubJSON(
-    `/repos/${REPO}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=1`
+const RUNS_PAGE_SIZE = 20;
+
+async function fetchWorkflowRuns(workflowFile) {
+  if (!workflowFile) return { ok: false };
+  const body = await githubJSON(
+    `/repos/${REPO}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=${RUNS_PAGE_SIZE}`
   );
-  const run = runs?.workflow_runs?.[0];
-  if (!run) return null;
+  if (!body || !Array.isArray(body.workflow_runs)) return { ok: false };
   return {
-    status: run.status,
-    conclusion: run.conclusion,
-    startedAt: run.run_started_at || run.created_at,
-    url: run.html_url,
+    ok: true,
+    // A full page means there are probably older runs we did not fetch. That
+    // matters: on a busy shared workflow the run that served this request can
+    // sit past the page boundary, and without this flag the report would state
+    // a count and a verdict as if it had seen everything.
+    truncated: body.workflow_runs.length >= RUNS_PAGE_SIZE,
+    runs: body.workflow_runs.map((r) => ({
+      status: r.status,
+      conclusion: r.conclusion,
+      startedAt: r.run_started_at || r.created_at,
+      url: r.html_url,
+    })),
   };
 }
 
-function describeRun(run) {
-  if (!run) return 'GitHub could not tell us how that workflow last ran (no runs found, or the API was unreachable).';
+/**
+ * The run that could plausibly have served THIS request.
+ *
+ * A shared workflow — add-requested-show.yml, gather-reviews.yml — runs for
+ * every request that routes to it, so "the workflow's most recent run" is
+ * usually somebody else's. Reporting that run's verdict as this request's is
+ * exactly the confident-but-wrong diagnosis this whole change exists to kill:
+ * on 2026-08-05 the two newest add-requested-show runs were green for other
+ * shows while The Outsiders' own run had failed hours earlier, so the naive
+ * version would have told the owner "it SUCCEEDED, re-running will not help".
+ *
+ * A run that started BEFORE the request cannot have served it, so only runs
+ * at-or-after requestedAt are considered. No such run is itself the finding:
+ * the dispatch never fired.
+ */
+function pickRunForRequest(fetched, requestedAt) {
+  if (!fetched || !fetched.ok) return { state: 'unknown' };
+  const asked = Date.parse(requestedAt);
+  // An unparseable requestedAt means we cannot tell which runs came after the
+  // request — and the ONLY safe answer is to say so. Falling back to "use all
+  // runs" here is precisely how the shared-workflow misattribution this
+  // function exists to prevent would sneak back in through a bad timestamp.
+  if (Number.isNaN(asked)) return { state: 'unknown' };
+  const candidates = fetched.runs.filter((r) => {
+    const started = Date.parse(r.startedAt);
+    return !Number.isNaN(started) && started >= asked;
+  });
+  // Every run we fetched is post-request AND the page was full: there are
+  // almost certainly more we never saw, so the count is a floor, not a total.
+  const partial = Boolean(fetched.truncated) && candidates.length === fetched.runs.length;
+  if (candidates.length === 0) {
+    // Only a NON-truncated page proves the workflow never ran. A full page of
+    // pre-request runs would mean we simply did not page back far enough.
+    return fetched.truncated ? { state: 'unknown' } : { state: 'never-ran' };
+  }
+  // Newest first is what GitHub returns; take the newest that qualifies.
+  return { state: 'ran', run: candidates[0], count: candidates.length, partial };
+}
+
+function describeRun(picked) {
+  if (!picked || picked.state === 'unknown') {
+    return 'We could not establish what its workflow did, so this is unexplained rather than diagnosed.';
+  }
+  if (picked.state === 'never-ran') {
+    // The most actionable verdict of the three: nothing was even attempted.
+    return 'That workflow has not run at all since the request came in — the job was never actually started.';
+  }
+  const { run, count, partial } = picked;
   const when = run.startedAt ? ` on ${String(run.startedAt).slice(0, 10)}` : '';
-  if (run.status !== 'completed') return `Its last run${when} is still ${run.status}.`;
+  const many = partial ? `at least ${count}` : String(count);
+  const scope = count > 1 ? ` (the most recent of ${many} runs since the request)` : '';
+  // Never "its last run" — see pickRunForRequest. This run is the newest that
+  // COULD have served the request; the workflow is shared, so it may have been
+  // doing something else entirely.
+  const status = run.status || 'in an unknown state';
+  if (status !== 'completed') return `Its most recent run since then${when}${scope} is still ${status}.`;
   if (run.conclusion === 'success') {
     // A green run that produced nothing is the WORSE case, and the one the old
     // "likely failed" wording actively hid: the fault is in the script's own
     // matching/gating, not in CI, so re-running it changes nothing.
-    return `Its last run${when} SUCCEEDED — so the workflow ran and still produced no live change. Re-running it will not help; the fault is in what it decided to do, not in CI.`;
+    return `Its most recent run since then${when}${scope} SUCCEEDED, and the change still is not live — so re-running it will not help; the fault is in what it decided to do, not in CI.`;
   }
-  return `Its last run${when} ended as ${run.conclusion}.`;
+  return `Its most recent run since then${when}${scope} ended as ${run.conclusion || 'an unreported conclusion'}.`;
 }
 
 /**
@@ -274,23 +335,26 @@ function buildLiveAlert(nowLive) {
  * and a long mailto: or context dump would be sliced into unreadable noise,
  * which is the exact failure being fixed here.
  */
-function buildStuckAlert(stale, diagnoses) {
+function buildStuckAlert(stale, runsByWorkflow) {
+  const picks = new Map(
+    stale.map((e) => [e.key, pickRunForRequest(runsByWorkflow.get(e.workflow), e.requestedAt)])
+  );
   const blocks = stale.map((e) => {
     const days = Math.round(daysSince(e.requestedAt));
     const issueUrl = e.issueNumber ? `https://github.com/${REPO}/issues/${e.issueNumber}` : null;
-    const run = diagnoses.get(e.workflow) || null;
+    const picked = picks.get(e.key);
     const lines = [
-      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${describeRun(run)}`,
+      `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${describeRun(picked)}`,
       `  They asked: "${e.requestedMessage || '(no message)'}"`,
     ];
-    if (run?.url) lines.push(`  The run that was supposed to do it: ${run.url}`);
+    if (picked?.run?.url) lines.push(`  That run: ${picked.run.url}`);
     if (issueUrl) lines.push(`  Tracking issue: ${issueUrl}`);
     return lines.join('\n');
   });
 
-  // The digest's "view" link. Point it at the failed run when there is one —
-  // that is where the reason lives — and fall back to the tracking issue.
-  const firstRun = stale.map((e) => diagnoses.get(e.workflow)).find((r) => r && r.url);
+  // The digest's "view" link. Point it at the run when there is one — that is
+  // where the reason lives — and fall back to the tracking issue.
+  const firstRun = stale.map((e) => picks.get(e.key)?.run).find((r) => r && r.url);
   const firstIssue = stale.find((e) => e.issueNumber);
 
   return {
@@ -369,12 +433,13 @@ async function main() {
   if (nowLive.length > 0) alerts.push(buildLiveAlert(nowLive));
   if (stale.length > 0) {
     // One API call per distinct workflow, not per entry — several stuck
-    // requests routinely share one workflow.
-    const diagnoses = new Map();
+    // requests routinely share one workflow. The per-request pick then happens
+    // in memory, against each entry's own requestedAt.
+    const runsByWorkflow = new Map();
     for (const wf of new Set(stale.map((e) => e.workflow).filter(Boolean))) {
-      diagnoses.set(wf, await diagnoseWorkflow(wf));
+      runsByWorkflow.set(wf, await fetchWorkflowRuns(wf));
     }
-    alerts.push(buildStuckAlert(stale, diagnoses));
+    alerts.push(buildStuckAlert(stale, runsByWorkflow));
   }
 
   if (DRY_RUN) {
@@ -414,7 +479,14 @@ async function main() {
   console.log(`Ledger updated: ${nowLive.length} marked live, ${stale.length} still stuck.`);
 }
 
-module.exports = { buildLiveAlert, buildStuckAlert, describeRun, showUrl, resolveEntryShowId };
+module.exports = {
+  buildLiveAlert,
+  buildStuckAlert,
+  describeRun,
+  pickRunForRequest,
+  showUrl,
+  resolveEntryShowId,
+};
 
 if (require.main === module) {
   // --help must short-circuit BEFORE main() does any network calls, ledger

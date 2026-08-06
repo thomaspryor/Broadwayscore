@@ -25,6 +25,7 @@ const {
   buildLiveAlert,
   buildStuckAlert,
   describeRun,
+  pickRunForRequest,
   showUrl,
 } = require('../../scripts/verify-feedback-requests-live.js');
 const { buildAlert, describeOutcome } = require('../../scripts/notify-feedback-outcomes.js');
@@ -115,17 +116,95 @@ test('a stuck request stays auto-dispatchable — the click is the digest\'s, no
     'digest-autofix.js dispatches every queued row that is NOT flagged a decision; flagging this would park it');
 });
 
+const FETCHED = (runs) => new Map([['add-requested-show.yml', { ok: true, runs }]]);
+
 test('the stuck report states what the workflow actually did, not a guess', () => {
-  const diagnoses = new Map([['add-requested-show.yml', {
+  const alert = buildStuckAlert([STUCK_ENTRY], FETCHED([{
     status: 'completed', conclusion: 'failure', startedAt: '2026-08-01T10:00:00Z',
     url: 'https://github.com/thomaspryor/Broadwayscore/actions/runs/1',
-  }]]);
-  const alert = buildStuckAlert([STUCK_ENTRY], diagnoses);
+  }]));
   assert.match(alert.description, /ended as failure/);
   assert.match(alert.description, /actions\/runs\/1/);
   assert.doesNotMatch(alert.description, /likely failed/, 'a guess is what the owner called useless');
   assert.equal(alert.url, 'https://github.com/thomaspryor/Broadwayscore/actions/runs/1',
     'the digest renders alert.url as the row\'s clickable "view" — point it at the reason');
+});
+
+// The bug this guards is REAL and was reproduced against the live API on
+// 2026-08-05: add-requested-show.yml is shared by every missing-show request,
+// and its two most recent runs were green — for OTHER shows — while The
+// Outsiders' own run had failed hours earlier. Attributing the newest run to
+// this request would have told the owner "it SUCCEEDED, re-running will not
+// help" about a run that never touched their request.
+test('a run that predates the request is never attributed to it', () => {
+  const picked = pickRunForRequest(
+    { ok: true, runs: [{ status: 'completed', conclusion: 'success', startedAt: '2026-07-01T00:00:00Z', url: 'u' }] },
+    '2026-07-27T00:00:00Z'
+  );
+  assert.equal(picked.state, 'never-ran',
+    'the only run started before the request — it cannot have served it');
+  assert.match(describeRun(picked), /not run at all since the request/);
+});
+
+test('among runs since the request, the newest is used and the count is stated', () => {
+  const picked = pickRunForRequest({ ok: true, runs: [
+    { status: 'completed', conclusion: 'success', startedAt: '2026-08-06T02:48:29Z', url: 'newest' },
+    { status: 'completed', conclusion: 'failure', startedAt: '2026-08-05T17:21:04Z', url: 'older' },
+    { status: 'completed', conclusion: 'failure', startedAt: '2026-07-01T00:00:00Z', url: 'pre-request' },
+  ] }, '2026-07-27T00:00:00Z');
+  assert.equal(picked.run.url, 'newest');
+  assert.equal(picked.count, 2, 'the pre-request run is excluded from the count');
+  const text = describeRun(picked);
+  assert.match(text, /most recent run since then/, 'never claim it was THIS request\'s run');
+  assert.doesNotMatch(text, /Its last run/, 'the shared workflow makes "its last run" a false attribution');
+  assert.match(text, /the most recent of 2 runs since the request/);
+});
+
+test('an unreachable GitHub is reported as unchecked, not as "nothing happened"', () => {
+  const picked = pickRunForRequest({ ok: false }, '2026-07-27T00:00:00Z');
+  assert.equal(picked.state, 'unknown');
+  assert.match(describeRun(picked), /could not establish what its workflow did/);
+  assert.doesNotMatch(describeRun(picked), /never/, 'do not imply the job was not started');
+});
+
+test('a genuinely never-run workflow is distinguished from an API failure', () => {
+  assert.equal(pickRunForRequest({ ok: true, runs: [] }, '2026-07-27T00:00:00Z').state, 'never-ran');
+});
+
+// Round-2 review finding: an unparseable requestedAt used to fall back to
+// "consider every run", which silently restores the exact misattribution this
+// function exists to prevent. A bad timestamp must produce "unknown".
+test('an unparseable request date yields unknown, never a guess from all runs', () => {
+  const runs = [{ status: 'completed', conclusion: 'success', startedAt: '2026-08-06T02:48:29Z', url: 'unrelated' }];
+  for (const bad of [undefined, null, '', 'not-a-date']) {
+    const picked = pickRunForRequest({ ok: true, runs }, bad);
+    assert.equal(picked.state, 'unknown', `must not attribute a run when requestedAt is ${JSON.stringify(bad)}`);
+    assert.equal(picked.run, undefined);
+  }
+});
+
+// Round-2 review finding: per_page caps the fetch. If every run on a full page
+// is post-request there are almost certainly more we never saw, so the count is
+// a floor and "never ran" is unprovable.
+test('a truncated page reports a floor, not a total', () => {
+  const runs = Array.from({ length: 20 }, (_, i) => ({
+    status: 'completed', conclusion: 'failure', startedAt: `2026-08-0${(i % 5) + 1}T00:00:00Z`, url: `r${i}`,
+  }));
+  const picked = pickRunForRequest({ ok: true, truncated: true, runs }, '2026-07-27T00:00:00Z');
+  assert.equal(picked.partial, true);
+  assert.match(describeRun(picked), /at least 20 runs since the request/);
+});
+
+test('a truncated page can never prove a workflow never ran', () => {
+  const allOld = [{ status: 'completed', conclusion: 'success', startedAt: '2026-01-01T00:00:00Z', url: 'old' }];
+  assert.equal(pickRunForRequest({ ok: true, truncated: true, runs: allOld }, '2026-07-27T00:00:00Z').state, 'unknown',
+    'a full page of pre-request runs means we did not page back far enough, not that nothing ran');
+  assert.equal(pickRunForRequest({ ok: true, truncated: false, runs: allOld }, '2026-07-27T00:00:00Z').state, 'never-ran');
+});
+
+test('a malformed run object never prints "undefined" at the owner', () => {
+  const text = describeRun({ state: 'ran', count: 1, run: {} });
+  assert.doesNotMatch(text, /undefined/);
 });
 
 test('with no run to link, the view link falls back to the tracking issue', () => {
@@ -134,14 +213,14 @@ test('with no run to link, the view link falls back to the tracking issue', () =
 });
 
 test('a GREEN run that produced nothing is called out as the worse case', () => {
-  const text = describeRun({ status: 'completed', conclusion: 'success', startedAt: '2026-08-01T10:00:00Z' });
+  const text = describeRun({ state: 'ran', count: 1, run: { status: 'completed', conclusion: 'success', startedAt: '2026-08-01T10:00:00Z' } });
   assert.match(text, /SUCCEEDED/);
-  assert.match(text, /Re-running it will not help/);
+  assert.match(text, /re-running it will not help/i);
 });
 
 test('an unknown run says it is unknown rather than inventing a diagnosis', () => {
-  assert.match(describeRun(null), /could not tell us/);
-  assert.match(describeRun({ status: 'in_progress' }), /still in_progress/);
+  assert.match(describeRun(null), /could not establish what its workflow did/);
+  assert.match(describeRun({ state: 'ran', count: 1, run: { status: 'in_progress' } }), /still in_progress/);
 });
 
 // --- 4. no mumbo jumbo ------------------------------------------------------
