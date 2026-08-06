@@ -14,13 +14,19 @@
  * pure scan logic lives in scripts/lib/wrongproduction-provenance.js
  * (require()able + unit-tested there), this file is the CLI walk + report.
  *
+ * Scans every .js and .ts file under scripts/, recursively — a ship-check
+ * adversarial review caught the first pass scanning .js only, missing a live
+ * unprovenanced writer at scripts/llm-scoring/index.ts (also fixed alongside
+ * this lint landing).
+ *
  * An audit of every current `.wrongProduction = true` write site in scripts/
  * (see scripts/lib/wrongproduction-provenance.js's scanFileForViolations)
- * found only 3 files genuinely missing a provenance signal, and all 3 were
+ * found only 4 files genuinely missing a provenance signal, and all 4 were
  * fixed alongside this lint landing (fix-wrong-reviews.js, classify-wrong-
- * production.js, audit-pre2005-reviews.js) — EXEMPT_FILES below is not a
- * grandfather list for those, it's a one-entry exemption for a report
- * script's in-memory replay fixtures, which are never written to disk.
+ * production.js, audit-pre2005-reviews.js, llm-scoring/index.ts) —
+ * EXEMPT_FILES below is not a grandfather list for those, it's a one-entry
+ * exemption for a report script's in-memory replay fixtures, which are
+ * never written to disk.
  *
  * Usage: node scripts/lint-wrongproduction-provenance.js
  */
@@ -57,7 +63,7 @@ const EXEMPT_FILES = new Set([
 function isExempt(relPath) {
   if (relPath === SELF_PATH) return true;
   if (EXEMPT_FILES.has(relPath)) return true;
-  if (relPath.endsWith('.test.js') || relPath.endsWith('.test.mjs')) return true;
+  if (relPath.endsWith('.test.js') || relPath.endsWith('.test.mjs') || relPath.endsWith('.test.ts')) return true;
   const base = path.basename(relPath);
   if (base.startsWith('test-') && relPath.startsWith('scripts/')) return true;
   return false;
@@ -75,7 +81,7 @@ function walk(dir, files) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       walk(full, files);
-    } else if (entry.name.endsWith('.js')) {
+    } else if (entry.name.endsWith('.js') || entry.name.endsWith('.ts')) {
       files.push(full);
     }
   }
@@ -85,7 +91,7 @@ const USAGE = `lint-wrongproduction-provenance.js — every wrongProduction
 writer in scripts/ must also record why (task #1109).
 
 Usage:
-  node scripts/lint-wrongproduction-provenance.js   scan every scripts/**/*.js
+  node scripts/lint-wrongproduction-provenance.js   scan every scripts/ .js/.ts file
   --help, -h                                        show this message
 
 Blocking by design: a wrongProduction write with no provenance signal is
@@ -130,7 +136,7 @@ function main(argv = process.argv.slice(2)) {
     process.exit(1);
   }
 
-  console.log(`OK — ${scanned} scripts/**/*.js file(s) scanned, every wrongProduction write carries a provenance signal.`);
+  console.log(`OK — ${scanned} scripts/ .js/.ts file(s) scanned, every wrongProduction write carries a provenance signal.`);
 }
 
 if (require.main === module) main();

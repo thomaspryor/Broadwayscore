@@ -106,6 +106,17 @@ function isComparisonLine(line) {
  * as real writes. Without this, the lint drowned in ~60 false positives on
  * this repo's real corpus (fix-cross-outlet-attributions*.js's `note:`
  * fields alone account for most of them) on its first real run.
+ *
+ * KNOWN GAP (ship-check adversarial review, task #1109): this quote-parity
+ * tracker doesn't know about regex literals, so an apostrophe inside a
+ * `/.../ ` regex on the SAME line as a `.wrongProduction = true` write (e.g.
+ * `if (!x.match(/it's wrong/i)) data.wrongProduction = true;`) can flip the
+ * parity into a false "inside a string" and hide a real, unprovenanced
+ * write. No current writer in this repo does this — verified zero hits —
+ * and this codebase's convention is one statement per line, so the fix
+ * (real tokenization) isn't worth the complexity it would add to a
+ * best-effort scanner. Same class of documented, accepted limitation as
+ * scripts/lib/infra-review-scope.js's KNOWN_GAPS.
  */
 function isInsideStringLiteral(line, index) {
   let inSingle = false;
