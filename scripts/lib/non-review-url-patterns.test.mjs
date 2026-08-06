@@ -49,6 +49,31 @@ test('namedNonReviewReason: an ordinary outlet URL is not classified', () => {
   assert.equal(namedNonReviewReason('https://theartsdesk.com/new-reviews/frank-sinatra-review'), null);
 });
 
+test('namedNonReviewReason: seventh wave — OWE opening ticketing/listing hosts (2026-08-06)', () => {
+  // Each of these reached a census "missing reviews" list on the Cats/NYSM/
+  // I'm Every Woman openings; the groupon one was auto-ingested as a bogus
+  // provisional outlet before downstream guards caught it.
+  assert.equal(namedNonReviewReason('https://www.groupon.co.uk/deals/ingresso-now-you-see-me'), 'ticketing-reseller');
+  assert.equal(namedNonReviewReason('https://www.groupon.com/deals/some-show'), 'ticketing-reseller');
+  assert.equal(namedNonReviewReason('https://www.officialtheatre.com/london-coliseum/now-you-see-me-live/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.kxtickets.com/whats-on/i-m-every-woman-the-chaka-khan-musical'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.westend.com/shows/now-you-see-me-live/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.mischiefcomedy.com/whats-on/the-comedy-about-spies/london/'), 'venue-production-page');
+  // westendtheatre.com (the WET aggregator) must NOT be caught by the
+  // westend.com host pattern — WET review-roundup pages are a real source.
+  assert.equal(namedNonReviewReason('https://www.westendtheatre.com/reviews/cats/'), null);
+});
+
+test('classifyReviewUrl: plural "-tickets" slugs and /whats-on/ paths are non-review-path', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  assert.deepEqual(classifyReviewUrl('https://www.westendtheatre.com/317407/shows/cats-tickets/'), { ok: false, reason: 'non-review-path' });
+  assert.deepEqual(classifyReviewUrl('https://www.londonboxoffice.co.uk/now-you-see-me-tickets'), { ok: false, reason: 'non-review-path' });
+  // Singular "-ticket" appears in three REAL review headlines (NY Post
+  // "…-sexy-hot-ticket/", CityAM "…-west-end-ticket/") — must stay ok.
+  assert.equal(classifyReviewUrl('https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broadway-phantom-of-the-opera-riff-is-a-sexy-hot-ticket/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.cityam.com/inter-alia-play-review-springs-must-book-west-end-ticket/').ok, true);
+});
+
 test('namedNonReviewReason: an unparseable URL returns null, never throws', () => {
   assert.equal(namedNonReviewReason('not-a-url'), null);
   assert.equal(namedNonReviewReason(''), null);

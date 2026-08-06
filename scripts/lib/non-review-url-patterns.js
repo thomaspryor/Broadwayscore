@@ -121,6 +121,14 @@ const NON_REVIEW_PATH_PATTERNS = [
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
   /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
+  // Ticket-page slugs: /cats-tickets/, /now-you-see-me-tickets (WET show pages,
+  // londonboxoffice.co.uk — OWE opening audit 2026-08-06). PLURAL only: three
+  // real reviews end in singular "-ticket" ("…-sexy-hot-ticket/",
+  // "…-west-end-ticket/"); plural measured 0 hits across 18,860 scored URLs.
+  /\/[^/]*-tickets(\/|$)/i,
+  // Venue/producer "what's on" listing sections (kxtickets.com/whats-on/…,
+  // mischiefcomedy.com/whats-on/…). Path-anchored, any host; 0 corpus hits.
+  /^\/whats-on(\/|$)/i,
 ];
 
 /**
@@ -161,6 +169,19 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theater-feature section is previews/features, not reviews (Disruption
   // census counted one as a missing review, 2026-08-05).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
+  // first live exercise of #1073): ticketing/listing hosts that reached the
+  // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
+  // provisional "groupon" outlet before downstream guards flagged it. All
+  // measured zero hits across the 18,860 scored review URLs in reviews.json.
+  { host: /(^|\.)groupon\./, reason: 'ticketing-reseller' },
+  { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)westend\.com$/, reason: 'ticketing-listing' },
+  // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
+  // Spies census "missing review"). Host-wide: a producer site never reviews
+  // its own show.
+  { host: /(^|\.)mischiefcomedy\.com$/, reason: 'venue-production-page' },
 ];
 
 /**

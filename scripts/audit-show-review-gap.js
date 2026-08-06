@@ -1171,10 +1171,29 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   }
   try {
     execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
-    return { ok: true, reason: null, provisional };
   } catch (e) {
     return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
+  // Exit 0 is NOT proof the review landed: ingest-review-from-url.js exits 0
+  // on no-op skips ("already exists", cross-show dedup) too. The recovery path
+  // learned this on ship-check 2026-06-22 and re-reads its file; this path
+  // never did — a 2016 WSJ Cats URL reported ok:true against cats-west-end-2026
+  // on every hourly run while its text lived under cats-1982/ (OWE opening
+  // audit 2026-08-06). Re-scan the show dir for the URL: only a file HERE
+  // counts, so a permanent no-op shows up as a residual gap instead of a
+  // silent evergreen "success".
+  const target = normalizeReviewUrl(url);
+  try {
+    const dir = path.join(REVIEW_TEXTS_DIR, showId);
+    const landed = fs.readdirSync(dir).filter(f => f.endsWith('.json')).some(f => {
+      try {
+        const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        return j.url && normalizeReviewUrl(j.url) === target;
+      } catch { return false; }
+    });
+    if (landed) return { ok: true, reason: null, provisional };
+  } catch { /* dir unreadable → fall through to not-landed */ }
+  return { ok: false, reason: 'ingest no-op — exit 0 but no file with this URL landed in this show dir', provisional };
 }
 
 // Persist aggUrlRecoveryCount onto the existing dir file. Called after a recovery
@@ -1513,8 +1532,16 @@ async function main(argv = process.argv.slice(2)) {
       saveWeProving(proving);
     }
 
-    const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length;
-    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.length} flagged=${r.flaggedMisses.length} citedNoUrl=${r.citedNoUrl.length})`;
+    // Prior-run entries are PERMANENTLY ingest-blocked by design (a different
+    // production's reviews are not a gap in this one) — count them separately
+    // so a common-title show doesn't read as a disaster. Cats (Regent's Park
+    // 2026) printed "114 gap" when every one of those was a correctly-blocked
+    // Jellicle Ball / 2019 movie / 2016 Broadway-revival URL (2026-08-06).
+    const nPriorGap = r.missing.filter(m => m.priorRun).length
+      + r.flaggedMisses.filter(m => m.priorRun).length
+      + r.citedNoUrl.filter(c => c.priorRun).length;
+    const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.filter(m => !m.priorRun).length} flagged=${r.flaggedMisses.filter(m => !m.priorRun).length} citedNoUrl=${r.citedNoUrl.filter(c => !c.priorRun).length}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
@@ -2032,8 +2059,11 @@ async function main(argv = process.argv.slice(2)) {
   for (const r of results) {
     const failedIngest = (r.ingestResults || []).filter(x => !x.ok).length;
     const capped = (r.ingestSkippedByCap || []).length;
-    // When --ingest-missing wasn't run, every missing URL is still residual.
-    const uningested = ingestMissing ? 0 : r.missing.length;
+    // When --ingest-missing wasn't run, every missing URL is still residual —
+    // EXCEPT prior-run entries, which are permanently ingest-blocked by design
+    // and must not re-alarm every run (Cats 2026-08-06: 46 correctly-blocked
+    // prior-production URLs kept the show in the residual warning forever).
+    const uningested = ingestMissing ? 0 : r.missing.filter(m => !m.priorRun).length;
     // flaggedMisses that the recovery loop just HEALED this run are no longer a
     // residual gap — count only the ones that stayed flagged out (recovery skipped,
     // fetch failed, or not recoverable in the first place). Uncited-stub
@@ -2041,7 +2071,10 @@ async function main(argv = process.argv.slice(2)) {
     // one uncited heal would otherwise hide one still-flagged cited gap
     // (ship-check 2026-07-23, Codex finding).
     const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
-    const flaggedOut = Math.max(0, r.flaggedMisses.length - recovered);
+    // Same prior-run exclusion as `uningested`: a wrongProduction-flagged file
+    // whose URL the census attributes to a prior production is correct state,
+    // not a residual gap (Cats: 62 such files, all deliberate).
+    const flaggedOut = Math.max(0, r.flaggedMisses.filter(m => !m.priorRun).length - recovered);
     const residual = failedIngest + capped + uningested + flaggedOut;
     if (residual > 0) {
       residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut, recovered });
