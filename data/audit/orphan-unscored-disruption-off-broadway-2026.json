@@ -2,23 +2,9 @@
   "version": 1,
   "showId": "disruption-off-broadway-2026",
   "openingDate": "2026-08-02",
-  "detectedAt": "2026-08-06T01:28:26.908Z",
+  "detectedAt": "2026-08-06T04:09:00.288Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "eventticketscenter--unknown.json",
-      "outletId": "eventticketscenter",
-      "criticName": "Unknown",
-      "url": "https://www.eventticketscenter.com/disruption-new-york-08-09-2026/8172186/t",
-      "fullTextLen": 3295,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "off-off-online--stanford-friedman.json",
       "outletId": "off-off-online",
@@ -62,7 +48,7 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
+  "orphanCount": 3,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
