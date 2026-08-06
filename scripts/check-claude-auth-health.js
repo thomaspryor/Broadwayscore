@@ -21,7 +21,18 @@
  */
 'use strict';
 
+const path = require('path');
 const { spawnSync } = require('child_process');
+
+// Under launchd, process.env carries ONLY the plist's EnvironmentVariables
+// block (PATH) — no .env, no login shell (same root cause as task #713,
+// documented at the top of scripts/lib/claude-cli.js). Without this, a real
+// alert built below would fail to email: RESEND_API_KEY/OWNER_EMAIL are only
+// in .env, and routeAlert()'s sendAlert() would silently no-op — the exact
+// "detector exists but nobody gets told" failure this card is about. Mirrors
+// opening-night-monitor-launch.js's identical preamble line.
+require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
+
 const { preflightAuth } = require('./lib/claude-cli.js');
 const { evaluateAuthHealth, buildAlertPayload } = require('./lib/claude-auth-health.js');
 
