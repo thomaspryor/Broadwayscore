@@ -14,6 +14,15 @@ set +a
 LOG="/Users/tompryor/Library/Logs/bwsc-weekly-retro.log"
 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Running weekly retro..." >> "$LOG"
 
+# Auth preflight (task #1107): this job's plist used to embed a session OAuth
+# token snapshot that rotates out from under automation on the next `/login` —
+# the job kept firing on schedule and accomplishing nothing. Abort loudly
+# instead of spawning `claude` blind.
+if ! node scripts/claude-auth-preflight.js >> "$LOG" 2>&1; then
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ABORTING: claude auth preflight failed — see above" >> "$LOG"
+  exit 1
+fi
+
 # Pull latest
 git pull --ff-only origin main >> "$LOG" 2>&1 || true
 
