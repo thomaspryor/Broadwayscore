@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-08-03",
+  "asOf": "2026-08-04",
   "shadow": true,
   "checks": [
     {
@@ -30,39 +30,39 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "8 conversions in trailing 7d"
+      "reason": "10 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "480/499 = 96% of peak, above the 20% floor"
+      "reason": "485/499 = 97% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "510/510 = 100% of peak, above the 20% floor"
+      "reason": "524/524 = 100% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 136% over 3d"
+      "reason": "Impact/PostHog click ratio 113% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
       "label": "Bot click divergence",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 1.4x over 3d"
+      "reason": "Impact/PostHog click ratio 1.1x over 3d"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 3.43%, 1 zero-payout"
+      "reason": "take-rate 3.46%, 1 zero-payout"
     }
   ],
   "failingCount": 0,
-  "updatedAt": "2026-08-05T16:22:17.929Z"
+  "updatedAt": "2026-08-06T09:31:52.736Z"
 }
