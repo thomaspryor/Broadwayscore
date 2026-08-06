@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T18:36:42.180Z",
-    "completedAt": "2026-08-02T18:36:42.356Z",
-    "totalReviews": 49,
-    "processed": 0,
-    "skipped": 48,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "trainspotting-the-musical-west-end-2026",
-        "outletId": "daily-mail",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-08-02T18:43:04.385Z",
-    "completedAt": "2026-08-02T18:43:04.598Z",
-    "totalReviews": 1,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-vessel-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T18:47:57.401Z",
     "completedAt": "2026-08-02T18:47:57.634Z",
     "totalReviews": 33,
@@ -725647,5 +725607,39 @@
         "error": "Review text too short or missing"
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-06T13:30:19.128Z",
+    "completedAt": "2026-08-06T13:30:33.888Z",
+    "totalReviews": 42086,
+    "processed": 1,
+    "skipped": 42081,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 17648,
+      "output": 689,
+      "total": 49017
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-06T14:03:33.283Z",
+    "completedAt": "2026-08-06T14:03:49.986Z",
+    "totalReviews": 23,
+    "processed": 3,
+    "skipped": 20,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 20371,
+      "output": 1026,
+      "total": 48211
+    },
+    "errorDetails": []
   }
 ]
