@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T13:41:28.500Z",
+  "generatedAt": "2026-08-06T14:38:45.725Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1023,23 +1023,22 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 62.58,
-      "liveScore": 63,
-      "scoreDrift": 0.4200000000000017,
+      "siteScore": 60.38,
+      "liveScore": 60,
+      "scoreDrift": -0.38000000000000256,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 1,
       "t2": 1,
-      "t3": 3,
-      "positive": 1,
+      "t3": 6,
+      "positive": 2,
       "mixed": 3,
-      "negative": 1,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
           "T1:1/3",
           "T2:0/2",
           "hi-conf:2/6"
@@ -1088,10 +1087,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -1123,6 +1118,18 @@
           "p": 1,
           "m": 3,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-06T14:38:45.725Z",
+          "rc": 8,
+          "s": 60.38,
+          "t1": 1,
+          "t2": 1,
+          "t3": 6,
+          "p": 2,
+          "m": 3,
+          "n": 3,
           "bc": "waiting"
         }
       ]
