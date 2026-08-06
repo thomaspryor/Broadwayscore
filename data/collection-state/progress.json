@@ -24,7 +24,10 @@
     "the-enormous-crocodile-west-end-2026/on-magazine--unknown.json",
     "the-enormous-crocodile-west-end-2026/theatre-weekly--unknown.json",
     "trainspotting-the-musical-west-end-2026/radio-times--olivia-garrett.json",
-    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+    "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json"
   ],
   "failed": [
     "the-comedy-about-spies-west-end-2026/guardian--ryan-gilbey.json",
@@ -87,7 +90,14 @@
     "trainspotting-the-musical-west-end-2026/west-end-wilma--unknown.json",
     "trainspotting-the-musical-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json"
+    "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+    "the-gruffalo-west-end-2026/waterstones--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/hollywood-reporter--thr-staff.json",
+    "loves-labours-lost-globe-west-end-2026/marquee--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/western-mail--unknown.json",
+    "loves-labours-lost-globe-west-end-2026/telegraph--ben-lawrence.json",
+    "heathers-the-musical-off-west-end-2026/hollywood-reporter--david-rooney.json",
+    "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -115,15 +125,24 @@
       "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [],
+    "browserbase": [
+      "data/review-texts/the-car-man-west-end-2026/times-uk--clive-davis.json"
+    ],
+    "directCookies": [
+      "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
+      "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
+      "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
+      "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json"
+    ],
+    "scrapingbee": [
+      "the-comedy-about-spies-west-end-2026/matineemouse--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-06T10:48:43.779Z",
-  "lastProcessed": "the-gruffalo-west-end-2026/daily-mail--jennifer-ruby.json",
+  "lastProcessed": "heathers-the-musical-off-west-end-2026/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-06T10:59:56.640Z",
