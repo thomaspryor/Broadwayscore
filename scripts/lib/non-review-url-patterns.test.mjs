@@ -49,6 +49,40 @@ test('namedNonReviewReason: an ordinary outlet URL is not classified', () => {
   assert.equal(namedNonReviewReason('https://theartsdesk.com/new-reviews/frank-sinatra-review'), null);
 });
 
+test('namedNonReviewReason: seventh wave — OWE opening ticketing/listing hosts (2026-08-06)', () => {
+  // Each of these reached a census "missing reviews" list on the Cats/NYSM/
+  // I'm Every Woman openings; the groupon one was auto-ingested as a bogus
+  // provisional outlet before downstream guards caught it.
+  assert.equal(namedNonReviewReason('https://www.groupon.co.uk/deals/ingresso-now-you-see-me'), 'ticketing-reseller');
+  assert.equal(namedNonReviewReason('https://www.groupon.com/deals/some-show'), 'ticketing-reseller');
+  assert.equal(namedNonReviewReason('https://www.officialtheatre.com/london-coliseum/now-you-see-me-live/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.kxtickets.com/whats-on/i-m-every-woman-the-chaka-khan-musical'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.westend.com/shows/now-you-see-me-live/'), 'ticketing-listing');
+  assert.equal(namedNonReviewReason('https://www.mischiefcomedy.com/whats-on/the-comedy-about-spies/london/'), 'venue-production-page');
+  // westendtheatre.com (the WET aggregator) must NOT be caught by the
+  // westend.com host pattern — WET review-roundup pages are a real source.
+  assert.equal(namedNonReviewReason('https://www.westendtheatre.com/reviews/cats/'), null);
+});
+
+test('classifyReviewUrl: host-scoped ticket pages blocked, real review shapes stay ok', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  // WET /NNNNNN/shows/… show pages and LBO root ticket slugs are listings.
+  assert.deepEqual(classifyReviewUrl('https://www.westendtheatre.com/317407/shows/cats-tickets/'), { ok: false, reason: 'ticketing-listing' });
+  assert.deepEqual(classifyReviewUrl('https://www.londonboxoffice.co.uk/now-you-see-me-tickets'), { ok: false, reason: 'ticketing-listing' });
+  // …but the same hosts' REAL review pages must stay ok.
+  assert.equal(classifyReviewUrl('https://www.westendtheatre.com/reviews/cats/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.londonboxoffice.co.uk/news/post/cats-review').ok, true);
+  // Host-agnostic FP guards (full-corpus check 2026-08-06): real reviews whose
+  // slugs end in "-ticket(s)" or that live under a /whats-on/ section. A bare
+  // path rule for either shape ate these — keep them ok forever.
+  assert.equal(classifyReviewUrl('https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets').ok, true);
+  assert.equal(classifyReviewUrl('https://www.digitalspy.com/movies/a63081350/devil-wears-prada-musical-review-buy-tickets/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/review-car-man--lowry-9336528').ok, true);
+  assert.equal(classifyReviewUrl('https://www.liverpoolecho.co.uk/whats-on/theatre-news/mousetrap-liverpool-empire-clever-classic-25472794').ok, true);
+  assert.equal(classifyReviewUrl('https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broadway-phantom-of-the-opera-riff-is-a-sexy-hot-ticket/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.cityam.com/inter-alia-play-review-springs-must-book-west-end-ticket/').ok, true);
+});
+
 test('namedNonReviewReason: an unparseable URL returns null, never throws', () => {
   assert.equal(namedNonReviewReason('not-a-url'), null);
   assert.equal(namedNonReviewReason(''), null);

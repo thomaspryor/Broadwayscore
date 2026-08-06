@@ -1259,6 +1259,12 @@ on:
       # above: without these entries a push touching only them runs ZERO CI.
       - 'scripts/lib/dispatch-card-drift.js'
       - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # Pre-implementation infra review gate (card #1079, owner decision
+      # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
+      # not scripts/lib/" gap: without these entries a push touching only them
+      # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
+      - 'scripts/lib/infra-review-scope.js'
+      - 'scripts/tests/infra-review-gate.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
@@ -1549,6 +1555,10 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # headStandsAlone() clip-readability guard (card #1078) — colocated
+      # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
+      # this is path-listed for the same reason as owner-alert-router.js above.
+      - 'tests/unit/digest-row-clip.test.mjs'
       # Lint guard: routeAlert()/resolveCondition() callers must commit
       # alert-ledger.json in the same job (card #618, 5th recurrence
       # prevention). Colocated *.test.mjs runs via the lib-test glob;
