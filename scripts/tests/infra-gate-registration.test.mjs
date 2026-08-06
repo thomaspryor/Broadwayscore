@@ -100,6 +100,21 @@ test('(a) checkSettingsRegistration FAILS when settings.json does not exist', ()
   assert.match(r.detail, /not found/);
 });
 
+test('(a) checkSettingsRegistration FAILS when a matching entry exists but its matcher does not cover Edit+Bash', () => {
+  // The exact gap a ship-check reviewer flagged: a command referencing the
+  // hook is not enough on its own if the matcher was narrowed (e.g. to
+  // 'Read') — real edits/shell writes would fail-open while this looked
+  // registered.
+  const dir = makeTmpDir();
+  const settingsPath = path.join(dir, 'settings.json');
+  fs.writeFileSync(settingsPath, JSON.stringify({
+    hooks: { PreToolUse: [{ matcher: 'Read', hooks: [{ type: 'command', command: 'bash ~/.claude/hooks/infra-plan-review-gate.sh' }] }] },
+  }));
+  const r = checkSettingsRegistration({ settingsPath });
+  assert.equal(r.ok, false);
+  assert.match(r.detail, /does not cover both Edit and Bash/);
+});
+
 test('(a) checkSettingsRegistration FAILS on unparseable settings.json', () => {
   const dir = makeTmpDir();
   const settingsPath = path.join(dir, 'settings.json');
@@ -195,6 +210,26 @@ test('(a) probeSyntheticBlock reports not-ok on a script that exits with an unre
   const r = probeSyntheticBlock({ hookPath, repoRoot: REPO_ROOT, sessionId: `test-${randomUUID()}` });
   assert.equal(r.exitCode, 1);
   assert.equal(r.ok, false);
+});
+
+test('(a) probeSyntheticBlock detects a stale DEFAULT_PROBE_TARGET instead of misreporting the gate as broken', () => {
+  // If a future scope edit reclassifies DEFAULT_PROBE_TARGET out of the
+  // 'critical' tier, the hook correctly stops blocking it (exit 0/warn) —
+  // that is NOT evidence the gate is broken. probeSyntheticBlock must catch
+  // this itself by re-classifying the target against the live scope lib.
+  const fakeRepo = makeTmpDir();
+  fs.mkdirSync(path.join(fakeRepo, 'scripts', 'lib'), { recursive: true });
+  fs.writeFileSync(
+    path.join(fakeRepo, 'scripts', 'lib', 'infra-review-scope.js'),
+    "module.exports = { classifyPath: () => ({ inScope: true, tier: 'shared' }) };\n"
+  );
+  const hookPath = path.join(fakeRepo, 'fake-gate.sh');
+  fs.writeFileSync(hookPath, '#!/usr/bin/env bash\ncat >/dev/null\nexit 2\n'); // would look healthy if run
+  fs.chmodSync(hookPath, 0o755);
+  const r = probeSyntheticBlock({ hookPath, repoRoot: fakeRepo, sessionId: `test-${randomUUID()}` });
+  assert.equal(r.ok, false);
+  assert.equal(r.staleTarget, true);
+  assert.match(r.detail, /no longer classifies as 'critical'/);
 });
 
 // ── (b) live-machine tests: only meaningful where ~/.claude is installed ────

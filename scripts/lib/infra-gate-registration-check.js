@@ -67,13 +67,32 @@ function checkSettingsRegistration({ settingsPath }) {
     return { ok: false, detail: `settings.json unparseable: ${err.message}` };
   }
   const preToolUse = (settings.hooks && settings.hooks.PreToolUse) || [];
-  const found = preToolUse.some((entry) =>
+  const matchingEntries = preToolUse.filter((entry) =>
     Array.isArray(entry && entry.hooks) &&
     entry.hooks.some((h) => typeof h.command === 'string' && h.command.includes('infra-plan-review-gate.sh'))
   );
-  return found
-    ? { ok: true, detail: 'PreToolUse has an entry whose command references infra-plan-review-gate.sh' }
-    : { ok: false, detail: 'no PreToolUse entry references infra-plan-review-gate.sh — the gate is unregistered' };
+  if (matchingEntries.length === 0) {
+    return { ok: false, detail: 'no PreToolUse entry references infra-plan-review-gate.sh — the gate is unregistered' };
+  }
+  // A command referencing the hook is not enough on its own: the hook's real
+  // scope is `Edit|Write|MultiEdit|NotebookEdit|Bash` (its file-write and
+  // shell-write routes — see infra-plan-review-gate.sh's own header). A
+  // matcher narrowed to e.g. 'Read' would still make this check report
+  // healthy while every real edit fail-opens (ship-check finding). Require
+  // coverage of BOTH the direct edit tools and Bash, since scope-scope.js's
+  // hardest-won fix (bashWriteTargets) exists specifically because Bash is
+  // the dodge that closes.
+  const adequatelyScoped = matchingEntries.some((entry) =>
+    typeof entry.matcher === 'string' && entry.matcher.includes('Edit') && entry.matcher.includes('Bash')
+  );
+  if (!adequatelyScoped) {
+    const matchers = matchingEntries.map((e) => e.matcher).join(', ');
+    return {
+      ok: false,
+      detail: `a PreToolUse entry references infra-plan-review-gate.sh but its matcher ("${matchers}") does not cover both Edit and Bash — real edits or shell writes would fail-open even though the hook looks registered`,
+    };
+  }
+  return { ok: true, detail: 'PreToolUse has an entry whose command references infra-plan-review-gate.sh and whose matcher covers Edit + Bash' };
 }
 
 /**
@@ -83,14 +102,21 @@ function checkSettingsRegistration({ settingsPath }) {
  */
 function checkHookFileExists({ hookPath }) {
   if (!hookPath) return { ok: false, detail: 'no hookPath given' };
-  if (!fs.existsSync(hookPath)) {
-    return { ok: false, detail: `hook file missing at ${hookPath}` };
+  // existsSync + statSync is a TOCTOU window (deletion, permission change, or
+  // a dangling symlink between the two calls) — statSync alone can throw.
+  // Catch it as a real "broken" finding rather than letting it escape as an
+  // uncaught exception (ship-check finding).
+  let stat;
+  try {
+    stat = fs.statSync(hookPath);
+  } catch (err) {
+    if (err.code === 'ENOENT') return { ok: false, detail: `hook file missing at ${hookPath}` };
+    return { ok: false, detail: `hook file at ${hookPath} could not be stat'd: ${err.message}` };
   }
-  const size = fs.statSync(hookPath).size;
-  if (size === 0) {
+  if (stat.size === 0) {
     return { ok: false, detail: `hook file at ${hookPath} exists but is empty (0 bytes)` };
   }
-  return { ok: true, detail: `hook file present (${size} bytes) at ${hookPath}` };
+  return { ok: true, detail: `hook file present (${stat.size} bytes) at ${hookPath}` };
 }
 
 /**
@@ -113,6 +139,26 @@ function checkScopeLibOnOrigin({ repoRoot }) {
 }
 
 /**
+ * Best-effort: is targetPath still classified 'critical' tier by THIS repo's
+ * live infra-review-scope.js? DEFAULT_PROBE_TARGET is a soft coupling to that
+ * file's rules (ship-check finding) — if a future scope edit reclassifies it
+ * to 'shared' or exempt, the hook would legitimately stop blocking it (exit 0
+ * or a warn), and probeSyntheticBlock would misreport a healthy gate as
+ * broken. Returns null (inconclusive, not false) if the scope lib can't be
+ * loaded — that failure is already surfaced by checkScopeLibOnOrigin, this
+ * function must not duplicate it as a probe failure.
+ */
+function isProbeTargetStillCritical({ repoRoot, targetPath }) {
+  try {
+    const scope = require(path.join(repoRoot, 'scripts', 'lib', 'infra-review-scope.js'));
+    const c = scope.classifyPath(targetPath);
+    return c.tier === 'critical';
+  } catch {
+    return null;
+  }
+}
+
+/**
  * RUNS the real hook against a synthetic PreToolUse Edit of known critical-tier
  * infra, for a session id that can hold no ledger verdict, and asserts it
  * actually blocks (exit 2). This is the difference between this check and the
@@ -127,7 +173,7 @@ function checkScopeLibOnOrigin({ repoRoot }) {
  * @param {string} a.sessionId   an id guaranteed to have no ledger verdict —
  *                                callers should pass something unique per call
  * @param {string} [a.targetPath] a path that must classify as 'critical' tier
- * @returns {{ok: boolean, exitCode: number|null, detail: string}}
+ * @returns {{ok: boolean, exitCode: number|null, detail: string, staleTarget?: boolean}}
  */
 function probeSyntheticBlock({ hookPath, repoRoot, sessionId, targetPath = DEFAULT_PROBE_TARGET }) {
   if (!hookPath) return { ok: false, exitCode: null, detail: 'no hookPath given' };
@@ -135,6 +181,21 @@ function probeSyntheticBlock({ hookPath, repoRoot, sessionId, targetPath = DEFAU
   if (!sessionId) return { ok: false, exitCode: null, detail: 'no sessionId given' };
   if (!fs.existsSync(hookPath)) {
     return { ok: false, exitCode: null, detail: `cannot probe — hook file missing at ${hookPath}` };
+  }
+
+  // Guard against the exact failure mode a reviewer flagged: if targetPath
+  // has been reclassified out of the 'critical' tier since DEFAULT_PROBE_TARGET
+  // was chosen, exit 0/warn from the hook is CORRECT behaviour, not a broken
+  // gate — misreporting it as "gate not blocking" would be a false alarm this
+  // whole check exists to avoid.
+  const stillCritical = isProbeTargetStillCritical({ repoRoot, targetPath });
+  if (stillCritical === false) {
+    return {
+      ok: false,
+      exitCode: null,
+      staleTarget: true,
+      detail: `probe target "${targetPath}" no longer classifies as 'critical' tier in this repo's infra-review-scope.js — DEFAULT_PROBE_TARGET needs updating; this is NOT evidence the gate itself is broken`,
+    };
   }
 
   const input = JSON.stringify({
