@@ -69,43 +69,93 @@ function buildEntry(action, { submissionId, issueNumber, requestedAt, message, s
   };
 }
 
+/** How many individual reviews to name in one report before summarising. */
+const MAX_NAMED_REVIEWS = 5;
+
+/**
+ * One live review rendered as the facts the owner asked to see (2026-08-05):
+ * outlet, critic, date. The show itself heads the block that contains it.
+ *
+ * Compact live-payload keys: `o` outlet, `cn` critic, `d` publish date, `s`
+ * score, `u` url. Every one can legitimately be absent on a real review (an
+ * un-bylined stub has no `cn`; a network-tier review can have no `d`), so each
+ * renders only when present instead of printing "undefined" at the owner.
+ */
+function describeReview(rv) {
+  if (!rv || typeof rv !== 'object') return null;
+  const outlet = rv.o || 'Unknown outlet';
+  const critic = rv.cn && rv.cn !== 'Unknown' ? rv.cn : null;
+  const parts = [critic ? `${critic}, ${outlet}` : outlet];
+  if (rv.d) parts.push(rv.d);
+  if (typeof rv.s === 'number') parts.push(`score ${rv.s}`);
+  return { text: parts.join(' · '), url: rv.u || null };
+}
+
+/**
+ * The reviews to NAME for a satisfied request — newest first.
+ *
+ * For missing-reviews the ledger records how many reviews existed at request
+ * time but not WHICH, so the newest `now - before` are the ones that landed.
+ * Sorted by publish date descending; an undated review sorts last rather than
+ * being dropped, since dropping it could make the named list shorter than the
+ * count the same report is claiming.
+ */
+function newReviewsFor(entry, reviews) {
+  const sorted = [...reviews].sort((a, b) => String(b?.d || '').localeCompare(String(a?.d || '')));
+  if (entry.kind !== 'missing-reviews') return sorted.slice(0, MAX_NAMED_REVIEWS);
+  const before = entry.reviewCountAtRequest == null ? 0 : entry.reviewCountAtRequest;
+  const added = Math.max(0, sorted.length - before);
+  return sorted.slice(0, Math.min(added, MAX_NAMED_REVIEWS));
+}
+
 /**
  * Is this request now visible on the live site?
  *
+ * `reviews` (2026-08-05, owner request) carries the specific reviews behind the
+ * verdict. "0 → 1 review(s) live" gave the owner a number and nothing they
+ * could check; they asked for outlet, critic, show and date. Always an array —
+ * empty for the kinds that have no review to name.
+ *
  * @param {object} entry     ledger entry
  * @param {object|null} live parsed {base}/data/shows/{id}.json, or null on 404
- * @returns {{satisfied: boolean, evidence: string}}
+ * @returns {{satisfied: boolean, evidence: string, reviews: Array<{text: string, url: string|null}>}}
  */
 function evaluateEntry(entry, live) {
   if (!live) {
-    return { satisfied: false, evidence: 'show JSON not served by production yet' };
+    return { satisfied: false, evidence: 'show JSON not served by production yet', reviews: [] };
   }
   const reviews = Array.isArray(live.rv) ? live.rv : [];
+  const named = () => newReviewsFor(entry, reviews).map(describeReview).filter(Boolean);
 
   if (entry.kind === 'missing-show') {
     // The show being served AT ALL is the whole ask. Reviews may follow later.
     return {
       satisfied: true,
       evidence: `live with ${reviews.length} review(s)${live.cat ? ` in ${live.cat}` : ''}`,
+      reviews: named(),
     };
   }
 
   if (entry.kind === 'missing-reviews') {
     const before = entry.reviewCountAtRequest == null ? 0 : entry.reviewCountAtRequest;
     if (reviews.length > before) {
-      return { satisfied: true, evidence: `${before} → ${reviews.length} review(s) live` };
+      return {
+        satisfied: true,
+        evidence: `${before} → ${reviews.length} review(s) live`,
+        reviews: named(),
+      };
     }
-    return { satisfied: false, evidence: `still ${reviews.length} review(s), was ${before}` };
+    return { satisfied: false, evidence: `still ${reviews.length} review(s), was ${before}`, reviews: [] };
   }
 
   if (entry.kind === 'missing-image') {
-    if (live.hi) return { satisfied: true, evidence: `hero image live at ${live.hi}` };
-    return { satisfied: false, evidence: 'still no hero image in production' };
+    if (live.hi) return { satisfied: true, evidence: `hero image live at ${live.hi}`, reviews: [] };
+    return { satisfied: false, evidence: 'still no hero image in production', reviews: [] };
   }
 
   // Unknown kind: never claim satisfied. A wrong "it's fixed!" email is worse
   // than another day of waiting — it is how a request gets closed unfixed.
-  return { satisfied: false, evidence: `no live-check rule for kind "${entry.kind}"` };
+  return { satisfied: false, evidence: `no live-check rule for kind "${entry.kind}"`, reviews: [] };
 }
 
 /** Days between an ISO timestamp and now. Returns 0 on an unparseable date. */
@@ -142,12 +192,24 @@ function mergeEntries(ledger, newEntries) {
   return { ledger: out, added };
 }
 
+// NOTE on "give me something to click" (owner, 2026-08-05): a mailto: link to
+// the email worker's +claude alias was tried here and removed. The reports that
+// carry these entries reach the owner as digest rows, and the digest renders a
+// row as clip(description, 200) — a URL-encoded mailto is shredded by that, and
+// send-morning-digest.js already hangs a signed one-click "Dispatch a fix" link
+// on every row that survives to "Needs your attention" while digest-autofix.js
+// auto-dispatches the rest. The click already exists; what was missing was a
+// report worth clicking from.
+
 module.exports = {
   STALE_AFTER_DAYS,
   MAX_STORED_MESSAGE,
+  MAX_NAMED_REVIEWS,
   entryKey,
   buildEntry,
   evaluateEntry,
+  describeReview,
+  newReviewsFor,
   staleEntries,
   mergeEntries,
   daysSince,
