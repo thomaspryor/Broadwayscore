@@ -133,16 +133,6 @@ test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article review
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/reviews/the-vessel').ok, false);
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/shows/The-Vessel-336202/cast').ok, false);
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/off-broadway/article/Review-THE-PASS-at-La-MaMa-20260804').ok, true);
-  // Bare /shows/Title-123.html hosts REAL scored reviews (Oliver!, Something
-  // Rotten!, Titanique — QA ship-check 2026-08-06). The WRITE path
-  // (isProfileUrl, used by gather-reviews at ingest) must NOT block it —
-  // only sub-pages (/cast, /synopsis) are listing pages. The audit-side
-  // classifier still rejects it via the PRE-EXISTING BWW internal-nav
-  // heuristic (unchanged discovery behavior, carried from old isReviewUrl —
-  // these reviews were ingested via aggregator citations, not SERP/audit).
-  assert.equal(isProfileUrl('https://www.broadwayworld.com/shows/Oliver!-335212.html'), false);
-  assert.equal(isProfileUrl('https://www.broadwayworld.com/shows/The-Vessel-336202/cast'), true);
-  assert.equal(classifyReviewUrl('https://www.broadwayworld.com/shows/Oliver!-335212.html').reason, 'aggregator-internal-nav');
 });
 
 test('classifyReviewUrl: static assets + unparseable rejected, real outlet reviews pass', () => {

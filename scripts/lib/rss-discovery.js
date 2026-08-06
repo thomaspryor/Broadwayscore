@@ -249,21 +249,6 @@ function urlSlugMatchesShow(url, showTitle) {
   let pathname;
   try { pathname = new URL(url).pathname; } catch { return false; }
   const slugText = pathname.replace(/\.[a-z0-9]+$/i, '').replace(/[-_/]+/g, ' ');
-  const normalize = t => String(t || '').toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
-  const significantWords = normalize(showTitle).split(' ')
-    .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
-    .filter(w => w.length > 1);
-  // Single-significant-word titles ("The Pass", "The Vessel"): a lone common
-  // token anywhere in a slug is not identity — "celebrity-sex-pass-review"
-  // would match The Pass (Codex ship-check finding). Require the FULL title
-  // (articles included) as a contiguous phrase in the slug instead:
-  // "the-pass-review-..." → "the pass review" contains "the pass" ✓;
-  // "...celebrity-sex-pass-review..." has "sex pass", not "the pass" ✗.
-  if (significantWords.length <= 1) {
-    const phrase = normalize(showTitle);
-    if (!phrase) return false;
-    return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
-  }
   return titleMatchesShow(slugText, showTitle);
 }
 

@@ -140,11 +140,7 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // isShowListingUrl (which already names broadwayworld.com/shows/ a listing).
   // BWW /reviews/{slug} critics-HUB pages are handled by review-guards
   // isRoundupUrl (composed in classifyReviewUrl below), not duplicated here.
-  // Sub-path REQUIRED (/shows/{id}/cast etc.) — the bare /shows/Title-123.html
-  // shape hosts 3 currently-scored real reviews (Oliver!, Something Rotten!,
-  // Titanique — QA ship-check 2026-08-06), so only the listing sub-pages are
-  // blocked, never the bare page.
-  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows?\/[^/]+\/.+/, reason: 'venue-production-page' },
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows?\//, reason: 'venue-production-page' },
   { host: /(^|\.)borninthecity\.com$/, reason: 'merch-store' },
   { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
   // Stagebuddy publishes real reviews under /theater/reviews/…; its
