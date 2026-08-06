@@ -1253,6 +1253,12 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
+      # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
+      # scripts/lib/" gap as the block above: without these entries a push
+      # touching only them runs ZERO CI.
+      - 'scripts/claude-auth-preflight.js'
+      - 'scripts/tests/agent-auth-preflight.test.mjs'
       # Dispatch-card drift (card #1009) — the detector that answers "is this
       # running session executing the card Notion currently shows?", plus its
       # watcher. Same "scripts/tests/ is not scripts/lib/" gap as the block

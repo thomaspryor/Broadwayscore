@@ -16,30 +16,33 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { main, formatPreflightResult } = require('../claude-auth-preflight.js');
 
-test('formatPreflightResult: oauth mode is ok, exit 0', () => {
+test('formatPreflightResult: oauth mode is ok, exit 0, stdout line is MODE=oauth', () => {
   const r = formatPreflightResult({ ok: true, mode: 'oauth' });
   assert.equal(r.exitCode, 0);
-  assert.match(r.message, /ok \(mode=oauth\)/);
+  assert.match(r.stderrMessage, /ok \(mode=oauth\)/);
+  assert.equal(r.stdoutLine, 'MODE=oauth');
 });
 
-test('formatPreflightResult: api-key fallback mode is still ok, exit 0', () => {
+test('formatPreflightResult: api-key fallback mode is still ok, exit 0, stdout line is MODE=api-key', () => {
   const r = formatPreflightResult({ ok: true, mode: 'api-key' });
   assert.equal(r.exitCode, 0);
-  assert.match(r.message, /mode=api-key/);
+  assert.match(r.stderrMessage, /mode=api-key/);
+  assert.equal(r.stdoutLine, 'MODE=api-key');
 });
 
-test('formatPreflightResult: a revoked/failed credential refuses with exit 1 and the detail', () => {
+test('formatPreflightResult: a revoked/failed credential refuses with exit 1, the detail, and no stdout line', () => {
   const r = formatPreflightResult({ ok: false, mode: 'fail', detail: 'OAuth access token has been revoked' });
   assert.equal(r.exitCode, 1);
-  assert.match(r.message, /REFUSING/);
-  assert.match(r.message, /OAuth access token has been revoked/);
-  assert.match(r.message, /claude auth login/); // repair hint present
+  assert.match(r.stderrMessage, /REFUSING/);
+  assert.match(r.stderrMessage, /OAuth access token has been revoked/);
+  assert.match(r.stderrMessage, /claude auth login/); // repair hint present
+  assert.equal(r.stdoutLine, null); // a bash `AUTH_MODE=$(...)` caller must never see a fake mode on failure
 });
 
 test('formatPreflightResult: missing detail still refuses clearly rather than throwing', () => {
   const r = formatPreflightResult({ ok: false, mode: 'fail' });
   assert.equal(r.exitCode, 1);
-  assert.match(r.message, /no working credential/);
+  assert.match(r.stderrMessage, /no working credential/);
 });
 
 test('main(): a deliberately revoked token makes the job abort loudly (exit 1), never runs blind', () => {
@@ -75,4 +78,30 @@ test('main(): -h is recognized the same as --help', () => {
   const exitCode = main(['-h'], { preflightAuthFn: () => { called = true; return { ok: true }; } });
   assert.equal(called, false);
   assert.equal(exitCode, 0);
+});
+
+test('main(): stdout carries exactly one MODE= line on success — a bash `VAR=$(...)` caller must get a clean value', () => {
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...args) => logged.push(args.join(' '));
+  try {
+    const exitCode = main([], { preflightAuthFn: () => ({ ok: true, mode: 'api-key' }) });
+    assert.equal(exitCode, 0);
+    assert.deepEqual(logged, ['MODE=api-key']);
+  } finally {
+    console.log = origLog;
+  }
+});
+
+test('main(): stdout is empty on failure — a bash `VAR=$(...)` caller never captures a fake mode', () => {
+  const logged = [];
+  const origLog = console.log;
+  console.log = (...args) => logged.push(args.join(' '));
+  try {
+    const exitCode = main([], { preflightAuthFn: () => ({ ok: false, mode: 'fail', detail: 'revoked' }) });
+    assert.equal(exitCode, 1);
+    assert.deepEqual(logged, []);
+  } finally {
+    console.log = origLog;
+  }
 });
