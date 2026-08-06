@@ -46,6 +46,15 @@ if (!fs.existsSync(CORPUS)) {
 
 const git = (args) => execSync(`git -C "${CORPUS}" ${args}`, { maxBuffer: 1e9 }).toString();
 
+// Pre-corruption reference: the last corpus commit before the incident date.
+const INCIDENT_DATE = process.env.INCIDENT_DATE || '2026-08-06';
+const REF = git(`log --format=%H --before='${INCIDENT_DATE}T00:00:00Z' -1`).trim();
+if (!REF) {
+  console.error(`FATAL: no corpus commit before ${INCIDENT_DATE} — cannot reconstruct pre-clear state.`);
+  process.exit(1);
+}
+console.log(`Pre-corruption reference: ${REF.slice(0, 9)} (last commit before ${INCIDENT_DATE})`);
+
 /**
  * The FIXED predicate, mirroring review-normalization.js mergeReviews.
  * Returns true when the auto-clear was legitimate.
@@ -79,29 +88,26 @@ console.log(`Scanning ${candidates.length} file(s) carrying a boolean wrongProdu
 const restore = [];
 const leave = [];
 const unresolved = [];
+let outOfWindow = 0;
 
 for (const abs of candidates) {
   const rel = path.relative(CORPUS, abs);
   let cur;
   try { cur = JSON.parse(fs.readFileSync(abs, 'utf8')); } catch { continue; }
 
-  // Find the commit that FIRST introduced the boolean breadcrumb, then read the
-  // file as it stood in that commit's parent — the true pre-clear state.
+  // Scope to THIS incident. The boolean breadcrumb also marks a long-standing
+  // flip-flop population (rebuild re-flags -> merge re-clears, ~380 files) that
+  // predates today and is tracked separately (#1020 / #1062). Mass-restoring
+  // those would suppress legitimate reviews site-wide, so this script only
+  // repairs files whose clear is stamped with the incident date.
+  if (cur.wrongProductionAutoClearedAt !== INCIDENT_DATE) { outOfWindow++; continue; }
+
+  // Every clear in this incident is stamped wrongProductionAutoClearedAt=2026-08-06,
+  // so the file as it stood at the last commit BEFORE that date is the pre-clear
+  // state. One `git show` per file instead of one per commit per file.
   let preBlob = null;
-  let clearCommit = null;
-  try {
-    const shas = git(`log --format=%H -- "${rel}"`).trim().split('\n').filter(Boolean);
-    // walk oldest -> newest, find first commit where the boolean is present
-    for (let i = shas.length - 1; i >= 0; i--) {
-      let blob;
-      try { blob = JSON.parse(git(`show ${shas[i]}:"${rel}"`)); } catch { continue; }
-      if (blob.wrongProductionAutoCleared === true) {
-        clearCommit = shas[i];
-        try { preBlob = JSON.parse(git(`show ${shas[i]}^:"${rel}"`)); } catch { preBlob = null; }
-        break;
-      }
-    }
-  } catch { /* fall through */ }
+  const clearCommit = REF.slice(0, 9);
+  try { preBlob = JSON.parse(git(`show ${REF}:"${rel}"`)); } catch { preBlob = null; }
 
   if (!preBlob || preBlob.wrongProduction !== true) {
     unresolved.push({ rel, why: preBlob ? 'pre-state had no wrongProduction flag' : 'no recoverable pre-clear blob' });
@@ -123,6 +129,7 @@ for (const abs of candidates) {
   }
 }
 
+console.log(`Out of incident window (pre-existing flip-flop population, untouched): ${outOfWindow}`);
 console.log(`RESTORE (fixed predicate would NOT have cleared): ${restore.length}`);
 for (const r of restore) {
   console.log(`  ${r.rel}`);
