@@ -799,10 +799,25 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Only 'Same URL' (URL-based) auto-clears here. Date-based flag prefixes
   // ('Pre-opening guard', 'Date guard', 'Dateless show') and 'Tour transfer'
   // manual flags must persist until a new valid date or manual override.
-  const isUrlBasedWrongProd = !merged.wrongProductionNote
-    || merged.wrongProductionNote.startsWith('Same URL');
+  //
+  // A MISSING note is not evidence of a URL-based flag — it is the absence of
+  // evidence, and it must not clear. The flaggers that write
+  // `wrongProductionReason` without a `wrongProductionNote` (collect-review-
+  // texts' ingest-anticipatory-gate, the collector/CV LLM promotions) are all
+  // content- or date-based, so the old `!merged.wrongProductionNote` default
+  // auto-cleared exactly the flags this block promises to preserve. That put a
+  // 2016 Broadway 'Cats' review live on the 2026 West End show page (class-A
+  // cross-market leak, main red 2026-08-06) and corrupted 18 files in one day.
+  const isUrlBasedWrongProd = !!merged.wrongProductionNote
+    && merged.wrongProductionNote.startsWith('Same URL');
+  // Content verification that read the article and said "different production"
+  // outranks any URL-shaped self-heal: a fresh URL for the same wrong article
+  // is still the wrong article.
+  const cvSaysWrongProduction = merged.contentVerification
+    && merged.contentVerification.wrongProduction === true;
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !merged.wrongProductionManualClear
+      && !cvSaysWrongProduction
       && isUrlBasedWrongProd) {
     delete merged.wrongProduction;
     delete merged.wrongProductionNote;

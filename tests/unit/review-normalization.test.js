@@ -1158,6 +1158,48 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
     assert.strictEqual(merged.wrongProductionAutoCleared, true);
   });
 
+  // The 7 cases above all supply a wrongProductionNote, so none of them
+  // exercised the `!merged.wrongProductionNote` default that used to sit in
+  // isUrlBasedWrongProd. That default treated "no note" as "URL-based, safe to
+  // clear" — and the flaggers that write wrongProductionReason WITHOUT a note
+  // (ingest-anticipatory-gate, collector/CV LLM promotion) are all date- or
+  // content-based. Live consequence on 2026-08-06: a Show Score re-merge
+  // cleared the flag on a 2016 Broadway 'Cats' review filed under
+  // cats-west-end-2026, surfacing another production's review on the show page
+  // (class-A cross-market leak) and reddening main's contamination gate.
+  test('preserves noteless date-based flag (anticipatory gate writes reason, no note)', () => {
+    const existing = {
+      ...baseExisting,
+      wrongProductionReason: 'anticipatory_pre_opening_post',
+      wrongProductionDetail: 'published 3659d before openingDate; exceeds 2-day grace',
+      // deliberately NO wrongProductionNote — this is the real on-disk shape
+    };
+    const incoming = { ...existing, source: 'show-score-playwright' };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.wrongProduction, true, 'noteless flag must persist');
+    assert.strictEqual(
+      merged.wrongProductionAutoCleared, undefined,
+      'absence of a note is not evidence the flag was URL-based'
+    );
+  });
+
+  test('preserves flag when contentVerification says wrongProduction, even with a Same URL note', () => {
+    // The article was read and judged to be a different production. A URL-shaped
+    // self-heal must not override direct content evidence.
+    const existing = {
+      ...baseExisting,
+      wrongProductionNote: 'Same URL exists in other-show-2020',
+      contentVerification: {
+        isValid: false,
+        wrongProduction: true,
+        reasoning: 'Review is of the Broadway production, not the West End production',
+      },
+    };
+    const incoming = { ...existing, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.wrongProduction, true, 'CV wrongProduction outranks URL self-heal');
+  });
+
   test('clears Pre-opening guard flag AND its publishDate basis on canonical URL change', () => {
     // Changed 2026-07-11 with the url-change invariant (Notion 399637c5).
     // Old behavior preserved date-based flags across URL changes ("the publish
