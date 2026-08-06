@@ -566,10 +566,14 @@ run_check() {
     dry-run-flag-setter) check_dry_run_flag_setter ;;
     swallowed-audit-writers) check_swallowed_audit_writers ;;
     workflows)
+      # check_swallowed_audit_writers is deliberately NOT in this composite yet:
+      # the pre-push hook runs `workflows`, and the check has ~70 pre-existing
+      # violations (task #1073 follow-up card) — including it here would block
+      # every push repo-wide until the triage lands. Run it standalone
+      # (`swallowed-audit-writers`) or via `all`.
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
-      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_dry_run_flag_setter
-      check_swallowed_audit_writers ;;
+      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_dry_run_flag_setter ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
