@@ -23,6 +23,7 @@ import {
   queryPushAllowed,
   queryCiRedClaimConflict,
   recordVerdict,
+  recordPlanVerdict,
   resolveBase,
 } from '../../scripts/lib/review-gate.mjs';
 import { appendClaim } from '../../scripts/lib/ci-red-claims.js';
@@ -65,6 +66,37 @@ test('under-budget diff is not gated', (t) => {
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.allowed, true);
   assert.equal(r.gated, false);
+});
+
+test('a plan-phase verdict NEVER satisfies the push gate (task #1079)', (t) => {
+  // Plan verdicts share this ledger (one store, deliberately — see the
+  // plan-phase section of review-gate.mjs). They carry no diffHash and no head,
+  // so both match arms must skip them. If either arm ever stopped guarding on
+  // those fields, a pre-implementation review would silently rubber-stamp an
+  // unreviewed push — the exact thing this gate exists to prevent.
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  commitLines(repo, 'scripts/monitor.js', 60, 'unreviewed code');
+  // 'second-opinion' is a LIGHT reviewer, so it clears the reviewer filter and
+  // reaches the hash/ancestor arms — the strongest form of this test.
+  const rec = recordPlanVerdict({
+    repoRoot: repo, reviewer: 'second-opinion', result: 'pass', sessionId: 'plan-sess',
+  });
+  assert.equal(rec.recorded, true);
+  assert.equal(rec.entry.phase, 'plan');
+  assert.equal(rec.entry.diffHash, undefined);
+  assert.equal(rec.entry.head, undefined);
+  const r = queryPushAllowed({ repoRoot: repo });
+  assert.equal(r.allowed, false, 'a plan verdict must not unlock the push gate');
+  assert.match(r.reason, /no review verdict/);
+});
+
+test('recordPlanVerdict requires a session id (an unattributed verdict covers nothing)', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  const r = recordPlanVerdict({ repoRoot: repo, reviewer: 'plan-review', result: 'pass' });
+  assert.equal(r.recorded, false);
+  assert.match(r.reason, /session-id/);
 });
 
 test('ACCEPTANCE: >30-line scripts/ diff with no verdict is BLOCKED', (t) => {
