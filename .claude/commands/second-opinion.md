@@ -113,7 +113,16 @@ Show the agent's findings. Then:
 node scripts/lib/review-gate.mjs --query=record --reviewer=second-opinion --result=pass
 ```
 
-(`--result=fail` if blockers remain.) This writes the push-boundary breadcrumb `pre-push-review-gate.sh` checks at `git push` time. A second-opinion verdict only satisfies the gate for diffs ≤100 gated lines — bigger diffs need /ship-check or /code-review. Plan-only reviews (nothing implemented yet) record nothing.
+(`--result=fail` if blockers remain.) This writes the push-boundary breadcrumb `pre-push-review-gate.sh` checks at `git push` time. A second-opinion verdict only satisfies the gate for diffs ≤100 gated lines — bigger diffs need /ship-check or /code-review.
+
+**If what you reviewed was a PLAN (nothing implemented yet), record the plan-phase verdict instead (MANDATORY):**
+
+```bash
+node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion \
+  --result=pass --session-id="$CLAUDE_SESSION_ID" --note="<one line: what the review changed>"
+```
+
+This is what `~/.claude/hooks/infra-plan-review-gate.sh` checks before the session's first edit to shared infrastructure (task #1079, owner decision 2026-08-05). Without it the session stays blocked no matter how good the review was. `--result=fail` if you found blockers — a fail verdict does NOT unblock, and overturning it is the owner's call, recorded as `--reviewer=owner-override`.
 
 For any issue you truly can't fix now, the bar is high: blocked on user decision, missing creds, different repo, or would push past ~2 hours. "Would take 30 min" is not blocked — that's just the work. For the rare genuine blocker, create a self-contained Notion card — and if it's technical + self-contained, dispatch it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) instead of leaving a paste-prompt — then KEEP WORKING on what you can. Never offer to "hand off to a new session" — that phrase is banned (see `feedback_no_premature_handoff.md`).
 

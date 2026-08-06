@@ -382,6 +382,71 @@ export function recordVerdict({ repoRoot, ledgerRoot = null, reviewer, result, r
   return { recorded: true, entry, ledger: p };
 }
 
+// ── plan-phase verdicts (task #1079) ─────────────────────────────────────────
+//
+// Everything above this line is DIFF-phase: a verdict is content-addressed on
+// the patch text, because the review it records happened after the code
+// existed. The owner decision behind task #1079 needs the other half — a review
+// recorded BEFORE the first edit, when there is no diff to hash. Those entries
+// carry `phase: 'plan'` and are keyed on (sessionId, freshness window) instead.
+//
+// They live in the SAME ledger on purpose. A second parallel ledger was the
+// original proposal and the /plan-review design reviewer killed it as a P0:
+// two verdict stores that both claim to answer "was this reviewed?" drift the
+// moment either evolves, which is the split-brain risk dispatch-ledger.js:581
+// documents ("one ledger … on purpose"). Diff-phase readers already ignore
+// unknown fields, and queryPushAllowed() below filters on diffHash/head, which
+// plan entries do not carry — so they are inert to it.
+//
+// Scope classification lives in scripts/lib/infra-review-scope.js (pure, CJS).
+
+export function recordPlanVerdict({
+  repoRoot, ledgerRoot = null, reviewer, result, sessionId = null, scope = [], note = '',
+}) {
+  ledgerRoot = ledgerRoot || canonicalRoot(repoRoot);
+  if (!reviewer) return { recorded: false, reason: '--reviewer is required' };
+  if (!['pass', 'fail'].includes(result)) return { recorded: false, reason: '--result must be pass|fail' };
+  // Unlike recordVerdict(), this deliberately does NOT require an origin/main
+  // base: a plan review can legitimately run on a fresh worktree with nothing
+  // committed yet, and refusing to record there would make the gate
+  // unsatisfiable exactly when it fires most (first edit of a new session).
+  if (!sessionId) return { recorded: false, reason: '--session-id is required for a plan verdict' };
+  const entry = {
+    ts: new Date().toISOString(),
+    phase: 'plan',
+    reviewer,
+    result,
+    sessionId,
+    ...(scope.length ? { scope } : {}),
+    ...(note ? { note } : {}),
+  };
+  const p = join(ledgerRoot, LEDGER_REL_PATH);
+  mkdirSync(dirname(p), { recursive: true });
+  appendFileSync(p, JSON.stringify(entry) + '\n');
+  return { recorded: true, entry, ledger: p };
+}
+
+// Answer the hook's question: may this session write these paths?
+// Returns the pure decision from infra-review-scope.js with the ledger read
+// filled in. Never throws — a caller that cannot evaluate must fail OPEN.
+export function queryInfraEditAllowed({
+  repoRoot, ledgerRoot = null, paths = [], sessionId = null, priorBlocks = 0, bypass = false,
+}) {
+  let scope;
+  try {
+    scope = require('./infra-review-scope.js');
+  } catch (e) {
+    return { action: 'allow', gated: false, tier: null, matched: [], reason: `infra-review-scope unavailable (${e.code || e.message}) — fail open` };
+  }
+  let verdicts = [];
+  try {
+    verdicts = readLedger(ledgerRoot || canonicalRoot(repoRoot));
+  } catch { /* unreadable ledger → treated as empty, decision still made */ }
+  return scope.evaluateInfraReviewGate({
+    paths, verdicts, sessionId, now: Date.now(), priorBlocks, bypass, repoRoot,
+  });
+}
+
 // ── the gate decision ────────────────────────────────────────────────────────
 
 export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) {
@@ -603,6 +668,24 @@ if (__isMain) {
         repoRoot, ledgerRoot, ref,
         reviewer: args.reviewer, result: args.result,
         sessionId: args['session-id'] || null,
+      });
+      break;
+    case 'record-plan':
+      result = recordPlanVerdict({
+        repoRoot, ledgerRoot,
+        reviewer: args.reviewer, result: args.result,
+        sessionId: args['session-id'] || null,
+        scope: (args.scope || '').split(',').filter(Boolean),
+        note: args.note || '',
+      });
+      break;
+    case 'infra-edit-allowed':
+      result = queryInfraEditAllowed({
+        repoRoot, ledgerRoot,
+        paths: (args.paths || '').split('\n').map((s) => s.trim()).filter(Boolean),
+        sessionId: args['session-id'] || null,
+        priorBlocks: Number(args['prior-blocks'] || 0),
+        bypass: args.bypass === 'true' || args.bypass === true,
       });
       break;
     case 'push-allowed':

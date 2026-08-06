@@ -258,3 +258,54 @@ test('stale-year guard and the priorRuns readmission read the SAME year delimite
   const withPrior = { ...CAR_MAN_SHOW, priorRuns: [{ openingDate: '2015-07-01', closingDate: '2015-08-09' }] };
   assert.ok(acceptSerpCensusResult(dashOld, { show: withPrior, showInfo: CAR_MAN_INFO }));
 });
+
+// computeResidualCounts — the residual ::warning:: math (OWE opening audit
+// 2026-08-06). Each invariant here maps to a live chronic-alarm incident;
+// see the function's header comment.
+test('computeResidualCounts: prior-run entries never count as residual', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  // Cats shape: 46 prior-run missing + 62 prior-run flagged + 3 real missing + 5 real flagged.
+  const r = {
+    missing: [...Array.from({ length: 46 }, () => ({ priorRun: true })), {}, {}, {}],
+    flaggedMisses: [...Array.from({ length: 62 }, () => ({ priorRun: true })), {}, {}, {}, {}, {}],
+    citedNoUrl: [],
+  };
+  const c = computeResidualCounts(r, false);
+  assert.equal(c.uningested, 3);
+  assert.equal(c.flaggedOut, 5);
+  assert.equal(c.residual, 8);
+});
+
+test('computeResidualCounts: noop ingests are visible but never alarm', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  // A cross-show-owned URL no-ops on every hourly --ingest-missing run (the
+  // 2016 WSJ Cats case). It must not keep the show in the residual warning.
+  const r = {
+    missing: [{}],
+    flaggedMisses: [],
+    citedNoUrl: [],
+    ingestResults: [
+      { ok: false, noop: true, reason: 'ingest no-op' },
+      { ok: false, reason: 'fetch failed' },
+      { ok: true },
+    ],
+  };
+  const c = computeResidualCounts(r, true);
+  assert.equal(c.noopIngest, 1);
+  assert.equal(c.failedIngest, 1); // only the real failure
+  assert.equal(c.uningested, 0);   // ingestMissing ran
+  assert.equal(c.residual, 1);
+});
+
+test('computeResidualCounts: cited recoveries subtract from flaggedOut, uncited do not', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  const r = {
+    missing: [],
+    flaggedMisses: [{}, {}],
+    citedNoUrl: [],
+    recoveryResults: [{ recovered: true }, { recovered: true, uncited: true }],
+  };
+  const c = computeResidualCounts(r, false);
+  assert.equal(c.recovered, 1);
+  assert.equal(c.flaggedOut, 1);
+});
