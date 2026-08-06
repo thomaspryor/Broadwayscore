@@ -163,12 +163,48 @@ test('among runs since the request, the newest is used and the count is stated',
 test('an unreachable GitHub is reported as unchecked, not as "nothing happened"', () => {
   const picked = pickRunForRequest({ ok: false }, '2026-07-27T00:00:00Z');
   assert.equal(picked.state, 'unknown');
-  assert.match(describeRun(picked), /could not reach GitHub/);
+  assert.match(describeRun(picked), /could not establish what its workflow did/);
   assert.doesNotMatch(describeRun(picked), /never/, 'do not imply the job was not started');
 });
 
 test('a genuinely never-run workflow is distinguished from an API failure', () => {
   assert.equal(pickRunForRequest({ ok: true, runs: [] }, '2026-07-27T00:00:00Z').state, 'never-ran');
+});
+
+// Round-2 review finding: an unparseable requestedAt used to fall back to
+// "consider every run", which silently restores the exact misattribution this
+// function exists to prevent. A bad timestamp must produce "unknown".
+test('an unparseable request date yields unknown, never a guess from all runs', () => {
+  const runs = [{ status: 'completed', conclusion: 'success', startedAt: '2026-08-06T02:48:29Z', url: 'unrelated' }];
+  for (const bad of [undefined, null, '', 'not-a-date']) {
+    const picked = pickRunForRequest({ ok: true, runs }, bad);
+    assert.equal(picked.state, 'unknown', `must not attribute a run when requestedAt is ${JSON.stringify(bad)}`);
+    assert.equal(picked.run, undefined);
+  }
+});
+
+// Round-2 review finding: per_page caps the fetch. If every run on a full page
+// is post-request there are almost certainly more we never saw, so the count is
+// a floor and "never ran" is unprovable.
+test('a truncated page reports a floor, not a total', () => {
+  const runs = Array.from({ length: 20 }, (_, i) => ({
+    status: 'completed', conclusion: 'failure', startedAt: `2026-08-0${(i % 5) + 1}T00:00:00Z`, url: `r${i}`,
+  }));
+  const picked = pickRunForRequest({ ok: true, truncated: true, runs }, '2026-07-27T00:00:00Z');
+  assert.equal(picked.partial, true);
+  assert.match(describeRun(picked), /at least 20 runs since the request/);
+});
+
+test('a truncated page can never prove a workflow never ran', () => {
+  const allOld = [{ status: 'completed', conclusion: 'success', startedAt: '2026-01-01T00:00:00Z', url: 'old' }];
+  assert.equal(pickRunForRequest({ ok: true, truncated: true, runs: allOld }, '2026-07-27T00:00:00Z').state, 'unknown',
+    'a full page of pre-request runs means we did not page back far enough, not that nothing ran');
+  assert.equal(pickRunForRequest({ ok: true, truncated: false, runs: allOld }, '2026-07-27T00:00:00Z').state, 'never-ran');
+});
+
+test('a malformed run object never prints "undefined" at the owner', () => {
+  const text = describeRun({ state: 'ran', count: 1, run: {} });
+  assert.doesNotMatch(text, /undefined/);
 });
 
 test('with no run to link, the view link falls back to the tracking issue', () => {
@@ -183,7 +219,7 @@ test('a GREEN run that produced nothing is called out as the worse case', () => 
 });
 
 test('an unknown run says it is unknown rather than inventing a diagnosis', () => {
-  assert.match(describeRun(null), /could not reach GitHub/);
+  assert.match(describeRun(null), /could not establish what its workflow did/);
   assert.match(describeRun({ state: 'ran', count: 1, run: { status: 'in_progress' } }), /still in_progress/);
 });
 
