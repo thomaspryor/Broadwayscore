@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-08-06T07:01:35.195Z",
+  "runDate": "2026-08-06T11:07:13.958Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "now-you-see-me-live-west-end-2026,weve-been-here-before-a-one-woman-musical-off-broadway-2026,the-pass-off-broadway-2026",
+    "showFilter": "matilda-the-musical-theatre-row-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 6,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "14.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,22 +27,22 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 11,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,21 +50,13 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-pass-off-broadway-2026/nytg--unknown.json",
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -73,14 +65,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Stage": {
-      "count": 1,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
