@@ -367,6 +367,18 @@ function planContentRequestActions({
         // NOT slugs, despite the workflow input's description. They diverge
         // for any show whose slug drops the year/market suffix.
         shows: resolved.id,
+        // Tier 3, not the default 2 (owner: "make sure we search for reviews
+        // beyond just aggregators", 2026-08-05). collect-outlet-reviews.js
+        // defaults an outlet with no explicit tier to 3, so max_tier=2 searches
+        // ONLY the national T1/T2 outlets and skips every local and untiered
+        // one. Those locals are precisely who reviews the regional tryouts
+        // these requests are about — the San Diego Union-Tribune is the sole
+        // review 3 Summers of Lincoln has. A tier-2 gather on that show would
+        // query the nationals, find nothing, and report success having changed
+        // nothing, which is the silent no-op this whole pipeline keeps
+        // producing. Costs more SERP searches (80 vs 30) but only ever fires
+        // for a real user request that already passed the review-count ceiling.
+        max_tier: '3',
       },
     };
   };

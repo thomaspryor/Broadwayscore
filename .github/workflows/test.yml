@@ -415,6 +415,12 @@ on:
       # Content-request → workflow routing (2026-08-01, GH #505 "3 Summers of
       # Lincoln"): content requests parked at a needs-review issue no workflow
       # consumed. Path-listed so a solo edit triggers CI.
+      # Core-data push show-recovery (2026-08-05): `-X ours` + a reconciliation
+      # that skipped remote-only ids silently ERASED a show a concurrent job had
+      # just added. Two green runs, one vanished show. The test extracts the
+      # logic straight out of the action YAML, so a solo action edit must run it.
+      - '.github/actions/push-core-data/action.yml'
+      - 'tests/unit/push-core-data-show-recovery.test.mjs'
       - 'scripts/lib/content-request-routing.js'
       - 'tests/unit/content-request-routing.test.mjs'
       # Owner-visibility path (2026-08-05, GH #542/#543): run-report enrichment
@@ -1227,6 +1233,13 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # Dispatch-card drift (card #1009) — the detector that answers "is this
+      # running session executing the card Notion currently shows?", plus its
+      # watcher. Same "scripts/tests/ is not scripts/lib/" gap as the block
+      # above: without these entries a push touching only them runs ZERO CI.
+      - 'scripts/lib/dispatch-card-drift.js'
+      - 'scripts/tests/dispatch-card-drift.test.mjs'
+      - 'scripts/dispatch-drift-watch.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no

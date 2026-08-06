@@ -663,13 +663,30 @@ async function enforceCloseTimeVerify(pageId, args) {
     VERDICTS = closeTimeVerify.VERDICTS;
     const dispatchLedger = require('./lib/dispatch-ledger.js');
 
-    const dispatch = closeTimeVerify.findCardDispatch({
-      entries: dispatchLedger.readEntries(),
-      notionId: pageId,
-    });
+    const entries = dispatchLedger.readEntries();
+    const dispatch = closeTimeVerify.findCardDispatch({ entries, notionId: pageId });
+
+    // Instruction drift (card #1009): was this card corrected AFTER the session
+    // working it was seeded, without the correction ever being delivered? Only
+    // asked while that dispatch is still in flight — once the session is over,
+    // nobody is running stale instructions and a late card edit is the closer's
+    // own judgment call, not a gate. Any failure here fails open (outer catch).
+    let drift = null;
+    if (dispatch.entry && !bypassReason) {
+      const cardDrift = require('./lib/dispatch-card-drift.js');
+      const stillRunning = cardDrift
+        .inFlightLaunches(entries, { maxAgeMs: null })
+        .some(l => l.ts === dispatch.entry.ts && l.workspaceRef === dispatch.entry.workspaceRef);
+      if (stillRunning) {
+        drift = cardDrift.detectDrift({ launch: dispatch.entry, card: await loadCard(pageId), amendments: entries });
+      }
+    }
 
     let verifyResult = null;
-    if (!bypassReason && dispatch.verifyCmd) {
+    // A blocking drift verdict is decided without the command, so don't pay for
+    // a fresh origin/main checkout just to have decideClose ignore its result.
+    const driftBlocks = !!(drift && drift.status === 'drifted' && drift.confidence === 'exact');
+    if (!bypassReason && !driftBlocks && dispatch.verifyCmd) {
       console.error(`ℹ️  close-time verify: re-running \`${dispatch.verifyCmd}\` against origin/main…`);
       const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
       const nodePath = require('path');
@@ -689,7 +706,7 @@ async function enforceCloseTimeVerify(pageId, args) {
       }
     }
 
-    decision = closeTimeVerify.decideClose({ dispatch, verifyResult, bypassReason });
+    decision = closeTimeVerify.decideClose({ dispatch, verifyResult, bypassReason, drift });
   } catch (e) {
     // The check's own tooling breaking must never block a close (same
     // fail-open contract as armingWarning's validator-unavailable path).
@@ -1148,13 +1165,11 @@ async function listCards(args) {
   return table;
 }
 
-async function getCard(args) {
-  const pageId = args._positional[1];
-  if (!pageId) {
-    console.error('Usage: notion-brain get <page-id>');
-    process.exit(1);
-  }
-
+// The card exactly as `get` returns it (page-body overflow stitched back in) —
+// extracted so non-printing callers (the close-time drift check, card #1009)
+// read the SAME text bsc-next hashed at dispatch. Reading the raw property
+// instead would hash a truncated body and report drift on every long card.
+async function loadCard(pageId) {
   const page = await notion.pages.retrieve({ page_id: pageId });
   const card = formatCard(page);
 
@@ -1171,7 +1186,17 @@ async function getCard(args) {
     card.outcome = await readFieldWithOverflow(pageId, card.outcome, 'outcome', { children });
     card.keyFiles = await readFieldWithOverflow(pageId, card.keyFiles, 'key-files', { children });
   }
+  return card;
+}
 
+async function getCard(args) {
+  const pageId = args._positional[1];
+  if (!pageId) {
+    console.error('Usage: notion-brain get <page-id>');
+    process.exit(1);
+  }
+
+  const card = await loadCard(pageId);
   console.log(JSON.stringify(card, null, 2));
   return card;
 }

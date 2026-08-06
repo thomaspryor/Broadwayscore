@@ -25,6 +25,7 @@ const { execFileSync, spawnSync } = require('child_process');
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const cmuxws = require('./lib/cmux-workspaces.js');
+const cardDrift = require('./lib/dispatch-card-drift.js');
 const { launchCmuxSession } = require('./lib/cmux-launch.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
@@ -57,6 +58,12 @@ Usage:
                            workspace is expected to still be open). Depth is
                            derived from the dispatch ledger and hard-capped —
                            see SUCCESSION_DEPTH_CAP in scripts/lib/dispatch-ledger.js.
+  bsc-next --id N --amend  re-deliver task N's CURRENT card text into the live
+                           workspace it was dispatched to (card #1009). Use this
+                           after CORRECTING a card whose session is still running:
+                           the seed is written once at launch, so an edited card
+                           otherwise never reaches the session executing it.
+                           No-op when the card is unchanged (--force sends anyway).
   bsc-next --help, -h      show this message, do nothing else
 `;
 
@@ -523,6 +530,12 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
         event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
         verifyCmd: priorLaunch.verifyCmd || null, verifyReason: priorLaunch.verifyReason || null,
         notionId: pid || null, adoptedLate: res.adoptedLate || null,
+        // Card #1009: hash of the card body this session was seeded with, so a
+        // later edit is detectable as drift instead of silently diverging.
+        // null when the Notion fetch degraded — an honest "unknown", never a
+        // hash of the truncated task mirror (that would read as a mismatch
+        // against every real card and cry wolf on every in-flight session).
+        contentHash: cardDrift.computeCardContentHash(card),
         // `succession: true` is the load-bearing flag successionDepthForTask()
         // keys on (ship-check P0 catch, 2026-08-03): `--succession-of <ref>`
         // is optional caller-supplied provenance ONLY — the real dispatch
@@ -543,6 +556,128 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
     console.error(`  ${res.command}`);
     process.exit(1);
   }
+}
+
+// Re-deliver a CORRECTED card into the session already running it (card #1009).
+//
+// The gap this closes: buildSeed() runs once, at launch. Correcting the card
+// afterwards changes Notion and nothing else — the session keeps executing the
+// text it was given, and every reader of the card believes otherwise. On
+// 2026-08-04 that was only caught because a human-driven session knew to run
+// `cmux send` by hand against workspace:156; this makes that the documented,
+// journaled path instead of tribal knowledge.
+//
+// Refuses rather than guesses in every ambiguous case: no in-flight dispatch,
+// no readable card, an unreachable (headless/dead) workspace. A refusal that
+// says "this session cannot be reached" is the point — the ledger records
+// delivered:false, and close-time verify (scripts/lib/close-time-verify.js)
+// then refuses to let the card close on criteria it never saw.
+// Is the workspace this launch recorded still occupied by THIS task's session?
+// Matched on the tab title (dispatchLedger.titleMatchesSubject — the same
+// matcher the prune/remap paths use), because that is the only identity cmux
+// exposes and refs are recycled. Unknown (list failed) fails CLOSED: refusing
+// to deliver costs a retry next pass; delivering into the wrong live session
+// cannot be undone.
+function occupantStillThisTask(launch, listWorkspacesFn) {
+  let workspaces;
+  try { workspaces = listWorkspacesFn(); } catch { return false; }
+  const ws = (workspaces || []).find(w => w.ref === launch.workspaceRef);
+  if (!ws) return false;
+  if (dispatchLedger.titleMatchesSubject(ws.title, launch.subject)) return true;
+  // titleMatchesSubject requires a 20-char overlap (it exists to avoid claiming
+  // a stranger's tab on a coincidental prefix). A card whose whole title is
+  // shorter than that would then be permanently undeliverable, so fall back to
+  // containment for those — still an identity check, just the only one
+  // available at that length.
+  const subject = String(launch.subject || '').trim();
+  if (subject.length >= 20 || !subject) return false;
+  return String(ws.title || '').toLowerCase().includes(subject.toLowerCase());
+}
+
+function runAmend(task, args, deps = {}) {
+  const {
+    readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
+    appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
+    fetchCard: fetchCardFn = fetchCard,
+    sendToWorkspace: sendFn = cmuxws.sendToWorkspace,
+    listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
+    readScreen: readScreenFn = (ref) => cmuxws.run(['read-screen', '--workspace', ref, '--lines', '60']),
+  } = deps;
+
+  const entries = readLedgerEntriesFn();
+  // maxAgeMs: null — an amend is an explicit operator action naming one task;
+  // the watcher's staleness cutoff would only refuse to correct a long-running
+  // session, which is the one most likely to have drifted.
+  const launches = cardDrift.inFlightLaunches(entries, { maxAgeMs: null })
+    .filter(l => String(l.taskId) === String(task.id));
+  const launch = launches[launches.length - 1] || null;
+  if (!launch) {
+    console.error(`[bsc-next] no in-flight dispatch for #${task.id} — nothing to amend.`);
+    console.error(`  Its workspace was closed/pruned, or it was never dispatched. Dispatch it: bsc-next --id ${task.id}`);
+    process.exit(1);
+  }
+
+  const pid = launch.notionId || notionIdOf(task);
+  const card = pid ? fetchCardFn(pid) : null;
+  if (!card) {
+    console.error(`[bsc-next] cannot read the current card for #${task.id} (${pid ? 'Notion fetch failed' : 'no Notion id on the task'}) — refusing to send a correction I cannot read.`);
+    process.exit(1);
+  }
+
+  const drift = cardDrift.detectDrift({ launch, card, amendments: entries });
+  if (!drift.drifted && !args.force) {
+    console.log(`[bsc-next] #${task.id}: ${drift.reason} — nothing to deliver (--force sends the current card anyway).`);
+    return;
+  }
+
+  const message = cardDrift.formatAmendMessage({ launch, card, drift });
+  if (args['dry-run'] || args['print-prompt']) {
+    console.log(`# would send to ${launch.workspaceRef} (#${task.id}):\n`);
+    console.log(message);
+    return;
+  }
+
+  const reachable = dispatchLedger.isWorkspaceRef(launch.workspaceRef);
+  let delivered = false;
+  let note = null;
+  if (!reachable) {
+    note = `${launch.workspaceRef} is not a live cmux workspace (headless job or missing ref) — no channel to deliver into`;
+  } else if (!occupantStillThisTask(launch, listWorkspacesFn)) {
+    // Ship-check P0 (GPT pass): cmux recycles workspace refs. A tab that died
+    // without a breadcrumb (cmux restart) leaves this launch looking in-flight
+    // while its ref now belongs to somebody else's session — typing this card's
+    // correction there would drop one task's instructions into another task's
+    // session. The title still carries the subject prefix, so check it.
+    note = `${launch.workspaceRef} no longer carries #${launch.taskId}'s title — the ref was recycled or the tab is gone; refusing to type into a stranger's session`;
+  } else {
+    let screen = '';
+    try { screen = readScreenFn(launch.workspaceRef); } catch { screen = ''; }
+    if (cardDrift.looksUnsafeToType(screen)) {
+      // Ship-check P0 (GPT pass): at a permission/selection dialog these
+      // keystrokes ANSWER the dialog instead of queueing a message.
+      note = `${launch.workspaceRef} is sitting at a selection/permission prompt — typing here would answer that dialog, not deliver a message`;
+    } else {
+      try { sendFn(launch.workspaceRef, message); delivered = true; }
+      catch (e) { note = `cmux send failed: ${e.message}`; }
+    }
+  }
+
+  try {
+    appendLedgerEntryFn(cardDrift.amendEntry({
+      taskId: task.id, workspaceRef: launch.workspaceRef,
+      contentHash: drift.currentHash, delivered, signal: drift.signal, note,
+    }));
+  } catch (e) { console.error(`[bsc-next] WARN dispatch-ledger amend write failed (non-fatal): ${e.message}`); }
+
+  if (delivered) {
+    console.log(`[bsc-next] delivered the corrected card for #${task.id} into ${launch.workspaceRef} (hash ${drift.currentHash}).`);
+    console.log(`  Read the session back before trusting it landed: cmux read-screen --workspace ${launch.workspaceRef}`);
+    return;
+  }
+  console.error(`[bsc-next] 🔴 COULD NOT REACH the session running #${task.id}: ${note}`);
+  console.error(`  It is still executing the ORIGINAL instructions. The card is corrected on paper only.`);
+  console.error(`  Recorded as an undelivered amend — close-time verify will refuse to close #${task.id} on the corrected criteria.`);
+  process.exit(1);
 }
 
 // ── side-effecting helpers ─────────────────────────────────────────────────
@@ -673,6 +808,18 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const task = pickTask(tasks, args, TASKS_DIR);
   if (!task) { console.error('[bsc-next] no matching actionable task.'); process.exit(1); }
+
+  // --amend (card #1009) re-delivers a corrected card into the session ALREADY
+  // running it. It launches nothing, so it runs before every dispatch guard —
+  // those exist to stop a second workspace opening, which is the opposite of
+  // what this does. --id is required: amending "whatever the top task is"
+  // would type a correction into an unrelated session.
+  if (args.amend) {
+    if (!args.id) { console.error('[bsc-next] --amend requires --id <taskId> (never guesses which session to correct).'); process.exit(1); }
+    runAmend(task, args, { readLedgerEntries: readLedgerEntriesFn, appendLedgerEntry: appendLedgerEntryFn, fetchCard: fetchCardFn });
+    return;
+  }
+
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
 
@@ -723,6 +870,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const pid = notionIdOf(task);
   const card = pid ? fetchCardFn(pid) : null;
+  // Card #1009: the fingerprint of the instructions this session is about to be
+  // given, journaled with the launch. Nothing re-seeds a running session, so
+  // without this the ONLY record of what a session was told is a temp seed file
+  // — and a card corrected mid-flight looks, to every reader, like instructions
+  // the session is following. null when the card fetch degraded (honest unknown).
+  const cardHash = cardDrift.computeCardContentHash(card);
   // Project bucket for auto-dispatch naming/coloring (scope add, card #168):
   // prefer the full card's tags/category (richer than the task-mirror line),
   // fall back to the mirror's categoryOf() for native/bridge-less tasks.
@@ -859,7 +1012,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, notionId: pid || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -950,7 +1103,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, adoptedLate: res.adoptedLate || null }); }
+    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, notionId: pid || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger write failed (non-fatal): ${e.message}`); }
   } else {
     // Card #705: report WHICH failure this is. "LAUNCH NOT VERIFIED" for a
@@ -1010,4 +1163,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, acquireSuccessionLock, releaseSuccessionLock };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock };

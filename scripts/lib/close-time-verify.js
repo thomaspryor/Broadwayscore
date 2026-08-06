@@ -53,6 +53,8 @@ const VERDICTS = {
   NO_VERIFY_CMD: 'no-verify-cmd',
   OWNER_JUDGMENT: 'owner-judgment',
   NOT_RUN: 'check-not-run',
+  DRIFTED: 'instructions-never-delivered',
+  DRIFT_SUSPECTED: 'instructions-possibly-stale',
   PASS: 'own-verify-passed',
   UNVERIFIABLE: 'own-verify-unverifiable',
   FAIL: 'own-verify-failed',
@@ -124,12 +126,52 @@ function findCardDispatch({ entries = [], notionId = null, taskId = null } = {})
  * @returns {{allowed:boolean, verdict:string, warn:boolean, message:string,
  *   verifyCmd:string|null}}
  */
-function decideClose({ dispatch = null, verifyResult = null, disabled = false, bypassReason = null } = {}) {
+function decideClose({ dispatch = null, verifyResult = null, disabled = false, bypassReason = null, drift = null } = {}) {
   const cmd = dispatch && dispatch.verifyCmd ? dispatch.verifyCmd : null;
   const allow = (verdict, message, warn = false) => ({ allowed: true, verdict, warn, message, verifyCmd: cmd });
 
   if (disabled) return allow(VERDICTS.DISABLED, 'close-time verify disabled by env');
   if (bypassReason) return allow(VERDICTS.BYPASSED, `close-time verify bypassed: ${bypassReason}`, true);
+
+  // Instruction drift (card #1009). A card corrected while its session was
+  // in flight, with the correction never delivered, cannot be closed on the
+  // corrected criteria — the session never saw them, so "it's Done" is a
+  // claim about work no one asked for in that form. Refuses ONLY on the
+  // 'exact' signal (the dispatch-time content hash disagrees with the card's
+  // current body — proof the WORK TEXT changed). The timestamp-only 'weak'
+  // signal warns and closes: last_edited_time moves on any property edit,
+  // and a gate that blocked on that would refuse most in-flight cards for
+  // reasons as trivial as a tag change.
+  if (drift && drift.status === 'drifted' && drift.confidence === 'exact') {
+    return {
+      allowed: false,
+      verdict: VERDICTS.DRIFTED,
+      warn: false,
+      verifyCmd: cmd,
+      message:
+        `This card cannot close: it was CORRECTED after its session was dispatched, and the correction was never delivered.\n\n` +
+        `  dispatched with: ${drift.dispatchHash}\n` +
+        `  card now:        ${drift.currentHash}${drift.cardLastEditedAt ? ` (edited ${drift.cardLastEditedAt})` : ''}\n` +
+        `  session:         ${drift.workspaceRef || 'unknown workspace'}\n\n` +
+        `The running session was seeded with the ORIGINAL text and nothing re-seeds it, so whatever it did,\n` +
+        `it did not do it against the criteria on this card. Deliver the correction first:\n` +
+        `  node scripts/bsc-next.js --id ${drift.taskId || '<taskId>'} --amend\n` +
+        `then let the session finish against the current card. If the work genuinely satisfies the corrected\n` +
+        `criteria anyway, close with --force "<reason ≥10 chars>" saying so.`,
+    };
+  }
+  if (drift && drift.status === 'drifted') {
+    // Weak signal — surfaced, never blocking. Its OWN verdict name (ship-check
+    // P1, GPT pass): reusing 'instructions-never-delivered' here would log a
+    // certainty this path does not have — the card may only have had a tag
+    // flipped.
+    return allow(
+      VERDICTS.DRIFT_SUSPECTED,
+      `card was edited after this session was dispatched (${drift.reason}) — closing anyway, but check the session ` +
+      `actually worked the current criteria (node scripts/bsc-next.js --id ${drift.taskId || '<taskId>'} --amend re-delivers them)`,
+      true
+    );
+  }
 
   if (!dispatch || !dispatch.entry) {
     return allow(
