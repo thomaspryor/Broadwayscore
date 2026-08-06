@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { evaluateAuthHealth, buildAlertPayload, REPAIR_STEPS } = require('../../scripts/lib/claude-auth-health.js');
+const { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS } = require('../../scripts/lib/claude-auth-health.js');
 
 test('revoked-token shape: preflight fails while auth status still says loggedIn:true → treated as FAILURE', () => {
   // This is the exact real-world bug: authPing's live call gets a 401 (spawn
@@ -80,6 +80,20 @@ test('buildAlertPayload: omits the auth-status-lies warning when status agrees (
   const payload = buildAlertPayload(health);
 
   assert.doesNotMatch(payload.description, /loggedIn:true/);
+});
+
+test('buildBillingFallbackAlertPayload: digest-tier (not page-worthy), distinct conditionKey from the revoked-token page', () => {
+  const health = evaluateAuthHealth({
+    preflight: { ok: true, mode: 'api-key', storedDetail: 'OAuth access token has been revoked' },
+    authStatus: { loggedIn: false },
+  });
+  const payload = buildBillingFallbackAlertPayload(health);
+
+  assert.equal(payload.conditionKey, 'claude-auth:api-key-fallback');
+  assert.notEqual(payload.conditionKey, 'claude-auth:revoked', 'must not collide with the real-failure page and reuse its cooldown');
+  assert.equal(payload.disposition, 'digest');
+  const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy(payload.conditionKey), false, 'billing-fallback is a real gap but not launch-blocking — digest, not a page');
 });
 
 test('scripts/lib/page-worthy-alerts.js has claude-auth:revoked on the page-worthy allowlist', () => {

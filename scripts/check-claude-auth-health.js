@@ -34,7 +34,7 @@ const { spawnSync } = require('child_process');
 require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const { preflightAuth } = require('./lib/claude-cli.js');
-const { evaluateAuthHealth, buildAlertPayload } = require('./lib/claude-auth-health.js');
+const { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload } = require('./lib/claude-auth-health.js');
 
 // Best-effort only — never allowed to affect the pass/fail verdict (see file
 // header). Failure here just means the alert body's status note is omitted.
@@ -56,7 +56,7 @@ async function main() {
   console.log(`[claude-auth-health] ok=${health.ok} mode=${health.mode} authStatus.loggedIn=${health.authStatusLoggedIn}`);
   console.log(`[claude-auth-health] ${health.reason}`);
 
-  const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-router.js');
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
 
   if (!health.ok) {
     await routeAlert(buildAlertPayload(health)).catch(e => console.error(`[claude-auth-health] alert failed to send: ${e.message}`));
@@ -66,16 +66,16 @@ async function main() {
   // Recovery: clear any still-open incident now that a real call succeeded —
   // mirrors check-secrets-health.js's recovery path so a later recurrence
   // inside the same cooldown window re-notifies instead of being swallowed.
-  const ledger = loadLedger();
-  if (ledger.conditions['claude-auth:revoked']) resolveCondition('claude-auth:revoked');
+  // resolveCondition() is already a safe no-op on a missing/non-open key.
+  resolveCondition('claude-auth:revoked');
 
   if (health.mode === 'api-key') {
     // Not a launch-blocking failure (preflightAuth's fallback still lets
     // cmux-launch.js proceed), but billing silently switched from
-    // subscription to pay-per-token — surface it in the log so it shows up
-    // in the launchd log file, without paging (that's what the alert path
-    // above is for).
+    // subscription to pay-per-token — this must reach the owner, not just a
+    // launchd log nobody reads (ship-check finding, task #1076).
     console.warn(`[claude-auth-health] WARNING: ${health.reason}`);
+    await routeAlert(buildBillingFallbackAlertPayload(health)).catch(e => console.error(`[claude-auth-health] alert failed to send: ${e.message}`));
   }
 
   console.log('[claude-auth-health] healthy.');
