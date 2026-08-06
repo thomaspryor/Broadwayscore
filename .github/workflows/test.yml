@@ -429,6 +429,12 @@ on:
       - 'tests/unit/feedback-request-ledger.test.mjs'
       - 'scripts/notify-feedback-outcomes.js'
       - 'scripts/verify-feedback-requests-live.js'
+      # What the owner actually reads. Added 2026-08-05 after a shipped report
+      # linked /shows/{slug} — a route that does not exist — and nothing failed:
+      # both report builders were exported but had no test at all. This file
+      # asserts the clicked URL, the named reviews, and the plain-English
+      # wording, so the next regression is red in CI, not in the owner's inbox.
+      - 'tests/unit/feedback-owner-reports.test.mjs'
       - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'

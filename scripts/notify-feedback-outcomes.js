@@ -52,12 +52,24 @@ const fs = require('fs');
 const path = require('path');
 const { routeAlert } = require('./lib/owner-alert-router.js');
 const { MAX_STORED_MESSAGE } = require('./lib/feedback-request-ledger.js');
+const { describeDispatchesPlainly } = require('./lib/content-request-routing.js');
 
 const REPORT_PATH = path.join(__dirname, '../data/audit/feedback-run-report.json');
 
 /**
- * One line per submission saying, in plain terms, what happened to it.
+ * One block per submission saying, in plain English, what happened to it and —
+ * when it stalled — what the owner can do in one click.
+ *
  * Ordered worst-first so the thing needing the owner is never below the fold.
+ *
+ * WORDING (2026-08-05, owner on two real notifications): "I have no idea what
+ * this email is telling me. It's all technical mumbo jumbo", and of a stalled
+ * row, "this one is not clear nor is it actionable". So:
+ *   - `detail` says what happened to their request, never what ran. Workflow
+ *     filenames and JSON input blobs stay out of the owner's inbox; the plain
+ *     sentence comes from content-request-routing.js's WORKFLOW_LABELS.
+ *   - `whatNow` is present on every needsYou row and says, in one sentence,
+ *     what happens next. The caller pairs it with a click-to-dispatch link.
  */
 function describeOutcome(item) {
   const dispatched = (item.dispatches || []).filter((d) => d.ok);
@@ -67,56 +79,67 @@ function describeOutcome(item) {
   if (failed.length > 0) {
     return {
       rank: 0,
-      state: 'DISPATCH FAILED',
+      state: 'COULD NOT START THE WORK',
       color: '#b91c1c',
-      detail: failed.map((d) => `${d.workflow}: ${d.error || 'unknown error'}`).join('; '),
+      detail:
+        `The site tried to start the work and GitHub refused it (${
+          failed.map((d) => d.error || 'no reason given').join('; ')
+        }). Nothing has been done about this request yet.`,
+      whatNow: 'Someone has to look at why the job would not start, then get the request done.',
       needsYou: true,
     };
   }
   if (parked.length > 0) {
     return {
       rank: 1,
-      state: 'PARKED — needs you',
+      state: 'HELD BACK ON PURPOSE',
       color: '#b45309',
-      detail: parked.map((a) => a.reason).join('; '),
+      // The reasons are written for a human already (e.g. "already has 12
+      // review(s); not auto-gathering"), so they are quoted rather than
+      // re-worded — but framed as a deliberate hold, not a failure.
+      detail: `The site deliberately did not act on this: ${parked.map((a) => a.reason).join('; ')}.`,
+      whatNow: 'Decide whether it should happen anyway — the hold is a guardrail, not a verdict.',
       needsYou: true,
     };
   }
   if (dispatched.length > 0) {
     return {
       rank: 2,
-      state: 'AUTO-DISPATCHED',
+      state: 'ALREADY BEING HANDLED',
       color: '#15803d',
-      detail: dispatched
-        .map((d) => `${d.workflow}${d.inputs ? ` (${JSON.stringify(d.inputs)})` : ''}`)
-        .join('; '),
+      detail: `${describeDispatchesPlainly(dispatched)}. You will get another email when it is live on the site.`,
       needsYou: false,
     };
   }
   if (item.diagnosed) {
     return {
       rank: 2,
-      state: 'DIAGNOSED — auto-fix dispatched',
+      state: 'ALREADY BEING HANDLED',
       color: '#15803d',
-      detail: item.summary || '',
+      detail: `${item.summary || 'The site worked out what was wrong and started a fix'}. You will get another email when it is live on the site.`,
       needsYou: false,
     };
   }
   if (item.category === 'Bug' || item.category === 'Content Error') {
-    // Reached the bug path but produced neither a diagnosis nor a dispatch.
+    // Reached the bug path but produced neither a diagnosis nor a dispatch:
+    // nothing in the request matched a show or an ask shape the site can route.
     return {
       rank: 1,
-      state: 'NO ACTION TAKEN — needs you',
+      state: 'NOBODY IS ON THIS YET',
       color: '#b45309',
-      detail: 'Categorized as a bug/content error but nothing routed or diagnosed.',
+      detail:
+        'This is a real problem report, but the site could not work out which show or which kind of fix it is asking for, so nothing was started. It will sit here until someone picks it up.',
+      whatNow: 'Read what they wrote, work out what they actually want, and get it done.',
       needsYou: true,
     };
   }
   return {
     rank: 3,
-    state: 'ACKNOWLEDGED',
+    state: 'NOTHING TO DO',
     color: '#525252',
-    detail: item.email ? 'Thank-you email sent to submitter.' : 'No submitter email on file.',
+    detail: item.email
+      ? 'Not a problem report — a thank-you went back to the person who sent it.'
+      : 'Not a problem report, and they left no email address, so there was nobody to reply to.',
     needsYou: false,
   };
 }
@@ -166,27 +189,30 @@ function buildAlert(report, pipelineStatus, runUrl) {
   // public GitHub issue, so the cap is belt-and-braces; identity is not).
   // The issue link is where the owner goes for who-sent-it.
   const lines = rows.map(({ item, outcome }) => {
-    const issue = item.issueNumber
-      ? ` — https://github.com/thomaspryor/Broadwayscore/issues/${item.issueNumber}`
-      : '';
+    const issueUrl = item.issueNumber
+      ? `https://github.com/thomaspryor/Broadwayscore/issues/${item.issueNumber}`
+      : null;
     const message = item.message
       ? String(item.message).slice(0, MAX_STORED_MESSAGE)
       : '(no message)';
-    return [
-      `[${outcome.state}] ${item.show || 'No show given'}`,
-      `  "${message}"`,
-      `  What happened: ${outcome.detail || '—'}`,
-      `  ${item.category || 'Uncategorized'}${item.priority ? ` · ${item.priority} priority` : ''}${issue}`,
-    ].join('\n');
+    // Front-loaded: the digest renders a queued row as clip(description, 200),
+    // so the first line has to carry the whole meaning on its own — the show,
+    // what happened to it, and what it needs.
+    const block = [
+      `${item.show || 'A message with no show named'} — ${outcome.detail || '—'}${outcome.whatNow ? ` ${outcome.whatNow}` : ''}`,
+      `  They wrote: "${message}"`,
+    ];
+    if (issueUrl) block.push(`  Full details and who sent it: ${issueUrl}`);
+    return block.join('\n');
   });
 
   const header = [
-    `${items.length} submission(s) processed${report.spamFlaggedCount ? `, ${report.spamFlaggedCount} spam-flagged` : ''}.`,
+    `${items.length} message${items.length === 1 ? '' : 's'} from users came in${report.spamFlaggedCount ? `, plus ${report.spamFlaggedCount} flagged as spam` : ''}.`,
     needsYou > 0
-      ? `${needsYou} need${needsYou === 1 ? 's' : ''} your attention.`
-      : 'Nothing needs you.',
+      ? `${needsYou} of them stalled and need${needsYou === 1 ? 's' : ''} a person.`
+      : 'All of them are being handled automatically. Nothing needs you.',
     failedRun
-      ? `The pipeline run itself ended in "${pipelineStatus}" — outcomes below may be incomplete.`
+      ? `The run itself ended as "${pipelineStatus}", so some messages may not have been processed at all.`
       : '',
   ]
     .filter(Boolean)
@@ -203,6 +229,13 @@ function buildAlert(report, pipelineStatus, runUrl) {
     // that is what decides the digest's severity ordering. A fully-automated
     // run is informational.
     severity: failedRun || needsYou > 0 ? 'error' : 'info',
+    // A run where nothing stalled is a receipt, not a fix request. Without this
+    // digest-autofix.js spends a whole session on "everything worked" (its
+    // default for any queued row is auto-dispatch — see queueDigestLine).
+    ...(failedRun || needsYou > 0 ? {} : {
+      decision: true,
+      decisionPrompt: 'Receipt only — every message in this run was handled automatically. Nothing to fix.',
+    }),
     url: runUrl || undefined,
     fields: [
       { name: 'Submissions', value: String(items.length) },

@@ -48,6 +48,50 @@ const WORKFLOW_ADD_SHOW = 'add-requested-show.yml';
 const WORKFLOW_REVIEWS = 'gather-reviews.yml';
 
 /**
+ * What each workflow means in English, for owner-facing mail.
+ *
+ * Owner, 2026-08-05, on a real notification: "I have no idea what this email is
+ * telling me. It's all technical mumbo jumbo." It had printed
+ * `add-requested-show.yml ({"title":"The Outsiders","venue_hint":"The Weiss"})`.
+ * A filename and a JSON blob describe the mechanism; the owner needs the
+ * outcome. Every workflow this module can dispatch must therefore have a
+ * sentence here — enforced by tests/unit/content-request-routing.test.mjs, so a
+ * new route cannot ship a raw filename into the owner's inbox.
+ */
+const WORKFLOW_LABELS = {
+  [WORKFLOW_IMAGE]: { verb: 'Fetching poster art', noun: 'poster art' },
+  [WORKFLOW_ADD_SHOW]: { verb: 'Adding to the site', noun: 'the show page' },
+  [WORKFLOW_REVIEWS]: { verb: 'Collecting the missing reviews', noun: 'the reviews' },
+};
+
+/**
+ * One plain sentence for a set of dispatches: what is now being done, and to
+ * what. Titles come from the dispatch inputs, which is where the owner's own
+ * words ended up after routing — so the sentence names the shows they asked
+ * about rather than the machinery that will handle them.
+ */
+function describeDispatchesPlainly(dispatches) {
+  const byWorkflow = new Map();
+  for (const d of dispatches || []) {
+    if (!d || !d.workflow) continue;
+    const titles = byWorkflow.get(d.workflow) || [];
+    const title = d.inputs && (d.inputs.title || d.inputs.shows || d.inputs.show_id);
+    if (title) titles.push(String(title));
+    byWorkflow.set(d.workflow, titles);
+  }
+  const parts = [];
+  for (const [workflow, titles] of byWorkflow) {
+    const label = WORKFLOW_LABELS[workflow];
+    // Unlabelled workflow: name it, but say plainly that it is a workflow, so
+    // the line still reads as English rather than as a stray filename.
+    const verb = label ? label.verb : `Running the ${workflow} workflow`;
+    const named = [...new Set(titles)];
+    parts.push(named.length ? `${verb}: ${named.join(', ')}` : verb);
+  }
+  return parts.join('. ');
+}
+
+/**
  * Above this review count, "you're missing reviews for X" is not taken at face
  * value: the ask parks for a human instead of auto-dispatching a scrape.
  * gather-reviews spends Bright Data / ScrapingBee credits, so the one thing
@@ -323,6 +367,18 @@ function planContentRequestActions({
         // NOT slugs, despite the workflow input's description. They diverge
         // for any show whose slug drops the year/market suffix.
         shows: resolved.id,
+        // Tier 3, not the default 2 (owner: "make sure we search for reviews
+        // beyond just aggregators", 2026-08-05). collect-outlet-reviews.js
+        // defaults an outlet with no explicit tier to 3, so max_tier=2 searches
+        // ONLY the national T1/T2 outlets and skips every local and untiered
+        // one. Those locals are precisely who reviews the regional tryouts
+        // these requests are about — the San Diego Union-Tribune is the sole
+        // review 3 Summers of Lincoln has. A tier-2 gather on that show would
+        // query the nationals, find nothing, and report success having changed
+        // nothing, which is the silent no-op this whole pipeline keeps
+        // producing. Costs more SERP searches (80 vs 30) but only ever fires
+        // for a real user request that already passed the review-count ceiling.
+        max_tier: '3',
       },
     };
   };
@@ -448,5 +504,7 @@ module.exports = {
   WORKFLOW_IMAGE,
   WORKFLOW_ADD_SHOW,
   WORKFLOW_REVIEWS,
+  WORKFLOW_LABELS,
+  describeDispatchesPlainly,
   REVIEW_COUNT_AUTOGATHER_CEILING,
 };
