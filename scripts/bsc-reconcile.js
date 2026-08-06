@@ -496,6 +496,16 @@ function reconcileCardDrift({ dryRun = false, deps = {} } = {}) {
   // session is still useful; one that reaches a 3-day-old zombie is not worth
   // a Notion read every half hour, forever.
   const launches = cardDrift.inFlightLaunches(entries, { now, maxAgeMs: 24 * 3600 * 1000 });
+
+  // Stamp the pass BEFORE the (slow, Notion-costing) fetch loop, not after
+  // (ship-check P1, GPT pass): a manual run overlapping the launchd tick would
+  // otherwise both read "window open", both fetch, and both deliver the same
+  // correction twice. Stamping first makes the loser of that race a no-op.
+  // The cost of stamping early is one skipped pass if this run then crashes —
+  // 30 minutes of delay on a correction, versus double-typing into a live
+  // session.
+  reportFn({ kind: cardDrift.DRIFT_PASS_EVENT, taskId: 'sweep', detail: `starting drift pass over ${launches.length} in-flight session(s)` });
+
   const cards = {};
   for (const l of launches) {
     if (l.notionId) cards[String(l.taskId)] = fetchCardFn(l.notionId);
@@ -504,10 +514,7 @@ function reconcileCardDrift({ dryRun = false, deps = {} } = {}) {
     cardDrift.detectDrift({ launch, card: cards[String(launch.taskId)] || null, amendments: entries })
   );
   const { deliver, deferred, reportOnly } = cardDrift.selectDriftDeliveries(rows);
-
-  // Stamp the pass FIRST so a crash mid-delivery can't make every subsequent
-  // tick re-run the whole (Notion-costing) pass.
-  reportFn({ kind: cardDrift.DRIFT_PASS_EVENT, taskId: 'sweep', detail: `checked ${rows.length} in-flight session(s): ${deliver.length + deferred.length} proven drift, ${reportOnly.length} suspected` });
+  reportFn({ kind: 'card-drift-summary', taskId: 'sweep', detail: `checked ${rows.length} in-flight session(s): ${deliver.length + deferred.length} proven drift, ${reportOnly.length} suspected` });
 
   for (const r of reportOnly) {
     reportFn({ kind: 'card-drift-suspected', taskId: String(r.taskId), detail: `${r.workspaceRef}: ${r.reason} — not auto-delivered (timestamp-only signal); check with: node scripts/bsc-next.js --id ${r.taskId} --amend` });

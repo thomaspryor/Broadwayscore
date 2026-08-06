@@ -54,6 +54,7 @@ const VERDICTS = {
   OWNER_JUDGMENT: 'owner-judgment',
   NOT_RUN: 'check-not-run',
   DRIFTED: 'instructions-never-delivered',
+  DRIFT_SUSPECTED: 'instructions-possibly-stale',
   PASS: 'own-verify-passed',
   UNVERIFIABLE: 'own-verify-unverifiable',
   FAIL: 'own-verify-failed',
@@ -160,9 +161,12 @@ function decideClose({ dispatch = null, verifyResult = null, disabled = false, b
     };
   }
   if (drift && drift.status === 'drifted') {
-    // Weak signal — surfaced, never blocking. See the block above.
+    // Weak signal — surfaced, never blocking. Its OWN verdict name (ship-check
+    // P1, GPT pass): reusing 'instructions-never-delivered' here would log a
+    // certainty this path does not have — the card may only have had a tag
+    // flipped.
     return allow(
-      VERDICTS.DRIFTED,
+      VERDICTS.DRIFT_SUSPECTED,
       `card was edited after this session was dispatched (${drift.reason}) — closing anyway, but check the session ` +
       `actually worked the current criteria (node scripts/bsc-next.js --id ${drift.taskId || '<taskId>'} --amend re-delivers them)`,
       true

@@ -23,7 +23,7 @@ const drift = require(LIB_PATH);
 const { computeContentHash } = require(path.join(HERE, '..', 'lib', 'attempt-memory.js'));
 const closeTimeVerify = require(path.join(HERE, '..', 'lib', 'close-time-verify.js'));
 
-const CARD = { name: 'P1: fix the thing', notes: '## Acceptance criteria\n`node --test scripts/tests/thing.test.mjs`' };
+const CARD = { name: 'P1: fix the thing that breaks overnight', notes: '## Acceptance criteria\n`node --test scripts/tests/thing.test.mjs`' };
 const CORRECTED = { ...CARD, notes: `${CARD.notes}\nCORRECTION: the bar above was unreachable; use the 3-case bar instead.` };
 
 const launchOf = (over = {}) => ({
@@ -76,6 +76,16 @@ describe('drift detection (acceptance criteria a + b)', () => {
     assert.equal(d.status, drift.STATUS.UNKNOWN);
     assert.equal(d.drifted, false);
     assert.match(d.reason, /unavailable/);
+  });
+
+  test('the hash survives the JSON round-trip between the two card readers', () => {
+    // bsc-next hashes a card parsed from `notion-brain get` stdout; notion-brain's
+    // own close gate hashes the loadCard() object directly. Same fields, but the
+    // first crosses JSON.stringify/parse — if that ever changed the hash, every
+    // unchanged card would read as drifted and close-time verify would refuse
+    // real closes (the top ship-check hypothesis; this pins it shut).
+    const viaStdout = JSON.parse(JSON.stringify({ ...CARD, id: 'abc', lastEditedAt: '2026-08-05T10:00:00.000Z' }));
+    assert.equal(drift.computeCardContentHash(viaStdout), drift.computeCardContentHash(CARD));
   });
 
   test('the hash is the SAME function the autonomous loop already uses (one card, one hash)', () => {
@@ -302,6 +312,124 @@ describe('the correction message is safe to type into a cmux prompt', () => {
     assert.ok(msg.length <= 1300, `message stayed bounded (${msg.length})`);
     assert.match(msg, /truncated/);
     assert.match(msg, /notion-brain\.js get/);
+  });
+});
+
+describe('delivery safety: never type into the wrong session, or the wrong moment', () => {
+  const bscNext = require(path.join(HERE, '..', 'bsc-next.js'));
+  const launch = { ts: '2026-08-05T10:00:00.000Z', event: 'launch', taskId: '4242', subject: CARD.name, workspaceRef: 'workspace:200', notionId: 'abc-123', contentHash: drift.computeCardContentHash(CARD) };
+  const liveTitle = `🤖🔮 Data·${CARD.name}`.slice(0, 60);
+
+  const runAmend = (over = {}) => {
+    const sent = [];
+    const appended = [];
+    const opts = {
+      readLedgerEntries: () => [launch],
+      appendLedgerEntry: (e) => { appended.push(e); return e; },
+      fetchCard: () => CORRECTED,
+      sendToWorkspace: (ref, text) => { sent.push({ ref, text }); },
+      listWorkspaces: () => [{ ref: 'workspace:200', title: liveTitle }],
+      readScreen: () => 'ctx 31% │ worktree │ ⏵⏵ bypass permissions on',
+      ...over,
+    };
+    let exitCode = null;
+    const realExit = process.exit;
+    process.exit = (c) => { exitCode = c; throw new Error('EXIT'); };
+    try { bscNext.runAmend({ id: '4242', subject: CARD.name }, { force: false }, opts); }
+    catch (e) { if (e.message !== 'EXIT') throw e; }
+    finally { process.exit = realExit; }
+    return { sent, appended, exitCode };
+  };
+
+  test('a healthy live session gets the correction', () => {
+    const { sent, appended } = runAmend();
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].ref, 'workspace:200');
+    assert.equal(appended[0].event, 'amend');
+    assert.equal(appended[0].delivered, true);
+  });
+
+  test('a recycled workspace ref (title no longer this task) is NOT typed into', () => {
+    const { sent, appended, exitCode } = runAmend({
+      listWorkspaces: () => [{ ref: 'workspace:200', title: '🤖🔮 Infra·Somebody else\'s completely different task' }],
+    });
+    assert.equal(sent.length, 0, 'refused to type into a stranger session');
+    assert.equal(appended[0].delivered, false);
+    assert.match(appended[0].note, /recycled|no longer carries/);
+    assert.equal(exitCode, 1, 'exits non-zero so the caller knows it did not land');
+  });
+
+  test('a closed/renumbered workspace (ref absent from the list) is NOT typed into', () => {
+    const { sent, appended } = runAmend({ listWorkspaces: () => [{ ref: 'workspace:7', title: liveTitle }] });
+    assert.equal(sent.length, 0);
+    assert.equal(appended[0].delivered, false);
+  });
+
+  test('a cmux list failure fails CLOSED — no delivery on uncertainty', () => {
+    const { sent, appended } = runAmend({ listWorkspaces: () => { throw new Error('socket busy'); } });
+    assert.equal(sent.length, 0);
+    assert.equal(appended[0].delivered, false);
+  });
+
+  test('a short-titled card is still deliverable (the 20-char matcher would refuse forever)', () => {
+    const shortLaunch = { ...launch, subject: 'Fix the poller' };
+    const { sent } = runAmend({
+      readLedgerEntries: () => [shortLaunch],
+      listWorkspaces: () => [{ ref: 'workspace:200', title: '🤖🔮 Data·Fix the poller' }],
+    });
+    assert.equal(sent.length, 1);
+  });
+
+  test('a session at a permission dialog is NOT typed into (keystrokes would answer it)', () => {
+    const dialog = 'Do you want to proceed?\n❯ 1. Yes\n  2. Yes, and don\'t ask again\n  3. No, and tell Claude what to do differently';
+    const { sent, appended } = runAmend({ readScreen: () => dialog });
+    assert.equal(sent.length, 0);
+    assert.match(appended[0].note, /selection\/permission prompt/);
+  });
+
+  test('looksUnsafeToType: dialogs yes, ordinary prompts no', () => {
+    assert.equal(drift.looksUnsafeToType('Do you want to proceed?\n❯ 1. Yes\n  2. No'), true);
+    assert.equal(drift.looksUnsafeToType('Overwrite file? (y/n)'), true);
+    assert.equal(drift.looksUnsafeToType('Do you want to proceed?'), true);
+    assert.equal(drift.looksUnsafeToType('❯ SELFTEST PROBE — a queued user message'), false, 'the normal prompt arrow is not a dialog');
+    assert.equal(drift.looksUnsafeToType('✻ Thinking… │ ctx 31% │ ⏵⏵ bypass permissions on'), false);
+    assert.equal(drift.looksUnsafeToType(''), false, 'an unreadable screen is handled by the other guards, not this one');
+  });
+
+  test('looksUnsafeToType does NOT fire on a healthy session whose scrollback QUOTES a dialog', () => {
+    // Verbatim from `cmux read-screen --workspace workspace:198` on 2026-08-05,
+    // while this very session was editing the test above. The first version of
+    // this guard refused to deliver here — the screen was showing a diff of the
+    // fixture string, not a live dialog. A live dialog renders at the bottom,
+    // on its own line; quoted text does neither.
+    const realScreen = [
+      "    383    test('a session at a permission dialog is NOT typed into (keystrokes would answer it)', () => {",
+      `    384      const dialog = 'Do you want to proceed?\\n❯ 1. Yes\\n  2. Yes, and don\\'t ask again\\n  3. No';`,
+      '    385      const { sent, appended } = runAmend({ readScreen: () => dialog });',
+      '',
+      '  Running 7 shell commands…',
+      '  ⎿  $ cmux read-screen --workspace workspace:198 --lines 60 | tail -30',
+      '',
+      '✳ Working on card #1009 (24m 50s · ↓ 92.8k tokens)',
+      '                                                            Now using usage credits',
+      '────────────────────────────────────────────────────────────────────────────────',
+      '❯ ',
+      '────────────────────────────────────────────────────────────────────────────────',
+      '  🔮 OPUS │ ctx 53% │ worktree-dispatch-card-drift-1009',
+      '  ⏵⏵ bypass permissions on (shift+tab to cycle) · ← for agents',
+    ].join('\n');
+    assert.equal(drift.looksUnsafeToType(realScreen), false, 'quoted dialog text in the scrollback is not a live dialog');
+  });
+
+  test('a real dialog at the bottom of a busy screen still blocks', () => {
+    const busyThenDialog = [
+      'lots of transcript above', 'more transcript', 'and more',
+      'Edit file scripts/lib/foo.js?',
+      '❯ 1. Yes',
+      '  2. Yes, and don\'t ask again this session',
+      '  3. No, and tell Claude what to do differently',
+    ].join('\n');
+    assert.equal(drift.looksUnsafeToType(busyThenDialog), true);
   });
 });
 

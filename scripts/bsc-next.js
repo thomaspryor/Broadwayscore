@@ -572,12 +572,36 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
 // says "this session cannot be reached" is the point — the ledger records
 // delivered:false, and close-time verify (scripts/lib/close-time-verify.js)
 // then refuses to let the card close on criteria it never saw.
+// Is the workspace this launch recorded still occupied by THIS task's session?
+// Matched on the tab title (dispatchLedger.titleMatchesSubject — the same
+// matcher the prune/remap paths use), because that is the only identity cmux
+// exposes and refs are recycled. Unknown (list failed) fails CLOSED: refusing
+// to deliver costs a retry next pass; delivering into the wrong live session
+// cannot be undone.
+function occupantStillThisTask(launch, listWorkspacesFn) {
+  let workspaces;
+  try { workspaces = listWorkspacesFn(); } catch { return false; }
+  const ws = (workspaces || []).find(w => w.ref === launch.workspaceRef);
+  if (!ws) return false;
+  if (dispatchLedger.titleMatchesSubject(ws.title, launch.subject)) return true;
+  // titleMatchesSubject requires a 20-char overlap (it exists to avoid claiming
+  // a stranger's tab on a coincidental prefix). A card whose whole title is
+  // shorter than that would then be permanently undeliverable, so fall back to
+  // containment for those — still an identity check, just the only one
+  // available at that length.
+  const subject = String(launch.subject || '').trim();
+  if (subject.length >= 20 || !subject) return false;
+  return String(ws.title || '').toLowerCase().includes(subject.toLowerCase());
+}
+
 function runAmend(task, args, deps = {}) {
   const {
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     fetchCard: fetchCardFn = fetchCard,
     sendToWorkspace: sendFn = cmuxws.sendToWorkspace,
+    listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
+    readScreen: readScreenFn = (ref) => cmuxws.run(['read-screen', '--workspace', ref, '--lines', '60']),
   } = deps;
 
   const entries = readLedgerEntriesFn();
@@ -616,11 +640,26 @@ function runAmend(task, args, deps = {}) {
   const reachable = dispatchLedger.isWorkspaceRef(launch.workspaceRef);
   let delivered = false;
   let note = null;
-  if (reachable) {
-    try { sendFn(launch.workspaceRef, message); delivered = true; }
-    catch (e) { note = `cmux send failed: ${e.message}`; }
-  } else {
+  if (!reachable) {
     note = `${launch.workspaceRef} is not a live cmux workspace (headless job or missing ref) — no channel to deliver into`;
+  } else if (!occupantStillThisTask(launch, listWorkspacesFn)) {
+    // Ship-check P0 (GPT pass): cmux recycles workspace refs. A tab that died
+    // without a breadcrumb (cmux restart) leaves this launch looking in-flight
+    // while its ref now belongs to somebody else's session — typing this card's
+    // correction there would drop one task's instructions into another task's
+    // session. The title still carries the subject prefix, so check it.
+    note = `${launch.workspaceRef} no longer carries #${launch.taskId}'s title — the ref was recycled or the tab is gone; refusing to type into a stranger's session`;
+  } else {
+    let screen = '';
+    try { screen = readScreenFn(launch.workspaceRef); } catch { screen = ''; }
+    if (cardDrift.looksUnsafeToType(screen)) {
+      // Ship-check P0 (GPT pass): at a permission/selection dialog these
+      // keystrokes ANSWER the dialog instead of queueing a message.
+      note = `${launch.workspaceRef} is sitting at a selection/permission prompt — typing here would answer that dialog, not deliver a message`;
+    } else {
+      try { sendFn(launch.workspaceRef, message); delivered = true; }
+      catch (e) { note = `cmux send failed: ${e.message}`; }
+    }
   }
 
   try {

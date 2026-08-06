@@ -49,14 +49,23 @@
 'use strict';
 
 const { computeContentHash } = require('./attempt-memory.js');
+const { TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS } = require('./dispatch-ledger.js');
 
 // Events that end a launch's life. A launch with any of these after it is no
 // longer in flight, so its card can be edited freely without anyone running
 // stale instructions. (`prune` — the sweep-summary line, taskId 'sweep' — is
 // NOT terminal for a task; it is bookkeeping for the sweep itself.)
+//
+// Composed from dispatch-ledger's OWN sets rather than re-listed here (the
+// "must match X" comment IS the bug — CLAUDE.md): a future terminal event
+// added there must not silently leave this detector calling dead sessions
+// in-flight. 'launch-failed' is added on top: dispatch-ledger treats it as a
+// journal line rather than a terminal state, but for drift purposes a launch
+// that never started is not a session anyone can mislead.
 const TERMINAL_EVENTS = new Set([
-  'prune-closed', 'dead', 'vanished', 'launch-failed',
-  'job-done', 'job-failed', 'job-orphaned',
+  ...TERMINAL_LAUNCH_EVENTS,   // dead, vanished, prune-closed, remapped
+  ...TERMINAL_JOB_EVENTS,      // job-done, job-failed, job-orphaned
+  'launch-failed',
 ]);
 
 const AMEND_EVENT = 'amend';
@@ -374,6 +383,43 @@ function selectDriftDeliveries(rows = [], { maxPerTick = MAX_DELIVERIES_PER_TICK
   };
 }
 
+/**
+ * Is it unsafe to type into this session right now? (ship-check P0, GPT pass.)
+ *
+ * `cmux send <text>` + Enter is keystrokes, not an API. Typed into a normal
+ * Claude Code prompt they queue harmlessly (verified live 2026-08-05 against
+ * this session's own workspace: the text landed as a queued user message).
+ * Typed at a SELECTION prompt — the permission dialog's "Do you want to
+ * proceed? ❯ 1. Yes / 2. Yes, and don't ask again / 3. No" — the same
+ * keystrokes answer the dialog instead, choosing an option nobody chose.
+ * That is the one state where delivering a correction can do real harm, so
+ * refuse there and let the next pass retry (self-healing: the drift is still
+ * recorded, and 30 minutes later the dialog is usually gone).
+ *
+ * Scoped to the BOTTOM of the screen and to line-start matches, both learned
+ * from a real false positive (2026-08-05): the first version scanned the whole
+ * 60-line dump and refused to deliver into a healthy session because the
+ * scrollback happened to be showing THIS FILE's own test fixture — the string
+ * "❯ 1. Yes" quoted inside a diff. A live dialog always renders in the input
+ * region at the bottom and always starts its own line; transcript text
+ * quoting one does neither.
+ *
+ * @param {string} screenText - `cmux read-screen` output.
+ * @param {{tailLines?: number}} [opts]
+ */
+function looksUnsafeToType(screenText, { tailLines = 15 } = {}) {
+  const s = String(screenText || '');
+  if (!s.trim()) return false; // no reading = no evidence of a dialog; other guards cover liveness
+  const tail = s.split('\n').slice(-Math.max(1, tailLines)).join('\n');
+  // An arrow-marked numbered choice list is the shape every Claude Code
+  // permission/selection dialog shares, whatever its wording.
+  if (/^\s*❯\s*\d+\.\s/m.test(tail)) return true;
+  if (/^\s*\d+\.\s+(Yes|No)\b/m.test(tail)) return true;
+  if (/\(y\/n\)\s*$/im.test(tail)) return true;
+  if (/^\s*Do you want to (proceed|continue|make this edit|create)/im.test(tail)) return true;
+  return false;
+}
+
 /** The ledger line to append after an amend attempt (delivered or not). */
 function amendEntry({ taskId, workspaceRef, contentHash, delivered, signal = null, note = null }) {
   return {
@@ -393,5 +439,5 @@ module.exports = {
   DRIFT_PASS_INTERVAL_MS, DRIFT_PASS_EVENT, MAX_DELIVERIES_PER_TICK,
   computeCardContentHash, inFlightLaunches, lastAmendFor,
   detectDrift, driftReport, summarizeDrift, formatAmendMessage, amendEntry,
-  shouldRunDriftPass, selectDriftDeliveries,
+  shouldRunDriftPass, selectDriftDeliveries, looksUnsafeToType,
 };
