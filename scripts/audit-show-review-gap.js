@@ -1193,7 +1193,36 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     });
     if (landed) return { ok: true, reason: null, provisional };
   } catch { /* dir unreadable → fall through to not-landed */ }
-  return { ok: false, reason: 'ingest no-op — exit 0 but no file with this URL landed in this show dir', provisional };
+  // noop, not failed: ingest-review-from-url exits 0 for many PERMANENT skip
+  // classes (cross-show-url-owned, junk-outlet, domain-mismatch, no-changes —
+  // see review-file-writer's skip reasons). Counting these as failedIngest
+  // would fire the residual ::warning:: every hourly run forever — the exact
+  // chronic-alarm shape the priorRun exclusion below removes (ship-check
+  // 2026-08-06). They stay visible in ingestResults (ok:false) but are
+  // reported as no-ops, not failures.
+  return { ok: false, noop: true, reason: 'ingest no-op — exit 0 but no file with this URL landed in this show dir', provisional };
+}
+
+// Residual-gap counts for one audited show (extracted for unit tests, §15).
+// Design invariants, each learned from a live chronic-alarm incident:
+// - failedIngest excludes noop entries: ingest-review-from-url exits 0 for many
+//   PERMANENT skip classes (cross-show-url-owned, junk-outlet, domain-mismatch,
+//   no-changes) — counting those as failures re-alarms every hourly run forever
+//   (ship-check 2026-08-06). They surface as `noopIngest` instead.
+// - uningested/flaggedOut exclude priorRun entries: prior-production URLs are
+//   permanently ingest-blocked by design (Cats 2026-08-06: 46 blocked URLs +
+//   62 wrongProduction files printed "114 gap" forever).
+// - recovered heals subtract from flaggedOut but uncited-stub recoveries don't
+//   (ship-check 2026-07-23, Codex finding).
+function computeResidualCounts(r, ingestMissing) {
+  const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
+  const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
+  const capped = (r.ingestSkippedByCap || []).length;
+  const uningested = ingestMissing ? 0 : (r.missing || []).filter(m => !m.priorRun).length;
+  const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
+  const flaggedOut = Math.max(0, (r.flaggedMisses || []).filter(m => !m.priorRun).length - recovered);
+  const residual = failedIngest + capped + uningested + flaggedOut;
+  return { residual, failedIngest, noopIngest, capped, uningested, flaggedOut, recovered };
 }
 
 // Persist aggUrlRecoveryCount onto the existing dir file. Called after a recovery
@@ -1608,7 +1637,7 @@ async function main(argv = process.argv.slice(2)) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
         perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
-        r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, reason: res.reason });
+        r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, noop: !!res.noop, reason: res.reason });
         const tag = res.ok ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested') : `✗ ingest failed (${res.reason || 'unknown'})`;
         console.log(`  ${tag}: ${m.url}`);
       }
@@ -2057,32 +2086,14 @@ async function main(argv = process.argv.slice(2)) {
   // hourly cron surfaces residual gaps in the daily digest via ::warning::.
   const residualShows = [];
   for (const r of results) {
-    const failedIngest = (r.ingestResults || []).filter(x => !x.ok).length;
-    const capped = (r.ingestSkippedByCap || []).length;
-    // When --ingest-missing wasn't run, every missing URL is still residual —
-    // EXCEPT prior-run entries, which are permanently ingest-blocked by design
-    // and must not re-alarm every run (Cats 2026-08-06: 46 correctly-blocked
-    // prior-production URLs kept the show in the residual warning forever).
-    const uningested = ingestMissing ? 0 : r.missing.filter(m => !m.priorRun).length;
-    // flaggedMisses that the recovery loop just HEALED this run are no longer a
-    // residual gap — count only the ones that stayed flagged out (recovery skipped,
-    // fetch failed, or not recoverable in the first place). Uncited-stub
-    // recoveries were never IN flaggedMisses, so they must not be subtracted —
-    // one uncited heal would otherwise hide one still-flagged cited gap
-    // (ship-check 2026-07-23, Codex finding).
-    const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
-    // Same prior-run exclusion as `uningested`: a wrongProduction-flagged file
-    // whose URL the census attributes to a prior production is correct state,
-    // not a residual gap (Cats: 62 such files, all deliberate).
-    const flaggedOut = Math.max(0, r.flaggedMisses.filter(m => !m.priorRun).length - recovered);
-    const residual = failedIngest + capped + uningested + flaggedOut;
-    if (residual > 0) {
-      residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut, recovered });
+    const counts = computeResidualCounts(r, ingestMissing);
+    if (counts.residual > 0) {
+      residualShows.push({ showId: r.showId, title: r.title, ...counts });
     }
   }
   if (residualShows.length > 0) {
     for (const s of residualShows) {
-      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered})`);
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered}${s.noopIngest ? ` noop=${s.noopIngest}` : ''})`);
     }
     console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
   }
@@ -2122,4 +2133,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, main, USAGE };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, main, USAGE };

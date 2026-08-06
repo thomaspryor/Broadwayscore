@@ -64,12 +64,21 @@ test('namedNonReviewReason: seventh wave — OWE opening ticketing/listing hosts
   assert.equal(namedNonReviewReason('https://www.westendtheatre.com/reviews/cats/'), null);
 });
 
-test('classifyReviewUrl: plural "-tickets" slugs and /whats-on/ paths are non-review-path', () => {
+test('classifyReviewUrl: host-scoped ticket pages blocked, real review shapes stay ok', () => {
   const { classifyReviewUrl } = require('./non-review-url-patterns.js');
-  assert.deepEqual(classifyReviewUrl('https://www.westendtheatre.com/317407/shows/cats-tickets/'), { ok: false, reason: 'non-review-path' });
-  assert.deepEqual(classifyReviewUrl('https://www.londonboxoffice.co.uk/now-you-see-me-tickets'), { ok: false, reason: 'non-review-path' });
-  // Singular "-ticket" appears in three REAL review headlines (NY Post
-  // "…-sexy-hot-ticket/", CityAM "…-west-end-ticket/") — must stay ok.
+  // WET /NNNNNN/shows/… show pages and LBO root ticket slugs are listings.
+  assert.deepEqual(classifyReviewUrl('https://www.westendtheatre.com/317407/shows/cats-tickets/'), { ok: false, reason: 'ticketing-listing' });
+  assert.deepEqual(classifyReviewUrl('https://www.londonboxoffice.co.uk/now-you-see-me-tickets'), { ok: false, reason: 'ticketing-listing' });
+  // …but the same hosts' REAL review pages must stay ok.
+  assert.equal(classifyReviewUrl('https://www.westendtheatre.com/reviews/cats/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.londonboxoffice.co.uk/news/post/cats-review').ok, true);
+  // Host-agnostic FP guards (full-corpus check 2026-08-06): real reviews whose
+  // slugs end in "-ticket(s)" or that live under a /whats-on/ section. A bare
+  // path rule for either shape ate these — keep them ok forever.
+  assert.equal(classifyReviewUrl('https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets').ok, true);
+  assert.equal(classifyReviewUrl('https://www.digitalspy.com/movies/a63081350/devil-wears-prada-musical-review-buy-tickets/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.manchestereveningnews.co.uk/whats-on/whats-on-news/review-car-man--lowry-9336528').ok, true);
+  assert.equal(classifyReviewUrl('https://www.liverpoolecho.co.uk/whats-on/theatre-news/mousetrap-liverpool-empire-clever-classic-25472794').ok, true);
   assert.equal(classifyReviewUrl('https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broadway-phantom-of-the-opera-riff-is-a-sexy-hot-ticket/').ok, true);
   assert.equal(classifyReviewUrl('https://www.cityam.com/inter-alia-play-review-springs-must-book-west-end-ticket/').ok, true);
 });
