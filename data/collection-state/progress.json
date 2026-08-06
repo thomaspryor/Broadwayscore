@@ -14,7 +14,13 @@
     "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-car-man-west-end-2026/balletcoforum--unknown.json",
-    "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+    "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+    "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
+    "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+    "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json"
   ],
   "failed": [
     "the-pass-off-broadway-2026/nytg--unknown.json",
@@ -88,7 +94,11 @@
     "the-car-man-west-end-2026/muddystilettos--muddy-stilettos.json",
     "the-car-man-west-end-2026/standard--lyndsey-winship.json",
     "the-car-man-west-end-2026/standard--nick-curtis.json",
-    "the-car-man-west-end-2026/the-list--unknown.json"
+    "the-car-man-west-end-2026/the-list--unknown.json",
+    "the-car-man-west-end-2026/times-uk--clive-davis.json",
+    "the-car-man-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-enormous-crocodile-west-end-2026/raring2go--trish-holder.json",
+    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -101,16 +111,24 @@
       "the-importance-of-being-oscar-off-west-end-2026/british-theatre--keith-mckenna.json",
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-car-man-west-end-2026/balletcoforum--unknown.json"
+      "the-car-man-west-end-2026/balletcoforum--unknown.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+      "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+      "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-car-man-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "scrapingbee": [
       "disruption-off-broadway-2026/nytimes--tim-teeman.json",
-      "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+      "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+      "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+      "the-saviors-off-broadway-2026/acsntn--august-cosentino.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -121,6 +139,18 @@
     ]
   },
   "startTime": "2026-08-06T06:59:45.754Z",
-  "lastProcessed": "the-car-man-west-end-2026/the-list--unknown.json",
-  "log": []
+  "lastProcessed": "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+  "log": [
+    {
+      "t": "2026-08-06T07:42:40.608Z",
+      "event": "bb-session",
+      "session": "aa1075fe",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the"
+    },
+    {
+      "t": "2026-08-06T07:42:41.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
