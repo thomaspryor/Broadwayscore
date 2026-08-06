@@ -24,7 +24,8 @@
     "disruption-off-broadway-2026/off-off-online--stanford-friedman.json",
     "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "twelfth-night-off-west-end-2026/independent--alice-saville.json",
-    "the-vessel-off-broadway-2026/broadwayworld--unknown.json"
+    "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -171,7 +172,16 @@
     "the-importance-of-being-oscar-off-west-end-2026/financialtimes--sarah-hemming.json",
     "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
     "the-car-man-west-end-2026/nytimes--unknown.json",
-    "the-car-man-west-end-2026/variety--unknown.json"
+    "the-car-man-west-end-2026/variety--unknown.json",
+    "the-car-man-west-end-2026/guardian--ammar-kalia.json",
+    "the-car-man-west-end-2026/manchester-evening-news--natalie-anglesey.json",
+    "the-car-man-west-end-2026/the-jewish-chronicle--joy-sable.json",
+    "the-enormous-crocodile-west-end-2026/third-coast-review--unknown.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "the-car-man-west-end-2026/a-younger-theatre--rebekah-ellerby.json",
+    "the-car-man-west-end-2026/attitude--alastair-james.json",
+    "the-car-man-west-end-2026/bachtrack--unknown.json",
+    "the-car-man-west-end-2026/express-uk--stefan-kyriazis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,7 +200,8 @@
       "the-pass-off-broadway-2026/nytg--unknown.json",
       "disruption-off-broadway-2026/off-off-online--stanford-friedman.json",
       "disruption-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
-      "twelfth-night-off-west-end-2026/independent--alice-saville.json"
+      "twelfth-night-off-west-end-2026/independent--alice-saville.json",
+      "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -218,7 +229,7 @@
     ]
   },
   "startTime": "2026-08-06T11:50:35.908Z",
-  "lastProcessed": "the-car-man-west-end-2026/variety--unknown.json",
+  "lastProcessed": "the-car-man-west-end-2026/express-uk--stefan-kyriazis.json",
   "log": [
     {
       "t": "2026-08-06T11:54:20.935Z",
@@ -253,6 +264,18 @@
       "t": "2026-08-06T12:05:45.687Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-08-06T12:41:45.665Z",
+      "event": "bb-session",
+      "session": "464185a5",
+      "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
+    },
+    {
+      "t": "2026-08-06T12:42:02.872Z",
+      "event": "bb-session",
+      "session": "c6a633a2",
+      "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
     }
   ]
 }
