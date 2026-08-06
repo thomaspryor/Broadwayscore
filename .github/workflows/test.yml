@@ -1259,6 +1259,12 @@ on:
       # above: without these entries a push touching only them runs ZERO CI.
       - 'scripts/lib/dispatch-card-drift.js'
       - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # Pre-implementation infra review gate (card #1079, owner decision
+      # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
+      # not scripts/lib/" gap: without these entries a push touching only them
+      # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
+      - 'scripts/lib/infra-review-scope.js'
+      - 'scripts/tests/infra-review-gate.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
@@ -1553,6 +1559,11 @@ on:
       # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
       # this is path-listed for the same reason as owner-alert-router.js above.
       - 'tests/unit/digest-row-clip.test.mjs'
+      # Static PR-time counterpart (task #1078 /what-else follow-up) — runs
+      # in the Lint Workflows job's colocated *.js glob, but path-listed for
+      # the same reason as everything else in this block.
+      - 'scripts/audit-digest-clip-safety.js'
+      - 'scripts/audit-digest-clip-safety.test.mjs'
       # Lint guard: routeAlert()/resolveCondition() callers must commit
       # alert-ledger.json in the same job (card #618, 5th recurrence
       # prevention). Colocated *.test.mjs runs via the lib-test glob;
@@ -2237,20 +2248,16 @@ jobs:
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
 
-      - name: Audit — no submitter PII in committed data/audit files
-        # Task #1074. "Never store submitter name/email; cap free text" existed
-        # only as a prose comment in feedback-request-ledger.js:54-60 until a
-        # session violated it in a fresh code path the same week (#1064):
-        # notify-feedback-outcomes.js's buildAlert() put submitter name + email
-        # + an uncapped message into an owner-alert-router description, which
-        # data/audit/alert-digest-queue.json — a file 12 workflows commit —
-        # then persists to this PUBLIC repo. Caught pre-merge only by an
-        # adversarial reviewer, not by any lint. Blocking: a committed PII leak
-        # in a public repo is a real exposure, not style debt. Waive a reviewed
-        # false positive (outlet contact address, critic byline) by adding it
-        # to ALLOWLIST in scripts/lint-committed-pii.js with a justification —
-        # never a silent skip.
-        run: node scripts/lint-committed-pii.js
+      - name: Audit — digest description clip-safety (statically checkable fields)
+        # Static, PR-time counterpart to headStandsAlone() (card #1078,
+        # scripts/lib/owner-alert-router.js) — that check only fires as a
+        # runtime console.warn inside queueDigestLine(), which is how the
+        # original bug (a description opening with "[direction]" in
+        # scripts/audit-tier-skip-drift.js) shipped unnoticed until the owner
+        # complained. This scans every routeAlert() call site for a
+        # statically-checkable description/decisionPrompt and fails CI
+        # immediately on a new violation instead of relying on server logs.
+        run: node scripts/audit-digest-clip-safety.js
 
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515
