@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T08:31:44.019Z",
+  "timestamp": "2026-08-06T10:53:22.754Z",
   "stats": {
-    "totalReviews": 41721,
-    "alreadyFlagged": 18133,
+    "totalReviews": 41757,
+    "alreadyFlagged": 18135,
     "dateGuardCatches": 120,
     "directorMismatch": 952,
-    "tvFilmSignals": 1153,
+    "tvFilmSignals": 1154,
     "londonSignals": 818,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3546
+    "noPublishDate": 3580
   },
   "findings": [
     {
@@ -12050,6 +12050,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 74,
+      "publishDate": "2026-08-05",
+      "url": "https://loureviews.blog/2026/08/05/musical-review-im-every-woman-troubadour-wembley-park/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -24603,6 +24617,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "theatre-south-east--unknown.json",
+      "score": 91,
       "publishDate": "2025-05-16",
       "url": "https://theatresoutheast.com/the-comedy-about-spies-noel-coward-theatre-review/",
       "findings": [
