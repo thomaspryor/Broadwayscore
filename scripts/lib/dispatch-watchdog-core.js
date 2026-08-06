@@ -22,7 +22,9 @@
  *   'watchdog-redispatch' {taskId}  claimed BEFORE the child bsc-next spawn,
  *                                   so budgets survive a crash mid-dispatch
  *   'watchdog-park'       {taskId}  retries exhausted; needs the owner
- * Both are excluded from bsc-prune/bsc-next semantics (unknown events are
+ *   'watchdog-resurrect'  {taskId:'watchdog', workspaceRef, gapMs}  the
+ *                                   crowned tab was recreated after a gap
+ * All are excluded from bsc-prune/bsc-next semantics (unknown events are
  * ignored by every existing fold).
  */
 'use strict';
@@ -50,8 +52,12 @@ const CAPS = Object.freeze({
   globalAutoTabs: 12,
 });
 
-const AUTO_TAB_RE = /^\s*🤖/u;
-const CROWN_TAB_RE = /^\s*👑/u;
+// Tolerate cmux's activity-glyph prefix (braille spinners ⠂/✳ prepended in
+// list output — see cmux-workspaces.isDoneTitle) before the marker glyph;
+// anchoring on ^\s* alone undercounted 🤖 tabs and made the global ceiling
+// leaky (ship-check silent-wrongness finding).
+const AUTO_TAB_RE = /^[^\p{L}\p{N}]*🤖/u;
+const CROWN_TAB_RE = /^[^\p{L}\p{N}]*👑/u;
 // The watchdog's own tab is distinguished from crowned SESSION tabs (the
 // context-budget-nudge successor pattern) by this fixed prefix.
 const WATCHDOG_TAB_PREFIX = '👑 OWNER';
@@ -74,12 +80,22 @@ function notionIdOf(task) {
   return m ? m[1] : null;
 }
 
+// LOCAL calendar day (not UTC — a UTC bucket resets the owner's "12/day"
+// cap at ~8pm ET; ship-check P1). Ledger ts values are UTC ISO strings, so
+// both sides convert through Date to the machine's local day.
+function localDay(tsOrMs) {
+  const d = new Date(tsOrMs);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 // Watchdog-origin bookkeeping: an entry claims a dispatch attempt; the day
 // budget counts claims (not successes) so a crash loop can't spend forever.
+// (A claim whose spawn crashes is retryable next sweep by design — the day
+// budget is what bounds that retry loop.)
 function watchdogClaimsToday(entries, now) {
-  const today = new Date(now).toISOString().slice(0, 10);
+  const today = localDay(now);
   return entries.filter(e => e && e.event === WATCHDOG_EVENTS.REDISPATCH &&
-    String(e.ts || '').slice(0, 10) === today);
+    e.ts && localDay(e.ts) === today);
 }
 
 // Watchdog-origin live concurrency: tasks the watchdog claimed whose latest

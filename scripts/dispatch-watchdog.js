@@ -86,9 +86,11 @@ function dispatchEnabled() {
 
 function writeHeartbeat(fields) {
   // tmp+rename: the exit-status gate and --health read this file — a torn
-  // read must be impossible (plan-review consensus).
+  // read must be impossible (plan-review consensus). Tmp name is pid-unique
+  // (ship-check P1: a shared '.tmp' lets concurrent writers rename/unlink
+  // each other's half-written file).
   fs.mkdirSync(STATE_DIR, { recursive: true });
-  const tmp = HEARTBEAT_PATH + '.tmp';
+  const tmp = `${HEARTBEAT_PATH}.${process.pid}.tmp`;
   fs.writeFileSync(tmp, JSON.stringify({ ts: new Date().toISOString(), pid: process.pid, ...fields }, null, 2));
   fs.renameSync(tmp, HEARTBEAT_PATH);
 }
@@ -111,17 +113,36 @@ function pidAlive(pid) {
 
 // mkdir-based lock: atomic on POSIX, stale-broken by dead pid (plan-review
 // P0: concurrent Stop hooks + the dashboard must not both create tabs or
-// both spend the dispatch budget).
+// both spend the dispatch budget). Ship-check P0 hardening: mkdir succeeds
+// BEFORE the pid file lands, so a concurrent reader can observe a pid-less
+// live lock — a missing pid file is only stale when the lock DIR itself is
+// old (>60s), never in the mkdir→write gap. After writing our pid we
+// re-read it: if another breaker replaced the dir between our write and
+// now, the read disagrees and we back off instead of both holding it.
 function acquireLock() {
   fs.mkdirSync(STATE_DIR, { recursive: true });
+  const pidFile = path.join(LOCK_DIR, 'pid');
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       fs.mkdirSync(LOCK_DIR);
-      fs.writeFileSync(path.join(LOCK_DIR, 'pid'), String(process.pid));
+      fs.writeFileSync(pidFile, String(process.pid));
+      try {
+        if (fs.readFileSync(pidFile, 'utf8').trim() !== String(process.pid)) return false;
+      } catch { return false; }
       return true;
     } catch {
-      const holder = parseInt(String((() => { try { return fs.readFileSync(path.join(LOCK_DIR, 'pid'), 'utf8'); } catch { return ''; } })()), 10);
-      if (holder && pidAlive(holder)) return false;
+      let holderRaw = null;
+      try { holderRaw = fs.readFileSync(pidFile, 'utf8'); } catch { holderRaw = null; }
+      if (holderRaw !== null) {
+        const holder = parseInt(holderRaw, 10);
+        if (holder && pidAlive(holder)) return false;
+      } else {
+        // No pid file: either mid-acquisition (fresh dir — leave it alone)
+        // or a crash in the gap (old dir — break it).
+        let dirAgeMs = 0;
+        try { dirAgeMs = Date.now() - fs.statSync(LOCK_DIR).mtimeMs; } catch { return false; }
+        if (dirAgeMs < 60 * 1000) return false;
+      }
       try { fs.rmSync(LOCK_DIR, { recursive: true, force: true }); } catch { /* raced another breaker */ }
     }
   }
@@ -214,14 +235,19 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 // dashboard dead (plan-review P0).
 function runBscNext(taskId, { onTick } = {}) {
   return new Promise(resolve => {
+    // detached: bsc-next spawns its own helpers (cmux calls, sleep loops) —
+    // a timeout must kill the whole PROCESS GROUP, or the node child dies
+    // while its wrapper keeps launching unjournaled (ship-check P1).
     const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)], {
-      cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'],
+      cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], detached: true,
     });
     let out = '';
     child.stdout.on('data', d => { out += d; });
     child.stderr.on('data', d => { out += d; });
     const drip = setInterval(() => { if (onTick) onTick(taskId); }, 30 * 1000);
-    const killer = setTimeout(() => { try { child.kill('SIGKILL'); } catch { /* gone */ } }, DISPATCH_TIMEOUT_MS);
+    const killer = setTimeout(() => {
+      try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
+    }, DISPATCH_TIMEOUT_MS);
     child.on('close', code => {
       clearInterval(drip);
       clearTimeout(killer);
@@ -290,14 +316,21 @@ function summarize(plan) {
 
 // ── crowned tab lifecycle ──────────────────────────────────────────────────
 
-// The watchdog's own tab carries both the crown prefix and the literal word
-// "watchdog" — crowned SESSION tabs (the successor-handoff pattern) carry a
-// mandate instead, so they never match here and are never touched.
+// The watchdog's own tab title always STARTS (after cmux's activity-glyph
+// prefix, e.g. braille spinners) with the exact string "👑 OWNER watchdog".
+// Ship-check P0: a substring match ("👑" + "watchdog" anywhere) also matched
+// crowned SESSION tabs whose mandate merely mentions the watchdog (e.g.
+// "👑 OWNER — repair dispatch-watchdog alerts") — and ensureTab would then
+// CLOSE a live owner session. Exact-prefix only; mandate tabs use "👑 OWNER
+// — <mandate>" which never starts with "👑 OWNER watchdog".
+const WATCHDOG_TITLE_START = `${core.WATCHDOG_TAB_PREFIX} ${core.WATCHDOG_TAB_MARKER}`;
+function isWatchdogTitle(title) {
+  return String(title).replace(/^[^\p{L}\p{N}👑]*/u, '').startsWith(WATCHDOG_TITLE_START);
+}
 function findWatchdogTab(titles) {
   if (!(titles instanceof Map)) return null;
   for (const [ref, title] of titles) {
-    const t = String(title);
-    if (t.includes('👑') && t.includes(core.WATCHDOG_TAB_MARKER)) return { ref, title };
+    if (isWatchdogTitle(title)) return { ref, title };
   }
   return null;
 }
@@ -310,15 +343,19 @@ function renameTab(ref, title) {
 function createTab() {
   const cmdFile = path.join(os.tmpdir(), `bsc-watchdog-dashboard-${Date.now()}.sh`);
   fs.writeFileSync(cmdFile, `#!/bin/bash\nexec node ${REPO}/scripts/dispatch-watchdog.js --dashboard\n`);
-  // Initial heartbeat BEFORE the tab exists so Gate O and a racing
-  // --ensure-tab both see "fresh" while the dashboard boots.
-  writeHeartbeat({ mode: 'starting' });
-  const r = spawnSync(cmuxws.CMUX, ['new-workspace', '--name', `${core.WATCHDOG_TAB_PREFIX} watchdog — starting…`,
+  const r = spawnSync(cmuxws.CMUX, ['new-workspace', '--name', `${WATCHDOG_TITLE_START} — starting…`,
     '--cwd', REPO, '--command', ` bash ${cmdFile}`, '--focus', 'false'], { encoding: 'utf8', timeout: 15000 });
   const m = /workspace:\d+/.exec(String(r.stdout || ''));
   const ref = m ? m[0] : null;
   if (ref) {
-    const tmp = TAB_STATE_PATH + '.tmp';
+    // 'starting' heartbeat only AFTER new-workspace succeeded (ship-check
+    // P0: writing it before masked a hard launch failure as "healthy" for
+    // 10-30 min — exactly what Gate O/--health exist to catch). The lock
+    // already serializes racing ensure-tabs, so nothing needs the earlier
+    // write. The dashboard overwrites this within one tick of booting;
+    // ensureTab treats a 'starting' heartbeat >3 min old as a dead boot.
+    writeHeartbeat({ mode: 'starting' });
+    const tmp = `${TAB_STATE_PATH}.${process.pid}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify({ ref, createdAt: new Date().toISOString() }));
     fs.renameSync(tmp, TAB_STATE_PATH);
   }
@@ -327,14 +364,20 @@ function createTab() {
 
 function ensureTab() {
   if (watchdogOff()) { console.log('watchdog: disabled (kill switch) — not ensuring tab'); return 0; }
-  const titles = liveTitleMap();
-  if (!titles) { console.log('watchdog: cmux unobservable — cannot ensure tab from here'); return 1; }
   if (!acquireLock()) { console.log('watchdog: another watchdog process holds the lock — skipping'); return 0; }
   try {
+    // List INSIDE the lock (ship-check P0: a pre-lock snapshot let a caller
+    // that waited on the lock create a second crowned tab from stale data).
+    const titles = liveTitleMap();
+    if (!titles) { console.log('watchdog: cmux unobservable — cannot ensure tab from here'); return 1; }
     const hb = readJson(HEARTBEAT_PATH);
     const age = heartbeatAgeMs();
+    // 'starting' heartbeats get a much shorter bar: the dashboard writes its
+    // first real heartbeat within seconds of boot, so a starting-stamp older
+    // than 3 min means the boot died (ship-check P1).
+    const staleBar = hb && hb.mode === 'starting' ? 3 * 60 * 1000 : HEARTBEAT_STALE_MS;
     const existing = findWatchdogTab(titles);
-    if (existing && age !== null && age < HEARTBEAT_STALE_MS) {
+    if (existing && age !== null && age < staleBar) {
       console.log(`watchdog: healthy — ${existing.ref} ("${existing.title}"), heartbeat ${Math.round(age / 1000)}s old`);
       return 0;
     }
@@ -400,11 +443,23 @@ async function dashboardLoop() {
         writeHeartbeat({ mode: 'dashboard', ...summarize(plan) });
         console.clear();
         console.log(core.renderNarrative(plan));
-        // Rename own tab (freshness cue lives in the title). Only when changed.
-        const tabState = readJson(TAB_STATE_PATH);
+        // Rename own tab (freshness cue lives in the title). The tab is
+        // located by TITLE in the current listing, never by the stored ref
+        // alone (ship-check P0: cmux recycles refs across restarts — a
+        // blind rename of tabState.ref can crown an unrelated live tab).
         const title = core.tabTitle(plan);
-        if (tabState && tabState.ref && title !== lastTitle) {
-          if (renameTab(tabState.ref, title)) lastTitle = title;
+        if (title !== lastTitle) {
+          const listing = liveTitleMap();
+          const self = findWatchdogTab(listing);
+          if (self && renameTab(self.ref, title)) {
+            lastTitle = title;
+            const tabState = readJson(TAB_STATE_PATH);
+            if (!tabState || tabState.ref !== self.ref) {
+              const tmp = `${TAB_STATE_PATH}.${process.pid}.tmp`;
+              fs.writeFileSync(tmp, JSON.stringify({ ref: self.ref, createdAt: new Date().toISOString() }));
+              fs.renameSync(tmp, TAB_STATE_PATH);
+            }
+          }
         }
       }
     } catch (e) {
@@ -418,6 +473,12 @@ async function dashboardLoop() {
 }
 
 function health() {
+  if (watchdogOff()) {
+    // Deliberate disable is not an outage — paging on it would train the
+    // owner to ignore the pager (ship-check P0).
+    console.log('watchdog: disabled by kill switch — health check skipped');
+    return 0;
+  }
   const age = heartbeatAgeMs();
   const stale = age === null || age > HEALTH_STALE_MS;
   if (!stale) { console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old`); return 0; }
