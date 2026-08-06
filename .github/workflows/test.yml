@@ -1278,6 +1278,18 @@ on:
       - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
+      # Generalized hook liveness (task #1104) — the same vacuous-gate class
+      # applied to EVERY hook registered in settings.json, not just the
+      # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
+      # 2026-08-06 and only the #1079 one was caught, because only it had a
+      # dedicated check. New functions live in the SAME lib file already
+      # path-listed above; its test + runner are separate files needing
+      # their own entries — same "scripts/tests/ is not scripts/lib/" gap.
+      # scripts/tests/hook-liveness.test.mjs is also registered in
+      # tests/unit-test-manifest.txt (node --test only runs files literally
+      # listed there — no glob).
+      - 'scripts/tests/hook-liveness.test.mjs'
+      - 'scripts/check-hook-liveness.js'
       # Infra-review gate digest (card #1095) — turns the gitignored
       # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
       # ledgers into a health-check.js row. health-check.js is already
