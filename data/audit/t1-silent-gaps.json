@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T11:25:10.362Z",
+  "generatedAt": "2026-08-06T13:35:12.755Z",
   "windowDays": 45,
   "showsScanned": 64,
   "gaps": [
@@ -16,9 +16,26 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 334.22606277777777,
+      "fileAgeHours": 336.3883763888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 293.52900694444446
+      "nonTerminalAgeHours": 295.6963386111111
+    },
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "title": "Trainspotting the musical",
+      "openingDate": "2026-07-22",
+      "file": "daily-mail--georgina-brown.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "unscored",
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=trainspotting-the-musical-west-end-2026",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-08-06T13:35:12.755Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
@@ -33,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=now-you-see-me-live-west-end-2026 --url=https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-04T09:41:36.523Z",
-      "fileAgeHours": 49.72604583333333,
+      "fileAgeHours": 51.88835777777778,
       "gapSeenAt": "2026-08-05T20:33:16.049Z",
-      "nonTerminalAgeHours": 14.865086666666667
+      "nonTerminalAgeHours": 17.032418333333332
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +67,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 24.669255,
+      "fileAgeHours": 26.836585833333334,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 24.031190833333334
+      "nonTerminalAgeHours": 26.1985225
     }
   ],
   "contradictions": []
