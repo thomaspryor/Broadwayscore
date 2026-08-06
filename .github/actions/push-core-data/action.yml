@@ -206,6 +206,30 @@ runs:
 
           # Save remote's shows.json before rebase overwrites it
           git show origin/main:shows.json > /tmp/remote-shows.json 2>/dev/null || true
+          # ...and the BASE we started from, so the reconciliation below can tell
+          # a show remote ADDED while we were running (must be kept) from one we
+          # deliberately DELETED (must stay deleted). Without the base, those two
+          # cases are indistinguishable and either new shows vanish or deleted
+          # ones resurrect. See the show-recovery block after the rebase.
+          #
+          # PRIMARY SOURCE is the checkout snapshot, NOT git history:
+          # checkout-core-data clones with --depth 1 and `git reset --hard`, so
+          # `git merge-base HEAD origin/main` frequently resolves to nothing in a
+          # shallow repo — the recovery would then quietly disable itself in
+          # exactly the concurrent case it exists for. /tmp/core-data-snapshot/
+          # is the pristine copy taken at checkout time, before this job touched
+          # anything, which is precisely "the base" and needs no history at all.
+          # merge-base stays as a fallback for callers that skipped the snapshot.
+          if [ -f /tmp/core-data-snapshot/shows.json ]; then
+            cp -f /tmp/core-data-snapshot/shows.json /tmp/base-shows.json
+          else
+            BASE_SHA="$(git merge-base HEAD origin/main 2>/dev/null || true)"
+            if [ -n "$BASE_SHA" ]; then
+              git show "${BASE_SHA}:shows.json" > /tmp/base-shows.json 2>/dev/null || rm -f /tmp/base-shows.json
+            else
+              rm -f /tmp/base-shows.json
+            fi
+          fi
 
           # Save remote's commercial.json + commercial-pending-review.json
           # before rebase overwrites them. With RSS poller + scraper + sweep
@@ -302,9 +326,41 @@ runs:
                 const localMap = {};
                 for (const s of (local.shows || [])) localMap[s.id] = s;
                 let recovered = 0;
+                // WHOLE SHOWS remote added while we were running. `git pull
+                // --rebase -X ours` makes our shows.json win outright, and this
+                // loop used to `continue` on any id we did not have — so a show
+                // a CONCURRENT job had just added was silently erased. Observed
+                // 2026-08-05: two add-requested-show runs 20s apart each
+                // promoted a show, both logged "Core data pushed successfully",
+                // and only the later one survived. Green run, vanished data.
+                //
+                // A show missing locally is only re-added when it is ALSO
+                // absent from the merge base — i.e. remote genuinely added it
+                // after we forked. If it IS in the base, our copy dropping it
+                // was a deliberate delete and must be honoured, or every
+                // legitimate removal would resurrect on the next concurrent push.
+                let readded = 0;
+                let baseIds = null;
+                try {
+                  const base = JSON.parse(fs.readFileSync("/tmp/base-shows.json", "utf8"));
+                  baseIds = new Set((base.shows || []).map((s) => s && s.id).filter(Boolean));
+                } catch {
+                  // No base (first push, shallow clone, unreadable) — cannot
+                  // distinguish add from delete, so do NOT re-add. Silently
+                  // losing a show is bad; silently resurrecting a deleted one
+                  // is worse, and the stuck-request check will surface the loss.
+                  baseIds = null;
+                }
                 for (const rs of (remote.shows || [])) {
                   const ls = localMap[rs.id];
-                  if (!ls) continue;
+                  if (!ls) {
+                    if (baseIds && rs && rs.id && !baseIds.has(rs.id)) {
+                      local.shows.push(rs);
+                      localMap[rs.id] = rs;
+                      readded++;
+                    }
+                    continue;
+                  }
                   for (const key of RECONCILABLE) {
                     const val = rs[key];
                     if (val !== null && val !== undefined && (ls[key] === null || ls[key] === undefined)) {
@@ -313,9 +369,21 @@ runs:
                     }
                   }
                 }
-                if (recovered > 0) {
+                if (recovered > 0 || readded > 0) {
                   fs.writeFileSync("shows.json", JSON.stringify(local, null, 2) + "\n");
-                  console.log("Reconciled " + recovered + " fields from remote shows.json");
+                  console.log(
+                    "Reconciled " + recovered + " fields from remote shows.json" +
+                    (readded > 0 ? "; re-added " + readded + " show(s) a concurrent job created" : "")
+                  );
+                }
+                if (readded === 0 && baseIds === null) {
+                  const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localMap[rs.id]).length;
+                  if (remoteOnly > 0) {
+                    console.log(
+                      "::warning::" + remoteOnly + " show(s) exist on remote but not locally and no merge base was " +
+                      "readable — cannot tell concurrent-add from delete, so they were NOT recovered."
+                    );
+                  }
                 }
               } catch (e) {
                 console.error("Shows reconciliation failed (non-fatal):", e.message);
