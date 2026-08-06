@@ -2238,7 +2238,7 @@ jobs:
         # only as a prose comment in feedback-request-ledger.js:54-60 until a
         # session violated it in a fresh code path the same week (#1064):
         # notify-feedback-outcomes.js's buildAlert() put submitter name + email
-        # + an uncapped message into a routeAlert() description, which
+        # + an uncapped message into an owner-alert-router description, which
         # data/audit/alert-digest-queue.json — a file 12 workflows commit —
         # then persists to this PUBLIC repo. Caught pre-merge only by an
         # adversarial reviewer, not by any lint. Blocking: a committed PII leak
