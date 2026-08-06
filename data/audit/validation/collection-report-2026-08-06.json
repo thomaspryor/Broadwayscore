@@ -1,76 +1,102 @@
 {
-  "runDate": "2026-08-06T01:25:29.380Z",
+  "runDate": "2026-08-06T04:03:57.419Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "now-you-see-me-live-west-end-2026,weve-been-here-before-a-one-woman-musical-off-broadway-2026,the-pass-off-broadway-2026",
+    "showFilter": "the-outsiders-world-premiere-regional-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 5,
+    "processed": 13,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "16.7%"
+    "successRate": "92.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 2,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 3,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 2,
     "tier2Success": 2,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 4,
+    "tier4Success": 2,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
+    "the-outsiders-world-premiere-regional-2023/hollywood-reporter--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/nytimes--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/vulture--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/deadline--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/ew--emlyn-travis.json",
+    "the-outsiders-world-premiere-regional-2023/nydailynews--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/theatermania--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/thewrap--robert-hofler.json",
+    "the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json",
+    "the-outsiders-world-premiere-regional-2023/theatrely--juan-a-ramirez.json",
+    "the-outsiders-world-premiere-regional-2023/latimes--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/playbill--unknown.json",
+    "the-outsiders-world-premiere-regional-2023/san-diego-union-tribune--pam-kragen.json"
   ],
   "failed": [
-    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
-    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "the-outsiders-world-premiere-regional-2023/pages-on-stages--mason-pilevsky.json"
   ],
   "tierDetails": {
     "playwright": [
-      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
+      "the-outsiders-world-premiere-regional-2023/theatermania--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json",
+      "the-outsiders-world-premiere-regional-2023/playbill--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/san-diego-union-tribune--pam-kragen.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-outsiders-world-premiere-regional-2023/hollywood-reporter--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/hollywood-reporter--unknown.json",
+      "data/review-texts/the-outsiders-world-premiere-regional-2023/deadline--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/deadline--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "the-outsiders-world-premiere-regional-2023/nytimes--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/theatrely--juan-a-ramirez.json"
+    ],
+    "brightdata": [
+      "the-outsiders-world-premiere-regional-2023/vulture--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "the-outsiders-world-premiere-regional-2023/ew--emlyn-travis.json",
+      "the-outsiders-world-premiere-regional-2023/nydailynews--unknown.json",
+      "the-outsiders-world-premiere-regional-2023/latimes--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
