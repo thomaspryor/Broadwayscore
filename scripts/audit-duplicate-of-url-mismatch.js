@@ -83,12 +83,27 @@ function stripTrivial(u) {
 // on a batch of otherwise-correct duplicateOf markings. Exported for the
 // unit test.
 const DOMAIN_ALIAS_TO_CANONICAL = (() => {
+  // Primary domains first: a handful of outlet-registry.json entries list
+  // ANOTHER outlet's own primary domain as one of their aliases (e.g. "ap"
+  // aliases "abcnews.go.com", which is abc-news's real domain — a registry
+  // data error, not a genuine syndication alias). Folding a real ABC News
+  // URL onto AP's canonical host would be exactly the false "same article"
+  // this gate exists to prevent, so any alias that collides with a
+  // DIFFERENT outlet's primary domain is dropped rather than trusted.
+  // Found by ship-check adversarial review, task #1072 follow-up.
+  const primaryDomains = new Set();
+  for (const o of Object.values(registry.outlets || {})) {
+    if (o.domain) primaryDomains.add(String(o.domain).toLowerCase());
+  }
   const map = {};
   for (const o of Object.values(registry.outlets || {})) {
     if (!o.domain || !Array.isArray(o.domainAliases)) continue;
     const canonical = String(o.domain).toLowerCase();
     for (const alias of o.domainAliases) {
-      map[String(alias).toLowerCase()] = canonical;
+      const a = String(alias).toLowerCase();
+      if (a === canonical) continue; // no-op alias
+      if (primaryDomains.has(a)) continue; // claims another outlet's own domain — skip
+      map[a] = canonical;
     }
   }
   return map;

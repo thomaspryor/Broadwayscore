@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { headStandsAlone } = require('./lib/owner-alert-router.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 
@@ -106,7 +107,21 @@ function fullStaticText(expr) {
   return null;
 }
 
-function main() {
+const USAGE = `audit-digest-clip-safety.js — PR-time guard for alert descriptions
+that would clip unreadably in the 200-char digest (task #1078).
+
+Usage:
+  node scripts/audit-digest-clip-safety.js     scan every routeAlert() call site
+  --help, -h                                   show this message, do nothing else
+
+Exits non-zero when a description's static leading text fails
+headStandsAlone() (scripts/lib/owner-alert-router.js).
+`;
+
+function main(argv = process.argv.slice(2)) {
+  // Before findCallSites(), which shells out to git — the --help contract is
+  // "print usage and do nothing else" (task #498).
+  if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const sites = findCallSites();
   const violations = [];
   let checked = 0;
