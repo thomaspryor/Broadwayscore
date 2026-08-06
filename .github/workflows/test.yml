@@ -1487,6 +1487,13 @@ on:
       - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'
       - 'scripts/lib/cli-help.test.mjs'
+      # Local Claude OAuth token liveness probe (task #1076) — colocated test
+      # runs in the tests/unit node --test batch (already globbed via
+      # 'tests/**' above); the .js source files need explicit listing (no
+      # scripts/lib/** broad glob).
+      - 'scripts/check-claude-auth-health.js'
+      - 'scripts/lib/claude-auth-health.js'
+      - 'scripts/lib/page-worthy-alerts.js'
       # Help-flag safety lint guard (#498): a solo edit to the audit script or
       # its baseline must still trigger CI — path-listed per
       # feedback_test_yml_push_path_allowlist.
