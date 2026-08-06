@@ -1173,6 +1173,17 @@ on:
       - 'scripts/audit-gate-corpus-guard-coverage.js'
       - 'scripts/lib/gate-corpus-guard-coverage.js'
       - 'scripts/lib/gate-corpus-guard-coverage.test.mjs'
+      # Invisible-verification guard (#1075) — blocking lint: no script may read a
+      # literal gitignored path out of a git ref (`git show <ref>:data/shows.json`),
+      # a check that can only ever report "nothing found" = success. The
+      # observability helper it points fixers at is observable-before-absence.js;
+      # its test lives in scripts/tests/ (registered in tests/unit-test-manifest.txt),
+      # the scanner's colocated *.test.mjs runs via the scripts/lib glob.
+      - 'scripts/audit-invisible-verification.js'
+      - 'scripts/lib/invisible-verification-scan.js'
+      - 'scripts/lib/invisible-verification-scan.test.mjs'
+      - 'scripts/lib/observable-before-absence.js'
+      - 'scripts/tests/observable-before-absence.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
@@ -1248,6 +1259,12 @@ on:
       # above: without these entries a push touching only them runs ZERO CI.
       - 'scripts/lib/dispatch-card-drift.js'
       - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # Pre-implementation infra review gate (card #1079, owner decision
+      # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
+      # not scripts/lib/" gap: without these entries a push touching only them
+      # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
+      - 'scripts/lib/infra-review-scope.js'
+      - 'scripts/tests/infra-review-gate.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
@@ -1538,6 +1555,10 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # headStandsAlone() clip-readability guard (card #1078) — colocated
+      # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
+      # this is path-listed for the same reason as owner-alert-router.js above.
+      - 'tests/unit/digest-row-clip.test.mjs'
       # Lint guard: routeAlert()/resolveCondition() callers must commit
       # alert-ledger.json in the same job (card #618, 5th recurrence
       # prevention). Colocated *.test.mjs runs via the lib-test glob;
@@ -1579,6 +1600,11 @@ on:
       # coverage at all.
       - 'scripts/e2e-canary-alert-chain.js'
       - 'scripts/lint-resend-calls.js'
+      # PII lint (#1074) — blocks submitter name/email leaking into committed,
+      # PUBLIC-repo data/audit/*.json files. Test lives in tests/unit/, already
+      # covered by 'tests/**' above; only the scripts/ sources need listing.
+      - 'scripts/lint-committed-pii.js'
+      - 'scripts/lib/pii-scan.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -2115,6 +2141,18 @@ jobs:
         # escape hatch.
         run: node scripts/audit-gate-corpus-guard-coverage.js
 
+      - name: Audit — invisible verification (git-ref read of a gitignored path)
+        # Task #1075, the ad-hoc-script sibling of the gate above. Blocking and
+        # mechanical: flags any `git show <ref>:<path>` / `git cat-file -e` whose
+        # LITERAL path is gitignored in this repo — core data lives in a private
+        # repo, so that read can never succeed and every caller so far let the
+        # resulting "found nothing" mean "clean". A 2026-08-05 monitor written to
+        # prove a live ticket-link bug was fixed did exactly that and would have
+        # reported it GONE forever; it was caught by luck. Fixers are pointed at
+        # scripts/lib/observable-before-absence.js (CANNOT-OBSERVE ≠ ABSENT).
+        # Escape hatch for a genuinely-handled case: `observability-ok: <reason>`.
+        run: node scripts/audit-invisible-verification.js
+
       - name: Audit — direct provider calls bypassing fetchPage() (advisory)
         # Task #684 T12: flags scripts constructing a raw HTTP call to a BD/SB/SD
         # content-fetch endpoint instead of routing through fetchPage()/fetchJSON()
@@ -2204,6 +2242,21 @@ jobs:
         # session can silently forget — same class as the 34 senders this
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
+
+      - name: Audit — no submitter PII in committed data/audit files
+        # Task #1074. "Never store submitter name/email; cap free text" existed
+        # only as a prose comment in feedback-request-ledger.js:54-60 until a
+        # session violated it in a fresh code path the same week (#1064):
+        # notify-feedback-outcomes.js's buildAlert() put submitter name + email
+        # + an uncapped message into an owner-alert-router description, which
+        # data/audit/alert-digest-queue.json — a file 12 workflows commit —
+        # then persists to this PUBLIC repo. Caught pre-merge only by an
+        # adversarial reviewer, not by any lint. Blocking: a committed PII leak
+        # in a public repo is a real exposure, not style debt. Waive a reviewed
+        # false positive (outlet contact address, critic byline) by adding it
+        # to ALLOWLIST in scripts/lint-committed-pii.js with a justification —
+        # never a silent skip.
+        run: node scripts/lint-committed-pii.js
 
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515

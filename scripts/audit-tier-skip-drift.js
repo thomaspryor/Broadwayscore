@@ -130,7 +130,11 @@ async function main() {
   await routeAlert({
     conditionKey: 'tier-skip-drift',
     title: `domain-tier-skip.json drift: ${alertable.length} domain+tier verdict(s) need review`,
-    description: alertable.map((v) => `[${v.direction}] ${v.domain} / ${v.tier}: ${v.reason}`).join('\n'),
+    // Front-loaded (card #1078): the digest clips this at 200 chars, and a
+    // leading "[direction]" bracket tag was exactly the fragment-head class
+    // headStandsAlone() now catches. Name the first verdict's domain/tier up
+    // front, then list the rest below the cut.
+    description: alertable.map((v) => `${v.domain} / ${v.tier} (${v.direction}): ${v.reason}`).join('\n'),
     severity: 'warn',
     disposition: 'digest',
     cooldownHours: 20,
