@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T04:09:09.418Z",
+  "timestamp": "2026-08-06T05:07:38.895Z",
   "stats": {
-    "totalReviews": 41708,
-    "alreadyFlagged": 18127,
+    "totalReviews": 41715,
+    "alreadyFlagged": 18129,
     "dateGuardCatches": 119,
-    "directorMismatch": 950,
+    "directorMismatch": 949,
     "tvFilmSignals": 1153,
     "londonSignals": 816,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3547
+    "noPublishDate": 3552
   },
   "findings": [
     {
@@ -21908,8 +21908,8 @@
     {
       "showId": "spring-awakening-2015",
       "file": "nytg--unknown.json",
-      "score": null,
-      "publishDate": null,
+      "score": 97,
+      "publishDate": "2015-10-02",
       "url": "https://www.newyorktheatreguide.com/reviews/spring-awakening-1",
       "findings": [
         {
@@ -26060,6 +26060,7 @@
     {
       "showId": "the-outsiders-world-premiere-regional-2023",
       "file": "latimes--charles-mcnulty.json",
+      "score": 78,
       "publishDate": "2023-03-07",
       "url": "https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
       "findings": [
@@ -26073,6 +26074,7 @@
     {
       "showId": "the-outsiders-world-premiere-regional-2023",
       "file": "nytimes--alexis-soloski.json",
+      "score": 75,
       "publishDate": "2023-03-06",
       "url": "https://www.nytimes.com/2023/03/06/theater/the-outsiders-review-la-jolla-playhouse.html",
       "findings": [
@@ -26086,21 +26088,9 @@
     {
       "showId": "the-outsiders-world-premiere-regional-2023",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 79,
       "publishDate": "2023-03-06",
       "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-outsiders-world-premiere-regional-2023",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": "2024-04-12",
-      "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
