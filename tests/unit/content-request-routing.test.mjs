@@ -21,6 +21,10 @@ const {
   extractVenueHint,
   extractVenueHintFor,
   WORKFLOW_REVIEWS,
+  WORKFLOW_IMAGE,
+  WORKFLOW_ADD_SHOW,
+  WORKFLOW_LABELS,
+  describeDispatchesPlainly,
   REVIEW_COUNT_AUTOGATHER_CEILING,
 } = require('../../scripts/lib/content-request-routing.js');
 
@@ -174,7 +178,15 @@ test('the real #543 submission routes to a review gather, not a parked issue', (
   // gather-reviews.js matches on show.id, not slug — they diverge for shows
   // whose slug drops the year/market suffix, so a slug here would silently
   // gather nothing.
-  assert.deepEqual(actions[0].inputs, { shows: '3-summers-of-lincoln-regional-2025' });
+  assert.deepEqual(actions[0].inputs, {
+    shows: '3-summers-of-lincoln-regional-2025',
+    // Tier 3, not the default 2. collect-outlet-reviews.js defaults untiered
+    // outlets to 3, so a tier-2 gather queries only national T1/T2 outlets and
+    // skips every local critic — the exact people who review regional tryouts
+    // (the San Diego Union-Tribune is this show's ONLY review). It would report
+    // success having changed nothing.
+    max_tier: '3',
+  });
   assert.equal(actions[0].reviewCountAtRequest, 1);
 });
 
@@ -346,4 +358,46 @@ test('helpers behave on edge input', () => {
   assert.equal(cleanRequestedTitle(''), '');
   assert.equal(cleanRequestedTitle(undefined), '');
   assert.equal(extractVenueHint('no venue mentioned here'), null);
+});
+
+// ---------------------------------------------------------------------------
+// Owner-facing wording (2026-08-05: "I have no idea what this email is telling
+// me. It's all technical mumbo jumbo" — the notification had printed a workflow
+// filename and a JSON input blob at them).
+// ---------------------------------------------------------------------------
+
+test('every dispatchable workflow has a plain-English label', () => {
+  for (const wf of [WORKFLOW_IMAGE, WORKFLOW_ADD_SHOW, WORKFLOW_REVIEWS]) {
+    assert.ok(WORKFLOW_LABELS[wf], `${wf} can be dispatched at a user's request but has no owner-readable label`);
+    assert.ok(WORKFLOW_LABELS[wf].verb.length > 0);
+  }
+});
+
+test('dispatches read as English, naming the shows and never the machinery', () => {
+  const text = describeDispatchesPlainly([
+    { ok: true, workflow: WORKFLOW_ADD_SHOW, inputs: { title: 'The Outsiders', venue_hint: 'The Weiss' } },
+    { ok: true, workflow: WORKFLOW_ADD_SHOW, inputs: { title: 'Two Strangers', venue_hint: '' } },
+  ]);
+  assert.equal(text, 'Adding to the site: The Outsiders, Two Strangers');
+  assert.doesNotMatch(text, /\.yml/, 'no workflow filenames in owner-facing copy');
+  assert.doesNotMatch(text, /[{}"]/, 'no JSON blobs in owner-facing copy');
+});
+
+test('a review gather names the show it is gathering for', () => {
+  assert.equal(
+    describeDispatchesPlainly([{ ok: true, workflow: WORKFLOW_REVIEWS, inputs: { shows: '3-summers-of-lincoln-regional-2025' } }]),
+    'Collecting the missing reviews: 3-summers-of-lincoln-regional-2025'
+  );
+});
+
+test('an unlabelled workflow still reads as a sentence, not a stray filename', () => {
+  assert.equal(
+    describeDispatchesPlainly([{ ok: true, workflow: 'some-future-thing.yml', inputs: {} }]),
+    'Running the some-future-thing.yml workflow'
+  );
+});
+
+test('describeDispatchesPlainly tolerates junk input', () => {
+  assert.equal(describeDispatchesPlainly(null), '');
+  assert.equal(describeDispatchesPlainly([null, {}, { ok: true }]), '');
 });

@@ -55,27 +55,72 @@ function parseArgs(argv) {
 }
 
 const ROUNDUP_URL_RE = /broadwayworld\.com\/article\/Review-Roundup/i;
+const PV_URL_RE = /playbill\.com\/article\//i;
 
-/** Best-effort BWW Review Roundup URL for a title, or null. Tries a
- *  venue-scoped query first (disambiguates same-title collisions) then a
- *  bare title query. Never throws — a SERP failure just yields null so the
- *  caller reports "no roundup found" instead of crashing. */
+/**
+ * Sources this script will accept as proof a production exists, in order.
+ *
+ * BWW-only was the original design and it is why GH #542's "The Outsiders at
+ * La Jolla" could not be added: no BroadwayWorld Review Roundup exists for that
+ * tryout, so the show was unaddable even though it plainly ran (owner:
+ * "make sure we search for reviews beyond just aggregators", 2026-08-05).
+ *
+ * Playbill's Verdict column is a second, independent roundup source that
+ * classifyCandidate() already understands (`source: 'playbill-verdict'`), so
+ * adding it costs no new parser and keeps the acceptance bar identical — the
+ * SAME classifier, the SAME venue allowlist, the SAME title-delta guard. What
+ * changes is only how many places we look before giving up.
+ *
+ * Deliberately NOT added: the venue's own website. A theatre's production page
+ * proves the show ran but is marketing copy, not a review roundup — it carries
+ * no critic verdicts and no independent confirmation, and classifyCandidate
+ * cannot parse it. Promoting off it would be closer to stubbing from memory
+ * than to CLAUDE.md §3's "the roundup IS the validation".
+ */
+const ROUNDUP_SOURCES = [
+  {
+    source: 'bww-roundup',
+    label: 'BroadwayWorld Review Roundup',
+    urlRe: ROUNDUP_URL_RE,
+    queries: (title, venueHint) => [
+      venueHint ? `site:broadwayworld.com/article/Review-Roundup "${title}" "${venueHint}"` : null,
+      `site:broadwayworld.com/article/Review-Roundup "${title}"`,
+    ].filter(Boolean),
+  },
+  {
+    source: 'playbill-verdict',
+    label: 'Playbill Verdict',
+    urlRe: PV_URL_RE,
+    queries: (title, venueHint) => [
+      venueHint ? `site:playbill.com/article "The Verdict" "${title}" "${venueHint}"` : null,
+      `site:playbill.com/article "The Verdict" "${title}"`,
+    ].filter(Boolean),
+  },
+];
+
+/**
+ * Best-effort roundup URL for a title, or null. Walks ROUNDUP_SOURCES in order,
+ * trying a venue-scoped query first (disambiguates same-title collisions) then
+ * a bare title query. Never throws — a SERP failure just yields null so the
+ * caller reports "no roundup found" instead of crashing.
+ *
+ * @returns {{url: string, source: string, label: string}|null}
+ */
 async function findRoundupUrl(title, venueHint, log) {
-  const queries = [
-    venueHint ? `site:broadwayworld.com/article/Review-Roundup "${title}" "${venueHint}"` : null,
-    `site:broadwayworld.com/article/Review-Roundup "${title}"`,
-  ].filter(Boolean);
-  for (const q of queries) {
-    let results = null;
-    try {
-      results = await serpQuery(q, { nbResults: 5 });
-    } catch (err) {
-      log(`  SERP query failed (${q}): ${err.message}`);
-      continue;
+  for (const src of ROUNDUP_SOURCES) {
+    for (const q of src.queries(title, venueHint)) {
+      let results = null;
+      try {
+        results = await serpQuery(q, { nbResults: 5 });
+      } catch (err) {
+        log(`  SERP query failed (${q}): ${err.message}`);
+        continue;
+      }
+      if (!Array.isArray(results)) continue;
+      const hit = results.find((r) => src.urlRe.test(r.url || ''));
+      if (hit) return { url: hit.url, source: src.source, label: src.label };
     }
-    if (!Array.isArray(results)) continue;
-    const hit = results.find((r) => ROUNDUP_URL_RE.test(r.url || ''));
-    if (hit) return hit.url;
+    log(`  No ${src.label} found for "${title}" — trying the next source.`);
   }
   return null;
 }
@@ -92,13 +137,17 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Looking for a BWW Review Roundup for "${title}"${venueHint ? ` (venue hint: "${venueHint}")` : ''}...`);
-  const roundupUrl = await findRoundupUrl(title, venueHint, console.log);
-  if (!roundupUrl) {
-    console.log('No BWW Review Roundup found via SERP — not staging. (Never stub shows.json from memory, CLAUDE.md §3.)');
+  console.log(`Looking for a review roundup for "${title}"${venueHint ? ` (venue hint: "${venueHint}")` : ''} across ${ROUNDUP_SOURCES.length} source(s)...`);
+  const found = await findRoundupUrl(title, venueHint, console.log);
+  if (!found) {
+    console.log(
+      `No roundup found via SERP on any of: ${ROUNDUP_SOURCES.map((s) => s.label).join(', ')} — not staging. ` +
+      '(Never stub shows.json from memory, CLAUDE.md §3.)'
+    );
     process.exit(1);
   }
-  console.log(`Found candidate roundup: ${roundupUrl}`);
+  const { url: roundupUrl, source: roundupSource, label: roundupLabel } = found;
+  console.log(`Found candidate roundup (${roundupLabel}): ${roundupUrl}`);
 
   let fetched;
   try {
@@ -123,7 +172,7 @@ async function main() {
 
   const slug = roundupUrl.split('/').filter(Boolean).pop() || '';
   const classification = classifyCandidate({
-    source: 'bww-roundup',
+    source: roundupSource,
     record: { url: roundupUrl, slug, firstSeen: new Date().toISOString() },
     html: fetched.content,
     existingSlugs,
