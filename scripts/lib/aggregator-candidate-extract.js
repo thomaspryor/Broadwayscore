@@ -765,7 +765,21 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
   const candidate = {
     title: displayTitle,
     venue: fields.venue,
-    slug: slugify(displayTitle),
+    // Slug stays derived from the RAW headline, NOT the cleaned title. The
+    // nightly crawl's already-in-shows gate compares slugify(RAW headline)
+    // against collisionSlugSet(shows), which indexes each show's slug, its
+    // market-suffix-stripped slug, and slugify(show.title). Cleaning the slug
+    // too removes every raw-derived member of that set, so the gate stops
+    // matching the very headline the show came from and the article re-fetches,
+    // re-stages and re-dedupes EVERY NIGHT, forever — the exact failure
+    // collisionSlugSet's own header warns about (QA 2026-07-08). Verified:
+    // with a cleaned slug, slugCollidesWith('THE OUTSIDERS World Premiere')
+    // returns false against the show it created.
+    //
+    // So identity (slug -> id) is deliberately unchanged and only the
+    // user-visible title is cleaned. Renaming ids is a separate migration:
+    // review records and audit trails reference them.
+    slug: slugify(fields.title),
     source,
     sourceUrl: record.url || null,
     articlePublishedAt: fields.date,
