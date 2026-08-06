@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T10:53:22.754Z",
+  "timestamp": "2026-08-06T10:59:33.190Z",
   "stats": {
-    "totalReviews": 41757,
-    "alreadyFlagged": 18135,
-    "dateGuardCatches": 120,
+    "totalReviews": 41758,
+    "alreadyFlagged": 18136,
+    "dateGuardCatches": 125,
     "directorMismatch": 952,
     "tvFilmSignals": 1154,
-    "londonSignals": 818,
+    "londonSignals": 819,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3580
+    "noPublishDate": 3575
   },
   "findings": [
     {
@@ -24421,6 +24421,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "score": null,
+      "publishDate": "2025-05-16",
+      "url": "https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 442d before show (2025-05-16 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 100,
       "publishDate": "2025-05-13",
@@ -24543,6 +24557,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2025-05-20",
+      "url": "https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 438d before show (2025-05-20 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 95,
       "publishDate": "2025-05-13",
@@ -24597,6 +24625,53 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": null,
+      "publishDate": "2025-05-13",
+      "url": "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "matineemouse--unknown.json",
+      "score": null,
+      "publishDate": "2025-05-14",
+      "url": "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": "2025-05-15",
+      "url": "https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 443d before show (2025-05-15 vs 2026-08-01)"
         }
       ]
     },
