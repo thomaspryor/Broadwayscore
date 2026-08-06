@@ -11,6 +11,13 @@
  * the same pattern scripts/lint-resend-calls.js uses: adding a new file
  * requires a one-line justification, never a silent skip.
  *
+ * Each entry carries a maxFindings count (scripts/.alert-sender-baseline.json's
+ * pattern, per test.yml's "Audit — alert-sender direct-bypass gate": a count
+ * map, not a file list, so a NEW leak landing in an already-allowlisted file
+ * still fails instead of hiding behind the file-level exemption forever
+ * (ship-check finding, 2026-08-06). Shrink/grow the count deliberately when
+ * the file's known-legitimate content changes.
+ *
  * Usage: node scripts/lint-committed-pii.js
  */
 
@@ -26,9 +33,13 @@ const REPO_ROOT = path.join(__dirname, '..');
 const ALLOWLIST = new Map([
   [
     'data/audit/truncated-reviews-to-fix.json',
-    'copyrighted review-excerpt text ("ending" field) carries publicly-published ' +
-      'outlet/critic contact addresses (e.g. LSA@lsamedia.com, nystagereview.com bylines) ' +
-      '— not submitter PII from the feedback pipeline',
+    {
+      reason:
+        'copyrighted review-excerpt text ("ending" field) carries publicly-published ' +
+        'outlet/critic contact addresses (e.g. LSA@lsamedia.com, nystagereview.com bylines) ' +
+        '— not submitter PII from the feedback pipeline',
+      maxFindings: 39,
+    },
   ],
 ]);
 
@@ -63,8 +74,9 @@ function main() {
       continue;
     }
     if (findings.length === 0) continue;
-    if (ALLOWLIST.has(relPath)) continue;
-    violations.push({ relPath, findings });
+    const allowed = ALLOWLIST.get(relPath);
+    if (allowed && findings.length <= allowed.maxFindings) continue;
+    violations.push({ relPath, findings, allowed });
   }
 
   if (parseErrors.length > 0) {
@@ -82,7 +94,15 @@ function main() {
 
   console.error('❌ Possible submitter PII in a committed, PUBLIC-repo data/audit file:\n');
   for (const v of violations) {
-    console.error(`  ${v.relPath}`);
+    if (v.allowed) {
+      console.error(
+        `  ${v.relPath} — ${v.findings.length} hit(s) exceeds its allowlisted baseline of ` +
+          `${v.allowed.maxFindings}. New content in this file introduced a NEW finding — ` +
+          'the allowlist covers a fixed count, not a blanket file skip.'
+      );
+    } else {
+      console.error(`  ${v.relPath}`);
+    }
     for (const f of v.findings) {
       const loc = formatPath(f.path) || '(root)';
       if (f.type === 'email-shaped-string') {
@@ -95,9 +115,9 @@ function main() {
   console.error(
     '\nNever store submitter name/email in a file committed to the PUBLIC ' +
       'thomaspryor/Broadwayscore repo — see scripts/lib/feedback-request-ledger.js. If this ' +
-      'is a genuine non-PII case (an outlet contact address, a critic byline), add it to ' +
-      'ALLOWLIST in scripts/lint-committed-pii.js with a one-line justification — do not ' +
-      'silently drop the data instead.'
+      'is a genuine non-PII case (an outlet contact address, a critic byline), add/raise it ' +
+      'in ALLOWLIST in scripts/lint-committed-pii.js with a one-line justification and the ' +
+      'new maxFindings count — do not silently drop the data instead.'
   );
   process.exit(1);
 }

@@ -134,11 +134,23 @@ describe('scanFile — end-to-end against fixtures', () => {
 });
 
 describe('ALLOWLIST', () => {
-  test('is a Map, and every entry has a non-empty justification', () => {
+  test('is a Map, and every entry has a justification + a positive finite maxFindings', () => {
     assert.ok(ALLOWLIST instanceof Map);
-    for (const [file, reason] of ALLOWLIST) {
+    for (const [file, entry] of ALLOWLIST) {
       assert.ok(file.startsWith('data/audit/'), `${file} should be a data/audit path`);
-      assert.ok(typeof reason === 'string' && reason.length > 10, `${file} needs a real justification`);
+      assert.ok(typeof entry.reason === 'string' && entry.reason.length > 10, `${file} needs a real justification`);
+      assert.ok(Number.isFinite(entry.maxFindings) && entry.maxFindings > 0, `${file} needs a positive maxFindings`);
     }
+  });
+
+  test('the allowlisted file is skipped at its current finding count', () => {
+    const entry = ALLOWLIST.get('data/audit/truncated-reviews-to-fix.json');
+    assert.ok(entry, 'expected truncated-reviews-to-fix.json to still be allowlisted');
+    const { findings } = scanFile('data/audit/truncated-reviews-to-fix.json');
+    assert.ok(
+      findings.length <= entry.maxFindings,
+      `live finding count ${findings.length} exceeds allowlisted baseline ${entry.maxFindings} — ` +
+        'a NEW hit landed in this file and the baseline must be reviewed, not silently raised'
+    );
   });
 });
