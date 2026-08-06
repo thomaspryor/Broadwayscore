@@ -3754,6 +3754,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   const outlets = loadOutlets({ category: show.category });
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
+  const isRegional = show.category === 'regional';
 
   // Per-show health tracking
   const health = {
@@ -3983,9 +3984,22 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
     const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
-    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }) ||
-        /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
-        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
+    // A REGIONAL show's roundup is legitimately regional. These checks exist to
+    // stop a BROADWAY show absorbing its own out-of-town reviews; applied to a
+    // tryout they reject the only roundup that show will ever have. '3 Summers
+    // of Lincoln' passed the URL validator ("Found via Google") and was then
+    // dropped here for being a La Jolla page — and "please finish the reviews"
+    // for exactly that show is the request that started all of this (2026-08-05).
+    //
+    // isNotBroadway already accepts allowRegional; the caller simply never
+    // passed it. Tour rejection is deliberately KEPT for regional shows: a
+    // regional production must still never inherit a national-tour roundup.
+    const venueMarkersDisqualify = !isRegional &&
+        (/\bat the kennedy center\b/.test(roundupTitle) ||
+         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle));
+    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
+        /\bon tour\b/.test(roundupTitle) || /\bnational tour\b/.test(roundupTitle) ||
+        venueMarkersDisqualify) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
