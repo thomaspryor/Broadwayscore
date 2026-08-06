@@ -32,13 +32,48 @@ test('finds literal git show / cat-file reads with ref and path', () => {
   );
 });
 
-test('skips interpolated paths — we cannot know what they resolve to', () => {
+test('skips fully-interpolated paths — no literal prefix to judge', () => {
   const reads = findGitRefReads([
     'git show "$ref:$file"',
     'execSync(`git show ${BASE_REF}:${relPath}`)',
     'git show HEAD:${f}',
   ].join('\n'));
   assert.deepEqual(reads, []);
+});
+
+// Adversarial-review findings, 2026-08-06: the first cut of the regex only
+// matched `git show|cat-file -e` directly after `git`, and only fully-literal
+// paths — so these five real shapes walked straight through the gate.
+test('catches git -C, cat-file -p and cat-file blob forms', () => {
+  const reads = findGitRefReads([
+    'execSync("git -C /repo show origin/main:data/shows.json")',
+    'git cat-file -p HEAD:data/reviews.json',
+    'git cat-file blob origin/main:data/shows.json',
+  ].join('\n'));
+  assert.equal(reads.length, 3);
+  assert.deepEqual(reads.map((r) => r.filePath), [
+    'data/shows.json', 'data/reviews.json', 'data/shows.json',
+  ]);
+});
+
+test('an interpolated FILENAME under a gitignored directory is still flagged', () => {
+  const ignoredDir = (p) => p === 'data/review-texts/';
+  const files = [{
+    path: 'scripts/watch-corpus.js',
+    source: 'execSync(`git show origin/main:data/review-texts/${showId}/nytimes.json`)',
+  }];
+  const { violations } = findInvisibleVerifications({ files, isIgnored: ignoredDir });
+  assert.equal(violations.length, 1);
+  assert.equal(violations[0].probePath, 'data/review-texts/');
+  assert.equal(violations[0].literal, false);
+});
+
+test('an interpolated path under a TRACKED directory is not flagged', () => {
+  const files = [{
+    path: 'scripts/ok.js',
+    source: 'execSync(`git show origin/main:src/config/${name}.ts`)',
+  }];
+  assert.deepEqual(findInvisibleVerifications({ files, isIgnored }).violations, []);
 });
 
 test('an interpolated REF with a literal path is still scanned', () => {

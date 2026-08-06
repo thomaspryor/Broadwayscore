@@ -28,14 +28,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const { findInvisibleVerifications } = require('./lib/invisible-verification-scan');
 
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..');
 
 // Where verification/monitor code actually lives. node_modules and build output
 // are never scanned.
-const SCAN_DIRS = ['scripts', '.claude/hooks', '.github/workflows'];
+const SCAN_DIRS = ['scripts', 'tests', '.claude/hooks', '.claude/skills', '.github/workflows'];
 const SCAN_EXT = new Set(['.js', '.mjs', '.cjs', '.sh', '.yml', '.yaml', '']);
 const SKIP_DIRS = new Set(['node_modules', '.git', 'worktrees', 'dist', '.next', 'coverage']);
 // Tests build the bad pattern on purpose as a fixture — flagging them would
@@ -62,21 +62,27 @@ function walk(dir, acc) {
   return acc;
 }
 
-/** git check-ignore, batched once for every distinct path the scan found. */
-function makeIsIgnored(root) {
+/**
+ * git check-ignore, cached per distinct path.
+ *
+ * Exit codes are load-bearing: 0 = ignored, 1 = not ignored, anything else
+ * (128 = not a repo / bad pathspec, 127 = no git) means the question was not
+ * answered. Swallowing those as "not ignored" would make THIS auditor commit
+ * the exact sin it exists to catch — a check that cannot see reporting clean.
+ * Unanswerable probes are collected and fail the run loudly.
+ */
+function makeIsIgnored(root, unanswered) {
   const cache = new Map();
   return (p) => {
     if (cache.has(p)) return cache.get(p);
-    let ignored = false;
-    try {
-      execFileSync('git', ['check-ignore', '-q', '--', p], {
-        cwd: root,
-        stdio: ['ignore', 'ignore', 'ignore'],
-      });
-      ignored = true;
-    } catch {
-      ignored = false;
+    const res = spawnSync('git', ['check-ignore', '-q', '--', p], {
+      cwd: root,
+      stdio: ['ignore', 'ignore', 'pipe'],
+    });
+    if (res.error || res.status === null || (res.status !== 0 && res.status !== 1)) {
+      unanswered.push({ path: p, status: res.status, error: res.error && res.error.message });
     }
+    const ignored = res.status === 0;
     cache.set(p, ignored);
     return ignored;
   };
@@ -105,10 +111,21 @@ function main() {
     process.exit(1);
   }
 
+  const unanswered = [];
   const { violations, readsFound } = findInvisibleVerifications({
     files,
-    isIgnored: makeIsIgnored(ROOT),
+    isIgnored: makeIsIgnored(ROOT, unanswered),
   });
+
+  if (unanswered.length > 0) {
+    console.error('❌ audit-invisible-verification: git check-ignore could not answer for:\n');
+    for (const u of unanswered) {
+      console.error(`  • ${u.path} (exit ${u.status}${u.error ? `, ${u.error}` : ''})`);
+    }
+    console.error('\nThis audit cannot report clean on questions it never answered — that is the');
+    console.error('very class it guards (task #1075). Fix the checkout/git availability and re-run.');
+    process.exit(1);
+  }
 
   if (violations.length === 0) {
     console.log(
@@ -124,7 +141,8 @@ function main() {
   console.error('fails. A check built on one reports "nothing found" — i.e. success — forever,');
   console.error('whether or not the thing it watches was ever fixed (task #1075).\n');
   for (const v of violations) {
-    console.error(`  • ${v.file}:${v.line} → ${v.ref}:${v.filePath}`);
+    const how = v.literal ? '' : ` (interpolated path; gitignored directory ${v.probePath})`;
+    console.error(`  • ${v.file}:${v.line} → ${v.ref}:${v.filePath}${how}`);
     console.error(`      ${v.raw}`);
   }
   console.error('\nFix: use scripts/lib/observable-before-absence.js (probeGitPath / observePresence /');

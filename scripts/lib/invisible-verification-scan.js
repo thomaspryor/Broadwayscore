@@ -22,10 +22,15 @@
 
 'use strict';
 
-// `git show <ref>:<path>` / `git cat-file -e <ref>:<path>`, ref and path both
-// literal. Anything with a shell/JS interpolation marker ($ or `) in the path
-// is skipped by isLiteralPath below — we can't know what it resolves to.
-const GIT_REF_READ = /\bgit\s+(?:show|cat-file\s+-e)\s+(?:--?\S+\s+)*([A-Za-z0-9_./^~{}@$-]+):([A-Za-z0-9_./$-]+)/g;
+// Every blob-reading form of `<ref>:<path>`:
+//   git show <ref>:<path>            git -C dir show <ref>:<path>
+//   git cat-file -e <ref>:<path>     git cat-file -p <ref>:<path>
+//   git cat-file blob <ref>:<path>
+// Global options (-C dir, -c k=v, --git-dir=…) may precede the subcommand —
+// the original pattern required the subcommand to follow `git` directly, so
+// `git -C dir show …` slipped through (adversarial review, 2026-08-06).
+const GIT_REF_READ =
+  /\bgit\s+(?:(?:-C|-c)\s+\S+\s+|--\S+(?:=\S+)?\s+)*(?:show|cat-file\s+(?:-e|-p|blob)\b)\s+(?:--?[A-Za-z][\w-]*(?:=\S+)?\s+)*([A-Za-z0-9_./^~{}@$-]*):([A-Za-z0-9_./${}-]+)/g;
 
 const EXEMPT_MARKER = /observability-ok:/;
 
@@ -34,13 +39,41 @@ const EXEMPT_MARKER = /observability-ok:/;
 // after real code still counts.
 const COMMENT_LINE = /^\s*(?:\/\/|\/\*|\*|#)/;
 
+const INTERPOLATION = /[$`{]/;
+
 function isLiteralPath(p) {
-  return !!p && !p.includes('$') && !p.includes('`') && !p.includes('{');
+  return !!p && !INTERPOLATION.test(p);
 }
 
 /**
- * Extract literal `<ref>:<path>` git reads from one file's source.
- * @returns {Array<{line:number, ref:string, filePath:string, raw:string}>}
+ * The part of a path we can actually reason about.
+ *
+ * A fully literal path probes itself. An interpolated one
+ * (`data/review-texts/${id}.json`) still carries a literal DIRECTORY prefix,
+ * and if that directory is gitignored every value the interpolation can take
+ * is unreadable too — so probe the prefix rather than give up, which is what
+ * the first cut did (adversarial review: `git show ${ref}:data/${name}.json`
+ * sailed straight past the gate).
+ *
+ * Returns null when there is no literal directory prefix to judge.
+ */
+function probeTargetFor(filePath) {
+  if (isLiteralPath(filePath)) return { probePath: filePath, literal: true };
+  const head = filePath.split(INTERPOLATION)[0];
+  const cut = head.lastIndexOf('/');
+  if (cut <= 0) return null;
+  return { probePath: head.slice(0, cut + 1), literal: false };
+}
+
+/**
+ * Extract `<ref>:<path>` git blob reads from one file's source.
+ *
+ * Known blind spot, deliberate: a command assembled across multiple lines or
+ * through intermediate variables is not seen — this scans line by line. The
+ * gate is a floor, not a proof; the helper in observable-before-absence.js is
+ * what makes an individual check honest.
+ *
+ * @returns {Array<{line:number, ref:string, filePath:string, probePath:string, literal:boolean, raw:string}>}
  */
 function findGitRefReads(source) {
   const out = [];
@@ -55,11 +88,12 @@ function findGitRefReads(source) {
     GIT_REF_READ.lastIndex = 0;
     let m;
     while ((m = GIT_REF_READ.exec(text)) !== null) {
-      const [raw, ref, filePath] = m;
-      if (!isLiteralPath(filePath)) continue;
-      // `git show :path` (staged blob) and `git show <sha>:path` are fine
-      // shapes; the ref side may interpolate — only the path must be literal.
-      out.push({ line: i + 1, ref, filePath, raw: text.trim() });
+      const [, ref, filePath] = m;
+      const target = probeTargetFor(filePath);
+      if (!target) continue;
+      // `git show :path` (staged blob) and `git show <sha>:path` are both fine
+      // shapes; the ref side may interpolate — only the path side is judged.
+      out.push({ line: i + 1, ref, filePath, ...target, raw: text.trim() });
     }
   });
   return out;
@@ -83,7 +117,7 @@ function findInvisibleVerifications({ files = [], isIgnored } = {}) {
   for (const file of files) {
     for (const read of findGitRefReads(file.source)) {
       readsFound++;
-      if (!isIgnored(read.filePath)) continue;
+      if (!isIgnored(read.probePath)) continue;
       violations.push({ file: file.path, ...read });
     }
   }
