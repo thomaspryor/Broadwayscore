@@ -101,9 +101,14 @@ const SHARED_INFRA_RULES = [
   {
     id: 'spend',
     tier: 'critical',
-    label: 'spend guard / circuit breaker',
+    label: 'spend / run-budget guard',
     re: /^scripts\/lib\/(?:[a-z-]*spend[a-z-]*|[a-z-]*circuit-breaker|[a-z-]*budget)\.(?:js|mjs|cjs)$/,
-    why: 'the only thing standing between a runaway loop and the API bill; the 2026-08-05 P0 was a false completion credited to this class',
+    // The `budget` half also catches run/time budgets (opening-night-budget.js,
+    // run-budget.js), not only the money breakers. That is deliberate — they
+    // are the same class of stop-the-runaway guard — but the label and this
+    // text must say so, because a rule whose stated reason does not match the
+    // file it just blocked is how a gate loses credibility and gets bypassed.
+    why: 'a stop-the-runaway guard (API spend, provider credits, or cron run-time); the 2026-08-05 P0 was a false completion credited to this class',
   },
   {
     id: 'concurrency',
@@ -129,11 +134,23 @@ const SHARED_INFRA_RULES = [
     why: 'runs inside every session on this machine; a fail-closed bug wedges every workspace at once',
   },
   {
-    id: 'ci',
+    id: 'ci-gate',
     tier: 'critical',
+    label: 'merge/deploy-gating CI workflow',
+    // The card says "CI gates", not "all workflows", and the distinction is
+    // load-bearing: there are 221 workflows here, and gating every one of them
+    // put 221 of the blocking tier's 272 files behind a review — the
+    // universal-scope tax the card warns gets routed around. A scraper cron
+    // failing fails itself; these four fail everyone.
+    re: /^\.github\/workflows\/(?:test|lint-workflows|vercel-deploy|vercel-build-guard)\.ya?ml$/,
+    why: 'gates merges and deploys for every branch and session; a defect here lands main red or blocks prod for everyone',
+  },
+  {
+    id: 'ci',
+    tier: 'shared',
     label: 'CI workflow',
     re: /^\.github\/workflows\/[^/]+\.ya?ml$/,
-    why: 'shared by every branch and every session; a broken gate here lands red on main for everyone',
+    why: 'runs on shared infrastructure and shared secrets, but a failure is scoped to this workflow',
   },
   {
     id: 'shared-lib',
@@ -158,8 +175,17 @@ const WRITE_COMMANDS = {
   mv: 'last',
   install: 'last',
   rsync: 'last',
-  patch: 'all',
 };
+
+// `git apply X` / `patch < X` are the one write route whose targets are NOT on
+// the command line — they are named inside the patch. Treating the patch file
+// as the write target (the first cut did) flags a throwaway /tmp path that
+// matches no rule, so a patch touching backlog-drain.js sailed through with the
+// gate reporting "allow" — worse than not handling patches at all, because the
+// shipped test asserted the wrong answer and made it look covered.
+// bashPatchSources() returns the patch FILES; the hook reads each and passes
+// the text to patchTargets(), which stays pure.
+const PATCH_COMMANDS = new Set(['patch']);
 
 // `> path` / `>> path`, including `2> path`. Deliberately not `<`.
 const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
@@ -301,12 +327,8 @@ function bashWriteTargets(command) {
 
     const tokens = tokenize(segment);
     if (!tokens.length) continue;
-    // `git apply X` — the verb is the second token.
-    let head = tokens[0].value.replace(/^.*\//, '');
-    let rest = tokens.slice(1);
-    if (head === 'git') {
-      if (rest[0] && rest[0].value === 'apply') { head = 'patch'; rest = rest.slice(1); } else continue;
-    }
+    const head = tokens[0].value.replace(/^.*\//, '');
+    const rest = tokens.slice(1);
     const mode = WRITE_COMMANDS[head];
     if (!mode) continue;
 
@@ -319,9 +341,54 @@ function bashWriteTargets(command) {
     else if (mode === 'last') add(operands[operands.length - 1].value);
     else if (mode === 'inplace') {
       // Only in-place invocations write a file; `sed 's/a/b/' f` reads it.
-      if (!rest.some((t) => !t.quoted && /^-[a-zA-Z]*i/.test(t.value))) continue;
+      // Long-form `--in-place` counts too — the short-flag-only check missed it.
+      const inPlace = rest.some((t) => !t.quoted
+        && (/^-[a-zA-Z]*i/.test(t.value) || /^--in-place\b/.test(t.value)));
+      if (!inPlace) continue;
       add(operands[operands.length - 1].value);
     }
+  }
+  return [...out];
+}
+
+/**
+ * Patch FILES a command would apply (`git apply f`, `patch -p1 < f`, `patch f`).
+ * The caller reads each and passes the text to patchTargets() — this stays pure.
+ */
+function bashPatchSources(command) {
+  if (!command) return [];
+  const out = new Set();
+  for (const segment of shellSegments(command)) {
+    const tokens = tokenize(segment);
+    if (!tokens.length) continue;
+    const head = tokens[0].value.replace(/^.*\//, '');
+    let rest = tokens.slice(1);
+    let isPatch = PATCH_COMMANDS.has(head);
+    if (head === 'git' && rest[0] && rest[0].value === 'apply') { isPatch = true; rest = rest.slice(1); }
+    if (!isPatch) continue;
+    // `patch -p1 < f` puts the file after a redirect, which shellSegments keeps
+    // in this segment; both forms are just non-flag operands here.
+    for (const t of rest) {
+      if (t.quoted || t.value.startsWith('-')) continue;
+      const v = t.value.replace(/^<+/, '').trim();
+      if (v && !v.startsWith('/dev/')) out.add(v);
+    }
+  }
+  return [...out];
+}
+
+/**
+ * Files a unified diff would WRITE, from its `+++ b/<path>` headers.
+ * Pure — the caller supplies the patch text.
+ */
+function patchTargets(patchText) {
+  if (!patchText) return [];
+  const out = new Set();
+  for (const line of String(patchText).split('\n')) {
+    const m = /^\+\+\+\s+(?:b\/)?(\S+)/.exec(line);
+    if (!m) continue;
+    if (m[1] === '/dev/null') continue; // deletion
+    out.add(m[1]);
   }
   return [...out];
 }
@@ -439,6 +506,8 @@ module.exports = {
   classifyPath,
   classifyChange,
   bashWriteTargets,
+  bashPatchSources,
+  patchTargets,
   evaluateInfraReviewGate,
   findFreshPlanVerdict,
 };

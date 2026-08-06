@@ -28,6 +28,8 @@ const {
   classifyChange,
   toRepoRelative,
   bashWriteTargets,
+  bashPatchSources,
+  patchTargets,
   evaluateInfraReviewGate,
   findFreshPlanVerdict,
   VERDICT_TTL_MS,
@@ -63,7 +65,12 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     ['scripts/lib/atomic-shows-write.js', 'concurrency', 'critical'],
     ['scripts/lib/review-gate.mjs', 'gates', 'critical'],
     ['scripts/lib/review-guards.js', 'gates', 'critical'],
-    ['.github/workflows/test.yml', 'ci', 'critical'],
+    ['.github/workflows/test.yml', 'ci-gate', 'critical'],
+    ['.github/workflows/vercel-deploy.yml', 'ci-gate', 'critical'],
+    // every OTHER workflow is observed, not blocked — 221 workflows behind a
+    // mandatory review is the universal-scope tax the card warns about
+    ['.github/workflows/scrape-nysr.yml', 'ci', 'shared'],
+    ['.github/workflows/weekly-grosses.yml', 'ci', 'shared'],
     ['/Users/x/.claude/hooks/finish-line-gate.sh', 'hooks', 'critical'],
     ['/Users/x/.claude/settings.json', 'hooks', 'critical'],
     // wider shared surface — in scope, but only the observe tier
@@ -221,11 +228,38 @@ test('bashWriteTargets catches the common non-Edit write routes', () => {
     ['printf x | tee scripts/lib/file-lock.js', 'scripts/lib/file-lock.js'],
     ["sed -i '' 's/a/b/' scripts/lib/file-lock.js", 'scripts/lib/file-lock.js'],
     ['cp /tmp/new.js scripts/lib/file-lock.js', 'scripts/lib/file-lock.js'],
-    ['git apply /tmp/patch.diff', '/tmp/patch.diff'],
+    ["sed --in-place 's/a/b/' scripts/lib/file-lock.js", 'scripts/lib/file-lock.js'],
   ];
   for (const [cmd, expected] of cases) {
     assert.ok(bashWriteTargets(cmd).includes(expected), `${cmd} → expected ${expected}, got ${JSON.stringify(bashWriteTargets(cmd))}`);
   }
+});
+
+test('patch application resolves to the files INSIDE the diff, not the patch file', () => {
+  // The first cut returned the patch path itself, which matches no rule — so
+  // `git apply p.diff` touching backlog-drain.js came back "allow" while the
+  // shipped test asserted that wrong answer and made it look covered.
+  assert.deepEqual(bashPatchSources('git apply /tmp/p.diff'), ['/tmp/p.diff']);
+  assert.deepEqual(bashPatchSources('patch -p1 < /tmp/p.diff'), ['/tmp/p.diff']);
+  assert.deepEqual(bashPatchSources('grep -rn foo scripts/'), []);
+  // The patch file is NOT itself a write target.
+  assert.equal(bashWriteTargets('git apply /tmp/p.diff').includes('/tmp/p.diff'), false);
+
+  const diff = [
+    'diff --git a/scripts/lib/backlog-drain.js b/scripts/lib/backlog-drain.js',
+    '--- a/scripts/lib/backlog-drain.js',
+    '+++ b/scripts/lib/backlog-drain.js',
+    '@@ -1 +1 @@',
+    '-old',
+    '+new',
+    '--- a/gone.txt',
+    '+++ /dev/null',
+  ].join('\n');
+  assert.deepEqual(patchTargets(diff), ['scripts/lib/backlog-drain.js']);
+  // …and that target lands in the blocking tier, which is the whole point.
+  assert.equal(
+    evaluateInfraReviewGate({ paths: patchTargets(diff), verdicts: [], sessionId: SESSION, now: NOW }).action,
+    'block');
 });
 
 test('bashWriteTargets ignores read-only commands and /dev/null', () => {
