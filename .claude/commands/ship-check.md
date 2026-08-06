@@ -221,7 +221,16 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
    **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`.
-   - READY (local): run Codex as below.
+   - READY (local): run Codex as below, THEN validate its output before trusting it (task #1081 — `codex exec` has exited 0 with zero bytes of output while `command -v codex` reports READY; exit code and CLI presence do not prove the reviewer said anything). Pipe the awk-filtered text through the guard:
+     ```bash
+     node -e "
+       const { isUsableReviewOutput } = require('./scripts/lib/review-output-guard.js');
+       const fs = require('fs');
+       const text = fs.readFileSync('/tmp/codex-review-output.txt', 'utf-8');
+       process.exit(isUsableReviewOutput(text) ? 0 : 1);
+     " && echo CODEX_USABLE || echo CODEX_EMPTY
+     ```
+     (Redirect the codex pipeline's output to `/tmp/codex-review-output.txt` instead of printing directly, so this check can read it before you decide what to report.) If `CODEX_EMPTY`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner that Codex was READY but returned unusable output (distinct from "not installed" — this is the flaky-empty-output failure mode, not a missing CLI).
    - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent. Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
    ```bash
@@ -263,16 +272,17 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
      echo "=== UNCOMMITTED CHANGES ==="
      git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
    } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-     | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag'
+     | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
+     | tee /tmp/codex-review-output.txt
    ```
-   Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.
+   Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap. The `tee` writes the filtered output to `/tmp/codex-review-output.txt` for the `isUsableReviewOutput` check above — run that check immediately after this command, before treating the output as a real review.
 
 ### Phase 6: Report
 
 Present findings in a structured report.
 
 **Reviewer coverage (print this FIRST — a degraded review is NOT a passed review):**
-State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
+State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini`; do not fold it into a bare "reviewed, no findings" line, since an empty-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
 
 **P0 — Blockers** (must fix before shipping):
 - Build/lint/type errors
