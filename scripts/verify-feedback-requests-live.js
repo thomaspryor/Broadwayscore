@@ -160,14 +160,21 @@ function githubJSON(apiPath) {
  * facts and the report says which one it is — collapsing both to null is how
  * "we could not check" gets reported as "nothing happened".
  */
+const RUNS_PAGE_SIZE = 20;
+
 async function fetchWorkflowRuns(workflowFile) {
   if (!workflowFile) return { ok: false };
   const body = await githubJSON(
-    `/repos/${REPO}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=20`
+    `/repos/${REPO}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=${RUNS_PAGE_SIZE}`
   );
   if (!body || !Array.isArray(body.workflow_runs)) return { ok: false };
   return {
     ok: true,
+    // A full page means there are probably older runs we did not fetch. That
+    // matters: on a busy shared workflow the run that served this request can
+    // sit past the page boundary, and without this flag the report would state
+    // a count and a verdict as if it had seen everything.
+    truncated: body.workflow_runs.length >= RUNS_PAGE_SIZE,
     runs: body.workflow_runs.map((r) => ({
       status: r.status,
       conclusion: r.conclusion,
@@ -195,39 +202,51 @@ async function fetchWorkflowRuns(workflowFile) {
 function pickRunForRequest(fetched, requestedAt) {
   if (!fetched || !fetched.ok) return { state: 'unknown' };
   const asked = Date.parse(requestedAt);
-  const candidates = Number.isNaN(asked)
-    ? fetched.runs
-    : fetched.runs.filter((r) => {
-        const started = Date.parse(r.startedAt);
-        return !Number.isNaN(started) && started >= asked;
-      });
-  if (candidates.length === 0) return { state: 'never-ran' };
+  // An unparseable requestedAt means we cannot tell which runs came after the
+  // request — and the ONLY safe answer is to say so. Falling back to "use all
+  // runs" here is precisely how the shared-workflow misattribution this
+  // function exists to prevent would sneak back in through a bad timestamp.
+  if (Number.isNaN(asked)) return { state: 'unknown' };
+  const candidates = fetched.runs.filter((r) => {
+    const started = Date.parse(r.startedAt);
+    return !Number.isNaN(started) && started >= asked;
+  });
+  // Every run we fetched is post-request AND the page was full: there are
+  // almost certainly more we never saw, so the count is a floor, not a total.
+  const partial = Boolean(fetched.truncated) && candidates.length === fetched.runs.length;
+  if (candidates.length === 0) {
+    // Only a NON-truncated page proves the workflow never ran. A full page of
+    // pre-request runs would mean we simply did not page back far enough.
+    return fetched.truncated ? { state: 'unknown' } : { state: 'never-ran' };
+  }
   // Newest first is what GitHub returns; take the newest that qualifies.
-  return { state: 'ran', run: candidates[0], count: candidates.length };
+  return { state: 'ran', run: candidates[0], count: candidates.length, partial };
 }
 
 function describeRun(picked) {
   if (!picked || picked.state === 'unknown') {
-    return 'We could not reach GitHub to find out what its workflow did, so this is unexplained rather than diagnosed.';
+    return 'We could not establish what its workflow did, so this is unexplained rather than diagnosed.';
   }
   if (picked.state === 'never-ran') {
     // The most actionable verdict of the three: nothing was even attempted.
     return 'That workflow has not run at all since the request came in — the job was never actually started.';
   }
-  const { run, count } = picked;
+  const { run, count, partial } = picked;
   const when = run.startedAt ? ` on ${String(run.startedAt).slice(0, 10)}` : '';
-  const scope = count > 1 ? ` (the most recent of ${count} runs since the request)` : '';
+  const many = partial ? `at least ${count}` : String(count);
+  const scope = count > 1 ? ` (the most recent of ${many} runs since the request)` : '';
   // Never "its last run" — see pickRunForRequest. This run is the newest that
   // COULD have served the request; the workflow is shared, so it may have been
   // doing something else entirely.
-  if (run.status !== 'completed') return `Its most recent run since then${when}${scope} is still ${run.status}.`;
+  const status = run.status || 'in an unknown state';
+  if (status !== 'completed') return `Its most recent run since then${when}${scope} is still ${status}.`;
   if (run.conclusion === 'success') {
     // A green run that produced nothing is the WORSE case, and the one the old
     // "likely failed" wording actively hid: the fault is in the script's own
     // matching/gating, not in CI, so re-running it changes nothing.
     return `Its most recent run since then${when}${scope} SUCCEEDED, and the change still is not live — so re-running it will not help; the fault is in what it decided to do, not in CI.`;
   }
-  return `Its most recent run since then${when}${scope} ended as ${run.conclusion}.`;
+  return `Its most recent run since then${when}${scope} ended as ${run.conclusion || 'an unreported conclusion'}.`;
 }
 
 /**

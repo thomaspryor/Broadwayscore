@@ -21,6 +21,7 @@ const {
   parseBwwSlugTitle,
   extractArticleFields,
   classifyTitleDelta,
+  cleanCandidateTitle,
   classifyCandidate,
   slugCollidesWith,
   pruneUnmatchedAudit,
@@ -460,4 +461,66 @@ test('loosened matching terminates fast on adversarial input', () => {
   classifyTitleDelta('Hamilton', 'World Premiere Opens '.repeat(400) + 'x');
   classifyTitleDelta('Hamilton', 'at the ' + 'Theatre '.repeat(500));
   assert.ok(Date.now() - t0 < 2000, 'title matching must not backtrack catastrophically');
+});
+
+// --- the written title is the SHOW, not the headline (2026-08-05) -----------
+// Both shows added on 2026-08-05 landed in the public catalog as
+// "THE OUTSIDERS World Premiere" and
+// "TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T." — that is what a
+// visitor would have read on the show page, and the id/slug were derived from
+// it. Only the WRITTEN record is cleaned; every comparison still runs on the
+// raw headline, so no classification or dedupe decision moves.
+test('a candidate title is cleaned of headline furniture before it is written', () => {
+  assert.equal(cleanCandidateTitle('THE OUTSIDERS World Premiere'), 'The Outsiders');
+  assert.equal(
+    cleanCandidateTitle('TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T.'),
+    'Two Strangers (Carry A Cake Across New York)'
+  );
+  assert.equal(cleanCandidateTitle('3 SUMMERS OF LINCOLN at La Jolla Playhouse'), '3 Summers Of Lincoln');
+  assert.equal(cleanCandidateTitle('GYPSY World Premiere'), 'Gypsy');
+});
+
+test('cleaning never mangles a title that is already correct', () => {
+  assert.equal(cleanCandidateTitle('Hamilton'), 'Hamilton');
+  assert.equal(
+    cleanCandidateTitle('Two Strangers (Carry a Cake Across New York)'),
+    'Two Strangers (Carry a Cake Across New York)'
+  );
+  // A non-venue "at" clause is part of the name and must survive.
+  assert.equal(cleanCandidateTitle('Dinner at Eight'), 'Dinner at Eight');
+});
+
+test('a show whose real name IS editorial vocabulary is left alone', () => {
+  // Stripping "World Premiere" down to "World" would silently rename a show.
+  // Better a slightly noisy title than a mangled one — noise is recoverable.
+  assert.equal(cleanCandidateTitle('World Premiere'), 'World Premiere');
+  assert.equal(cleanCandidateTitle('Opening Night'), 'Opening Night');
+  assert.equal(cleanCandidateTitle(''), '');
+  assert.equal(cleanCandidateTitle(undefined), '');
+});
+
+// The clean title must NOT change the show's IDENTITY. The nightly crawl's
+// already-in-shows gate compares slugify(RAW headline) against
+// collisionSlugSet(shows). If the slug were cleaned too, every raw-derived
+// member of that set disappears, the gate stops matching the headline the show
+// came from, and the article re-fetches + re-stages EVERY NIGHT forever — the
+// exact failure collisionSlugSet's header warns about. Caught by adversarial
+// review, 2026-08-05, after the first cut cleaned the slug as well.
+test('cleaning the title does not break the nightly already-in-shows gate', () => {
+  const { collisionSlugSet, slugCollidesWith } = require('./aggregator-candidate-extract.js');
+  const { slugify } = require('./deduplication.js');
+  const RAW = 'THE OUTSIDERS World Premiere';
+  // The show exactly as the promoter creates it: raw-derived slug, clean title.
+  const promoted = {
+    id: slugify(RAW) + '-regional-2023',
+    slug: slugify(RAW) + '-regional-2023',
+    title: cleanCandidateTitle(RAW),
+  };
+  assert.equal(promoted.title, 'The Outsiders', 'the visible title is clean');
+  assert.ok(promoted.slug.startsWith('the-outsiders-world-premiere'), 'identity stays raw-derived');
+  assert.equal(
+    slugCollidesWith(RAW, collisionSlugSet([promoted])),
+    true,
+    'the roundup that created this show must still collide with it, or it re-stages nightly'
+  );
 });
