@@ -14,6 +14,7 @@
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
 #         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
 #         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | reset-soft-partial-commit
+#         | dry-run-flag-setter | swallowed-audit-writers
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
 set -uo pipefail
@@ -495,6 +496,59 @@ check_reset_soft_partial_commit() {
   fi
 }
 
+check_swallowed_audit_writers() {
+  # Task #1073 W5.1: a workflow step that (a) runs `node scripts/X.js` where
+  # X.js writes to data/audit/ (heuristic: grep the script file for the
+  # literal string 'data/audit/' — same loose/over-inclusive style as
+  # check_core_data_pairing()'s CORE_WRITER_SCRIPTS grep above), AND (b) that
+  # step swallows its own failure via `continue-on-error: true` or `|| true`
+  # anywhere in the step body, silently discards audit-ledger writes with
+  # zero signal anywhere. This is exactly the bug class that let
+  # opening-night-checklist.yml's history append fail invisibly for 100+ days
+  # (2026-04-26 -> 2026-08-05 — see the diagnosis comment above
+  # appendToHistory() in scripts/opening-night-checklist.js). Inline
+  # `# lint-allow-swallow: <reason>` anywhere in a step suppresses a specific,
+  # reviewed exemption for that step.
+  # Pure-function detector: scripts/lib/swallowed-audit-writer-check.js
+  # (colocated test: scripts/lib/swallowed-audit-writer-check.test.mjs).
+  local OUT
+  OUT=$(node -e "
+    const fs = require('fs');
+    const path = require('path');
+    const { findSwallowedAuditWriters } = require('./scripts/lib/swallowed-audit-writer-check.js');
+
+    const auditWriterCache = new Map();
+    function isAuditWriterScript(scriptPath) {
+      if (auditWriterCache.has(scriptPath)) return auditWriterCache.get(scriptPath);
+      let result = false;
+      try {
+        result = fs.readFileSync(scriptPath, 'utf8').includes('data/audit/');
+      } catch { result = false; }
+      auditWriterCache.set(scriptPath, result);
+      return result;
+    }
+
+    const dir = '.github/workflows';
+    let any = false;
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findSwallowedAuditWriters(text, isAuditWriterScript)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+    echo "No workflow step swallows a data/audit/-writing script's failure via continue-on-error/|| true (or all are documented lint-allow-swallow exemptions)"
+  else
+    echo "::error::Workflow step(s) swallow a data/audit/-writing script's failure (continue-on-error: true or '|| true'), discarding writes with no signal anywhere:"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: remove continue-on-error/|| true and handle the script's real exit code explicitly (see opening-night-checklist.yml's 'Run opening night checklist' step for the pattern), or if this step's failure genuinely is optional, add '# lint-allow-swallow: <reason>' to the step."
+    FAILED=1
+  fi
+}
+
 run_check() {
   case "$1" in
     prebuild)          check_prebuild ;;
@@ -510,7 +564,13 @@ run_check() {
     ledger-coverage)    check_ledger_coverage ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     dry-run-flag-setter) check_dry_run_flag_setter ;;
+    swallowed-audit-writers) check_swallowed_audit_writers ;;
     workflows)
+      # check_swallowed_audit_writers is deliberately NOT in this composite yet:
+      # the pre-push hook runs `workflows`, and the check has ~70 pre-existing
+      # violations (task #1073 follow-up card) — including it here would block
+      # every push repo-wide until the triage lands. Run it standalone
+      # (`swallowed-audit-writers`) or via `all`.
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_dry_run_flag_setter ;;
@@ -518,8 +578,8 @@ run_check() {
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
-      check_reset_soft_partial_commit; check_dry_run_flag_setter ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|reset-soft-partial-commit|dry-run-flag-setter|workflows|all>[,...]" >&2; exit 2 ;;
+      check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

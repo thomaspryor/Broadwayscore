@@ -169,6 +169,15 @@ async function processShow(showId) {
       kept++;
       continue;
     }
+    // Tagged by sweep-rss-pending-junk.js (task #1073): the pre-fix RSS
+    // openingWindow branch attributed unrelated theater-section articles
+    // (obituaries, awards coverage) to whatever show opened that week. These
+    // fail the identity check permanently — never fetch, never count as
+    // drain candidates.
+    if (data.rssIdentityRejected) {
+      kept++;
+      continue;
+    }
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);

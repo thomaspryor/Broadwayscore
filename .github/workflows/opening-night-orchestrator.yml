@@ -712,7 +712,6 @@ jobs:
 
       - name: Run opening night checklist + SLA dispatch
         if: always() && steps.find.outputs.has_shows == 'true'
-        continue-on-error: true
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -722,7 +721,17 @@ jobs:
           # --out keeps the JSON free of stdout/stderr log noise — a merged
           # redirect made checklist.json unparseable and silently un-scoped
           # the SLA dispatcher (2026-08-02 false P0 storm).
-          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json 2>&1 || true
+          # rc discrimination (task #1073, Codex ship-check): 0/1 are designed
+          # outcomes (clean / shows-have-errors — the SLA dispatcher consumes
+          # the JSON either way); >1 means the checklist CRASHED (the exact
+          # MODULE_NOT_FOUND that ran swallowed for 3 months) — fail the step
+          # loudly instead of feeding the SLA dispatcher an empty/stale file.
+          RC=0
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json 2>&1 || RC=$?
+          if [ "$RC" -gt 1 ]; then
+            echo "::error::opening-night-checklist crashed (exit $RC) — SLA dispatch skipped"
+            exit "$RC"
+          fi
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json
 
       - name: Notify on failure
