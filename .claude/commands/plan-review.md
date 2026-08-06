@@ -308,6 +308,19 @@ The user is approving THE PLAN, not a diff. They need to see the plan. No jargon
 
 Present the revised plan and ask: "Want to go with the revised plan, keep the original, or adjust further?"
 
+### Record the plan-phase verdict (BWSC repo — MANDATORY)
+
+As soon as the critique is complete — before the user answers Phase 7, and whether or not the plan changes — record it:
+
+```bash
+node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
+  --result=pass --session-id="$CLAUDE_SESSION_ID" --note="<one line: what the review changed>"
+```
+
+`~/.claude/hooks/infra-plan-review-gate.sh` reads this before the session's first edit to shared infrastructure — the dispatch layer, spend guards, concurrency primitives, the review gates, CI workflows and hooks (task #1079, owner decision 2026-08-05, scope in `scripts/lib/infra-review-scope.js`). Without the record the session stays blocked no matter how thorough the review was.
+
+Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock; overturning it is the owner's call, recorded as `--reviewer=owner-override`.
+
 ### Notion Update (BWSC projects only)
 
 After the user approves a plan, update the session's Notion card:
