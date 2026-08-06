@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const ROOT = path.join(__dirname, '..');
 const PENDING_DIR = path.join(ROOT, 'data', 'review-texts', '_pending');
@@ -69,7 +70,7 @@ function main() {
         j.rssIdentityRejected = true;
         j.rssIdentityRejectedReason = 'no title/slug match to show (pre-fix openingWindow date-only acceptance, task #1073)';
         j.rssIdentityRejectedAt = new Date().toISOString();
-        fs.writeFileSync(fp, JSON.stringify(j, null, 2) + '\n');
+        safeWriteReview(fp, j);
       }
     }
   }
