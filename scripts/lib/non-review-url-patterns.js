@@ -106,7 +106,17 @@ const ALLOWED_ORG_HOSTS = new Set([
 ]);
 
 const NON_REVIEW_PATH_PATTERNS = [
-  /^\/article(\/|$)/, // playbill article nav
+  // NOTE: `/^\/article(\/|$)/` was here, commented "playbill article nav", but
+  // these patterns are matched HOST-AGNOSTICALLY against every URL — and
+  // /article/ is where several major critic outlets publish. It dropped 736 of
+  // 18841 existing reviews when measured against reviews.json, including 144
+  // Vulture, 88 Entertainment Weekly, 33 Wall Street Journal, 106 New York Sun.
+  // Vulture's review URLs are literally vulture.com/article/theater-review-*.
+  //
+  // The intended case is already covered, correctly and host-scoped, by the
+  // playbill.com/broadwayworld.com 'aggregator-internal-nav' check in
+  // classifyReviewUrl() below. Do not re-add a bare /article/ rule here; scope
+  // any aggregator-nav rule to the aggregator's host.
   /^\/reviews\/?$/,   // BWW landing
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
