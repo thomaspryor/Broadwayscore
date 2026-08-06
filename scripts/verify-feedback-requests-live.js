@@ -462,6 +462,10 @@ async function main() {
       console.error(`::error::Failed to report "${alert.title}": ${err.message}`);
       process.exit(1);
     }
+    // result.action === 'digest' means the page-worthy gate (card #611)
+    // folded this into tomorrow's digest instead of emailing — the owner
+    // WILL see it there, so only a 'human' request that failed to deliver
+    // counts as failure here.
     if (result.action === 'human' && result.delivered === false) {
       console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was told.`);
       process.exit(1);

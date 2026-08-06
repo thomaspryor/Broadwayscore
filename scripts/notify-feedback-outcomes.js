@@ -281,6 +281,10 @@ async function main() {
   // routeAlert returns without recording when delivery actually failed (Resend
   // down, etc). Treat that as the send failure it is, so the workflow's
   // notify-failure step fires instead of the run looking clean.
+  // result.action === 'digest' means the page-worthy gate (card #611) folded
+  // this into tomorrow's digest instead of emailing — that still satisfies
+  // "the owner was told", so only a 'human' request that failed to deliver
+  // counts as failure here.
   if (result.action === 'human' && result.delivered === false) {
     console.error(`::error::Owner alert delivery FAILED for "${alert.title}" — nobody was notified.`);
     process.exit(1);
