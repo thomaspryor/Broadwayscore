@@ -9,5 +9,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-06T09:32:29.162Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "2/154 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThe Enormous Crocodile: score-drift\nThe Car Man: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-06T11:25:18.100Z"
   }
 ]

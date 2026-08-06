@@ -1,28 +1,40 @@
 {
-  "updatedAt": "2026-08-06T08:13:27.284Z",
-  "processed": 52,
-  "failed": 255,
-  "successRate": "16.9%",
+  "updatedAt": "2026-08-06T11:15:47.274Z",
+  "processed": 31,
+  "failed": 119,
+  "successRate": "20.7%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 23,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 5,
-    "scrapingbee": 8,
-    "brightdata": 2,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-08-06T07:42:40.608Z",
+      "t": "2026-08-06T10:59:56.640Z",
       "event": "bb-session",
-      "session": "aa1075fe",
+      "session": "ef8ff8dc",
+      "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
+    },
+    {
+      "t": "2026-08-06T11:00:13.254Z",
+      "event": "bb-session",
+      "session": "69b733cc",
+      "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
+    },
+    {
+      "t": "2026-08-06T11:03:19.347Z",
+      "event": "bb-session",
+      "session": "eb68461f",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the"
     },
     {
-      "t": "2026-08-06T07:42:41.664Z",
+      "t": "2026-08-06T11:03:19.818Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
