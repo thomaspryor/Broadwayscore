@@ -32,7 +32,7 @@ process.env.REVIEW_TEXTS_DIR = FIXTURE;
 // which broke every call site here with "audit(...).filter is not a function"
 // and left main red. Destructure or read .mismatches; never call array methods
 // on the result directly.
-const { stripTrivial, audit, fix } = require('../../scripts/audit-duplicate-of-url-mismatch.js');
+const { stripTrivial, canonicalizeHost, audit, fix } = require('../../scripts/audit-duplicate-of-url-mismatch.js');
 const SCRIPT_PATH = path.join(import.meta.dirname, '..', '..', 'scripts', 'audit-duplicate-of-url-mismatch.js');
 
 function writeShow(showId, files) {
@@ -91,6 +91,17 @@ test('different article on a domain-alias hostname is STILL flagged (alias foldi
   const mismatches = audit().mismatches.filter(m => m.showId === 'domain-alias-different-article-2026');
   assert.equal(mismatches.length, 1, 'different PATH must still flag even after hostname canonicalization');
   assert.equal(mismatches[0].reason, 'url-mismatch');
+});
+
+test('a real outlet-registry entry never folds onto ANOTHER outlet\'s own primary domain (ship-check follow-up)', () => {
+  // outlet-registry.json has at least one bad domainAliases entry where one
+  // outlet lists a DIFFERENT outlet's actual primary domain as an alias
+  // (e.g. "ap" aliasing "abcnews.go.com", which is abc-news's real domain).
+  // canonicalizeHost must never fold a genuine ABC News URL onto AP's
+  // canonical host on the strength of that bad entry.
+  const abcNewsHost = canonicalizeHost('abcnews.go.com/entertainment/story/review.html');
+  assert.equal(abcNewsHost, 'abcnews.go.com/entertainment/story/review.html',
+    'a hostname that is itself a registered primary domain must never be rewritten onto a different outlet\'s canonical host');
 });
 
 test('different-article (path) diff IS flagged and --fix clears it', () => {
