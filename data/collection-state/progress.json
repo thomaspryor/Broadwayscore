@@ -1,13 +1,23 @@
 {
   "processed": [
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "failed": [
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
     "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
     "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -17,12 +27,27 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "disruption-off-broadway-2026/nytimes--tim-teeman.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-06T01:22:30.695Z",
-  "lastProcessed": "now-you-see-me-live-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+  "log": [
+    {
+      "t": "2026-08-06T01:51:25.391Z",
+      "event": "bb-session",
+      "session": "0d352519",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-06T01:51:25.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
