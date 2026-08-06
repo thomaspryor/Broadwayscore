@@ -383,6 +383,75 @@ function checkPushVerification() {
   );
 }
 
+// --- Category A2b: Opening Night History Push Verification ---
+// Same drift logic as checkPushVerification() above (workflow ran
+// successfully more recently than the data reflects => the write/push is
+// failing silently even though the workflow itself reports green) — but
+// data/audit/opening-night-history.json stores its freshness signal as the
+// newest entry in a `runs[]` array, not a `_meta.lastUpdated`-style field, so
+// it can't be expressed as another PUSH_VERIFY_CHECKS entry (that generic
+// field-path reducer doesn't index arrays). Task #1073: this exact failure
+// mode ran undetected for 100+ days — opening-night-checklist.yml stayed
+// green ~5x/day while its history append silently crashed on every run from
+// 2026-04-26 onward (see the diagnosis comment above appendToHistory() in
+// scripts/opening-night-checklist.js). 26h (not the generic 24h) gives the
+// hourly cron slack for one missed/late tick before alerting.
+const OPENING_NIGHT_HISTORY_MAX_DRIFT_H = 26;
+
+function checkOpeningNightHistoryFreshness() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: 'Push verify: opening-night-history.json', status: 'warn', message: 'Skipped — no GH_TOKEN' }];
+  }
+  return [runCheck('Push verify: opening-night-history.json', () => {
+    try {
+      // Get last successful workflow run time (same gh invocation shape as
+      // checkPushVerification() above).
+      const result = execSync(
+        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      if (!result) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No successful Opening Night Checklist runs found' };
+      }
+      const workflowTime = new Date(result);
+
+      const filePath = path.join(AUDIT_DIR, 'opening-night-history.json');
+      if (!fs.existsSync(filePath)) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'File missing' };
+      }
+      const data = readJSON(filePath);
+      const runs = Array.isArray(data.runs) ? data.runs : [];
+      if (runs.length === 0) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No runs[] entries in file' };
+      }
+      const newest = runs[runs.length - 1];
+      if (!newest || !newest.at) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'Newest runs[] entry has no `at` field' };
+      }
+      const dataTime = new Date(newest.at);
+      if (isNaN(dataTime.getTime())) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: `Unparseable date on newest runs[] entry: ${newest.at}` };
+      }
+
+      // If the workflow ran successfully but the newest history entry is
+      // older by more than OPENING_NIGHT_HISTORY_MAX_DRIFT_H, the append is
+      // likely failing silently on every run (workflow green, ledger frozen).
+      const driftH = (workflowTime.getTime() - dataTime.getTime()) / (1000 * 60 * 60);
+      if (driftH > OPENING_NIGHT_HISTORY_MAX_DRIFT_H) {
+        return {
+          name: 'Push verify: opening-night-history.json',
+          status: 'error',
+          message: `Newest history entry ${formatAge(hoursAgo(newest.at))} old but Opening Night Checklist succeeded ${formatAge(hoursAgo(result))} ago — history append may be failing silently`,
+          hint: 'Check the "Run opening night checklist" step\'s logged exit code in opening-night-checklist.yml (0/1 expected; anything else — including exit 3 — means appendToHistory() failed). See the diagnosis comment above appendToHistory() in scripts/opening-night-checklist.js.',
+        };
+      }
+      return { name: 'Push verify: opening-night-history.json', status: 'pass', message: `History synced (newest entry ${formatAge(hoursAgo(newest.at))} old, workflow ${formatAge(hoursAgo(result))} ago)` };
+    } catch (err) {
+      return { name: 'Push verify: opening-night-history.json', status: 'warn', message: `Check failed: ${err.message.substring(0, 80)}` };
+    }
+  })];
+}
+
 // --- Category B: Data Sync ---
 
 function checkSync() {
@@ -3235,6 +3304,7 @@ async function main() {
   const allResults = [
     ...checkFreshness(),
     ...checkPushVerification(),
+    ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
     ...checkPipelines(),
     ...checkBatchState(),

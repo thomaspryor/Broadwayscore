@@ -271,6 +271,55 @@ function remediateMissingReviews(showResults, now) {
   return stats;
 }
 
+// W2.0 diagnosis (task #1073, 2026-08-06): data/audit/opening-night-history.json
+// stopped getting new entries on 2026-04-26 while this workflow kept reporting
+// green ~5x/day. Root cause, reproduced locally by renaming node_modules/cheerio
+// out of the way and re-running this exact script against real data:
+//
+//   opening-night-checklist.js (main(), the for-loop over targetShows) calls
+//   runChecks() -> opening-night-checks/index.js's loadChecks(), which does an
+//   UNGUARDED `require(checkFile)` for every *.check.js file — including
+//   bww-rr-count-mismatch.check.js and dtli-count-mismatch.check.js, which both
+//   `require('../../gather-reviews')` at module top level. gather-reviews.js in
+//   turn top-level-requires ./lib/page-validator.js, which top-level-requires the
+//   THIRD-PARTY npm package 'cheerio'. .github/workflows/opening-night-checklist.yml
+//   has NEVER had an `npm ci`/`npm install` step in its entire git history (it uses
+//   raw actions/setup-node@v5, not the shared ./.github/actions/setup-node
+//   composite that every other workflow uses) — so node_modules never exists on
+//   that job's runner, and `require('cheerio')` throws MODULE_NOT_FOUND.
+//
+//   That throw happens while loadChecks() is still synchronously loading check
+//   files — it propagates past runChecks()/main() as an uncaught exception RAISED
+//   DURING MODULE RESOLUTION, which Node prints via its own default handler
+//   (`node:internal/modules/cjs/loader:...`) and exits 1 BEFORE this file's own
+//   `main().catch()` wrapper (bottom of this file) ever gets a chance to run —
+//   so appendToHistory() (below) is never reached, on effectively every run.
+//   Confirmed against real CI logs: even before the 2026-08-04 change that added
+//   a second, direct top-level `require('./gather-reviews.js')` to THIS file for
+//   the remediation feature (which independently reproduces the identical crash),
+//   the exact same raw Node crash trace was already present — just silently
+//   merged into /tmp/checklist.json instead of the workflow log (the pre-2026-08-02
+//   step used `> /tmp/checklist.json 2>&1`), where opening-night-sla-dispatch.js's
+//   `JSON.parse` failure ("Unexpected token 'o', "node:intern"...") is the only
+//   surviving fingerprint — itself swallowed by that script's own graceful
+//   degradation. `continue-on-error: true` + `|| true` on the checklist step (see
+//   the workflow's W2.1 fix) then hid all of this end to end.
+//
+//   Net effect: this bug is NOT primarily about the empty catch below (though
+//   that WAS also a real, independent bug — a genuine write failure, e.g. disk
+//   full or a bad HISTORY_FILE path, would be silently swallowed forever with no
+//   trace anywhere). The real fix for the April 26 incident is workflow-level:
+//   .github/workflows/opening-night-checklist.yml now runs `npm ci` (via the
+//   shared setup-node composite action) so the require chain actually resolves,
+//   AND the checklist step's exit code is no longer swallowed, so a FUTURE
+//   regression of this class fails loudly instead of silently. This function's
+//   catch is hardened below as defense in depth for the class of bug it was
+//   originally meant to catch (a genuine write-time failure), and the
+//   "0 target shows" early-exit path (see main(), a few dozen lines up) now also
+//   calls appendToHistory() so a legitimate "checked, nothing in window" run is
+//   still recorded instead of silently skipping the ledger entirely.
+let historyAppendFailed = false;
+
 function appendToHistory(showResults, now) {
   let history = { runs: [] };
   if (fs.existsSync(HISTORY_FILE)) {
@@ -288,6 +337,19 @@ function appendToHistory(showResults, now) {
   });
   fs.mkdirSync(path.dirname(HISTORY_FILE), { recursive: true });
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2));
+}
+
+// Shared by both call sites (the "0 target shows" early exit and the normal
+// end-of-run path) so a write failure is reported and flagged identically
+// either way — was previously an inline `try { appendToHistory(...) } catch
+// (_) {}` at the normal call site that swallowed every error with zero signal.
+function appendToHistorySafe(showResults, now) {
+  try {
+    appendToHistory(showResults, now);
+  } catch (err) {
+    console.error('::error::opening-night-history append failed: ' + err.message);
+    historyAppendFailed = true;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -315,7 +377,11 @@ async function main() {
     } else {
       console.error(msg);
     }
-    process.exit(1);
+    // A "0 shows in window" run is still a completed, legitimate checklist run —
+    // record it in history instead of skipping the ledger entirely (W2.2: this
+    // early exit used to return before ever reaching appendToHistory below).
+    appendToHistorySafe([], now);
+    process.exit(historyAppendFailed ? 3 : 1);
   }
 
   // Snapshot before running checks (A6 requirement)
@@ -391,9 +457,17 @@ async function main() {
   }
 
   // Append to history
-  try { appendToHistory(showResults, now); } catch (_) {}
+  appendToHistorySafe(showResults, now);
 
   const hasErrors = showResults.some(({ summary }) => summary.errors > 0);
+  if (historyAppendFailed) {
+    // Distinct from the DESIGNED exit 1 "shows have errors" path below (W2.2) —
+    // exit 3 signals an INFRASTRUCTURE failure (the history ledger write itself
+    // failed) that the caller must not treat as "routine gaps, continue as
+    // normal". See the "Run opening night checklist" step in
+    // .github/workflows/opening-night-checklist.yml for the rc handling.
+    process.exit(3);
+  }
   process.exit(hasErrors ? 1 : 0);
 }
 

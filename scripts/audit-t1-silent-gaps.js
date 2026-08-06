@@ -503,6 +503,15 @@ async function main() {
           hint: g.fix,
           severity: 'error',
           disposition: 'auto',
+          // #1073 W1.1: was bare 'Investigate' (dispatchCard()'s default) —
+          // an Investigate-only card never implements the recovery command,
+          // it just writes findings to Outcome and clears. This condition
+          // already names its own exact fix command (fixCommand()), so it's
+          // a machine-runnable Fix, not something needing owner judgment
+          // first. (scripts/lib/plan-ready.js's shouldEscalateToFix also
+          // allowlists this conditionKey family for cards that slip through
+          // as bare Investigate anyway — e.g. pre-existing queued cards.)
+          cardAction: 'Fix',
         });
         if (result.action === 'silent' || result.dispatchOk === true) {
           dispatchedOutletKeys.add(`${g.showId}/${g.outletId}`);
@@ -604,6 +613,9 @@ async function main() {
           hint: g.fix,
           severity: 'error',
           disposition: 'auto',
+          // #1073 W1.1: see the matching comment on the gap: routeAlert()
+          // call above — bare Investigate never runs g.fix, it only reports.
+          cardAction: 'Fix',
         });
         // routeAlert() sets result.action = disposition ('auto') BEFORE it
         // knows whether the Notion dispatch actually succeeded — checking

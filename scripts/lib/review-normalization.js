@@ -1563,6 +1563,11 @@ function isProfileUrl(url) {
   if (/^\/people\/[A-Z]/i.test(url)) return true;
   // TheaterMania /shows/ pages are listing pages, not reviews
   if (/theatermania\.com\/shows\//.test(lower)) return true;
+  // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages too —
+  // a SERP-discovered cast page was ingested as a "review" for The Vessel
+  // (task #1073, 2026-08-05). Mirrors the TheaterMania line above and
+  // rebuild-all-reviews.js isShowListingUrl.
+  if (/broadwayworld\.com\/shows?\//.test(lower)) return true;
   return false;
 }
 
