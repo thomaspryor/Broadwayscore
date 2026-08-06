@@ -174,7 +174,15 @@ test('the real #543 submission routes to a review gather, not a parked issue', (
   // gather-reviews.js matches on show.id, not slug — they diverge for shows
   // whose slug drops the year/market suffix, so a slug here would silently
   // gather nothing.
-  assert.deepEqual(actions[0].inputs, { shows: '3-summers-of-lincoln-regional-2025' });
+  assert.deepEqual(actions[0].inputs, {
+    shows: '3-summers-of-lincoln-regional-2025',
+    // Tier 3, not the default 2. collect-outlet-reviews.js defaults untiered
+    // outlets to 3, so a tier-2 gather queries only national T1/T2 outlets and
+    // skips every local critic — the exact people who review regional tryouts
+    // (the San Diego Union-Tribune is this show's ONLY review). It would report
+    // success having changed nothing.
+    max_tier: '3',
+  });
   assert.equal(actions[0].reviewCountAtRequest, 1);
 });
 

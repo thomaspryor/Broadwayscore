@@ -313,10 +313,16 @@ test('a parenthesised subtitle plus a headline venue clause still matches', () =
     ),
     'match'
   );
-  assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James'), 'match');
+  // A house named WITHOUT venue vocabulary ("the St. James", "the Majestic")
+  // is indistinguishable from a title continuation, so it is NOT stripped and
+  // the pair stays a mismatch. Deliberate: rejecting costs a manual add, while
+  // stripping non-venue words is how "Dinner" matched "Dinner at Eight".
+  assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James'), 'mismatch');
+  // With venue vocabulary present it matches, which is the real BWW shape.
+  assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James Theatre'), 'match');
 });
 
-test('a one-word stem never matches through a venue strip — "Dinner" is not "Dinner at Eight"', () => {
+test('a non-venue "at" clause is part of the title and never stripped', () => {
   // stripTrailingVenueClause() cannot tell a venue from a title: "Dinner at
   // Eight" and "Meet Me at the Fair" are real shows whose "at" clause is part
   // of the NAME. Without a substantiality floor, a request for "Dinner" matched
@@ -348,4 +354,72 @@ test('pre-existing venue-parenthetical and typo behaviour is unchanged', () => {
   assert.equal(classifyTitleDelta('Hamilton', 'Hamilton'), 'match');
   assert.equal(classifyTitleDelta('Hamilton', 'Hamiltone'), 'typo');
   assert.equal(classifyTitleDelta('Hamilton', 'Wicked'), 'mismatch');
+});
+
+// --- stage/hall names, not just company names (2026-08-05, owner decision) ---
+// Aggregators name the HALL, not the company: BroadwayWorld filed Two Strangers
+// under "A.R.T.'s Loeb Drama Center", which matched nothing, so a genuine
+// Cambridge tryout classified 'off-broadway' and add-requested-show refused it
+// (run 31029607629). The company was already allowlisted — only its stage name
+// was missing. Users talk this way too ("The Weiss at La Jolla", GH #542).
+test('a feeder venue is recognised by its stage name, not only its company name', () => {
+  const { feederVenueCity } = require('./aggregator-candidate-extract.js');
+  assert.equal(feederVenueCity("A.R.T.'s Loeb Drama Center"), 'Cambridge, MA');
+  assert.equal(feederVenueCity('Loeb Drama Center'), 'Cambridge, MA');
+  assert.equal(feederVenueCity('Mandell Weiss Forum'), 'La Jolla, CA');
+  assert.equal(feederVenueCity("La Jolla Playhouse's Mandell Weiss Theatre"), 'La Jolla, CA');
+  assert.equal(feederVenueCity('Sheila and Hughes Potiker Theatre'), 'La Jolla, CA');
+  assert.equal(feederVenueCity('Lowell Davies Festival Theatre'), 'San Diego, CA');
+  assert.equal(feederVenueCity('Roda Theatre'), 'Berkeley, CA');
+  assert.equal(feederVenueCity('Toni Rembe Theater'), 'San Francisco, CA');
+});
+
+test('company names still classify exactly as before', () => {
+  const { feederVenueCity } = require('./aggregator-candidate-extract.js');
+  assert.equal(feederVenueCity('American Repertory Theater'), 'Cambridge, MA');
+  assert.equal(feederVenueCity('La Jolla Playhouse'), 'La Jolla, CA');
+  assert.equal(feederVenueCity('The Old Globe'), 'San Diego, CA');
+  assert.equal(feederVenueCity('Berkeley Repertory Theatre'), 'Berkeley, CA');
+});
+
+test('A.R.T./New York stays Off-Broadway — the ambiguity the bare pattern avoids', () => {
+  const { classifyVenueMarket } = require('./aggregator-candidate-extract.js');
+  // A real NYC Off-Broadway rental complex that shares the "A.R.T." initials
+  // with Cambridge's American Repertory Theater. Adding stage names must not
+  // reintroduce the collision the original comment warned about — which is why
+  // the new patterns name HALLS ("Loeb Drama Center") and never bare "A.R.T.".
+  assert.equal(classifyVenueMarket('A.R.T./New York Theatres'), 'off-broadway');
+  assert.equal(classifyVenueMarket('A.R.T. / New York Theatres'), 'off-broadway');
+  // Ordinary Broadway/Off-Broadway houses must never become regional.
+  assert.equal(classifyVenueMarket('Booth Theatre'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Lucille Lortel Theatre'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Vivian Beaumont Theater'), 'off-broadway');
+});
+
+// --- editorial headline furniture (2026-08-05) ------------------------------
+// BWW headlines describe the EVENT: "THE OUTSIDERS World Premiere Opens at La
+// Jolla Playhouse". The slug carries the bare title, so the two disagreed by
+// several words and a request for "The Outsiders" was refused against its own
+// correct roundup (dry run, 2026-08-05).
+test('editorial suffixes on an aggregator headline do not block a real match', () => {
+  assert.equal(classifyTitleDelta('The Outsiders', 'THE OUTSIDERS World Premiere'), 'match');
+  assert.equal(
+    classifyTitleDelta('The Outsiders', 'THE OUTSIDERS World Premiere Opens at La Jolla Playhouse'),
+    'match'
+  );
+  assert.equal(
+    classifyTitleDelta('3 Summers of Lincoln', '3 SUMMERS OF LINCOLN at La Jolla Playhouse'),
+    'match'
+  );
+});
+
+test('stripping editorial furniture never rescues a different show', () => {
+  // The trap: "World Premiere" appears in BOTH, but the shows differ. This is
+  // the real SERP collision that add-requested-show hit while looking for The
+  // Outsiders (run 31028149298) — it must stay rejected.
+  assert.equal(classifyTitleDelta('The Outsiders', 'GATSBY Makes its World Premiere at ART'), 'mismatch');
+  assert.equal(classifyTitleDelta('Wicked', 'Hamilton at the Gershwin Theatre'), 'mismatch');
+  // A title whose real name IS one of the stripped words survives intact.
+  assert.equal(classifyTitleDelta('The Revival', 'The Revival'), 'match');
+  assert.equal(classifyTitleDelta('Opening Night', 'Opening Night'), 'match');
 });

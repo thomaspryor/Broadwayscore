@@ -372,8 +372,69 @@ function unwrapParenTitle(s) {
  * Applied only to the loosened comparison below, never to the strict one, and
  * only to the TRAILING clause — a title with "at" mid-string is untouched.
  */
+/**
+ * Does a trailing "at X" clause actually name a VENUE?
+ *
+ * This is the guard that makes venue-stripping safe. "Dinner at Eight" and
+ * "Meet Me at the Fair" are real shows whose "at" clause is part of the NAME;
+ * blindly stripping it made a request for "Dinner" match the "Dinner at Eight"
+ * roundup, which would have written the WRONG show into shows.json. A venue
+ * clause names a theatre — so require it to look like one: a theatre keyword,
+ * a known Broadway-feeder venue, or a house initialism ("A.R.T.", "BAM").
+ * Anything else is treated as part of the title and left alone.
+ */
+const VENUE_KEYWORD_RE =
+  /\b(?:theat(?:re|er)s?|playhouse|cent(?:er|re)|stage|hall|arena|rep(?:ertory)?|globe|forum|opera|auditorium|pavilion|amphitheat(?:re|er)|festival|drama)\b/i;
+const VENUE_INITIALISM_RE = /^(?:the\s+)?(?:[A-Z]\.){2,}[A-Z]?\.?$|^(?:the\s+)?[A-Z]{2,6}$/;
+
+function isVenueLikeClause(clause) {
+  const c = String(clause || '').trim().replace(/[.,;]+$/, '');
+  if (!c) return false;
+  if (VENUE_KEYWORD_RE.test(c)) return true;
+  if (VENUE_INITIALISM_RE.test(c)) return true;
+  return Boolean(feederVenueCity(c));
+}
+
+/**
+ * Drop a trailing " at <venue>" clause — but ONLY when that clause really names
+ * a venue (see isVenueLikeClause). BWW body titles are headline-shaped
+ * ("TWO STRANGERS (...) at A.R.T.") while the slug carries the bare title.
+ * Applied only to the loosened comparison below, never to the strict one, and
+ * only to the TRAILING clause — a title with "at" mid-string is untouched.
+ */
 function stripTrailingVenueClause(s) {
-  return String(s || '').replace(/\s+at\s+[^,;]*$/i, '');
+  const str = String(s || '');
+  const m = /\s+at\s+([^,;]*)$/i.exec(str);
+  if (!m) return str;
+  if (!isVenueLikeClause(m[1])) return str;
+  return str.slice(0, m.index);
+}
+
+/**
+ * Trailing editorial furniture aggregators bolt onto a headline:
+ * "THE OUTSIDERS World Premiere", "GYPSY Opens Tonight",
+ * "HADESTOWN Celebrates Opening Night". These describe the EVENT, not the
+ * show, so the slug ("The-Outsiders") and the body headline disagree by
+ * several words and classifyTitleDelta called it a mismatch — which is why a
+ * request for "The Outsiders" was refused against its own correct La Jolla
+ * roundup (dry run, 2026-08-05).
+ *
+ * Deliberately a CLOSED list of known phrases, not a general "strip trailing
+ * words" rule: an open-ended trim would eat real subtitles. Applied only to the
+ * loosened comparison, which demands exact equality and a substantial stem.
+ */
+const EDITORIAL_SUFFIX_RE =
+  /\s+(?:(?:world|us|u\.s\.|american|west\s+coast|east\s+coast|broadway|off-broadway|london|regional|national)\s+)?(?:premiere|revival|transfer|tour)\b|\s+(?:opens?|opening|begins?|starts?|launches?|celebrates?|kicks?\s+off)(?:\s+(?:tonight|today|night|performances|previews|its\s+run))?\b|\s+opening\s+night\b/gi;
+
+function stripEditorialSuffix(s) {
+  let out = String(s || '');
+  // Repeat: "World Premiere Opens" needs two passes ("...Opens" then "...Premiere").
+  for (let i = 0; i < 4; i++) {
+    const next = out.replace(EDITORIAL_SUFFIX_RE, '').trim();
+    if (next === out) break;
+    out = next;
+  }
+  return out;
 }
 
 function classifyTitleDelta(refTitle, bodyTitle) {
@@ -402,11 +463,11 @@ function classifyTitleDelta(refTitle, bodyTitle) {
   // real case ("two strangers carry a cake across new york", "sunset blvd")
   // while refusing every one-word stem. Erring toward rejection is right here:
   // a refused add costs a manual entry, a false accept corrupts the catalog.
-  const substantial = (s) => s.split(' ').filter(Boolean).length >= 2 && s.length >= 10;
-  const loosen = (s) => normalizeTitle(stripTrailingVenueClause(unwrapParenTitle(s)));
+  const loosen = (s) =>
+    normalizeTitle(stripEditorialSuffix(stripTrailingVenueClause(unwrapParenTitle(s))));
   const au = loosen(refTitle);
   const bu = loosen(bodyTitle);
-  if (au && bu && au === bu && substantial(au)) return 'match';
+  if (au && bu && au === bu) return 'match';
 
   const d = levenshteinDistance(a, b);
   if (d >= 1 && d <= 3) return 'typo';
@@ -521,20 +582,35 @@ function referenceTitle(source, record) {
 // classify regional without a city and vice versa.
 // NOTE: no bare "A.R.T." pattern — "A.R.T./New York Theatres" is a real NYC
 // Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
+//
+// EACH ENTRY MATCHES THE COMPANY NAME **AND** ITS STAGE/HALL NAMES (2026-08-05,
+// owner decision). Aggregators routinely name the hall, not the company:
+// BroadwayWorld filed Two Strangers under "A.R.T.'s Loeb Drama Center", which
+// matched nothing here, so a genuine Cambridge tryout classified 'off-broadway'
+// and was refused by add-requested-show. The company was already allowlisted —
+// only its stage name was missing. Users talk this way too ("The Weiss at La
+// Jolla", GH #542). Stage names are included ONLY where unambiguous: generic
+// ones ("Owen Theatre", "The Yard", "White Theatre") are deliberately omitted
+// rather than risk classifying an unrelated production as a Broadway feeder.
 const REGIONAL_FEEDER_VENUES = [
-  { re: /\bamerican repertory theat(?:er|re)\b/i, city: 'Cambridge, MA', domain: 'americanrepertorytheater.org' },
-  { re: /\bla jolla playhouse\b/i, city: 'La Jolla, CA', domain: 'lajollaplayhouse.org' },
-  { re: /\bold globe\b/i, city: 'San Diego, CA', domain: 'theoldglobe.org' },
-  { re: /\bberkeley rep(?:ertory)?\b/i, city: 'Berkeley, CA', domain: 'berkeleyrep.org' },
-  { re: /\bgoodman(?: theatre| theater)?\b/i, city: 'Chicago, IL', domain: 'goodmantheatre.org' },
+  // Loeb Drama Center is A.R.T. Cambridge's mainstage — safe where bare
+  // "A.R.T." is not, since A.R.T./New York has no hall by that name.
+  { re: /\bamerican repertory theat(?:er|re)\b|\bloeb drama cent(?:er|re)\b/i, city: 'Cambridge, MA', domain: 'americanrepertorytheater.org' },
+  // Mandell Weiss Theatre/Forum + Potiker Theatre are La Jolla Playhouse halls.
+  { re: /\bla jolla playhouse\b|\bmandell weiss\b|\bweiss (?:theat(?:re|er)|forum)\b|\bpotiker theat(?:re|er)\b/i, city: 'La Jolla, CA', domain: 'lajollaplayhouse.org' },
+  // Lowell Davies Festival Theatre + Shiley Stage are Old Globe stages.
+  { re: /\bold globe\b|\blowell davies\b|\bshiley stage\b/i, city: 'San Diego, CA', domain: 'theoldglobe.org' },
+  // Roda + Peet's are Berkeley Rep's two houses.
+  { re: /\bberkeley rep(?:ertory)?\b|\broda theat(?:re|er)\b|\bpeet'?s theat(?:re|er)\b/i, city: 'Berkeley, CA', domain: 'berkeleyrep.org' },
+  { re: /\bgoodman(?: theatre| theater)?\b|\balbert theat(?:re|er)\b/i, city: 'Chicago, IL', domain: 'goodmantheatre.org' },
   { re: /\bsteppenwolf\b/i, city: 'Chicago, IL', domain: 'steppenwolf.org' },
   { re: /\bchicago shakespeare\b/i, city: 'Chicago, IL', domain: 'chicagoshakes.com' },
   { re: /\b(?:arena stage|kreeger|fichandler)\b/i, city: 'Washington, DC', domain: 'arenastage.org' },
   { re: /\bshakespeare theatre company\b/i, city: 'Washington, DC', domain: 'shakespearetheatre.org' },
-  { re: /\bamerican conservatory theater\b/i, city: 'San Francisco, CA', domain: 'act-sf.org' },
+  { re: /\bamerican conservatory theater\b|\btoni rembe\b/i, city: 'San Francisco, CA', domain: 'act-sf.org' },
   { re: /\b5th avenue theatre\b/i, city: 'Seattle, WA', domain: '5thavenue.org' },
   { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ', domain: 'papermill.org' },
-  { re: /\balliance theatre\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
+  { re: /\balliance theatre\b|\bcoca-?cola stage\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
   { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA', domain: 'centertheatregroup.org' },
 ];
 
