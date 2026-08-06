@@ -20,9 +20,13 @@
 'use strict';
 
 // Lines that are pure CLI/session chrome with no reviewer content of their
-// own. If everything surviving the awk filter is one of these, the filter
-// caught only scaffolding — not an empty-but-valid "no findings" reply
-// (a real "no findings" reply is prose, not a bare marker line).
+// own. ship-check.md's awk filter (`/^codex$/{flag=1;next} /^tokens used$/
+// {flag=0} flag`) already excludes these two exact lines from what reaches
+// this function on the Codex path — this set is defense-in-depth for callers
+// that don't go through that exact filter (e.g. a future fallback path with
+// different chrome, or a change to the awk pattern), not a case the current
+// pipeline can trigger. Kept because a marker line slipping through a changed
+// filter is exactly the silent-degrade shape task #1081 exists to catch.
 const MARKER_ONLY_LINES = new Set([
   'codex',
   'tokens used',
