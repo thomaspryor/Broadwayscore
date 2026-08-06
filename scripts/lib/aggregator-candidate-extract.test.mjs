@@ -21,6 +21,7 @@ const {
   parseBwwSlugTitle,
   extractArticleFields,
   classifyTitleDelta,
+  cleanCandidateTitle,
   classifyCandidate,
   slugCollidesWith,
   pruneUnmatchedAudit,
@@ -460,4 +461,40 @@ test('loosened matching terminates fast on adversarial input', () => {
   classifyTitleDelta('Hamilton', 'World Premiere Opens '.repeat(400) + 'x');
   classifyTitleDelta('Hamilton', 'at the ' + 'Theatre '.repeat(500));
   assert.ok(Date.now() - t0 < 2000, 'title matching must not backtrack catastrophically');
+});
+
+// --- the written title is the SHOW, not the headline (2026-08-05) -----------
+// Both shows added on 2026-08-05 landed in the public catalog as
+// "THE OUTSIDERS World Premiere" and
+// "TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T." — that is what a
+// visitor would have read on the show page, and the id/slug were derived from
+// it. Only the WRITTEN record is cleaned; every comparison still runs on the
+// raw headline, so no classification or dedupe decision moves.
+test('a candidate title is cleaned of headline furniture before it is written', () => {
+  assert.equal(cleanCandidateTitle('THE OUTSIDERS World Premiere'), 'The Outsiders');
+  assert.equal(
+    cleanCandidateTitle('TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T.'),
+    'Two Strangers (Carry A Cake Across New York)'
+  );
+  assert.equal(cleanCandidateTitle('3 SUMMERS OF LINCOLN at La Jolla Playhouse'), '3 Summers Of Lincoln');
+  assert.equal(cleanCandidateTitle('GYPSY World Premiere'), 'Gypsy');
+});
+
+test('cleaning never mangles a title that is already correct', () => {
+  assert.equal(cleanCandidateTitle('Hamilton'), 'Hamilton');
+  assert.equal(
+    cleanCandidateTitle('Two Strangers (Carry a Cake Across New York)'),
+    'Two Strangers (Carry a Cake Across New York)'
+  );
+  // A non-venue "at" clause is part of the name and must survive.
+  assert.equal(cleanCandidateTitle('Dinner at Eight'), 'Dinner at Eight');
+});
+
+test('a show whose real name IS editorial vocabulary is left alone', () => {
+  // Stripping "World Premiere" down to "World" would silently rename a show.
+  // Better a slightly noisy title than a mangled one — noise is recoverable.
+  assert.equal(cleanCandidateTitle('World Premiere'), 'World Premiere');
+  assert.equal(cleanCandidateTitle('Opening Night'), 'Opening Night');
+  assert.equal(cleanCandidateTitle(''), '');
+  assert.equal(cleanCandidateTitle(undefined), '');
 });

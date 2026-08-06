@@ -446,6 +446,51 @@ function stripEditorialSuffix(s) {
   return out;
 }
 
+/**
+ * The title to WRITE for a candidate: the show's name, not the headline.
+ *
+ * Aggregator headlines describe an event at a venue, so the raw extracted title
+ * carries both ("THE OUTSIDERS World Premiere",
+ * "TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T."). Written straight
+ * through, that becomes the public show title AND the id/slug derived from it.
+ *
+ * Reuses the exact strippers the loosened matcher uses, so what we write is
+ * consistent with what we match on. Shouty all-caps is restored to title case
+ * via the existing titleCaseShout. Parentheses are deliberately NOT unwrapped —
+ * a parenthesised subtitle is part of the real name
+ * ("Two Strangers (Carry a Cake Across New York)").
+ *
+ * Never returns empty: if stripping would leave nothing, the original wins.
+ * A slightly noisy title is recoverable; a blank one corrupts the catalog.
+ */
+const EDITORIAL_VOCAB = new Set([
+  'world', 'us', 'american', 'west', 'east', 'coast', 'broadway', 'london',
+  'regional', 'national', 'premiere', 'revival', 'transfer', 'tour', 'opens',
+  'opening', 'night', 'begins', 'starts', 'launches', 'celebrates', 'kicks',
+  'off', 'performances', 'previews', 'the', 'its', 'run', 'a', 'an',
+]);
+
+/** Is every remaining word editorial furniture? Then we stripped the title. */
+function isAllEditorial(text) {
+  const words = String(text || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+  return words.length > 0 && words.every((w) => EDITORIAL_VOCAB.has(w));
+}
+
+function cleanCandidateTitle(raw) {
+  const original = String(raw || '').trim();
+  if (!original) return original;
+  const stripped = stripEditorialSuffix(stripTrailingVenueClause(original)).trim();
+  // Keep the original when stripping leaves nothing, or leaves only more
+  // editorial words — a show actually named "World Premiere" must not become
+  // "World". A slightly noisy title is recoverable; a mangled one is not.
+  const base = stripped && !isAllEditorial(stripped) ? stripped : original;
+  const letters = base.replace(/[^A-Za-z]/g, '');
+  if (!letters || letters !== letters.toUpperCase()) return base;
+  // titleCaseShout only capitalises after whitespace, so "(CARRY" would become
+  // "(carry". Capitalise after an opening bracket or quote too.
+  return titleCaseShout(base).replace(/([([{"'\u2018\u201c])([a-z])/g, (_, p, c) => p + c.toUpperCase());
+}
+
 function classifyTitleDelta(refTitle, bodyTitle) {
   const a = normalizeTitle(refTitle || '');
   const b = normalizeTitle(bodyTitle || '');
@@ -708,10 +753,19 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
   // (S2, task #995: a rule whose corroborators nobody builds confirms
   // nothing — see decideCriticListingPromotion in ob-cross-validation.js).
   // Optional; defaults to [] so every existing caller/candidate is unaffected.
+  // The DISPLAY title, cleaned of headline furniture. fields.title comes from a
+  // news headline, so it carries the event description and the venue clause:
+  // the two shows added on 2026-08-05 landed in the public catalog as
+  // "THE OUTSIDERS World Premiere" and
+  // "TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T." — which is what a
+  // visitor would have read on the show page, and what the id/slug were derived
+  // from. Only the written record is cleaned; every comparison above still runs
+  // on the raw headline, so no classification or dedupe decision shifts.
+  const displayTitle = cleanCandidateTitle(fields.title);
   const candidate = {
-    title: fields.title,
+    title: displayTitle,
     venue: fields.venue,
-    slug: slugify(fields.title),
+    slug: slugify(displayTitle),
     source,
     sourceUrl: record.url || null,
     articlePublishedAt: fields.date,
@@ -723,6 +777,7 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
 }
 
 module.exports = {
+  cleanCandidateTitle,
   INFRASTRUCTURE_SLUG_RE,
   REGIONAL_FEEDER_VENUES,
   feederVenueCity,
