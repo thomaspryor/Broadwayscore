@@ -174,6 +174,8 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
   // provisional "groupon" outlet before downstream guards flagged it. All
   // measured zero hits across the 18,860 scored review URLs in reviews.json.
+  // No $ anchor on purpose: groupon sells under many ccTLDs (groupon.com,
+  // groupon.co.uk, groupon.de, …) — unlike the single-domain siblings below.
   { host: /(^|\.)groupon\./, reason: 'ticketing-reseller' },
   { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
   { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
