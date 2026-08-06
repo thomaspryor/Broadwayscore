@@ -221,58 +221,76 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
    **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`.
-   - READY (local): run Codex as below.
+   - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
+     ```bash
+     set -o pipefail
+     # No suffix after the X's — BSD mktemp (macOS) silently ignores a template
+     # that doesn't end in X's and returns the literal (non-random) path instead
+     # of erroring, which would reintroduce the exact shared-path collision this
+     # is meant to avoid. `mktemp /tmp/foo.XXXXXX` is the portable form.
+     export CODEX_OUT=$(mktemp /tmp/codex-review-output.XXXXXX)
+     # Determine the base ref. Robust against detached HEAD, non-main default branches (dev/trunk), and shallow repos.
+     DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+     [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
+     CURRENT=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+     if [ "$CURRENT" = "$DEFAULT_BRANCH" ] || [ "$CURRENT" = "HEAD" ]; then
+       # On default branch or detached: compare last 5 commits, falling back to root if shallow
+       BASE=$(git rev-parse HEAD~5 2>/dev/null) || BASE=$(git rev-list --max-parents=0 HEAD | head -1)
+     else
+       BASE="$DEFAULT_BRANCH"
+     fi
+     if [ -z "$BASE" ]; then echo "ERROR: could not determine base ref"; exit 1; fi
+     {
+       cat <<'PROMPT_HEAD'
+     You are a senior engineer doing an adversarial pre-ship review. The diff below is about to be deployed. Your job is to find what's brittle, what's premature, and what assumptions are wrong — NOT to validate that it works.
+
+     You have read access to the repository — use Read/Grep on the actual files. Cite specific files and line numbers.
+
+     **CHALLENGE THE DESIGN:**
+     1. Was this the right approach? Is there a simpler one that was skipped? (config change vs new code, existing helper vs new function, deletion vs addition)
+     2. What hidden assumption does this make that future-you will regret? (data shape, API contract, ordering, idempotency)
+     3. What edge case does the surrounding code already handle that THIS code does not? Find the analogous pattern that already exists and the way the diff diverges from it.
+     4. What's the rollback story? If this ships and breaks production at 2am, what's the path back? Is rollback safe or does it leave half-written state?
+
+     **CHALLENGE THE INTEGRATION:**
+     5. Race conditions: are there any concurrent paths (parallel CI, multiple workflows, user actions) that hit the same resource the diff touches? What happens if they collide?
+     6. Backwards compatibility: does this break any existing data, route, query, or API consumer? Search for callers/readers/writers of anything the diff changed.
+     7. Failure modes: list 3 concrete scenarios where this code does the wrong thing silently. (Not crashes — silent wrongness.) For each, what would the user see?
+
+     Reference specific files (path:line) for every finding. No generic advice. Under 600 words. Bullet points only.
+
+     THE DIFF TO REVIEW:
+     PROMPT_HEAD
+       git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -2000
+       echo
+       echo "=== UNCOMMITTED CHANGES ==="
+       git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
+     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
+       | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
+       | tee "$CODEX_OUT"
+     ```
+     Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.
+
+     **Step 2 — validate the output before trusting it** (task #1081 — `codex exec` has exited 0 with zero bytes of output while `command -v codex` reports READY; exit code and CLI presence do not prove the reviewer said anything). Run this immediately after Step 1, in the same shell so `$CODEX_OUT` is still set:
+     ```bash
+     node -e "
+       const { isUsableReviewOutput } = require('./scripts/lib/review-output-guard.js');
+       const fs = require('fs');
+       const text = fs.readFileSync(process.env.CODEX_OUT, 'utf-8');
+       process.exit(isUsableReviewOutput(text) ? 0 : 1);
+     " && echo CODEX_USABLE || echo CODEX_EMPTY
+     rm -f "$CODEX_OUT"
+     ```
+     If `CODEX_EMPTY`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner that Codex was READY but returned unusable output (distinct from "not installed" — this is the flaky-empty-output failure mode, not a missing CLI).
    - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent. Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
-   ```bash
-   set -o pipefail
-   # Determine the base ref. Robust against detached HEAD, non-main default branches (dev/trunk), and shallow repos.
-   DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
-   [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
-   CURRENT=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-   if [ "$CURRENT" = "$DEFAULT_BRANCH" ] || [ "$CURRENT" = "HEAD" ]; then
-     # On default branch or detached: compare last 5 commits, falling back to root if shallow
-     BASE=$(git rev-parse HEAD~5 2>/dev/null) || BASE=$(git rev-list --max-parents=0 HEAD | head -1)
-   else
-     BASE="$DEFAULT_BRANCH"
-   fi
-   if [ -z "$BASE" ]; then echo "ERROR: could not determine base ref"; exit 1; fi
-   {
-     cat <<'PROMPT_HEAD'
-   You are a senior engineer doing an adversarial pre-ship review. The diff below is about to be deployed. Your job is to find what's brittle, what's premature, and what assumptions are wrong — NOT to validate that it works.
-
-   You have read access to the repository — use Read/Grep on the actual files. Cite specific files and line numbers.
-
-   **CHALLENGE THE DESIGN:**
-   1. Was this the right approach? Is there a simpler one that was skipped? (config change vs new code, existing helper vs new function, deletion vs addition)
-   2. What hidden assumption does this make that future-you will regret? (data shape, API contract, ordering, idempotency)
-   3. What edge case does the surrounding code already handle that THIS code does not? Find the analogous pattern that already exists and the way the diff diverges from it.
-   4. What's the rollback story? If this ships and breaks production at 2am, what's the path back? Is rollback safe or does it leave half-written state?
-
-   **CHALLENGE THE INTEGRATION:**
-   5. Race conditions: are there any concurrent paths (parallel CI, multiple workflows, user actions) that hit the same resource the diff touches? What happens if they collide?
-   6. Backwards compatibility: does this break any existing data, route, query, or API consumer? Search for callers/readers/writers of anything the diff changed.
-   7. Failure modes: list 3 concrete scenarios where this code does the wrong thing silently. (Not crashes — silent wrongness.) For each, what would the user see?
-
-   Reference specific files (path:line) for every finding. No generic advice. Under 600 words. Bullet points only.
-
-   THE DIFF TO REVIEW:
-   PROMPT_HEAD
-     git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -2000
-     echo
-     echo "=== UNCOMMITTED CHANGES ==="
-     git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
-   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-     | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag'
-   ```
-   Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.
 
 ### Phase 6: Report
 
 Present findings in a structured report.
 
 **Reviewer coverage (print this FIRST — a degraded review is NOT a passed review):**
-State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
+State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini`; do not fold it into a bare "reviewed, no findings" line, since an empty-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
 
 **P0 — Blockers** (must fix before shipping):
 - Build/lint/type errors

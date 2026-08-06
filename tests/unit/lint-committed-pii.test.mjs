@@ -9,8 +9,8 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { scanJsonValue, formatPath, maskEmail, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
-const { scanFile, ALLOWLIST } = require('../../scripts/lint-committed-pii.js');
+const { scanJsonValue, scanJsonlValue, formatPath, maskEmail, EMAIL_RE } = require('../../scripts/lib/pii-scan.js');
+const { scanFile, listTrackedAuditFiles, ALLOWLIST } = require('../../scripts/lint-committed-pii.js');
 
 describe('EMAIL_RE', () => {
   test('matches a plain email address', () => {
@@ -130,6 +130,59 @@ describe('scanFile — end-to-end against fixtures', () => {
     const { error, findings } = scanFile('tests/fixtures/lint-committed-pii/does-not-exist.json');
     assert.ok(error);
     assert.deepStrictEqual(findings, []);
+  });
+});
+
+describe('scanJsonlValue — JSON Lines coverage (task #1092)', () => {
+  test('flags a submitter email baked into a title field, queued-alert-attempt shape', () => {
+    const text =
+      '{"ts":"2026-08-06T00:00:00.000Z","conditionKey":"feedback-outcome:missing-show",' +
+      '"title":"Feedback from Jane Submitter (jane.submitter@example.com): please add this show",' +
+      '"ok":true,"error":null}\n';
+    const findings = scanJsonlValue(text);
+    assert.strictEqual(findings.length, 1);
+    assert.strictEqual(findings[0].type, 'email-shaped-string');
+    assert.deepStrictEqual(findings[0].path, ['line1', 'title']);
+  });
+
+  test('skips a line that fails to parse instead of throwing', () => {
+    const text = '{"title":"clean line"}\nnot valid json\n{"title":"also clean"}\n';
+    assert.deepStrictEqual(scanJsonlValue(text), []);
+  });
+
+  test('ignores blank lines', () => {
+    const text = '{"title":"clean"}\n\n\n{"title":"still clean"}\n';
+    assert.deepStrictEqual(scanJsonlValue(text), []);
+  });
+
+  test('clean fixture scans clean end-to-end via scanFile', () => {
+    const { error, findings } = scanFile('tests/fixtures/lint-committed-pii/clean.jsonl');
+    assert.strictEqual(error, null);
+    assert.deepStrictEqual(findings, []);
+  });
+
+  test('the dirty fixture (submitter email in a queued alert-attempt title) trips the scan via scanFile', () => {
+    const { error, findings } = scanFile('tests/fixtures/lint-committed-pii/dirty-attempts.jsonl');
+    assert.strictEqual(error, null);
+    assert.ok(findings.some((f) => f.type === 'email-shaped-string'));
+  });
+
+  test('a malformed line is recorded on badLineNumbers instead of silently vanishing', () => {
+    const { badLineNumbers } = scanFile('tests/fixtures/lint-committed-pii/dirty-attempts.jsonl');
+    assert.deepStrictEqual(badLineNumbers, [2]);
+  });
+
+  test('a clean jsonl file reports an empty badLineNumbers', () => {
+    const { badLineNumbers } = scanFile('tests/fixtures/lint-committed-pii/clean.jsonl');
+    assert.deepStrictEqual(badLineNumbers, []);
+  });
+});
+
+describe('listTrackedAuditFiles — task #1092', () => {
+  test('includes both .json and .jsonl tracked files', () => {
+    const files = listTrackedAuditFiles();
+    assert.ok(files.some((f) => f.endsWith('.json')), 'expected at least one tracked .json file');
+    assert.ok(files.some((f) => f.endsWith('.jsonl')), 'expected at least one tracked .jsonl file');
   });
 });
 

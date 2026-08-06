@@ -17,7 +17,19 @@
  * behind a plain exit code, so a bash wrapper or a Python worker can call it
  * as a one-line guard before spawning `claude` for real:
  *
- *   node scripts/claude-auth-preflight.js || { echo "auth broken, not running"; exit 1; }
+ *   AUTH_MODE=$(node scripts/claude-auth-preflight.js) || { echo "auth broken, not running"; exit 1; }
+ *
+ * On success, stdout is EXACTLY one line: `MODE=oauth` or `MODE=api-key` (all
+ * diagnostics go to stderr). Callers that go on to spawn `claude` themselves
+ * MUST reproduce that exact credential shape rather than just checking the
+ * exit code and moving on: preflightAuth()'s oauth probe explicitly clears
+ * ANTHROPIC_API_KEY to test the stored-login path, and if the real spawn
+ * still has an ANTHROPIC_API_KEY lying around (e.g. sourced from a .env file)
+ * it will silently use that instead — proven-free-subscription becomes
+ * unproven-pay-per-token with no error (same bug class as claude-cli.js's
+ * `envForMode`, flagged in ship-check adversarial review 2026-08-06). On
+ * `MODE=oauth`, unset ANTHROPIC_API_KEY before the real spawn; on
+ * `MODE=api-key`, make sure it's actually populated.
  *
  * Deliberately does NOT page/alert — that's scripts/check-claude-auth-health.js's
  * job (task #1076/#1088), already running once daily on its own schedule.
@@ -38,6 +50,11 @@ Usage:
   node scripts/claude-auth-preflight.js   probe once, exit 0 (ok) or 1 (not ok)
   --help, -h                              show this message, do nothing else
 
+On exit 0, stdout is exactly one line: MODE=oauth or MODE=api-key. Callers
+that go on to spawn claude directly MUST match that credential shape in the
+real spawn's env (unset ANTHROPIC_API_KEY for oauth, ensure it's set for
+api-key) — see the file header for why.
+
 Wraps preflightAuth() (scripts/lib/claude-cli.js) — the same probe cmux-launch.js
 and notion-action-poll.js already gate real launches on. Call this before
 spawning \`claude\` directly from a bash/python launchd wrapper so a revoked or
@@ -50,21 +67,27 @@ alert/page — scripts/check-claude-auth-health.js does that once daily.
 // require()d).
 function formatPreflightResult(auth) {
   if (auth && auth.ok) {
-    return { exitCode: 0, message: `[claude-auth-preflight] ok (mode=${auth.mode})` };
+    return {
+      exitCode: 0,
+      stderrMessage: `[claude-auth-preflight] ok (mode=${auth.mode})`,
+      stdoutLine: `MODE=${auth.mode}`,
+    };
   }
   const detail = (auth && auth.detail) || 'no working credential';
   return {
     exitCode: 1,
-    message: `[claude-auth-preflight] REFUSING: claude cannot authenticate — ${detail}\n`
+    stderrMessage: `[claude-auth-preflight] REFUSING: claude cannot authenticate — ${detail}\n`
       + `[claude-auth-preflight] Repair: ${REPAIR_STEPS}`,
+    stdoutLine: null,
   };
 }
 
 function main(argv = process.argv.slice(2), { preflightAuthFn = preflightAuth } = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const auth = preflightAuthFn({ log: msg => console.error(`[claude-auth-preflight] ${msg}`) });
-  const { exitCode, message } = formatPreflightResult(auth);
-  console.error(message);
+  const { exitCode, stderrMessage, stdoutLine } = formatPreflightResult(auth);
+  console.error(stderrMessage);
+  if (stdoutLine) console.log(stdoutLine);
   return exitCode;
 }
 
