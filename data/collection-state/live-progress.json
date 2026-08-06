@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-08-06T11:52:29.351Z",
-  "processed": 2,
-  "failed": 28,
-  "successRate": "6.7%",
+  "updatedAt": "2026-08-06T11:55:13.852Z",
+  "processed": 5,
+  "failed": 35,
+  "successRate": "12.5%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-08-06T11:54:20.935Z",
+      "event": "bb-session",
+      "session": "d2847405",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/im-every-woman-review-t"
+    },
+    {
+      "t": "2026-08-06T11:54:21.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    }
+  ]
 }
