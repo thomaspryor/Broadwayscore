@@ -808,13 +808,23 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // auto-cleared exactly the flags this block promises to preserve. That put a
   // 2016 Broadway 'Cats' review live on the 2026 West End show page (class-A
   // cross-market leak, main red 2026-08-06) and corrupted 18 files in one day.
-  const isUrlBasedWrongProd = !!merged.wrongProductionNote
-    && merged.wrongProductionNote.startsWith('Same URL');
+  // Note presence alone is not a type system: cleanup-dedup-comprehensive.js
+  // (live via weekly-integrity.yml) writes a genuinely URL-based cross-show
+  // collision flag with only `_wrongProductionReason` and no note, and it must
+  // keep its self-heal. So accept EITHER a 'Same URL' note or explicit
+  // URL-collision provenance (codex adversarial review, 2026-08-06).
+  const isUrlBasedWrongProd = isUrlProvenanceWrongProduction(merged);
   // Content verification that read the article and said "different production"
-  // outranks any URL-shaped self-heal: a fresh URL for the same wrong article
-  // is still the wrong article.
-  const cvSaysWrongProduction = merged.contentVerification
-    && merged.contentVerification.wrongProduction === true;
+  // outranks a URL-shaped self-heal: a fresh URL for the same wrong article is
+  // still the wrong article. Gated to HIGH confidence — the rebuild already
+  // refuses to promote stale/low-confidence CV, and vetoing on those here would
+  // let one weak false positive pin a legitimate transfer forever with no
+  // automated way out (the CV self-heal in review-guards.js is provenance-gated
+  // to CV-promoted flags and would not cover a 'Same URL' flag).
+  const cv = merged.contentVerification;
+  const cvSaysWrongProduction = !!cv
+    && cv.wrongProduction === true
+    && cv.confidence === 'high';
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
@@ -826,6 +836,38 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   }
 
   return merged;
+}
+
+/**
+ * Detectors that flag wrongProduction purely from URL identity, so the flag is
+ * legitimately clearable by a URL refresh (venue-transfer self-heal). Keyed by
+ * the writer's own provenance stamp rather than by note text, because not every
+ * URL-based writer emits a note — cleanup-dedup-comprehensive.js writes only
+ * `_wrongProductionDetectedBy` + `_wrongProductionReason`.
+ */
+const URL_PROVENANCE_DETECTORS = new Set(['cleanup-dedup-comprehensive']);
+
+/**
+ * Is this wrongProduction flag URL-based (and therefore eligible for the
+ * venue-transfer self-heal), as opposed to date- or content-based?
+ *
+ * A MISSING note is NOT evidence of a URL-based flag — that default is what
+ * cleared date-based flags and put a 2016 Broadway 'Cats' review on the 2026
+ * West End show page (main red, 2026-08-06). Evidence must be positive: either
+ * a 'Same URL' note, or an explicit URL-collision provenance stamp.
+ */
+function isUrlProvenanceWrongProduction(data) {
+  if (!data) return false;
+  if (typeof data.wrongProductionNote === 'string'
+      && data.wrongProductionNote.startsWith('Same URL')) {
+    return true;
+  }
+  // No note, but the writer stamped itself as a URL-collision detector.
+  if (!data.wrongProductionNote
+      && URL_PROVENANCE_DETECTORS.has(data._wrongProductionDetectedBy)) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -1689,6 +1731,7 @@ module.exports = {
   areCriticsSimilar,
   areOutletsSame,
   mergeReviews,
+  isUrlProvenanceWrongProduction,
   getOutletDisplayName,
   getOutletFromRegistry,
   getOutletTier,
