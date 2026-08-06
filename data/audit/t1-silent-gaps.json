@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-06T08:24:29.207Z",
+  "generatedAt": "2026-08-06T11:25:10.362Z",
   "windowDays": 45,
-  "showsScanned": 63,
+  "showsScanned": 64,
   "gaps": [
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 331.21463416666666,
+      "fileAgeHours": 334.22606277777777,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 290.5175752777778
+      "nonTerminalAgeHours": 293.52900694444446
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
@@ -33,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=now-you-see-me-live-west-end-2026 --url=https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-04T09:41:36.523Z",
-      "fileAgeHours": 46.714615555555554,
+      "fileAgeHours": 49.72604583333333,
       "gapSeenAt": "2026-08-05T20:33:16.049Z",
-      "nonTerminalAgeHours": 11.853655
+      "nonTerminalAgeHours": 14.865086666666667
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 21.657825,
+      "fileAgeHours": 24.669255,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 21.019759166666667
+      "nonTerminalAgeHours": 24.031190833333334
     }
   ],
   "contradictions": []
