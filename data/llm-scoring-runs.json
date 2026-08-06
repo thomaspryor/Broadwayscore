@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T18:00:07.068Z",
-    "completedAt": "2026-08-02T18:00:07.288Z",
-    "totalReviews": 33,
-    "processed": 0,
-    "skipped": 32,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-car-man-west-end-2026",
-        "outletId": "london-theatre",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T18:04:05.075Z",
     "completedAt": "2026-08-02T18:04:21.856Z",
     "totalReviews": 41558,
@@ -725899,6 +725879,26 @@
       "input": 4354,
       "output": 134,
       "total": 12241
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-06T12:26:28.671Z",
+    "completedAt": "2026-08-06T12:26:38.140Z",
+    "totalReviews": 42074,
+    "processed": 1,
+    "skipped": 42070,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 12354,
+      "output": 526,
+      "total": 35650
     },
     "errorDetails": [
       {
