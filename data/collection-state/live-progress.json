@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-06T04:16:09.408Z",
-  "processed": 22,
-  "failed": 22,
-  "successRate": "50.0%",
+  "updatedAt": "2026-08-06T04:19:40.018Z",
+  "processed": 26,
+  "failed": 28,
+  "successRate": "48.1%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-08-06T04:00:24.579Z",
@@ -37,6 +37,18 @@
       "t": "2026-08-06T04:11:23.512Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-06T04:17:57.340Z",
+      "event": "bb-session",
+      "session": "b7da8c4c",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
+    },
+    {
+      "t": "2026-08-06T04:18:12.062Z",
+      "event": "bb-session",
+      "session": "9d48ca2a",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
     }
   ]
 }
