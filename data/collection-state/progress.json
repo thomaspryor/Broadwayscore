@@ -81,7 +81,17 @@
     "the-car-man-west-end-2026/attitude--alastair-james.json",
     "the-car-man-west-end-2026/bachtrack--unknown.json",
     "the-car-man-west-end-2026/express-uk--stefan-kyriazis.json",
-    "the-car-man-west-end-2026/herald--mary-brennan.json"
+    "the-car-man-west-end-2026/herald--mary-brennan.json",
+    "the-car-man-west-end-2026/i-paper--rosemary-waugh.json",
+    "the-car-man-west-end-2026/independent--zoe-anderson.json",
+    "the-car-man-west-end-2026/london-box-office--stuart-king.json",
+    "the-car-man-west-end-2026/londontheatre1--terry-eastham.json",
+    "the-car-man-west-end-2026/muddystilettos--muddy-stilettos.json",
+    "the-car-man-west-end-2026/standard--lyndsey-winship.json",
+    "the-car-man-west-end-2026/standard--nick-curtis.json",
+    "the-car-man-west-end-2026/the-list--unknown.json",
+    "the-car-man-west-end-2026/times-uk--clive-davis.json",
+    "the-car-man-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -100,7 +110,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/im-every-woman-off-west-end-2026/times-uk--unknown.json",
-      "im-every-woman-off-west-end-2026/times-uk--unknown.json"
+      "im-every-woman-off-west-end-2026/times-uk--unknown.json",
+      "data/review-texts/the-car-man-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -115,7 +126,7 @@
     ]
   },
   "startTime": "2026-08-06T11:50:35.908Z",
-  "lastProcessed": "the-car-man-west-end-2026/herald--mary-brennan.json",
+  "lastProcessed": "the-car-man-west-end-2026/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-08-06T11:54:20.935Z",
@@ -139,6 +150,17 @@
       "event": "bb-session",
       "session": "f714de2f",
       "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
+    },
+    {
+      "t": "2026-08-06T12:05:45.273Z",
+      "event": "bb-session",
+      "session": "e931f4b3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the"
+    },
+    {
+      "t": "2026-08-06T12:05:45.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
