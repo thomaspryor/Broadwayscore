@@ -45,7 +45,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
+const { spawnSync, execFileSync } = require('child_process');
 const USAGE = `Usage: node scripts/bsc-reconcile.js [--dry-run]
 Marks headless jobs whose process died as orphaned, sweeps stale leases,
 re-dispatches in_progress tasks whose cmux tab died, re-dispatches stalled
@@ -59,6 +59,7 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 }
 
 const ledger = require('./lib/dispatch-ledger.js');
+const cardDrift = require('./lib/dispatch-card-drift.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { setAppFocus, osActivateCmuxApp } = require('./lib/cmux-launch.js');
@@ -466,6 +467,102 @@ function reconcileFlaglessSessions({ dryRun = false, deps = {} } = {}) {
   return { checked: autoDispatched.length, flagless, revived };
 }
 
+// Card #1009: is any in-flight session executing a card that has since been
+// CORRECTED? bsc-next seeds the card once, at launch; an edit afterwards
+// changes Notion and nothing else, so the session keeps working the original
+// text while everyone reading the card believes otherwise (task #1002,
+// 2026-08-04 — caught only because a human happened to run `cmux send`).
+//
+// Rides this tick rather than its own launchd job (the ledger, cmux and the
+// Notion CLI all live here already), but throttled to DRIFT_PASS_INTERVAL_MS:
+// each pass costs one Notion read per in-flight session and the tick fires
+// every 5 min. Deliveries are hash-proven drift only, capped per tick — see
+// selectDriftDeliveries. Weak (timestamp-only) drift is reported, never typed
+// into a live session.
+function reconcileCardDrift({ dryRun = false, deps = {} } = {}) {
+  const {
+    readLedgerEntriesFn = ledger.readEntries,
+    readReportFn = readReportEntries,
+    fetchCardFn = fetchCardForDrift,
+    amendFn = amendViaBscNext,
+    reportFn = report,
+    now = Date.now(),
+  } = deps;
+
+  if (!cardDrift.shouldRunDriftPass(readReportFn(), { now })) return { skipped: true, checked: 0, drifted: [], delivered: [] };
+
+  const entries = readLedgerEntriesFn();
+  // 24h, not the lib's 3-day default: a correction that reaches a day-old
+  // session is still useful; one that reaches a 3-day-old zombie is not worth
+  // a Notion read every half hour, forever.
+  const launches = cardDrift.inFlightLaunches(entries, { now, maxAgeMs: 24 * 3600 * 1000 });
+  const cards = {};
+  for (const l of launches) {
+    if (l.notionId) cards[String(l.taskId)] = fetchCardFn(l.notionId);
+  }
+  const rows = launches.map(launch =>
+    cardDrift.detectDrift({ launch, card: cards[String(launch.taskId)] || null, amendments: entries })
+  );
+  const { deliver, deferred, reportOnly } = cardDrift.selectDriftDeliveries(rows);
+
+  // Stamp the pass FIRST so a crash mid-delivery can't make every subsequent
+  // tick re-run the whole (Notion-costing) pass.
+  reportFn({ kind: cardDrift.DRIFT_PASS_EVENT, taskId: 'sweep', detail: `checked ${rows.length} in-flight session(s): ${deliver.length + deferred.length} proven drift, ${reportOnly.length} suspected` });
+
+  for (const r of reportOnly) {
+    reportFn({ kind: 'card-drift-suspected', taskId: String(r.taskId), detail: `${r.workspaceRef}: ${r.reason} — not auto-delivered (timestamp-only signal); check with: node scripts/bsc-next.js --id ${r.taskId} --amend` });
+  }
+  for (const r of deferred) {
+    reportFn({ kind: 'card-drift-throttled', taskId: String(r.taskId), detail: `${r.workspaceRef} deferred — this tick's delivery budget (${cardDrift.MAX_DELIVERIES_PER_TICK}) is spent; will retry next pass` });
+  }
+
+  const delivered = [];
+  for (const r of deliver) {
+    if (dryRun) { reportFn({ kind: 'card-drift-would-deliver', taskId: String(r.taskId), detail: `${r.workspaceRef}: ${r.reason}` }); continue; }
+    const res = amendFn(r.taskId);
+    reportFn({
+      kind: res.ok ? 'card-drift-delivered' : 'card-drift-delivery-failed',
+      taskId: String(r.taskId),
+      detail: res.ok
+        ? `re-delivered the corrected card into ${r.workspaceRef} (${r.dispatchHash} → ${r.currentHash})`
+        : `could NOT reach ${r.workspaceRef} — it is still running the ORIGINAL instructions: ${res.detail}`,
+    });
+    if (res.ok) delivered.push(String(r.taskId));
+  }
+
+  return { skipped: false, checked: rows.length, drifted: [...deliver, ...deferred, ...reportOnly], delivered };
+}
+
+function readReportEntries(reportPath = REPORT_PATH) {
+  let raw;
+  try { raw = fs.readFileSync(reportPath, 'utf8'); } catch { return []; }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return out;
+}
+
+function fetchCardForDrift(pageId) {
+  try {
+    const raw = execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', pageId],
+      { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+function amendViaBscNext(taskId) {
+  try {
+    const out = execFileSync('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId), '--amend'],
+      { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    return { ok: true, detail: String(out).trim().split('\n')[0] || '' };
+  } catch (e) {
+    return { ok: false, detail: `${e.stderr || e.stdout || e.message}`.trim().split('\n')[0] };
+  }
+}
+
 async function main() {
   const entries = ledger.readEntries();
   const open = ledger.openJobs(entries);
@@ -569,10 +666,21 @@ async function main() {
   } catch (e) {
     console.error(`[bsc-reconcile] flagless-session sweep crashed (non-fatal): ${e.message}`);
   }
+
+  // Card #1009: instruction-drift pass, same best-effort isolation (throttled
+  // internally to every DRIFT_PASS_INTERVAL_MS).
+  try {
+    const driftSweep = reconcileCardDrift({ dryRun: DRY });
+    if (!driftSweep.skipped) {
+      console.log(`[bsc-reconcile] card-drift checked=${driftSweep.checked} drifted=${driftSweep.drifted.length} delivered=${driftSweep.delivered.length}${DRY ? ' (dry-run)' : ''}`);
+    }
+  } catch (e) {
+    console.error(`[bsc-reconcile] card-drift sweep crashed (non-fatal): ${e.message}`);
+  }
 }
 
 if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK };
