@@ -1899,6 +1899,115 @@ function checkInfraReviewGate() {
   }))];
 }
 
+// --- Category: Dispatch outcomes (did dispatched work actually land?) ---
+//
+// scripts/audit-dispatch-outcomes.js (task #1101) already classifies every
+// dispatch as landed/in-flight/abandoned by cross-referencing
+// data/audit/dispatch-ledger.jsonl against the task store, but nothing ran
+// it — its first real run found 37 abandoned dispatches that had gone unseen
+// for up to 14 days (task #1106). This wires its pure decision function
+// (scripts/lib/dispatch-outcome-digest.js) into the daily digest.
+//
+// dispatch-ledger.jsonl is gitignored/per-machine, same as the infra-review
+// ledger above — a fresh CI checkout won't have it. Say so plainly instead of
+// a silent pass (#1075 vacuous-gate class).
+//
+// previousAbandonedCount is tracked in its own small state file rather than
+// folded into the shared HISTORY_FILE: history.results (below, ~L3546) is
+// deliberately narrowed to {name,status,message} for every check to avoid
+// bloating health-check-history.json, so extending it would mean widening
+// that shared shape for one check. A dedicated per-check state file already
+// has precedent here (tryAutoFix()'s data/audit/triage/autofix-*.json
+// attempt counters) — this follows the same pattern.
+const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
+
+function checkDispatchOutcomes() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: 'Dispatch outcomes: abandoned',
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here.',
+      hint: 'Run `node scripts/health-check.js` (or `node scripts/audit-dispatch-outcomes.js`) on the machine where dispatches launch to see real counts.',
+    }];
+  }
+
+  return [runCheck('Dispatch outcomes: abandoned', () => {
+    const { computeDispatchOutcomeDigest } = require('./lib/dispatch-outcome-digest.js');
+    const { classifyDispatches, OUTCOMES } = require('./lib/dispatch-outcome.js');
+    const { loadTasksUnioned } = require('./audit-dispatch-outcomes.js');
+
+    const raw = fs.readFileSync(ledgerPath, 'utf8');
+    const dispatchLedgerEntries = raw.trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // loadTasksUnioned() throws loud on an empty/unreadable task store — do
+    // NOT wrap this in a try/catch that defaults to an empty Map. runCheck()
+    // (the caller) turns an uncaught throw into a visible 'error' status row,
+    // which is the point: a dead task store must surface as broken, not as a
+    // quiet "0 abandoned" pass (#1063/#1069 vacuous-gate class).
+    const tasksById = loadTasksUnioned();
+
+    // cmux-workspaces.js is the shared, tested cmux-liveness abstraction
+    // (also used by the #1102 dispatch watchdog) — reuse it rather than
+    // re-parsing `cmux list-workspaces` a second way.
+    // An empty result is treated the SAME as cmux being unavailable (ship-check
+    // finding, task #1106): `listWorkspaces()` returns `[]` on a cmux daemon
+    // hiccup or malformed output, not a throw — trusting an empty Set as
+    // ground truth would flip EVERY in-flight dispatch with a workspaceRef to
+    // ABANDONED in one shot (dispatch-outcome.js's workspaceGone check is
+    // `!live.has(ref)`, true for everything when live is empty). "Never
+    // guess" already governs the ledger-side helper this mirrors
+    // (audit-dispatch-outcomes.js's own liveWorkspaceRefs()) — apply the same
+    // rule here: only trust cmux when it reports at least one workspace.
+    let liveWorkspaceRefs;
+    try {
+      const { cmuxAvailable, listWorkspaces } = require('./lib/cmux-workspaces.js');
+      if (cmuxAvailable()) {
+        const refs = listWorkspaces().map((w) => w.ref);
+        if (refs.length > 0) liveWorkspaceRefs = new Set(refs);
+      }
+    } catch { /* cmux unavailable — classifyDispatches falls back to ledger-only */ }
+
+    let previousAbandonedCount = null;
+    try {
+      if (fs.existsSync(DISPATCH_OUTCOME_STATE_FILE)) {
+        const prev = readJSON(DISPATCH_OUTCOME_STATE_FILE);
+        previousAbandonedCount = typeof prev.abandonedCount === 'number' ? prev.abandonedCount : null;
+      }
+    } catch { /* corrupt state file — treat as no history, don't fail the check over it */ }
+
+    const row = computeDispatchOutcomeDigest({
+      dispatchLedgerEntries, tasksById, liveWorkspaceRefs, previousAbandonedCount,
+    });
+
+    // The state file tracks the TRUE current count, not "count as of the
+    // last alert" — recompute it directly rather than relying on `row`,
+    // which is null both when there are 0 abandoned and when the count is
+    // unchanged from last run.
+    const currentAbandonedCount = classifyDispatches(
+      dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
+    ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
+    try {
+      fs.mkdirSync(AUDIT_DIR, { recursive: true });
+      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+      }, null, 2) + '\n');
+    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+
+    if (row) return row;
+    // currentAbandonedCount > 0 but unchanged from last run still counts as
+    // 'warn', not 'pass' — an unresolved backlog must not silently drop out
+    // of the digest's pass/warn/error tally just because it stopped
+    // generating a fresh alert (the vacuous-pass class this whole check
+    // exists to avoid). Only a genuinely zero count is a real pass.
+    return currentAbandonedCount === 0
+      ? { name: 'Dispatch outcomes: abandoned', status: 'pass', message: 'No abandoned dispatches' }
+      : { name: 'Dispatch outcomes: abandoned', status: 'warn', message: `${currentAbandonedCount} abandoned dispatch(es), unchanged since last run — see \`node scripts/audit-dispatch-outcomes.js\`` };
+  })];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -3411,6 +3520,7 @@ async function main() {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
+    ...checkDispatchOutcomes(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
