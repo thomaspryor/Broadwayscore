@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-06T05:36:12.985Z",
+  "runDate": "2026-08-06T06:12:49.889Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,17 +11,17 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
+    "processed": 1,
     "failed": 2,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -33,16 +33,16 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
-    "tier4Success": 1,
+    "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,7 +50,9 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "3-summers-of-lincoln-regional-2025/broadwayworld--marie-reiter.json"
+  ],
   "failed": [
     "3-summers-of-lincoln-regional-2025/latimes--unknown.json",
     "3-summers-of-lincoln-regional-2025/stageandcinema--unknown.json"
@@ -60,7 +62,9 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "3-summers-of-lincoln-regional-2025/broadwayworld--marie-reiter.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
