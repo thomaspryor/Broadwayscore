@@ -16,13 +16,13 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers cancel-cascade); manual dispatch is emergency-only. Private core-data-only changes ride the next rebuild/6h backstop.
 - **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof (2026-06-26).
-- **CI monitoring:** never `gh run watch` (polls every 3s, zeroed quota 2x). Use `scripts/lib/wait-for-run.sh <run-id> [min]`; prefer outcome checks (prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`) — all rate-limit-immune. On 403: `gh api rate_limit` for the reset, don't loop gh. Detail: `memory/feedback_github_polling_rate_limit.md`.
+- **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`); project outcome checks: prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`. Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
-- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit: `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Exception: regional feeder-venue shows auto-promote off their PV/BWW roundup page (`promote-ob-venue-candidates.js --regional-only`) — the roundup IS the validation.
+- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit: `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
 - **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Rationale + incidents: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
@@ -78,14 +78,14 @@ Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket
 ### 14. Opening Night Readiness Check (MANDATORY)
 **TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, don't pre-stage or treat as a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early (handled by TB direct-URL discovery).
 
-Run `/verify-opening-night <show-id>` for the full 9-point checklist. Check the AUTOMATION CHAIN, not just data: Opening Night Orchestrator cron fired (5 entries: 23:00 UTC BW evening, 08:00 UTC BW morning, 05:00 UTC WE morning, 18:00 UTC WE evening) and is in `check-cron-health.yml` CRITICAL_CRONS (force: `gh workflow run opening-night-orchestrator.yml -f show_id=ID -f market=broadway`); `category` is set, not `null`; `status='open'` pushed to private repo; ScrapingBee >25% credits; BD zone `web_unlocker2` active (ignore `mcp_unlocker` alarms). Gotchas: `memory/opening-night-discovery-chains.md`.
+Run `/verify-opening-night <show-id>` for the full 9-point checklist (covers orchestrator cron/CRITICAL_CRONS, ScrapingBee credits, BD zone) plus `node scripts/check-opening-night-readiness.js --show=ID` (category/status checks). Gotchas: `memory/opening-night-discovery-chains.md`.
 
 ---
 
 ## Project Reference
 
 **Stack:** Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwayscorecard.com
-**Scale:** 2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics (raw counts: `data/shows.json` length; unique `outletId`/`criticName` in `data/reviews.json`).
+**Scale:** 2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics.
 
 ### Scoring
 Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (blogs): 0.35
@@ -100,7 +100,7 @@ Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full
 **Scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`
 
 ### Automation
-Source: `data/review-texts/` → Derived: `reviews.json`. Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
+Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
 ### Commercial (`/biz`)
 Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation.
@@ -110,7 +110,7 @@ Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mar
 **After ANY manual review recovery** (clearing flags, stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=ID --production` — 5 pipeline steps fail silently and independently; it checks all and prints each fix command.
 
 ### Web Scraping
-Fallback chain: Bright Data → ScrapingBee → Playwright. **Rule:** all new scraping MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly; scraping workflows pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY` (CI enforces in `lint-workflows`; exemptions: test.yml exempt list with comment).
+Fallback chain: Bright Data → ScrapingBee → Playwright → Browserbase. **Rule:** all new scraping MUST use `fetchPage()` — see scraper-reference skill for the full rule + CI enforcement.
 **Aggregators** — BW: Show Score, DTLI, BWW Roundups + Reviews Pages, Playbill Verdict, NYC Theatre. WE: WestEndTheatre (WET), theatre.reviews (TR), Stagedoor (SD), The Stage (TS), London Box Office (LBO) — in `gather-reviews.js` + `opening-night-poller.js`.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
