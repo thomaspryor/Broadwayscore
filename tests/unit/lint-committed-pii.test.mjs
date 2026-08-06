@@ -166,6 +166,16 @@ describe('scanJsonlValue — JSON Lines coverage (task #1092)', () => {
     assert.strictEqual(error, null);
     assert.ok(findings.some((f) => f.type === 'email-shaped-string'));
   });
+
+  test('a malformed line is recorded on badLineNumbers instead of silently vanishing', () => {
+    const { badLineNumbers } = scanFile('tests/fixtures/lint-committed-pii/dirty-attempts.jsonl');
+    assert.deepStrictEqual(badLineNumbers, [2]);
+  });
+
+  test('a clean jsonl file reports an empty badLineNumbers', () => {
+    const { badLineNumbers } = scanFile('tests/fixtures/lint-committed-pii/clean.jsonl');
+    assert.deepStrictEqual(badLineNumbers, []);
+  });
 });
 
 describe('listTrackedAuditFiles — task #1092', () => {

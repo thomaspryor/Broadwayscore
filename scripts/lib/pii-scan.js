@@ -95,11 +95,15 @@ function scanJsonValue(root) {
  * Scan JSON Lines text (one JSON value per line). Findings carry a leading
  * `line` path segment (1-indexed) so formatPath() output points at the
  * offending line, e.g. "line12.title". A line that fails to parse is
- * skipped, not fatal — callers report the file-level parse status
- * separately (mirrors scanJsonValue's caller contract in lint-committed-pii.js).
+ * skipped for the walk (can't scan what doesn't parse), but its 1-indexed
+ * line number is recorded on the non-enumerable `badLineNumbers` property
+ * so callers can surface it — silently dropping a malformed line would be
+ * a blind spot (a future write bug could inject non-JSON content past this
+ * scan undetected; ship-check finding, 2026-08-06).
  */
 function scanJsonlValue(text) {
   const findings = [];
+  const badLineNumbers = [];
   const lines = text.split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -108,10 +112,12 @@ function scanJsonlValue(text) {
     try {
       parsed = JSON.parse(line);
     } catch {
+      badLineNumbers.push(i + 1);
       continue;
     }
     walk(parsed, [`line${i + 1}`], (f) => findings.push(f));
   }
+  Object.defineProperty(findings, 'badLineNumbers', { value: badLineNumbers, enumerable: false });
   return findings;
 }
 

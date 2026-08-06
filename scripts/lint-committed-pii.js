@@ -63,7 +63,8 @@ function scanFile(relPath) {
     return { error: err.message, findings: [] };
   }
   if (relPath.endsWith('.jsonl')) {
-    return { error: null, findings: scanJsonlValue(text) };
+    const findings = scanJsonlValue(text);
+    return { error: null, findings, badLineNumbers: findings.badLineNumbers };
   }
   let parsed;
   try {
@@ -92,12 +93,16 @@ function main(argv = process.argv.slice(2)) {
   const files = listTrackedAuditFiles();
   const violations = [];
   const parseErrors = [];
+  const badJsonlLines = [];
 
   for (const relPath of files) {
-    const { error, findings } = scanFile(relPath);
+    const { error, findings, badLineNumbers } = scanFile(relPath);
     if (error) {
       parseErrors.push({ relPath, error });
       continue;
+    }
+    if (badLineNumbers && badLineNumbers.length > 0) {
+      badJsonlLines.push({ relPath, badLineNumbers });
     }
     if (findings.length === 0) continue;
     const allowed = ALLOWLIST.get(relPath);
@@ -108,6 +113,16 @@ function main(argv = process.argv.slice(2)) {
   if (parseErrors.length > 0) {
     console.log('⚠️  Skipped (not valid JSON, not this lint\'s job to fix):');
     for (const p of parseErrors) console.log(`  • ${p.relPath}: ${p.error}`);
+  }
+
+  if (badJsonlLines.length > 0) {
+    console.log(
+      '⚠️  Unparseable line(s) in tracked .jsonl (skipped from the PII scan — a blind spot, ' +
+        'not this lint\'s job to fix the data):'
+    );
+    for (const b of badJsonlLines) {
+      console.log(`  • ${b.relPath}: line(s) ${b.badLineNumbers.join(', ')}`);
+    }
   }
 
   if (violations.length === 0) {
