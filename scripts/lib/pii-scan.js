@@ -91,4 +91,28 @@ function scanJsonValue(root) {
   return findings;
 }
 
-module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue };
+/**
+ * Scan JSON Lines text (one JSON value per line). Findings carry a leading
+ * `line` path segment (1-indexed) so formatPath() output points at the
+ * offending line, e.g. "line12.title". A line that fails to parse is
+ * skipped, not fatal — callers report the file-level parse status
+ * separately (mirrors scanJsonValue's caller contract in lint-committed-pii.js).
+ */
+function scanJsonlValue(text) {
+  const findings = [];
+  const lines = text.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    let parsed;
+    try {
+      parsed = JSON.parse(line);
+    } catch {
+      continue;
+    }
+    walk(parsed, [`line${i + 1}`], (f) => findings.push(f));
+  }
+  return findings;
+}
+
+module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue, scanJsonlValue };
