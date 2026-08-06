@@ -12,10 +12,20 @@
     "the-outsiders-world-premiere-regional-2023/theatrely--juan-a-ramirez.json",
     "the-outsiders-world-premiere-regional-2023/latimes--unknown.json",
     "the-outsiders-world-premiere-regional-2023/playbill--unknown.json",
-    "the-outsiders-world-premiere-regional-2023/san-diego-union-tribune--pam-kragen.json"
+    "the-outsiders-world-premiere-regional-2023/san-diego-union-tribune--pam-kragen.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "disruption-off-broadway-2026/nytimes--tim-teeman.json"
   ],
   "failed": [
-    "the-outsiders-world-premiere-regional-2023/pages-on-stages--mason-pilevsky.json"
+    "the-outsiders-world-premiere-regional-2023/pages-on-stages--mason-pilevsky.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,7 +45,9 @@
     "directCookies": [],
     "scrapingbee": [
       "the-outsiders-world-premiere-regional-2023/nytimes--unknown.json",
-      "the-outsiders-world-premiere-regional-2023/theatrely--juan-a-ramirez.json"
+      "the-outsiders-world-premiere-regional-2023/theatrely--juan-a-ramirez.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "disruption-off-broadway-2026/nytimes--tim-teeman.json"
     ],
     "brightdata": [
       "the-outsiders-world-premiere-regional-2023/vulture--unknown.json",
@@ -49,7 +61,7 @@
     ]
   },
   "startTime": "2026-08-06T04:00:22.204Z",
-  "lastProcessed": "the-outsiders-world-premiere-regional-2023/san-diego-union-tribune--pam-kragen.json",
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
   "log": [
     {
       "t": "2026-08-06T04:00:24.579Z",
@@ -62,6 +74,17 @@
       "event": "bb-session",
       "session": "cb6a1945",
       "url": "https://deadline.com/2023/08/the-outsiders-broadway-musical-opening-date-1235523"
+    },
+    {
+      "t": "2026-08-06T04:11:22.396Z",
+      "event": "bb-session",
+      "session": "d7c83e32",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-06T04:11:23.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

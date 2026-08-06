@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-06T04:03:39.179Z",
-  "processed": 13,
-  "failed": 1,
-  "successRate": "92.9%",
+  "updatedAt": "2026-08-06T04:12:54.249Z",
+  "processed": 15,
+  "failed": 9,
+  "successRate": "62.5%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-06T04:00:24.579Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "cb6a1945",
       "url": "https://deadline.com/2023/08/the-outsiders-broadway-musical-opening-date-1235523"
+    },
+    {
+      "t": "2026-08-06T04:11:22.396Z",
+      "event": "bb-session",
+      "session": "d7c83e32",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-06T04:11:23.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
