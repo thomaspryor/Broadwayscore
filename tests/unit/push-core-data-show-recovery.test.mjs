@@ -102,3 +102,45 @@ test('field-level reconciliation still works', () => {
   });
   assert.equal(shows[0].venue, 'Richard Rodgers');
 });
+
+// The recovery above is only as good as its BASE. If the base never resolves,
+// the code takes its conservative branch and the fix silently disables itself —
+// in exactly the concurrent case it exists for. checkout-core-data clones with
+// `--depth 1`, so `git merge-base HEAD origin/main` frequently resolves to
+// nothing; the base must therefore come from the checkout SNAPSHOT, which needs
+// no git history at all.
+test('the base comes from the checkout snapshot, not from git history', () => {
+  const yaml = fs.readFileSync(ACTION, 'utf8');
+  // Strip comment lines first — this must assert what the shell RUNS, not what
+  // the prose around it says. (First cut of this test matched the word
+  // "merge-base" inside the explanatory comment and failed on correct code.)
+  const capture = yaml
+    .slice(
+      yaml.indexOf('# ...and the BASE we started from'),
+      yaml.indexOf('# Save remote\'s commercial.json')
+    )
+    .split('\n')
+    .filter((l) => !l.trim().startsWith('#'))
+    .join('\n');
+  assert.ok(capture.includes('/tmp/core-data-snapshot/shows.json'),
+    'must read the pristine checkout snapshot as the primary base');
+  const snapAt = capture.indexOf('/tmp/core-data-snapshot/shows.json');
+  const mergeBaseAt = capture.indexOf('git merge-base');
+  assert.ok(mergeBaseAt === -1 || snapAt < mergeBaseAt,
+    'merge-base may only be a FALLBACK — it returns nothing in a --depth 1 clone');
+  // A failed fallback must leave NO stale base file behind: a leftover base from
+  // an earlier run would misclassify this run's adds and deletes.
+  assert.ok(/rm -f \/tmp\/base-shows\.json/.test(capture),
+    'an unresolvable base must remove the file, not leave a stale one');
+});
+
+test('checkout-core-data really does snapshot shows.json', () => {
+  // The base capture above depends on this. If the snapshot step ever narrows
+  // its file list, the recovery silently loses its base — so assert the link
+  // rather than trusting it.
+  const checkout = fs.readFileSync(
+    path.join(__dirname, '../../.github/actions/checkout-core-data/action.yml'), 'utf8');
+  assert.ok(checkout.includes('/tmp/core-data-snapshot'), 'snapshot dir must exist');
+  assert.ok(/for f in \/tmp\/core-data-checkout\/\*\.json/.test(checkout),
+    'snapshot must cover every top-level JSON, which is what includes shows.json');
+});

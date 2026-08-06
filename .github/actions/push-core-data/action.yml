@@ -206,12 +206,30 @@ runs:
 
           # Save remote's shows.json before rebase overwrites it
           git show origin/main:shows.json > /tmp/remote-shows.json 2>/dev/null || true
-          # ...and the MERGE BASE's, so the reconciliation below can tell a show
-          # remote ADDED while we were running (must be kept) from one we
+          # ...and the BASE we started from, so the reconciliation below can tell
+          # a show remote ADDED while we were running (must be kept) from one we
           # deliberately DELETED (must stay deleted). Without the base, those two
           # cases are indistinguishable and either new shows vanish or deleted
           # ones resurrect. See the show-recovery block after the rebase.
-          git show "$(git merge-base HEAD origin/main 2>/dev/null):shows.json" > /tmp/base-shows.json 2>/dev/null || true
+          #
+          # PRIMARY SOURCE is the checkout snapshot, NOT git history:
+          # checkout-core-data clones with --depth 1 and `git reset --hard`, so
+          # `git merge-base HEAD origin/main` frequently resolves to nothing in a
+          # shallow repo — the recovery would then quietly disable itself in
+          # exactly the concurrent case it exists for. /tmp/core-data-snapshot/
+          # is the pristine copy taken at checkout time, before this job touched
+          # anything, which is precisely "the base" and needs no history at all.
+          # merge-base stays as a fallback for callers that skipped the snapshot.
+          if [ -f /tmp/core-data-snapshot/shows.json ]; then
+            cp -f /tmp/core-data-snapshot/shows.json /tmp/base-shows.json
+          else
+            BASE_SHA="$(git merge-base HEAD origin/main 2>/dev/null || true)"
+            if [ -n "$BASE_SHA" ]; then
+              git show "${BASE_SHA}:shows.json" > /tmp/base-shows.json 2>/dev/null || rm -f /tmp/base-shows.json
+            else
+              rm -f /tmp/base-shows.json
+            fi
+          fi
 
           # Save remote's commercial.json + commercial-pending-review.json
           # before rebase overwrites them. With RSS poller + scraper + sweep
