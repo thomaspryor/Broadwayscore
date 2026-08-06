@@ -77,4 +77,24 @@ function buildAlertPayload(health) {
   };
 }
 
-module.exports = { evaluateAuthHealth, buildAlertPayload, REPAIR_STEPS };
+/**
+ * Builds the routeAlert() payload for the "healthy but billing silently
+ * switched to pay-per-token" case (stored OAuth login failed, ANTHROPIC_API_KEY
+ * fallback covered it). Launches still work, so this is digest-tier, not a
+ * page — but it must not be console.warn-only into a launchd log nobody
+ * reads (ship-check finding, task #1076): a stale/expired OAuth token that
+ * happens to have a working API key fallback would otherwise burn real
+ * pay-per-token spend indefinitely with zero owner visibility.
+ */
+function buildBillingFallbackAlertPayload(health) {
+  return {
+    conditionKey: 'claude-auth:api-key-fallback',
+    title: 'Claude launches are running on pay-per-token, not the subscription',
+    description: `check-claude-auth-health.js: ${health.reason}. Launches still work, but billing silently left the subscription. Repair: \`${REPAIR_STEPS}\``,
+    severity: 'warning',
+    disposition: 'digest',
+    hint: REPAIR_STEPS,
+  };
+}
+
+module.exports = { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS };
