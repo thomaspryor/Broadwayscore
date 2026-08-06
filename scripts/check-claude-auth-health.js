@@ -35,6 +35,7 @@ require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const { preflightAuth } = require('./lib/claude-cli.js');
 const { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload } = require('./lib/claude-auth-health.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Best-effort only — never allowed to affect the pass/fail verdict (see file
 // header). Failure here just means the alert body's status note is omitted.
@@ -48,7 +49,22 @@ function getAuthStatus() {
   }
 }
 
-async function main() {
+const USAGE = `check-claude-auth-health.js — is this Mac's Claude OAuth token
+actually usable? (task #1076)
+
+Usage:
+  node scripts/check-claude-auth-health.js   run the live probe
+  --help, -h                                 show this message, do nothing else
+
+Makes a REAL API call via preflightAuth() — \`claude auth status\` reports the
+on-disk token, not its server-side validity, and said {loggedIn:true} through
+the entire 2026-08-05 revocation. Exits 1 and pages the owner on failure.
+`;
+
+async function main(argv = process.argv.slice(2)) {
+  // Before preflightAuth(), which spawns the CLI and makes a billable API call
+  // — and before any routeAlert() that could page the owner from a --help run.
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const preflight = preflightAuth({ log: msg => console.error(`[claude-auth-health] ${msg}`) });
   const authStatus = getAuthStatus();
   const health = evaluateAuthHealth({ preflight, authStatus });
