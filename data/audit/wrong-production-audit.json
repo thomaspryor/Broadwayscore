@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T01:05:30.470Z",
+  "timestamp": "2026-08-06T01:28:04.200Z",
   "stats": {
-    "totalReviews": 41671,
+    "totalReviews": 41679,
     "alreadyFlagged": 18115,
-    "dateGuardCatches": 115,
+    "dateGuardCatches": 119,
     "directorMismatch": 946,
     "tvFilmSignals": 1153,
-    "londonSignals": 814,
+    "londonSignals": 816,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3533
+    "noPublishDate": 3534
   },
   "findings": [
     {
@@ -24426,6 +24426,19 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "amyleighchandler--amy.json",
+      "publishDate": "2025-05-11",
+      "url": "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 447d before show (2025-05-11 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "british-theatre--robert-tanitch.json",
       "score": 79,
       "publishDate": "2025-05-18",
@@ -24589,10 +24602,36 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "therealchrisparkle--therealchrisparkle.json",
+      "publishDate": "2025-05-14",
+      "url": "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "thereviewshub--christine-stanton.json",
       "score": 90,
       "publishDate": "2025-05-14",
       "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thereviewshub--reviewer-upload.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -24625,6 +24664,24 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "westendtheatre--west-end-theatre-editorial.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.westendtheatre.com/291159/news/reviews/reviews-of-the-comedy-about-spies-in-the-west-end/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -32791,6 +32848,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "sunday-telegraph--tim-robey.json",
+      "publishDate": "2026-07-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
