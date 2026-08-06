@@ -121,6 +121,14 @@ const NON_REVIEW_PATH_PATTERNS = [
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
   /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
+  // NOTE (OWE opening audit 2026-08-06): do NOT add host-agnostic "-tickets"
+  // or "/whats-on/" rules here — same trap as the removed bare /article/ rule
+  // above. Full-corpus check found real reviews at BOTH shapes: Express UK and
+  // Digital Spy review slugs end in "-tickets" (Operation Mincemeat scored
+  // 100), and Manchester Evening News / Liverpool Echo / London Mums publish
+  // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
+  // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
+  // londonboxoffice.co.uk root ticket slugs).
 ];
 
 /**
@@ -161,6 +169,27 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theater-feature section is previews/features, not reviews (Disruption
   // census counted one as a missing review, 2026-08-05).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
+  // first live exercise of #1073): ticketing/listing hosts that reached the
+  // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
+  // provisional "groupon" outlet before downstream guards flagged it. All
+  // measured zero hits across the 18,860 scored review URLs in reviews.json.
+  { host: /(^|\.)groupon\./, reason: 'ticketing-reseller' },
+  { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)westend\.com$/, reason: 'ticketing-listing' },
+  // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
+  // Spies census "missing review"). Host-wide: a producer site never reviews
+  // its own show.
+  { host: /(^|\.)mischiefcomedy\.com$/, reason: 'venue-production-page' },
+  // WET's own /NNNNNN/shows/… show/ticket pages (e.g. /317407/shows/cats-tickets/)
+  // are listings; its real roundups live at /reviews/. Host+path scoped — a
+  // host-agnostic "-tickets" rule would eat Express UK / Digital Spy review
+  // slugs (see NON_REVIEW_PATH_PATTERNS note above).
+  { host: /(^|\.)westendtheatre\.com$/, path: /^\/\d+\/shows\//, reason: 'ticketing-listing' },
+  // LBO root ticket slugs (/now-you-see-me-tickets); its reviews live under
+  // /news/ (e.g. /news/post/cats-review — a real captured review).
+  { host: /(^|\.)londonboxoffice\.co\.uk$/, path: /^\/[^/]*-tickets\/?$/, reason: 'ticketing-listing' },
 ];
 
 /**
