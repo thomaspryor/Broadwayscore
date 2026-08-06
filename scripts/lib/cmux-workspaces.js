@@ -92,6 +92,18 @@ function closeWorkspace(ref) {
   run(['close-workspace', '--workspace', ref]);
 }
 
+// Type text into a live workspace's prompt and submit it (card #1009). The two
+// calls are the same pair a human-driven session ran by hand on 2026-08-04 to
+// get a corrected card into workspace:156 — `cmux send <text>` fills the
+// prompt, `send-key Enter` submits it. Text MUST already be a single line:
+// cmux treats a newline (and the literal two-character sequence "\n") as
+// Enter, so an unflattened message submits itself half-typed. Callers use
+// dispatch-card-drift.formatAmendMessage, which flattens.
+function sendToWorkspace(ref, text) {
+  run(['send', '--workspace', ref, '--', String(text)]);
+  run(['send-key', '--workspace', ref, 'Enter']);
+}
+
 // SAFE variant for the close-decision path (card #709 ship-check catch).
 // An earlier version of this reused a legacy helper that failed OPEN to
 // "not running" on any I/O error — the same unsafe direction the #559 fix
@@ -338,6 +350,6 @@ module.exports = {
   CMUX, cmuxAvailable, run,
   parseWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError,
-  listWorkspaces, closeWorkspace, claudeMidTurnIn, claudeAliveIn,
+  listWorkspaces, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, checkLiveness, computeClaudeAlive, pruneDone,
 };
