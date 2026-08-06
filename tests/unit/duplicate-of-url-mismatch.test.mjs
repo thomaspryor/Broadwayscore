@@ -66,6 +66,33 @@ test('trivial %20-only URL diff is NOT flagged (real dup stays deduped)', () => 
   assert.equal(mismatches.length, 0, 'trivial %20 diff must not be a mismatch');
 });
 
+test('same article on a registered domain-alias hostname is NOT flagged (task #1072)', () => {
+  writeShow('domain-alias-2026', {
+    'about-entertainment--ben-brantley.json': {
+      url: 'http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance.html',
+      duplicateOf: 'nytimes--ben-brantley.json',
+      duplicateReason: 'outlet-mismatch',
+    },
+    'nytimes--ben-brantley.json': { url: 'https://www.nytimes.com/2013/04/16/theater/reviews/the-nance.html' },
+  });
+  const mismatches = audit().mismatches.filter(m => m.showId === 'domain-alias-2026');
+  assert.equal(mismatches.length, 0, 'theater.nytimes.com is a registered domainAlias of nytimes.com — same article, same path');
+});
+
+test('different article on a domain-alias hostname is STILL flagged (alias folding must not hide real staleness)', () => {
+  writeShow('domain-alias-different-article-2026', {
+    'about-entertainment--ben-brantley.json': {
+      url: 'http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance.html',
+      duplicateOf: 'nytimes--ben-brantley.json',
+      duplicateReason: 'outlet-mismatch',
+    },
+    'nytimes--ben-brantley.json': { url: 'https://www.nytimes.com/2005/08/15/theater/reviews/a-completely-different-review.html' },
+  });
+  const mismatches = audit().mismatches.filter(m => m.showId === 'domain-alias-different-article-2026');
+  assert.equal(mismatches.length, 1, 'different PATH must still flag even after hostname canonicalization');
+  assert.equal(mismatches[0].reason, 'url-mismatch');
+});
+
 test('different-article (path) diff IS flagged and --fix clears it', () => {
   writeShow('stale-flag-2026', {
     'guardian--unknown.json': {

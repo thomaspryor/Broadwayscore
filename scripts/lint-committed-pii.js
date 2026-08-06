@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { scanJsonValue, formatPath } = require('./lib/pii-scan');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 
@@ -62,7 +63,21 @@ function scanFile(relPath) {
   return { error: null, findings: scanJsonValue(parsed) };
 }
 
-function main() {
+const USAGE = `lint-committed-pii.js — no git-tracked data/audit JSON may carry
+submitter PII (task #1074).
+
+Usage:
+  node scripts/lint-committed-pii.js   scan every tracked data/audit/*.json
+  --help, -h                           show this message, do nothing else
+
+Blocking by design: a committed PII leak in a PUBLIC repo is a real exposure.
+ALLOWLIST (top of file) holds per-file maxFindings counts, so a NEW leak in an
+already-allowlisted file still fails.
+`;
+
+function main(argv = process.argv.slice(2)) {
+  // Before listTrackedAuditJson(), which shells out to git via execFileSync.
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const files = listTrackedAuditJson();
   const violations = [];
   const parseErrors = [];
