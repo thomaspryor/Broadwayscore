@@ -67,6 +67,9 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     ['scripts/lib/review-guards.js', 'gates', 'critical'],
     ['.github/workflows/test.yml', 'ci-gate', 'critical'],
     ['.github/workflows/vercel-deploy.yml', 'ci-gate', 'critical'],
+    // its own docstring: the ONLY place a branch the nightly loop produced
+    // reaches main — a defect merges a bad branch unattended
+    ['.github/workflows/autonomous-merge.yml', 'ci-gate', 'critical'],
     // every OTHER workflow is observed, not blocked — 221 workflows behind a
     // mandatory review is the universal-scope tax the card warns about
     ['.github/workflows/scrape-nysr.yml', 'ci', 'shared'],
@@ -256,6 +259,24 @@ test('patch application resolves to the files INSIDE the diff, not the patch fil
     '+++ /dev/null',
   ].join('\n');
   assert.deepEqual(patchTargets(diff), ['scripts/lib/backlog-drain.js']);
+
+  // A pure rename emits NO `+++` line — verified against real `git diff -M`
+  // output. A `+++`-only parser sees an empty target list and allows a patch
+  // that renames critical infra out from under the gate.
+  const renameOnly = [
+    'diff --git a/scripts/lib/backlog-drain.js b/scripts/lib/innocuous.js',
+    'similarity index 100%',
+    'rename from scripts/lib/backlog-drain.js',
+    'rename to scripts/lib/backlog-drain-renamed.js',
+  ].join('\n');
+  assert.deepEqual(patchTargets(renameOnly), ['scripts/lib/backlog-drain-renamed.js']);
+
+  // `diff -u` (not git) emits a tab + timestamp after the path, and Windows
+  // patches carry CRLF. Both must not leak into the classified path.
+  assert.deepEqual(
+    patchTargets('+++ b/scripts/lib/file-lock.js\t2026-01-01 00:00:00.000\r'),
+    ['scripts/lib/file-lock.js']);
+  assert.deepEqual(patchTargets('+++ scripts/lib/file-lock.js\r'), ['scripts/lib/file-lock.js']);
   // …and that target lands in the blocking tier, which is the whole point.
   assert.equal(
     evaluateInfraReviewGate({ paths: patchTargets(diff), verdicts: [], sessionId: SESSION, now: NOW }).action,
