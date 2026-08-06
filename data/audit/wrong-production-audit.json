@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T11:13:41.056Z",
+  "timestamp": "2026-08-06T11:30:59.871Z",
   "stats": {
-    "totalReviews": 41758,
-    "alreadyFlagged": 18136,
+    "totalReviews": 41768,
+    "alreadyFlagged": 18137,
     "dateGuardCatches": 128,
     "directorMismatch": 952,
-    "tvFilmSignals": 1154,
+    "tvFilmSignals": 1155,
     "londonSignals": 819,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3570
+    "noPublishDate": 3572
   },
   "findings": [
     {
@@ -12050,6 +12050,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2026-08-05",
+      "url": "https://www.londontheatre1.com/reviews/im-every-woman-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -24422,7 +24435,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-05-16",
       "url": "https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/",
       "findings": [
@@ -24558,7 +24571,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2025-05-20",
       "url": "https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/",
       "findings": [
@@ -24631,7 +24644,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "loureviews--louise-penn.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2025-05-13",
       "url": "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
       "findings": [
@@ -24650,7 +24663,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "matineemouse--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2025-05-14",
       "url": "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
       "findings": [
@@ -24664,7 +24677,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2025-05-15",
       "url": "https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/",
       "findings": [
@@ -24957,7 +24970,7 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "afridiziak-theatre-news--ronke-lawal.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2024-05-23",
       "url": "https://www.afridiziak.com/reviews/the-enormous-crocodile-the-musical-by-roald-dahl/",
       "findings": [
@@ -25013,7 +25026,7 @@
     {
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "on-magazine--on-yorkshire-magazine.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2023-12-08",
       "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/the-enormous-crocodile-review-leeds-playhouse/",
       "findings": [
