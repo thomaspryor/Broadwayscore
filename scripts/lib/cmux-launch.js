@@ -32,6 +32,7 @@ const cmuxws = require('./cmux-workspaces.js');
 const { decideLaunchWait, isSlowBootFailure, STATES,
   DEFAULT_SLOW_BOOT_CAP_SEC } = require('./cmux-launch-state.js');
 const { preflightAuth } = require('./claude-cli.js');
+const { ensureAutoTitle } = require('./workspace-naming.js');
 
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 const CMUX_APP = '/Applications/cmux.app';
@@ -377,6 +378,14 @@ function pageAuthPreflightFailure(detail) {
 }
 
 function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', focus = true, autoColor = false, settingsPath = null, commandOverride = null, verifyTimeoutSec = 30, lateAdoptSec = 0, slowBootCapSec = DEFAULT_SLOW_BOOT_CAP_SEC, skipAuthPreflight = false, probes = {} }, wakeState = { woke: false }) {
+  // Naming-convention floor (owner escalation 2026-08-06): a glyphless bare
+  // title is decorated with 🤖 + the model glyph; titles that already lead
+  // with a glyph (🤖/👑/✅/…) pass through untouched — see ensureAutoTitle.
+  const normalizedTitle = ensureAutoTitle(title, model);
+  if (normalizedTitle !== title) {
+    console.error(`[cmux-launch] bare title auto-decorated to house convention: "${title}" → "${normalizedTitle}"`);
+    title = normalizedTitle;
+  }
   const seedFile = path.join(os.tmpdir(), `bsc-seed-${seedKey}.txt`);
   fs.writeFileSync(seedFile, seed);
   // The wrapper script expands $(cat …) so the multi-line prompt survives
