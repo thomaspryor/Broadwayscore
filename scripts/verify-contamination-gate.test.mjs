@@ -46,8 +46,15 @@ function runGate() {
   }
 }
 
+// audit-review-contamination.js prints two different GATE line shapes: the
+// failing form ("N cross-market leak(s) ... + N strict hit(s) vs floor N")
+// and the passing form ("0 cross-market leaks, N strict hit(s) ≤ floor N",
+// scripts/audit-review-contamination.js console.log branch). This regex was
+// only ever exercised against the failing form before the gate went green —
+// tolerate the "(s)" suffix and the "+"/"," separator being optional so both
+// print shapes parse (task #1072).
 function parseGate(out) {
-  const m = out.match(/GATE:\s*(\d+)\s*cross-market leak\(s\).*?\+\s*(\d+)\s*strict hit\(s\)\s*(?:vs|≤)\s*floor\s*(\d+)/);
+  const m = out.match(/GATE:\s*(\d+)\s*cross-market leaks?(?:\(s\))?.*?(\d+)\s*strict hit\(s\)\s*(?:vs|≤)\s*floor\s*(\d+)/);
   if (!m) return null;
   return { leaks: Number(m[1]), strict: Number(m[2]), floor: Number(m[3]) };
 }
