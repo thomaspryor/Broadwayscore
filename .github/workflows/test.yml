@@ -1552,6 +1552,15 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
+      # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
+      # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
+      # dir is NOT globbed); path-listed so a solo edit triggers CI.
+      - 'scripts/dispatch-watchdog.js'
+      - 'scripts/lib/dispatch-watchdog-core.js'
+      - 'scripts/tests/dispatch-watchdog-core.test.mjs'
+      - 'scripts/lib/dispatch-outcome.js'
+      - 'scripts/tests/dispatch-outcome.test.mjs'
       # No-payload reaper (card #856, Session-system overhaul S3) — colocated
       # test runs in the lib-test glob (scripts/lib/*.test.mjs); path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).

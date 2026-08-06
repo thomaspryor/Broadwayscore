@@ -87,4 +87,21 @@ function stripAutoPrefix(cleanedTitle) {
   return m ? cleanedTitle.slice(m[0].length) : cleanedTitle;
 }
 
-module.exports = { AUTO_GLYPH, PROJECTS, PROJECT_RULES, CATEGORY_DEFAULT, MODEL_GLYPHS, projectOf, modelGlyph, buildAutoTitle, stripAutoPrefix };
+// Convention enforcement at the launch primitive (owner escalation
+// 2026-08-06: a session called launchCmuxSession directly with a bare title,
+// so the tab carried no 🤖/model glyph and bsc-prune + the owner's sidebar
+// scan both misread it). A title that already leads with ANY non-letter/digit
+// glyph (🤖, 👑, ✅, …) is the caller's stated intent and passes through
+// untouched — "caller owns naming convention" still holds for callers who
+// actually used one. Only a truly bare title gets the auto-dispatch glyphs
+// prepended. Deliberately NO projectOf() inference here (plan-review: the
+// heuristic has no task metadata to work with at this layer and would
+// destroy intentional names) — the caller's own text is kept verbatim.
+function ensureAutoTitle(title, model) {
+  const t = String(title || '').trim();
+  if (!t) return `${AUTO_GLYPH}${modelGlyph(model)} untitled dispatch`;
+  if (/^[^\p{L}\p{N}]/u.test(t)) return t;
+  return `${AUTO_GLYPH}${modelGlyph(model)} ${t}`;
+}
+
+module.exports = { AUTO_GLYPH, PROJECTS, PROJECT_RULES, CATEGORY_DEFAULT, MODEL_GLYPHS, projectOf, modelGlyph, buildAutoTitle, stripAutoPrefix, ensureAutoTitle };
