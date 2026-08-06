@@ -1197,6 +1197,15 @@ async function main() {
         };
         if (shouldEscalateToFix(card, escalationCtx)) {
           const note = '🔧 Auto-escalated Investigate→Fix (T1-gap allowlist) — this card was auto-created by the alert router, is P0/P1, and the Investigate stage made no durable change, so nothing would ever have implemented the recovery command. Setting Action="Fix" to run it end-to-end. Clear the Priority (or touch ~/.claude-action-dispatcher/escalation-off) to stop future auto-escalations.';
+          // Record intent BEFORE mutating Notion (Codex ship-check): a crash
+          // after the Notion write but before persisting the once-per-card
+          // record would otherwise leave a live unattended Fix with no durable
+          // escalation breadcrumb. Ordering here fails CLOSED — a crash
+          // between persist and the Notion write leaves a card recorded as
+          // escalated that never was, which simply falls back to the normal
+          // clearAction dead-end (safe), never a double or untracked Fix.
+          state.escalatedCardIds = [...state.escalatedCardIds, card.id];
+          saveState(state);
           try {
             await withRetry(() => notion.pages.update({
               page_id: card.id,
@@ -1206,13 +1215,14 @@ async function main() {
             await setCardOutcome(card.id, outcomeAccum);
             await addInfoComment(card.id, note, 'escalationComment');
             log(`Auto-escalated "${card.name}" Investigate→Fix (T1-gap allowlist, ${escalatedThisCycle + 1}/2 this cycle).`);
-            state.escalatedCardIds = [...state.escalatedCardIds, card.id];
             escalatedThisCycle += 1;
             escalated = true;
           } catch (err) {
-            // Escalation write failed — fall through to the normal
-            // clearAction path below rather than leaving the card stuck with
-            // Action already cleared in Notion but not locally recorded.
+            // Escalation write failed — compensate the intent record and fall
+            // through to the normal clearAction path so a transient Notion
+            // error doesn't permanently burn the card's one escalation.
+            state.escalatedCardIds = state.escalatedCardIds.filter(id => id !== card.id);
+            saveState(state);
             log(`  escalation to Fix failed (non-fatal, falling back to clearAction): ${err.message}`);
           }
         }
