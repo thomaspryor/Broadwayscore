@@ -254,6 +254,38 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
   }
 }
 
+// renderHealthDigestBlock (scripts/lib/autonomous-email-render.js) clips
+// every queued row's description/decisionPrompt to 200 chars — whatever a
+// caller puts after that is invisible to the owner, and nothing enforced
+// that the surviving head reads as a complete thought (card #1078: two of
+// three reports the owner screenshotted 2026-08-05 led with a bracketed
+// state tag or an indented detail line, so the clipped head was a
+// fragment). Rule mirrors the working assertion in
+// tests/unit/feedback-owner-reports.test.mjs: the first 200 chars must not
+// open on a bracket tag or an indented detail line, and must name the
+// row's subject. `subject` is normally the row's title — pass it explicitly
+// when the description's opening words diverge from the title (e.g. a show
+// name the title doesn't repeat).
+function headStandsAlone(description, subject) {
+  if (typeof description !== 'string' || description.length === 0) {
+    return { ok: true, reason: null };
+  }
+  const head = description.slice(0, 200);
+  if (/^\s*\[/.test(head)) {
+    return { ok: false, reason: 'clipped head opens on a bracket tag' };
+  }
+  if (/^\s{2}/.test(head)) {
+    return { ok: false, reason: 'clipped head opens on an indented detail line' };
+  }
+  if (subject) {
+    const escaped = String(subject).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (escaped && !new RegExp(escaped, 'i').test(head)) {
+      return { ok: false, reason: "clipped head does not name the row's subject" };
+    }
+  }
+  return { ok: true, reason: null };
+}
+
 // `decision`/`decisionPrompt` (task #843, owner mandate 2026-08-02): a digest
 // row is auto-dispatched by scripts/lib/digest-autofix.js by default — a
 // caller opts a row OUT of that (keeps a bare Dispatch-a-fix button) only by
@@ -264,6 +296,21 @@ function dispatchCard({ title, description, hint, fields, severity, cardAction, 
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
 function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model }) {
+  // Non-throwing (card #1078): an alert must still reach the owner even if
+  // its own head would clip badly — this is a loud warning, not a gate.
+  // description renders as "<b>title</b> — description" (autonomous-email-
+  // render.js) — the unclipped title always carries the subject, so only the
+  // structural checks (bracket-tag/indent) apply here, not the subject rule.
+  const headCheck = headStandsAlone(description);
+  if (!headCheck.ok) {
+    console.warn(`[alert-router] digest row "${conditionKey}" description may clip badly: ${headCheck.reason}`);
+  }
+  // decisionPrompt renders under a bare "Decision needed:" label with no
+  // title prefix, so its own clipped head has to name the subject.
+  const promptCheck = headStandsAlone(decisionPrompt, title);
+  if (!promptCheck.ok) {
+    console.warn(`[alert-router] digest row "${conditionKey}" decisionPrompt may clip badly: ${promptCheck.reason}`);
+  }
   let queue = [];
   try {
     const parsed = JSON.parse(fs.readFileSync(DIGEST_QUEUE_PATH, 'utf8'));
@@ -492,6 +539,7 @@ module.exports = {
   resolveCondition,
   deleteCondition,
   loadLedger,
+  headStandsAlone,
   drainDigestQueue,
   peekDigestQueue,
   clearDigestQueue,
