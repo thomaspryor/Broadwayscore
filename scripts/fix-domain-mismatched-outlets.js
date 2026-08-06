@@ -97,6 +97,41 @@ const MISMATCHES = [
 
 function exists(p) { try { fs.accessSync(p); return true; } catch { return false; } }
 
+function hostnameOf(url) {
+  if (!url || typeof url !== 'string') return null;
+  try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
+}
+
+// Path only (ignore scheme/www/query) — NYT in particular re-slugs the same
+// article between theater.nytimes.com's old short-code URLs and nytimes.com's
+// modern SEO slugs, so an exact string match is too strict, but the path is
+// stable. Two files with the same show/critic and a DIFFERENT path are not
+// reliably the same article — task #1072's first pass learned this the hard
+// way (35/146 "duplicates" turned out to be distinct NYT pieces — arts
+// briefs, profile pieces, different production years — caught by Codex
+// adversarial review after the fact, not before).
+function urlPath(url) {
+  try { return new URL(url).pathname.replace(/\/$/, ''); } catch { return url || null; }
+}
+
+// Follow an existing duplicateOf chain to its ultimate root (bounded — a
+// cycle, however it arose, must not hang the script). Pointing a new
+// duplicateOf at an already-duplicate-flagged file is unsafe: rebuild-all-
+// reviews.js's refAlsoDupe fallback can silently un-exclude the chain if the
+// root turns out missing/invalid, so always resolve to the root up front.
+function resolveDuplicateRoot(showId, fileName) {
+  let name = fileName;
+  let data = null;
+  for (let hops = 0; hops < 5; hops++) {
+    const p = path.join(REVIEW_TEXTS_DIR, showId, name);
+    if (!exists(p)) return { name, data: null };
+    data = JSON.parse(fs.readFileSync(p, 'utf8'));
+    if (!data.duplicateOf || data.duplicateOf === name) break; // no chain, or a cycle back to self
+    name = data.duplicateOf;
+  }
+  return { name, data };
+}
+
 function processOne(showId, file, fromOutlet, toOutlet) {
   const oldFile = path.join(REVIEW_TEXTS_DIR, showId, file);
   const critic = file.replace(/\.json$/, '').split('--').slice(1).join('--');
@@ -104,17 +139,35 @@ function processOne(showId, file, fromOutlet, toOutlet) {
   if (!exists(oldFile)) return { action: 'skip-not-found', oldFile };
 
   if (exists(correctFile)) {
-    // Duplicate: the correct-outlet copy already exists for this show/critic.
-    if (DRY_RUN) return { action: 'would-duplicate', oldFile, correctFile };
+    const srcData = JSON.parse(fs.readFileSync(oldFile, 'utf8'));
+    const root = resolveDuplicateRoot(showId, `${toOutlet}--${critic}.json`);
+    const verified = root.data && urlPath(srcData.url) === urlPath(root.data.url);
+
+    if (!verified) {
+      // Same show/critic, but not verifiably the same article — retag in
+      // place instead of claiming a duplicate relationship we can't back up.
+      // No rename (the correct-outlet filename is taken); the outletId field
+      // alone is what scoring and the contamination audit read.
+      if (DRY_RUN) return { action: 'would-retag-inplace', oldFile, correctFile };
+      try {
+        srcData.outletId = toOutlet;
+        if (OUTLET_DISPLAY_NAMES[toOutlet]) srcData.outlet = OUTLET_DISPLAY_NAMES[toOutlet];
+        fs.writeFileSync(oldFile, JSON.stringify(srcData, null, 2) + '\n');
+      } catch (e) {
+        return { action: 'retag-inplace-json-error', oldFile, correctFile, error: e.message };
+      }
+      return { action: 'retagged-inplace-unverified', oldFile, correctFile };
+    }
+
+    if (DRY_RUN) return { action: 'would-duplicate', oldFile, correctFile: path.join(REVIEW_TEXTS_DIR, showId, root.name) };
     try {
-      const j = JSON.parse(fs.readFileSync(oldFile, 'utf8'));
-      j.duplicateOf = `${toOutlet}--${critic}.json`;
-      j.duplicateReason = `outlet-mismatch: mistagged ${fromOutlet}, same article as ${toOutlet}--${critic}.json (task #1072)`;
-      fs.writeFileSync(oldFile, JSON.stringify(j, null, 2) + '\n');
+      srcData.duplicateOf = root.name;
+      srcData.duplicateReason = `outlet-mismatch: mistagged ${fromOutlet}, same article as ${root.name} (task #1072)`;
+      fs.writeFileSync(oldFile, JSON.stringify(srcData, null, 2) + '\n');
     } catch (e) {
       return { action: 'duplicate-json-error', oldFile, correctFile, error: e.message };
     }
-    return { action: 'marked-duplicate', oldFile, correctFile };
+    return { action: 'marked-duplicate', oldFile, correctFile: path.join(REVIEW_TEXTS_DIR, showId, root.name) };
   }
 
   if (DRY_RUN) return { action: 'would-rename', oldFile, correctFile };
@@ -130,11 +183,6 @@ function processOne(showId, file, fromOutlet, toOutlet) {
   return { action: 'renamed', oldFile, correctFile };
 }
 
-function hostnameOf(url) {
-  if (!url || typeof url !== 'string') return null;
-  try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
-}
-
 function main() {
   let showDirs;
   try {
@@ -146,7 +194,10 @@ function main() {
     process.exit(1);
   }
 
-  const results = { renamed: 0, wouldRename: 0, duped: 0, wouldDupe: 0, skipMissing: 0, errs: 0 };
+  const results = {
+    renamed: 0, wouldRename: 0, duped: 0, wouldDupe: 0,
+    retagged: 0, wouldRetag: 0, skipMissing: 0, errs: 0,
+  };
 
   for (const rule of MISMATCHES) {
     const prefix = `${rule.from}--`;
@@ -158,7 +209,10 @@ function main() {
       for (const file of files) {
         let d;
         try { d = JSON.parse(fs.readFileSync(path.join(sDir, file), 'utf8')); } catch { continue; }
-        if (d.duplicateOf) continue; // already resolved
+        // Already resolved by a prior run: either flagged duplicate, or
+        // in-place retagged (filename keeps the old outlet prefix on
+        // purpose in the unverified-duplicate branch — see processOne).
+        if (d.duplicateOf || d.outletId === rule.to) continue;
         const host = hostnameOf(d.url);
         if (!host || !rule.domains.includes(host)) continue;
 
@@ -168,6 +222,8 @@ function main() {
         else if (r.action === 'would-rename') results.wouldRename++;
         else if (r.action === 'marked-duplicate') results.duped++;
         else if (r.action === 'would-duplicate') results.wouldDupe++;
+        else if (r.action === 'retagged-inplace-unverified') results.retagged++;
+        else if (r.action === 'would-retag-inplace') results.wouldRetag++;
         else if (r.action === 'skip-not-found') results.skipMissing++;
         else if (r.action.endsWith('json-error')) results.errs++;
       }
@@ -175,8 +231,8 @@ function main() {
   }
 
   console.log('');
-  console.log(`Summary: renamed=${results.renamed} would-rename=${results.wouldRename} marked-duplicate=${results.duped} would-duplicate=${results.wouldDupe} skip-not-found=${results.skipMissing} errors=${results.errs}`);
-  if (!DRY_RUN && (results.renamed > 0 || results.duped > 0)) {
+  console.log(`Summary: renamed=${results.renamed} would-rename=${results.wouldRename} marked-duplicate=${results.duped} would-duplicate=${results.wouldDupe} retagged-inplace=${results.retagged} would-retag-inplace=${results.wouldRetag} skip-not-found=${results.skipMissing} errors=${results.errs}`);
+  if (!DRY_RUN && (results.renamed > 0 || results.duped > 0 || results.retagged > 0)) {
     console.log('\nNext: cd data/review-texts && git add -A && git commit -m "..." && git push');
   }
 }
