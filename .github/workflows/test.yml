@@ -1572,6 +1572,11 @@ on:
       # coverage at all.
       - 'scripts/e2e-canary-alert-chain.js'
       - 'scripts/lint-resend-calls.js'
+      # PII lint (#1074) — blocks submitter name/email leaking into committed,
+      # PUBLIC-repo data/audit/*.json files. Test lives in tests/unit/, already
+      # covered by 'tests/**' above; only the scripts/ sources need listing.
+      - 'scripts/lint-committed-pii.js'
+      - 'scripts/lib/pii-scan.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -2197,6 +2202,21 @@ jobs:
         # session can silently forget — same class as the 34 senders this
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
+
+      - name: Audit — no submitter PII in committed data/audit files
+        # Task #1074. "Never store submitter name/email; cap free text" existed
+        # only as a prose comment in feedback-request-ledger.js:54-60 until a
+        # session violated it in a fresh code path the same week (#1064):
+        # notify-feedback-outcomes.js's buildAlert() put submitter name + email
+        # + an uncapped message into a routeAlert() description, which
+        # data/audit/alert-digest-queue.json — a file 12 workflows commit —
+        # then persists to this PUBLIC repo. Caught pre-merge only by an
+        # adversarial reviewer, not by any lint. Blocking: a committed PII leak
+        # in a public repo is a real exposure, not style debt. Waive a reviewed
+        # false positive (outlet contact address, critic byline) by adding it
+        # to ALLOWLIST in scripts/lint-committed-pii.js with a justification —
+        # never a silent skip.
+        run: node scripts/lint-committed-pii.js
 
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515
