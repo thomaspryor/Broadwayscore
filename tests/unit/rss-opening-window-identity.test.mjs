@@ -20,6 +20,17 @@ test('urlSlugMatchesShow: NYT review slug matches show title', () => {
     'Disruption'), true);
 });
 
+test('urlSlugMatchesShow: single-word titles need the full phrase, not a stray token (Codex finding)', () => {
+  // "pass" token inside an unrelated slug must NOT match The Pass.
+  assert.equal(urlSlugMatchesShow(
+    'https://www.thewrap.com/creative-content/movies/gail-daughtry-and-the-celebrity-sex-pass-review-sundance/',
+    'The Pass'), false);
+  // The real review slug still matches — full phrase "the pass" is contiguous.
+  assert.equal(urlSlugMatchesShow(
+    'https://newyorktheater.me/2026/08/03/the-pass-review-a-heated-rivalry/',
+    'The Pass'), true);
+});
+
 test('urlSlugMatchesShow: unrelated theater-section articles do NOT match', () => {
   const vesselJunk = [
     'https://www.nytimes.com/2026/07/25/theater/kenneth-branagh-royal-shakespeare-company.html',
