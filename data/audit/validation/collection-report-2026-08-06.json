@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-08-06T11:07:13.958Z",
+  "runDate": "2026-08-06T11:11:23.097Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "matilda-the-musical-theatre-row-off-broadway-2026",
+    "showFilter": "cats-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 28,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "3.4%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,22 +41,52 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 28,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 28,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "cats-west-end-2026/standard--unknown.json"
+  ],
   "failed": [
-    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json"
+    "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "cats-west-end-2026/nyt-theater--unknown.json",
+    "cats-west-end-2026/nytg--kyle-turner.json",
+    "cats-west-end-2026/nytimes--helen-shaw.json",
+    "cats-west-end-2026/variety--frank-rizzo.json",
+    "cats-west-end-2026/vulture--unknown.json",
+    "cats-west-end-2026/deadline--greg-evans.json",
+    "cats-west-end-2026/ew--shania-russell.json",
+    "cats-west-end-2026/new-york-sun--elysa-gardner.json",
+    "cats-west-end-2026/nypost--johnny-oleksinski.json",
+    "cats-west-end-2026/nypost--kyle-smith.json",
+    "cats-west-end-2026/theatermania--zachary-stewart.json",
+    "cats-west-end-2026/timeout--adam-feldman.json",
+    "cats-west-end-2026/cititour--unknown.json",
+    "cats-west-end-2026/theatrely--joey-sims.json",
+    "cats-west-end-2026/ap--mark-kennedy.json",
+    "cats-west-end-2026/chicagotribune--chris-jones.json",
+    "cats-west-end-2026/culturesauce--thom-geier.json",
+    "cats-west-end-2026/curtainup--elyse-sommer.json",
+    "cats-west-end-2026/frontmezzjunkies--steven-ross.json",
+    "cats-west-end-2026/huffpost--david-finkle.json",
+    "cats-west-end-2026/nbcny--robert-kahn.json",
+    "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
+    "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cats-west-end-2026/slantmagazine--dan-rubins.json",
+    "cats-west-end-2026/usatoday--patrick-ryan.json",
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "cats-west-end-2026/london-box-office--daniel-perks.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "cats-west-end-2026/standard--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
