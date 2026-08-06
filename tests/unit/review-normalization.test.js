@@ -30,6 +30,7 @@ const {
   loadOutletRegistry,
   normalizeUrl,
   mergeReviews,
+  isUrlProvenanceWrongProduction,
   OUTLET_ALIASES,
   CRITIC_ALIASES,
 } = require('../../scripts/lib/review-normalization.js');
@@ -1183,21 +1184,81 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
     );
   });
 
-  test('preserves flag when contentVerification says wrongProduction, even with a Same URL note', () => {
+  test('preserves flag when HIGH-confidence contentVerification says wrongProduction, even with a Same URL note', () => {
     // The article was read and judged to be a different production. A URL-shaped
-    // self-heal must not override direct content evidence.
+    // self-heal must not override direct high-confidence content evidence.
     const existing = {
       ...baseExisting,
       wrongProductionNote: 'Same URL exists in other-show-2020',
       contentVerification: {
         isValid: false,
         wrongProduction: true,
+        confidence: 'high',
         reasoning: 'Review is of the Broadway production, not the West End production',
       },
     };
     const incoming = { ...existing, source: 'show-score' };
     const merged = mergeReviews(existing, incoming);
     assert.strictEqual(merged.wrongProduction, true, 'CV wrongProduction outranks URL self-heal');
+  });
+
+  // Codex adversarial review, 2026-08-06: vetoing on ANY cv.wrongProduction
+  // (no confidence check) would let a single weak false positive pin a
+  // legitimate URL transfer forever — the CV self-heal in review-guards.js is
+  // provenance-gated to CV-promoted flags and would never cover a 'Same URL'
+  // flag. The rebuild already refuses to promote low-confidence CV, so the
+  // merge must not trust what the rebuild rejects.
+  test('LOW-confidence contentVerification does NOT veto a legitimate Same URL self-heal', () => {
+    const existing = {
+      ...baseExisting,
+      wrongProductionNote: 'Same URL exists in other-show-2020',
+      contentVerification: { wrongProduction: true, confidence: 'low' },
+    };
+    const incoming = { ...existing, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(merged.wrongProduction, undefined, 'weak CV must not pin a URL-based flag');
+  });
+
+  // Codex adversarial review, 2026-08-06: cleanup-dedup-comprehensive.js (live
+  // via weekly-integrity.yml) writes a genuinely URL-based cross-show collision
+  // flag with only `_wrongProductionReason` / `_wrongProductionDetectedBy` and
+  // NO note. Requiring note text alone would have permanently disabled its only
+  // automatic recovery path.
+  test('noteless URL-collision flag from cleanup-dedup-comprehensive still self-heals', () => {
+    const existing = {
+      ...baseExisting,
+      _wrongProductionReason: 'URL matches other-show-2020 (year-based)',
+      _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive',
+    };
+    const incoming = { ...existing, source: 'show-score' };
+    const merged = mergeReviews(existing, incoming);
+    assert.strictEqual(
+      merged.wrongProduction, undefined,
+      'explicit URL-collision provenance is positive evidence, so the self-heal must still fire'
+    );
+  });
+
+  test('isUrlProvenanceWrongProduction requires positive evidence, never bare absence', () => {
+    assert.strictEqual(isUrlProvenanceWrongProduction({}), false, 'no evidence at all');
+    assert.strictEqual(
+      isUrlProvenanceWrongProduction({ wrongProductionReason: 'anticipatory_pre_opening_post' }),
+      false, 'date-based reason with no note is NOT url-based'
+    );
+    assert.strictEqual(
+      isUrlProvenanceWrongProduction({ wrongProductionNote: 'Same URL exists in x-2020' }),
+      true, 'Same URL note'
+    );
+    assert.strictEqual(
+      isUrlProvenanceWrongProduction({ _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive' }),
+      true, 'explicit URL-collision provenance'
+    );
+    assert.strictEqual(
+      isUrlProvenanceWrongProduction({
+        wrongProductionNote: 'Pre-opening guard: dated 2016-07-30',
+        _wrongProductionDetectedBy: 'cleanup-dedup-comprehensive',
+      }),
+      false, 'an explicit date-based note wins over the provenance stamp'
+    );
   });
 
   test('clears Pre-opening guard flag AND its publishDate basis on canonical URL change', () => {
