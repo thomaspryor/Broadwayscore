@@ -498,3 +498,29 @@ test('a show whose real name IS editorial vocabulary is left alone', () => {
   assert.equal(cleanCandidateTitle(''), '');
   assert.equal(cleanCandidateTitle(undefined), '');
 });
+
+// The clean title must NOT change the show's IDENTITY. The nightly crawl's
+// already-in-shows gate compares slugify(RAW headline) against
+// collisionSlugSet(shows). If the slug were cleaned too, every raw-derived
+// member of that set disappears, the gate stops matching the headline the show
+// came from, and the article re-fetches + re-stages EVERY NIGHT forever — the
+// exact failure collisionSlugSet's header warns about. Caught by adversarial
+// review, 2026-08-05, after the first cut cleaned the slug as well.
+test('cleaning the title does not break the nightly already-in-shows gate', () => {
+  const { collisionSlugSet, slugCollidesWith } = require('./aggregator-candidate-extract.js');
+  const { slugify } = require('./deduplication.js');
+  const RAW = 'THE OUTSIDERS World Premiere';
+  // The show exactly as the promoter creates it: raw-derived slug, clean title.
+  const promoted = {
+    id: slugify(RAW) + '-regional-2023',
+    slug: slugify(RAW) + '-regional-2023',
+    title: cleanCandidateTitle(RAW),
+  };
+  assert.equal(promoted.title, 'The Outsiders', 'the visible title is clean');
+  assert.ok(promoted.slug.startsWith('the-outsiders-world-premiere'), 'identity stays raw-derived');
+  assert.equal(
+    slugCollidesWith(RAW, collisionSlugSet([promoted])),
+    true,
+    'the roundup that created this show must still collide with it, or it re-stages nightly'
+  );
+});
