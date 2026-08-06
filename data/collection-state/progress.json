@@ -59,7 +59,9 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-vessel-off-broadway-2026/off-off-online--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -399,7 +401,43 @@
     "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json",
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/wsj--charles-isherwood.json",
-    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
+    "shifters-off-broadway-2026/timeout-london--anya-ryan.json",
+    "shifters-off-broadway-2026/financialtimes--sarah-hemming.json",
+    "shifters-off-broadway-2026/i-paper--fiona-mountford.json",
+    "shifters-off-broadway-2026/independent--alice-saville.json",
+    "shifters-off-broadway-2026/standard--nick-curtis.json",
+    "shifters-off-broadway-2026/telegraph--dzifa-benson.json",
+    "shifters-off-broadway-2026/telegraph--kirsten-grant.json",
+    "shifters-off-broadway-2026/thestage--tom-wicker.json",
+    "shifters-off-broadway-2026/times-uk--donald-hutera.json",
+    "shifters-off-broadway-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -442,7 +480,9 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "the-vessel-off-broadway-2026/off-off-online--unknown.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -479,7 +519,7 @@
     ]
   },
   "startTime": "2026-08-06T11:50:35.908Z",
-  "lastProcessed": "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "shifters-off-broadway-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-08-06T12:51:55.232Z",
@@ -492,6 +532,28 @@
       "event": "bb-session",
       "session": "ef14135c",
       "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-lon"
+    },
+    {
+      "t": "2026-08-06T14:58:07.352Z",
+      "event": "bb-session",
+      "session": "5236552c",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-06T14:58:08.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-06T14:58:25.855Z",
+      "event": "bb-session",
+      "session": "68a44fae",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-06T14:58:26.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
