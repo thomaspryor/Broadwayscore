@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T13:40:51.131Z",
-    "completedAt": "2026-08-02T13:40:51.300Z",
-    "totalReviews": 1,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-vessel-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-08-02T14:01:56.462Z",
-    "completedAt": "2026-08-02T14:01:56.665Z",
-    "totalReviews": 1,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "the-vessel-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T14:30:26.467Z",
     "completedAt": "2026-08-02T14:31:01.947Z",
     "totalReviews": 41550,
@@ -704296,5 +704256,44 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-06T07:55:27.530Z",
+    "completedAt": "2026-08-06T07:57:47.421Z",
+    "totalReviews": 42019,
+    "processed": 1,
+    "skipped": 42015,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 9747,
+      "output": 462,
+      "total": 26078
+    },
+    "errorDetails": [
+      {
+        "showId": "hungry-women-off-broadway-2026",
+        "outletId": "melissamaney",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-06T07:57:58.083Z",
+    "completedAt": "2026-08-06T08:02:00.147Z",
+    "totalReviews": 42019,
+    "processed": 24,
+    "skipped": 41822,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 292368,
+      "output": 11005,
+      "total": 724378
+    },
+    "errorDetails": []
   }
 ]
