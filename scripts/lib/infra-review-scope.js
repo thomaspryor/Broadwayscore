@@ -141,9 +141,12 @@ const SHARED_INFRA_RULES = [
     // load-bearing: there are 221 workflows here, and gating every one of them
     // put 221 of the blocking tier's 272 files behind a review — the
     // universal-scope tax the card warns gets routed around. A scraper cron
-    // failing fails itself; these four fail everyone.
-    re: /^\.github\/workflows\/(?:test|lint-workflows|vercel-deploy|vercel-build-guard)\.ya?ml$/,
-    why: 'gates merges and deploys for every branch and session; a defect here lands main red or blocks prod for everyone',
+    // failing fails itself; these fail everyone.
+    // autonomous-merge.yml is here because its own docstring calls it the ONLY
+    // place a branch the nightly loop produced reaches main — a defect there
+    // merges a bad branch unattended, which is precisely this tier's remit.
+    re: /^\.github\/workflows\/(?:test|lint-workflows|vercel-deploy|vercel-build-guard|autonomous-merge)\.ya?ml$/,
+    why: 'gates merges and deploys for every branch and session; a defect here lands main red, blocks prod, or merges a bad branch unattended',
   },
   {
     id: 'ci',
@@ -378,17 +381,24 @@ function bashPatchSources(command) {
 }
 
 /**
- * Files a unified diff would WRITE, from its `+++ b/<path>` headers.
- * Pure — the caller supplies the patch text.
+ * Files a unified diff would WRITE. Pure — the caller supplies the patch text.
+ *
+ * Reads BOTH `+++ b/<path>` hunk headers AND `rename to <path>` lines. A pure
+ * rename (`git diff -M`, similarity index 100%) emits NO `+++` line at all —
+ * verified against real `git diff -M` output — so a patch that renames
+ * scripts/lib/backlog-drain.js was invisible to a `+++`-only parser.
  */
 function patchTargets(patchText) {
   if (!patchText) return [];
   const out = new Set();
-  for (const line of String(patchText).split('\n')) {
-    const m = /^\+\+\+\s+(?:b\/)?(\S+)/.exec(line);
-    if (!m) continue;
-    if (m[1] === '/dev/null') continue; // deletion
-    out.add(m[1]);
+  for (const raw of String(patchText).split('\n')) {
+    const line = raw.replace(/\r$/, '');           // tolerate CRLF patches
+    // `+++ b/path`, `+++ path` (--no-prefix), optionally followed by a tab +
+    // timestamp, which `diff -u` emits and git does not.
+    const plus = /^\+\+\+ (?:b\/)?([^\t]+?)(?:\t.*)?\s*$/.exec(line);
+    if (plus && plus[1] !== '/dev/null') { out.add(plus[1]); continue; }
+    const ren = /^rename to (.+?)\s*$/.exec(line);
+    if (ren) out.add(ren[1]);
   }
   return [...out];
 }
