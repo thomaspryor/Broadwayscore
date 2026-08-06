@@ -2251,10 +2251,10 @@ jobs:
       - name: Audit — digest description clip-safety (statically checkable fields)
         # Static, PR-time counterpart to headStandsAlone() (card #1078,
         # scripts/lib/owner-alert-router.js) — that check only fires as a
-        # runtime console.warn inside queueDigestLine(), which is how the
+        # runtime console.warn inside queueDigestLine, which is how the
         # original bug (a description opening with "[direction]" in
         # scripts/audit-tier-skip-drift.js) shipped unnoticed until the owner
-        # complained. This scans every routeAlert() call site for a
+        # complained. This scans every owner-alert-router call site for a
         # statically-checkable description/decisionPrompt and fails CI
         # immediately on a new violation instead of relying on server logs.
         run: node scripts/audit-digest-clip-safety.js
