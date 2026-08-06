@@ -55,7 +55,20 @@ function parseArgs(argv) {
 }
 
 const ROUNDUP_URL_RE = /broadwayworld\.com\/article\/Review-Roundup/i;
-const PV_URL_RE = /playbill\.com\/article\//i;
+// A Playbill VERDICT article, not just any Playbill article. The SERP query
+// asks for "The Verdict", but a search engine is free to return anything from
+// the site — an interview, a casting notice, an obituary — and the URL filter
+// is the only thing that stops it being handed to classifyCandidate() as
+// `source: 'playbill-verdict'` and parsed with roundup assumptions
+// (ship-check finding, 2026-08-05).
+//
+// The slug vocabulary is deliberately the SAME list scrape-playbill-verdict.js
+// already uses to recognise a Verdict article (its verdictUrls filter), so the
+// two cannot drift on what counts as one. Playbill keeps inventing phrasings
+// ("what-do-critics-think", "what-did-reviews-say-about-X"); keep both lists
+// in step when it does.
+const PV_URL_RE =
+  /playbill\.com\/article\/[^?#]*(?:review|verdict|critics|what-are|what-do|what-did|did-the|how-did)/i;
 
 /**
  * Sources this script will accept as proof a production exists, in order.
