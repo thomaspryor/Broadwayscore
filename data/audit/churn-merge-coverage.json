@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-06T06:39:14.440Z",
+    "generatedAt": "2026-08-06T09:19:38.480Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,33 +9,33 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 18,
-    "exemptCount": 36,
+    "exemptCount": 33,
     "coveredCount": 28,
-    "highChurnTracked": 82
+    "highChurnTracked": 79
   },
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 396
+      "churn": 388
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 170
+      "churn": 171
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 66
+      "churn": 64
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 55
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 53
+      "churn": 56
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 51
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
       "churn": 51
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 47
+      "churn": 46
     },
     {
       "path": "data/audit/we-gate-proving.json",
@@ -72,53 +72,53 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 42
+      "churn": 41
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 36
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 32
+      "churn": 35
     },
     {
       "path": "data/audit/bd-circuit-breaker.json",
+      "churn": 33
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
       "churn": 32
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 318
+      "churn": 310
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 318
+      "churn": 310
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 318
+      "churn": 310
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 204
+      "churn": 198
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 98
-    },
-    {
-      "path": "public/data/shows/the-car-man-west-end-2026.json",
-      "churn": 95
+      "churn": 96
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 95
+      "churn": 93
+    },
+    {
+      "path": "public/data/shows/the-car-man-west-end-2026.json",
+      "churn": 91
     },
     {
       "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
@@ -126,23 +126,23 @@
     },
     {
       "path": "public/data/shows/the-oresteia-west-end-2026.json",
-      "churn": 75
+      "churn": 74
     },
     {
       "path": "public/data/shows/tao-of-glass-west-end-2026.json",
-      "churn": 69
+      "churn": 67
     },
     {
       "path": "public/data/shows/the-enormous-crocodile-west-end-2026.json",
-      "churn": 66
-    },
-    {
-      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
-      "churn": 60
+      "churn": 62
     },
     {
       "path": "public/data/shows/disruption-off-broadway-2026.json",
-      "churn": 58
+      "churn": 60
+    },
+    {
+      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "churn": 56
     },
     {
       "path": "public/data/shows/dinosaur-world-live-off-west-end-2026.json",
@@ -154,34 +154,22 @@
     },
     {
       "path": "public/data/shows/cat-cohen-broad-strokes-off-broadway-2026.json",
-      "churn": 48
+      "churn": 47
     },
     {
       "path": "public/data/shows/the-saviors-off-broadway-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/space-dogs-off-west-end-2026.json",
-      "churn": 43
-    },
-    {
-      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 39
-    },
-    {
-      "path": "public/data/shows/midnight-at-the-never-get-west-end-2026.json",
-      "churn": 39
+      "churn": 42
     },
     {
       "path": "public/data/shows/sinatra-the-musical-west-end-2026.json",
       "churn": 39
     },
     {
-      "path": "public/data/shows/the-vessel-off-broadway-2026.json",
+      "path": "public/data/shows/space-dogs-off-west-end-2026.json",
+      "churn": 39
+    },
+    {
+      "path": "public/data/shows/weve-been-here-before-a-one-woman-musical-off-broadway-2026.json",
       "churn": 39
     },
     {
@@ -189,7 +177,15 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/weve-been-here-before-a-one-woman-musical-off-broadway-2026.json",
+      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
+      "churn": 38
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 38
+    },
+    {
+      "path": "public/data/shows/midnight-at-the-never-get-west-end-2026.json",
       "churn": 38
     },
     {
@@ -197,91 +193,83 @@
       "churn": 37
     },
     {
-      "path": "data/show-score-urls.json",
-      "churn": 35
+      "path": "public/data/shows/the-vessel-off-broadway-2026.json",
+      "churn": 37
     },
     {
-      "path": "public/data/shows/dog-man-the-musical-west-end-2026.json",
-      "churn": 35
+      "path": "data/show-score-urls.json",
+      "churn": 36
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
       "churn": 35
     },
     {
-      "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
+      "path": "public/data/shows/dog-man-the-musical-west-end-2026.json",
       "churn": 33
+    },
+    {
+      "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
+      "churn": 32
     },
     {
       "path": "public/data/shows/the-whoopi-monologues-off-broadway-2026.json",
       "churn": 32
     },
     {
-      "path": "public/data/shows/avenue-q-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/shifters-off-broadway-2026.json",
-      "churn": 30
-    },
-    {
       "path": "public/data/shows/tender-off-west-end-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
       "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 4195,
+      "churn": 4151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 4138,
+      "churn": 4096,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 820,
+      "churn": 825,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 779,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/needs-human-review.json",
-      "churn": 396,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/rebuild-score-drift.json",
-      "churn": 396,
+      "churn": 783,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 394,
+      "churn": 393,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/needs-human-review.json",
+      "churn": 388,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 388,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 351,
+      "churn": 344,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 318,
+      "churn": 310,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 142,
+      "churn": 139,
       "mergeAttr": "union"
     },
     {
@@ -291,27 +279,27 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 95,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 95,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 95,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 88,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-disruption-off-broadway-2026.json",
-      "churn": 66,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
@@ -336,41 +324,41 @@
     },
     {
       "path": "data/audit/poller-backoff/dog-man-the-musical-west-end-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/tao-of-glass-west-end-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-enormous-crocodile-west-end-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-car-man-west-end-2026.json",
       "churn": 34,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
-      "churn": 32,
+      "path": "data/audit/poller-backoff/loves-labours-lost-globe-west-end-2026.json",
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 31,
+      "path": "data/audit/poller-backoff/tao-of-glass-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-enormous-crocodile-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-car-man-west-end-2026.json",
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/midnight-at-the-never-get-west-end-2026.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-importance-of-being-oscar-off-west-end-2026.json",
       "churn": 30,
       "mergeAttr": "ours"
     }
