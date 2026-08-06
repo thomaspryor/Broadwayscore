@@ -1549,6 +1549,10 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # headStandsAlone() clip-readability guard (card #1078) — colocated
+      # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
+      # this is path-listed for the same reason as owner-alert-router.js above.
+      - 'tests/unit/digest-row-clip.test.mjs'
       # Lint guard: routeAlert()/resolveCondition() callers must commit
       # alert-ledger.json in the same job (card #618, 5th recurrence
       # prevention). Colocated *.test.mjs runs via the lib-test glob;
