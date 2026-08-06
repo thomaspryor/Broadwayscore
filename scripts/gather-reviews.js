@@ -2918,10 +2918,15 @@ function createReviewFile(showId, reviewData, options = {}) {
   const allowOffBroadway = options.allowOffBroadway || false;
   const allowWestEnd = options.allowWestEnd || false;
   const allowOpera = options.allowOpera || false;
+  // Regional tryouts: isNotBroadway() rejects any text containing "world
+  // premiere" unless allowRegional, and a tryout review says exactly that.
+  // Cousin of the two roundup gates fixed earlier (2026-08-05) — same helper,
+  // same missing flag, one layer further down the same path.
+  const allowRegional = options.allowRegional || false;
   const fromPostOpening = options.fromPostOpening || false;
   // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
   let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
-  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera })) {
+  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
   }
@@ -4920,7 +4925,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         }
       }
 
-      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' });
+      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' });
       if (result === true) {
         created++;
         reviewFilesTouched++;
@@ -4995,7 +5000,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' })) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }
