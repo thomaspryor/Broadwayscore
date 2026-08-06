@@ -62,12 +62,20 @@ describe('extractShowScoreReviewUrls', () => {
     assert.ok(!urls.some(u => /show-score\.com/.test(u)), 'must drop Show Score own links');
   });
 
-  it('returns raw candidates including non-review links (caller filters)', () => {
-    // The lib is intentionally permissive — ticketing/maps filtering is the
-    // caller's job (isReviewUrl). Just verify it does not crash and de-dupes.
-    const html = `<a href="https://maps.google.com/?q=1,2">map</a><a href="https://maps.google.com/?q=1,2">dup</a>`;
+  it('de-dupes repeated links, and now filters non-review URLs in-lib', () => {
+    // CONTRACT CHANGED (task #1073, commit 0218374 "canonical URL classifier"):
+    // this lib used to be deliberately permissive and leave ticketing/maps
+    // filtering to the caller's isReviewUrl. It now applies classifyReviewUrl
+    // itself, so non-review hosts never reach the caller at all. The de-dupe
+    // guarantee — the thing this test actually guards — is asserted on a URL
+    // that survives filtering.
+    const dupe = 'https://www.vulture.com/article/theater-review-girl-interrupted.html';
+    const html = `<a href="${dupe}">a</a><a href="${dupe}">dup</a>`
+      + `<a href="https://maps.google.com/?q=1,2">map</a>`;
     const urls = extractShowScoreReviewUrls(html);
-    assert.strictEqual(urls.filter(u => /maps\.google/.test(u)).length, 1, 'de-dupes');
+    assert.strictEqual(urls.filter(u => u === dupe).length, 1, 'de-dupes');
+    assert.strictEqual(urls.some(u => /maps\.google/.test(u)), false,
+      'non-review hosts are filtered in-lib now');
   });
 
   it('handles empty/garbage input', () => {
