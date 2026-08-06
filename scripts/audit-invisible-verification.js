@@ -29,7 +29,27 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { findInvisibleVerifications } = require('./lib/invisible-verification-scan');
+
+const USAGE = `Usage: node scripts/audit-invisible-verification.js [rootDir]
+
+Blocking lint (task #1075): fails when any script reads a LITERAL gitignored
+path out of a git ref — \`git show <ref>:<path>\`, \`git cat-file -e|-p|blob\`.
+Such a read can never succeed here (core data lives in a private repo), so a
+check built on it reports "nothing found" — i.e. success — forever.
+
+  rootDir   repo to scan (default: this repo). Scans scripts/, tests/,
+            .claude/hooks/, .claude/skills/, .github/workflows/.
+
+Exit 0 = clean, 1 = violations found OR the scan could not answer (missing
+files, git check-ignore unusable). Opt a handled call out with an inline
+\`observability-ok: <reason>\` comment on that line or the line above.`;
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(USAGE);
+  process.exit(0);
+}
 
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..');
 
