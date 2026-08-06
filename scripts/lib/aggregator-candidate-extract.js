@@ -390,9 +390,18 @@ const VENUE_INITIALISM_RE = /^(?:the\s+)?(?:[A-Z]\.){2,}[A-Z]?\.?$|^(?:the\s+)?[
 function isVenueLikeClause(clause) {
   const c = String(clause || '').trim().replace(/[.,;]+$/, '');
   if (!c) return false;
-  if (VENUE_KEYWORD_RE.test(c)) return true;
+  // A known feeder venue or a house initialism ("A.R.T.") is conclusive.
+  if (feederVenueCity(c)) return true;
   if (VENUE_INITIALISM_RE.test(c)) return true;
-  return Boolean(feederVenueCity(c));
+  // Otherwise a venue keyword is necessary but NOT sufficient: a real venue
+  // clause names a specific house ("the St. James Theatre", "La Jolla
+  // Playhouse"), whereas a BARE keyword is ordinary English that belongs to the
+  // title — "Meet Me at the Forum" and "A Night at the Stage" both stripped to
+  // a one-word stem and false-matched, the same defect as "Dinner"/"Dinner at
+  // Eight" (ship-check adversarial review, 2026-08-05). Require a proper-noun
+  // word ALONGSIDE the keyword, ignoring a leading article.
+  const words = c.replace(/^the\s+/i, '').split(/\s+/).filter(Boolean);
+  return words.length >= 2 && VENUE_KEYWORD_RE.test(c);
 }
 
 /**

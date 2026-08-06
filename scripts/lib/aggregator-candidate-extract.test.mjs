@@ -423,3 +423,41 @@ test('stripping editorial furniture never rescues a different show', () => {
   assert.equal(classifyTitleDelta('The Revival', 'The Revival'), 'match');
   assert.equal(classifyTitleDelta('Opening Night', 'Opening Night'), 'match');
 });
+
+// --- a bare venue keyword is ordinary English, not a venue (2026-08-05) ------
+// Second adversarial-review catch in this class. Treating any "at <...keyword>"
+// clause as a venue stripped real title words: "Meet Me at the Forum" and
+// "A Night at the Stage" collapsed to one-word stems and false-matched — the
+// same defect as "Dinner"/"Dinner at Eight". A real venue clause names a
+// SPECIFIC house, so a keyword now needs a proper-noun word beside it.
+test('a bare venue keyword does not make an "at" clause a venue', () => {
+  assert.equal(classifyTitleDelta('Meet Me', 'Meet Me at the Forum'), 'mismatch');
+  assert.equal(classifyTitleDelta('A Night', 'A Night at the Stage'), 'mismatch');
+  assert.equal(classifyTitleDelta('Drama', 'Drama at Eight'), 'mismatch');
+  assert.equal(classifyTitleDelta('Dinner', 'Dinner at Eight'), 'mismatch');
+});
+
+test('a specific named house IS a venue and still strips', () => {
+  assert.equal(classifyTitleDelta('Sunset Blvd', 'Sunset Blvd. at the St. James Theatre'), 'match');
+  assert.equal(
+    classifyTitleDelta('3 Summers of Lincoln', '3 SUMMERS OF LINCOLN at La Jolla Playhouse'),
+    'match'
+  );
+  // House initialisms resolve too — this is the real Two Strangers headline.
+  assert.equal(
+    classifyTitleDelta(
+      'Two Strangers Carry A Cake Across New York',
+      'TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) at A.R.T.'
+    ),
+    'match'
+  );
+});
+
+test('loosened matching terminates fast on adversarial input', () => {
+  // EDITORIAL_SUFFIX_RE is global and runs in a loop; guard against a
+  // pathological rescan turning a feedback dispatch into a hung job.
+  const t0 = Date.now();
+  classifyTitleDelta('Hamilton', 'World Premiere Opens '.repeat(400) + 'x');
+  classifyTitleDelta('Hamilton', 'at the ' + 'Theatre '.repeat(500));
+  assert.ok(Date.now() - t0 < 2000, 'title matching must not backtrack catastrophically');
+});
