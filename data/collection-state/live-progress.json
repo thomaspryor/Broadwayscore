@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-08-06T06:12:38.798Z",
-  "processed": 1,
-  "failed": 2,
-  "successRate": "33.3%",
+  "updatedAt": "2026-08-06T08:13:27.284Z",
+  "processed": 52,
+  "failed": 255,
+  "successRate": "16.9%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 35,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "browserbase": 1,
+    "directCookies": 5,
+    "scrapingbee": 8,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-08-06T07:42:40.608Z",
+      "event": "bb-session",
+      "session": "aa1075fe",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the"
+    },
+    {
+      "t": "2026-08-06T07:42:41.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }

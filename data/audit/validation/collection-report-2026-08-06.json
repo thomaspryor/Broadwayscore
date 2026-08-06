@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-08-06T06:12:49.889Z",
+  "runDate": "2026-08-06T07:01:35.195Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "3-summers-of-lincoln-regional-2025",
+    "showFilter": "now-you-see-me-live-west-end-2026,weve-been-here-before-a-one-woman-musical-off-broadway-2026,the-pass-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,63 +12,75 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 2,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "3-summers-of-lincoln-regional-2025/broadwayworld--marie-reiter.json"
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
   ],
   "failed": [
-    "3-summers-of-lincoln-regional-2025/latimes--unknown.json",
-    "3-summers-of-lincoln-regional-2025/stageandcinema--unknown.json"
+    "the-pass-off-broadway-2026/nytg--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "now-you-see-me-live-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "now-you-see-me-live-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "3-summers-of-lincoln-regional-2025/broadwayworld--marie-reiter.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
