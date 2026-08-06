@@ -43,6 +43,7 @@ scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
 scripts/tests/dispatch-outcome-digest.test.mjs
@@ -339,6 +340,7 @@ tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
+tests/unit/review-output-guard.test.mjs
 tests/unit/review-url-clusters.test.mjs
 tests/unit/review-write-guard-placeholder.test.mjs
 tests/unit/review-write-guard-topology.test.mjs

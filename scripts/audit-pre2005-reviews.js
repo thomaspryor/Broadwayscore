@@ -462,6 +462,7 @@ if (applyMode) {
       // Check if target already has this file — if so, flag source as wrongProduction
       if (fs.existsSync(targetPath)) {
         reviewData.wrongProduction = true;
+        reviewData.wrongProductionProvenance = 'content';
         reviewData.auditSuggested = 'wrongProduction';
         reviewData.auditReason = 'pre2005-audit: duplicate exists at ' + result.suggestedShowId;
         reviewData.auditConfidence = result.confidence;
