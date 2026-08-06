@@ -72,6 +72,15 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // on disposition==='human' (scripts/lib/opening-night-sla.js) — downgrading
   // this key would silently stop future re-notifies once one incident queued.
   'opening-night-sla:pages-stuck',
+
+  // Category 2 (task #1076): a revoked/unusable local Claude OAuth token
+  // disables cmux-launch.js's launch gate entirely — not just tonight's
+  // monitor — so this pages immediately rather than waiting in the digest
+  // for the owner to discover it by accident on the next launch attempt (as
+  // happened 2026-08-05, five shows before opening). Emitted by
+  // check-claude-auth-health.js (launchd, runs on the Mac — the token never
+  // reaches CI).
+  'claude-auth:revoked',
 ]);
 
 function isPageWorthy(conditionKey) {
