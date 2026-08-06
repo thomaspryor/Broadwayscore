@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-08-05T23:59:30.883Z",
+  "timestamp": "2026-08-06T01:05:30.470Z",
   "stats": {
     "totalReviews": 41671,
     "alreadyFlagged": 18115,
     "dateGuardCatches": 115,
-    "directorMismatch": 945,
+    "directorMismatch": 946,
     "tvFilmSignals": 1153,
     "londonSignals": 814,
-    "offBroadwaySignals": 479,
+    "offBroadwaySignals": 480,
     "yearMismatch": 88,
     "noPublishDate": 3533
   },
@@ -21907,6 +21907,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/spring-awakening-1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "nytimes--charles-isherwood.json",
       "score": 91,
       "publishDate": "September 27, 2015",
@@ -32715,6 +32729,20 @@
       "showId": "carmen-off-broadway-2025",
       "file": "new-york-classical-review--richard-sasanow.json",
       "publishDate": null,
+      "url": "https://newyorkclassicalreview.com/2024/01/cast-brings-vocal-luster-to-mets-grim-truck-stop-carmen/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "new-york-classical-review--rick-perdian.json",
+      "score": 79,
+      "publishDate": "January 1st, 2024",
       "url": "https://newyorkclassicalreview.com/2024/01/cast-brings-vocal-luster-to-mets-grim-truck-stop-carmen/",
       "findings": [
         {
