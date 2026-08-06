@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
 
 // Score sources from aggregator sites — these are third-party star ratings,
@@ -838,37 +839,21 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   return merged;
 }
 
-/**
- * Detectors that flag wrongProduction purely from URL identity, so the flag is
- * legitimately clearable by a URL refresh (venue-transfer self-heal). Keyed by
- * the writer's own provenance stamp rather than by note text, because not every
- * URL-based writer emits a note — cleanup-dedup-comprehensive.js writes only
- * `_wrongProductionDetectedBy` + `_wrongProductionReason`.
- */
-const URL_PROVENANCE_DETECTORS = new Set(['cleanup-dedup-comprehensive']);
-
-/**
- * Is this wrongProduction flag URL-based (and therefore eligible for the
- * venue-transfer self-heal), as opposed to date- or content-based?
- *
- * A MISSING note is NOT evidence of a URL-based flag — that default is what
- * cleared date-based flags and put a 2016 Broadway 'Cats' review on the 2026
- * West End show page (main red, 2026-08-06). Evidence must be positive: either
- * a 'Same URL' note, or an explicit URL-collision provenance stamp.
- */
-function isUrlProvenanceWrongProduction(data) {
-  if (!data) return false;
-  if (typeof data.wrongProductionNote === 'string'
-      && data.wrongProductionNote.startsWith('Same URL')) {
-    return true;
-  }
-  // No note, but the writer stamped itself as a URL-collision detector.
-  if (!data.wrongProductionNote
-      && URL_PROVENANCE_DETECTORS.has(data._wrongProductionDetectedBy)) {
-    return true;
-  }
-  return false;
-}
+// isUrlProvenanceWrongProduction() — is this wrongProduction flag URL-based
+// (and therefore eligible for the venue-transfer self-heal above), as
+// opposed to date- or content-based? Moved to scripts/lib/wrongproduction-
+// provenance.js (task #1109) as part of the shared provenance vocabulary
+// every wrongProduction writer now has access to — imported at the top of
+// this file. Detectors that predate the explicit `wrongProductionProvenance`
+// field (currently just cleanup-dedup-comprehensive.js, keyed by
+// `_wrongProductionDetectedBy` with no note) live there as
+// LEGACY_URL_DETECTORS.
+//
+// A MISSING note is NOT evidence of a URL-based flag — that default is what
+// cleared date-based flags and put a 2016 Broadway 'Cats' review on the 2026
+// West End show page (main red, 2026-08-06). Evidence must be positive:
+// either an explicit wrongProductionProvenance='url' stamp, a 'Same URL'
+// note, or a legacy URL-collision detector stamp.
 
 /**
  * Get the full outlet object from the registry.

@@ -1656,6 +1656,11 @@ on:
       # covered by 'tests/**' above; only the scripts/ sources need listing.
       - 'scripts/lint-committed-pii.js'
       - 'scripts/lib/pii-scan.js'
+      # wrongProduction provenance lint (#1109) — colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit to the lint
+      # or its lib triggers CI.
+      - 'scripts/lint-wrongproduction-provenance.js'
+      - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -2293,6 +2298,16 @@ jobs:
         # session can silently forget — same class as the 34 senders this
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
+
+      - name: Audit — wrongProduction writers must record provenance
+        # Task #1109, the P1 follow-up to the 2026-08-06 main-red (#1108):
+        # mergeReviews() treated a MISSING provenance breadcrumb as "URL-based,
+        # safe to auto-clear" and put a 2016 Broadway Cats review on the 2026
+        # West End show page. That specific gap was fixed directly
+        # (isUrlProvenanceWrongProduction), but nothing stopped the NEXT
+        # writer from being added with zero breadcrumb at all. Blocking — a
+        # writer with no provenance signal is exactly this bug's shape.
+        run: node scripts/lint-wrongproduction-provenance.js
 
       - name: Audit — digest description clip-safety (statically checkable fields)
         # Static, PR-time counterpart to headStandsAlone() (card #1078,
