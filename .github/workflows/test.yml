@@ -1278,6 +1278,14 @@ on:
       - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
+      # Infra-review gate digest (card #1095) — turns the gitignored
+      # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
+      # ledgers into a health-check.js row. health-check.js is already
+      # path-listed; same "scripts/tests/ is not scripts/lib/" gap as the
+      # blocks above: without these entries a push touching only the lib +
+      # test would run ZERO CI.
+      - 'scripts/lib/infra-review-digest.js'
+      - 'scripts/tests/infra-review-digest.test.mjs'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send
