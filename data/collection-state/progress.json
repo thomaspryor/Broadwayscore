@@ -151,7 +151,17 @@
     "macbeth-off-broadway-2026/newsday--linda-winer.json",
     "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
     "macbeth-off-broadway-2026/amny--unknown.json",
-    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json"
+    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,13 +209,24 @@
     ]
   },
   "startTime": "2026-08-07T09:48:32.611Z",
-  "lastProcessed": "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
+  "lastProcessed": "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
   "log": [
     {
       "t": "2026-08-07T10:04:48.039Z",
       "event": "bb-session",
       "session": "ce44e105",
       "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-08-07T10:42:48.335Z",
+      "event": "bb-session",
+      "session": "7d545b5f",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-07T10:42:49.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
