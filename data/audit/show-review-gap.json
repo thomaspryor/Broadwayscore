@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-07T16:49:27.567Z",
+  "generatedAt": "2026-08-07T17:49:33.869Z",
   "windowDays": 1095,
-  "targets": 35,
-  "auditedThisRun": 17,
-  "carriedForward": 151,
+  "targets": 24,
+  "auditedThisRun": 12,
+  "carriedForward": 158,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 129,
-    "totalMissing": 831,
+    "withGap": 131,
+    "totalMissing": 848,
     "totalCitedNoUrl": 2,
     "totalFlaggedMisses": 816,
-    "totalRecoverable": 27,
-    "totalRecovered": 3
+    "totalRecoverable": 32,
+    "totalRecovered": 6
   },
   "results": [
     {
@@ -2037,6 +2037,180 @@
       "computedAt": "2026-08-07T03:55:04.733Z"
     },
     {
+      "showId": "arcadia-west-end-2026",
+      "title": "Arcadia",
+      "openingDate": "2026-02-04",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-tom-stoppards-arcadia-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
+        "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard"
+      ],
+      "dirFiles": 41,
+      "dirClean": 16,
+      "inReviewsJson": 19,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 2
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "inews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 98,
+        "byReason": {
+          "aggregator-internal-nav": 73,
+          "not-http-url": 5,
+          "non-review-host": 20
+        }
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-tom-stoppards-arcadia-off-broadway",
+          "publishDate": "2023-11-13"
+        }
+      ],
+      "recoveryResults": [
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/arcadia-at-the-old-vic-review-tom-stoppard-b1269701.html",
+          "host": "standard.co.uk",
+          "file": "standard--nick-curtis.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://www.thejc.com/life/theatre/arcadia-review-gardens-maths-and-heart-in-stoppards-masterpiece-kmoq3r85",
+          "host": "thejc.com",
+          "file": "the-jewish-chronicle--john-nathan.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-08-07T17:49:33.869Z"
+    },
+    {
       "showId": "archduke-west-end-2026",
       "title": "Archduke",
       "openingDate": "2026-06-26",
@@ -3047,7 +3221,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-06T08:24:28.764Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "avenue-q-west-end-2026",
@@ -6505,8 +6679,8 @@
         "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
         "https://www.timeout.com/london/kids/brainiac-live",
         "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
-        "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
         "https://fairypoweredproductions.com/brainiac-live-review-2/",
+        "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
         "https://www.pinkprincetheatre.com/post/review-brainiac-live-garrick-theatre",
         "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
         "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
@@ -6514,14 +6688,18 @@
         "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
         "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
         "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
-        "https://www.adventuresintheatreland.com/post/brainiac-live-garrick-theatre",
         "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/"
       ],
       "dirFiles": 15,
       "dirClean": 9,
       "inReviewsJson": 8,
       "missing": [
+        {
+          "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "serpCensus": true
+        },
         {
           "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
           "host": "primarytimes.co.uk",
@@ -6555,7 +6733,15 @@
       ],
       "dirOnly": [
         {
+          "host": "adventuresintheatreland.com",
+          "count": 1
+        },
+        {
           "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
           "count": 1
         },
         {
@@ -6564,24 +6750,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--west-end-theatre.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/64763/shows/brainiac-live/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.timeout.com/london/kids/brainiac-live",
           "host": "timeout.com",
@@ -6693,8 +6861,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -6704,7 +6872,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -6714,39 +6882,50 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
-          "non-review-host": 14,
           "aggregator-internal-nav": 1,
+          "non-review-host": 16,
           "non-review-path": 2
         }
       },
       "ingestResults": [
+        {
+          "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "reason": null
+        },
         {
           "url": "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~495228/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351785/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
         },
         {
           "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
           "host": "minitravellers.co.uk",
           "outletId": "minitravellers",
           "provisional": true,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
@@ -6754,6 +6933,7 @@
           "outletId": "london-theatre",
           "provisional": false,
           "ok": false,
+          "noop": false,
           "reason": "spawnSync node ETIMEDOUT"
         },
         {
@@ -6761,22 +6941,28 @@
           "host": "thestage.co.uk",
           "outletId": "thestage",
           "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~495381/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
-        },
+          "ok": true,
+          "noop": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
           "host": "eastendkids.co.uk",
-          "outletId": "eastendkids",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~495384/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
+          "outletId": "eastendkids"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/"
+          },
           {
             "outletId": "primarytimes.co.uk",
             "outlet": "primarytimes.co.uk",
@@ -6811,13 +6997,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/"
           },
           {
             "outletId": "timeout-london",
@@ -6867,15 +7046,10 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/brainiac-live-garrick-theatre",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.adventuresintheatreland.com/post/brainiac-live-garrick-theatre",
-            "outletId": "adventuresintheatreland.com",
-            "state": "live",
+            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
@@ -6914,13 +7088,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
-            "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "https://www.timeout.com/london/kids/brainiac-live",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -6935,10 +7102,10 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 15
+        "liveCount": 5,
+        "candidateCount": 13
       },
-      "computedAt": "2026-08-06T11:25:09.578Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -11238,9 +11405,9 @@
         "https://playbill.com/article/read-reviews-for-the-cats-movie",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-Hits-The-Big-Screen-See-What-The-Critics-Are-Saying-20191218",
-        "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
         "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-CATS-on-Tour-20191030",
+        "https://www.broadwayworld.com/article/Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
@@ -11318,9 +11485,6 @@
         "https://www.irishtimes.com/culture/film/cats-review-the-biggest-problem-is-the-disturbing-digital-fur-technology-1.4119068",
         "https://time.com/5752569/cats-movie-review/",
         "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/",
-        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-        "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-        "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
         "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html",
         "https://www.theguardian.com/stage/2016/jul/31/cats-review-broadway-leona-lewis-andrew-lloyd-weber",
         "http://www.timeout.com/newyork/blog/broadway-review-cats-at-the-neil-simon-theatre-073116",
@@ -11353,7 +11517,7 @@
         "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
         "https://www.thestage.co.uk/reviews/cats-review-regents-park-open-air-theatre-london"
       ],
-      "dirFiles": 63,
+      "dirFiles": 66,
       "dirClean": 8,
       "inReviewsJson": 9,
       "missing": [
@@ -11536,20 +11700,6 @@
           "url": "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/",
           "host": "thescottishsun.co.uk",
           "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -12010,16 +12160,16 @@
           "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726"
             }
           ],
           "priorRun": true,
@@ -12253,16 +12403,16 @@
           "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726"
             }
           ],
           "priorRun": true,
@@ -12434,16 +12584,16 @@
           "url": "https://www.timeout.com/us/film/cats",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726"
             }
           ],
           "priorRun": true,
@@ -12622,35 +12772,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sunday-telegraph--tim-robey.json",
-              "flag": "clean",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/"
-            },
-            {
-              "file": "telegraph--james-hall.json",
-              "flag": "clean",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/"
-            },
-            {
-              "file": "telegraph--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
@@ -12692,16 +12813,16 @@
           "url": "http://www.timeout.com/newyork/blog/broadway-review-cats-at-the-neil-simon-theatre-073116",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726"
             }
           ],
           "priorRun": true,
@@ -12925,16 +13046,16 @@
           "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726"
             }
           ],
           "weRef": true,
@@ -12993,13 +13114,13 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 1800,
+        "count": 1530,
         "byReason": {
-          "aggregator-internal-nav": 1285,
-          "not-http-url": 354,
-          "non-review-host": 134,
-          "roundup-page": 12,
-          "non-review-path": 15
+          "aggregator-internal-nav": 1075,
+          "not-http-url": 313,
+          "non-review-host": 119,
+          "roundup-page": 11,
+          "non-review-path": 12
         }
       },
       "priorRunArticles": [
@@ -13022,10 +13143,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Hits-The-Big-Screen-See-What-The-Critics-Are-Saying-20191218",
           "publishDate": "2019-12-18"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Revival-Opens-in-the-West-End-20141211",
-          "publishDate": "2014-12-11"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-Returns-to-Broadway--UPDATING-LIVE-20160731",
@@ -13194,18 +13311,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-          "host": "dailymail.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-          "host": "londontheatre1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
           "host": "washingtonpost.com",
           "priorRun": true,
@@ -13291,21 +13396,44 @@
           "outletId": "wsj",
           "provisional": false,
           "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351742/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
         }
       ],
       "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/cats-review-regents-park-open-air-theatre",
-          "host": "londontheatre.co.uk",
-          "file": "london-theatre--unknown.json",
+          "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
+          "host": "timeout.com",
+          "file": "timeout--adam-feldman.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "spawnSync node ETIMEDOUT",
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/",
+          "host": "radiotimes.com",
+          "file": "radio-times--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-cats-regents-park-open-air-theatre",
+          "host": "westendbestfriend.co.uk",
+          "file": "west-end-best-friend--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
           "recoveryCount": 0,
           "uncited": true
         }
@@ -13494,20 +13622,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thescottishsun.co.uk/tvandshowbiz/5084142/cats-movie-film-review-musical-cinema/"
-          },
-          {
-            "outletId": "daily-mail",
-            "outlet": "daily-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/"
           },
           {
             "outletId": "washpost",
@@ -13923,13 +14037,6 @@
             "url": "https://www.telegraph.co.uk/films/0/cats-creepy-trailer-reaction-naked-idris-elba-taylor-swift/"
           },
           {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html"
-          },
-          {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
@@ -14256,20 +14363,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
-          },
-          {
-            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2870967/Nicole-near-purr-fect-plenty-meow-factor-QUENTIN-LETTS-night-review-Cats.html",
-            "outletId": "daily-mail",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T08:24:28.764Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/news/99477/5-star-review-cats-starring-nicole-scherzinger-grizabella/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T08:24:28.764Z"
           },
           {
             "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/07/31/cats-now-and-forever-again/",
@@ -14699,13 +14792,6 @@
             "firstSeenAt": "2026-08-04T02:43:14.416Z"
           },
           {
-            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11282078/Cats-London-Palladium-Nicole-Scherzinger-makes-West-End-debut.html",
-            "outletId": "sunday-telegraph",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T08:24:28.764Z"
-          },
-          {
             "url": "http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html",
             "outletId": "nytimes",
             "state": "GAP",
@@ -14805,9 +14891,9 @@
           }
         ],
         "liveCount": 3,
-        "candidateCount": 68
+        "candidateCount": 66
       },
-      "computedAt": "2026-08-07T15:52:55.659Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -18137,37 +18223,28 @@
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/aug/05/dog-man-the-musical-review-southbank-centre-london",
         "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
+        "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/",
         "https://www.timeout.com/london/theatre/dog-man-the-musical-review",
         "https://www.thestage.co.uk/reviews/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
         "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
-        "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
         "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/",
-        "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
-        "https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
+        "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
         "https://www.southbankcentre.co.uk/whats-on/dog-man-the-musical/",
-        "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
+        "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
         "https://southbank.london/whats-on/dog-man-the-musical",
+        "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+        "https://whattheredheadsaid.com/dog-man-the-musical-review/",
         "https://www.timeout.com/london/theatre/dog-man-the-musical",
-        "https://www.londonboxoffice.co.uk/dog-man-tickets",
-        "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-        "https://theatreweekly.com/interview-brad-alexander-on-dog-man-the-musical-at-southbank-centre/",
-        "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
         "https://www.theguardian.com/stage/2026/jun/25/the-truth-review-stephen-mangan-sarah-hadland-ardal-ohanlon-janie-dee-florian-zeller-apollo-theatre-london",
         "https://www.timeout.com/london/theatre/the-truth-review",
         "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
         "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
         "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
       ],
-      "dirFiles": 10,
+      "dirFiles": 14,
       "dirClean": 4,
       "inReviewsJson": 3,
       "missing": [
-        {
-          "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
-          "serpCensus": true
-        },
         {
           "url": "https://www.thestage.co.uk/reviews/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
           "host": "thestage.co.uk",
@@ -18175,39 +18252,21 @@
           "serpCensus": true
         },
         {
-          "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
-          "host": "muddystilettos.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
+          "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
           "host": "westendtheatre.com",
           "knownOutletId": "westendtheatre",
           "serpCensus": true
         },
         {
-          "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
+          "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
           "serpCensus": true
         },
         {
-          "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-          "host": "muddystilettos.co.uk",
+          "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+          "host": "whattheredheadsaid.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
-          "host": "southlondon.co.uk",
-          "knownOutletId": "south-london",
           "serpCensus": true
         },
         {
@@ -18252,9 +18311,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
+          "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -18262,9 +18321,27 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwayworld--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805"
+              "file": "everything-theatre--sara-west.json",
+              "flag": "clean",
+              "urlInDir": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": true,
+          "recoverableFile": "musical-theatre-review--unknown.json",
+          "recoverableOutletId": "musical-theatre-review",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/"
             }
           ],
           "serpCensus": true
@@ -18283,6 +18360,24 @@
               "file": "theatre-weekly--unknown.json",
               "flag": "emptyBody",
               "urlInDir": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805"
             }
           ],
           "serpCensus": true
@@ -18319,24 +18414,6 @@
               "file": "southbank--unknown.json",
               "flag": "clean",
               "urlInDir": "https://southbank.london/whats-on/dog-man-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/interview-brad-alexander-on-dog-man-the-musical-at-southbank-centre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": true,
-          "recoverableFile": "theatre-weekly--unknown.json",
-          "recoverableOutletId": "theatre-weekly",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/"
             }
           ],
           "serpCensus": true
@@ -18417,7 +18494,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -18437,7 +18514,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -18453,79 +18530,64 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
-          "non-review-host": 16,
-          "ticketing-listing": 1
+          "non-review-host": 17,
+          "ticketing-listing": 2
         }
       },
       "ingestResults": [
-        {
-          "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
-          "host": "everything-theatre.co.uk",
-          "outletId": "everything-theatre",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
         {
           "url": "https://www.thestage.co.uk/reviews/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
           "host": "thestage.co.uk",
           "outletId": "thestage",
           "provisional": false,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~495529/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351808/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
         },
         {
-          "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
-          "host": "muddystilettos.co.uk",
-          "outletId": "muddystilettos",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~495556/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
-        },
-        {
-          "url": "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
+          "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
           "host": "westendtheatre.com",
           "outletId": "westendtheatre",
           "provisional": false,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
+          "provisional": false,
           "ok": true,
+          "noop": false,
           "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office"
         },
         {
-          "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-          "host": "muddystilettos.co.uk",
-          "outletId": "muddystilettos"
-        },
-        {
-          "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
-          "host": "southlondon.co.uk",
-          "outletId": "south-london"
+          "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+          "host": "whattheredheadsaid.com",
+          "outletId": "whattheredheadsaid",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
           "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
           "host": "standard.co.uk",
-          "outletId": "standard"
-        },
+          "outletId": "standard",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
           "host": "londontheatre.co.uk",
@@ -18540,12 +18602,12 @@
       "recoveryResults": [],
       "recoverySkippedByCap": [
         {
-          "url": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/",
-          "host": "theatreweekly.com",
-          "file": "theatre-weekly--unknown.json"
+          "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/",
+          "host": "musicaltheatrereview.com",
+          "file": "musical-theatre-review--unknown.json"
         },
         {
-          "url": "https://theatreweekly.com/interview-brad-alexander-on-dog-man-the-musical-at-southbank-centre/",
+          "url": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/",
           "host": "theatreweekly.com",
           "file": "theatre-weekly--unknown.json"
         }
@@ -18554,13 +18616,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "everything-theatre",
-            "outlet": "everything-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/"
-          },
-          {
             "outletId": "thestage",
             "outlet": "thestage",
             "critic": "Unknown",
@@ -18568,46 +18623,25 @@
             "url": "https://www.thestage.co.uk/reviews/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey"
           },
           {
-            "outletId": "muddystilettos.co.uk",
-            "outlet": "muddystilettos.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey"
-          },
-          {
             "outletId": "westendtheatre",
             "outlet": "westendtheatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/"
+            "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/"
           },
           {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/dog-man-tickets"
+            "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets"
           },
           {
-            "outletId": "muddystilettos.co.uk",
-            "outlet": "muddystilettos.co.uk",
+            "outletId": "whattheredheadsaid.com",
+            "outlet": "whattheredheadsaid.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/"
-          },
-          {
-            "outletId": "south-london",
-            "outlet": "south-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/"
+            "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/"
           },
           {
             "outletId": "standard",
@@ -18631,11 +18665,18 @@
             "url": "https://www.thestage.co.uk/reviews/the-truth-review-apollo-theatre-london-florian-zeller-lindsay-posner"
           },
           {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805"
+            "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/"
           },
           {
             "outletId": "theatre-weekly",
@@ -18643,6 +18684,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805"
           },
           {
             "outletId": "southbankcentre.co.uk",
@@ -18657,13 +18705,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://southbank.london/whats-on/dog-man-the-musical"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/interview-brad-alexander-on-dog-man-the-musical-at-southbank-centre/"
           },
           {
             "outletId": "telegraph",
@@ -18712,13 +18753,6 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
-            "outletId": "everything-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
             "outletId": "thestage",
             "state": "GAP",
@@ -18726,46 +18760,25 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
-            "outletId": "muddystilettos.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/325595/shows/dog-man-the-musical-tickets/",
+            "url": "https://www.westendtheatre.com/325594/news/dog-man-is-headed-to-the-london-stage-in-dog-man-the-musical/",
             "outletId": "westendtheatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/dog-man-tickets",
-            "outletId": "london-box-office",
+            "url": "https://www.londontheatredirect.com/musical/dog-man-the-musical-tickets",
+            "outletId": "londontheatredirect",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://london.muddystilettos.co.uk/kids/dog-man-the-musical/",
-            "outletId": "muddystilettos.co.uk",
+            "url": "https://whattheredheadsaid.com/dog-man-the-musical-review/",
+            "outletId": "whattheredheadsaid.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://southlondon.co.uk/area/southwark/dog-man-the-musical/",
-            "outletId": "south-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/the-truth-apollo-theatre-review-b1287716.html",
@@ -18789,15 +18802,29 @@
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
-            "outletId": "broadwayworld",
+            "url": "https://everything-theatre.co.uk/2026/08/review-dog-man-the-musical-southbank-centre/",
+            "outletId": "everything-theatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
+            "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
             "url": "https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/",
             "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DOG-MAN-THE-MUSICAL-Southbank-Centre-20260805",
+            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
@@ -18817,13 +18844,6 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://theatreweekly.com/interview-brad-alexander-on-dog-man-the-musical-at-southbank-centre/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "",
             "outletId": "telegraph",
             "state": "GAP",
@@ -18834,7 +18854,7 @@
         "liveCount": 3,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-06T11:25:09.578Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -32086,6 +32106,684 @@
       "computedAt": "2026-08-07T09:59:50.346Z"
     },
     {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "title": "Little Bear Ridge Road",
+      "openingDate": "2024-06-24",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
+        "https://playbill.com/article/reviews-critics-sound-off-on-steppenwolfs-little-bear-ridge-road",
+        "https://www.broadwayworld.com/article/Review-Roundup-LITTLE-BEAR-RIDGE-ROAD-Opens-On-Broadway-with-Laurie-MetcalfandMicah-Stock-Star-20251030",
+        "https://www.broadwayworld.com/article/Review-Roundup-LITTLE-BEAR-RIDGE-ROAD-Starring-Laurie-Metcalf-Opens-at-Steppenwolf-20240624"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/",
+        "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333",
+        "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
+        "https://www.nydailynews.com/2025/10/30/broadway-review-little-bear-ridge-road-laurie-metcalf/",
+        "https://nypost.com/2025/10/30/entertainment/little-bear-ridge-road-review-laurie-metcalf-bares-her-soul-in-moving-broadway-play/",
+        "https://nystagereview.com/2025/10/30/little-bear-ridge-road-small-lives-writ-large/",
+        "https://nystagereview.com/2025/10/30/little-bear-ridge-road-destination-uncertain/",
+        "https://www.newyorktheatreguide.com/reviews/little-bear-ridge-road-broadway-review-laurie-metcalf",
+        "https://newyorktheater.me/2025/10/30/little-bear-ridge-road-broadway-review/",
+        "https://www.nytimes.com/2025/07/07/theater/laurie-metcalf-broadway-little-bear-ridge-road.html",
+        "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/",
+        "https://www.theatrely.com/post/little-bear-ridge-road-samuel-d-hunters-existential-idahoans-make-it-to-broadway-review",
+        "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter",
+        "https://variety.com/2025/legit/reviews/little-bear-ridge-road-laurie-metcalf-review-1236562382/",
+        "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html",
+        "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/",
+        "https://www.wsj.com/articles/little-bear-ridge-road-and-endgame-review-a-tale-of-two-samuels-e3a727bb",
+        "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
+        "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
+        "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
+        "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+        "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+        "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
+        "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
+        "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html",
+        "https://www.wsj.com/articles/little-bear-ridge-road-review-laurie-metcalf-steppenwolf-4479a7d4"
+      ],
+      "dirFiles": 7,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/10/30/broadway-review-little-bear-ridge-road-laurie-metcalf/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2025/10/30/entertainment/little-bear-ridge-road-review-laurie-metcalf-bares-her-soul-in-moving-broadway-play/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-small-lives-writ-large/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-destination-uncertain/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/little-bear-ridge-road-broadway-review-laurie-metcalf",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/10/30/little-bear-ridge-road-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/07/07/theater/laurie-metcalf-broadway-little-bear-ridge-road.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/little-bear-ridge-road-samuel-d-hunters-existential-idahoans-make-it-to-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/little-bear-ridge-road-laurie-metcalf-review-1236562382/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 742,
+        "byReason": {
+          "aggregator-internal-nav": 551,
+          "not-http-url": 116,
+          "non-review-host": 69,
+          "non-review-path": 6
+        }
+      },
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-are-in-for-little-bear-ridge-road-on-broadway",
+          "publishDate": "2025-10-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-LITTLE-BEAR-RIDGE-ROAD-Opens-On-Broadway-with-Laurie-MetcalfandMicah-Stock-Star-20251030",
+          "publishDate": "2025-10-30"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/10/30/broadway-review-little-bear-ridge-road-laurie-metcalf/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nypost.com/2025/10/30/entertainment/little-bear-ridge-road-review-laurie-metcalf-bares-her-soul-in-moving-broadway-play/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-small-lives-writ-large/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-destination-uncertain/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/little-bear-ridge-road-broadway-review-laurie-metcalf",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/10/30/little-bear-ridge-road-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/07/07/theater/laurie-metcalf-broadway-little-bear-ridge-road.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/little-bear-ridge-road-samuel-d-hunters-existential-idahoans-make-it-to-broadway-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/little-bear-ridge-road-laurie-metcalf-review-1236562382/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333"
+          },
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nydailynews.com/2025/10/30/broadway-review-little-bear-ridge-road-laurie-metcalf/"
+          },
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nypost.com/2025/10/30/entertainment/little-bear-ridge-road-review-laurie-metcalf-bares-her-soul-in-moving-broadway-play/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-small-lives-writ-large/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-destination-uncertain/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/little-bear-ridge-road-broadway-review-laurie-metcalf"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2025/10/30/little-bear-ridge-road-broadway-review/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2025/07/07/theater/laurie-metcalf-broadway-little-bear-ridge-road.html"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/little-bear-ridge-road-samuel-d-hunters-existential-idahoans-make-it-to-broadway-review"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2025/legit/reviews/little-bear-ridge-road-laurie-metcalf-review-1236562382/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html"
+          },
+          {
+            "outletId": "washpost",
+            "outlet": "washpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.wsj.com/articles/little-bear-ridge-road-and-endgame-review-a-tale-of-two-samuels-e3a727bb",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
+            "outletId": "chicago.suntimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
+            "outletId": "chicagoreader.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2024/06/24/review-in-compelling-little-bear-ridge-road-at-steppenwolf-theatre-laurie-metcalf-meets-her-match/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
+            "outletId": "thirdcoastreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/little-bear-ridge-road-review-laurie-metcalf-steppenwolf-4479a7d4",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://1minutecritic.com/laurie-metcalf-micah-stock-little-bear-ridge-road-broadway-review/",
+            "outletId": "one-minute-critic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Little-Bear-Ridge-Road/1333",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/10/30/laurie-metcalf-little-bear-ridge-road-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/2025/10/30/broadway-review-little-bear-ridge-road-laurie-metcalf/",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://nypost.com/2025/10/30/entertainment/little-bear-ridge-road-review-laurie-metcalf-bares-her-soul-in-moving-broadway-play/",
+            "outletId": "nypost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-small-lives-writ-large/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/10/30/little-bear-ridge-road-destination-uncertain/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/little-bear-ridge-road-broadway-review-laurie-metcalf",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/10/30/little-bear-ridge-road-broadway-review/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/07/07/theater/laurie-metcalf-broadway-little-bear-ridge-road.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-little-bear-ridge-road-samuel-d-hunters-must-see-broadway-debut_1809721/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/little-bear-ridge-road-samuel-d-hunters-existential-idahoans-make-it-to-broadway-review",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://variety.com/2025/legit/reviews/little-bear-ridge-road-laurie-metcalf-review-1236562382/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-samuel-hunter-laurie-metcalf-little-bear-ridge-road.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/30/little-bear-ridge-road-broadway-review/",
+            "outletId": "washpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.thewrap.com/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/10/30/theater/little-bear-ridge-road-review-metcalf.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          }
+        ],
+        "liveCount": 7,
+        "candidateCount": 25
+      },
+      "computedAt": "2026-08-07T17:49:33.869Z"
+    },
+    {
       "showId": "los-soles-truncos-off-broadway-2025",
       "title": "LOS SOLES TRUNCOS",
       "openingDate": "2025-02-20",
@@ -32697,7 +33395,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-07T15:52:55.659Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
@@ -32731,7 +33429,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-07T15:52:55.659Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -49762,7 +50460,24 @@
         "https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review",
         "https://www.nytimes.com/2022/02/14/theater/space-dogs-review.html",
         "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
-        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
+        "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
+        "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
+        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+        "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+        "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+        "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+        "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+        "https://www.operationlivetheatre.com/post/space-dogs-the-musical",
+        "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+        "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+        "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+        "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+        "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+        "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+        "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/"
       ],
       "dirFiles": 19,
       "dirClean": 15,
@@ -49802,6 +50517,24 @@
           "knownOutletId": "timeout-london",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+          "host": "thetheatreflyer.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+          "host": "uktw.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -49810,59 +50543,35 @@
           "count": 1
         },
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "onin.london",
-          "count": 1
-        },
-        {
-          "host": "operationlivetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 2
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tanyel-gumushan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
+            },
+            {
+              "file": "whatsonstage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -49902,15 +50611,72 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Space Dogs\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Space Dogs\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Space Dogs\" review other",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Space Dogs The Other Palace - Studio review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 17,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 116,
+        "count": 132,
         "byReason": {
+          "aggregator-internal-nav": 92,
           "not-http-url": 4,
-          "non-review-host": 20,
-          "aggregator-internal-nav": 92
+          "non-review-host": 36
         }
       },
       "priorRunArticles": [
@@ -49951,7 +50717,35 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+          "host": "thetheatreflyer.co.uk",
+          "outletId": "thetheatreflyer",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351830/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351830/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -49990,10 +50784,116 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika"
+          },
+          {
+            "outletId": "thetheatreflyer.co.uk",
+            "outlet": "thetheatreflyer.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026"
+          },
+          {
+            "outletId": "uktw.co.uk",
+            "outlet": "uktw.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.operationlivetheatre.com/post/space-dogs-the-musical",
+            "outletId": "operationlivetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
+            "outletId": "onin.london",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
           {
             "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
             "outletId": "nysr",
@@ -50028,12 +50928,40 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
+          {
+            "url": "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
+            "outletId": "thetheatreflyer.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
+            "outletId": "uktw.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 12,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-06T13:34:47.304Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "stereophonic-off-broadway-2023",
@@ -55998,7 +56926,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-07T15:52:55.659Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -59475,27 +60403,25 @@
       "aggregatorListedUrls": [
         "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
         "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
-        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-        "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
         "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
         "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
         "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
         "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
-        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
         "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
-        "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
         "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
+        "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
         "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
         "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
+        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
         "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
+        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
+        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
         "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-        "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
-        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-        "https://www.london-now.co.uk/news/26429794.review-importance-oscar---park-theatre/",
         "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+        "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
         "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
         "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
         "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
@@ -59506,6 +60432,7 @@
         "https://www.express.co.uk/entertainment/theatre/2115504/importance-being-earnest-review-stephen-fry-oscar-wilde",
         "https://www.thetimes.com/culture/theatre-dance/article/importance-of-being-earnest-review-stephen-fry-national-theatre-5mtq88cxs",
         "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre-london-olly-alexander-stephen-fry-nathan-stewart-jarrett-oscar-wilde",
+        "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
         "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-noel-coward-theatre"
       ],
       "dirFiles": 34,
@@ -59519,14 +60446,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-          "host": "theatreandartreviews.com",
+          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-          "host": "redbuslondinium.uk",
+          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+          "host": "theatreandartreviews.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -59537,20 +60464,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-          "host": "reviewsgate.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.london-now.co.uk/news/26429794.review-importance-oscar---park-theatre/",
-          "host": "london-now.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
           "host": "unknownkentandsussex.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+          "host": "reviewsgate.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -59640,24 +60561,6 @@
               "file": "fairypoweredproductions--fairypoweredproductions.json",
               "flag": "clean",
               "urlInDir": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--west-end-theatre.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/"
             }
           ],
           "serpCensus": true
@@ -59840,8 +60743,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 7,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -59850,8 +60753,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -59861,7 +60764,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           },
           {
@@ -59877,15 +60780,14 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 23,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
-        "count": 9,
+        "count": 11,
         "byReason": {
-          "non-review-host": 7,
-          "non-review-path": 1,
-          "ticketing-listing": 1
+          "non-review-host": 8,
+          "ticketing-listing": 3
         }
       },
       "weIngestBlocked": [
@@ -59927,15 +60829,8 @@
           "outletId": "londonpubtheatres",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~500941/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
-        },
-        {
-          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-          "host": "theatreandartreviews.com",
-          "outletId": "theatreandartreviews",
-          "provisional": true,
-          "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~500942/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351917/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
         },
         {
           "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -59943,35 +60838,42 @@
           "outletId": "redbuslondinium",
           "provisional": true,
           "ok": false,
-          "reason": "⚠️  Scrapingdog pace (~500942/day) projects exhaustion in ~6d, before the 28d-out renewal — still us"
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351921/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+        },
+        {
+          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+          "host": "theatreandartreviews.com",
+          "outletId": "theatreandartreviews",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~351933/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
         },
         {
           "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
           "host": "theatreandtonic.co.uk",
           "outletId": "theatreandtonic",
           "provisional": false,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-          "host": "reviewsgate.co.uk",
-          "outletId": "reviewsgate",
+          "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+          "host": "unknownkentandsussex.co.uk",
+          "outletId": "unknownkentandsussex",
           "provisional": true,
           "ok": true,
+          "noop": false,
           "reason": null
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.london-now.co.uk/news/26429794.review-importance-oscar---park-theatre/",
-          "host": "london-now.co.uk",
-          "outletId": "london-now"
-        },
-        {
-          "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
-          "host": "unknownkentandsussex.co.uk",
-          "outletId": "unknownkentandsussex"
+          "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+          "host": "reviewsgate.co.uk",
+          "outletId": "reviewsgate"
         }
       ],
       "censusVerdict": {
@@ -59985,18 +60887,18 @@
             "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026"
           },
           {
-            "outletId": "theatreandartreviews.com",
-            "outlet": "theatreandartreviews.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/"
-          },
-          {
             "outletId": "redbuslondinium.uk",
             "outlet": "redbuslondinium.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
+          },
+          {
+            "outletId": "theatreandartreviews.com",
+            "outlet": "theatreandartreviews.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/"
           },
           {
             "outletId": "theatreandtonic",
@@ -60006,25 +60908,18 @@
             "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review"
           },
           {
-            "outletId": "reviewsgate.co.uk",
-            "outlet": "reviewsgate.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park"
-          },
-          {
-            "outletId": "london-now.co.uk",
-            "outlet": "london-now.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.london-now.co.uk/news/26429794.review-importance-oscar---park-theatre/"
-          },
-          {
             "outletId": "unknownkentandsussex.co.uk",
             "outlet": "unknownkentandsussex.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/"
+          },
+          {
+            "outletId": "reviewsgate.co.uk",
+            "outlet": "reviewsgate.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park"
           },
           {
             "outletId": "sunday-telegraph",
@@ -60067,13 +60962,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/"
           },
           {
             "outletId": "parktheatre.co.uk",
@@ -60121,12 +61009,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
@@ -60145,20 +61027,14 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
             "url": "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
             "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -60175,8 +61051,20 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
             "url": "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
             "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -60205,15 +61093,14 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-            "outletId": "londonpubtheatres.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+            "url": "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-            "outletId": "theatreandartreviews.com",
+            "url": "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
+            "outletId": "londonpubtheatres.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
@@ -60226,6 +61113,13 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
+            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+            "outletId": "theatreandartreviews.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
             "outletId": "theatreandtonic",
             "state": "GAP",
@@ -60233,25 +61127,18 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
-            "outletId": "reviewsgate.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.london-now.co.uk/news/26429794.review-importance-oscar---park-theatre/",
-            "outletId": "london-now.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T13:34:47.304Z"
-          },
-          {
             "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
             "outletId": "unknownkentandsussex.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T13:34:47.304Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+            "outletId": "reviewsgate.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
@@ -60291,13 +61178,6 @@
           {
             "url": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
             "outletId": "fairypoweredproductions",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
-            "outletId": "westendtheatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
@@ -60346,9 +61226,9 @@
           }
         ],
         "liveCount": 12,
-        "candidateCount": 32
+        "candidateCount": 30
       },
-      "computedAt": "2026-08-06T13:34:47.304Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -64357,7 +65237,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-06T11:25:09.578Z"
+      "computedAt": "2026-08-07T17:49:33.869Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
