@@ -45,3 +45,1558 @@
 [2026-07-26 04:00:26] REMOVE tier3-scope-widening — worktree-tier3-scope-widening merged, worktree removed (branch kept)
 [2026-07-26 04:00:27] SKIP  wos-consent-wall-recovery — merged but worktree dirty; not forcing
 [2026-07-26 04:00:27] DONE  removed=4 kept=1 skipped=8 (dry_run=0)
+[2026-08-06 15:58:58] ALERT: disk free 10GB below floor 20GB — running emergency cleanup
+[2026-08-06 15:59:01] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 15:59:01] DIGEST: disk-floor cleanup freed 0KB — free space 10GB -> 10GB (floor 20GB)
+[2026-08-06 15:59:01] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 15:59:01] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 15:59:01] SKIP  main — detached HEAD, leaving alone
+[2026-08-06 15:59:16] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 15:59:16] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 15:59:33] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 15:59:33] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 15:59:49] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 15:59:49] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 16:00:04] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:00:04] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 16:00:06] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 16:00:06] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 16:00:21] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:00:21] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 16:00:37] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:00:37] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 16:00:53] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:00:53] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 16:01:08] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:01:08] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 16:01:24] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:01:24] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 16:01:40] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:01:40] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 16:01:56] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:01:56] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 16:02:11] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:02:11] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 16:02:28] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:02:28] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 16:02:44] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:02:44] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 16:03:00] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:03:00] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 16:03:16] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:03:16] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 16:03:32] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:03:32] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 16:03:50] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:03:50] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 16:04:11] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:04:11] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 16:04:12] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 16:04:12] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 16:04:27] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:04:27] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 16:04:53] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:04:53] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 16:05:09] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:05:09] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 16:05:24] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:05:24] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 16:05:40] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:05:40] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 16:05:41] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 16:05:41] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 16:05:41] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 16:05:56] WARN  job-1014-mser17le — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:05:56] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 16:05:57] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 16:05:57] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 16:05:57] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 16:06:13] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:06:13] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 16:06:28] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:06:28] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 16:06:44] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:06:44] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 16:07:00] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:07:00] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 16:07:01] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 16:07:16] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:07:16] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 16:07:18] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 16:07:33] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:07:33] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 16:07:51] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:07:51] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 16:08:07] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:08:07] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 16:08:23] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:08:23] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 16:08:38] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:08:39] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 16:08:54] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:08:54] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 16:08:55] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 16:09:10] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:09:10] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 16:09:26] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:09:26] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 16:09:42] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:09:42] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 16:09:57] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:09:57] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 16:10:13] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:10:13] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 16:10:14] STRIP  show-hero-dates-faq-order/node_modules — freed 0KB, untouched >3d
+[2026-08-06 16:10:29] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:10:29] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 16:10:33] REMOVE task-1075-observable-before-absence — worktree-task-1075-observable-before-absence merged, worktree removed (branch kept)
+[2026-08-06 16:10:48] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:10:48] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 16:11:03] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:11:03] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 16:11:04] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 16:11:20] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:11:20] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 16:11:36] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 16:11:36] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 16:11:36] KEEP  wrongproduction-provenance-1109 — 1 unmerged commit(s) on worktree-wrongproduction-provenance-1109
+[2026-08-06 16:11:36] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 16:11:36] DONE  removed=1 kept=49 skipped=15 freed=0KB (dry_run=0)
+[2026-08-06 17:11:37] ALERT: disk free 12GB below floor 20GB — running emergency cleanup
+[2026-08-06 17:11:38] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 17:11:38] DIGEST: disk-floor cleanup freed 0KB — free space 12GB -> 12GB (floor 20GB)
+[2026-08-06 17:11:38] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 17:11:38] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 17:11:53] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:11:53] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 17:12:10] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:12:10] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 17:12:26] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:12:26] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 17:12:42] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:12:42] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 17:12:43] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 17:12:43] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 17:12:58] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:12:58] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 17:13:14] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:13:14] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 17:13:30] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:13:30] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 17:13:46] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:13:46] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 17:14:02] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:14:02] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 17:14:18] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:14:18] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 17:14:33] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:14:33] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 17:14:50] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:14:50] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 17:15:05] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:15:05] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 17:15:21] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:15:21] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 17:15:37] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:15:37] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 17:15:53] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:15:53] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 17:16:08] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:16:08] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 17:16:24] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:16:24] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 17:16:40] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:16:40] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 17:16:41] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 17:16:41] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 17:16:56] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:16:56] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 17:17:12] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:17:12] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 17:17:27] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:17:27] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 17:17:43] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:17:43] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 17:17:59] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:17:59] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 17:18:00] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 17:18:00] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 17:18:00] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 17:18:00] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 17:18:00] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 17:18:01] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 17:18:01] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 17:18:16] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:18:16] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 17:18:32] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:18:32] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 17:18:48] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:18:48] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 17:19:04] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:19:04] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 17:19:04] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 17:19:20] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:19:20] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 17:19:21] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 17:19:36] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:19:36] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 17:19:53] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:19:53] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 17:20:08] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:20:08] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 17:20:24] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:20:24] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 17:20:40] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:20:40] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 17:20:56] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:20:56] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 17:20:57] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 17:21:12] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:21:12] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 17:21:28] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:21:28] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 17:21:44] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:21:44] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 17:21:59] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:21:59] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 17:22:15] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:22:15] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 17:22:31] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:22:31] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 17:22:47] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:22:47] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 17:23:02] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:23:02] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 17:23:03] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 17:23:19] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:23:19] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 17:23:35] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 17:23:35] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 17:23:35] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 17:23:35] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-06 18:23:37] ALERT: disk free 11GB below floor 20GB — running emergency cleanup
+[2026-08-06 18:23:38] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 18:23:38] DIGEST: disk-floor cleanup freed 0KB — free space 11GB -> 11GB (floor 20GB)
+[2026-08-06 18:23:38] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 18:23:38] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 18:23:53] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:23:53] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 18:24:10] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:24:10] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 18:24:26] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:24:26] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 18:24:42] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:24:42] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 18:24:42] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 18:24:42] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 18:24:58] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:24:58] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 18:25:13] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:25:13] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 18:25:29] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:25:29] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 18:25:45] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:25:45] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 18:26:01] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:26:01] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 18:26:17] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:26:17] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 18:26:32] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:26:32] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 18:26:48] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:26:48] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 18:27:04] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:27:04] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 18:27:20] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:27:20] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 18:27:36] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:27:36] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 18:27:51] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:27:51] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 18:28:07] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:28:07] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 18:28:23] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:28:23] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 18:28:39] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:28:39] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 18:28:40] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 18:28:40] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 18:28:55] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:28:55] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 18:29:11] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:29:11] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 18:29:26] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:29:26] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 18:29:42] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:29:42] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 18:29:58] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:29:58] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 18:29:59] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 18:29:59] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 18:29:59] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 18:29:59] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 18:30:00] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 18:30:00] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 18:30:00] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 18:30:15] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:30:15] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 18:30:31] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:30:31] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 18:30:47] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:30:47] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 18:31:03] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:31:03] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 18:31:07] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 18:31:22] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:31:22] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 18:31:23] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 18:31:38] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:31:38] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 18:31:55] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:31:55] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 18:32:11] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:32:11] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 18:32:27] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:32:27] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 18:32:42] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:32:42] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 18:32:58] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:32:58] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 18:32:59] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 18:33:14] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:33:14] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 18:33:30] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:33:30] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 18:33:46] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:33:46] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 18:34:02] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:34:02] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 18:34:17] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:34:17] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 18:34:33] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:34:33] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 18:34:50] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:34:50] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 18:35:05] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:35:05] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 18:35:06] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 18:35:22] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:35:22] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 18:35:38] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 18:35:38] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 18:35:38] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 18:35:38] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-06 19:35:40] ALERT: disk free 13GB below floor 20GB — running emergency cleanup
+[2026-08-06 19:35:41] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 19:35:41] DIGEST: disk-floor cleanup freed 0KB — free space 13GB -> 13GB (floor 20GB)
+[2026-08-06 19:35:41] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 19:35:41] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 19:35:56] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:35:56] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 19:36:13] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:36:13] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 19:36:29] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:36:29] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 19:36:44] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:36:44] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 19:36:45] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 19:36:45] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 19:37:01] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:37:01] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 19:37:16] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:37:16] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 19:37:32] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:37:32] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 19:37:48] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:37:48] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 19:38:04] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:38:04] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 19:38:20] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:38:20] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 19:38:36] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:38:36] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 19:38:51] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:38:51] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 19:39:07] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:39:07] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 19:39:23] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:39:23] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 19:39:39] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:39:39] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 19:39:55] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:39:55] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 19:40:10] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:40:10] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 19:40:26] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:40:26] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 19:40:42] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:40:42] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 19:40:43] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 19:40:43] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 19:40:58] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:40:58] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 19:41:14] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:41:14] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 19:41:30] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:41:30] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 19:41:45] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:41:45] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 19:42:01] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:42:01] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 19:42:02] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 19:42:02] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 19:42:02] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 19:42:02] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 19:42:03] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 19:42:03] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 19:42:03] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 19:42:18] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:42:18] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 19:42:34] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:42:34] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 19:42:50] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:42:50] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 19:43:06] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:43:06] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 19:43:07] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 19:43:22] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:43:22] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 19:43:23] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 19:43:38] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:43:38] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 19:43:55] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:43:55] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 19:44:11] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:44:11] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 19:44:27] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:44:27] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 19:44:42] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:44:42] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 19:44:58] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:44:58] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 19:44:59] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 19:45:14] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:45:14] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 19:45:30] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:45:30] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 19:45:46] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:45:46] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 19:46:02] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:46:02] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 19:46:17] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:46:17] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 19:46:33] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:46:33] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 19:46:50] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:46:50] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 19:47:05] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:47:05] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 19:47:06] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 19:47:21] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:47:21] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 19:47:37] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 19:47:37] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 19:47:38] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 19:47:38] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-06 20:47:39] ALERT: disk free 12GB below floor 20GB — running emergency cleanup
+[2026-08-06 20:47:41] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 20:47:41] DIGEST: disk-floor cleanup freed 0KB — free space 12GB -> 12GB (floor 20GB)
+[2026-08-06 20:47:41] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 20:47:41] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 20:47:56] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:47:56] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 20:48:13] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:48:13] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 20:48:29] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:48:29] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 20:48:44] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:48:44] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 20:48:45] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 20:48:45] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 20:49:00] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:49:00] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 20:49:16] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:49:16] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 20:49:32] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:49:32] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 20:49:48] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:49:48] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 20:50:04] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:50:04] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 20:50:19] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:50:19] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 20:50:35] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:50:35] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 20:50:51] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:50:51] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 20:51:07] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:51:07] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 20:51:23] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:51:23] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 20:51:39] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:51:39] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 20:51:54] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:51:54] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 20:52:10] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:52:10] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 20:52:26] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:52:26] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 20:52:42] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:52:42] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 20:52:42] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 20:52:42] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 20:52:58] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:52:58] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 20:53:13] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:53:13] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 20:53:29] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:53:29] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 20:53:45] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:53:45] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 20:54:01] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:54:01] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 20:54:02] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 20:54:02] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 20:54:02] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 20:54:02] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 20:54:02] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 20:54:03] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 20:54:03] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 20:54:18] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:54:18] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 20:54:34] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:54:34] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 20:54:50] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:54:50] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 20:55:06] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:55:06] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 20:55:07] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 20:55:22] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:55:22] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 20:55:23] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 20:55:38] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:55:38] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 20:55:55] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:55:55] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 20:56:11] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:56:11] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 20:56:27] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:56:27] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 20:56:42] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:56:42] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 20:56:58] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:56:58] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 20:56:59] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 20:57:15] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:57:15] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 20:57:30] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:57:30] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 20:57:46] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:57:46] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 20:58:02] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:58:02] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 20:58:18] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:58:18] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 20:58:33] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:58:33] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 20:58:50] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:58:50] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 20:59:06] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:59:06] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 20:59:07] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 20:59:22] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:59:22] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 20:59:38] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 20:59:38] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 20:59:38] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 20:59:38] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-06 21:59:40] ALERT: disk free 11GB below floor 20GB — running emergency cleanup
+[2026-08-06 21:59:41] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 21:59:41] DIGEST: disk-floor cleanup freed 0KB — free space 11GB -> 11GB (floor 20GB)
+[2026-08-06 21:59:41] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 21:59:41] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 21:59:41] SKIP  main — detached HEAD, leaving alone
+[2026-08-06 21:59:56] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 21:59:56] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 22:00:13] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:00:13] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 22:00:28] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:00:28] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 22:00:44] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:00:44] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 22:00:45] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 22:00:45] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 22:00:45] SKIP  action-f6ae7424da68 — notion-action-poll worktree, owner-managed
+[2026-08-06 22:01:00] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:01:00] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 22:01:16] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:01:16] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 22:01:32] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:01:32] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 22:01:48] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:01:48] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 22:02:04] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:02:04] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 22:02:19] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:02:19] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 22:02:35] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:02:35] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 22:02:51] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:02:51] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 22:03:07] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:03:07] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 22:03:23] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:03:23] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 22:03:39] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:03:39] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 22:03:54] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:03:54] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 22:04:10] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:04:10] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 22:04:26] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:04:26] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 22:04:42] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:04:42] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 22:04:42] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 22:04:42] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 22:04:58] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:04:58] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 22:05:13] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:05:13] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 22:05:29] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:05:29] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 22:05:45] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:05:45] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 22:06:01] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:06:01] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 22:06:02] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 22:06:02] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 22:06:02] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 22:06:02] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 22:06:03] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 22:06:03] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 22:06:03] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 22:06:18] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:06:18] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 22:06:34] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:06:34] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 22:06:50] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:06:50] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 22:07:06] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:07:06] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 22:07:07] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 22:07:22] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:07:22] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 22:07:23] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 22:07:38] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:07:38] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 22:07:55] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:07:55] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 22:08:11] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:08:11] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 22:08:27] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:08:27] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 22:08:42] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:08:42] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 22:08:58] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:08:58] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 22:08:59] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 22:09:14] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:09:14] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 22:09:30] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:09:30] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 22:09:46] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:09:46] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 22:10:02] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:10:02] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 22:10:17] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:10:17] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 22:10:33] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:10:33] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 22:10:49] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:10:49] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 22:11:05] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:11:05] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 22:11:06] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 22:11:22] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:11:22] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 22:11:38] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 22:11:38] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 22:11:38] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 22:11:38] DONE  removed=0 kept=48 skipped=16 freed=0KB (dry_run=0)
+[2026-08-06 23:11:41] ALERT: disk free 11GB below floor 20GB — running emergency cleanup
+[2026-08-06 23:11:42] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-06 23:11:42] DIGEST: disk-floor cleanup freed 0KB — free space 11GB -> 11GB (floor 20GB)
+[2026-08-06 23:11:42] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-06 23:11:42] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-06 23:11:58] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:11:58] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-06 23:12:14] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:12:14] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-06 23:12:30] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:12:30] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-06 23:12:46] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:12:46] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-06 23:12:47] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-06 23:12:47] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-06 23:13:02] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:13:02] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-06 23:13:18] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:13:18] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-06 23:13:34] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:13:34] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-06 23:13:50] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:13:50] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-06 23:14:06] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:14:06] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-06 23:14:22] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:14:22] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-06 23:14:37] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:14:37] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-06 23:14:53] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:14:53] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-06 23:15:09] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:15:09] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-06 23:15:25] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:15:25] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-06 23:15:40] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:15:40] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-06 23:15:56] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:15:56] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-06 23:16:12] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:16:12] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-06 23:16:28] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:16:28] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-06 23:16:44] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:16:44] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-06 23:16:45] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-06 23:16:45] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-06 23:17:00] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:17:00] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-06 23:17:16] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:17:16] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-06 23:17:31] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:17:31] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-06 23:17:47] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:17:47] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-06 23:18:03] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:18:03] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-06 23:18:04] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-06 23:18:04] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-06 23:18:04] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-06 23:18:04] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-06 23:18:05] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-06 23:18:05] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-06 23:18:05] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-06 23:18:21] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:18:21] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-06 23:18:36] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:18:36] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-06 23:18:52] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:18:52] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-06 23:19:08] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:19:08] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-06 23:19:09] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-06 23:19:24] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:19:24] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-06 23:19:25] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-06 23:19:40] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:19:40] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-06 23:19:57] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:19:57] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-06 23:20:13] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:20:13] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-06 23:20:29] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:20:29] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-06 23:20:45] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:20:45] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-06 23:21:01] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:21:01] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-06 23:21:02] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-06 23:21:17] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:21:17] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-06 23:21:33] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:21:33] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-06 23:21:48] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:21:48] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-06 23:22:04] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:22:04] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-06 23:22:20] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:22:20] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-06 23:22:36] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:22:36] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-06 23:22:52] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:22:52] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-06 23:23:07] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:23:07] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-06 23:23:08] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-06 23:23:24] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:23:24] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-06 23:23:40] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-06 23:23:40] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-06 23:23:40] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-06 23:23:40] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-07 00:23:44] ALERT: disk free 14GB below floor 20GB — running emergency cleanup
+[2026-08-07 00:23:45] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 00:23:45] DIGEST: disk-floor cleanup freed 0KB — free space 14GB -> 14GB (floor 20GB)
+[2026-08-07 00:23:45] SKIP  pushwt — detached HEAD, leaving alone
+[2026-08-07 00:23:45] SKIP  ffonly-test3 — detached HEAD, leaving alone
+[2026-08-07 00:24:00] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:24:00] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 00:24:19] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:24:19] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 00:24:34] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:24:34] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 00:24:50] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:24:50] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 00:24:51] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 00:24:51] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 00:25:06] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:25:06] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 00:25:22] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:25:22] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 00:25:38] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:25:38] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 00:25:54] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:25:54] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 00:26:10] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:26:10] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 00:26:25] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:26:25] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 00:26:41] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:26:41] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 00:26:57] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:26:57] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 00:27:13] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:27:13] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 00:27:29] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:27:29] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 00:27:45] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:27:45] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 00:28:00] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:28:00] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 00:28:16] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:28:16] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 00:28:32] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:28:32] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 00:28:48] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:28:48] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 00:28:49] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 00:28:49] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 00:29:04] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:29:04] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 00:29:20] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:29:20] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 00:29:36] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:29:36] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 00:29:51] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:29:51] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 00:30:07] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:30:07] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 00:30:08] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 00:30:08] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 00:30:08] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 00:30:09] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 00:30:09] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 00:30:09] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 00:30:10] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 00:30:25] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:30:25] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 00:30:41] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:30:41] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 00:30:56] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:30:56] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 00:31:12] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:31:12] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 00:31:13] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 00:31:28] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:31:28] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 00:31:29] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 00:31:44] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:31:44] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 00:32:01] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:32:01] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 00:32:17] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:32:17] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 00:32:33] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:32:33] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 00:32:49] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:32:49] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 00:33:05] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:33:05] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 00:33:06] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 00:33:21] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:33:21] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 00:33:37] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:33:37] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 00:33:52] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:33:52] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 00:34:08] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:34:08] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 00:34:24] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:34:24] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 00:34:40] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:34:40] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 00:34:56] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:34:56] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 00:35:11] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:35:11] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 00:35:12] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 00:35:28] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:35:28] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 00:35:44] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 00:35:44] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 00:35:44] DIGEST: 45 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 00:35:44] DONE  removed=0 kept=48 skipped=14 freed=0KB (dry_run=0)
+[2026-08-07 01:35:48] ALERT: disk free 14GB below floor 20GB — running emergency cleanup
+[2026-08-07 01:35:50] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 01:35:50] DIGEST: disk-floor cleanup freed 0KB — free space 14GB -> 14GB (floor 20GB)
+[2026-08-07 01:36:05] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:36:05] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 01:36:22] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:36:22] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 01:36:37] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:36:37] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 01:36:54] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:36:54] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 01:36:54] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 01:36:55] STRIP  995-ob-discovery-s2/.next — freed 228KB, untouched >3d
+[2026-08-07 01:36:55] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 01:37:10] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:37:10] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 01:37:26] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:37:26] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 01:37:42] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:37:42] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 01:37:58] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:37:58] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 01:38:14] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:38:14] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 01:38:29] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:38:29] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 01:38:45] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:38:45] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 01:39:01] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:39:01] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 01:39:17] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:39:17] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 01:39:32] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:39:32] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 01:39:48] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:39:48] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 01:40:04] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:40:04] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 01:40:20] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:40:20] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 01:40:36] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:40:36] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 01:40:51] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:40:51] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 01:40:52] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 01:40:52] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 01:41:08] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:41:08] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 01:41:23] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:41:23] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 01:41:39] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:41:39] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 01:41:55] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:41:55] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 01:42:11] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:42:11] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 01:42:12] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 01:42:12] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 01:42:12] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 01:42:12] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 01:42:12] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 01:42:13] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 01:42:13] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 01:42:28] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:42:28] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 01:42:44] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:42:44] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 01:43:00] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:43:00] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 01:43:16] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:43:16] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 01:43:17] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 01:43:32] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:43:32] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 01:43:33] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 01:43:48] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:43:48] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 01:44:05] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:44:05] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 01:44:21] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:44:21] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 01:44:36] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:44:36] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 01:44:52] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:44:52] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 01:45:08] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:45:08] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 01:45:09] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 01:45:24] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:45:24] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 01:45:40] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:45:40] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 01:45:56] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:45:56] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 01:46:11] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:46:12] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 01:46:27] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:46:27] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 01:46:43] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:46:43] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 01:46:59] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:46:59] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 01:47:15] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:47:15] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 01:47:16] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 01:47:31] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:47:31] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 01:47:47] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 01:47:47] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 01:47:48] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 01:47:48] DONE  removed=0 kept=48 skipped=12 freed=228KB (dry_run=0)
+[2026-08-07 02:47:53] ALERT: disk free 14GB below floor 20GB — running emergency cleanup
+[2026-08-07 02:47:54] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 02:47:54] DIGEST: disk-floor cleanup freed 0KB — free space 14GB -> 14GB (floor 20GB)
+[2026-08-07 02:48:09] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:48:09] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 02:48:26] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:48:26] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 02:48:42] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:48:42] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 02:48:58] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:48:58] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 02:48:59] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 02:49:00] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 02:49:15] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:49:15] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 02:49:30] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:49:30] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 02:49:46] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:49:46] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 02:50:02] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:50:02] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 02:50:18] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:50:18] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 02:50:34] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:50:34] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 02:50:50] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:50:50] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 02:51:06] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:51:06] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 02:51:22] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:51:22] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 02:51:38] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:51:38] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 02:51:53] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:51:53] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 02:52:09] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:52:09] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 02:52:25] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:52:25] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 02:52:41] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:52:41] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 02:52:57] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:52:57] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 02:52:57] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 02:52:57] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 02:53:13] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:53:13] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 02:53:29] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:53:29] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 02:53:44] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:53:44] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 02:54:00] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:54:00] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 02:54:16] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:54:16] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 02:54:17] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 02:54:17] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 02:54:17] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 02:54:17] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 02:54:18] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 02:54:18] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 02:54:18] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 02:54:34] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:54:34] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 02:54:50] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:54:50] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 02:55:06] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:55:06] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 02:55:22] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:55:22] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 02:55:23] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 02:55:38] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:55:38] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 02:55:39] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 02:55:54] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:55:54] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 02:56:11] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:56:11] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 02:56:27] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:56:27] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 02:56:42] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:56:42] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 02:56:58] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:56:58] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 02:57:14] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:57:14] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 02:57:15] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 02:57:30] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:57:30] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 02:57:46] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:57:46] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 02:58:02] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:58:02] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 02:58:18] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:58:18] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 02:58:33] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:58:33] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 02:58:49] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:58:49] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 02:59:05] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:59:05] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 02:59:21] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:59:21] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 02:59:22] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 02:59:37] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:59:37] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 02:59:53] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 02:59:53] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 02:59:54] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 02:59:54] DONE  removed=0 kept=48 skipped=12 freed=0KB (dry_run=0)
+[2026-08-07 03:59:59] ALERT: disk free 15GB below floor 20GB — running emergency cleanup
+[2026-08-07 04:00:00] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 04:00:01] DIGEST: disk-floor cleanup freed 0KB — free space 15GB -> 15GB (floor 20GB)
+[2026-08-07 04:00:16] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:00:16] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 04:00:33] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:00:33] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 04:00:48] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:00:48] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 04:01:04] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:01:04] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 04:01:05] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 04:01:06] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 04:01:21] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:01:21] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 04:01:37] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:01:37] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 04:01:53] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:01:53] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 04:02:08] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:02:08] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 04:02:24] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:02:24] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 04:02:40] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:02:40] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 04:02:56] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:02:56] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 04:03:11] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:03:11] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 04:03:27] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:03:27] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 04:03:43] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:03:43] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 04:03:59] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:03:59] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 04:04:15] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:04:15] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 04:04:30] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:04:30] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 04:04:46] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:04:46] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 04:05:02] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:05:02] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 04:05:03] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 04:05:03] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 04:05:18] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:05:18] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 04:05:34] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:05:34] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 04:05:50] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:05:50] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 04:06:06] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:06:06] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 04:06:21] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:06:21] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 04:06:22] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 04:06:22] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 04:06:22] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 04:06:23] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 04:06:23] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 04:06:23] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 04:06:24] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 04:06:39] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:06:39] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 04:06:55] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:06:55] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 04:07:10] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:07:10] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 04:07:26] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:07:26] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 04:07:27] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 04:07:42] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:07:42] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 04:07:43] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 04:07:58] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:07:58] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 04:08:15] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:08:15] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 04:08:31] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:08:31] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 04:08:47] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:08:47] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 04:09:02] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:09:02] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 04:09:18] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:09:18] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 04:09:19] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 04:09:34] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:09:34] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 04:09:50] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:09:50] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 04:10:06] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:10:06] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 04:10:22] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:10:22] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 04:10:38] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:10:38] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 04:10:53] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:10:53] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 04:11:09] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:11:09] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 04:11:25] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:11:25] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 04:11:26] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 04:11:41] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:11:41] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 04:11:57] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 04:11:57] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 04:11:58] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 04:11:58] DONE  removed=0 kept=48 skipped=12 freed=0KB (dry_run=0)
+[2026-08-07 05:12:01] ALERT: disk free 15GB below floor 20GB — running emergency cleanup
+[2026-08-07 05:12:02] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 05:12:02] DIGEST: disk-floor cleanup freed 0KB — free space 15GB -> 15GB (floor 20GB)
+[2026-08-07 05:12:17] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:12:17] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 05:12:34] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:12:34] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 05:12:50] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:12:50] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 05:13:06] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:13:06] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 05:13:07] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 05:13:07] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 05:13:23] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:13:23] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 05:13:38] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:13:38] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 05:13:54] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:13:54] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 05:14:10] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:14:10] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 05:14:26] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:14:26] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 05:14:42] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:14:42] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 05:14:57] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:14:57] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 05:15:13] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:15:13] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 05:15:29] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:15:29] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 05:15:45] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:15:45] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 05:16:01] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:16:01] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 05:16:16] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:16:16] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 05:16:32] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:16:32] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 05:16:48] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:16:48] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 05:17:04] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:17:04] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 05:17:05] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 05:17:05] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 05:17:20] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:17:20] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 05:17:36] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:17:36] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 05:17:51] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:17:51] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 05:18:07] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:18:07] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 05:18:23] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:18:23] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 05:18:24] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 05:18:24] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 05:18:24] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 05:18:25] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 05:18:25] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 05:18:25] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 05:18:25] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 05:18:41] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:18:41] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 05:18:56] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:18:56] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 05:19:12] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:19:12] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 05:19:28] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:19:28] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 05:19:29] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 05:19:44] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:19:44] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 05:19:45] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 05:20:00] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:20:00] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 05:20:17] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:20:17] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 05:20:33] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:20:33] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 05:20:49] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:20:49] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 05:21:05] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:21:05] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 05:21:20] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:21:20] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 05:21:21] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 05:21:36] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:21:36] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 05:21:52] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:21:52] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 05:22:08] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:22:08] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 05:22:24] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:22:24] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 05:22:40] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:22:40] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 05:22:56] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:22:56] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 05:23:11] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:23:11] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 05:23:27] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:23:27] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 05:23:28] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 05:23:43] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:23:43] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 05:23:59] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 05:23:59] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 05:24:00] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 05:24:00] DONE  removed=0 kept=48 skipped=12 freed=0KB (dry_run=0)
+[2026-08-07 06:24:06] ALERT: disk free 15GB below floor 20GB — running emergency cleanup
+[2026-08-07 06:24:08] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 06:24:08] DIGEST: disk-floor cleanup freed 0KB — free space 15GB -> 15GB (floor 20GB)
+[2026-08-07 06:24:23] WARN  419-seo-health-lcp — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:24:23] KEEP  419-seo-health-lcp — 1 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 06:24:40] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:24:40] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 06:24:56] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:24:56] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 06:25:11] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:25:11] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 06:25:12] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 06:25:13] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 06:25:28] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:25:28] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 06:25:44] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:25:44] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 06:26:00] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:26:00] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 06:26:16] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:26:16] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 06:26:31] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:26:31] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 06:26:47] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:26:47] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 06:27:03] WARN  classify-checkpoint-925 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:27:03] KEEP  classify-checkpoint-925 — 1 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 06:27:19] WARN  claude-901-census-recall — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:27:19] KEEP  claude-901-census-recall — 1 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 06:27:35] WARN  claude-902-coverage-verdict-s0 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:27:35] KEEP  claude-902-coverage-verdict-s0 — 1 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 06:27:50] WARN  claude-cli-loadenv-713 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:27:50] KEEP  claude-cli-loadenv-713 — 1 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 06:28:06] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:28:06] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 06:28:22] WARN  coverage-verdict-s0-foundations — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:28:22] KEEP  coverage-verdict-s0-foundations — 1 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 06:28:38] WARN  coverage-verdict-s1-recall-cadence — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:28:38] KEEP  coverage-verdict-s1-recall-cadence — 1 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 06:28:54] WARN  coverage-verdict-s3 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:28:54] KEEP  coverage-verdict-s3 — 1 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 06:29:09] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:29:09] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 06:29:10] SKIP  dedupe-watchlist-star-fix — merged but worktree dirty; not forcing
+[2026-08-07 06:29:10] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 06:29:25] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:29:25] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 06:29:41] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:29:41] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 06:29:57] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:29:57] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 06:30:13] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:30:13] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 06:30:29] WARN  gap-audit-checkpoint-lock-warning — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:30:29] KEEP  gap-audit-checkpoint-lock-warning — 1 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 06:30:30] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 06:30:30] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 06:30:30] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 06:30:30] KEEP  job-1014-mser17le — 1 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 06:30:30] SKIP  job-1071-msgngnev — merged but worktree dirty; not forcing
+[2026-08-07 06:30:31] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 06:30:31] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 06:30:46] WARN  job-326-msbxpfqi — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:30:46] KEEP  job-326-msbxpfqi — 1 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 06:31:02] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:31:02] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 06:31:18] WARN  job-458-msbxf85p — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:31:18] KEEP  job-458-msbxf85p — 1 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 06:31:34] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:31:34] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 06:31:35] SKIP  job-71-msge6xuy — merged but worktree dirty; not forcing
+[2026-08-07 06:31:50] WARN  job-733-msd5zaog — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:31:50] KEEP  job-733-msd5zaog — 1 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 06:31:51] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 06:32:06] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:32:06] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 06:32:23] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:32:23] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 06:32:39] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:32:39] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 06:32:55] WARN  job-934-msd617rf — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:32:55] KEEP  job-934-msd617rf — 1 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 06:33:11] WARN  job-935-msd6091j — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:33:11] KEEP  job-935-msd6091j — 1 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 06:33:26] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:33:26] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 06:33:27] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 06:33:42] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:33:42] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 06:33:58] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:33:58] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 06:34:14] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:34:14] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 06:34:30] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:34:30] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 06:34:46] WARN  show-hero-dates-faq-order — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:34:46] KEEP  show-hero-dates-faq-order — 1 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 06:35:02] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:35:02] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 06:35:17] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:35:17] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 06:35:33] WARN  telegraph-backfill-894 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:35:33] KEEP  telegraph-backfill-894 — 1 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 06:35:34] SKIP  vacuous-gate-corpus-guard — merged but worktree dirty; not forcing
+[2026-08-07 06:35:50] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:35:50] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 06:36:06] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 06:36:06] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 06:36:06] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 06:36:06] DONE  removed=0 kept=48 skipped=12 freed=0KB (dry_run=0)
+[2026-08-07 07:36:07] ALERT: disk free 13GB below floor 20GB — running emergency cleanup
+[2026-08-07 07:36:08] CLEAN  xcrun simctl delete unavailable — done
+[2026-08-07 07:36:08] DIGEST: disk-floor cleanup freed 0KB — free space 13GB -> 13GB (floor 20GB)
+[2026-08-07 07:36:16] KEEP  419-seo-health-lcp — 187 unmerged commit(s) on worktree-419-seo-health-lcp
+[2026-08-07 07:36:33] WARN  456-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:36:33] KEEP  456-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-456-run-budget-lib-gaps
+[2026-08-07 07:36:49] WARN  785-gather-reviews-disk-check — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:36:49] KEEP  785-gather-reviews-disk-check — 1 unmerged commit(s) on worktree-785-gather-reviews-disk-check
+[2026-08-07 07:37:05] WARN  828-review-gate-scope — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:37:05] KEEP  828-review-gate-scope — 1 unmerged commit(s) on worktree-828-review-gate-scope
+[2026-08-07 07:37:06] KEEP  995-ob-discovery-s2 — 2 unmerged commit(s) on worktree-995-ob-discovery-s2
+[2026-08-07 07:37:06] SKIP  action-dd8de8f6a686 — notion-action-poll worktree, owner-managed
+[2026-08-07 07:37:22] WARN  alert-sender-ci-gate — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:37:22] KEEP  alert-sender-ci-gate — 1 unmerged commit(s) on worktree-alert-sender-ci-gate
+[2026-08-07 07:37:37] WARN  arm-yield-detector-647 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:37:37] KEEP  arm-yield-detector-647 — 1 unmerged commit(s) on worktree-arm-yield-detector-647
+[2026-08-07 07:37:53] WARN  audit-run-budget-lib-gaps — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:37:53] KEEP  audit-run-budget-lib-gaps — 1 unmerged commit(s) on worktree-audit-run-budget-lib-gaps
+[2026-08-07 07:38:09] WARN  audit-run-budget-lib-threading — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:38:09] KEEP  audit-run-budget-lib-threading — 1 unmerged commit(s) on worktree-audit-run-budget-lib-threading
+[2026-08-07 07:38:25] WARN  audit-t1-silent-gaps-alert-router-531 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:38:25] KEEP  audit-t1-silent-gaps-alert-router-531 — 1 unmerged commit(s) on worktree-audit-t1-silent-gaps-alert-router-531
+[2026-08-07 07:38:41] WARN  car-man-completeness-874 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:38:41] KEEP  car-man-completeness-874 — 1 unmerged commit(s) on worktree-car-man-completeness-874
+[2026-08-07 07:38:54] KEEP  classify-checkpoint-925 — 2163 unmerged commit(s) on worktree-classify-checkpoint-925
+[2026-08-07 07:39:03] KEEP  claude-901-census-recall — 83 unmerged commit(s) on worktree-claude-901-census-recall
+[2026-08-07 07:39:11] KEEP  claude-902-coverage-verdict-s0 — 83 unmerged commit(s) on worktree-claude-902-coverage-verdict-s0
+[2026-08-07 07:39:23] KEEP  claude-cli-loadenv-713 — 1075 unmerged commit(s) on worktree-claude-cli-loadenv-713
+[2026-08-07 07:39:39] WARN  cmux-send-rescue-705 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:39:39] KEEP  cmux-send-rescue-705 — 1 unmerged commit(s) on worktree-cmux-send-rescue-705
+[2026-08-07 07:39:48] KEEP  coverage-verdict-s0-foundations — 99 unmerged commit(s) on worktree-coverage-verdict-s0-foundations
+[2026-08-07 07:39:56] KEEP  coverage-verdict-s1-recall-cadence — 92 unmerged commit(s) on worktree-coverage-verdict-s1-recall-cadence
+[2026-08-07 07:40:06] KEEP  coverage-verdict-s3 — 203 unmerged commit(s) on worktree-coverage-verdict-s3
+[2026-08-07 07:40:22] WARN  da-completion-2026-07-12 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:40:22] KEEP  da-completion-2026-07-12 — 1 unmerged commit(s) on worktree-da-completion-2026-07-12
+[2026-08-07 07:40:37] WARN  dedupe-watchlist-star-fix — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:40:37] KEEP  dedupe-watchlist-star-fix — 1 unmerged commit(s) on worktree-dedupe-watchlist-star-fix
+[2026-08-07 07:40:37] KEEP  digest-clip-readability — 1 unmerged commit(s) on worktree-digest-clip-readability
+[2026-08-07 07:40:52] WARN  domainless-outlet-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:40:52] KEEP  domainless-outlet-guard — 1 unmerged commit(s) on worktree-domainless-outlet-guard
+[2026-08-07 07:41:08] WARN  fix-merge-stash-pop-conflict — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:41:08] KEEP  fix-merge-stash-pop-conflict — 1 unmerged commit(s) on sync-audit-exempt-only
+[2026-08-07 07:41:24] WARN  fix-newsletter-subject-cap — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:41:24] KEEP  fix-newsletter-subject-cap — 1 unmerged commit(s) on worktree-fix-newsletter-subject-cap
+[2026-08-07 07:41:40] WARN  fix-prediction-ledger — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:41:40] KEEP  fix-prediction-ledger — 1 unmerged commit(s) on worktree-fix-prediction-ledger
+[2026-08-07 07:41:48] KEEP  gap-audit-checkpoint-lock-warning — 80 unmerged commit(s) on worktree-gap-audit-checkpoint-lock-warning
+[2026-08-07 07:41:49] SKIP  infra-gate-registration-check — merged but worktree dirty; not forcing
+[2026-08-07 07:41:49] SKIP  infra-gate-round3 — merged but worktree dirty; not forcing
+[2026-08-07 07:41:49] SKIP  infra-review-digest-1095 — merged but worktree dirty; not forcing
+[2026-08-07 07:42:01] KEEP  job-1014-mser17le — 616 unmerged commit(s) on job/1014-mser17le
+[2026-08-07 07:42:16] WARN  job-1071-msgngnev — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:42:16] KEEP  job-1071-msgngnev — 1 unmerged commit(s) on job/1071-msgngnev
+[2026-08-07 07:42:17] SKIP  job-1085-mshfqiit — merged but worktree dirty; not forcing
+[2026-08-07 07:42:17] SKIP  job-1085-msiv6a52 — merged but worktree dirty; not forcing
+[2026-08-07 07:42:18] SKIP  job-1086-mshfpjlm — merged but worktree dirty; not forcing
+[2026-08-07 07:42:21] REMOVE job-1086-msiv5bgt — job/1086-msiv5bgt merged, worktree removed (branch kept)
+[2026-08-07 07:42:21] SKIP  job-1121-msiv790a — merged but worktree dirty; not forcing
+[2026-08-07 07:42:33] KEEP  job-326-msbxpfqi — 1253 unmerged commit(s) on job/326-msbxpfqi
+[2026-08-07 07:42:49] WARN  job-419-mscemlna — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:42:49] KEEP  job-419-mscemlna — 1 unmerged commit(s) on job/419-mscemlna
+[2026-08-07 07:43:02] KEEP  job-458-msbxf85p — 1254 unmerged commit(s) on job/458-msbxf85p
+[2026-08-07 07:43:17] WARN  job-6-mscf20o2 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:43:18] KEEP  job-6-mscf20o2 — 1 unmerged commit(s) on job/6-mscf20o2
+[2026-08-07 07:43:33] WARN  job-71-msge6xuy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:43:33] KEEP  job-71-msge6xuy — 1 unmerged commit(s) on job/71-msge6xuy
+[2026-08-07 07:43:47] KEEP  job-733-msd5zaog — 2141 unmerged commit(s) on job/733-msd5zaog
+[2026-08-07 07:43:48] SKIP  job-801-mshfri0c — merged but worktree dirty; not forcing
+[2026-08-07 07:44:03] WARN  job-805-mscboo6t — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:44:03] KEEP  job-805-mscboo6t — 1 unmerged commit(s) on job/805-mscboo6t
+[2026-08-07 07:44:20] WARN  job-807-msc9dtck — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:44:20] KEEP  job-807-msc9dtck — 1 unmerged commit(s) on job/807-msc9dtck
+[2026-08-07 07:44:36] WARN  job-808-msc9b7m4 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:44:36] KEEP  job-808-msc9b7m4 — 1 unmerged commit(s) on job/808-msc9b7m4
+[2026-08-07 07:44:49] KEEP  job-934-msd617rf — 2141 unmerged commit(s) on job/934-msd617rf
+[2026-08-07 07:45:03] KEEP  job-935-msd6091j — 2142 unmerged commit(s) on job/935-msd6091j
+[2026-08-07 07:45:19] WARN  kill-sb-premium-proxy — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:45:19] KEEP  kill-sb-premium-proxy — 1 unmerged commit(s) on worktree-kill-sb-premium-proxy
+[2026-08-07 07:45:20] SKIP  main-green-helpflag — merged but worktree dirty; not forcing
+[2026-08-07 07:45:36] WARN  owner-mandate-review-gate-timing — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:45:36] KEEP  owner-mandate-review-gate-timing — 1 unmerged commit(s) on worktree-owner-mandate-review-gate-timing
+[2026-08-07 07:45:51] WARN  progress-watch-597 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:45:51] KEEP  progress-watch-597 — 1 unmerged commit(s) on worktree-progress-watch-597
+[2026-08-07 07:46:07] WARN  scraping-v2-t12-ship-check-fixes — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:46:07] KEEP  scraping-v2-t12-ship-check-fixes — 1 unmerged commit(s) on worktree-scraping-v2-t12-ship-check-fixes
+[2026-08-07 07:46:23] WARN  seo-cwv-field-lcp-grace-368 — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:46:23] KEEP  seo-cwv-field-lcp-grace-368 — 1 unmerged commit(s) on worktree-seo-cwv-field-lcp-grace-368
+[2026-08-07 07:46:31] KEEP  show-hero-dates-faq-order — 59 unmerged commit(s) on worktree-show-hero-dates-faq-order
+[2026-08-07 07:46:47] WARN  show-stats-s1-theater-coords — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:46:47] KEEP  show-stats-s1-theater-coords — 1 unmerged commit(s) on worktree-show-stats-s1-theater-coords
+[2026-08-07 07:47:03] WARN  task-653-corpus-determinism — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:47:03] KEEP  task-653-corpus-determinism — 1 unmerged commit(s) on worktree-task-653-corpus-determinism
+[2026-08-07 07:47:12] KEEP  telegraph-backfill-894 — 99 unmerged commit(s) on worktree-telegraph-backfill-894
+[2026-08-07 07:47:27] WARN  vacuous-gate-corpus-guard — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:47:27] KEEP  vacuous-gate-corpus-guard — 1 unmerged commit(s) on worktree-vacuous-gate-corpus-guard
+[2026-08-07 07:47:43] WARN  workspace-title-task-number — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:47:43] KEEP  workspace-title-task-number — 1 unmerged commit(s) on worktree-workspace-title-task-number
+[2026-08-07 07:47:59] WARN  wos-consent-wall-recovery — git cherry timed out/failed (exit 124); treating as unmerged (safety default)
+[2026-08-07 07:47:59] KEEP  wos-consent-wall-recovery — 1 unmerged commit(s) on worktree-wos-consent-wall-recovery
+[2026-08-07 07:47:59] DIGEST: 46 unmerged worktree(s) untouched >3d holding stranded work: 419-seo-health-lcp 456-run-budget-lib-gaps 785-gather-reviews-disk-check 828-review-gate-scope 995-ob-discovery-s2 alert-sender-ci-gate arm-yield-detector-647 audit-run-budget-lib-gaps audit-run-budget-lib-threading audit-t1-silent-gaps-alert-router-531 car-man-completeness-874 classify-checkpoint-925 claude-901-census-recall claude-902-coverage-verdict-s0 claude-cli-loadenv-713 cmux-send-rescue-705 coverage-verdict-s0-foundations coverage-verdict-s1-recall-cadence coverage-verdict-s3 da-completion-2026-07-12 domainless-outlet-guard fix-merge-stash-pop-conflict fix-newsletter-subject-cap fix-prediction-ledger gap-audit-checkpoint-lock-warning job-326-msbxpfqi job-419-mscemlna job-458-msbxf85p job-6-mscf20o2 job-733-msd5zaog job-805-mscboo6t job-807-msc9dtck job-808-msc9b7m4 job-934-msd617rf job-935-msd6091j kill-sb-premium-proxy owner-mandate-review-gate-timing progress-watch-597 scraping-v2-t12-ship-check-fixes seo-cwv-field-lcp-grace-368 show-hero-dates-faq-order show-stats-s1-theater-coords task-653-corpus-determinism telegraph-backfill-894 workspace-title-task-number wos-consent-wall-recovery
+[2026-08-07 07:47:59] DONE  removed=1 kept=52 skipped=10 freed=0KB (dry_run=0)

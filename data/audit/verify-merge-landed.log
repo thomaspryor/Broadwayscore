@@ -193,3 +193,15 @@ verify-merge-landed: action-cceb236f72dd -> main still reachable from origin/mai
 verify-merge-landed: action-cceb236f72dd -> main survived all 3 delayed check(s) — done
 verify-merge-landed: worktree-857-worktree-gc-s4 -> main still reachable from origin/main (compare status: identical) at +120s
 verify-merge-landed: worktree-session-system-s3 -> main still reachable from origin/main (compare status: identical) at +120s
+verify-merge-landed: worktree-pii-lint-jsonl-1092 -> main still reachable from origin/main (compare status: identical) at +120s
+verify-merge-landed: worktree-pii-lint-jsonl-1092 -> main still reachable from origin/main (compare status: ahead) at +480s
+verify-merge-landed: worktree-wrongproduction-provenance-1109 -> main still reachable from origin/main (compare status: identical) at +120s
+verify-merge-landed: worktree-wrongproduction-provenance-1109 -> main still reachable from origin/main (compare status: identical) at +480s
+verify-merge-landed: worktree-wrongproduction-provenance-1109 -> main still reachable from origin/main (compare status: ahead) at +900s
+verify-merge-landed: worktree-wrongproduction-provenance-1109 -> main survived all 3 delayed check(s) — done
+verify-merge-landed: worktree-alert-sender-digest-gate -> main still reachable from origin/main (compare status: identical) at +120s
+verify-merge-landed: worktree-alert-sender-digest-gate -> main still reachable from origin/main (compare status: ahead) at +480s
+verify-merge-landed: worktree-alert-sender-digest-gate -> main still reachable from origin/main (compare status: ahead) at +900s
+verify-merge-landed: worktree-alert-sender-digest-gate -> main survived all 3 delayed check(s) — done
+verify-merge-landed: worktree-ensemble-weight-calibration-384 -> main still reachable from origin/main (compare status: ahead) at +120s
+verify-merge-landed: worktree-ensemble-weight-calibration-384 -> main still reachable from origin/main (compare status: ahead) at +480s
