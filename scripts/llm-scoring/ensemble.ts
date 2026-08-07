@@ -26,11 +26,28 @@ const HIGH_DISAGREEMENT_THRESHOLD = 15;
 
 /**
  * Majority-vs-outlier weighting for the >50% majority branch.
- * 1.5/1.0 = current behavior. Lowering MAJORITY_WEIGHT gives outlier models more pull.
+ * 1.5/1.0 = v1 (default) behavior. Lowering MAJORITY_WEIGHT gives outlier models more pull.
  * Exported so re-ensemble-scores.ts and ensemble-scorer.ts share one source of truth.
  */
 export const MAJORITY_WEIGHT = 1.5;
 export const OUTLIER_WEIGHT = 1.0;
+
+/**
+ * Phase B (2026-08-07, Notion 367637c5-416f-81a3): MAJORITY_WEIGHT 1.5→1.4 behind
+ * ENSEMBLE_V2=1. Approved after a 72h clean-signal observation window on Phase A
+ * (the needsReview numeric-gap check below). Lowering the majority weight gives
+ * the dissenting model relatively more pull on the final weighted score without
+ * changing the flag-off (v1) path, which is still what ships by default.
+ *
+ * getEnsembleWeights() is read on every call (not memoized) so tests and the
+ * live pipeline can toggle ENSEMBLE_V2 per-process without a module reload.
+ */
+export function getEnsembleWeights(): { majorityWeight: number; outlierWeight: number; version: 'v1' | 'v2' } {
+  if (process.env.ENSEMBLE_V2 === '1') {
+    return { majorityWeight: 1.4, outlierWeight: OUTLIER_WEIGHT, version: 'v2' };
+  }
+  return { majorityWeight: MAJORITY_WEIGHT, outlierWeight: OUTLIER_WEIGHT, version: 'v1' };
+}
 
 /**
  * When the lone outlier's score is more than this many points from the mean of the
@@ -324,11 +341,12 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
     const majorityResults = results.filter(r => r.bucket === majority.bucket);
     const outlierResults = results.filter(r => r.bucket !== majority.bucket);
 
-    // Weighted average: majority weight (default 1.5) vs outlier weight (default 1.0)
-    // Constants exported at top of file so re-ensemble-scores.ts uses the same values.
-    const totalWeight = majorityResults.length * MAJORITY_WEIGHT + outlierResults.length * OUTLIER_WEIGHT;
-    const weightedSum = majorityResults.reduce((s, r) => s + r.score * MAJORITY_WEIGHT, 0)
-                      + outlierResults.reduce((s, r) => s + r.score * OUTLIER_WEIGHT, 0);
+    // Weighted average: majority weight (1.5, or 1.4 behind ENSEMBLE_V2=1) vs outlier weight (1.0).
+    // getEnsembleWeights() is the one source of truth so re-ensemble-scores.ts stays in sync.
+    const { majorityWeight, outlierWeight, version } = getEnsembleWeights();
+    const totalWeight = majorityResults.length * majorityWeight + outlierResults.length * outlierWeight;
+    const weightedSum = majorityResults.reduce((s, r) => s + r.score * majorityWeight, 0)
+                      + outlierResults.reduce((s, r) => s + r.score * outlierWeight, 0);
     const finalScore = Math.round(weightedSum / totalWeight);
     // Derive bucket from numeric score — no clamping to voted bucket
     const derivedBucket = scoreToBucket(finalScore);
@@ -378,7 +396,8 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
       // Keep singular reviewReason populated for backward compat with existing review files on disk;
       // re-ensemble-scores.ts:189 already writes the plural needsReviewReasons array.
       reviewReason: needsReview ? needsReviewReasons.join('; ') : undefined,
-      needsReviewReasons: needsReview ? needsReviewReasons : undefined
+      needsReviewReasons: needsReview ? needsReviewReasons : undefined,
+      ensembleVersion: version
     };
   }
 

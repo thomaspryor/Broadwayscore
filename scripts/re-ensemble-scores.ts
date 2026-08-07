@@ -187,6 +187,11 @@ async function main() {
             data.ensembleData.modelAgreement = result.agreement;
             data.ensembleData.needsReview = result.needsReview || false;
             data.ensembleData.needsReviewReasons = result.reviewReason ? [result.reviewReason] : [];
+            // Which majority/outlier weight set produced this score (task #384 Phase B) —
+            // written so mixed v1/v2 batches are distinguishable once ENSEMBLE_V2 ships.
+            if (result.ensembleVersion) {
+              data.ensembleData.ensembleVersion = result.ensembleVersion;
+            }
 
             data.rescoreReason = 're-ensemble-v2-decluster';
 
