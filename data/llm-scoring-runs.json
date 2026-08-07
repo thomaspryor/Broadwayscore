@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-02T23:01:19.998Z",
-    "completedAt": "2026-08-02T23:01:25.224Z",
-    "totalReviews": 41558,
-    "processed": 1,
-    "skipped": 41556,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 6241,
-      "output": 331,
-      "total": 15147
-    },
-    "errorDetails": [
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-02T23:30:57.813Z",
     "completedAt": "2026-08-02T23:31:14.743Z",
     "totalReviews": 41557,
@@ -704035,6 +704015,36 @@
         "showId": "just-in-time-2025",
         "outletId": "newyorker",
         "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-07T06:48:08.816Z",
+    "completedAt": "2026-08-07T06:48:23.353Z",
+    "totalReviews": 42110,
+    "processed": 1,
+    "skipped": 42105,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 8392,
+      "output": 481,
+      "total": 24155
+    },
+    "errorDetails": [
+      {
+        "showId": "hadestown-2019",
+        "outletId": "theatrely",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-book-of-mormon-west-end-2024",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
       }
     ]
   }
