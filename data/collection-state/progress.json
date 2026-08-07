@@ -717,7 +717,17 @@
     "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
     "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
     "disruption-off-broadway-2026/everything-theatre--dave-b.json",
-    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json"
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -824,7 +834,7 @@
     ]
   },
   "startTime": "2026-08-07T10:32:52.947Z",
-  "lastProcessed": "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+  "lastProcessed": "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -854,6 +864,18 @@
       "t": "2026-08-07T12:31:55.704Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-07T12:32:53.467Z",
+      "event": "bb-session",
+      "session": "3bf0560c",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-07T12:33:00.274Z",
+      "event": "bb-session",
+      "session": "7cfa260c",
+      "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
     }
   ]
 }
