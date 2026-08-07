@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T16:57:18.843Z",
+  "timestamp": "2026-08-07T17:55:55.083Z",
   "stats": {
-    "totalReviews": 41845,
-    "alreadyFlagged": 18157,
-    "dateGuardCatches": 132,
-    "directorMismatch": 953,
+    "totalReviews": 41849,
+    "alreadyFlagged": 18158,
+    "dateGuardCatches": 133,
+    "directorMismatch": 954,
     "tvFilmSignals": 1159,
-    "londonSignals": 827,
+    "londonSignals": 828,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3584
+    "noPublishDate": 3582
   },
   "findings": [
     {
@@ -4565,6 +4565,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2026-08-07",
+      "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
@@ -31700,6 +31713,19 @@
     },
     {
       "showId": "arcadia-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-02-07",
+      "url": "https://www.standard.co.uk/culture/theatre/arcadia-at-the-old-vic-review-tom-stoppard-b1269701.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-west-end-2026",
       "file": "theatre-weekly--benedict-pignatelli.json",
       "score": 79,
       "publishDate": "2026-02-11",
@@ -44613,6 +44639,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 42d before show (2026-06-10 vs 2026-07-22)"
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "file": "unknownkentandsussex--maria-bligh.json",
+      "publishDate": "2026-06-19",
+      "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 33d before show (2026-06-19 vs 2026-07-22)"
         }
       ]
     },
