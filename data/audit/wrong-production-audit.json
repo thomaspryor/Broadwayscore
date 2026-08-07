@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T18:51:48.657Z",
+  "timestamp": "2026-08-07T20:04:10.729Z",
   "stats": {
-    "totalReviews": 41853,
-    "alreadyFlagged": 18157,
+    "totalReviews": 41861,
+    "alreadyFlagged": 18159,
     "dateGuardCatches": 133,
-    "directorMismatch": 954,
-    "tvFilmSignals": 1159,
+    "directorMismatch": 955,
+    "tvFilmSignals": 1160,
     "londonSignals": 828,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3587
+    "noPublishDate": 3588
   },
   "findings": [
     {
@@ -4565,6 +4565,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "publishDate": null,
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
@@ -20177,6 +20190,20 @@
       "score": 40,
       "publishDate": "2026-04-05",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-31",
+      "url": "https://monstagigz.com/2026/03/28/theatre-review-romeo-and-juliet-starring-sadie-sink-at-the-harold-pinter-theatre/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-07T19:28:13.730Z",
+  "detectedAt": "2026-08-07T20:03:57.959Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "jonathan-baz--unknown.json",
+      "outletId": "jonathan-baz",
+      "criticName": "Unknown",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html",
+      "fullTextLen": 3644,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
@@ -18,10 +32,24 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "seeing-dance--unknown.json",
+      "outletId": "seeing-dance",
+      "criticName": "Unknown",
+      "url": "https://www.seeingdance.com/cats-260807/",
+      "fullTextLen": 7116,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-08-07T20:03:57.959Z"
 }
