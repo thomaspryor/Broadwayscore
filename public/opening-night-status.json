@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T15:04:08.033Z",
+  "generatedAt": "2026-08-07T01:13:05.163Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -72,10 +72,6 @@
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1023,23 +1019,23 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 60.38,
-      "liveScore": 60,
-      "scoreDrift": -0.38000000000000256,
+      "siteScore": 54.71,
+      "liveScore": 55,
+      "scoreDrift": 0.28999999999999915,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 1,
-      "t2": 1,
-      "t3": 6,
+      "total": 13,
+      "t1": 2,
+      "t2": 3,
+      "t3": 8,
       "positive": 2,
-      "mixed": 3,
-      "negative": 3,
+      "mixed": 5,
+      "negative": 6,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
+          "T1:2/3",
           "T2:0/2",
           "hi-conf:2/6"
         ],
@@ -1130,6 +1126,18 @@
           "p": 2,
           "m": 3,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-07T01:13:05.163Z",
+          "rc": 13,
+          "s": 54.71,
+          "t1": 2,
+          "t2": 3,
+          "t3": 8,
+          "p": 2,
+          "m": 5,
+          "n": 6,
           "bc": "waiting"
         }
       ]
@@ -1910,265 +1918,6 @@
           "bc": "waiting"
         }
       ]
-    },
-    {
-      "id": "now-you-see-me-live-west-end-2026",
-      "title": "Now You See Me Live",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "special",
-      "openingDate": "2026-08-03",
-      "status": "open",
-      "slug": "now-you-see-me-live-west-end",
-      "thumbnail": "/images/shows/now-you-see-me-live-west-end-2026/thumbnail.jpg",
-      "siteScore": 70.24,
-      "liveScore": 70,
-      "scoreDrift": -0.23999999999999488,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 16,
-      "t1": 3,
-      "t2": 6,
-      "t3": 7,
-      "positive": 8,
-      "mixed": 6,
-      "negative": 2,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 8,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-08-04T09:23:08.044Z",
-          "rc": 3,
-          "s": 71.32,
-          "t1": 1,
-          "t2": 2,
-          "t3": 0,
-          "p": 2,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T09:37:37.104Z",
-          "rc": 4,
-          "s": 73.91,
-          "t1": 2,
-          "t2": 2,
-          "t3": 0,
-          "p": 3,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T09:46:30.514Z",
-          "rc": 3,
-          "s": 71.32,
-          "t1": 1,
-          "t2": 2,
-          "t3": 0,
-          "p": 2,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T10:02:59.673Z",
-          "rc": 5,
-          "s": 79.24,
-          "t1": 0,
-          "t2": 2,
-          "t3": 3,
-          "p": 4,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T11:15:17.671Z",
-          "rc": 8,
-          "s": 73.6,
-          "t1": 1,
-          "t2": 4,
-          "t3": 3,
-          "p": 4,
-          "m": 4,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T13:42:23.092Z",
-          "rc": 10,
-          "s": 69.71,
-          "t1": 1,
-          "t2": 5,
-          "t3": 4,
-          "p": 5,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T14:54:44.881Z",
-          "rc": 11,
-          "s": 70.31,
-          "t1": 2,
-          "t2": 5,
-          "t3": 4,
-          "p": 6,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T17:04:15.564Z",
-          "rc": 12,
-          "s": 72.31,
-          "t1": 2,
-          "t2": 5,
-          "t3": 5,
-          "p": 7,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T18:04:31.401Z",
-          "rc": 14,
-          "s": 71.18,
-          "t1": 2,
-          "t2": 5,
-          "t3": 7,
-          "p": 8,
-          "m": 4,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T18:35:34.199Z",
-          "rc": 16,
-          "s": 70.68,
-          "t1": 3,
-          "t2": 5,
-          "t3": 8,
-          "p": 9,
-          "m": 5,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T19:32:02.759Z",
-          "rc": 15,
-          "s": 70.31,
-          "t1": 3,
-          "t2": 5,
-          "t3": 7,
-          "p": 8,
-          "m": 5,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-04T20:15:15.373Z",
-          "rc": 15,
-          "s": 70.59,
-          "t1": 3,
-          "t2": 6,
-          "t3": 6,
-          "p": 8,
-          "m": 5,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-05T06:16:55.810Z",
-          "rc": 16,
-          "s": 70.24,
-          "t1": 3,
-          "t2": 6,
-          "t3": 7,
-          "p": 8,
-          "m": 6,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-05T06:27:36.989Z",
-          "rc": 17,
-          "s": 70.89,
-          "t1": 3,
-          "t2": 6,
-          "t3": 8,
-          "p": 9,
-          "m": 6,
-          "n": 2,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-08-05T08:32:34.055Z",
-          "rc": 16,
-          "s": 70.24,
-          "t1": 3,
-          "t2": 6,
-          "t3": 7,
-          "p": 8,
-          "m": 6,
-          "n": 2,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
@@ -2182,7 +1931,7 @@
       "status": "upcoming",
       "slug": "isla-off-broadway",
       "thumbnail": null,
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2221,7 +1970,7 @@
       "status": "previews",
       "slug": "death-note-the-musical-west-end",
       "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2246,6 +1995,70 @@
       "status": "previews",
       "slug": "marlise-off-broadway",
       "thumbnail": "/images/shows/marlise-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-08-14",
+      "status": "upcoming",
+      "slug": "as-you-like-it-globe-west-end",
+      "thumbnail": "/images/shows/as-you-like-it-globe-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-house-of-the-negro-insane-off-broadway-2026",
+      "title": "The House of the Negro Insane",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-08-14",
+      "status": "previews",
+      "slug": "the-house-of-the-negro-insane-off-broadway",
+      "thumbnail": "/images/shows/the-house-of-the-negro-insane-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
