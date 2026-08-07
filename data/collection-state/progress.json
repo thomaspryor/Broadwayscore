@@ -23,7 +23,10 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -111,7 +114,14 @@
     "miles-for-mary-off-broadway-2026/thewrap--robert-hofler.json",
     "miles-for-mary-off-broadway-2026/timeout--helen-shaw.json",
     "miles-for-mary-off-broadway-2026/broadwayselect--peter-filichia.json",
-    "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json"
+    "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json",
+    "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
+    "miles-for-mary-off-broadway-2026/playbill--olivia-clement.json",
+    "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
+    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -136,13 +146,18 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "disruption-off-broadway-2026/nytimes--tim-teeman.json",
       "the-vessel-off-broadway-2026/broadwayworld--unknown.json",
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -152,6 +167,13 @@
     ]
   },
   "startTime": "2026-08-07T09:48:32.611Z",
-  "lastProcessed": "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json",
-  "log": []
+  "lastProcessed": "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+  "log": [
+    {
+      "t": "2026-08-07T10:04:48.039Z",
+      "event": "bb-session",
+      "session": "ce44e105",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    }
+  ]
 }
