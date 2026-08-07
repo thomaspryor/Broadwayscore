@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-06T15:04:01.645Z",
+  "timestamp": "2026-08-07T01:12:58.905Z",
   "stats": {
-    "totalReviews": 41778,
-    "alreadyFlagged": 18141,
-    "dateGuardCatches": 128,
+    "totalReviews": 41795,
+    "alreadyFlagged": 18154,
+    "dateGuardCatches": 129,
     "directorMismatch": 952,
-    "tvFilmSignals": 1155,
-    "londonSignals": 820,
+    "tvFilmSignals": 1156,
+    "londonSignals": 821,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3582
+    "noPublishDate": 3574
   },
   "findings": [
     {
@@ -24628,7 +24628,7 @@
       "file": "londontheatre1--chris-omaweng.json",
       "score": 88,
       "publishDate": "2025-05-14",
-      "url": null,
+      "url": "https://www.londontheatre1.com/reviews/the-comedy-about-spies-noel-coward-theatre-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -24806,6 +24806,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "writewatchwork--abbybathurst.json",
+      "publishDate": "2025-06-18",
+      "url": "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 409d before show (2025-06-18 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -27403,6 +27421,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/smile-her-marylebone-theatre-review-one-woman-unlocks-cupboard-her-familys-skeletons",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
