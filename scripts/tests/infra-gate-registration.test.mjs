@@ -250,9 +250,27 @@ test(
   }
 );
 
+// origin/main is not fetched in PR CI checkouts (actions/checkout fetches only
+// refs/pull/*/merge), so `git cat-file` against it exits 128 there regardless
+// of repo content — that broke every PR's Unit Tests batch (PR #550, 2026-08-07).
+// Main-branch runs still resolve origin/main and enforce the check.
+function originMainResolvable() {
+  if (!fs.existsSync(path.join(REPO_ROOT, '.git'))) return false;
+  try {
+    const { execFileSync } = require('node:child_process');
+    execFileSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
+      cwd: REPO_ROOT,
+      stdio: 'pipe',
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 test(
   '(b) scripts/lib/infra-review-scope.js is present on origin/main',
-  { skip: !fs.existsSync(path.join(REPO_ROOT, '.git')) && 'not a git checkout' },
+  { skip: !originMainResolvable() && 'origin/main not resolvable in this checkout (expected in PR CI)' },
   () => {
     const r = checkScopeLibOnOrigin({ repoRoot: REPO_ROOT });
     assert.equal(r.ok, true, r.detail);
