@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T22:00:12.943Z",
+  "timestamp": "2026-08-07T22:30:22.709Z",
   "stats": {
-    "totalReviews": 41863,
+    "totalReviews": 41865,
     "alreadyFlagged": 18159,
-    "dateGuardCatches": 133,
+    "dateGuardCatches": 134,
     "directorMismatch": 954,
     "tvFilmSignals": 1161,
-    "londonSignals": 829,
+    "londonSignals": 830,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3583
+    "noPublishDate": 3582
   },
   "findings": [
     {
@@ -4584,6 +4584,7 @@
     {
       "showId": "cats-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 67,
       "publishDate": "2026-08-07T07:46:52-04:00",
       "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
       "findings": [
@@ -44192,6 +44193,25 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 342d before show (2025-08-20 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": null,
+      "publishDate": "2025-08-21",
+      "url": "https://theatreandtonic.co.uk/blog/the-enormous-crocodile-at-regents-park-open-air-theatre-review-2025",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 341d before show (2025-08-21 vs 2026-07-28)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
