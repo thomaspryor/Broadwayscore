@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-07T20:18:36.791Z",
-  "processed": 105,
-  "failed": 1072,
-  "successRate": "8.9%",
+  "updatedAt": "2026-08-07T20:27:17.059Z",
+  "processed": 114,
+  "failed": 1213,
+  "successRate": "8.6%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 73,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 6,
-    "scrapingbee": 14,
+    "scrapingbee": 15,
     "brightdata": 5,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 16
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -72,6 +72,18 @@
       "t": "2026-08-07T20:15:12.714Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-07T20:20:04.045Z",
+      "event": "bb-session",
+      "session": "b15eec74",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-08-07T20:20:15.601Z",
+      "event": "bb-session",
+      "session": "21df797c",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
