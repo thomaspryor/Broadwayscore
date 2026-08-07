@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T11:47:03.845Z",
+  "generatedAt": "2026-08-07T13:07:11.837Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,26 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 76.6,
-      "liveScore": 77,
-      "scoreDrift": 0.4000000000000057,
+      "siteScore": 72.2,
+      "liveScore": 72,
+      "scoreDrift": -0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 2,
+      "total": 8,
+      "t1": 3,
       "t2": 2,
       "t3": 3,
       "positive": 4,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:1/3",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -59,10 +58,6 @@
         },
         {
           "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
           "isDualMarket": true
         },
         {
@@ -158,6 +153,18 @@
           "t3": 3,
           "p": 4,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-07T12:52:11.249Z",
+          "rc": 8,
+          "s": 72.2,
+          "t1": 3,
+          "t2": 2,
+          "t3": 3,
+          "p": 4,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
@@ -1094,17 +1101,17 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 57.52,
+      "siteScore": 57.93,
       "liveScore": 58,
-      "scoreDrift": 0.4799999999999969,
+      "scoreDrift": 0.07000000000000028,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 3,
       "t2": 5,
-      "t3": 11,
-      "positive": 5,
+      "t3": 12,
+      "positive": 6,
       "mixed": 6,
       "negative": 8,
       "readiness": {
@@ -1113,7 +1120,7 @@
           "T1:2/3",
           "T2:1/2"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1246,6 +1253,30 @@
           "t2": 5,
           "t3": 11,
           "p": 5,
+          "m": 6,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-07T12:52:11.249Z",
+          "rc": 20,
+          "s": 57.97,
+          "t1": 3,
+          "t2": 5,
+          "t3": 12,
+          "p": 6,
+          "m": 6,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-07T13:07:11.837Z",
+          "rc": 20,
+          "s": 57.93,
+          "t1": 3,
+          "t2": 5,
+          "t3": 12,
+          "p": 6,
           "m": 6,
           "n": 8,
           "bc": "waiting"
