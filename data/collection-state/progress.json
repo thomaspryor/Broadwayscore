@@ -28,7 +28,9 @@
     "amaze-off-broadway-2026/cititour--unknown.json",
     "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -121,7 +123,15 @@
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json",
+    "medea-off-broadway-2026/times-uk--quentin-letts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -146,10 +156,14 @@
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "disruption-off-broadway-2026/nytimes--tim-teeman.json",
@@ -168,7 +182,7 @@
     ]
   },
   "startTime": "2026-08-07T09:07:07.275Z",
-  "lastProcessed": "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--quentin-letts.json",
   "log": [
     {
       "t": "2026-08-07T09:08:36.670Z",
@@ -181,6 +195,12 @@
       "event": "bb-session",
       "session": "6116b14e",
       "url": "https://www.scorebig.com/events/disruption-the-romulus-linney-courtyard-theatre-"
+    },
+    {
+      "t": "2026-08-07T09:21:08.319Z",
+      "event": "bb-session",
+      "session": "ff87c8db",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
     }
   ]
 }
