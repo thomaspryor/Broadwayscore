@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-06T13:35:12.755Z",
+  "generatedAt": "2026-08-07T00:48:18.003Z",
   "windowDays": 45,
-  "showsScanned": 64,
+  "showsScanned": 62,
   "gaps": [
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 336.3883763888889,
+      "fileAgeHours": 347.6035913888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 295.6963386111111
+      "nonTerminalAgeHours": 306.91446305555553
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 11.218124444444445
     },
     {
       "showId": "now-you-see-me-live-west-end-2026",
@@ -50,9 +50,72 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=now-you-see-me-live-west-end-2026 --url=https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-04T09:41:36.523Z",
-      "fileAgeHours": 51.88835777777778,
+      "fileAgeHours": 63.10357333333334,
       "gapSeenAt": "2026-08-05T20:33:16.049Z",
-      "nonTerminalAgeHours": 17.032418333333332
+      "nonTerminalAgeHours": 28.250542777777778
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "title": "I'm Every Woman",
+      "openingDate": "2026-08-05",
+      "file": "london-theatre--unknown.json",
+      "outletId": "london-theatre",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 117 chars — pattern may be missing for this outlet. Add an entry to scri"
+      },
+      "recoveryCount": 2,
+      "fix": "node scripts/ingest-review-from-url.js --show=im-every-woman-off-west-end-2026 --url=https://www.londontheatre.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre --outlet=london-theatre   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-06T13:06:18.578Z",
+      "fileAgeHours": 11.69328,
+      "gapSeenAt": "2026-08-07T00:48:18.003Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "title": "I'm Every Woman",
+      "openingDate": "2026-08-05",
+      "file": "theatre-weekly--unknown.json",
+      "outletId": "theatre-weekly",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://theatreweekly.com/review-im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 128 chars — pattern may be missing for this outlet. Add an entry to scri"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=im-every-woman-off-west-end-2026 --url=https://theatreweekly.com/review-im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre/ --outlet=theatre-weekly   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-06T13:34:43.850Z",
+      "fileAgeHours": 11.222880277777778,
+      "gapSeenAt": "2026-08-07T00:48:18.003Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "title": "I'm Every Woman",
+      "openingDate": "2026-08-05",
+      "file": "thestage--unknown.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=im-every-woman-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-06T13:06:26.294Z",
+      "fileAgeHours": 11.6976825,
+      "gapSeenAt": "2026-08-07T00:48:18.003Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -67,9 +130,26 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 26.836585833333334,
+      "fileAgeHours": 38.05471027777778,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 26.1985225
+      "nonTerminalAgeHours": 37.416646944444445
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "title": "The Pass",
+      "openingDate": "2026-08-04",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "tier": 2,
+      "type": "unscored",
+      "url": "https://www.newyorktheatreguide.com/show/47271-the-pass",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
+      "firstSeen": "2026-08-06T06:24:23.949Z",
+      "fileAgeHours": 18.398343055555557,
+      "gapSeenAt": "2026-08-07T00:48:18.003Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
