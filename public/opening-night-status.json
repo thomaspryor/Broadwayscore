@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T09:04:10.733Z",
+  "generatedAt": "2026-08-07T09:31:26.264Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,23 +12,23 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 69.09,
-      "liveScore": 69,
-      "scoreDrift": -0.09000000000000341,
+      "siteScore": 76.27,
+      "liveScore": 76,
+      "scoreDrift": -0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 1,
       "t2": 0,
-      "t3": 2,
-      "positive": 1,
+      "t3": 3,
+      "positive": 2,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:0/6"
@@ -138,6 +138,18 @@
           "t2": 0,
           "t3": 2,
           "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-07T09:31:26.264Z",
+          "rc": 4,
+          "s": 76.27,
+          "t1": 1,
+          "t2": 0,
+          "t3": 3,
+          "p": 2,
           "m": 2,
           "n": 0,
           "bc": "waiting"
