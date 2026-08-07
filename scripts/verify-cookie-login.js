@@ -39,7 +39,14 @@ const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const TARGETS = [
   { outlet: 'nytimes',   url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html', minBody: 1500 },
   { outlet: 'variety',   url: 'https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/', minBody: 1500 },
-  { outlet: 'thestage',  url: 'https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain', minBody: 1200 },
+  // The Stage: the old probe (a 2023 A Doll's House article) is free-to-anonymous,
+  // so "✅ logged-in" was vacuous — it passed with NO cookies while every recent
+  // walled article failed (Stage went silently logged-out ~11 days). Probe a
+  // recent walled 2026 review and additionally require the registration-wall
+  // marker to be ABSENT. knownLoggedOut: no working Stage login exists until the
+  // OTP-login infra (#876) lands — report the true state but don't gate exit 1
+  // on it, or this script becomes unusable as a post-cookie-extraction gate.
+  { outlet: 'thestage',  url: 'https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter', minBody: 1200, wallMarker: /THIS IS NOT A PAYWALL/i, knownLoggedOut: 'no working Stage login until #876 OTP infra' },
   { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500 },
   { outlet: 'newyorker', url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain', minBody: 1500 },
   { outlet: 'wapo',      url: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/', minBody: 1500 },
@@ -77,10 +84,16 @@ async function probe(t) {
     ok = !error && t.loggedInMarker.test(html);
     detail = `marker ${ok ? 'present' : 'absent'} (html ${htmlLen})`;
   } else {
-    ok = !error && body.length >= t.minBody;
-    detail = `body ${body.length} / need ${t.minBody}`;
+    // wallMarker mode: a registration/paywall interstitial can still carry
+    // extractable page furniture — marker PRESENT means logged-out regardless
+    // of body length.
+    const walled = t.wallMarker ? !error && t.wallMarker.test(html) : false;
+    ok = !error && !walled && body.length >= t.minBody;
+    detail = walled
+      ? `wall marker present (html ${htmlLen}, body ${body.length})`
+      : `body ${body.length} / need ${t.minBody}`;
   }
-  return { outlet: t.outlet, ok, detail, error, url: t.url };
+  return { outlet: t.outlet, ok, detail, error, url: t.url, knownLoggedOut: t.knownLoggedOut || null };
 }
 
 (async () => {
@@ -95,21 +108,23 @@ async function probe(t) {
   } else {
     console.log('\n=== Cookie login verification (extracted body length) ===\n');
     for (const r of results) {
-      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : '❌ LOGGED-OUT ';
-      console.log(`${mark} ${r.outlet.padEnd(11)} ${r.error || r.detail}`);
+      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : r.knownLoggedOut ? '⚠️  logged-out' : '❌ LOGGED-OUT ';
+      const suffix = !r.ok && r.knownLoggedOut ? ` [expected: ${r.knownLoggedOut}]` : '';
+      console.log(`${mark} ${r.outlet.padEnd(11)} ${r.error || r.detail}${suffix}`);
     }
-    const bad = results.filter((r) => !r.ok);
+    const bad = results.filter((r) => !r.ok && !r.knownLoggedOut);
     console.log('');
     if (bad.length) {
       console.log(`❌ ${bad.length} outlet(s) not returning full text: ${bad.map((r) => r.outlet).join(', ')}`);
       console.log('   → Log into those sites in Safari, then re-run:');
       console.log('     python3 scripts/extract-safari-cookies.py --push');
     } else {
-      console.log('✅ All probed outlets return full review text.');
+      console.log('✅ All probed outlets return full review text (known-logged-out outlets excluded).');
     }
   }
 
-  process.exit(results.some((r) => !r.ok) ? 1 : 0);
+  // knownLoggedOut targets report honestly but don't gate the exit code.
+  process.exit(results.some((r) => !r.ok && !r.knownLoggedOut) ? 1 : 0);
 })().catch((e) => {
   console.error('verify-cookie-login failed:', e.stack || e.message);
   process.exit(1);
