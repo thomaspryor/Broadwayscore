@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T06:27:31.529Z",
+  "timestamp": "2026-08-07T07:18:15.704Z",
   "stats": {
-    "totalReviews": 41810,
-    "alreadyFlagged": 18160,
-    "dateGuardCatches": 129,
-    "directorMismatch": 952,
+    "totalReviews": 41814,
+    "alreadyFlagged": 18157,
+    "dateGuardCatches": 130,
+    "directorMismatch": 953,
     "tvFilmSignals": 1157,
-    "londonSignals": 821,
+    "londonSignals": 823,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3572
+    "noPublishDate": 3574
   },
   "findings": [
     {
@@ -23958,6 +23958,19 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "timeout-london--david-cote.json",
+      "publishDate": "2013-03-19",
+      "url": "https://www.timeout.com/london/theatre/the-book-of-mormon-explained",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "times-uk--libby-purves.json",
       "score": 55,
       "publishDate": "2013-03-22",
@@ -24408,7 +24421,7 @@
     {
       "showId": "the-color-purple-2015",
       "file": "wsj--terry-teachout.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "December 9, 2015",
       "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky-1449805305",
       "findings": [
@@ -24672,6 +24685,24 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "micablackwell--unknown.json",
+      "publishDate": "2025-05-14",
+      "url": "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -25299,7 +25330,7 @@
     {
       "showId": "the-gin-game-2015",
       "file": "wsj--terry-teachout.json",
-      "score": 71,
+      "score": 72,
       "publishDate": "2015-10-15",
       "url": "http://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066",
       "findings": [
@@ -33144,6 +33175,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/cats",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
