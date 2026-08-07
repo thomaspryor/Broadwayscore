@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T13:07:05.456Z",
+  "timestamp": "2026-08-07T14:25:03.949Z",
   "stats": {
-    "totalReviews": 41833,
-    "alreadyFlagged": 18157,
-    "dateGuardCatches": 130,
+    "totalReviews": 41837,
+    "alreadyFlagged": 18156,
+    "dateGuardCatches": 132,
     "directorMismatch": 953,
     "tvFilmSignals": 1159,
-    "londonSignals": 824,
+    "londonSignals": 827,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3577
+    "noPublishDate": 3578
   },
   "findings": [
     {
@@ -24755,6 +24755,24 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatre--paul-lewis.json",
+      "publishDate": "2025-05-14",
+      "url": "https://theatre.reviews/reviews-roundup/comedy-about-spies-reviews/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "theatre-south-east--unknown.json",
       "score": 91,
       "publishDate": "2025-05-16",
@@ -24783,6 +24801,24 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thelivereview--tanya-howard.json",
+      "publishDate": "2025-05-14",
+      "url": "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -33220,6 +33256,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-08-07",
+      "url": "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
