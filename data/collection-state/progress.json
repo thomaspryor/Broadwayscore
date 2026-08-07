@@ -77,7 +77,10 @@
     "the-smile-of-her-off-west-end-2026/artsdesk--unknown.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/talkinbroadway--unknown.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -449,7 +452,14 @@
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json"
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -507,10 +517,15 @@
       "the-vessel-off-broadway-2026/off-off-online--adrienne-onofri.json",
       "the-smile-of-her-off-west-end-2026/artsdesk--unknown.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -547,7 +562,7 @@
     ]
   },
   "startTime": "2026-08-06T11:50:35.908Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+  "lastProcessed": "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
   "log": [
     {
       "t": "2026-08-06T12:51:55.232Z",
@@ -584,15 +599,10 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-08-07T00:46:00.102Z",
+      "t": "2026-08-07T00:52:54.228Z",
       "event": "bb-session",
-      "session": "77ef9af8",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-07T00:46:00.674Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "4ea117c8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     }
   ]
 }
