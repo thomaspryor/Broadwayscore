@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T22:30:22.709Z",
+  "timestamp": "2026-08-07T23:33:04.357Z",
   "stats": {
-    "totalReviews": 41865,
+    "totalReviews": 41867,
     "alreadyFlagged": 18159,
     "dateGuardCatches": 134,
-    "directorMismatch": 954,
+    "directorMismatch": 955,
     "tvFilmSignals": 1161,
-    "londonSignals": 830,
+    "londonSignals": 831,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3582
+    "noPublishDate": 3583
   },
   "findings": [
     {
@@ -13927,6 +13927,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-23",
+      "url": "https://www.theupcoming.co.uk/2026/04/23/john-proctor-is-the-villain-at-wyndhams-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
