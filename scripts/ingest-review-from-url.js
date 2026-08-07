@@ -198,6 +198,18 @@ function extractByline(html) {
     if (OUTLET_EXTRACTORS[outletId]) {
       recoveredScore = extractScore(html, '', outletId, show.title) || null;
     }
+    // With no body there is no content-based wrong-show signal left for the
+    // rebuild guards to scan, so require the show's title to appear somewhere
+    // in the raw page HTML (normalized: punctuation-insensitive) before
+    // accepting a score-only ingest — this path is reachable from the public
+    // /submit-review form and automated SERP ingest.
+    if (recoveredScore) {
+      const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      if (!norm(html).includes(norm(show.title))) {
+        console.error(`Score-only fallback refused: show title "${show.title}" not found in page HTML — cannot verify this is the right show without body text.`);
+        process.exit(1);
+      }
+    }
     if (!recoveredScore) {
       console.error(`Article extraction returned ${text ? text.length : 0} chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.`);
       process.exit(1);
@@ -264,18 +276,25 @@ function extractByline(html) {
     humanScore: null,
     provisional: false,
     fullText: hasBody ? text : null,
-    originalScore: recoveredScore ? recoveredScore.originalScore : null,
-    originalScoreSource: recoveredScore ? recoveredScore.source : null,
+    originalScore: null,
+    originalScoreSource: null,
     publishDate: publishDate,
     operatorTrust: false,
   });
   if (recoveredScore) {
-    // buildManualReviewFields only sets originalScoreNormalized from a typed
-    // humanScore; carry the extractor's normalized value so downstream score
-    // predicates (hasValidScore normOk path) see it without a re-parse.
-    fields.originalScoreNormalized = recoveredScore.normalizedScore;
+    // Route through setExtractedScore, never hand-set originalScore: an
+    // extractor whose source is an aggregator tag (e.g. lbo-css-stars) must
+    // land in aggregatorStars, not originalScore — the contamination guards
+    // downstream key on scoreSource and would miss a hand-set field.
+    const { setExtractedScore } = require('./lib/score-routing');
+    const routed = setExtractedScore(fields, {
+      value: recoveredScore.originalScore,
+      normalizedValue: recoveredScore.normalizedScore,
+      source: recoveredScore.source,
+    });
     fields.scoreExtractedFrom = 'scraped-html';
     fields.scoreRecoveredAt = new Date().toISOString();
+    console.log(`  → Score routed to ${routed.field}`);
   }
 
   const result = createOrMergeReviewFile(showId, {
