@@ -1989,6 +1989,14 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/ensemble-scorer.ts'
       - 'scripts/llm-scoring/batch-runner.ts'
+      # Ensemble voting logic (task #384, Phase B weight calibration) and its
+      # shared types were never path-listed — a solo edit to either got ZERO
+      # CI despite tests/unit/ensemble.test.mjs pinning the scoring math
+      # (feedback_test_yml_push_path_allowlist). gemini-calibration-ema.js is
+      # the new rolling-EMA calibration script from the same task.
+      - 'scripts/llm-scoring/ensemble.ts'
+      - 'scripts/llm-scoring/types.ts'
+      - 'scripts/llm-scoring/gemini-calibration-ema.js'
       # Duplicate-dispatch guard (task #542): pure predicate for the
       # EnterWorktree same-name collision + CI-red double-fix incidents.
       # Test lives in tests/unit/ (node --test batch, not globbed) — path-listed
