@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-03T06:09:19.103Z",
-    "completedAt": "2026-08-03T06:13:32.367Z",
-    "totalReviews": 41596,
-    "processed": 43,
-    "skipped": 41336,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 266817,
-      "output": 14351,
-      "total": 682054
-    },
-    "errorDetails": [
-      {
-        "showId": "just-in-time-2025",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-03T06:54:21.024Z",
     "completedAt": "2026-08-03T06:54:24.348Z",
     "totalReviews": 47,
@@ -704463,5 +704443,19 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-07T14:44:38.320Z",
+    "completedAt": "2026-08-07T14:44:43.540Z",
+    "totalReviews": 54,
+    "processed": 1,
+    "skipped": 53,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5175,
+      "output": 257,
+      "total": 13561
+    },
+    "errorDetails": []
   }
 ]
