@@ -307,6 +307,9 @@ tmp/
 # Backlog drain engine (task #654) — Mac-local; both producer
 # (scripts/backlog-drain.js) and consumer (send-morning-digest.js) run on
 # this Mac via launchd, so no git commit is needed to bridge them.
+# Per-machine telemetry from the pre-implementation infra review gate (#1079):
+# every warn/block the hook emits. Local observability, not shared state.
+/data/audit/infra-review-gate.jsonl
 /data/audit/backlog-drain-ledger.jsonl
 /data/audit/backlog-drain-metric.json
 /data/audit/backlog-drain-logs/

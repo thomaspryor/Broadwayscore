@@ -44,6 +44,7 @@ const { wouldFormDuplicateCycle: _wouldFormDuplicateCycleN } = require('./duplic
 // Lazy-loaded, memoized once per process — safeWriteReview is called
 // thousands of times per rebuild run and shows.json rarely changes mid-run.
 let _showsByIdCache = null;
+let _siblingOpeningsCache = null;
 function _getShowById(showId) {
   if (!_showsByIdCache) {
     _showsByIdCache = new Map();
@@ -57,10 +58,26 @@ function _getShowById(showId) {
   return _showsByIdCache.get(showId) || null;
 }
 
+// Same-title sibling openings for the cross-market quarantine below. Derived
+// from the SAME shows map _getShowById populates, so a test that seeds the
+// cache seeds both. Built once per process — buildSiblingOpeningsMap is O(shows)
+// and safeWriteReview runs thousands of times per rebuild.
+function _getSiblingOpenings(showId) {
+  _getShowById(showId); // ensure _showsByIdCache is populated
+  if (!_siblingOpeningsCache) {
+    const { buildSiblingOpeningsMap } = require('./cross-market-contamination');
+    _siblingOpeningsCache = buildSiblingOpeningsMap(
+      [..._showsByIdCache.values()],
+      (d) => (d ? new Date(d) : null)
+    );
+  }
+  return _siblingOpeningsCache.get(showId) || [];
+}
+
 // Test-only: seed the shows cache directly so date-plausibility.test.mjs can
 // exercise safeWriteReview's quarantine routing without depending on the real
 // data/shows.json corpus.
-function _setShowsCacheForTest(map) { _showsByIdCache = map; }
+function _setShowsCacheForTest(map) { _showsByIdCache = map; _siblingOpeningsCache = null; }
 
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
@@ -582,6 +599,57 @@ function safeWriteReview(filePath, newData, options = {}) {
           fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
           console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
           return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
+        }
+
+        // Cross-market class-A quarantine (card #1085). The mirror of the check
+        // above: date-plausibility only catches a review dated implausibly
+        // BEFORE this show's earliest date. It cannot see the tryout/transfer
+        // shape, where the leaking review is dated LATER than the folder show's
+        // opening — on a same-title sibling's. That is exactly what re-reddened
+        // main: gather for 'the-outsiders-world-premiere-regional-2023' (La
+        // Jolla, opened 2023-03-07) picked up EW + TheWrap reviews of the
+        // BROADWAY production dated 2024-04-11 — 0 days from the-outsiders-2024's
+        // opening, 401 from the tryout's. Deleted by hand on 2026-08-06; the
+        // Weekly review refresh cron re-created them 17h later, because the
+        // preventer added that day lives inline in gather-reviews.js's
+        // saveReview and extract-dtli-reviews.js does not go through it.
+        //
+        // Putting it HERE, at the shared write chokepoint (78 caller scripts),
+        // is what makes the class unrepeatable rather than per-writer whack-a-mole.
+        // Uses classifyClassAContamination — the SAME predicate the zero-tolerance
+        // CI gate flags on — so detector and preventer can never disagree.
+        // Quarantines rather than drops: _pending/ is recoverable if a human
+        // disagrees, and `_auditAllowCrossMarket` (the audit's own manual
+        // allowlist) opts a file out here too.
+        if (newData && newData.publishDate && !newData._auditAllowCrossMarket) {
+          const sibOpenings = _getSiblingOpenings(parentDirName);
+          if (sibOpenings.length) {
+            const { classifyClassAContamination } = require('./cross-market-contamination');
+            const xv = classifyClassAContamination(
+              new Date(newData.publishDate),
+              show.openingDate ? new Date(show.openingDate) : null,
+              sibOpenings
+            );
+            if (xv.isClassA) {
+              const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+              fs.mkdirSync(pendingDir, { recursive: true });
+              const pendingPath = path.join(pendingDir, path.basename(filePath));
+              const detail = `publishDate ${newData.publishDate} is ${Math.round(xv.sibDiff)}d from a same-title sibling production's opening but ${Math.round(xv.thisDiff)}d from this show's — it belongs to the sibling`;
+              fs.writeFileSync(pendingPath, JSON.stringify({
+                ...newData,
+                pendingReason: 'cross_market_contamination',
+                _crossMarketDetail: detail,
+              }, null, 2) + '\n');
+              console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
+              return {
+                wrote: false,
+                skipped: 'cross_market_contamination',
+                quarantinedPath: pendingPath,
+                sibDiff: xv.sibDiff,
+                thisDiff: xv.thisDiff,
+              };
+            }
+          }
         }
       }
     }

@@ -27,7 +27,12 @@ const require = createRequire(import.meta.url);
 // at load time).
 const FIXTURE = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-audit-'));
 process.env.REVIEW_TEXTS_DIR = FIXTURE;
-const { stripTrivial, audit, fix } = require('../../scripts/audit-duplicate-of-url-mismatch.js');
+// audit() returns { mismatches, scanned } — NOT a bare array. It gained the
+// `scanned` count in e1db0bc0425 ("fail loud on missing/empty review-texts"),
+// which broke every call site here with "audit(...).filter is not a function"
+// and left main red. Destructure or read .mismatches; never call array methods
+// on the result directly.
+const { stripTrivial, canonicalizeHost, audit, fix } = require('../../scripts/audit-duplicate-of-url-mismatch.js');
 const SCRIPT_PATH = path.join(import.meta.dirname, '..', '..', 'scripts', 'audit-duplicate-of-url-mismatch.js');
 
 function writeShow(showId, files) {
@@ -59,6 +64,44 @@ test('trivial %20-only URL diff is NOT flagged (real dup stays deduped)', () => 
   });
   const mismatches = audit().mismatches.filter(m => m.showId === 'trivial-diff-2026');
   assert.equal(mismatches.length, 0, 'trivial %20 diff must not be a mismatch');
+});
+
+test('same article on a registered domain-alias hostname is NOT flagged (task #1072)', () => {
+  writeShow('domain-alias-2026', {
+    'about-entertainment--ben-brantley.json': {
+      url: 'http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance.html',
+      duplicateOf: 'nytimes--ben-brantley.json',
+      duplicateReason: 'outlet-mismatch',
+    },
+    'nytimes--ben-brantley.json': { url: 'https://www.nytimes.com/2013/04/16/theater/reviews/the-nance.html' },
+  });
+  const mismatches = audit().mismatches.filter(m => m.showId === 'domain-alias-2026');
+  assert.equal(mismatches.length, 0, 'theater.nytimes.com is a registered domainAlias of nytimes.com — same article, same path');
+});
+
+test('different article on a domain-alias hostname is STILL flagged (alias folding must not hide real staleness)', () => {
+  writeShow('domain-alias-different-article-2026', {
+    'about-entertainment--ben-brantley.json': {
+      url: 'http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance.html',
+      duplicateOf: 'nytimes--ben-brantley.json',
+      duplicateReason: 'outlet-mismatch',
+    },
+    'nytimes--ben-brantley.json': { url: 'https://www.nytimes.com/2005/08/15/theater/reviews/a-completely-different-review.html' },
+  });
+  const mismatches = audit().mismatches.filter(m => m.showId === 'domain-alias-different-article-2026');
+  assert.equal(mismatches.length, 1, 'different PATH must still flag even after hostname canonicalization');
+  assert.equal(mismatches[0].reason, 'url-mismatch');
+});
+
+test('a real outlet-registry entry never folds onto ANOTHER outlet\'s own primary domain (ship-check follow-up)', () => {
+  // outlet-registry.json has at least one bad domainAliases entry where one
+  // outlet lists a DIFFERENT outlet's actual primary domain as an alias
+  // (e.g. "ap" aliasing "abcnews.go.com", which is abc-news's real domain).
+  // canonicalizeHost must never fold a genuine ABC News URL onto AP's
+  // canonical host on the strength of that bad entry.
+  const abcNewsHost = canonicalizeHost('abcnews.go.com/entertainment/story/review.html');
+  assert.equal(abcNewsHost, 'abcnews.go.com/entertainment/story/review.html',
+    'a hostname that is itself a registered primary domain must never be rewritten onto a different outlet\'s canonical host');
 });
 
 test('different-article (path) diff IS flagged and --fix clears it', () => {
