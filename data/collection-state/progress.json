@@ -1198,7 +1198,17 @@
     "hadestown-west-end-2024/theatres-leiter-side--samuel-l-leiter.json",
     "hadestown-west-end-2024/times-square-chronicles--unknown.json",
     "hadestown-west-end-2024/towleroad--naveen-kumar.json",
-    "hadestown-west-end-2024/vox--constance-grady.json"
+    "hadestown-west-end-2024/vox--constance-grady.json",
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "hadestown-west-end-2024/whatsonoffbroadway--scott-mitchell.json",
+    "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1278,7 +1288,9 @@
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
@@ -1329,7 +1341,7 @@
     ]
   },
   "startTime": "2026-08-07T10:32:52.947Z",
-  "lastProcessed": "hadestown-west-end-2024/vox--constance-grady.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -1388,6 +1400,18 @@
       "t": "2026-08-07T20:15:12.714Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-08-07T20:20:04.045Z",
+      "event": "bb-session",
+      "session": "b15eec74",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-08-07T20:20:15.601Z",
+      "event": "bb-session",
+      "session": "21df797c",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
