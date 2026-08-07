@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-05T21:31:38.544Z",
+  "timestamp": "2026-08-07T15:59:17.182Z",
   "stats": {
-    "totalReviews": 41668,
-    "alreadyFlagged": 18114,
-    "dateGuardCatches": 115,
-    "directorMismatch": 945,
-    "tvFilmSignals": 1152,
-    "londonSignals": 814,
-    "offBroadwaySignals": 479,
+    "totalReviews": 41842,
+    "alreadyFlagged": 18155,
+    "dateGuardCatches": 132,
+    "directorMismatch": 953,
+    "tvFilmSignals": 1159,
+    "londonSignals": 827,
+    "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3535
+    "noPublishDate": 3585
   },
   "findings": [
     {
@@ -1814,20 +1814,6 @@
       "score": 81,
       "publishDate": "2026-04-17",
       "url": "https://www.broadwayworld.com/westend/article/Review-AVENUE-Q-Shaftesbury-Theatre-20260417",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11823,6 +11809,19 @@
     },
     {
       "showId": "hungry-women-off-broadway-2026",
+      "file": "broadwaypodcastnetwork--broadway-podcast-network.json",
+      "publishDate": "2026-08-02",
+      "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
       "file": "iloveny--unknown.json",
       "publishDate": "2026-07-07",
       "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
@@ -12051,6 +12050,52 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": 66,
+      "publishDate": "2026-08-05",
+      "url": "https://www.londontheatre1.com/reviews/im-every-woman-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 74,
+      "publishDate": "2026-08-05",
+      "url": "https://loureviews.blog/2026/08/05/musical-review-im-every-woman-troubadour-wembley-park/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -21908,6 +21953,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "nytg--unknown.json",
+      "score": 97,
+      "publishDate": "2015-10-02",
+      "url": "https://www.newyorktheatreguide.com/reviews/spring-awakening-1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "nytimes--charles-isherwood.json",
       "score": 91,
       "publishDate": "September 27, 2015",
@@ -23917,6 +23976,19 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "timeout-london--david-cote.json",
+      "publishDate": "2013-03-19",
+      "url": "https://www.timeout.com/london/theatre/the-book-of-mormon-explained",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "times-uk--libby-purves.json",
       "score": 55,
       "publishDate": "2013-03-22",
@@ -24367,7 +24439,7 @@
     {
       "showId": "the-color-purple-2015",
       "file": "wsj--terry-teachout.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "December 9, 2015",
       "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky-1449805305",
       "findings": [
@@ -24394,6 +24466,20 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "score": 96,
+      "publishDate": "2025-05-16",
+      "url": "https://ayoungishperspective.co.uk/2025/05/16/review-the-comedy-about-spies/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 442d before show (2025-05-16 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 100,
       "publishDate": "2025-05-13",
@@ -24408,6 +24494,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "amyleighchandler--amy.json",
+      "score": 86,
+      "publishDate": "2025-05-11",
+      "url": "https://amyleighchandler.co.uk/review-the-comedy-about-spies-noel-coward-theatre-london/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 447d before show (2025-05-11 vs 2026-08-01)"
         }
       ]
     },
@@ -24502,10 +24602,37 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "score": 81,
+      "publishDate": "2025-05-20",
+      "url": "https://liamodell.com/2025/05/20/the-comedy-about-spies-review-mischief-theatre-noel-coward-theatre-the-play-that-goes-wrong/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 438d before show (2025-05-20 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 95,
       "publishDate": "2025-05-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "london-theatre--aliya-al-hussan.json",
+      "publishDate": "2025-05-13",
+      "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -24532,7 +24659,7 @@
       "file": "londontheatre1--chris-omaweng.json",
       "score": 88,
       "publishDate": "2025-05-14",
-      "url": null,
+      "url": "https://www.londontheatre1.com/reviews/the-comedy-about-spies-noel-coward-theatre-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -24543,6 +24670,72 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 90,
+      "publishDate": "2025-05-13",
+      "url": "https://loureviews.blog/2025/05/14/theatre-review-the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "matineemouse--unknown.json",
+      "score": 91,
+      "publishDate": "2025-05-14",
+      "url": "https://matineemouse.substack.com/p/the-comedy-about-spies-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "micablackwell--unknown.json",
+      "score": 93,
+      "publishDate": "2025-05-14",
+      "url": "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": 84,
+      "publishDate": "2025-05-15",
+      "url": "https://playsinternational.org.uk/the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 443d before show (2025-05-15 vs 2026-08-01)"
         }
       ]
     },
@@ -24562,10 +24755,80 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatre--paul-lewis.json",
+      "publishDate": "2025-05-14",
+      "url": "https://theatre.reviews/reviews-roundup/comedy-about-spies-reviews/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatre-south-east--unknown.json",
+      "score": 91,
+      "publishDate": "2025-05-16",
+      "url": "https://theatresoutheast.com/the-comedy-about-spies-noel-coward-theatre-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 442d before show (2025-05-16 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
       "file": "theatrecat--libby-purves.json",
       "score": 93,
       "publishDate": "2025-05-14",
       "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thelivereview--tanya-howard.json",
+      "score": 94,
+      "publishDate": "2025-05-14",
+      "url": "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "therealchrisparkle--therealchrisparkle.json",
+      "score": 95,
+      "publishDate": "2025-05-14",
+      "url": "https://therealchrisparkle.com/2025/05/14/review-the-comedy-about-spies-noel-coward-theatre-london-13th-may-2025/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -24612,6 +24875,57 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": 87,
+      "publishDate": "2025-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "westendtheatre--west-end-theatre-editorial.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.westendtheatre.com/291159/news/reviews/reviews-of-the-comedy-about-spies-in-the-west-end/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "writewatchwork--abbybathurst.json",
+      "score": 88,
+      "publishDate": "2025-06-18",
+      "url": "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 409d before show (2025-06-18 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -24776,6 +25090,20 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "afridiziak-theatre-news--ronke-lawal.json",
+      "score": 88,
+      "publishDate": "2024-05-23",
+      "url": "https://www.afridiziak.com/reviews/the-enormous-crocodile-the-musical-by-roald-dahl/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 796d before show (2024-05-23 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
       "file": "everything-theatre--mary-pollard.json",
       "score": 100,
       "publishDate": "2024-05-27",
@@ -24813,6 +25141,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 964d before show (2023-12-07 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-enormous-crocodile-west-end-2026",
+      "file": "on-magazine--on-yorkshire-magazine.json",
+      "score": 92,
+      "publishDate": "2023-12-08",
+      "url": "https://www.on-magazine.co.uk/arts/yorkshire-theatre/the-enormous-crocodile-review-leeds-playhouse/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 963d before show (2023-12-08 vs 2026-07-28)"
         }
       ]
     },
@@ -25044,7 +25386,7 @@
     {
       "showId": "the-gin-game-2015",
       "file": "wsj--terry-teachout.json",
-      "score": 71,
+      "score": 72,
       "publishDate": "2015-10-15",
       "url": "http://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066",
       "findings": [
@@ -25986,6 +26328,75 @@
       ]
     },
     {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 78,
+      "publishDate": "2023-03-07",
+      "url": "https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "nytimes--alexis-soloski.json",
+      "score": 75,
+      "publishDate": "2023-03-06",
+      "url": "https://www.nytimes.com/2023/03/06/theater/the-outsiders-review-la-jolla-playhouse.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 79,
+      "publishDate": "2023-03-06",
+      "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "theatrely--kobi-kassal.json",
+      "score": 86,
+      "publishDate": "2023-03-01",
+      "url": "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-world-premiere-regional-2023",
+      "file": "theatrely--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-pajama-game-2006",
       "file": "about-entertainment--ben-brantley.json",
       "score": 89,
@@ -26365,6 +26776,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "file": "broadwayworld--nicole-rosky.json",
+      "publishDate": "2026-08-04",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-PASS-Opens-at-La-MaMa-20260804",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -27099,6 +27523,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 74,
+      "publishDate": "2026-08-06",
+      "url": "http://theartsdesk.com/theatre/smile-her-marylebone-theatre-review-one-woman-unlocks-cupboard-her-familys-skeletons?amp",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 57,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/smile-her-marylebone-theatre-review-one-woman-unlocks-cupboard-her-familys-skeletons",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -28318,6 +28770,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "file": "boston-globe--unknown.json",
+      "score": 68,
+      "publishDate": "2025-05-30",
+      "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
         }
       ]
     },
@@ -32713,6 +33179,20 @@
       ]
     },
     {
+      "showId": "carmen-off-broadway-2025",
+      "file": "new-york-classical-review--rick-perdian.json",
+      "score": 80,
+      "publishDate": "January 1st, 2024",
+      "url": "https://newyorkclassicalreview.com/2024/01/cast-brings-vocal-luster-to-mets-grim-truck-stop-carmen/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "carousel-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 88,
@@ -32746,6 +33226,46 @@
       "score": 91,
       "publishDate": "2026-04-08",
       "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-new-revival-is-the-biggest-party-on-broadway_1717665/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/cats",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "sunday-telegraph--tim-robey.json",
+      "publishDate": "2026-07-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 89,
+      "publishDate": "2026-08-07",
+      "url": "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -33401,7 +33921,7 @@
     {
       "showId": "dear-evan-hansen-2016",
       "file": "wsj--terry-teachout.json",
-      "score": 92,
+      "score": 88,
       "publishDate": "December 5th, 2016",
       "url": "http://www.wsj.com/articles/dear-evan-hansen-review-an-ode-to-outsiders-1480955949",
       "findings": [
@@ -34740,7 +35260,7 @@
     {
       "showId": "groundhog-day-2017",
       "file": "wsj--terry-teachout.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "April 18th, 2017",
       "url": "https://www.wsj.com/articles/groundhog-day-the-musical-review-reliable-and-relivable-1492542578",
       "findings": [
@@ -35948,6 +36468,20 @@
       ]
     },
     {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": 39,
+      "publishDate": "2026-08-05",
+      "url": "https://www.allthatdazzles.co.uk/post/review-i-m-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "im-sorry-prime-minister-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 61,
@@ -36717,7 +37251,7 @@
     {
       "showId": "junk-2017",
       "file": "wsj--terry-teachout.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "November 9, 2017",
       "url": "https://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000",
       "findings": [
@@ -38703,6 +39237,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "file": "groupon--unknown.json",
+      "publishDate": null,
+      "url": "https://www.groupon.co.uk/deals/ingresso-now-you-see-me",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -41640,6 +42187,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "vogue--taylor-antrim.json",
+      "score": 78,
+      "publishDate": "2025-04-30",
+      "url": "https://www.vogue.com/article/stranger-things-the-first-shadow-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },

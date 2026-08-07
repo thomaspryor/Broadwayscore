@@ -145,26 +145,9 @@ function extractByline(html) {
     process.exit(1);
   }
 
-  const text = extractArticleTextFromUrl(html, url);
-  if (!text || text.length < 200) {
-    console.error(`Article extraction returned ${text ? text.length : 0} chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.`);
-    process.exit(1);
-  }
-
-  // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
-  const lsaCritic = /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
-  const critic = criticArg || lsaCritic || extractByline(html) || 'Unknown';
-
-  // Page-date extraction: when --publish-date wasn't supplied, pull it from
-  // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
-  // this the review lands with publishDate:undefined, which fails-open through
-  // the anticipatory-pre-opening gate and weakens temporal wrong-production
-  // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
-  const publishDate = publishDateArg || extractPublishDate(html, url) || null;
-  if (!publishDateArg && publishDate) {
-    console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
-  }
-
+  // Outlet resolution runs BEFORE the text-extraction gate: the star-rating
+  // fallback below needs outletId to pick an extractor, and none of this
+  // block depends on the extracted text.
   let outletId;
   let outletName;
   if (outletArg && provisional) {
@@ -202,12 +185,59 @@ function extractByline(html) {
     }
   }
 
+  const text = extractArticleTextFromUrl(html, url);
+  // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
+  // serve recent articles as a registration wall with the review body absent
+  // from server HTML — but the page's own StarRating block is still present.
+  // For these outlets the star IS the score (policy: 177/177 thestage reviews
+  // scored from stars), so an empty text extraction with a recoverable star
+  // is a score-only ingest, not a failure. Card 3b5637c5 (NYSM Live).
+  let recoveredScore = null;
+  if (!text || text.length < 200) {
+    const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+    if (OUTLET_EXTRACTORS[outletId]) {
+      recoveredScore = extractScore(html, '', outletId, show.title) || null;
+    }
+    // With no body there is no content-based wrong-show signal left for the
+    // rebuild guards to scan, so require the show's title to appear somewhere
+    // in the raw page HTML (normalized: punctuation-insensitive) before
+    // accepting a score-only ingest — this path is reachable from the public
+    // /submit-review form and automated SERP ingest.
+    if (recoveredScore) {
+      const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      if (!norm(html).includes(norm(show.title))) {
+        console.error(`Score-only fallback refused: show title "${show.title}" not found in page HTML — cannot verify this is the right show without body text.`);
+        process.exit(1);
+      }
+    }
+    if (!recoveredScore) {
+      console.error(`Article extraction returned ${text ? text.length : 0} chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.`);
+      process.exit(1);
+    }
+    console.log(`  → Body extraction empty (${text ? text.length : 0} chars) — recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
+  }
+  const hasBody = !!(text && text.length >= 200);
+
+  // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
+  const lsaCritic = hasBody && /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
+  const critic = criticArg || lsaCritic || extractByline(html) || 'Unknown';
+
+  // Page-date extraction: when --publish-date wasn't supplied, pull it from
+  // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
+  // this the review lands with publishDate:undefined, which fails-open through
+  // the anticipatory-pre-opening gate and weakens temporal wrong-production
+  // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
+  const publishDate = publishDateArg || extractPublishDate(html, url) || null;
+  if (!publishDateArg && publishDate) {
+    console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
+  }
+
   console.log(`╔══════════════════════════════════════════════════╗`);
   console.log(`║  Show:    ${show.title} (${showId})`);
   console.log(`║  Outlet:  ${outletName} (${outletId})`);
   console.log(`║  Critic:  ${critic}${criticArg ? '' : ' (extracted)'}`);
   console.log(`║  URL:     ${url}`);
-  console.log(`║  Text:    ${text.length} chars`);
+  console.log(`║  Text:    ${hasBody ? `${text.length} chars` : `none — score-only (${recoveredScore.originalScore})`}`);
   if (publishDate) console.log(`║  Pub:     ${publishDate}`);
   console.log(`╚══════════════════════════════════════════════════╝`);
 
@@ -245,12 +275,27 @@ function extractByline(html) {
   const fields = buildManualReviewFields({
     humanScore: null,
     provisional: false,
-    fullText: text,
+    fullText: hasBody ? text : null,
     originalScore: null,
     originalScoreSource: null,
     publishDate: publishDate,
     operatorTrust: false,
   });
+  if (recoveredScore) {
+    // Route through setExtractedScore, never hand-set originalScore: an
+    // extractor whose source is an aggregator tag (e.g. lbo-css-stars) must
+    // land in aggregatorStars, not originalScore — the contamination guards
+    // downstream key on scoreSource and would miss a hand-set field.
+    const { setExtractedScore } = require('./lib/score-routing');
+    const routed = setExtractedScore(fields, {
+      value: recoveredScore.originalScore,
+      normalizedValue: recoveredScore.normalizedScore,
+      source: recoveredScore.source,
+    });
+    fields.scoreExtractedFrom = 'scraped-html';
+    fields.scoreRecoveredAt = new Date().toISOString();
+    console.log(`  → Score routed to ${routed.field}`);
+  }
 
   const result = createOrMergeReviewFile(showId, {
     outletId,

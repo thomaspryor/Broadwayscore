@@ -119,7 +119,14 @@ function loadSharedTaskState() {
   for (const f of files) {
     const m = /^(\d+)\.json$/.exec(f);
     if (!m) continue;
-    try { tasksById[m[1]] = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* skip corrupt */ }
+    const filePath = path.join(dir, f);
+    // _mtimeMs feeds findClaimedTask's staleness bound (task #1124) — see
+    // autonomous-triage.js loadSharedTaskState for the full rationale.
+    try {
+      const task = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      task._mtimeMs = fs.statSync(filePath).mtimeMs;
+      tasksById[m[1]] = task;
+    } catch { /* skip corrupt */ }
   }
   return { notionMap, tasksById };
 }
@@ -190,11 +197,21 @@ function main(argv = process.argv.slice(2)) {
   }
   const timeBudgetMinLabel = Math.round(timeBudgetMs / 60000);
 
-  // 100 = Notion's page cap. Under --sort edited the page holds the NEWEST
-  // 100 edits, so a burst day would have to edit >100 Done/Paused cards
-  // before anything in the window is cut off (Codex finding: 50 was lossier).
+  // 100 = Notion's page cap, PER STATUS. Originally one combined
+  // `--status Done,Paused` call shared a single 100-card page across both
+  // statuses — Done's daily churn (routinely 80-90+ edits/day on this brain)
+  // crowded Paused cards out of the page entirely. Found 2026-08-07 (card
+  // #1121): the combined page held 89 Done + 11 Paused, so 6 of 7 genuinely
+  // stuck Paused P0/P1 cards (overdue RECHECK-AFTER stamps) were invisible to
+  // this recheck every single night, no matter how starved they were —
+  // selectRecheckTargets' starvation guard only reorders candidates that
+  // already made it into the page. Querying each status separately gives
+  // Paused its own full page (the brain runs ~30-40 Paused cards total, far
+  // under 100), decoupled from however many cards close today.
   const DONE_LIST_LIMIT = 100;
+  const PAUSED_LIST_LIMIT = 100;
   let doneCards = [];
+  let pausedCards = [];
   // --sort edited: most-recently-touched cards first. The default Priority
   // sort returns the highest-priority cards EVER, so the cards completed
   // last night were never in the page (2026-07-26 root cause). Paused is
@@ -203,11 +220,29 @@ function main(argv = process.argv.slice(2)) {
   // stamp is due — selectRecheckTargets/doneWithinWindow refuse every Paused
   // card that lacks that stamp, so this widening never pulls in ordinary
   // paused backlog work.
-  try { doneCards = notionBrain(['list', '--status', 'Done,Paused', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
-  catch (err) {
-    console.error(`[recheck] could not list Done/Paused cards: ${String(err.message).slice(0, 200)}`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed: ${String(err.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
+  // Independent try/catch per status (ship-check finding, 2026-08-07): a
+  // shared try/catch around both calls meant a transient failure fetching
+  // Paused would discard an already-successful Done fetch (and vice versa),
+  // silently reintroducing the crowding-out failure this split exists to fix
+  // on any night one of the two calls has a blip.
+  let doneErr = null;
+  let pausedErr = null;
+  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
+  catch (err) { doneErr = err; }
+  try { pausedCards = notionBrain(['list', '--status', 'Paused', '--limit', String(PAUSED_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
+  catch (err) { pausedErr = err; }
+  if (doneErr && pausedErr) {
+    console.error(`[recheck] could not list Done or Paused cards: ${String(doneErr.message).slice(0, 200)}`);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed for both statuses: ${String(doneErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
     return;
+  }
+  if (doneErr) {
+    console.error(`[recheck] could not list Done cards, proceeding with Paused only: ${String(doneErr.message).slice(0, 200)}`);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Done listing failed, Paused still checked: ${String(doneErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
+  }
+  if (pausedErr) {
+    console.error(`[recheck] could not list Paused cards, proceeding with Done only: ${String(pausedErr.message).slice(0, 200)}`);
+    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Paused listing failed, Done still checked: ${String(pausedErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
   }
 
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
@@ -215,13 +250,16 @@ function main(argv = process.argv.slice(2)) {
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
   if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
 
-  // A full page means there may be Done cards we never saw — say so instead of
+  // A full page means there may be cards we never saw — say so instead of
   // reporting "nothing to re-check" from a truncated list (ship-check finding).
   if (doneCards.length >= DONE_LIST_LIMIT) {
     console.error(`[recheck] WARN the Done listing came back full (${DONE_LIST_LIMIT}) — older Done cards in the window may have been cut off`);
     ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
   }
-
+  if (pausedCards.length >= PAUSED_LIST_LIMIT) {
+    console.error(`[recheck] WARN the Paused listing came back full (${PAUSED_LIST_LIMIT}) — older Paused cards in the window may have been cut off`);
+    ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Paused listing hit the ${PAUSED_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
+  }
   const taskState = loadSharedTaskState();
   // Starvation guard (ship-check finding): a permanently-due RECHECK-AFTER
   // card must not win the same slot every night forever once other cards
@@ -236,13 +274,38 @@ function main(argv = process.argv.slice(2)) {
     const prev = lastRecheckedByCard.get(e.cardId);
     if (prev === undefined || t > prev) lastRecheckedByCard.set(e.cardId, t);
   }
-  const targets = selectRecheckTargets({
-    doneCards,
+  const selectFrom = (cards) => selectRecheckTargets({
+    doneCards: cards,
     launchEntries: dispatchLedger.readEntries(),
     windowHours,
     isClaimed: cardId => !!findClaimedTask(cardId, taskState),
     lastRecheckedAt: cardId => lastRecheckedByCard.get(cardId) ?? null,
-  }).slice(0, limit);
+  });
+  // Selected SEPARATELY per status, then merged with a reserved Paused share,
+  // rather than concatenating the two lists and leaning on selectRecheckTargets'
+  // starvation-guard sort to keep Paused visible. That sort's tie-break is
+  // "never yet rechecked" (lastRecheckedAt ?? -Infinity) — it only favors Paused
+  // while every Paused card is still unchecked. The FIRST night a Paused card
+  // gets checked, its lastRecheckedAt stops being -Infinity, so it starts losing
+  // to whatever still-never-checked Done card closed today — reproducing the
+  // exact crowding-out bug one cycle later, since Done churns new never-checked
+  // cards daily. Codex ship-check finding, 2026-08-07 (card #1121 follow-up).
+  // Reserving half of tonight's slots for Paused makes the guarantee structural:
+  // Paused gets real nightly attention regardless of check history, and Done
+  // still gets a meaningful, bounded share for its own regression-checking job.
+  const pausedTargets = selectFrom(pausedCards);
+  const doneTargets = selectFrom(doneCards);
+  const pausedShare = Math.min(pausedTargets.length, Math.ceil(limit / 2));
+  const seen = new Set();
+  const targets = [];
+  for (const t of [...pausedTargets.slice(0, pausedShare), ...doneTargets]) {
+    if (targets.length >= limit) break;
+    // A card could theoretically transition Done<->Paused between the two
+    // sequential Notion calls above and land in both lists — dedupe by id.
+    if (seen.has(t.cardId)) continue;
+    seen.add(t.cardId);
+    targets.push(t);
+  }
 
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
   if (!targets.length) {

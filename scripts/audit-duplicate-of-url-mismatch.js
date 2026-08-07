@@ -36,6 +36,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const registry = require(path.join(__dirname, '..', 'data', 'outlet-registry.json'));
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -68,6 +69,52 @@ const FIX_SURGE_THRESHOLD = 25;
 function stripTrivial(u) {
   if (!u) return u;
   return u.split('?')[0].replace(/(?:%20|\s|\/)+$/gi, '');
+}
+
+// Domain-alias map: alias hostname -> canonical hostname, from the SAME
+// outlet-registry.json domainAliases the C_domain_mismatch detector uses
+// (audit-review-contamination.js) — single source of truth, not a second
+// hardcoded list. Without this, a duplicateOf pair that IS the same article —
+// one file scraped from an outlet's retired subdomain (theater.nytimes.com),
+// the sibling from its current one (nytimes.com) — differs only by hostname
+// and false-positives as 'url-mismatch'. Discovered 2026-08-06 (task #1072):
+// retagging ~110 outlet-mismatched about-entertainment files to nytimes
+// (whose siblings already lived at nytimes.com) tripped FIX_SURGE_THRESHOLD
+// on a batch of otherwise-correct duplicateOf markings. Exported for the
+// unit test.
+const DOMAIN_ALIAS_TO_CANONICAL = (() => {
+  // Primary domains first: a handful of outlet-registry.json entries list
+  // ANOTHER outlet's own primary domain as one of their aliases (e.g. "ap"
+  // aliases "abcnews.go.com", which is abc-news's real domain — a registry
+  // data error, not a genuine syndication alias). Folding a real ABC News
+  // URL onto AP's canonical host would be exactly the false "same article"
+  // this gate exists to prevent, so any alias that collides with a
+  // DIFFERENT outlet's primary domain is dropped rather than trusted.
+  // Found by ship-check adversarial review, task #1072 follow-up.
+  const primaryDomains = new Set();
+  for (const o of Object.values(registry.outlets || {})) {
+    if (o.domain) primaryDomains.add(String(o.domain).toLowerCase());
+  }
+  const map = {};
+  for (const o of Object.values(registry.outlets || {})) {
+    if (!o.domain || !Array.isArray(o.domainAliases)) continue;
+    const canonical = String(o.domain).toLowerCase();
+    for (const alias of o.domainAliases) {
+      const a = String(alias).toLowerCase();
+      if (a === canonical) continue; // no-op alias
+      if (primaryDomains.has(a)) continue; // claims another outlet's own domain — skip
+      map[a] = canonical;
+    }
+  }
+  return map;
+})();
+
+// Rewrite the leading hostname of an already-stripped (scheme/www-free) URL
+// to its registered canonical domain, if it's a known alias. A no-op for
+// every host not in the map.
+function canonicalizeHost(u) {
+  if (!u) return u;
+  return u.replace(/^[a-z0-9.-]+/i, (host) => DOMAIN_ALIAS_TO_CANONICAL[host.toLowerCase()] || host);
 }
 
 /**
@@ -208,7 +255,7 @@ function audit() {
       // this, --fix would read the trivially-dirty URL as a DIFFERENT article,
       // clear the duplicateOf, and resurface a real duplicate into scoring. The
       // Sommers/much-ado genuine-stale case still differs by PATH and survives.
-      const canon = (u) => stripTrivial(normalizeUrl(u));
+      const canon = (u) => canonicalizeHost(stripTrivial(normalizeUrl(u)));
       const a = canon(data.url);
       const b = canon(sibling.url);
       if (a && b && a !== b) {
@@ -369,4 +416,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { stripTrivial, audit, fix };
+module.exports = { stripTrivial, canonicalizeHost, audit, fix };

@@ -608,6 +608,7 @@ async function main() {
         if (fs.existsSync(targetPath)) {
           // Duplicate at target — flag source as wrongProduction
           reviewData.wrongProduction = true;
+          reviewData.wrongProductionProvenance = 'content';
           reviewData.llmClassified = 'wrongProduction';
           reviewData.llmConfidence = result.confidence;
           reviewData.llmReason = result.reasoning;
@@ -637,6 +638,7 @@ async function main() {
       } else {
         // No target — flag as wrongProduction
         reviewData.wrongProduction = true;
+        reviewData.wrongProductionProvenance = 'content';
         reviewData.llmClassified = 'wrongProduction';
         reviewData.llmConfidence = result.confidence;
         reviewData.llmReason = result.reasoning;

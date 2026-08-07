@@ -1,7 +1,7 @@
 {
   "system": "push verify",
   "status": "pass",
-  "lastChecked": "2026-08-05T16:22:45.115Z",
+  "lastChecked": "2026-08-07T08:02:22.658Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,12 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (2h old, workflow 8h ago)"
+      "message": "Data synced (1h old, workflow 22h ago)"
+    },
+    {
+      "name": "Push verify: opening-night-history.json",
+      "status": "pass",
+      "message": "History synced (newest entry 0h old, workflow 0h ago)"
     }
   ]
 }

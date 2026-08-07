@@ -3,6 +3,7 @@ scripts/audit-audience-buzz-contamination.test.mjs
 scripts/audit-card-verifiability.test.mjs
 scripts/audit-cross-outlet-attributions.test.mjs
 scripts/audit-deployed-coverage.test.mjs
+scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
 scripts/audit-show-review-gap.test.mjs
@@ -42,9 +43,20 @@ scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
+scripts/tests/dispatch-card-drift.test.mjs
+scripts/tests/dispatch-outcome-digest.test.mjs
+scripts/tests/dispatch-outcome.test.mjs
+scripts/tests/dispatch-watchdog-core.test.mjs
 scripts/tests/headless-dispatchability.test.mjs
+scripts/tests/hook-liveness.test.mjs
+scripts/tests/infra-gate-registration.test.mjs
+scripts/tests/infra-review-digest.test.mjs
+scripts/tests/infra-review-gate.test.mjs
+scripts/tests/observable-before-absence.test.mjs
 scripts/tests/trunk-status.test.mjs
+scripts/verify-contamination-gate.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-email-policy.test.mjs
@@ -96,6 +108,7 @@ tests/unit/cast-changes-real-data.test.mjs
 tests/unit/cast-changes-validate-event.test.mjs
 tests/unit/cast-extraction-guards.test.mjs
 tests/unit/cast-tombstone.test.mjs
+tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
 tests/unit/ci-red-claims.test.mjs
@@ -139,6 +152,7 @@ tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
 tests/unit/cross-market-contamination.test.mjs
+tests/unit/cross-market-write-guard.test.mjs
 tests/unit/cross-production-guards.test.mjs
 tests/unit/cross-show-url-cv-authority.test.mjs
 tests/unit/cross-show-url-reroute.test.mjs
@@ -148,6 +162,7 @@ tests/unit/date-utils.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
 tests/unit/digest-escalation.test.mjs
+tests/unit/digest-row-clip.test.mjs
 tests/unit/discover-historical-shows-category.test.mjs
 tests/unit/discover-new-shows-gates.test.mjs
 tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
@@ -167,6 +182,7 @@ tests/unit/extract-dtli-preserves-exclusion-flags.test.mjs
 tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
 tests/unit/feedback-categorize.test.mjs
 tests/unit/feedback-dedup.test.mjs
+tests/unit/feedback-owner-reports.test.mjs
 tests/unit/feedback-request-ledger.test.mjs
 tests/unit/feedback-run-report.test.mjs
 tests/unit/fix-shared-ibdb-urls.test.mjs
@@ -179,6 +195,7 @@ tests/unit/gather-reviews-collision.test.mjs
 tests/unit/gather-reviews-createreviewfile-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/gather-reviews-rebuild-trigger.test.mjs
+tests/unit/gemini-calibration-ema.test.mjs
 tests/unit/gemini-thinking-budget-guard.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
@@ -212,6 +229,7 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/lint-committed-pii.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
 tests/unit/llm-scoring-rebuild-parity.test.mjs
@@ -291,6 +309,7 @@ tests/unit/protected-fields-sync.test.mjs
 tests/unit/protected-fields-three-way-sync.test.mjs
 tests/unit/provider-telemetry.test.mjs
 tests/unit/pull-quote-guards.test.mjs
+tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-ledger-store.test.mjs
 tests/unit/push-via-git-api.test.mjs
 tests/unit/push-with-retry-abort-preserves-head.test.mjs
@@ -322,12 +341,14 @@ tests/unit/review-guards-circular-dup-recovery.test.mjs
 tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
+tests/unit/review-output-guard.test.mjs
 tests/unit/review-url-clusters.test.mjs
 tests/unit/review-write-guard-placeholder.test.mjs
 tests/unit/review-write-guard-topology.test.mjs
 tests/unit/review-write-guard.test.mjs
 tests/unit/roundup-digest.test.mjs
 tests/unit/roundup-rebuild-guard.test.mjs
+tests/unit/rss-opening-window-identity.test.mjs
 tests/unit/rss-poller-state.test.mjs
 tests/unit/rss-wrongshow-guard.test.mjs
 tests/unit/same-title-venue-carveout.test.mjs

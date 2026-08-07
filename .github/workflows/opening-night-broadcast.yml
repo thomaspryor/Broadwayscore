@@ -330,16 +330,29 @@ jobs:
             # --out: remediation logs go to stdout, so a merged redirect makes
             # the JSON unparseable and the catch below reads ERRORS=0 — passing
             # the QA gate exactly when a show has missing reviews.
-            node scripts/opening-night-checklist.js --show="$SHOW" --json --out=/tmp/checklist-"$SHOW".json 2>&1 || true
+            # rc discrimination (task #1073, Codex ship-check): exit 0/1 are the
+            # designed outcomes (clean / shows-have-errors); anything else means
+            # the checklist itself CRASHED (MODULE_NOT_FOUND ran silently for 3
+            # months this way) — treat a crashed QA gate as BLOCKED, never as
+            # 0 errors. Same for missing/unparseable output: fail CLOSED (-1
+            # sentinel), not open.
+            RC=0
+            node scripts/opening-night-checklist.js --show="$SHOW" --json --out=/tmp/checklist-"$SHOW".json 2>&1 || RC=$?
+            if [ "$RC" -gt 1 ]; then
+              echo "::error::checklist crashed for $SHOW (exit $RC) — failing the gate closed"
+              BLOCKED=true
+              BREACHED_SHOWS+=("$SHOW")
+              continue
+            fi
             ERRORS=$(node -e "
               try {
                 const d = JSON.parse(require('fs').readFileSync('/tmp/checklist-${SHOW}.json','utf8'));
                 const total = (d.shows||[]).reduce((s,x)=>s+(x.summary&&x.summary.errors||0),0);
                 console.log(total);
-              } catch { console.log(0); }
-            " 2>/dev/null || echo 0)
+              } catch { console.log(-1); }
+            " 2>/dev/null || echo -1)
             echo "Show $SHOW: $ERRORS checklist error(s)"
-            if [ "$ERRORS" -gt 0 ]; then
+            if [ "$ERRORS" -ne 0 ]; then
               BLOCKED=true
               BREACHED_SHOWS+=("$SHOW")
             fi

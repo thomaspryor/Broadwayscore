@@ -1479,6 +1479,7 @@ async function main(): Promise<void> {
           }
         } else if (rejection === 'wrong_production' && !isOffBroadway) {
           fileData.wrongProduction = true;
+          fileData.wrongProductionProvenance = 'content';
         } else if (rejection === 'wrong_production' && isOffBroadway) {
           console.log(` (OB exempt — skipping wrongProduction flag)`);
         } else if (rejection === 'not_a_review') {

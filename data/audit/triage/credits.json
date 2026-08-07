@@ -1,30 +1,30 @@
 {
   "system": "credits",
   "status": "error",
-  "lastChecked": "2026-08-05T16:22:45.117Z",
+  "lastChecked": "2026-08-07T08:02:22.660Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Credits: ScrapingBee",
-      "status": "error",
-      "message": "0k credits left (0%) · EXHAUSTED · renews Aug 5"
+      "status": "pass",
+      "message": "953k credits left (95%) · renews Sep 5 (burn rate unavailable — <5 days into cycle)"
     },
     {
       "name": "Credits: ScrapingDog",
-      "status": "warn",
-      "message": "3069k credits left (77%) · 931k/day burn · renews in 29d · exhausts in ~3d (BEFORE renewal) — acknowledged: Burn spike is ScrapingBee-exhaustion fallthrough (card #224) — SB resets 2026-08-05 and reabsorbs its load. Re-triage if burn stays >30k/day after reset. [expires 2026-08-06]"
+      "status": "error",
+      "message": "2969k credits left (74%) · 344k/day burn · renews in 27d · exhausts in ~9d (BEFORE renewal)"
     },
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $33.99 · pending invoice $41.75 · month-to-date $39.45 (serp+unlocker)"
+      "message": "balance $23.38 · pending invoice $52.36 · month-to-date $50.92 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "378 browser minutes used (cumulative)"
+      "message": "461 browser minutes used (cumulative)"
     }
   ]
 }

@@ -62,7 +62,8 @@ function recordIssue(report, submission, issueNumber) {
  *
  * Failures are recorded, not swallowed: "I tried to run gather-reviews and
  * GitHub rejected it" must reach the owner as loudly as a parked request. The
- * email ranks DISPATCH FAILED above everything else for that reason.
+ * email ranks that state ("COULD NOT START THE WORK", rank 0 in
+ * notify-feedback-outcomes.js describeOutcome) above everything else.
  */
 function recordDispatch(report, submission, action, ok, error) {
   const entry = findReportItem(report, submission);

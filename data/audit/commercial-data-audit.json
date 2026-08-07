@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-08-02T15:48:56.378Z",
+    "generatedAt": "2026-08-06T15:45:59.256Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
     "totalEntries": 229,
-    "totalShowsInShowsJson": 2874,
+    "totalShowsInShowsJson": 2883,
     "matchStats": {
       "matchedBySlug": 229,
       "matchedById": 0,
@@ -41,17 +41,17 @@
       "hasDeepResearch": 165
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 184,
+      "totalOpenPreviewsShows": 180,
       "withCommercialData": 29,
-      "withoutCommercialData": 155,
+      "withoutCommercialData": 151,
       "coveragePct": 16
     },
     "issuesSummary": {
-      "total": 296,
+      "total": 292,
       "bySeverity": {
         "high": 0,
         "medium": 13,
-        "low": 283
+        "low": 279
       },
       "byType": {
         "designation-logic": 1,
@@ -62,7 +62,7 @@
         "closed-show-tbd": 12,
         "nonprofit-classification": 15,
         "recoupment-pct": 1,
-        "coverage-gap": 155
+        "coverage-gap": 151
       }
     }
   },
@@ -695,127 +695,127 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "harry-potter",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.845Z\" (97 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.845Z\" (101 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.843Z\" (97 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.843Z\" (101 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (186 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (190 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (180 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (184 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (165 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (169 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.842Z\" (97 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.842Z\" (101 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (186 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (190 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "two-strangers",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (172 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (176 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "maybe-happy-ending",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (151 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (155 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "our-town",
-      "detail": "Show is closed (closed 560 days ago on 2025-01-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 564 days ago on 2025-01-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "proof",
-      "detail": "Show is closed (closed 14 days ago on 2026-07-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 18 days ago on 2026-07-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "leopoldstadt-2022",
-      "detail": "Show is closed (closed 1127 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 1131 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "dog-day-afternoon",
-      "detail": "Show is closed (closed 21 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 25 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "a-christmas-carol-2019",
-      "detail": "Show is closed (closed 2401 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2405 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lyons-2012",
-      "detail": "Show is closed (closed 5145 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5149 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "jerusalem-2011",
-      "detail": "Show is closed (closed 5460 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5464 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "job-2024",
-      "detail": "Show is closed (closed 644 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 648 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "torch-song-2018",
-      "detail": "Show is closed (closed 2765 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2769 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "joe-turners-come-and-gone",
-      "detail": "Show is closed (closed 7 days ago on 2026-07-26) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 11 days ago on 2026-07-26) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-fear-of-13",
-      "detail": "Show is closed (closed 21 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 25 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "celebrity-autobiography",
-      "detail": "Show is closed (closed 42 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 46 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -1026,12 +1026,6 @@
       "severity": "low",
       "showId": "the-whoopi-monologues-off-broadway",
       "detail": "Open/previews show \"The Whoopi Monologues\" at Lincoln Center Theater - Mitzi E. Newhouse Theater has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "giulia-the-poison-queen-of-palermo-off-broadway",
-      "detail": "Open/previews show \"Giulia: The Poison Queen of Palermo\" at Perelman Performing Arts Center (PAC NYC) has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1331,7 +1325,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "the-gruffalo-west-end-2026",
-      "detail": "Open/previews show \"The Gruffalo\" at TBA has no commercial data entry."
+      "detail": "Open/previews show \"The Gruffalo\" at Lyric Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1409,13 +1403,13 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "the-comedy-about-spies-west-end",
-      "detail": "Open/previews show \"The Comedy About Spies\" at TBA has no commercial data entry."
+      "detail": "Open/previews show \"The Comedy About Spies\" at West End has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "trainspotting-the-musical-west-end",
-      "detail": "Open/previews show \"Trainspotting the musical\" at TBA has no commercial data entry."
+      "detail": "Open/previews show \"Trainspotting the musical\" at Theatre Royal Haymarket has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1474,6 +1468,12 @@
     {
       "type": "coverage-gap",
       "severity": "low",
+      "showId": "be-like-blippi-off-west-end",
+      "detail": "Open/previews show \"Be Like Blippi\" at The Arts at Marble Arch has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
       "showId": "sukkot-off-broadway",
       "detail": "Open/previews show \"Sukkot\" at 59E59 Theaters Theater B has no commercial data entry."
     },
@@ -1481,7 +1481,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "hershey-felder-the-piano-and-me-off-broadway",
-      "detail": "Open/previews show \"Hershey Felder: The Piano and Me\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"Hershey Felder: The Piano and Me\" at 59E59 Theaters has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1499,25 +1499,25 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "the-vessel-off-broadway",
-      "detail": "Open/previews show \"The Vessel\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"The Vessel\" at 59E59 Theaters, Theater C has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "the-house-of-the-negro-insane-off-broadway",
-      "detail": "Open/previews show \"The House of the Negro Insane\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"The House of the Negro Insane\" at 59E59 Theaters has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "lean-to-off-broadway",
-      "detail": "Open/previews show \"Lean-To\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"Lean-To\" at 59E59 Theaters has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway",
-      "detail": "Open/previews show \"Crazy Mama: A True Story of Love and Madness\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"Crazy Mama: A True Story of Love and Madness\" at 59E59 Theaters, Theater C has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1559,13 +1559,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "amaze-off-broadway",
-      "detail": "Open/previews show \"AMAZE\" at Midtown W has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "ectoplasm-spitandvigor-off-broadway",
-      "detail": "Open/previews show \"Ectoplasm (spit&vigor)\" at West Village has no commercial data entry."
+      "detail": "Open/previews show \"AMAZE\" at New World Stages – Stage 5 has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1595,7 +1589,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "phyl-off-broadway",
-      "detail": "Open/previews show \"PHYL\" at Midtown W has no commercial data entry."
+      "detail": "Open/previews show \"PHYL\" at Theatre Row has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1625,7 +1619,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "how-the-other-half-loves-west-end",
-      "detail": "Open/previews show \"How the Other Half Loves\" at TBA has no commercial data entry."
+      "detail": "Open/previews show \"How the Other Half Loves\" at The Old Vic has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1643,19 +1637,19 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "matilda-the-musical-theatre-row-off-broadway",
-      "detail": "Open/previews show \"Matilda The Musical (Theatre Row)\" at Midtown W has no commercial data entry."
+      "detail": "Open/previews show \"Matilda The Musical (Theatre Row)\" at Theatre Row has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "masticate-off-broadway",
-      "detail": "Open/previews show \"Masticate\" at Greenwich V has no commercial data entry."
+      "detail": "Open/previews show \"Masticate\" at The Players Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "marlise-off-broadway",
-      "detail": "Open/previews show \"Marlise\" at Greenwich V has no commercial data entry."
+      "detail": "Open/previews show \"Marlise\" at The Players Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1667,7 +1661,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "day-of-the-hog-off-broadway",
-      "detail": "Open/previews show \"Day of the Hog\" at Greenwich V has no commercial data entry."
+      "detail": "Open/previews show \"Day of the Hog\" at The Steve & Marie Sgouros Theatre (The Players Theatre Loft) has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1685,7 +1679,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "spellbound-off-broadway",
-      "detail": "Open/previews show \"Spellbound\" at Soho/Tribeca has no commercial data entry."
+      "detail": "Open/previews show \"Spellbound\" at SoHo Playhouse has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1698,12 +1692,6 @@
       "severity": "low",
       "showId": "iceboy-regional-2026",
       "detail": "Open/previews show \"Iceboy!\" at Goodman Theatre, Chicago, IL has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "bridget-everett-and-patti-lupone-knockouts-off-broadway",
-      "detail": "Open/previews show \"Bridget Everett & Patti LuPone: Knockouts\" at Joe's Pub at The Public Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1721,13 +1709,13 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway",
-      "detail": "Open/previews show \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" at Midtown E has no commercial data entry."
+      "detail": "Open/previews show \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" at 59E59 Theaters (Theater A) has no commercial data entry."
     },
     {
       "type": "coverage-gap",
       "severity": "low",
       "showId": "weve-been-here-before-a-one-woman-musical-off-broadway",
-      "detail": "Open/previews show \"We've Been Here Before: A One Woman Musical\" at Soho/Tribeca has no commercial data entry."
+      "detail": "Open/previews show \"We've Been Here Before: A One Woman Musical\" at SoHo Playhouse has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1740,12 +1728,6 @@
       "severity": "low",
       "showId": "the-pass-off-broadway",
       "detail": "Open/previews show \"The Pass\" at Ellen Stewart Theatre at La MaMa has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "father-time-off-broadway",
-      "detail": "Open/previews show \"Father Time\" at Greenwich House Theater  has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1781,7 +1763,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "jest-to-impress-off-broadway",
-      "detail": "Open/previews show \"Jest to Impress\" at Soho/Tribeca has no commercial data entry."
+      "detail": "Open/previews show \"Jest to Impress\" at Soho Playhouse Main Stage has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1793,7 +1775,7 @@
       "type": "coverage-gap",
       "severity": "low",
       "showId": "la-distance-bam-off-broadway",
-      "detail": "Open/previews show \"La Distance (BAM)\" at Brooklyn has no commercial data entry."
+      "detail": "Open/previews show \"La Distance (BAM)\" at BAM Harvey Theater has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1824,12 +1806,6 @@
       "severity": "low",
       "showId": "brainiac-live-west-end",
       "detail": "Open/previews show \"Brainiac Live\" at Garrick Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "malory-towers-off-west-end",
-      "detail": "Open/previews show \"Malory Towers\" at Alexandra Palace has no commercial data entry."
     },
     {
       "type": "coverage-gap",

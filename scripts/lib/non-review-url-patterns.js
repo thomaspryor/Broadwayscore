@@ -106,11 +106,29 @@ const ALLOWED_ORG_HOSTS = new Set([
 ]);
 
 const NON_REVIEW_PATH_PATTERNS = [
-  /^\/article(\/|$)/, // playbill article nav
+  // NOTE: `/^\/article(\/|$)/` was here, commented "playbill article nav", but
+  // these patterns are matched HOST-AGNOSTICALLY against every URL — and
+  // /article/ is where several major critic outlets publish. It dropped 736 of
+  // 18841 existing reviews when measured against reviews.json, including 144
+  // Vulture, 88 Entertainment Weekly, 33 Wall Street Journal, 106 New York Sun.
+  // Vulture's review URLs are literally vulture.com/article/theater-review-*.
+  //
+  // The intended case is already covered, correctly and host-scoped, by the
+  // playbill.com/broadwayworld.com 'aggregator-internal-nav' check in
+  // classifyReviewUrl() below. Do not re-add a bare /article/ rule here; scope
+  // any aggregator-nav rule to the aggregator's host.
   /^\/reviews\/?$/,   // BWW landing
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
   /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
+  // NOTE (OWE opening audit 2026-08-06): do NOT add host-agnostic "-tickets"
+  // or "/whats-on/" rules here — same trap as the removed bare /article/ rule
+  // above. Full-corpus check found real reviews at BOTH shapes: Express UK and
+  // Digital Spy review slugs end in "-tickets" (Operation Mincemeat scored
+  // 100), and Manchester Evening News / Liverpool Echo / London Mums publish
+  // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
+  // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
+  // londonboxoffice.co.uk root ticket slugs).
 ];
 
 /**
@@ -132,6 +150,48 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
+  // Sixth wave (task #1073, 2026-08-05 — Pass/Disruption/Vessel coverage audit):
+  // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages, never
+  // reviews — the-vessel had one ingested via SERP as a "review" whose 920-char
+  // synopsis blurb then host-masked the real coverage check. Mirrors the
+  // theatermania.com/shows/ entry above and rebuild-all-reviews.js's
+  // isShowListingUrl (which already names broadwayworld.com/shows/ a listing).
+  // BWW /reviews/{slug} critics-HUB pages are handled by review-guards
+  // isRoundupUrl (composed in classifyReviewUrl below), not duplicated here.
+  // Sub-path REQUIRED (/shows/{id}/cast etc.) — the bare /shows/Title-123.html
+  // shape hosts 3 currently-scored real reviews (Oliver!, Something Rotten!,
+  // Titanique — QA ship-check 2026-08-06), so only the listing sub-pages are
+  // blocked, never the bare page.
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows?\/[^/]+\/.+/, reason: 'venue-production-page' },
+  { host: /(^|\.)borninthecity\.com$/, reason: 'merch-store' },
+  { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
+  // Stagebuddy publishes real reviews under /theater/reviews/…; its
+  // theater-feature section is previews/features, not reviews (Disruption
+  // census counted one as a missing review, 2026-08-05).
+  { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
+  // first live exercise of #1073): ticketing/listing hosts that reached the
+  // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
+  // provisional "groupon" outlet before downstream guards flagged it. All
+  // measured zero hits across the 18,860 scored review URLs in reviews.json.
+  // No $ anchor on purpose: groupon sells under many ccTLDs (groupon.com,
+  // groupon.co.uk, groupon.de, …) — unlike the single-domain siblings below.
+  { host: /(^|\.)groupon\./, reason: 'ticketing-reseller' },
+  { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)westend\.com$/, reason: 'ticketing-listing' },
+  // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
+  // Spies census "missing review"). Host-wide: a producer site never reviews
+  // its own show.
+  { host: /(^|\.)mischiefcomedy\.com$/, reason: 'venue-production-page' },
+  // WET's own /NNNNNN/shows/… show/ticket pages (e.g. /317407/shows/cats-tickets/)
+  // are listings; its real roundups live at /reviews/. Host+path scoped — a
+  // host-agnostic "-tickets" rule would eat Express UK / Digital Spy review
+  // slugs (see NON_REVIEW_PATH_PATTERNS note above).
+  { host: /(^|\.)westendtheatre\.com$/, path: /^\/\d+\/shows\//, reason: 'ticketing-listing' },
+  // LBO root ticket slugs (/now-you-see-me-tickets); its reviews live under
+  // /news/ (e.g. /news/post/cats-review — a real captured review).
+  { host: /(^|\.)londonboxoffice\.co\.uk$/, path: /^\/[^/]*-tickets\/?$/, reason: 'ticketing-listing' },
 ];
 
 /**
@@ -151,10 +211,111 @@ function namedNonReviewReason(url) {
   return null;
 }
 
+// Host normalization, moved VERBATIM from audit-show-review-gap.js (task
+// #1073) so classifyReviewUrl and every caller share ONE implementation.
+// The audit now imports these instead of carrying its own copy.
+
+// Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
+// or mobile host is the same outlet as its bare domain.
+const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
+// Blog/newsletter platforms where the publication identity IS the subdomain
+// (pub.substack.com). These must NOT collapse. Mirrors
+// PROVISIONAL_BLOG_PLATFORMS in outlet-canonicalize.js.
+const COLLAPSE_BLOG_PLATFORMS = [
+  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
+  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
+];
+// Multi-part public suffixes — registrable domain keeps 3 labels (foo.co.uk),
+// not 2 (co.uk). Mirrors PROVISIONAL_MULTIPART_SUFFIXES in outlet-canonicalize.js.
+const COLLAPSE_MULTIPART_SUFFIXES = [
+  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
+  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
+];
+
+// Collapse a hostname to its registrable domain so section subdomains
+// (theater.nytimes.com) and mirror hosts (amp.theguardian.com) look up the same
+// registry entry as the bare domain. Leaves blog-platform publication subdomains
+// intact so they keep their per-publication provisional identity.
+function registrableHost(host) {
+  if (!host || typeof host !== 'string') return host;
+  let h = host.replace(/^www\./, '').toLowerCase();
+  while (MIRROR_SUBDOMAIN_PREFIX.test(h)) h = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
+  if (COLLAPSE_BLOG_PLATFORMS.some(p => h.endsWith('.' + p))) return h;
+  const parts = h.split('.').filter(Boolean);
+  const keep = COLLAPSE_MULTIPART_SUFFIXES.some(s => h.endsWith('.' + s)) ? 3 : 2;
+  return parts.length > keep ? parts.slice(-keep).join('.') : h;
+}
+
+function hostOf(u) {
+  try { return registrableHost(new URL(u).hostname); }
+  catch { return null; }
+}
+
+const STATIC_ASSET_EXT_RE = /\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i;
+
+/**
+ * classifyReviewUrl — THE canonical "may this URL be a review candidate"
+ * decision (task #1073). Composes every URL-shape policy in one place:
+ * host denylist, named host+path pairs, roundup-hub shapes (write-path policy
+ * via review-guards.isRoundupUrl), aggregator internal nav, static assets.
+ *
+ * Rejects by URL/host SHAPE only — never by "outlet not registered", so
+ * unknown-but-real outlets still flow to the unknown-outlets onboarding
+ * report (Codex review finding, plan W3.B).
+ *
+ * @param {string} url
+ * @returns {{ok: boolean, reason: string|null}}
+ */
+function classifyReviewUrl(url) {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+    return { ok: false, reason: 'not-http-url' };
+  }
+  const h = hostOf(url);
+  if (!h) return { ok: false, reason: 'unparseable-url' };
+  if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
+    return { ok: false, reason: 'non-review-host' };
+  }
+  const named = namedNonReviewReason(url);
+  if (named) return { ok: false, reason: named };
+  // Roundup hubs/articles: same policy the write path enforces
+  // (review-guards.isRoundupUrl). Lazy require: keeps this module's
+  // zero-heavy-deps load contract for the S5 probe and avoids any
+  // load-order cycle with review-guards.
+  const { isRoundupUrl } = require('./review-guards');
+  const roundup = isRoundupUrl(url);
+  if (roundup && roundup.isRoundup) return { ok: false, reason: 'roundup-page' };
+  // Lighting & Sound America: bare /news/story.asp with no ?ID= is the news
+  // index, not a review (moved from audit-show-review-gap.js isReviewUrl).
+  if (h === 'lightingandsoundamerica.com') {
+    try {
+      const u = new URL(url);
+      if (/\/news\/story\.asp$/i.test(u.pathname) && !u.searchParams.get('ID')) {
+        return { ok: false, reason: 'lsa-news-index' };
+      }
+    } catch { return { ok: false, reason: 'unparseable-url' }; }
+  }
+  // Playbill/BWW internal navigation (we want outlet URLs, not aggregator nav).
+  if ((h === 'playbill.com' || h === 'broadwayworld.com')
+      && !/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(url)) {
+    return { ok: false, reason: 'aggregator-internal-nav' };
+  }
+  try {
+    const p = new URL(url).pathname;
+    if (NON_REVIEW_PATH_PATTERNS.some(rx => rx.test(p))) {
+      return { ok: false, reason: 'non-review-path' };
+    }
+    if (STATIC_ASSET_EXT_RE.test(p)) return { ok: false, reason: 'static-asset' };
+  } catch { return { ok: false, reason: 'unparseable-url' }; }
+  return { ok: true, reason: null };
+}
+
 module.exports = {
   NON_REVIEW_HOST_PATTERNS,
   ALLOWED_ORG_HOSTS,
   NON_REVIEW_PATH_PATTERNS,
   NAMED_NON_REVIEW_URL_PATTERNS,
   namedNonReviewReason,
+  registrableHost,
+  hostOf,
+  classifyReviewUrl,
 };

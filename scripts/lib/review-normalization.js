@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
 
 // Score sources from aggregator sites — these are third-party star ratings,
@@ -799,10 +800,35 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Only 'Same URL' (URL-based) auto-clears here. Date-based flag prefixes
   // ('Pre-opening guard', 'Date guard', 'Dateless show') and 'Tour transfer'
   // manual flags must persist until a new valid date or manual override.
-  const isUrlBasedWrongProd = !merged.wrongProductionNote
-    || merged.wrongProductionNote.startsWith('Same URL');
+  //
+  // A MISSING note is not evidence of a URL-based flag — it is the absence of
+  // evidence, and it must not clear. The flaggers that write
+  // `wrongProductionReason` without a `wrongProductionNote` (collect-review-
+  // texts' ingest-anticipatory-gate, the collector/CV LLM promotions) are all
+  // content- or date-based, so the old `!merged.wrongProductionNote` default
+  // auto-cleared exactly the flags this block promises to preserve. That put a
+  // 2016 Broadway 'Cats' review live on the 2026 West End show page (class-A
+  // cross-market leak, main red 2026-08-06) and corrupted 18 files in one day.
+  // Note presence alone is not a type system: cleanup-dedup-comprehensive.js
+  // (live via weekly-integrity.yml) writes a genuinely URL-based cross-show
+  // collision flag with only `_wrongProductionReason` and no note, and it must
+  // keep its self-heal. So accept EITHER a 'Same URL' note or explicit
+  // URL-collision provenance (codex adversarial review, 2026-08-06).
+  const isUrlBasedWrongProd = isUrlProvenanceWrongProduction(merged);
+  // Content verification that read the article and said "different production"
+  // outranks a URL-shaped self-heal: a fresh URL for the same wrong article is
+  // still the wrong article. Gated to HIGH confidence — the rebuild already
+  // refuses to promote stale/low-confidence CV, and vetoing on those here would
+  // let one weak false positive pin a legitimate transfer forever with no
+  // automated way out (the CV self-heal in review-guards.js is provenance-gated
+  // to CV-promoted flags and would not cover a 'Same URL' flag).
+  const cv = merged.contentVerification;
+  const cvSaysWrongProduction = !!cv
+    && cv.wrongProduction === true
+    && cv.confidence === 'high';
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !merged.wrongProductionManualClear
+      && !cvSaysWrongProduction
       && isUrlBasedWrongProd) {
     delete merged.wrongProduction;
     delete merged.wrongProductionNote;
@@ -812,6 +838,22 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   return merged;
 }
+
+// isUrlProvenanceWrongProduction() — is this wrongProduction flag URL-based
+// (and therefore eligible for the venue-transfer self-heal above), as
+// opposed to date- or content-based? Moved to scripts/lib/wrongproduction-
+// provenance.js (task #1109) as part of the shared provenance vocabulary
+// every wrongProduction writer now has access to — imported at the top of
+// this file. Detectors that predate the explicit `wrongProductionProvenance`
+// field (currently just cleanup-dedup-comprehensive.js, keyed by
+// `_wrongProductionDetectedBy` with no note) live there as
+// LEGACY_URL_DETECTORS.
+//
+// A MISSING note is NOT evidence of a URL-based flag — that default is what
+// cleared date-based flags and put a 2016 Broadway 'Cats' review on the 2026
+// West End show page (main red, 2026-08-06). Evidence must be positive:
+// either an explicit wrongProductionProvenance='url' stamp, a 'Same URL'
+// note, or a legacy URL-collision detector stamp.
 
 /**
  * Get the full outlet object from the registry.
@@ -1563,6 +1605,13 @@ function isProfileUrl(url) {
   if (/^\/people\/[A-Z]/i.test(url)) return true;
   // TheaterMania /shows/ pages are listing pages, not reviews
   if (/theatermania\.com\/shows\//.test(lower)) return true;
+  // BWW /shows/{id}/{sub-page} (cast/synopsis/videos) pages are listing pages —
+  // a SERP-discovered cast page was ingested as a "review" for The Vessel
+  // (task #1073, 2026-08-05). Sub-path REQUIRED: the bare
+  // /shows/Title-123.html shape hosts 3 currently-scored real reviews
+  // (Oliver!/Something Rotten!/Titanique — QA ship-check 2026-08-06), so only
+  // sub-pages are blocked. Mirrors the TheaterMania line above.
+  if (/broadwayworld\.com\/shows?\/[^/]+\/.+/.test(lower)) return true;
   return false;
 }
 
@@ -1667,6 +1716,7 @@ module.exports = {
   areCriticsSimilar,
   areOutletsSame,
   mergeReviews,
+  isUrlProvenanceWrongProduction,
   getOutletDisplayName,
   getOutletFromRegistry,
   getOutletTier,

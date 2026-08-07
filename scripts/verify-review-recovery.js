@@ -43,6 +43,8 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { fetchLiveRc, countAggregate, countLocalPerShowJson } = require('./lib/review-count-probe');
+const { explainExclusion } = require('./lib/review-guards');
+const { parseOriginalScore } = require('./lib/score-parsers');
 
 // ── Parse args ──────────────────────────────────────────────────────────────
 
@@ -184,21 +186,35 @@ console.log(`\n${BOLD}Step 3: Exclusion flags${RESET}`);
 let excludedCount = 0;
 const includable = [];
 
-for (const [file, data] of parsed) {
-  const reasons = [];
-  if (data.wrongProduction) reasons.push('wrongProduction');
-  if (data.wrongShow) reasons.push('wrongShow');
-  if (data.isRoundupArticle) reasons.push('isRoundupArticle');
-  if (data.contentTier === 'invalid') reasons.push('contentTier=invalid');
-  if (data.contentTier === 'stub') reasons.push('contentTier=stub');
+// Canonical predicate, not inline flag checks — the inline version diverged
+// (e.g. reported a star-scored contentTier=stub file as EXCLUDED when the
+// rebuild includes it via originalScore; card 3b5637c5).
+// cwd first (matches how review-texts is resolved), then the script's own
+// checkout — the autonomous Tier-2 verifier runs this from a scratch root
+// that symlinks review-texts but NOT shows.json, and without the show record
+// the predicate's show-dependent guards (premature-pre-opening, stale
+// wrongShow) silently no-op and diverge from the real rebuild.
+const showRecord = (() => {
+  for (const dir of [ROOT, path.join(__dirname, '..')]) {
+    try {
+      const j = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'shows.json'), 'utf8'));
+      return (j.shows || j).find(s => s.id === showId);
+    } catch { /* try next location */ }
+  }
+  return undefined;
+})();
 
-  if (reasons.length > 0) {
+for (const [file, data] of parsed) {
+  const filepath = path.join(REVIEW_TEXTS_DIR, file);
+  const rule = explainExclusion(data, showRecord, filepath);
+
+  if (rule) {
     const detail = data.wrongProductionReason || data.wrongShowReason || '';
-    warn(`${file} — EXCLUDED: ${reasons.join(', ')}${detail ? ' (' + detail.slice(0, 60) + ')' : ''}`);
+    warn(`${file} — EXCLUDED: ${rule}${detail ? ' (' + detail.slice(0, 60) + ')' : ''}`);
     excludedCount++;
   } else {
     includable.push(file);
-    info(`${file} — no exclusion flags`);
+    info(`${file} — includable (canonical predicate)`);
   }
 }
 
@@ -269,7 +285,15 @@ if (reviewsData) {
 
   for (const file of includable) {
     const data = parsed.get(file);
-    if (!data || data.assignedScore == null) continue; // can't be in reviews without a score
+    // A file reaches reviews.json with an LLM score OR a PARSEABLE explicit
+    // rating (star-scored UK stubs — card 3b5637c5). Bare originalScore
+    // truthiness is not enough: an unparseable rating (letter grade at a
+    // non-letter-grade outlet, odd format) is dropped by the rebuild as
+    // skippedNoScore and legitimately never reaches reviews.json.
+    if (!data) continue;
+    const hasParseableRating = data.originalScore
+      && parseOriginalScore(data.originalScore, data.outletId) !== null;
+    if (data.assignedScore == null && !hasParseableRating) continue;
     const key = `${data.outletId}||${(data.criticName || '').toLowerCase()}`;
     if (reviewKeys.has(key)) {
       inReviews++;

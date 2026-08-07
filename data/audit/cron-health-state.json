@@ -1,20 +1,32 @@
 {
   "stale": [
-    "Check Cutoff Freshness",
-    "Recover Explicit Ratings"
+    "Audit Closing Dates",
+    "Audit Opening Dates",
+    "Recover Explicit Ratings",
+    "Test Suite"
   ],
   "redispatched": [
-    "Check Cutoff Freshness"
+    "Audit Closing Dates",
+    "Audit Opening Dates",
+    "Test Suite"
   ],
   "staleStreak": {
-    "Check Cutoff Freshness": {
+    "Audit Closing Dates": {
       "days": 1,
-      "lastCounted": "2026-08-05"
+      "lastCounted": "2026-08-07"
+    },
+    "Audit Opening Dates": {
+      "days": 1,
+      "lastCounted": "2026-08-07"
     },
     "Recover Explicit Ratings": {
-      "days": 3,
-      "lastCounted": "2026-08-05"
+      "days": 5,
+      "lastCounted": "2026-08-07"
+    },
+    "Test Suite": {
+      "days": 1,
+      "lastCounted": "2026-08-07"
     }
   },
-  "updatedAt": "2026-08-05T12:36:03.748Z"
+  "updatedAt": "2026-08-07T12:46:03.286Z"
 }

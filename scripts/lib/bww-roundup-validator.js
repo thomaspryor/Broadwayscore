@@ -98,6 +98,15 @@ const BWW_SLUG_BOILERPLATE = new Set([
   'comes', 'coming', 'closes', 'closing', 'begins', 'beginning',
   'previews', 'preview', 'starts', 'starting', 'updating', 'live',
   'premieres', 'premiering', 'debuts', 'debuting', 'extends', 'extending',
+  // Event descriptors BWW places directly after a title on TRYOUT roundups:
+  // "Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse".
+  // Without these, a single-word title ("The Outsiders" -> "outsiders" after
+  // stop-words) found no valid terminator and its own roundup was rejected —
+  // a tier-3 gather with 80 searches returned 0 reviews for a show whose
+  // roundup lists a full set of critics (2026-08-05).
+  // Only ever consulted for the segment IMMEDIATELY after an already-matched
+  // title word, so this cannot make an unrelated slug match.
+  'world', 'premiere', 'revival', 'transfer', 'tryout', 'regional',
 ]);
 
 // Market words that follow a preposition after a title (e.g. "…-on-Broadway-…").
@@ -186,7 +195,7 @@ function titleWordsPassSlugCheck(title, slugSegments, slugSegmentsArray) {
   return matchedCount / titleWords.length >= threshold;
 }
 
-function validateBWWRoundupUrlMatchesShow(url, showTitle) {
+function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
   if (!url || !showTitle) return true; // can't validate, don't block
 
   const slugMatch = url.match(/Review-Roundup-(.+)/i);
@@ -194,9 +203,28 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
 
   const slug = slugMatch[1].toLowerCase();
 
-  // Reject tryout / pre-Broadway / regional variants of the same show
-  for (const marker of TRYOUT_URL_MARKERS) {
-    if (slug.includes(marker)) return false;
+  // Reject tryout / pre-Broadway / regional variants of the same show — UNLESS
+  // the show we are gathering for IS that tryout.
+  //
+  // These markers exist to stop a BROADWAY show inheriting reviews of its
+  // out-of-town run: "Hamilton" must not absorb the Public Theater roundup.
+  // But regional tryouts are first-class catalog entries now (feedback-pipeline
+  // content requests, 2026-08-05), and for THOSE shows the tryout roundup is
+  // not a contaminant — it is the only correct source in existence.
+  //
+  // Concretely: 'the-outsiders-world-premiere-regional-2023' was rejected from
+  // its own La Jolla roundup because the slug contains both "world-premiere"
+  // and "la-jolla", so a tier-3 gather with 80 searches returned 0 reviews for
+  // a show whose roundup lists a full set of critics.
+  //
+  // Gated on the show's category rather than on the markers themselves, so the
+  // Broadway protection is completely unchanged — a regional show simply stops
+  // being protected from its own market.
+  const showIsTryout = String(showCategory || '').toLowerCase() === 'regional';
+  if (!showIsTryout) {
+    for (const marker of TRYOUT_URL_MARKERS) {
+      if (slug.includes(marker)) return false;
+    }
   }
 
   const slugSegmentsArray = slug.split(/[-_]/);

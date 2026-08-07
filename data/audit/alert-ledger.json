@@ -15,11 +15,11 @@
       "disposition": "auto",
       "title": "BSC Daily: SEO: health",
       "firstSeen": "2026-07-24T07:50:32.738Z",
-      "lastSeen": "2026-08-05T16:22:48.309Z",
+      "lastSeen": "2026-08-07T08:02:23.930Z",
       "lastNotifiedAt": "2026-08-02T21:53:33.705Z",
       "notifyCount": 2,
       "cardId": "3b0637c5-416f-8107-886e-fdf635520d94",
-      "silentRefires": 4
+      "silentRefires": 6
     },
     "health-check:Secrets: health": {
       "status": "open",
@@ -36,22 +36,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Credits: ScrapingDog",
       "firstSeen": "2026-07-24T07:50:33.764Z",
-      "lastSeen": "2026-08-05T07:41:43.737Z",
+      "lastSeen": "2026-08-07T08:02:23.927Z",
       "lastNotifiedAt": "2026-08-01T07:38:40.053Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-8180-9f61-fe6c0edcb36a",
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Test Suite",
       "firstSeen": "2026-07-24T07:50:34.248Z",
-      "lastSeen": "2026-08-04T07:42:02.536Z",
+      "lastSeen": "2026-08-07T08:02:23.928Z",
       "lastNotifiedAt": "2026-08-01T07:38:36.675Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-81ab-bfd5-ebf3fee39510",
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "health-check:Workflow repeat-failure: Commercial RSS Poll": {
       "status": "open",
@@ -69,33 +69,33 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-08-05T16:22:48.308Z",
+      "lastSeen": "2026-08-07T08:02:23.928Z",
       "lastNotifiedAt": "2026-08-01T07:38:37.181Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-81a2-9ad2-d23efac9d949",
-      "silentRefires": 6
+      "silentRefires": 8
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-08-05T16:22:48.308Z",
+      "lastSeen": "2026-08-07T08:02:23.929Z",
       "lastNotifiedAt": "2026-08-01T07:38:37.687Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-8193-bbfd-e8003444f28a",
-      "silentRefires": 5
+      "silentRefires": 7
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-08-05T16:22:48.308Z",
+      "lastSeen": "2026-08-07T08:02:23.929Z",
       "lastNotifiedAt": "2026-08-01T07:38:39.572Z",
       "notifyCount": 2,
       "cardId": "3af637c5-416f-810e-99ef-ff2b8ca792bc",
-      "silentRefires": 6
+      "silentRefires": 8
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -131,16 +131,17 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-05T19:30:20.291Z",
-      "lastNotifiedAt": "2026-08-05T16:43:04.760Z",
-      "notifyCount": 17,
+      "lastSeen": "2026-08-07T12:10:26.677Z",
+      "lastNotifiedAt": "2026-08-06T23:25:48.768Z",
+      "notifyCount": 19,
       "cardId": null,
-      "silentRefires": 6
+      "silentRefires": 4,
+      "resolvedAt": "2026-08-07T14:03:06.076Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -224,30 +225,31 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-05T18:31:30.557Z",
-      "lastNotifiedAt": "2026-08-05T18:31:30.557Z",
-      "notifyCount": 8,
-      "cardId": null
+      "lastSeen": "2026-08-07T15:53:07.398Z",
+      "lastNotifiedAt": "2026-08-07T00:48:28.136Z",
+      "notifyCount": 9,
+      "cardId": null,
+      "silentRefires": 9
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-05T20:33:24.791Z",
-      "lastNotifiedAt": "2026-08-05T05:07:28.375Z",
-      "notifyCount": 8,
+      "lastSeen": "2026-08-07T15:53:07.469Z",
+      "lastNotifiedAt": "2026-08-07T00:48:25.454Z",
+      "notifyCount": 10,
       "cardId": null,
-      "silentRefires": 13
+      "silentRefires": 19
     },
     "deployed-coverage:stale": {
       "status": "open",
       "disposition": "digest",
       "title": "Deployed coverage — the site is serving stale coverage",
       "firstSeen": "2026-07-30T06:51:16.731Z",
-      "lastSeen": "2026-08-05T13:39:01.311Z",
-      "lastNotifiedAt": "2026-08-04T23:57:26.647Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-08-07T07:12:15.803Z",
+      "lastNotifiedAt": "2026-08-06T11:25:18.100Z",
+      "notifyCount": 6,
       "cardId": null,
       "silentRefires": 2
     },
@@ -264,13 +266,12 @@
     "provider-spend:overspend": {
       "status": "open",
       "disposition": "digest",
-      "title": "Scraping spend over budget: browserbase $5.5 > $4 (55 sessions); brightdata $5.67 > $2.5 (1205 serp + 2574 unlocker reqs); scrapingdog 73437 credits > 45000",
+      "title": "Scraping spend over budget: brightdata $6.12 > $2.5 (1626 serp + 2455 unlocker reqs); scrapingdog 47883 credits > 45000",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-08-05T16:22:58.619Z",
-      "lastNotifiedAt": "2026-08-05T07:41:49.357Z",
-      "notifyCount": 5,
-      "cardId": null,
-      "silentRefires": 1
+      "lastSeen": "2026-08-07T08:02:31.417Z",
+      "lastNotifiedAt": "2026-08-07T08:02:31.417Z",
+      "notifyCount": 7,
+      "cardId": null
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -318,21 +319,22 @@
       "disposition": "auto",
       "title": "BSC Daily: Coverage: SERP census recall",
       "firstSeen": "2026-08-03T07:58:02.691Z",
-      "lastSeen": "2026-08-05T16:22:48.309Z",
+      "lastSeen": "2026-08-07T08:02:23.930Z",
       "lastNotifiedAt": "2026-08-03T07:58:02.691Z",
       "notifyCount": 1,
       "cardId": "3b1637c5-416f-8142-9163-cfaa4f3167ad",
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "health-check:Cron failed: Test Suite": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Cron failed: Test Suite",
       "firstSeen": "2026-08-03T07:58:04.633Z",
-      "lastSeen": "2026-08-03T07:58:04.633Z",
+      "lastSeen": "2026-08-07T08:02:23.930Z",
       "lastNotifiedAt": "2026-08-03T07:58:04.633Z",
       "notifyCount": 1,
-      "cardId": "3b1637c5-416f-81b1-9a9e-e03383baa951"
+      "cardId": "3b1637c5-416f-81b1-9a9e-e03383baa951",
+      "silentRefires": 2
     },
     "backstop:trainspotting-the-musical-west-end-2026/daily-mail--georgina-brown.json": {
       "status": "open",
@@ -361,11 +363,11 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (185 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-05T13:03:03.136Z",
+      "lastSeen": "2026-08-07T13:44:44.063Z",
       "lastNotifiedAt": "2026-08-03T13:05:40.014Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -382,13 +384,12 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 9.5% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 18.2% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-05T16:10:00.025Z",
-      "lastNotifiedAt": "2026-08-05T11:23:09.640Z",
-      "notifyCount": 5,
-      "cardId": null,
-      "silentRefires": 1
+      "lastSeen": "2026-08-07T11:48:24.584Z",
+      "lastNotifiedAt": "2026-08-07T11:48:24.584Z",
+      "notifyCount": 6,
+      "cardId": null
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -470,6 +471,70 @@
       "lastNotifiedAt": "2026-08-05T20:33:16.050Z",
       "notifyCount": 1,
       "cardId": "3b3637c5-416f-81b2-8bb2-d5cebcb05a0c"
+    },
+    "feedback-requests-live:missing-show:two strangers (carry a cake across new york):2026-08-04T17:27:01.614593+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:53:33.054218+00:00,missing-show:two strangers (carry a cake across new york):2026-08-05T16:59:44.465941+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "3 user request(s) now live on the site",
+      "firstSeen": "2026-08-06T04:27:07.606Z",
+      "lastSeen": "2026-08-06T04:27:07.606Z",
+      "lastNotifiedAt": "2026-08-06T04:27:07.606Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "feedback-requests-live:missing-reviews:3-summers-of-lincoln-regional-2025:2026-08-05T14:10:07.351614+00:00,missing-show:the outsiders:2026-08-04T17:27:01.614593+00:00,missing-show:the outsiders:2026-08-05T16:53:33.054218+00:00,missing-show:the outsiders:2026-08-05T16:59:44.465941+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "4 user request(s) now live on the site",
+      "firstSeen": "2026-08-06T07:15:44.773Z",
+      "lastSeen": "2026-08-06T07:15:44.773Z",
+      "lastNotifiedAt": "2026-08-06T07:15:44.773Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "backstop:disruption-off-broadway-2026/wsj--unknown.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 review stuck >24h: Disruption — wsj",
+      "firstSeen": "2026-08-06T11:25:10.363Z",
+      "lastSeen": "2026-08-06T11:25:10.363Z",
+      "lastNotifiedAt": "2026-08-06T11:25:10.363Z",
+      "notifyCount": 1,
+      "cardId": "3b4637c5-416f-815f-9a12-fac69f9dcb86"
+    },
+    "feedback-outcomes:2026-08-06T13:13:16.896839+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Feedback: 1 of 1 needs you",
+      "firstSeen": "2026-08-06T14:39:39.643Z",
+      "lastSeen": "2026-08-06T14:39:39.643Z",
+      "lastNotifiedAt": "2026-08-06T14:39:39.643Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "feedback-outcomes:2026-08-06T16:40:41.426664+00:00": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Feedback: 1 of 1 needs you",
+      "firstSeen": "2026-08-07T00:14:27.384Z",
+      "lastSeen": "2026-08-07T00:14:27.384Z",
+      "lastNotifiedAt": "2026-08-07T00:14:27.384Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "backstop:now-you-see-me-live-west-end-2026/thestage--unknown.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 review stuck >24h: Now You See Me Live — thestage",
+      "firstSeen": "2026-08-07T00:48:20.096Z",
+      "lastSeen": "2026-08-07T00:48:20.096Z",
+      "lastNotifiedAt": "2026-08-07T00:48:20.096Z",
+      "notifyCount": 1,
+      "cardId": "3b5637c5-416f-815c-9f7b-f6ae7424da68"
     }
   }
 }

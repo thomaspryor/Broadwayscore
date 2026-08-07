@@ -153,6 +153,8 @@ for (const entry of manifest) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (!data.wrongProduction) {
         data.wrongProduction = true;
+        data.wrongProductionReason = entry.reason;
+        data.wrongProductionProvenance = 'manual';
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         flagged++;
       }
@@ -224,6 +226,8 @@ for (const entry of manifest) {
   switch (entry.action) {
     case 'flagWrongProd':
       data.wrongProduction = true;
+      data.wrongProductionReason = entry.reason;
+      data.wrongProductionProvenance = 'manual';
       flagged++;
       console.log(`✓ flagWrongProd ${entry.showId}/${entry.file} | ${entry.reason}`);
       break;

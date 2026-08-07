@@ -596,21 +596,38 @@ function main() {
       // reads critic-registry.json at decision time, so a change to that data file can flip
       // inclusion decisions even when the function source is identical. We hash the registry
       // content and include it in the identity check so registry-driven flips replay too.
+      //
+      // Task #1075: BOTH reads can be blind, and the blindness used to be
+      // invisible. data/critic-registry.json is gitignored here (private
+      // core-data repo, CLAUDE.md §11), so the baseline read via `git show`
+      // NEVER succeeds; and in a worktree/CI checkout without the private
+      // clone the working-tree read fails too. When both failed they both
+      // returned the literal 'unreadable', compared EQUAL, and Phase A was
+      // skipped with "decisions identical" — a comparison that never happened
+      // reported as a clean one. Now an unreadable side is a distinct verdict:
+      // registryComparable=false forces the replay and says why.
+      const registryPath = require('path').join(__dirname, '..', 'data', 'critic-registry.json');
+      const hashOrNull = (buf) => (buf == null ? null : crypto.createHash('md5').update(buf).digest('hex'));
       const registryHash = (() => {
-        try {
-          const fs = require('fs');
-          const path = require('path');
-          const p = path.join(__dirname, '..', 'data', 'critic-registry.json');
-          const buf = fs.readFileSync(p);
-          return crypto.createHash('md5').update(buf).digest('hex');
-        } catch { return 'unreadable'; }
+        try { return hashOrNull(require('fs').readFileSync(registryPath)); } catch { return null; }
       })();
       const baselineRegistryHash = (() => {
         try {
-          const buf = require('child_process').execSync(`git show ${BASE_REF}:data/critic-registry.json`, { stdio: ['ignore', 'pipe', 'ignore'] });
-          return crypto.createHash('md5').update(buf).digest('hex');
-        } catch { return 'unreadable'; }
+          // observability-ok: failure yields null → registryComparable=false → Phase A replays; never read as "same"
+          return hashOrNull(require('child_process').execSync(`git show ${BASE_REF}:data/critic-registry.json`, { stdio: ['ignore', 'pipe', 'ignore'] }));
+        } catch { return null; }
       })();
+      const registryComparable = registryHash !== null && baselineRegistryHash !== null;
+      if (!registryComparable) {
+        const blind = [
+          registryHash === null ? 'the working tree' : null,
+          baselineRegistryHash === null ? `${BASE_REF} (gitignored here — it lives in the private core-data repo)` : null,
+        ].filter(Boolean).join(' and ');
+        log(
+          `[scoring-delta] CANNOT-OBSERVE: critic-registry.json unreadable on ${blind} — ` +
+            'cannot prove registry-driven inclusion decisions are unchanged, so Phase A replays.'
+        );
+      }
       const guardsIdentical =
         baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
         && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
@@ -655,7 +672,8 @@ function main() {
         // as PRE_WINDOW_DAYS above), so compare by value.
         && String(baseline.PRE_OPENING_LEAD_DAYS) === String(working.PRE_OPENING_LEAD_DAYS)
         && String(baseline.UNSCHEDULED_MAX_AGE_DAYS) === String(working.UNSCHEDULED_MAX_AGE_DAYS)
-        && registryHash === baselineRegistryHash;
+        // Unreadable on either side is NOT "identical" (task #1075).
+        && registryComparable && registryHash === baselineRegistryHash;
       if (guardsIdentical && !dataFlagDiff) {
         log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
       } else if (!guardsIdentical) {

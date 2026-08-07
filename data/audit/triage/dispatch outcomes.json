@@ -1,0 +1,15 @@
+{
+  "system": "dispatch outcomes",
+  "status": "warn",
+  "lastChecked": "2026-08-07T08:02:22.661Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Dispatch outcomes: abandoned",
+      "status": "warn",
+      "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
+    }
+  ]
+}

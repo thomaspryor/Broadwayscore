@@ -273,6 +273,9 @@ on:
       - 'scripts/lib/plan-ready.js'
       - 'scripts/notion-action-poll.js'
       - 'tests/unit/plan-ready.test.mjs'
+      # shouldEscalateToFix decision table (task #1073): colocated test runs in
+      # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/plan-ready.test.mjs'
       # --card single-card scope flag (task #725): pure filter predicate,
       # colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
@@ -415,6 +418,12 @@ on:
       # Content-request → workflow routing (2026-08-01, GH #505 "3 Summers of
       # Lincoln"): content requests parked at a needs-review issue no workflow
       # consumed. Path-listed so a solo edit triggers CI.
+      # Core-data push show-recovery (2026-08-05): `-X ours` + a reconciliation
+      # that skipped remote-only ids silently ERASED a show a concurrent job had
+      # just added. Two green runs, one vanished show. The test extracts the
+      # logic straight out of the action YAML, so a solo action edit must run it.
+      - '.github/actions/push-core-data/action.yml'
+      - 'tests/unit/push-core-data-show-recovery.test.mjs'
       - 'scripts/lib/content-request-routing.js'
       - 'tests/unit/content-request-routing.test.mjs'
       # Owner-visibility path (2026-08-05, GH #542/#543): run-report enrichment
@@ -429,6 +438,12 @@ on:
       - 'tests/unit/feedback-request-ledger.test.mjs'
       - 'scripts/notify-feedback-outcomes.js'
       - 'scripts/verify-feedback-requests-live.js'
+      # What the owner actually reads. Added 2026-08-05 after a shipped report
+      # linked /shows/{slug} — a route that does not exist — and nothing failed:
+      # both report builders were exported but had no test at all. This file
+      # asserts the clicked URL, the named reviews, and the plain-English
+      # wording, so the next regression is red in CI, not in the owner's inbox.
+      - 'tests/unit/feedback-owner-reports.test.mjs'
       - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'
@@ -747,6 +762,12 @@ on:
       # with ZERO CI (silent-gate class, feedback_test_yml_push_path_allowlist).
       - 'scripts/lint-write-routing.sh'
       - 'scripts/lint-workflow-guards.sh'
+      # swallowed-audit-writer lint (task #1073): pure decision lib + colocated
+      # test (runs in the scripts/lib/*.test.mjs glob); path-listed so a solo
+      # edit triggers CI. The check itself is OPT-IN (not in any CI step) until
+      # the ~70 pre-existing violations are triaged — follow-up card exists.
+      - 'scripts/lib/swallowed-audit-writer-check.js'
+      - 'scripts/lib/swallowed-audit-writer-check.test.mjs'
       - '.review-write-guard-exempt.txt'
       - '.reviews-json-write-exempt.txt'
       - '.shows-json-write-exempt.txt'
@@ -1152,6 +1173,17 @@ on:
       - 'scripts/audit-gate-corpus-guard-coverage.js'
       - 'scripts/lib/gate-corpus-guard-coverage.js'
       - 'scripts/lib/gate-corpus-guard-coverage.test.mjs'
+      # Invisible-verification guard (#1075) — blocking lint: no script may read a
+      # literal gitignored path out of a git ref (`git show <ref>:data/shows.json`),
+      # a check that can only ever report "nothing found" = success. The
+      # observability helper it points fixers at is observable-before-absence.js;
+      # its test lives in scripts/tests/ (registered in tests/unit-test-manifest.txt),
+      # the scanner's colocated *.test.mjs runs via the scripts/lib glob.
+      - 'scripts/audit-invisible-verification.js'
+      - 'scripts/lib/invisible-verification-scan.js'
+      - 'scripts/lib/invisible-verification-scan.test.mjs'
+      - 'scripts/lib/observable-before-absence.js'
+      - 'scripts/tests/observable-before-absence.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
@@ -1221,7 +1253,57 @@ on:
       - 'scripts/produce-trunk-snapshot.js'
       - 'scripts/tests/close-time-verify.test.mjs'
       - 'scripts/tests/trunk-status.test.mjs'
+      # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
+      # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
+      # scripts/lib/" gap as the block above: without these entries a push
+      # touching only them runs ZERO CI.
+      - 'scripts/claude-auth-preflight.js'
+      - 'scripts/tests/agent-auth-preflight.test.mjs'
+      # Dispatch-card drift (card #1009) — the detector that answers "is this
+      # running session executing the card Notion currently shows?", plus its
+      # watcher. Same "scripts/tests/ is not scripts/lib/" gap as the block
+      # above: without these entries a push touching only them runs ZERO CI.
+      - 'scripts/lib/dispatch-card-drift.js'
+      - 'scripts/tests/dispatch-card-drift.test.mjs'
+      # Pre-implementation infra review gate (card #1079, owner decision
+      # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
+      # not scripts/lib/" gap: without these entries a push touching only them
+      # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
+      - 'scripts/lib/infra-review-scope.js'
+      - 'scripts/tests/infra-review-gate.test.mjs'
+      - 'scripts/dispatch-drift-watch.js'
+      # Infra-review gate registration + liveness probe (task #1094) — the
+      # vacuous-gate class (#1063/#1066-#1069) applied to the #1079 gate
+      # itself: checks settings.json still registers the hook, the hook file
+      # still exists, scripts/lib/infra-review-scope.js is still on
+      # origin/main, AND actually RUNS the hook against a synthetic
+      # critical-infra edit to confirm it still blocks. Same "scripts/tests/
+      # is not scripts/lib/" gap: without these entries a push touching only
+      # them runs ZERO CI.
+      - 'scripts/lib/infra-gate-registration-check.js'
+      - 'scripts/tests/infra-gate-registration.test.mjs'
+      - 'scripts/check-infra-gate-registration.js'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
+      # Generalized hook liveness (task #1104) — the same vacuous-gate class
+      # applied to EVERY hook registered in settings.json, not just the
+      # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
+      # 2026-08-06 and only the #1079 one was caught, because only it had a
+      # dedicated check. New functions live in the SAME lib file already
+      # path-listed above; its test + runner are separate files needing
+      # their own entries — same "scripts/tests/ is not scripts/lib/" gap.
+      # scripts/tests/hook-liveness.test.mjs is also registered in
+      # tests/unit-test-manifest.txt (node --test only runs files literally
+      # listed there — no glob).
+      - 'scripts/tests/hook-liveness.test.mjs'
+      - 'scripts/check-hook-liveness.js'
+      # Infra-review gate digest (card #1095) — turns the gitignored
+      # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
+      # ledgers into a health-check.js row. health-check.js is already
+      # path-listed; same "scripts/tests/ is not scripts/lib/" gap as the
+      # blocks above: without these entries a push touching only the lib +
+      # test would run ZERO CI.
+      - 'scripts/lib/infra-review-digest.js'
+      - 'scripts/tests/infra-review-digest.test.mjs'
       # Digest content invariants (card #670) — asserts what the ASSEMBLED
       # email contains (Fix-this button parity, signed-URL validity, no
       # unrendered template artifacts, subject bounds), not just that a send
@@ -1459,6 +1541,13 @@ on:
       - 'scripts/lib/session-wrapups.test.mjs'
       - 'scripts/lib/cli-help.js'
       - 'scripts/lib/cli-help.test.mjs'
+      # Local Claude OAuth token liveness probe (task #1076) — colocated test
+      # runs in the tests/unit node --test batch (already globbed via
+      # 'tests/**' above); the .js source files need explicit listing (no
+      # scripts/lib/** broad glob).
+      - 'scripts/check-claude-auth-health.js'
+      - 'scripts/lib/claude-auth-health.js'
+      - 'scripts/lib/page-worthy-alerts.js'
       # Help-flag safety lint guard (#498): a solo edit to the audit script or
       # its baseline must still trigger CI — path-listed per
       # feedback_test_yml_push_path_allowlist.
@@ -1489,6 +1578,15 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
+      # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
+      # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
+      # dir is NOT globbed); path-listed so a solo edit triggers CI.
+      - 'scripts/dispatch-watchdog.js'
+      - 'scripts/lib/dispatch-watchdog-core.js'
+      - 'scripts/tests/dispatch-watchdog-core.test.mjs'
+      - 'scripts/lib/dispatch-outcome.js'
+      - 'scripts/tests/dispatch-outcome.test.mjs'
       # No-payload reaper (card #856, Session-system overhaul S3) — colocated
       # test runs in the lib-test glob (scripts/lib/*.test.mjs); path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
@@ -1503,6 +1601,15 @@ on:
       # the same reason (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/owner-alert-router.js'
       - 'scripts/lib/owner-alert-router.test.mjs'
+      # headStandsAlone() clip-readability guard (card #1078) — colocated
+      # test lives in tests/unit/ (registered in unit-test-manifest.txt), so
+      # this is path-listed for the same reason as owner-alert-router.js above.
+      - 'tests/unit/digest-row-clip.test.mjs'
+      # Static PR-time counterpart (task #1078 /what-else follow-up) — runs
+      # in the Lint Workflows job's colocated *.js glob, but path-listed for
+      # the same reason as everything else in this block.
+      - 'scripts/audit-digest-clip-safety.js'
+      - 'scripts/audit-digest-clip-safety.test.mjs'
       # Lint guard: routeAlert()/resolveCondition() callers must commit
       # alert-ledger.json in the same job (card #618, 5th recurrence
       # prevention). Colocated *.test.mjs runs via the lib-test glob;
@@ -1544,6 +1651,16 @@ on:
       # coverage at all.
       - 'scripts/e2e-canary-alert-chain.js'
       - 'scripts/lint-resend-calls.js'
+      # PII lint (#1074) — blocks submitter name/email leaking into committed,
+      # PUBLIC-repo data/audit/*.json files. Test lives in tests/unit/, already
+      # covered by 'tests/**' above; only the scripts/ sources need listing.
+      - 'scripts/lint-committed-pii.js'
+      - 'scripts/lib/pii-scan.js'
+      # wrongProduction provenance lint (#1109) — colocated test runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit to the lint
+      # or its lib triggers CI.
+      - 'scripts/lint-wrongproduction-provenance.js'
+      - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
       - 'scripts/lib/autonomous-state.js'
@@ -1872,6 +1989,14 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/llm-scoring/ensemble-scorer.ts'
       - 'scripts/llm-scoring/batch-runner.ts'
+      # Ensemble voting logic (task #384, Phase B weight calibration) and its
+      # shared types were never path-listed — a solo edit to either got ZERO
+      # CI despite tests/unit/ensemble.test.mjs pinning the scoring math
+      # (feedback_test_yml_push_path_allowlist). gemini-calibration-ema.js is
+      # the new rolling-EMA calibration script from the same task.
+      - 'scripts/llm-scoring/ensemble.ts'
+      - 'scripts/llm-scoring/types.ts'
+      - 'scripts/llm-scoring/gemini-calibration-ema.js'
       # Duplicate-dispatch guard (task #542): pure predicate for the
       # EnterWorktree same-name collision + CI-red double-fix incidents.
       # Test lives in tests/unit/ (node --test batch, not globbed) — path-listed
@@ -2080,6 +2205,18 @@ jobs:
         # escape hatch.
         run: node scripts/audit-gate-corpus-guard-coverage.js
 
+      - name: Audit — invisible verification (git-ref read of a gitignored path)
+        # Task #1075, the ad-hoc-script sibling of the gate above. Blocking and
+        # mechanical: flags any `git show <ref>:<path>` / `git cat-file -e` whose
+        # LITERAL path is gitignored in this repo — core data lives in a private
+        # repo, so that read can never succeed and every caller so far let the
+        # resulting "found nothing" mean "clean". A 2026-08-05 monitor written to
+        # prove a live ticket-link bug was fixed did exactly that and would have
+        # reported it GONE forever; it was caught by luck. Fixers are pointed at
+        # scripts/lib/observable-before-absence.js (CANNOT-OBSERVE ≠ ABSENT).
+        # Escape hatch for a genuinely-handled case: `observability-ok: <reason>`.
+        run: node scripts/audit-invisible-verification.js
+
       - name: Audit — direct provider calls bypassing fetchPage() (advisory)
         # Task #684 T12: flags scripts constructing a raw HTTP call to a BD/SB/SD
         # content-fetch endpoint instead of routing through fetchPage()/fetchJSON()
@@ -2169,6 +2306,27 @@ jobs:
         # session can silently forget — same class as the 34 senders this
         # sprint is consolidating in the first place.
         run: node scripts/lint-resend-calls.js
+
+      - name: Audit — wrongProduction writers must record provenance
+        # Task #1109, the P1 follow-up to the 2026-08-06 main-red (#1108):
+        # mergeReviews() treated a MISSING provenance breadcrumb as "URL-based,
+        # safe to auto-clear" and put a 2016 Broadway Cats review on the 2026
+        # West End show page. That specific gap was fixed directly
+        # (isUrlProvenanceWrongProduction), but nothing stopped the NEXT
+        # writer from being added with zero breadcrumb at all. Blocking — a
+        # writer with no provenance signal is exactly this bug's shape.
+        run: node scripts/lint-wrongproduction-provenance.js
+
+      - name: Audit — digest description clip-safety (statically checkable fields)
+        # Static, PR-time counterpart to headStandsAlone() (card #1078,
+        # scripts/lib/owner-alert-router.js) — that check only fires as a
+        # runtime console.warn inside queueDigestLine, which is how the
+        # original bug (a description opening with "[direction]" in
+        # scripts/audit-tier-skip-drift.js) shipped unnoticed until the owner
+        # complained. This scans every owner-alert-router call site for a
+        # statically-checkable description/decisionPrompt and fails CI
+        # immediately on a new violation instead of relying on server logs.
+        run: node scripts/audit-digest-clip-safety.js
 
       - name: Audit — alert-sender direct-bypass gate
         # Alert-sender regression gate (card 3a9637c5; #475/#486/#514/#515

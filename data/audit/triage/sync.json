@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "error",
-  "lastChecked": "2026-08-05T16:22:45.115Z",
+  "status": "warn",
+  "lastChecked": "2026-08-07T08:02:22.658Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "41953 files, 19503 reviews (surplus: 22450)"
+      "message": "42114 files, 19554 reviews (surplus: 22560)"
     },
     {
       "name": "Sync: open show coverage",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "error",
-      "message": "29 empty cast: The Lost Boys, The Rocky Horror Show, Schmigadoon!"
+      "status": "pass",
+      "message": "29 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 19503 vs baseline 19511"
+      "message": "Reviews dropped: 19554 vs baseline 19558"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 8/2/2026 (3d ago)"
+      "message": "weekEnding 8/2/2026 (5d ago)"
     }
   ]
 }

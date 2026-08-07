@@ -27,7 +27,8 @@ const {
   bucketDistance,
   median,
   mean,
-  getAgreementLevel
+  getAgreementLevel,
+  getEnsembleWeights
 } = require('../../scripts/llm-scoring/ensemble');
 
 // ========================================
@@ -601,6 +602,79 @@ describe('toModelScore', () => {
 
     assert.strictEqual(modelScore.error, 'API timeout');
     assert.strictEqual(modelScore.bucket, 'Mixed'); // fallback
+  });
+});
+
+// ========================================
+// PHASE B: ENSEMBLE_V2 WEIGHT CALIBRATION (Notion 367637c5-416f-81a3)
+// ========================================
+describe('getEnsembleWeights (ENSEMBLE_V2 flag)', () => {
+  const ORIGINAL_FLAG = process.env.ENSEMBLE_V2;
+
+  function restoreFlag() {
+    if (ORIGINAL_FLAG === undefined) delete process.env.ENSEMBLE_V2;
+    else process.env.ENSEMBLE_V2 = ORIGINAL_FLAG;
+  }
+
+  test('flag unset → v1 weights (1.5/1.0)', () => {
+    delete process.env.ENSEMBLE_V2;
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.majorityWeight, 1.5);
+    assert.strictEqual(w.outlierWeight, 1.0);
+    assert.strictEqual(w.version, 'v1');
+    restoreFlag();
+  });
+
+  test('ENSEMBLE_V2=1 → v2 weights (1.4/1.0)', () => {
+    process.env.ENSEMBLE_V2 = '1';
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.majorityWeight, 1.4);
+    assert.strictEqual(w.outlierWeight, 1.0);
+    assert.strictEqual(w.version, 'v2');
+    restoreFlag();
+  });
+
+  test('any non-"1" value → v1 (fail-safe default)', () => {
+    process.env.ENSEMBLE_V2 = 'true';
+    const w = getEnsembleWeights();
+    assert.strictEqual(w.version, 'v1');
+    restoreFlag();
+  });
+
+  test('multiModelEnsemble: ENSEMBLE_V2=1 shifts Cititour-style score toward the outlier', () => {
+    delete process.env.ENSEMBLE_V2;
+    const v1 = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    // v1: (90*1.5 + 90*1.5 + 76*1.0) / 4.0 = 86.5 → 87
+    assert.strictEqual(v1.score, 87);
+    assert.strictEqual(v1.ensembleVersion, 'v1');
+
+    process.env.ENSEMBLE_V2 = '1';
+    const v2 = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    // v2: (90*1.4 + 90*1.4 + 76*1.0) / 3.8 = 86.32 → 86
+    assert.strictEqual(v2.score, 86);
+    assert.strictEqual(v2.ensembleVersion, 'v2');
+    assert.ok(v2.score < v1.score, 'lowering MAJORITY_WEIGHT should pull the score toward the outlier');
+    restoreFlag();
+  });
+
+  test('needsReview numeric-gap check is unaffected by ENSEMBLE_V2 (still fires)', () => {
+    process.env.ENSEMBLE_V2 = '1';
+    const result = ensembleScore(
+      makeModelScore('claude', 'Positive', 76),
+      makeModelScore('openai', 'Rave', 90),
+      makeModelScore('gemini', 'Rave', 90)
+    );
+    assert.strictEqual(result.needsReview, true);
+    assert.ok(result.needsReviewReasons?.some(r => /sole-outlier-\d+pt-gap/.test(r)));
+    restoreFlag();
   });
 });
 

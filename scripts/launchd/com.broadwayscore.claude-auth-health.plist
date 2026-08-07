@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Local Claude OAuth token liveness probe (task #1076). Runs
+         scripts/check-claude-auth-health.js, which makes a REAL minimal
+         `claude -p` call (via preflightAuth() from scripts/lib/claude-cli.js)
+         and pages via routeAlert on failure — `claude auth status` is never
+         trusted for the pass/fail decision (see script header: it reported
+         loggedIn:true through the entire 2026-08-05 revoked-token outage).
+
+         MUST run on this Mac, not GitHub Actions — the OAuth token never
+         reaches CI. check-secrets-health.js (GitHub Actions, weekly) covers
+         API-key-based secrets; this covers the one credential CI can't see.
+
+         09:00 ET daily: a few hours ahead of BOTH opening-night monitor
+         windows (Broadway 17:00 ET, West End 17:00 UK ≈ 12-13:00 ET per
+         scripts/lib/opening-night-windows.js WINDOW_START_HOUR_LOCAL), so a
+         revoked token is caught with time to `claude auth login` again
+         before curtain — not discovered by the monitor launcher refusing to
+         start at 5pm.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Install:  cp scripts/launchd/com.broadwayscore.claude-auth-health.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.claude-auth-health.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.claude-auth-health
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.claude-auth-health
+         Manual check: node scripts/check-claude-auth-health.js -->
+    <key>Label</key>
+    <string>com.broadwayscore.claude-auth-health</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/check-claude-auth-health.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/claude-auth-health-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/claude-auth-health-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

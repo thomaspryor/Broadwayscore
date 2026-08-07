@@ -16,8 +16,8 @@ const { validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validato
 let passed = 0;
 let failed = 0;
 
-function test(description, url, title, expected) {
-  const result = validateBWWRoundupUrlMatchesShow(url, title);
+function test(description, url, title, expected, category) {
+  const result = validateBWWRoundupUrlMatchesShow(url, title, category);
   if (result === expected) {
     console.log(`  ✓ ${description}`);
     passed++;
@@ -297,6 +297,42 @@ try {
 } catch (e) {
   console.log(`  ⚠ Skipped real-show regression (shows.json not found or unreadable): ${e.message}`);
 }
+
+
+// ─── REGIONAL TRYOUTS REACH THEIR OWN ROUNDUPS (2026-08-05) ────────────────
+// TRYOUT_URL_MARKERS exist to stop a BROADWAY show inheriting reviews of its
+// out-of-town run. Regional tryouts are first-class catalog entries now
+// (feedback-pipeline content requests), and for those the tryout roundup is
+// not a contaminant — it is the only correct source that exists.
+//
+// 'the-outsiders-world-premiere-regional-2023' was rejected from its own La
+// Jolla roundup on TWO counts: the slug carries "world-premiere" and "la-jolla"
+// (tryout markers), and after stop-word removal the single title word
+// "outsiders" was followed by "world", which was not a recognised post-title
+// terminator. A tier-3 gather with 80 searches returned 0 reviews for a show
+// whose roundup lists a full set of critics.
+console.log('\n── Regional tryouts reach their own roundups ──');
+
+const LA_JOLLA_OUTSIDERS =
+  'https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse-20230307';
+const ART_TWO_STRANGERS =
+  'https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602';
+
+test('Regional show accepts its own La Jolla tryout roundup',
+  LA_JOLLA_OUTSIDERS, 'The Outsiders', true, 'regional');
+test('Regional show accepts its own A.R.T. roundup',
+  ART_TWO_STRANGERS, 'Two Strangers (Carry A Cake Across New York)', true, 'regional');
+
+// The protection that must NOT weaken — the whole reason the markers exist.
+test('BROADWAY show still REJECTS a tryout roundup (protection unchanged)',
+  LA_JOLLA_OUTSIDERS, 'The Outsiders', false, 'broadway');
+test('No category supplied (legacy caller) keeps the strict tryout rejection',
+  LA_JOLLA_OUTSIDERS, 'The Outsiders', false, undefined);
+// Adding 'world'/'premiere' as terminators must not loosen the single-word
+// guard the terminator logic was written for.
+test('Single-word title "Fear" still does NOT match "fear-of-13"',
+  'https://www.broadwayworld.com/article/Review-Roundup-Fear-of-13-Opens-Off-Broadway-20240101',
+  'Fear', false, 'off-broadway');
 
 // ─── SUMMARY ─────────────────────────────────────────────────────────────
 console.log(`\n${'─'.repeat(50)}`);

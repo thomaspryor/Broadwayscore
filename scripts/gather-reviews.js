@@ -2034,7 +2034,7 @@ async function searchBWWRoundup(show, year, options = {}) {
       : [];
     let bwwCloudflareGated = false;
     for (const searchResult of serpCandidates) {
-      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title)) {
+      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title, show.category)) {
         console.log(`    ✗ SERP result doesn't match title "${show.title}" — skipping: ${searchResult.substring(0, 80)}`);
         continue;
       }
@@ -2918,10 +2918,15 @@ function createReviewFile(showId, reviewData, options = {}) {
   const allowOffBroadway = options.allowOffBroadway || false;
   const allowWestEnd = options.allowWestEnd || false;
   const allowOpera = options.allowOpera || false;
+  // Regional tryouts: isNotBroadway() rejects any text containing "world
+  // premiere" unless allowRegional, and a tryout review says exactly that.
+  // Cousin of the two roundup gates fixed earlier (2026-08-05) — same helper,
+  // same missing flag, one layer further down the same path.
+  const allowRegional = options.allowRegional || false;
   const fromPostOpening = options.fromPostOpening || false;
   // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
   let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
-  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera })) {
+  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
   }
@@ -3234,10 +3239,59 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Load show metadata early — needed to auto-detect post-opening context BEFORE the
   // merge loop runs. Also reused by the date guard and placeholder marking below.
   let _showMeta = null;
+  let _allShows = null;
   try {
     const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
-    _showMeta = showsJSON.shows.find(s => s.id === showId) || null;
+    _allShows = showsJSON.shows || [];
+    _showMeta = _allShows.find(s => s.id === showId) || null;
   } catch (e) {}
+
+  // CROSS-MARKET WRITE GUARD (class A, zero-tolerance).
+  //
+  // audit-review-contamination has always DETECTED this class; nothing blocked
+  // it at write time. On 2026-08-05 a gather for the La Jolla tryout
+  // 'the-outsiders-world-premiere-regional-2023' wrote three reviews of the
+  // BROADWAY production — each dated exactly on the Broadway opening
+  // (0 days from it, 401 from the tryout's) — so the tryout page would have
+  // shown a user another production's reviews. The three already existed on
+  // the-outsiders-2024; they were pure misattributed duplicates.
+  //
+  // Uses classifyClassAContamination(), the SAME predicate the audit flags on,
+  // so the detector and the preventer can never disagree about what class A is.
+  // Title-grouped via buildSiblingOpeningsMap, so it only ever considers
+  // same-title productions in other markets.
+  //
+  // This matters most for tryout/transfer pairs, which is exactly the shape the
+  // feedback pipeline now adds on request — a regional show and its Broadway
+  // transfer share a title, and roundup/SERP discovery for one readily surfaces
+  // the other's reviews.
+  if (_showMeta && _allShows && reviewData && reviewData.publishDate) {
+    try {
+      const { classifyClassAContamination, buildSiblingOpeningsMap } =
+        require('./lib/cross-market-contamination');
+      const sibMap = buildSiblingOpeningsMap(_allShows, (d) => (d ? new Date(d) : null));
+      const sibs = sibMap.get(showId) || [];
+      if (sibs.length) {
+        const v = classifyClassAContamination(
+          new Date(reviewData.publishDate),
+          _showMeta.openingDate ? new Date(_showMeta.openingDate) : null,
+          sibs.map((x) => (x && x.opening ? x.opening : x))
+        );
+        if (v.isClassA) {
+          console.log(
+            `    \u2717 Skipping ${filename}: cross-market contamination — published ` +
+            `${Math.round(v.sibDiff)}d from a same-title sibling's opening but ` +
+            `${Math.round(v.thisDiff)}d from this show's. Belongs to the sibling.`
+          );
+          return 'crossMarketContamination';
+        }
+      }
+    } catch (e) {
+      // Never let the guard's own failure block a legitimate write — the audit
+      // still catches class A after the fact, which is the pre-existing behaviour.
+      console.log(`    (cross-market guard skipped: ${e.message})`);
+    }
+  }
 
   // Auto-detect post-opening context: if caller didn't explicitly pass fromPostOpening
   // but the show has already opened, treat all merges as post-opening so placeholder
@@ -3754,6 +3808,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   const outlets = loadOutlets({ category: show.category });
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
+  const isRegional = show.category === 'regional';
 
   // Per-show health tracking
   const health = {
@@ -3983,9 +4038,22 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
     const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
-    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }) ||
-        /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
-        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
+    // A REGIONAL show's roundup is legitimately regional. These checks exist to
+    // stop a BROADWAY show absorbing its own out-of-town reviews; applied to a
+    // tryout they reject the only roundup that show will ever have. '3 Summers
+    // of Lincoln' passed the URL validator ("Found via Google") and was then
+    // dropped here for being a La Jolla page — and "please finish the reviews"
+    // for exactly that show is the request that started all of this (2026-08-05).
+    //
+    // isNotBroadway already accepts allowRegional; the caller simply never
+    // passed it. Tour rejection is deliberately KEPT for regional shows: a
+    // regional production must still never inherit a national-tour roundup.
+    const venueMarkersDisqualify = !isRegional &&
+        (/\bat the kennedy center\b/.test(roundupTitle) ||
+         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle));
+    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
+        /\bon tour\b/.test(roundupTitle) || /\bnational tour\b/.test(roundupTitle) ||
+        venueMarkersDisqualify) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
@@ -4906,7 +4974,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         }
       }
 
-      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' });
+      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' });
       if (result === true) {
         created++;
         reviewFilesTouched++;
@@ -4981,7 +5049,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' })) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }

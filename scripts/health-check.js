@@ -383,6 +383,75 @@ function checkPushVerification() {
   );
 }
 
+// --- Category A2b: Opening Night History Push Verification ---
+// Same drift logic as checkPushVerification() above (workflow ran
+// successfully more recently than the data reflects => the write/push is
+// failing silently even though the workflow itself reports green) — but
+// data/audit/opening-night-history.json stores its freshness signal as the
+// newest entry in a `runs[]` array, not a `_meta.lastUpdated`-style field, so
+// it can't be expressed as another PUSH_VERIFY_CHECKS entry (that generic
+// field-path reducer doesn't index arrays). Task #1073: this exact failure
+// mode ran undetected for 100+ days — opening-night-checklist.yml stayed
+// green ~5x/day while its history append silently crashed on every run from
+// 2026-04-26 onward (see the diagnosis comment above appendToHistory() in
+// scripts/opening-night-checklist.js). 26h (not the generic 24h) gives the
+// hourly cron slack for one missed/late tick before alerting.
+const OPENING_NIGHT_HISTORY_MAX_DRIFT_H = 26;
+
+function checkOpeningNightHistoryFreshness() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: 'Push verify: opening-night-history.json', status: 'warn', message: 'Skipped — no GH_TOKEN' }];
+  }
+  return [runCheck('Push verify: opening-night-history.json', () => {
+    try {
+      // Get last successful workflow run time (same gh invocation shape as
+      // checkPushVerification() above).
+      const result = execSync(
+        `gh run list --workflow="opening-night-checklist.yml" --status=success --limit=1 --json createdAt -q '.[0].createdAt'`,
+        { encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe'] }
+      ).trim();
+      if (!result) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No successful Opening Night Checklist runs found' };
+      }
+      const workflowTime = new Date(result);
+
+      const filePath = path.join(AUDIT_DIR, 'opening-night-history.json');
+      if (!fs.existsSync(filePath)) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'File missing' };
+      }
+      const data = readJSON(filePath);
+      const runs = Array.isArray(data.runs) ? data.runs : [];
+      if (runs.length === 0) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'No runs[] entries in file' };
+      }
+      const newest = runs[runs.length - 1];
+      if (!newest || !newest.at) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: 'Newest runs[] entry has no `at` field' };
+      }
+      const dataTime = new Date(newest.at);
+      if (isNaN(dataTime.getTime())) {
+        return { name: 'Push verify: opening-night-history.json', status: 'warn', message: `Unparseable date on newest runs[] entry: ${newest.at}` };
+      }
+
+      // If the workflow ran successfully but the newest history entry is
+      // older by more than OPENING_NIGHT_HISTORY_MAX_DRIFT_H, the append is
+      // likely failing silently on every run (workflow green, ledger frozen).
+      const driftH = (workflowTime.getTime() - dataTime.getTime()) / (1000 * 60 * 60);
+      if (driftH > OPENING_NIGHT_HISTORY_MAX_DRIFT_H) {
+        return {
+          name: 'Push verify: opening-night-history.json',
+          status: 'error',
+          message: `Newest history entry ${formatAge(hoursAgo(newest.at))} old but Opening Night Checklist succeeded ${formatAge(hoursAgo(result))} ago — history append may be failing silently`,
+          hint: 'Check the "Run opening night checklist" step\'s logged exit code in opening-night-checklist.yml (0/1 expected; anything else — including exit 3 — means appendToHistory() failed). See the diagnosis comment above appendToHistory() in scripts/opening-night-checklist.js.',
+        };
+      }
+      return { name: 'Push verify: opening-night-history.json', status: 'pass', message: `History synced (newest entry ${formatAge(hoursAgo(newest.at))} old, workflow ${formatAge(hoursAgo(result))} ago)` };
+    } catch (err) {
+      return { name: 'Push verify: opening-night-history.json', status: 'warn', message: `Check failed: ${err.message.substring(0, 80)}` };
+    }
+  })];
+}
+
 // --- Category B: Data Sync ---
 
 function checkSync() {
@@ -1739,6 +1808,204 @@ function checkPushRetryDeadman() {
     message,
     hint: 'A no-op-rebase abort means refs/remotes/origin/<branch> is stale after fetch (SHA-pinned checkout refspec) — verify scripts/lib/push-with-retry.sh still fetches with an explicit +refs/heads/X:refs/remotes/origin/X destination. Exhaustion means the remote genuinely could not be integrated.',
   }];
+}
+
+// --- Category I3: Infra-review gate telemetry (task #1095) ---
+//
+// The #1079 gate (~/.claude/hooks/infra-plan-review-gate.sh,
+// scripts/lib/infra-review-scope.js) writes every warn/block to
+// data/audit/infra-review-gate.jsonl — gitignored, per-machine, read by
+// nothing until now. A session that ran a real /plan-review and one that
+// typed "NO-PLAN-REVIEW: whatever" both look like silence from the owner's
+// side. Card #672 named the honest observable: the ratio of real
+// pre-implementation reviews (phase:'plan' verdicts in
+// .claude/review-verdicts.jsonl) to bypasses. Pure counting logic lives in
+// scripts/lib/infra-review-digest.js (tested by
+// scripts/tests/infra-review-digest.test.mjs) — this just reads the two
+// ledgers and hands them over.
+
+function readJsonlBestEffort(absPath) {
+  let raw;
+  try {
+    raw = fs.readFileSync(absPath, 'utf8');
+  } catch {
+    return [];
+  }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* tolerate partial line */ }
+  }
+  return out;
+}
+
+// Both ledgers are written by ~/.claude/hooks/infra-plan-review-gate.sh /
+// scripts/lib/review-gate.mjs at the MAIN checkout root — resolved via
+// `git rev-parse --git-common-dir`, not the invoking script's own directory,
+// specifically so a worktree session's writes land somewhere every other
+// worktree (and this check) can see (infra-review-scope.js header, and
+// review-gate.mjs's canonicalRoot()). This file is __dirname-relative by
+// default (matching every other check here), which resolves to the WRONG
+// directory when health-check.js itself runs from inside a worktree — the
+// overwhelmingly common case per this repo's own worktree-first mandate.
+// Reading via __dirname alone would make this check see nothing even on the
+// same machine, in the same run, that just wrote real events.
+function infraReviewLedgerRoot() {
+  try {
+    const common = execSync('git rev-parse --git-common-dir', { cwd: __dirname, encoding: 'utf8' }).trim();
+    if (!common) return path.join(__dirname, '..');
+    // `common` is already relative to __dirname (git was invoked with
+    // cwd: __dirname) — joining it against __dirname alone resolves it
+    // correctly, matching review-gate.mjs's canonicalRoot(). An earlier
+    // version prepended an extra '..' here, which double-counted the
+    // "go up one level" already baked into a relative --git-common-dir
+    // result (e.g. "../.git") and landed one directory ABOVE the actual
+    // repo root for any plain (non-worktree) checkout — silently wrong
+    // only for the primary Mac Studio use case, since worktree common-dir
+    // happens to come back absolute and skip this branch entirely
+    // (caught by ship-check's adversarial review, task #1095).
+    const abs = path.isAbsolute(common) ? common : path.join(__dirname, common);
+    return path.dirname(abs);
+  } catch {
+    return path.join(__dirname, '..');
+  }
+}
+
+function checkInfraReviewGate() {
+  const ledgerRoot = infraReviewLedgerRoot();
+  const gatePath = path.join(ledgerRoot, 'data', 'audit', 'infra-review-gate.jsonl');
+  const verdictsPath = path.join(ledgerRoot, '.claude', 'review-verdicts.jsonl');
+  // Both ledgers are gitignored, per-machine files the local
+  // infra-plan-review-gate.sh hook writes only on a dev machine — a fresh CI
+  // checkout will never have them. Reporting the same "no edits observed"
+  // pass message in that case would be indistinguishable from a genuinely
+  // clean week: exactly the vacuous-gate failure class (task #1075, #1063-69)
+  // this file elsewhere insists on failing loud for. Say plainly that this
+  // environment can't see the telemetry instead of silently passing.
+  if (!fs.existsSync(gatePath) && !fs.existsSync(verdictsPath)) {
+    return [{
+      name: 'Infra-review: gate telemetry',
+      status: 'warn',
+      message: 'No local infra-review telemetry visible from this environment — data/audit/infra-review-gate.jsonl and .claude/review-verdicts.jsonl are gitignored, per-machine files the #1079 hook writes only where it runs. This check cannot confirm the plan-review gate is being used or bypassed from here.',
+      hint: 'Run `node scripts/health-check.js` on the machine where the hook actually fires to see real counts. A CI-visible rollup (so the scheduled digest sees this too) is tracked as a follow-up.',
+    }];
+  }
+  const { computeInfraReviewDigest } = require('./lib/infra-review-digest.js');
+  const gateEvents = readJsonlBestEffort(gatePath);
+  const planVerdicts = readJsonlBestEffort(verdictsPath);
+  return [runCheck('Infra-review: gate telemetry', () => computeInfraReviewDigest({
+    gateEvents, planVerdicts, now: Date.now(),
+  }))];
+}
+
+// --- Category: Dispatch outcomes (did dispatched work actually land?) ---
+//
+// scripts/audit-dispatch-outcomes.js (task #1101) already classifies every
+// dispatch as landed/in-flight/abandoned by cross-referencing
+// data/audit/dispatch-ledger.jsonl against the task store, but nothing ran
+// it — its first real run found 37 abandoned dispatches that had gone unseen
+// for up to 14 days (task #1106). This wires its pure decision function
+// (scripts/lib/dispatch-outcome-digest.js) into the daily digest.
+//
+// dispatch-ledger.jsonl is gitignored/per-machine, same as the infra-review
+// ledger above — a fresh CI checkout won't have it. Say so plainly instead of
+// a silent pass (#1075 vacuous-gate class).
+//
+// previousAbandonedCount is tracked in its own small state file rather than
+// folded into the shared HISTORY_FILE: history.results (below, ~L3546) is
+// deliberately narrowed to {name,status,message} for every check to avoid
+// bloating health-check-history.json, so extending it would mean widening
+// that shared shape for one check. A dedicated per-check state file already
+// has precedent here (tryAutoFix()'s data/audit/triage/autofix-*.json
+// attempt counters) — this follows the same pattern.
+const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
+
+function checkDispatchOutcomes() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: 'Dispatch outcomes: abandoned',
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here.',
+      hint: 'Run `node scripts/health-check.js` (or `node scripts/audit-dispatch-outcomes.js`) on the machine where dispatches launch to see real counts.',
+    }];
+  }
+
+  return [runCheck('Dispatch outcomes: abandoned', () => {
+    const { computeDispatchOutcomeDigest } = require('./lib/dispatch-outcome-digest.js');
+    const { classifyDispatches, OUTCOMES } = require('./lib/dispatch-outcome.js');
+    const { loadTasksUnioned } = require('./audit-dispatch-outcomes.js');
+
+    const raw = fs.readFileSync(ledgerPath, 'utf8');
+    const dispatchLedgerEntries = raw.trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // loadTasksUnioned() throws loud on an empty/unreadable task store — do
+    // NOT wrap this in a try/catch that defaults to an empty Map. runCheck()
+    // (the caller) turns an uncaught throw into a visible 'error' status row,
+    // which is the point: a dead task store must surface as broken, not as a
+    // quiet "0 abandoned" pass (#1063/#1069 vacuous-gate class).
+    const tasksById = loadTasksUnioned();
+
+    // cmux-workspaces.js is the shared, tested cmux-liveness abstraction
+    // (also used by the #1102 dispatch watchdog) — reuse it rather than
+    // re-parsing `cmux list-workspaces` a second way.
+    // An empty result is treated the SAME as cmux being unavailable (ship-check
+    // finding, task #1106): `listWorkspaces()` returns `[]` on a cmux daemon
+    // hiccup or malformed output, not a throw — trusting an empty Set as
+    // ground truth would flip EVERY in-flight dispatch with a workspaceRef to
+    // ABANDONED in one shot (dispatch-outcome.js's workspaceGone check is
+    // `!live.has(ref)`, true for everything when live is empty). "Never
+    // guess" already governs the ledger-side helper this mirrors
+    // (audit-dispatch-outcomes.js's own liveWorkspaceRefs()) — apply the same
+    // rule here: only trust cmux when it reports at least one workspace.
+    let liveWorkspaceRefs;
+    try {
+      const { cmuxAvailable, listWorkspaces } = require('./lib/cmux-workspaces.js');
+      if (cmuxAvailable()) {
+        const refs = listWorkspaces().map((w) => w.ref);
+        if (refs.length > 0) liveWorkspaceRefs = new Set(refs);
+      }
+    } catch { /* cmux unavailable — classifyDispatches falls back to ledger-only */ }
+
+    let previousAbandonedCount = null;
+    try {
+      if (fs.existsSync(DISPATCH_OUTCOME_STATE_FILE)) {
+        const prev = readJSON(DISPATCH_OUTCOME_STATE_FILE);
+        previousAbandonedCount = typeof prev.abandonedCount === 'number' ? prev.abandonedCount : null;
+      }
+    } catch { /* corrupt state file — treat as no history, don't fail the check over it */ }
+
+    const row = computeDispatchOutcomeDigest({
+      dispatchLedgerEntries, tasksById, liveWorkspaceRefs, previousAbandonedCount,
+    });
+
+    // The state file tracks the TRUE current count, not "count as of the
+    // last alert" — recompute it directly rather than relying on `row`,
+    // which is null both when there are 0 abandoned and when the count is
+    // unchanged from last run.
+    const currentAbandonedCount = classifyDispatches(
+      dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
+    ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
+    try {
+      fs.mkdirSync(AUDIT_DIR, { recursive: true });
+      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+      }, null, 2) + '\n');
+    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+
+    if (row) return row;
+    // currentAbandonedCount > 0 but unchanged from last run still counts as
+    // 'warn', not 'pass' — an unresolved backlog must not silently drop out
+    // of the digest's pass/warn/error tally just because it stopped
+    // generating a fresh alert (the vacuous-pass class this whole check
+    // exists to avoid). Only a genuinely zero count is a real pass.
+    return currentAbandonedCount === 0
+      ? { name: 'Dispatch outcomes: abandoned', status: 'pass', message: 'No abandoned dispatches' }
+      : { name: 'Dispatch outcomes: abandoned', status: 'warn', message: `${currentAbandonedCount} abandoned dispatch(es), unchanged since last run — see \`node scripts/audit-dispatch-outcomes.js\`` };
+  })];
 }
 
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
@@ -3235,6 +3502,7 @@ async function main() {
   const allResults = [
     ...checkFreshness(),
     ...checkPushVerification(),
+    ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
     ...checkPipelines(),
     ...checkBatchState(),
@@ -3251,6 +3519,8 @@ async function main() {
     ...(await checkStuckWork()),
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
+    ...checkInfraReviewGate(),
+    ...checkDispatchOutcomes(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,

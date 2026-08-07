@@ -59,6 +59,11 @@ const KNOWN_SETTERS = [
   'apply-cross-production-llm-flags.js', // conservative apply of Opus WRONG verdicts
   'auto-triage-cross-production.js',     // conservative flagging from cross-prod audit
   'fetch-guardian-reviews.js',           // guardian-api stale-slug flag
+  // Incident repair for the 2026-08-06 noteless auto-clear bug (#1108). Restores
+  // flags the buggy mergeReviews predicate wrongly cleared — so it writes
+  // wrongProduction=true and owes the same guard: a file a human explicitly
+  // cleared or overrode is left alone. (added 2026-08-07, #1085)
+  'repair-noteless-wrongprod-autoclear.js',
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
@@ -149,6 +154,15 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // equivalent to shouldSkipWrongProductionAudit, via the selection gate
       // instead of an in-function check. (ship-check 2026-07-24, #371)
       'audit-show-review-gap.js',
+      // repair-noteless-wrongprod-autoclear.js — one-off manual CLI (dry-run
+      // default, --apply to write) that restores flags wrongly auto-cleared by
+      // the 2026-08-06 noteless-default bug in mergeReviews. Its own predicate
+      // (fixedClearIsLegitimate) checks pre.wrongProductionManualClear before
+      // ever restoring, so it never re-flags a file a human explicitly cleared
+      // — the exact protection shouldSkipWrongProductionAudit provides, just
+      // evaluated against a reconstructed pre-incident git blob instead of the
+      // live file. Not CI-scheduled; not in any workflow. (task #1086)
+      'repair-noteless-wrongprod-autoclear.js',
     ]);
 
     const allFiles = fs.readdirSync(SCRIPTS_DIR)

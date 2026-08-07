@@ -759,6 +759,11 @@ export class EnsembleReviewScorer {
         modelAgreement: ensembleResult.agreement,
         // Propagate emergency flag: 1-of-N model succeeded — score excluded from compositeScore
         ...(ensembleResult.singleModelEmergency ? { singleModelEmergency: true } : {}),
+        // Which majority/outlier weight set produced this score (task #384 Phase B).
+        // Written now so mixed v1/v2 batches are distinguishable on disk once
+        // ENSEMBLE_V2 is ever flipped on — without this, rollback/debugging after
+        // a live flag flip would have no record of which reviews used which weights.
+        ...(ensembleResult.ensembleVersion ? { ensembleVersion: ensembleResult.ensembleVersion } : {}),
       }
     };
 
