@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T20:04:10.729Z",
+  "timestamp": "2026-08-07T20:35:37.876Z",
   "stats": {
     "totalReviews": 41861,
-    "alreadyFlagged": 18159,
+    "alreadyFlagged": 18157,
     "dateGuardCatches": 133,
     "directorMismatch": 955,
-    "tvFilmSignals": 1160,
-    "londonSignals": 828,
+    "tvFilmSignals": 1161,
+    "londonSignals": 829,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3588
+    "noPublishDate": 3584
   },
   "findings": [
     {
@@ -1819,6 +1819,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "independent--louis-chilton.json",
+      "publishDate": "2026-04-17",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -4571,6 +4584,7 @@
     {
       "showId": "cats-west-end-2026",
       "file": "jonathan-baz--unknown.json",
+      "score": 94,
       "publishDate": null,
       "url": "https://www.jonathanbaz.com/2026/08/cats-review.html",
       "findings": [
@@ -36531,6 +36545,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "score": null,
+      "publishDate": "2026-08-05",
+      "url": "https://theatreandtonic.co.uk/blog/im-every-woman-the-chaka-khan-musical-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
