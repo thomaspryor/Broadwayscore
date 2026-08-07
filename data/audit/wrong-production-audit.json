@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T01:19:39.539Z",
+  "timestamp": "2026-08-07T02:34:53.020Z",
   "stats": {
-    "totalReviews": 41795,
-    "alreadyFlagged": 18154,
+    "totalReviews": 41808,
+    "alreadyFlagged": 18157,
     "dateGuardCatches": 129,
     "directorMismatch": 952,
-    "tvFilmSignals": 1156,
+    "tvFilmSignals": 1157,
     "londonSignals": 821,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3574
+    "noPublishDate": 3575
   },
   "findings": [
     {
@@ -24812,6 +24812,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "writewatchwork--abbybathurst.json",
+      "score": 88,
       "publishDate": "2025-06-18",
       "url": "https://www.writewatchwork.com/post/theatre-review-the-comedy-about-spies",
       "findings": [
@@ -27426,7 +27427,21 @@
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "publishDate": "2026-08-06",
+      "url": "http://theartsdesk.com/theatre/smile-her-marylebone-theatre-review-one-woman-unlocks-cupboard-her-familys-skeletons?amp",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
       "file": "artsdesk--unknown.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/smile-her-marylebone-theatre-review-one-woman-unlocks-cupboard-her-familys-skeletons",
       "findings": [
