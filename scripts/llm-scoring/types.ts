@@ -158,6 +158,8 @@ export interface EnsembleResult {
   needsReviewReasons?: string[];
   /** All models failed — caller must refuse to write score=50 silently */
   allModelsFailed?: boolean;
+  /** Which majority/outlier weight set produced this score. Only set on the ensemble-majority path. */
+  ensembleVersion?: 'v1' | 'v2';
   /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
   singleModelEmergency?: boolean;
   /** Individual model results */
@@ -312,6 +314,10 @@ export interface ScoredReviewFile extends ReviewTextFile {
     ensembleSource?: 'ensemble-unanimous' | 'ensemble-majority' | 'ensemble-no-consensus' | 'two-model-fallback' | 'single-model-fallback';
     /** Model agreement (v5+) */
     modelAgreement?: string;
+    /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
+    singleModelEmergency?: boolean;
+    /** Which majority/outlier weight set produced this score (task #384 Phase B). Only set on the ensemble-majority path. */
+    ensembleVersion?: 'v1' | 'v2';
   };
 }
 
