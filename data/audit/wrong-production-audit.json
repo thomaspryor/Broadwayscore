@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-08-07T21:46:09.800Z",
+  "timestamp": "2026-08-07T22:00:12.943Z",
   "stats": {
     "totalReviews": 41863,
-    "alreadyFlagged": 18158,
+    "alreadyFlagged": 18159,
     "dateGuardCatches": 133,
-    "directorMismatch": 955,
+    "directorMismatch": 954,
     "tvFilmSignals": 1161,
     "londonSignals": 829,
     "offBroadwaySignals": 480,
@@ -4583,22 +4583,8 @@
     },
     {
       "showId": "cats-west-end-2026",
-      "file": "jonathan-baz--unknown.json",
-      "score": 94,
-      "publishDate": null,
-      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "timeout-london--adam-feldman.json",
-      "publishDate": "2026-08-07",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-08-07T07:46:52-04:00",
       "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
       "findings": [
         {
