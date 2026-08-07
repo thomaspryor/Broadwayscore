@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: e02aeafc-deda-4880-86b6-03c60e59e534
-  modified: 2026-08-07T00:59:12.748Z
+  modified: 2026-08-07T01:08:23.601Z
 ---
 
 Owner's paywall subscription status (as of 2026-07-21):
@@ -20,6 +20,7 @@ Owner's paywall subscription status (as of 2026-07-21):
 - WaPo FIXED 2026-08-02 20:46 UTC: after the owner's Safari re-login this session, fresh cookies verify `✅ logged-in` (body 8282, real auth cookie values 36-335 chars) via `node scripts/verify-cookie-login.js --outlets=wsj,wapo`. This was a pipeline-wide fix (WaPo was broken for every show's WaPo reviews, not just one) — confirms the extraction pipeline itself works correctly end-to-end when the source login is real, which is what makes the WSJ non-recovery diagnosable as login-specific rather than systemic.
 NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard, Independent — cookies refreshed from owner Safari 2026-07-20, pushed to COOKIES_BUNDLE_1-4 secrets. As of 2026-08-02 the wsj/wapo entries in that list are stale (see regressions above) — nytimes, variety, newyorker, ft, thetimes still verified logged-in.
 - The Stage NOT-ENTITLED (found 2026-08-06): verify-cookie-login.js's thestage probe is VACUOUS — its test article (2023 a-dolls-house) serves the full body with ZERO cookies, so "✅ logged-in thestage" proves nothing. Recent 2026 articles (e.g. now-you-see-me-live) serve a registration wall ("THIS IS NOT A PAYWALL … create a free account to read 5 free articles") with the body entirely absent from server HTML, identically with or without the Aug-2 cookie jar (VISITOR/USER/USERSECURE, unexpired). The extracted cookie session grants no article entitlement — subscription lapsed, session invalidated, or a missing httpOnly cookie (task #779 Tahoe class). Fix path = #876 real-browser/OTP login infra; #921 already cards the ~80-file Stage recent-gap backfill on it. Also: fix the verifier to probe a recent walled article, else it stays vacuous.
+  - **CORRECTION (2026-08-07): only the BODY is walled — the SCORE is not.** The registration-wall HTML still contains the article's own star rating (first `aos-StarRating` block, directly under the `aos-ReviewArticle` h1; related-article cards come later). `extractUKStarRating(html,'')` from `scripts/lib/score-extractors.js` returns the correct score from a zero-cookie plain fetch (verified on now-you-see-me-live: 5/5, source `stage-star-svg`). Stage scores are recoverable TODAY without #876 — only full text recovery is blocked on OTP login. Recovery tool: `recover-explicit-ratings.js --outlet=thestage --phase=3` (WARNING: its `--dry-run` flag is DEAD — parsed at line 68, never referenced; it fetches and writes regardless).
 
 **No subscription exists (never prompt for login):**
 - Backstage — jar is only a cf_clearance bot cookie; no credentials, no Gmail receipts in 2 years.
