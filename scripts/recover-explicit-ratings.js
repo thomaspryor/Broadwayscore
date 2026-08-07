@@ -17,6 +17,7 @@
  *   node scripts/recover-explicit-ratings.js --phase=0,1,2,3    # Full pipeline with URL discovery
  *   node scripts/recover-explicit-ratings.js --phase=0,3        # Discover URLs then scrape
  *   node scripts/recover-explicit-ratings.js --outlet=guardian   # Single outlet
+ *   node scripts/recover-explicit-ratings.js --show=some-show-id # Single show
  *   node scripts/recover-explicit-ratings.js --source=theatre-record # Filter by source
  *   node scripts/recover-explicit-ratings.js --limit=10          # Limit per outlet
  *
@@ -31,6 +32,8 @@ const path = require('path');
 const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { isScoreable } = require('./lib/is-scoreable');
+const { explainExclusion } = require('./lib/review-guards');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
@@ -71,6 +74,7 @@ const PHASES = (() => {
   return p ? p.split('=')[1].split(',').map(Number) : [1, 2, 3];
 })();
 const OUTLET_FILTER = args.find(a => a.startsWith('--outlet='))?.split('=')[1] || '';
+const SHOW_FILTER = args.find(a => a.startsWith('--show='))?.split('=')[1] || '';
 const SOURCE_FILTER = args.find(a => a.startsWith('--source='))?.split('=')[1] || '';
 const MARKET_FILTER = args.find(a => a.startsWith('--market='))?.split('=')[1] || '';
 const SINCE_FILTER = args.find(a => a.startsWith('--since='))?.split('=')[1] || '';
@@ -733,6 +737,18 @@ async function phase3ScrapeURLs(reviews) {
       // Try direct HTTP with subscriber cookies first (free, instant)
       html = await httpGetWithCookies(url);
 
+      // A no-cookie direct fetch can return a registration wall (>1000 chars
+      // of page furniture, no article). Keep it ONLY if the rule-based
+      // extractor already finds a score in it (UK star outlets embed the
+      // article's own StarRating in the wall); otherwise discard so the
+      // archive.org / scraper chain runs exactly as it did before the
+      // no-cookie fallback existed (NYT-class text paywalls need archive).
+      if (html && !buildCookieHeaderForUrl(url)
+          && !extractScoreRuleBased(html, review.data.fullText || '', review.data.outletId || '', review.data.showTitle || '')) {
+        console.log(`    → no-cookie fetch has no extractable score — falling through`);
+        html = null;
+      }
+
       // For paywall/blocked sites without cookies, try archive.org
       if (!html && isArchiveFirstSite(url)) {
         console.log(`    → Trying archive.org (paywall site)...`);
@@ -740,8 +756,15 @@ async function phase3ScrapeURLs(reviews) {
         if (html) console.log(`    → Archive.org: ${html.length} chars`);
       }
 
-      // Fall back to scraper for non-paywall or if archive/cookies failed
-      if (!html && scraper) {
+      // Fall back to scraper for non-paywall or if archive/cookies failed.
+      // Dry-run skips the PAID fallback chain (BD/SB/SD) — free direct+cookie
+      // and archive.org probes still run so the report stays meaningful, but a
+      // "report only" run must never burn scraper credits (2026-08-07: a
+      // 120s dry-run burned ScrapingDog + BrightData calls).
+      if (!html && scraper && DRY_RUN) {
+        console.log(`    → dry-run: skipping paid scraper fallback`);
+      }
+      if (!html && scraper && !DRY_RUN) {
         const result = await scraper.fetchPage(url);
         if (result && result.content) {
           html = result.content;
@@ -839,19 +862,22 @@ function httpGet(url, maxRedirects = 5) {
 }
 
 /**
- * Fetch URL with subscriber cookies (free, no API credits).
- * Returns HTML string or null if cookies unavailable/fetch fails.
+ * Fetch URL directly with subscriber cookies when available, plain otherwise
+ * (both free, no API credits). No-cookie fetches matter: UK star outlets serve
+ * their registration wall — which still carries the article's own star rating —
+ * to anonymous requests, so a plain GET is enough for score recovery even when
+ * no cookie jar exists for the domain (NYSM/The Stage, card 3b5637c5).
+ * Returns HTML string or null on failure.
  */
 async function httpGetWithCookies(url) {
   const cookieHeader = buildCookieHeaderForUrl(url);
-  if (!cookieHeader) return null;
 
   try {
     const hostname = new URL(url).hostname;
     const resp = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Cookie': cookieHeader,
+        ...(cookieHeader ? { 'Cookie': cookieHeader } : {}),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
         'Referer': `https://${hostname}/`,
@@ -862,7 +888,7 @@ async function httpGetWithCookies(url) {
     if (resp.status !== 200) return null;
     const html = await resp.text();
     if (html && html.length > 1000) {
-      console.log(`    → Direct+cookies: ${html.length} chars`);
+      console.log(`    → Direct${cookieHeader ? '+cookies' : ' (no cookies)'}: ${html.length} chars`);
       return html;
     }
     return null;
@@ -895,6 +921,11 @@ function findMissingRatings() {
     shows = shows.filter(d => d.includes(MARKET_FILTER));
   }
 
+  // Show filter: restrict to a single show directory (exact id match)
+  if (SHOW_FILTER) {
+    shows = shows.filter(d => d === SHOW_FILTER);
+  }
+
   // Since filter: restrict to shows opened on or after a date (e.g., '2024-07-01')
   // Also includes all currently open/previews shows regardless of date
   if (SINCE_FILTER) {
@@ -913,7 +944,18 @@ function findMissingRatings() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (!isScoreable(data, showFor(data), filePath)) continue;
+        // Candidacy: isScoreable, EXCEPT that a zero-content stub whose only
+        // exclusion is noTextOrScoreSignal is exactly what this script exists
+        // to fix — the recovered score satisfies the very predicate that
+        // excluded it (chicken-and-egg: 400 of 422 scoreless thestage files
+        // were invisible to this script; card 3b5637c5). Every other
+        // exclusion (wrongShow, wrongProduction, contentTierInvalid, …) and
+        // the isScoreable extras still exclude.
+        if (!isScoreable(data, showFor(data), filePath)) {
+          if (explainExclusion(data, showFor(data), filePath) !== 'noTextOrScoreSignal') continue;
+          if (data.incompleteReason === 'scraper_garbage') continue;
+          if (data.showNotMentioned && !hasExcerpt(data)) continue;
+        }
         if (data.originalScore) continue;
 
         const outletId = data.outletId || '';
@@ -940,6 +982,7 @@ async function main() {
   if (DRY_RUN) console.log('*** DRY RUN — no files will be modified ***');
   console.log(`Phases: ${PHASES.join(', ')}`);
   if (OUTLET_FILTER) console.log(`Outlet filter: ${OUTLET_FILTER}`);
+  if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
   if (SOURCE_FILTER) console.log(`Source filter: ${SOURCE_FILTER}`);
   if (MARKET_FILTER) console.log(`Market filter: ${MARKET_FILTER}`);
   if (LIMIT) console.log(`Limit per phase: ${LIMIT}`);
@@ -954,7 +997,7 @@ async function main() {
   reviews.sort((a, b) =>
     (attemptState.attempts[attemptKey(a)] || '').localeCompare(attemptState.attempts[attemptKey(b)] || '')
   );
-  const isUnfilteredRun = !OUTLET_FILTER && !SOURCE_FILTER && !MARKET_FILTER && !SINCE_FILTER && LIMIT === 0;
+  const isUnfilteredRun = !OUTLET_FILTER && !SHOW_FILTER && !SOURCE_FILTER && !MARKET_FILTER && !SINCE_FILTER && LIMIT === 0;
   const allCandidateKeys = new Set(reviews.map(attemptKey));
 
   console.log(`\nFound ${reviews.length} reviews from rated outlets missing originalScore\n`);
