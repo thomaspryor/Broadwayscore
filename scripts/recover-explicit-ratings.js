@@ -737,6 +737,18 @@ async function phase3ScrapeURLs(reviews) {
       // Try direct HTTP with subscriber cookies first (free, instant)
       html = await httpGetWithCookies(url);
 
+      // A no-cookie direct fetch can return a registration wall (>1000 chars
+      // of page furniture, no article). Keep it ONLY if the rule-based
+      // extractor already finds a score in it (UK star outlets embed the
+      // article's own StarRating in the wall); otherwise discard so the
+      // archive.org / scraper chain runs exactly as it did before the
+      // no-cookie fallback existed (NYT-class text paywalls need archive).
+      if (html && !buildCookieHeaderForUrl(url)
+          && !extractScoreRuleBased(html, review.data.fullText || '', review.data.outletId || '', review.data.showTitle || '')) {
+        console.log(`    → no-cookie fetch has no extractable score — falling through`);
+        html = null;
+      }
+
       // For paywall/blocked sites without cookies, try archive.org
       if (!html && isArchiveFirstSite(url)) {
         console.log(`    → Trying archive.org (paywall site)...`);
