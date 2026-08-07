@@ -850,19 +850,22 @@ function httpGet(url, maxRedirects = 5) {
 }
 
 /**
- * Fetch URL with subscriber cookies (free, no API credits).
- * Returns HTML string or null if cookies unavailable/fetch fails.
+ * Fetch URL directly with subscriber cookies when available, plain otherwise
+ * (both free, no API credits). No-cookie fetches matter: UK star outlets serve
+ * their registration wall — which still carries the article's own star rating —
+ * to anonymous requests, so a plain GET is enough for score recovery even when
+ * no cookie jar exists for the domain (NYSM/The Stage, card 3b5637c5).
+ * Returns HTML string or null on failure.
  */
 async function httpGetWithCookies(url) {
   const cookieHeader = buildCookieHeaderForUrl(url);
-  if (!cookieHeader) return null;
 
   try {
     const hostname = new URL(url).hostname;
     const resp = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Cookie': cookieHeader,
+        ...(cookieHeader ? { 'Cookie': cookieHeader } : {}),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
         'Referer': `https://${hostname}/`,
@@ -873,7 +876,7 @@ async function httpGetWithCookies(url) {
     if (resp.status !== 200) return null;
     const html = await resp.text();
     if (html && html.length > 1000) {
-      console.log(`    → Direct+cookies: ${html.length} chars`);
+      console.log(`    → Direct${cookieHeader ? '+cookies' : ' (no cookies)'}: ${html.length} chars`);
       return html;
     }
     return null;
