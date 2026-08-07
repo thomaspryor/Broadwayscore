@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T08:57:29.881Z",
+  "generatedAt": "2026-08-07T10:01:51.269Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 355.7648247222222,
+      "fileAgeHours": 356.8374269444444,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 315.0677622222222
+      "nonTerminalAgeHours": 316.1403702777778
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 19.371423611111112
+      "nonTerminalAgeHours": 20.444031666666667
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,26 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 46.208011666666664,
+      "fileAgeHours": 47.28061722222222,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 45.56994611111111
-    },
-    {
-      "showId": "the-pass-off-broadway-2026",
-      "title": "The Pass",
-      "openingDate": "2026-08-04",
-      "file": "nytg--unknown.json",
-      "outletId": "nytg",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.newyorktheatreguide.com/show/47271-the-pass",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
-      "firstSeen": "2026-08-06T06:24:23.949Z",
-      "fileAgeHours": 26.55164388888889,
-      "gapSeenAt": "2026-08-07T00:48:18.003Z",
-      "nonTerminalAgeHours": 8.153299166666667
+      "nonTerminalAgeHours": 46.64255416666666
     }
   ],
   "contradictions": []
