@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-07T20:27:17.059Z",
-  "processed": 114,
-  "failed": 1213,
-  "successRate": "8.6%",
+  "updatedAt": "2026-08-07T20:54:57.971Z",
+  "processed": 115,
+  "failed": 1262,
+  "successRate": "8.4%",
   "tierBreakdown": {
     "playwright": 73,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 6,
     "scrapingbee": 15,
-    "brightdata": 5,
+    "brightdata": 6,
     "archiveToday": 0,
     "archive": 16
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -84,6 +84,17 @@
       "event": "bb-session",
       "session": "21df797c",
       "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-08-07T20:53:45.867Z",
+      "event": "bb-session",
+      "session": "397512f2",
+      "url": "https://www.thetimes.co.uk/culture/tv-radio/article/alley-cats-review-ricky-gerv"
+    },
+    {
+      "t": "2026-08-07T20:53:46.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
