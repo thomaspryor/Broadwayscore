@@ -1,40 +1,28 @@
 {
-  "generatedAt": "2026-08-06T09:32:35.363Z",
+  "generatedAt": "2026-08-07T08:02:41.312Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "5562ca0d72a0a11358e76b685cd34917fa2e2aa4",
+  "latestRunHeadSha": "b9efb687419a371ffb963627faaac2dff50538a2",
   "state": "RED",
-  "consecutiveFailures": 43,
+  "consecutiveFailures": 66,
   "redSince": "2026-08-05T14:09:09Z",
-  "redForHours": 19.39065638888889,
+  "redForHours": 41.89230888888889,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-04T23:54:19Z",
-  "latestFailedRunId": "31085708817",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31085708817",
-  "decidedRuns": 87,
+  "latestFailedRunId": "31157109910",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31157109910",
+  "decidedRuns": 86,
   "failingJobs": [
     {
-      "name": "Lint Workflows",
+      "name": "Unit Tests",
       "steps": [
-        "Audit — alert-sender direct-bypass gate"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run unit tests"
+        "Run unit tests (no-data-dependency)"
       ]
     },
     {
       "name": "Data Validation",
       "steps": [
         "Audit review contamination"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
       ]
     },
     {
@@ -46,17 +34,11 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/show-score-discover.test.mjs",
-      "job": "E2E Tests",
-      "step": "Run unit tests",
-      "evidence": "not ok 1 - pulls JSON-LD url values and anchor hrefs, dropping Show Score own links"
-    },
-    {
-      "path": "tests/unit/intentional-clear-breadcrumb.test.mjs",
+      "path": "tests/unit/wrong-production-setters-honor-manual-clear.test.mjs",
       "job": "Unit Tests",
       "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 1613 - every CLEAR_BREADCRUMBS key is an actual PROTECTED_FIELD"
+      "evidence": "not ok 16 - no NEW setter outside the known list — alert if grep finds one"
     }
   ],
-  "topFailingJob": "Lint Workflows"
+  "topFailingJob": "Unit Tests"
 }
