@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T22:23:51.396Z",
+  "generatedAt": "2026-08-07T23:26:21.644Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 369.2041311111111,
+      "fileAgeHours": 370.2458663888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 328.5070719444444
+      "nonTerminalAgeHours": 329.5488075
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 32.81073333333333
+      "nonTerminalAgeHours": 33.852468888888886
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +50,26 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 59.64732,
+      "fileAgeHours": 60.689055555555555,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 59.009255833333334
+      "nonTerminalAgeHours": 60.05099138888889
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "title": "The Pass",
+      "openingDate": "2026-08-04",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "tier": 2,
+      "type": "unscored",
+      "url": "https://www.newyorktheatreguide.com/show/47271-the-pass",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
+      "firstSeen": "2026-08-06T06:24:23.949Z",
+      "fileAgeHours": 41.03268861111111,
+      "gapSeenAt": "2026-08-07T23:26:21.643Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
