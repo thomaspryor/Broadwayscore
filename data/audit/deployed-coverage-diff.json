@@ -1,51 +1,11 @@
 {
-  "generatedAt": "2026-08-07T07:12:15.799Z",
+  "generatedAt": "2026-08-07T08:57:37.018Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 154,
-  "clean": 152,
-  "defective": 2,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "moulin-rouge-2019",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2019-07-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: billboard"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.03 vs local 72.36 (Δ0.33)"
-        }
-      ],
-      "missingFromProd": [
-        "billboard"
-      ],
-      "localCount": 39,
-      "deployedCount": 38
-    },
-    {
-      "showId": "hamilton-2015",
-      "title": "Hamilton",
-      "openingDate": "2015-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 91.81 vs local 91.62 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 39,
-      "deployedCount": 40
-    }
-  ]
+  "clean": 154,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
