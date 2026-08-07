@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-07T05:33:23.942Z",
+  "timestamp": "2026-08-07T06:06:32.613Z",
   "stats": {
-    "totalReviews": 41808,
+    "totalReviews": 41810,
     "alreadyFlagged": 18159,
-    "dateGuardCatches": 129,
+    "dateGuardCatches": 130,
     "directorMismatch": 952,
     "tvFilmSignals": 1157,
     "londonSignals": 821,
@@ -24783,6 +24783,20 @@
       "score": 60,
       "publishDate": "2025-05-14",
       "url": "https://www.thetimes.com/article/eaafd29a-2398-4612-9a87-370d891587ee",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": "2025-05-14",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
