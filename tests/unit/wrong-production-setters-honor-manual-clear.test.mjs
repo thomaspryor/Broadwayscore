@@ -59,6 +59,11 @@ const KNOWN_SETTERS = [
   'apply-cross-production-llm-flags.js', // conservative apply of Opus WRONG verdicts
   'auto-triage-cross-production.js',     // conservative flagging from cross-prod audit
   'fetch-guardian-reviews.js',           // guardian-api stale-slug flag
+  // Incident repair for the 2026-08-06 noteless auto-clear bug (#1108). Restores
+  // flags the buggy mergeReviews predicate wrongly cleared — so it writes
+  // wrongProduction=true and owes the same guard: a file a human explicitly
+  // cleared or overrode is left alone. (added 2026-08-07, #1085)
+  'repair-noteless-wrongprod-autoclear.js',
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {

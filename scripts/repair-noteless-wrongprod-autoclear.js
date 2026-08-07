@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const APPLY = process.argv.includes('--apply');
 
@@ -101,6 +102,16 @@ for (const abs of candidates) {
   // those would suppress legitimate reviews site-wide, so this script only
   // repairs files whose clear is stamped with the incident date.
   if (cur.wrongProductionAutoClearedAt !== INCIDENT_DATE) { outOfWindow++; continue; }
+
+  // Manual-clear breadcrumb wins over any automated restore. The incident stamp
+  // alone should never coexist with a human's explicit clear/override, but this
+  // script writes `wrongProduction = true`, so it owes the same guard every
+  // other setter honours: a human who cleared or overrode a flag must not have
+  // it re-flagged by a sweep. (tests/unit/wrong-production-setters-honor-manual-clear.test.mjs)
+  if (shouldSkipWrongProductionAudit(cur)) {
+    leave.push({ rel, note: 'manual-clear/override breadcrumb present — honoured, not restored' });
+    continue;
+  }
 
   // Every clear in this incident is stamped wrongProductionAutoClearedAt=2026-08-06,
   // so the file as it stood at the last commit BEFORE that date is the pre-clear
