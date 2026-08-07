@@ -102,7 +102,15 @@ function loadSharedTaskState() {
   for (const f of files) {
     const m = /^(\d+)\.json$/.exec(f);
     if (!m) continue;
-    try { tasksById[m[1]] = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* skip corrupt task file */ }
+    const filePath = path.join(dir, f);
+    // _mtimeMs feeds findClaimedTask's staleness bound (task #1124) — the
+    // task file itself carries no "last touched" field, so the file's own
+    // mtime is the freshness signal for an owner-less in_progress claim.
+    try {
+      const task = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      task._mtimeMs = fs.statSync(filePath).mtimeMs;
+      tasksById[m[1]] = task;
+    } catch { /* skip corrupt task file */ }
   }
   return { notionMap, tasksById };
 }
