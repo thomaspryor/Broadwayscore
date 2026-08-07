@@ -119,7 +119,14 @@ function loadSharedTaskState() {
   for (const f of files) {
     const m = /^(\d+)\.json$/.exec(f);
     if (!m) continue;
-    try { tasksById[m[1]] = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* skip corrupt */ }
+    const filePath = path.join(dir, f);
+    // _mtimeMs feeds findClaimedTask's staleness bound (task #1124) — see
+    // autonomous-triage.js loadSharedTaskState for the full rationale.
+    try {
+      const task = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      task._mtimeMs = fs.statSync(filePath).mtimeMs;
+      tasksById[m[1]] = task;
+    } catch { /* skip corrupt */ }
   }
   return { notionMap, tasksById };
 }

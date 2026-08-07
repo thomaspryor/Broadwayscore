@@ -389,11 +389,64 @@ function mkTaskState(notionMap, tasksById) { return { notionMap, tasksById }; }
 test('findClaimedTask: mapped taskId in_progress + marker present → claimed', () => {
   const ts = mkTaskState(
     { 'abc-123': { taskId: '151' } },
-    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1 Next · Not started · Admin\nsome notes' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1 Next · Not started · Admin\nsome notes', _mtimeMs: Date.now() } },
   );
   const hit = findClaimedTask('abc-123', ts);
   assert.ok(hit);
   assert.equal(hit.id, '151');
+});
+
+test('findClaimedTask (task #1124): in_progress + owner:null + mtime older than the staleness window → NOT claimed', () => {
+  const now = 1_800_000_000_000;
+  const staleMtime = now - 3 * 24 * 60 * 60 * 1000; // 3 days old, default window is 48h
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', owner: null, description: '[notion:abc-123] P1', _mtimeMs: staleMtime } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts, { now: () => now }), null);
+});
+
+test('findClaimedTask (task #1124): in_progress + no owner field at all + mtime within the window → still claimed', () => {
+  const now = 1_800_000_000_000;
+  const freshMtime = now - 1 * 60 * 60 * 1000; // 1h old
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1', _mtimeMs: freshMtime } },
+  );
+  const hit = findClaimedTask('abc-123', ts, { now: () => now });
+  assert.ok(hit);
+  assert.equal(hit.id, '151');
+});
+
+test('findClaimedTask (task #1124): in_progress + real owner + mtime far outside the window → owner wins, still claimed', () => {
+  const now = 1_800_000_000_000;
+  const staleMtime = now - 30 * 24 * 60 * 60 * 1000; // 30 days old
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', owner: 'live-session-xyz', description: '[notion:abc-123] P1', _mtimeMs: staleMtime } },
+  );
+  const hit = findClaimedTask('abc-123', ts, { now: () => now });
+  assert.ok(hit);
+  assert.equal(hit.id, '151');
+});
+
+test('findClaimedTask (task #1124): in_progress + owner:null + no _mtimeMs at all → fails closed, NOT claimed', () => {
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', owner: null, description: '[notion:abc-123] P1' } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts), null);
+});
+
+test('findClaimedTask (task #1124): custom claimStaleHours narrows the window', () => {
+  const now = 1_800_000_000_000;
+  const twoHoursOld = now - 2 * 60 * 60 * 1000;
+  const ts = mkTaskState(
+    { 'abc-123': { taskId: '151' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:abc-123] P1', _mtimeMs: twoHoursOld } },
+  );
+  assert.equal(findClaimedTask('abc-123', ts, { now: () => now, claimStaleHours: 1 }), null);
+  assert.ok(findClaimedTask('abc-123', ts, { now: () => now, claimStaleHours: 3 }));
 });
 
 test('findClaimedTask: mapped taskId not in_progress → not claimed', () => {
@@ -433,7 +486,7 @@ test('a card claimed in-flight (shared task in_progress) skips without an LLM ca
   let calls = 0;
   const taskState = mkTaskState(
     { 'card-42': { taskId: '151' } },
-    { 151: { id: '151', status: 'in_progress', description: '[notion:card-42] P1 Next · Not started · Admin' } },
+    { 151: { id: '151', status: 'in_progress', description: '[notion:card-42] P1 Next · Not started · Admin', _mtimeMs: Date.now() } },
   );
   const r = await triageCard({ ...CARD, id: 'card-42' }, async () => { calls++; return JSON.stringify(GOOD); }, { taskState });
   assert.equal(calls, 0);

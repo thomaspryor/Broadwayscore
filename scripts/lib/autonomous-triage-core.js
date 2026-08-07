@@ -322,13 +322,38 @@ function validateTriageResult(obj) {
 // task must still carry `[notion:<cardId>]` before it's trusted (ship-check
 // finding — a bare description-substring scan risked a false match on any
 // task whose notes happened to contain the same bracket text).
-function findClaimedTask(cardId, taskState) {
+// Freshness bound (task #1124): a task-list entry set in_progress and never
+// touched again is not evidence of live work. A 2026-08-07 audit found 74
+// in_progress/owner:null entries in the shared task-list mirror, the oldest
+// 6.9 days stale, which permanently fooled this exact function into reporting
+// abandoned cards as "someone is working this right now" to all 4 autonomous
+// consumers (autonomous-run.js, autonomous-triage.js, autonomous-shadow-run.js,
+// autonomous-acceptance-recheck.js all route through triageCard/this fn). The
+// task-list JSON has no reliable "last touched" field, so the loader
+// (loadSharedTaskState in autonomous-triage.js / autonomous-acceptance-
+// recheck.js) stamps each task with the mtime of its own file — the one
+// signal available without a schema change. A claim still counts if the task
+// carries a real `owner` (an explicit claim, immune to staleness) OR its file
+// was touched within the window.
+const DEFAULT_CLAIM_STALE_HOURS = 48;
+
+function findClaimedTask(cardId, taskState, opts = {}) {
   if (!cardId || !taskState) return null;
   const entry = taskState.notionMap && taskState.notionMap[cardId];
   if (!entry || !entry.taskId) return null;
   const task = taskState.tasksById && taskState.tasksById[String(entry.taskId)];
   if (!task || task.status !== 'in_progress') return null;
   if (typeof task.description !== 'string' || !task.description.includes(`[notion:${cardId}]`)) return null;
+  const hasOwner = typeof task.owner === 'string' && task.owner.trim().length > 0;
+  if (!hasOwner) {
+    const staleHours = Number.isFinite(opts.claimStaleHours) ? opts.claimStaleHours : DEFAULT_CLAIM_STALE_HOURS;
+    const now = typeof opts.now === 'function' ? opts.now() : Date.now();
+    const mtimeMs = Number.isFinite(task._mtimeMs) ? task._mtimeMs : null;
+    // No mtime signal at all (a taskState built without loadSharedTaskState's
+    // stamping) fails closed — not claimed — rather than silently trusting an
+    // unowned entry forever, which is the exact bug this fixes.
+    if (mtimeMs === null || (now - mtimeMs) > staleHours * 60 * 60 * 1000) return null;
+  }
   return task;
 }
 
@@ -401,7 +426,7 @@ async function fetchCardWithRetry(id, fetchFn, opts = {}) {
  *   { preFilter: {eligible:true}, failed: 'triage', error, attempts }
  */
 async function triageCard(card, callLLM, opts = {}) {
-  const claimedBy = findClaimedTask(card.id, opts.taskState);
+  const claimedBy = findClaimedTask(card.id, opts.taskState, opts);
   if (claimedBy) {
     return { preFilter: { eligible: false, reason: `claimed in-flight (shared task #${claimedBy.id} is in_progress — already being worked interactively)` } };
   }
