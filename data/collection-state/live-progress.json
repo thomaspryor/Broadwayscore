@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-08-07T08:11:34.277Z",
+  "updatedAt": "2026-08-07T08:14:56.021Z",
   "processed": 138,
-  "failed": 1637,
-  "successRate": "7.8%",
+  "failed": 1647,
+  "successRate": "7.7%",
   "tierBreakdown": {
     "playwright": 83,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-06T12:51:55.232Z",
@@ -110,6 +110,17 @@
     },
     {
       "t": "2026-08-07T07:06:44.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-08-07T08:14:03.735Z",
+      "event": "bb-session",
+      "session": "49fd609b",
+      "url": "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-the"
+    },
+    {
+      "t": "2026-08-07T08:14:04.509Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
