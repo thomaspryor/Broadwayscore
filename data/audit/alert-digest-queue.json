@@ -1,79 +1,13 @@
 [
   {
     "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: browserbase $6.9 > $4 (69 sessions); brightdata $5.34 > $2.5 (1414 serp + 2148 unlocker reqs); scrapingdog 52125 credits > 45000",
-    "description": "Day 2026-08-05. 2026-08-05 · Browserbase: $6.9 (69 sessions) · 2026-08-05 · Bright Data: $5.34 (1414 serp / 2148 unlocker) · ScrapingBee: 21400 credits (21400 this cycle) · ScrapingDog: 52125 credits (983562 this cycle) · Browserbase attribution: 6% attributed — top: collect-review-texts.js 4 · Bright Data attribution: 30% attributed — top: opening-night-poller.js 780, audit-show-review-gap.js 205, ingest-review-from-url.js 52, enrich-stubhub-prices.js 18, collect-review-texts.js 3 · ScrapingBee attribution: 1% attributed — top: opening-night-poller.js 75, audit-show-review-gap.js 46, ingest-review-from-url.js 44, enrich-stubhub-prices.js 2, auto-fix-show-data.js 1 · ScrapingDog attribution: 8% attributed — top: audit-show-review-gap.js 1422, opening-night-poller.js 1216, collect-review-texts.js 935, ingest-review-from-url.js 203, detect-revivals-ibdb.js 108. Verification streak reset to 0.",
+    "title": "Scraping spend over budget: brightdata $6.12 > $2.5 (1626 serp + 2455 unlocker reqs); scrapingdog 47883 credits > 45000",
+    "description": "Day 2026-08-06. 2026-08-06 · Browserbase: $3.2 (32 sessions) · 2026-08-06 · Bright Data: $6.12 (1626 serp / 2455 unlocker) · ScrapingBee: 25618 credits (47018 this cycle) · ScrapingDog: 47883 credits (1031445 this cycle) · Browserbase attribution: 3% attributed — top: sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 32% attributed — top: opening-night-poller.js 866, fetch-show-images-auto.js 288, audit-show-review-gap.js 121, enrich-stubhub-prices.js 20, ingest-review-from-url.js 13 · ScrapingBee attribution: 2% attributed — top: fetch-show-images-auto.js 290, opening-night-poller.js 121, audit-show-review-gap.js 49, enrich-stubhub-prices.js 10, ingest-review-from-url.js 10 · ScrapingDog attribution: 6% attributed — top: opening-night-poller.js 1436, fetch-show-images-auto.js 557, audit-show-review-gap.js 529, enrich-stubhub-prices.js 100, ingest-review-from-url.js 96. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-06T09:32:29.162Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "2/154 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThe Enormous Crocodile: score-drift\nThe Car Man: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-06T11:25:18.100Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-08-06T13:13:16.896839+00:00",
-    "title": "Feedback: 1 of 1 needs you",
-    "description": "1 message from users came in. 1 of them stalled and needs a person.\n\n3 Summers of Lincoln (Regional) — The site deliberately did not act on this: show \"3 Summers of Lincoln\" (regional) already in catalog as 3-summers-of-lincoln-regional-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Stage West, Stage and Cinema, and Vanguard Culture’s to 3 Summers of Lincoln’s scorecard, please\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/552",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31111698535",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-06T14:39:39.646Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 29 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31129924024",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-06T23:25:48.769Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-08-06T16:40:41.426664+00:00",
-    "title": "Feedback: 1 of 1 needs you",
-    "description": "1 message from users came in. 1 of them stalled and needs a person.\n\nTwo Strangers/Outsiders/3 Summersmof Lincoln — The site deliberately did not act on this: show \"Two Strangers/Outsiders/3 Summersmof Lincoln\" already in catalog as two-strangers-bway-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add the Audience Grade for all Two Strangers and The Outsiders respectively under Transferred to Broadway alongside Lincoln’s Audience Grade under its page from Recent Tryouts.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/553",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31133806584",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-07T00:14:27.386Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 80.1% (452/564)\noff-broadway: 48.7% (155/318)\nwest-end: 70.2% (403/574)\n\nOldest gaps:\n1536 — guardian (357h)\n1536 — independent (357h)\nA Midsummer Night's Dream - Globe — financialtimes (357h)\nA Midsummer Night's Dream - Globe — telegraph (357h)\nA Midsummer Night's Dream — financialtimes (357h)\n… 202 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (357h)\nThe Book of Mormon — usatoday (357h)\nHeathers The Musical — dailybeast (357h)\nHeathers The Musical — ew (357h)\nSpamalot — dailybeast (357h)\n… 4 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-07T00:48:25.455Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "12 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-07T00:48:28.137Z"
+    "queuedAt": "2026-08-07T08:02:31.417Z"
   }
 ]
