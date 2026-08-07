@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-07T07:18:15.704Z",
+  "timestamp": "2026-08-07T09:04:04.306Z",
   "stats": {
-    "totalReviews": 41814,
+    "totalReviews": 41819,
     "alreadyFlagged": 18157,
     "dateGuardCatches": 130,
     "directorMismatch": 953,
-    "tvFilmSignals": 1157,
-    "londonSignals": 823,
+    "tvFilmSignals": 1158,
+    "londonSignals": 824,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
     "noPublishDate": 3574
@@ -12050,6 +12050,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/shows/im-every-woman-musical-tickets",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -24691,6 +24709,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "micablackwell--unknown.json",
+      "score": 93,
       "publishDate": "2025-05-14",
       "url": "https://micablackwell.co.uk/the-comedy-about-spies-noel-coward-theatre/",
       "findings": [
