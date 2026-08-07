@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-07T11:46:57.486Z",
+  "timestamp": "2026-08-07T11:55:30.558Z",
   "stats": {
-    "totalReviews": 41831,
-    "alreadyFlagged": 18157,
+    "totalReviews": 41833,
+    "alreadyFlagged": 18158,
     "dateGuardCatches": 130,
     "directorMismatch": 953,
-    "tvFilmSignals": 1158,
+    "tvFilmSignals": 1159,
     "londonSignals": 824,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3580
+    "noPublishDate": 3579
   },
   "findings": [
     {
@@ -42136,6 +42136,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "vogue--taylor-antrim.json",
+      "publishDate": "2025-04-30",
+      "url": "https://www.vogue.com/article/stranger-things-the-first-shadow-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
