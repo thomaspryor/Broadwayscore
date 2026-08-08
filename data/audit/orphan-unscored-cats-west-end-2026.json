@@ -2,9 +2,51 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-08T09:45:48.289Z",
+  "detectedAt": "2026-08-08T09:57:10.763Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "i-paper--fiona-mountford.json",
+      "outletId": "i-paper",
+      "criticName": "Fiona Mountford",
+      "url": null,
+      "fullTextLen": 4306,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "criticName": "Alice Saville",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
+      "fullTextLen": 3946,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "london-theatre--marianka-swain.json",
+      "outletId": "london-theatre",
+      "criticName": "Marianka Swain",
+      "url": null,
+      "fullTextLen": 3462,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
@@ -18,10 +60,24 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "thestage--tom-wicker.json",
+      "outletId": "thestage",
+      "criticName": "Tom Wicker",
+      "url": "https://www.thestage.co.uk/reviews/cats-review-regents-park-open-air-theatre-london",
+      "fullTextLen": 2845,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 5,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-08T09:45:48.289Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
