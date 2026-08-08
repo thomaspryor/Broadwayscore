@@ -122,9 +122,14 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
         // else: unstamped and paused within the grace window — a routine
         // wrap-up pause of live work, not stuck (yet).
       } else if (idleHours > pausedLowDays * 24) {
-        // Stamped-and-waiting P2s are parked by the same process rule — keep
-        // them out of the FYI line while their stamp is still in the future.
-        if (!(stampMs != null && stampMs > nowMs)) pausedStale.push({ ...card, idleHours });
+        // Stamped-and-waiting P2s are parked by the same process rule as
+        // criticals — give them the same grace window past the stamp (the
+        // nightly recheck runs once a day; a stamp due today isn't stuck
+        // yet, only a stamp overdue past grace is). Without this, a P2 whose
+        // stamp lands on today's date fires the FYI warning hours before the
+        // recheck has had a chance to run.
+        const awaitingRecheck = stampMs != null && (stampMs > nowMs || stampOverdueDays <= graceDays);
+        if (!awaitingRecheck) pausedStale.push({ ...card, idleHours });
       }
     } else if (card.status === 'In progress' && idleHours > orphanHours) {
       orphaned.push({ ...card, idleHours });
