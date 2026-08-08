@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-08-08T04:21:02.763Z",
+  "timestamp": "2026-08-08T05:49:30.979Z",
   "stats": {
-    "totalReviews": 41871,
+    "totalReviews": 41873,
     "alreadyFlagged": 18166,
-    "dateGuardCatches": 134,
+    "dateGuardCatches": 135,
     "directorMismatch": 957,
     "tvFilmSignals": 1161,
     "londonSignals": 833,
@@ -24649,6 +24649,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "elementaltheatre--thomas-levi.json",
+      "publishDate": "2025-05-12",
+      "url": "https://www.elementaltheatre.com/post/comedy-about-spies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 446d before show (2025-05-12 vs 2026-08-01)"
         }
       ]
     },
