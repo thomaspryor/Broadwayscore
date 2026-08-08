@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-08T09:57:26.042Z",
+  "generatedAt": "2026-08-08T10:26:59.999Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,25 +396,23 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 72.34,
-      "liveScore": 72,
-      "scoreDrift": -0.3400000000000034,
+      "siteScore": 75.37,
+      "liveScore": 75,
+      "scoreDrift": -0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
-      "t1": 5,
-      "t2": 4,
+      "total": 20,
+      "t1": 8,
+      "t2": 5,
       "t3": 7,
-      "positive": 8,
-      "mixed": 8,
+      "positive": 11,
+      "mixed": 9,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:2/6"
-        ],
-        "highConfidence": 2,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -424,7 +422,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -660,6 +658,18 @@
           "t3": 7,
           "p": 8,
           "m": 8,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T10:26:59.999Z",
+          "rc": 20,
+          "s": 75.37,
+          "t1": 8,
+          "t2": 5,
+          "t3": 7,
+          "p": 11,
+          "m": 9,
           "n": 0,
           "bc": "waiting"
         }
@@ -1620,25 +1630,25 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 55.52,
-      "liveScore": 56,
+      "siteScore": 54.52,
+      "liveScore": 55,
       "scoreDrift": 0.4799999999999969,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 23,
       "t1": 4,
       "t2": 5,
-      "t3": 13,
+      "t3": 14,
       "positive": 6,
       "mixed": 6,
-      "negative": 10,
+      "negative": 11,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1833,6 +1843,18 @@
           "p": 6,
           "m": 6,
           "n": 10,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T10:26:59.999Z",
+          "rc": 23,
+          "s": 54.52,
+          "t1": 4,
+          "t2": 5,
+          "t3": 14,
+          "p": 6,
+          "m": 6,
+          "n": 11,
           "bc": "waiting"
         }
       ]
