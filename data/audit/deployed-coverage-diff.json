@@ -1,11 +1,51 @@
 {
-  "generatedAt": "2026-08-08T00:14:11.042Z",
+  "generatedAt": "2026-08-08T02:52:15.597Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 154,
-  "clean": 154,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 152,
+  "defective": 2,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: guardian"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.81 vs local 73.61 (Δ0.2)"
+        }
+      ],
+      "missingFromProd": [
+        "guardian"
+      ],
+      "localCount": 16,
+      "deployedCount": 15
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "title": "The Car Man",
+      "openingDate": "2026-07-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.83 vs local 87.7 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20
+    }
+  ]
 }
