@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-08T11:19:34.086Z",
+  "generatedAt": "2026-08-08T12:07:28.373Z",
   "windowDays": 1095,
-  "targets": 16,
-  "auditedThisRun": 16,
-  "carriedForward": 190,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 204,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 161,
-    "totalMissing": 1098,
-    "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 1047,
-    "totalRecoverable": 32,
+    "totalMissing": 1072,
+    "totalCitedNoUrl": 2,
+    "totalFlaggedMisses": 1071,
+    "totalRecoverable": 31,
     "totalRecovered": 7
   },
   "results": [
@@ -18145,17 +18145,16 @@
       "aggregatorListedUrls": [
         "https://www.westendbestfriend.co.uk/news/review-dinosaur-world-live-troubadour-wembley-park",
         "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
-        "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
-        "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
-        "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
         "https://suburban-mum.com/dinosaur-world-live-troubadour-wembley-park-theatre/",
-        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
+        "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
         "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+        "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/",
         "https://www.westendtheatre.com/352331/news/dinosaur-world-live-to-play-the-troubadour-wembley-park-theatre-in-london/",
-        "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
         "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
-        "https://inyougo.com/events/dinosaur-world-live",
-        "https://playstosee.com/reviews/dinosaur-world-live/"
+        "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+        "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+        "https://playstosee.com/reviews/dinosaur-world-live/",
+        "https://chillingwithlucas.com/days-out/dinosaur-world-live-review/"
       ],
       "dirFiles": 13,
       "dirClean": 4,
@@ -18174,14 +18173,20 @@
           "serpCensus": true
         },
         {
-          "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
+          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
+          "host": "troubadourtheatres.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
-          "host": "troubadourtheatres.com",
+          "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+          "host": "stagedoor.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+          "host": "ourlittleescapades.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -18190,28 +18195,21 @@
           "host": "playstosee.com",
           "knownOutletId": "plays-to-see",
           "serpCensus": true
+        },
+        {
+          "url": "https://chillingwithlucas.com/days-out/dinosaur-world-live-review/",
+          "host": "chillingwithlucas.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
-          "host": "seetickets.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "seetickets--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865"
-            }
-          ],
-          "serpCensus": true
-        },
+          "host": "londontheatre1.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
         {
           "url": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
           "host": "wembleypark.com",
@@ -18244,24 +18242,6 @@
               "file": "westendtheatre--paul-raven.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.westendtheatre.com/352331/news/dinosaur-world-live-to-play-the-troubadour-wembley-park-theatre-in-london/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://inyougo.com/events/dinosaur-world-live",
-          "host": "inyougo.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "inyougo--unknown.json",
-              "flag": "nonReview",
-              "urlInDir": "https://inyougo.com/events/dinosaur-world-live"
             }
           ],
           "serpCensus": true
@@ -18327,7 +18307,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -18336,7 +18316,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           },
@@ -18363,14 +18343,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 29,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 22,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 26,
           "non-review-path": 1,
           "ticketing-listing": 1
         }
@@ -18395,34 +18375,45 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
           "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
           "host": "troubadourtheatres.com",
           "outletId": "troubadourtheatres",
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~357997/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~277268/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
-          "url": "https://playstosee.com/reviews/dinosaur-world-live/",
-          "host": "playstosee.com",
-          "outletId": "plays-to-see",
-          "provisional": false,
+          "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+          "host": "stagedoor.com",
+          "outletId": "stagedoor",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~277269/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+        },
+        {
+          "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+          "host": "ourlittleescapades.com",
+          "outletId": "ourlittleescapades",
+          "provisional": true,
           "ok": false,
           "noop": true,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://playstosee.com/reviews/dinosaur-world-live/",
+          "host": "playstosee.com",
+          "outletId": "plays-to-see"
+        },
+        {
+          "url": "https://chillingwithlucas.com/days-out/dinosaur-world-live-review/",
+          "host": "chillingwithlucas.com",
+          "outletId": "chillingwithlucas"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -18441,18 +18432,25 @@
             "url": "https://www.kensingtonmums.co.uk/dinosaur-world-live-review/"
           },
           {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/"
-          },
-          {
             "outletId": "troubadourtheatres.com",
             "outlet": "troubadourtheatres.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr"
+          },
+          {
+            "outletId": "stagedoor.com",
+            "outlet": "stagedoor.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews"
+          },
+          {
+            "outletId": "ourlittleescapades.com",
+            "outlet": "ourlittleescapades.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/"
           },
           {
             "outletId": "plays-to-see",
@@ -18462,11 +18460,11 @@
             "url": "https://playstosee.com/reviews/dinosaur-world-live/"
           },
           {
-            "outletId": "seetickets.com",
-            "outlet": "seetickets.com",
+            "outletId": "chillingwithlucas.com",
+            "outlet": "chillingwithlucas.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865"
+            "url": "https://chillingwithlucas.com/days-out/dinosaur-world-live-review/"
           },
           {
             "outletId": "wembleypark.com",
@@ -18481,13 +18479,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westendtheatre.com/352331/news/dinosaur-world-live-to-play-the-troubadour-wembley-park-theatre-in-london/"
-          },
-          {
-            "outletId": "inyougo.com",
-            "outlet": "inyougo.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://inyougo.com/events/dinosaur-world-live"
           }
         ],
         "suppressedMissing": [],
@@ -18501,12 +18492,6 @@
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-DINOSAUR-WORLD-LIVE-Troubadour-Wembley-Park-Theatre-20260731",
             "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/dinosaur-world-live-troubadour-wembley-park-theatre/",
-            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
@@ -18531,18 +18516,25 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/dinosaur-world-live-review-2/",
-            "outletId": "fairypoweredproductions",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
             "url": "https://www.troubadourtheatres.com/news/dinosaur-world-live-returns-to-troubadour-wembley-park-theatr",
             "outletId": "troubadourtheatres.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews",
+            "outletId": "stagedoor.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T12:07:28.373Z"
+          },
+          {
+            "url": "https://ourlittleescapades.com/dinosaur-world-live-show-review/",
+            "outletId": "ourlittleescapades.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T12:07:28.373Z"
           },
           {
             "url": "https://playstosee.com/reviews/dinosaur-world-live/",
@@ -18552,11 +18544,11 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://stereoboard.seetickets.com/n/event/dinosaur-world-live-2026-dinosaur-world-live/troubadour-wembley-park-theatre/131865",
-            "outletId": "seetickets.com",
+            "url": "https://chillingwithlucas.com/days-out/dinosaur-world-live-review/",
+            "outletId": "chillingwithlucas.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+            "firstSeenAt": "2026-08-08T12:07:28.373Z"
           },
           {
             "url": "https://wembleypark.com/things-to-do/dinosaur-world-live-troubadour-wembley-park-theatre-guide/",
@@ -18571,19 +18563,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://inyougo.com/events/dinosaur-world-live",
-            "outletId": "inyougo.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 13
+        "liveCount": 3,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-07T23:26:20.886Z"
+      "computedAt": "2026-08-08T12:07:28.373Z"
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -91421,9 +91406,9 @@
         "https://playbill.com/article/what-do-the-reviews-say-about-twelfth-night-at-free-shakespeare-in-the-park",
         "https://playbill.com/article/what-did-critics-think-of-the-shakespeare-in-the-park-twelfth-night",
         "https://playbill.com/article/read-reviews-for-fiascos-twelfth-night-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-TWELFTH-NIGHT-in-Central-Park-20180731",
+        "https://www.broadwayworld.com/article/Review-Roundup-Star-Studded-TWELFTH-NIGHT-Opens-at-Shakespeare-in-the-Park-20250821",
         "https://www.broadwayworld.com/article/Review-Roundup-TWELFTH-NIGHT-RICHARD-III-Open-on-Broadway-Updating-Live-20131110",
-        "https://www.broadwayworld.com/article/Review-Roundup-Star-Studded-TWELFTH-NIGHT-Opens-at-Shakespeare-in-the-Park-20250821"
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-TWELFTH-NIGHT-in-Central-Park-20180731"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
@@ -91459,7 +91444,7 @@
         "http://www.newyorktheatreguide.com/reviews/review-of-fiasco-theaters-twelfth-night-at-classic-stage-company",
         "http://www.timeout.com/newyork/theater/twelfth-night-or-what-you-will-2",
         "http://t2conline.com/he-says-twelfth-night-a-fun-and-festive-fiasco/",
-        "https://www.timeout.com/newyork/theater/twelfth-night",
+        "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
         "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
         "http://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003",
         "http://www.usatoday.com/story/life/theater/2013/11/10/broadway-review-twelfth-night-richard-iii/3455249/",
@@ -91468,51 +91453,43 @@
         "http://www.timeout.com/newyork/theater/twelfth-night-and-richard-iii",
         "http://www.newsday.com/entertainment/theater/twelfth-night-and-richard-iii-review-top-notch-event-theater-1.6407270",
         "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html",
-        "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
-        "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
+        "https://www.timeout.com/newyork/theater/twelfth-night",
         "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
+        "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
         "https://www.dailyinfo.co.uk/events/293689/twelfth-night-or-what-you-will",
         "https://operaramblings.blog/2026/07/20/twelfth-night-in-the-park/",
         "https://slotkinletter.com/2026/08/review-twelfth-night-5",
-        "https://heretothereproductions.co.uk/twelfth-night/",
-        "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
         "https://www.intermissionmagazine.ca/reviews/twelfth-night-high-park/",
-        "https://www.thestar.com/entertainment/stage/canadian-stage-twelfth-night-high-park-review/article_8435ad32-374e-432b-9efb-d155dc18fb48.html",
+        "https://heretothereproductions.co.uk/twelfth-night/",
         "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
+        "https://www.thestar.com/entertainment/stage/canadian-stage-twelfth-night-high-park-review/article_8435ad32-374e-432b-9efb-d155dc18fb48.html",
         "https://onin.london/twelfth-night-at-kew-gardens-review/",
         "https://shakespeareaustralia.com.au/productions/twelfth-night",
         "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803",
         "https://www.londontheatre1.com/reviews/twelfth-night-theatre-on-kew/",
         "https://www.adventuresintheatreland.com/post/twelfth-night-kew-gardens",
-        "https://www.thestage.co.uk/reviews/twelfth-night-review-kew-gardens-london-shakespeare",
         "https://www.theatrebookings.com/play/twelfth-night",
+        "https://www.thestage.co.uk/reviews/twelfth-night-review-kew-gardens-london-shakespeare",
         "https://list.co.uk/event/twelfth-night-620469",
         "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night",
         "https://www.timeout.com/london/theatre/twelfth-night-65",
         "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company",
         "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112",
-        "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
-        "https://westendwilma.com/review-twelfth-night-national-theatre/",
-        "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+        "https://www.lsbo.co.uk/play/twelfth-night",
+        "https://thespyinthestalls.com/2026/08/twelfth-night-8/",
         "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562",
-        "https://oxinabox.co.uk/review-a-joyful-fun-and-accomplished-romp-thats-impossible-to-resist-creations-twelfth-night-ticks-all-the-boxes-at-wolfson-college-this-summer/",
+        "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
+        "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
         "https://www.theartsdesk.com/theatre/twelfth-night-rsc-barbican-review-intelligent-inventive-and-genuinely-funny",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html",
         "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
         "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
         "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7"
       ],
-      "dirFiles": 24,
-      "dirClean": 8,
-      "inReviewsJson": 9,
+      "dirFiles": 50,
+      "dirClean": 9,
+      "inReviewsJson": 11,
       "missing": [
-        {
-          "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://cititour.com/NYC_Broadway/Twelfth-Night/1320",
           "host": "cititour.com",
@@ -91528,100 +91505,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/obsessed/shakespeare-in-the-park-peter-dinklage-shines-in-new-twelfth-night/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/",
           "host": "lavocedinewyork.com",
           "knownOutletId": "la-voce-di-new-york",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/08/21/twelfth-night-moonlit-enchantment-as-shakespeare-returns-to-the-park/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nysun.com/article/a-happy-place-for-theater-lovers-central-parks-delacorte-theater-reopens-with-a-giddy-new-production-of-twelfth-night",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/08/21/twelfth-night-at-the-delacorte-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2025/08/review-shakespeare-in-the-park-twelfth-night-sandra-oh-peter-dinklage/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-twelfth-night-reopens-shakespeare-in-the-park_1798191/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/twelfth-night-review-greatness-thrust-upon-central-park-742db9c3",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -91661,27 +91547,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://nystagereview.com/2018/07/31/twelfth-night-a-rambunctiously-jubilant-fest-in-central-park/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-shakespeare-in-the-park-production-of-twelfth-night-at-delacorte-theater",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/07/31/theater/review-twelfth-night-shakespeare-in-the-park-shaina-taub.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/",
           "host": "variety.com",
           "knownOutletId": "variety",
@@ -91689,37 +91554,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.vulture.com/2018/07/theater-review-its-always-sunny-in-this-twelfth-night.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/",
           "host": "thewrap.com",
           "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2017/12/14/theater/review-twelfth-night-fiasco-theater-classic-stage-company.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2017/12/theater-an-enticing-twelfth-night-for-both-newbies-and-pros.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newyorktheatreguide.com/reviews/review-of-fiasco-theaters-twelfth-night-at-classic-stage-company",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -91738,16 +91575,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/twelfth-night",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -91801,9 +91631,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
+          "url": "https://www.timeout.com/newyork/theater/twelfth-night",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -91823,18 +91653,6 @@
           "url": "https://shakespeareaustralia.com.au/productions/twelfth-night",
           "host": "shakespeareaustralia.com.au",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrebookings.com/play/twelfth-night",
-          "host": "theatrebookings.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://list.co.uk/event/twelfth-night-620469",
-          "host": "list.co.uk",
-          "knownOutletId": "the-list",
           "serpCensus": true
         },
         {
@@ -91862,21 +91680,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
-          "host": "acrossthearts.co.uk",
+          "url": "https://www.lsbo.co.uk/play/twelfth-night",
+          "host": "lsbo.co.uk",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://thespyinthestalls.com/2026/08/twelfth-night-8/",
+          "host": "thespyinthestalls.com",
+          "knownOutletId": "the-spy-in-the-stalls",
           "serpCensus": true
         },
         {
@@ -91886,43 +91698,10 @@
           "serpCensus": true
         },
         {
-          "url": "https://oxinabox.co.uk/review-a-joyful-fun-and-accomplished-romp-thats-impossible-to-resist-creations-twelfth-night-ticks-all-the-boxes-at-wolfson-college-this-summer/",
-          "host": "oxinabox.co.uk",
+          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+          "host": "acrossthearts.co.uk",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "weRef": true,
-          "weRefSources": [
-            "theatre-reviews"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "theatre-reviews"
         }
       ],
       "dirOnly": [
@@ -91937,32 +91716,422 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "recoverable": true,
-          "recoverableFile": "thereviewshub--unknown.json",
-          "recoverableOutletId": "thereviewshub",
-          "recoverableCritic": "Unknown",
+          "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "thereviewshub--the-reviews-hub-london.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
-            },
-            {
-              "file": "thereviewshub--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
-            },
-            {
-              "file": "thereviewshub--yingnan-chu.json",
+              "file": "one-minute-critic--matthew-wexler.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
+              "urlInDir": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/"
             }
           ],
-          "serpCensus": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/shakespeare-in-the-park-peter-dinklage-shines-in-new-twelfth-night/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/obsessed/shakespeare-in-the-park-peter-dinklage-shines-in-new-twelfth-night/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/08/21/twelfth-night-moonlit-enchantment-as-shakespeare-returns-to-the-park/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/a-happy-place-for-theater-lovers-central-parks-delacorte-theater-reopens-with-a-giddy-new-production-of-twelfth-night",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "new-york-sun--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nysun.com/article/a-happy-place-for-theater-lovers-central-parks-delacorte-theater-reopens-with-a-giddy-new-production-of-twelfth-night"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/08/21/twelfth-night-at-the-delacorte-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2025/08/21/twelfth-night-at-the-delacorte-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newyorker--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2025/08/review-shakespeare-in-the-park-twelfth-night-sandra-oh-peter-dinklage/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2025/08/review-shakespeare-in-the-park-twelfth-night-sandra-oh-peter-dinklage/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-twelfth-night-reopens-shakespeare-in-the-park_1798191/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-twelfth-night-reopens-shakespeare-in-the-park_1798191/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/twelfth-night-review-greatness-thrust-upon-central-park-742db9c3",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/twelfth-night-review-greatness-thrust-upon-central-park-742db9c3?gaa_at=eafs&gaa_n=ASWzDAjMREB85L42ICXcmmNwGBh7LeegKC8dH7EsDyE-3iyIHxkBnFRFWS-P6MZcJOM%3D&gaa_ts=68a872ca&gaa_sig=kzugR441xzqSkyjMnix9Q9UdNYO3BmnPnWPTSsWMkqmc7l0WXkDeOPhXFVOWqNcy_Y8AisqLHVpvJOAgwWLlWg%3D%3D"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/07/31/twelfth-night-a-rambunctiously-jubilant-fest-in-central-park/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-shakespeare-in-the-park-production-of-twelfth-night-at-delacorte-theater",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/07/31/theater/review-twelfth-night-shakespeare-in-the-park-shaina-taub.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/07/theater-review-its-always-sunny-in-this-twelfth-night.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2017/12/14/theater/review-twelfth-night-fiasco-theater-classic-stage-company.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2017/12/theater-an-enticing-twelfth-night-for-both-newbies-and-pros.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newyorktheatreguide.com/reviews/review-of-fiasco-theaters-twelfth-night-at-classic-stage-company",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
@@ -91978,6 +92147,34 @@
               "file": "broadwayworld--abby-korb.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--the-reviews-hub-london.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
+            },
+            {
+              "file": "thereviewshub--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
+            },
+            {
+              "file": "thereviewshub--yingnan-chu.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
             }
           ],
           "serpCensus": true
@@ -92014,24 +92211,6 @@
               "file": "slotkinletter--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
-          "host": "frontmezzjunkies.com",
-          "knownOutletId": "frontmezzjunkies",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frontmezzjunkies--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/"
             }
           ],
           "serpCensus": true
@@ -92091,6 +92270,65 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.theatrebookings.com/play/twelfth-night",
+          "host": "theatrebookings.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrebookings--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatrebookings.com/play/twelfth-night"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://list.co.uk/event/twelfth-night-620469",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-list--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://list.co.uk/event/twelfth-night-620469"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--julia-rank.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
+            },
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
@@ -92112,19 +92350,60 @@
           ],
           "weRefStars": 4,
           "weRefStarsSource": "theatre-reviews"
-        }
-      ],
-      "citedNoUrl": [
+        },
         {
-          "outletId": "broadwayworld",
-          "outletName": "BroadwayWorld",
-          "stars": 4,
-          "source": "theatre-reviews",
-          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/twelfth-night-barbican-reviews/",
-          "priorRun": false,
-          "hasExcludedFiles": true
+          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--julia-rank.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
+            },
+            {
+              "file": "london-theatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alex-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
         }
       ],
+      "citedNoUrl": [],
       "weReference": {
         "rowCount": 6,
         "sources": {
@@ -92159,11 +92438,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 6,
-        "corroborated": 1,
+        "corroborated": 3,
         "perSource": {
           "theatre-reviews": {
-            "cited": 3,
-            "corroborated": 1
+            "cited": 6,
+            "corroborated": 3
           }
         }
       },
@@ -92189,7 +92468,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -92198,7 +92477,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 4,
             "error": null
           },
@@ -92225,13 +92504,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 27,
+        "resultCount": 26,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1236,
+        "count": 1235,
         "byReason": {
-          "aggregator-internal-nav": 920,
+          "aggregator-internal-nav": 919,
           "not-http-url": 183,
           "non-review-host": 116,
           "roundup-page": 8,
@@ -92252,25 +92531,19 @@
           "publishDate": "2017-12-15"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-TWELFTH-NIGHT-in-Central-Park-20180731",
-          "publishDate": "2018-07-31"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Star-Studded-TWELFTH-NIGHT-Opens-at-Shakespeare-in-the-Park-20250821",
+          "publishDate": "2025-08-21"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-TWELFTH-NIGHT-RICHARD-III-Open-on-Broadway-Updating-Live-20131110",
           "publishDate": "2013-11-10"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Star-Studded-TWELFTH-NIGHT-Opens-at-Shakespeare-in-the-Park-20250821",
-          "publishDate": "2025-08-21"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-TWELFTH-NIGHT-in-Central-Park-20180731",
+          "publishDate": "2018-07-31"
         }
       ],
       "weIngestBlocked": [
-        {
-          "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
-          "host": "1minutecritic.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
         {
           "url": "https://cititour.com/NYC_Broadway/Twelfth-Night/1320",
           "host": "cititour.com",
@@ -92284,86 +92557,8 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.thedailybeast.com/obsessed/shakespeare-in-the-park-peter-dinklage-shines-in-new-twelfth-night/",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/",
-          "host": "thefrontrowcenter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/",
           "host": "lavocedinewyork.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2025/08/21/twelfth-night-moonlit-enchantment-as-shakespeare-returns-to-the-park/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nysun.com/article/a-happy-place-for-theater-lovers-central-parks-delacorte-theater-reopens-with-a-giddy-new-production-of-twelfth-night",
-          "host": "nysun.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/08/21/twelfth-night-at-the-delacorte-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/08/21/theater/twelfth-night-review-lupita-nyongo-in-illyria.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
-          "host": "newyorker.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2025/08/review-shakespeare-in-the-park-twelfth-night-sandra-oh-peter-dinklage/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-twelfth-night-reopens-shakespeare-in-the-park_1798191/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/twelfth-night-review-greatness-thrust-upon-central-park-742db9c3",
-          "host": "wsj.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -92398,56 +92593,14 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://nystagereview.com/2018/07/31/twelfth-night-a-rambunctiously-jubilant-fest-in-central-park/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-shakespeare-in-the-park-production-of-twelfth-night-at-delacorte-theater",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/07/31/theater/review-twelfth-night-shakespeare-in-the-park-shaina-taub.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/",
           "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://www.vulture.com/2018/07/theater-review-its-always-sunny-in-this-twelfth-night.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/",
           "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nytimes.com/2017/12/14/theater/review-twelfth-night-fiasco-theater-classic-stage-company.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2017/12/theater-an-enticing-twelfth-night-for-both-newbies-and-pros.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.newyorktheatreguide.com/reviews/review-of-fiasco-theaters-twelfth-night-at-classic-stage-company",
-          "host": "newyorktheatreguide.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -92464,14 +92617,8 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/twelfth-night",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
-          "host": "nytimes.com",
+          "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
+          "host": "exeuntnyc.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -92518,8 +92665,8 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
-          "host": "exeuntnyc.com",
+          "url": "https://www.timeout.com/newyork/theater/twelfth-night",
+          "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -92532,7 +92679,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~357931/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~277159/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
           "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
@@ -92541,7 +92688,7 @@
           "provisional": false,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~357931/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~277160/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
           "url": "https://shakespeareaustralia.com.au/productions/twelfth-night",
@@ -92550,21 +92697,21 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~357931/day) projects exhaustion in ~8d, before the 27d-out renewal — still us"
+          "reason": "⚠️  Scrapingdog pace (~277162/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
-          "url": "https://www.theatrebookings.com/play/twelfth-night",
-          "host": "theatrebookings.com",
-          "outletId": "theatrebookings",
+          "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night",
+          "host": "seetickets.com",
+          "outletId": "seetickets",
           "provisional": true,
           "ok": true,
           "noop": false,
           "reason": null
         },
         {
-          "url": "https://list.co.uk/event/twelfth-night-620469",
-          "host": "list.co.uk",
-          "outletId": "the-list",
+          "url": "https://www.timeout.com/london/theatre/twelfth-night-65",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -92572,16 +92719,6 @@
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night",
-          "host": "seetickets.com",
-          "outletId": "seetickets"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/twelfth-night-65",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
         {
           "url": "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company",
           "host": "show-score.com",
@@ -92593,19 +92730,14 @@
           "outletId": "primarytimes"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
+          "url": "https://www.lsbo.co.uk/play/twelfth-night",
+          "host": "lsbo.co.uk",
+          "outletId": "lsbo"
         },
         {
-          "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma"
-        },
-        {
-          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
-          "host": "acrossthearts.co.uk",
-          "outletId": "acrossthearts"
+          "url": "https://thespyinthestalls.com/2026/08/twelfth-night-8/",
+          "host": "thespyinthestalls.com",
+          "outletId": "the-spy-in-the-stalls"
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562",
@@ -92613,44 +92745,14 @@
           "outletId": "british-theatre"
         },
         {
-          "url": "https://oxinabox.co.uk/review-a-joyful-fun-and-accomplished-romp-thats-impossible-to-resist-creations-twelfth-night-ticks-all-the-boxes-at-wolfson-college-this-summer/",
-          "host": "oxinabox.co.uk",
-          "outletId": "oxinabox"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
-          "host": "thetimes.com",
-          "outletId": "times-uk"
-        }
-      ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
-          "host": "thereviewshub.com",
-          "file": "thereviewshub--unknown.json"
+          "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+          "host": "acrossthearts.co.uk",
+          "outletId": "acrossthearts"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/"
-          },
           {
             "outletId": "cititour",
             "outlet": "cititour",
@@ -92666,6 +92768,223 @@
             "url": "https://culturesauce.com/2025/08/21/twelfth-night-delacorte-2025-off-broadway-review/"
           },
           {
+            "outletId": "la-voce-di-new-york",
+            "outlet": "la-voce-di-new-york",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/entertainment/twelfth-night-review-1.20225605"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://deadline.com/2018/07/twelfth-night-review-shakespeare-in-the-park-musical-shaina-taub-1202437435/"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://ew.com/theater/2018/07/31/twelfth-night-public-theater-review/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/twelfth-night-theater-1131005"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/theater/twelfth-night-central-park-1.20213228"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/twelfth-night-or-what-you-will-2"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://t2conline.com/he-says-twelfth-night-a-fun-and-festive-fiasco/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2013/11/10/broadway-review-twelfth-night-richard-iii/3455249/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/twelfth-night-richard-iii-theater-654931"
+          },
+          {
+            "outletId": "nbcny",
+            "outlet": "nbcny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nbcnewyork.com/news/local/twelfth-night-richard-III-review-231156711.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/twelfth-night-and-richard-iii"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/twelfth-night-and-richard-iii-review-top-notch-event-theater-1.6407270"
+          },
+          {
+            "outletId": "northjerseycom",
+            "outlet": "northjerseycom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/twelfth-night"
+          },
+          {
+            "outletId": "heretothereproductions.co.uk",
+            "outlet": "heretothereproductions.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://heretothereproductions.co.uk/twelfth-night/"
+          },
+          {
+            "outletId": "next-magazine",
+            "outlet": "next-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/"
+          },
+          {
+            "outletId": "shakespeareaustralia.com.au",
+            "outlet": "shakespeareaustralia.com.au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://shakespeareaustralia.com.au/productions/twelfth-night"
+          },
+          {
+            "outletId": "seetickets.com",
+            "outlet": "seetickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/twelfth-night-65"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company"
+          },
+          {
+            "outletId": "primarytimes.co.uk",
+            "outlet": "primarytimes.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112"
+          },
+          {
+            "outletId": "lsbo.co.uk",
+            "outlet": "lsbo.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.lsbo.co.uk/play/twelfth-night"
+          },
+          {
+            "outletId": "the-spy-in-the-stalls",
+            "outlet": "the-spy-in-the-stalls",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thespyinthestalls.com/2026/08/twelfth-night-8/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562"
+          },
+          {
+            "outletId": "acrossthearts.co.uk",
+            "outlet": "acrossthearts.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/"
+          },
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/"
+          },
+          {
             "outletId": "dailybeast",
             "outlet": "dailybeast",
             "critic": "Unknown",
@@ -92678,13 +92997,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/"
-          },
-          {
-            "outletId": "la-voce-di-new-york",
-            "outlet": "la-voce-di-new-york",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/"
           },
           {
             "outletId": "vulture",
@@ -92750,41 +93062,6 @@
             "url": "https://www.theatermania.com/news/review-twelfth-night-reopens-shakespeare-in-the-park_1798191/"
           },
           {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.amny.com/entertainment/twelfth-night-review-1.20225605"
-          },
-          {
-            "outletId": "deadline",
-            "outlet": "deadline",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://deadline.com/2018/07/twelfth-night-review-shakespeare-in-the-park-musical-shaina-taub-1202437435/"
-          },
-          {
-            "outletId": "ew",
-            "outlet": "ew",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://ew.com/theater/2018/07/31/twelfth-night-public-theater-review/"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hollywoodreporter.com/review/twelfth-night-theater-1131005"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newsday.com/entertainment/theater/twelfth-night-central-park-1.20213228"
-          },
-          {
             "outletId": "nysr",
             "outlet": "nysr",
             "critic": "Unknown",
@@ -92806,25 +93083,11 @@
             "url": "https://www.nytimes.com/2018/07/31/theater/review-twelfth-night-shakespeare-in-the-park-shaina-taub.html"
           },
           {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/"
-          },
-          {
             "outletId": "vulture",
             "outlet": "vulture",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.vulture.com/2018/07/theater-review-its-always-sunny-in-this-twelfth-night.html"
-          },
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/"
           },
           {
             "outletId": "nytimes",
@@ -92848,27 +93111,6 @@
             "url": "http://www.newyorktheatreguide.com/reviews/review-of-fiasco-theaters-twelfth-night-at-classic-stage-company"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.timeout.com/newyork/theater/twelfth-night-or-what-you-will-2"
-          },
-          {
-            "outletId": "times-square-chronicles",
-            "outlet": "times-square-chronicles",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://t2conline.com/he-says-twelfth-night-a-fun-and-festive-fiasco/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/twelfth-night"
-          },
-          {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
@@ -92876,179 +93118,11 @@
             "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html"
           },
           {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003"
-          },
-          {
-            "outletId": "usatoday",
-            "outlet": "usatoday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.usatoday.com/story/life/theater/2013/11/10/broadway-review-twelfth-night-richard-iii/3455249/"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.hollywoodreporter.com/review/twelfth-night-richard-iii-theater-654931"
-          },
-          {
-            "outletId": "nbcny",
-            "outlet": "nbcny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nbcnewyork.com/news/local/twelfth-night-richard-III-review-231156711.html"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.timeout.com/newyork/theater/twelfth-night-and-richard-iii"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.newsday.com/entertainment/theater/twelfth-night-and-richard-iii-review-top-notch-event-theater-1.6407270"
-          },
-          {
-            "outletId": "northjerseycom",
-            "outlet": "northjerseycom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/"
-          },
-          {
-            "outletId": "heretothereproductions.co.uk",
-            "outlet": "heretothereproductions.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://heretothereproductions.co.uk/twelfth-night/"
-          },
-          {
-            "outletId": "next-magazine",
-            "outlet": "next-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/"
-          },
-          {
-            "outletId": "shakespeareaustralia.com.au",
-            "outlet": "shakespeareaustralia.com.au",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://shakespeareaustralia.com.au/productions/twelfth-night"
-          },
-          {
-            "outletId": "theatrebookings.com",
-            "outlet": "theatrebookings.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrebookings.com/play/twelfth-night"
-          },
-          {
-            "outletId": "the-list",
-            "outlet": "the-list",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://list.co.uk/event/twelfth-night-620469"
-          },
-          {
-            "outletId": "seetickets.com",
-            "outlet": "seetickets.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/twelfth-night-65"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company"
-          },
-          {
-            "outletId": "primarytimes.co.uk",
-            "outlet": "primarytimes.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-twelfth-night-national-theatre/"
-          },
-          {
-            "outletId": "acrossthearts.co.uk",
-            "outlet": "acrossthearts.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562"
-          },
-          {
-            "outletId": "oxinabox.co.uk",
-            "outlet": "oxinabox.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://oxinabox.co.uk/review-a-joyful-fun-and-accomplished-romp-thats-impossible-to-resist-creations-twelfth-night-ticks-all-the-boxes-at-wolfson-college-this-summer/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7"
+            "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
           },
           {
             "outletId": "thereviewshub",
@@ -93056,13 +93130,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721"
           },
           {
             "outletId": "operaramblings.blog",
@@ -93077,13 +93144,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5"
-          },
-          {
-            "outletId": "frontmezzjunkies",
-            "outlet": "frontmezzjunkies",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/"
           },
           {
             "outletId": "intermissionmagazine.ca",
@@ -93107,6 +93167,27 @@
             "url": "https://www.broadwayworld.com/westend/article/Review-TWELFTH-NIGHT-Theatre-On-Kew-20260803"
           },
           {
+            "outletId": "theatrebookings.com",
+            "outlet": "theatrebookings.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrebookings.com/play/twelfth-night"
+          },
+          {
+            "outletId": "the-list",
+            "outlet": "the-list",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://list.co.uk/event/twelfth-night-620469"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre"
+          },
+          {
             "outletId": "independent",
             "outlet": "independent",
             "critic": "Unknown",
@@ -93114,11 +93195,18 @@
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html"
           },
           {
-            "outletId": "broadwayworld",
-            "outlet": "BroadwayWorld",
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": ""
+            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/"
           }
         ],
         "suppressedMissing": [
@@ -93175,10 +93263,9 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
-            "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
+            "outletId": "thetimes.com",
+            "state": "live",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
@@ -93196,6 +93283,223 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
+            "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/",
+            "outletId": "la-voce-di-new-york",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/twelfth-night-review-1.20225605",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://deadline.com/2018/07/twelfth-night-review-shakespeare-in-the-park-musical-shaina-taub-1202437435/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://ew.com/theater/2018/07/31/twelfth-night-public-theater-review/",
+            "outletId": "ew",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/twelfth-night-theater-1131005",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/twelfth-night-central-park-1.20213228",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/twelfth-night-or-what-you-will-2",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://t2conline.com/he-says-twelfth-night-a-fun-and-festive-fiasco/",
+            "outletId": "times-square-chronicles",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2013/11/10/broadway-review-twelfth-night-richard-iii/3455249/",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/twelfth-night-richard-iii-theater-654931",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.nbcnewyork.com/news/local/twelfth-night-richard-III-review-231156711.html",
+            "outletId": "nbcny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/twelfth-night-and-richard-iii",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/twelfth-night-and-richard-iii-review-top-notch-event-theater-1.6407270",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html",
+            "outletId": "northjerseycom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/twelfth-night",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://heretothereproductions.co.uk/twelfth-night/",
+            "outletId": "heretothereproductions.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
+            "outletId": "next-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://shakespeareaustralia.com.au/productions/twelfth-night",
+            "outletId": "shakespeareaustralia.com.au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night",
+            "outletId": "seetickets.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/twelfth-night-65",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112",
+            "outletId": "primarytimes.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.lsbo.co.uk/play/twelfth-night",
+            "outletId": "lsbo.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T12:07:28.373Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/08/twelfth-night-8/",
+            "outletId": "the-spy-in-the-stalls",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T12:07:28.373Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
+            "outletId": "acrossthearts.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
+            "outletId": "one-minute-critic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
             "url": "https://www.thedailybeast.com/obsessed/shakespeare-in-the-park-peter-dinklage-shines-in-new-twelfth-night/",
             "outletId": "dailybeast",
             "state": "GAP",
@@ -93205,13 +93509,6 @@
           {
             "url": "https://thefrontrowcenter.com/2025/08/twelfth-night-6/",
             "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://lavocedinewyork.com/en/new-york/2025/08/22/twelfth-night-at-the-delacorte-stars-in-a-play-that-doesnt-quite-shine-bright/",
-            "outletId": "la-voce-di-new-york",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
@@ -93294,41 +93591,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.amny.com/entertainment/twelfth-night-review-1.20225605",
-            "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://deadline.com/2018/07/twelfth-night-review-shakespeare-in-the-park-musical-shaina-taub-1202437435/",
-            "outletId": "deadline",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://ew.com/theater/2018/07/31/twelfth-night-public-theater-review/",
-            "outletId": "ew",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/review/twelfth-night-theater-1131005",
-            "outletId": "hollywood-reporter",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.newsday.com/entertainment/theater/twelfth-night-central-park-1.20213228",
-            "outletId": "newsday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "http://nystagereview.com/2018/07/31/twelfth-night-a-rambunctiously-jubilant-fest-in-central-park/",
             "outletId": "nysr",
             "state": "GAP",
@@ -93350,22 +93612,8 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://variety.com/2018/legit/reviews/twelfth-night-review-central-park-1202891228/",
-            "outletId": "variety",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "http://www.vulture.com/2018/07/theater-review-its-always-sunny-in-this-twelfth-night.html",
             "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.thewrap.com/twelfth-night-theater-review-public-shakespeare-nikki-james/",
-            "outletId": "thewrap",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
@@ -93392,27 +93640,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "http://www.timeout.com/newyork/theater/twelfth-night-or-what-you-will-2",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://t2conline.com/he-says-twelfth-night-a-fun-and-festive-fiasco/",
-            "outletId": "times-square-chronicles",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/twelfth-night",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
             "outletId": "nytimes",
             "state": "GAP",
@@ -93420,190 +93647,15 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "http://www.nydailynews.com/entertainment/music-arts/twelfth-night-richard-iii-theater-reviews-article-1.1511003",
-            "outletId": "nydailynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.usatoday.com/story/life/theater/2013/11/10/broadway-review-twelfth-night-richard-iii/3455249/",
-            "outletId": "usatoday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.hollywoodreporter.com/review/twelfth-night-richard-iii-theater-654931",
-            "outletId": "hollywood-reporter",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.nbcnewyork.com/news/local/twelfth-night-richard-III-review-231156711.html",
-            "outletId": "nbcny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/twelfth-night-and-richard-iii",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.newsday.com/entertainment/theater/twelfth-night-and-richard-iii-review-top-notch-event-theater-1.6407270",
-            "outletId": "newsday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "http://www.northjersey.com/arts_entertainment/theater/231392511_Theater_review___Twelfth_Night__and__Richard_III_.html",
-            "outletId": "northjerseycom",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://heretothereproductions.co.uk/twelfth-night/",
-            "outletId": "heretothereproductions.co.uk",
+            "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
+            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://nextmag.ca/review-twelfth-night-is-a-classic-restaging-full-of-warmth-joy-and-heart/",
-            "outletId": "next-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://shakespeareaustralia.com.au/productions/twelfth-night",
-            "outletId": "shakespeareaustralia.com.au",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.theatrebookings.com/play/twelfth-night",
-            "outletId": "theatrebookings.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://list.co.uk/event/twelfth-night-620469",
-            "outletId": "the-list",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.seetickets.com/tour/theatre-on-kew-twelfth-night",
-            "outletId": "seetickets.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/twelfth-night-65",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.show-score.com/uk/london/theatre-shows/twelfth-night-the-australian-shakespeare-company",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-twelfth-night-586112",
-            "outletId": "primarytimes.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
-            "outletId": "west-end-wilma",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.acrossthearts.co.uk/news/artsblog/theatre-review-twelfth-night-1/",
-            "outletId": "acrossthearts.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-theatr-clwyd-25562",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://oxinabox.co.uk/review-a-joyful-fun-and-accomplished-romp-thats-impossible-to-resist-creations-twelfth-night-ticks-all-the-boxes-at-wolfson-college-this-summer/",
-            "outletId": "oxinabox.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-samuel-west-p7r6dp2l7",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
             "url": "https://www.thereviewshub.com/twelfth-night-theatre-on-kew-london/",
             "outletId": "thereviewshub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/washington-dc/article/Review-TWELFTH-NIGHT-at-Shakespeare-Theatre-Company-Academy-20260721",
-            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
@@ -93618,13 +93670,6 @@
           {
             "url": "https://slotkinletter.com/2026/08/review-twelfth-night-5",
             "outletId": "slotkinletter.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://frontmezzjunkies.com/2026/07/26/canadian-stages-twelfth-night-finds-new-joy-in-shakespeares-queer-heart/",
-            "outletId": "frontmezzjunkies",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
@@ -93651,6 +93696,27 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
+            "url": "https://www.theatrebookings.com/play/twelfth-night",
+            "outletId": "theatrebookings.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://list.co.uk/event/twelfth-night-620469",
+            "outletId": "the-list",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-regents-park-open-air-theatre",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/twelfth-night-barbican-review-b2885654.html",
             "outletId": "independent",
             "state": "GAP",
@@ -93658,17 +93724,24 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "",
-            "outletId": "broadwayworld",
+            "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
+            "outletId": "london-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T15:52:55.659Z"
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/rscs-twelfth-night-at-the-barbican-review_1706977/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 59
+        "liveCount": 7,
+        "candidateCount": 58
       },
-      "computedAt": "2026-08-07T23:26:20.886Z"
+      "computedAt": "2026-08-08T12:07:28.373Z"
     },
     {
       "showId": "two-strangers-bway-2025",
