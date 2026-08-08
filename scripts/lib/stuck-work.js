@@ -127,8 +127,11 @@ function classifyStuckCards(cards, nowMs, opts = {}) {
         // nightly recheck runs once a day; a stamp due today isn't stuck
         // yet, only a stamp overdue past grace is). Without this, a P2 whose
         // stamp lands on today's date fires the FYI warning hours before the
-        // recheck has had a chance to run.
-        const awaitingRecheck = stampMs != null && (stampMs > nowMs || stampOverdueDays <= graceDays);
+        // recheck has had a chance to run. A future stamp makes
+        // stampOverdueDays negative, which already satisfies `<= graceDays` —
+        // no separate future-stamp check needed (mirrors the critical branch
+        // above).
+        const awaitingRecheck = stampMs != null && stampOverdueDays <= graceDays;
         if (!awaitingRecheck) pausedStale.push({ ...card, idleHours });
       }
     } else if (card.status === 'In progress' && idleHours > orphanHours) {
