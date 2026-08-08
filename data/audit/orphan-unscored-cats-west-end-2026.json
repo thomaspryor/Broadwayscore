@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-08T02:38:57.503Z",
+  "detectedAt": "2026-08-08T02:57:56.484Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "criticName": "Alice Saville",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
+      "fullTextLen": 4587,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
@@ -20,8 +34,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-08T02:38:57.503Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
