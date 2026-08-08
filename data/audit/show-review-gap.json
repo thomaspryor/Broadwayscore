@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-08T17:17:26.499Z",
+  "generatedAt": "2026-08-08T18:07:20.595Z",
   "windowDays": 1095,
-  "targets": 12,
-  "auditedThisRun": 12,
-  "carriedForward": 195,
+  "targets": 9,
+  "auditedThisRun": 9,
+  "carriedForward": 198,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 162,
-    "totalMissing": 1067,
+    "totalMissing": 1068,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1072,
+    "totalFlaggedMisses": 1071,
     "totalRecoverable": 33,
     "totalRecovered": 6
   },
@@ -1621,11 +1621,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 316,
+        "count": 320,
         "byReason": {
-          "aggregator-internal-nav": 220,
-          "non-review-host": 15,
+          "aggregator-internal-nav": 224,
           "not-http-url": 78,
+          "non-review-host": 15,
           "non-review-path": 3
         }
       },
@@ -1701,7 +1701,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -4088,7 +4088,7 @@
           "provisional": false,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~271445/day) projects exhaustion in ~11d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~281184/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4158,7 +4158,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -4268,9 +4268,15 @@
         "https://theartsdesk.com/theatre/avenue-q-shaftesbury-theatre-review-we-need-puppet-sex-now-and-rest"
       ],
       "dirFiles": 58,
-      "dirClean": 29,
+      "dirClean": 30,
       "inReviewsJson": 30,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent"
+        }
+      ],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -4282,6 +4288,10 @@
         },
         {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
           "count": 1
         },
         {
@@ -4328,23 +4338,6 @@
               "file": "1883-magazine--nick-barr.json",
               "flag": "wrongProduction",
               "urlInDir": "https://1883magazine.com/avenue-q-review-london/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--louis-chilton.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html"
             }
           ]
         },
@@ -4461,26 +4454,38 @@
         "count": 89,
         "byReason": {
           "aggregator-internal-nav": 50,
-          "non-review-host": 19,
-          "not-http-url": 20
+          "not-http-url": 20,
+          "non-review-host": 19
         }
       },
+      "ingestResults": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "host": "the-independent.com",
+          "outletId": "independent",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "1883magazine.com",
-            "outlet": "1883magazine.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1883magazine.com/avenue-q-review-london/"
-          },
           {
             "outletId": "independent",
             "outlet": "independent",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html"
+          },
+          {
+            "outletId": "1883magazine.com",
+            "outlet": "1883magazine.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1883magazine.com/avenue-q-review-london/"
           },
           {
             "outletId": "thereviewshub",
@@ -4636,15 +4641,15 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://1883magazine.com/avenue-q-review-london/",
-            "outletId": "1883magazine.com",
+            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+            "outletId": "independent",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-            "outletId": "independent",
+            "url": "https://1883magazine.com/avenue-q-review-london/",
+            "outletId": "1883magazine.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -4695,7 +4700,7 @@
         "liveCount": 18,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "beetlejuice-west-end-2026",
@@ -42603,7 +42608,7 @@
       ],
       "dirFiles": 39,
       "dirClean": 33,
-      "inReviewsJson": 33,
+      "inReviewsJson": 32,
       "missing": [],
       "dirOnly": [
         {
@@ -42676,8 +42681,8 @@
         "count": 390,
         "byReason": {
           "aggregator-internal-nav": 305,
-          "non-review-host": 37,
           "not-http-url": 45,
+          "non-review-host": 37,
           "non-review-path": 3
         }
       },
@@ -42855,7 +42860,7 @@
         "liveCount": 22,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -61746,11 +61751,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 880,
+        "count": 879,
         "byReason": {
-          "aggregator-internal-nav": 608,
-          "non-review-host": 80,
+          "aggregator-internal-nav": 607,
           "not-http-url": 186,
+          "non-review-host": 80,
           "non-review-path": 6
         }
       },
@@ -61772,7 +61777,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~271478/day) projects exhaustion in ~11d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~281200/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -62000,7 +62005,7 @@
         "liveCount": 23,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -71780,8 +71785,8 @@
         "count": 772,
         "byReason": {
           "aggregator-internal-nav": 602,
-          "non-review-host": 72,
           "not-http-url": 92,
+          "non-review-host": 72,
           "non-review-path": 6
         }
       },
@@ -72129,7 +72134,7 @@
         "liveCount": 21,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -73138,7 +73143,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "sunset-baby-off-broadway-2026",
@@ -80647,8 +80652,8 @@
         "count": 385,
         "byReason": {
           "aggregator-internal-nav": 300,
-          "non-review-host": 35,
           "not-http-url": 47,
+          "non-review-host": 35,
           "non-review-path": 3
         }
       },
@@ -80914,7 +80919,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "the-karate-kid-the-musical-west-end-2026",
@@ -93962,8 +93967,8 @@
         "count": 671,
         "byReason": {
           "aggregator-internal-nav": 525,
-          "non-review-host": 53,
           "not-http-url": 87,
+          "non-review-host": 53,
           "non-review-path": 6
         }
       },
@@ -94125,7 +94130,7 @@
         "liveCount": 16,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-08T05:43:18.019Z"
+      "computedAt": "2026-08-08T18:07:20.595Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
