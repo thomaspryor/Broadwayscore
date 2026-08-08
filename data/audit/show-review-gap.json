@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-08T07:53:27.081Z",
+  "generatedAt": "2026-08-08T08:25:10.782Z",
   "windowDays": 1095,
-  "targets": 27,
-  "auditedThisRun": 21,
-  "carriedForward": 175,
+  "targets": 7,
+  "auditedThisRun": 7,
+  "carriedForward": 189,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 156,
     "totalMissing": 1040,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 1032,
+    "totalFlaggedMisses": 1031,
     "totalRecoverable": 30,
     "totalRecovered": 7
   },
@@ -3084,7 +3084,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "arcadia-west-end-2026",
@@ -8947,9 +8947,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 265,
+        "count": 282,
         "byReason": {
-          "aggregator-internal-nav": 206,
+          "aggregator-internal-nav": 223,
           "not-http-url": 41,
           "non-review-host": 15,
           "non-review-path": 3
@@ -9055,7 +9055,7 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "camping-off-broadway-2026",
@@ -16559,7 +16559,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -16858,7 +16858,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
@@ -43388,15 +43388,14 @@
         "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
         "https://everything-theatre.co.uk/2026/07/review-midnight-at-the-never-get-menier-chocolate-factory/",
         "https://therealchrisparkle.com/2026/08/03/review-midnight-at-the-never-get-menier-chocolate-factory-london-2nd-august-2026/",
-        "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
         "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+        "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+        "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
         "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
         "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
         "https://musicaltheatrereview.com/midnight-at-the-never-get-menier-chocolate-factory/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/midnight-at-the-never-get-menier-chocolate-factory",
-        "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
-        "https://southlondon.co.uk/area/southwark/review-midnight-at-the-never-get-at-menier/",
-        "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/"
+        "https://southlondon.co.uk/area/southwark/review-midnight-at-the-never-get-at-menier/"
       ],
       "dirFiles": 37,
       "dirClean": 27,
@@ -43443,24 +43442,6 @@
               "file": "lovelondonloveculture--unknown.json",
               "flag": "clean",
               "urlInDir": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
-          "host": "theatre.reviews",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre--paul-lewis.json",
-              "flag": "roundup",
-              "urlInDir": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/"
             }
           ],
           "serpCensus": true
@@ -43531,7 +43512,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -43540,7 +43521,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -43561,7 +43542,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -43571,21 +43552,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 19,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 404,
+        "count": 406,
         "byReason": {
           "aggregator-internal-nav": 266,
           "not-http-url": 83,
-          "non-review-host": 48,
+          "non-review-host": 50,
           "non-review-path": 5,
           "roundup-page": 1,
           "ticketing-listing": 1
@@ -43600,13 +43581,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/"
-          },
-          {
-            "outletId": "theatre.reviews",
-            "outlet": "theatre.reviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/"
           }
         ],
         "suppressedMissing": [],
@@ -43696,14 +43670,20 @@
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
           },
           {
+            "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:27:35.083Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
+            "outletId": "monstagigz.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           },
@@ -43732,30 +43712,17 @@
             "firstSeenAt": "2026-08-03T16:48:58.521Z"
           },
           {
-            "url": "https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:27:35.083Z"
-          },
-          {
             "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
             "outletId": "lovelondonloveculture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:27:35.083Z"
-          },
-          {
-            "url": "https://theatre.reviews/reviews-roundup/midnight-at-the-never-get-menier-reviews/",
-            "outletId": "theatre.reviews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:27:35.083Z"
           }
         ],
         "liveCount": 21,
-        "candidateCount": 23
+        "candidateCount": 22
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "misterman-theatre-row-off-broadway-2026",
@@ -63264,7 +63231,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-07T19:57:41.802Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -75935,9 +75902,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 260,
+        "count": 276,
         "byReason": {
-          "aggregator-internal-nav": 200,
+          "aggregator-internal-nav": 216,
           "not-http-url": 42,
           "non-review-host": 15,
           "non-review-path": 3
@@ -75994,7 +75961,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-07T18:44:56.343Z"
+      "computedAt": "2026-08-08T08:25:10.782Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
