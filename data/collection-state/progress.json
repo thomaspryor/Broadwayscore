@@ -1928,7 +1928,33 @@
     "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
     "every-brilliant-thing-2026/standard--nick-curtis.json",
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
-    "every-brilliant-thing-2026/times-uk--alice-jones.json"
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+    "disruption-off-broadway-2026/playbill--unknown.json",
+    "disruption-off-broadway-2026/scorebig--unknown.json",
+    "disruption-off-broadway-2026/standard--nick-curtis.json",
+    "disruption-off-broadway-2026/theater-pizzazz--unknown.json",
+    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+    "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
+    "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2075,7 +2101,7 @@
     ]
   },
   "startTime": "2026-08-07T10:32:52.947Z",
-  "lastProcessed": "every-brilliant-thing-2026/times-uk--alice-jones.json",
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -2157,6 +2183,51 @@
       "t": "2026-08-07T20:53:46.260Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-08-08T01:32:25.504Z",
+      "event": "bb-session",
+      "session": "f8361a63",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-08T01:32:26.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-08T01:32:42.499Z",
+      "event": "bb-session",
+      "session": "c46d3876",
+      "url": "https://www.nytimes.com/2026/07/30/theater/game-of-thrones-mad-king-royal-shakes"
+    },
+    {
+      "t": "2026-08-08T01:32:43.348Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-08T01:33:27.330Z",
+      "event": "bb-session",
+      "session": "2149d1b6",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-08T01:33:28.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-08T01:36:42.433Z",
+      "event": "bb-session",
+      "session": "c83a6f34",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
+    },
+    {
+      "t": "2026-08-08T01:36:57.000Z",
+      "event": "bb-session",
+      "session": "2665ed10",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
     }
   ]
 }
