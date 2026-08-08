@@ -79,6 +79,18 @@ function evaluateSlaForReviews(latencyEntries, { warningMinutes = 30, pageMinute
     : null;
 
   // Latest show-level terminal timestamp per show (rebuilt/deployed-live w/o key).
+  //
+  // A terminal must carry a showId. rebuild-all-reviews also emits one
+  // showId-less 'rebuilt' line per run for run-level visibility (task #388,
+  // when the per-show loop was scoped down from ~1,210 lines to the tracked
+  // shows) — that line is DELIBERATELY not a terminal here. It says a rebuild
+  // happened, not that it covered this show: per-show lines only ever existed
+  // for shows with ≥1 review in reviews.json, so a show whose first review is
+  // still unscored has none, and its review must keep counting as in-flight.
+  // At the time of that change 2 of the 13 shows with review-first-seen events
+  // in the log had never appeared in a 'rebuilt' line — treating the global
+  // line as a terminal would have silently cleared exactly the case this SLA
+  // exists to catch: a brand-new opening's first review going nowhere.
   const showTerminalAt = new Map();
   for (const e of latencyEntries) {
     if (!e || !e.showId || e.reviewKey) continue;

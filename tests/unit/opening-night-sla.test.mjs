@@ -105,6 +105,39 @@ test('show-level rebuilt at/after first-seen clears the review (the core fix)', 
   assert.equal(warnings.length, 0);
 });
 
+// --- Regression coverage for the 2026-08-08 rebuild-emit scoping (task #388) ---
+
+test('the run-level rebuild line (no showId) is NOT a terminal for any show', () => {
+  // rebuild-all-reviews emits one showId-less 'rebuilt' line per run alongside
+  // the per-show terminals, which were scoped down from ~1,210 lines to the
+  // shows the SLA tracks. Honouring the run-level line as a terminal was the
+  // tempting simplification and it is WRONG: per-show lines only ever existed
+  // for shows with >=1 review in reviews.json, so a show whose first review is
+  // still unscored has none. At the time of the change 2 of the 13 shows with
+  // review-first-seen events had never appeared in a 'rebuilt' line. Clearing
+  // on the run-level line would silently drop exactly the case this SLA is for.
+  const now = new Date('2026-08-08T14:00:00Z');
+  const entries = [
+    makeEntry('the-peculiar-patriot-off-broadway-2026', 'nytimes:shaw:https://nyt/r', 'review-first-seen', 90, now),
+    { showId: null, reviewKey: null, stage: 'rebuilt', at: new Date(now - 30 * MS_MIN).toISOString(), metadata: { scope: 'all-shows', showCount: 1210, perShowTerminalsEmitted: 11 } },
+  ];
+  const { pages } = evaluateSlaForReviews(entries, { warningMinutes: 30, pageMinutes: 60, now });
+  assert.equal(pages.length, 1, 'a stuck first review still pages despite a run-level rebuild');
+  assert.equal(pages[0].showId, 'the-peculiar-patriot-off-broadway-2026');
+});
+
+test('a per-show rebuild still clears, and the run-level line alongside it changes nothing', () => {
+  const now = new Date('2026-08-08T14:00:00Z');
+  const entries = [
+    makeEntry('now-you-see-me-live-west-end-2026', 'thestage:tim-bano:https://ts.com/r', 'review-first-seen', 90, now),
+    { showId: 'now-you-see-me-live-west-end-2026', reviewKey: null, stage: 'rebuilt', at: new Date(now - 30 * MS_MIN).toISOString(), metadata: { reviewCount: 4 } },
+    { showId: null, reviewKey: null, stage: 'rebuilt', at: new Date(now - 30 * MS_MIN).toISOString(), metadata: { scope: 'all-shows' } },
+  ];
+  const { warnings, pages } = evaluateSlaForReviews(entries, { warningMinutes: 30, pageMinutes: 60, now });
+  assert.equal(pages.length, 0);
+  assert.equal(warnings.length, 0);
+});
+
 test('activeShowIds scopes out test fixtures and historical backfills', () => {
   const now = new Date('2026-07-24T14:00:00Z');
   const entries = [
