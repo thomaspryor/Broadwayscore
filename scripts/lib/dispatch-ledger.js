@@ -243,25 +243,63 @@ function vanishEpochEntry() {
   return { event: 'vanish-epoch', taskId: 'epoch' };
 }
 
+// How long the pre-epoch exclusion below holds. The epoch's job is a ONE-TIME
+// guard against the first sweep after rollout mass-parking ~150 historical
+// tabs that had already closed normally before #578 existed to record a
+// terminal event for them. That job is done the moment the first sweep
+// completes. A permanent (unbounded) exclusion instead makes epochTs a dead
+// line in the sand: ANY task launched before it can never be parked again,
+// however long its tab has been gone — card #801's root cause (health check
+// "Stuck work: orphaned in-progress cards" never clearing; #434/#752/#758/#832
+// were still "in flight" 6-14 days after their pre-epoch launch, ledger-wise
+// immortal). 72h comfortably exceeds a normal session's runtime, so it never
+// races a legitimately-long session, while still letting truly-dead pre-epoch
+// history rejoin the same re-validate/ratio-guard/renumber protections every
+// post-epoch launch already relies on.
+const HISTORICAL_EXCLUSION_GRACE_MS = 72 * 60 * 60 * 1000;
+
 // `liveRefs`: Set of workspace refs cmux currently lists. Returns the NEW
 // 'vanished' breadcrumbs to append — one per launched-but-absent workspace.
 // Idempotent: a ref only ever contributes one breadcrumb, because the
 // breadcrumb itself is a terminal event for the next sweep.
-function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null } = {}) {
+//
+// `now` (ms epoch) is required, matching this file's own detectLauncherOutage
+// and dispatch-watchdog-core.js's planSweep — a silent default would let a
+// caller forget it and keep getting the (soon-to-be-legacy) permanent-
+// exclusion behavior with no signal, masking exactly the bug class this
+// grace window exists to fix.
+function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
   if (!(liveRefs instanceof Set)) {
     throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
   }
+  if (!Number.isFinite(now)) throw new Error('vanishedBreadcrumbs requires now (ms epoch)');
   // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
   // empty listing is indistinguishable from cmux being restarted, crashed, or
   // mid-reinstall — and that is precisely the moment when every ref on the
   // machine looks vanished at once.
   if (!epochTs || liveRefs.size === 0) return [];
+  // NaN epochMs (malformed epoch entry) must fail CLOSED — never let a bad
+  // timestamp accidentally expire the grace and mass-park pre-epoch history.
+  const epochMs = Date.parse(epochTs);
+  const graceExpired = Number.isFinite(epochMs) && (now - epochMs) >= HISTORICAL_EXCLUSION_GRACE_MS;
+
+  // Per-task liveness view: if a DIFFERENT, still-open launch exists for the
+  // same taskId, any other ref for that task is superseded, not vanished —
+  // parking it would flip the Notion card to Paused while a newer session is
+  // actively working the task under its own ref. vanishedBreadcrumbs iterates
+  // per-REF (below), so without this a stale pre-epoch ref surviving the
+  // grace above could independently "vanish" even though the task moved on
+  // (ship-check catch during card #801's review).
+  const openByTask = openTaskWorkspaceLaunches(entries);
 
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   const out = [];
   for (const [ref, launch] of lastByRef(entries, e => e.event === 'launch')) {
     if (liveRefs.has(ref)) continue;                       // still on screen
-    if (!launch.ts || launch.ts < epochTs) continue;       // pre-epoch history is not ours to park
+    if (!launch.ts) continue;
+    if (launch.ts < epochTs && !graceExpired) continue;    // pre-epoch history is not ours to park (yet)
+    const openElsewhere = openByTask.get(String(launch.taskId));
+    if (openElsewhere && openElsewhere.workspaceRef !== ref) continue; // superseded by a newer open launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
     out.push({
