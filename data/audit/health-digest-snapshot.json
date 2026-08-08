@@ -1,12 +1,16 @@
 {
-  "generatedAt": "2026-08-08T07:38:05.139Z",
-  "subject": "BSC URGENT (day 8): 1 unresolved error",
-  "bannerText": "1 error, 21 warnings",
-  "consecutiveErrorDays": 8,
+  "generatedAt": "2026-08-08T11:39:24.638Z",
+  "subject": "BSC URGENT (day 9): 2 unresolved errors",
+  "bannerText": "2 errors, 19 warnings",
+  "consecutiveErrorDays": 9,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2905k credits left (73%) · 274k/day burn · renews in 26d · exhausts in ~11d (BEFORE renewal)"
+      "message": "2893k credits left (72%) · 277k/day burn · renews in 26d · exhausts in ~10d (BEFORE renewal)"
+    },
+    {
+      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
+      "message": "Collect WE/OB Review Texts failed 3 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -15,12 +19,8 @@
       "message": "1 open show(s) have audience data on a source that didn't link — Theatr: The Jonathan Larson Project (150 ratings ↔ The Jonathan Larson Project)"
     },
     {
-      "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19593 vs baseline 19598"
-    },
-    {
       "name": "Quality: corpus drift",
-      "message": "10 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Coverage: SERP census recall",
@@ -43,24 +43,12 @@
       "message": "70 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (16d); Trainspotting: only 4 reviews on site + email said 7 (invest (16d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (15d)"
     },
     {
-      "name": "Stuck work: paused P2/other cards",
-      "message": "1 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
-    },
-    {
       "name": "Infra-review: gate telemetry",
       "message": "No local infra-review telemetry visible from this environment — data/audit/infra-review-gate.jsonl and .claude/review-verdicts.jsonl are gitignored, per-machine files the #1079 hook writes only where it runs. This check cannot confirm the plan-review gate is being used or bypassed from here."
     },
     {
       "name": "Dispatch outcomes: abandoned",
       "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Poller — auto",
-      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
@@ -76,7 +64,7 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "4 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
+      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -89,37 +77,13 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget: brightdata $6.12 > $2.5 (1626 serp + 2455 unlocker reqs); scrapingdog 47883 credits > 45000",
-      "description": "Day 2026-08-06. 2026-08-06 · Browserbase: $3.2 (32 sessions) · 2026-08-06 · Bright Data: $6.12 (1626 serp / 2455 unlocker) · ScrapingBee: 25618 credits (47018 this cycle) · ScrapingDog: 47883 credits (1031445 this cycle) · Browserbase attribution: 3% attributed — top: sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 32% attributed — top: opening-night-poller.js 866, fetch-show-images-auto.js 288, audit-show-review-gap.js 121, enrich-stubhub-prices.js 20, ingest-review-from-url.js 13 · ScrapingBee attribution: 2% attributed — top: fetch-show-images-auto.js 290, opening-night-poller.js 121, audit-show-review-gap.js 49, enrich-stubhub-prices.js 10, ingest-review-from-url.js 10 · ScrapingDog attribution: 6% attributed — top: opening-night-poller.js 1436, fetch-show-images-auto.js 557, audit-show-review-gap.js 529, enrich-stubhub-prices.js 100, ingest-review-from-url.js 96. Verification streak reset to 0.",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80.7% (455/564)\noff-broadway: 48.7% (155/318)\nwest-end: 71.1% (408/574)\n\nOldest gaps:\n1536 — guardian (377h)\n1536 — independent (377h)\nA Midsummer Night's Dream - Globe — financialtimes (377h)\nA Midsummer Night's Dream - Globe — telegraph (377h)\nA Midsummer Night's Dream — financialtimes (377h)\n… 200 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (377h)\nThe Book of Mormon — usatoday (377h)\nHeathers The Musical — dailybeast (377h)\nHeathers The Musical — ew (377h)\nSpamalot — dailybeast (377h)\n… 4 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/154 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nCats: score-drift",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Review-gap audit refused to write — 17.2% of shows changed coverage state",
-      "description": "review-gap blast radius 17.2% (5/29 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: disruption-off-broadway-2026, isla-off-broadway-2026, now-you-see-me-live-west-end-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "13 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+      "title": "Scraping spend over budget: brightdata $4.33 > $2.5 (862 serp + 2025 unlocker reqs); scrapingdog 63308 credits > 45000",
+      "description": "Day 2026-08-07. 2026-08-07 · Browserbase: $3.4 (34 sessions) · 2026-08-07 · Bright Data: $4.33 (862 serp / 2025 unlocker) · ScrapingBee: 16906 credits (63924 this cycle) · ScrapingDog: 63308 credits (1094753 this cycle) · Browserbase attribution: 9% attributed — top: collect-review-texts.js 3 · Bright Data attribution: 40% attributed — top: opening-night-poller.js 753, audit-show-review-gap.js 357, ingest-review-from-url.js 42, enrich-stubhub-prices.js 9, recover-explicit-ratings.js 2 · ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 179, opening-night-poller.js 127, ingest-review-from-url.js 32, enrich-stubhub-prices.js 7, auto-fix-show-data.js 2 · ScrapingDog attribution: 7% attributed — top: audit-show-review-gap.js 2138, opening-night-poller.js 1236, collect-review-texts.js 510, ingest-review-from-url.js 276, scrape-recoupment-announcements.js 202. Verification streak reset to 0.",
       "severity": "error",
       "url": null
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 55,
-  "totalCount": 80
+  "autoFixedCount": 2,
+  "passedCount": 54,
+  "totalCount": 78
 }
