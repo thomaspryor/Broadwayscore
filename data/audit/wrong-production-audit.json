@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-08T02:58:05.747Z",
+  "timestamp": "2026-08-08T04:21:02.763Z",
   "stats": {
-    "totalReviews": 41870,
-    "alreadyFlagged": 18165,
+    "totalReviews": 41871,
+    "alreadyFlagged": 18166,
     "dateGuardCatches": 134,
     "directorMismatch": 957,
     "tvFilmSignals": 1161,
-    "londonSignals": 832,
+    "londonSignals": 833,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
-    "noPublishDate": 3580
+    "noPublishDate": 3581
   },
   "findings": [
     {
@@ -43925,6 +43925,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "lwtheatres--unknown.json",
+      "publishDate": null,
+      "url": "https://lwtheatres.co.uk/whats-on/the-comedy-about-spies/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
