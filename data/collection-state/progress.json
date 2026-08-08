@@ -1,7 +1,11 @@
 {
   "processed": [
     "twelfth-night-off-west-end-2026/thereviewshub--unknown.json",
-    "twelfth-night-off-west-end-2026/london-theatre--unknown.json"
+    "twelfth-night-off-west-end-2026/london-theatre--unknown.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--alun-hood.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/london-theatre-reviews--unknown.json",
@@ -11,12 +15,22 @@
     "twelfth-night-off-west-end-2026/independent--alice-saville.json",
     "twelfth-night-off-west-end-2026/london-box-office--phil-willmott.json",
     "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
-    "twelfth-night-off-west-end-2026/standard--unknown.json"
+    "twelfth-night-off-west-end-2026/standard--unknown.json",
+    "twelfth-night-off-west-end-2026/the-list--unknown.json",
+    "twelfth-night-off-west-end-2026/theatrecat--unknown.json",
+    "twelfth-night-off-west-end-2026/thestage--unknown.json",
+    "twelfth-night-off-west-end-2026/times-uk--unknown.json",
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--matt-barton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "twelfth-night-off-west-end-2026/london-theatre--unknown.json"
+      "twelfth-night-off-west-end-2026/london-theatre--unknown.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--alun-hood.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -29,6 +43,19 @@
     "archive": []
   },
   "startTime": "2026-08-08T06:17:38.100Z",
-  "lastProcessed": "twelfth-night-off-west-end-2026/standard--unknown.json",
-  "log": []
+  "lastProcessed": "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json",
+  "log": [
+    {
+      "t": "2026-08-08T06:19:24.048Z",
+      "event": "bb-session",
+      "session": "1f6ec4c4",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T06:19:31.630Z",
+      "event": "bb-session",
+      "session": "2574c91a",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    }
+  ]
 }
