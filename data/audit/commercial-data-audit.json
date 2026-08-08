@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-08-06T15:45:59.256Z",
+    "generatedAt": "2026-08-08T18:44:42.258Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
     "totalEntries": 229,
-    "totalShowsInShowsJson": 2883,
+    "totalShowsInShowsJson": 2884,
     "matchStats": {
       "matchedBySlug": 229,
       "matchedById": 0,
@@ -41,17 +41,17 @@
       "hasDeepResearch": 165
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 180,
+      "totalOpenPreviewsShows": 181,
       "withCommercialData": 29,
-      "withoutCommercialData": 151,
+      "withoutCommercialData": 152,
       "coveragePct": 16
     },
     "issuesSummary": {
-      "total": 292,
+      "total": 293,
       "bySeverity": {
         "high": 0,
         "medium": 13,
-        "low": 279
+        "low": 280
       },
       "byType": {
         "designation-logic": 1,
@@ -62,7 +62,7 @@
         "closed-show-tbd": 12,
         "nonprofit-classification": 15,
         "recoupment-pct": 1,
-        "coverage-gap": 151
+        "coverage-gap": 152
       }
     }
   },
@@ -695,127 +695,127 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "harry-potter",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.845Z\" (101 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.845Z\" (103 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.843Z\" (101 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.843Z\" (103 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (190 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (192 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (184 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (186 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (169 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (171 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.842Z\" (101 days ago, threshold: 90 days)."
+      "detail": "Open show with stale data: lastUpdated is \"2026-04-26T19:40:14.842Z\" (103 days ago, threshold: 90 days)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (190 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (192 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "two-strangers",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (176 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (178 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "maybe-happy-ending",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (155 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-03-04\" (157 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "our-town",
-      "detail": "Show is closed (closed 564 days ago on 2025-01-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 566 days ago on 2025-01-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "proof",
-      "detail": "Show is closed (closed 18 days ago on 2026-07-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 20 days ago on 2026-07-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "leopoldstadt-2022",
-      "detail": "Show is closed (closed 1131 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 1133 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "dog-day-afternoon",
-      "detail": "Show is closed (closed 25 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 27 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "a-christmas-carol-2019",
-      "detail": "Show is closed (closed 2405 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2407 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lyons-2012",
-      "detail": "Show is closed (closed 5149 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5151 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "jerusalem-2011",
-      "detail": "Show is closed (closed 5464 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5466 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "job-2024",
-      "detail": "Show is closed (closed 648 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 650 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "torch-song-2018",
-      "detail": "Show is closed (closed 2769 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2771 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "joe-turners-come-and-gone",
-      "detail": "Show is closed (closed 11 days ago on 2026-07-26) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 13 days ago on 2026-07-26) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-fear-of-13",
-      "detail": "Show is closed (closed 25 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 27 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "celebrity-autobiography",
-      "detail": "Show is closed (closed 46 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 48 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -1818,6 +1818,12 @@
       "severity": "low",
       "showId": "twelfth-night-off-west-end",
       "detail": "Open/previews show \"Twelfth Night\" at Theatre on Kew has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "isla-off-broadway",
+      "detail": "Open/previews show \"ISLA\" at WP Theater has no commercial data entry."
     }
   ]
 }
