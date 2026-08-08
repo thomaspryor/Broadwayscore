@@ -128,3 +128,100 @@ test('emitStage rotates an oversized log before appending', () => {
   const kept = readLines(logFile);
   assert.equal(kept[kept.length - 1].showId, 'show-new', 'append still lands after rotation');
 });
+
+// --- readTrackedShowIds (task #388) ------------------------------------------
+// rebuild-all-reviews uses this to decide which shows get a per-show 'rebuilt'
+// terminal. Too wide and the log rotates the SLA's history away every ~3.5 days
+// (the bug this fixed); too narrow and a genuinely stuck review never clears.
+
+test('readTrackedShowIds returns shows with a recent review-level event', () => {
+  const logFile = makeTempLog();
+  const now = new Date('2026-08-08T12:00:00Z');
+  const at = days => new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
+  fs.writeFileSync(logFile, [
+    { showId: 'fresh-show', reviewKey: 'nyt:a:u1', stage: 'review-first-seen', at: at(1) },
+    { showId: 'collected-show', reviewKey: 'var:b:u2', stage: 'review-text-collected', at: at(5) },
+    { showId: 'scored-show', reviewKey: 'gua:c:u3', stage: 'scored', at: at(20) },
+    { showId: 'stale-show', reviewKey: 'nyp:d:u4', stage: 'review-first-seen', at: at(40) },
+  ].map(o => JSON.stringify(o)).join('\n') + '\n');
+
+  const { readTrackedShowIds } = require('../../scripts/lib/stage-latency.js');
+  const tracked = readTrackedShowIds({ logFile, now });
+  assert.ok(tracked.has('fresh-show'));
+  assert.ok(tracked.has('collected-show'));
+  assert.ok(tracked.has('scored-show'), '20 days is inside the 21-day window');
+  assert.ok(!tracked.has('stale-show'), '40 days is outside the window');
+});
+
+test('readTrackedShowIds ignores rebuild/deploy lines — only review-level events track a show', () => {
+  const logFile = makeTempLog();
+  const now = new Date('2026-08-08T12:00:00Z');
+  const recent = new Date(now.getTime() - 60 * 1000).toISOString();
+  fs.writeFileSync(logFile, [
+    { showId: 'rebuild-only-show', reviewKey: null, stage: 'rebuilt', at: recent, metadata: { reviewCount: 9 } },
+    { showId: null, reviewKey: null, stage: 'deployed-live', at: recent },
+    { showId: 'real-show', reviewKey: 'nyt:a:u', stage: 'review-first-seen', at: recent },
+  ].map(o => JSON.stringify(o)).join('\n') + '\n');
+
+  const { readTrackedShowIds } = require('../../scripts/lib/stage-latency.js');
+  const tracked = readTrackedShowIds({ logFile, now });
+  assert.deepEqual([...tracked], ['real-show']);
+});
+
+test('readTrackedShowIds returns an empty set when the log does not exist', () => {
+  const { readTrackedShowIds } = require('../../scripts/lib/stage-latency.js');
+  const tracked = readTrackedShowIds({ logFile: path.join(os.tmpdir(), 'definitely-not-here-388.jsonl') });
+  assert.equal(tracked.size, 0);
+});
+
+test('readTrackedShowIds drops the partial first line when scanning only the tail', () => {
+  const logFile = makeTempLog();
+  const now = new Date('2026-08-08T12:00:00Z');
+  const recent = new Date(now.getTime() - 60 * 1000).toISOString();
+  const lines = [];
+  for (let i = 0; i < 200; i++) {
+    lines.push(JSON.stringify({ showId: `pad-${i}`, reviewKey: `o:c:u${i}`, stage: 'scored', at: recent }));
+  }
+  lines.push(JSON.stringify({ showId: 'tail-show', reviewKey: 'o:c:tail', stage: 'review-first-seen', at: recent }));
+  fs.writeFileSync(logFile, lines.join('\n') + '\n');
+
+  const { readTrackedShowIds } = require('../../scripts/lib/stage-latency.js');
+  // scanBytes small enough that the window starts mid-line
+  const tracked = readTrackedShowIds({ logFile, now, scanBytes: 900 });
+  assert.ok(tracked.has('tail-show'), 'the newest line is always readable');
+  assert.ok(tracked.size < 201, 'only the scanned tail is considered');
+  // Nothing malformed leaked in as a show id
+  for (const id of tracked) assert.ok(/^(pad-\d+|tail-show)$/.test(id), `unexpected id ${id}`);
+});
+
+// --- selectTerminalShowIds (task #388) ---------------------------------------
+// The which-shows-get-a-terminal decision, extracted from rebuild-all-reviews so
+// it is covered (CLAUDE.md rule 15). Inline, an inverted condition would either
+// flood the log again or emit terminals for NOBODY — which pages every
+// in-flight review — and no test would fail.
+
+test('selectTerminalShowIds keeps only shows that are both reviewed and tracked', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  const withReviews = ['tracked-a', 'untracked-b', 'tracked-c'];
+  const tracked = new Set(['tracked-a', 'tracked-c', 'tracked-but-no-reviews']);
+  assert.deepEqual(selectTerminalShowIds(withReviews, tracked), ['tracked-a', 'tracked-c']);
+});
+
+test('selectTerminalShowIds emits nothing when the tracked set is empty', () => {
+  // The dangerous direction: no terminals at all means every in-flight review
+  // looks stuck. This asserts the shape, so a regression that silently empties
+  // the set is at least visible here rather than only in a 3am page.
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], new Set()), []);
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], null), []);
+});
+
+test('selectTerminalShowIds does not invent shows that have no reviews', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds([], new Set(['x', 'y'])), []);
+});
+
+test('selectTerminalShowIds accepts a plain array as the tracked set', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], ['b']), ['b']);
+});

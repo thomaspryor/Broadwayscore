@@ -43,7 +43,7 @@ const {
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
-const { emitStage } = require('./lib/stage-latency');
+const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -5421,11 +5421,50 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   }
 }
 
+// Per-show 'rebuilt' terminals, but only for shows the SLA could be watching
+// (changed 2026-08-08, task #388). The old loop emitted one line for every show
+// with reviews — ~1,210 per run, ~60 runs/day — which was 256,240 of the
+// 256,864 lines in data/audit/stage-latency.jsonl (99.87%). That blew the log's
+// 40 MB rotation cap every ~3.5 days and rotated away the review-level history
+// the time-to-publish SLA has to read, so the card's own acceptance criterion
+// ("90% of reviews in the last two opening weekends") could never be evaluated.
+//
+// The scoping rule is readTrackedShowIds(): a show with a review-level stage
+// event in the last 21 days. For every such show the terminal is emitted
+// exactly as before, so scripts/lib/opening-night-sla.js clears and pages
+// identically. Shows outside the set have no in-flight review for the SLA to
+// clear, so their line carried no information.
+//
+// It must stay a PER-SHOW line. Collapsing this to one global line looked
+// equivalent — every run is a full corpus rebuild — but it is not: showCounts
+// is built from allReviews, so a show whose only review is unscored or excluded
+// has never appeared here, and its stuck review correctly kept paging. A global
+// line would clear it. That is not hypothetical: at the time of this change 2
+// of the 13 shows with review-first-seen events in the log
+// (entangled-12-scenes…, the-peculiar-patriot-off-broadway-2026) had never
+// appeared in a single 'rebuilt' line. The one global line below is emitted for
+// run-level visibility and the latency report's timing, and is deliberately NOT
+// treated as a per-show terminal by any consumer.
 try {
   const showCounts = allReviews.reduce((acc, r) => { acc[r.showId] = (acc[r.showId] || 0) + 1; return acc; }, {});
-  for (const [showId, reviewCount] of Object.entries(showCounts)) {
-    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount } });
+  const tracked = readTrackedShowIds();
+  // The which-shows decision lives in the lib so it is unit-tested (rule 15) —
+  // inline, an inverted condition here would either flood the log again or
+  // emit terminals for nobody, and no test would fail.
+  const terminalShowIds = selectTerminalShowIds(Object.keys(showCounts), tracked);
+  for (const showId of terminalShowIds) {
+    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount: showCounts[showId] } });
   }
+  const emitted = terminalShowIds.length;
+  emitStage({
+    stage: 'rebuilt',
+    metadata: {
+      scope: 'all-shows',
+      showCount: Object.keys(showCounts).length,
+      reviewCount: allReviews.length,
+      perShowTerminalsEmitted: emitted,
+    },
+  });
 } catch (e) { process.stderr.write(`[stage-latency] rebuild emit failed: ${e.message}\n`); }
 
 console.log('\n=== DONE ===');

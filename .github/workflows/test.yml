@@ -993,6 +993,23 @@ on:
       - 'scripts/lib/wrong-production-corroboration.test.mjs'
       - 'scripts/flag-wrong-production-by-date.js'
       - 'scripts/rebuild-all-reviews.js'
+      # Time-to-publish SLA (task #388): how long a review takes to go from
+      # published by the outlet to live on the site, and the 90%-within-15-min
+      # target. stage-latency.js gained readTrackedShowIds(), which decides
+      # which shows rebuild-all-reviews gives a 'rebuilt' terminal — get that
+      # wrong and either the log rotates the SLA's history away in ~3.5 days or
+      # a genuinely stuck opening-night review never pages. Test lives in
+      # tests/unit/ (node --test batch, not globbed) and there is no broad
+      # scripts/lib/** glob, so each source file needs its own entry.
+      - 'scripts/lib/time-to-publish-sla.js'
+      - 'scripts/time-to-publish-sla.js'
+      - 'scripts/lib/stage-latency.js'
+      - 'scripts/lib/opening-night-sla.js'
+      - 'scripts/opening-night-latency-report.js'
+      - 'tests/unit/time-to-publish-sla.test.mjs'
+      - 'tests/unit/stage-latency.test.mjs'
+      - 'tests/unit/opening-night-sla.test.mjs'
+      - 'tests/unit/opening-night-latency-report.test.mjs'
       # Pull-quote guards decide the excerpt shown on every review card. The
       # 2026-08-01 owner report (listing chrome / tag cloud / mid-word
       # truncation / hedge-guard starvation) added hard + soft guards here and

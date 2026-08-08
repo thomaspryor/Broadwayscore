@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-08T06:25:51.947Z",
+  "generatedAt": "2026-08-08T09:08:24.307Z",
   "summary": {
-    "total": 3,
-    "high": 3,
+    "total": 4,
+    "high": 4,
     "medium": 0,
     "low": 0
   },
@@ -86,6 +86,33 @@
       ],
       "suggestedWinner": "a-dolls-house-2023",
       "reason": "publishDate 2023-03-13 is 4 days from a-dolls-house-2023 opening (2023-03-09)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+      "normalizedUrl": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical",
+      "candidates": [
+        {
+          "showId": "bad-cinderella-2023",
+          "file": "ew--emlyn-travis.json",
+          "publishDate": "March 24, 2023",
+          "openingDate": "2023-03-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "ew"
+        },
+        {
+          "showId": "cinderella-west-end-2026",
+          "file": "ew--jessica-shaw.json",
+          "publishDate": null,
+          "openingDate": "2026-12-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "ew"
+        }
+      ],
+      "suggestedWinner": "bad-cinderella-2023",
+      "reason": "publishDate March 24, 2023 is 1 days from bad-cinderella-2023 opening (2023-03-23)",
       "confidence": "high"
     }
   ]

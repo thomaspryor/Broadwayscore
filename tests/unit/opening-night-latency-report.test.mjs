@@ -101,3 +101,57 @@ test('negative e2e from clock skew is excluded from stats (not in median/p90)', 
   assert.equal(s.median_e2e_ms, null, 'negative e2e should not enter median');
   assert.equal(s.p90_e2e_ms, null);
 });
+
+// --- Per-show rebuild resolution (task #388) ---------------------------------
+// 'rebuilt' is never stamped per-reviewKey, so scored-to-rebuilt and
+// rebuilt-to-deployed were always null. They now resolve from the show's own
+// rebuild lines — and must NOT resolve from the run-level (showId-less) line,
+// which says a rebuild happened but not which shows it covered.
+
+test('per-stage gaps resolve rebuilt from the show\'s own rebuild lines', () => {
+  const base = new Date('2026-08-08T20:00:00Z');
+  const t = m => new Date(base.getTime() + m * MS_MIN).toISOString();
+  const entries = [
+    { showId: 'isla', reviewKey: 'nytimes:shaw:https://nyt/r', stage: 'review-first-seen', at: t(0) },
+    { showId: 'isla', reviewKey: 'nytimes:shaw:https://nyt/r', stage: 'scored', at: t(4) },
+    // A rebuild of this show BEFORE it was scored cannot have folded it in.
+    { showId: 'isla', reviewKey: null, stage: 'rebuilt', at: t(2), metadata: { reviewCount: 1 } },
+    { showId: 'isla', reviewKey: null, stage: 'rebuilt', at: t(7), metadata: { reviewCount: 2 } },
+    { showId: null, reviewKey: null, stage: 'deployed-live', at: t(11), metadata: { runId: 'r1' } },
+  ];
+
+  const [s] = computeLatencyStats(entries);
+  assert.equal(s.per_stage_median_ms['scored-to-rebuilt'], 3 * MS_MIN, 'scored +4 → rebuilt +7');
+  assert.equal(s.per_stage_median_ms['rebuilt-to-deployed'], 4 * MS_MIN, 'rebuilt +7 → deployed +11');
+  assert.equal(s.median_e2e_ms, 11 * MS_MIN);
+});
+
+test('the run-level rebuild line does not resolve a rebuilt time for a show', () => {
+  const base = new Date('2026-08-08T20:00:00Z');
+  const t = m => new Date(base.getTime() + m * MS_MIN).toISOString();
+  const entries = [
+    { showId: 'the-peculiar-patriot-off-broadway-2026', reviewKey: 'nytimes:shaw:https://nyt/r', stage: 'review-first-seen', at: t(0) },
+    // Run-level only — this show has never had a rebuild of its own.
+    { showId: null, reviewKey: null, stage: 'rebuilt', at: t(5), metadata: { scope: 'all-shows', showCount: 1210 } },
+    { showId: null, reviewKey: null, stage: 'deployed-live', at: t(9), metadata: { runId: 'r1' } },
+  ];
+
+  const [s] = computeLatencyStats(entries);
+  assert.equal(s.per_stage_median_ms['scored-to-rebuilt'], null, 'no show rebuild → no gap invented');
+  assert.equal(s.per_stage_median_ms['rebuilt-to-deployed'], null);
+});
+
+test('--show=ID keeps the global deploy line so a scoped report still has its terminal', () => {
+  const base = new Date('2026-08-08T20:00:00Z');
+  const t = m => new Date(base.getTime() + m * MS_MIN).toISOString();
+  const entries = [
+    { showId: 'isla', reviewKey: 'nytimes:shaw:https://nyt/r', stage: 'review-first-seen', at: t(0) },
+    { showId: 'other-show', reviewKey: 'var:x:https://v/r', stage: 'review-first-seen', at: t(0) },
+    { showId: null, reviewKey: null, stage: 'deployed-live', at: t(6), metadata: { runId: 'r1' } },
+  ];
+
+  const shows = computeLatencyStats(entries, { showFilter: 'isla' });
+  assert.equal(shows.length, 1);
+  assert.equal(shows[0].showId, 'isla');
+  assert.equal(shows[0].median_e2e_ms, 6 * MS_MIN, 'global deploy survives the --show filter');
+});
