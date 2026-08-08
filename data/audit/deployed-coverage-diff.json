@@ -1,57 +1,11 @@
 {
-  "generatedAt": "2026-08-08T19:31:05.981Z",
+  "generatedAt": "2026-08-08T20:18:46.370Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 157,
-  "clean": 155,
-  "defective": 2,
-  "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: independent"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.42 vs local 75.3 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [
-        "independent"
-      ],
-      "localCount": 20,
-      "deployedCount": 19
-    },
-    {
-      "showId": "twelfth-night-off-west-end-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-08-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.88 vs local 72.51 (Δ2.37)"
-        }
-      ],
-      "missingFromProd": [
-        "times-uk"
-      ],
-      "localCount": 11,
-      "deployedCount": 10
-    }
-  ]
+  "clean": 157,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

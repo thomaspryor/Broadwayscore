@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-08-08T19:30:57.054Z",
+  "generatedAt": "2026-08-08T20:18:39.268Z",
   "windowDays": 45,
   "showsScanned": 63,
   "gaps": [
     {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "title": "Horrible Histories: Barmy Britain - The Best Bits",
-      "openingDate": "2026-08-03",
-      "file": "everything-theatre--chris-elwell.json",
-      "outletId": "everything-theatre",
-      "tier": 2,
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "tier": 1,
       "type": "empty-body",
-      "url": "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
       "recovery": {
         "attempted": false,
         "reason": "circuit-breaker:daily-global-cap"
       },
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=horrible-histories-barmy-britain-the-best-bits-west-end-2026 --url=https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/ --outlet=everything-theatre --critic=\"Chris Elwell\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-08T18:49:48.080Z",
-      "fileAgeHours": 0.6857958333333334,
-      "gapSeenAt": "2026-08-08T19:30:57.053Z",
+      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-08-08T20:18:39.268Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 390.3223644444444,
+      "fileAgeHours": 391.1174286111111,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 349.62531027777777
+      "nonTerminalAgeHours": 350.42037
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 53.92897166666667
+      "nonTerminalAgeHours": 54.72403138888889
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 80.76555666666667,
+      "fileAgeHours": 81.56061694444445,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 80.12749416666666
+      "nonTerminalAgeHours": 80.92255388888888
     }
   ],
   "contradictions": []
