@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-04T05:54:55.303Z",
-    "completedAt": "2026-08-04T05:58:37.376Z",
-    "totalReviews": 41746,
-    "processed": 27,
-    "skipped": 41518,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 273577,
-      "output": 11419,
-      "total": 695449
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-04T06:19:54.387Z",
     "completedAt": "2026-08-04T06:20:04.951Z",
     "totalReviews": 41749,
@@ -661015,17 +661001,88 @@
     ]
   },
   {
-    "startedAt": "2026-08-08T06:10:45.062Z",
-    "completedAt": "2026-08-08T06:10:50.492Z",
-    "totalReviews": 77,
+    "startedAt": "2026-08-08T06:12:07.944Z",
+    "completedAt": "2026-08-08T06:12:12.929Z",
+    "totalReviews": 57,
     "processed": 1,
-    "skipped": 76,
+    "skipped": 56,
     "errors": 0,
     "tokensUsed": {
-      "input": 5666,
-      "output": 364,
-      "total": 14423
+      "input": 5697,
+      "output": 336,
+      "total": 14425
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-08T06:09:24.267Z",
+    "completedAt": "2026-08-08T06:12:06.968Z",
+    "totalReviews": 42185,
+    "processed": 15,
+    "skipped": 42018,
+    "errors": 10,
+    "tokensUsed": {
+      "input": 219935,
+      "output": 7294,
+      "total": 556375
+    },
+    "errorDetails": [
+      {
+        "showId": "just-in-time-2025",
+        "outletId": "newyorker",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "chaplin-2012",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "private-lives-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-normal-heart-2011",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "anything-goes-2011",
+        "outletId": "stageandcinema",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "anything-goes-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "that-championship-season-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "good-people-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "enron-2010",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "promises-promises-2010",
+        "outletId": "usatoday",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
