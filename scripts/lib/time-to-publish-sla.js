@@ -90,12 +90,16 @@ const PER_REVIEW_STAGES = ['review-first-seen', 'review-text-collected', 'scored
  *
  * Date-only values ("2026-04-15", "April 15, 2026") return null on purpose:
  * midnight is not a publication time, and treating it as one would report a
- * review that went live at 09:00 as 9 hours late. A bare "YYYY-MM-DDTHH:MM:SS"
- * with no zone is read as UTC so the result is deterministic wherever this runs
- * (CI is UTC; a local run must not produce a different number).
+ * review that went live at 09:00 as 9 hours late.
+ *
+ * A bare "YYYY-MM-DDTHH:MM:SS" with no zone is read as UTC so the result is
+ * deterministic wherever this runs — but deterministic is not the same as
+ * correct, and most of these come from US blogs whose real offset is 4–8 hours
+ * away. `assumedZone` says so, and computeReviewLatencies keeps those records
+ * in a separate basis rather than passing them off as measured.
  *
  * @param {string|null|undefined} publishDate
- * @returns {string|null} ISO-8601 instant, or null if not precise
+ * @returns {{at: string, assumedZone: boolean}|null} null if not precise
  */
 function parsePrecisePublishTime(publishDate) {
   if (!publishDate || typeof publishDate !== 'string') return null;
@@ -103,12 +107,11 @@ function parsePrecisePublishTime(publishDate) {
   if (!raw || raw === 'null' || raw === 'undefined') return null;
   // Require an explicit HH:MM somewhere — that is what "precise" means here.
   if (!/\d{1,2}:\d{2}/.test(raw)) return null;
-  const normalized = /[zZ]$|[+-]\d{2}:?\d{2}$/.test(raw)
-    ? raw
-    : `${raw.replace(' ', 'T')}Z`;
+  const hasZone = /[zZ]$|[+-]\d{2}:?\d{2}$/.test(raw);
+  const normalized = hasZone ? raw : `${raw.replace(' ', 'T')}Z`;
   const d = new Date(normalized);
   if (Number.isNaN(d.getTime())) return null;
-  return d.toISOString();
+  return { at: d.toISOString(), assumedZone: !hasZone };
 }
 
 /**
@@ -116,11 +119,13 @@ function parsePrecisePublishTime(publishDate) {
  *
  * Show-level events (no reviewKey) are the terminals: a `rebuilt` folds a
  * show's reviews into reviews.json, a `deployed-live` puts that build on prod.
- * Both are recorded per-show AND globally: since 2026-08-08 rebuild-all-reviews
- * emits ONE global `rebuilt` line per run instead of one per show (the per-show
- * loop was 99.87% of the log and rotated review history away in ~3.5 days), and
- * a full-corpus rebuild covers every show, so a global rebuild is a valid
- * terminal for any show. Older logs still carry per-show lines; both are read.
+ *
+ * `globalRebuilds` collects the showId-less run-level `rebuilt` line that
+ * rebuild-all-reviews emits once per run, but it is NOT a per-show terminal —
+ * see computeReviewLatencies. Same rule as scripts/lib/opening-night-sla.js:
+ * per-show lines only ever existed for shows with ≥1 review in reviews.json,
+ * so treating the run-level line as coverage would mark a show's stuck first
+ * review "live" when nothing of that show was ever rebuilt.
  *
  * @param {object[]} entries parsed stage-latency.jsonl rows
  */
@@ -215,10 +220,11 @@ function computeReviewLatencies(entries, { publishTimes = null, discoveryWindowM
     const collectedAt = rv.stages['review-text-collected'] || null;
 
     const readyAt = scoredAt || firstSeenAt;
-    const rebuiltAt = earliest(
-      firstAtOrAfter(showRebuilds.get(rv.showId), readyAt),
-      firstAtOrAfter(globalRebuilds, readyAt)
-    );
+    // THIS SHOW's rebuilds only. The run-level (showId-less) line says a
+    // rebuild happened, not that it covered this show — crediting it here
+    // would report a review as live that was never folded in, and would
+    // contradict opening-night-sla.js, which still (correctly) pages for it.
+    const rebuiltAt = firstAtOrAfter(showRebuilds.get(rv.showId), readyAt);
 
     const perKeyLive = rv.stages['deployed-live'] || null;
     const liveAt = perKeyLive || (rebuiltAt ? firstAtOrAfter(globalDeploys, rebuiltAt) : null);
@@ -232,13 +238,19 @@ function computeReviewLatencies(entries, { publishTimes = null, discoveryWindowM
     };
 
     const pipelineMs = span(firstSeenAt, liveAt);
-    const publishedAt = lookup.get(key) || lookup.get(rv.reviewKey) || null;
+    // publishTimes may hold either a bare ISO string or {at, assumedZone}
+    // (what parsePrecisePublishTime returns). Accept both.
+    const rawPublished = lookup.get(key) || lookup.get(rv.reviewKey) || null;
+    const publishedAt = rawPublished && typeof rawPublished === 'object' ? rawPublished.at : rawPublished;
+    const assumedZone = !!(rawPublished && typeof rawPublished === 'object' && rawPublished.assumedZone);
 
     let publishedToLiveMs = null;
     let basis = null;
     if (publishedAt && liveAt) {
       publishedToLiveMs = span(publishedAt, liveAt);
-      basis = publishedToLiveMs === null ? null : 'published';
+      // A zoneless outlet stamp read as UTC can be hours off. Kept, but in its
+      // own basis so a reader never mistakes it for a measured number.
+      basis = publishedToLiveMs === null ? null : (assumedZone ? 'published-assumed-tz' : 'published');
     }
     if (publishedToLiveMs === null && pipelineMs !== null) {
       // No usable publication clock: report the worst case rather than nothing.
@@ -251,6 +263,7 @@ function computeReviewLatencies(entries, { publishTimes = null, discoveryWindowM
       reviewKey: rv.reviewKey,
       outletId: String(rv.reviewKey).split(':')[0] || 'unknown',
       publishedAt,
+      publishedAtAssumedZone: publishedAt ? assumedZone : false,
       firstSeenAt,
       collectedAt,
       scoredAt,
@@ -367,7 +380,11 @@ function selectRecentOpeningWindows(shows, { now, count = 2, daysBefore = 1, day
     if (windows.length >= count) break;
     const opening = new Date(`${s.openingDate.slice(0, 10)}T00:00:00Z`);
     const from = new Date(opening.getTime() - daysBefore * 24 * 60 * MS_MIN).toISOString();
-    const to = new Date(opening.getTime() + daysAfter * 24 * 60 * MS_MIN).toISOString();
+    // INCLUSIVE of the whole last day. Ending at midnight of openingDate+N cut
+    // out nearly all of day N — for a Wednesday opening with daysAfter=4 that
+    // silently dropped the entire Sunday, which is exactly when the weekend
+    // stragglers land.
+    const to = new Date(opening.getTime() + (daysAfter + 1) * 24 * 60 * MS_MIN - 1).toISOString();
     windows.push({ showId: s.id, openingDate: s.openingDate.slice(0, 10), from, to });
   }
   return windows;

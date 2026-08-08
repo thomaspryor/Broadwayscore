@@ -193,3 +193,35 @@ test('readTrackedShowIds drops the partial first line when scanning only the tai
   // Nothing malformed leaked in as a show id
   for (const id of tracked) assert.ok(/^(pad-\d+|tail-show)$/.test(id), `unexpected id ${id}`);
 });
+
+// --- selectTerminalShowIds (task #388) ---------------------------------------
+// The which-shows-get-a-terminal decision, extracted from rebuild-all-reviews so
+// it is covered (CLAUDE.md rule 15). Inline, an inverted condition would either
+// flood the log again or emit terminals for NOBODY — which pages every
+// in-flight review — and no test would fail.
+
+test('selectTerminalShowIds keeps only shows that are both reviewed and tracked', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  const withReviews = ['tracked-a', 'untracked-b', 'tracked-c'];
+  const tracked = new Set(['tracked-a', 'tracked-c', 'tracked-but-no-reviews']);
+  assert.deepEqual(selectTerminalShowIds(withReviews, tracked), ['tracked-a', 'tracked-c']);
+});
+
+test('selectTerminalShowIds emits nothing when the tracked set is empty', () => {
+  // The dangerous direction: no terminals at all means every in-flight review
+  // looks stuck. This asserts the shape, so a regression that silently empties
+  // the set is at least visible here rather than only in a 3am page.
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], new Set()), []);
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], null), []);
+});
+
+test('selectTerminalShowIds does not invent shows that have no reviews', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds([], new Set(['x', 'y'])), []);
+});
+
+test('selectTerminalShowIds accepts a plain array as the tracked set', () => {
+  const { selectTerminalShowIds } = require('../../scripts/lib/stage-latency.js');
+  assert.deepEqual(selectTerminalShowIds(['a', 'b'], ['b']), ['b']);
+});

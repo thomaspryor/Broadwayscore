@@ -42,6 +42,8 @@ const {
   MS_MIN,
   DEFAULT_DISCOVERY_WINDOW_MIN,
 } = require('./lib/time-to-publish-sla');
+// Same normalizer review-file-writer uses to build the reviewKey critic slug.
+const { normalizeCritic } = require('./lib/review-normalization');
 
 const ROOT = path.join(__dirname, '..');
 const DEFAULT_LOG = path.join(ROOT, 'data/audit/stage-latency.jsonl');
@@ -55,10 +57,12 @@ function parseArgs(argv) {
   const args = {
     windows: 2, days: null, show: null, discoveryBaseline: null,
     alert: false, output: null, quiet: false, log: null,
+    discoveryWindow: DEFAULT_DISCOVERY_WINDOW_MIN,
   };
   for (const a of argv) {
     const [k, v] = a.replace(/^--/, '').split('=');
     if (k === 'windows') args.windows = Number(v) || 2;
+    else if (k === 'discovery-window') args.discoveryWindow = Number(v) || DEFAULT_DISCOVERY_WINDOW_MIN;
     else if (k === 'days') args.days = Number(v) || null;
     else if (k === 'show') args.show = v;
     else if (k === 'discovery-baseline') args.discoveryBaseline = v;
@@ -120,8 +124,16 @@ function loadPublishTimes(showIds) {
       if (!j || !j.url) continue;
       const precise = parsePrecisePublishTime(j.publishDate);
       if (!precise) continue;
-      // reviewKey shape written by review-file-writer: outletId:critic:url
-      const critic = (j.criticName || 'unknown').toLowerCase().replace(/\s+/g, '-');
+      // The key MUST be built with the same normalizer the writer used
+      // (review-file-writer.js:69 → normalizeCritic), not a hand-rolled
+      // lowercase+dash. A local slugifier disagreed on 86 of the 2,016
+      // precise-time files — "Samuel L. Leiter" → samuel-l.-leiter vs the real
+      // samuel-l-leiter, plus alias mappings like "Steve Babyak" →
+      // steven-babyak. Every mismatch silently fell through to
+      // 'poller-bounded', which is the worst kind of bug here: the measured
+      // basis quietly becomes dead code and the number gets worse, not wrong
+      // enough to notice.
+      const critic = normalizeCritic(j.criticName);
       out.set(`${j.outletId}:${critic}:${j.url}`, precise);
       out.set(`${showId}||${j.outletId}:${critic}:${j.url}`, precise);
     }
@@ -163,8 +175,13 @@ function discoveryBaseline(showId, openingDate = null) {
     if (!j.textFetchedAt) { noFetchStamp++; continue; }
     const exact = parsePrecisePublishTime(j.publishDate);
     if (exact) {
-      const ms = new Date(j.textFetchedAt) - new Date(exact);
-      if (ms >= 0) precise.push({ file: f, outletId: j.outletId, publishedAt: exact, fetchedAt: j.textFetchedAt, lagMs: ms });
+      const ms = new Date(j.textFetchedAt) - new Date(exact.at);
+      if (ms >= 0) {
+        precise.push({
+          file: f, outletId: j.outletId, publishedAt: exact.at,
+          assumedZone: exact.assumedZone, fetchedAt: j.textFetchedAt, lagMs: ms,
+        });
+      }
       continue;
     }
     const day = String(j.publishDate || '').match(/^(\d{4}-\d{2}-\d{2})/);
@@ -271,7 +288,10 @@ async function main() {
 
   let records = computeReviewLatencies(entries, {
     publishTimes,
-    discoveryWindowMinutes: DEFAULT_DISCOVERY_WINDOW_MIN,
+    // Defaults to the orchestrator's POLL_INTERVAL default (10 min). A window
+    // dispatched with a different poll_interval_minutes must pass
+    // --discovery-window=N or the bound understates the real worst case.
+    discoveryWindowMinutes: args.discoveryWindow,
   });
 
   let scope;
@@ -339,17 +359,45 @@ async function main() {
     console.log(`Written: ${outPath}`);
   }
 
-  if (args.alert && verdict.verdict === 'fail') {
-    const { routeAlert } = require('./lib/owner-alert-router');
-    const list = verdict.breaches.slice(0, 8)
-      .map(b => `• ${b.showId} / ${b.outletId} — ${fmtMinutes(b.publishedToLiveMs)}`).join('\n');
-    await routeAlert({
-      conditionKey: 'time-to-publish-sla:missed',
-      title: `Time-to-publish SLA missed — ${verdict.compliancePct}% within ${verdict.targetMinutes} min (target ${verdict.targetPct}%)`,
-      description: `Scope: ${scope}\nEvaluated ${verdict.evaluated} review(s), p90 ${fmtMinutes(verdict.p90Ms)}.\nSlowest:\n${list}`,
-      severity: 'warning',
-      disposition: 'digest',
-    }).catch(e => console.error('[time-to-publish-sla] alert route failed:', e.message));
+  if (args.alert) {
+    const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+
+    if (verdict.verdict === 'fail') {
+      const list = verdict.breaches.slice(0, 8)
+        .map(b => `• ${b.showId} / ${b.outletId} — ${fmtMinutes(b.publishedToLiveMs)}`).join('\n');
+      await routeAlert({
+        conditionKey: 'time-to-publish-sla:missed',
+        title: `Time-to-publish SLA missed — ${verdict.compliancePct}% within ${verdict.targetMinutes} min (target ${verdict.targetPct}%)`,
+        description: `Scope: ${scope}\nEvaluated ${verdict.evaluated} review(s), p90 ${fmtMinutes(verdict.p90Ms)}.\nSlowest:\n${list}`,
+        severity: 'warning',
+        disposition: 'digest',
+      }).catch(e => console.error('[time-to-publish-sla] alert route failed:', e.message));
+    } else {
+      resolveCondition('time-to-publish-sla:missed');
+    }
+
+    // A metric that can see nothing must SAY it can see nothing. Without this,
+    // rotation eating the history, a degraded scope, or the stage emits dying
+    // all look identical to a healthy quiet day: no alert, no digest line, and
+    // an owner who believes the SLA is being watched when it is not. This is
+    // the vacuous-monitoring class (#1075/#1094) applied to the monitor itself.
+    if (verdict.verdict === 'insufficient-data') {
+      await routeAlert({
+        conditionKey: 'time-to-publish-sla:unmeasurable',
+        title: `Time-to-publish SLA cannot be measured — only ${verdict.evaluated} review(s) in scope (need ${verdict.minSample})`,
+        description: [
+          `Scope: ${scope}`,
+          `${verdict.inFlight} review(s) still in flight.`,
+          report.logOldestEntryAt ? `Stage log currently starts at ${report.logOldestEntryAt}.` : 'Stage log is empty.',
+          degraded ? `DEGRADED: ${degraded}` : '',
+          'This is NOT a pass — the SLA had too little to judge.',
+        ].filter(Boolean).join('\n'),
+        severity: 'warning',
+        disposition: 'digest',
+      }).catch(e => console.error('[time-to-publish-sla] unmeasurable route failed:', e.message));
+    } else {
+      resolveCondition('time-to-publish-sla:unmeasurable');
+    }
   }
 }
 

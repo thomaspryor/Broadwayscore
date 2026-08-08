@@ -43,7 +43,7 @@ const {
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
-const { emitStage, readTrackedShowIds } = require('./lib/stage-latency');
+const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -5448,12 +5448,14 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 try {
   const showCounts = allReviews.reduce((acc, r) => { acc[r.showId] = (acc[r.showId] || 0) + 1; return acc; }, {});
   const tracked = readTrackedShowIds();
-  let emitted = 0;
-  for (const [showId, reviewCount] of Object.entries(showCounts)) {
-    if (!tracked.has(showId)) continue;
-    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount } });
-    emitted++;
+  // The which-shows decision lives in the lib so it is unit-tested (rule 15) —
+  // inline, an inverted condition here would either flood the log again or
+  // emit terminals for nobody, and no test would fail.
+  const terminalShowIds = selectTerminalShowIds(Object.keys(showCounts), tracked);
+  for (const showId of terminalShowIds) {
+    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount: showCounts[showId] } });
   }
+  const emitted = terminalShowIds.length;
   emitStage({
     stage: 'rebuilt',
     metadata: {
