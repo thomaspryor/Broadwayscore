@@ -533,7 +533,7 @@ function pageZombieSweep({ corpses, revive, guarded = [] }) {
 
 // Task #578: reconcile launches whose workspace the owner CLOSED. Split out
 // of main() so the epoch/park rules are testable without a live cmux.
-function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn }) {
+function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, now = Date.now() }) {
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
 
@@ -558,7 +558,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   }
 
   const liveRefs = new Set(all.map(w => w.ref));
-  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs });
+  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs, now });
   if (!candidates.length) return;
 
   // Task #883: a cmux restart renumbers every open workspace ref at once, so
@@ -658,7 +658,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
     try {
       const fresh = readLedgerEntriesFn();
       stillVanished = dispatchLedger
-        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs })
+        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs, now })
         .some(f => f.workspaceRef === v.workspaceRef);
     } catch (e) {
       console.error(`[bsc-prune] WARN re-validate failed for ${v.workspaceRef}, skipping park: ${e.message}`);
