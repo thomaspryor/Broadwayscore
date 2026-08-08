@@ -373,6 +373,24 @@ test('vanishedBreadcrumbs: a pre-epoch ref superseded by a newer OPEN launch for
   assert.deepEqual(out, []);
 });
 
+test('vanishedBreadcrumbs: a pre-epoch ref is NOT suppressed when the "newer" launch for the task is also dead (Codex adversarial-review catch, card #801 ship-check)', () => {
+  // Both refs are absent from liveRefs — the newer launch is exactly as
+  // dead as the older one, so "a newer launch exists" alone must NOT
+  // suppress the older, notionId-bearing ref. Requiring liveRefs.has() on
+  // the newer launch's ref (not just "no terminal event yet") is what makes
+  // this distinguishable from the genuinely-superseded case above.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']), // neither workspace:1 nor workspace:2 is live
+    [
+      launch({ taskId: '1', workspaceRef: 'workspace:1', ts: BEFORE, notionId: 'abc' }),
+      launch({ taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }), // also dead, no notionId
+    ],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  const refs = out.map(b => b.workspaceRef).sort();
+  assert.deepEqual(refs, ['workspace:1', 'workspace:2'], 'both dead refs become candidates — the notionId-bearing one must not be silently swallowed');
+  assert.equal(out.find(b => b.workspaceRef === 'workspace:1').notionId, 'abc');
+});
+
 test('vanishedBreadcrumbs: requires now (ms epoch)', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
   assert.throws(() => vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH }), /now/);
@@ -479,8 +497,20 @@ test('openWorkspaceLaunchCount: counts post-epoch, non-terminal workspace launch
     launch({ taskId: '3', workspaceRef: 'workspace:3', ts: BEFORE }), // pre-epoch
     launch({ taskId: '4', workspaceRef: 'headless:4', ts: AFTER }),  // not workspace-shaped
   ];
-  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH }), 1);
-  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: null }), 0, 'no epoch = nothing counted');
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: NOW }), 1);
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: null, now: NOW }), 0, 'no epoch = nothing counted');
+  assert.throws(() => openWorkspaceLaunchCount(entries, { epochTs: EPOCH }), /now/);
+});
+
+test('openWorkspaceLaunchCount: pre-epoch launches join the count once the grace elapses, matching vanishedBreadcrumbs (card #801 ship-check)', () => {
+  const entries = [
+    launch({ taskId: '1', workspaceRef: 'workspace:1', ts: AFTER }),
+    launch({ taskId: '3', workspaceRef: 'workspace:3', ts: BEFORE }), // pre-epoch
+  ];
+  const withinGrace = Date.parse(EPOCH) + 1000;
+  const pastGrace = Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1;
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: withinGrace }), 1, 'pre-epoch launch not yet counted');
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: pastGrace }), 2, 'pre-epoch launch now counted — same population vanishedBreadcrumbs draws candidates from');
 });
 
 test('looksLikeRestart: requires both a minimum absolute count and a majority fraction', () => {
