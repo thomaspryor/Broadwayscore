@@ -1,8 +1,28 @@
 {
-  "generatedAt": "2026-08-08T18:07:21.354Z",
+  "generatedAt": "2026-08-08T19:30:57.054Z",
   "windowDays": 45,
   "showsScanned": 63,
   "gaps": [
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "title": "Horrible Histories: Barmy Britain - The Best Bits",
+      "openingDate": "2026-08-03",
+      "file": "everything-theatre--chris-elwell.json",
+      "outletId": "everything-theatre",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=horrible-histories-barmy-britain-the-best-bits-west-end-2026 --url=https://everything-theatre.co.uk/2025/08/review-horrible-histories-barmy-britain-the-best-bits-apollo-theatre/ --outlet=everything-theatre --critic=\"Chris Elwell\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-08T18:49:48.080Z",
+      "fileAgeHours": 0.6857958333333334,
+      "gapSeenAt": "2026-08-08T19:30:57.053Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -16,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 388.9291172222222,
+      "fileAgeHours": 390.3223644444444,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 348.2320602777778
+      "nonTerminalAgeHours": 349.62531027777777
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 52.53572166666667
+      "nonTerminalAgeHours": 53.92897166666667
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 79.37230694444445,
+      "fileAgeHours": 80.76555666666667,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 78.73424416666667
+      "nonTerminalAgeHours": 80.12749416666666
     }
   ],
   "contradictions": []
