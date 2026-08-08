@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-08T12:13:55.733Z",
+  "generatedAt": "2026-08-08T13:57:08.781Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,23 +396,23 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 75.37,
-      "liveScore": 75,
-      "scoreDrift": -0.37000000000000455,
+      "siteScore": 75.77,
+      "liveScore": 76,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 8,
+      "total": 19,
+      "t1": 7,
       "t2": 5,
       "t3": 7,
       "positive": 11,
-      "mixed": 9,
+      "mixed": 8,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 7,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -670,6 +670,18 @@
           "t3": 7,
           "p": 11,
           "m": 9,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T13:57:08.781Z",
+          "rc": 19,
+          "s": 75.77,
+          "t1": 7,
+          "t2": 5,
+          "t3": 7,
+          "p": 11,
+          "m": 8,
           "n": 0,
           "bc": "waiting"
         }
@@ -1630,18 +1642,18 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 54.52,
+      "siteScore": 54.65,
       "liveScore": 55,
-      "scoreDrift": 0.4799999999999969,
+      "scoreDrift": 0.3500000000000014,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 24,
       "t1": 4,
       "t2": 5,
-      "t3": 14,
+      "t3": 15,
       "positive": 6,
-      "mixed": 6,
+      "mixed": 7,
       "negative": 11,
       "readiness": {
         "ready": false,
@@ -1693,10 +1705,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -1854,6 +1862,18 @@
           "t3": 14,
           "p": 6,
           "m": 6,
+          "n": 11,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T13:57:08.781Z",
+          "rc": 24,
+          "s": 54.65,
+          "t1": 4,
+          "t2": 5,
+          "t3": 15,
+          "p": 6,
+          "m": 7,
           "n": 11,
           "bc": "waiting"
         }
