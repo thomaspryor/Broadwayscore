@@ -283,13 +283,22 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
   const epochMs = Date.parse(epochTs);
   const graceExpired = Number.isFinite(epochMs) && (now - epochMs) >= HISTORICAL_EXCLUSION_GRACE_MS;
 
-  // Per-task liveness view: if a DIFFERENT, still-open launch exists for the
-  // same taskId, any other ref for that task is superseded, not vanished —
-  // parking it would flip the Notion card to Paused while a newer session is
-  // actively working the task under its own ref. vanishedBreadcrumbs iterates
-  // per-REF (below), so without this a stale pre-epoch ref surviving the
-  // grace above could independently "vanish" even though the task moved on
-  // (ship-check catch during card #801's review).
+  // Per-task liveness view: if a DIFFERENT, still-open launch for the same
+  // taskId is CURRENTLY LIVE (in liveRefs), any other ref for that task is
+  // superseded, not vanished — parking it would flip the Notion card to
+  // Paused while a newer session is actively working the task under its own
+  // ref. vanishedBreadcrumbs iterates per-REF (below), so without this a
+  // stale pre-epoch ref surviving the grace above could independently
+  // "vanish" even though the task moved on (ship-check catch, card #801).
+  //
+  // Requiring liveRefs.has() (not just "no terminal event yet") matters: a
+  // newer launch that's ALSO absent from liveRefs is exactly as dead as the
+  // one being considered — treating its mere existence as "superseding"
+  // would suppress the older ref (which may carry the notionId Notion needs
+  // to update) while the newer ref becomes its own candidate and, lacking a
+  // notionId, parks in the ledger only — silently reproducing the exact
+  // "Notion card stuck forever" bug this fix exists to close (Codex
+  // adversarial review catch, card #801 ship-check).
   const openByTask = openTaskWorkspaceLaunches(entries);
 
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
@@ -299,7 +308,7 @@ function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
     if (!launch.ts) continue;
     if (launch.ts < epochTs && !graceExpired) continue;    // pre-epoch history is not ours to park (yet)
     const openElsewhere = openByTask.get(String(launch.taskId));
-    if (openElsewhere && openElsewhere.workspaceRef !== ref) continue; // superseded by a newer open launch
+    if (openElsewhere && openElsewhere.workspaceRef !== ref && liveRefs.has(openElsewhere.workspaceRef)) continue; // superseded by a newer LIVE launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
     out.push({
@@ -459,12 +468,23 @@ function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model 
 // Denominator for looksLikeRestart: how many workspace-shaped launches the
 // ledger currently believes are still open (post-epoch, no terminal event
 // yet) — regardless of whether cmux's live listing still contains them.
-function openWorkspaceLaunchCount(entries, { epochTs } = {}) {
+// `now` (ms epoch) must apply the SAME pre-epoch grace as vanishedBreadcrumbs
+// — this count is the denominator looksLikeRestart() compares candidates
+// against (bsc-prune.js), so counting a different population than
+// vanishedBreadcrumbs' candidates (e.g. still excluding pre-epoch launches
+// here while they've become eligible candidates there) would distort the
+// mass-restart ratio (ship-check catch, card #801: Codex adversarial
+// review flagged the two functions drifting out of sync).
+function openWorkspaceLaunchCount(entries, { epochTs, now } = {}) {
   if (!epochTs) return 0;
+  if (!Number.isFinite(now)) throw new Error('openWorkspaceLaunchCount requires now (ms epoch)');
+  const epochMs = Date.parse(epochTs);
+  const graceExpired = Number.isFinite(epochMs) && (now - epochMs) >= HISTORICAL_EXCLUSION_GRACE_MS;
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   let n = 0;
   for (const [ref, launch] of lastByRef(entries, e => e.event === 'launch')) {
-    if (!launch.ts || launch.ts < epochTs) continue;
+    if (!launch.ts) continue;
+    if (launch.ts < epochTs && !graceExpired) continue;
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;
     n++;
