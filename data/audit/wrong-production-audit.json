@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-08T08:55:40.590Z",
+  "timestamp": "2026-08-08T09:46:02.520Z",
   "stats": {
-    "totalReviews": 41901,
+    "totalReviews": 41905,
     "alreadyFlagged": 18180,
-    "dateGuardCatches": 138,
+    "dateGuardCatches": 139,
     "directorMismatch": 957,
-    "tvFilmSignals": 1161,
+    "tvFilmSignals": 1162,
     "londonSignals": 833,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3589
+    "noPublishDate": 3590
   },
   "findings": [
     {
@@ -11579,6 +11579,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -36482,6 +36495,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-06-07",
+      "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 53d before show (2026-06-07 vs 2026-07-30)"
         }
       ]
     },
