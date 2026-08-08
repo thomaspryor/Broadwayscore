@@ -1948,7 +1948,13 @@
     "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026/nytimes--richard-sandomir.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026/broadwayworld--aa-cristi.json",
-    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json"
+    "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-saviors-off-broadway-2026/playbill--unknown.json",
+    "hungry-women-off-broadway-2026/broadwayworld--unknown.json",
+    "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "hungry-women-off-broadway-2026/sohoplayhouse--unknown.json",
+    "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2095,7 +2101,7 @@
     ]
   },
   "startTime": "2026-08-07T10:32:52.947Z",
-  "lastProcessed": "les-miserables-arena-concert-spectacular-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "are-you-mad-at-me-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-08-07T10:46:19.372Z",
@@ -2210,6 +2216,18 @@
       "t": "2026-08-08T01:33:28.408Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-08T01:36:42.433Z",
+      "event": "bb-session",
+      "session": "c83a6f34",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
+    },
+    {
+      "t": "2026-08-08T01:36:57.000Z",
+      "event": "bb-session",
+      "session": "2665ed10",
+      "url": "https://www.broadwayworld.com/reviews/hungry-women"
     }
   ]
 }
