@@ -14,7 +14,12 @@
          PATH/HOME only, no token — verified live 2026-07-30.
          Install:  cp scripts/launchd/com.bwsc.opening-night-monitor.plist ~/Library/LaunchAgents/
                    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.bwsc.opening-night-monitor.plist
-         Kill:     launchctl bootout gui/$(id -u)/com.bwsc.opening-night-monitor -->
+         Kill:     launchctl bootout gui/$(id -u)/com.bwsc.opening-night-monitor
+
+         claude-token-not-required: authenticates via the keychain-stored
+         login, same as autonomous-nightly (~/.config/claude/check-token.sh +
+         update-token.sh discovery skip this job on purpose — do not stamp a
+         token in without re-verifying the keychain path is still broken). -->
     <key>Label</key>
     <string>com.bwsc.opening-night-monitor</string>
     <key>ProgramArguments</key>

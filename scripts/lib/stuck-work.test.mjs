@@ -168,6 +168,25 @@ test('paused P2 older than 7d with a future stamp is excluded from pausedStale',
   assert.deepEqual(r.pausedStale.map((c) => c.name), ['M']);
 });
 
+test('paused P2 with stamp overdue within the 3d grace stays out of pausedStale (was: fired immediately)', () => {
+  // Stamp due "today" (1d overdue relative to NOW) — the nightly recheck
+  // hasn't run yet. #1127: this fired the FYI warning the moment the stamp
+  // date arrived, hours before the recheck had a chance to run.
+  const r = classifyStuckCards(
+    [{ name: 'N', status: 'Paused', priority: 'P2 Later', lastEditedAt: hoursAgo(24 * 10), outcome: 'RECHECK-AFTER: 2026-07-21' }],
+    NOW,
+  );
+  assert.equal(r.pausedStale.length, 0);
+});
+
+test('paused P2 with stamp overdue past the 3d grace still fires pausedStale', () => {
+  const r = classifyStuckCards(
+    [{ name: 'O', status: 'Paused', priority: 'P2 Later', lastEditedAt: hoursAgo(24 * 10), outcome: 'RECHECK-AFTER: 2026-07-17' }],
+    NOW,
+  );
+  assert.deepEqual(r.pausedStale.map((c) => c.name), ['O']);
+});
+
 test('pausedAwaitingRecheck sorts by soonest stamp first', () => {
   const r = classifyStuckCards(
     [

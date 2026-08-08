@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-08-08T10:45:35.642Z",
-  "processed": 5,
-  "failed": 45,
-  "successRate": "10.0%",
+  "updatedAt": "2026-08-08T11:23:11.772Z",
+  "processed": 51,
+  "failed": 249,
+  "successRate": "17.0%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 38,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "directCookies": 4,
+    "scrapingbee": 5,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-08T10:50:02.902Z",
+      "event": "bb-session",
+      "session": "d833ac1b",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T10:50:11.174Z",
+      "event": "bb-session",
+      "session": "63b7168a",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    }
+  ]
 }

@@ -1,13 +1,13 @@
 [
   {
-    "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: brightdata $4.33 > $2.5 (862 serp + 2025 unlocker reqs); scrapingdog 63308 credits > 45000",
-    "description": "Day 2026-08-07. 2026-08-07 · Browserbase: $3.4 (34 sessions) · 2026-08-07 · Bright Data: $4.33 (862 serp / 2025 unlocker) · ScrapingBee: 16906 credits (63924 this cycle) · ScrapingDog: 63308 credits (1094753 this cycle) · Browserbase attribution: 9% attributed — top: collect-review-texts.js 3 · Bright Data attribution: 40% attributed — top: opening-night-poller.js 753, audit-show-review-gap.js 357, ingest-review-from-url.js 42, enrich-stubhub-prices.js 9, recover-explicit-ratings.js 2 · ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 179, opening-night-poller.js 127, ingest-review-from-url.js 32, enrich-stubhub-prices.js 7, auto-fix-show-data.js 2 · ScrapingDog attribution: 7% attributed — top: audit-show-review-gap.js 2138, opening-night-poller.js 1236, collect-review-texts.js 510, ingest-review-from-url.js 276, scrape-recoupment-announcements.js 202. Verification streak reset to 0.",
-    "severity": "error",
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): isla-off-broadway-2026 (2026-08-08), cats-west-end-2026 (2026-08-06)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-08T07:38:10.132Z"
+    "queuedAt": "2026-08-08T11:39:46.730Z"
   }
 ]

@@ -1,20 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-08-08T07:38:01.485Z",
+  "status": "error",
+  "lastChecked": "2026-08-08T11:39:20.176Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Opening Night Poller — auto",
-      "status": "warn",
-      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
+      "status": "error",
+      "message": "Collect WE/OB Review Texts failed 3 times in the last 24h — likely broken, not transient."
     }
   ]
 }

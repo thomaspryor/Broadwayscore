@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-08T07:38:23.603Z",
+  "generatedAt": "2026-08-08T11:39:40.706Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "5f9b4ca5cda336ef8c0f804ee35191d79f80b772",
+  "latestRunHeadSha": "f7d935aca81a6b48dced4a2a073d303cb3a01040",
   "state": "RED",
-  "consecutiveFailures": 1,
+  "consecutiveFailures": 2,
   "redSince": "2026-08-08T06:55:52Z",
-  "redForHours": 0.7087786111111111,
+  "redForHours": 4.730196111111111,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-07T13:35:39Z",
-  "latestFailedRunId": "31245021247",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31245021247",
-  "decidedRuns": 87,
+  "latestFailedRunId": "31250605252",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31250605252",
+  "decidedRuns": 88,
   "failingJobs": [
     {
       "name": "Data Validation",
@@ -26,6 +26,13 @@
       ]
     }
   ],
-  "failingPaths": [],
+  "failingPaths": [
+    {
+      "path": "scripts/audit-duplicate-shows.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
   "topFailingJob": "Data Validation"
 }
