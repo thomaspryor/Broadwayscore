@@ -601,7 +601,17 @@
     "titanique-2026/the-queer-review--james-kleinmann.json",
     "titanique-2026/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
-    "death-of-a-salesman-2026/newsday--linda-winer.json"
+    "death-of-a-salesman-2026/newsday--linda-winer.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
+    "disruption-off-broadway-2026/everything-theatre--dave-b.json",
+    "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -689,7 +699,7 @@
     ]
   },
   "startTime": "2026-08-08T10:40:01.992Z",
-  "lastProcessed": "death-of-a-salesman-2026/newsday--linda-winer.json",
+  "lastProcessed": "disruption-off-broadway-2026/nysr--melissa-rose-bernardo.json",
   "log": [
     {
       "t": "2026-08-08T10:50:02.902Z",
@@ -702,6 +712,17 @@
       "event": "bb-session",
       "session": "63b7168a",
       "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T12:44:29.950Z",
+      "event": "bb-session",
+      "session": "25b19a5b",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-08T12:44:30.781Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
