@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-08T06:03:59.228Z",
+  "timestamp": "2026-08-08T06:49:37.182Z",
   "stats": {
-    "totalReviews": 41880,
+    "totalReviews": 41886,
     "alreadyFlagged": 18165,
-    "dateGuardCatches": 135,
+    "dateGuardCatches": 138,
     "directorMismatch": 957,
     "tvFilmSignals": 1161,
     "londonSignals": 833,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3587
+    "noPublishDate": 3589
   },
   "findings": [
     {
@@ -224,6 +224,28 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "broadwayworld--michael-dale.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2898d before show (2018-12-06 vs 2026-11-12)"
         }
       ]
     },
@@ -5982,7 +6004,7 @@
     {
       "showId": "death-of-a-salesman-2012",
       "file": "timeout--david-cote.json",
-      "score": 87,
+      "score": 98,
       "publishDate": "2012-03-15T20:42:51-04:00",
       "url": "http://newyork.timeout.com/arts-culture/theater/2847381/review-death-of-a-salesman",
       "findings": [
@@ -13423,7 +13445,7 @@
     {
       "showId": "jesus-christ-superstar-2000",
       "file": "ew--melissa-rose-bernardo.json",
-      "score": 45,
+      "score": 73,
       "publishDate": null,
       "url": "http://www.ew.com/ew/article/0,,20364394_20579821,00.html",
       "findings": [
@@ -24655,6 +24677,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "elementaltheatre--thomas-levi.json",
+      "score": 94,
       "publishDate": "2025-05-12",
       "url": "https://www.elementaltheatre.com/post/comedy-about-spies",
       "findings": [
@@ -30767,6 +30790,17 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
       "showId": "a-dolls-house-2023",
       "file": "amny--matt-windman.json",
       "score": 80,
@@ -35665,6 +35699,7 @@
     {
       "showId": "hamilton-2015",
       "file": "boston-globe--don-aucoin.json",
+      "score": 93,
       "publishDate": "2015-08-06",
       "url": "https://www.bostonglobe.com/arts/theater-art/2015/08/06/political-rivalries-and-rap-battles-broadway-dynamic-hamilton/tnohgXXg2ud9ffjQGrCX5I/story.html",
       "findings": [
