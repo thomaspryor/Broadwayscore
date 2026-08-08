@@ -612,7 +612,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   // still stabilizing, never that many individual owner closes landing in
   // one 5-minute tick. Ratio uses the ORIGINAL candidate count (not the
   // post-remap remainder) — that's the true churn magnitude for this sweep.
-  const totalOpen = dispatchLedger.openWorkspaceLaunchCount(entries, { epochTs });
+  const totalOpen = dispatchLedger.openWorkspaceLaunchCount(entries, { epochTs, now });
   if (dispatchLedger.looksLikeRestart(candidates.length, totalOpen)) {
     // Bounded hold (ship-check P0 catch, 2026-08-03): a GENUINE mass-close
     // (the owner closes 3+ tabs in one pass, none renumbered) never shrinks
