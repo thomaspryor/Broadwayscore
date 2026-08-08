@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-08-08T14:14:33.902Z",
+  "generatedAt": "2026-08-08T15:04:56.374Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 157,
-  "clean": 157,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 156,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: london-box-office"
+        }
+      ],
+      "missingFromProd": [
+        "london-box-office"
+      ],
+      "localCount": 20,
+      "deployedCount": 19
+    }
+  ]
 }
