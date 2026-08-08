@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-08T17:23:51.213Z",
+  "timestamp": "2026-08-08T18:07:01.819Z",
   "stats": {
-    "totalReviews": 41925,
-    "alreadyFlagged": 18182,
-    "dateGuardCatches": 139,
+    "totalReviews": 41927,
+    "alreadyFlagged": 18189,
+    "dateGuardCatches": 137,
     "directorMismatch": 957,
     "tvFilmSignals": 1161,
     "londonSignals": 833,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3591
+    "noPublishDate": 3590
   },
   "findings": [
     {
@@ -224,28 +224,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "broadwayworld--michael-dale.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 721d before show (2024-11-21 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2898d before show (2018-12-06 vs 2026-11-12)"
         }
       ]
     },
