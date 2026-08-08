@@ -1,28 +1,22 @@
 {
-  "generatedAt": "2026-08-07T08:02:41.312Z",
+  "generatedAt": "2026-08-08T07:38:23.603Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "b9efb687419a371ffb963627faaac2dff50538a2",
+  "latestRunHeadSha": "5f9b4ca5cda336ef8c0f804ee35191d79f80b772",
   "state": "RED",
-  "consecutiveFailures": 66,
-  "redSince": "2026-08-05T14:09:09Z",
-  "redForHours": 41.89230888888889,
+  "consecutiveFailures": 1,
+  "redSince": "2026-08-08T06:55:52Z",
+  "redForHours": 0.7087786111111111,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-04T23:54:19Z",
-  "latestFailedRunId": "31157109910",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31157109910",
-  "decidedRuns": 86,
+  "lastSuccessAt": "2026-08-07T13:35:39Z",
+  "latestFailedRunId": "31245021247",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31245021247",
+  "decidedRuns": 87,
   "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
     {
       "name": "Data Validation",
       "steps": [
-        "Audit review contamination"
+        "Run data validation"
       ]
     },
     {
@@ -32,13 +26,6 @@
       ]
     }
   ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/wrong-production-setters-honor-manual-clear.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 16 - no NEW setter outside the known list — alert if grep finds one"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingPaths": [],
+  "topFailingJob": "Data Validation"
 }

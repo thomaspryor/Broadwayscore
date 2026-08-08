@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-07T08:02:22.659Z",
+  "lastChecked": "2026-08-08T07:38:01.483Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "pass",
-      "message": "No new star/score contradictions (49 known/baselined)"
+      "message": "No new star/score contradictions (48 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (19554/19907)"
+      "message": "98.3% scored (19593/19941)"
     },
     {
       "name": "Quality: corpus drift",
@@ -34,7 +34,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "107 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 4d ago)"
+      "message": "107 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 5d ago)"
     }
   ]
 }
