@@ -1,59 +1,11 @@
 {
-  "generatedAt": "2026-08-08T16:02:38.396Z",
+  "generatedAt": "2026-08-08T17:17:35.723Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 157,
-  "clean": 154,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.75 vs local 75.62 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20
-    },
-    {
-      "showId": "disruption-off-broadway-2026",
-      "title": "Disruption",
-      "openingDate": "2026-08-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.34 vs local 61.46 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 11
-    },
-    {
-      "showId": "cats-the-jellicle-ball-2026",
-      "title": "CATS: The Jellicle Ball",
-      "openingDate": "2026-04-07",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.85 vs local 86.32 (Δ0.47)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31
-    }
-  ]
+  "clean": 157,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
