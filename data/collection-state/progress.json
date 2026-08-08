@@ -801,7 +801,17 @@
     "hadestown-west-end-2024/theater-scene--victor-gluck.json",
     "hadestown-west-end-2024/theatres-leiter-side--samuel-l-leiter.json",
     "hadestown-west-end-2024/times-square-chronicles--unknown.json",
-    "hadestown-west-end-2024/towleroad--naveen-kumar.json"
+    "hadestown-west-end-2024/towleroad--naveen-kumar.json",
+    "hadestown-west-end-2024/vox--constance-grady.json",
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "hadestown-west-end-2024/whatsonoffbroadway--scott-mitchell.json",
+    "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -858,7 +868,9 @@
       "hadestown-west-end-2024/columbus-dispatch--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
+    ],
     "directCookies": [
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
@@ -908,7 +920,7 @@
     ]
   },
   "startTime": "2026-08-08T10:40:01.992Z",
-  "lastProcessed": "hadestown-west-end-2024/towleroad--naveen-kumar.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
   "log": [
     {
       "t": "2026-08-08T10:50:02.902Z",
@@ -921,6 +933,12 @@
       "event": "bb-session",
       "session": "63b7168a",
       "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T17:26:17.049Z",
+      "event": "bb-session",
+      "session": "243e0244",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
     }
   ]
 }
