@@ -1,18 +1,37 @@
 {
-  "updatedAt": "2026-08-08T09:15:18.751Z",
-  "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "updatedAt": "2026-08-08T09:17:42.556Z",
+  "processed": 2,
+  "failed": 28,
+  "successRate": "6.7%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-08-08T09:15:48.631Z",
+      "event": "bb-session",
+      "session": "97091408",
+      "url": "https://www.cityam.com/cats-musical-review-regents-park-purrrfectly-exquisite-no"
+    },
+    {
+      "t": "2026-08-08T09:16:55.604Z",
+      "event": "bb-session",
+      "session": "7fde5950",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    },
+    {
+      "t": "2026-08-08T09:17:12.776Z",
+      "event": "bb-session",
+      "session": "9835ad8e",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    }
+  ]
 }
