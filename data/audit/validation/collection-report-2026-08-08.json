@@ -1,0 +1,114 @@
+{
+  "runDate": "2026-08-08T06:23:43.565Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "twelfth-night-off-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 7,
+    "failed": 14,
+    "skipped": 0,
+    "successRate": "33.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 6,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 11,
+    "tier1Success": 8,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 14,
+    "scrapingBeePageCredits": 12,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 9,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "twelfth-night-off-west-end-2026/thereviewshub--unknown.json",
+    "twelfth-night-off-west-end-2026/london-theatre--unknown.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--alun-hood.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--unknown.json"
+  ],
+  "failed": [
+    "twelfth-night-off-west-end-2026/london-theatre-reviews--unknown.json",
+    "twelfth-night-off-west-end-2026/thereviewshub--yingnan-chu.json",
+    "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json",
+    "twelfth-night-off-west-end-2026/frontmezzjunkies--unknown.json",
+    "twelfth-night-off-west-end-2026/independent--alice-saville.json",
+    "twelfth-night-off-west-end-2026/london-box-office--phil-willmott.json",
+    "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
+    "twelfth-night-off-west-end-2026/standard--unknown.json",
+    "twelfth-night-off-west-end-2026/the-list--unknown.json",
+    "twelfth-night-off-west-end-2026/theatrecat--unknown.json",
+    "twelfth-night-off-west-end-2026/thestage--unknown.json",
+    "twelfth-night-off-west-end-2026/times-uk--unknown.json",
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--matt-barton.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "twelfth-night-off-west-end-2026/london-theatre--unknown.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--alun-hood.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--michael-davies.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "twelfth-night-off-west-end-2026/whatsonstage--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "twelfth-night-off-west-end-2026/thereviewshub--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "The List": {
+      "count": 1,
+      "domain": "list.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
