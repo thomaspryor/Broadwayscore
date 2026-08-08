@@ -332,9 +332,9 @@ async function main() {
     })),
   };
 
-  const outPath = args.output ? path.resolve(args.output) : DEFAULT_OUTPUT;
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
+  const reportPath = args.output ? path.resolve(args.output) : DEFAULT_OUTPUT;
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
 
   if (!args.quiet) {
     console.log(`Time-to-publish SLA — ${scope}`);
@@ -356,7 +356,7 @@ async function main() {
       console.log(`  NOTE: fewer than ${verdict.minSample} reviews reached live in scope — reporting insufficient-data, not a pass.`);
       if (report.logOldestEntryAt) console.log(`        Log currently starts at ${report.logOldestEntryAt}.`);
     }
-    console.log(`Written: ${outPath}`);
+    console.log(`Written: ${reportPath}`);
   }
 
   if (args.alert) {
