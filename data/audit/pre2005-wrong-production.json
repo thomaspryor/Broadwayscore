@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-07T23:29:45.807Z",
+    "generatedAt": "2026-08-08T00:30:49.247Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 87,
+    "totalFlagged": 88,
     "highConfidence": 6,
-    "mediumConfidence": 81,
+    "mediumConfidence": 82,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 37
   },
   "results": [
     {
@@ -1294,6 +1294,24 @@
         "year 1972 in text matches revival jesus-christ-superstar-1971"
       ],
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
+    },
+    {
+      "showId": "our-town-1988",
+      "showTitle": "Our Town",
+      "showYear": 1988,
+      "file": "playbill--unknown.json",
+      "outlet": "Playbill",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "our-town-2002",
+      "signals": [
+        "revival text signals: revival, revived, new production",
+        "year 2002 in text matches revival our-town-2002",
+        "modern references: pandemic, covid",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Dustin Hoffman will tread the boards once more, taking on the Stage Manager in a Broadway revival of Thornton Wilder's Pulitzer Prize-winning Our Town. The staging comes from mega-producer Scott Rudin"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",

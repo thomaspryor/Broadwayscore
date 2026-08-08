@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T23:26:21.644Z",
+  "generatedAt": "2026-08-08T00:14:01.469Z",
   "windowDays": 45,
   "showsScanned": 62,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 370.2458663888889,
+      "fileAgeHours": 371.0402622222222,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 329.5488075
+      "nonTerminalAgeHours": 330.3432036111111
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -35,7 +35,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 33.852468888888886
+      "nonTerminalAgeHours": 34.646865
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +50,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 60.689055555555555,
+      "fileAgeHours": 61.48345111111111,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 60.05099138888889
+      "nonTerminalAgeHours": 60.8453875
     },
     {
       "showId": "the-pass-off-broadway-2026",
@@ -67,9 +67,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
       "firstSeen": "2026-08-06T06:24:23.949Z",
-      "fileAgeHours": 41.03268861111111,
+      "fileAgeHours": 41.827084444444445,
       "gapSeenAt": "2026-08-07T23:26:21.643Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 0.7943961111111111
     }
   ],
   "contradictions": []

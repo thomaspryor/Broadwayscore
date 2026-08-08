@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-07T23:33:04.357Z",
+  "timestamp": "2026-08-08T00:34:01.849Z",
   "stats": {
-    "totalReviews": 41867,
+    "totalReviews": 41868,
     "alreadyFlagged": 18159,
     "dateGuardCatches": 134,
-    "directorMismatch": 955,
-    "tvFilmSignals": 1161,
-    "londonSignals": 831,
+    "directorMismatch": 957,
+    "tvFilmSignals": 1162,
+    "londonSignals": 832,
     "offBroadwaySignals": 480,
     "yearMismatch": 88,
     "noPublishDate": 3583
@@ -4583,6 +4583,19 @@
     },
     {
       "showId": "cats-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "http://www.theartsdesk.com/theatre/cats-regents-park-open-air-theatre-review-contemporary-makeover-gives-classic-added-lustre?amp",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 67,
       "publishDate": "2026-08-07T07:46:52-04:00",
@@ -5868,6 +5881,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-08-03",
+      "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -28839,6 +28870,20 @@
       "score": 68,
       "publishDate": "2025-05-30",
       "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "file": "nydailynews--chris-jones.json",
+      "score": null,
+      "publishDate": "November 20, 2025",
+      "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
