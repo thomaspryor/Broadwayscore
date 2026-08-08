@@ -312,13 +312,18 @@ const {
 const EPOCH = '2026-08-01T00:00:00.000Z';
 const AFTER = '2026-08-02T12:00:00.000Z';
 const BEFORE = '2026-07-20T12:00:00.000Z';
+// `now` for tests that don't care about the historical-exclusion grace: well
+// after EPOCH but still comfortably inside HISTORICAL_EXCLUSION_GRACE_MS
+// (72h), so pre-epoch behavior is unaffected and these tests exercise
+// everything else unchanged.
+const NOW = Date.parse(AFTER);
 const launch = (o) => ({ event: 'launch', taskId: '1', subject: 's', ...o });
 
 test('vanishedBreadcrumbs: absent workspace after the epoch parks its task', () => {
   const out = vanishedBreadcrumbs(
     new Set(['workspace:2']),
     [launch({ workspaceRef: 'workspace:1', ts: AFTER, notionId: 'abc' })],
-    { epochTs: EPOCH });
+    { epochTs: EPOCH, now: NOW });
   assert.equal(out.length, 1);
   assert.equal(out[0].event, 'vanished');
   assert.equal(out[0].workspaceRef, 'workspace:1');
@@ -329,23 +334,66 @@ test('vanishedBreadcrumbs: a workspace still listed never parks', () => {
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:1']),
     [launch({ workspaceRef: 'workspace:1', ts: AFTER })],
-    { epochTs: EPOCH }), []);
+    { epochTs: EPOCH, now: NOW }), []);
 });
 
-test('vanishedBreadcrumbs: pre-epoch launches are history, not parks', () => {
+test('vanishedBreadcrumbs: pre-epoch launches are history, not parks (within the grace window)', () => {
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:9']),
     [launch({ workspaceRef: 'workspace:1', ts: BEFORE })],
-    { epochTs: EPOCH }), []);
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 1000 }), []);
+});
+
+test('vanishedBreadcrumbs: pre-epoch launches become eligible once the historical-exclusion grace elapses (card #801)', () => {
+  // Card #801 root cause: the epoch's ONLY job is protecting the FIRST sweep
+  // from mass-parking historical tabs. A permanent exclusion instead made
+  // any pre-epoch launch immortal — never reconciled no matter how long its
+  // tab was actually gone. Past the grace, it rejoins the normal path.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: BEFORE, notionId: 'abc' })],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].workspaceRef, 'workspace:1');
+});
+
+test('vanishedBreadcrumbs: a pre-epoch ref superseded by a newer OPEN launch for the same task never parks, even past the grace', () => {
+  // Per-ref iteration alone would treat the dead pre-epoch ref as an
+  // independent candidate once the grace expires — but the task itself
+  // moved on to workspace:2, which is still open (no terminal event, still
+  // live in liveRefs). Parking the stale workspace:1 candidate would
+  // incorrectly flip that task's Notion card to Paused mid-flight.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:2']),
+    [
+      launch({ taskId: '1', workspaceRef: 'workspace:1', ts: BEFORE }),
+      launch({ taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }),
+    ],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  assert.deepEqual(out, []);
+});
+
+test('vanishedBreadcrumbs: requires now (ms epoch)', () => {
+  const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  assert.throws(() => vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH }), /now/);
+  assert.throws(() => vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH, now: NaN }), /now/);
+});
+
+test('vanishedBreadcrumbs: a malformed epoch timestamp fails closed (never expires the grace)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: BEFORE })],
+    { epochTs: 'not-a-date', now: Date.parse(EPOCH) + 365 * 24 * 60 * 60 * 1000 });
+  assert.deepEqual(out, [], 'NaN epochMs must never let pre-epoch history through');
 });
 
 test('vanishedBreadcrumbs: fails closed with no epoch and on an empty cmux listing', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
-  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: null }), [],
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: null, now: NOW }), [],
     'no epoch recorded must never park');
-  assert.deepEqual(vanishedBreadcrumbs(new Set(), entries, { epochTs: EPOCH }), [],
+  assert.deepEqual(vanishedBreadcrumbs(new Set(), entries, { epochTs: EPOCH, now: NOW }), [],
     'empty listing = cmux restarted/crashed, not 200 closed tabs');
-  assert.throws(() => vanishedBreadcrumbs(['workspace:9'], entries, { epochTs: EPOCH }), /Set/);
+  assert.throws(() => vanishedBreadcrumbs(['workspace:9'], entries, { epochTs: EPOCH, now: NOW }), /Set/);
 });
 
 test('vanishedBreadcrumbs: headless and ref-less launches are never workspace-shaped', () => {
@@ -355,7 +403,7 @@ test('vanishedBreadcrumbs: headless and ref-less launches are never workspace-sh
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:9']),
     [launch({ workspaceRef: 'headless:1', ts: AFTER }), launch({ taskId: '2', ts: AFTER })],
-    { epochTs: EPOCH }), [], 'headless dispatches are never in a cmux listing — parking them is the #578 bug');
+    { epochTs: EPOCH, now: NOW }), [], 'headless dispatches are never in a cmux listing — parking them is the #578 bug');
 });
 
 test('vanishedBreadcrumbs: a terminal entry after the launch means already reconciled', () => {
@@ -364,7 +412,7 @@ test('vanishedBreadcrumbs: a terminal entry after the launch means already recon
       new Set(['workspace:9']),
       [launch({ workspaceRef: 'workspace:1', ts: AFTER }),
         { event: ev, taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T13:00:00.000Z' }],
-      { epochTs: EPOCH }), [], `${ev} should terminate the launch`);
+      { epochTs: EPOCH, now: NOW }), [], `${ev} should terminate the launch`);
   }
 });
 
@@ -374,17 +422,17 @@ test('vanishedBreadcrumbs: a ref relaunched after its close parks again (cmux re
     [launch({ workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z' }),
       { event: 'prune-closed', taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T11:00:00.000Z' },
       launch({ taskId: '77', workspaceRef: 'workspace:1', ts: '2026-08-02T12:00:00.000Z' })],
-    { epochTs: EPOCH });
+    { epochTs: EPOCH, now: NOW });
   assert.equal(out.length, 1);
   assert.equal(out[0].taskId, '77', 'the LATEST launch owns the ref, not the first');
 });
 
 test('vanishedBreadcrumbs is idempotent: its own output terminates the next sweep', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
-  const first = vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH });
+  const first = vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH, now: NOW });
   assert.equal(first.length, 1);
   const replayed = entries.concat(first.map(e => ({ ...e, ts: '2026-08-02T14:00:00.000Z' })));
-  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH }), []);
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH, now: NOW }), []);
 });
 
 test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () => {
