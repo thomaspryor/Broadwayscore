@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-08T14:20:43.685Z",
+  "generatedAt": "2026-08-08T17:23:56.717Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,18 +396,18 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 75.77,
+      "siteScore": 75.62,
       "liveScore": 76,
-      "scoreDrift": 0.23000000000000398,
+      "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
-      "t1": 7,
+      "total": 20,
+      "t1": 8,
       "t2": 5,
       "t3": 7,
       "positive": 11,
-      "mixed": 8,
+      "mixed": 9,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -439,10 +439,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -682,6 +678,18 @@
           "t3": 7,
           "p": 11,
           "m": 8,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T17:23:56.717Z",
+          "rc": 20,
+          "s": 75.62,
+          "t1": 8,
+          "t2": 5,
+          "t3": 7,
+          "p": 11,
+          "m": 9,
           "n": 0,
           "bc": "waiting"
         }
@@ -1642,25 +1650,25 @@
       "status": "open",
       "slug": "im-every-woman-off-west-end",
       "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.webp",
-      "siteScore": 54.65,
-      "liveScore": 55,
-      "scoreDrift": 0.3500000000000014,
+      "siteScore": 53.85,
+      "liveScore": 54,
+      "scoreDrift": 0.14999999999999858,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
+      "total": 25,
       "t1": 4,
-      "t2": 5,
+      "t2": 6,
       "t3": 15,
       "positive": 6,
       "mixed": 7,
-      "negative": 11,
+      "negative": 12,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1875,6 +1883,18 @@
           "p": 6,
           "m": 7,
           "n": 11,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-08T17:23:56.717Z",
+          "rc": 25,
+          "s": 53.85,
+          "t1": 4,
+          "t2": 6,
+          "t3": 15,
+          "p": 6,
+          "m": 7,
+          "n": 12,
           "bc": "waiting"
         }
       ]
