@@ -97,4 +97,83 @@ function emitStage({ showId, reviewKey, stage, at, metadata }) {
   }
 }
 
-module.exports = { emitStage, rotateIfNeeded, MAX_LOG_BYTES, RETAIN_BYTES };
+// How far back a review-level event keeps its show "tracked". Must comfortably
+// exceed the SLA's evaluation horizon (two opening weekends ≈ 14 days) so a
+// show whose review is still in flight never drops out of the set while the
+// SLA is still watching it.
+const TRACKED_WINDOW_DAYS = 21;
+
+// Only the tail of the log is scanned. A review-level event older than the
+// window cannot make a show tracked, and reading 40 MB on every rebuild to
+// learn that would be pure waste.
+const TRACKED_SCAN_BYTES = 8 * 1024 * 1024;
+
+const REVIEW_LEVEL_STAGES = new Set(['review-first-seen', 'review-text-collected', 'scored']);
+
+/**
+ * Show IDs with a review-level stage event in the recent window — i.e. the
+ * shows the opening-night SLA could currently be watching.
+ *
+ * rebuild-all-reviews uses this to decide which shows get a per-show 'rebuilt'
+ * terminal. Emitting one for all ~1,210 shows with reviews was 99.87% of the
+ * log and rotated the review history away every ~3.5 days (task #388); emitting
+ * one for NO show would silently clear nothing and page everything. Scoping to
+ * tracked shows keeps the terminal exactly as informative as before for every
+ * show that can have an in-flight review, at ~5% of the volume.
+ *
+ * @param {object} [opts]
+ * @param {string} [opts.logFile]
+ * @param {Date}   [opts.now]
+ * @param {number} [opts.days=21]
+ * @returns {Set<string>}
+ */
+function readTrackedShowIds({ logFile, now = new Date(), days = TRACKED_WINDOW_DAYS, scanBytes = TRACKED_SCAN_BYTES } = {}) {
+  const file = logFile || process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
+  const out = new Set();
+  let size;
+  try {
+    size = fs.statSync(file).size;
+  } catch {
+    return out; // no log yet — nothing is tracked
+  }
+
+  let text;
+  try {
+    const start = Math.max(0, size - scanBytes);
+    const fd = fs.openSync(file, 'r');
+    try {
+      const buf = Buffer.alloc(Math.min(scanBytes, size));
+      fs.readSync(fd, buf, 0, buf.length, start);
+      text = buf.toString('utf8');
+    } finally {
+      fs.closeSync(fd);
+    }
+    // Drop a partial first line when we started mid-file.
+    if (start > 0) text = text.slice(text.indexOf('\n') + 1);
+  } catch (err) {
+    process.stderr.write(`[stage-latency] tracked-show scan failed: ${err.message}\n`);
+    return out;
+  }
+
+  const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000).toISOString();
+  for (const line of text.split('\n')) {
+    if (!line) continue;
+    let e;
+    try { e = JSON.parse(line); } catch { continue; }
+    if (!e || !e.showId || !e.at) continue;
+    if (!REVIEW_LEVEL_STAGES.has(e.stage)) continue;
+    if (e.at < cutoff) continue;
+    out.add(e.showId);
+  }
+  return out;
+}
+
+module.exports = {
+  emitStage,
+  rotateIfNeeded,
+  readTrackedShowIds,
+  MAX_LOG_BYTES,
+  RETAIN_BYTES,
+  TRACKED_WINDOW_DAYS,
+  REVIEW_LEVEL_STAGES,
+};

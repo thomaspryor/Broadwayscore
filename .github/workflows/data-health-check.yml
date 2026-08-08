@@ -206,12 +206,31 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/produce-trunk-snapshot.js
 
+      # Time-to-publish SLA (task #388) — 90% of opening-night reviews live
+      # within 15 min of outlet publication. 2026-04-15 (Fear of 13) BWSC was
+      # the LAST aggregator to have the reviews up; this is the standing
+      # reading of whether that is still true. --alert queues a DIGEST line
+      # (never its own email) when the target is missed. Runs here because this
+      # job already checks out core data + review-texts and commits
+      # data/audit snapshots. continue-on-error: a metric must never block the
+      # health commit.
+      - name: Time-to-publish SLA
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/time-to-publish-sla.js --windows=2 --alert
+
       - name: Commit health check + triage data
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/health-check-history.json
+          # Time-to-publish SLA reading (task #388) — same reason as the
+          # snapshots below: the Mac Studio renders the digest, so the report
+          # has to leave the runner. Its step is continue-on-error, so the file
+          # can legitimately be absent on a failed run.
+          git add data/audit/time-to-publish-sla.json 2>/dev/null || true
           # Task #737: never-run workflow coverage snapshot, computed inline
           # by health-check.js (see scripts/health-check.js) since this is
           # the job that can actually commit it — lint-workflows checks out
