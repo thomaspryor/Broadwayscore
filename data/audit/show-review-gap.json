@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-08T22:04:02.721Z",
+  "generatedAt": "2026-08-08T23:11:37.077Z",
   "windowDays": 1095,
-  "targets": 6,
-  "auditedThisRun": 6,
-  "carriedForward": 201,
+  "targets": 15,
+  "auditedThisRun": 15,
+  "carriedForward": 192,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 166,
-    "totalMissing": 1076,
+    "withGap": 165,
+    "totalMissing": 1068,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1079,
+    "totalFlaggedMisses": 1075,
     "totalRecoverable": 33,
     "totalRecovered": 6
   },
@@ -16170,8 +16170,8 @@
         "count": 394,
         "byReason": {
           "not-http-url": 49,
-          "non-review-host": 34,
           "aggregator-internal-nav": 308,
+          "non-review-host": 34,
           "non-review-path": 3
         }
       },
@@ -16435,7 +16435,7 @@
         "liveCount": 8,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -17079,7 +17079,6 @@
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-do-the-critics-think-of-broadways-death-of-a-salesman-starring-nathan-lane-laurie-metcalf-and-christopher-abbott",
         "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
-        "https://playbill.com/article/read-reviews-for-young-vics-death-of-a-salesman-in-london",
         "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Nathan-Lane-and-Laurie-Metcalf-20260409",
         "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
         "https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-in-the-West-End-Read-the-Reviews-20191105"
@@ -17129,16 +17128,6 @@
         "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
         "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
         "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/",
-        "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
-        "https://www.theguardian.com/stage/2019/may/10/death-of-a-salesman-review-young-vic-wendell-pierce-sharon-d-clarke",
-        "https://www.hollywoodreporter.com/review/death-of-a-salesman-theater-1209546",
-        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
-        "https://www.nytimes.com/2019/05/30/theater/london-theater-death-of-a-salesman-.html",
-        "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
-        "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
-        "http://www.timeout.com/london/theatre/death-of-a-salesman-review",
-        "https://variety.com/2019/legit/reviews/death-of-a-salesman-review-london-wendell-pierce-1203213082/",
-        "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
         "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
         "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
         "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
@@ -17158,20 +17147,6 @@
       "dirClean": 38,
       "inReviewsJson": 33,
       "missing": [
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "times-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
           "host": "culturewhisper.com",
@@ -17197,11 +17172,19 @@
           "count": 1
         },
         {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
           "host": "nysun.com",
           "count": 1
         },
         {
           "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
           "count": 1
         },
         {
@@ -17464,25 +17447,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
           "host": "thedailybeast.com",
           "knownOutletId": "dailybeast",
@@ -17581,11 +17545,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1195,
+        "count": 1096,
         "byReason": {
-          "not-http-url": 203,
-          "non-review-host": 104,
-          "aggregator-internal-nav": 879,
+          "not-http-url": 199,
+          "aggregator-internal-nav": 804,
+          "non-review-host": 84,
           "non-review-path": 9
         }
       },
@@ -17593,10 +17557,6 @@
         {
           "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
           "publishDate": "2022-10-09"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-young-vics-death-of-a-salesman-in-london",
-          "publishDate": "2019-05-10"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
@@ -17608,18 +17568,6 @@
         }
       ],
       "weIngestBlocked": [
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
         {
           "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
           "host": "culturewhisper.com",
@@ -17638,20 +17586,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf"
-          },
           {
             "outletId": "culture-whisper",
             "outlet": "culture-whisper",
@@ -17756,13 +17690,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theaterpizzazz.com/death-of-a-salesman/"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html"
           },
           {
             "outletId": "dailybeast",
@@ -17989,48 +17916,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2019/may/10/death-of-a-salesman-review-young-vic-wendell-pierce-sharon-d-clarke",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/review/death-of-a-salesman-theater-1209546",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
-            "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2019/05/30/theater/london-theater-death-of-a-salesman-.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.timeout.com/london/theatre/death-of-a-salesman-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://variety.com/2019/legit/reviews/death-of-a-salesman-review-london-wendell-pierce-1203213082/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
             "outletId": "chicagotribune.com",
             "state": "live",
@@ -18071,20 +17956,6 @@
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.thetimes.co.uk/article/review-death-of-a-salesman-young-vic-se1-rfl9nx8cf",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T08:57:29.253Z"
           },
           {
             "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
@@ -18192,13 +18063,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
             "outletId": "dailybeast",
             "state": "GAP",
@@ -18234,10 +18098,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 26,
-        "candidateCount": 47
+        "liveCount": 24,
+        "candidateCount": 42
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -30111,11 +29975,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1838,
+        "count": 1840,
         "byReason": {
           "not-http-url": 457,
+          "aggregator-internal-nav": 1239,
           "non-review-host": 128,
-          "aggregator-internal-nav": 1237,
           "non-review-path": 15,
           "unparseable-url": 1
         }
@@ -32105,7 +31969,7 @@
         "liveCount": 8,
         "candidateCount": 104
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -38953,154 +38817,32 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-          "host": "westsidespirit.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 16,
-        "byReason": {
-          "non-review-host": 13,
-          "aggregator-internal-nav": 2,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
-      "ingestResults": [
-        {
-          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-          "host": "westsidespirit.com",
-          "outletId": "westsidespirit",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~284087/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "westsidespirit.com",
-            "outlet": "westsidespirit.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617"
-          },
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-            "outletId": "westsidespirit.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-08T21:19:14.182Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-            "outletId": "theatre-reviews-limited",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-08T21:19:14.182Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-08T21:19:14.182Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -39697,8 +39439,7 @@
         "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
         "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
-        "https://www.broadwayworld.com/article/Review-Roundup-Whats-the-Buzz-on-JESUS-CHRIST-SUPERSTAR-LIVE-20180402"
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017"
       ],
       "aggregatorListedUrls": [
         "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
@@ -39739,15 +39480,7 @@
         "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
         "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
         "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
-        "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
-        "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-        "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
-        "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-        "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-        "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
-        "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-        "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
-        "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html"
+        "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155"
       ],
       "dirFiles": 81,
       "dirClean": 34,
@@ -39918,41 +39651,6 @@
           "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
           "host": "post-gazette.com",
           "knownOutletId": "pittsburgh-post-gazette",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
-          "host": "bostonherald.com",
-          "knownOutletId": "boston-herald",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
-          "host": "siouxcityjournal.com",
-          "knownOutletId": "sioux-city-journal",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -40337,68 +40035,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--charles-isherwood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?adxnnl=1&adxnnlx=1332468908-ZvjkZ2cfy1NLdSrRcXuqYg"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--linda-winer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
-            },
-            {
-              "file": "newsday--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -40408,12 +40044,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1427,
+        "count": 1146,
         "byReason": {
-          "not-http-url": 263,
-          "non-review-host": 99,
-          "aggregator-internal-nav": 1052,
-          "non-review-path": 12,
+          "not-http-url": 227,
+          "aggregator-internal-nav": 825,
+          "non-review-host": 84,
+          "non-review-path": 9,
           "unparseable-url": 1
         }
       },
@@ -40437,10 +40073,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
           "publishDate": "2019-10-17"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Whats-the-Buzz-on-JESUS-CHRIST-SUPERSTAR-LIVE-20180402",
-          "publishDate": "2018-04-02"
         }
       ],
       "weIngestBlocked": [
@@ -40585,36 +40217,6 @@
         {
           "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
           "host": "post-gazette.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
-          "host": "bostonherald.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
-          "host": "siouxcityjournal.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -40793,41 +40395,6 @@
             "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155"
           },
           {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474"
-          },
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html"
-          },
-          {
-            "outletId": "latimes",
-            "outlet": "latimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html"
-          },
-          {
-            "outletId": "boston-herald",
-            "outlet": "boston-herald",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit"
-          },
-          {
-            "outletId": "sioux-city-journal",
-            "outlet": "sioux-city-journal",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html"
-          },
-          {
             "outletId": "deadline",
             "outlet": "deadline",
             "critic": "Unknown",
@@ -40924,27 +40491,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html"
-          },
-          {
-            "outletId": "newsday",
-            "outlet": "newsday",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
-          },
-          {
-            "outletId": "hollywood-reporter",
-            "outlet": "hollywood-reporter",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854"
           }
         ],
         "suppressedMissing": [],
@@ -41124,41 +40670,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "http://www.nydailynews.com/entertainment/tv/jesus-christ-superstar-rises-ashes-john-legend-article-1.3909474",
-            "outletId": "nydailynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.vulture.com/2018/04/jesus-chris-superstar-live-highs-lows.html",
-            "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-            "outletId": "latimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://www.bostonherald.com/entertainment/television/love_that_tv/2018/04/nbcs_jesus_christ_superstar_rocks_with_holy_spirit",
-            "outletId": "boston-herald",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "http://siouxcityjournal.com/entertainment/television/review-john-legend-cast-make-jesus-christ-superstar-special/article_8bcdd6f9-01e3-55da-bcb3-6e0632e9c6e6.html",
-            "outletId": "sioux-city-journal",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
             "outletId": "deadline",
             "state": "GAP",
@@ -41255,33 +40766,12 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-            "outletId": "newsday",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-            "outletId": "hollywood-reporter",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
         "liveCount": 1,
-        "candidateCount": 36
+        "candidateCount": 33
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
@@ -50590,8 +50080,8 @@
         "count": 120,
         "byReason": {
           "not-http-url": 4,
-          "non-review-host": 19,
           "aggregator-internal-nav": 89,
+          "non-review-host": 19,
           "roundup-page": 8
         }
       },
@@ -50699,7 +50189,7 @@
         "liveCount": 5,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -55262,8 +54752,8 @@
         "count": 896,
         "byReason": {
           "not-http-url": 114,
-          "non-review-host": 91,
           "aggregator-internal-nav": 685,
+          "non-review-host": 91,
           "non-review-path": 6
         }
       },
@@ -56090,7 +55580,7 @@
         "liveCount": 23,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -61368,7 +60858,7 @@
         "https://www.seattletimes.com/entertainment/theater/review-austens-pride-at-seattles-5th-ave-will-likely-satisfy-some-pride-and-prejudice-fans-but-needs-rethinking/"
       ],
       "dirFiles": 60,
-      "dirClean": 20,
+      "dirClean": 21,
       "inReviewsJson": 21,
       "missing": [
         {
@@ -61433,7 +60923,7 @@
         },
         {
           "host": "whatsonstage.com",
-          "count": 1
+          "count": 2
         }
       ],
       "flaggedMisses": [
@@ -61619,8 +61109,8 @@
         "count": 468,
         "byReason": {
           "not-http-url": 43,
-          "non-review-host": 55,
           "aggregator-internal-nav": 367,
+          "non-review-host": 55,
           "non-review-path": 3
         }
       },
@@ -61842,7 +61332,7 @@
         "liveCount": 4,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "ragtime-2025",
@@ -67022,11 +66512,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1078,
+        "count": 1073,
         "byReason": {
-          "not-http-url": 239,
+          "not-http-url": 238,
+          "aggregator-internal-nav": 754,
           "non-review-host": 64,
-          "aggregator-internal-nav": 758,
           "non-review-path": 9,
           "roundup-page": 8
         }
@@ -67507,7 +66997,7 @@
         "liveCount": 24,
         "candidateCount": 41
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
@@ -76613,8 +76103,8 @@
         "count": 406,
         "byReason": {
           "not-http-url": 65,
-          "non-review-host": 34,
           "aggregator-internal-nav": 304,
+          "non-review-host": 34,
           "non-review-path": 3
         }
       },
@@ -76778,7 +76268,7 @@
         "liveCount": 9,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -77439,8 +76929,9 @@
         "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
         "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
         "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-12-26-7pm/7860278/",
         "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-6-26-7pm/7860271/",
         "https://thewordsd.news/the-family-album/"
       ],
       "dirFiles": 8,
@@ -77474,7 +76965,25 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-12-26-7pm/7860278/",
+          "host": "tickpick.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tickpick--tickpick.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-6-26-7pm/7860271/",
           "host": "tickpick.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -77554,7 +77063,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -77564,7 +77073,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -77574,23 +77083,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 41,
         "byReason": {
+          "aggregator-internal-nav": 8,
           "non-review-host": 31,
-          "aggregator-internal-nav": 7,
           "non-review-path": 1,
-          "venue-production-page": 1,
-          "ticketing-reseller": 2
+          "venue-production-page": 1
         }
       },
       "ingestResults": [
@@ -77601,7 +77109,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~275964/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285070/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
           "url": "https://www.vividseats.com/the-family-album---musical-tickets-la-jolla-la-jolla-playhouse---sheila-and-hughes-potiker-theatre-8-2-2026--theater-musical/production/6872079",
@@ -77610,7 +77118,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~275964/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285084/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
           "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
@@ -77619,7 +77127,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~275968/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285096/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -77652,7 +77160,14 @@
             "outlet": "tickpick.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-12-26-7pm/7860278/"
+          },
+          {
+            "outletId": "tickpick.com",
+            "outlet": "tickpick.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-6-26-7pm/7860271/"
           },
           {
             "outletId": "thewordsd.news",
@@ -77698,11 +77213,18 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-12-26-7pm/7860278/",
             "outletId": "tickpick.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+            "firstSeenAt": "2026-08-08T23:11:37.077Z"
+          },
+          {
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-6-26-7pm/7860271/",
+            "outletId": "tickpick.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T23:11:37.077Z"
           },
           {
             "url": "https://thewordsd.news/the-family-album/",
@@ -77715,7 +77237,7 @@
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "the-fear-of-13-2026",
@@ -85041,7 +84563,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "the-price-off-west-end-2026",
@@ -85922,7 +85444,7 @@
             {
               "file": "ew--dalton-ross.json",
               "flag": "wrongShow",
-              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopN6c8LBt4sf2YzVO_m7dSQn0fzXfQp_zrhpb8UZjPCDd6Iw5cs"
+              "urlInDir": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOor7TZKfoxDZ4ZTJP7aDZKthZlBqgqbs-5ELzCPuTJ9NyyOiuuHX"
             }
           ]
         },
@@ -85951,11 +85473,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 397,
+        "count": 401,
         "byReason": {
           "not-http-url": 84,
-          "non-review-host": 38,
-          "aggregator-internal-nav": 272,
+          "aggregator-internal-nav": 275,
+          "non-review-host": 39,
           "non-review-path": 3
         }
       },
@@ -86155,7 +85677,7 @@
         "liveCount": 23,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "the-saviors-off-broadway-2026",
@@ -88124,8 +87646,8 @@
         "count": 766,
         "byReason": {
           "not-http-url": 168,
-          "non-review-host": 53,
           "aggregator-internal-nav": 531,
+          "non-review-host": 53,
           "non-review-path": 6,
           "roundup-page": 8
         }
@@ -88148,7 +87670,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~275933/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285023/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -88413,7 +87935,7 @@
         "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -91727,8 +91249,8 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
+        "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
         "https://www.thereviewshub.com/trainspotting-the-musical-theatre-royal-haymarket-london/",
         "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
@@ -91736,11 +91258,11 @@
         "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
         "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
         "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
+        "https://rolandcat.substack.com/p/review-trainspotting-theatre-royal",
+        "https://www.westendbestfriend.co.uk/news/review-trainspotting-the-musical-theatre-royal-haymarket",
         "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
-        "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
-        "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://theatreweekly.com/review-trainspotting-the-musical-at-theatre-royal-haymarket/",
+        "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
         "https://www.londontheatredirect.com/news/finding-its-own-rhythm-trainspotting-the-musical-review",
         "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.telegraph.co.uk/theatre/what-to-see/muddled-trainspotting-musical-review/",
@@ -91755,10 +91277,6 @@
       "dirOnly": [
         {
           "host": "cityam.com",
-          "count": 1
-        },
-        {
-          "host": "crazychris.net",
           "count": 1
         },
         {
@@ -91778,6 +91296,10 @@
           "count": 1
         },
         {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
           "host": "nytimes.com",
           "count": 1
         },
@@ -91790,11 +91312,11 @@
           "count": 1
         },
         {
-          "host": "rolandcat.substack.com",
+          "host": "soundspheremag.com",
           "count": 1
         },
         {
-          "host": "soundspheremag.com",
+          "host": "stagedtheatre.co.uk",
           "count": 1
         },
         {
@@ -91806,7 +91328,7 @@
           "count": 1
         },
         {
-          "host": "westendbestfriend.co.uk",
+          "host": "unmissabletheatre.co.uk",
           "count": 1
         }
       ],
@@ -91943,7 +91465,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -91953,7 +91475,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -91963,10 +91485,9 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 16,
         "byReason": {
           "non-review-host": 15,
-          "roundup-page": 1,
           "ticketing-listing": 1
         }
       },
@@ -91991,16 +91512,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
             "outletId": "voicemag.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
@@ -92033,34 +91554,34 @@
             "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
+            "url": "https://rolandcat.substack.com/p/review-trainspotting-theatre-royal",
+            "outletId": "rolandcat.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T23:11:37.077Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-trainspotting-the-musical-theatre-royal-haymarket",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T23:11:37.077Z"
+          },
+          {
             "url": "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
             "outletId": "jonathanbaz.com",
             "state": "live",
             "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
-            "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
-            "outletId": "unmissabletheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T10:21:02.207Z"
-          },
-          {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T10:21:02.207Z"
-          },
-          {
             "url": "https://theatreweekly.com/review-trainspotting-the-musical-at-theatre-royal-haymarket/",
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T21:40:26.604Z"
+          },
+          {
+            "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
+            "outletId": "crazychris.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T23:11:37.077Z"
           },
           {
             "url": "https://www.londontheatredirect.com/news/finding-its-own-rhythm-trainspotting-the-musical-review",
@@ -92116,7 +91637,7 @@
         "liveCount": 18,
         "candidateCount": 20
       },
-      "computedAt": "2026-08-08T10:21:02.207Z"
+      "computedAt": "2026-08-08T23:11:37.077Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
