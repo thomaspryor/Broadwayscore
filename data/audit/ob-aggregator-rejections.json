@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-07T14:50:22.556Z",
+  "generatedAt": "2026-08-08T14:27:30.605Z",
   "counts": {
     "accepted": 0,
-    "rejected": 10,
+    "rejected": 11,
     "byReason": {
-      "low-confidence-existing-match": 5,
+      "low-confidence-existing-match": 6,
       "bot-shell": 3,
       "placeholder-venue-no-theater": 2
     }
@@ -57,6 +57,12 @@
       "slug": "reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "source": "playbill-verdict",
       "reason": "bot-shell"
+    },
+    {
+      "url": "https://playbill.com/article/what-do-reviews-say-about-londons-new-cats-revival",
+      "slug": "what-do-reviews-say-about-londons-new-cats-revival",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
