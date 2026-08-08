@@ -1,11 +1,36 @@
 {
-  "generatedAt": "2026-08-08T06:43:31.916Z",
+  "generatedAt": "2026-08-08T08:25:19.912Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 155,
-  "clean": 155,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 154,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "dog-man-the-musical-west-end-2026",
+      "title": "Dog Man - The Musical",
+      "openingDate": "2026-07-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: thestage"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.18 vs local 64.38 (Δ0.8)"
+        }
+      ],
+      "missingFromProd": [
+        "thestage"
+      ],
+      "localCount": 4,
+      "deployedCount": 3
+    }
+  ]
 }
