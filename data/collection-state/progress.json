@@ -71,7 +71,17 @@
     "twelfth-night-off-west-end-2026/frontmezzjunkies--unknown.json",
     "twelfth-night-off-west-end-2026/independent--alice-saville.json",
     "twelfth-night-off-west-end-2026/london-box-office--phil-willmott.json",
-    "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json"
+    "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
+    "twelfth-night-off-west-end-2026/london-theatre--julia-rank.json",
+    "twelfth-night-off-west-end-2026/nysr--unknown.json",
+    "twelfth-night-off-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "twelfth-night-off-west-end-2026/publictheaterorg--unknown.json",
+    "twelfth-night-off-west-end-2026/standard--unknown.json",
+    "twelfth-night-off-west-end-2026/the-list--unknown.json",
+    "twelfth-night-off-west-end-2026/theatrecat--unknown.json",
+    "twelfth-night-off-west-end-2026/times-uk--unknown.json",
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "twelfth-night-off-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -95,6 +105,30 @@
     ]
   },
   "startTime": "2026-08-08T10:13:48.072Z",
-  "lastProcessed": "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
-  "log": []
+  "lastProcessed": "twelfth-night-off-west-end-2026/whatsonstage--alex-wood.json",
+  "log": [
+    {
+      "t": "2026-08-08T10:25:01.423Z",
+      "event": "bb-session",
+      "session": "e0aa7916",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T10:25:10.515Z",
+      "event": "bb-session",
+      "session": "522450ca",
+      "url": "https://list.co.uk/event/twelfth-night-620469"
+    },
+    {
+      "t": "2026-08-08T10:27:01.938Z",
+      "event": "bb-session",
+      "session": "4f39c706",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-rsc-"
+    },
+    {
+      "t": "2026-08-08T10:27:03.068Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
