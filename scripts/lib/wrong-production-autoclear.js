@@ -297,9 +297,39 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
  * @param {object} data - The review JSON object
  * @returns {boolean} - true if it's safe to delete wrongProduction
  */
+/**
+ * Did the multi-model ensemble scoreability check reject this file for `kind`?
+ *
+ * The defect this closes (tracker #2 / task #1146, 2026-08-09): a blanket domain
+ * heuristic ("UK outlet URL on a London show") and a user override
+ * (allowCrossMarket) both deleted `wrongShow` even when claude + openai + gemini
+ * had independently returned wrong_show AND named a different production. 28
+ * corpus files were in that state; romeo-and-juliet-west-end-2026's London
+ * Theatre file was LIVE serving Noughts & Crosses text. The identical hole
+ * exists on wrongProduction (42 files by the same scan), so both are guarded
+ * here rather than patching one flag and leaving its larger cousin.
+ *
+ * Reads STRUCTURED fields only — `rejectedBy` and `rejectionReason`, which the
+ * scoreability check writes as a fixed vocabulary (rejectedBy:
+ * 'ensemble-scoreability-check' on 2,101 corpus files). It deliberately does NOT
+ * parse `rejectionReasoning`, which is LLM-authored prose that moves with
+ * PROMPT_VERSION: a prose parser would be a second, drifting representation of
+ * a fact the producer already records structurally, and its "couldn't parse →
+ * assume no verdict" branch would silently restore this very bug.
+ *
+ * @param {object} data review JSON
+ * @param {'wrong_show'|'wrong_production'} kind
+ * @returns {boolean}
+ */
+function hasEnsembleRejection(data, kind) {
+  if (!data || data.rejectionReason !== kind) return false;
+  return typeof data.rejectedBy === 'string' && /ensemble/i.test(data.rejectedBy);
+}
+
 function shouldAutoClearWrongProduction(data) {
   if (data.wrongProduction !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
+  if (hasEnsembleRejection(data, 'wrong_production')) return false;
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
@@ -315,6 +345,7 @@ function shouldAutoClearWrongProduction(data) {
 function shouldAutoClearWrongShow(data) {
   if (data.wrongShow !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
+  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
@@ -342,6 +373,7 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } =
   if (data.wrongProduction !== true) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
   if (!isLondonOrOffBroadway) return false;
+  if (hasEnsembleRejection(data, 'wrong_production')) return false;
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
@@ -373,6 +405,7 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   if (!isLondonMarketShow) return false;
   if (!isUkOutletUrl) return false;
   if (dateMismatchOver90d) return false;
+  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
   return !isWrongArticle && !hasManualReason;
@@ -441,6 +474,7 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
 }
 
 module.exports = {
+  hasEnsembleRejection,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,

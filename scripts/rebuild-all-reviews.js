@@ -59,6 +59,7 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
@@ -2586,14 +2587,17 @@ showDirs.forEach(showId => {
 
       // Skip wrong-show reviews (review content is for a different show)
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
-      // the wrongShow flag is almost certainly a false positive from LLM classification.
-      // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
-      // AND: Do NOT auto-clear if the review date is more than PRE_WINDOW_DAYS before the show — that's a prior production.
-      // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
-      // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
-      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
-      const wsHasManualReason = !!data.wrongShowReason;
+      // the wrongShow flag is often a false positive from LLM classification —
+      // UK outlets reviewing London shows rarely cover anything else.
+      //
+      // The policy lives in shouldAutoClearWrongShowUkUrl (wrong-production-autoclear.js),
+      // NOT inline here. Until 2026-08-09 this file carried a hand-written copy of it while
+      // the lib function had 8 unit tests and ZERO production callers — so those tests proved
+      // nothing about what actually ran, and the guard added to one copy could never reach the
+      // other. That is the same two-copies-of-one-policy trap this tracker keeps finding
+      // (memory: includability predicates must be canonical). Calling the lib is what makes its
+      // new ensemble guard live: a unanimous ensemble wrong_show verdict now outranks the
+      // domain heuristic instead of the other way round (tracker #2 / task #1146).
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
@@ -2601,7 +2605,11 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
+      if (shouldAutoClearWrongShowUkUrl(data, {
+        isLondonMarketShow: isLondonMarket(showCat),
+        isUkOutletUrl: isUkOutletUrl(data.url),
+        dateMismatchOver90d: wsDateMismatch,
+      })) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
