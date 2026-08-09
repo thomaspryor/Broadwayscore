@@ -83,12 +83,64 @@ test('flags a bare spawn() with no options object at all', () => {
   assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
 });
 
+test('flags the shell-string form execSync uses', () => {
+  const src = "execSync('node scripts/newsletter/generate.mjs ' + weekStart, { env: process.env });";
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('flags the template-literal shell form', () => {
+  const src = 'execSync(`node scripts/newsletter/generate.mjs ${weekStart}`);';
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('an apostrophe in a comment inside the call does not hide the violation', () => {
+  const src = `
+    execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
+      // don't forget the cwd here
+      cwd: repoRoot,
+      env: { ...process.env },
+    });
+  `;
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('a comment naming NEWSLETTER_EDITION does not count as a pin', () => {
+  const src = `
+    execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
+      // NEWSLETTER_EDITION is set by the workflow
+      env: { ...process.env },
+    });
+  `;
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('resolves a pin through a spread identifier in an inline env object', () => {
+  const src = `
+    const base = { ...process.env, NEWSLETTER_EDITION: draftEdition };
+    execFileSync('node', [path.join(__dirname, 'generate.mjs'), w], { env: { ...base, OTHER: 1 } });
+  `;
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
 test('does NOT flag generate.mjs appearing only in an error message or comment', () => {
   const src = `
     // Re-run generate.mjs under this edition first.
     console.error('Generated HTML is the wrong edition — re-run generate.mjs first.');
     execFileSync('node', ['scripts/newsletter/pre-send-check.mjs', weekStart], { env: process.env });
   `;
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
+test('flags a spawn whose generator path is held in a variable', () => {
+  const src = `
+    const generator = path.join(__dirname, 'generate.mjs');
+    execFileSync('node', [generator, weekStart], { env: process.env });
+  `;
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('does NOT flag generate.mjs passed as DATA to a different program', () => {
+  const src = `execFileSync('node', ['scripts/tool.mjs', 'generate.mjs'], { env: process.env });`;
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
 });
 
@@ -109,13 +161,27 @@ test('real call site: regression-test.mjs pins the edition on its re-run', () =>
   assert.deepEqual(v.map((x) => x.reason), []);
 });
 
-test('corpus sweep: no script under scripts/newsletter spawns the generator unpinned', () => {
-  const dir = path.join(repoRoot, 'scripts/newsletter');
+// Sweep every plausible home for a generator spawn, not just scripts/newsletter —
+// a helper under scripts/lib or a one-off in scripts/ root can spawn it just as
+// easily, and that is precisely the "third call site" this guard exists for.
+test('corpus sweep: nothing under scripts/newsletter, scripts/lib, or scripts/ root spawns the generator unpinned', () => {
+  const dirs = ['scripts/newsletter', 'scripts/lib', 'scripts'];
   const all = [];
-  for (const f of fs.readdirSync(dir)) {
-    if (!/\.(mjs|js)$/.test(f)) continue;
-    const p = path.join(dir, f);
-    all.push(...findUnpinnedGenerateSpawns(fs.readFileSync(p, 'utf8'), `scripts/newsletter/${f}`));
+  let scanned = 0;
+  for (const rel of dirs) {
+    const dir = path.join(repoRoot, rel);
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir)) {
+      if (!/\.(mjs|js)$/.test(f)) continue;
+      // Test files carry deliberately-unpinned fixtures (including this one).
+      if (/\.test\.(mjs|js)$/.test(f)) continue;
+      const p = path.join(dir, f);
+      if (!fs.statSync(p).isFile()) continue;
+      scanned++;
+      all.push(...findUnpinnedGenerateSpawns(fs.readFileSync(p, 'utf8'), `${rel}/${f}`));
+    }
   }
+  // Vacuous-guard check: a sweep that scanned nothing must not read as a pass.
+  assert.ok(scanned > 50, `expected to scan >50 scripts, scanned ${scanned}`);
   assert.deepEqual(all.map((x) => x.reason), []);
 });

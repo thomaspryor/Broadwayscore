@@ -175,7 +175,11 @@ const LEAD_ENV_BY_CATEGORY = {
 };
 const appliedSwapNotes = [];
 const unswappableNotes = [];
-if (Array.isArray(meta.openingShows)) {
+// Skip the swap entirely when the draft on disk is already the wrong edition:
+// regenerating would rewrite the file from a draft we've just declared invalid,
+// leaving a clobbered draft behind for whoever looks at the out dir next. The
+// run is failing either way — fail without touching the file.
+if (hardFailuresEarly.length === 0 && Array.isArray(meta.openingShows)) {
   let gapCheckpointEarly = {};
   try { gapCheckpointEarly = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/gap-audit-checkpoint.json'), 'utf8')); } catch { /* no-op — reported as soft below */ }
   const acksEarly = loadAcks();
