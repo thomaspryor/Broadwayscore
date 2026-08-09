@@ -286,13 +286,40 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
 }
 
 /**
+ * True when the LLM ensemble scoreability check rejected this file with the
+ * given rejection reason ('wrong_production' or 'wrong_show'). Set by
+ * scripts/llm-scoring/index.ts only when 2+ of the 3 ensemble models agree
+ * (scripts/llm-scoring/ensemble-scorer.ts source: 'ensemble-unanimous') — the
+ * strongest per-content signal the pipeline produces, distinct from the
+ * date/URL/venue heuristics every *AutoCleared path below is built on.
+ *
+ * Background (Notion cousin of 34e637c5-416f-8121, #1146/#1156): a corpus scan
+ * (2026-08-09) found 42 wrongProduction + 28 wrongShow files where an
+ * allowEarlyDate/allowCrossMarket or UK-URL auto-clear stripped the flag on a
+ * file the ensemble had unanimously rejected on content grounds — the show-level
+ * date/market override has no bearing on whether THIS review's text is actually
+ * about the right production. Auto-clear paths must defer to this signal the
+ * same way they already defer to high-confidence contentVerification.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {'wrong_production'|'wrong_show'} reason
+ * @returns {boolean}
+ */
+function hasEnsembleRejection(data, reason) {
+  return !!data
+    && data.rejectionReason === reason
+    && data.rejectedBy === 'ensemble-scoreability-check';
+}
+
+/**
  * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
  * strip wrongProduction from a review file.
  *
  * Returns true ONLY if both conditions hold:
  *   - One of allowEarlyDate / allowCrossMarket is true (user explicit override)
- *   - There is NO explicit wrongProductionReason and NO high-confidence CV signal
- *     (so the flag is safe to clear)
+ *   - There is NO explicit wrongProductionReason, NO high-confidence CV signal,
+ *     and NO unanimous ensemble wrong_production rejection (so the flag is
+ *     safe to clear)
  *
  * @param {object} data - The review JSON object
  * @returns {boolean} - true if it's safe to delete wrongProduction
@@ -303,6 +330,7 @@ function shouldAutoClearWrongProduction(data) {
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleRejection(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -318,6 +346,7 @@ function shouldAutoClearWrongShow(data) {
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -347,6 +376,7 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } =
     && data.contentVerification?.confidence === 'high';
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleRejection(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
 }
 
@@ -375,6 +405,7 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   if (dateMismatchOver90d) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
+  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   return !isWrongArticle && !hasManualReason;
 }
 
@@ -441,6 +472,7 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
 }
 
 module.exports = {
+  hasEnsembleRejection,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,

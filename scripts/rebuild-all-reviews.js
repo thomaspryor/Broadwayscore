@@ -59,6 +59,7 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  hasEnsembleRejection,
   isWithinPriorRun,
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
@@ -2515,7 +2516,13 @@ showDirs.forEach(showId => {
               // same-title other-market reviews.
               const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
                 || outletRegionMap[earlyRawOutlet] === 'london';
-              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
+              // Do NOT auto-clear a unanimous ensemble wrong_production verdict — a
+              // UK-URL/registry-region heuristic about the OUTLET says nothing about
+              // whether THIS review's text is actually about the right production,
+              // which is exactly what the ensemble already judged on content. See
+              // scripts/lib/wrong-production-autoclear.js hasEnsembleRejection (#1156).
+              const ensembleBlocksClear = hasEnsembleRejection(data, 'wrong_production');
+              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl && !ensembleBlocksClear) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = isUkUrl
@@ -2601,7 +2608,12 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
+      // Do NOT auto-clear a unanimous ensemble wrong_show verdict — the UK/major-
+      // outlet heuristic is about the OUTLET, not what this review's text is
+      // actually about, which is exactly what the ensemble judged on content.
+      // See scripts/lib/wrong-production-autoclear.js hasEnsembleRejection (#1156).
+      const wsEnsembleBlocksClear = hasEnsembleRejection(data, 'wrong_show');
+      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch && !wsEnsembleBlocksClear) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
