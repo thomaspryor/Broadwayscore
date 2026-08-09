@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-09T13:55:02.370Z",
+  "generatedAt": "2026-08-09T14:39:44.135Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 156,
-  "clean": 156,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 155,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.6 vs local 79.52 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    }
+  ]
 }
