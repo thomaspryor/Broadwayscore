@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-09T20:41:46.144Z",
+  "timestamp": "2026-08-09T21:03:27.288Z",
   "stats": {
-    "totalReviews": 41951,
+    "totalReviews": 41946,
     "alreadyFlagged": 18238,
-    "dateGuardCatches": 140,
+    "dateGuardCatches": 139,
     "directorMismatch": 963,
     "tvFilmSignals": 1163,
-    "londonSignals": 837,
+    "londonSignals": 836,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3529
@@ -24949,24 +24949,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "theatre--paul-lewis.json",
-      "publishDate": "2025-05-14",
-      "url": "https://theatre.reviews/reviews-roundup/comedy-about-spies-reviews/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
