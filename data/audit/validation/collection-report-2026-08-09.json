@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-09T15:47:48.650Z",
+  "runDate": "2026-08-09T19:34:37.935Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 65,
-    "failed": 871,
+    "failed": 872,
     "skipped": 0,
     "successRate": "6.9%"
   },
@@ -27,27 +27,27 @@
     "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 31,
-    "tier1Success": 29,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 4,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 19,
-    "tier4Success": 1,
-    "totalFailed": 265,
-    "scrapingBeePageCredits": 14,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 267,
-    "urlDiscoverySuccess": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -988,7 +988,8 @@
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
     "schmigadoon-2026/variety--clayton-davis.json",
-    "schmigadoon-2026/musical-theatre-review--unknown.json"
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "cats-west-end-2026/firstnightmagazine--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1072,40 +1073,6 @@
       "schmigadoon-2026/wsj--john-anderson.json"
     ]
   },
-  "failuresByOutlet": {
-    "show-score": {
-      "count": 1,
-      "domain": "show-score.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-      "oldUrl": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
-      "newUrl": "https://www.inquirer.com/arts/to-kill-a-mockingbird-richard-thomas-kimmel-review-20220715.html"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos"
-    },
-    {
-      "reviewId": "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-WHITE-RABBIT-RED-RABBIT-sohoplace-20241003",
-      "newUrl": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047/replacement-cast"
-    },
-    {
-      "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopZUnP1eY89_dLl6rW35SUSltTXxenwX8baAhlginYdrauG4Q9N"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
