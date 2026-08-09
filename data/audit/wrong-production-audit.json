@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-09T14:45:17.337Z",
+  "timestamp": "2026-08-09T15:56:14.434Z",
   "stats": {
-    "totalReviews": 41941,
-    "alreadyFlagged": 18232,
-    "dateGuardCatches": 140,
+    "totalReviews": 41945,
+    "alreadyFlagged": 18235,
+    "dateGuardCatches": 139,
     "directorMismatch": 963,
     "tvFilmSignals": 1163,
     "londonSignals": 836,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3527
+    "noPublishDate": 3528
   },
   "findings": [
     {
@@ -43767,20 +43767,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "file": "westminsterextra--unknown.json",
-      "score": 88,
-      "publishDate": "2025-08-07",
-      "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 355d before show (2025-08-07 vs 2026-07-28)"
         }
       ]
     },

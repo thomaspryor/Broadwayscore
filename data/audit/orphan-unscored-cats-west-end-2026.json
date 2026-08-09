@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-09T15:08:01.453Z",
+  "detectedAt": "2026-08-09T15:56:01.446Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "broadwayworld--louise-penn.json",
+      "outletId": "broadwayworld",
+      "criticName": "Louise Penn",
+      "url": null,
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "excerpt",
+      "eligibilityReason": null
+    },
     {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
@@ -20,8 +34,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-08-09T15:56:01.446Z"
 }
