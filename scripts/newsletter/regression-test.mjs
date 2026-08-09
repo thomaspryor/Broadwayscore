@@ -77,22 +77,27 @@ const pinnedEdition = draftEditionOnDisk
 const scratchDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-regression-'));
 const metaPath = path.join(scratchDir, `A-${weekStart}.meta.json`);
 
+const cleanup = () => { try { fs.rmSync(scratchDir, { recursive: true, force: true }); } catch { /* no-op */ } };
+
+let current;
 try {
   execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
     cwd: repoRoot,
     env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir },
     stdio: ['ignore', 'pipe', 'inherit'],
   });
+  if (!fs.existsSync(metaPath)) {
+    console.error(`Generator did not produce ${metaPath}`);
+    cleanup();
+    process.exit(2);
+  }
+  current = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 } finally {
-  // Best-effort: leave nothing behind in tmp even when the generator throws.
-  process.on('exit', () => { try { fs.rmSync(scratchDir, { recursive: true, force: true }); } catch { /* no-op */ } });
+  // Delete inline, as soon as the meta is in memory. An exit-event handler
+  // would not run on SIGINT/SIGTERM — the way a cancelled Saturday workflow
+  // actually dies — and would leave /tmp/newsletter-regression-* behind.
+  cleanup();
 }
-
-if (!fs.existsSync(metaPath)) {
-  console.error(`Generator did not produce ${metaPath}`);
-  process.exit(2);
-}
-const current = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 
 const failures = [];
 

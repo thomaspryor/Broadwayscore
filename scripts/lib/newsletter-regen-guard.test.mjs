@@ -144,6 +144,65 @@ test('does NOT flag generate.mjs passed as DATA to a different program', () => {
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
 });
 
+// Regex literals are the dangerous direction: mis-lexing one as a comment
+// blanks the rest of the line and hides any spawn after it (Codex, 2026-08-09).
+test('a regex literal containing // does not hide a later unpinned spawn', () => {
+  const src = [
+    'const r = /[//]/;',
+    "execFileSync('node', ['generate.mjs'], { env: process.env });",
+  ].join('\n');
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('a regex literal containing quotes does not hide a later unpinned spawn', () => {
+  const src = [
+    'const r = /[\'"]/;',
+    "execFileSync('node', ['generate.mjs'], { env: process.env });",
+  ].join('\n');
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('an escaped-backslash string in the options does not hide the violation', () => {
+  const src = String.raw`execFileSync('node', ['generate.mjs'], { cwd: "C:\\", env: process.env });`;
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('does NOT flag a spawn that only appears inside a string literal', () => {
+  const src = "const doc = \"execFileSync('node', ['generate.mjs'], {env: process.env})\";";
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
+test('a URL inside a string is not treated as a line comment', () => {
+  const src = [
+    "const u = 'https://example.com/x';",
+    "execFileSync('node', ['generate.mjs'], { env: process.env });",
+  ].join('\n');
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('division is still treated as division, not a regex', () => {
+  const src = [
+    'const ratio = total / count;',
+    "execFileSync('node', ['generate.mjs'], { env: { ...process.env, NEWSLETTER_EDITION: e } });",
+  ].join('\n');
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
+// Template interpolation is CODE — a spawn nested in `${...}` is a real call
+// site, not string content (Codex round 3, 2026-08-09).
+test('flags a spawn nested in a template interpolation', () => {
+  const src = "const t = `${execFileSync('node', ['generate.mjs'], { env: process.env })}`;";
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+// Documented limit, asserted so it stays a known quantity rather than a
+// surprise: argv assembled at runtime is out of this scanner's reach. See the
+// KNOWN LIMIT note in newsletter-regen-guard.js for why no net guards it.
+test('KNOWN LIMIT: runtime-assembled argv is not checked', () => {
+  const src = "const args = []; execFileSync('node', [...args, 'generate.mjs'], { env: process.env });";
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
 test('does NOT flag spawns of other scripts', () => {
   const src = `execFileSync('node', [path.join(__dirname, 'overflow-check.mjs'), weekStart], { env: process.env });`;
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
