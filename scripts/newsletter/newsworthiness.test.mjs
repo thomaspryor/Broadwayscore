@@ -9,7 +9,7 @@
 // Per CLAUDE.md §15 these import the real functions; no logic is copied here.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildSubjectFromCandidates, trimToWordBoundary } from './newsworthiness.mjs';
+import { buildSubjectFromCandidates, trimToWordBoundary, scoreCandidates, formatClosingDay } from './newsworthiness.mjs';
 
 const show = (id) => ({ id, slug: id, title: id });
 const cand = (kind, headline, id = kind) => ({ kind, headline, show: show(id) });
@@ -87,4 +87,42 @@ test('trimToWordBoundary hard-cuts an unbroken token', () => {
 
 test('trimToWordBoundary is a no-op under the limit', () => {
   assert.equal(trimToWordBoundary('short enough', 80), 'short enough');
+});
+
+// ── closing-final headlines must name the day ────────────────────────────────
+// Regression guard for the 2026-08-09 Sunday review catch. `closingsThisWeek`
+// is the 7 days AFTER the issue window (it was repointed there on 2026-07-12 to
+// match the body's "Closing this Week" card), but the headline still read a
+// bare "X plays final performance" — so the Broadway lede announced Ragtime's
+// final performance on Aug 9 when the actual last show was Aug 16.
+test('closing-final headline names the closing day', () => {
+  const [c] = scoreCandidates({
+    closingsThisWeek: [{ id: 'ragtime-2025', slug: 'ragtime', title: 'Ragtime', closingDate: '2026-08-16' }],
+  }).filter(x => x.kind === 'closing-final');
+  assert.ok(c, 'expected a closing-final candidate');
+  assert.equal(c.headline, 'Ragtime plays its final performance Sun Aug 16');
+  // The undated phrasing is the bug — it reads as "happening now".
+  assert.notEqual(c.headline, 'Ragtime plays final performance');
+});
+
+test('closing-final headline degrades cleanly when the date is missing', () => {
+  const [c] = scoreCandidates({
+    closingsThisWeek: [{ id: 'x', slug: 'x', title: 'Some Show', closingDate: null }],
+  }).filter(x => x.kind === 'closing-final');
+  assert.equal(c.headline, 'Some Show plays its final performance');
+  assert.ok(!/undefined|null|NaN|Invalid/.test(c.headline), c.headline);
+});
+
+test('formatClosingDay renders the NY-local day, not the UTC-midnight one', () => {
+  // Bare YYYY-MM-DD parses as UTC midnight, which is the PREVIOUS evening in
+  // New York — "Sun Aug 16" would render "Sat Aug 15" without the noon anchor.
+  assert.equal(formatClosingDay('2026-08-16'), 'Sun Aug 16');
+  assert.equal(formatClosingDay('2026-08-15'), 'Sat Aug 15');
+  assert.equal(formatClosingDay('2026-08-16T00:00:00Z'), 'Sun Aug 16');
+});
+
+test('formatClosingDay returns empty string for unusable input', () => {
+  for (const bad of [null, undefined, '', 'soon', 12345, {}]) {
+    assert.equal(formatClosingDay(bad), '', `input: ${JSON.stringify(bad)}`);
+  }
 });
