@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-09T06:39:40.008Z",
+  "generatedAt": "2026-08-09T07:57:40.228Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 157,
-  "clean": 156,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "title": "Showstopper! The Improvised Musical",
-      "openingDate": "2015-09-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.35 vs local 85.1 (Δ0.75)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 5
-    }
-  ]
+  "clean": 157,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
