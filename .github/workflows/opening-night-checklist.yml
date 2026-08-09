@@ -36,6 +36,20 @@ jobs:
       # (opening-night-sla-state.json + owner-alert-router cooldown/dedup in
       # scripts/lib/opening-night-sla.js), so an overlapping run can't double-page
       # (task #922 audit, 2026-08-03).
+      #
+      # SCOPE CORRECTION (task #389): that application-layer protection covers
+      # the ALERT path, not the new workflow-dispatch remediation path. Its
+      # cooldown state is data/audit/remediation-log.jsonl, which is committed
+      # in the LAST step of the job — so a cron run overlapping a manual
+      # workflow_dispatch reads the same pre-commit ledger and can dispatch the
+      # same remediation twice. Consequences are bounded and were accepted
+      # rather than serialized: the target workflows
+      # (update-critic-consensus.yml, recover-explicit-ratings.yml) each have
+      # their own named concurrency group with cancel-in-progress: false, so a
+      # duplicate queues instead of racing; the real cost is that it burns one
+      # of the 2-attempts-per-24h budget and can escalate to the owner's digest
+      # a cycle early. Serializing this job instead would reintroduce the
+      # queue-depth-1 cancellation this per-run group exists to avoid.
       group: opening-night-checklist-${{ github.run_id }}
       cancel-in-progress: false
 

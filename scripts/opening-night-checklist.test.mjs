@@ -415,6 +415,48 @@ describe('remediation runner', () => {
     assert.equal(routed[0].conditionKey, alertAction.conditionKey);
   });
 
+  it('never drops a malformed remediation spec silently', () => {
+    // A typo'd kind or a missing key must not reproduce the very failure this
+    // feature closes: check fires, nobody acts, nobody knows.
+    const dropped = [];
+    const actions = collectRemediations(
+      [{
+        show: { id: SHOW_ID },
+        results: [
+          { name: 'future-check', ok: false, details: { remediation: { kind: 'workfow', key: 'typo' } } },
+          { name: 'keyless-check', ok: false, details: { remediation: { kind: 'workflow' } } },
+        ],
+      }],
+      { onInvalid: info => dropped.push(info) }
+    );
+    assert.equal(actions.length, 0);
+    assert.equal(dropped.length, 2, 'both malformed specs must be reported, not swallowed');
+    assert.deepEqual(dropped.map(d => d.checkName), ['future-check', 'keyless-check']);
+  });
+
+  it('counts a cooldown-suppressed alert as suppressed, not alerted', async () => {
+    const alertAction = {
+      kind: 'alert',
+      key: `score-jump:${SHOW_ID}`,
+      conditionKey: `opening-night-score-jump-${SHOW_ID}`,
+      title: 'Unexplained score jump',
+      severity: 'warning',
+      showId: SHOW_ID,
+      checkName: 'unexplained-score-jump',
+    };
+    const ledger = [];
+    const stats = await executeRemediations(planRemediations([alertAction], readAttempts([]), now), {
+      now,
+      dispatchWorkflow: async () => ({ ok: true }),
+      // routeAlert's own conditionKey cooldown already told the owner.
+      routeAlert: async () => ({ action: 'silent' }),
+      appendLedger: e => ledger.push(e),
+    });
+    assert.equal(stats.suppressed, 1);
+    assert.equal(stats.alerted, 0, 'a suppressed alert must not inflate the alerted count');
+    assert.equal(ledger[0].action, 'suppressed');
+  });
+
   it('honors the kill switch — logs the intent, dispatches nothing', async () => {
     const ledger = [];
     let dispatched = 0;

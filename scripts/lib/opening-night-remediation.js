@@ -57,10 +57,18 @@ const VALID_KINDS = new Set(['workflow', 'alert']);
  * Collect self-declared remediations from a checklist run.
  *
  * @param {Array<{show: Object, results: Array<Object>}>} showResults
+ * @param {{onInvalid?: (info: Object) => void}} [opts] called for every dropped
+ *   malformed spec. Default logs a GitHub Actions warning — a spec with a
+ *   typo'd kind or a missing key must NEVER be dropped in silence: that is
+ *   precisely the "detected, nobody acted" failure this whole feature exists
+ *   to close, and a silent drop would recreate it one layer down.
  * @returns {Array<Object>} remediation specs, each stamped with showId/checkName,
  *   deduped by `key` (first occurrence wins).
  */
-function collectRemediations(showResults) {
+function collectRemediations(showResults, opts = {}) {
+  const onInvalid = opts.onInvalid || ((info) => {
+    console.warn(`::warning::opening-night remediation spec dropped as malformed (check=${info.checkName}, show=${info.showId}, kind=${JSON.stringify(info.kind)}, key=${JSON.stringify(info.key)}) — the check fired but nothing will act on it`);
+  });
   const out = [];
   const seen = new Set();
 
@@ -79,7 +87,15 @@ function collectRemediations(showResults) {
       const specs = Array.isArray(raw) ? raw : [raw];
 
       for (const spec of specs) {
-        if (!spec || !VALID_KINDS.has(spec.kind) || !spec.key) continue;
+        if (!spec || !VALID_KINDS.has(spec.kind) || !spec.key) {
+          onInvalid({
+            showId,
+            checkName: result.name || null,
+            kind: spec ? spec.kind : null,
+            key: spec ? spec.key : null,
+          });
+          continue;
+        }
         if (seen.has(spec.key)) continue;
         seen.add(spec.key);
         out.push({ ...spec, showId, checkName: result.name || null });
@@ -176,7 +192,13 @@ function planRemediations(remediations, attemptsByKey, now, opts = {}) {
  */
 async function executeRemediations(planned, deps) {
   const { now, dispatchWorkflow, routeAlert, appendLedger, disabled = false } = deps || {};
-  const stats = { considered: 0, dispatched: 0, waited: 0, escalated: 0, alerted: 0, failed: 0, killed: 0 };
+  // `suppressed` is tracked separately from `alerted` on purpose: routeAlert
+  // owns a 7-day per-conditionKey cooldown and returns {action:'silent'} when
+  // it suppresses. Counting those as `alerted` would make the stat read as
+  // "the owner was told N times" when the owner was told once — the same
+  // class of self-flattering metric as a gate that reports clean because it
+  // scanned nothing.
+  const stats = { considered: 0, dispatched: 0, waited: 0, escalated: 0, alerted: 0, suppressed: 0, failed: 0, killed: 0 };
   const at = (now || new Date()).toISOString();
 
   for (const { remediation, action, waitMs, attempts } of planned || []) {
@@ -245,8 +267,17 @@ async function executeRemediations(planned, deps) {
         appendLedger({ ...base, action: 'failed', why: `alert threw: ${err?.message || String(err)}` });
         continue;
       }
-      stats.alerted++;
-      appendLedger({ ...base, action: 'dispatched', routed: routed?.action || null, conditionKey: remediation.conditionKey });
+      // routeAlert returns {action:'silent'} when its own conditionKey cooldown
+      // suppressed the notification. That is NOT an alert the owner received,
+      // and the ledger must not call it 'dispatched' — the hourly cron would
+      // otherwise write one "dispatched" line per hour for a single incident.
+      if (routed?.action === 'silent') {
+        stats.suppressed++;
+        appendLedger({ ...base, action: 'suppressed', why: 'alert-router cooldown', conditionKey: remediation.conditionKey });
+      } else {
+        stats.alerted++;
+        appendLedger({ ...base, action: 'dispatched', routed: routed?.action || null, conditionKey: remediation.conditionKey });
+      }
       continue;
     }
 
@@ -262,7 +293,13 @@ async function executeRemediations(planned, deps) {
       appendLedger({ ...base, action: 'dispatched', workflow: remediation.workflow, inputs: remediation.inputs || {} });
     } else {
       stats.failed++;
-      appendLedger({ ...base, action: 'failed', workflow: remediation.workflow, inputs: remediation.inputs || {}, why: result?.error || 'unknown dispatch failure' });
+      const why = result?.error || 'unknown dispatch failure';
+      appendLedger({ ...base, action: 'failed', workflow: remediation.workflow, inputs: remediation.inputs || {}, why });
+      // Surface in the Actions log. 'no-token' especially: it means the whole
+      // self-healing layer is inert while detection keeps reporting normally —
+      // the vacuous-gate shape (looks like it ran, did nothing). Annotation
+      // only; the checklist's 0/1/3 exit contract is deliberately unchanged.
+      console.warn(`::warning::opening-night remediation failed to dispatch ${remediation.workflow} for ${remediation.showId}: ${why}`);
     }
   }
 

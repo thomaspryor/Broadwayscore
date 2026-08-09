@@ -309,7 +309,7 @@ async function runSelfDeclaredRemediations(showResults, now) {
     disabled: process.env.OPENING_NIGHT_REMEDIATION_DISABLED === 'true',
   });
 
-  console.log(`[remediation] self-declared: considered=${stats.considered} dispatched=${stats.dispatched} alerted=${stats.alerted} waited=${stats.waited} escalated=${stats.escalated} failed=${stats.failed} killed=${stats.killed}`);
+  console.log(`[remediation] self-declared: considered=${stats.considered} dispatched=${stats.dispatched} alerted=${stats.alerted} suppressed=${stats.suppressed} waited=${stats.waited} escalated=${stats.escalated} failed=${stats.failed} killed=${stats.killed}`);
 
   return {
     ...stats,
