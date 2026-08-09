@@ -48,6 +48,21 @@ jobs:
       fail-fast: false
       matrix:
         edition: [broadway, west-end]
+
+    # Job-level so EVERY step that touches the draft sees the same generator
+    # environment — including pre-send-check.mjs, which re-invokes generate.mjs
+    # when it applies a coverage swap. When its step env omitted
+    # NEWSLETTER_EDITION, that regen silently rewrote a west-end draft as the
+    # Broadway edition (see newsletter-draft.yml for the 2026-08-08 incident).
+    # The scripts now pin the edition themselves, so this is defense in depth —
+    # and it's what gets GA creds to the regen so it keeps the Trending section.
+    # Step-level env still wins where a step needs something different.
+    env:
+      NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+      NEWSLETTER_EDITION: ${{ matrix.edition }}
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -104,7 +119,6 @@ jobs:
         id: status
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           status=$(node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" --status)
           echo "status=$status" >> "$GITHUB_OUTPUT"
@@ -112,25 +126,16 @@ jobs:
 
       - name: Generate newsletter HTML + meta.json
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Pre-send check (HTML invariants, UTMs, subject, lede)
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Mobile overflow gate
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
 
@@ -140,8 +145,6 @@ jobs:
         if: steps.status.outputs.status == 'draft'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
             --create --audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}"
