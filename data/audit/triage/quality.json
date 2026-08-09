@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-08T11:39:20.174Z",
+  "lastChecked": "2026-08-09T07:42:45.112Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (19599/19950)"
+      "message": "98.6% scored (19629/19904)"
     },
     {
       "name": "Quality: corpus drift",
@@ -34,7 +34,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "107 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 5d ago)"
+      "message": "107 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 6d ago)"
     }
   ]
 }
