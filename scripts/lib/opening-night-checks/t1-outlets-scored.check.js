@@ -65,12 +65,30 @@ function run(show, context) {
   }
 
   const problems = [];
+  const remediation = [];
   if (missing.length > 0) {
     problems.push(`Missing T1 reviews: ${missing.join(', ')} — run: node scripts/gather-reviews.js --show=${show.id} --force`);
+    // Self-declared remediation (task #1132, extending #389). gather-reviews.yml
+    // takes a comma-separated `shows` input — single-show scoped, same as the
+    // manual --show=ID command it replaces.
+    remediation.push({
+      kind: 'workflow',
+      key: `t1-missing:${show.id}`,
+      workflow: 'gather-reviews.yml',
+      inputs: { shows: show.id },
+      reason: `missing T1 outlets: ${missing.join(', ')}`,
+    });
   }
   if (unscoredT1.length > 0) {
     const ids = unscoredT1.map(r => r.outletId).join(', ');
     problems.push(`Unscored T1 reviews: ${ids} — run: node scripts/collect-review-texts.js --show=${show.id}`);
+    remediation.push({
+      kind: 'workflow',
+      key: `t1-unscored:${show.id}`,
+      workflow: 'collect-review-texts.yml',
+      inputs: { show_filter: show.id },
+      reason: `unscored T1 outlets: ${ids}`,
+    });
   }
 
   // Missing all 3 core T1s with a compositeScore is likely a pipeline failure — error
@@ -80,7 +98,11 @@ function run(show, context) {
     ok: false,
     severity,
     message: problems.join('\n'),
-    details: { missing, unscoredT1: unscoredT1.map(r => ({ outletId: r.outletId, url: r.url })) },
+    details: {
+      missing,
+      unscoredT1: unscoredT1.map(r => ({ outletId: r.outletId, url: r.url })),
+      remediation,
+    },
   };
 }
 
