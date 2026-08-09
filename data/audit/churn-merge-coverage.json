@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-09T11:42:12.512Z",
+    "generatedAt": "2026-08-09T11:55:41.532Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,11 +16,11 @@
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 251
+      "churn": 253
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 93
+      "churn": 94
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -66,23 +66,23 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 219
+      "churn": 221
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 219
+      "churn": 221
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 219
+      "churn": 221
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 142
+      "churn": 144
     },
     {
       "path": "public/data/shows/cats-west-end-2026.json",
-      "churn": 140
+      "churn": 143
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -94,14 +94,14 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 77
-    },
-    {
-      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
-      "churn": 76
+      "churn": 78
     },
     {
       "path": "public/data/shows/disruption-off-broadway-2026.json",
+      "churn": 75
+    },
+    {
+      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
       "churn": 75
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "path": "public/data/shows/twelfth-night-off-west-end-2026.json",
-      "churn": 51
+      "churn": 50
     },
     {
       "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
@@ -130,7 +130,7 @@
     },
     {
       "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
-      "churn": 34
+      "churn": 33
     },
     {
       "path": "public/data/shows/the-pass-off-broadway-2026.json",
@@ -138,7 +138,7 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 32
+      "churn": 31
     },
     {
       "path": "public/data/shows/horrible-histories-barmy-britain-the-best-bits-west-end-2026.json",
@@ -162,47 +162,47 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 606,
+      "churn": 609,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 557,
+      "churn": 560,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 265,
+      "churn": 266,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 251,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 251,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 237,
+      "churn": 238,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 219,
+      "churn": 221,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-pass-off-broadway-2026.json",
-      "churn": 188,
+      "churn": 191,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-cats-west-end-2026.json",
-      "churn": 176,
+      "churn": 179,
       "mergeAttr": "ours"
     },
     {
@@ -212,22 +212,22 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 81,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
