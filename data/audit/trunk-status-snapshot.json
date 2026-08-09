@@ -1,22 +1,29 @@
 {
-  "generatedAt": "2026-08-08T11:39:40.706Z",
+  "generatedAt": "2026-08-09T07:42:59.976Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "f7d935aca81a6b48dced4a2a073d303cb3a01040",
+  "latestRunHeadSha": "5ddd56d778725f548b50491e6c8718024e9d05ed",
   "state": "RED",
-  "consecutiveFailures": 2,
+  "consecutiveFailures": 9,
   "redSince": "2026-08-08T06:55:52Z",
-  "redForHours": 4.730196111111111,
+  "redForHours": 24.78554888888889,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-07T13:35:39Z",
-  "latestFailedRunId": "31250605252",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31250605252",
-  "decidedRuns": 88,
+  "latestFailedRunId": "31300077032",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31300077032",
+  "decidedRuns": 89,
   "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
     {
       "name": "Data Validation",
       "steps": [
-        "Run data validation"
+        "Run data validation",
+        "Validate review-text files"
       ]
     },
     {
@@ -28,11 +35,11 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/audit-duplicate-shows.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
+      "path": "tests/unit/validate-data-push-refusal-sentinel.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 1 - clean shows.json → exit 0, no sentinel written"
     }
   ],
-  "topFailingJob": "Data Validation"
+  "topFailingJob": "Unit Tests"
 }
