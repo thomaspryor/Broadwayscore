@@ -115,7 +115,7 @@ function stripComments(src) {
     // a comment or a string. Getting this wrong is the DANGEROUS direction:
     // a mis-lexed regex blanks the rest of the line, hiding any unpinned spawn
     // that follows it (Codex adversarial finding, verified 2026-08-09).
-    if (ch === '/' && regexCanStartAfter(prevMeaningful)) {
+    if (ch === '/' && regexCanStartAfter(prevMeaningful, wordBefore(src, i))) {
       const end = scanRegexLiteral(src, i);
       if (end !== -1) {
         out += src.slice(i, end + 1);
@@ -139,9 +139,29 @@ function stripComments(src) {
  * Standard heuristic: regex may follow an operator/punctuator or nothing,
  * never an operand (identifier char, closing bracket, quote).
  */
-function regexCanStartAfter(prevMeaningful) {
+function regexCanStartAfter(prevMeaningful, prevWord) {
+  // `return /re/`, `typeof /re/`, `case /re/` … a keyword is an operator
+  // position, not an operand. Missing these lexed `return /[.!?]/` as division,
+  // which opened a phantom string that blanked 200+ lines of a swept file from
+  // the guard — coverage lost silently, the exact vacuous-pass this file exists
+  // to avoid (code-review HIGH, 2026-08-09).
+  if (prevWord && REGEX_PRECEDING_KEYWORDS.has(prevWord)) return true;
   if (!prevMeaningful) return true;
   return '(,=:[!&|?{};+-*%<>~^'.includes(prevMeaningful);
+}
+
+const REGEX_PRECEDING_KEYWORDS = new Set([
+  'return', 'typeof', 'instanceof', 'in', 'of', 'new', 'delete', 'void',
+  'throw', 'case', 'do', 'else', 'yield', 'await',
+]);
+
+/** The identifier/keyword immediately before position `i`, or '' if none. */
+function wordBefore(src, i) {
+  let end = i;
+  while (end > 0 && /\s/.test(src[end - 1])) end--;
+  let start = end;
+  while (start > 0 && /[A-Za-z_$]/.test(src[start - 1])) start--;
+  return src.slice(start, end);
 }
 
 /** End index of the regex literal starting at `start`, or -1 if unterminated. */
@@ -173,8 +193,10 @@ function matchBracket(src, openIdx) {
   if (!close) return -1;
   let depth = 0;
   let quote = null;
+  let prevMeaningful = '';
   for (let i = openIdx; i < src.length; i++) {
     const ch = src[i];
+    const next = src[i + 1];
     if (quote) {
       // Consume the escaped char outright — `prev !== '\\'` mis-reads an even
       // run of backslashes (cwd: "\\\\") as escaping the closing quote, which
@@ -183,12 +205,24 @@ function matchBracket(src, openIdx) {
       if (ch === quote) quote = null;
       continue;
     }
-    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; continue; }
+    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; prevMeaningful = ch; continue; }
+    // Comments and regex literals must be skipped here too, not just in
+    // stripComments: this runs on RAW source when delimiting a `${...}`, and a
+    // template holding `.replace(/"/g, '\\"')` otherwise leaves a dangling
+    // quote that ran the span 80+ lines past the interpolation and hid every
+    // spawn inside it (code-review HIGH, 2026-08-09).
+    if (ch === '/' && next === '/') { while (i < src.length && src[i] !== '\n') i++; prevMeaningful = ''; continue; }
+    if (ch === '/' && next === '*') { const e = src.indexOf('*/', i + 2); i = e === -1 ? src.length : e + 1; continue; }
+    if (ch === '/' && regexCanStartAfter(prevMeaningful, wordBefore(src, i))) {
+      const e = scanRegexLiteral(src, i);
+      if (e !== -1) { i = e; prevMeaningful = '/'; continue; }
+    }
     if (ch === open) depth++;
     else if (ch === close) {
       depth--;
       if (depth === 0) return i;
     }
+    if (!/\s/.test(ch)) prevMeaningful = ch;
   }
   return -1;
 }
