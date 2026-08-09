@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-08-09T15:47:48.650Z",
+  "runDate": "2026-08-09T20:03:16.347Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 65,
-    "failed": 871,
+    "processed": 68,
+    "failed": 933,
     "skipped": 0,
-    "successRate": "6.9%"
+    "successRate": "6.8%"
   },
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 49,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 5,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 31,
-    "tier1Success": 29,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
-    "tier2Success": 4,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 19,
-    "tier4Success": 1,
-    "totalFailed": 265,
-    "scrapingBeePageCredits": 14,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 61,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 267,
-    "urlDiscoverySuccess": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 60,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -115,7 +115,10 @@
     "the-rocky-horror-show-2026/ew--dalton-ross.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/wsj--john-anderson.json"
+    "schmigadoon-2026/wsj--john-anderson.json",
+    "cats-west-end-2026/firstnightmagazine--unknown.json",
+    "cats-west-end-2026/independent--alice-saville.json",
+    "cats-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
@@ -988,7 +991,69 @@
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
     "schmigadoon-2026/variety--clayton-davis.json",
-    "schmigadoon-2026/musical-theatre-review--unknown.json"
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "cats-west-end-2026/firstnightmagazine--unknown.json",
+    "im-every-woman-off-west-end-2026/london-theatre--anya-ryan.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "suffs-2024/guardian--adrian-horton.json",
+    "suffs-2024/usatoday--melissa-ruggieri.json",
+    "the-wiz-2024/indiewire--sarah-shachat.json",
+    "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "appropriate-2023/timeout--adam-feldman.json",
+    "harmony-2023/usatoday--david-rooney.json",
+    "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
+    "grey-house-2023/stageandcinema--simi-horwitz.json",
+    "the-collaboration-2022/hollywood-reporter--anita-gates.json",
+    "the-collaboration-2022/times-uk--jesse-green.json",
+    "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+    "aint-no-mo-2022/usatoday--matthew-j-palm.json",
+    "topdog-underdog-2022/rollingstone--david-fear.json",
+    "waitress-2021/vulture--helen-shaw.json",
+    "the-inheritance-2019/usatoday--charles-isherwood.json",
+    "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
+    "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
+    "kiss-me-kate-2019/usatoday--david-rooney.json",
+    "kiss-me-kate-2019/usatoday--elysa-gardner.json",
+    "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
+    "the-nap-2018/nypost--johnny-oleksinski.json",
+    "escape-to-margaritaville-2018/vulture--jesse-green.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "farinelli-and-the-king-2017/observer--rex-reed.json",
+    "indecent-2017/usatoday--elysa-gardner.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+    "tuck-everlasting-2016/usatoday--elysa-gardner.json",
+    "eclipsed-2016/observer--rex-reed.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1038,7 +1103,9 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "cats-west-end-2026/firstnightmagazine--unknown.json",
+      "cats-west-end-2026/independent--alice-saville.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -1056,7 +1123,8 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json"
+      "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
+      "cats-west-end-2026/telegraph--unknown.json"
     ],
     "brightdata": [
       "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -1072,40 +1140,6 @@
       "schmigadoon-2026/wsj--john-anderson.json"
     ]
   },
-  "failuresByOutlet": {
-    "show-score": {
-      "count": 1,
-      "domain": "show-score.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-      "oldUrl": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html",
-      "newUrl": "https://www.inquirer.com/arts/to-kill-a-mockingbird-richard-thomas-kimmel-review-20220715.html"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos"
-    },
-    {
-      "reviewId": "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-WHITE-RABBIT-RED-RABBIT-sohoplace-20241003",
-      "newUrl": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047/replacement-cast"
-    },
-    {
-      "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOopZUnP1eY89_dLl6rW35SUSltTXxenwX8baAhlginYdrauG4Q9N"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }

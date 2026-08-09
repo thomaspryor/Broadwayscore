@@ -1,11 +1,36 @@
 {
-  "generatedAt": "2026-08-09T18:23:00.356Z",
+  "generatedAt": "2026-08-09T19:38:40.028Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 156,
-  "clean": 156,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 155,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: independent"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.78 vs local 73.9 (Δ0.88)"
+        }
+      ],
+      "missingFromProd": [
+        "independent"
+      ],
+      "localCount": 28,
+      "deployedCount": 27
+    }
+  ]
 }
