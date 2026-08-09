@@ -23,6 +23,16 @@
  * alike with no parser dependency, and the shapes it must catch are narrow.
  * Matches the established scripts/lib/*-guard.js convention (see
  * unbounded-fetch-guard.js, shallow-fetch-args.js).
+ *
+ * KNOWN LIMIT — argv assembled at runtime. `execFileSync('node', [...args,
+ * 'generate.mjs'])` and `argv.concat(x)` are invisible to any text scanner,
+ * so a spawn written that way is NOT checked. A fail-closed net for it was
+ * tried and removed: keyed on the assembly markers it false-positived on
+ * create-broadcast-draft.mjs (which spreads argv and separately names the
+ * generator in an error string), and a guard that cries wolf on correct code
+ * gets ignored, which costs more than the shape it would catch — nothing in
+ * this repo builds a generator argv dynamically. Keep the generator path a
+ * literal in the argv array and this guard can see it.
  */
 
 'use strict';
@@ -51,19 +61,46 @@ const SPAWN_FNS = ['execFileSync', 'execFile', 'spawnSync', 'spawn', 'execSync',
 function stripComments(src) {
   let out = '';
   let quote = null;
+  let quoteStart = 0;
+  let prevMeaningful = '';
+  const stringSpans = [];
   for (let i = 0; i < src.length; i++) {
     const ch = src[i];
     const next = src[i + 1];
     if (quote) {
       out += ch;
       if (ch === '\\') { out += next === undefined ? '' : next; i++; continue; }
-      if (ch === quote) quote = null;
+      // `${...}` inside a template literal is CODE, not string content — a
+      // spawn nested in an interpolation is a real call site. Close the string
+      // span before it and reopen after, so the span list doesn't swallow it.
+      if (quote === '`' && ch === '$' && next === '{') {
+        const close = matchBracket(src, i + 1);
+        if (close !== -1) {
+          stringSpans.push([quoteStart, i]);
+          const inner = src.slice(i + 1, close + 1);
+          // Lex the interpolation as code in its own right, so string literals
+          // NESTED inside it are still recorded as strings. Without this, a
+          // quoted spawn-call snippet inside an interpolation reads as live
+          // code and reddens CI (Codex round 4, 2026-08-09).
+          const innerLexed = stripComments(inner);
+          out += innerLexed.code;
+          for (const [s, e] of innerLexed.stringSpans) stringSpans.push([s + i + 1, e + i + 1]);
+          i = close;
+          quoteStart = i;          // remainder of the template is string again
+          continue;
+        }
+      }
+      if (ch === quote) { stringSpans.push([quoteStart, i]); quote = null; }
       continue;
     }
-    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; out += ch; continue; }
+    if (ch === "'" || ch === '"' || ch === '`') { quote = ch; quoteStart = i; out += ch; prevMeaningful = ch; continue; }
+    // `//` and `/*` are unambiguously comments — no regex literal can begin
+    // with a second slash or a star — so these are checked before the regex
+    // branch and never consult the regex heuristic.
     if (ch === '/' && next === '/') {
       while (i < src.length && src[i] !== '\n') { out += ' '; i++; }
       out += '\n';
+      prevMeaningful = '';
       continue;
     }
     if (ch === '/' && next === '*') {
@@ -73,9 +110,56 @@ function stripComments(src) {
       i--;
       continue;
     }
+    // Regex literal: copy it through verbatim so its contents (which routinely
+    // include //, quotes and brackets — /[//]/, /['"]/) are never mistaken for
+    // a comment or a string. Getting this wrong is the DANGEROUS direction:
+    // a mis-lexed regex blanks the rest of the line, hiding any unpinned spawn
+    // that follows it (Codex adversarial finding, verified 2026-08-09).
+    if (ch === '/' && regexCanStartAfter(prevMeaningful)) {
+      const end = scanRegexLiteral(src, i);
+      if (end !== -1) {
+        out += src.slice(i, end + 1);
+        i = end;
+        prevMeaningful = '/';
+        continue;
+      }
+    }
     out += ch;
+    if (!/\s/.test(ch)) prevMeaningful = ch;
   }
-  return out;
+  // Offsets are preserved (comments are blanked, never removed), so the spans
+  // index into `out` as well as `src`. Sharing this single regex-aware pass is
+  // what keeps the span list from mistaking a quote INSIDE a regex character
+  // class (/['"]/) for the start of a string and swallowing the code after it.
+  return { code: out, stringSpans };
+}
+
+/**
+ * Can a `/` at this position start a regex literal rather than division?
+ * Standard heuristic: regex may follow an operator/punctuator or nothing,
+ * never an operand (identifier char, closing bracket, quote).
+ */
+function regexCanStartAfter(prevMeaningful) {
+  if (!prevMeaningful) return true;
+  return '(,=:[!&|?{};+-*%<>~^'.includes(prevMeaningful);
+}
+
+/** End index of the regex literal starting at `start`, or -1 if unterminated. */
+function scanRegexLiteral(src, start) {
+  let inClass = false;
+  for (let i = start + 1; i < src.length; i++) {
+    const ch = src[i];
+    if (ch === '\\') { i++; continue; }
+    if (ch === '\n') return -1;            // regex literals can't span lines
+    if (ch === '[') inClass = true;
+    else if (ch === ']') inClass = false;
+    else if (ch === '/' && !inClass) {
+      let j = i + 1;                        // consume flags
+      while (j < src.length && /[a-z]/i.test(src[j])) j++;
+      return j - 1;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -91,9 +175,12 @@ function matchBracket(src, openIdx) {
   let quote = null;
   for (let i = openIdx; i < src.length; i++) {
     const ch = src[i];
-    const prev = src[i - 1];
     if (quote) {
-      if (ch === quote && prev !== '\\') quote = null;
+      // Consume the escaped char outright — `prev !== '\\'` mis-reads an even
+      // run of backslashes (cwd: "\\\\") as escaping the closing quote, which
+      // desynchronises the scan and makes the whole call get skipped.
+      if (ch === '\\') { i++; continue; }
+      if (ch === quote) quote = null;
       continue;
     }
     if (ch === "'" || ch === '"' || ch === '`') { quote = ch; continue; }
@@ -242,13 +329,17 @@ function editionIsPinned(sourceText, callText) {
 function findUnpinnedGenerateSpawns(rawSource, filename = '<source>') {
   const violations = [];
   if (typeof rawSource !== 'string' || !rawSource) return violations;
-  const sourceText = stripComments(rawSource);
+  const { code: sourceText, stringSpans: spans } = stripComments(rawSource);
 
   for (const fn of SPAWN_FNS) {
     // Word-boundary so `execFile` doesn't also match inside `execFileSync`.
     const callRe = new RegExp(`\\b${fn}\\s*\\(`, 'g');
     let m;
     while ((m = callRe.exec(sourceText)) !== null) {
+      // A spawn call that only APPEARS inside a string — a doc snippet, a
+      // fixture, a generated-code sample — is text, not a call site. Flagging
+      // it would redden CI on code that spawns nothing.
+      if (spans.some(([s, e]) => m.index > s && m.index < e)) continue;
       const openIdx = m.index + m[0].length - 1;
       const closeIdx = matchBracket(sourceText, openIdx);
       if (closeIdx === -1) continue;
@@ -265,6 +356,7 @@ function findUnpinnedGenerateSpawns(rawSource, filename = '<source>') {
       }
     }
   }
+
   return violations;
 }
 

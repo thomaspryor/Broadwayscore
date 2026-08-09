@@ -1,12 +1,20 @@
 {
-  "generatedAt": "2026-08-09T07:42:47.500Z",
-  "subject": "BSC URGENT (day 10): 1 unresolved error",
-  "bannerText": "1 error, 21 warnings",
-  "consecutiveErrorDays": 10,
+  "generatedAt": "2026-08-09T11:41:25.021Z",
+  "subject": "BSC URGENT (day 11): 3 unresolved errors",
+  "bannerText": "3 errors, 21 warnings",
+  "consecutiveErrorDays": 11,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2838k credits left (71%) · 232k/day burn · renews in 25d · exhausts in ~12d (BEFORE renewal)"
+      "message": "2821k credits left (71%) · 236k/day burn · renews in 25d · exhausts in ~12d (BEFORE renewal)"
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
+      "message": "Collect WE/OB Review Texts failed 3 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -32,19 +40,11 @@
     },
     {
       "name": "SEO: health",
-      "message": "1 SEO warning(s): Lighthouse score below 70 on /show/hamilton: 69/100 (lab only — field CWV healthy)"
-    },
-    {
-      "name": "Cron failed: Test Suite",
-      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+      "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
     },
     {
       "name": "Cron failed: Reverse Discovery",
-      "message": "Last run inconclusive: failure (2h ago), no success in 24h"
-    },
-    {
-      "name": "Stuck work: paused P0/P1 cards",
-      "message": "2 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: 👑 OWNER: dispatch-outcome ownership — 39 abandoned + in-fli (3d); Sarah check-in: growth plan progress and metrics report (2d) (15 awaiting recheck, earliest due 2026-08-07; 63 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force — not counted)"
+      "message": "Last run inconclusive: failure (1h ago), no success in 24h"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
@@ -59,8 +59,8 @@
       "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
@@ -76,7 +76,7 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "5 discovered review(s) not reaching the composite score (4 T1). First: cats-west-end-2026 — daily-mail (empty-body)"
+      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -89,43 +89,25 @@
   ],
   "queued": [
     {
-      "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
-      "description": "Scope: 2 opening window(s): isla-off-broadway-2026 (2026-08-08), cats-west-end-2026 (2026-08-06)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-06T08:07:06.168Z.\nThis is NOT a pass — the SLA had too little to judge.",
-      "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31255926256"
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80.3% (453/564)\noff-broadway: 49.1% (157/320)\nwest-end: 71.3% (409/574)\n\nOldest gaps:\n1536 — guardian (398h)\n1536 — independent (398h)\nA Midsummer Night's Dream - Globe — financialtimes (398h)\nA Midsummer Night's Dream - Globe — telegraph (398h)\nA Midsummer Night's Dream — financialtimes (398h)\n… 195 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (398h)\nThe Book of Mormon — usatoday (398h)\nBuena Vista Social Club — broadwaynews (398h)\nHeathers The Musical — dailybeast (398h)\nHeathers The Musical — ew (398h)\n… 12 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "2/157 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 2\nscore-drift: 2\nCats: missing-from-prod+score-drift\nTwelfth Night: missing-from-prod+score-drift",
+      "title": "Scraping spend over budget: brightdata $3.53 > $2.5 (403 serp + 1949 unlocker reqs); scrapingdog 55177 credits > 45000",
+      "description": "Day 2026-08-08. 2026-08-08 · Browserbase: $3.7 (37 sessions) · 2026-08-08 · Bright Data: $3.53 (403 serp / 1949 unlocker) · ScrapingBee: 15916 credits (83909 this cycle) · ScrapingDog: 55177 credits (1162260 this cycle) · Browserbase attribution: 0% attributed · Bright Data attribution: 55% attributed — top: opening-night-poller.js 772, audit-show-review-gap.js 302, fetch-show-images-auto.js 161, ingest-review-from-url.js 49, enrich-stubhub-prices.js 9 · ScrapingBee attribution: 4% attributed — top: fetch-show-images-auto.js 222, audit-show-review-gap.js 175, opening-night-poller.js 162, ingest-review-from-url.js 36, enrich-stubhub-prices.js 6 · ScrapingDog attribution: 8% attributed — top: audit-show-review-gap.js 2113, opening-night-poller.js 1309, fetch-show-images-auto.js 353, ingest-review-from-url.js 232, collect-review-texts.js 155. Verification streak reset to 0.",
       "severity": "error",
       "url": null
     },
     {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "5 T1/T2 outlet(s) still missing >24h after they became measurable.",
+      "title": "Review-gap audit refused to write — 15.4% of shows changed coverage state",
+      "description": "review-gap blast radius 15.4% (4/26 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: horrible-histories-barmy-britain-the-best-bits-west-end-2026, now-you-see-me-live-west-end-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
       "severity": "error",
       "url": null
     },
     {
-      "title": "Affiliate revenue: Bot click divergence — anomaly [shadow]",
-      "description": "The affiliate ticket-revenue pipeline (the site's only revenue stream) tripped its \"Bot click divergence\" check as of 2026-08-07. Impact recorded 236 clicks vs only 58 real PostHog TodayTix clicks over 3d (4.1x, ceiling 2.5x) — likely bots hitting the pxf.io tracking links; dilutes EPC and risks Impact compliance review if sustained\n\n(Shadow burn-in until 2026-08-17: digest-only while thresholds calibrate — verify before reacting.)\n\nReplay: node scripts/check-affiliate-health.js --dry-run",
+      "title": "Stale 'upcoming' tag on ISLA",
+      "description": "isla-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=isla-off-broadway-2026 --apply",
       "severity": "warning",
       "url": null
     }
   ],
-  "autoFixedCount": 1,
+  "autoFixedCount": 2,
   "passedCount": 53,
-  "totalCount": 78
+  "totalCount": 80
 }
