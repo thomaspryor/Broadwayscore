@@ -95,12 +95,73 @@ function successionDepthForTask(taskId, entries) {
   return depth;
 }
 
+// Shared "did this one event, by itself, fail to do the work" predicate —
+// deadAttemptsForTask, isLatestDispatchDead (card #1144) and anything else
+// this ledger grows must all agree on what DEAD means, or a task can pass one
+// check and fail the other for the same underlying state. JOB_EVENTS is
+// declared later in this file (below), but that's fine — this function body
+// only reads JOB_EVENTS.* when CALLED, by which point the whole module has
+// finished loading (same lazy-reference shape the original inline Set here
+// already relied on).
+function isDeadlikeEvent(event) {
+  return event === 'dead' || event === JOB_EVENTS.FAILED || event === JOB_EVENTS.ORPHANED;
+}
+
 function deadAttemptsForTask(taskId, entries) {
   // Failed/orphaned headless jobs count as dead attempts too — this is the
   // "one ledger, one guard" promise: a task cannot burn unlimited headless
   // jobs just because its deaths use the job-* vocabulary (Opus ship-check P1).
-  const DEADLIKE = new Set(['dead', JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED]);
-  return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
+  return entries.filter(e => isDeadlikeEvent(e.event) && String(e.taskId) === String(taskId));
+}
+
+// Events that represent one dispatch ATTEMPT for a task, across both the
+// cmux-tab path (bsc-next.js's 'launch'/'dead') and the --headless path
+// (bsc-runner.js's job-* vocabulary). Other ledger events ('prune',
+// 'vanish-epoch', 'vanished', 'prune-closed', 'remapped', 'restart-hold')
+// describe what happened to a WORKSPACE/CARD after a launch, not a fresh
+// attempt, and are deliberately excluded from this set.
+function isAttemptEvent(event) {
+  return event === 'launch' || isDeadlikeEvent(event)
+    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED;
+}
+
+// The most recent dispatch-attempt entry for a task, or null if it was never
+// dispatched through bsc-next/bsc-runner (manual/owner-typed work this has no
+// opinion on). Walks entries in FILE ORDER and lets the last match win —
+// appendEntry always appends, so the ledger is already chronological — rather
+// than re-sorting by `ts` the way a first draft of this did: readEntries()
+// already tolerates corrupt/partial lines, and a ts-sort trusts a field that
+// can be missing or malformed on exactly those lines. Matches this file's own
+// lastByRef/foldJobs/openTaskWorkspaceLaunches convention (last-in-array
+// wins), not a new one (Opus second-opinion review, card #1144).
+function latestAttemptForTask(taskId, entries) {
+  let latest = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (String(e.taskId) !== String(taskId)) continue;
+    if (!isAttemptEvent(e.event)) continue;
+    latest = e;
+  }
+  return latest;
+}
+
+// True when the task's MOST RECENT dispatch attempt never actually ran.
+// Card #1144: bsc-next's failedLaunchEntries() writes a 'dead' entry
+// immediately followed by an unverified:true 'launch' entry for the SAME
+// failed attempt (see that function's header) — the 'launch' entry lands
+// last in file order, so it (not 'dead') is what latestAttemptForTask
+// returns; the unverified:true check below is what still recognizes it as
+// dead. A plain verified 'launch' (no unverified flag), or a live/finished
+// job event (job-spawned/job-done/job-retried), as the latest attempt is NOT
+// dead — a later successful redispatch always supersedes earlier deaths, so
+// a task that died once and was then legitimately redispatched is never
+// blocked forever. No attempt recorded at all → NOT dead.
+function isLatestDispatchDead(taskId, entries) {
+  const latest = latestAttemptForTask(taskId, entries);
+  if (!latest) return false;
+  if (isDeadlikeEvent(latest.event)) return true;
+  if (latest.event === 'launch' && latest.unverified === true) return true;
+  return false;
 }
 
 // LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
@@ -676,6 +737,7 @@ module.exports = {
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
+  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,
