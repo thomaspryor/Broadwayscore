@@ -107,6 +107,16 @@ on:
       - 'scripts/lib/bww-roundup-parser.js'
       - 'scripts/lib/bww-roundup-parser.test.mjs'
       - 'tests/fixtures/bww-roundups/**'
+      # Ingest-skip classification (2026-08-09): the gap audit treated EVERY
+      # non-landing ingest as a benign no-op, so a cross-show URL ownership veto
+      # looked identical to "already up to date". I'm Every Woman's Guardian,
+      # Times and Standard reviews sat unreachable under the-car-man-west-end-2026
+      # for days while the hourly audit logged "no-op". Its test greps
+      # review-file-writer.js for every skip reason it emits and fails if one is
+      # unclassified, so the two cannot drift. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/ingest-skip-classify.js'
+      - 'scripts/lib/ingest-skip-classify.test.mjs'
       # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
       # raw-wrote over already-flagged review files, so ~155 excluded historical
       # DTLI excerpts re-entered reviews.json on every review-refresh and were

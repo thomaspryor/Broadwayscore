@@ -170,6 +170,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
 const { articleRunIdentity, ingestBlockReason } = require('./lib/gap-ingest-policy');
+const { classifyIngestSkip, describeConflict } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
 // get a 365d skip; without invalidation the WE reference would never run on them).
@@ -1169,8 +1170,11 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     args.push(`--outlet=${provId}`, '--provisional');
     provisional = true;
   }
+  let ingestOut = '';
   try {
-    execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
+    // Capture stdout: the child's `⚠️  Skipped: <reason>` line is the ONLY
+    // signal that separates a benign no-op from a data conflict (both exit 0).
+    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000 }) || '');
   } catch (e) {
     return { ok: false, reason: execErrorDetail(e, 100), provisional };
   }
@@ -1193,14 +1197,45 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     });
     if (landed) return { ok: true, reason: null, provisional };
   } catch { /* dir unreadable → fall through to not-landed */ }
-  // noop, not failed: ingest-review-from-url exits 0 for many PERMANENT skip
-  // classes (cross-show-url-owned, junk-outlet, domain-mismatch, no-changes —
-  // see review-file-writer's skip reasons). Counting these as failedIngest
-  // would fire the residual ::warning:: every hourly run forever — the exact
-  // chronic-alarm shape the priorRun exclusion below removes (ship-check
-  // 2026-08-06). They stay visible in ingestResults (ok:false) but are
-  // reported as no-ops, not failures.
-  return { ok: false, noop: true, reason: 'ingest no-op — exit 0 but no file with this URL landed in this show dir', provisional };
+  // Not landed. Split the two very different things that look identical here
+  // (both exit 0, both leave no file):
+  //
+  //   CONFLICT — another show owns this URL, or the outlet/domain disagree.
+  //     Exactly one side is wrong; retrying can never fix it and ignoring it
+  //     silently caps coverage forever. I'm Every Woman lost its Guardian,
+  //     Times and Standard reviews this way: they were filed under The Car Man,
+  //     so ownership vetoed every hourly attempt and the audit logged "no-op"
+  //     each time (2026-08-09). These MUST surface.
+  //   BENIGN — the desired end state already holds (no-changes), or the URL
+  //     legitimately isn't a review (junk-outlet). Counting these as failures
+  //     is what caused the chronic hourly alarm that ship-check 2026-08-06
+  //     silenced, so they stay quiet.
+  //
+  // Unknown reasons stay in the benign/no-op bucket (fail quiet, not loud) so a
+  // new skip string can't start paging the owner on its own — but it is still
+  // recorded, and the conflict census below counts it separately.
+  const skip = classifyIngestSkip(ingestOut);
+  if (skip.kind === 'conflict') {
+    return {
+      ok: false,
+      noop: true,
+      conflict: true,
+      conflictReason: skip.reason,
+      conflictDetail: skip.detail,
+      reason: describeConflict(showId, url, skip),
+      provisional,
+    };
+  }
+  return {
+    ok: false,
+    noop: true,
+    // An unrecognised skip reason is contract drift with review-file-writer.js,
+    // not a benign no-op — surfaced separately so a newly-added reason string
+    // announces itself instead of inheriting silence.
+    unclassified: skip.kind === 'unclassified' && !!skip.reason,
+    reason: `ingest no-op — exit 0 but no file with this URL landed in this show dir${skip.reason ? ` (${skip.reason})` : ''}`,
+    provisional,
+  };
 }
 
 // Residual-gap counts for one audited show (extracted for unit tests, §15).
@@ -1214,15 +1249,31 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 //   62 wrongProduction files printed "114 gap" forever).
 // - recovered heals subtract from flaggedOut but uncited-stub recoveries don't
 //   (ship-check 2026-07-23, Codex finding).
+// - conflictIngest is a SUBSET of noopIngest that is never benign: another show
+//   owns the URL, or outlet/domain disagree. Retrying cannot clear it, so
+//   unlike the chronic-alarm classes the 2026-08-06 ship-check silenced, it
+//   stays loud until someone resolves the underlying disagreement.
+//   NB: this does NOT change `uncollected` — that is computed separately from
+//   r.missing (see the checkpoint write below), and a conflicted URL is still
+//   in r.missing, so the coverage COUNT was always right. What was missing is
+//   WHY: every run read as "still waiting on a fetch" when the true state was
+//   "two shows claim this URL". conflictIngest exists to make that visible in
+//   `residual` and in the per-conflict ::error:: lines.
+// - unclassifiedIngest counts skip reasons in neither list — contract drift
+//   with review-file-writer.js. Counted and printed rather than silently
+//   folded into benign, because "unrecognised → quiet" is precisely the bug
+//   this whole split exists to remove.
 function computeResidualCounts(r, ingestMissing) {
   const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
   const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
+  const conflictIngest = (r.ingestResults || []).filter(x => x.conflict).length;
+  const unclassifiedIngest = (r.ingestResults || []).filter(x => x.unclassified).length;
   const capped = (r.ingestSkippedByCap || []).length;
   const uningested = ingestMissing ? 0 : (r.missing || []).filter(m => !m.priorRun).length;
   const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
   const flaggedOut = Math.max(0, (r.flaggedMisses || []).filter(m => !m.priorRun).length - recovered);
-  const residual = failedIngest + capped + uningested + flaggedOut;
-  return { residual, failedIngest, noopIngest, capped, uningested, flaggedOut, recovered };
+  const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest;
+  return { residual, failedIngest, noopIngest, conflictIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
 }
 
 // Persist aggUrlRecoveryCount onto the existing dir file. Called after a recovery
@@ -1637,8 +1688,24 @@ async function main(argv = process.argv.slice(2)) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
         perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
-        r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, noop: !!res.noop, reason: res.reason });
-        const tag = res.ok ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested') : `✗ ingest failed (${res.reason || 'unknown'})`;
+        // conflict/conflictReason MUST be carried through: computeResidualCounts
+        // and the ::error:: summary read this array, not `res`. Omitting them
+        // made the whole conflict signal dead code (ship-check 2026-08-09).
+        r.ingestResults.push({
+          url: m.url,
+          host: m.host,
+          outletId,
+          provisional: !!res.provisional,
+          ok: res.ok,
+          noop: !!res.noop,
+          conflict: !!res.conflict,
+          conflictReason: res.conflictReason || null,
+          unclassified: !!res.unclassified,
+          reason: res.reason,
+        });
+        const tag = res.ok
+          ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested')
+          : (res.conflict ? `⛔ CONFLICT (${res.conflictReason}) — ${res.reason}` : `✗ ingest failed (${res.reason || 'unknown'})`);
         console.log(`  ${tag}: ${m.url}`);
       }
       if (cappedSkipped.length > 0) {
@@ -2088,12 +2155,23 @@ async function main(argv = process.argv.slice(2)) {
   for (const r of results) {
     const counts = computeResidualCounts(r, ingestMissing);
     if (counts.residual > 0) {
-      residualShows.push({ showId: r.showId, title: r.title, ...counts });
+      const conflicts = (r.ingestResults || []).filter(x => x.conflict).map(x => x.reason);
+      residualShows.push({ showId: r.showId, title: r.title, ...counts, conflicts });
     }
   }
   if (residualShows.length > 0) {
     for (const s of residualShows) {
-      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered}${s.noopIngest ? ` noop=${s.noopIngest}` : ''})`);
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered}${s.noopIngest ? ` noop=${s.noopIngest}` : ''}${s.conflictIngest ? ` conflict=${s.conflictIngest}` : ''}${s.unclassifiedIngest ? ` unclassified=${s.unclassifiedIngest}` : ''})`);
+      if (s.unclassifiedIngest) {
+        console.log(`::warning::unclassified ingest skip on ${s.showId} — a review-file-writer skip reason is in neither CONFLICT_REASONS nor BENIGN_REASONS (scripts/lib/ingest-skip-classify.js). Classify it so it stops defaulting to quiet.`);
+      }
+      // Conflicts get their own ::error:: line naming the other side. A count
+      // buried in the residual tally is what let the I'm Every Woman / Car Man
+      // ownership conflict sit unresolved (2026-08-09) — the operator must be
+      // able to act straight from the log without re-deriving anything.
+      for (const c of (s.conflicts || [])) {
+        console.log(`::error::review conflict — ${c}`);
+      }
     }
     console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
   }

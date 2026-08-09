@@ -41,7 +41,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
-const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap } = require('./lib/outlet-canonicalize');
+const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
@@ -69,7 +69,10 @@ const forceClearStale = hasFlag('force-clear-stale-flag');
 // "new-york-notebook" -> "vulture" via a fuzzy New York Magazine match), which then
 // trips the domain-mismatch guard and drops the review. With --provisional the
 // caller has already derived a domain-safe slug and wants it written as-is.
-const provisional = hasFlag('provisional');
+// `let`, not const: the no---outlet branch below auto-derives a provisional id
+// for an unregistered domain and flips this on, so the write path stamps the
+// record as provisional exactly as an explicit --provisional call would.
+let provisional = hasFlag('provisional');
 
 if (!showId || !url) {
   console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run]');
@@ -179,8 +182,36 @@ function extractByline(html) {
     if (domain && !ambiguous.has(domain) && domainToOutlet[domain]) {
       outletId = domainToOutlet[domain];
       outletName = getOutletDisplayName(outletId) || outletId;
+    } else if (!ambiguous.has(domain)) {
+      // Unregistered domain — derive a provisional outlet instead of bailing.
+      // Scope note (corrected after review, 2026-08-09): the gap audit does NOT
+      // reach this branch — it always passes --outlet=<provId> --provisional
+      // itself (audit-show-review-gap.js ingestMissingUrl). This branch serves
+      // the callers that DON'T pre-resolve an outlet: /submit-review and manual
+      // CLI runs, which previously exited 1 and dropped the review entirely.
+      // Owner rule 2026-08-09: "1minutecritic is a real theater review site.
+      // The others probably are too. All should be collected. We tier weight
+      // them so you don't get to omit them just because they're hard." Tier
+      // weighting is the correct defence against a low-quality outlet;
+      // refusing to collect it is not.
+      // Ambiguous domains still bail: a shared host (multi-outlet CMS) would
+      // attach the review to a guessed outlet, which is a misattribution, not a
+      // coverage win.
+      const provisionalId = provisionalOutletIdFromHost(domain);
+      if (!provisionalId) {
+        console.error(`Could not resolve or derive an outlet from URL ${url} (domain="${domain}"). Pass --outlet=ID explicitly.`);
+        process.exit(1);
+      }
+      outletId = provisionalId;
+      outletName = provisionalId
+        .split('-')
+        .filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      provisional = true;
+      console.warn(`⚠️  provisional outlet "${outletId}" auto-derived from ${domain} (not in registry) — onboard to outlet-registry.json after review.`);
     } else {
-      console.error(`Could not resolve outlet from URL ${url} (domain="${domain}"). Pass --outlet=ID explicitly.`);
+      console.error(`Could not resolve outlet from URL ${url} (domain="${domain}" is ambiguous — shared by multiple registered outlets). Pass --outlet=ID explicitly.`);
       process.exit(1);
     }
   }
