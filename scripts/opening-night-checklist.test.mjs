@@ -34,6 +34,10 @@ const criticsTakePresent = require('./lib/opening-night-checks/critics-take-pres
 const unparsedRatings = require('./lib/opening-night-checks/unparsed-explicit-ratings.check.js');
 const scoreJump = require('./lib/opening-night-checks/unexplained-score-jump.check.js');
 const bwwRrCountMismatch = require('./lib/opening-night-checks/bww-rr-count-mismatch.check.js');
+const t1OutletsScored = require('./lib/opening-night-checks/t1-outlets-scored.check.js');
+const emptyCast = require('./lib/opening-night-checks/empty-cast.check.js');
+const staleUpcomingTag = require('./lib/opening-night-checks/stale-upcoming-tag.check.js');
+const reviewCountMatch = require('./lib/opening-night-checks/review-count-match.check.js');
 const { loadChecks } = require('./lib/opening-night-checks/index.js');
 const {
   collectRemediations,
@@ -301,6 +305,85 @@ describe('catch 6: unexplained score jump', () => {
     const [action] = collectRemediations(asShowResults(result, 'unexplained-score-jump'));
     assert.equal(action.kind, 'alert');
     assert.ok(action.conditionKey.includes(SHOW_ID));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Catches 7-9 (task #1132) — the four checks task #389 left print-only
+// ---------------------------------------------------------------------------
+describe('catch 7: T1 outlets missing or unscored', () => {
+  // openingDate is a few days before makeContext()'s default `now` — past the
+  // 24h grace window the check gives critics before flagging missing T1s.
+  const show = { id: SHOW_ID, title: 'The 2026-04-15 Show', compositeScore: 74, openingDate: '2026-04-10' };
+
+  it('dispatches gather-reviews.yml scoped to the show when T1 outlets are missing', () => {
+    const result = t1OutletsScored.run(show, makeContext({ reviewsDoc: {} }));
+    assert.equal(result.ok, false);
+    const actions = collectRemediations(asShowResults(result, 't1-outlets-scored'));
+    const dispatch = actions.find(a => a.workflow === 'gather-reviews.yml');
+    assert.ok(dispatch, 'missing T1 outlets must queue gather-reviews.yml');
+    assert.deepEqual(dispatch.inputs, { shows: SHOW_ID });
+  });
+
+  it('dispatches collect-review-texts.yml scoped to the show when T1 reviews are unscored', () => {
+    const context = makeContext({
+      reviewsDoc: {
+        [SHOW_ID]: [
+          { outletId: 'nytimes', url: 'https://nytimes.com/r1', compositeScore: null, assignedScore: null },
+          { outletId: 'vulture', url: 'https://vulture.com/r2', compositeScore: 80 },
+          { outletId: 'variety', url: 'https://variety.com/r3', compositeScore: 70 },
+        ],
+      },
+    });
+    const result = t1OutletsScored.run(show, context);
+    assert.equal(result.ok, false);
+    const actions = collectRemediations(asShowResults(result, 't1-outlets-scored'));
+    const dispatch = actions.find(a => a.workflow === 'collect-review-texts.yml');
+    assert.ok(dispatch, 'unscored T1 review must queue collect-review-texts.yml');
+    assert.deepEqual(dispatch.inputs, { show_filter: SHOW_ID });
+  });
+});
+
+describe('catch 8: empty cast at opening', () => {
+  const show = { id: SHOW_ID, title: 'The 2026-04-15 Show', status: 'open', cast: [] };
+
+  it('dispatches backfill-cast.yml scoped to the show', () => {
+    const result = emptyCast.run(show, makeContext());
+    assert.equal(result.ok, false);
+    const [action] = collectRemediations(asShowResults(result, 'empty-cast'));
+    assert.equal(action.kind, 'workflow');
+    assert.equal(action.workflow, 'backfill-cast.yml');
+    assert.deepEqual(action.inputs, { show_filter: SHOW_ID, force: 'true' });
+  });
+});
+
+describe('catch 9: stale upcoming tag', () => {
+  const show = { id: SHOW_ID, title: 'The 2026-04-15 Show', status: 'open', tags: ['upcoming', 'musical'] };
+
+  it('routes to the digest instead of mutating shows.json (kind:alert, no workflow)', () => {
+    const result = staleUpcomingTag.run(show, makeContext());
+    assert.equal(result.ok, false);
+    const [action] = collectRemediations(asShowResults(result, 'stale-upcoming-tag'));
+    assert.equal(action.kind, 'alert');
+    assert.equal(action.workflow, undefined, 'a tag fix must not auto-write shows.json');
+    assert.ok(action.conditionKey.includes(SHOW_ID));
+  });
+});
+
+describe('review-count-match stays print-only on purpose', () => {
+  it('emits no details.remediation — a per-file reason is not an automatable decision', () => {
+    const show = { id: SHOW_ID, title: 'The 2026-04-15 Show' };
+    // reviewTextsRoot/show.id must resolve to a dir with more local files than
+    // reviews.json has entries, so the check actually fires (gap > 0).
+    const scopedRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'on-review-count-root-'));
+    fs.mkdirSync(path.join(scopedRoot, SHOW_ID));
+    fs.writeFileSync(path.join(scopedRoot, SHOW_ID, 'outlet--critic.json'), '{}');
+    const result = reviewCountMatch.run(show, makeContext({ reviewTextsRoot: scopedRoot, reviewsDoc: {} }));
+    assert.equal(result.ok, false);
+    assert.equal(result.details.remediation, undefined);
+    const actions = collectRemediations(asShowResults(result, 'review-count-match'));
+    assert.equal(actions.length, 0);
+    fs.rmSync(scopedRoot, { recursive: true, force: true });
   });
 });
 

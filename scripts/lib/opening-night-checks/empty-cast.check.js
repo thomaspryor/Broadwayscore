@@ -27,7 +27,18 @@ function run(show, context) {
     ok: false,
     severity: 'warning',
     message: `cast is empty for ${show.id} — source from review JSON-LD or a major review body; Broadway shows can also try: node scripts/backfill-cast.js --show-filter=${show.id} --force`,
-    details: { showId: show.id },
+    details: {
+      showId: show.id,
+      // Self-declared remediation (task #1132, extending #389). backfill-cast.yml
+      // already exposes show_filter + force for exactly this single-show case.
+      remediation: {
+        kind: 'workflow',
+        key: `empty-cast:${show.id}`,
+        workflow: 'backfill-cast.yml',
+        inputs: { show_filter: show.id, force: 'true' },
+        reason: 'cast is empty at/near opening',
+      },
+    },
   };
 }
 
