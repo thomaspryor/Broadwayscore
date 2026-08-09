@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-09T19:42:57.799Z",
+  "detectedAt": "2026-08-09T20:10:32.680Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -20,20 +20,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "london-box-office--stuart-king.json",
-      "outletId": "london-box-office",
-      "criticName": "Stuart King",
-      "url": "https://www.londonboxoffice.co.uk/news/post/cats-regents-park-open-air-theatre-review",
-      "fullTextLen": 5452,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
       "criticName": "Unknown",
@@ -48,8 +34,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-08-09T19:42:57.799Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
