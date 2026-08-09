@@ -133,7 +133,12 @@
     "bus-stop-1996/broadwayworld--unknown.json",
     "jellys-last-jam-1992/theatermania--unknown.json",
     "jellys-last-jam-1992/broadwayworld--unknown.json",
-    "jellys-last-jam-1992/culturesauce--unknown.json"
+    "jellys-last-jam-1992/culturesauce--unknown.json",
+    "deathtrap-1978/broadwayworld--unknown.json",
+    "deathtrap-1978/metrmag--unknown.json",
+    "deathtrap-1978/whatsonstage--unknown.json",
+    "pacific-overtures-1976/musical-theatre-review--unknown.json",
+    "pacific-overtures-1976/theater-mirror--unknown.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -1047,7 +1052,12 @@
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "frozen-2004/nytimes--unknown.json",
     "noises-off-2001/nytimes--ben-brantley.json",
-    "mamma-mia-2001/thestage--unknown.json"
+    "mamma-mia-2001/thestage--unknown.json",
+    "jellys-last-jam-1992/playbill--unknown.json",
+    "all-my-sons-1987/city-cabaret--elizabeth-ahlfors.json",
+    "talleys-folly-1980/broadwayworld--unknown.json",
+    "deathtrap-1978/thestage--unknown.json",
+    "pacific-overtures-1976/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1131,7 +1141,11 @@
       "mamma-mia-2001/whatsonstage--unknown.json",
       "stones-in-his-pockets-2001/playbill--unknown.json",
       "jellys-last-jam-1992/theatermania--unknown.json",
-      "jellys-last-jam-1992/culturesauce--unknown.json"
+      "jellys-last-jam-1992/culturesauce--unknown.json",
+      "deathtrap-1978/metrmag--unknown.json",
+      "deathtrap-1978/whatsonstage--unknown.json",
+      "pacific-overtures-1976/musical-theatre-review--unknown.json",
+      "pacific-overtures-1976/theater-mirror--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1172,7 +1186,8 @@
       "pal-joey-2008/broadwayworld--unknown.json",
       "julius-caesar-2005/newsday--unknown.json",
       "julius-caesar-2005/plays-to-see--unknown.json",
-      "jellys-last-jam-1992/broadwayworld--unknown.json"
+      "jellys-last-jam-1992/broadwayworld--unknown.json",
+      "deathtrap-1978/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
@@ -1208,7 +1223,7 @@
     ]
   },
   "startTime": "2026-08-08T17:54:18.932Z",
-  "lastProcessed": "jellys-last-jam-1992/culturesauce--unknown.json",
+  "lastProcessed": "pacific-overtures-1976/theater-mirror--unknown.json",
   "log": [
     {
       "t": "2026-08-08T23:00:19.083Z",
@@ -1265,6 +1280,28 @@
       "t": "2026-08-09T06:18:49.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-09T06:28:59.417Z",
+      "event": "bb-session",
+      "session": "f9a4db0c",
+      "url": "https://a.talkinbroadway.com/page/world/PacificOvertures2004.html"
+    },
+    {
+      "t": "2026-08-09T06:29:00.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-08-09T06:29:16.322Z",
+      "event": "bb-session",
+      "session": "cbddd0cd",
+      "url": "https://a.talkinbroadway.com/page/world/PacificOvertures2004.html"
+    },
+    {
+      "t": "2026-08-09T06:29:17.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
