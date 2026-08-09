@@ -20,5 +20,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-09T10:26:51.775Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-isla-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on ISLA",
+    "description": "isla-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=isla-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-09T10:55:00.197Z"
   }
 ]
