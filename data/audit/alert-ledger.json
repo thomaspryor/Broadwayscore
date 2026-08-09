@@ -223,22 +223,22 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-09T17:27:59.649Z",
+      "lastSeen": "2026-08-09T18:23:00.441Z",
       "lastNotifiedAt": "2026-08-09T02:55:34.053Z",
       "notifyCount": 11,
       "cardId": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-09T17:27:59.713Z",
+      "lastSeen": "2026-08-09T18:23:00.509Z",
       "lastNotifiedAt": "2026-08-09T14:39:39.237Z",
       "notifyCount": 13,
       "cardId": null,
-      "silentRefires": 7
+      "silentRefires": 9
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -385,10 +385,11 @@
       "requestedDisposition": "human",
       "title": "Review-gap audit refused to write — 9.1% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
-      "lastSeen": "2026-08-09T17:27:49.938Z",
+      "lastSeen": "2026-08-09T18:22:48.902Z",
       "lastNotifiedAt": "2026-08-09T17:27:49.938Z",
       "notifyCount": 9,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "open",
@@ -595,32 +596,33 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on ISLA",
       "firstSeen": "2026-08-09T10:55:00.197Z",
-      "lastSeen": "2026-08-09T17:50:29.300Z",
+      "lastSeen": "2026-08-09T19:04:23.288Z",
       "lastNotifiedAt": "2026-08-09T10:55:00.197Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-remediation-exhausted-critic-consensus:death-note-the-musical-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
       "firstSeen": "2026-08-09T14:04:51.028Z",
-      "lastSeen": "2026-08-09T17:50:29.298Z",
+      "lastSeen": "2026-08-09T19:04:23.287Z",
       "lastNotifiedAt": "2026-08-09T14:04:51.028Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-empty-cast:isla-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on isla-off-broadway-2026",
       "firstSeen": "2026-08-09T17:50:29.299Z",
-      "lastSeen": "2026-08-09T17:50:29.299Z",
+      "lastSeen": "2026-08-09T19:04:23.287Z",
       "lastNotifiedAt": "2026-08-09T17:50:29.299Z",
       "notifyCount": 1,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     }
   }
 }

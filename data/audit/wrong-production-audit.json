@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-09T16:28:53.164Z",
+  "timestamp": "2026-08-09T18:29:06.337Z",
   "stats": {
-    "totalReviews": 41945,
-    "alreadyFlagged": 18235,
-    "dateGuardCatches": 139,
+    "totalReviews": 41947,
+    "alreadyFlagged": 18234,
+    "dateGuardCatches": 140,
     "directorMismatch": 963,
     "tvFilmSignals": 1163,
-    "londonSignals": 836,
+    "londonSignals": 837,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3528
+    "noPublishDate": 3529
   },
   "findings": [
     {
@@ -24865,6 +24865,24 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "lovelondonloveculture--emma.json",
+      "publishDate": "2025-05-21",
+      "url": "https://lovelondonloveculture.com/2025/05/21/review-the-comedy-about-spies-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 437d before show (2025-05-21 vs 2026-08-01)"
         },
         {
           "type": "LONDON_SIGNAL",
