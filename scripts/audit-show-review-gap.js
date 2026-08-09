@@ -53,7 +53,11 @@ const { execSync, execFileSync } = require('child_process');
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
 const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
-const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
+const {
+  provisionalOutletIdFromHost,
+  sameOutletUrlVariant,
+  _buildDomainMap,
+} = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
@@ -665,6 +669,11 @@ async function auditShow(show, opts = {}) {
     // digest instead of silently shrinking the candidate set. A junk-harvest
     // regression shows up here as a spike, not as phantom "missing reviews".
     candidatesRejected: { count: 0, byReason: {} },
+    // Candidates suppressed because the SAME outlet's review is already held
+    // for this show under another registered host (The Pass / one-minute-critic
+    // Substack move, 2026-08-03). Recorded, never silently dropped — same rule
+    // as candidatesRejected above.
+    dedupedVariants: [],
   };
   const rejStartCount = candidateRejections.count;
   const rejStartByReason = { ...candidateRejections.byReason };
@@ -918,6 +927,17 @@ async function auditShow(show, opts = {}) {
   const reviewsJson = loadReviews();
   result.inReviewsJson = reviewsJson.filter(r => r.showId === show.id).length;
 
+  // URLs of files we already hold AND count as covered for this show. Used by
+  // the alias-variant check below; deliberately covered-only, so a flagged or
+  // excluded file can never vouch for a candidate.
+  const coveredUrls = dirData.filter(d => d.url && isCoveredFile(d, show)).map(d => d.url);
+  // Registry host -> outletId, plus the set of hosts 2+ outlets claim. The
+  // ambiguous set is why this uses outlet-canonicalize's map and not the
+  // audit's own getKnownDomainMap(), which resolves a contested host to one
+  // arbitrary outlet (last writer wins) — good enough for labelling a gap,
+  // not good enough for HIDING one.
+  const { domainToOutlet: aliasOutletMap, ambiguous: ambiguousHosts } = _buildDomainMap();
+
   // For each aggregator-listed URL: is it covered locally?
   const knownDomains = getKnownDomainMap();
   for (const aggUrl of aggUrls) {
@@ -935,6 +955,30 @@ async function auditShow(show, opts = {}) {
       ? exactMatches
       : dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok);
     if (dirFiles.length === 0) {
+      // Before calling it missing: is this the SAME outlet's review we already
+      // hold, published on another host that outlet has registered? The Pass
+      // (2026-08-03) was reported as missing a one-minute-critic review we held
+      // the whole time — the census found the Substack mirror
+      // (1minutecritic.substack.com/p/…) while the file carried the .com URL,
+      // and the two paths don't match so no URL-level dedupe could see it. That
+      // phantom gap helped get the show deleted from the newsletter.
+      const variant = sameOutletUrlVariant({
+        candidateUrl: aggUrl,
+        heldUrls: coveredUrls,
+        domainToOutlet: aliasOutletMap,
+        ambiguous: ambiguousHosts,
+        hostOf,
+      });
+      if (variant.dup) {
+        // Recorded, never silently dropped — same rule as candidatesRejected:
+        // a filter that shrinks the candidate set invisibly is how a real gap
+        // would eventually hide behind this one.
+        result.dedupedVariants.push({
+          url: aggUrl, host: aggHost, matchedUrl: variant.matchedUrl,
+          outletId: variant.outletId, reason: variant.reason,
+        });
+        continue;
+      }
       result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
     } else {
       const clean = dirFiles.filter(d => isCoveredFile(d, show));
