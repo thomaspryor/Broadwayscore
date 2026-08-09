@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
+const { MIRROR_FMT, mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
 
@@ -61,8 +61,8 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
     { id: 'same', status: 'In progress' },
   ];
   const map = {
-    moved: { taskId: '2', syncedStatus: 'Not started', fmt: 2 },
-    same: { taskId: '3', syncedStatus: 'In progress', fmt: 2 },
+    moved: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT },
+    same: { taskId: '3', syncedStatus: 'In progress', fmt: MIRROR_FMT },
   };
   const plan = planPull(cards, map);
   assert.deepEqual(plan.toCreate.map(x => x.card.id), ['new']);
@@ -72,11 +72,23 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
 
 test('planPull is idempotent: re-running with a fully-synced map is a no-op', () => {
   const cards = [{ id: 'a', status: 'In progress' }, { id: 'b', status: 'Not started' }];
-  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: 2 }, b: { taskId: '2', syncedStatus: 'Not started', fmt: 2 } };
+  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: MIRROR_FMT }, b: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT } };
   const plan = planPull(cards, map);
   assert.equal(plan.toCreate.length, 0);
   assert.equal(plan.toUpdate.length, 0);
   assert.deepEqual(plan.unchanged.sort(), ['a', 'b']);
+});
+
+// Bumping MIRROR_FMT is the ONLY thing that makes a mapCardToTask change reach
+// cards that are already mirrored — planPull otherwise re-maps only on a Notion
+// status change, so the #1154 truncation fix would have been a no-op for every
+// existing long-notes owner-judgment card (ship-check catch).
+test('#1154: an old-fmt mirror is rewritten even when its status is unchanged', () => {
+  assert.ok(MIRROR_FMT > 2, 'MIRROR_FMT must be bumped past 2 for the #1154 rewrite to fire');
+  const cards = [{ id: 'old', status: 'In progress' }];
+  const plan = planPull(cards, { old: { taskId: '5', syncedStatus: 'In progress', fmt: 2 } });
+  assert.deepEqual(plan.toUpdate.map(x => x.taskId), ['5']);
+  assert.equal(plan.unchanged.length, 0);
 });
 
 test('allocateFreeId skips ids a live session already occupies', () => {
@@ -122,10 +134,10 @@ test('mapCardToTask mirrors category as third meta segment', () => {
   assert.match(t2.description.split('\n')[0], /· no-category$/);
 });
 
-test('planPull upgrades pre-fmt2 entries even when status unchanged', () => {
+test('planPull upgrades stale-fmt entries even when status unchanged', () => {
   const cards = [{ id: 'a', status: 'Not started', category: 'Product' }];
-  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };          // no fmt
-  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: 2 } };
+  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };                   // no fmt
+  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: MIRROR_FMT } };  // current
   assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
   assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
 });

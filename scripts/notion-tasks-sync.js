@@ -31,6 +31,14 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 
+// Mirror-description format version. Bump whenever mapCardToTask starts
+// emitting something a previously-synced task is missing — planPull uses it to
+// force a one-time rewrite of every existing mirror, which is the ONLY way a
+// change to the description reaches cards whose Notion status never changes
+// again. 2 = category meta segment. 3 = owner-judgment marker survives the
+// 400-char truncation (task #1154).
+const MIRROR_FMT = 3;
+
 const USAGE = `notion-tasks-sync.js — bridge the Notion "brain" backlog to Claude Code's.
 
 Usage:
@@ -120,7 +128,13 @@ function planPull(cards, existingMap) {
     if (!entry) { plan.toCreate.push({ card }); continue; }
     // fmt 2 = description carries the category segment; older mirrors get
     // rewritten once so bsc-next's category filter sees every task.
-    if (entry.syncedStatus !== card.status || entry.fmt !== 2) {
+    // fmt 3 (task #1154) = description re-attaches a "VERIFY: owner-judgment"
+    // line that the 400-char truncation dropped. Bumping the number is what
+    // makes the fix reach cards that are ALREADY mirrored: without it this
+    // branch only re-runs mapCardToTask when a card's Notion status changes,
+    // so every existing long-notes owner-judgment card would have stayed
+    // wrongly dispatchable indefinitely (ship-check catch).
+    if (entry.syncedStatus !== card.status || entry.fmt !== MIRROR_FMT) {
       plan.toUpdate.push({ card, taskId: entry.taskId });
     } else {
       plan.unchanged.push(card.id);
@@ -339,7 +353,7 @@ function cmdPull(args) {
       id = dry ? id : allocateFreeId(dir, id);
       const task = mapCardToTask(card, id);
       if (!dry) writeTask(dir, task);
-      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: 2 };
+      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
       created.push({ taskId: task.id, name: card.name });
       id++;
     };
@@ -354,7 +368,7 @@ function cmdPull(args) {
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
       map[card.id].name = card.name;
-      map[card.id].fmt = 2;
+      map[card.id].fmt = MIRROR_FMT;
       updated.push({ taskId, name: card.name });
     }
     if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
@@ -442,4 +456,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock };
