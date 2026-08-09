@@ -1398,6 +1398,11 @@ on:
       # colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/newsletter-preflight.js'
       - 'scripts/lib/newsletter-preflight.test.mjs'
+      # Structural guard: every spawn of generate.mjs must pin NEWSLETTER_EDITION.
+      # Lives outside scripts/newsletter/** so it needs its own path entries;
+      # colocated test runs in the scripts/lib/*.test.mjs glob step.
+      - 'scripts/lib/newsletter-regen-guard.js'
+      - 'scripts/lib/newsletter-regen-guard.test.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter

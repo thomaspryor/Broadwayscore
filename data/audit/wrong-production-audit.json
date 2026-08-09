@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-09T09:52:07.145Z",
+  "timestamp": "2026-08-09T11:28:44.550Z",
   "stats": {
-    "totalReviews": 41931,
-    "alreadyFlagged": 18226,
+    "totalReviews": 41939,
+    "alreadyFlagged": 18231,
     "dateGuardCatches": 140,
     "directorMismatch": 963,
-    "tvFilmSignals": 1162,
-    "londonSignals": 835,
+    "tvFilmSignals": 1163,
+    "londonSignals": 836,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3529
@@ -4618,6 +4618,19 @@
     {
       "showId": "cats-west-end-2026",
       "file": "daily-mail--deborah-ross.json",
+      "publishDate": "2026-08-08",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "daily-mail--unknown.json",
       "publishDate": "2026-08-08",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
       "findings": [
@@ -33520,6 +33533,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "theatrecat--libby-purves.json",
+      "score": 91,
+      "publishDate": "2026-08-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

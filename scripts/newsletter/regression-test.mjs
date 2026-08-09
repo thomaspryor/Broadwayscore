@@ -19,8 +19,10 @@
 // Exit codes: 0 pass · 1 baseline mismatch · 2 missing fixture / I/O failure.
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -38,23 +40,64 @@ if (!fs.existsSync(fixturePath)) {
 
 const baseline = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 
-// Re-run the generator. Its stderr/stdout are noisy; we just need the meta.
-// Honor NEWSLETTER_OUT_DIR so the test works in CI (workspace) and locally
-// (~/Documents/claude-outputs/newsletter-mocks).
+// The draft this run is checking. Honor NEWSLETTER_OUT_DIR so the test works in
+// CI (workspace) and locally (~/Documents/claude-outputs/newsletter-mocks).
 const outDir = process.env.NEWSLETTER_OUT_DIR
   || path.join(process.env.HOME || '', 'Documents/claude-outputs/newsletter-mocks');
-const metaPath = path.join(outDir, `A-${weekStart}.meta.json`);
+const draftMetaPath = path.join(outDir, `A-${weekStart}.meta.json`);
 
-execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
-  cwd: repoRoot,
-  stdio: ['ignore', 'pipe', 'inherit'],
-});
+// Re-run the generator INTO A THROWAWAY DIRECTORY, never over the real draft.
+//
+// This step runs AFTER pre-send-check.mjs in newsletter-draft.yml, and
+// pre-send-check may have regenerated the draft with NEWSLETTER_EXCLUDE_SHOWS +
+// an editorial lead to apply a coverage swap — env only IT sets, which this
+// process cannot reconstruct. A regeneration in place therefore silently undid
+// the swap: the gapped opening came back, its banner disappeared, and the
+// `|| echo ::warning::` wrapper in the workflow swallowed any complaint, so the
+// owner's preview and the Resend draft carried content the gates had already
+// rejected. (Latent until now only because a first-run week has no fixture and
+// this script exits before the spawn.) Writing elsewhere removes the whole
+// class — the finished draft is read-only from here on — and makes the env
+// threading the workflow does for this step belt-and-braces rather than
+// load-bearing.
+//
+// The edition is still pinned, so the comparison meta is the same edition as
+// the draft. Anchor order is deliberately NOT "fixture first": fixtures are
+// keyed by WEEK, not edition (one <weekStart>.meta.json for both), and the
+// documented re-baseline copies a generated meta straight in — so once anyone
+// re-baselines from a Broadway run, a fixture-first pin would make that week's
+// West End run compare against Broadway output.
+const cjsRequire = createRequire(import.meta.url);
+const { resolveNewsletterEdition } = cjsRequire(path.join(repoRoot, 'scripts/lib/email-templates.js'));
+let draftEditionOnDisk = null;
+try { draftEditionOnDisk = JSON.parse(fs.readFileSync(draftMetaPath, 'utf8')).edition || null; } catch { /* no draft yet — fall through */ }
+const pinnedEdition = draftEditionOnDisk
+  || (process.env.NEWSLETTER_EDITION ? resolveNewsletterEdition(process.env.NEWSLETTER_EDITION) : 'broadway');
 
-if (!fs.existsSync(metaPath)) {
-  console.error(`Generator did not produce ${metaPath}`);
-  process.exit(2);
+const scratchDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-regression-'));
+const metaPath = path.join(scratchDir, `A-${weekStart}.meta.json`);
+
+const cleanup = () => { try { fs.rmSync(scratchDir, { recursive: true, force: true }); } catch { /* no-op */ } };
+
+let current;
+try {
+  execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
+    cwd: repoRoot,
+    env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir },
+    stdio: ['ignore', 'pipe', 'inherit'],
+  });
+  if (!fs.existsSync(metaPath)) {
+    console.error(`Generator did not produce ${metaPath}`);
+    cleanup();
+    process.exit(2);
+  }
+  current = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+} finally {
+  // Delete inline, as soon as the meta is in memory. An exit-event handler
+  // would not run on SIGINT/SIGTERM — the way a cancelled Saturday workflow
+  // actually dies — and would leave /tmp/newsletter-regression-* behind.
+  cleanup();
 }
-const current = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 
 const failures = [];
 
@@ -100,5 +143,7 @@ if (failures.length === 0) {
 console.error(`✗ newsletter regression FAILED for week ${weekStart}:`);
 for (const f of failures) console.error(`  - ${f}`);
 console.error(`\nIf the change was intentional, re-baseline with:`);
-console.error(`  cp ${metaPath} ${fixturePath}`);
+// Re-baseline from the REAL draft, not the throwaway comparison copy — the
+// scratch dir is deleted when this process exits.
+console.error(`  cp ${draftMetaPath} ${fixturePath}`);
 process.exit(1);
