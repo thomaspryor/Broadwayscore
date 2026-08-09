@@ -2,9 +2,37 @@
   "version": 1,
   "showId": "cats-west-end-2026",
   "openingDate": "2026-08-06",
-  "detectedAt": "2026-08-09T18:58:05.638Z",
+  "detectedAt": "2026-08-09T19:42:57.799Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "independent--alice-saville.json",
+      "outletId": "independent",
+      "criticName": "Alice Saville",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
+      "fullTextLen": 0,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
+    },
+    {
+      "file": "london-box-office--stuart-king.json",
+      "outletId": "london-box-office",
+      "criticName": "Stuart King",
+      "url": "https://www.londonboxoffice.co.uk/news/post/cats-regents-park-open-air-theatre-review",
+      "fullTextLen": 5452,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "radio-times--unknown.json",
       "outletId": "radio-times",
@@ -20,8 +48,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 3,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-08-09T19:42:57.799Z"
 }
