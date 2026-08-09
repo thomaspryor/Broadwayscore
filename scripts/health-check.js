@@ -2511,7 +2511,13 @@ function feedbackBacklogResults(feedbackSummary, now = new Date()) {
 // merge-worktree-to-main.sh already refuses to run under.
 function diskSpaceResults(free, total) {
   const NAME = 'Infra: disk space';
-  if (!Number.isFinite(free) || free <= 0) {
+  // UNPARSEABLE and ZERO must not share a branch (code-review finding, 2026-08-09).
+  // Folding `free <= 0` in here meant a volume so full that `df -h` rounds Avail
+  // to 0 — precisely the incident this row exists for — reported as a parse-failure
+  // WARN instead of an ERROR. Only a non-finite reading is a parse failure; 0 is a
+  // real, and maximally bad, measurement. Negative is impossible from df, so treat
+  // it as unparseable.
+  if (!Number.isFinite(free) || free < 0) {
     return [{
       name: NAME,
       status: 'warn',
@@ -2546,12 +2552,18 @@ function readDiskSpace(dfOutput) {
   const line = String(dfOutput || '').trim().split('\n').pop() || '';
   const cols = line.split(/\s+/);
   const toGB = (v) => {
-    const m = /^([\d.]+)([KMGTPi]*)$/.exec(v || '');
+    const m = /^([\d.]+)([BKMGTPi]*)$/.exec(v || '');
     if (!m) return NaN;
     const n = parseFloat(m[1]);
     const unit = m[2].replace(/i$/, '');
-    const mult = { K: 1 / 1024 / 1024, M: 1 / 1024, G: 1, T: 1024, P: 1024 * 1024 }[unit];
-    return mult ? Math.round(n * mult) : NaN;
+    // 'B' (bytes) is included because a genuinely full volume prints Avail as
+    // "0B" / "0Bi" — dropping it would send the worst possible reading down the
+    // unparseable path (code-review finding, 2026-08-09). A bare number stays
+    // NaN on purpose: this parser is only ever fed `df -h`, which always emits a
+    // suffix, so a unitless value means the output is not what we think it is and
+    // guessing the unit would risk reporting a full disk as healthy.
+    const mult = { B: 1 / 1024 / 1024 / 1024, K: 1 / 1024 / 1024, M: 1 / 1024, G: 1, T: 1024, P: 1024 * 1024 }[unit];
+    return mult === undefined ? NaN : Math.round(n * mult);
   };
   // df -h layout: Filesystem Size Used Avail Capacity ... Mounted
   return { total: toGB(cols[1]), free: toGB(cols[3]) };
