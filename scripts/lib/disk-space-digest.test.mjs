@@ -49,11 +49,44 @@ test('boundaries are exact: 10 warns, just under 10 errors', () => {
 test('an unreadable reading warns instead of silently passing', () => {
   // The failure that started all this was a check that could not speak. A parse
   // failure must never look like a healthy disk.
-  for (const bad of [NaN, 0, -1, undefined, null]) {
+  for (const bad of [NaN, -1, undefined, null]) {
     const [r] = diskSpaceResults(bad, 460);
     assert.equal(r.status, 'warn', `${bad} must not read as ok`);
     assert.match(r.message, /Could not read/);
   }
+});
+
+test('ZERO free is an ERROR, not a parse failure (code-review finding)', () => {
+  // The first cut folded `free <= 0` in with unparseable output, so a volume so
+  // full that df rounds Avail to 0 — the exact incident this row exists for —
+  // would have reported as a WARN saying it could not read the disk. Zero is a
+  // real measurement, and the worst one.
+  const [r] = diskSpaceResults(0, 460);
+  assert.equal(r.status, 'error');
+  assert.doesNotMatch(r.message, /Could not read/);
+  assert.match(r.message, /0GB free/);
+});
+
+test('df printing Avail in bytes still parses and errors', () => {
+  // A full volume prints "0B" / "0Bi"; without a B multiplier that fell through
+  // to NaN and became "Could not read" — the same swallowing, one layer down.
+  const full = [
+    'Filesystem      Size  Used Avail Capacity iused ifree %iused  Mounted on',
+    '/dev/disk3s5   460Gi  460Gi     0Bi   100%    6.9M   21M   25%   /System/Volumes/Data',
+  ].join('\n');
+  const { free, total } = readDiskSpace(full);
+  assert.equal(free, 0);
+  assert.equal(total, 460);
+  assert.equal(diskSpaceResults(free, total)[0].status, 'error');
+});
+
+test('a unitless Avail stays unparseable rather than being guessed', () => {
+  // Deliberate: this parser is only fed `df -h`, which always emits a suffix. A
+  // bare number means the output is not what we think it is, and guessing the
+  // unit could report a full disk as healthy.
+  const { free } = readDiskSpace('Filesystem Size Used Avail Capacity\n/dev/x 460 400 60 88%');
+  assert.ok(Number.isNaN(free));
+  assert.equal(diskSpaceResults(free, NaN)[0].status, 'warn');
 });
 
 test('readDiskSpace parses the real df -h output from this machine', () => {
