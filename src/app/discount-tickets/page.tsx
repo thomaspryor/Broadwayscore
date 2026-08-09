@@ -128,7 +128,7 @@ export default function DiscountTicketsPage() {
       instructions: data.standingRoom.instructions || null,
     } : null;
 
-    rows.push({ slug: show.slug, title: show.title, score: show.criticScore?.score ?? null, lottery, rush, sro });
+    rows.push({ id: show.id, slug: show.slug, title: show.title, score: show.criticScore?.score ?? null, lottery, rush, sro });
   }
 
   rows.sort((a, b) => (b.score ?? -Infinity) - (a.score ?? -Infinity));
