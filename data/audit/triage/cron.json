@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-08-09T11:41:21.068Z",
+  "lastChecked": "2026-08-09T11:54:47.723Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -23,8 +23,8 @@
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -75,6 +75,11 @@
       "name": "Cron: Update Social Pulse",
       "status": "pass",
       "message": "6d ago, success"
+    },
+    {
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "0h ago, success"
     }
   ]
 }

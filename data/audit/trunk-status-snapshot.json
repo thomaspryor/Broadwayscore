@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-08-09T11:41:38.882Z",
+  "generatedAt": "2026-08-09T11:55:04.392Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "917ace9a8b337b378379052839e6b0800dc2117c",
+  "latestRunHeadSha": "a37885035cfb5b041662874be3d83f61c9bac706",
   "state": "RED",
-  "consecutiveFailures": 11,
+  "consecutiveFailures": 13,
   "redSince": "2026-08-08T06:55:52Z",
-  "redForHours": 28.763022777777778,
+  "redForHours": 28.986775555555557,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-07T13:35:39Z",
-  "latestFailedRunId": "31310252818",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31310252818",
-  "decidedRuns": 88,
+  "latestFailedRunId": "31311363212",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31311363212",
+  "decidedRuns": 89,
   "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
     {
       "name": "Data Validation",
       "steps": [
         "Run data validation",
         "Validate review-text files"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
       ]
     },
     {
@@ -41,5 +41,5 @@
       "evidence": "not ok 1 - clean shows.json → exit 0, no sentinel written"
     }
   ],
-  "topFailingJob": "Data Validation"
+  "topFailingJob": "Unit Tests"
 }

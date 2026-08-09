@@ -309,7 +309,7 @@ export default function ShowPageBelowFold({
           const today = new Date();
           if (today < previewsStart) return null;
         }
-        return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
+        return <LotteryRushCard data={lotteryRush} showId={show.id} showName={show.title} showStatus={show.status} showCategory={show.category} />;
       })()}
 
       {/* Cast Updates */}

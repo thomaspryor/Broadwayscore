@@ -208,6 +208,36 @@ test('KNOWN LIMIT: runtime-assembled argv is not checked', () => {
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
 });
 
+// Both of these are COVERAGE-LOSS bugs: the lexer mis-read a construct, opened
+// a phantom string span, and everything after it stopped being scanned — so the
+// corpus sweep passed partly because it had gone blind (code-review HIGH,
+// 2026-08-09). Asserted on the real repo shapes that exposed them.
+test('a regex holding a quote inside a template interpolation does not blind the scanner', () => {
+  const src = [
+    'const cmd = `gh issue create --body "${body.replace(/"/g, \'\\\\"\')}"`;',
+    "execFileSync('node', ['generate.mjs'], { env: process.env });",
+  ].join('\n');
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('a regex after `return` is not lexed as division', () => {
+  const src = [
+    'function f(t) { return /[.!?]["\']?\\s*$/.test(t); }',
+    "execFileSync('node', ['generate.mjs'], { env: process.env });",
+  ].join('\n');
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+test('regexes after other keyword positions do not blind the scanner', () => {
+  for (const kw of ['typeof', 'case', 'throw', 'void', 'in', 'of']) {
+    const src = [
+      `const x = ${kw} /ab["']c/;`,
+      "execFileSync('node', ['generate.mjs'], { env: process.env });",
+    ].join('\n');
+    assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1, `keyword: ${kw}`);
+  }
+});
+
 test('does NOT flag spawns of other scripts', () => {
   const src = `execFileSync('node', [path.join(__dirname, 'overflow-check.mjs'), weekStart], { env: process.env });`;
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
@@ -248,4 +278,13 @@ test('corpus sweep: nothing under scripts/newsletter, scripts/lib, or scripts/ r
   // Vacuous-guard check: a sweep that scanned nothing must not read as a pass.
   assert.ok(scanned > 50, `expected to scan >50 scripts, scanned ${scanned}`);
   assert.deepEqual(all.map((x) => x.reason), []);
+});
+
+// A property named like a keyword is an operand — what follows is division, not
+// a regex. Reading `.return` as the keyword started a phantom regex that ran to
+// the next slash, opened a phantom string, and swallowed the spawn after it
+// (Codex round 5, 2026-08-09).
+test('a property named like a keyword does not turn division into a regex', () => {
+  const src = 'const s = `${obj.return / "/" , execFileSync(\'node\', [\'generate.mjs\'], {env:process.env})}`;';
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
 });
