@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-08-09T11:41:21.066Z",
-  "consecutiveErrorDays": 11,
+  "lastRun": "2026-08-09T11:54:47.720Z",
+  "consecutiveErrorDays": 12,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -35,7 +35,7 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "24h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: cast-changes.json",
@@ -80,12 +80,12 @@
     {
       "name": "Push verify: opening-night-history.json",
       "status": "pass",
-      "message": "History synced (newest entry 1h old, workflow 1h ago)"
+      "message": "History synced (newest entry 0h old, workflow 0h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "42240 files, 19631 reviews (surplus: 22609)"
+      "message": "42237 files, 19630 reviews (surplus: 22607)"
     },
     {
       "name": "Sync: open show coverage",
@@ -115,7 +115,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2884 shows, 155 open, 19631 reviews (all at or above baseline)"
+      "message": "2884 shows, 155 open, 19630 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
@@ -125,7 +125,7 @@
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -165,7 +165,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (19631/19908)"
+      "message": "98.6% scored (19630/19908)"
     },
     {
       "name": "Quality: corpus drift",
@@ -215,7 +215,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (2h ago)"
+      "message": "All metrics within thresholds (3h ago)"
     },
     {
       "name": "SEO: health",
@@ -239,8 +239,8 @@
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -293,9 +293,9 @@
       "message": "6d ago, success"
     },
     {
-      "name": "Cron failed: Reverse Discovery",
-      "status": "warn",
-      "message": "Last run inconclusive: failure (1h ago), no success in 24h"
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "0h ago, success"
     },
     {
       "name": "Secrets: health",
@@ -315,17 +315,17 @@
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $15.01 · pending invoice $60.73 · month-to-date $58.77 (serp+unlocker)"
+      "message": "balance $14.73 · pending invoice $61.01 · month-to-date $58.77 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "531 browser minutes used (cumulative)"
+      "message": "532 browser minutes used (cumulative)"
     },
     {
       "name": "Deploy: production freshness",
       "status": "pass",
-      "message": "Latest READY production deploy: d2ce6c868a, age 0.1h"
+      "message": "Latest READY production deploy: 1084dd3b2a, age 0.1h"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
@@ -335,12 +335,12 @@
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "71 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
+      "message": "72 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
     },
     {
       "name": "Alert Router: dispatch deadman",
       "status": "pass",
-      "message": "38/38 auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded"
+      "message": "41/41 auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded"
     },
     {
       "name": "Push-retry deadman",
@@ -360,7 +360,7 @@
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Collect WE/OB Review Texts",

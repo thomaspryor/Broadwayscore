@@ -93,6 +93,54 @@ export function affiliateRel(isAffiliate: boolean): string {
   return isAffiliate ? 'sponsored nofollow noopener noreferrer' : 'noopener noreferrer';
 }
 
+// Window.posthog is declared globally in TicketLink.tsx (get_distinct_id +
+// capture/flush/getFeatureFlag) — ambient `declare global` augmentations
+// apply program-wide, no import needed here.
+
+const POSTHOG_API_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
+
+export interface TicketClickEvent {
+  showId: string;
+  showName: string;
+  platform: string;
+  pageType: string;
+  showStatus?: string | null;
+  isAffiliate: boolean;
+  linkPosition?: number;
+  totalLinks?: number;
+  abVariant?: string;
+}
+
+/**
+ * Fires the same 'ticket_click' PostHog beacon TicketLink.tsx's handleClick
+ * uses. Every affiliate <a> tag rendered outside TicketLink (lottery/rush
+ * cards and tables, the discount-tickets page) must call this on click too —
+ * otherwise those real clicks reach Impact's pxf.io redirect but never reach
+ * PostHog, which check-affiliate-health.js's bot-divergence check reads as
+ * "bots hitting the tracking links" (task #1138: 43 TodayTix lottery/rush
+ * entries had zero click tracking).
+ */
+export function trackTicketClick(event: TicketClickEvent): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const distinctId = window.posthog?.get_distinct_id?.() ?? 'anonymous';
+    navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
+      api_key: POSTHOG_API_KEY,
+      event: 'ticket_click',
+      properties: {
+        distinct_id: distinctId,
+        $current_url: window.location.href,
+        show_id: event.showId, show_name: event.showName, platform: event.platform,
+        show_status: event.showStatus ?? null,
+        page_type: event.pageType, is_affiliate: event.isAffiliate,
+        link_position: event.linkPosition ?? 0, total_links: event.totalLinks ?? 1,
+        ab_variant: event.abVariant ?? null,
+      },
+      timestamp: new Date().toISOString(),
+    }));
+  } catch { /* tracking not critical */ }
+}
+
 /** Check whether a platform has affiliate tracking enabled */
 export function isAffiliateEnabled(platform: string): boolean {
   return AFFILIATE_CONFIG[platform]?.enabled ?? false;
