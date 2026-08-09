@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
 import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
@@ -99,6 +99,7 @@ interface LotteryData {
 
 interface ShowLotteryData {
   show: {
+    id: string;
     slug: string;
     title: string;
     status: string;
@@ -244,7 +245,13 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                       if (rawUrl) {
                         const { url, isAffiliate } = buildAffiliateUrl(rawUrl, platform || '', 'lottery');
                         return (
-                          <a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors">
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel={affiliateRel(isAffiliate)}
+                            className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors"
+                            onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: platform || '', pageType: 'lottery', showStatus: item.show.status, isAffiliate })}
+                          >
                             {platform}<ExternalLinkIcon />
                           </a>
                         );
@@ -292,18 +299,21 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                               {lottery.instructions && (
                                 <p className="text-gray-400 text-xs leading-relaxed">{lottery.instructions}</p>
                               )}
-                              {lottery.url && (
-                                <a
-                                  href={buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery').url}
-                                  target="_blank"
-                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery').isAffiliate)}
-                                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Enter on {lottery.platform || 'website'}
-                                  <ActionLinkIcon />
-                                </a>
-                              )}
+                              {lottery.url && (() => {
+                                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(lottery.url)!, lottery.platform || '', 'lottery');
+                                return (
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel={affiliateRel(isAffiliate)}
+                                    className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: lottery.platform || '', pageType: 'lottery', showStatus: item.show.status, isAffiliate }); }}
+                                  >
+                                    Enter on {lottery.platform || 'website'}
+                                    <ActionLinkIcon />
+                                  </a>
+                                );
+                              })()}
                             </div>
                           )}
                           {special && (
@@ -315,18 +325,21 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                               {special.instructions && (
                                 <p className="text-gray-400 text-xs leading-relaxed">{special.instructions}</p>
                               )}
-                              {special.url && (
-                                <a
-                                  href={buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery').url}
-                                  target="_blank"
-                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery').isAffiliate)}
-                                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Enter on {special.platform || 'website'}
-                                  <ActionLinkIcon />
-                                </a>
-                              )}
+                              {special.url && (() => {
+                                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(special.url)!, special.platform || '', 'lottery');
+                                return (
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel={affiliateRel(isAffiliate)}
+                                    className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: special.platform || '', pageType: 'lottery', showStatus: item.show.status, isAffiliate }); }}
+                                  >
+                                    Enter on {special.platform || 'website'}
+                                    <ActionLinkIcon />
+                                  </a>
+                                );
+                              })()}
                             </div>
                           )}
                         </div>
@@ -353,6 +366,7 @@ interface SROData {
 
 interface ShowSROData {
   show: {
+    id: string;
     slug: string;
     title: string;
     status: string;
@@ -561,6 +575,7 @@ interface RushData {
 
 interface ShowRushData {
   show: {
+    id: string;
     slug: string;
     title: string;
     status: string;
@@ -720,7 +735,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const label = rush.platform || 'Box Office';
                         if (rawUrl) {
                           const affiliateResult = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush') : { url: rawUrl, isAffiliate: false };
-                          return <a href={affiliateResult.url} target="_blank" rel={affiliateRel(affiliateResult.isAffiliate)} className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a>;
+                          return <a href={affiliateResult.url} target="_blank" rel={affiliateRel(affiliateResult.isAffiliate)} className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors" onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: rush.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate: affiliateResult.isAffiliate })}>{label}<ExternalLinkIcon /></a>;
                         }
                         return <span className="text-emerald-400">{label}</span>;
                       })()}
@@ -730,7 +745,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const prefix = rush ? ' + ' : '';
                         if (rawUrl) {
                           const { url, isAffiliate } = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush');
-                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors">{label}<ExternalLinkIcon /></a></>;
+                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors" onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate })}>{label}<ExternalLinkIcon /></a></>;
                         }
                         return <span className="text-blue-400">{prefix}{label}</span>;
                       })()}
@@ -790,7 +805,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                                       target="_blank"
                                       rel={affiliateRel(affiliateResult.isAffiliate)}
                                       className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
-                                      onClick={(e) => e.stopPropagation()}
+                                      onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: rush.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate: affiliateResult.isAffiliate }); }}
                                     >
                                       Enter on {rush.platform || 'website'}
                                       <ActionLinkIcon />
@@ -819,18 +834,21 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                               {digital.instructions && (
                                 <p className="text-gray-400 text-xs leading-relaxed">{digital.instructions}</p>
                               )}
-                              {digital.url && (
-                                <a
-                                  href={buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush').url}
-                                  target="_blank"
-                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush').isAffiliate)}
-                                  className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium text-xs mt-2 transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Enter on {digital.platform || 'website'}
-                                  <ActionLinkIcon />
-                                </a>
-                              )}
+                              {digital.url && (() => {
+                                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(digital.url)!, digital.platform || '', 'rush');
+                                return (
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel={affiliateRel(isAffiliate)}
+                                    className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium text-xs mt-2 transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate }); }}
+                                  >
+                                    Enter on {digital.platform || 'website'}
+                                    <ActionLinkIcon />
+                                  </a>
+                                );
+                              })()}
                             </div>
                           )}
                           {student && (
@@ -851,18 +869,21 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                               {student.instructions && (
                                 <p className="text-gray-400 text-xs leading-relaxed">{student.instructions}</p>
                               )}
-                              {student.url && (
-                                <a
-                                  href={buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush').url}
-                                  target="_blank"
-                                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush').isAffiliate)}
-                                  className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium text-xs mt-2 transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  Enter on {student.platform || 'website'}
-                                  <ActionLinkIcon />
-                                </a>
-                              )}
+                              {student.url && (() => {
+                                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(student.url)!, student.platform || '', 'rush');
+                                return (
+                                  <a
+                                    href={url}
+                                    target="_blank"
+                                    rel={affiliateRel(isAffiliate)}
+                                    className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-medium text-xs mt-2 transition-colors"
+                                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: student.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate }); }}
+                                  >
+                                    Enter on {student.platform || 'website'}
+                                    <ActionLinkIcon />
+                                  </a>
+                                );
+                              })()}
                             </div>
                           )}
                         </div>
