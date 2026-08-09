@@ -18,6 +18,12 @@ on:
 
 permissions:
   contents: write
+  # actions: write — the checklist now dispatches the workflows that fix what
+  # it finds (task #389: update-critic-consensus.yml for a missing Critics
+  # Take, recover-explicit-ratings.yml for unparsed star ratings) instead of
+  # printing the command for the owner to run by hand. Same mechanism
+  # recover-explicit-ratings.yml already uses to dispatch rebuild-reviews.yml.
+  actions: write
 
 jobs:
   checklist:
@@ -68,6 +74,16 @@ jobs:
         # produce a real JSON payload downstream steps consume) from anything
         # else (crash, or exit 3 = the history-ledger append itself failed —
         # see opening-night-checklist.js), which now fails this step loudly.
+        env:
+          # Arms the self-declared remediation layer (task #389). Without a
+          # token, dispatchWorkflow() returns {ok:false,error:'no-token'} and
+          # every remediation lands in the ledger as 'failed' — detection still
+          # runs, nothing crashes, but nothing self-heals either.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Kill switch. Set to 'true' (repo variable or here) to make the
+          # checklist detect-and-log only, dispatching nothing.
+          OPENING_NIGHT_REMEDIATION_DISABLED: ${{ vars.OPENING_NIGHT_REMEDIATION_DISABLED || 'false' }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
           SHOW_ARG=""
           if [ -n "${{ inputs.show_id }}" ]; then
@@ -140,11 +156,16 @@ jobs:
           # SLA alert router incident state never persists across the hourly runs
           # — routeAlert would re-open + re-email every run, reintroducing the
           # storm this migration fixes (#406).
+          # remediation-log.jsonl is the cooldown store for self-declared
+          # remediations (task #389) — decideRequeueAction reads prior attempts
+          # out of it. If it is not committed, every hourly run starts with an
+          # empty attempt history and re-dispatches the same workflow forever.
           git add data/audit/opening-night-history.json \
                   data/audit/opening-night-latency-*.json \
                   data/audit/stage-latency.jsonl \
                   data/audit/alert-ledger.json \
                   data/audit/alert-digest-queue.json \
+                  data/audit/remediation-log.jsonl \
                   data/audit/opening-night-sla-state.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No audit data changes to commit"

@@ -17,6 +17,11 @@ on:
         required: false
         type: number
         default: 200
+      show:
+        description: 'Single show ID to regenerate (opening-night remediation, task #389)'
+        required: false
+        type: string
+        default: ''
 
 concurrency:
   group: update-critic-consensus
@@ -61,6 +66,13 @@ jobs:
           MAX_SHOWS="${{ inputs.max_shows }}"
           if [ -n "$MAX_SHOWS" ] && [ "$MAX_SHOWS" != "0" ]; then
             ARGS="$ARGS --max-shows=$MAX_SHOWS"
+          fi
+          # Single-show mode — how opening-night-checklist.js self-heals a
+          # missing Critics Take (task #389). generate-critic-consensus.js has
+          # supported --show= since it shipped; nothing dispatched it before.
+          SHOW="${{ inputs.show }}"
+          if [ -n "$SHOW" ]; then
+            ARGS="$ARGS --show=$SHOW"
           fi
           node scripts/generate-critic-consensus.js $ARGS
 
