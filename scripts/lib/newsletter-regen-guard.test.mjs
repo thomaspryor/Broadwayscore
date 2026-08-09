@@ -188,6 +188,21 @@ test('division is still treated as division, not a regex', () => {
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
 });
 
+// Template interpolation is CODE — a spawn nested in `${...}` is a real call
+// site, not string content (Codex round 3, 2026-08-09).
+test('flags a spawn nested in a template interpolation', () => {
+  const src = "const t = `${execFileSync('node', ['generate.mjs'], { env: process.env })}`;";
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
+
+// Documented limit, asserted so it stays a known quantity rather than a
+// surprise: argv assembled at runtime is out of this scanner's reach. See the
+// KNOWN LIMIT note in newsletter-regen-guard.js for why no net guards it.
+test('KNOWN LIMIT: runtime-assembled argv is not checked', () => {
+  const src = "const args = []; execFileSync('node', [...args, 'generate.mjs'], { env: process.env });";
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
 test('does NOT flag spawns of other scripts', () => {
   const src = `execFileSync('node', [path.join(__dirname, 'overflow-check.mjs'), weekStart], { env: process.env });`;
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);

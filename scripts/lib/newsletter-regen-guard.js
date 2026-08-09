@@ -23,6 +23,16 @@
  * alike with no parser dependency, and the shapes it must catch are narrow.
  * Matches the established scripts/lib/*-guard.js convention (see
  * unbounded-fetch-guard.js, shallow-fetch-args.js).
+ *
+ * KNOWN LIMIT — argv assembled at runtime. `execFileSync('node', [...args,
+ * 'generate.mjs'])` and `argv.concat(x)` are invisible to any text scanner,
+ * so a spawn written that way is NOT checked. A fail-closed net for it was
+ * tried and removed: keyed on the assembly markers it false-positived on
+ * create-broadcast-draft.mjs (which spreads argv and separately names the
+ * generator in an error string), and a guard that cries wolf on correct code
+ * gets ignored, which costs more than the shape it would catch — nothing in
+ * this repo builds a generator argv dynamically. Keep the generator path a
+ * literal in the argv array and this guard can see it.
  */
 
 'use strict';
@@ -60,6 +70,19 @@ function stripComments(src) {
     if (quote) {
       out += ch;
       if (ch === '\\') { out += next === undefined ? '' : next; i++; continue; }
+      // `${...}` inside a template literal is CODE, not string content — a
+      // spawn nested in an interpolation is a real call site. Close the string
+      // span before it and reopen after, so the span list doesn't swallow it.
+      if (quote === '`' && ch === '$' && next === '{') {
+        const close = matchBracket(src, i + 1);
+        if (close !== -1) {
+          stringSpans.push([quoteStart, i]);
+          out += src.slice(i + 1, close + 1);
+          i = close;
+          quoteStart = i;          // remainder of the template is string again
+          continue;
+        }
+      }
       if (ch === quote) { stringSpans.push([quoteStart, i]); quote = null; }
       continue;
     }
@@ -326,6 +349,7 @@ function findUnpinnedGenerateSpawns(rawSource, filename = '<source>') {
       }
     }
   }
+
   return violations;
 }
 
