@@ -48,6 +48,7 @@ const {
   gapSwapDecisions,
 } = require_('../lib/newsletter-preflight.js');
 const { loadAcks, isAcked, addAck, saveAcks, cellKey } = require_('../lib/t1-scoreboard.js');
+const { resolveNewsletterEdition } = require_('../lib/email-templates.js');
 
 const NEWSLETTER_GAP_NS = 'newsletter-gap'; // namespaced "outletId" in the shared ack store — see t1-scoreboard.js
 
@@ -117,6 +118,28 @@ let meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 
 const repoRoot = path.join(__dirname, '..', '..');
 
+// Failures raised before the main hardFailures array exists (the coverage-swap
+// block below runs first so every later check sees the swapped draft). Folded
+// into hardFailures at its declaration.
+const hardFailuresEarly = [];
+
+// ── Edition sanity, BEFORE anything regenerates or reads this draft ──────────
+// The draft on disk must be the edition this invocation is checking. A west-end
+// run over a leftover broadway draft (stale NEWSLETTER_OUT_DIR, a failed earlier
+// run, a workflow that generated under the wrong edition) would otherwise sail
+// through every check below and only blow up two steps later at send-test.mjs's
+// identical guard — or, with the coverage-swap pin above, be silently carried
+// forward into a regenerated draft. Fail here, where the message can name the
+// mismatch. Only checked when the caller declared an edition; an unset
+// NEWSLETTER_EDITION means "whatever is on disk", the historical behaviour.
+if (process.env.NEWSLETTER_EDITION) {
+  const wantEdition = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION);
+  const haveEdition = meta.edition || 'broadway';
+  if (haveEdition !== wantEdition) {
+    hardFailuresEarly.push(`Draft on disk is the "${haveEdition}" edition but NEWSLETTER_EDITION=${wantEdition} — ${htmlPath} is stale or was generated under the wrong edition. Re-run generate.mjs under this edition first.`);
+  }
+}
+
 // ── Coverage-gap swap: apply BEFORE any other check runs, so every check
 // below sees the swapped draft, not the gapped one (Coverage Verdict S3,
 // task #905, supersedes task #823's hard fail). A swap is "applied" — not
@@ -152,7 +175,11 @@ const LEAD_ENV_BY_CATEGORY = {
 };
 const appliedSwapNotes = [];
 const unswappableNotes = [];
-if (Array.isArray(meta.openingShows)) {
+// Skip the swap entirely when the draft on disk is already the wrong edition:
+// regenerating would rewrite the file from a draft we've just declared invalid,
+// leaving a clobbered draft behind for whoever looks at the out dir next. The
+// run is failing either way — fail without touching the file.
+if (hardFailuresEarly.length === 0 && Array.isArray(meta.openingShows)) {
   let gapCheckpointEarly = {};
   try { gapCheckpointEarly = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/gap-audit-checkpoint.json'), 'utf8')); } catch { /* no-op — reported as soft below */ }
   const acksEarly = loadAcks();
@@ -177,7 +204,23 @@ if (Array.isArray(meta.openingShows)) {
     swapsByEnvVar.get(envVar).entries.push(s);
   }
   if (applicableSwaps.length) {
-    const regenEnv = { ...process.env, NEWSLETTER_EXCLUDE_SHOWS: excludeIds.join(',') };
+    // Pin the edition the regen must produce, exactly the way NEWSLETTER_EXCLUDE_SHOWS
+    // is pinned: SET what the subprocess needs rather than hoping the caller exported
+    // it. generate.mjs defaults to 'broadway' when NEWSLETTER_EDITION is unset, so a
+    // caller that omits it (newsletter-draft.yml's Pre-send step did, 2026-08-08 +
+    // 2026-07-25) silently rewrote the west-end draft as the Broadway edition. That
+    // draft then died at send-test.mjs's edition guard and the WE run never reached
+    // create-broadcast-draft.mjs — no West End broadcast draft reached Resend at all.
+    // draftEdition comes from the meta generate.mjs just wrote, so the pin is correct
+    // by construction for CI, newsletter-draft-refresh.yml, refresh-drafts.sh, and any
+    // future caller. 'broadway' is the same legacy default send-test.mjs:57 and
+    // create-broadcast-draft.mjs use for a meta written before the field existed.
+    const draftEdition = meta.edition || 'broadway';
+    const regenEnv = {
+      ...process.env,
+      NEWSLETTER_EXCLUDE_SHOWS: excludeIds.join(','),
+      NEWSLETTER_EDITION: draftEdition,
+    };
     for (const [envVar, group] of swapsByEnvVar) regenEnv[envVar] = group.leadId;
     try {
       execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
@@ -187,6 +230,13 @@ if (Array.isArray(meta.openingShows)) {
       });
       html = fs.readFileSync(htmlPath, 'utf8');
       meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+      // Backstop: the pin above makes this near-unfalsifiable, but a regen that
+      // still changed the edition means generate.mjs ignored NEWSLETTER_EDITION —
+      // fail loudly here rather than hand a wrong-edition draft to the steps below.
+      const regeneratedEdition = meta.edition || 'broadway';
+      if (regeneratedEdition !== draftEdition) {
+        hardFailuresEarly.push(`Coverage-swap regeneration changed the draft edition from "${draftEdition}" to "${regeneratedEdition}" — generate.mjs ignored NEWSLETTER_EDITION=${draftEdition}. The draft on disk is now the wrong edition; do not send it.`);
+      }
       for (const s of applicableSwaps) {
         appliedSwapNotes.push(`COVERAGE SWAP APPLIED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. Draft regenerated with ${s.from.id} excluded.`);
       }
@@ -198,7 +248,7 @@ if (Array.isArray(meta.openingShows)) {
   }
 }
 
-const hardFailures = [];  // stop the workflow entirely
+const hardFailures = [...hardFailuresEarly];  // stop the workflow entirely
 const softIssues = [...appliedSwapNotes, ...unswappableNotes];    // inject into draft banner so owner sees them
 
 // ── HARD: unsubscribe placeholder ────────────────────────────────────────────
