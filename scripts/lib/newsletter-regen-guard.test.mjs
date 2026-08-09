@@ -195,6 +195,11 @@ test('flags a spawn nested in a template interpolation', () => {
   assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
 });
 
+test('does NOT flag a quoted spawn snippet nested inside an interpolation', () => {
+  const src = 'const t = `${ `execFileSync(\'node\', [\'generate.mjs\'], { env: process.env })` }`;';
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
+});
+
 // Documented limit, asserted so it stays a known quantity rather than a
 // surprise: argv assembled at runtime is out of this scanner's reach. See the
 // KNOWN LIMIT note in newsletter-regen-guard.js for why no net guards it.
