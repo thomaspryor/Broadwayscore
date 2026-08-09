@@ -42,5 +42,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-09T17:27:49.938Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:isla-off-broadway-2026",
+    "title": "Auto-remediation gave up on isla-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast.yml {\"show_filter\":\"isla-off-broadway-2026\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-09T17:50:29.299Z"
   }
 ]
