@@ -1631,6 +1631,13 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dead-dispatch completion guard (card #1144): a task whose latest
+      # dispatch is journaled dead must not be marked completed. Colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers
+      # CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-dead-launch-guard.js'
+      - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
+      - 'scripts/reconcile-dead-completions.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
