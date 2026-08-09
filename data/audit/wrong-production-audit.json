@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-09T06:07:12.181Z",
+  "timestamp": "2026-08-09T06:45:36.924Z",
   "stats": {
-    "totalReviews": 41928,
-    "alreadyFlagged": 18190,
+    "totalReviews": 41930,
+    "alreadyFlagged": 18227,
     "dateGuardCatches": 140,
-    "directorMismatch": 962,
+    "directorMismatch": 963,
     "tvFilmSignals": 1161,
-    "londonSignals": 834,
+    "londonSignals": 835,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3572
+    "noPublishDate": 3531
   },
   "findings": [
     {
@@ -25872,6 +25872,20 @@
     },
     {
       "showId": "the-house-of-blue-leaves-2011",
+      "file": "nytimes--unknown.json",
+      "score": 42,
+      "publishDate": "April 25, 2011",
+      "url": "https://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html?adxnnl=1&amp;ref=theater&amp;adxnnlx=1303784480-tY77evBC2AGZ/4XBamyPLg",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from the-house-of-blue-leaves-1986"
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
       "file": "scheckontheater--frank-scheck.json",
       "score": 44,
       "publishDate": "2011-04-26",
@@ -34912,6 +34926,20 @@
       "score": 45,
       "publishDate": "April 10, 2006",
       "url": "https://www.nytimes.com/2006/04/10/theater/reviews/haunting-memories-of-daddy-dearest-in-festen.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "festen-2006",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 44,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/Festen.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
