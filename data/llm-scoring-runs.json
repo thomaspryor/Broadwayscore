@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-08-05T08:11:52.142Z",
-    "completedAt": "2026-08-05T08:12:06.477Z",
-    "totalReviews": 11,
-    "processed": 2,
-    "skipped": 7,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 15382,
-      "output": 765,
-      "total": 40456
-    },
-    "errorDetails": [
-      {
-        "showId": "disruption-off-broadway-2026",
-        "outletId": "off-off-online",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-05T09:13:03.873Z",
     "completedAt": "2026-08-05T09:13:26.811Z",
     "totalReviews": 14,
@@ -662127,6 +662107,26 @@
       "input": 8314,
       "output": 609,
       "total": 24181
+    },
+    "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-09T14:28:37.773Z",
+    "completedAt": "2026-08-09T14:28:37.967Z",
+    "totalReviews": 42241,
+    "processed": 0,
+    "skipped": 42240,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
     "errorDetails": [
       {
