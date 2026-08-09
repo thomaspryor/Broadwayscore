@@ -29,6 +29,7 @@ const os = require('os');
 const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { OWNER_JUDGMENT_RE } = require('./lib/owner-judgment-marker.js');
 
 const USAGE = `notion-tasks-sync.js — bridge the Notion "brain" backlog to Claude Code's.
 
@@ -66,7 +67,8 @@ function mapStatus(notionStatus) {
 // description too, so a human reading the task can trace it back even if the
 // sidecar map is lost.
 function mapCardToTask(card, taskId) {
-  const shortNotes = (card.notes || '').replace(/\s+/g, ' ').trim().slice(0, 400);
+  const fullNotes = (card.notes || '').replace(/\s+/g, ' ').trim();
+  const shortNotes = fullNotes.slice(0, 400);
   // Category is the third meta segment — bsc-next's launcher filter keys on it
   // (Marketing/Partnerships are human territory, never default-picked).
   const descLines = [
@@ -74,6 +76,15 @@ function mapCardToTask(card, taskId) {
     card.url || '',
     shortNotes,
   ].filter(Boolean);
+  // The mirror is the ONLY thing isExcludedCategory() sees (task #1154), and
+  // enrich-card-acceptance.js appends "VERIFY: owner-judgment" to the END of a
+  // card's notes — so on any card with >400 chars of notes the marker falls
+  // past the cut and the dispatch-time exclusion silently stops applying.
+  // Re-attach it rather than widening the truncation: this is a fixed 22-char
+  // line, not an unbounded notes dump.
+  if (OWNER_JUDGMENT_RE.test(fullNotes) && !OWNER_JUDGMENT_RE.test(shortNotes)) {
+    descLines.push('VERIFY: owner-judgment');
+  }
   return {
     id: String(taskId),
     subject: (card.name || 'Untitled card').slice(0, 200),

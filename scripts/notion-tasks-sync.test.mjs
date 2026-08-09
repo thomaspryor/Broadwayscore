@@ -30,6 +30,30 @@ test('mapCardToTask embeds notion page id and traces back', () => {
   assert.deepEqual(t.blockedBy, []);
 });
 
+// The mirror's description is the ONLY text isExcludedCategory() sees, and
+// enrich-card-acceptance.js appends "VERIFY: owner-judgment" to the END of a
+// card's notes — so on a long card the marker fell past the 400-char cut and
+// the dispatch-time exclusion silently stopped applying (task #1154).
+test('#1154: owner-judgment marker survives the 400-char notes truncation', () => {
+  const { isExcludedCategory } = require('./lib/autonomous-eligibility.js');
+  const longNotes = `${'x'.repeat(900)}\n\nVERIFY: owner-judgment (owner must read the report)`;
+  const card = { id: 'abc', url: 'https://n/x', name: 'Quarterly relationship check-in', status: 'Not started', priority: 'P1 Next', category: 'Admin', notes: longNotes };
+  const t = mapCardToTask(card, 11);
+
+  assert.ok(t.description.length < longNotes.length, 'notes should still be truncated, not inlined whole');
+  assert.match(t.description, /VERIFY: owner-judgment/);
+  assert.equal(isExcludedCategory(t), true, 'a long-notes owner-judgment card must not be default-pickable');
+});
+
+test('#1154: the marker line is added only when truncation actually drops it', () => {
+  // Short notes: the marker is already inside the 400 chars, so no duplicate.
+  const short = mapCardToTask({ id: 'a', name: 'n', notes: 'do the thing\n\nVERIFY: owner-judgment' }, 1);
+  assert.equal(short.description.match(/VERIFY: owner-judgment/g).length, 1);
+  // No marker at all: nothing appended, and the card stays pickable.
+  const none = mapCardToTask({ id: 'b', name: 'n', category: 'Engineering', notes: 'y'.repeat(900) }, 2);
+  assert.equal(/VERIFY: owner-judgment/.test(none.description), false);
+});
+
 test('planPull creates unmapped cards, updates on status change, else unchanged', () => {
   const cards = [
     { id: 'new', status: 'Not started' },
