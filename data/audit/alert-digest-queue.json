@@ -9,5 +9,16 @@
     "decisionPrompt": null,
     "model": "opus",
     "queuedAt": "2026-08-09T12:11:17.608Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-critic-consensus:death-note-the-musical-west-end-2026",
+    "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
+    "description": "critics-take-present keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: update-critic-consensus.yml {\"show\":\"death-note-the-musical-west-end-2026\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-09T14:04:51.028Z"
   }
 ]
