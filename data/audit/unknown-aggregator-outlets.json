@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-09T20:22:06.502Z",
-  "count": 223,
+  "generatedAt": "2026-08-09T21:25:48.062Z",
+  "count": 225,
   "outlets": [
     {
       "host": "google.com",
@@ -21,7 +21,7 @@
     },
     {
       "host": "show-score.com",
-      "provisionalOutletId": "show-score",
+      "provisionalOutletId": null,
       "occurrences": 9,
       "sampleUrls": [
         "https://www.show-score.com/uk/london/off-west-end-shows/a-midsummer-night-s-dream-regent-s-park-open-air-theatre-london",
@@ -432,6 +432,21 @@
       ]
     },
     {
+      "host": "theatre.reviews",
+      "provisionalOutletId": null,
+      "occurrences": 3,
+      "sampleUrls": [
+        "https://theatre.reviews/reviews-roundup/glengarry-glen-ross-old-vic-reviews/",
+        "https://theatre.reviews/reviews-roundup/the-misanthrope-national-reviews/",
+        "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/"
+      ],
+      "shows": [
+        "glengarry-glen-ross-west-end-2026",
+        "the-misanthrope-west-end-2026",
+        "trainspotting-the-musical-west-end-2026"
+      ]
+    },
+    {
       "host": "socalthrills.com",
       "provisionalOutletId": "socalthrills",
       "occurrences": 3,
@@ -634,19 +649,6 @@
       "shows": [
         "giant-royal-court-off-west-end-2024",
         "giant-west-end-2025"
-      ]
-    },
-    {
-      "host": "theatre.reviews",
-      "provisionalOutletId": "theatre",
-      "occurrences": 2,
-      "sampleUrls": [
-        "https://theatre.reviews/reviews-roundup/glengarry-glen-ross-old-vic-reviews/",
-        "https://theatre.reviews/reviews-roundup/the-misanthrope-national-reviews/"
-      ],
-      "shows": [
-        "glengarry-glen-ross-west-end-2026",
-        "the-misanthrope-west-end-2026"
       ]
     },
     {
@@ -1213,7 +1215,7 @@
     },
     {
       "host": "stagedoor.com",
-      "provisionalOutletId": "stagedoor",
+      "provisionalOutletId": null,
       "occurrences": 1,
       "sampleUrls": [
         "https://stagedoor.com/family-theatre/14470-dinosaur-world-live/user-reviews"
@@ -1234,11 +1236,22 @@
       ]
     },
     {
-      "host": "boxofficeticketsales.com",
-      "provisionalOutletId": "boxofficeticketsales",
+      "host": "ticketluck.com",
+      "provisionalOutletId": "ticketluck",
       "occurrences": 1,
       "sampleUrls": [
-        "https://www.boxofficeticketsales.com/8172195/disruption-tickets-sun-9-13-2026-the-romulus-linney-courtyard-theatre-at-signature-theatre"
+        "https://www.ticketluck.com/theater-tickets/Disruption/Disruption-The-Romulus-Linney-Courtyard-Theatre-at-Signature-Theatre/8-8-8172162"
+      ],
+      "shows": [
+        "disruption-off-broadway-2026"
+      ]
+    },
+    {
+      "host": "etickets.com",
+      "provisionalOutletId": "etickets",
+      "occurrences": 1,
+      "sampleUrls": [
+        "https://www.etickets.com/theater/off-broadway/disruption-new-york-ny-08-08-2026/8172162/t"
       ],
       "shows": [
         "disruption-off-broadway-2026"
@@ -2411,11 +2424,22 @@
       ]
     },
     {
-      "host": "lajolla.ca",
-      "provisionalOutletId": "lajolla",
+      "host": "viagogo.co.uk",
+      "provisionalOutletId": "viagogo",
       "occurrences": 1,
       "sampleUrls": [
-        "https://lajolla.ca/events/the-family-album-world-premiere-musical/"
+        "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118"
+      ],
+      "shows": [
+        "the-family-album-regional-2026"
+      ]
+    },
+    {
+      "host": "behindtheencore.substack.com",
+      "provisionalOutletId": "behindtheencore",
+      "occurrences": 1,
+      "sampleUrls": [
+        "https://behindtheencore.substack.com/p/the-family-album-review-a-beautiful"
       ],
       "shows": [
         "the-family-album-regional-2026"
