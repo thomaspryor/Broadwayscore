@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-08-09T09:18:18.436Z",
-  "processed": 0,
-  "failed": 20,
-  "successRate": "0%",
+  "updatedAt": "2026-08-09T09:20:41.362Z",
+  "processed": 3,
+  "failed": 27,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-08-09T09:19:29.098Z",
+      "event": "bb-session",
+      "session": "943f21e1",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    },
+    {
+      "t": "2026-08-09T09:19:46.375Z",
+      "event": "bb-session",
+      "session": "d0db0ffe",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    }
+  ]
 }

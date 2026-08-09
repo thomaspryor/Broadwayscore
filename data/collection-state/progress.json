@@ -1,5 +1,9 @@
 {
-  "processed": [],
+  "processed": [
+    "cats-west-end-2026/daily-mail--unknown.json",
+    "cats-west-end-2026/independent--alice-saville.json",
+    "cats-west-end-2026/north-west-end--michelle-knight.json"
+  ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
     "cats-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -20,20 +24,45 @@
     "cats-west-end-2026/cititour--unknown.json",
     "cats-west-end-2026/theatrely--joey-sims.json",
     "cats-west-end-2026/ap--mark-kennedy.json",
-    "cats-west-end-2026/chicagotribune--chris-jones.json"
+    "cats-west-end-2026/chicagotribune--chris-jones.json",
+    "cats-west-end-2026/culturesauce--thom-geier.json",
+    "cats-west-end-2026/curtainup--elyse-sommer.json",
+    "cats-west-end-2026/frontmezzjunkies--steven-ross.json",
+    "cats-west-end-2026/huffpost--david-finkle.json",
+    "cats-west-end-2026/jonathan-baz--jonathan-baz.json",
+    "cats-west-end-2026/nbcny--robert-kahn.json",
+    "cats-west-end-2026/nysr--melissa-rose-bernardo.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cats-west-end-2026/independent--alice-saville.json",
+      "cats-west-end-2026/north-west-end--michelle-knight.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "cats-west-end-2026/daily-mail--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-09T09:17:32.275Z",
-  "lastProcessed": "cats-west-end-2026/chicagotribune--chris-jones.json",
-  "log": []
+  "lastProcessed": "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
+  "log": [
+    {
+      "t": "2026-08-09T09:19:29.098Z",
+      "event": "bb-session",
+      "session": "943f21e1",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    },
+    {
+      "t": "2026-08-09T09:19:46.375Z",
+      "event": "bb-session",
+      "session": "d0db0ffe",
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    }
+  ]
 }
