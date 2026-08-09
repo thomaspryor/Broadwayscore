@@ -90,6 +90,21 @@ function reviewVerdict(score, category, variantIndex = 0) {
   return pool[Math.min(variantIndex, pool.length - 1)];
 }
 
+// "Sun Aug 16" — same shape generate.mjs's `dayOf(d) + ' ' + fmt(d)` renders
+// into the Closing this Week card and the `Last chance for …` context line, so
+// the lede and the body agree on the wording as well as the date. Noon-anchored
+// in America/New_York for the same reason those helpers are: a bare YYYY-MM-DD
+// parses as UTC midnight and renders as the PREVIOUS day west of Greenwich.
+// Returns '' for a missing/unparseable date so the caller degrades to an
+// undated sentence instead of emitting "undefined" to subscribers.
+export function formatClosingDay(closingDate) {
+  if (typeof closingDate !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(closingDate)) return '';
+  const d = new Date(closingDate.slice(0, 10) + 'T12:00:00');
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' })
+    + ' ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/New_York' });
+}
+
 // Each candidate is `{ kind, weight, headline, show, slug }`. `headline` is the
 // short imperative phrase that goes into the subject line and lede.
 export function scoreCandidates(input) {
@@ -166,11 +181,20 @@ export function scoreCandidates(input) {
   }
 
   // 4. Closings this week (final performances inside the week window)
+  //
+  // The date is NOT optional garnish. Until 2026-07-12 `closingsThisWeek` was
+  // the week that just ENDED, so a bare "X plays final performance" was a
+  // report on something that had already happened and read fine. That fix
+  // (see generate.mjs `closingsThisWeek`) repointed the window at the NEXT 7
+  // days to match the body's "Closing this Week" card — but left this string
+  // alone, so the lede started announcing a future event in the present tense.
+  // On 2026-08-09 the Broadway lede read "Ragtime plays final performance"
+  // when Ragtime's last show was Aug 16, a week out. Always name the day.
   for (const c of (input.closingsThisWeek || [])) {
     out.push({
       kind: 'closing-final',
       weight: WEIGHTS.CLOSING_THIS_WEEK_BASE,
-      headline: `${c.title} plays final performance`,
+      headline: `${c.title} plays its final performance ${formatClosingDay(c.closingDate)}`.trimEnd(),
       show: c,
       slug: c.slug,
     });
