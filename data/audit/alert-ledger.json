@@ -130,7 +130,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -139,7 +139,8 @@
       "lastNotifiedAt": "2026-08-09T12:11:17.607Z",
       "notifyCount": 21,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-08-09T20:53:32.131Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -596,33 +597,33 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on ISLA",
       "firstSeen": "2026-08-09T10:55:00.197Z",
-      "lastSeen": "2026-08-09T19:51:32.539Z",
+      "lastSeen": "2026-08-09T20:54:56.367Z",
       "lastNotifiedAt": "2026-08-09T10:55:00.197Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-remediation-exhausted-critic-consensus:death-note-the-musical-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
       "firstSeen": "2026-08-09T14:04:51.028Z",
-      "lastSeen": "2026-08-09T19:51:32.538Z",
+      "lastSeen": "2026-08-09T20:54:56.366Z",
       "lastNotifiedAt": "2026-08-09T14:04:51.028Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-remediation-exhausted-empty-cast:isla-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on isla-off-broadway-2026",
       "firstSeen": "2026-08-09T17:50:29.299Z",
-      "lastSeen": "2026-08-09T19:51:32.539Z",
+      "lastSeen": "2026-08-09T20:54:56.367Z",
       "lastNotifiedAt": "2026-08-09T17:50:29.299Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 2
+      "silentRefires": 3
     }
   }
 }
