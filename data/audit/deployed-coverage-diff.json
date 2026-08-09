@@ -1,79 +1,29 @@
 {
-  "generatedAt": "2026-08-09T05:35:02.562Z",
+  "generatedAt": "2026-08-09T06:39:40.008Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 157,
-  "clean": 154,
-  "defective": 3,
+  "clean": 156,
+  "defective": 1,
   "byType": {
-    "missing-from-prod": 3,
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
+      "showId": "showstopper-the-improvised-musical-west-end-2023",
+      "title": "Showstopper! The Improvised Musical",
+      "openingDate": "2015-09-01",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatre-vibe"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed cs 75.8 vs local 76.04 (Δ0.24)"
+          "detail": "deployed cs 84.35 vs local 85.1 (Δ0.75)"
         }
       ],
-      "missingFromProd": [
-        "theatre-vibe"
-      ],
-      "localCount": 23,
-      "deployedCount": 22
-    },
-    {
-      "showId": "twelfth-night-off-west-end-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-08-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: the-spy-in-the-stalls"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.88 vs local 75.33 (Δ0.45)"
-        }
-      ],
-      "missingFromProd": [
-        "the-spy-in-the-stalls"
-      ],
-      "localCount": 11,
-      "deployedCount": 10
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "title": "The Car Man",
-      "openingDate": "2026-07-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: londonlivinglarge, westminsterextra"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 86.53 vs local 86.29 (Δ0.24)"
-        }
-      ],
-      "missingFromProd": [
-        "londonlivinglarge",
-        "westminsterextra"
-      ],
-      "localCount": 24,
-      "deployedCount": 22
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 5
     }
   ]
 }
