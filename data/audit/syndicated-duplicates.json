@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-09T06:43:07.970Z",
+  "generatedAt": "2026-08-09T08:01:10.792Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 67,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Matt Windman",
+      "showId": "the-lyons-2012",
+      "primaryOutlet": "newsday",
+      "secondaryOutlet": "amny",
+      "primaryFile": "newsday--matt-windman.json",
+      "secondaryFile": "amny--matt-windman.json",
+      "similarity": 67,
+      "primaryScore": 74,
+      "secondaryScore": 74,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
