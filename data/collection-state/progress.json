@@ -28,7 +28,9 @@
     "im-every-woman-off-west-end-2026/seeing-dance--unknown.json",
     "now-you-see-me-live-west-end-2026/london-theatre-reviews--unknown.json",
     "disruption-off-broadway-2026/pages-on-stages--unknown.json",
-    "titanique-2026/times-square-chronicles--unknown.json"
+    "titanique-2026/times-square-chronicles--unknown.json",
+    "the-pass-off-broadway-2026/nytg--unknown.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
@@ -395,7 +397,15 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -419,7 +429,8 @@
       "im-every-woman-off-west-end-2026/seeing-dance--unknown.json",
       "now-you-see-me-live-west-end-2026/london-theatre-reviews--unknown.json",
       "disruption-off-broadway-2026/pages-on-stages--unknown.json",
-      "titanique-2026/times-square-chronicles--unknown.json"
+      "titanique-2026/times-square-chronicles--unknown.json",
+      "the-pass-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -439,10 +450,23 @@
     "archive": [
       "tao-of-glass-west-end-2026/the-jewish-chronicle--john-nathan.json",
       "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
-      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+      "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ]
   },
   "startTime": "2026-08-09T10:03:26.658Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+  "log": [
+    {
+      "t": "2026-08-09T12:37:28.052Z",
+      "event": "bb-session",
+      "session": "e1fbdee9",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-09T12:37:28.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
