@@ -77,7 +77,14 @@ function stripComments(src) {
         const close = matchBracket(src, i + 1);
         if (close !== -1) {
           stringSpans.push([quoteStart, i]);
-          out += src.slice(i + 1, close + 1);
+          const inner = src.slice(i + 1, close + 1);
+          // Lex the interpolation as code in its own right, so string literals
+          // NESTED inside it are still recorded as strings. Without this, a
+          // quoted spawn-call snippet inside an interpolation reads as live
+          // code and reddens CI (Codex round 4, 2026-08-09).
+          const innerLexed = stripComments(inner);
+          out += innerLexed.code;
+          for (const [s, e] of innerLexed.stringSpans) stringSpans.push([s + i + 1, e + i + 1]);
           i = close;
           quoteStart = i;          // remainder of the template is string again
           continue;
