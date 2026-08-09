@@ -353,7 +353,18 @@ function saveNycTheatreExcerpt(showId, reviewInfo) {
   if (result.action === 'new') stats.newReviews++;
   else if (result.action === 'updated') stats.updatedReviews++;
   else if (result.reason?.startsWith('domain-mismatch')) stats.skippedDomainMismatch = (stats.skippedDomainMismatch || 0) + 1;
-  else stats.skippedExisting++;
+  // Count the aggregator-URL refusal separately (adversarial review, 2026-08-09).
+  // createOrMergeReviewFile gained this skip reason when the aggregator-URL guard
+  // moved to the shared chokepoint, and this roundup parser takes the FIRST inline
+  // link as the review URL — so an internal nyctheatre.com link lands here. The
+  // `else` below files every unrecognised reason under skippedExisting, which
+  // reads to the operator as ordinary "already had it" churn while an excerpt was
+  // actually dropped. The writer already warns with the URL; this keeps the run
+  // summary honest too.
+  else if (result.reason === 'aggregator-url-mismatch') {
+    stats.skippedAggregatorUrl = (stats.skippedAggregatorUrl || 0) + 1;
+    console.warn(`  ⚠️  ${showId}: "${reviewInfo.outlet}" cited with an aggregator URL (${reviewInfo.url}) — excerpt dropped, needs the outlet's own article URL`);
+  } else stats.skippedExisting++;
 
   return result.action === 'skipped' ? 'skipped' : result.action;
 }
@@ -530,6 +541,9 @@ async function scrapeNYCTheatreRoundups() {
   console.log(`New reviews created: ${stats.newReviews}`);
   console.log(`Existing reviews updated: ${stats.updatedReviews}`);
   console.log(`Skipped (already have excerpt): ${stats.skippedExisting}`);
+  if (stats.skippedAggregatorUrl) {
+    console.log(`⚠️  Dropped (aggregator URL, not the outlet's own article): ${stats.skippedAggregatorUrl}`);
+  }
   if (stats.errors.length > 0) {
     console.log(`Errors: ${stats.errors.length}`);
     stats.errors.forEach(e => console.log(`  - ${e}`));
