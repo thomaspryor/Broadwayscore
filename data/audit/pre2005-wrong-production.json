@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-08T23:14:37.509Z",
+    "generatedAt": "2026-08-09T00:18:56.032Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 87,
-    "highConfidence": 6,
+    "totalFlagged": 88,
+    "highConfidence": 7,
     "mediumConfidence": 81,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 37
   },
   "results": [
     {
@@ -968,6 +968,24 @@
         "revival text signals: revival, new revival"
       ],
       "textSnippet": "  A bright and beckoning path cuts through the fairy-tale thicket of whimsy and woe that is ”Into the Woods,” the musical by Stephen Sondheim and James Lapine that opened last night in a new revival a"
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "showTitle": "Into the Woods",
+      "showYear": 1997,
+      "file": "playbill--unknown.json",
+      "outlet": "Playbill",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, Lear deBessonet, director: Lear deBessonet",
+        "year 1987 in text matches revival into-the-woods-1987",
+        "year 2002 in text matches revival into-the-woods-2002",
+        "modern references: covid"
+      ],
+      "textSnippet": "The Hedwig and the Angry Inch Tony winner has stepped in for the previously announced Christian Borle.\n\nTony-winning TV and stage star Neil Patrick Harris has joined the cast of the upcoming New York "
     },
     {
       "showId": "into-the-woods-1997",

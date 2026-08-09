@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-08T23:11:37.077Z",
+  "generatedAt": "2026-08-09T00:11:00.874Z",
   "windowDays": 1095,
-  "targets": 15,
-  "auditedThisRun": 15,
-  "carriedForward": 192,
+  "targets": 13,
+  "auditedThisRun": 13,
+  "carriedForward": 194,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 165,
-    "totalMissing": 1068,
+    "withGap": 164,
+    "totalMissing": 1064,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1075,
-    "totalRecoverable": 33,
-    "totalRecovered": 6
+    "totalFlaggedMisses": 1071,
+    "totalRecoverable": 30,
+    "totalRecovered": 5
   },
   "results": [
     {
@@ -5632,8 +5632,8 @@
         "count": 1767,
         "byReason": {
           "not-http-url": 355,
-          "non-review-host": 123,
           "aggregator-internal-nav": 1274,
+          "non-review-host": 123,
           "non-review-path": 15
         }
       },
@@ -7109,7 +7109,7 @@
         "liveCount": 6,
         "candidateCount": 74
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "birthright-off-broadway-2026",
@@ -10702,7 +10702,7 @@
       ],
       "dirFiles": 73,
       "dirClean": 35,
-      "inReviewsJson": 33,
+      "inReviewsJson": 32,
       "missing": [
         {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
@@ -10804,7 +10804,7 @@
             },
             {
               "file": "nysr--unknown.json",
-              "flag": "duplicate",
+              "flag": "wrongProduction",
               "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             }
           ]
@@ -10908,7 +10908,7 @@
             },
             {
               "file": "nysr--unknown.json",
-              "flag": "duplicate",
+              "flag": "wrongProduction",
               "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
             }
           ],
@@ -11007,8 +11007,8 @@
         "count": 457,
         "byReason": {
           "not-http-url": 58,
-          "non-review-host": 55,
           "aggregator-internal-nav": 341,
+          "non-review-host": 55,
           "non-review-path": 3
         }
       },
@@ -11030,7 +11030,7 @@
           "provisional": false,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~276500/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~228689/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -11395,7 +11395,7 @@
         "liveCount": 21,
         "candidateCount": 31
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
@@ -22969,11 +22969,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 422,
+        "count": 418,
         "byReason": {
           "not-http-url": 106,
+          "aggregator-internal-nav": 273,
           "non-review-host": 36,
-          "aggregator-internal-nav": 277,
           "non-review-path": 3
         }
       },
@@ -22985,7 +22985,7 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~276507/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~228696/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -23233,7 +23233,7 @@
         "liveCount": 23,
         "candidateCount": 29
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "evita-west-end-2025",
@@ -38842,7 +38842,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-08T23:11:37.077Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -43607,9 +43607,9 @@
         "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-you-will-hear-the-people-cheer/",
         "https://www.theatermania.com/news/review-les-miserables-arena-spectacular-at-radio-city-is-a-glorious-farewell-to-a-bygone-era_1847093/",
         "https://www.chicagotribune.com/2026/07/28/les-miserables-arena-concert-new-york/",
-        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
         "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
-        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+        "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
+        "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CB2D142A",
         "https://www.theatermania.com/news/interview-matt-lucas-on-les-miserables-thenardier-and-the-arena-spectacular-at-radio-city_1846836/"
       ],
       "dirFiles": 15,
@@ -43623,7 +43623,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CB2D142A",
           "host": "msg.com",
           "knownOutletId": null,
           "serpCensus": true
@@ -43683,7 +43683,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -43714,15 +43714,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 423,
+        "count": 425,
         "byReason": {
           "not-http-url": 82,
-          "non-review-host": 62,
-          "aggregator-internal-nav": 270,
+          "aggregator-internal-nav": 269,
+          "non-review-host": 65,
           "non-review-path": 3,
-          "roundup-page": 2,
-          "ticketing-reseller": 3,
-          "venue-production-page": 1
+          "ticketing-reseller": 4,
+          "venue-production-page": 1,
+          "roundup-page": 1
         }
       },
       "ingestResults": [
@@ -43736,13 +43736,13 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
-          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+          "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CB2D142A",
           "host": "msg.com",
           "outletId": "msg",
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~276359/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285754/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -43761,7 +43761,7 @@
             "outlet": "msg.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417"
+            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CB2D142A"
           }
         ],
         "suppressedMissing": [],
@@ -43822,17 +43822,17 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-july-2026/3C006347CA7E1417",
+            "url": "https://www.msg.com/events-tickets/les-misrables-the-arena-concert-spectacular-radio-city-music-hall-august-2026/3C006347CB2D142A",
             "outletId": "msg.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           }
         ],
         "liveCount": 6,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
@@ -59534,8 +59534,8 @@
         "count": 290,
         "byReason": {
           "not-http-url": 51,
-          "non-review-host": 15,
           "aggregator-internal-nav": 221,
+          "non-review-host": 15,
           "non-review-path": 3
         }
       },
@@ -59707,7 +59707,7 @@
         "liveCount": 15,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -67329,11 +67329,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 91,
+        "count": 90,
         "byReason": {
           "not-http-url": 20,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 50
+          "aggregator-internal-nav": 49,
+          "non-review-host": 21
         }
       },
       "censusVerdict": {
@@ -67416,7 +67416,7 @@
         "liveCount": 7,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -73184,23 +73184,33 @@
         "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
         "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
         "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
+        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
         "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
-        "https://www.london-unattached.com/tao-of-glass-soho-place/",
         "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
         "https://www.timeout.com/london/theatre/tao-of-glass-review",
+        "https://www.london-unattached.com/tao-of-glass-soho-place/",
         "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
-        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+        "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
+        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
         "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-        "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
         "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
-        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+        "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
+        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+        "https://www.thejc.com/life/theatre/tao-of-glass-review-this-love-letter-to-the-composer-philip-glass-needs-a-good-editor-lk9n77uv",
         "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
         "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html"
       ],
       "dirFiles": 44,
       "dirClean": 27,
       "inReviewsJson": 24,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
+          "host": "totaltheatre.org.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "everything-theatre.co.uk",
@@ -73208,6 +73218,10 @@
         },
         {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "liamodell.com",
           "count": 1
         },
         {
@@ -73224,10 +73238,6 @@
         },
         {
           "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thejc.com",
           "count": 1
         },
         {
@@ -73272,6 +73282,42 @@
               "file": "times-uk--richard-morrison-chief-culture-writer.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--helen-hawkins.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
             }
           ],
           "serpCensus": true
@@ -73341,8 +73387,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -73362,7 +73408,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -73372,13 +73418,13 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
@@ -73388,9 +73434,28 @@
           "ticketing-listing": 2
         }
       },
+      "ingestResults": [
+        {
+          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
+          "host": "totaltheatre.org.uk",
+          "outletId": "totaltheatre",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "totaltheatre.org.uk",
+            "outlet": "totaltheatre.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/"
+          },
           {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
@@ -73404,6 +73469,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
           }
         ],
         "suppressedMissing": [],
@@ -73433,12 +73512,6 @@
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
           {
-            "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
-            "outletId": "london-unattached.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
             "outletId": "londontheatre.co.uk",
             "state": "live",
@@ -73451,8 +73524,26 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
+            "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+          },
+          {
             "url": "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
             "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+            "outletId": "playstosee.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
@@ -73463,22 +73554,10 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://www.thejc.com/life/theatre/tao-of-glass-review-this-love-letter-to-the-composer-philip-glass-needs-a-good-editor-lk9n77uv",
+            "outletId": "thejc.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
@@ -73493,6 +73572,13 @@
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
+            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
+            "outletId": "totaltheatre.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
+          },
+          {
             "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -73505,12 +73591,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
+          },
+          {
+            "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
+          },
+          {
+            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           }
         ],
         "liveCount": 14,
-        "candidateCount": 16
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -74264,26 +74364,28 @@
         "https://www.thereviewshub.com/the-car-man-lyceum-theatre-sheffield/",
         "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
         "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
-        "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
-        "https://fairypoweredproductions.com/the-car-man-review/",
         "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
+        "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
         "http://theartsdesk.com/dance/car-man-sadlers-wells-review-dark-gutsy-raunchy-unsympathetic-noir-core",
         "https://www.thereviewshub.com/the-car-man-sadlers-wells-london/",
+        "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
         "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
-        "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+        "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
         "https://quayslife.com/reviews/matthew-bournes-the-car-man-review/",
         "https://northantsleicsrutland.muddystilettos.co.uk/things-to-do/arts-culture-things-to-do/review-matthew-bournes-the-car-man-at-curve-leicester/",
-        "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
         "https://www.pinkprincetheatre.com/post/review-the-car-man-theatre-royal-plymouth",
         "https://www.timeout.com/london/dance/the-car-man",
+        "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
         "https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/",
+        "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
         "https://www.broadwayworld.com/westend/article/Review-THE-CAR-MAN-Sadlers-Wells-20260803",
-        "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
         "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
+        "https://www.westendbestfriend.co.uk/news/review-the-car-man-sadlers-wells-theatre",
         "https://www.londonboxoffice.co.uk/news/post/the-car-man-sadlers-wells-review",
-        "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
         "https://www.balletcoforum.com/topic/34595-matthew-bournes-the-car-man-sadlers-wells/",
+        "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
         "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
+        "http://www.londonlivinglarge.com/2026/08/matthew-bournes-new-adventures-car-man.html",
         "https://www.theguardian.com/stage/2026/aug/05/im-every-woman-the-chaka-khan-musical-review-queen-of-funk",
         "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd",
         "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
@@ -74293,18 +74395,36 @@
         "https://www.thestage.co.uk/reviews/im-every-woman-the-chaka-khan-musical-review-troubadour-wembley-park-theatre-alexandra-burke"
       ],
       "dirFiles": 65,
-      "dirClean": 26,
-      "inReviewsJson": 21,
+      "dirClean": 27,
+      "inReviewsJson": 23,
       "missing": [
         {
-          "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
-          "host": "northernartsreview.co.uk",
+          "url": "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
+          "host": "curveonline.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+          "host": "westminsterextra.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
+          "host": "thestateofthearts.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
           "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
           "host": "reviewsgate.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "http://www.londonlivinglarge.com/2026/08/matthew-bournes-new-adventures-car-man.html",
+          "host": "londonlivinglarge.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -74319,7 +74439,7 @@
           "count": 1
         },
         {
-          "host": "dailyecho.co.uk",
+          "host": "fairypoweredproductions.com",
           "count": 1
         },
         {
@@ -74389,70 +74509,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": true,
-          "recoverableFile": "whatsonstage--sarah-crompton.json",
-          "recoverableOutletId": "whatsonstage",
-          "recoverableCritic": "Sarah Crompton",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--alun-hood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-the-royal-albert-hall-review_56708/"
-            },
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/"
-            },
-            {
-              "file": "whatsonstage--tanyel-gumushan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.whatsonstage.com/news/the-car-man-to-return-for-major-uk-tour_1701487/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": true,
-          "recoverableFile": "british-theatre--susan-novak.json",
-          "recoverableOutletId": "british-theatre",
-          "recoverableCritic": "Susan Novak",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--susan-novak.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "recoverable": true,
-          "recoverableFile": "bachtrack--unknown.json",
-          "recoverableOutletId": "bachtrack",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bachtrack--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://northantsleicsrutland.muddystilettos.co.uk/things-to-do/arts-culture-things-to-do/review-matthew-bournes-the-car-man-at-curve-leicester/",
           "host": "muddystilettos.co.uk",
           "knownOutletId": null,
@@ -74484,6 +74540,24 @@
               "file": "lovelondonloveculture--unknown.json",
               "flag": "clean",
               "urlInDir": "https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": true,
+          "recoverableFile": "bachtrack--unknown.json",
+          "recoverableOutletId": "bachtrack",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 1,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
             }
           ],
           "serpCensus": true
@@ -74569,30 +74643,6 @@
             "westendtheatre"
           ],
           "weRefStars": 3,
-          "weRefStarsSource": "westendtheatre"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": true,
-          "recoverableFile": "whatsonstage--sarah-crompton.json",
-          "recoverableOutletId": "whatsonstage",
-          "recoverableCritic": "Sarah Crompton",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre",
-            "theatre-reviews"
-          ],
-          "weRefStars": 2,
           "weRefStarsSource": "westendtheatre"
         },
         {
@@ -74688,15 +74738,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 11,
-        "corroborated": 2,
+        "corroborated": 3,
         "perSource": {
           "theatre-reviews": {
             "cited": 7,
-            "corroborated": 2
+            "corroborated": 3
           },
           "westendtheatre": {
             "cited": 4,
-            "corroborated": 0
+            "corroborated": 1
           }
         }
       },
@@ -74712,7 +74762,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 8,
+            "accepted": 7,
             "error": null
           },
           {
@@ -74722,7 +74772,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -74732,7 +74782,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -74751,8 +74801,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -74762,32 +74812,50 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 25,
+        "resultCount": 27,
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 14,
         "byReason": {
-          "non-review-host": 13,
+          "non-review-host": 11,
           "ticketing-listing": 2,
           "static-asset": 1
         }
       },
       "ingestResults": [
         {
-          "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
-          "host": "northernartsreview.co.uk",
-          "outletId": "northernartsreview",
+          "url": "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
+          "host": "curveonline.co.uk",
+          "outletId": "curveonline",
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~276446/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~228671/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+          "host": "westminsterextra.co.uk",
+          "outletId": "westminsterextra",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
+          "host": "thestateofthearts.co.uk",
+          "outletId": "thestateofthearts",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
           "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
@@ -74797,45 +74865,25 @@
           "ok": false,
           "noop": true,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.londonlivinglarge.com/2026/08/matthew-bournes-new-adventures-car-man.html",
+          "host": "londonlivinglarge.com",
+          "outletId": "londonlivinglarge",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
-          "host": "whatsonstage.com",
-          "file": "whatsonstage--sarah-crompton.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "spawnSync node ETIMEDOUT",
-          "recoveryCount": 2
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
-          "host": "britishtheatreguide.info",
-          "file": "british-theatre--susan-novak.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        },
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
         {
           "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
           "host": "bachtrack.com",
-          "file": "bachtrack--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch returned no usable HTML (got 175 chars)",
-          "recoveryCount": 1
-        }
-      ],
-      "recoverySkippedByCap": [
+          "file": "bachtrack--unknown.json"
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/matthew-bournes-the-car-man",
           "host": "thestage.co.uk",
@@ -74845,11 +74893,6 @@
           "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd",
           "host": "thetimes.com",
           "file": "times-uk--clive-davis.json"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
-          "host": "whatsonstage.com",
-          "file": "whatsonstage--sarah-crompton.json"
         },
         {
           "url": "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html",
@@ -74866,11 +74909,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "northernartsreview.co.uk",
-            "outlet": "northernartsreview.co.uk",
+            "outletId": "curveonline.co.uk",
+            "outlet": "curveonline.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/"
+            "url": "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/"
+          },
+          {
+            "outletId": "westminsterextra.co.uk",
+            "outlet": "westminsterextra.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells"
+          },
+          {
+            "outletId": "thestateofthearts.co.uk",
+            "outlet": "thestateofthearts.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/"
           },
           {
             "outletId": "reviewsgate.co.uk",
@@ -74878,6 +74935,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london"
+          },
+          {
+            "outletId": "londonlivinglarge.com",
+            "outlet": "londonlivinglarge.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.londonlivinglarge.com/2026/08/matthew-bournes-new-adventures-car-man.html"
           },
           {
             "outletId": "east-midlands-theatre",
@@ -74894,27 +74958,6 @@
             "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/"
           },
           {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
-          },
-          {
             "outletId": "muddystilettos.co.uk",
             "outlet": "muddystilettos.co.uk",
             "critic": "Unknown",
@@ -74927,6 +74970,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/08/04/review-round-up-the-car-man-sadlers-wells/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026"
           },
           {
             "outletId": "london-box-office",
@@ -74955,13 +75005,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/"
           },
           {
             "outletId": "standard",
@@ -75006,12 +75049,6 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/the-car-man-review/",
-            "outletId": "fairypoweredproductions.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -75026,6 +75063,18 @@
           {
             "url": "https://www.thereviewshub.com/the-car-man-sadlers-wells-london/",
             "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
@@ -75060,16 +75109,22 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
+            "url": "https://www.balletcoforum.com/topic/34595-matthew-bournes-the-car-man-sadlers-wells/",
+            "outletId": "balletcoforum.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
             "url": "https://jadar.uk/2026/06/24/review-matthew-bournes-the-car-man/",
             "outletId": "jadar.uk",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://www.balletcoforum.com/topic/34595-matthew-bournes-the-car-man-sadlers-wells/",
-            "outletId": "balletcoforum.com",
+            "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
+            "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+            "firstSeenAt": "2026-08-05T22:12:01.770Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-IM-EVERY-WOMAN-THE-CHAKA-KHAN-MUSICAL-Troubadour-Wembley-Park-20260805",
@@ -75084,11 +75139,25 @@
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
           },
           {
-            "url": "https://northernartsreview.co.uk/central-north/matthew-bourne-talks-about-the-creation-of-the-car-man/",
-            "outletId": "northernartsreview.co.uk",
+            "url": "https://www.curveonline.co.uk/whats-on/shows/the-car-man-2/",
+            "outletId": "curveonline.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
+          },
+          {
+            "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+            "outletId": "westminsterextra.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
+          },
+          {
+            "url": "https://www.thestateofthearts.co.uk/features/review-the-car-man-a-feast-for-all-the-senses/",
+            "outletId": "thestateofthearts.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
             "url": "https://www.reviewsgate.co.uk/all-reviews/the-car-man-directed-and-choreographed-by-matthew-bourne-sadlers-wells-roseberry-avenue-islington-london",
@@ -75096,6 +75165,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
+          },
+          {
+            "url": "http://www.londonlivinglarge.com/2026/08/matthew-bournes-new-adventures-car-man.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
             "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
@@ -75107,27 +75183,6 @@
           {
             "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
             "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/matthew-bournes-the-car-man-at-sadlers-wells-and-on-tour-review_1728457/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/the-car-man-sadler-s-wells-25778",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
-            "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
@@ -75145,6 +75200,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-the-car-man-bourne-new-adventures-sadlers-wells-london-july-2026",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/the-car-man-sadlers-wells-review",
@@ -75175,13 +75237,6 @@
             "firstSeenAt": "2026-08-05T22:12:01.770Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/im-every-woman-the-chaka-khan-musical-at-troubadour-wembley-park-theatre-review_1728669/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T22:12:01.770Z"
-          },
-          {
             "url": "https://www.standard.co.uk/culture/theatre/i-m-every-woman-the-chaka-khan-musical-review-b1292417.html",
             "outletId": "standard",
             "state": "GAP",
@@ -75203,10 +75258,10 @@
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 28
+        "liveCount": 14,
+        "candidateCount": 30
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
@@ -76292,14 +76347,12 @@
         "https://theschooltrip.co.uk/ideas/the-enormous-crocodile-the-musical-lyric-hammersmith-london/",
         "https://www.roalddahl.com/stage/the-enormous-crocodile",
         "https://musicaltheatrereview.com/the-enormous-crocodile-the-musical-regents-park-open-air-theatre/",
+        "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
         "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
-        "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
-        "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-        "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-        "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-        "https://www.westendbestfriend.co.uk/news/review-the-enormous-crocodile-regents-park-open-air-theatre"
+        "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+        "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review"
       ],
-      "dirFiles": 32,
+      "dirFiles": 33,
       "dirClean": 12,
       "inReviewsJson": 12,
       "missing": [
@@ -76307,12 +76360,6 @@
           "url": "https://www.westendtheatre.com/301598/news/roald-dahls-the-enormous-crocodile-to-tour-the-uk-in-2026/",
           "host": "westendtheatre.com",
           "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
-          "host": "bristololdvic.org.uk",
-          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -76328,14 +76375,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-          "host": "ilovemanchester.com",
+          "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+          "host": "letsgowiththechildren.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-          "host": "theatrereviewsnorth.com",
+          "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
+          "host": "ilovemanchester.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -76362,7 +76409,15 @@
           "count": 1
         },
         {
+          "host": "playstosee.com",
+          "count": 1
+        },
+        {
           "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -76422,6 +76477,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
+          "host": "bristololdvic.org.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bristololdvic--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
           "host": "show-score.com",
           "knownOutletId": null,
@@ -76476,6 +76549,29 @@
           "serpCensus": true
         },
         {
+          "url": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
+          "host": "raring2go.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "raring2go--trish-holder.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/"
+            },
+            {
+              "file": "raring2go--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
           "host": "pleasemindtheblog.wordpress.com",
           "knownOutletId": null,
@@ -76489,24 +76585,6 @@
               "file": "pleasemindtheblog--debbie.json",
               "flag": "wrongProduction",
               "urlInDir": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-          "host": "thirdcoastreview.com",
-          "knownOutletId": "third-coast-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "third-coast-review--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater"
             }
           ],
           "serpCensus": true
@@ -76561,7 +76639,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 6,
             "error": null
           },
@@ -76592,7 +76670,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -76602,21 +76680,20 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 20,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 20,
         "byReason": {
-          "non-review-host": 17,
-          "non-review-path": 1,
-          "ticketing-listing": 1
+          "non-review-host": 19,
+          "non-review-path": 1
         }
       },
       "ingestResults": [
@@ -76628,15 +76705,6 @@
           "ok": false,
           "noop": true,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
-          "host": "bristololdvic.org.uk",
-          "outletId": "bristololdvic",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "reason": null
         },
         {
           "url": "https://www.latheatrix.com/post/review-family-fun-with-the-enormous-crocodile-at-kirk-douglas-theatre",
@@ -76654,7 +76722,16 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~276406/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~285817/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
+        },
+        {
+          "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+          "host": "letsgowiththechildren.co.uk",
+          "outletId": "letsgowiththechildren",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~285820/day) projects exhaustion in ~10d, before the 26d-out renewal — still u"
         },
         {
           "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
@@ -76666,13 +76743,7 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-          "host": "theatrereviewsnorth.com",
-          "outletId": "theatrereviewsnorth"
-        }
-      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -76682,13 +76753,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westendtheatre.com/301598/news/roald-dahls-the-enormous-crocodile-to-tour-the-uk-in-2026/"
-          },
-          {
-            "outletId": "bristololdvic.org.uk",
-            "outlet": "bristololdvic.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical"
           },
           {
             "outletId": "latheatrix.com",
@@ -76705,18 +76769,18 @@
             "url": "https://theschooltrip.co.uk/ideas/the-enormous-crocodile-the-musical-lyric-hammersmith-london/"
           },
           {
+            "outletId": "letsgowiththechildren.co.uk",
+            "outlet": "letsgowiththechildren.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/"
+          },
+          {
             "outletId": "ilovemanchester.com",
             "outlet": "ilovemanchester.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review"
-          },
-          {
-            "outletId": "theatrereviewsnorth.com",
-            "outlet": "theatrereviewsnorth.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical"
           },
           {
             "outletId": "theatre-vibe",
@@ -76740,6 +76804,13 @@
             "url": "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/"
           },
           {
+            "outletId": "bristololdvic.org.uk",
+            "outlet": "bristololdvic.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical"
+          },
+          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
@@ -76761,18 +76832,18 @@
             "url": "https://www.roalddahl.com/stage/the-enormous-crocodile"
           },
           {
+            "outletId": "raring2go.co.uk",
+            "outlet": "raring2go.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/"
+          },
+          {
             "outletId": "pleasemindtheblog.wordpress.com",
             "outlet": "pleasemindtheblog.wordpress.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/"
-          },
-          {
-            "outletId": "third-coast-review",
-            "outlet": "third-coast-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater"
           }
         ],
         "suppressedMissing": [],
@@ -76802,27 +76873,8 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
-            "url": "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-enormous-crocodile-regents-park-open-air-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
             "url": "https://www.westendtheatre.com/301598/news/roald-dahls-the-enormous-crocodile-to-tour-the-uk-in-2026/",
             "outletId": "westendtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
-            "outletId": "bristololdvic.org.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
@@ -76842,15 +76894,15 @@
             "firstSeenAt": "2026-08-05T22:12:01.770Z"
           },
           {
-            "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
-            "outletId": "ilovemanchester.com",
+            "url": "https://letsgowiththechildren.co.uk/events/the-enormous-crocodile-lyric-hammersmith/",
+            "outletId": "letsgowiththechildren.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-04T13:35:42.946Z"
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           },
           {
-            "url": "https://www.theatrereviewsnorth.com/post/the-enormous-crocodile-the-musical",
-            "outletId": "theatrereviewsnorth.com",
+            "url": "https://ilovemanchester.com/enormous-crocodile-lowry-roald-dahl-review",
+            "outletId": "ilovemanchester.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
@@ -76877,6 +76929,13 @@
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
           },
           {
+            "url": "https://bristololdvic.org.uk/whats-on/the-enormous-crocodile-the-musical",
+            "outletId": "bristololdvic.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
             "outletId": "show-score.com",
             "state": "GAP",
@@ -76898,24 +76957,24 @@
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
           {
+            "url": "https://raring2go.co.uk/event/the-enormous-crocodile-at-the-lyric-hammersmith-theatre/",
+            "outletId": "raring2go.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
+          },
+          {
             "url": "https://pleasemindtheblog.wordpress.com/2025/08/20/the-enormous-crocodile/",
             "outletId": "pleasemindtheblog.wordpress.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T13:35:42.946Z"
-          },
-          {
-            "url": "https://thirdcoastreview.com/stages/2026/02/04/review-the-enormous-crocodile-studebaker-theater",
-            "outletId": "third-coast-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 20
+        "liveCount": 4,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "the-family-album-regional-2026",
@@ -79033,496 +79092,32 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
-        "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
-        "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
-        "https://www.londontheatre1.com/reviews/the-gruffalo-lyric-theatre/",
-        "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
-        "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
-        "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
-        "https://fairypoweredproductions.com/the-gruffalo-review-2/",
-        "https://www.britannica.com/topic/The-Gruffalo",
-        "https://www.curtaincallreviews.co.uk/the-gruffalo",
-        "https://northwestend.com/the-gruffalo-lyric-theatre/",
-        "https://www.ayoungertheatre.com/review-the-gruffalo/",
-        "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars"
-      ],
-      "dirFiles": 12,
-      "dirClean": 2,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
-          "host": "londonmumsmagazine.com",
-          "knownOutletId": "londonmumsmagazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fairypoweredproductions.com/the-gruffalo-review-2/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
-          "host": "britishtheatre.com",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--alex-plim.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/the-gruffalo-review-1"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britannica.com/topic/The-Gruffalo",
-          "host": "britannica.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "britannica--the-information-architects-of-encyclopaedia-britannica.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britannica.com/topic/The-Gruffalo"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
-          "host": "curtaincallreviews.co.uk",
-          "knownOutletId": "curtain-call-reviews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "curtain-call-reviews--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.curtaincallreviews.co.uk/the-gruffalo"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": {
-        "rowCount": 0,
-        "sources": {
-          "westendtheatre": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "theatre-reviews": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "lbo-roundup": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "fetchErrors": 0
-          },
-          "thestage-archive": {
-            "found": false,
-            "rows": 0,
-            "emptyParse": false,
-            "error": null,
-            "passive": true
-          }
-        },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
-      },
+      "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Gruffalo\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Gruffalo\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Gruffalo\" review lyric",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 7,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Gruffalo\" Scheffler review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Gruffalo Lyric Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Gruffalo Lyric Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Gruffalo Lyric Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 13,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 22,
-        "byReason": {
-          "non-review-host": 16,
-          "non-review-path": 5,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
-      "ingestResults": [
-        {
-          "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
-          "host": "londonmumsmagazine.com",
-          "outletId": "londonmumsmagazine",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://fairypoweredproductions.com/the-gruffalo-review-2/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
-          "host": "ayoungertheatre.com",
-          "outletId": "a-younger-theatre"
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
-          "host": "britishtheatre.com",
-          "outletId": "british-theatre"
-        }
-      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/"
-          },
-          {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour"
-          },
-          {
-            "outletId": "londonmumsmagazine",
-            "outlet": "londonmumsmagazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/"
-          },
-          {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/the-gruffalo-review-2/"
-          },
-          {
-            "outletId": "a-younger-theatre",
-            "outlet": "a-younger-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ayoungertheatre.com/review-the-gruffalo/"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1"
-          },
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/"
-          },
-          {
-            "outletId": "britannica.com",
-            "outlet": "britannica.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britannica.com/topic/The-Gruffalo"
-          },
-          {
-            "outletId": "curtain-call-reviews",
-            "outlet": "curtain-call-reviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.curtaincallreviews.co.uk/the-gruffalo"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-gruffalo-lyric-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T22:23:50.667Z"
-          },
-          {
-            "url": "https://northwestend.com/the-gruffalo-lyric-theatre/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-gruffalo_1704203/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T22:23:50.667Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-gruffalo-lyric-theatre---uk-tour",
-            "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://www.londonmumsmagazine.com/shopping/tested-recommended/show-review-the-gruffalo-at-the-lyric-theatre/",
-            "outletId": "londonmumsmagazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-the-gruffalo-lyric-theatre/",
-            "outletId": "west-end-wilma",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://fairypoweredproductions.com/the-gruffalo-review-2/",
-            "outletId": "fairypoweredproductions",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://www.ayoungertheatre.com/review-the-gruffalo/",
-            "outletId": "a-younger-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://www.britishtheatre.com/posts/review-the-gruffalo-lyric-theatre-4stars",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
-            "outletId": "musical-theatre-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
-            "url": "https://www.britannica.com/topic/The-Gruffalo",
-            "outletId": "britannica.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
-            "outletId": "curtain-call-reviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          }
-        ],
-        "liveCount": 2,
-        "candidateCount": 13
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "the-guilty-west-end-2026",
@@ -86117,7 +85712,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -86558,7 +86153,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -86589,13 +86184,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 334,
+        "count": 331,
         "byReason": {
           "not-http-url": 67,
-          "non-review-host": 35,
           "aggregator-internal-nav": 225,
+          "non-review-host": 31,
           "non-review-path": 3,
-          "roundup-page": 1,
+          "roundup-page": 2,
           "merch-store": 3
         }
       },
@@ -86653,7 +86248,7 @@
         "liveCount": 5,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-08T11:19:34.086Z"
+      "computedAt": "2026-08-09T00:11:00.874Z"
     },
     {
       "showId": "the-whoopi-monologues-off-broadway-2026",

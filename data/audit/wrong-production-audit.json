@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-08T23:17:48.033Z",
+  "timestamp": "2026-08-09T00:22:19.474Z",
   "stats": {
-    "totalReviews": 41936,
-    "alreadyFlagged": 18196,
+    "totalReviews": 41937,
+    "alreadyFlagged": 18195,
     "dateGuardCatches": 137,
-    "directorMismatch": 958,
-    "tvFilmSignals": 1161,
-    "londonSignals": 833,
+    "directorMismatch": 959,
+    "tvFilmSignals": 1162,
+    "londonSignals": 834,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3588
+    "noPublishDate": 3589
   },
   "findings": [
     {
@@ -12432,6 +12432,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/neil-patrick-harris-joins-encores-into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
         }
       ]
     },
@@ -26123,6 +26137,20 @@
       "score": 55,
       "publishDate": "2026-04-26",
       "url": "https://www.thewrap.com/creative-content/theater/the-lost-boys-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lyons-2012",
+      "file": "curtainup--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.curtainup.com/lyons.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -40982,6 +41010,7 @@
     {
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
       "file": "thecomicscomic--sean-l-mccarthy.json",
+      "score": 76,
       "publishDate": "2025-08-04",
       "url": "https://thecomicscomic.com/2025/08/04/rosie-odonnell-common-knowledge-at-edinburgh-fringe-2025/",
       "findings": [
@@ -43608,6 +43637,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "westminsterextra--unknown.json",
+      "publishDate": null,
+      "url": "https://www.westminsterextra.co.uk/article/review-the-car-man-at-sadlers-wells",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
