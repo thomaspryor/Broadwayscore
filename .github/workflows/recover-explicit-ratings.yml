@@ -17,6 +17,10 @@ on:
         description: 'Filter to specific outlet'
         required: false
         default: ''
+      show:
+        description: 'Filter to a single show ID (opening-night remediation, task #389)'
+        required: false
+        default: ''
       market:
         description: 'Filter by market (west-end, off-broadway)'
         required: false
@@ -119,6 +123,13 @@ jobs:
             ARGS="$ARGS --time-budget-min=$TB"
             if [ -n "${{ inputs.outlet }}" ]; then
               ARGS="$ARGS --outlet=${{ inputs.outlet }}"
+            fi
+            # Single-show mode — opening-night-checklist.js dispatches
+            # {show, outlet} together so an unparsed Guardian 3/5 on tonight's
+            # opening recovers that one review, not the whole Guardian backlog
+            # (task #389; the script's --show= filter predates this).
+            if [ -n "${{ inputs.show }}" ]; then
+              ARGS="$ARGS --show=${{ inputs.show }}"
             fi
             if [ -n "${{ inputs.market }}" ]; then
               ARGS="$ARGS --market=${{ inputs.market }}"

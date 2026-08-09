@@ -116,7 +116,13 @@ async function run(show, context) {
       ok: true,
       severity: 'warning',
       message: `BWW RR extractor threw (${err?.message || String(err)}) — skipping parity check`,
-      details: { rrUrl, ourBwwCount },
+      // `ourBwwCount` used to be referenced here and has never existed in this
+      // function (it was a leftover from the pre-2026-04-16 outletId-counting
+      // version). That made this graceful-degradation branch throw a
+      // ReferenceError instead of degrading: index.js's per-check try/catch
+      // then reported severity 'error' — a hard checklist failure — for what
+      // is meant to be a skippable "aggregator markup changed" warning.
+      details: { rrUrl },
     };
   }
 
