@@ -100,7 +100,11 @@
     "lucky-guy-2013/theatermania--unknown.json",
     "vanya-and-sonia-and-masha-and-spike-2013/nydailynews--unknown.json",
     "vanya-and-sonia-and-masha-and-spike-2013/plays-to-see--unknown.json",
-    "the-lyons-2012/newsday--unknown.json"
+    "the-lyons-2012/newsday--unknown.json",
+    "the-house-of-blue-leaves-2011/nytimes--unknown.json",
+    "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
+    "the-house-of-blue-leaves-2011/broadwayworld--unknown.json",
+    "the-scottsboro-boys-2010/broadwayworld--unknown.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -987,7 +991,13 @@
     "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
     "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
     "picnic-2013/observer--rex-reed.json",
-    "ghost-the-musical-2012/timeout--david-cote.json"
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "once-2012/musical-theatre-review--unknown.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "wonderland-2011/curtainup--unknown.json",
+    "the-scottsboro-boys-2010/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1060,7 +1070,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/dog-man-the-musical-west-end-2026/londontheatre1--unknown.json"
+      "data/review-texts/dog-man-the-musical-west-end-2026/londontheatre1--unknown.json",
+      "data/review-texts/the-house-of-blue-leaves-2011/nytimes--unknown.json",
+      "the-house-of-blue-leaves-2011/nytimes--unknown.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
@@ -1083,7 +1095,9 @@
       "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/theater-life--samuel-l-leiter.json",
       "spring-awakening-2015/theatrely--unknown.json",
       "vanya-and-sonia-and-masha-and-spike-2013/nydailynews--unknown.json",
-      "vanya-and-sonia-and-masha-and-spike-2013/plays-to-see--unknown.json"
+      "vanya-and-sonia-and-masha-and-spike-2013/plays-to-see--unknown.json",
+      "the-house-of-blue-leaves-2011/broadwayworld--unknown.json",
+      "the-scottsboro-boys-2010/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
@@ -1108,11 +1122,12 @@
       "the-car-man-west-end-2026/westminsterextra--unknown.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "mother-russia-off-broadway-2026/broadwayworld--unknown.json",
-      "all-my-sons-2019/newnownextcom--michael-musto.json"
+      "all-my-sons-2019/newnownextcom--michael-musto.json",
+      "the-house-of-blue-leaves-2011/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-08-08T17:54:18.932Z",
-  "lastProcessed": "the-lyons-2012/newsday--unknown.json",
+  "lastProcessed": "the-scottsboro-boys-2010/thestage--unknown.json",
   "log": [
     {
       "t": "2026-08-08T23:00:19.083Z",
@@ -1136,6 +1151,17 @@
       "t": "2026-08-09T00:30:18.921Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-09T06:04:05.779Z",
+      "event": "bb-session",
+      "session": "67f7864c",
+      "url": "https://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-"
+    },
+    {
+      "t": "2026-08-09T06:04:06.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-09T06:03:44.128Z",
-  "processed": 101,
-  "failed": 885,
-  "successRate": "10.2%",
+  "updatedAt": "2026-08-09T06:08:03.389Z",
+  "processed": 105,
+  "failed": 891,
+  "successRate": "10.5%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 5,
-    "scrapingbee": 14,
+    "scrapingbee": 16,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-08T23:00:19.083Z",
@@ -37,6 +37,17 @@
       "t": "2026-08-09T00:30:18.921Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-09T06:04:05.779Z",
+      "event": "bb-session",
+      "session": "67f7864c",
+      "url": "https://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-"
+    },
+    {
+      "t": "2026-08-09T06:04:06.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
