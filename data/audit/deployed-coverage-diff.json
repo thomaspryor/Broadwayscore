@@ -1,14 +1,13 @@
 {
-  "generatedAt": "2026-08-09T19:38:40.028Z",
+  "generatedAt": "2026-08-09T20:22:14.931Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 156,
-  "clean": 155,
-  "defective": 1,
+  "clean": 154,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
@@ -18,19 +17,28 @@
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: independent"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed cs 74.78 vs local 73.9 (Δ0.88)"
+          "detail": "deployed cs 73.87 vs local 74.33 (Δ0.46)"
         }
       ],
-      "missingFromProd": [
-        "independent"
-      ],
+      "missingFromProd": [],
       "localCount": 28,
-      "deployedCount": 27
+      "deployedCount": 29
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "title": "I'm Every Woman",
+      "openingDate": "2026-08-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 52.05 vs local 54.52 (Δ2.47)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 29
     }
   ]
 }
