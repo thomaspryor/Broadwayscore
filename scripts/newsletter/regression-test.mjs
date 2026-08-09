@@ -75,7 +75,25 @@ const pinnedEdition = draftEditionOnDisk
   || (process.env.NEWSLETTER_EDITION ? resolveNewsletterEdition(process.env.NEWSLETTER_EDITION) : 'broadway');
 
 const scratchDir = fs.mkdtempSync(path.join(os.tmpdir(), 'newsletter-regression-'));
+const actualMetaPath = path.join(outDir, `A-${weekStart}.regression-actual.meta.json`);
 const metaPath = path.join(scratchDir, `A-${weekStart}.meta.json`);
+
+// NEWSLETTER_OUT_DIR does not redirect everything generate.mjs writes: it also
+// UPSERTs data/newsletter-state.json (its STATE_PATH is repo-relative and
+// unconditional). This throwaway re-run has no NEWSLETTER_EXCLUDE_SHOWS, so it
+// would overwrite this week's de-dup row with the UNSWAPPED featured/mover ids
+// — and newsletter-draft.yml commits that file two steps later, so next week's
+// suppression would reflect an issue that was never sent. Snapshot and restore
+// it around the spawn (code-review MEDIUM, 2026-08-09).
+const statePath = path.join(repoRoot, 'data/newsletter-state.json');
+let stateBefore = null;
+try { stateBefore = fs.readFileSync(statePath); } catch { /* absent — restore by deleting */ }
+const restoreState = () => {
+  try {
+    if (stateBefore !== null) fs.writeFileSync(statePath, stateBefore);
+    else fs.rmSync(statePath, { force: true });
+  } catch { /* no-op */ }
+};
 
 const cleanup = () => { try { fs.rmSync(scratchDir, { recursive: true, force: true }); } catch { /* no-op */ } };
 
@@ -88,14 +106,31 @@ try {
   });
   if (!fs.existsSync(metaPath)) {
     console.error(`Generator did not produce ${metaPath}`);
+    restoreState();
     cleanup();
     process.exit(2);
   }
   current = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  // Keep the comparison meta next to the draft so the re-baseline hint below
+  // points at something that still exists AND matches what was compared. The
+  // draft's own meta can differ (pre-send-check may have swapped a gapped show
+  // out of it); copying THAT into the fixture would bake in a diff the next
+  // unswapped run fails on again (code-review MEDIUM, 2026-08-09).
+  try { fs.copyFileSync(metaPath, actualMetaPath); } catch { /* best effort */ }
+} catch (err) {
+  // A generator crash is an I/O failure (exit 2), not a baseline mismatch
+  // (exit 1) — the workflow's `|| echo "no fixture yet"` would otherwise
+  // report a crash to the owner as a routine first-run skip.
+  console.error(`Generator failed: ${err && err.message}`);
+  restoreState();
+  cleanup();
+  process.exit(2);
 } finally {
-  // Delete inline, as soon as the meta is in memory. An exit-event handler
-  // would not run on SIGINT/SIGTERM — the way a cancelled Saturday workflow
-  // actually dies — and would leave /tmp/newsletter-regression-* behind.
+  // Restore + delete inline, as soon as the meta is in memory. An exit-event
+  // handler would not run on SIGINT/SIGTERM — the way a cancelled Saturday
+  // workflow actually dies — and would leave /tmp/newsletter-regression-*
+  // behind and the de-dup state clobbered.
+  restoreState();
   cleanup();
 }
 
@@ -143,7 +178,8 @@ if (failures.length === 0) {
 console.error(`✗ newsletter regression FAILED for week ${weekStart}:`);
 for (const f of failures) console.error(`  - ${f}`);
 console.error(`\nIf the change was intentional, re-baseline with:`);
-// Re-baseline from the REAL draft, not the throwaway comparison copy — the
-// scratch dir is deleted when this process exits.
-console.error(`  cp ${draftMetaPath} ${fixturePath}`);
+// Re-baseline from what was actually COMPARED, not from the draft: after a
+// coverage swap those differ, and copying the draft would bake in a diff the
+// next (unswapped) run fails on again.
+console.error(`  cp ${actualMetaPath} ${fixturePath}`);
 process.exit(1);
