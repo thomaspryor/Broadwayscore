@@ -1006,6 +1006,16 @@ on:
       - 'scripts/lib/stage-latency.js'
       - 'scripts/lib/opening-night-sla.js'
       - 'scripts/opening-night-latency-report.js'
+      # Opening-night checklist layer (task #389). NONE of these were path-listed
+      # before, so every edit to the six automated QA checks — the ones that are
+      # supposed to catch a wrong-production review or a missing Critics Take
+      # before the owner does — shipped with ZERO CI. The colocated
+      # scripts/opening-night-checklist.test.mjs runs in the tests/unit-test-
+      # manifest.txt batch; these source entries make a solo edit trigger it.
+      - 'scripts/opening-night-checklist.js'
+      - 'scripts/opening-night-checklist.test.mjs'
+      - 'scripts/lib/opening-night-checks/**'
+      - 'scripts/lib/opening-night-remediation.js'
       - 'tests/unit/time-to-publish-sla.test.mjs'
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'

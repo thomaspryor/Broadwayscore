@@ -18,6 +18,14 @@ const { runChecks } = require('./lib/opening-night-checks/index.js');
 const { recordDailySnapshot } = require('./lib/score-history-snapshot.js');
 const { computeCriticScore } = require('./lib/compute-critic-score.js');
 const { createReviewFile } = require('./gather-reviews.js');
+const {
+  collectRemediations,
+  readAttempts,
+  planRemediations,
+  executeRemediations,
+  dispatchWorkflow,
+} = require('./lib/opening-night-remediation.js');
+const { routeAlert } = require('./lib/owner-alert-router.js');
 
 const DATA_DIR = path.resolve(__dirname, '../data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
@@ -209,7 +217,7 @@ function remediateMissingReviews(showResults, now) {
 
       if (disabled) {
         stats.killed++;
-        logRemediation({ at: now.toISOString(), showId: show.id, action: 'killed', reason: 'OPENING_NIGHT_REMEDIATION_DISABLED', outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
+        logRemediation({ at: now.toISOString(), kind: 'stub', showId: show.id, action: 'killed', reason: 'OPENING_NIGHT_REMEDIATION_DISABLED', outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source });
         continue;
       }
 
@@ -244,7 +252,10 @@ function remediateMissingReviews(showResults, now) {
         threw = err.message;
       }
 
-      const base = { at: now.toISOString(), showId: show.id, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source };
+      // kind:'stub' distinguishes these from the workflow/alert remediations
+      // that share this ledger (task #389) — one ledger, discriminated by kind,
+      // rather than a second cooldown store.
+      const base = { at: now.toISOString(), kind: 'stub', showId: show.id, outletId: m.outletId, criticName: m.criticName, url: m.url, source: m.source };
       if (threw) {
         stats.rejected++;
         logRemediation({ ...base, action: 'rejected', reason: `threw: ${threw}` });
@@ -269,6 +280,51 @@ function remediateMissingReviews(showResults, now) {
     console.log(`\n[remediation] ${stats.shows} show(s), considered=${stats.considered} created=${stats.created} skipped=${stats.skipped} rejected=${stats.rejected} killed=${stats.killed}`);
   }
   return stats;
+}
+
+// ---------------------------------------------------------------------------
+// Self-declared remediation — the 2026-04-15 catches (task #389)
+// ---------------------------------------------------------------------------
+// Sibling of remediateMissingReviews above, for the checks whose fix is "run
+// the workflow that already owns this" or "tell the owner", rather than "write
+// a stub review file". Same structural contract: a check opts in by emitting
+// details.remediation; this function never switches on check name. See
+// scripts/lib/opening-night-remediation.js for the full rationale.
+async function runSelfDeclaredRemediations(showResults, now) {
+  const remediations = collectRemediations(showResults);
+  if (remediations.length === 0) return null;
+
+  let ledgerLines = [];
+  try {
+    ledgerLines = fs.readFileSync(REMEDIATION_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+  } catch (_) { /* first run — no ledger yet */ }
+
+  const planned = planRemediations(remediations, readAttempts(ledgerLines), now);
+
+  const stats = await executeRemediations(planned, {
+    now,
+    dispatchWorkflow,
+    routeAlert,
+    appendLedger: logRemediation,
+    disabled: process.env.OPENING_NIGHT_REMEDIATION_DISABLED === 'true',
+  });
+
+  console.log(`[remediation] self-declared: considered=${stats.considered} dispatched=${stats.dispatched} alerted=${stats.alerted} suppressed=${stats.suppressed} waited=${stats.waited} escalated=${stats.escalated} failed=${stats.failed} killed=${stats.killed}`);
+
+  return {
+    ...stats,
+    // Plan detail rides in the ONE JSON payload so the run is auditable even
+    // when the ledger commit later fails.
+    actions: planned.map(({ remediation, action, waitMs }) => ({
+      showId: remediation.showId,
+      check: remediation.checkName,
+      kind: remediation.kind,
+      key: remediation.key,
+      action,
+      ...(remediation.workflow ? { workflow: remediation.workflow } : {}),
+      ...(waitMs != null ? { waitMs } : {}),
+    })),
+  };
 }
 
 // W2.0 diagnosis (task #1073, 2026-08-06): data/audit/opening-night-history.json
@@ -424,6 +480,16 @@ async function main() {
     console.error('[remediation] fatal (non-blocking):', err.message);
   }
 
+  // Self-declared remediations (task #389). Non-blocking for the same reason
+  // the stub path is: a dispatch/alert failure must not lose the checklist
+  // result the SLA dispatcher is waiting on.
+  let selfDeclaredRemediation = null;
+  try {
+    selfDeclaredRemediation = await runSelfDeclaredRemediations(showResults, now);
+  } catch (err) {
+    console.error('[remediation] self-declared fatal (non-blocking):', err.message);
+  }
+
   if (jsonMode) {
     const payload = JSON.stringify({
       generatedAt: now.toISOString(),
@@ -434,6 +500,9 @@ async function main() {
         summary,
       })),
       ...(remediationStats ? { remediation: remediationStats } : {}),
+      // Additive key — opening-night-sla-dispatch.js reads only .shows (and
+      // each show's .summary/.results), so this cannot change SLA scoping.
+      ...(selfDeclaredRemediation ? { remediationActions: selfDeclaredRemediation } : {}),
     }, null, 2);
     // --out=<file>: write the JSON to its own file so it can NEVER be
     // corrupted by log lines. The remediation step's scraper stack logs to
