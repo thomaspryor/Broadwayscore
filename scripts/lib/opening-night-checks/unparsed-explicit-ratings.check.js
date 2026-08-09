@@ -53,11 +53,29 @@ function run(show, context) {
     m => `${m.outletId} (${m.schema}) has no parsed rating; queue: node scripts/recover-explicit-ratings.js --show=${show.id} --outlet=${m.outletId}`
   );
 
+  // One remediation per DISTINCT outlet, not per review — recover-explicit-
+  // ratings.js is already outlet-scoped (--outlet=), so two unparsed Guardian
+  // reviews on the same show are one job, not two. (2026-04-15: Guardian 3/5
+  // and NY Post 2/4 were both unparsed on the same show — that's two outlets,
+  // so two dispatches, which is correct.)
+  const byOutlet = [...new Set(missing.map(m => m.outletId))];
+
   return {
     ok: false,
     severity: 'warning',
     message: messages.join('\n'),
-    details: { missing },
+    details: {
+      missing,
+      // Self-declared remediation (task #389) — see critics-take-present.check.js
+      // for why this is a structural field rather than a central name-switch.
+      remediation: byOutlet.map(outletId => ({
+        kind: 'workflow',
+        key: `explicit-ratings:${show.id}:${outletId}`,
+        workflow: 'recover-explicit-ratings.yml',
+        inputs: { show: show.id, outlet: outletId, phases: '0,1,2,3' },
+        reason: `${outletId} (${RATING_SCHEMA_OUTLETS[outletId]}) review has no parsed rating`,
+      })),
+    },
   };
 }
 
