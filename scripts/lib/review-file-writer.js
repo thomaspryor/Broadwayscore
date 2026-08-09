@@ -44,6 +44,7 @@ const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
+const { shouldSkipAggregatorUrlWrite } = require('./aggregator-domains');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -290,6 +291,33 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (isSuspiciousOutletId(outletId)) {
     console.warn(`  ⚠️  Skipping suspicious outlet ID: "${outletId}" (likely sentence fragment from roundup parsing)`);
     return { action: 'skipped', reason: 'suspicious-outlet-id' };
+  }
+
+  // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
+  // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
+  // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file
+  // written that way is the zero-tolerance `aggregator_url_mismatch` error in
+  // validate-review-texts.js, and it reddens the trunk the moment an auto-clear
+  // promotes it into the validated population (see lib/aggregator-url-latent.js).
+  //
+  // This guard already existed — but only inside gather-reviews.js createReviewFile,
+  // one writer out of the ~20 that reach review-texts through this function. The
+  // gap-audit ingest path (audit-show-review-gap.js → ingest-review-from-url.js →
+  // here) had none, so it wrote five theatre.reviews roundups as "theatre" outlet
+  // reviews and the newest held main red. Hoisting the SAME predicate to the shared
+  // chokepoint is what makes the fix cover every caller rather than the two we
+  // happened to read. shouldSkipAggregatorUrlWrite is deliberately narrow: it lets
+  // aggregator-SOURCE writes through (they legitimately carry the roundup URL) and
+  // lets any write carrying a real star/score through (star-stubs).
+  //
+  // Verified against the full 42,252-file corpus before landing: it matches exactly
+  // the 5 contaminated files and zero legitimate ones.
+  if (shouldSkipAggregatorUrlWrite(
+    { source: input.source, url: input.url, originalScore: fields.originalScore, aggregatorStars: fields.aggregatorStars },
+    outletId,
+  )) {
+    console.warn(`  ⚠️  Skipping aggregator-URL write: outletId "${outletId}" with aggregator URL ${input.url} (roundup page, not this outlet's review)`);
+    return { action: 'skipped', reason: 'aggregator-url-mismatch' };
   }
 
   // --- Guard: unregistered outlet + empty stub (2026-05-25) ---

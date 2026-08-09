@@ -22,9 +22,26 @@
  *   Guard rails that keep it from firing on legitimate small runs:
  *     - needs >= minSample shows present in BOTH snapshots (a `--show=X` run
  *       compares 1 show; 1/1 = 100% and would trip every time)
+ *     - needs >= minChanged shows actually changed (see below)
  *     - shows absent from either side are ignored (added/pruned != changed)
  *     - COVERAGE_BLAST_RADIUS_OVERRIDE=1 forces the write through, for the
  *       real mass-change case (a big ingest run healing many shows at once)
+ *
+ *   WHY minChanged EXISTS (2026-08-09, "Audit Aggregator Review Gap" red 13x
+ *   in 3 days; cards #431 / #1030 / #1125):
+ *   audit-show-review-gap.js is time-budget partial — a scheduled run audits
+ *   whatever slice fits the budget, typically ~22 shows, not the full 207. A
+ *   percentage threshold has no meaning at that denominator: 5% of 22 is 1.1
+ *   shows, so ANY run where two shows genuinely changed coverage state read as
+ *   a 9.1% "blast radius" and refused to write. The audit then rolled back its
+ *   freshness stamps and exited 1, every hour, while the real coverage data it
+ *   had just computed was thrown away.
+ *   The failure mode this guard is FOR — dead SERP provider, empty census,
+ *   partial checkout — does not flip two shows. It flips essentially the whole
+ *   batch (80-100%). So requiring an absolute floor as well as a percentage
+ *   costs nothing in detection and removes the entire small-denominator false
+ *   positive class. minSample alone could not do this: raising it would make
+ *   every partial run unjudgeable rather than correctly judged.
  */
 
 'use strict';
@@ -67,6 +84,9 @@ function coverageGateAllows(predicate, opts = {}) {
 
 const DEFAULT_THRESHOLD_PCT = 5;
 const DEFAULT_MIN_SAMPLE = 20;
+// Absolute floor on `changed` before the percentage threshold may refuse a
+// write. See the minChanged rationale in the header comment.
+const DEFAULT_MIN_CHANGED = 5;
 
 /**
  * Compare two {id -> state} snapshots and decide whether the new one is safe
@@ -77,6 +97,7 @@ const DEFAULT_MIN_SAMPLE = 20;
  * @param {Object} [opts]
  * @param {number} [opts.thresholdPct=5]  refuse above this % of compared ids changed
  * @param {number} [opts.minSample=20]    below this many compared ids, never refuse
+ * @param {number} [opts.minChanged=5]    below this many CHANGED ids, never refuse
  * @param {string} [opts.label='coverage'] shown in the reason string
  * @param {NodeJS.ProcessEnv} [opts.env]
  * @returns {{ok: boolean, compared: number, changed: number, changedPct: number,
@@ -87,6 +108,7 @@ function blastRadiusCheck(prevStates, nextStates, opts = {}) {
   const {
     thresholdPct = DEFAULT_THRESHOLD_PCT,
     minSample = DEFAULT_MIN_SAMPLE,
+    minChanged = DEFAULT_MIN_CHANGED,
     label = 'coverage',
     env = process.env,
   } = opts;
@@ -127,6 +149,12 @@ function blastRadiusCheck(prevStates, nextStates, opts = {}) {
       reason: `only ${compared} show(s) comparable (<${minSample}) — sample too small to judge, failing open`,
     };
   }
+  if (changed < minChanged) {
+    return {
+      ok: true, compared, changed, changedPct, changedIds,
+      reason: `only ${changed} show(s) changed state (<${minChanged}) — too few to be a broken input, failing open (${changedPct.toFixed(1)}% of ${compared} compared)`,
+    };
+  }
   if (changedPct > thresholdPct) {
     return {
       ok: false, compared, changed, changedPct, changedIds,
@@ -145,4 +173,5 @@ module.exports = {
   blastRadiusCheck,
   DEFAULT_THRESHOLD_PCT,
   DEFAULT_MIN_SAMPLE,
+  DEFAULT_MIN_CHANGED,
 };

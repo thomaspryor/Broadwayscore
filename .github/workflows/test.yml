@@ -940,6 +940,17 @@ on:
       # consumer. A silent regression here disarms the guard for all of them.
       - 'scripts/lib/coverage-gate.js'
       - 'scripts/lib/coverage-gate.test.mjs'
+      # Aggregator-URL contamination guard (2026-08-09): provisionalOutletIdFromHost
+      # must mint no outlet id for an aggregator host, and createOrMergeReviewFile
+      # must refuse a real outlet carrying an aggregator roundup URL. Both feed the
+      # zero-tolerance aggregator_url_mismatch error in validate-review-texts.js —
+      # the class that held the trunk red 08-07 → 08-09. review-file-writer.js is
+      # already path-listed below; these need their own entries (no scripts/lib/**
+      # broad glob) so a solo edit still triggers CI. The colocated test runs in
+      # the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/outlet-canonicalize.js'
+      - 'scripts/lib/aggregator-domains.js'
+      - 'scripts/lib/aggregator-url-write-chokepoint.test.mjs'
       # Per-show merge for data/audit/show-review-gap.json (#893). Without it a
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
