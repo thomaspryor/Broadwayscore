@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-09T11:41:25.021Z",
-  "subject": "BSC URGENT (day 11): 3 unresolved errors",
+  "generatedAt": "2026-08-09T11:54:49.027Z",
+  "subject": "BSC Daily: 3 known issues (unchanged, day 12)",
   "bannerText": "3 errors, 21 warnings",
-  "consecutiveErrorDays": 11,
+  "consecutiveErrorDays": 12,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
@@ -10,7 +10,7 @@
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
@@ -43,12 +43,8 @@
       "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
     },
     {
-      "name": "Cron failed: Reverse Discovery",
-      "message": "Last run inconclusive: failure (1h ago), no success in 24h"
-    },
-    {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "71 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
+      "message": "72 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
     },
     {
       "name": "Infra-review: gate telemetry",
@@ -87,27 +83,8 @@
       "message": "31 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Pull design and UX inspo from TodayTix predictions site"
     }
   ],
-  "queued": [
-    {
-      "title": "Scraping spend over budget: brightdata $3.53 > $2.5 (403 serp + 1949 unlocker reqs); scrapingdog 55177 credits > 45000",
-      "description": "Day 2026-08-08. 2026-08-08 · Browserbase: $3.7 (37 sessions) · 2026-08-08 · Bright Data: $3.53 (403 serp / 1949 unlocker) · ScrapingBee: 15916 credits (83909 this cycle) · ScrapingDog: 55177 credits (1162260 this cycle) · Browserbase attribution: 0% attributed · Bright Data attribution: 55% attributed — top: opening-night-poller.js 772, audit-show-review-gap.js 302, fetch-show-images-auto.js 161, ingest-review-from-url.js 49, enrich-stubhub-prices.js 9 · ScrapingBee attribution: 4% attributed — top: fetch-show-images-auto.js 222, audit-show-review-gap.js 175, opening-night-poller.js 162, ingest-review-from-url.js 36, enrich-stubhub-prices.js 6 · ScrapingDog attribution: 8% attributed — top: audit-show-review-gap.js 2113, opening-night-poller.js 1309, fetch-show-images-auto.js 353, ingest-review-from-url.js 232, collect-review-texts.js 155. Verification streak reset to 0.",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Review-gap audit refused to write — 15.4% of shows changed coverage state",
-      "description": "review-gap blast radius 15.4% (4/26 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: horrible-histories-barmy-britain-the-best-bits-west-end-2026, now-you-see-me-live-west-end-2026, the-pass-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Stale 'upcoming' tag on ISLA",
-      "description": "isla-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=isla-off-broadway-2026 --apply",
-      "severity": "warning",
-      "url": null
-    }
-  ],
-  "autoFixedCount": 2,
+  "queued": [],
+  "autoFixedCount": 1,
   "passedCount": 53,
   "totalCount": 80
 }
