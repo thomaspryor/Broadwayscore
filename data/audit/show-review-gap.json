@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-09T02:55:25.695Z",
+  "generatedAt": "2026-08-09T04:07:28.257Z",
   "windowDays": 1095,
-  "targets": 13,
-  "auditedThisRun": 13,
-  "carriedForward": 194,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 206,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 162,
-    "totalMissing": 1057,
+    "withGap": 163,
+    "totalMissing": 1059,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1062,
+    "totalFlaggedMisses": 1063,
     "totalRecoverable": 31,
     "totalRecovered": 5
   },
@@ -38947,32 +38947,185 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+        "https://www.chelseanewsny.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "westsidespirit.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.chelseanewsny.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "chelseanewsny.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"ISLA\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ISLA\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ISLA WP Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ISLA WP Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ISLA WP Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "venue-production-page": 1,
+          "non-review-host": 14,
+          "merch-store": 1,
+          "aggregator-internal-nav": 3
+        }
       },
+      "ingestResults": [
+        {
+          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "westsidespirit.com",
+          "outletId": "westsidespirit",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~230337/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+        },
+        {
+          "url": "https://www.chelseanewsny.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "chelseanewsny.com",
+          "outletId": "chelseanewsny",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "reason": "⚠️  Scrapingdog pace (~230337/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "westsidespirit.com",
+            "outlet": "westsidespirit.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617"
+          },
+          {
+            "outletId": "chelseanewsny.com",
+            "outlet": "chelseanewsny.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chelseanewsny.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+            "outletId": "westsidespirit.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T04:07:28.257Z"
+          },
+          {
+            "url": "https://www.chelseanewsny.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+            "outletId": "chelseanewsny.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T04:07:28.257Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T04:07:28.257Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-09T02:55:25.695Z"
+      "computedAt": "2026-08-09T04:07:28.257Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
