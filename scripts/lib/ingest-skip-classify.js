@@ -57,6 +57,13 @@ const CONFLICT_REASONS = [
   // leak, but it is a rejection of a cited review, so it must stay visible
   // rather than reading as "nothing to do".
   'cross-market',
+  // The URL is on a known aggregator domain while the resolved outlet is a
+  // real outlet — the aggregator_url_mismatch contamination class (guard added
+  // to createOrMergeReviewFile 2026-08-09). Same shape as 'cross-market':
+  // refusing the write is correct, but a CITED review was dropped, and the
+  // citation usually means the outlet's own URL was never resolved — the
+  // roundup link stood in for it. Visible, not quiet.
+  'aggregator-url-mismatch',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -113,6 +120,11 @@ function describeConflict(showId, url, { reason, detail }) {
   }
   if (reason === 'cross-market') {
     return `${showId}: ${url} was rejected by the cross-market guard — confirm the review really belongs to this market.`;
+  }
+  if (reason === 'aggregator-url-mismatch') {
+    return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `
+      + `— find that outlet's own article URL (the roundup links to it) and ingest that instead. `
+      + `Filing the roundup URL under a real outlet is the aggregator_url_mismatch defect validate-review-texts.js fails the trunk on.`;
   }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }
