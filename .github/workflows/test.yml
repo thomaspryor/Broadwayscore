@@ -65,6 +65,11 @@ on:
       # that existence-based readers counted as art (2026-08-02).
       - 'scripts/lib/show-image-coverage.js'
       - 'scripts/lib/show-image-coverage.test.mjs'
+      # Gate T acceptance test (card #1153) — spawns the real fleet-wide
+      # ~/.claude/hooks/exit-status-gate.sh, not a repo helper, so a solo edit
+      # here needs its own path entry (the hook has no colocated source file
+      # in-repo to piggyback on). Runs in the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/exit-status-gate-taskref.test.mjs'
       # SERP-census recall metric + its weekly cadence (Coverage Verdict S1,
       # tasks #872/#898). The whole point of the sprint is that a regression in
       # a discovery arm must stop being invisible; a change to the metric or the
@@ -1631,6 +1636,13 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dead-dispatch completion guard (card #1144): a task whose latest
+      # dispatch is journaled dead must not be marked completed. Colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers
+      # CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-dead-launch-guard.js'
+      - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
+      - 'scripts/reconcile-dead-completions.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
