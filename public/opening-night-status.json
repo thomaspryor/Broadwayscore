@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T09:52:13.785Z",
+  "generatedAt": "2026-08-09T11:03:40.787Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,23 +396,23 @@
       "status": "open",
       "slug": "cats-west-end",
       "thumbnail": "/images/shows/cats-west-end-2026/thumbnail.webp",
-      "siteScore": 71.17,
-      "liveScore": 71,
-      "scoreDrift": -0.1700000000000017,
+      "siteScore": 73.1,
+      "liveScore": 73,
+      "scoreDrift": -0.09999999999999432,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
-      "t1": 9,
+      "total": 28,
+      "t1": 10,
       "t2": 5,
-      "t3": 12,
-      "positive": 14,
-      "mixed": 11,
+      "t3": 13,
+      "positive": 15,
+      "mixed": 12,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -435,6 +435,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -782,6 +786,18 @@
           "t3": 12,
           "p": 14,
           "m": 11,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-08-09T11:03:40.787Z",
+          "rc": 28,
+          "s": 73.1,
+          "t1": 10,
+          "t2": 5,
+          "t3": 13,
+          "p": 15,
+          "m": 12,
           "n": 1,
           "bc": "waiting"
         }
