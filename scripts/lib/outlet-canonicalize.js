@@ -22,6 +22,7 @@
 
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName } = require('./review-normalization');
+const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -177,6 +178,18 @@ function getCvStyle(outletId) {
  * girl-interrupted backfill 2026-06-21). Plain TLDs use parts[-2]
  * (ctvoice.com -> "ctvoice", 1minutecritic.com -> "1minutecritic").
  *
+ * AGGREGATOR HOSTS RETURN null (2026-08-09). An aggregator domain is never an
+ * outlet — its pages are roundups that cite other outlets' reviews. Minting a
+ * provisional slug from one produces a phantom outlet AND a review-text file
+ * whose url is on an aggregator domain while its outletId is not an aggregator:
+ * exactly the `aggregator_url_mismatch` zero-tolerance error in
+ * validate-review-texts.js. theatre.reviews split to parts ["theatre","reviews"],
+ * so the registrable label was the generic word "theatre" — five
+ * `theatre--paul-lewis.json` roundup files reached the corpus that way and the
+ * newest one held the trunk red (Test Suite, 27 failures 08-07 → 08-09).
+ * Returning null routes these URLs down the caller's existing "no usable outlet"
+ * branch, which skips the ingest instead of inventing one.
+ *
  * @param {string} host - hostname (with or without leading www.)
  * @returns {string|null} provisional slug, or null if no usable label
  */
@@ -199,6 +212,10 @@ const PROVISIONAL_MULTIPART_SUFFIXES = [
 function provisionalOutletIdFromHost(host) {
   if (!host || typeof host !== 'string') return null;
   const h = host.replace(/^www\./, '').toLowerCase().trim();
+  // Aggregators are not outlets — see the header note. Required import: a
+  // silently-empty set here would make this guard vacuous, so aggregator-domains.js
+  // throws at load if its sets are empty.
+  if (AGGREGATOR_DOMAINS.has(h)) return null;
   const parts = h.split('.').filter(Boolean);
   if (parts.length < 2) return null;
   let label;
