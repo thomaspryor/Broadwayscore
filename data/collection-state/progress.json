@@ -116,7 +116,15 @@
     "les-miserables-2006/slantmagazine--unknown.json",
     "festen-2006/talkinbroadway--unknown.json",
     "the-light-in-the-piazza-2005/timeout--unknown.json",
-    "the-light-in-the-piazza-2005/artsfuse--unknown.json"
+    "the-light-in-the-piazza-2005/artsfuse--unknown.json",
+    "the-light-in-the-piazza-2005/playbill--unknown.json",
+    "julius-caesar-2005/newsday--unknown.json",
+    "julius-caesar-2005/artsfuse--unknown.json",
+    "julius-caesar-2005/plays-to-see--unknown.json",
+    "julius-caesar-2005/times-uk--unknown.json",
+    "julius-caesar-2005/whatsonstage--unknown.json",
+    "little-women-2005/theater-mirror--unknown.json",
+    "enchanted-april-2003/whatsonstage--unknown.json"
   ],
   "failed": [
     "twelfth-night-off-west-end-2026/newyorker--helen-shaw.json",
@@ -1027,7 +1035,9 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "deuce-2007/curtainup--unknown.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "frozen-2004/nytimes--unknown.json",
+    "noises-off-2001/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1102,20 +1112,28 @@
       "the-ritz-2007/ew--unknown.json",
       "les-miserables-2006/slantmagazine--unknown.json",
       "the-light-in-the-piazza-2005/timeout--unknown.json",
-      "the-light-in-the-piazza-2005/artsfuse--unknown.json"
+      "the-light-in-the-piazza-2005/artsfuse--unknown.json",
+      "the-light-in-the-piazza-2005/playbill--unknown.json",
+      "julius-caesar-2005/artsfuse--unknown.json",
+      "julius-caesar-2005/whatsonstage--unknown.json",
+      "little-women-2005/theater-mirror--unknown.json",
+      "enchanted-april-2003/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/dog-man-the-musical-west-end-2026/londontheatre1--unknown.json",
       "data/review-texts/the-house-of-blue-leaves-2011/nytimes--unknown.json",
-      "the-house-of-blue-leaves-2011/nytimes--unknown.json"
+      "the-house-of-blue-leaves-2011/nytimes--unknown.json",
+      "data/review-texts/frozen-2004/nytimes--unknown.json",
+      "data/review-texts/noises-off-2001/nytimes--ben-brantley.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--david-jays-and-maxie-szalwinska.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--the-times.json",
-      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json"
+      "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
+      "julius-caesar-2005/times-uk--unknown.json"
     ],
     "scrapingbee": [
       "cats-west-end-2026/telegraph--james-hall.json",
@@ -1136,7 +1154,9 @@
       "the-scottsboro-boys-2010/broadwayworld--unknown.json",
       "million-dollar-quartet-2010/sfgate--lily-janiak.json",
       "pal-joey-2008/theatrely--unknown.json",
-      "pal-joey-2008/broadwayworld--unknown.json"
+      "pal-joey-2008/broadwayworld--unknown.json",
+      "julius-caesar-2005/newsday--unknown.json",
+      "julius-caesar-2005/plays-to-see--unknown.json"
     ],
     "brightdata": [
       "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
@@ -1169,7 +1189,7 @@
     ]
   },
   "startTime": "2026-08-08T17:54:18.932Z",
-  "lastProcessed": "the-light-in-the-piazza-2005/artsfuse--unknown.json",
+  "lastProcessed": "noises-off-2001/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-08-08T23:00:19.083Z",
@@ -1202,6 +1222,28 @@
     },
     {
       "t": "2026-08-09T06:04:06.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-09T06:18:21.652Z",
+      "event": "bb-session",
+      "session": "d4c22e61",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=98"
+    },
+    {
+      "t": "2026-08-09T06:18:22.559Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-08-09T06:18:48.855Z",
+      "event": "bb-session",
+      "session": "eef27d4f",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE0DB1130F931A35752C"
+    },
+    {
+      "t": "2026-08-09T06:18:49.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
