@@ -161,6 +161,11 @@ function wordBefore(src, i) {
   while (end > 0 && /\s/.test(src[end - 1])) end--;
   let start = end;
   while (start > 0 && /[A-Za-z_$]/.test(src[start - 1])) start--;
+  // A PROPERTY named like a keyword is an operand, so what follows is division,
+  // not a regex: `obj.return / x`. Misreading it started a phantom regex that
+  // ran to the next slash and then opened a phantom string, swallowing the rest
+  // of the template — a missed spawn (Codex round 5, 2026-08-09).
+  if (start > 0 && src[start - 1] === '.') return '';
   return src.slice(start, end);
 }
 

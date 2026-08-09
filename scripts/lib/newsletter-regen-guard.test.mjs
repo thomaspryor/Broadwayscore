@@ -279,3 +279,12 @@ test('corpus sweep: nothing under scripts/newsletter, scripts/lib, or scripts/ r
   assert.ok(scanned > 50, `expected to scan >50 scripts, scanned ${scanned}`);
   assert.deepEqual(all.map((x) => x.reason), []);
 });
+
+// A property named like a keyword is an operand — what follows is division, not
+// a regex. Reading `.return` as the keyword started a phantom regex that ran to
+// the next slash, opened a phantom string, and swallowed the spawn after it
+// (Codex round 5, 2026-08-09).
+test('a property named like a keyword does not turn division into a regex', () => {
+  const src = 'const s = `${obj.return / "/" , execFileSync(\'node\', [\'generate.mjs\'], {env:process.env})}`;';
+  assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
+});
