@@ -21,6 +21,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -45,8 +46,22 @@ const outDir = process.env.NEWSLETTER_OUT_DIR
   || path.join(process.env.HOME || '', 'Documents/claude-outputs/newsletter-mocks');
 const metaPath = path.join(outDir, `A-${weekStart}.meta.json`);
 
+// Pin the edition this re-run must produce instead of inheriting whatever the
+// caller happened to export. This spawn OVERWRITES the draft on disk, so an
+// unset NEWSLETTER_EDITION here silently rewrites a west-end draft as the
+// Broadway edition (generate.mjs's default) — the same defect that killed the
+// 2026-08-08 West End run from pre-send-check.mjs's coverage-swap regen.
+// The fixture is the right anchor (it's what we diff against) but current
+// fixtures predate the meta `edition` field, so fall back to the caller's
+// declared edition, then to the same legacy 'broadway' default send-test.mjs uses.
+const cjsRequire = createRequire(import.meta.url);
+const { resolveNewsletterEdition } = cjsRequire(path.join(repoRoot, 'scripts/lib/email-templates.js'));
+const pinnedEdition = baseline.edition
+  || (process.env.NEWSLETTER_EDITION ? resolveNewsletterEdition(process.env.NEWSLETTER_EDITION) : 'broadway');
+
 execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
   cwd: repoRoot,
+  env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition },
   stdio: ['ignore', 'pipe', 'inherit'],
 });
 
