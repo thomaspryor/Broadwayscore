@@ -79,6 +79,11 @@ const CONFLICT_REASONS = [
   // citation usually means the outlet's own URL was never resolved — the
   // roundup link stood in for it. Visible, not quiet.
   'aggregator-url-mismatch',
+  // Same class, refinement side: the URL's domain resolved to an AGGREGATOR
+  // outlet, so the writer refused to rewrite the real outlet onto it AND
+  // refused the write. Also a CONFLICT, not an expected rejection — a cited
+  // review was dropped and the roundup link stood in for the outlet's own URL.
+  'aggregator-url-refinement-refused',
 ];
 
 // EXPECTED REJECTION = the write was correctly refused and no human action
@@ -175,6 +180,11 @@ function describeSkip(showId, url, { reason, detail }) {
     return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `
       + `— find that outlet's own article URL (the roundup links to it) and ingest that instead. `
       + `Filing the roundup URL under a real outlet is the aggregator_url_mismatch defect validate-review-texts.js fails the trunk on.`;
+  }
+  if (reason === 'aggregator-url-refinement-refused') {
+    return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
+      + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
+      + `If this was a legitimate aggregator star-stub, its stars are lost until the validator gains the star-stub carve-out the write guard already has.`;
   }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }

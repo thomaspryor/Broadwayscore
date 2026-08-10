@@ -273,9 +273,25 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     const refiningOntoAggregator = urlResolved
       && shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId);
     if (refiningOntoAggregator) {
-      console.warn(`  ⚠️  Refusing aggregator outlet refinement for ${showId}: URL=${urlResolved.outletId} (${input.url}) is a roundup domain — keeping name-derived outlet "${outletId}"`);
+      // Refuse the WRITE, not just the refinement (code review on 2c679ad4bb1).
+      // Keeping the name-derived outlet leaves a real outletId on an aggregator
+      // URL — which IS the zero-tolerance aggregator_url_mismatch. The guard
+      // below can't save us: validateUrlDomain only rejects when the outlet has
+      // a registered `domain`, and 361 of the 1043 registry outlets have none,
+      // while shouldSkipAggregatorUrlWrite short-circuits on an aggregator
+      // source or any stored score. So the refusal alone would have converted a
+      // clean (but mis-attributed) write into one that reds the trunk. The
+      // corpus already holds 7 files of this shape on stagedoor.com.
+      //
+      // Dropping the write loses a star-stub in the scored case — but that stub
+      // was previously credited to the WRONG outlet, so nothing correct is lost.
+      // Once the validator gains the star-stub carve-out the write guard already
+      // has (card "P1: aggregator guard misses westendtheatre.com"), this can be
+      // relaxed to allow scored stubs to keep their true outlet.
+      console.warn(`  ⛔ Refusing aggregator-URL write for ${showId}: outlet "${outletId}" on roundup domain ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — not this outlet's review`);
+      return { action: 'skipped', reason: 'aggregator-url-refinement-refused' };
     }
-    if (urlResolved && !refiningOntoAggregator && urlResolved.outletId !== outletId) {
+    if (urlResolved && urlResolved.outletId !== outletId) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
