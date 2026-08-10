@@ -59,6 +59,8 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  hasEnsembleConsensus,
+  isTextStaleRelativeToUrlRewrite,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   isWithinTourLeg,
@@ -2516,7 +2518,15 @@ showDirs.forEach(showId => {
               // same-title other-market reviews.
               const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
                 || outletRegionMap[earlyRawOutlet] === 'london';
-              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
+              // Do NOT auto-clear a unanimous ensemble wrong_production verdict, or a
+              // flag whose evidence text is stale relative to a later URL rewrite — a
+              // UK-URL/registry-region heuristic about the OUTLET says nothing about
+              // whether THIS review's text is actually about the right production,
+              // which is exactly what the ensemble already judged on content. See
+              // scripts/lib/wrong-production-autoclear.js hasEnsembleConsensus (#1156).
+              const ensembleBlocksClear = hasEnsembleConsensus(data, 'wrong_production')
+                || isTextStaleRelativeToUrlRewrite(data);
+              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl && !ensembleBlocksClear) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = isUkUrl
