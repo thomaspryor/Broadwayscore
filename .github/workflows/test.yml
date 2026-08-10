@@ -1006,6 +1006,23 @@ on:
       - 'scripts/lib/date-guard.js'
       - 'scripts/lib/date-guard.test.mjs'
       - 'scripts/lib/wrong-production-autoclear.js'
+      # Coverage-pipeline tracker #1147 (2026-08-09). None of these were path-listed,
+      # so an edit to any of them shipped with ZERO CI (feedback_test_yml_push_path_allowlist).
+      # audit-wrongshow-autoclear-conflicts.js in particular MUTATES the review-texts
+      # corpus under --fix, and its --strict mode is the standing gate for the
+      # auto-clear-vs-ensemble-verdict class.
+      - 'scripts/audit-wrongshow-autoclear-conflicts.js'
+      - 'scripts/lib/outlet-canonicalize.js'
+      - 'scripts/lib/outlet-canonicalize.test.mjs'
+      - 'scripts/lib/non-review-url-patterns.js'
+      - 'scripts/lib/domain-filters.js'
+      - 'scripts/lib/ingest-skip-classify.js'
+      - 'scripts/lib/ingest-skip-classify.test.mjs'
+      - 'scripts/lib/newsletter-preflight.js'
+      - 'scripts/lib/newsletter-preflight.test.mjs'
+      - 'scripts/newsletter/pre-send-check.mjs'
+      - 'scripts/audit-show-review-gap.js'
+      - 'scripts/audit-show-review-gap.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
       # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior

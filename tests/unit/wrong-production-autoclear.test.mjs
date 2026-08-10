@@ -15,6 +15,11 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirnameCompat = path.dirname(fileURLToPath(import.meta.url));
 
 const require = createRequire(import.meta.url);
 const {
@@ -27,6 +32,7 @@ const {
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
   hasEnsembleRejection,
+  shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
@@ -943,5 +949,78 @@ describe('an ensemble verdict outranks every auto-clear heuristic', () => {
     );
     assert.equal(shouldAutoClearWrongShow({ wrongShow: true, allowCrossMarket: true }), true);
     assert.equal(shouldAutoClearWrongProduction({ wrongProduction: true, allowCrossMarket: true }), true);
+  });
+});
+
+// ship-check 2026-08-09: the first cut of the ensemble guard covered only 4 of
+// the 6 auto-clear paths. priorRuns/tourLegs answer "is this DATE legitimate
+// for this production" — they cannot answer "is this TEXT about a different
+// production", which is exactly what the ensemble asserts. Operator-trust over
+// CV (the Phase 1 design) does not extend to overruling three models that read
+// the text and named another show.
+describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', () => {
+  const SHOW_PRIOR = { priorRuns: [{ openingDate: '2025-01-01', closingDate: '2025-06-01' }] };
+  const SHOW_TOUR = { tourLegs: [{ startDate: '2025-01-01', endDate: '2025-06-01' }] };
+  const dateOnlyFlag = {
+    wrongProduction: true,
+    wrongProductionNote: 'Pre-opening guard: review predates previews',
+    publishDate: '2025-03-01',
+  };
+
+  it('priorRun clear happens WITHOUT an ensemble rejection (guard stays narrow)', () => {
+    assert.equal(shouldAutoClearWrongProductionPriorRun({ ...dateOnlyFlag }, SHOW_PRIOR), true);
+  });
+
+  it('priorRun clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionPriorRun(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production' },
+        SHOW_PRIOR,
+      ),
+      false,
+    );
+  });
+
+  it('tourLeg clear happens WITHOUT an ensemble rejection', () => {
+    assert.equal(shouldAutoClearWrongProductionTourLeg({ ...dateOnlyFlag }, SHOW_TOUR), true);
+  });
+
+  it('tourLeg clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionTourLeg(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production' },
+        SHOW_TOUR,
+      ),
+      false,
+    );
+  });
+});
+
+// The census guard: every auto-clear predicate this module exports must consult
+// hasEnsembleRejection. Structural, so a SEVENTH predicate added later cannot
+// quietly re-open the hole the way priorRun/tourLeg did.
+describe('no auto-clear predicate may skip the ensemble guard', () => {
+  it('every shouldAutoClear* function body references hasEnsembleRejection', () => {
+    const src = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    // Split on top-level function declarations and check each shouldAutoClear* body.
+    const bodies = src.split(/\nfunction /).slice(1);
+    const missing = [];
+    for (const b of bodies) {
+      const name = b.slice(0, b.indexOf('('));
+      if (!/^shouldAutoClear/.test(name)) continue;
+      // Stale-date-guard clears are re-evaluations of OUR OWN date guard against
+      // a corrected date; they carry no cross-production claim, so they are
+      // deliberately exempt. Named explicitly so the exemption is a decision.
+      if (name === 'shouldAutoClearStaleDateGuard' || name === 'shouldAutoClearDatelessRevival') continue;
+      if (!b.includes('hasEnsembleRejection')) missing.push(name);
+    }
+    assert.deepEqual(
+      missing, [],
+      `these auto-clear predicates do not consult hasEnsembleRejection: ${missing.join(', ')}. `
+        + 'A heuristic must never overrule a multi-model verdict that read the text (tracker #2).',
+    );
   });
 });
