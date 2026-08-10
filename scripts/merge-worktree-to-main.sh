@@ -279,6 +279,45 @@ if [ -n "$(echo "$AUDIT_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   fi
 fi
 
+# --- Post-merge TEST floor (task #1149) ─────────────────────────────────────
+# The syntax floor above (`node --check`) catches parse-level collisions but
+# not semantic ones: two branches can each be individually correct and pass
+# their OWN pre-merge test runs, yet the MERGED tree fails a colocated
+# contract test that only exists because of the OTHER branch. Reproduced
+# 2026-08-09: a worktree branched at 16:24, another session's commit
+# (ingest-skip-classify.js + its contract test) landed on origin at 16:31,
+# local runs at 16:33-16:38 were green because that test didn't exist yet at
+# the branch point, this script merged origin in at 16:41 and pushed, and CI
+# went red minutes later. Running the full suite BEFORE the merge — exactly
+# what that session had already done — cannot catch this class; the
+# colliding test only exists WITH the merge. Run the colocated
+# scripts/lib/*.test.mjs suite (same glob CI's own "Run scripts/lib tests"
+# step uses) against the MERGED tree, BEFORE push, whenever any scripts/lib
+# file changed on this diff — same $ORIGIN_BASE_SHA..HEAD anchor as the
+# syntax floor and push audits above. A failure refuses to push and leaves
+# the branch intact, same recovery shape as those checks.
+#
+# Kill switch (adversarial-review finding, same pattern as
+# PUSH_SKIP_CONTENT_SURVIVAL_CHECK below): this runs the WHOLE scripts/lib/
+# suite, not just files this branch touched, so a flaky or slow pre-existing
+# test unrelated to the branch's own diff can block ANY merge that happens to
+# touch a scripts/lib file. Without an escape hatch, a false-positive storm
+# here would wedge every session's merges with no way out except editing this
+# script under pressure — MERGE_SKIP_POST_MERGE_TEST_GATE=1 gives an
+# immediate, auditable bypass instead.
+if [ "${MERGE_SKIP_POST_MERGE_TEST_GATE:-}" = "1" ]; then
+  log "post-merge test floor: skipped (MERGE_SKIP_POST_MERGE_TEST_GATE=1)"
+else
+  CHANGED_FOR_TEST_GATE=$(g diff --name-only "$ORIGIN_BASE_SHA" HEAD 2>/dev/null || true)
+  if [ -n "$(echo "$CHANGED_FOR_TEST_GATE" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js" ]; then
+    log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
+    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
+      restore_stash
+      die "post-merge test floor failed — the MERGED tree fails a scripts/lib/ colocated test (likely a semantic collision between two branches, see task #1149). Resolve in $MAIN_DIR, commit the fix, then re-run this script. (Escape hatch for a false positive: MERGE_SKIP_POST_MERGE_TEST_GATE=1 scripts/merge-worktree-to-main.sh)"
+    fi
+  fi
+fi
+
 # --- Push, integrating remote moves via merge (never rebase) on rejection ---
 if [ "${DRY_RUN:-0}" = "1" ]; then
   log "DRY_RUN=1 — skipping push"
