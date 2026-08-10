@@ -104,6 +104,12 @@ const EXPECTED_REJECTION_REASONS = [
   // review — but it stays visible, since a caller producing these in bulk
   // means an upstream extractor is returning empty.
   'empty-unknown',
+  // Tour/regional contamination guard refused the write
+  // (review-file-writer.js:396, hoisted from gather-reviews by task #1150).
+  // A tour-stop or regional-mounting review filed under this show is not a
+  // review of this production — the refusal is correct and permanent, same
+  // footing as cross-market.
+  'tour-review',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -175,6 +181,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'empty-unknown') {
     return `${showId}: ${url} carried no URL, no text and no critic, so there was nothing to write. Expected rejection; if a caller produces these in bulk its extractor is returning empty.`;
+  }
+  if (reason === 'tour-review') {
+    return `${showId}: ${url} looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js.`;
   }
   if (reason === 'aggregator-url-mismatch') {
     return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `
