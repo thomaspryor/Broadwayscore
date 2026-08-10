@@ -40,7 +40,8 @@
     "the-whoopi-monologues-off-broadway-2026/one-minute-critic--unknown.json",
     "the-jonathan-larson-project-off-west-end-2026/times-uk--donald-hutera.json",
     "allegra-west-end-2026/londongrip--julia-pascal.json",
-    "allegra-west-end-2026/slippedisc--norman-lebrecht.json"
+    "allegra-west-end-2026/slippedisc--norman-lebrecht.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "isla-off-broadway-2026/show-score--unknown.json",
@@ -222,7 +223,16 @@
     "jesus-christ-superstar-west-end-2026/wwwandrewlloydwebbercomshowjesus-christ-superstar--unknown.json",
     "jesus-christ-superstar-west-end-2026/ap--mark-kennedy.json",
     "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
-    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json"
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "jesus-christ-superstar-west-end-2026/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/deadline--nellie-andreeva.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -253,7 +263,10 @@
       "allegra-west-end-2026/slippedisc--norman-lebrecht.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [
       "im-every-woman-off-west-end-2026/times-uk--clive-davis.json",
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
@@ -283,6 +296,13 @@
     ]
   },
   "startTime": "2026-08-10T04:54:03.295Z",
-  "lastProcessed": "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
-  "log": []
+  "lastProcessed": "the-guilty-west-end-2026/deadline--nellie-andreeva.json",
+  "log": [
+    {
+      "t": "2026-08-10T06:45:46.721Z",
+      "event": "bb-session",
+      "session": "cc448cd8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/to-kill-a-mockingbird-broadway-"
+    }
+  ]
 }
