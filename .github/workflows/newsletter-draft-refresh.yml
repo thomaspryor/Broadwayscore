@@ -73,7 +73,17 @@ jobs:
       # Job-level so the pre-send-check regen inherits it too — a step-level
       # value would be lost in exactly the way NEWSLETTER_EDITION was.
       # Consumed as a strict === '1' test; see the allowGaps input comment.
-      NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || vars.NEWSLETTER_ALLOW_GAPS || '' }}
+      #
+      # Deliberately reads ONLY the dispatch input — NOT vars.NEWSLETTER_ALLOW_GAPS,
+      # which newsletter-draft.yml uses as a persistent, manually-toggled escape
+      # hatch. This workflow's Sunday cron is UNATTENDED: honouring that repo
+      # variable would mean an owner who set it for a one-off manual send, and
+      # forgot to unset it, silently ships a featured opening with an incomplete
+      # review set with nobody in the loop. On a cron run this expression yields
+      # '' (missing inputs resolve to null, not an error), so the swap applies
+      # exactly as it did before this input existed. Waiving gaps here must
+      # always be a deliberate, per-run human act.
+      NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || '' }}
       GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
       GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
 

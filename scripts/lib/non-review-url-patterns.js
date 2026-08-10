@@ -25,6 +25,12 @@
  * "pure, fixture-testable" pure-decision-layer contract to require directly.
  */
 
+// Ticket-seller hosts are owned by the WRITE PATH's list, not duplicated here
+// — see the note in classifyReviewUrl. domain-filters.js is dependency-free
+// (no fs, no network), so this preserves this module's "safe for the S5 probe's
+// pure decision layer" load contract.
+const { TICKET_DOMAINS, matchesDomainSet } = require('./domain-filters');
+
 // Non-review domains ignored inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
 const NON_REVIEW_HOST_PATTERNS = [
@@ -274,6 +280,21 @@ function classifyReviewUrl(url) {
   if (!h) return { ok: false, reason: 'unparseable-url' };
   if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
     return { ok: false, reason: 'non-review-host' };
+  }
+  // Ticket sellers: read the WRITE PATH's list rather than keeping a parallel
+  // one here. domain-filters.js TICKET_DOMAINS is what isBlockedReviewUrl uses
+  // to refuse an ingest; before this, the census kept its own copy, so a host
+  // added to one list still counted as a "missing review" in the other. That
+  // divergence is how ticketluck.com and etickets.com became two of the
+  // phantom gaps that got Disruption deleted from the 2026-08-03 newsletter.
+  // One list now covers discovery AND ingest.
+  //
+  // Only TICKET_DOMAINS is borrowed, deliberately — domain-filters' aggregator
+  // and reference sets are broader than this classifier wants (show-score.com
+  // in particular must stay classifiable here, see the note above on
+  // NON_REVIEW_HOST_PATTERNS).
+  if (matchesDomainSet(h, TICKET_DOMAINS)) {
+    return { ok: false, reason: 'ticketing-reseller' };
   }
   const named = namedNonReviewReason(url);
   if (named) return { ok: false, reason: named };
