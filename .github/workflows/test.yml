@@ -1435,6 +1435,13 @@ on:
       # colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/newsletter-regen-guard.js'
       - 'scripts/lib/newsletter-regen-guard.test.mjs'
+      # Structural guard: the refresh workflow's allowGaps input must stay a
+      # STRING ('1'), and the ADC fallback in popular-pages.mjs must stay gated
+      # to non-CI. Test-only (no lib file); runs in the scripts/lib/*.test.mjs
+      # glob step. Path-listed so a solo edit to the guard triggers CI, and so
+      # edits to the two files it guards do too.
+      - 'scripts/lib/newsletter-allow-gaps-wiring.test.mjs'
+      - 'scripts/newsletter/popular-pages.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter
