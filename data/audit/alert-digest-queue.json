@@ -53,5 +53,16 @@
     "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
     "model": null,
     "queuedAt": "2026-08-10T17:27:20.294Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-08-10T19:41:05.945753+00:00,2026-08-10T19:44:53.632124+00:00",
+    "title": "Feedback: 1 of 2 needs you",
+    "description": "2 messages from users came in. 1 of them stalled and needs a person.\n\n3 Summers of Lincoln (Regional) — The site deliberately did not act on this: show \"3 Summers of Lincoln\" (regional) already in catalog as 3-summers-of-lincoln-regional-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Vanguard Culture’s review from David Coddon to the Scorecard page for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/567\n\n3 Summers of Lincoln (Regional) — A review on the 3 Summers of Lincoln page is misattributed — David Coddon's review is credited to Vanguard Culture but should be attributed to Stage West.. You will get another email when it is live on the site.\n  They wrote: \"Update: David Coddon’s review is Stage West’s not Vanguard Culture’s\"",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31427249280",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-10T20:10:40.174Z"
   }
 ]
