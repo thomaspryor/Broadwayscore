@@ -21,21 +21,30 @@
 
 const SKIP_ANNOTATION = /--\s*verify-schema:\s*skip/;
 
-// Strip -- comments and $$..$$ / $tag$..$tag$ bodies so DDL keywords inside
-// function bodies or comment prose can't produce phantom assertions.
+// Strip $$..$$ bodies, comments, and string literals so DDL keywords inside
+// function bodies or prose can't produce phantom assertions, and so a ';'
+// inside a string (COMMENT text, CHECK ... IN ('a;b')) can't fracture the
+// statement split. Order matters: dollar bodies first (may contain anything),
+// then line comments (often contain apostrophes — "don't" — that would
+// otherwise open a phantom string literal), then block comments, then strings.
 function stripNoise(sql) {
-  let out = sql.replace(/--[^\n]*/g, '');
-  out = out.replace(/\$([A-Za-z_]*)\$[\s\S]*?\$\1\$/g, "''");
+  let out = sql.replace(/\$([A-Za-z_]*)\$[\s\S]*?\$\1\$/g, "''");
+  out = out.replace(/--[^\n]*/g, '');
+  out = out.replace(/\/\*[\s\S]*?\*\//g, '');
+  out = out.replace(/'(?:[^']|'')*'/g, "''");
   return out;
 }
 
 function unquoteIdent(raw) {
   if (!raw) return raw;
-  let name = raw.trim().replace(/^"(.*)"$/, '$1');
+  let name = raw.trim();
   // Strip schema qualifier; everything this project owns lives in public.
   const dot = name.lastIndexOf('.');
-  if (dot !== -1) name = name.slice(dot + 1).replace(/^"(.*)"$/, '$1');
-  return name;
+  if (dot !== -1 && !/^".*"$/.test(name)) name = name.slice(dot + 1);
+  if (/^".*"$/.test(name)) return name.slice(1, -1);
+  // Postgres folds unquoted identifiers to lowercase before storing them in
+  // the catalogs — match that, or an unquoted MixedCase name false-fails forever.
+  return name.toLowerCase();
 }
 
 // key → {kind, name, file}; key doubles as the identity used to diff against
@@ -45,14 +54,27 @@ function keyFor(kind, name) {
 }
 
 function parseStatement(stmt, file, expected) {
-  const add = (kind, name) => {
-    if (name) expected.set(keyFor(kind, name), { kind, name, file });
+  const add = (kind, name, extra) => {
+    if (name) expected.set(keyFor(kind, name), { kind, name, file, ...extra });
   };
   const remove = (kind, name) => {
     if (name) expected.delete(keyFor(kind, name));
   };
 
   let m;
+  if ((m = stmt.match(/\bDROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w.]+)/i))) {
+    const table = unquoteIdent(m[1]);
+    remove('table', table);
+    // Cascade: expectations scoped to the dropped table (columns `t.col`,
+    // policies/triggers/constraints `t:name`, indexes recorded with table=t)
+    // would otherwise false-fail forever after a legitimate drop.
+    for (const [key, obj] of [...expected]) {
+      if (obj.name.startsWith(`${table}.`) || obj.name.startsWith(`${table}:`) || obj.table === table) {
+        expected.delete(key);
+      }
+    }
+    return true;
+  }
   if ((m = stmt.match(/\bCREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?("[^"]+"|[\w.]+)/i))) {
     const table = unquoteIdent(m[1]);
     add('table', table);
@@ -75,21 +97,26 @@ function parseStatement(stmt, file, expected) {
       remove('column', `${table}.${unquoteIdent(c[1])}`);
       found = true;
     }
+    // Constraint (and trigger, below) names are only unique per-table in
+    // Postgres, so the key is table-qualified — a same-named constraint on a
+    // DIFFERENT table must not satisfy this table's assertion.
     const addCon = /\bADD\s+CONSTRAINT\s+("[^"]+"|[\w]+)/gi;
     while ((c = addCon.exec(body))) {
-      add('constraint', unquoteIdent(c[1]));
+      add('constraint', `${table}:${unquoteIdent(c[1])}`);
       found = true;
     }
     const dropCon = /\bDROP\s+CONSTRAINT\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w]+)/gi;
     while ((c = dropCon.exec(body))) {
-      remove('constraint', unquoteIdent(c[1]));
+      remove('constraint', `${table}:${unquoteIdent(c[1])}`);
       found = true;
     }
     // ENABLE ROW LEVEL SECURITY etc. — real DDL, but nothing to assert.
     return found || /\bROW\s+LEVEL\s+SECURITY\b/i.test(body);
   }
-  if ((m = stmt.match(/\bCREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:CONCURRENTLY\s+)?(?:IF\s+NOT\s+EXISTS\s+)?("[^"]+"|[\w.]+)/i))) {
-    add('index', unquoteIdent(m[1]));
+  if ((m = stmt.match(/\bCREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:CONCURRENTLY\s+)?(?:IF\s+NOT\s+EXISTS\s+)?("[^"]+"|[\w.]+)\s+ON\s+(?:ONLY\s+)?("[^"]+"|[\w.]+)/i))) {
+    // Index names are schema-unique so the key stays the bare name; the table
+    // is recorded so a DROP TABLE can cascade-remove the expectation.
+    add('index', unquoteIdent(m[1]), { table: unquoteIdent(m[2]) });
     return true;
   }
   if ((m = stmt.match(/\bDROP\s+INDEX\s+(?:CONCURRENTLY\s+)?(?:IF\s+EXISTS\s+)?("[^"]+"|[\w.]+)/i))) {
@@ -120,17 +147,18 @@ function parseStatement(stmt, file, expected) {
     remove('view', unquoteIdent(m[1]));
     return true;
   }
-  if ((m = stmt.match(/\bCREATE\s+(?:OR\s+REPLACE\s+)?TRIGGER\s+("[^"]+"|[\w]+)/i))) {
-    add('trigger', unquoteIdent(m[1]));
+  if ((m = stmt.match(/\bCREATE\s+(?:OR\s+REPLACE\s+)?(?:CONSTRAINT\s+)?TRIGGER\s+("[^"]+"|[\w]+)[\s\S]*?\bON\s+("[^"]+"|[\w.]+)/i))) {
+    add('trigger', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
     return true;
   }
-  if ((m = stmt.match(/\bDROP\s+TRIGGER\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w]+)/i))) {
-    remove('trigger', unquoteIdent(m[1]));
+  if ((m = stmt.match(/\bDROP\s+TRIGGER\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w]+)\s+ON\s+("[^"]+"|[\w.]+)/i))) {
+    remove('trigger', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
     return true;
   }
-  // GRANT/REVOKE/COMMENT/INSERT/UPDATE: legitimate migration content with no
-  // existence assertion. Counts as "understood" so a migration made only of
-  // these still needs the explicit skip annotation to document that intent.
+  // GRANT/REVOKE/COMMENT: legitimate migration content with no existence
+  // assertion. Counts as "understood", so a migration made only of these
+  // passes without the skip annotation — there is nothing to verify, and
+  // forcing an annotation would just be ceremony.
   return /^\s*(GRANT|REVOKE|COMMENT)\b/i.test(stmt);
 }
 
@@ -169,11 +197,11 @@ const LIVE_CATALOG_QUERY = `
 SELECT 'table' AS kind, tablename AS name FROM pg_tables WHERE schemaname = 'public'
 UNION ALL SELECT 'view', viewname FROM pg_views WHERE schemaname = 'public'
 UNION ALL SELECT 'column', table_name || '.' || column_name FROM information_schema.columns WHERE table_schema = 'public'
-UNION ALL SELECT 'constraint', conname FROM pg_constraint c JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
+UNION ALL SELECT 'constraint', rel.relname || ':' || conname FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
 UNION ALL SELECT 'index', indexname FROM pg_indexes WHERE schemaname = 'public'
 UNION ALL SELECT 'policy', tablename || ':' || policyname FROM pg_policies WHERE schemaname = 'public'
 UNION ALL SELECT 'function', p.proname FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
-UNION ALL SELECT 'trigger', t.tgname FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
+UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
 `.trim();
 
 function diffAgainstLive(expected, liveRows) {
