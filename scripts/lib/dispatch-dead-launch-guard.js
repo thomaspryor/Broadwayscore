@@ -29,6 +29,10 @@
  */
 
 const { isLatestDispatchDead } = require('./dispatch-ledger.js');
+// notionIdOf already parses the "[notion:<id>] ..." marker notion-tasks-sync
+// writes into a mirrored task's description (dispatch-watchdog-core.js) —
+// reused rather than re-implementing the same regex a third place (card #1157).
+const { notionIdOf } = require('./dispatch-watchdog-core.js');
 
 // Decision for a completion attempt (a TaskUpdate-shaped {taskId, status}
 // plus the ledger entries already read from disk). Non-'completed' statuses
@@ -48,11 +52,23 @@ function guardTaskCompletion({ taskId, status, entries }) {
 
 // Tasks that are ALREADY marked 'completed' but whose latest dispatch is
 // dead — the reconciler's input. `tasks` is the shape loadTasks() already
-// produces ({id, status, subject, ...}).
+// produces ({id, status, subject, ...}). notionId (card #1157) lets the
+// caller also correct the mirrored Notion card's status — a dead-completed
+// task whose description carries notion-tasks-sync's "[notion:<id>] ..."
+// marker had its card pushed to "Done" by notion-tasks-sync push BEFORE the
+// dead dispatch was discovered; null for native (non-mirrored) tasks.
 function reconcileDeadCompletions(tasks, entries) {
   return (tasks || [])
     .filter((t) => t && t.status === 'completed' && isLatestDispatchDead(t.id, entries))
-    .map((t) => ({ id: t.id, subject: t.subject || null }));
+    .map((t) => ({ id: t.id, subject: t.subject || null, notionId: notionIdOf(t) }));
 }
 
-module.exports = { guardTaskCompletion, reconcileDeadCompletions };
+// Whether a Notion card's CURRENT status should be corrected back off "Done"
+// when its mirrored task is reopened. Read-then-check (rather than writing
+// unconditionally) so a card the owner has since re-triaged by hand isn't
+// clobbered (card #1157).
+function shouldCorrectNotionStatus(currentStatus) {
+  return currentStatus === 'Done';
+}
+
+module.exports = { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus };

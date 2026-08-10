@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { guardTaskCompletion, reconcileDeadCompletions } = require('./dispatch-dead-launch-guard.js');
+const { guardTaskCompletion, reconcileDeadCompletions, shouldCorrectNotionStatus } = require('./dispatch-dead-launch-guard.js');
 const { isLatestDispatchDead, latestAttemptForTask, failedLaunchEntries } = require('./dispatch-ledger.js');
 
 // Ship-check adversarial finding (card #1144): isLatestDispatchDead's
@@ -109,6 +109,37 @@ test('reconcileDeadCompletions: flags a completed task whose latest dispatch is 
   const flagged = reconcileDeadCompletions(tasks, entries);
   assert.equal(flagged.length, 1);
   assert.equal(flagged[0].id, '1140');
+  assert.equal(flagged[0].notionId, null);
+});
+
+// Card #1157: reopening the local task-store copy doesn't correct the
+// mirrored Notion card notion-tasks-sync.js's push already flipped to
+// "Done". notionId is how the caller (reconcile-dead-completions.js) finds
+// which card to correct.
+test('reconcileDeadCompletions: extracts notionId from a notion-tasks-sync mirrored description', () => {
+  const tasks = [{
+    id: '1140', status: 'completed',
+    subject: 'P1: main red — The Car Man',
+    description: '[notion:3b4637c5-416f-81c9-94ba-c956de23e648] P1 Next · In progress · Data\nhttps://notion.so/x\nsome notes',
+  }];
+  const flagged = reconcileDeadCompletions(tasks, DEAD_LAUNCH_1140);
+  assert.equal(flagged.length, 1);
+  assert.equal(flagged[0].notionId, '3b4637c5-416f-81c9-94ba-c956de23e648');
+});
+
+test('reconcileDeadCompletions: notionId is null for a native (non-mirrored) task', () => {
+  const tasks = [{ id: '1140', status: 'completed', subject: 'x', description: 'no marker here' }];
+  const flagged = reconcileDeadCompletions(tasks, DEAD_LAUNCH_1140);
+  assert.equal(flagged.length, 1);
+  assert.equal(flagged[0].notionId, null);
+});
+
+test('shouldCorrectNotionStatus: true only for "Done"', () => {
+  assert.equal(shouldCorrectNotionStatus('Done'), true);
+  assert.equal(shouldCorrectNotionStatus('Not started'), false);
+  assert.equal(shouldCorrectNotionStatus('In progress'), false);
+  assert.equal(shouldCorrectNotionStatus('Paused'), false);
+  assert.equal(shouldCorrectNotionStatus(undefined), false);
 });
 
 test('reconcileDeadCompletions: never flags a pending/in_progress task, even if its dispatch is dead', () => {
