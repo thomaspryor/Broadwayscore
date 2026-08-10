@@ -71,6 +71,18 @@ test('BEFORE this module existed, nothing in the codebase flagged that shape —
   assert.equal(wouldHaveBeenSkippedByValidator, false, 'no rejection flag explains the drop — that IS the silent gap');
 });
 
+test('delegates to the canonical isIncludableForRebuild, not a hand-rolled flag list (ship-check finding: memory feedback_includability_predicates_must_be_canonical.md)', () => {
+  // isNonReview / fabricatedEntry / scoreStatus==='TO_BE_CALCULATED' are real
+  // exclusion classes explainExclusion() recognizes that a flat
+  // VALIDATOR_EXCLUSION_FLAGS-style list (9 rejection-flag fields) never
+  // covered — a bespoke predicate would have false-flagged these as silent
+  // gaps when they are deliberate, correct exclusions.
+  const base = { criticName: 'Jonathan', fullText: LONG_TEXT };
+  assert.equal(isMissingContentTierGap({ ...base, isNonReview: true }), false);
+  assert.equal(isMissingContentTierGap({ ...base, fabricatedEntry: true }), false);
+  assert.equal(isMissingContentTierGap({ ...base, scoreStatus: 'TO_BE_CALCULATED' }), false);
+});
+
 test('a review WITH a contentTier is not reported', () => {
   assert.equal(isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, contentTier: 'complete' }), false);
 });
@@ -150,6 +162,15 @@ test('normalizeHostSlug strips www, a hosting platform suffix, and the TLD', () 
   assert.equal(normalizeHostSlug('example.com'), 'example');
   assert.equal(normalizeHostSlug(''), '');
   assert.equal(normalizeHostSlug(null), '');
+});
+
+test('normalizeHostSlug takes the LAST remaining segment on a 3+-label host — not the subdomain prefix (ship-check finding, confirmed by direct execution)', () => {
+  // Before the fix, the generic single-label-TLD strip ran UNCONDITIONALLY
+  // after the platform-suffix/two-label-TLD strip already removed a suffix,
+  // eating the real identity label instead: 'theater.jerryportwood.substack.com'
+  // came back 'theater' (wrong) instead of 'jerryportwood'.
+  assert.equal(normalizeHostSlug('theater.jerryportwood.substack.com'), 'jerryportwood');
+  assert.equal(normalizeHostSlug('news.dancemagazine.co.uk'), 'dancemagazine');
 });
 
 test('normalizeOutletName strips punctuation/case for comparison', () => {

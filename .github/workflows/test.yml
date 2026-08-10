@@ -305,6 +305,10 @@ on:
       # shouldEscalateToFix decision table (task #1073): colocated test runs in
       # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/plan-ready.test.mjs'
+      # Guards task #94's review-texts write-routing regression (runs the real
+      # lint-write-routing.sh gate). Registered in tests/unit-test-manifest.txt;
+      # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/notion-action-poll.test.mjs'
       # --card single-card scope flag (task #725): pure filter predicate,
       # colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).

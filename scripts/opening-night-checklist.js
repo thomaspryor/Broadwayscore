@@ -24,6 +24,7 @@ const {
   readGiveUps,
   planRemediations,
   executeRemediations,
+  findAbandonedRemediations,
   dispatchWorkflow,
 } = require('./lib/opening-night-remediation.js');
 const { routeAlert } = require('./lib/owner-alert-router.js');
@@ -330,6 +331,58 @@ async function runSelfDeclaredRemediations(showResults, now) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Drain pass — terminalize remediations abandoned by the ±2-day window (task #1223)
+// ---------------------------------------------------------------------------
+// resolveTargetShows() only re-collects remediations from shows currently in
+// the ±2-day window, so a key whose show ages out mid-remediation just stops
+// being looked at: no lifetime-ceiling line, no ledger activity at all,
+// forever. Ledger silence then reads as "resolved" when it may mean
+// "abandoned". This pass scans the FULL ledger for keys stuck on an open
+// action whose show is no longer targeted this run, and writes exactly one
+// terminal line each.
+//
+// Only meaningful on a full run — a --show=ID run only ever sees one show, so
+// every OTHER key's showId would look "not in this run's targets" even though
+// it just wasn't asked about, which would wrongly terminalize the entire
+// ledger the first time anyone ran with --show.
+function runDrainPass(showResults, now) {
+  if (showIdArg) return null;
+  // Same kill switch remediateMissingReviews() and runSelfDeclaredRemediations()
+  // already honor — if the owner has disabled the remediation layer (e.g.
+  // mid-incident), the drain pass should not write new ledger state either.
+  if (process.env.OPENING_NIGHT_REMEDIATION_DISABLED === 'true') return null;
+
+  let ledgerLines = [];
+  try {
+    ledgerLines = fs.readFileSync(REMEDIATION_LOG_PATH, 'utf8').split('\n').filter(Boolean);
+  } catch (_) { return null; }
+
+  const targetShowIds = new Set(showResults.map(({ show }) => show.id));
+  const abandoned = findAbandonedRemediations(ledgerLines, targetShowIds, now);
+
+  for (const item of abandoned) {
+    logRemediation({
+      at: now.toISOString(),
+      kind: item.kind,
+      key: item.key,
+      showId: item.showId,
+      checkName: item.checkName,
+      action: item.action,
+      attempts: item.attempts,
+      ...(item.workflow ? { workflow: item.workflow } : {}),
+      why: item.why,
+    });
+  }
+
+  const gaveUp = abandoned.filter(a => a.action === 'gave-up').length;
+  const trulyAbandoned = abandoned.length - gaveUp;
+  if (abandoned.length > 0) {
+    console.log(`[remediation] drain: ${abandoned.length} key(s) left the ±2-day window still open — ${trulyAbandoned} abandoned, ${gaveUp} gave-up`);
+  }
+  return { considered: abandoned.length, abandoned: trulyAbandoned, gaveUp, keys: abandoned.map(a => a.key) };
+}
+
 // W2.0 diagnosis (task #1073, 2026-08-06): data/audit/opening-night-history.json
 // stopped getting new entries on 2026-04-26 while this workflow kept reporting
 // green ~5x/day. Root cause, reproduced locally by renaming node_modules/cheerio
@@ -493,6 +546,17 @@ async function main() {
     console.error('[remediation] self-declared fatal (non-blocking):', err.message);
   }
 
+  // Drain pass (task #1223) — must run AFTER self-declared remediations so it
+  // reads the ledger including any lines just written above, and is equally
+  // non-blocking for the same reason: a drain failure must not lose the
+  // checklist result the SLA dispatcher is waiting on.
+  let remediationDrain = null;
+  try {
+    remediationDrain = runDrainPass(showResults, now);
+  } catch (err) {
+    console.error('[remediation] drain fatal (non-blocking):', err.message);
+  }
+
   if (jsonMode) {
     const payload = JSON.stringify({
       generatedAt: now.toISOString(),
@@ -506,6 +570,9 @@ async function main() {
       // Additive key — opening-night-sla-dispatch.js reads only .shows (and
       // each show's .summary/.results), so this cannot change SLA scoping.
       ...(selfDeclaredRemediation ? { remediationActions: selfDeclaredRemediation } : {}),
+      // Additive key (task #1223) — feeds the daily digest a visible count of
+      // keys terminalized because their show left the targeting window.
+      ...(remediationDrain ? { remediationDrain } : {}),
     }, null, 2);
     // --out=<file>: write the JSON to its own file so it can NEVER be
     // corrupted by log lines. The remediation step's scraper stack logs to

@@ -461,6 +461,98 @@ async function executeRemediations(planned, deps) {
   return stats;
 }
 
+// Ledger actions that mean "a remediation was in flight and never reached a
+// terminal state" — the set findAbandonedRemediations() looks for when a
+// key's show has aged out of the ±2-day targeting window (task #1223).
+// 'failed' is included alongside the three the card names ('dispatched',
+// 'escalated', 'waited'): a dispatch that failed (e.g. no-token) means the
+// problem persists exactly like a successful dispatch does — leaving it out
+// would recreate the same "last line looks inconclusive, silence follows"
+// gap for that one action.
+// 'suppressed' included too: it means routeAlert's own cooldown swallowed a
+// notification for a check that is presumably STILL failing (the same
+// "unresolved, not yet re-notified" state as 'waited') — leaving it out would
+// let a key whose last line is 'suppressed' go silent forever, the exact
+// ambiguity this drain pass exists to close.
+const DRAIN_OPEN_ACTIONS = new Set(['dispatched', 'escalated', 'waited', 'failed', 'suppressed']);
+
+/**
+ * Find remediation keys stuck open because their show left the ±2-day
+ * targeting window before the key ever reached a terminal ledger state.
+ *
+ * resolveTargetShows() in opening-night-checklist.js only re-collects
+ * remediations from shows currently within ±2 days of opening, so a key
+ * whose show ages out mid-remediation simply stops being looked at — the
+ * ledger goes silent, and silence is ambiguous between "resolved" and
+ * "abandoned". This scans the FULL ledger (not just the current run) for
+ * keys whose latest entry is still an open action, and whose show is no
+ * longer in `targetShowIds`, and returns exactly one terminal line per key:
+ * 'gave-up' if the key had already spent its lifetime attempt budget
+ * (mirrors planRemediations' own ceiling check), otherwise 'abandoned'.
+ *
+ * A key already carrying a terminal last entry ('gave-up', or nothing at all
+ * because it resolved or was 'retired') is left alone — this must never
+ * re-terminalize an already-terminal key, or the ledger would grow forever.
+ *
+ * @param {string[]} lines - full remediation-log.jsonl content
+ * @param {Set<string>} targetShowIds - shows in THIS run's ±2-day window
+ * @param {Date} now
+ * @param {{lifetimeMaxAttempts?: number}} [opts]
+ * @returns {Array<{key: string, showId: string, kind: string, checkName: ?string, workflow: ?string, inputs: ?Object, action: 'gave-up'|'abandoned', attempts: number, why: string}>}
+ */
+function findAbandonedRemediations(lines, targetShowIds, now, opts = {}) {
+  const lifetimeMaxAttempts = opts.lifetimeMaxAttempts ?? DEFAULT_LIFETIME_MAX_ATTEMPTS;
+
+  const latestByKey = new Map();
+  for (const line of lines || []) {
+    let entry;
+    try { entry = JSON.parse(line); } catch (_) { continue; }
+    if (!entry || !entry.key || !entry.at) continue;
+    const prev = latestByKey.get(entry.key);
+    // Ties (same `at`, e.g. a rebased ledger) keep the LAST one seen in file
+    // order, matching readAttempts/readGiveUps' own append-order convention.
+    if (!prev || new Date(entry.at).getTime() >= new Date(prev.at).getTime()) {
+      latestByKey.set(entry.key, entry);
+    }
+  }
+
+  const attemptsByKey = readAttempts(lines);
+  const gaveUpKeys = readGiveUps(lines);
+  const out = [];
+  for (const [key, entry] of latestByKey) {
+    if (!DRAIN_OPEN_ACTIONS.has(entry.action)) continue;
+    if (!entry.showId || targetShowIds.has(entry.showId)) continue;
+
+    // Mirror planRemediations' own ceiling check exactly (including its
+    // retiredAt filter): attempts made BEFORE the key's last retirement were
+    // already spent earning that retirement, and must not be recounted once
+    // the TTL expires and grants a fresh cycle — otherwise a key that gave up
+    // once, cooled off, took one more attempt, and then aged out of the
+    // window would be double-counted back into 'gave-up' on a cycle that had
+    // really only spent 1 of its budget.
+    const retiredAt = gaveUpKeys.get(key);
+    const reachedTarget = (attemptsByKey.get(key) || [])
+      .filter(a => a.ok && (retiredAt == null || new Date(a.at).getTime() > retiredAt))
+      .length;
+    const giveUp = entry.kind === 'workflow' && reachedTarget >= lifetimeMaxAttempts;
+
+    out.push({
+      key,
+      showId: entry.showId,
+      kind: entry.kind,
+      checkName: entry.checkName || null,
+      workflow: entry.workflow || null,
+      inputs: entry.inputs || null,
+      action: giveUp ? 'gave-up' : 'abandoned',
+      attempts: reachedTarget,
+      why: giveUp
+        ? `lifetime attempt ceiling reached (${reachedTarget}) — show left the ±2-day targeting window before a later run could record it`
+        : `show left the ±2-day targeting window with ${reachedTarget} attempt(s) made — remediation was never confirmed resolved`,
+    });
+  }
+  return out;
+}
+
 const REPO_OWNER = process.env.GITHUB_REPOSITORY?.split('/')?.[0] || 'thomaspryor';
 const REPO_NAME = process.env.GITHUB_REPOSITORY?.split('/')?.[1] || 'Broadwayscore';
 
@@ -506,6 +598,7 @@ module.exports = {
   readGiveUps,
   planRemediations,
   executeRemediations,
+  findAbandonedRemediations,
   dispatchWorkflow,
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
