@@ -622,6 +622,19 @@ reconcile_merged_json() {
 # signature: our own resolution silently reverting to the pre-edit base with
 # no OTHER concurrent write in between (the reproduced incident).
 verify_content_survived() {
+  # $1 (optional): the SHA that was actually pushed, when it is NOT local HEAD
+  # — the Git Data API fallback builds its commit via plumbing without moving
+  # HEAD, so its call site must pass $API_NEW_SHA explicitly. Everywhere else
+  # HEAD IS the just-pushed commit and the default applies. The pushed SHA
+  # lets push-content-survival.js tell "our own rebase integrated a sibling
+  # pipeline's concurrent version of the same file" (superseded — warn, pass)
+  # from "a write clobbered us after our push" (fail) — the distinction whose
+  # absence made 6 Opening Night Poller runs go deterministically red Aug 7-9
+  # while their pushes had actually landed.
+  local pushed_sha="${1:-}"
+  if [ -z "$pushed_sha" ]; then
+    pushed_sha="$(git rev-parse HEAD 2>/dev/null || true)"
+  fi
   # Emergency kill switch (ship-check/Codex finding) — this check is new and
   # globally affects every one of the ~130 workflows that push through this
   # helper, unlike the opt-in PUSH_RECONCILE_MERGED_JSON below. Mirrors the
@@ -640,10 +653,13 @@ verify_content_survived() {
   # reproduces exactly that pinned-refspec condition).
   git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 \
     || git_fetch origin "$PULL_BRANCH" >/dev/null 2>&1 || true
-  node "$SCRIPT_DIR/push-content-survival.js" \
-    --before-sha="$SCRIPT_ENTRY_HEAD" \
-    --base-sha="$SCRIPT_ENTRY_BASE" \
+  local survival_args=(
+    --before-sha="$SCRIPT_ENTRY_HEAD"
+    --base-sha="$SCRIPT_ENTRY_BASE"
     --check-ref="origin/$PULL_BRANCH"
+  )
+  [ -n "$pushed_sha" ] && survival_args+=(--pushed-sha="$pushed_sha")
+  node "$SCRIPT_DIR/push-content-survival.js" "${survival_args[@]}"
 }
 
 pushed=false
@@ -1237,7 +1253,11 @@ if [ "$_api_fallback_ok" = "true" ]; then
   if API_NEW_SHA=$(bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-6}"); then
     echo "  Git Data API fallback succeeded: $API_NEW_SHA"
     git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 || true
-    if verify_content_survived; then
+    # HEAD was reset to SCRIPT_ENTRY_HEAD above and the API commit never moved
+    # it — pass the actually-pushed SHA explicitly, or the default (HEAD) would
+    # tautologically equal --before-sha and the superseded check would be
+    # meaningless on this branch.
+    if verify_content_survived "$API_NEW_SHA"; then
       # The commit push-via-git-api.sh built has a DIFFERENT parent lineage
       # than local HEAD (it was built on top of the remote tip via plumbing,
       # not via a local rebase of our commits) — local main must be moved to
