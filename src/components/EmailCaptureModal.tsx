@@ -12,7 +12,7 @@ import { captureEvent } from '@/lib/posthog-events';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
-import { getTriggerCopy, type GateTrigger } from '@/lib/gate-logic';
+import { getTriggerCopy, COPY_VERSION, type GateTrigger } from '@/lib/gate-logic';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -84,8 +84,8 @@ export default function EmailCaptureModal({
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
-      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
-      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
+      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
+      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
     }
     // analyticsProps is set by ProGateContext before isOpen flips; identity may
     // change per fire but only isOpen/trigger should re-emit the event.
@@ -154,6 +154,7 @@ export default function EmailCaptureModal({
         role: userData.role || 'none',
         trigger,
         is_return_visitor: trigger === 'return_visitor',
+        copyVersion: COPY_VERSION,
         ...analyticsProps,
       };
       track('email_captured', captureProps);
@@ -199,6 +200,11 @@ export default function EmailCaptureModal({
           <p className="text-gray-400">
             {copy.subheading}
           </p>
+          {copy.example && (
+            <p className="mt-3 inline-block px-3 py-1.5 bg-surface border border-white/10 rounded-lg text-sm text-gray-300">
+              {copy.example}
+            </p>
+          )}
         </div>
 
         {/* Form */}

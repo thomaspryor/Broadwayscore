@@ -150,6 +150,9 @@ export type GateTrigger =
 export interface TriggerCopy {
   heading: string;
   subheading: string;
+  /** Optional one-line preview of the actual email content — makes the abstract
+   *  value-prop concrete. Only exit_intent/scroll_depth carry one (task #1205). */
+  example?: string;
 }
 
 /**
@@ -158,9 +161,35 @@ export interface TriggerCopy {
  * the vague "Know the score before you book" to state the concrete
  * deliverable, cadence, and volume up front — the prior copy named no
  * specific benefit a visitor could weigh against handing over their email.
+ * The `example` line (task #1205, gpt-5.4-mini fresh-eyes review on that same
+ * session) illustrates the CriticScore format described in the subheading
+ * above — it is explicitly labeled "Sample" (not "Example:", and no quotation
+ * marks around the tagline) so it doesn't read as a live score or a real
+ * critic's quote (ship-check 2026-08-10 caught both misreadings: gpt-5.4-mini
+ * flagged the quote marks as looking like an attributed critic quote; Codex
+ * flagged that the shipped opening-night email is a full score badge + review
+ * count + distribution + optional Critics' Take, not this compact line —
+ * this is a stylized preview of the deliverable, not a literal rendering).
+ * EXAMPLE_SCORE values are asserted against the live canonical score in
+ * tests/unit/email-gate-conversion.test.mjs so a Hamilton rescore fails CI
+ * instead of shipping a silently stale number.
  */
+const EXAMPLE_SCORE = { broadway: 92, westEnd: 90 }; // hamilton-2015 cs:91.83, hamilton-west-end-2021 cs:90.07 — kept in sync by the test above
+
+/**
+ * Stamped as `copyVersion` on gate_modal_shown / email_captured /
+ * gate_modal_dismissed (task #1206) so the #586 copy rewrite's before/after
+ * effect on conversion/dismiss can be isolated from ordinary week-to-week
+ * trend — the 2026-08-24 recheck needs this to tell "copy change moved it"
+ * apart from "traffic mix moved it". Bump this string (new date suffix) on
+ * any future getTriggerCopy rewrite so old and new copy segment cleanly in
+ * scripts/analyze-email-gate-funnel.js's byCopyVersion breakdown.
+ */
+export const COPY_VERSION = 'v2-2026-08-10';
+
 export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy {
   const market = isWE ? 'West End' : 'Broadway';
+  const exampleScore = isWE ? EXAMPLE_SCORE.westEnd : EXAMPLE_SCORE.broadway;
   const copies: Record<GateTrigger, TriggerCopy> = {
     csv_download: {
       heading: 'CSV Export Coming Soon',
@@ -177,10 +206,12 @@ export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy
     exit_intent: {
       heading: `Before you go: the ${market} CriticScore`,
       subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+      example: `Sample: Hamilton — ${exampleScore} · Sharp, electric, essential.`,
     },
     scroll_depth: {
       heading: `Before you go: the ${market} CriticScore`,
       subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+      example: `Sample: Hamilton — ${exampleScore} · Sharp, electric, essential.`,
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,

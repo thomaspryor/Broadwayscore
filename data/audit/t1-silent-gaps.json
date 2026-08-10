@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T06:57:17.281Z",
+  "generatedAt": "2026-08-10T09:16:07.406Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -18,10 +18,10 @@
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
+      "firstSeen": "2026-08-10T09:09:08.420Z",
+      "fileAgeHours": 0.11635111111111111,
       "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 8.586324722222223
+      "nonTerminalAgeHours": 10.900248333333334
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 425.76132,
+      "fileAgeHours": 428.0752430555556,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 385.0642622222222
+      "nonTerminalAgeHours": 387.37818583333336
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 89.36792361111111
+      "nonTerminalAgeHours": 91.68184722222222
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 116.20450916666667,
+      "fileAgeHours": 118.51843222222222,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 115.5664461111111
+      "nonTerminalAgeHours": 117.88036972222223
     }
   ],
   "contradictions": []
