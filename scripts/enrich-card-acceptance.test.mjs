@@ -72,6 +72,50 @@ test('human-action title with no category gets owner-judgment', async () => {
   assert.equal(r.action, 'owner-judgment');
 });
 
+// Task #1186: a technical deny-tag rejection (email/commercial/scoring/
+// ios-app) is not owner-judgment — it must NOT get the hard-blocking bare
+// marker, and must instead reach the same LLM-drafted path an eligible card
+// would.
+test('deny-tagged technical card (scoring) does NOT get owner-judgment — reaches the LLM path instead', async () => {
+  const calls = [];
+  let llmCalled = false;
+  const card = {
+    id: 'd1', name: 'Fix a scoring script bug', category: 'Product', tags: ['scoring'],
+    notes: '## Problem\nSomething in the scoring pipeline is wrong.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => { llmCalled = true; return JSON.stringify({ command: 'npx tsc --noEmit', acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit` is clean' }); },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(llmCalled, true);
+  assert.equal(calls.length, 1);
+  const notesIdx = calls[0].indexOf('--notes');
+  assert.doesNotMatch(calls[0][notesIdx + 1], /VERIFY: owner-judgment/);
+});
+
+// 'owner-action' is the one DENY_TAGS entry that IS genuinely human-territory
+// (autonomous-eligibility.js docstring: "cards that need the OWNER
+// personally") — it must keep getting the marker, unlike the other deny-tags.
+test('owner-action tagged card still gets owner-judgment, no LLM call', async () => {
+  const calls = [];
+  let llmCalled = false;
+  const card = {
+    id: 'd2', name: 'Reconnect App Store Connect', category: 'Product', tags: ['owner-action'],
+    notes: 'Needs the owner to re-auth.',
+  };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => { llmCalled = true; return '{}'; },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(r.action, 'owner-judgment');
+  assert.equal(llmCalled, false);
+  const notesIdx = calls[0].indexOf('--notes');
+  assert.match(calls[0][notesIdx + 1], /VERIFY: owner-judgment/);
+});
+
 test('eligible card: LLM drafts a valid tsc command, notes are updated and re-verified armed', async () => {
   const calls = [];
   const card = {
