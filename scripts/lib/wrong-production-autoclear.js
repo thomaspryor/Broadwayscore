@@ -253,12 +253,10 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  // A declared priorRuns/tourLegs window says 'this date is legitimate for this
-  // production'. It cannot answer 'this text is about a different production' —
-  // which is exactly what the ensemble verdict asserts. Operator-trust over CV
-  // (the Phase 1 design) does not extend to overruling three models that read
-  // the text and named another show (ship-check 2026-08-09: the first cut of
-  // this guard covered only 4 of the 6 auto-clear paths).
+  // Defense-in-depth (#1156 ship-check): structurally, ensemble rejections
+  // never populate wrongProductionNote/Reason with a DATE_GUARD_PREFIXES/
+  // AUTO_REASON value, so this can't currently overlap with an ensemble
+  // verdict — but check explicitly rather than relying on that coincidence.
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
@@ -289,12 +287,7 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
   const hasManualReason = !!reason && !reasonIsAuto;
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  // A declared priorRuns/tourLegs window says 'this date is legitimate for this
-  // production'. It cannot answer 'this text is about a different production' —
-  // which is exactly what the ensemble verdict asserts. Operator-trust over CV
-  // (the Phase 1 design) does not extend to overruling three models that read
-  // the text and named another show (ship-check 2026-08-09: the first cut of
-  // this guard covered only 4 of the 6 auto-clear paths).
+  // Defense-in-depth (#1156 ship-check) — see shouldAutoClearWrongProductionPriorRun.
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
