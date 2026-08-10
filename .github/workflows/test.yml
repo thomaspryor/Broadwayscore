@@ -1088,6 +1088,12 @@ on:
       - 'scripts/opening-night-checklist.test.mjs'
       - 'scripts/lib/opening-night-checks/**'
       - 'scripts/lib/opening-night-remediation.js'
+      # The Critics' Take floor, shared by generate-critic-consensus.js and
+      # critics-take-present.check.js (#389). Editing either side without the
+      # other is how the death-note dispatch loop started.
+      - 'scripts/lib/critic-consensus-eligibility.js'
+      - 'tests/unit/critic-consensus-eligibility.test.mjs'
+      - 'scripts/generate-critic-consensus.js'
       - 'tests/unit/time-to-publish-sla.test.mjs'
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'

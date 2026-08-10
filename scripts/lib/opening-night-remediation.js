@@ -50,6 +50,33 @@ const DEFAULT_COOLDOWN_MS = 6 * 60 * 60 * 1000;
 // anything the first two didn't.
 const DEFAULT_MAX_ATTEMPTS = 2;
 const DEFAULT_WINDOW_MS = 24 * 60 * 60 * 1000;
+// Lifetime ceiling, deliberately NOT windowed (task #389, 2026-08-10).
+//
+// DEFAULT_MAX_ATTEMPTS is a ROLLING budget: once the two attempts age out of
+// the 24h window the key is eligible again, so a remediation whose target can
+// never succeed re-dispatches two workflow runs per day, forever, and re-writes
+// an 'escalated' ledger line every hour in between. That is what happened to
+// `critic-consensus:death-note-the-musical-west-end-2026` — the show had one
+// scored review, generate-critic-consensus.js refuses to write a consensus
+// below its own floor, and the loop ran 5 dispatches + 23 escalations before a
+// human noticed.
+//
+// Why a ceiling rather than teaching each check its target's preconditions:
+// that mirror is not always constructible. The checklist job checks out
+// core-data only, so critics-take-present can see reviews.json but NOT the
+// review-text files the generator actually counts; measured against the live
+// corpus, every reviews.json-derived proxy either over-counts (14 shows could
+// still loop) or under-counts (15 shows silently stop being checked). A check
+// SHOULD mirror a precondition it can see — and critics-take-present now does
+// — but the layer that dispatches has to be the one that guarantees no
+// remediation runs forever, because it is the only layer that knows a fix has
+// been attempted and did not take.
+//
+// 4 = two full budget cycles. After that the owner has been told (escalation
+// happens at attempt 2) and two more automatic attempts have failed to change
+// anything, so the honest state is "automation is done with this", recorded
+// once and then silent.
+const DEFAULT_LIFETIME_MAX_ATTEMPTS = 4;
 
 const VALID_KINDS = new Set(['workflow', 'alert']);
 
@@ -141,6 +168,27 @@ function readAttempts(lines) {
 }
 
 /**
+ * Keys that have already been retired by the lifetime ceiling.
+ *
+ * Read separately from readAttempts() rather than folded into its return shape
+ * so the attempt budget and the terminal marker stay independently testable —
+ * and so adding this could not change what readAttempts() means to its existing
+ * callers.
+ *
+ * @param {string[]} lines - raw JSONL lines
+ * @returns {Set<string>}
+ */
+function readGiveUps(lines) {
+  const out = new Set();
+  for (const line of lines || []) {
+    let entry;
+    try { entry = JSON.parse(line); } catch (_) { continue; }
+    if (entry && entry.key && entry.action === 'gave-up') out.add(entry.key);
+  }
+  return out;
+}
+
+/**
  * Decide what to do with each collected remediation.
  *
  * @param {Array<Object>} remediations - from collectRemediations()
@@ -153,6 +201,8 @@ function planRemediations(remediations, attemptsByKey, now, opts = {}) {
   const cooldownMs = opts.cooldownMs ?? DEFAULT_COOLDOWN_MS;
   const maxAttempts = opts.maxAttempts ?? DEFAULT_MAX_ATTEMPTS;
   const windowMs = opts.windowMs ?? DEFAULT_WINDOW_MS;
+  const lifetimeMaxAttempts = opts.lifetimeMaxAttempts ?? DEFAULT_LIFETIME_MAX_ATTEMPTS;
+  const gaveUpKeys = opts.gaveUpKeys || new Set();
 
   return (remediations || []).map((remediation) => {
     // kind:'alert' has no cooldown here on purpose — routeAlert() owns its own
@@ -164,6 +214,19 @@ function planRemediations(remediations, attemptsByKey, now, opts = {}) {
     }
 
     const attempts = attemptsByKey.get(remediation.key) || [];
+
+    // Already retired: stay silent. Not even a ledger line — an hourly cron
+    // writing "still given up" forever is the same noise in a new costume.
+    if (gaveUpKeys.has(remediation.key)) {
+      return { remediation, action: 'retired', attempts: attempts.length };
+    }
+
+    // Lifetime ceiling, checked before the rolling budget so an aged-out window
+    // cannot resurrect a remediation that has already had its full run.
+    if (attempts.length >= lifetimeMaxAttempts) {
+      return { remediation, action: 'give-up', attempts: attempts.length };
+    }
+
     const decision = decideRequeueAction(attempts, now, { cooldownMs, maxAttempts, windowMs });
     return {
       remediation,
@@ -198,7 +261,7 @@ async function executeRemediations(planned, deps) {
   // "the owner was told N times" when the owner was told once — the same
   // class of self-flattering metric as a gate that reports clean because it
   // scanned nothing.
-  const stats = { considered: 0, dispatched: 0, waited: 0, escalated: 0, alerted: 0, suppressed: 0, failed: 0, killed: 0 };
+  const stats = { considered: 0, dispatched: 0, waited: 0, escalated: 0, alerted: 0, suppressed: 0, failed: 0, killed: 0, gaveUp: 0, retired: 0 };
   const at = (now || new Date()).toISOString();
 
   for (const { remediation, action, waitMs, attempts } of planned || []) {
@@ -218,6 +281,31 @@ async function executeRemediations(planned, deps) {
       continue;
     }
 
+    // Retired on an earlier run. Write nothing at all — the whole point of the
+    // terminal state is that the ledger stops growing.
+    if (action === 'retired') {
+      stats.retired++;
+      continue;
+    }
+
+    // Crossing the lifetime ceiling: record it exactly once, dispatch nothing,
+    // alert nothing. The owner already got the escalation at attempt 2; this
+    // line is the automation saying it has stopped, which is what makes
+    // "no ledger activity" readable as "resolved or retired" rather than
+    // ambiguous silence.
+    if (action === 'give-up') {
+      stats.gaveUp++;
+      appendLedger({
+        ...base,
+        action: 'gave-up',
+        attempts,
+        workflow: remediation.workflow || null,
+        why: `lifetime attempt ceiling reached (${attempts}) — no further automatic attempts for this key`,
+      });
+      console.warn(`::warning::opening-night remediation retired ${remediation.key} after ${attempts} attempts — ${remediation.workflow || remediation.kind} never resolved the check`);
+      continue;
+    }
+
     if (action === 'wait') {
       stats.waited++;
       appendLedger({ ...base, action: 'waited', waitMs, attempts });
@@ -228,7 +316,6 @@ async function executeRemediations(planned, deps) {
       // Budget spent. Tell the owner ONCE (routeAlert dedups on conditionKey)
       // that auto-remediation gave up, rather than silently retrying forever
       // or silently stopping — the "write-only" failure mode of #689/#690.
-      stats.escalated++;
       let routed = null;
       try {
         routed = await routeAlert({
@@ -243,7 +330,20 @@ async function executeRemediations(planned, deps) {
         stats.failed++;
         continue;
       }
-      appendLedger({ ...base, action: 'escalated', attempts, routed: routed?.action || null });
+      // Same distinction the kind:'alert' branch below makes, for the same
+      // reason: routeAlert returns {action:'silent'} when its own conditionKey
+      // cooldown suppressed the notification, and an hourly cron will hit that
+      // branch every hour for a single incident. Counting those as 'escalated'
+      // made the stat read "the owner was told 23 times" when the owner was
+      // told once (task #389, observed on
+      // critic-consensus:death-note-the-musical-west-end-2026).
+      if (routed?.action === 'silent') {
+        stats.suppressed++;
+        appendLedger({ ...base, action: 'suppressed', why: 'escalation alert-router cooldown', attempts });
+      } else {
+        stats.escalated++;
+        appendLedger({ ...base, action: 'escalated', attempts, routed: routed?.action || null });
+      }
       continue;
     }
 
@@ -348,10 +448,12 @@ async function dispatchWorkflow(workflow, inputs) {
 module.exports = {
   collectRemediations,
   readAttempts,
+  readGiveUps,
   planRemediations,
   executeRemediations,
   dispatchWorkflow,
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_WINDOW_MS,
+  DEFAULT_LIFETIME_MAX_ATTEMPTS,
 };
