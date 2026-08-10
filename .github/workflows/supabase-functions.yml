@@ -42,33 +42,18 @@ jobs:
           deno check supabase/functions/mezzanine-search/index.ts
           deno check supabase/functions/delete-account/index.ts
       - name: Verify required schema exists in prod
-        # Both functions hard-depend on their rate-limit log tables (fail
-        # closed without them). Migrations are applied via the Management
-        # API, not this workflow — fail the deploy loudly if the schema is
-        # missing rather than shipping a function that 500s on every call.
+        # The functions hard-depend on their rate-limit log tables (fail
+        # closed without them). Checks are auto-derived from every file in
+        # supabase/migrations/ — the hand-maintained check_table/check_column
+        # list this step used to carry covered 3 of 12 migrations and needed a
+        # second hand-edit per migration, the forgetting-class that let
+        # 20260809_watchlist_showtime.sql sit unapplied until the nightly UGC
+        # roundtrip paged the owner. verify-schema.yml runs the same script on
+        # pushes that touch migrations; this invocation gates function deploys.
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          check_table() {
-            RES=$(curl -s -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/database/query" \
-              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
-              -d "{\"query\":\"SELECT 1 FROM pg_class WHERE relname = '$1';\"}")
-            echo "$RES" | grep -q '"?column?":1' || { echo "::error::$1 table missing in prod — apply $2 before deploying"; exit 1; }
-          }
-          # A migration that ADDS COLUMNS to an existing table is invisible to
-          # check_table — the table is already there, so the guard passes while
-          # every write to the new column 400s. Hence the column-level variant.
-          check_column() {
-            RES=$(curl -s -X POST "https://api.supabase.com/v1/projects/${{ secrets.SUPABASE_PROJECT_REF }}/database/query" \
-              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" \
-              -d "{\"query\":\"SELECT 1 FROM information_schema.columns WHERE table_name = '$1' AND column_name = '$2';\"}")
-            echo "$RES" | grep -q '"?column?":1' || { echo "::error::$1.$2 missing in prod — apply $3 before deploying"; exit 1; }
-          }
-          check_table import_fetch_log supabase/migrations/20260713_import_fetch_log.sql
-          check_table mezzanine_search_log supabase/migrations/20260714f_mezzanine_search_log.sql
-          check_table user_show_stubs supabase/migrations/20260714e_user_show_stubs.sql
-          check_column watchlist time_slot supabase/migrations/20260809_watchlist_showtime.sql
-          check_column watchlist curtain_time supabase/migrations/20260809_watchlist_showtime.sql
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: node scripts/verify-supabase-schema.js
       - name: Deploy edge functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
