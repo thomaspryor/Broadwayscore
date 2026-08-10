@@ -132,3 +132,67 @@ export function coldStartCheckApplies(arm: ColdStartArm): boolean {
   return arm === 'cold-start';
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Trigger copy — pulled out of EmailCaptureModal.tsx (task #586, 2026-08-10)
+// so the value-prop text is unit-testable per CLAUDE.md §15 without importing
+// the 'use client' component tree (React/Next.js/Formspree) into a node test.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type GateTrigger =
+  | 'csv_download'
+  | 'json_download'
+  | 'page_view_limit'
+  | 'exit_intent'
+  | 'scroll_depth'
+  | 'return_visitor'
+  | 'recapture';
+
+export interface TriggerCopy {
+  heading: string;
+  subheading: string;
+}
+
+/**
+ * Value-prop copy shown per gate trigger. exit_intent/scroll_depth were
+ * rewritten 2026-08-10 (task #586, 0.6% conversion / 68% dismiss audit) from
+ * the vague "Know the score before you book" to state the concrete
+ * deliverable, cadence, and volume up front — the prior copy named no
+ * specific benefit a visitor could weigh against handing over their email.
+ */
+export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy {
+  const market = isWE ? 'West End' : 'Broadway';
+  const copies: Record<GateTrigger, TriggerCopy> = {
+    csv_download: {
+      heading: 'CSV Export Coming Soon',
+      subheading: 'Be first to access Pro features including data exports, alerts, and historical data.',
+    },
+    json_download: {
+      heading: 'API Access Coming Soon',
+      subheading: 'Get early access to our data API for integrations and analysis.',
+    },
+    page_view_limit: {
+      heading: 'Want to see more?',
+      subheading: `Enter your email for full access to ${market} investment data.`,
+    },
+    exit_intent: {
+      heading: `Before you go: the ${market} CriticScore`,
+      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+    },
+    scroll_depth: {
+      heading: `Before you go: the ${market} CriticScore`,
+      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+    },
+    return_visitor: {
+      heading: `Never miss a new ${market} show`,
+      subheading: isWE
+        ? 'We’ll email you when new West End shows get their reviews, plus what’s closing soon.'
+        : 'We’ll email you the CriticScore when new shows open, plus what’s closing soon.',
+    },
+    recapture: {
+      heading: 'Confirm your email',
+      subheading: 'We updated how we send opening night scores. Enter your email once more to stay on the list.',
+    },
+  };
+  return copies[trigger];
+}
+
