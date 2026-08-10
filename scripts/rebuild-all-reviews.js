@@ -2598,6 +2598,8 @@ showDirs.forEach(showId => {
       // (memory: includability predicates must be canonical). Calling the lib is what makes its
       // new ensemble guard live: a unanimous ensemble wrong_show verdict now outranks the
       // domain heuristic instead of the other way round (tracker #2 / task #1146).
+      // Also do NOT auto-clear when the fetched text predates a later URL correction
+      // (origin/main, task #1146) — the same class, arriving from the other side of this merge.
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);

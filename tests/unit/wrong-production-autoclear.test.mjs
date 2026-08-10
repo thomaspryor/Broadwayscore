@@ -176,6 +176,32 @@ describe('shouldAutoClearWrongShow', () => {
       false
     );
   });
+
+  it('returns false when a 2+ model ensemble consensus named a different show (task #1146)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongShow({
+        wrongShow: true,
+        allowCrossMarket: true,
+        rejectionReason: 'wrong_show',
+        rejectedBy: 'ensemble-scoreability-check',
+        rejectionReasoning: "claude: This is a review of Noughts & Crosses; openai: This is about Noughts & Crosses, not Romeo and Juliet.",
+      }),
+      false
+    );
+  });
+
+  it('returns false when fetched text predates a later URL rewrite (task #1146)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongShow({
+        wrongShow: true,
+        allowCrossMarket: true,
+        urlCorrectedFrom: 'https://example.com/old-article',
+        urlUpdatedAt: '2026-04-03T17:01:15.864Z',
+        textFetchedAt: '2026-02-26T03:18:04.314Z',
+      }),
+      false
+    );
+  });
 });
 
 describe('shouldAutoClearWrongProductionUrlYear', () => {
@@ -352,6 +378,58 @@ describe('shouldAutoClearWrongShowUkUrl', () => {
         { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: true }
       ),
       false
+    );
+  });
+
+  it('returns false on a 3/3 ensemble wrong_show verdict naming a different show (task #1146 regression)', () => {
+    // romeo-and-juliet-west-end-2026/london-theatre--holly-omahony.json: URL
+    // pointed at the R&J page, but all 3 models independently identified the
+    // fetched text as a review of a different show (Noughts & Crosses).
+    assert.strictEqual(
+      shouldAutoClearWrongShowUkUrl(
+        {
+          wrongShow: true,
+          rejectionReason: 'wrong_show',
+          rejectedBy: 'ensemble-scoreability-check',
+          rejectionReasoning:
+            "claude: This review is about 'Noughts & Crosses' at Regent's Park Open Air Theatre, not 'Romeo and Juliet' at Harold Pinter Theatre; " +
+            "openai: The text is a review of 'Noughts & Crosses' at the Regent's Park Open Air Theatre, not 'Romeo and Juliet' at the Harold Pinter Theatre.; " +
+            "gemini: This review is for Noughts & Crosses at Regent's Park Open Air Theatre, not Romeo and Juliet at Harold Pinter Theatre.",
+        },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false }
+      ),
+      false
+    );
+  });
+
+  it('returns false when fetched text predates a later URL rewrite (task #1146)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongShowUkUrl(
+        {
+          wrongShow: true,
+          urlCorrectedFrom: 'https://example.com/old-sondheim-review',
+          urlUpdatedFrom: 'https://example.com/old-sondheim-review',
+          urlUpdatedAt: '2026-04-03T17:01:15.864Z',
+          textFetchedAt: '2026-02-26T03:18:04.314Z',
+        },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false }
+      ),
+      false
+    );
+  });
+
+  it('still clears on a single-model rejection (not a >=2-model consensus)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongShowUkUrl(
+        {
+          wrongShow: true,
+          rejectionReason: 'wrong_show',
+          rejectedBy: 'ensemble-scoreability-check',
+          rejectionReasoning: 'claude: This looks like a different show.',
+        },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false }
+      ),
+      true
     );
   });
 });

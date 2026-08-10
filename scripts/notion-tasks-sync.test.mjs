@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
+const { MIRROR_FMT, mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
 
@@ -30,6 +30,30 @@ test('mapCardToTask embeds notion page id and traces back', () => {
   assert.deepEqual(t.blockedBy, []);
 });
 
+// The mirror's description is the ONLY text isExcludedCategory() sees, and
+// enrich-card-acceptance.js appends "VERIFY: owner-judgment" to the END of a
+// card's notes — so on a long card the marker fell past the 400-char cut and
+// the dispatch-time exclusion silently stopped applying (task #1154).
+test('#1154: owner-judgment marker survives the 400-char notes truncation', () => {
+  const { isExcludedCategory } = require('./lib/autonomous-eligibility.js');
+  const longNotes = `${'x'.repeat(900)}\n\nVERIFY: owner-judgment (owner must read the report)`;
+  const card = { id: 'abc', url: 'https://n/x', name: 'Quarterly relationship check-in', status: 'Not started', priority: 'P1 Next', category: 'Admin', notes: longNotes };
+  const t = mapCardToTask(card, 11);
+
+  assert.ok(t.description.length < longNotes.length, 'notes should still be truncated, not inlined whole');
+  assert.match(t.description, /VERIFY: owner-judgment/);
+  assert.equal(isExcludedCategory(t), true, 'a long-notes owner-judgment card must not be default-pickable');
+});
+
+test('#1154: the marker line is added only when truncation actually drops it', () => {
+  // Short notes: the marker is already inside the 400 chars, so no duplicate.
+  const short = mapCardToTask({ id: 'a', name: 'n', notes: 'do the thing\n\nVERIFY: owner-judgment' }, 1);
+  assert.equal(short.description.match(/VERIFY: owner-judgment/g).length, 1);
+  // No marker at all: nothing appended, and the card stays pickable.
+  const none = mapCardToTask({ id: 'b', name: 'n', category: 'Engineering', notes: 'y'.repeat(900) }, 2);
+  assert.equal(/VERIFY: owner-judgment/.test(none.description), false);
+});
+
 test('planPull creates unmapped cards, updates on status change, else unchanged', () => {
   const cards = [
     { id: 'new', status: 'Not started' },
@@ -37,8 +61,8 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
     { id: 'same', status: 'In progress' },
   ];
   const map = {
-    moved: { taskId: '2', syncedStatus: 'Not started', fmt: 2 },
-    same: { taskId: '3', syncedStatus: 'In progress', fmt: 2 },
+    moved: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT },
+    same: { taskId: '3', syncedStatus: 'In progress', fmt: MIRROR_FMT },
   };
   const plan = planPull(cards, map);
   assert.deepEqual(plan.toCreate.map(x => x.card.id), ['new']);
@@ -48,11 +72,23 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
 
 test('planPull is idempotent: re-running with a fully-synced map is a no-op', () => {
   const cards = [{ id: 'a', status: 'In progress' }, { id: 'b', status: 'Not started' }];
-  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: 2 }, b: { taskId: '2', syncedStatus: 'Not started', fmt: 2 } };
+  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: MIRROR_FMT }, b: { taskId: '2', syncedStatus: 'Not started', fmt: MIRROR_FMT } };
   const plan = planPull(cards, map);
   assert.equal(plan.toCreate.length, 0);
   assert.equal(plan.toUpdate.length, 0);
   assert.deepEqual(plan.unchanged.sort(), ['a', 'b']);
+});
+
+// Bumping MIRROR_FMT is the ONLY thing that makes a mapCardToTask change reach
+// cards that are already mirrored — planPull otherwise re-maps only on a Notion
+// status change, so the #1154 truncation fix would have been a no-op for every
+// existing long-notes owner-judgment card (ship-check catch).
+test('#1154: an old-fmt mirror is rewritten even when its status is unchanged', () => {
+  assert.ok(MIRROR_FMT > 2, 'MIRROR_FMT must be bumped past 2 for the #1154 rewrite to fire');
+  const cards = [{ id: 'old', status: 'In progress' }];
+  const plan = planPull(cards, { old: { taskId: '5', syncedStatus: 'In progress', fmt: 2 } });
+  assert.deepEqual(plan.toUpdate.map(x => x.taskId), ['5']);
+  assert.equal(plan.unchanged.length, 0);
 });
 
 test('allocateFreeId skips ids a live session already occupies', () => {
@@ -98,10 +134,10 @@ test('mapCardToTask mirrors category as third meta segment', () => {
   assert.match(t2.description.split('\n')[0], /· no-category$/);
 });
 
-test('planPull upgrades pre-fmt2 entries even when status unchanged', () => {
+test('planPull upgrades stale-fmt entries even when status unchanged', () => {
   const cards = [{ id: 'a', status: 'Not started', category: 'Product' }];
-  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };          // no fmt
-  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: 2 } };
+  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };                   // no fmt
+  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: MIRROR_FMT } };  // current
   assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
   assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
 });

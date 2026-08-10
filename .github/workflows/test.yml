@@ -65,6 +65,11 @@ on:
       # that existence-based readers counted as art (2026-08-02).
       - 'scripts/lib/show-image-coverage.js'
       - 'scripts/lib/show-image-coverage.test.mjs'
+      # Gate T acceptance test (card #1153) — spawns the real fleet-wide
+      # ~/.claude/hooks/exit-status-gate.sh, not a repo helper, so a solo edit
+      # here needs its own path entry (the hook has no colocated source file
+      # in-repo to piggyback on). Runs in the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/exit-status-gate-taskref.test.mjs'
       # SERP-census recall metric + its weekly cadence (Coverage Verdict S1,
       # tasks #872/#898). The whole point of the sprint is that a regression in
       # a discovery arm must stop being invisible; a change to the metric or the
@@ -1023,6 +1028,12 @@ on:
       - 'scripts/newsletter/pre-send-check.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      - 'tests/unit/wrong-production-autoclear.test.mjs'
+      # Ensemble-vs-heuristic guard for the UK-URL/allowCrossMarket wrongShow
+      # auto-clear paths (task #1146) + its live-corpus scan. Colocated
+      # .test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI.
+      - 'scripts/lib/wrongshow-autoclear-ensemble.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
       # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior
@@ -1648,6 +1659,13 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dead-dispatch completion guard (card #1144): a task whose latest
+      # dispatch is journaled dead must not be marked completed. Colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers
+      # CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-dead-launch-guard.js'
+      - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
+      - 'scripts/reconcile-dead-completions.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
@@ -1733,6 +1751,12 @@ on:
       - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
+      # owner-judgment marker (#1154) — one regex, three consumers
+      # (autonomous-eligibility excludes on it, verify-gate arms on it,
+      # headless-dispatchability blocks on it). Path-listed so a solo edit to
+      # the leaf or to verify-gate triggers CI instead of silently getting none.
+      - 'scripts/lib/owner-judgment-marker.js'
+      - 'scripts/lib/verify-gate.js'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'
@@ -3381,6 +3405,20 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/review-guards.explain.test.mjs
+
+      - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
+        # Same corpus-missing trap as explainExclusion above, same fix: the
+        # scripts/lib/*.test.mjs glob in the unit-tests job never has
+        # data/review-texts, so this file's corpus test always t.skip()'d
+        # there. Re-run it HERE (after checkout-review-texts) with
+        # REQUIRE_REVIEW_CORPUS=1 so the task #1146 acceptance scan
+        # (rejectionReason=wrong_show + wrongShowAutoCleared + wrongShow!==true
+        # must be 0) is a real assertion, not a silent no-op. ship-check
+        # finding, task #1146.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
 
       - name: Run data validation
         if: always()

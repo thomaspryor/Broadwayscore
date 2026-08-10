@@ -44,6 +44,7 @@
 'use strict';
 
 const { evaluateVerifiability } = require('./verify-gate.js');
+const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 
 const BLOCKERS = Object.freeze({
   VISUAL_QA_GATE: 'VISUAL_QA_GATE',
@@ -101,7 +102,9 @@ const ASYNC_WAIT_RES = [
 // bsc-next's verify gate accepts it).
 const OWNER_DECISION_RES = [
   /\bDECISION NEEDED\b/i,
-  /VERIFY:\s*owner-judgment/i,
+  // Same regex object autonomous-eligibility.js and verify-gate.js use — it
+  // was a third handwritten copy until task #1154 pulled it into a leaf module.
+  OWNER_JUDGMENT_RE,
   /\bowner\s+(?:must|needs?\s+to|has\s+to|should)\s+(?:decide|choose|approve|pick|sign off)\b/i,
   /\b(?:needs?|requires?|awaiting)\s+(?:an?\s+)?owner\s+(?:decision|judgment|judgement|approval|call)\b/i,
 ];
@@ -246,6 +249,9 @@ module.exports = {
   BLOCKERS,
   UI_PATH_RE,
   UI_CARD_CLASS_RE,
+  // Exported so a test can assert this array holds the SHARED owner-judgment
+  // regex object rather than a fourth handwritten copy (task #1154).
+  OWNER_DECISION_RES,
   classifyHeadlessDispatchability,
   looksLikeUiPath,
   extractPathTokens,

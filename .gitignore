@@ -28,6 +28,13 @@ yarn-error.log*
 
 # local env files
 .env*.local
+# Timestamped .env backups. Sessions routinely copy .env before editing it
+# (`cp .env .env.bak-YYYYMMDD-reason`) — three such files existed untracked and
+# UNIGNORED on 2026-08-09, each a full copy of every live credential. `.env` on
+# line 115 does not cover them, so a single `git add -A` would have committed
+# real keys to a repo. Ignore the whole family, not just the exact name.
+.env.bak*
+.env.backup*
 
 # vercel
 .vercel
