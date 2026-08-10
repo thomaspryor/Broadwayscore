@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-08-10T08:19:20.314Z",
+  "lastChecked": "2026-08-10T12:00:59.189Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,12 @@
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test UGC Features",
+      "status": "error",
+      "message": "Test UGC Features failed 3 times in the last 24h — likely broken, not transient."
     }
   ]
 }

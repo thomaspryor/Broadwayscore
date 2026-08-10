@@ -1,15 +1,15 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-10T08:19:20.313Z",
+  "lastChecked": "2026-08-10T12:00:59.188Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "status": "warn",
-      "message": "11 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: content-quality.js Path-3 capsule-review fallback miscla (7d, parked past 7d window by 1d); Send-day gap-audit state is self-clobbering: per-show runs o (7d, parked past 7d window by 1d); P1: validateShowMentioned Check-3 rubber-stamps unrelated lo (7d, parked past 7d window by 1d) (12 awaiting recheck, earliest due 2026-08-08; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
+      "status": "pass",
+      "message": "No stuck paused P0/P1 cards (16 awaiting recheck, earliest due 2026-08-08; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
