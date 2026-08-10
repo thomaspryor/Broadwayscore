@@ -36,14 +36,24 @@ function writeFakeClaude(dir, { resultText = 'ok', exitCode = 0, sawCmux = false
   // shell out to one (it isn't, by design, but the assertion is here so a
   // future regression that pipes cmux calls through the monitor path would
   // fail loudly instead of silently).
-  const envelope = JSON.stringify({
+  //
+  // runClaudeCli spawns with `--output-format stream-json --verbose` (task
+  // #1184 S1), which emits one JSONL event per line and only sets resultText
+  // from a line whose `type` is "result" (claude-cli.js parseStreamLine) —
+  // this fixture must emit that shape, not the old single-envelope
+  // `--output-format json` output, or every event is silently dropped and
+  // the pass reads back as stage:"parse-error" despite valid JSON (#1231).
+  const initEvent = JSON.stringify({ type: 'system', subtype: 'init', session_id: 'fake-session-123' });
+  const resultEvent = JSON.stringify({
+    type: 'result',
+    subtype: exitCode !== 0 ? 'error' : 'success',
     is_error: exitCode !== 0,
     result: resultText,
     session_id: 'fake-session-123',
     total_cost_usd: 0.0123,
     usage: { input_tokens: 10, output_tokens: 5 },
   });
-  fs.writeFileSync(scriptPath, `#!/bin/bash\ncommand -v cmux >/dev/null 2>&1 && echo "SAW_CMUX_ON_PATH" >&2\ncat > /dev/null\necho '${envelope.replace(/'/g, "'\\''")}'\nexit ${exitCode}\n`);
+  fs.writeFileSync(scriptPath, `#!/bin/bash\ncommand -v cmux >/dev/null 2>&1 && echo "SAW_CMUX_ON_PATH" >&2\ncat > /dev/null\necho '${initEvent.replace(/'/g, "'\\''")}'\necho '${resultEvent.replace(/'/g, "'\\''")}'\nexit ${exitCode}\n`);
   fs.chmodSync(scriptPath, 0o755);
   return scriptPath;
 }
