@@ -1,20 +1,20 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-09T11:54:47.724Z",
+  "lastChecked": "2026-08-10T08:19:20.313Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "status": "pass",
-      "message": "No stuck paused P0/P1 cards (17 awaiting recheck, earliest due 2026-08-07; 64 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force)"
+      "status": "warn",
+      "message": "11 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: content-quality.js Path-3 capsule-review fallback miscla (7d, parked past 7d window by 1d); Send-day gap-audit state is self-clobbering: per-show runs o (7d, parked past 7d window by 1d); P1: validateShowMentioned Check-3 rubber-stamps unrelated lo (7d, parked past 7d window by 1d) (12 awaiting recheck, earliest due 2026-08-08; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "72 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
+      "message": "68 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (18d); Trainspotting: only 4 reviews on site + email said 7 (invest (18d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (17d)"
     }
   ]
 }
