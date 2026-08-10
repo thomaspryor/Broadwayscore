@@ -59,6 +59,7 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearWrongProductionUrlYear,
   hasEnsembleConsensus,
   isTextStaleRelativeToUrlRewrite,
   shouldAutoClearWrongShowUkUrl,
@@ -2263,21 +2264,24 @@ showDirs.forEach(showId => {
       // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
       // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
-      // GUARD: Respect manual reasons, high-confidence CV wrongProduction, and CV wrongArticle
-      // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
+      // Delegates to the named predicate (task #1193) — was inline-only and untested/unreplayed
+      // by scoring-delta.js; shouldAutoClearWrongProductionUrlYear existed but was dead code.
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
           && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
         // Shared with the UK-URL auto-clear below — includes the high-confidence
         // non-review articleType block (Times Sam Ryder interview, 2026-07-08).
         const wpCvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
-        const wpHasManualReason = !!data.wrongProductionReason;
         // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
         // aggregate/listing page is not a dated review, so a URL-year mismatch on
         // it is not a clearable false positive (cousin of the theo-bosanquet
         // /shows/ stub, 2026-07-05).
         const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
           || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
-        if (!wpCvBlocksClear && !wpHasManualReason && !wpIsShowListingUrl) {
+        if (shouldAutoClearWrongProductionUrlYear(data, {
+          isLondonOrOffBroadway: isLondonMarket(showCat) || showCat === 'off-broadway',
+          cvBlocksClear: wpCvBlocksClear,
+          isShowListingUrl: wpIsShowListingUrl,
+        })) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
