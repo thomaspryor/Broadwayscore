@@ -827,14 +827,31 @@ function isLikelyTourReview(url, showId) {
   const lower = url.toLowerCase();
   const isWestEnd = /-west-end/.test(showId) || /-off-west-end/.test(showId);
   const isOffBroadway = /-off-broadway/.test(showId);
+  // Regional-category shows (showId convention: `-regional-YYYY`, e.g.
+  // 42-balloons-regional-2025). A regional production reviewed by ITS OWN
+  // local/city outlet is definitionally legitimate coverage, not "tour of a
+  // Broadway show" — neither branch below applies. Found via corpus scan
+  // (task #1150, 2026-08-09): without this, 42-balloons-regional/black-swan-
+  // regional/etc.'s own Chicago/Boston/Atlanta/San-Diego BWW reviews were
+  // misclassified as regional-tour contamination. Deliberately does not check
+  // WHICH city — a regional show's city can be anywhere, and a false-negative
+  // here (missing a genuine multi-city tour contamination on a regional show)
+  // is a much rarer, lower-stakes failure than the false positive this fixes.
+  const isRegional = /-regional-/.test(showId);
 
   // Regional BWW (city-specific subdirectories)
   const bwwMatch = lower.match(/broadwayworld\.com\/([a-z-]+)\/article\//);
   if (bwwMatch) {
     const city = bwwMatch[1];
-    // These are NOT regional — they're main BWW sections
-    const nonRegional = ['article', 'off-broadway', 'reviews', 'board', 'columns', 'people', 'video', 'shows'];
+    // These are NOT regional — they're main BWW sections or topic verticals
+    // (bwwopera/bwwdance/bwwtv are BWW's subject verticals, not city
+    // editions; a Met Opera review under /bwwopera/ isn't "tour of a
+    // Broadway show" any more than one under /off-broadway/ is). Corpus scan
+    // (task #1150) found 11 off-broadway opera/dance reviews under
+    // bwwopera/bwwdance misclassified as regional-tour before this fix.
+    const nonRegional = ['article', 'off-broadway', 'off-off-broadway', 'reviews', 'board', 'columns', 'people', 'video', 'shows', 'bwwopera', 'bwwdance', 'bwwtv'];
     if (nonRegional.includes(city)) { /* not regional, fall through */ }
+    else if (isRegional) { /* regional show's own city page — legitimate, fall through */ }
     else if (isWestEnd || isOffBroadway) {
       // For WE/OB shows: BWW westend and london are legitimate, US cities are not
       const ukCities = ['westend', 'london', 'uk-regional'];
@@ -846,7 +863,7 @@ function isLikelyTourReview(url, showId) {
   }
 
   // Local paper tour indicators (Broadway shows only)
-  if (!isWestEnd && !isOffBroadway) {
+  if (!isWestEnd && !isOffBroadway && !isRegional) {
     const tourPatterns = [
       /star-telegram\.com.*fort-worth/i,
       /houstonchronicle\.com/i,
