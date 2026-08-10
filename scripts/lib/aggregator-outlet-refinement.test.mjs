@@ -120,9 +120,36 @@ test('a genuine theatre.reviews record is not treated as contamination', () => {
 
 test('westendtheatre.com is covered even though AGGREGATOR_DOMAINS carries .co.uk', () => {
   // The reason this guard keys on the resolved OUTLET rather than the domain set.
-  const { AGGREGATOR_DOMAINS } = require('./aggregator-domains.js');
-  assert.equal(AGGREGATOR_DOMAINS.has('westendtheatre.com'), false,
-    'if .com was added to the domain set, revisit the validator carve-out first');
+  // Deliberately does NOT assert what AGGREGATOR_DOMAINS contains: pinning
+  // `.has('westendtheatre.com') === false` would turn CI red on the correct
+  // future fix for the TLD gap (card "P1: aggregator guard misses
+  // westendtheatre.com"). Outlet-keying is what makes this guard survive that
+  // change either way, so that is what the test asserts.
   const resolved = resolveOutletFromUrl('https://www.westendtheatre.com/reviews/x');
   assert.equal(shouldRefuseAggregatorOutletRefinement(resolved.outletId, 'guardian'), true);
+});
+
+test('normalizes the URL-resolved outlet too, not just the current one', () => {
+  // Asymmetric normalization would let a capitalized/aliased first argument slip
+  // past and permit the laundering this guard exists to stop.
+  assert.equal(shouldRefuseAggregatorOutletRefinement('Show-Score', 'guardian'), true);
+  assert.equal(shouldRefuseAggregatorOutletRefinement('DTLI', 'guardian'), true);
+});
+
+test('the refusal is classified as a CONFLICT skip, not an expected rejection', () => {
+  // The writer returns {action:'skipped', reason:'aggregator-url-refinement-refused'}.
+  // Every skip reason review-file-writer.js emits must be classified — an
+  // unclassified reason is what reddened main on 2026-08-09 (commit c67cc1b2777).
+  const { classifyIngestSkip, describeSkip } = require('./ingest-skip-classify.js');
+  // classifyIngestSkip parses real writer stdout, so feed it that shape.
+  const classified = classifyIngestSkip('Skipped: aggregator-url-refinement-refused');
+  assert.equal(classified.kind, 'conflict');
+  assert.equal(classified.reason, 'aggregator-url-refinement-refused');
+  const msg = describeSkip('hamilton-2015', 'https://didtheylikeit.com/reviews/x', {
+    reason: 'aggregator-url-refinement-refused',
+    detail: null,
+  });
+  assert.match(msg, /roundup domain/i);
+  assert.ok(!/skipped as aggregator-url-refinement-refused/.test(msg),
+    'must have a bespoke message, not the generic fallback');
 });

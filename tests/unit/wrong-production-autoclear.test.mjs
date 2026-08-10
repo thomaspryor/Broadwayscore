@@ -205,6 +205,10 @@ describe('shouldAutoClearWrongShow', () => {
 });
 
 describe('shouldAutoClearWrongProductionUrlYear', () => {
+  // Task #1193: this predicate was dead code — the real rebuild-all-reviews.js
+  // call site ran its own diverging inline logic. Ctx shape (cvBlocksClear,
+  // isShowListingUrl) now mirrors what the caller actually computes and
+  // passes in — same pattern as shouldAutoClearWrongProductionUkDualMarket.
   const urlYearNote = 'URL contains year 2019 but show is 2025';
 
   it('returns false when wrongProduction is not set', () => {
@@ -263,45 +267,70 @@ describe('shouldAutoClearWrongProductionUrlYear', () => {
     );
   });
 
-  it('returns false when CV high-confidence wrongProduction is set', () => {
+  it('returns false when caller-computed cvBlocksClear is true (CV wrongProduction/wrongArticle/non-review-articleType)', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongProduction: true, confidence: 'high' },
-        },
-        { isLondonOrOffBroadway: true }
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, cvBlocksClear: true }
       ),
       false
     );
   });
 
-  it('returns false when CV high-confidence wrongArticle is set', () => {
+  it('returns true when cvBlocksClear is false (e.g. CV was only low confidence)', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongArticle: true, confidence: 'high' },
-        },
-        { isLondonOrOffBroadway: true }
-      ),
-      false
-    );
-  });
-
-  it('returns true when CV is low confidence (low conf is not authoritative)', () => {
-    assert.strictEqual(
-      shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongProduction: true, confidence: 'low' },
-        },
-        { isLondonOrOffBroadway: true }
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, cvBlocksClear: false }
       ),
       true
+    );
+  });
+
+  it('returns false when isShowListingUrl is true (whatsonstage/broadwayworld /shows/ aggregate page)', () => {
+    // Cousin of the Birmingham-Rep whatsonstage /shows/ stub incident
+    // (2026-07-05) — a listing page URL-year mismatch is not a dated
+    // review's false positive.
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, isShowListingUrl: true }
+      ),
+      false
+    );
+  });
+
+  it('returns false on ensemble wrong_production consensus (outranks the URL-year heuristic)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        {
+          wrongProduction: true,
+          wrongProductionNote: urlYearNote,
+          rejectedBy: 'ensemble-scoreability-check',
+          rejectionReason: 'wrong_production',
+          rejectionReasoning:
+            "claude: This review is about a different production; "
+            + "gemini: The text is a review of a different production.",
+        },
+        { isLondonOrOffBroadway: true }
+      ),
+      false
+    );
+  });
+
+  it('returns false when fetched text predates a later URL rewrite (stale-text guard)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        {
+          wrongProduction: true,
+          wrongProductionNote: urlYearNote,
+          urlCorrectedFrom: 'https://example.com/old-article',
+          urlUpdatedAt: '2026-04-03T17:01:15.864Z',
+          textFetchedAt: '2026-02-26T03:18:04.314Z',
+        },
+        { isLondonOrOffBroadway: true }
+      ),
+      false
     );
   });
 });
@@ -1103,6 +1132,44 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
       missing, [],
       `these auto-clear predicates do not consult hasEnsembleConsensus: ${missing.join(', ')}. `
         + 'A heuristic must never overrule a multi-model verdict that read the text (tracker #2).',
+    );
+  });
+});
+
+// The dead-code guard: this module has twice shipped a tested, exported
+// shouldAutoClear* predicate that no caller actually invoked — the real
+// rebuild-all-reviews.js call site ran its own diverging inline logic
+// instead (shouldAutoClearWrongProductionUrlYear, task #1193; the sibling
+// UK-dual-market predicate had the same defect class, task #1189). Tests
+// passing gave false confidence the predicate governed production behavior.
+// Structural, so an EIGHTH predicate added later cannot quietly repeat it.
+describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard)', () => {
+  it('every exported shouldAutoClear* name has at least one call site in a documented caller script', () => {
+    const libSrc = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    const exportsMatch = libSrc.match(/module\.exports\s*=\s*\{([\s\S]*?)\};/);
+    assert.ok(exportsMatch, 'expected a module.exports = { ... } block');
+    const exportedNames = exportsMatch[1]
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => /^shouldAutoClear\w+$/.test(s));
+    assert.ok(exportedNames.length > 0, 'expected at least one exported shouldAutoClear* name');
+
+    // The two production callers documented in this file's header docstring.
+    const callerPaths = [
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'rebuild-all-reviews.js'),
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'flag-wrong-production-by-date.js'),
+    ];
+    const callerSrc = callerPaths.map(p => fs.readFileSync(p, 'utf8')).join('\n');
+
+    const unwired = exportedNames.filter(name => !callerSrc.includes(`${name}(`));
+    assert.deepEqual(
+      unwired, [],
+      `these exported predicates have zero call sites in rebuild-all-reviews.js or `
+        + `flag-wrong-production-by-date.js: ${unwired.join(', ')}. A predicate with unit `
+        + 'tests but no caller is dead code masquerading as tested production logic (#1193).',
     );
   });
 });

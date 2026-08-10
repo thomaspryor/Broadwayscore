@@ -443,28 +443,31 @@ function shouldAutoClearWrongShow(data) {
  * that doesn't match the show's season. For West End and off-Broadway shows this
  * is a known false-positive source (transfers, unconventional year tags) and the
  * rebuild exempts them — but only if the flag wasn't set for some OTHER explicit
- * reason (manual audit, high-confidence CV).
+ * reason (manual audit, high-confidence CV, a show-listing/aggregate URL).
  *
  * Callers pass `isLondonOrOffBroadway` so this lib stays decoupled from
- * isLondonMarket() / show-category imports.
+ * isLondonMarket() / show-category imports. `cvBlocksClear` and
+ * `isShowListingUrl` are computed by the caller (rebuild-all-reviews.js) —
+ * same ctx shape as the sibling shouldAutoClearWrongProductionUkDualMarket —
+ * so this lib doesn't need to require review-guards.js / cross-production-guards.js.
  *
  * @param {object} data
  * @param {object} ctx
  * @param {boolean} ctx.isLondonOrOffBroadway - true if showCat is london/off-broadway
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {boolean} ctx.isShowListingUrl - true if data.url is a /shows/ aggregate/listing page
  * @returns {boolean}
  */
-function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } = {}) {
+function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
   if (data.wrongProduction !== true) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
   if (!isLondonOrOffBroadway) return false;
-  const hasManualReason = !!data.wrongProductionReason;
-  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
-    && data.contentVerification?.confidence === 'high';
-  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-    && data.contentVerification?.confidence === 'high';
+  if (cvBlocksClear) return false;
+  if (isShowListingUrl) return false;
+  if (data.wrongProductionReason) return false;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
-  return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
+  return true;
 }
 
 /**
@@ -559,6 +562,73 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
   return nowInWindow === true;
 }
 
+/**
+ * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
+ * strip wrongProduction from a London-market show reviewed by a UK or
+ * dual-market outlet.
+ *
+ * Background (task #1189): this was the largest wrongProduction auto-clear
+ * path (rebuild-all-reviews.js:2464-2534) but, unlike shouldAutoClearWrongProduction/
+ * shouldAutoClearWrongShowUkUrl/shouldAutoClearWrongShow, it was never
+ * extracted into a named, unit-testable predicate — leaving it invisible to
+ * scoring-delta.js's mandated inclusion replay (CLAUDE.md rule 12.7).
+ *
+ * A UK-outlet URL (or a dual-market/london-registry-region outlet) on a
+ * London-market show is a strong signal the wrongProduction flag is a
+ * cross-market false positive — but only when nothing else outranks that
+ * heuristic: a structural date/URL-year flag, a review that genuinely
+ * predates the show, explicit CV confirmation, a manual reason, a show-
+ * listing (not dated-review) URL, or a unanimous ensemble wrong_production
+ * verdict / stale-relative-to-URL-rewrite text (task #1156/#1162 generalized
+ * the ensemble-consensus guard — already used by shouldAutoClearWrongShowUkUrl
+ * — to this wrongProduction path too; landed on main while this extraction
+ * was in flight, reconciled here at merge time).
+ *
+ * Callers compute the URL/outlet/date classification (isUkUrl, outletIsDualOrUk,
+ * outletIsLondonRegion, isDateMismatch, isShowListingUrl, cvBlocksClear) so this
+ * module stays decoupled from venue-classification, review-normalization,
+ * cross-production-guards, and review-guards.js (which itself requires this
+ * module — see review-guards.js:598 — so importing back would be circular).
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.isLondonMarketShow - isLondonMarket(showCat)
+ * @param {boolean} ctx.isUkUrl - venue-classification's isUkOutletUrl(data.url)
+ * @param {boolean} ctx.outletIsDualOrUk - outlet is in DUAL_MARKET_OUTLETS or registry region 'london'
+ * @param {boolean} ctx.outletIsLondonRegion - registry region 'london' specifically (subset of outletIsDualOrUk)
+ * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
+ * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isLondonMarketShow) return false;
+  if (!data.url) return false;
+
+  const wpNote = data.wrongProductionNote || '';
+  const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
+    || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
+  if (isStructuralFlag) return false;
+  if (ctx.isDateMismatch) return false;
+
+  // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
+  // or specifically registry-region 'london' (dual-market outlets alone are
+  // NOT enough here — their flags can be genuine same-title other-market
+  // reviews, see the inline comment this predicate replaces).
+  if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
+  if (!ctx.isUkUrl && !ctx.outletIsLondonRegion) return false;
+
+  if (ctx.cvBlocksClear) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+
+  return true;
+}
+
 module.exports = {
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
@@ -574,4 +644,5 @@ module.exports = {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearWrongProductionUkDualMarket,
 };
