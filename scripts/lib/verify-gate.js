@@ -15,8 +15,11 @@
 
 const { extractVerifyCmd, candidatesFrom } = require('./autonomous-verify-cmd.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
-
-const OWNER_JUDGMENT_RE = /VERIFY:\s*owner-judgment/i;
+// Leaf module, deliberately: autonomous-eligibility.js needs the same marker
+// and cannot require THIS file without closing a cycle (task #1154 — see the
+// header of owner-judgment-marker.js). Still re-exported below so existing
+// importers of verify-gate's OWNER_JUDGMENT_RE are unchanged.
+const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 
 /**
  * @param {string} notes - the card's full notes/body (untrusted content)
