@@ -44,7 +44,7 @@ const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
-const { shouldSkipAggregatorUrlWrite } = require('./aggregator-domains');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./aggregator-domains');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -250,7 +250,32 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (Apr 2026). That created a duplicate file and a cross-market validation failure.
   if (input.url) {
     const urlResolved = resolveOutletFromUrl(input.url);
-    if (urlResolved && urlResolved.outletId !== outletId) {
+    // NEVER refine ONTO an aggregator outlet (2026-08-09). An aggregator's domain
+    // hosts ROUNDUP pages citing many outlets, so "the URL is on this domain" is
+    // never evidence that the aggregator wrote this particular review. Refining
+    // here would rewrite a real outlet's id to the aggregator's, which both
+    // destroys the attribution AND launders the contamination past the
+    // aggregator-URL write guard below: that guard permits an aggregator URL when
+    // outletId IS the aggregator, so a Guardian review on a westendtheatre.com
+    // roundup URL would be silently rewritten to `westendtheatre` and written as
+    // the aggregator's own review.
+    //
+    // Keyed on the resolved OUTLET being an aggregator, not on AGGREGATOR_DOMAINS,
+    // deliberately: the domain set carries westendtheatre.co.uk while every one of
+    // the 395 corpus files uses westendtheatre.com (see the TLD note in
+    // aggregator-domains.js). Checking the outlet catches both spellings and any
+    // future aggregator domain that reaches the registry before that set.
+    //
+    // Genuine aggregator writes are unaffected: all four laundering display names
+    // ("Did They Like It", "WestEndTheatre.com", "Theatre Reviews Limited",
+    // "London Box Office") already normalize to their own outletId, so
+    // urlResolved.outletId === outletId and this block never runs for them.
+    const refiningOntoAggregator = urlResolved
+      && shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId);
+    if (refiningOntoAggregator) {
+      console.warn(`  ⚠️  Refusing aggregator outlet refinement for ${showId}: URL=${urlResolved.outletId} (${input.url}) is a roundup domain — keeping name-derived outlet "${outletId}"`);
+    }
+    if (urlResolved && !refiningOntoAggregator && urlResolved.outletId !== outletId) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];

@@ -31,7 +31,7 @@ const {
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
-  hasEnsembleRejection,
+  hasEnsembleConsensus,
   shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
@@ -914,7 +914,7 @@ describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () =
   });
 });
 
-// ── hasEnsembleRejection: the ensemble outranks the heuristic ────────────────
+// ── hasEnsembleConsensus: the ensemble outranks the heuristic ────────────────
 // Coverage-pipeline tracker #2 / task #1146 (2026-08-09). A blanket domain
 // heuristic ("UK outlet URL on a London show") and the allowCrossMarket
 // override both deleted wrongShow even when the ensemble scoreability check had
@@ -938,13 +938,13 @@ const REAL_ROMEO_SHAPE = {
     + 'gemini: This review is for Noughts & Crosses at Regent\'s Park Open Air Theatre, not Romeo and Juliet at Harold Pinter Theatre.',
 };
 
-describe('hasEnsembleRejection', () => {
+describe('hasEnsembleConsensus', () => {
   it('recognises the real romeo-and-juliet file shape', () => {
-    assert.equal(hasEnsembleRejection(REAL_ROMEO_SHAPE, 'wrong_show'), true);
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_show'), true);
   });
 
   it('is scoped to the kind asked about', () => {
-    assert.equal(hasEnsembleRejection(REAL_ROMEO_SHAPE, 'wrong_production'), false);
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_production'), false);
   });
 
   it('reads STRUCTURED fields only — never the LLM prose', () => {
@@ -952,13 +952,13 @@ describe('hasEnsembleRejection', () => {
     // would fire here; this must not, because rejectionReasoning is
     // LLM-authored text that moves with PROMPT_VERSION.
     const proseOnly = { rejectionReasoning: REAL_ROMEO_SHAPE.rejectionReasoning };
-    assert.equal(hasEnsembleRejection(proseOnly, 'wrong_show'), false);
+    assert.equal(hasEnsembleConsensus(proseOnly, 'wrong_show'), false);
   });
 
   it('ignores non-ensemble rejecters (human/manual/OCR triage)', () => {
     for (const by of ['human-manual-cleanup', 'ocr-extraction', 'manual-contamination-triage']) {
       assert.equal(
-        hasEnsembleRejection({ rejectionReason: 'wrong_show', rejectedBy: by }, 'wrong_show'),
+        hasEnsembleConsensus({ rejectionReason: 'wrong_show', rejectedBy: by }, 'wrong_show'),
         false,
         `${by} is not the ensemble`,
       );
@@ -967,7 +967,7 @@ describe('hasEnsembleRejection', () => {
 
   it('never throws on malformed input', () => {
     for (const d of [null, undefined, {}, { rejectionReason: 'wrong_show' }, { rejectedBy: 42, rejectionReason: 'wrong_show' }]) {
-      assert.doesNotThrow(() => hasEnsembleRejection(d, 'wrong_show'));
+      assert.doesNotThrow(() => hasEnsembleConsensus(d, 'wrong_show'));
     }
   });
 });
@@ -1079,10 +1079,10 @@ describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', 
 });
 
 // The census guard: every auto-clear predicate this module exports must consult
-// hasEnsembleRejection. Structural, so a SEVENTH predicate added later cannot
+// hasEnsembleConsensus. Structural, so a SEVENTH predicate added later cannot
 // quietly re-open the hole the way priorRun/tourLeg did.
 describe('no auto-clear predicate may skip the ensemble guard', () => {
-  it('every shouldAutoClear* function body references hasEnsembleRejection', () => {
+  it('every shouldAutoClear* function body references hasEnsembleConsensus', () => {
     const src = fs.readFileSync(
       path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
       'utf8',
@@ -1097,11 +1097,11 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
       // a corrected date; they carry no cross-production claim, so they are
       // deliberately exempt. Named explicitly so the exemption is a decision.
       if (name === 'shouldAutoClearStaleDateGuard' || name === 'shouldAutoClearDatelessRevival') continue;
-      if (!b.includes('hasEnsembleRejection')) missing.push(name);
+      if (!b.includes('hasEnsembleConsensus')) missing.push(name);
     }
     assert.deepEqual(
       missing, [],
-      `these auto-clear predicates do not consult hasEnsembleRejection: ${missing.join(', ')}. `
+      `these auto-clear predicates do not consult hasEnsembleConsensus: ${missing.join(', ')}. `
         + 'A heuristic must never overrule a multi-model verdict that read the text (tracker #2).',
     );
   });

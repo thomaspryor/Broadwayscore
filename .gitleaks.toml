@@ -19,6 +19,9 @@ paths = [
   '''(^|/)tests/unit/.*\.m?(j|t)s$''',
   # Colocated scripts/lib tests reference the same slug-string fixtures (e.g. idKey: 'becky-shaw-2026')
   '''(^|/)scripts/lib/.*\.test\.mjs$''',
+  # Colocated scripts/newsletter tests reference env VAR NAMES (e.g. 'no-access: GA4_PROPERTY_ID
+  # missing') that trip generic-api-key on entropy alone — no actual key values, just identifiers
+  '''(^|/)scripts/newsletter/.*\.test\.mjs$''',
   # Aggregated reviews.json contains the same third-party URL fragments as the per-show JSONs
   '''(^|/)data/reviews\.json$''',
   '''(^|/)public/data/reviews\.json$''',

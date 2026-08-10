@@ -37,7 +37,17 @@ const AGGREGATOR_DOMAINS = new Set([
 // Outlet IDs that ARE aggregators — a file with one of these outletIds pointing
 // at the matching aggregator domain is legitimate, not contamination.
 const AGGREGATOR_OUTLET_IDS = new Set([
-  'show-score', 'showscore', 'westendtheatre', 'theatre-reviews',
+  'show-score', 'showscore', 'westendtheatre',
+  // 'theatre-reviews' is NOT a registry id — it never has been. The live outlet
+  // is 'theatre-reviews-limited' (domain theatrereviews.com). Because the dead
+  // spelling was the only one listed, isAggregatorUrlMismatch() classified a
+  // GENUINE theatre.reviews aggregator record as contamination: the URL host is
+  // in AGGREGATOR_DOMAINS but the outletId was not in this set, so the write
+  // guard refused it and validate-review-texts.js would error on it (verified
+  // 2026-08-09: isAggregatorUrlMismatch(TR url, 'theatre-reviews-limited') was
+  // true). Adding an id here only ever makes those checks MORE permissive, so
+  // this cannot turn main red. The dead spelling stays as a harmless alias.
+  'theatre-reviews', 'theatre-reviews-limited',
   'dtli', 'london-box-office', 'lbo', 'nyc-theatre', 'stagedoor',
   'playbill-verdict', 'bww-roundup',
 ]);
@@ -168,9 +178,38 @@ function isOutletDomainMismatch(expected, internalOutlet, opts = {}) {
   return true;
 }
 
+/**
+ * Should URL-based outlet refinement REFUSE to rewrite `currentOutletId` into
+ * `urlOutletId`, because the URL resolves to an AGGREGATOR outlet?
+ *
+ * An aggregator's domain hosts ROUNDUP pages citing many outlets, so a URL on
+ * that domain is never evidence the aggregator authored the review. Refining
+ * would destroy the real outlet's attribution AND launder the contamination past
+ * shouldSkipAggregatorUrlWrite(), which permits an aggregator URL precisely when
+ * outletId IS the aggregator.
+ *
+ * Keyed on the resolved OUTLET, not on AGGREGATOR_DOMAINS: that domain set
+ * carries westendtheatre.co.uk while the live aggregator (and all 395 corpus
+ * files) use westendtheatre.com. Checking the outlet covers both spellings.
+ *
+ * Returns false when there is nothing to refuse: no resolution, a non-aggregator
+ * target, or a current outlet that is ITSELF an aggregator (a genuine aggregator
+ * record — refinement there is a no-op or a legitimate alias fix).
+ *
+ * @param {string|undefined} urlOutletId - outlet the URL resolved to
+ * @param {string|undefined} currentOutletId - the review's current outletId
+ */
+function shouldRefuseAggregatorOutletRefinement(urlOutletId, currentOutletId) {
+  if (!urlOutletId || !currentOutletId) return false;
+  if (!AGGREGATOR_OUTLET_IDS.has(urlOutletId)) return false;
+  const normCurrent = normalizeOutlet(currentOutletId) || currentOutletId;
+  return !AGGREGATOR_OUTLET_IDS.has(normCurrent);
+}
+
 module.exports = {
   AGGREGATOR_DOMAINS,
   AGGREGATOR_OUTLET_IDS,
+  shouldRefuseAggregatorOutletRefinement,
   isAggregatorReviewSource,
   shouldSkipAggregatorUrlWrite,
   isOutletDomainMismatch,
