@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T11:51:39.324Z",
+  "timestamp": "2026-08-10T12:37:40.477Z",
   "stats": {
-    "totalReviews": 41977,
-    "alreadyFlagged": 18308,
+    "totalReviews": 41973,
+    "alreadyFlagged": 18305,
     "dateGuardCatches": 134,
     "directorMismatch": 960,
     "tvFilmSignals": 1160,
-    "londonSignals": 829,
+    "londonSignals": 830,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3520
+    "noPublishDate": 3519
   },
   "findings": [
     {
@@ -33412,6 +33412,20 @@
       "file": "sunday-telegraph--tim-robey.json",
       "publishDate": "2026-07-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "telegraph--james-hall.json",
+      "score": null,
+      "publishDate": "2026-08-06",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
