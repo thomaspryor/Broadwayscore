@@ -1001,6 +1001,7 @@ describe('an ensemble verdict outranks every auto-clear heuristic', () => {
       allowCrossMarket: true,
       rejectedBy: 'ensemble-scoreability-check',
       rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
     };
     assert.equal(shouldAutoClearWrongProduction(d), false);
   });
@@ -1011,6 +1012,7 @@ describe('an ensemble verdict outranks every auto-clear heuristic', () => {
       wrongProductionNote: 'URL contains year 2019',
       rejectedBy: 'ensemble-scoreability-check',
       rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
     };
     assert.equal(shouldAutoClearWrongProductionUrlYear(d, { isLondonOrOffBroadway: true }), false);
   });
@@ -1052,7 +1054,8 @@ describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', 
   it('priorRun clear is REFUSED when the ensemble rejected the file', () => {
     assert.equal(
       shouldAutoClearWrongProductionPriorRun(
-        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production' },
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
         SHOW_PRIOR,
       ),
       false,
@@ -1066,7 +1069,8 @@ describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', 
   it('tourLeg clear is REFUSED when the ensemble rejected the file', () => {
     assert.equal(
       shouldAutoClearWrongProductionTourLeg(
-        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production' },
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
         SHOW_TOUR,
       ),
       false,

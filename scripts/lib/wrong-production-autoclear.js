@@ -428,7 +428,21 @@ function isTextStaleRelativeToUrlRewrite(data) {
  */
 function hasEnsembleRejection(data, kind) {
   if (!data || data.rejectionReason !== kind) return false;
-  return typeof data.rejectedBy === 'string' && /ensemble/i.test(data.rejectedBy);
+  if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
+  // Reuse the SAME >=2-distinct-model-tag rule hasEnsembleWrongShowConsensus
+  // applies, rather than accepting the rejectedBy pairing on its own. That
+  // function landed on origin/main from a parallel #1146 session while this
+  // branch was in flight; its model count is the defensive check for a future
+  // writer that reuses rejectedBy without going through combineOutcomes(), and
+  // quietly widening the rule here would have overridden a shipped decision
+  // with a merge. One definition of "the ensemble agreed", used by both.
+  const models = new Set();
+  ENSEMBLE_MODEL_TAG_RE.lastIndex = 0;
+  let m;
+  while ((m = ENSEMBLE_MODEL_TAG_RE.exec(String(data.rejectionReasoning || '')))) {
+    models.add(m[1].toLowerCase());
+  }
+  return models.size >= 2;
 }
 
 function shouldAutoClearWrongProduction(data) {
