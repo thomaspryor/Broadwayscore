@@ -57,14 +57,18 @@ export const mockReviews: UserReview[] = [
   },
 ];
 
+// Showtime fields deliberately cover all four shapes the picker has to render:
+// an exact evening curtain, an exact matinee, a slot with no clock time yet
+// (legitimate — tier 2 knows a matinee exists on a date without its time), and
+// no time at all.
 export const mockWatchlist: WatchlistEntry[] = [
-  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-09-15', created_at: '2026-01-01T00:00:00Z' },
-  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-10-10', created_at: '2026-02-01T00:00:00Z' },
-  { id: 'w3', user_id: USER_ID, show_id: 'oh-mary-2024', planned_date: null, created_at: '2025-12-15T00:00:00Z' },
-  { id: 'w4', user_id: USER_ID, show_id: 'operation-mincemeat-2025', planned_date: null, created_at: '2026-01-20T00:00:00Z' },
+  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-09-15', time_slot: 'evening', curtain_time: '19:00:00', created_at: '2026-01-01T00:00:00Z' },
+  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-10-10', time_slot: 'matinee', curtain_time: '14:00:00', created_at: '2026-02-01T00:00:00Z' },
+  { id: 'w3', user_id: USER_ID, show_id: 'oh-mary-2024', planned_date: null, time_slot: null, curtain_time: null, created_at: '2025-12-15T00:00:00Z' },
+  { id: 'w4', user_id: USER_ID, show_id: 'operation-mincemeat-2025', planned_date: null, time_slot: null, curtain_time: null, created_at: '2026-01-20T00:00:00Z' },
   // Past planned_date, no review → "To be rated"
-  { id: 'w5', user_id: USER_ID, show_id: 'chess-2025', planned_date: '2026-02-15', created_at: '2026-01-05T00:00:00Z' },
-  { id: 'w6', user_id: USER_ID, show_id: 'ragtime-2025', planned_date: '2026-02-28', created_at: '2026-01-10T00:00:00Z' },
+  { id: 'w5', user_id: USER_ID, show_id: 'chess-2025', planned_date: '2026-02-15', time_slot: 'evening', curtain_time: null, created_at: '2026-01-05T00:00:00Z' },
+  { id: 'w6', user_id: USER_ID, show_id: 'ragtime-2025', planned_date: '2026-02-28', time_slot: null, curtain_time: null, created_at: '2026-01-10T00:00:00Z' },
 ];
 
 // Mock lists for the Lists tab

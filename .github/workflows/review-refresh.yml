@@ -13,6 +13,11 @@ on:
         required: false
         default: ''
         type: string
+      tr_show_filter:
+        description: 'Comma-separated show IDs for per-show Theatre Record extraction (works for closed/historical shows; overrides the default --browse-we listing pass)'
+        required: false
+        default: ''
+        type: string
       include_closed:
         description: 'Also check closed shows for review gaps'
         required: false
@@ -340,18 +345,32 @@ jobs:
         run: node scripts/convert-show-score-to-review-texts.js
 
       - name: Extract Theatre Record reviews (WE shows)
-        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true' || inputs.tr_show_filter != ''
         continue-on-error: true
         env:
           TR_EMAIL: ${{ secrets.TR_EMAIL }}
           TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+          TR_SHOW_FILTER: ${{ inputs.tr_show_filter }}
         run: |
           if [ -z "$TR_EMAIL" ] || [ -z "$TR_PASSWORD" ]; then
             echo "TR credentials not configured — skipping Theatre Record extraction"
             exit 0
           fi
-          echo "Extracting reviews from Theatre Record (browse WE listing)..."
-          node scripts/extract-theatre-record.js --browse-we --no-skip-existing
+          if [ -n "$TR_SHOW_FILTER" ]; then
+            echo "Extracting reviews from Theatre Record (per-show: $TR_SHOW_FILTER)..."
+            IFS=',' read -ra TR_SHOWS <<< "$TR_SHOW_FILTER"
+            tr_failures=0
+            for tr_show in "${TR_SHOWS[@]}"; do
+              tr_show="$(echo "$tr_show" | xargs)"
+              [ -z "$tr_show" ] && continue
+              node scripts/extract-theatre-record.js --show="$tr_show" --no-skip-existing \
+                || { echo "::warning::Theatre Record extraction failed for $tr_show"; tr_failures=$((tr_failures+1)); }
+            done
+            echo "Per-show TR extraction done: ${#TR_SHOWS[@]} requested, $tr_failures failed"
+          else
+            echo "Extracting reviews from Theatre Record (browse WE listing)..."
+            node scripts/extract-theatre-record.js --browse-we --no-skip-existing
+          fi
 
       - name: Discover URLs for Theatre Record reviews (Phase 0)
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'

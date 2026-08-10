@@ -1,24 +1,46 @@
 {
-  "generatedAt": "2026-08-10T12:47:44.072Z",
+  "generatedAt": "2026-08-10T14:22:16.516Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 147,
-  "defective": 1,
+  "clean": 146,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1,
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "im-every-woman-off-west-end-2026",
-      "title": "I'm Every Woman",
-      "openingDate": "2026-08-05",
+      "showId": "moulin-rouge-2019",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2019-07-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: billboard"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.03 vs local 72.36 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [
+        "billboard"
+      ],
+      "localCount": 39,
+      "deployedCount": 38
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
+      "openingDate": "2026-08-06",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 51.52 vs local 51.87 (Δ0.35)"
+          "detail": "deployed cs 73.16 vs local 71.51 (Δ1.65)"
         }
       ],
       "missingFromProd": [],

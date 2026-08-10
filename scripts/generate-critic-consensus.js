@@ -9,6 +9,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+// The scored-review floor below which a Critics' Take is not generated. Shared
+// with opening-night-checks/critics-take-present.check.js so the check cannot
+// demand a consensus this script is coded to refuse (task #389).
+import { MIN_SCORED_REVIEWS, isConsensusEligible } from './lib/critic-consensus-eligibility.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -259,10 +263,10 @@ async function main() {
 
     // Layer 5a: Input validation — minimum review threshold
     const scoredReviews = reviews.filter(r => r.score != null);
-    if (scoredReviews.length < 2) {
-      console.log(`  ⏭️  Skipped - only ${scoredReviews.length} scored reviews (need 2+)`);
+    if (!isConsensusEligible(scoredReviews.length)) {
+      console.log(`  ⏭️  Skipped - only ${scoredReviews.length} scored reviews (need ${MIN_SCORED_REVIEWS}+)`);
       // Delete stale consensus if show dropped below threshold
-      if (consensusData.shows[showId] && (consensusData.shows[showId].reviewCount || 0) >= 2) {
+      if (consensusData.shows[showId] && (consensusData.shows[showId].reviewCount || 0) >= MIN_SCORED_REVIEWS) {
         console.log(`  🗑️  Removing stale consensus (reviews dropped below threshold)`);
         delete consensusData.shows[showId];
       }
