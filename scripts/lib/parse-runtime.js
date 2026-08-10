@@ -21,8 +21,11 @@ function parseRuntimeMinutes(runtime) {
   const s = String(runtime).trim().toLowerCase();
   if (!s) return null;
 
+  // Falls through to the shared cap rather than returning early — an early
+  // return let "12:00" through while "12h" was rejected (same duration,
+  // different outcome by format alone).
   const colon = s.match(/^(\d{1,2}):([0-5]\d)$/);
-  if (colon) return Number(colon[1]) * 60 + Number(colon[2]);
+  if (colon) return clampRuntime(Number(colon[1]) * 60 + Number(colon[2]));
 
   let total = 0;
   let matched = false;
@@ -40,6 +43,10 @@ function parseRuntimeMinutes(runtime) {
   }
 
   if (!matched) return null;
+  return clampRuntime(total);
+}
+
+function clampRuntime(total) {
   if (total <= 0 || total > 8 * 60) return null;
   return total;
 }

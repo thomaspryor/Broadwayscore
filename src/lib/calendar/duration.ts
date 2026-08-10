@@ -26,9 +26,12 @@ export function parseRuntimeMinutes(runtime: string | null | undefined): number 
   const s = String(runtime).trim().toLowerCase();
   if (!s) return null;
 
-  // "2:30" — colon form.
+  // "2:30" — colon form. Falls through to the shared sanity cap below rather
+  // than returning early: an early return let "12:00" through as a 12-hour
+  // event while the equivalent "12h" was correctly rejected, so the same
+  // duration passed or failed depending purely on how it was written.
   const colon = s.match(/^(\d{1,2}):([0-5]\d)$/);
-  if (colon) return Number(colon[1]) * 60 + Number(colon[2]);
+  if (colon) return clampRuntime(Number(colon[1]) * 60 + Number(colon[2]));
 
   let total = 0;
   let matched = false;
@@ -46,7 +49,11 @@ export function parseRuntimeMinutes(runtime: string | null | undefined): number 
   }
 
   if (!matched) return null;
-  // A "runtime" of zero or a full day is data corruption, not a short play.
+  return clampRuntime(total);
+}
+
+/** A "runtime" of zero or most of a day is data corruption, not a short play. */
+function clampRuntime(total: number): number | null {
   if (total <= 0 || total > 8 * 60) return null;
   return total;
 }

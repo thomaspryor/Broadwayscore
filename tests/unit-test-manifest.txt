@@ -42,6 +42,7 @@ scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/newsletter/newsworthiness.test.mjs
+scripts/newsletter/section-credential-guard.test.mjs
 scripts/newsletter/we-openings-section.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
@@ -450,3 +451,4 @@ tests/unit/workflow-run-coverage.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs
 tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
+tests/unit/supabase-schema-expectations.test.mjs

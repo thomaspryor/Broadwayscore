@@ -17,16 +17,35 @@
  *   every run looked like "still waiting on a fetch" instead of "two shows
  *   claim this URL and a human must pick one".
  *
- * The distinction that matters: a CONFLICT is a skip where two records
- * disagree about reality, so exactly one of them is wrong and a fix exists. It
- * can never resolve itself by being retried. A BENIGN skip is one where the
- * desired end state already holds, or the URL legitimately isn't a review.
+ * Three buckets, because two was one too few (ship-check on the first version,
+ * 2026-08-09):
+ *
+ *   CONFLICT           two records disagree about reality, so exactly one of
+ *                      them is wrong and a fix exists. Retrying never resolves
+ *                      it. Loud, and counted as a residual gap until fixed.
+ *   EXPECTED-REJECTION the write was refused and that refusal is CORRECT and
+ *                      PERMANENT — no human action changes it. Visible in the
+ *                      per-run log so it is never invisible, but never added to
+ *                      `residual`: inflating the residual tally with these is
+ *                      exactly the chronic hourly alarm the 2026-08-06
+ *                      ship-check removed, and re-creating it would retrain the
+ *                      owner to ignore the warning that matters.
+ *   BENIGN             the desired end state already holds, or the URL
+ *                      legitimately isn't a review. Quiet.
  *
  * The reason strings are a CONTRACT with scripts/lib/review-file-writer.js.
  * ingest-skip-classify.test.mjs greps that file for every `reason:` literal it
- * can emit and fails if one is in neither list — so adding a skip reason there
+ * can emit and fails if one is in no list — so adding a skip reason there
  * without classifying it here breaks CI instead of silently defaulting to
  * quiet (which is the exact failure mode this module exists to remove).
+ *
+ * That grep is itself load-bearing, and its FIRST version was too narrow to see
+ * two real literals: `onMerge-aborted` (capital M) and `empty-unknown: no URL,
+ * no text, unknown critic` (colon + spaces inside the quoted literal). A
+ * contract test that cannot see part of its contract is worse than none — it
+ * reports coverage it does not have. Both the producer grep and the classifier
+ * are therefore case-insensitive and colon-tolerant, and reasons are compared
+ * lower-cased on both sides.
  *
  * Pure per CLAUDE.md §15 — audit-show-review-gap.js wires it, the test
  * require()s it.
@@ -53,10 +72,6 @@ const CONFLICT_REASONS = [
   // Outlet id failed the slug sanity check (garbage provisional slug). Real
   // review, unusable attribution — needs a registry entry.
   'suspicious-outlet-id',
-  // Cross-market guard rejected the write. Correct behaviour on a genuine
-  // leak, but it is a rejection of a cited review, so it must stay visible
-  // rather than reading as "nothing to do".
-  'cross-market',
   // The URL is on a known aggregator domain while the resolved outlet is a
   // real outlet — the aggregator_url_mismatch contamination class (guard added
   // to createOrMergeReviewFile 2026-08-09). Same shape as 'cross-market':
@@ -64,6 +79,31 @@ const CONFLICT_REASONS = [
   // citation usually means the outlet's own URL was never resolved — the
   // roundup link stood in for it. Visible, not quiet.
   'aggregator-url-mismatch',
+  // Same class, refinement side: the URL's domain resolved to an AGGREGATOR
+  // outlet, so the writer refused to rewrite the real outlet onto it AND
+  // refused the write. Also a CONFLICT, not an expected rejection — a cited
+  // review was dropped and the roundup link stood in for the outlet's own URL.
+  'aggregator-url-refinement-refused',
+];
+
+// EXPECTED REJECTION = the write was correctly refused and no human action
+// changes that. Printed once per occurrence so it is never invisible, but
+// deliberately NOT residual — see the three-bucket note in the header.
+const EXPECTED_REJECTION_REASONS = [
+  // Cross-market guard refused the write. On a genuine cross-market leak this
+  // is the right answer forever; counting it as an unresolved conflict re-arms
+  // the chronic hourly alarm on every show that legitimately has one.
+  'cross-market',
+  // A caller's onMerge hook aborted the merge (review-file-writer.js:752).
+  // The caller decided not to write; that is its prerogative, not a data
+  // disagreement. Lower-cased here because classifyIngestSkip lower-cases the
+  // captured reason and the literal is `onMerge-aborted`.
+  'onmerge-aborted',
+  // Nothing to write at all: no URL, no text, unknown critic
+  // (review-file-writer.js:532). No review was dropped because there was no
+  // review — but it stays visible, since a caller producing these in bulk
+  // means an upstream extractor is returning empty.
+  'empty-unknown',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -77,14 +117,17 @@ const BENIGN_REASONS = [
  * Classify one ingest attempt from the child process's stdout.
  *
  * ingest-review-from-url.js prints `⚠️  Skipped: <reason>` on the skip path.
- * Two emitted shapes carry a detail after the reason:
- *   `cross-show-url-owned:<showId>`      — no space, machine-readable
- *   `domain-mismatch: <human prose>`     — space, prose (detail stays null)
+ * Emitted shapes that carry something after the reason:
+ *   `cross-show-url-owned:<showId>`                     — no space, machine-readable
+ *   `domain-mismatch: <human prose>`                    — space, prose (detail stays null)
+ *   `empty-unknown: no URL, no text, unknown critic`    — same prose shape
  * so the detail group deliberately requires NO space after the colon; prose
- * variants classify correctly with detail === null.
+ * variants classify correctly with detail === null. `onMerge-aborted` carries a
+ * capital letter, so the reason charset is case-insensitive and the captured
+ * reason is lower-cased before lookup (every list below is lower-case).
  *
  * @param {string} stdout  combined child stdout (may be '' when unavailable)
- * @returns {{kind: 'conflict'|'benign'|'unclassified', reason: string|null, detail: string|null}}
+ * @returns {{kind: 'conflict'|'expected'|'benign'|'unclassified', reason: string|null, detail: string|null}}
  */
 function classifyIngestSkip(stdout) {
   const text = String(stdout || '');
@@ -93,6 +136,7 @@ function classifyIngestSkip(stdout) {
   const reason = m[1].toLowerCase();
   const detail = m[2] || null;
   if (CONFLICT_REASONS.includes(reason)) return { kind: 'conflict', reason, detail };
+  if (EXPECTED_REJECTION_REASONS.includes(reason)) return { kind: 'expected', reason, detail };
   if (BENIGN_REASONS.includes(reason)) return { kind: 'benign', reason, detail };
   // Deliberately NOT benign: an unrecognised reason is a contract drift, and
   // defaulting it to quiet is how the original silent veto survived. The audit
@@ -101,11 +145,16 @@ function classifyIngestSkip(stdout) {
 }
 
 /**
- * Human-readable, action-bearing line for a conflict — used in the audit's
- * ::error:: and any alert body. Never phrase a conflict as "no-op": the
- * operator must be able to act on it from the message alone.
+ * Human-readable, action-bearing line for a skip — used in the audit's
+ * ::error::/::warning:: and any alert body. Never phrase a skip as "no-op": the
+ * operator must be able to tell from the message alone whether there is
+ * something to do, and if so what.
+ *
+ * Covers conflicts AND expected rejections. An expected-rejection message says
+ * plainly that no action is needed, so a reader can stop there instead of
+ * re-deriving that conclusion every run.
  */
-function describeConflict(showId, url, { reason, detail }) {
+function describeSkip(showId, url, { reason, detail }) {
   if (reason === 'cross-show-url-owned') {
     return `${showId}: ${url} is already owned by ${detail || 'another show'} — one of the two is contaminated. `
       + `Inspect data/review-texts/${detail || '<owner>'}/ for this URL; if that copy is the misfiled one, flag it `
@@ -119,14 +168,31 @@ function describeConflict(showId, url, { reason, detail }) {
     return `${showId}: ${url} could not be attributed to a usable outlet (${reason}) — add a registry entry for its host.`;
   }
   if (reason === 'cross-market') {
-    return `${showId}: ${url} was rejected by the cross-market guard — confirm the review really belongs to this market.`;
+    return `${showId}: ${url} was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json).`;
+  }
+  if (reason === 'onmerge-aborted') {
+    return `${showId}: ${url} — the calling script's onMerge hook aborted the write. Expected rejection: the caller decided not to merge, no action needed here.`;
+  }
+  if (reason === 'empty-unknown') {
+    return `${showId}: ${url} carried no URL, no text and no critic, so there was nothing to write. Expected rejection; if a caller produces these in bulk its extractor is returning empty.`;
   }
   if (reason === 'aggregator-url-mismatch') {
     return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `
       + `— find that outlet's own article URL (the roundup links to it) and ingest that instead. `
       + `Filing the roundup URL under a real outlet is the aggregator_url_mismatch defect validate-review-texts.js fails the trunk on.`;
   }
+  if (reason === 'aggregator-url-refinement-refused') {
+    return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
+      + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
+      + `If this was a legitimate aggregator star-stub, its stars are lost until the validator gains the star-stub carve-out the write guard already has.`;
+  }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }
 
-module.exports = { classifyIngestSkip, describeConflict, CONFLICT_REASONS, BENIGN_REASONS };
+module.exports = {
+  classifyIngestSkip,
+  describeSkip,
+  CONFLICT_REASONS,
+  EXPECTED_REJECTION_REASONS,
+  BENIGN_REASONS,
+};

@@ -15,6 +15,11 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirnameCompat = path.dirname(fileURLToPath(import.meta.url));
 
 const require = createRequire(import.meta.url);
 const {
@@ -26,6 +31,8 @@ const {
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
+  hasEnsembleConsensus,
+  shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
@@ -198,6 +205,10 @@ describe('shouldAutoClearWrongShow', () => {
 });
 
 describe('shouldAutoClearWrongProductionUrlYear', () => {
+  // Task #1193: this predicate was dead code — the real rebuild-all-reviews.js
+  // call site ran its own diverging inline logic. Ctx shape (cvBlocksClear,
+  // isShowListingUrl) now mirrors what the caller actually computes and
+  // passes in — same pattern as shouldAutoClearWrongProductionUkDualMarket.
   const urlYearNote = 'URL contains year 2019 but show is 2025';
 
   it('returns false when wrongProduction is not set', () => {
@@ -256,45 +267,70 @@ describe('shouldAutoClearWrongProductionUrlYear', () => {
     );
   });
 
-  it('returns false when CV high-confidence wrongProduction is set', () => {
+  it('returns false when caller-computed cvBlocksClear is true (CV wrongProduction/wrongArticle/non-review-articleType)', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongProduction: true, confidence: 'high' },
-        },
-        { isLondonOrOffBroadway: true }
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, cvBlocksClear: true }
       ),
       false
     );
   });
 
-  it('returns false when CV high-confidence wrongArticle is set', () => {
+  it('returns true when cvBlocksClear is false (e.g. CV was only low confidence)', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongArticle: true, confidence: 'high' },
-        },
-        { isLondonOrOffBroadway: true }
-      ),
-      false
-    );
-  });
-
-  it('returns true when CV is low confidence (low conf is not authoritative)', () => {
-    assert.strictEqual(
-      shouldAutoClearWrongProductionUrlYear(
-        {
-          wrongProduction: true,
-          wrongProductionNote: urlYearNote,
-          contentVerification: { wrongProduction: true, confidence: 'low' },
-        },
-        { isLondonOrOffBroadway: true }
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, cvBlocksClear: false }
       ),
       true
+    );
+  });
+
+  it('returns false when isShowListingUrl is true (whatsonstage/broadwayworld /shows/ aggregate page)', () => {
+    // Cousin of the Birmingham-Rep whatsonstage /shows/ stub incident
+    // (2026-07-05) — a listing page URL-year mismatch is not a dated
+    // review's false positive.
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        { wrongProduction: true, wrongProductionNote: urlYearNote },
+        { isLondonOrOffBroadway: true, isShowListingUrl: true }
+      ),
+      false
+    );
+  });
+
+  it('returns false on ensemble wrong_production consensus (outranks the URL-year heuristic)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        {
+          wrongProduction: true,
+          wrongProductionNote: urlYearNote,
+          rejectedBy: 'ensemble-scoreability-check',
+          rejectionReason: 'wrong_production',
+          rejectionReasoning:
+            "claude: This review is about a different production; "
+            + "gemini: The text is a review of a different production.",
+        },
+        { isLondonOrOffBroadway: true }
+      ),
+      false
+    );
+  });
+
+  it('returns false when fetched text predates a later URL rewrite (stale-text guard)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUrlYear(
+        {
+          wrongProduction: true,
+          wrongProductionNote: urlYearNote,
+          urlCorrectedFrom: 'https://example.com/old-article',
+          urlUpdatedAt: '2026-04-03T17:01:15.864Z',
+          textFetchedAt: '2026-02-26T03:18:04.314Z',
+        },
+        { isLondonOrOffBroadway: true }
+      ),
+      false
     );
   });
 });
@@ -903,6 +939,237 @@ describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () =
         {}
       ),
       false
+    );
+  });
+});
+
+// ── hasEnsembleConsensus: the ensemble outranks the heuristic ────────────────
+// Coverage-pipeline tracker #2 / task #1146 (2026-08-09). A blanket domain
+// heuristic ("UK outlet URL on a London show") and the allowCrossMarket
+// override both deleted wrongShow even when the ensemble scoreability check had
+// rejected the file as wrong_show with claude + openai + gemini independently
+// naming a different production. 28 wrongShow files and 42 wrongProduction
+// files were in that state corpus-wide;
+// romeo-and-juliet-west-end-2026/london-theatre--holly-omahony.json was LIVE
+// serving Noughts & Crosses text.
+//
+// Fixture fields copied verbatim from that real file.
+const REAL_ROMEO_SHAPE = {
+  showId: 'romeo-and-juliet-west-end-2026',
+  outletId: 'london-theatre',
+  url: 'https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-sadie-sink-noah-jupe-rob-icke',
+  rejectedAt: '2026-04-27T09:03:25.185Z',
+  rejectedBy: 'ensemble-scoreability-check',
+  rejectionReason: 'wrong_show',
+  rejectionReasoning:
+    "claude: This review is about 'Noughts & Crosses' at Regent's Park Open Air Theatre, not 'Romeo and Juliet' at Harold Pinter Theatre; "
+    + "openai: The text is a review of 'Noughts & Crosses' at the Regent's Park Open Air Theatre, not 'Romeo and Juliet' at the Harold Pinter Theatre.; "
+    + 'gemini: This review is for Noughts & Crosses at Regent\'s Park Open Air Theatre, not Romeo and Juliet at Harold Pinter Theatre.',
+};
+
+describe('hasEnsembleConsensus', () => {
+  it('recognises the real romeo-and-juliet file shape', () => {
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_show'), true);
+  });
+
+  it('is scoped to the kind asked about', () => {
+    assert.equal(hasEnsembleConsensus(REAL_ROMEO_SHAPE, 'wrong_production'), false);
+  });
+
+  it('reads STRUCTURED fields only — never the LLM prose', () => {
+    // Same verdict prose, but no structured rejection recorded. A prose parser
+    // would fire here; this must not, because rejectionReasoning is
+    // LLM-authored text that moves with PROMPT_VERSION.
+    const proseOnly = { rejectionReasoning: REAL_ROMEO_SHAPE.rejectionReasoning };
+    assert.equal(hasEnsembleConsensus(proseOnly, 'wrong_show'), false);
+  });
+
+  it('ignores non-ensemble rejecters (human/manual/OCR triage)', () => {
+    for (const by of ['human-manual-cleanup', 'ocr-extraction', 'manual-contamination-triage']) {
+      assert.equal(
+        hasEnsembleConsensus({ rejectionReason: 'wrong_show', rejectedBy: by }, 'wrong_show'),
+        false,
+        `${by} is not the ensemble`,
+      );
+    }
+  });
+
+  it('never throws on malformed input', () => {
+    for (const d of [null, undefined, {}, { rejectionReason: 'wrong_show' }, { rejectedBy: 42, rejectionReason: 'wrong_show' }]) {
+      assert.doesNotThrow(() => hasEnsembleConsensus(d, 'wrong_show'));
+    }
+  });
+});
+
+describe('an ensemble verdict outranks every auto-clear heuristic', () => {
+  it('shouldAutoClearWrongShowUkUrl refuses to clear the real romeo-and-juliet file', () => {
+    // The exact call rebuild-all-reviews.js makes for that file: London market,
+    // UK outlet URL, no date mismatch. Pre-fix this returned true and the flag
+    // was deleted, which is why the file went live with another show's text.
+    assert.equal(
+      shouldAutoClearWrongShowUkUrl(
+        { ...REAL_ROMEO_SHAPE, wrongShow: true },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false },
+      ),
+      false,
+    );
+  });
+
+  it('shouldAutoClearWrongShow refuses even with allowCrossMarket set', () => {
+    assert.equal(
+      shouldAutoClearWrongShow({ ...REAL_ROMEO_SHAPE, wrongShow: true, allowCrossMarket: true }),
+      false,
+    );
+  });
+
+  it('shouldAutoClearWrongProduction refuses on the wrongProduction cousin', () => {
+    // The larger population (42 files): same hole, other flag. Fixing one and
+    // leaving the cousin is how this class keeps coming back.
+    const d = {
+      wrongProduction: true,
+      allowCrossMarket: true,
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
+    };
+    assert.equal(shouldAutoClearWrongProduction(d), false);
+  });
+
+  it('shouldAutoClearWrongProductionUrlYear refuses too', () => {
+    const d = {
+      wrongProduction: true,
+      wrongProductionNote: 'URL contains year 2019',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
+    };
+    assert.equal(shouldAutoClearWrongProductionUrlYear(d, { isLondonOrOffBroadway: true }), false);
+  });
+
+  it('WITHOUT an ensemble rejection the heuristics still clear — the guard is narrow', () => {
+    // The UK-URL heuristic exists because LLM wrongShow false positives on
+    // London shows are real. This must not become a blanket "never clear".
+    assert.equal(
+      shouldAutoClearWrongShowUkUrl(
+        { wrongShow: true },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false },
+      ),
+      true,
+    );
+    assert.equal(shouldAutoClearWrongShow({ wrongShow: true, allowCrossMarket: true }), true);
+    assert.equal(shouldAutoClearWrongProduction({ wrongProduction: true, allowCrossMarket: true }), true);
+  });
+});
+
+// ship-check 2026-08-09: the first cut of the ensemble guard covered only 4 of
+// the 6 auto-clear paths. priorRuns/tourLegs answer "is this DATE legitimate
+// for this production" — they cannot answer "is this TEXT about a different
+// production", which is exactly what the ensemble asserts. Operator-trust over
+// CV (the Phase 1 design) does not extend to overruling three models that read
+// the text and named another show.
+describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', () => {
+  const SHOW_PRIOR = { priorRuns: [{ openingDate: '2025-01-01', closingDate: '2025-06-01' }] };
+  const SHOW_TOUR = { tourLegs: [{ startDate: '2025-01-01', endDate: '2025-06-01' }] };
+  const dateOnlyFlag = {
+    wrongProduction: true,
+    wrongProductionNote: 'Pre-opening guard: review predates previews',
+    publishDate: '2025-03-01',
+  };
+
+  it('priorRun clear happens WITHOUT an ensemble rejection (guard stays narrow)', () => {
+    assert.equal(shouldAutoClearWrongProductionPriorRun({ ...dateOnlyFlag }, SHOW_PRIOR), true);
+  });
+
+  it('priorRun clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionPriorRun(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
+        SHOW_PRIOR,
+      ),
+      false,
+    );
+  });
+
+  it('tourLeg clear happens WITHOUT an ensemble rejection', () => {
+    assert.equal(shouldAutoClearWrongProductionTourLeg({ ...dateOnlyFlag }, SHOW_TOUR), true);
+  });
+
+  it('tourLeg clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionTourLeg(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
+        SHOW_TOUR,
+      ),
+      false,
+    );
+  });
+});
+
+// The census guard: every auto-clear predicate this module exports must consult
+// hasEnsembleConsensus. Structural, so a SEVENTH predicate added later cannot
+// quietly re-open the hole the way priorRun/tourLeg did.
+describe('no auto-clear predicate may skip the ensemble guard', () => {
+  it('every shouldAutoClear* function body references hasEnsembleConsensus', () => {
+    const src = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    // Split on top-level function declarations and check each shouldAutoClear* body.
+    const bodies = src.split(/\nfunction /).slice(1);
+    const missing = [];
+    for (const b of bodies) {
+      const name = b.slice(0, b.indexOf('('));
+      if (!/^shouldAutoClear/.test(name)) continue;
+      // Stale-date-guard clears are re-evaluations of OUR OWN date guard against
+      // a corrected date; they carry no cross-production claim, so they are
+      // deliberately exempt. Named explicitly so the exemption is a decision.
+      if (name === 'shouldAutoClearStaleDateGuard' || name === 'shouldAutoClearDatelessRevival') continue;
+      if (!b.includes('hasEnsembleConsensus')) missing.push(name);
+    }
+    assert.deepEqual(
+      missing, [],
+      `these auto-clear predicates do not consult hasEnsembleConsensus: ${missing.join(', ')}. `
+        + 'A heuristic must never overrule a multi-model verdict that read the text (tracker #2).',
+    );
+  });
+});
+
+// The dead-code guard: this module has twice shipped a tested, exported
+// shouldAutoClear* predicate that no caller actually invoked — the real
+// rebuild-all-reviews.js call site ran its own diverging inline logic
+// instead (shouldAutoClearWrongProductionUrlYear, task #1193; the sibling
+// UK-dual-market predicate had the same defect class, task #1189). Tests
+// passing gave false confidence the predicate governed production behavior.
+// Structural, so an EIGHTH predicate added later cannot quietly repeat it.
+describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard)', () => {
+  it('every exported shouldAutoClear* name has at least one call site in a documented caller script', () => {
+    const libSrc = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    const exportsMatch = libSrc.match(/module\.exports\s*=\s*\{([\s\S]*?)\};/);
+    assert.ok(exportsMatch, 'expected a module.exports = { ... } block');
+    const exportedNames = exportsMatch[1]
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => /^shouldAutoClear\w+$/.test(s));
+    assert.ok(exportedNames.length > 0, 'expected at least one exported shouldAutoClear* name');
+
+    // The two production callers documented in this file's header docstring.
+    const callerPaths = [
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'rebuild-all-reviews.js'),
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'flag-wrong-production-by-date.js'),
+    ];
+    const callerSrc = callerPaths.map(p => fs.readFileSync(p, 'utf8')).join('\n');
+
+    const unwired = exportedNames.filter(name => !callerSrc.includes(`${name}(`));
+    assert.deepEqual(
+      unwired, [],
+      `these exported predicates have zero call sites in rebuild-all-reviews.js or `
+        + `flag-wrong-production-by-date.js: ${unwired.join(', ')}. A predicate with unit `
+        + 'tests but no caller is dead code masquerading as tested production logic (#1193).',
     );
   });
 });

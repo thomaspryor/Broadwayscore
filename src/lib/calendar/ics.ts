@@ -53,6 +53,19 @@ export function foldLine(line: string): string {
   return out.join('\r\n ');
 }
 
+/**
+ * UID is NOT a TEXT property, so it does not get escapeText's treatment — it is
+ * written raw. Anything that reaches it must therefore be scrubbed of the
+ * characters that would end the line and start a new calendar property.
+ *
+ * decodeEventParams already restricts showId to a safe charset, but this module
+ * is also called directly with events built from database rows, so the
+ * guarantee belongs here too rather than only at one entry point.
+ */
+function sanitizeUidPart(value: string): string {
+  return value.replace(/[^a-zA-Z0-9._-]/g, '-').slice(0, 80) || 'unknown';
+}
+
 /** YYYYMMDDTHHMMSS for a local wall time (no trailing Z — TZID supplies the zone). */
 function icsLocal(date: string, time: string): string {
   return `${date.replace(/-/g, '')}T${time.replace(':', '')}00`;
@@ -107,7 +120,7 @@ export function buildIcs(ev: PerformanceEvent, opts: BuildIcsOptions): string {
     'BEGIN:VEVENT',
     // Date excluded from the UID on purpose: re-exporting after a reschedule
     // must UPDATE the existing event, not create a second one.
-    `UID:bsc-${ev.showId}@${uidDomain}`,
+    `UID:bsc-${sanitizeUidPart(ev.showId)}@${uidDomain}`,
     `DTSTAMP:${icsUtc(generatedAt)}`,
     `SEQUENCE:${sequence}`,
   ];

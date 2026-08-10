@@ -10,6 +10,10 @@ on:
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # Schema-drift parser (verify-schema.yml / supabase-functions.yml gate):
+      # its unit test is in tests/unit-test-manifest.txt (tests/** is globbed
+      # above) but a solo edit to the lib needs this listing to trigger CI.
+      - 'scripts/lib/supabase-schema-expectations.js'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
@@ -962,6 +966,11 @@ on:
       - 'scripts/lib/outlet-canonicalize.js'
       - 'scripts/lib/aggregator-domains.js'
       - 'scripts/lib/aggregator-url-write-chokepoint.test.mjs'
+      # Same class, refinement side (2026-08-09): URL-based outlet refinement must
+      # never rewrite a real outlet's id ONTO an aggregator outlet — doing so both
+      # destroys the attribution and launders the file past the write guard above,
+      # which permits an aggregator URL precisely when outletId IS the aggregator.
+      - 'scripts/lib/aggregator-outlet-refinement.test.mjs'
       # Per-show merge for data/audit/show-review-gap.json (#893). Without it a
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
@@ -1017,11 +1026,36 @@ on:
       - 'scripts/lib/date-guard.js'
       - 'scripts/lib/date-guard.test.mjs'
       - 'scripts/lib/wrong-production-autoclear.js'
+      # Coverage-pipeline tracker #1147 (2026-08-09). None of these were path-listed,
+      # so an edit to any of them shipped with ZERO CI (feedback_test_yml_push_path_allowlist).
+      # audit-wrongshow-autoclear-conflicts.js in particular MUTATES the review-texts
+      # corpus under --fix, and its --strict mode is the standing gate for the
+      # auto-clear-vs-ensemble-verdict class.
+      - 'scripts/audit-wrongshow-autoclear-conflicts.js'
+      - 'scripts/lib/outlet-canonicalize.js'
+      - 'scripts/lib/outlet-canonicalize.test.mjs'
+      - 'scripts/lib/non-review-url-patterns.js'
+      - 'scripts/lib/domain-filters.js'
+      - 'scripts/lib/ingest-skip-classify.js'
+      - 'scripts/lib/ingest-skip-classify.test.mjs'
+      - 'scripts/lib/newsletter-preflight.js'
+      - 'scripts/lib/newsletter-preflight.test.mjs'
+      - 'scripts/newsletter/pre-send-check.mjs'
+      - 'scripts/audit-show-review-gap.js'
+      - 'scripts/audit-show-review-gap.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
-      # Ensemble-vs-heuristic guard for the UK-URL/allowCrossMarket wrongShow
-      # auto-clear paths (task #1146) + its live-corpus scan. Colocated
-      # .test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
-      # solo edit triggers CI.
+      # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
+      # must never silently override a unanimous LLM ensemble rejection.
+      # Colocated *.test.mjs corpus layers run explicitly below (Data
+      # Validation job, after checkout-review-texts); scan lib + audit CLI
+      # are path-listed so a solo edit triggers CI (allow-list gate).
+      # wrongshow-autoclear-ensemble.test.mjs (task #1146) covers the
+      # wrongShow-only case with its own self-contained corpus scan;
+      # autoclear-vs-ensemble.test.mjs (#1156) generalizes to both flags via
+      # the shared scan lib.
+      - 'scripts/lib/autoclear-vs-ensemble-scan.js'
+      - 'scripts/lib/autoclear-vs-ensemble.test.mjs'
+      - 'scripts/audit-autoclear-vs-ensemble.js'
       - 'scripts/lib/wrongshow-autoclear-ensemble.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
@@ -1441,6 +1475,13 @@ on:
       # colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/newsletter-regen-guard.js'
       - 'scripts/lib/newsletter-regen-guard.test.mjs'
+      # Structural guard: the refresh workflow's allowGaps input must stay a
+      # STRING ('1'), and the ADC fallback in popular-pages.mjs must stay gated
+      # to non-CI. Test-only (no lib file); runs in the scripts/lib/*.test.mjs
+      # glob step. Path-listed so a solo edit to the guard triggers CI, and so
+      # edits to the two files it guards do too.
+      - 'scripts/lib/newsletter-allow-gaps-wiring.test.mjs'
+      - 'scripts/newsletter/popular-pages.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter
@@ -3394,6 +3435,25 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/review-guards.explain.test.mjs
+
+      - name: Run autoclear-vs-ensemble corpus test (needs review-texts)
+        # #1146/#1156: an auto-clear path (allowEarlyDate/allowCrossMarket
+        # bypass, UK-URL/registry-region heuristic) must never silently
+        # override a unanimous LLM-ensemble content rejection. Same
+        # corpus-presence contract as the parity test above —
+        # REQUIRE_REVIEW_CORPUS=1 turns a missing checkout into a hard
+        # failure instead of a silent skip.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/autoclear-vs-ensemble.test.mjs
+
+      - name: Autoclear-vs-ensemble audit (strict)
+        # Standalone re-runnable audit alongside the corpus test above —
+        # same defect class, gate reports the violating files directly
+        # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
+        if: always()
+        run: node scripts/audit-autoclear-vs-ensemble.js --strict
 
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the
