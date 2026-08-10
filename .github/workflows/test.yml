@@ -1011,6 +1011,12 @@ on:
       - 'scripts/lib/date-guard.js'
       - 'scripts/lib/date-guard.test.mjs'
       - 'scripts/lib/wrong-production-autoclear.js'
+      - 'tests/unit/wrong-production-autoclear.test.mjs'
+      # Ensemble-vs-heuristic guard for the UK-URL/allowCrossMarket wrongShow
+      # auto-clear paths (task #1146) + its live-corpus scan. Colocated
+      # .test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit triggers CI.
+      - 'scripts/lib/wrongshow-autoclear-ensemble.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
       # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior
@@ -1728,6 +1734,12 @@ on:
       - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
+      # owner-judgment marker (#1154) — one regex, three consumers
+      # (autonomous-eligibility excludes on it, verify-gate arms on it,
+      # headless-dispatchability blocks on it). Path-listed so a solo edit to
+      # the leaf or to verify-gate triggers CI instead of silently getting none.
+      - 'scripts/lib/owner-judgment-marker.js'
+      - 'scripts/lib/verify-gate.js'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'
@@ -3376,6 +3388,20 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/review-guards.explain.test.mjs
+
+      - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
+        # Same corpus-missing trap as explainExclusion above, same fix: the
+        # scripts/lib/*.test.mjs glob in the unit-tests job never has
+        # data/review-texts, so this file's corpus test always t.skip()'d
+        # there. Re-run it HERE (after checkout-review-texts) with
+        # REQUIRE_REVIEW_CORPUS=1 so the task #1146 acceptance scan
+        # (rejectionReason=wrong_show + wrongShowAutoCleared + wrongShow!==true
+        # must be 0) is a real assertion, not a silent no-op. ship-check
+        # finding, task #1146.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
 
       - name: Run data validation
         if: always()

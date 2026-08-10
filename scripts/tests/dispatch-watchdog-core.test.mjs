@@ -27,6 +27,30 @@ test('ledger-confirmed dead launch with open task is retryable', () => {
   assert.equal(plan.toDispatch[0].taskId, '10');
 });
 
+test('#1154: an owner-judgment card that died is NEVER retried (retry bypasses actionable())', () => {
+  // The Sarah check-in shape: launched once, session died, then re-dispatched
+  // by dead-session recovery — which goes through `bsc-next --id` and so skips
+  // the pick filter entirely. The P0/P1 backlog sweep alone does not cover it.
+  const marked = [String(12), {
+    id: '12',
+    subject: 'Sarah check-in: growth plan progress and metrics report',
+    status: 'in_progress',
+    description: '[notion:abc-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
+  }];
+  const entries = [
+    { ts: T(60), event: 'launch', taskId: '12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
+    { ts: T(30), event: 'dead', taskId: '12', workspaceRef: 'workspace:7' },
+  ];
+  const plan = core.planSweep(entries, new Map([marked]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 0, 'owner-judgment card must not be retryable');
+  assert.equal(plan.toDispatch.filter(d => d.taskId === '12').length, 0, 'and must never be dispatched');
+
+  // Control: identical ledger, identical Admin category, marker removed -> retried.
+  const control = [String(12), { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
+  const plan2 = core.planSweep(entries, new Map([control]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan2.retryable.length, 1, 'without the marker the same card IS retryable');
+});
+
 test('vanished (owner-closed) is never retried — terminal reason matters', () => {
   const entries = [
     { ts: T(60), event: 'launch', taskId: '11', subject: 's', workspaceRef: 'workspace:6' },

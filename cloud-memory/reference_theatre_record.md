@@ -1,7 +1,11 @@
 ---
-name: Theatre Record subscription and integration
-description: "Paid UK review archive £53/yr; extraction script; wired into refresh pipeline."
-type: reference
+name: theatre-record-subscription-and-integration
+description: Paid UK review archive £53/yr; extraction script; wired into refresh pipeline.
+metadata: 
+  node_type: memory
+  type: reference
+  originSessionId: 5f71081d-465d-46a5-b460-4c8c6b29bed3
+  modified: 2026-08-09T23:53:45.963Z
 ---
 
 ## Theatre Record Integration
@@ -30,4 +34,4 @@ type: reference
 **Known limitations:**
 - PDF parser misses reviews in older volumes (pre-2017) with different formatting
 - Search sometimes returns touring productions instead of WE — retry with location filter helps but not perfect
-- No star ratings — all reviews need LLM scoring
+- **Captures NEITHER original review URLs NOR critics' star/explicit ratings (owner-confirmed 2026-08-09) — never treat TR as a sole source.** TR = full-text source only; URLs + stars must be recovered from WET roundup rows, the outlet page itself, or SERP. Star ratings matter because explicit stars anchor/cap LLM scores ([[feedback_star_score_cap]]); URL-less majors break dedup and verification. Policy set in the WE historical plan (~/Documents/claude-outputs/we-historical-scoring-plan.md): every T1/T2 review needs URL + star (where the outlet uses stars); T3 tail may stay URL-less with source metadata.

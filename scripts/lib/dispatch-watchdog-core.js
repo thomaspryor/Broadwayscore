@@ -202,6 +202,15 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    // Human-territory cards are excluded here too, not just in the P0/P1
+    // backlog sweep below (ship-check catch on task #1154). Retry only needs a
+    // PRIOR dead launch to fire, so without this a card that was dispatched
+    // once — before the marker existed, or by an explicit owner --id — gets
+    // re-launched unattended forever by dead-session recovery. That is exactly
+    // the Sarah check-in shape: launched 2026-07-25, then re-dispatched twice
+    // more by the watchdog. Retry goes through `bsc-next --id`, which skips
+    // actionable()'s filter entirely, so this is the only place to stop it.
+    if (isExcludedCategory(task)) continue;
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
     const deaths = deadAttemptsForTask(id, entries).length;
