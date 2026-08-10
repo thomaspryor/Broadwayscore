@@ -294,6 +294,42 @@ async function main() {
     const wReadB = await rest('GET', `watchlist?show_id=eq.${SHOW_ID}&select=*`, tokenB);
     check('watchlist: RLS isolates it', Array.isArray(wReadB.json) && wReadB.json.length === 0);
 
+    // ── WATCHLIST SHOWTIME (20260809_watchlist_showtime.sql) ──
+    // These columns back Add-to-Calendar. Before this block the watchlist test
+    // only posted user_id/show_id, so a missing migration or a wrong CHECK
+    // constraint shipped green and only surfaced as "Set time" silently never
+    // persisting. Exercise the real write/read/clear path plus the constraint.
+    const wTime = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
+      planned_date: '2026-09-11', time_slot: 'evening', curtain_time: '20:00:00',
+    });
+    check('watchlist: showtime columns save',
+      wTime.ok && Array.isArray(wTime.json) && wTime.json[0]?.time_slot === 'evening',
+      `PATCH status=${wTime.status} body=${JSON.stringify(wTime.json)?.slice(0, 160)}`);
+    check('watchlist: curtain_time reads back as a time',
+      String(wTime.json?.[0]?.curtain_time ?? '').startsWith('20:00'),
+      `curtain_time=${wTime.json?.[0]?.curtain_time}`);
+
+    // A time with no slot must be rejected by curtain_time_requires_slot.
+    const wOrphan = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
+      time_slot: null, curtain_time: '14:00:00',
+    });
+    check('watchlist: orphan curtain_time is rejected', !wOrphan.ok,
+      `expected a constraint violation, got status=${wOrphan.status}`);
+
+    // An unknown slot must fail the enum CHECK.
+    const wBadSlot = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
+      time_slot: 'midnight',
+    });
+    check('watchlist: unknown time_slot is rejected', !wBadSlot.ok,
+      `expected a CHECK violation, got status=${wBadSlot.status}`);
+
+    // Clearing both together is the "unset the time" path and must be allowed.
+    const wClear = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
+      time_slot: null, curtain_time: null,
+    });
+    check('watchlist: showtime clears', wClear.ok && wClear.json?.[0]?.curtain_time === null,
+      `PATCH status=${wClear.status}`);
+
     // ── LISTS ──
     const lIns = await rest('POST', 'lists', tokenA, { user_id: userA.id, name: 'Round-trip list' });
     const listId = Array.isArray(lIns.json) ? lIns.json[0]?.id : null;
