@@ -48,12 +48,22 @@ const MIN_FULLTEXT_LENGTH = 200; // below this, "missing tier" is not the bug �
  * contentTier without going through that safety net at all.
  *
  * @param {object} data - parsed review-text JSON
+ * @param {object} [show] - the review's show record from shows.json (by id),
+ *   or undefined/{} if unavailable. Forwarded to isIncludableForRebuild,
+ *   whose show-context checks (isPrematureReviewForUnopenedShow) need the
+ *   real record — passing `{}` for every call makes that check permanently
+ *   inert (its `status` read is always '', which never matches
+ *   'announced'/'upcoming'/'previews'), silently hiding a real exclusion
+ *   reason for reviews of not-yet-open shows (found in the #1188 duplicate-
+ *   dispatch review, 2026-08-10). Every other isIncludableForRebuild caller
+ *   in this codebase looks up the real show by id for exactly this reason
+ *   (scripts/check-review-count-drift.js, audit-show-review-gap.js, etc.).
  * @param {string} [filePath] - forwarded to isIncludableForRebuild for its
  *   filePath-dependent checks (e.g. rejectedAt vs textFetchedAt re-fetch
  *   detection); optional, matching isIncludableForRebuild's own signature.
  * @returns {boolean}
  */
-function isMissingContentTierGap(data, filePath) {
+function isMissingContentTierGap(data, show, filePath) {
   if (!data || typeof data !== 'object') return false;
   if (data.contentTier) return false; // has a tier — not the gap
   // manualContentTier is a human override that classifyContentTier() (content-quality.js)
@@ -71,10 +81,11 @@ function isMissingContentTierGap(data, filePath) {
   // isLikelyStaleRoundupFlag) a flat Boolean(data[flag]) list would get
   // wrong in both directions: false-flagging a file whose rejection was
   // already cleared, and missing exclusion classes the flat list never
-  // knew about (isNonReview, fabricatedEntry, rejectedAt, ...). `{}` for
-  // `show` is the documented safe form when no show record is on hand —
-  // none of its exclusion checks require show-specific data to run.
-  if (!isIncludableForRebuild(data, {}, filePath)) return false;
+  // knew about (isNonReview, fabricatedEntry, rejectedAt, ...). `show` may
+  // be undefined (orphan review-text dir with no shows.json entry) —
+  // isIncludableForRebuild's show-context checks treat that the same as
+  // `{}` (safe default, matches every other caller's convention).
+  if (!isIncludableForRebuild(data, show, filePath)) return false;
   return true;
 }
 
@@ -84,9 +95,14 @@ function isMissingContentTierGap(data, filePath) {
  * scan (memory: feedback_stray_symlink_crashes_pipeline.md).
  *
  * @param {string} reviewTextsDir - path to data/review-texts
+ * @param {object} [showsById] - showId -> show record (data/shows.json,
+ *   pre-indexed by caller), forwarded per-file to isIncludableForRebuild so
+ *   its show-context checks (e.g. premature-review-for-unopened-show) can
+ *   actually run. A showId with no entry passes `undefined` through — same
+ *   safe-default behavior as every other isIncludableForRebuild caller.
  * @returns {Array<{showId: string, file: string, criticName: string, outletId: string|null, outlet: string|null, url: string|null, wordCount: number}>}
  */
-function scanMissingContentTier(reviewTextsDir) {
+function scanMissingContentTier(reviewTextsDir, showsById) {
   const results = [];
   for (const showId of listShowDirs(reviewTextsDir)) {
     // `_`-prefixed dirs (e.g. `_superseded-misattributed`, `_pending`) are
@@ -110,7 +126,8 @@ function scanMissingContentTier(reviewTextsDir) {
       } catch {
         continue;
       }
-      if (isMissingContentTierGap(data, filePath)) {
+      const show = showsById ? showsById[showId] : undefined;
+      if (isMissingContentTierGap(data, show, filePath)) {
         results.push({
           showId,
           file,

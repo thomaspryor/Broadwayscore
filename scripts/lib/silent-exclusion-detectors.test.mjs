@@ -114,6 +114,25 @@ test('null/non-object input does not throw', () => {
   assert.equal(isMissingContentTierGap(undefined), false);
 });
 
+test('a review published well before an unopened show\'s previews window IS excluded when the real show record is passed (card #1188 duplicate-dispatch review, 2026-08-10)', () => {
+  // Bug found by the OTHER session that independently worked card #1188:
+  // isPrematureReviewForUnopenedShow(data, show) reads show.status, and an
+  // always-{} show has status === '' forever, which never matches
+  // 'announced'/'upcoming'/'previews' — so this exclusion rule was
+  // permanently inert no matter what data/filePath said. Passing the real
+  // show record (status: 'previews', far-future previewsStartDate) restores
+  // the real exclusion: this is a deliberate "not includable yet" case, not
+  // a silent contentTier gap to flag.
+  const show = { id: 'some-future-show-2026', status: 'previews', previewsStartDate: '2026-12-01', openingDate: '2026-12-10' };
+  const data = { criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' }; // 11 months early
+  assert.equal(isMissingContentTierGap(data, show), false, 'a genuinely premature review must not be reported as a contentTier gap');
+});
+
+test('the SAME premature-review fixture is (wrongly) reported when show is {} — proving {} was not a safe default for this predicate', () => {
+  const data = { criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' };
+  assert.equal(isMissingContentTierGap(data, {}), true, 'demonstrates the bug: {} makes isPrematureReviewForUnopenedShow permanently inert');
+});
+
 test('scanMissingContentTier walks a review-texts tree and finds only the gap fixture', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'silent-exclusion-rt-'));
   try {
@@ -138,6 +157,27 @@ test('scanMissingContentTier walks a review-texts tree and finds only the gap fi
     assert.equal(results[0].showId, 'rosie-odonnell-common-knowledge-off-broadway-2026');
     assert.equal(results[0].file, 'nyt-theater--jonathan.json');
     assert.equal(results[0].criticName, 'Jonathan');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('scanMissingContentTier threads showsById per-file so a premature review under an unopened show is correctly excluded, not reported', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'silent-exclusion-rt-showctx-'));
+  try {
+    const showDir = path.join(tmp, 'some-future-show-2026');
+    fs.mkdirSync(showDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(showDir, 'nyt-theater--jonathan.json'),
+      JSON.stringify({ criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' }),
+    );
+    const showsById = {
+      'some-future-show-2026': { id: 'some-future-show-2026', status: 'previews', previewsStartDate: '2026-12-01', openingDate: '2026-12-10' },
+    };
+    assert.deepEqual(scanMissingContentTier(tmp, showsById), [], 'a real show record must suppress the premature-review false positive');
+    // Without showsById (or with an id missing from it), the same file falls
+    // back to `show === undefined` — same as before this fix existed.
+    assert.equal(scanMissingContentTier(tmp).length, 1, 'documents the pre-fix/no-context behavior for comparison');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
