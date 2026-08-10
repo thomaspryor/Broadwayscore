@@ -1,20 +1,26 @@
 {
-  "totalCandidates": 2,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 13,
+  "cdxFound": 5,
+  "cdxNotFound": 3,
+  "recovered": 5,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 5
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "lightingandsoundamerica.com": 1,
+    "londonboxoffice.co.uk": 1,
+    "broadwayworld.com": 1,
+    "dailymail.com": 1,
+    "standard.co.uk": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 2,
-  "notInArchive": 0,
+  "errors": 5,
+  "notInArchive": 3,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
