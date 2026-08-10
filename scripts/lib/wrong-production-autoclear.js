@@ -286,29 +286,97 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
 }
 
 /**
- * True when the LLM ensemble scoreability check rejected this file with the
- * given rejection reason ('wrong_production' or 'wrong_show'). Set by
- * scripts/llm-scoring/index.ts only when 2+ of the 3 ensemble models agree
- * (scripts/llm-scoring/ensemble-scorer.ts source: 'ensemble-unanimous') — the
- * strongest per-content signal the pipeline produces, distinct from the
- * date/URL/venue heuristics every *AutoCleared path below is built on.
+ * Decide whether a wrongProduction/wrongShow-rejected file carries a
+ * strong-evidence ensemble verdict that no domain/market heuristic should be
+ * allowed to override.
  *
- * Background (Notion cousin of 34e637c5-416f-8121, #1146/#1156): a corpus scan
- * (2026-08-09) found 42 wrongProduction + 28 wrongShow files where an
- * allowEarlyDate/allowCrossMarket or UK-URL auto-clear stripped the flag on a
- * file the ensemble had unanimously rejected on content grounds — the show-level
- * date/market override has no bearing on whether THIS review's text is actually
- * about the right production. Auto-clear paths must defer to this signal the
- * same way they already defer to high-confidence contentVerification.
+ * Background (Notion 3b7637c5-416f-810a, task #1146; generalized to
+ * wrongProduction under #1156): the rebuild's UK/major-outlet and
+ * allowCrossMarket/allowEarlyDate auto-clear paths strip wrongProduction/
+ * wrongShow unconditionally once their domain/market conditions match —
+ * including when scripts/llm-scoring/index.ts already ran 3 independent
+ * models (claude + openai + gemini) against the actual fetched text and >=2
+ * of them independently rejected it. ensemble-scorer.ts's combineOutcomes()
+ * only produces a top-level `rejected` verdict (and therefore only ever
+ * writes rejectionReason='wrong_production'|'wrong_show' + rejectedBy=
+ * 'ensemble-scoreability-check') when `rejections.length >= 2` — so the mere
+ * presence of that pairing on disk is itself the >=2/3-model-agreement
+ * receipt; rejectionReasoning's `model: reasoning; model: reasoning` shape
+ * is the paper trail, counted here defensively in case some other writer
+ * ever reuses rejectedBy='ensemble-scoreability-check' without going through
+ * combineOutcomes.
  *
- * @param {object} data - Review-text JSON
+ * A blanket "UK outlet URL on a London show can't be wrong-show" heuristic
+ * is a reasonable prior when nothing else is known, but it is weaker
+ * evidence than 2-3 models independently reading the fetched text and naming
+ * a specific different production (romeo-and-juliet-west-end-2026's
+ * london-theatre--holly-omahony.json: url pointed at the R&J page, all 3
+ * models identified the fetched text as a Noughts & Crosses review).
+ *
+ * @param {object} data - the review JSON object
  * @param {'wrong_production'|'wrong_show'} reason
  * @returns {boolean}
  */
-function hasEnsembleRejection(data, reason) {
-  return !!data
-    && data.rejectionReason === reason
-    && data.rejectedBy === 'ensemble-scoreability-check';
+// The 4 model tags ensemble-scorer.ts's combineOutcomes() ever writes
+// (results.find(r => r.model === 'claude' | 'openai' | 'gemini' | 'kimi')).
+// Anchoring to this literal set — instead of a generic `[\w-]+:` match after
+// splitting rejectionReasoning on ';' — matters because a single model's own
+// free-text reasoning can legitimately contain a ';' or a digit+colon
+// (e.g. "...mentions an 8:00pm curtain; not the same show"), which a naive
+// split+regex miscounts as a second model's segment. ship-check finding
+// (task #1146): verified `8:00pm` alone satisfied the old `[\w-]+\s*:` test.
+const ENSEMBLE_MODEL_TAG_RE = /(?:^|;\s*)(claude|openai|gemini|kimi)\s*:/gi;
+
+function hasEnsembleConsensus(data, reason) {
+  if (!data) return false;
+  if (data.rejectionReason !== reason) return false;
+  if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
+  const reasoning = data.rejectionReasoning;
+  if (!reasoning || typeof reasoning !== 'string') return false;
+  const models = new Set();
+  ENSEMBLE_MODEL_TAG_RE.lastIndex = 0;
+  let match;
+  while ((match = ENSEMBLE_MODEL_TAG_RE.exec(reasoning))) {
+    models.add(match[1].toLowerCase());
+  }
+  return models.size >= 2;
+}
+
+/**
+ * Decide whether a review's fetched text is too stale to vouch for a URL
+ * that was later corrected/rewritten onto a different article.
+ *
+ * Background (task #1146): a URL rewrite (urlCorrectedFrom / urlUpdatedFrom
+ * / _urlChangedClear) records that the file's `url` now points at a
+ * different article than when `fullText` was fetched. If `textFetchedAt`
+ * predates the rewrite, the on-disk text was never (re-)fetched from the
+ * corrected URL — it's still whatever the OLD url returned — so the file's
+ * content cannot be used as evidence that the NEW url's show is correct.
+ * (the-devil-wears-prada-west-end-2024's times-uk--clive-davis.json:
+ * urlCorrectedFrom + urlUpdatedFrom both present, textFetchedAt
+ * 2026-02-26 predates urlUpdatedAt 2026-04-03 — the text on disk is a
+ * Sondheim/Bridge Theatre review that was never re-fetched after the URL
+ * was corrected to the Devil Wears Prada page.)
+ *
+ * @param {object} data - the review JSON object
+ * @returns {boolean}
+ */
+function isTextStaleRelativeToUrlRewrite(data) {
+  if (!data) return false;
+  const hasUrlRewrite = !!(data.urlCorrectedFrom || data.urlUpdatedFrom || data._urlChangedClear);
+  if (!hasUrlRewrite) return false;
+  const rewriteAt = data.urlUpdatedAt || (data._urlChangedClear && data._urlChangedClear.at);
+  if (!rewriteAt || !data.textFetchedAt) return false;
+  // NOT parseDate() here — it truncates to UTC midnight (date-utils.js:
+  // `new Date(normalized + 'T00:00:00Z')`), which would silently collapse
+  // same-day fetch-before-rewrite gaps to equal timestamps. urlUpdatedAt /
+  // textFetchedAt are always full ISO instants (e.g.
+  // "2026-04-03T17:01:15.864Z"), so compare them directly. ship-check
+  // finding (task #1146).
+  const rewriteMs = new Date(rewriteAt).getTime();
+  const fetchedMs = new Date(data.textFetchedAt).getTime();
+  if (isNaN(rewriteMs) || isNaN(fetchedMs)) return false;
+  return fetchedMs < rewriteMs;
 }
 
 /**
@@ -330,7 +398,8 @@ function shouldAutoClearWrongProduction(data) {
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -346,7 +415,8 @@ function shouldAutoClearWrongShow(data) {
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  if (hasEnsembleRejection(data, 'wrong_show')) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -376,7 +446,8 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } =
     && data.contentVerification?.confidence === 'high';
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
 }
 
@@ -405,7 +476,8 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   if (dateMismatchOver90d) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
-  if (hasEnsembleRejection(data, 'wrong_show')) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !isWrongArticle && !hasManualReason;
 }
 
@@ -472,11 +544,12 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
 }
 
 module.exports = {
-  hasEnsembleRejection,
+  hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
+  isTextStaleRelativeToUrlRewrite,
   isWithinPriorRun,
   hasDeclaredPriorRuns,
   isWithinTourLeg,

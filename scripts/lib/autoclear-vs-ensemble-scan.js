@@ -9,13 +9,16 @@
  * scripts/llm-scoring/index.ts). The show-level date/market override or the
  * outlet-URL heuristic has no bearing on whether THIS review's TEXT is about
  * the right production; the ensemble's per-content verdict is the stronger
- * signal and auto-clear paths must defer to it
- * (scripts/lib/wrong-production-autoclear.js hasEnsembleRejection).
+ * signal and auto-clear paths must defer to it. Uses the SAME
+ * hasEnsembleConsensus/isTextStaleRelativeToUrlRewrite predicates the fixed
+ * auto-clear functions call (scripts/lib/wrong-production-autoclear.js), so
+ * "the scan found 0" and "the guard would refuse to clear this" can never
+ * drift apart.
  *
  * A hit is exempted (not a violation) when either:
- *   - the text was re-fetched AFTER the ensemble rejection (textFetchedAt >
- *     rejectedAt) — the rejection is stale, about content that no longer
- *     backs the file, so clearing the flag was correct; or
+ *   - isTextStaleRelativeToUrlRewrite(data) — the on-disk text was never
+ *     re-fetched after a later URL correction, so the rejection is about
+ *     content that no longer backs the file; or
  *   - a human has since explicitly overridden the flag
  *     (wrongProductionManualClear/Override, wrongShowManualClear/Override, or
  *     humanReviewedWrongProduction === false) — a deliberate human verdict
@@ -30,6 +33,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasEnsembleConsensus, isTextStaleRelativeToUrlRewrite } = require('./wrong-production-autoclear.js');
 
 function isHumanOverridden(data) {
   return (
@@ -41,15 +45,6 @@ function isHumanOverridden(data) {
   );
 }
 
-function isStaleRejection(data) {
-  return !!(
-    data.textFetchedAt &&
-    typeof data.textFetchedAt === 'string' &&
-    typeof data.rejectedAt === 'string' &&
-    data.textFetchedAt > data.rejectedAt
-  );
-}
-
 /**
  * @param {object} data - review-text JSON
  * @returns {{ isViolation: boolean, exemptReason?: string }}
@@ -57,11 +52,10 @@ function isStaleRejection(data) {
 function classifyAutoclearVsEnsemble(data, { reason, autoClearedField, flagField } = {}) {
   if (!data) return { isViolation: false };
   if (!data[autoClearedField]) return { isViolation: false };
-  if (data.rejectionReason !== reason) return { isViolation: false };
-  if (data.rejectedBy !== 'ensemble-scoreability-check') return { isViolation: false };
+  if (!hasEnsembleConsensus(data, reason)) return { isViolation: false };
   if (data[flagField] === true) return { isViolation: false }; // flag never actually cleared
   if (isHumanOverridden(data)) return { isViolation: false, exemptReason: 'human-overridden' };
-  if (isStaleRejection(data)) return { isViolation: false, exemptReason: 'stale-rejection-refetched' };
+  if (isTextStaleRelativeToUrlRewrite(data)) return { isViolation: false, exemptReason: 'stale-rejection-url-rewrite' };
   return { isViolation: true };
 }
 
@@ -141,5 +135,4 @@ module.exports = {
   classifyAutoclearVsEnsemble,
   scanAutoclearVsEnsembleViolations,
   isHumanOverridden,
-  isStaleRejection,
 };

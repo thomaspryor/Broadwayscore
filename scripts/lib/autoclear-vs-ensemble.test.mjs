@@ -2,7 +2,7 @@
 // UK-URL/registry-region heuristic) must never silently strip wrongProduction/
 // wrongShow off a file the LLM ensemble already unanimously rejected on
 // content grounds. See scripts/lib/wrong-production-autoclear.js
-// (hasEnsembleRejection) and scripts/lib/autoclear-vs-ensemble-scan.js for
+// (hasEnsembleConsensus) and scripts/lib/autoclear-vs-ensemble-scan.js for
 // the full defect writeup.
 //
 // Two layers, cheapest first:
@@ -23,7 +23,7 @@ const require = createRequire(import.meta.url);
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
-  hasEnsembleRejection,
+  hasEnsembleConsensus,
 } = require('./wrong-production-autoclear.js');
 const { scanAutoclearVsEnsembleViolations } = require('./autoclear-vs-ensemble-scan.js');
 
@@ -34,12 +34,13 @@ const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data',
 // layer silently skipped" (same policy as review-guards.explain.test.mjs).
 const REQUIRE_CORPUS = process.env.REQUIRE_REVIEW_CORPUS === '1';
 
-test('hasEnsembleRejection matches only rejectionReason + rejectedBy=ensemble-scoreability-check', () => {
-  assert.strictEqual(hasEnsembleRejection({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check' }, 'wrong_production'), true);
-  assert.strictEqual(hasEnsembleRejection({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check' }, 'wrong_show'), false);
-  assert.strictEqual(hasEnsembleRejection({ rejectionReason: 'wrong_production', rejectedBy: 'manual-review' }, 'wrong_production'), false);
-  assert.strictEqual(hasEnsembleRejection({ rejectionReason: 'wrong_production' }, 'wrong_production'), false);
-  assert.strictEqual(hasEnsembleRejection(null, 'wrong_production'), false);
+test('hasEnsembleConsensus matches only rejectionReason + rejectedBy=ensemble-scoreability-check + 2+ distinct model tags', () => {
+  const reasoning = 'claude: wrong production; openai: also wrong production';
+  assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectionReasoning: reasoning }, 'wrong_production'), true);
+  assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectionReasoning: reasoning }, 'wrong_show'), false);
+  assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'manual-review', rejectionReasoning: reasoning }, 'wrong_production'), false);
+  assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check' }, 'wrong_production'), false);
+  assert.strictEqual(hasEnsembleConsensus(null, 'wrong_production'), false);
 });
 
 test('shouldAutoClearWrongProduction refuses to clear a unanimous ensemble wrong_production verdict', () => {
@@ -48,6 +49,7 @@ test('shouldAutoClearWrongProduction refuses to clear a unanimous ensemble wrong
     allowCrossMarket: true, // the show-level override that would otherwise bypass the flag
     rejectionReason: 'wrong_production',
     rejectedBy: 'ensemble-scoreability-check',
+    rejectionReasoning: 'claude: wrong production; openai: also wrong production',
   };
   assert.strictEqual(shouldAutoClearWrongProduction(data), false);
   // Sanity: without the ensemble rejection, the same allowCrossMarket bypass clears normally.
@@ -60,6 +62,7 @@ test('shouldAutoClearWrongShow refuses to clear a unanimous ensemble wrong_show 
     allowEarlyDate: true,
     rejectionReason: 'wrong_show',
     rejectedBy: 'ensemble-scoreability-check',
+    rejectionReasoning: 'claude: wrong show; openai: also wrong show',
   };
   assert.strictEqual(shouldAutoClearWrongShow(data), false);
   assert.strictEqual(shouldAutoClearWrongShow({ wrongShow: true, allowEarlyDate: true }), true);

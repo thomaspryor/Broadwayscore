@@ -56,7 +56,7 @@ function fixViolation(v, { flagField, autoClearedField, autoClearedAtField, reas
   data[`${flagField}RestoredNote`] =
     `[${new Date().toISOString().slice(0, 10)}] restored by scripts/audit-autoclear-vs-ensemble.js --fix: ` +
     `unanimous ensemble rejectionReason='${reason}' (rejectedAt ${v.rejectedAt}) was silently overridden by ` +
-    `an auto-clear (was: ${v.breadcrumb}). See scripts/lib/wrong-production-autoclear.js hasEnsembleRejection (#1156).`;
+    `an auto-clear (was: ${v.breadcrumb}). See scripts/lib/wrong-production-autoclear.js hasEnsembleConsensus (#1156).`;
   fs.writeFileSync(v.filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
 }
 

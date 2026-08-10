@@ -27,6 +27,12 @@
 
 // ── Card level ──────────────────────────────────────────────────────────────
 
+// Leaf module (task #1154) — NOT verify-gate.js, which owns the same regex but
+// sits downstream of this file (verify-gate -> autonomous-triage-core -> here).
+// Requiring verify-gate from here would close a CommonJS cycle and hand one
+// side a half-built exports object.
+const { hasOwnerJudgmentMarker } = require('./owner-judgment-marker.js');
+
 // Marketing/Partnerships cards are human territory — the loop (and bsc-next's
 // default pick) must never select them. Explicit --id/--pick still can.
 const EXCLUDED_CATEGORIES = new Set(['marketing', 'partnerships']);
@@ -79,6 +85,15 @@ function isHumanActionSubject(subject) {
 // Explicit --id still reaches anything this excludes (--pick indexes the
 // already-filtered list, so it can't).
 function isExcludedCategory(task) {
+  // Hard exclusion, checked before every heuristic below (task #1154). The
+  // card itself says only the owner can judge the outcome — that is a stronger
+  // statement than anything category/tags/subject can infer, and all three of
+  // those independently missed the Sarah check-in card, which the P0/P1
+  // backlog sweep in dispatch-watchdog-core.js then auto-dispatched twice.
+  // The marker used to be consulted ONLY by the verify gate, where it ARMS a
+  // dispatch — so the one signal saying "a human must do this" was, in effect,
+  // a permission slip.
+  if (hasOwnerJudgmentMarker(task && task.description)) return true;
   const c = categoryOf(task);
   if (c === null || c === 'no-category') return HUMAN_ACTION_RE.test((task.subject || '').trim());
   if (EXCLUDED_CATEGORIES.has(c)) return true;
@@ -88,6 +103,15 @@ function isExcludedCategory(task) {
 // Notion-card shape ({name, category, tags[]}) — used by the nightly triage.
 // Returns { eligible, reason } — reason is always set when ineligible.
 function isCardEligible(card) {
+  // Same hard exclusion as isExcludedCategory, on the full card's notes rather
+  // than the truncated task mirror (task #1154). Live for the callers that
+  // pass a whole card — autonomous-triage-core.js and autonomous-shadow-run.js.
+  // enrich-card-acceptance.js passes only {name, category, tags}, so this is a
+  // no-op there by design: that caller already returns 'already armed' on the
+  // marker before it ever reaches this predicate.
+  if (hasOwnerJudgmentMarker(card.notes)) {
+    return { eligible: false, reason: 'card declares VERIFY: owner-judgment — only the owner can judge the outcome' };
+  }
   const category = (card.category || '').trim().toLowerCase();
   if (EXCLUDED_CATEGORIES.has(category)) {
     return { eligible: false, reason: `category "${card.category}" is human territory` };
