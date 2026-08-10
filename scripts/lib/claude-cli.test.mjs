@@ -131,3 +131,58 @@ test('resolveAuthEnv returns only auth keys and leaves process.env alone', () =>
   for (const k of Object.keys(got)) assert.ok(AUTH_KEYS.includes(k), `unexpected key ${k}`);
   assert.deepEqual(Object.keys(process.env).sort(), Object.keys(before).sort());
 });
+
+// ---------------------------------------------------------------------------
+// Task #1184 S1: stream-json parsing + killed-session cost estimation.
+// `--output-format json` only emitted its envelope on a CLEAN exit, so every
+// timed-out fix session left no session id (unresumable) and no cost (spend
+// breaker read $0). These pure helpers are what runClaudeCli now folds the
+// stream through; event shapes verified against the real CLI 2026-08-10.
+// ---------------------------------------------------------------------------
+import { parseStreamLine, addUsage, estimateCostUSD } from './claude-cli.js';
+
+test('parseStreamLine: captures session_id from ANY event (it arrives on the first one)', () => {
+  const ev = parseStreamLine('{"type":"system","subtype":"init","session_id":"abc-123"}');
+  assert.equal(ev.sessionId, 'abc-123');
+  assert.equal(ev.result, null);
+});
+
+test('parseStreamLine: assistant events carry per-message usage', () => {
+  const ev = parseStreamLine(JSON.stringify({
+    type: 'assistant', session_id: 's', message: { usage: { input_tokens: 10, output_tokens: 4 } },
+  }));
+  assert.deepEqual(ev.usage, { input_tokens: 10, output_tokens: 4 });
+});
+
+test('parseStreamLine: result event maps to the old envelope fields', () => {
+  const ev = parseStreamLine(JSON.stringify({
+    type: 'result', subtype: 'success', session_id: 's1', result: 'pong',
+    total_cost_usd: 0.05, usage: { output_tokens: 42 },
+  }));
+  assert.equal(ev.result.resultText, 'pong');
+  assert.equal(ev.result.sessionId, 's1');
+  assert.equal(ev.result.costUSD, 0.05);
+});
+
+test('parseStreamLine: corrupt/blank lines return null (SIGKILL can sever the last line)', () => {
+  assert.equal(parseStreamLine(''), null);
+  assert.equal(parseStreamLine('{"type":"resu'), null);
+});
+
+test('addUsage accumulates across assistant events, starting from null', () => {
+  let t = addUsage(null, { input_tokens: 10, output_tokens: 5 });
+  t = addUsage(t, { input_tokens: 20, output_tokens: 7, cache_read_input_tokens: 100 });
+  assert.equal(t.input_tokens, 30);
+  assert.equal(t.output_tokens, 12);
+  assert.equal(t.cache_read_input_tokens, 100);
+});
+
+test('estimateCostUSD: null without usage; opus > sonnet; unknown model estimates as sonnet', () => {
+  assert.equal(estimateCostUSD(null, 'sonnet'), null);
+  const usage = { input_tokens: 1_000_000, output_tokens: 100_000 };
+  const sonnet = estimateCostUSD(usage, 'sonnet');
+  const opus = estimateCostUSD(usage, 'opus');
+  assert.ok(sonnet > 0);
+  assert.ok(opus > sonnet, 'opus rate must exceed sonnet');
+  assert.equal(estimateCostUSD(usage, 'mystery-model'), sonnet, 'unknown model falls back to sonnet rates');
+});
