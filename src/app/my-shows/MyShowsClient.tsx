@@ -54,6 +54,8 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     posterUrl: (raw.p as string) || null,
     diaryOnly: !!raw.dy,
     ticketsOnSale: !!raw.tx,
+    theaterAddress: (raw.a as string) || undefined,
+    runtimeMin: typeof raw.rt === 'number' ? raw.rt : undefined,
   };
 }
 
