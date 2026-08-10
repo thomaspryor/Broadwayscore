@@ -118,8 +118,27 @@ function cmuxIdleSec(markerPath = LAST_LAUNCH_MARKER, nowMs = Date.now()) {
   return idle;
 }
 
+// Returns whether the stamp landed. A silent failure here is NOT harmless
+// (ship-check finding): if the marker can never be written (full/read-only
+// tmpdir, permissions), its mtime stops advancing, cmuxIdleSec() reports an
+// ever-growing gap, and shouldPreWake starts returning true on EVERY launch —
+// reproducing exactly the unconditional-wake amplification the idle gate
+// exists to prevent, in the concurrent-batch regime the data shows is
+// currently safest. Still non-fatal (a launch that might succeed must never
+// be blocked by a scratch-file write), but it announces itself once per
+// process instead of degrading in silence.
+let markerWriteFailureLogged = false;
 function noteLaunchAttempt(markerPath = LAST_LAUNCH_MARKER) {
-  try { fs.writeFileSync(markerPath, new Date().toISOString()); } catch { /* advisory only */ }
+  try {
+    fs.writeFileSync(markerPath, new Date().toISOString());
+    return true;
+  } catch (e) {
+    if (!markerWriteFailureLogged) {
+      markerWriteFailureLogged = true;
+      console.error(`[cmux-launch] WARN cannot stamp ${markerPath} (${e.message}) — the idle gate will now pre-wake on EVERY launch instead of only idle ones (card #1199). Non-fatal, but fix the tmpdir.`);
+    }
+    return false;
+  }
 }
 
 // Pure decision (rule 15 — the test require()s this rather than re-deriving

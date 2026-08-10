@@ -193,7 +193,32 @@ function foldAttempts(entries) {
     }
   }
 
-  return { attempts, unattributedDeadCount };
+  // `remapped` (ship-check finding): after a cmux restart, dispatch-ledger
+  // rewrites a live dispatch onto a NEW ref and journals
+  // {event:'remapped', workspaceRef:<old>, newRef:<new>}. The same real
+  // dispatch therefore owns two launch rows — and the old one is typically
+  // unverified:true, because verification is what gave up when cmux
+  // restarted. Counting both inflates the denominator AND manufactures a
+  // phantom "unverified" attempt out of a dispatch that in fact continued
+  // fine. Only 3 remaps exist in the ledger today, but the error is silent
+  // and grows with any restart storm. dispatch-ledger.js already treats
+  // 'remapped' as terminal for the old ref (TERMINAL_LAUNCH_EVENTS) — this
+  // applies the same rule to the rate.
+  const superseded = new Set();
+  for (const e of rows) {
+    if (e.event !== 'remapped' || !e.workspaceRef) continue;
+    const remapTs = tsOf(e);
+    const candidates = idxByRef.get(e.workspaceRef) || [];
+    for (let k = candidates.length - 1; k >= 0; k--) {
+      if (attempts[candidates[k]].ts <= remapTs) { superseded.add(candidates[k]); break; }
+    }
+  }
+
+  return {
+    attempts: attempts.filter((_, i) => !superseded.has(i)),
+    unattributedDeadCount,
+    supersededByRemapCount: superseded.size,
+  };
 }
 
 /**
@@ -218,7 +243,7 @@ function computeDeadRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lan
     throw new Error('dispatch-health.computeDeadRate: nowMs (epoch ms) is required — this module takes no clock of its own');
   }
   const windowStart = nowMs - windowDays * DAY_MS;
-  const { attempts, unattributedDeadCount } = foldAttempts(entries);
+  const { attempts, unattributedDeadCount, supersededByRemapCount } = foldAttempts(entries);
   const inWindow = attempts.filter((a) => a.ts >= windowStart && a.ts <= nowMs);
 
   const byLane = {};
@@ -259,6 +284,7 @@ function computeDeadRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lan
     deadTaskIds: [...new Set(deadAttempts.filter((a) => a.taskId).map((a) => a.taskId))],
     unverifiedTaskIds: [...new Set(unverifiedAttempts.filter((a) => a.taskId).map((a) => a.taskId))],
     unattributedDeadCount,
+    supersededByRemapCount,
     perDay: [...perDayMap.values()].sort((a, b) => a.day.localeCompare(b.day)),
   };
 }

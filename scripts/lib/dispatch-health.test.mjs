@@ -203,3 +203,45 @@ test('the digest row is shaped for health-check.js (name/status/message)', () =>
   assert.ok(['pass', 'warn', 'error'].includes(row.status));
   assert.equal(typeof row.message, 'string');
 });
+
+// Ship-check finding: after a cmux restart, dispatch-ledger rewrites a live
+// dispatch onto a NEW ref and journals {event:'remapped', workspaceRef:<old>,
+// newRef:<new>}. Real shape from the ledger (task #895, 2026-08-03): the old
+// launch is unverified:true (verification is what gave up when cmux
+// restarted), and the relaunch is a separate launch row. Counting both
+// inflates the denominator AND invents an "unverified" attempt for a dispatch
+// that actually continued.
+const REMAPPED_895 = [
+  launch('2026-08-05T01:00:29.409Z', 'workspace:57', '895', { unverified: true }),
+  { ts: '2026-08-05T03:43:04.110Z', event: 'remapped', taskId: '895', workspaceRef: 'workspace:57', newRef: 'workspace:73' },
+  launch('2026-08-05T03:43:04.200Z', 'workspace:73', '895'),
+];
+
+test('a remapped dispatch is ONE attempt, not two — the superseded launch drops out', () => {
+  const r = computeDeadRate(REMAPPED_895, { nowMs: NOW, windowDays: 7 });
+  assert.equal(r.launches, 1, 'the pre-restart launch and its relaunch are the same real dispatch');
+  assert.equal(r.supersededByRemapCount, 1);
+  assert.equal(r.unverified, 0, 'the pre-restart unverified flag must not survive as a phantom unknown');
+  assert.equal(r.dead, 0);
+});
+
+test('remap supersession is last-match-at-or-before, so it cannot swallow a LATER reuse of the old ref', () => {
+  const entries = [
+    ...REMAPPED_895,
+    // workspace:57 recycled onto a different task days later — untouched by
+    // the older remap (card #960's recycled-ref rule, restated for remaps).
+    launch('2026-08-08T10:00:00.000Z', 'workspace:57', '999'),
+  ];
+  const r = computeDeadRate(entries, { nowMs: NOW, windowDays: 7 });
+  assert.equal(r.launches, 2);
+  assert.equal(r.supersededByRemapCount, 1);
+  const { attempts } = foldAttempts(entries);
+  assert.ok(attempts.some((a) => a.taskId === '999'), 'the later occupant of a recycled ref must survive');
+});
+
+test('a remapped row with no matching launch is ignored, not a crash', () => {
+  const orphanRemap = [{ ts: '2026-08-06T00:00:00.000Z', event: 'remapped', taskId: '5', workspaceRef: 'workspace:404', newRef: 'workspace:405' }];
+  const r = computeDeadRate(orphanRemap, { nowMs: NOW, windowDays: 7 });
+  assert.equal(r.launches, 0);
+  assert.equal(r.supersededByRemapCount, 0);
+});

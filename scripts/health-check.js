@@ -71,6 +71,17 @@ const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot
 // `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
 
 const AUTO_FIX_PLAYBOOK = [
+  // Card #1199. A check with NO playbook entry defaults to urgency 'low'
+  // (~L3271), which drops it out of `actionable` entirely: it never reaches
+  // routeAlert, and renders as an anonymous "+N low-priority items monitoring
+  // themselves (no action needed)" line — no name, no rate, no hint. For a
+  // check whose entire purpose is to end a chronic failure's invisibility,
+  // that would have shipped the measurement invisible, which is the exact
+  // defect the card exists to close (caught by the ship-check reviewer).
+  // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
+  // dead rate is expensive and worth chasing but never data loss.
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+    humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
