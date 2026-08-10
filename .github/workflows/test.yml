@@ -1315,6 +1315,7 @@ on:
       - 'src/contexts/ProGateContext.tsx'
       - 'src/components/EmailCaptureModal.tsx'
       - 'tests/unit/gate-logic.test.mjs'
+      - 'tests/unit/email-gate-conversion.test.mjs'
       # Advanced-filter score-tier predicates (card #479) — src/lib/** is
       # covered by the top-level 'src/**' entry, but its colocated test
       # needs a path entry so a solo test-only edit still triggers CI.
