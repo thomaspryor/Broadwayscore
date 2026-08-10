@@ -39,7 +39,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasEnsembleRejection } = require('./lib/wrong-production-autoclear');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -133,6 +133,22 @@ function applyFix(findings) {
       continue;
     }
     data[c.flag] = true;
+    // Invalidate the auto-clear breadcrumb we are overturning. review-write-guard.js
+    // states the contract outright: "Every wrongProduction = true writer should call
+    // this." Skipping it leaves _freshWrongProductionAutoClear true for
+    // AUTO_CLEAR_FRESH_DAYS, so isIntentionalClear() keeps reporting the field as
+    // DELIBERATELY CLEARED for up to a week — and the next push-review-texts restore
+    // that finds the flag locally absent (rebase, concurrent writer, another
+    // workflow's checkout) re-clears it as "intentional" instead of restoring this
+    // fix. That is the inverted-ping-pong bug the helper was written to prevent
+    // (ship-check 2026-08-10), and re-asserting a flag without it would have quietly
+    // undone this whole backfill within 7 days.
+    if (c.flag === 'wrongProduction') {
+      invalidateWrongProductionAutoClear(data);
+    } else {
+      delete data.wrongShowAutoCleared;
+      delete data.wrongShowAutoClearedAt;
+    }
     // A manual *Reason is what every auto-clear predicate already respects, and
     // it is a PROTECTED_FIELD — so this is what makes the re-flag durable across
     // the next rebuild AND the push-time restore. Without it the next cron
