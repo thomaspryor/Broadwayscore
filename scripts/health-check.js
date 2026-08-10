@@ -1018,18 +1018,25 @@ function checkQuality() {
       if (hits.length > 0 && fs.existsSync(reviewsPath)) {
         try {
           const live = readJSON(reviewsPath);
-          const liveUrls = new Set((live.reviews || []).map((r) => r.url).filter(Boolean));
+          // Keyed by url+showId, not url alone (ship-check finding): a
+          // review URL reused across two DIFFERENT shows (rare, but review
+          // URLs aren't validated globally-unique) must not let one show's
+          // live entry suppress a genuine gap under a different show.
+          const liveUrlShowKeys = new Set(
+            (live.reviews || []).map((r) => (r.url ? `${r.url}|${r.showId}` : null)).filter(Boolean),
+          );
           const liveTriples = new Set(
             (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
           );
-          // Match on url FIRST when the hit has one: two review-text files can
-          // share showId+outletId+criticName (a republished article, or
-          // byline-enrichment landing on two separate URLs) — the coarser
-          // triple match alone would let one file already live in reviews.json
-          // mask the OTHER file's genuine gap (ship-check finding). Only fall
-          // back to the triple match when the hit has no url to compare.
+          // Match on url+showId FIRST when the hit has a url: two review-text
+          // files can share showId+outletId+criticName (a republished
+          // article, or byline-enrichment landing on two separate URLs) — the
+          // coarser triple match alone would let one file already live in
+          // reviews.json mask the OTHER file's genuine gap (ship-check
+          // finding). Only fall back to the triple match when the hit has no
+          // url to compare.
           hits = hits.filter((h) => {
-            if (h.url) return !liveUrls.has(h.url);
+            if (h.url) return !liveUrlShowKeys.has(`${h.url}|${h.showId}`);
             return !liveTriples.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`);
           });
         } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
