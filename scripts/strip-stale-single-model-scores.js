@@ -178,6 +178,13 @@ function runBeforeOpeningMode(openingDateStr, showId) {
       data.llmMetadata = null;
       data.needsRescore = true;
       data.staleScoredBeforeOpening = true;
+      // Freshness-stamped so the push-restore breadcrumb (review-write-guard.js
+      // CLEAR_BREADCRUMBS) can bound how long it suppresses restoring a stale
+      // score to the days right around this run, not forever. markRescoreComplete()
+      // also clears both fields the moment a real score lands, but this stamp is
+      // the backstop if some other write path re-nulls the score without going
+      // through that chokepoint.
+      data.staleScoredBeforeOpeningAt = new Date().toISOString();
       const r = safeWriteReview(fp, data, { force: true });
       if (r.lockedSkipped) lockedSkipCount++;
     }
