@@ -1,51 +1,29 @@
 {
-  "generatedAt": "2026-08-10T14:22:16.516Z",
+  "generatedAt": "2026-08-10T15:54:08.036Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 146,
-  "defective": 2,
+  "clean": 147,
+  "defective": 1,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "moulin-rouge-2019",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2019-07-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: billboard"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.03 vs local 72.36 (Δ0.33)"
-        }
-      ],
-      "missingFromProd": [
-        "billboard"
-      ],
-      "localCount": 39,
-      "deployedCount": 38
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.16 vs local 71.51 (Δ1.65)"
+          "detail": "deployed cs 84.84 vs local 82.87 (Δ1.97)"
         }
       ],
       "missingFromProd": [],
       "localCount": 29,
-      "deployedCount": 30
+      "deployedCount": 29
     }
   ]
 }

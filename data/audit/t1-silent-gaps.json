@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T14:22:05.004Z",
+  "generatedAt": "2026-08-10T15:53:59.200Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -16,26 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 433.174575,
+      "fileAgeHours": 434.7062963888889,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 392.4775188888889
-    },
-    {
-      "showId": "trainspotting-the-musical-west-end-2026",
-      "title": "Trainspotting the musical",
-      "openingDate": "2026-07-22",
-      "file": "daily-mail--georgina-brown.json",
-      "outletId": "daily-mail",
-      "tier": 1,
-      "type": "unscored",
-      "url": null,
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=trainspotting-the-musical-west-end-2026",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 96.78118027777778
+      "nonTerminalAgeHours": 394.0092397222222
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -50,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 123.61776527777778,
+      "fileAgeHours": 125.14948666666666,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 122.97970277777777
+      "nonTerminalAgeHours": 124.51142361111111
     }
   ],
   "contradictions": []
