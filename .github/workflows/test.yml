@@ -126,6 +126,16 @@ on:
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/ingest-skip-classify.js'
       - 'scripts/lib/ingest-skip-classify.test.mjs'
+      # Silent-exclusion detectors (#1147 tracker, card #1188): a review with
+      # fullText + a real byline + no rejection flags but no contentTier stays
+      # OUT of reviews.json forever (rebuild only re-derives contentTier when
+      # fullText changes), and an outlet that migrates to a new host (e.g.
+      # Substack) silently drops every review on the new domain via
+      # domain-mismatch. Both wired into health-check.js's daily digest.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/silent-exclusion-detectors.js'
+      - 'scripts/lib/silent-exclusion-detectors.test.mjs'
       # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
       # raw-wrote over already-flagged review files, so ~155 excluded historical
       # DTLI excerpts re-entered reviews.json on every review-refresh and were
@@ -1038,6 +1048,8 @@ on:
       - 'scripts/lib/domain-filters.js'
       - 'scripts/lib/ingest-skip-classify.js'
       - 'scripts/lib/ingest-skip-classify.test.mjs'
+      - 'scripts/lib/silent-exclusion-detectors.js'
+      - 'scripts/lib/silent-exclusion-detectors.test.mjs'
       - 'scripts/lib/newsletter-preflight.js'
       - 'scripts/lib/newsletter-preflight.test.mjs'
       - 'scripts/newsletter/pre-send-check.mjs'

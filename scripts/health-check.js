@@ -976,6 +976,59 @@ function checkQuality() {
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
     }),
 
+    // Silent-exclusion detectors (#1147 tracker, card #1188): a pipeline stage
+    // refuses to include a review and records nothing an operator would ever
+    // look at. Two live incidents, both fixed by hand with no detector left
+    // behind — this is that detector, wired into the existing daily digest
+    // rather than a new cron. Advisory `this-week` warns via the /^Quality:/
+    // playbook route, not a page: both predicates report CANDIDATES for a
+    // human to confirm, never write.
+    runCheck('Quality: missing contentTier', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
+      const hits = scanMissingContentTier(rtDir);
+      if (hits.length === 0) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'No scored reviews missing contentTier' };
+      }
+      const worst = hits[0];
+      return {
+        name: 'Quality: missing contentTier',
+        status: 'warn',
+        message: `${hits.length} review(s) have fullText + a real byline + no rejection flags but NO contentTier — silently absent from reviews.json (e.g. ${worst.showId}/${worst.file})`,
+        hint: 'A review-text file lost its contentTier without fullText changing, so rebuild never re-derives it. Run classifyContentTier on it and restore contentTier by hand, or add contentTier to the show\'s review file directly.',
+      };
+    }),
+
+    runCheck('Quality: outlet domain moves', () => {
+      const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
+      const censusPath = path.join(AUDIT_DIR, 'unknown-aggregator-outlets.json');
+      if (!fs.existsSync(registryPath) || !fs.existsSync(censusPath)) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: 'Skipped (registry or unknown-outlet census not present)' };
+      }
+      const { findProbableDomainMoves } = require('./lib/silent-exclusion-detectors');
+      const outlets = readJSON(registryPath)?.outlets;
+      const census = readJSON(censusPath);
+      const ts = census?.generatedAt;
+      const age = ts ? hoursAgo(ts) : Infinity;
+      if (age > 48) {
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Unknown-outlet census is ${formatAge(age)} old (>48h)`, hint: 'The census that this check mines may be stale — check what writes data/audit/unknown-aggregator-outlets.json' };
+      }
+      const moves = findProbableDomainMoves(outlets, census?.outlets || []);
+      if (moves.length === 0) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: `No probable domain moves in ${census?.outlets?.length || 0} unregistered host(s)` };
+      }
+      const worst = moves[0];
+      return {
+        name: 'Quality: outlet domain moves',
+        status: 'warn',
+        message: `${moves.length} unregistered host(s) name-match a registered outlet (e.g. ${worst.host} → ${worst.outletId}) — probable domain move dropping reviews via domain-mismatch`,
+        hint: 'Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases in data/outlet-registry.json.',
+      };
+    }),
+
     // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
     // check-affiliate-health.js runs earlier in the same data-health-check.yml
     // job and writes this snapshot; this line is (a) the digest surface for
