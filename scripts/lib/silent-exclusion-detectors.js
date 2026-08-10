@@ -129,10 +129,30 @@ function normalizeHost(host) {
  *
  * Pure — no fs, no fetch. The scanner and the unit test share it.
  *
+ * `show` and `filePath` are NOT optional decoration: explainExclusion() gates
+ * real rules on them (isPrematureReviewForUnopenedShow at review-guards.js:71,
+ * the KNOWN_SYNDICATION_PAIRS sibling scan at :156, the tour-excerpt check at
+ * :195, and the duplicateOf sibling resolution at :81). Calling the canonical
+ * predicate with only `data` silently changes its verdict in BOTH directions —
+ * a never-opened show's premature review and a syndicated duplicate both stop
+ * being excluded, so both get reported as invariant violations that aren't.
+ * t1-silent-gap.js:108 already passes both; this does too. Callers that
+ * genuinely have no show record pass undefined and get the degraded verdict,
+ * which is why the scanner counts those separately rather than hiding them.
+ *
+ * Throws whatever the canonical predicate throws — see scanMissingContentTier,
+ * which counts predicate failures instead of swallowing them. Swallowing was
+ * the first version's bug: on a checkout without shows.json the tour check
+ * throws ENOENT for every file, and a silent catch turned the whole detector
+ * into a permanent all-clear — the exact class this module exists to kill.
+ *
  * @param {object} review - parsed review-text JSON
+ * @param {object} [opts]
+ * @param {object} [opts.show] - the show record from shows.json
+ * @param {string} [opts.filePath] - absolute path to the review file
  * @returns {{criticName:string, outletId:string, chars:number, hasScore:boolean}|null}
  */
-function evaluateMissingContentTier(review) {
+function evaluateMissingContentTier(review, opts = {}) {
   if (!review || typeof review !== 'object') return null;
 
   // Already classified — nothing to report. Any non-empty tier counts, including
@@ -151,13 +171,10 @@ function evaluateMissingContentTier(review) {
   // nonReview, …) is SUPPOSED to be absent; its missing tier is not a silent
   // exclusion, and reporting it would drown the real signal. 54 of the 115
   // tier-less files in the live corpus are exactly this case.
-  let includable = false;
-  try {
-    includable = isIncludableForRebuild(review);
-  } catch {
-    return null;
-  }
-  if (!includable) return null;
+  //
+  // Called with the SAME context rebuild has (see the note above) — a bare
+  // isIncludableForRebuild(review) quietly disables four of its rules.
+  if (!isIncludableForRebuild(review, opts.show, opts.filePath)) return null;
 
   return {
     criticName,
@@ -176,34 +193,57 @@ function missingTierKey(finding) {
  * Walk a review-texts root for the (b) invariant violation.
  *
  * Returns `scanned` so callers can refuse to report a vacuous pass: a scan that
- * saw zero files is a broken checkout, not a clean corpus (task #1065).
+ * saw zero files is a broken checkout, not a clean corpus (task #1065). Returns
+ * `predicateErrors` for the same reason one level down: if the canonical
+ * predicate throws for every file (e.g. its tour-excerpt branch needs
+ * shows.json and the checkout has none), the scan would otherwise report a
+ * confident all-clear built on zero actual verdicts.
  *
  * @param {string} rootDir - path to data/review-texts
  * @param {object} [opts]
  * @param {string[]} [opts.shows] - restrict to these show dirs (default: all)
+ * @param {Map<string,object>|object} [opts.showsById] - show records by id, so
+ *        the canonical predicate gets the same `show` context rebuild has
  * @param {Set<string>|string[]} [opts.baselineKeys] - already-triaged keys
- * @returns {{scanned:number, findings:object[], baselinedCount:number}}
+ * @returns {{scanned:number, findings:object[], baselinedCount:number,
+ *            predicateErrors:number, firstPredicateError:string|null}}
  */
 function scanMissingContentTier(rootDir, opts = {}) {
   const baseline = opts.baselineKeys
     ? (opts.baselineKeys instanceof Set ? opts.baselineKeys : new Set(opts.baselineKeys))
     : null;
+  const showsById = opts.showsById instanceof Map
+    ? opts.showsById
+    : new Map(Object.entries(opts.showsById || {}));
 
   const shows = opts.shows || listShowDirs(rootDir);
   const findings = [];
   let scanned = 0;
   let baselinedCount = 0;
+  let predicateErrors = 0;
+  let firstPredicateError = null;
 
   for (const showId of shows) {
     const dir = path.join(rootDir, showId);
     let files;
     try { files = fs.readdirSync(dir); } catch { continue; }
+    const show = showsById.get(showId);
     for (const f of files) {
       if (!f.endsWith('.json')) continue;
+      const filePath = path.join(dir, f);
       let review;
-      try { review = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+      try { review = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
       scanned++;
-      const hit = evaluateMissingContentTier(review);
+      let hit;
+      try {
+        hit = evaluateMissingContentTier(review, { show, filePath });
+      } catch (err) {
+        // Never swallow silently — that would make this detector the very
+        // thing it detects. Counted and surfaced by the caller.
+        predicateErrors++;
+        if (!firstPredicateError) firstPredicateError = `${showId}/${f}: ${err.message}`;
+        continue;
+      }
       if (!hit) continue;
       const full = { showId, file: f, url: review.url || '', ...hit };
       if (baseline && baseline.has(missingTierKey(full))) { baselinedCount++; continue; }
@@ -212,7 +252,7 @@ function scanMissingContentTier(rootDir, opts = {}) {
   }
 
   findings.sort((a, b) => b.chars - a.chars);
-  return { scanned, findings, baselinedCount };
+  return { scanned, findings, baselinedCount, predicateErrors, firstPredicateError };
 }
 
 // ───────────────────────── (a) outlet domain moves ─────────────────────────
@@ -277,6 +317,7 @@ function detectOutletDomainMoves({ outlets, unknownHosts, baselineKeys } = {}) {
   const findings = [];
   let baselinedCount = 0;
   let domainlessMatches = 0;
+  let genericAliasMatches = 0;
   let scanned = 0;
 
   for (const row of Array.isArray(unknownHosts) ? unknownHosts : []) {
@@ -304,6 +345,23 @@ function detectOutletDomainMoves({ outlets, unknownHosts, baselineKeys } = {}) {
         domainlessMatches++;
         continue;
       }
+
+      // CORROBORATION: the candidate host and the outlet's CURRENT domain must
+      // derive the same identity label. A slug that merely matches one of the
+      // outlet's aliases is not enough, because 8 registered outlets answer to
+      // a bare generic word that clears the length floor — `guardian`,
+      // `herald`, `mirror`, `standard`, `observer`, `express`, `tribune`,
+      // `metro`. Without this, guardian.ng (The Guardian Nigeria, a different
+      // newspaper) reads as "theguardian.com moved to guardian.ng", and acting
+      // on that alert would file Nigerian reviews under a T1 UK outlet — a
+      // worse outcome than the missed detection this check exists to prevent.
+      //
+      // Comparing labels instead of aliases keeps the detector's actual claim
+      // honest: "same publication name, different host" (reviewsgate.com →
+      // .co.uk, dailymail.co.uk → .com, 1minutecritic.com → the Substack), not
+      // "this host's name appears somewhere in that outlet's alias list".
+      const registeredSlug = identitySlug(provisionalOutletIdFromHost(registeredDomain));
+      if (registeredSlug !== slug) { genericAliasMatches++; continue; }
       const finding = {
         host: row.host,
         outletId,
@@ -319,7 +377,7 @@ function detectOutletDomainMoves({ outlets, unknownHosts, baselineKeys } = {}) {
   }
 
   findings.sort((a, b) => b.occurrences - a.occurrences || a.host.localeCompare(b.host));
-  return { findings, baselinedCount, domainlessMatches, scanned };
+  return { findings, baselinedCount, domainlessMatches, genericAliasMatches, scanned };
 }
 
 module.exports = {

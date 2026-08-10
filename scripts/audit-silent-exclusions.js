@@ -113,9 +113,16 @@ function main() {
   let tier = null;
   const reviewTextsPresent = fs.existsSync(REVIEW_TEXTS_DIR);
   if (reviewTextsPresent) {
+    // The canonical inclusion predicate needs each review's show record —
+    // without it four of explainExclusion's rules go dark and the scan
+    // over-reports. See scripts/lib/silent-exclusion-detectors.js.
+    const showsById = {};
+    const showsFile = readJSON(path.join(ROOT, 'data', 'shows.json'));
+    for (const s of (showsFile?.shows || [])) if (s?.id) showsById[s.id] = s;
     tier = scanMissingContentTier(REVIEW_TEXTS_DIR, {
       shows: args.show ? [args.show] : undefined,
       baselineKeys: tierBaseline,
+      showsById,
     });
   }
 
@@ -141,7 +148,13 @@ function main() {
       findings: moves.findings,
     },
     missingContentTier: tier
-      ? { scannedFiles: tier.scanned, baselinedCount: tier.baselinedCount, findings: tier.findings }
+      ? {
+        scannedFiles: tier.scanned,
+        baselinedCount: tier.baselinedCount,
+        predicateErrors: tier.predicateErrors,
+        firstPredicateError: tier.firstPredicateError,
+        findings: tier.findings,
+      }
       : { skipped: 'review-texts not checked out (private repo)' },
   };
   fs.writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
@@ -167,6 +180,13 @@ function main() {
       console.log('Skipped — data/review-texts not checked out (private repo).');
     } else {
       console.log(`Scanned ${tier.scanned} file(s); ${tier.baselinedCount} baselined.`);
+      if (tier.predicateErrors) {
+        // Loud, because a predicate that threw decided nothing — "no findings"
+        // off the back of it would be a false all-clear.
+        console.log(`  ⚠ inclusion check FAILED on ${tier.predicateErrors} file(s) — those were not judged at all.`);
+        console.log(`    first: ${tier.firstPredicateError}`);
+        console.log('    Usually a missing data/shows.json in this checkout.');
+      }
       if (tier.findings.length === 0) {
         console.log('No unclassified reviews.');
       } else {

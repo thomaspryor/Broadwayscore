@@ -947,24 +947,42 @@ function checkQuality() {
         const b = readJSON(path.join(AUDIT_DIR, 'silent-exclusions-baseline.json'));
         if (b && Array.isArray(b.missingContentTier)) baselineKeys = b.missingContentTier;
       } catch { /* no baseline yet — everything is "new" */ }
-      const { scanned, findings, baselinedCount } = scanMissingContentTier(rtDir, { baselineKeys });
+      // The canonical inclusion predicate needs each review's show record (see
+      // silent-exclusion-detectors.js) — without it four of its rules go dark.
+      let showsById = {};
+      try {
+        const showsFile = readJSON(path.join(DATA_DIR, 'shows.json'));
+        for (const s of (showsFile?.shows || [])) if (s?.id) showsById[s.id] = s;
+      } catch { /* no shows.json — predicate runs degraded, surfaced below */ }
+      const { scanned, findings, baselinedCount, predicateErrors, firstPredicateError } =
+        scanMissingContentTier(rtDir, { baselineKeys, showsById });
       if (scanned === 0) {
         return {
           name: 'Quality: reviews missing contentTier',
           status: 'warn',
-          message: 'review-texts is present but the scan saw 0 files — broken checkout, not a clean corpus',
+          message: 'review-texts is present but the scan read 0 files — this is a broken checkout, not a clean corpus',
           hint: 'Check the data/review-texts clone; a vacuous pass here would hide the whole class (task #1065).',
         };
       }
+      // A predicate that threw on most files decided nothing — reporting "all
+      // clear" off that would be the silent all-clear this module exists to kill.
+      if (predicateErrors > scanned * 0.01) {
+        return {
+          name: 'Quality: reviews missing contentTier',
+          status: 'warn',
+          message: `inclusion check failed on ${predicateErrors} of ${scanned} files — the result is not trustworthy (first: ${firstPredicateError})`,
+          hint: 'Usually a missing data/shows.json in this checkout. Fix the checkout and re-run `node scripts/audit-silent-exclusions.js`.',
+        };
+      }
       if (findings.length === 0) {
-        return { name: 'Quality: reviews missing contentTier', status: 'pass', message: `${scanned} files scanned, all classified (${baselinedCount} known/baselined)` };
+        return { name: 'Quality: reviews missing contentTier', status: 'pass', message: `${scanned} review files checked; every one with text has a content tier (${baselinedCount} previously acked)` };
       }
       const worst = findings[0];
       return {
         name: 'Quality: reviews missing contentTier',
         status: 'warn',
-        message: `${findings.length} scored/unflagged review(s) carry text but no contentTier (worst: ${worst.showId}/${worst.file}, ${worst.criticName}, ${worst.chars} chars)`,
-        hint: 'Run `node scripts/audit-silent-exclusions.js` — these fell out of classification and are invisible to every contentTier consumer. Re-run classification for the show, then `--write-baseline` to ack.',
+        message: `${findings.length} review(s) have text and a score but were never classified, so they are missing from the site (worst: ${worst.showId}/${worst.file}, ${worst.criticName}, ${worst.chars} chars)`,
+        hint: 'Run `node scripts/audit-silent-exclusions.js` to list them, then re-run classification for those shows to put them back in the corpus. `--write-baseline` acks any you decide to leave.',
       };
     }),
 
@@ -1392,14 +1410,15 @@ function checkOutletHealth() {
         baselineKeys,
       });
       if (findings.length === 0) {
-        return { name: 'Quality: outlet domain move', status: 'pass', message: `${scanned} unregistered host(s) checked, no probable outlet domain moves (${baselinedCount} known/baselined, ${domainlessMatches} domainless-outlet matches out of scope)` };
+        return { name: 'Quality: outlet domain move', status: 'pass', message: `${scanned} unrecognised host(s) checked, none look like an outlet that changed domain (${baselinedCount} previously acked; ${domainlessMatches} matched an outlet that has no domain recorded at all, which a different guard owns)` };
       }
       const worst = findings[0];
+      const hosts = findings.slice(0, 4).map(f => `${f.host}→${f.outletId}`).join(', ');
       return {
         name: 'Quality: outlet domain move',
         status: 'warn',
-        message: `${findings.length} unregistered host(s) look like a registered outlet's new home (worst: ${worst.host} → "${worst.outletId}", registered as ${worst.registeredDomain}, ${worst.occurrences} occurrence(s))`,
-        hint: 'Run `node scripts/audit-silent-exclusions.js` — if the host really is that outlet, add it to the outlet\'s domainAliases in data/outlet-registry.json, otherwise register it as its own outlet. Until then every review on that host is dropped by the domain-mismatch guard. `--write-baseline` acks the current backlog once triaged.',
+        message: `${findings.length} host(s) need a decision: are they the same outlet under a new domain, or a new outlet? Until one is recorded, every review published on them is silently dropped. ${hosts}${findings.length > 4 ? ', …' : ''} (worst: ${worst.host}, currently registered as ${worst.registeredDomain}, ${worst.occurrences} occurrence(s))`,
+        hint: 'Run `node scripts/audit-silent-exclusions.js`. Same outlet → add the host to that outlet\'s domainAliases in data/outlet-registry.json. Different outlet → register it as its own. Either way the alert clears; `--write-baseline` only silences it without fixing the dropped reviews.',
       };
     }),
   ];

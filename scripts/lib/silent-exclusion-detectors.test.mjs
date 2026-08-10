@@ -156,6 +156,34 @@ test('(b) NEGATIVE CONTROL: a tier-less file with no real byline is NOT reported
   }
 });
 
+test('(b) the show record reaches the canonical predicate (not a bare one-arg call)', () => {
+  // Regression guard for the ship-check finding: calling
+  // isIncludableForRebuild(review) with only `data` silently disables
+  // isPrematureReviewForUnopenedShow (review-guards.js:340 returns false the
+  // moment `show` is undefined), so a pre-opening review that rebuild DOES
+  // exclude was being reported as an invariant violation.
+  //
+  // Same review, two calls. Without the show it is reported; with a show whose
+  // first performance is months after the review's publishDate, the canonical
+  // predicate excludes it and there is nothing to report. If the wiring
+  // regresses to a one-arg call, the second assertion fails.
+  const review = tierlessReview({ publishDate: '2026-06-14' });
+  const unopenedShow = {
+    id: 'rosie-odonnell-common-knowledge-off-broadway-2026',
+    title: "Rosie O'Donnell: Common Knowledge",
+    status: 'previews',
+    previewsStartDate: '2026-12-01',
+    openingDate: '2026-12-15',
+  };
+
+  assert.ok(evaluateMissingContentTier(review), 'no show context → nothing excludes it, so it is reported');
+  assert.equal(
+    evaluateMissingContentTier(review, { show: unopenedShow }),
+    null,
+    'with the show, the canonical predicate excludes it as premature — so it must NOT be reported',
+  );
+});
+
 test('(b) survives junk input instead of throwing', () => {
   for (const junk of [null, undefined, 'a string', 42, []]) {
     assert.equal(evaluateMissingContentTier(junk), null);
@@ -246,6 +274,43 @@ test('(a) NEGATIVE CONTROL: an unrelated host matching no outlet is NOT reported
     unknownHosts: [unknownHostRow('some-random-blog.com', { provisionalOutletId: 'some-random-blog' })],
   });
   assert.deepEqual(findings, []);
+});
+
+test('(a) NEGATIVE CONTROL: a generic alias match is NOT a move unless the domains corroborate', () => {
+  // The real hazard, found in ship-check: 8 registered outlets answer to a bare
+  // generic word that clears the length floor. The Guardian Nigeria
+  // (guardian.ng) is a DIFFERENT newspaper from theguardian.com; reporting it
+  // as a domain move would invite an alias that files Nigerian reviews under a
+  // T1 UK outlet. Same shape for The Herald (Glasgow) vs Zimbabwe's herald.co.zw.
+  const { findings, genericAliasMatches } = detectOutletDomainMoves({
+    outlets: {
+      guardian: { displayName: 'The Guardian', aliases: ['guardian'], domain: 'theguardian.com' },
+      herald: { displayName: 'The Herald (Glasgow)', aliases: ['herald'], domain: 'heraldscotland.com' },
+    },
+    unknownHosts: [
+      unknownHostRow('guardian.ng', { provisionalOutletId: 'guardian' }),
+      unknownHostRow('herald.co.zw', { provisionalOutletId: 'herald' }),
+    ],
+  });
+  assert.deepEqual(findings, [], 'an alias-only match with a non-corroborating domain is not a move');
+  assert.equal(genericAliasMatches, 2, 'suppressed, but counted rather than silently dropped');
+});
+
+test('(a) corroboration still admits a genuine same-name host change', () => {
+  // metro.co.uk → metro.news and dailymail.co.uk → dailymail.com both survive:
+  // the registered domain derives the SAME label as the candidate host.
+  const { findings } = detectOutletDomainMoves({
+    outlets: {
+      'metro-uk': { displayName: 'Metro', aliases: ['metro'], domain: 'metro.co.uk' },
+      'daily-mail': { displayName: 'Daily Mail', aliases: ['dailymail'], domain: 'dailymail.co.uk' },
+    },
+    unknownHosts: [
+      unknownHostRow('metro.news', { provisionalOutletId: 'metro' }),
+      unknownHostRow('dailymail.com', { provisionalOutletId: 'dailymail' }),
+    ],
+  });
+  assert.equal(findings.length, 2, 'same label, different host is exactly what this detects');
+  assert.deepEqual(findings.map(f => f.outletId).sort(), ['daily-mail', 'metro-uk']);
 });
 
 test('(a) NEGATIVE CONTROL: short generic slugs never match', () => {
