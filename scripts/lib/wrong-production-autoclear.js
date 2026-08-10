@@ -443,28 +443,31 @@ function shouldAutoClearWrongShow(data) {
  * that doesn't match the show's season. For West End and off-Broadway shows this
  * is a known false-positive source (transfers, unconventional year tags) and the
  * rebuild exempts them — but only if the flag wasn't set for some OTHER explicit
- * reason (manual audit, high-confidence CV).
+ * reason (manual audit, high-confidence CV, a show-listing/aggregate URL).
  *
  * Callers pass `isLondonOrOffBroadway` so this lib stays decoupled from
- * isLondonMarket() / show-category imports.
+ * isLondonMarket() / show-category imports. `cvBlocksClear` and
+ * `isShowListingUrl` are computed by the caller (rebuild-all-reviews.js) —
+ * same ctx shape as the sibling shouldAutoClearWrongProductionUkDualMarket —
+ * so this lib doesn't need to require review-guards.js / cross-production-guards.js.
  *
  * @param {object} data
  * @param {object} ctx
  * @param {boolean} ctx.isLondonOrOffBroadway - true if showCat is london/off-broadway
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {boolean} ctx.isShowListingUrl - true if data.url is a /shows/ aggregate/listing page
  * @returns {boolean}
  */
-function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } = {}) {
+function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
   if (data.wrongProduction !== true) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
   if (!isLondonOrOffBroadway) return false;
-  const hasManualReason = !!data.wrongProductionReason;
-  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
-    && data.contentVerification?.confidence === 'high';
-  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-    && data.contentVerification?.confidence === 'high';
+  if (cvBlocksClear) return false;
+  if (isShowListingUrl) return false;
+  if (data.wrongProductionReason) return false;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
-  return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
+  return true;
 }
 
 /**
