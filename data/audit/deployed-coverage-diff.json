@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T11:06:53.246Z",
+  "generatedAt": "2026-08-10T12:47:44.072Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,19 +11,19 @@
   },
   "shows": [
     {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
+      "showId": "im-every-woman-off-west-end-2026",
+      "title": "I'm Every Woman",
+      "openingDate": "2026-08-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 60.34 vs local 61.25 (Δ0.91)"
+          "detail": "deployed cs 51.52 vs local 51.87 (Δ0.35)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 27
+      "localCount": 29,
+      "deployedCount": 30
     }
   ]
 }
