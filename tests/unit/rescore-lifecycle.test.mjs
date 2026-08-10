@@ -158,6 +158,38 @@ test('isBlockedFromRescore unblocks when an excerpt appears since the block (shi
   assert.equal(isBlockedFromRescore(excerptCleared), false);
 });
 
+test('isBlockedFromRescore exempts Theatre Record capsules stamped body_too_short', () => {
+  // TR print capsules (Mail on Sunday / Sunday Telegraph) in the 100-999 char
+  // band were stamped body_too_short before the capsule exemption existed at
+  // the validator call sites (scorer.ts / ensemble-scorer.ts). The gate they
+  // failed no longer applies to them, so the stamp must not keep them out of
+  // the queue — the unblock is logic-side, no review-texts writes needed.
+  const trCapsule = {
+    source: 'theatre-record',
+    fullText: 'x'.repeat(787),
+    rescoreBlockedReason: 'input_validation_failed:body_too_short',
+    rescoreBlockedTextLength: 787,
+    rescoreBlockedHadExcerpt: false,
+  };
+  assert.equal(isBlockedFromRescore(trCapsule), false);
+
+  // Same length, same stamp, NOT theatre-record — a partial scrape of a long
+  // review. The gate still applies; stays blocked.
+  const partialScrape = { ...trCapsule, source: 'scrapingbee' };
+  assert.equal(isBlockedFromRescore(partialScrape), true);
+  const noSource = { ...trCapsule };
+  delete noSource.source;
+  assert.equal(isBlockedFromRescore(noSource), true);
+
+  // TR file stamped for a DIFFERENT deterministic gate (nav chrome) — the
+  // capsule exemption only voids body_too_short; nav chrome still reproduces.
+  const trNavChrome = {
+    ...trCapsule,
+    rescoreBlockedReason: 'input_validation_failed:nav_chrome_majority',
+  };
+  assert.equal(isBlockedFromRescore(trNavChrome), true);
+});
+
 test('isDeterministicTextGateFailure excludes hallucinated_score (ship-check P1)', () => {
   // The two real deterministic gates (scorer.ts, ensemble-scorer.ts) both
   // stamp this exact prefix.
