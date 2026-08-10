@@ -201,7 +201,12 @@ function isOutletDomainMismatch(expected, internalOutlet, opts = {}) {
  */
 function shouldRefuseAggregatorOutletRefinement(urlOutletId, currentOutletId) {
   if (!urlOutletId || !currentOutletId) return false;
-  if (!AGGREGATOR_OUTLET_IDS.has(urlOutletId)) return false;
+  // Normalize BOTH sides. resolveOutletFromUrl returns canonical registry keys
+  // today, but this is exported as a general predicate whose JSDoc invites any
+  // "outlet the URL resolved to" — a capitalized or aliased first argument would
+  // silently return false and permit exactly the laundering this exists to stop.
+  const normUrl = normalizeOutlet(urlOutletId) || urlOutletId;
+  if (!AGGREGATOR_OUTLET_IDS.has(normUrl)) return false;
   const normCurrent = normalizeOutlet(currentOutletId) || currentOutletId;
   return !AGGREGATOR_OUTLET_IDS.has(normCurrent);
 }
