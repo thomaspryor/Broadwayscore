@@ -1,36 +1,36 @@
 {
   "significanceAlertedAt": 1785160304144,
-  "lastRunAt": "2026-08-04T12:38:04.520Z",
+  "lastRunAt": "2026-08-10T13:34:10.446Z",
   "lastSummary": {
     "flag": "ticket-single-button",
     "days": 14,
-    "startDate": "2026-07-21",
-    "endDate": "2026-08-04",
+    "startDate": "2026-07-27",
+    "endDate": "2026-08-10",
     "restartClamped": false,
-    "postbackCoverage": 0.938,
-    "totalConversions": 32,
+    "postbackCoverage": 0.818,
+    "totalConversions": 22,
     "flagHealthy": true,
     "flagHealthProblem": null,
     "variants": [
       {
         "name": "multi",
-        "clicks": 127,
-        "users": 52,
-        "convUsers": 7,
-        "convCount": 9,
+        "clicks": 130,
+        "users": 51,
+        "convUsers": 9,
+        "convCount": 11,
         "joinCoverage": 1
       },
       {
         "name": "single",
-        "clicks": 152,
-        "users": 64,
-        "convUsers": 8,
-        "convCount": 20,
+        "clicks": 122,
+        "users": 44,
+        "convUsers": 6,
+        "convCount": 7,
         "joinCoverage": 1
       }
     ],
     "primary": {
-      "p": 0.8780115933576509,
+      "p": 0.5929491689765569,
       "significant": false,
       "suppressed": null,
       "degenerate": null,
