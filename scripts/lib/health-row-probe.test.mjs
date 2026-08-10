@@ -66,13 +66,35 @@ test('probeHealthRowLive: row absent from every status -> verdict unknown, never
   assert.equal(out.verdict, 'unknown');
 });
 
-test('probeHealthRowLive: row only appears as a credential-skip placeholder -> verdict unknown, not present or absent', async () => {
+test('probeHealthRowLive: row only appears as a warn-status credential-skip placeholder -> verdict unknown, not present or absent', async () => {
   // Real shape checkCronHealth()/checkSecretsHealth()/etc. emit when a
   // required token is missing (see module header) — the single placeholder
   // row name can collide with a real check's own success-path name.
   const out = await withStubbedCoreResults(
     [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }],
     () => probeHealthRowLive('Cron: health'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: row only appears as a PASS-status checkout-skip placeholder -> verdict unknown, not a false pass (ship-check finding)', async () => {
+  // Real shape checkSync()'s "Sync: review-texts vs reviews.json" row when
+  // the private review-texts repo isn't checked out — status 'pass', not
+  // 'warn'. A card targeting this exact row must not exit 0 just because
+  // this sandbox never actually re-ran the real check.
+  const out = await withStubbedCoreResults(
+    [{ name: 'Sync: review-texts vs reviews.json', status: 'pass', message: 'Skipped — review-texts not checked out (private repo)' }],
+    () => probeHealthRowLive('Sync: review-texts vs reviews.json'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: row only appears as a parenthetical PASS-status skip placeholder -> verdict unknown', async () => {
+  // Real shape checkQuality()'s star-vs-score / missing-contentTier / etc.
+  // rows use "Skipped (...)" (parentheses, no em dash) at status 'pass'.
+  const out = await withStubbedCoreResults(
+    [{ name: 'Quality: star-vs-score mismatch', status: 'pass', message: 'Skipped (review-texts not checked out)' }],
+    () => probeHealthRowLive('Quality: star-vs-score mismatch'),
   );
   assert.equal(out.verdict, 'unknown');
 });
@@ -164,4 +186,36 @@ test('a probe run never touches the dispatch-outcome-digest-state.json trend cac
   await probeHealthRowLive('__health-row-probe-test-no-state-write__');
   const after = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
   assert.equal(after, before, 'dispatch-outcome-digest-state.json mtime changed across a probe run');
+});
+
+test('two concurrent in-process probe calls stay side-effect-free (reentrancy — ship-check finding, task #1224)', async () => {
+  // The original write-disable window was not reentrant: the first of two
+  // overlapping calls to finish would restore the REAL fs.writeFileSync
+  // while the second call was still mid-flight, un-protecting it. Real
+  // usage always runs --live as a fresh CLI process (never overlapping
+  // in-process calls), but Promise.all-ing two probes in the same process
+  // must still never leak a real write.
+  const realFs = require('node:fs');
+  let realWriteCalls = 0;
+  const originalWrite = realFs.writeFileSync;
+  realFs.writeFileSync = (...args) => { realWriteCalls++; return originalWrite(...args); };
+  try {
+    // One shared stub (not two nested withStubbedCoreResults calls) — the
+    // require.cache-swap trick this test file uses for stubbing is itself
+    // not reentrant, so overlapping it would test the test harness's race,
+    // not health-row-probe.js's. The fs-write-disable reentrancy under test
+    // lives entirely inside health-row-probe.js's own withWritesDisabled.
+    const [a, b] = await withStubbedCoreResults(
+      [
+        { name: 'Row A', status: 'pass', message: 'ok' },
+        { name: 'Row B', status: 'error', message: 'broken' },
+      ],
+      () => Promise.all([probeHealthRowLive('Row A'), probeHealthRowLive('Row B')]),
+    );
+    assert.equal(a.verdict, 'absent');
+    assert.equal(b.verdict, 'present');
+  } finally {
+    realFs.writeFileSync = originalWrite;
+  }
+  assert.equal(realWriteCalls, 0, `overlapping probes performed ${realWriteCalls} real fs write(s)`);
 });
