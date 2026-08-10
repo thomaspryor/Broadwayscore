@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-10T03:12:46.831Z",
+  "updatedAt": "2026-08-10T03:50:18.486Z",
   "processed": 72,
-  "failed": 1433,
+  "failed": 1443,
   "successRate": "4.8%",
   "tierBreakdown": {
     "playwright": 52,
@@ -42,6 +42,17 @@
       "event": "bb-session",
       "session": "52d27dde",
       "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0"
+    },
+    {
+      "t": "2026-08-10T03:49:58.250Z",
+      "event": "bb-session",
+      "session": "626f67cf",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-10T03:49:58.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
