@@ -15,7 +15,8 @@
     "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
     "cats-west-end-2026/independent--alice-saville.json",
     "cats-west-end-2026/telegraph--james-hall.json",
-    "cats-west-end-2026/telegraph--unknown.json"
+    "cats-west-end-2026/telegraph--unknown.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
@@ -151,7 +152,16 @@
     "cats-west-end-2026/usatoday--patrick-ryan.json",
     "cats-west-end-2026/whatsonstage--oliver-ainley.json",
     "the-comedy-about-spies-west-end-2026/buy-tickets-from-the-producers-here--unknown.json",
-    "the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json"
+    "the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json",
+    "isla-off-broadway-2026/show-score--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -181,7 +191,8 @@
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
       "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
       "cats-west-end-2026/telegraph--james-hall.json",
-      "cats-west-end-2026/telegraph--unknown.json"
+      "cats-west-end-2026/telegraph--unknown.json",
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -191,6 +202,18 @@
     ]
   },
   "startTime": "2026-08-10T10:15:58.760Z",
-  "lastProcessed": "the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json",
-  "log": []
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+  "log": [
+    {
+      "t": "2026-08-10T10:56:31.729Z",
+      "event": "bb-session",
+      "session": "31070f7d",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-10T10:56:32.921Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
