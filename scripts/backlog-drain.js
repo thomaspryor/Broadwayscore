@@ -108,7 +108,11 @@ function saveSkipCache(cache, p = HUMAN_GATED_CACHE_PATH) {
 }
 
 function skipCacheFresh(entry, nowMs, ttlMs = HUMAN_GATED_CACHE_TTL_MS) {
-  return Boolean(entry && Number.isFinite(Date.parse(entry.ts)) && nowMs - Date.parse(entry.ts) < ttlMs);
+  if (!entry || !Number.isFinite(Date.parse(entry.ts))) return false;
+  const ageMs = nowMs - Date.parse(entry.ts);
+  // A future-dated ts (clock skew, corrupted write) must not read as fresh
+  // forever — allow 60s of skew, nothing more (ship-check QA finding).
+  return ageMs >= -60_000 && ageMs < ttlMs;
 }
 
 // How long to wait for a dispatched detached child to reach bsc-runner's
@@ -197,9 +201,12 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
     .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   if (!spawns.length) return null;
-  const jobId = spawns[0].jobId;
-  const jobs = dispatchLedger.foldJobs(dispatchLedgerEntries.filter(e => e.jobId === jobId));
-  return jobs.get(jobId) || null;
+  // Task #1184 S1 (ship-check Codex finding): a timed-out drain job the
+  // reconciler resumed ends 'job-retried'; without following the chain the
+  // resumed successor's real outcome was ignored and the dispatch scored
+  // card-fail into attempt-memory while the resume was still working. Shared,
+  // causal chain-follower — see dispatch-ledger.followRetryChain's header.
+  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
 // Resolve prior 'drain-dispatch' ledger entries with no outcome yet into
@@ -341,6 +348,19 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
       newEntries.push({
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+      });
+      emitted.push({ cardId: taskId, ts: now.toISOString(), event: 'card-fail' });
+      continue;
+    }
+    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
+      // Chain ends at a retry whose successor hasn't spawned yet — in-flight
+      // within the same orphan bound as the no-spawn case; past it, the
+      // resume child died before spawning and the attempt scores as a fail.
+      const retriedAgeH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
+      if (retriedAgeH < ORPHAN_TIMEOUT_H) continue;
+      newEntries.push({
+        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: Number(job.costUSD) || 0,
+        note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       emitted.push({ cardId: taskId, ts: now.toISOString(), event: 'card-fail' });
       continue;
@@ -497,7 +517,10 @@ async function main(argv = process.argv.slice(2)) {
         continue;
       }
       if (!card.notes) {
-        if (!WINDOW_FIX_DISABLED) { skipCache[id] = { ts: new Date(nowMs).toISOString(), codes: ['NO_NOTES'] }; cacheDirty = true; }
+        // NOT cached (ship-check finding): a transient/partial Notion response
+        // with empty notes is indistinguishable from a real notes-less card,
+        // and caching it would suppress a dispatchable card for 24h. It just
+        // consumes a fetch slot and gets re-read next tick.
         continue;
       }
       const gate = evaluateVerifiability(card.notes);

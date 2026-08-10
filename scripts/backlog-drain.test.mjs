@@ -303,6 +303,7 @@ test('skipCacheFresh: fresh within TTL, stale past it, garbage never fresh', () 
   assert.equal(skipCacheFresh(at(25), now), false, 'past TTL — card gets re-evaluated');
   assert.equal(skipCacheFresh(undefined, now), false);
   assert.equal(skipCacheFresh({ ts: 'not-a-date' }, now), false);
+  assert.equal(skipCacheFresh(at(-2), now), false, 'a future-dated ts (clock skew/corruption) must never read as fresh');
   assert.ok(HUMAN_GATED_CACHE_TTL_MS <= 24 * 3600e3, 'TTL must stay <= 24h so an edited card is picked up within a day');
 });
 

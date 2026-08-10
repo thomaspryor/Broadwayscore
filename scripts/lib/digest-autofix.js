@@ -278,24 +278,11 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
     .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   if (!spawns.length) return null;
-  const jobsAll = dispatchLedger.foldJobs(
-    dispatchLedgerEntries.filter(e => String(e.taskId) === String(taskId)));
-  let job = jobsAll.get(spawns[0].jobId) || null;
-  // Task #1184 S1: a timed-out job the reconciler resumes ends 'job-retried'
-  // (terminal for the OLD jobId) while a successor job continues the SAME
-  // card. Without following the chain, a live resume scored card-fail here —
-  // parking a card whose fix session was still running. Follow retries to
-  // the newest link; a chain ending at RETRIED (successor not spawned yet)
+  // Task #1184 S1: follow job-retried chains (shared, causal implementation —
+  // see dispatch-ledger.followRetryChain's header) so a live resume is never
+  // scored card-fail. A chain ending at RETRIED (successor not spawned yet)
   // is handled by the caller as still-in-flight, with its own orphan bound.
-  const visited = new Set();
-  while (job && job.event === dispatchLedger.JOB_EVENTS.RETRIED && !visited.has(job.jobId)) {
-    visited.add(job.jobId);
-    const retriedMs = new Date(job.ts || 0).getTime();
-    const next = spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId && new Date(s.ts).getTime() >= retriedMs - 5000);
-    if (!next) break;
-    job = jobsAll.get(next.jobId) || null;
-  }
-  return job;
+  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into

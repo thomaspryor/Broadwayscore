@@ -468,6 +468,10 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     flipFn = (task, note) => {
       const file = path.join(tasksDir, `${task.id}.json`);
       const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+      // Check-then-act guard (ship-check Codex finding): a session can claim
+      // or complete this task between the sweep's snapshot and this write —
+      // the re-read is the last word, never the stale snapshot.
+      if (t.status !== 'in_progress') return;
       t.status = 'pending';
       t.owner = null;
       t.description = note + (t.description || '');

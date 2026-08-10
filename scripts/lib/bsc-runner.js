@@ -178,7 +178,10 @@ async function runJob(opts) {
 
     // Ledger record BEFORE spawn: a crash between here and the spawn leaves a
     // visible open job for the reconciler, never an invisible failure (F2).
-    ledger.appendEntry({ event: ledger.JOB_EVENTS.SPAWNED, taskId, jobId, subject, cwd, logFile, model: model || null, resumed: Boolean(resumeSessionId) });
+    // resumeOfSession makes retry-chain attribution CAUSAL (dispatch-ledger.
+    // followRetryChain matches it against the RETRIED entry's sessionId) — a
+    // manual headless job spawned in the gap can never be credited as the resume.
+    ledger.appendEntry({ event: ledger.JOB_EVENTS.SPAWNED, taskId, jobId, subject, cwd, logFile, model: model || null, resumed: Boolean(resumeSessionId), resumeOfSession: resumeSessionId || null });
 
     const res = await runClaudeCli({
       // Budget preamble on every job, resume included: the resumed session
