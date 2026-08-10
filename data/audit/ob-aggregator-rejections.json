@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-09T14:30:58.666Z",
+  "generatedAt": "2026-08-10T14:53:49.107Z",
   "counts": {
     "accepted": 0,
-    "rejected": 12,
+    "rejected": 13,
     "byReason": {
-      "low-confidence-existing-match": 6,
+      "low-confidence-existing-match": 7,
       "bot-shell": 3,
       "placeholder-venue-no-theater": 2,
       "title-mismatch": 1
@@ -62,6 +62,12 @@
     {
       "url": "https://playbill.com/article/what-do-reviews-say-about-londons-new-cats-revival",
       "slug": "what-do-reviews-say-about-londons-new-cats-revival",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
+      "slug": "reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
       "source": "playbill-verdict",
       "reason": "low-confidence-existing-match"
     },

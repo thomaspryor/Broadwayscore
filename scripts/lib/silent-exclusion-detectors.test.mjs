@@ -212,6 +212,21 @@ test('normalizeHostSlug takes the LAST remaining segment on a 3+-label host — 
   assert.equal(normalizeHostSlug('news.dancemagazine.co.uk'), 'dancemagazine');
 });
 
+test('normalizeHostSlug handles two-label ccTLDs beyond UK/AU/NZ (ship-check finding: TWO_LABEL_TLDS allowlist was incomplete)', () => {
+  // Before this fix, any two-label ccTLD not in the original UK/AU/NZ-only
+  // list fell through to the generic single-label strip, which only removes
+  // the LAST label — leaving a generic 2-3 char fragment ('co', 'com') as
+  // "identity". Confirmed by direct execution pre-fix:
+  // normalizeHostSlug('guardian.co.za') === 'co', normalizeHostSlug('example.com.br') === 'com'.
+  // Both clear MIN_SLUG_LENGTH=3, so two unrelated outlets on an unlisted
+  // .com.xx-style ccTLD would collide on the generic slug and get falsely
+  // flagged as domain-moves of each other — the exact false-positive class
+  // the domain-vs-domain redesign (task #1228) exists to eliminate.
+  assert.equal(normalizeHostSlug('guardian.co.za'), 'guardian');
+  assert.equal(normalizeHostSlug('example.com.br'), 'example');
+  assert.equal(normalizeHostSlug('blogspot.co.id'), 'blogspot');
+});
+
 test('a host matching a registered outlet name, not yet in domainAliases, is reported (the real 1minutecritic incident, replayed pre-fix)', () => {
   // Registry state AS IT WAS before the by-hand fix: domain 1minutecritic.com,
   // domainAliases only has the earlier oneminutecritic.com typo-domain — the

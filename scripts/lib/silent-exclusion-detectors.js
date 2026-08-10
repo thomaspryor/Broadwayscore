@@ -160,8 +160,19 @@ function scanMissingContentTier(reviewTextsDir, showsById) {
 const PLATFORM_SUFFIXES = /\.(substack\.com|wordpress\.com|medium\.com|blogspot\.com|wixsite\.com|squarespace\.com|ghost\.io)$/i;
 
 // Two-label TLDs that a single-label strip would mishandle (.co.uk → "co",
-// wrong; must strip both labels).
-const TWO_LABEL_TLDS = /\.(co\.uk|com\.au|org\.uk|co\.nz|org\.au)$/i;
+// wrong; must strip both labels). ship-check finding (ship-check round 2,
+// ORIGINAL list only covered UK/AU/NZ): any OTHER real two-label ccTLD fell
+// through to the generic single-label strip, which removes only the last
+// label and leaves the second-to-last as "identity" — confirmed by direct
+// execution: 'guardian.co.za' normalized to 'co', 'example.com.br' to 'com'.
+// Both clear MIN_SLUG_LENGTH=3, so two unrelated outlets on an unlisted
+// .com.xx-style ccTLD would collide on the generic slug 'com'/'co' and get
+// falsely flagged as domain-moves of each other — the exact false-positive
+// class this comparison was redesigned to eliminate (task #1228). Aligned
+// with outlet-canonicalize.js's PROVISIONAL_MULTIPART_SUFFIXES list (same
+// source of truth for "which ccTLDs are two-label"), plus co.id (already a
+// live registry outlet, show-showdown / blogspot.co.id).
+const TWO_LABEL_TLDS = /\.(co\.uk|com\.au|org\.uk|co\.nz|org\.au|me\.uk|ac\.uk|gov\.uk|net\.au|co\.za|com\.br|co\.id)$/i;
 
 // Below this, a domain-slug match is too generic to be "probable". Lower
 // than the old alias-based floor (was 4, with a separate 3-char carve-out
