@@ -12,6 +12,9 @@
 
 const fs = require('fs');
 const path = require('path');
+// Mirror of src/lib/calendar/duration.ts — kept in lockstep by
+// tests/unit/parse-runtime-parity.test.ts. See that file before editing either.
+const { parseRuntimeMinutes } = require('./lib/parse-runtime');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -49,6 +52,14 @@ const lookup = relevantShows.map(show => {
   if ((show.status === 'upcoming' || show.status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
   if (show.images?.poster) entry.p = show.images.poster;
   else if (show.images?.thumbnail) entry.p = show.images.thumbnail;
+  // Calendar export (Phase 0): a diary card only ever had `venue`, so an .ics
+  // built from this lookup had no street address to put in LOCATION and no
+  // runtime to size the event. Both are emitted only when present — address
+  // exists for ~741 shows and runtime for ~631, so the vast majority of
+  // entries add zero bytes here.
+  if (show.theaterAddress) entry.a = show.theaterAddress;
+  const runtimeMin = parseRuntimeMinutes(show.runtime);
+  if (runtimeMin) entry.rt = runtimeMin;
   return entry;
 });
 
