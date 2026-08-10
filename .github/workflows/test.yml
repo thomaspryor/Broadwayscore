@@ -1126,6 +1126,20 @@ on:
       - 'scripts/backfill-cast-web.js'
       - 'data/cast/**'
       - 'scripts/lib/content-quality.js'
+      # validateShowMentioned Check 3 + generic-idWords regression tests
+      # (task #895/#915/#947 — false-positive review recoveries). Colocated
+      # scripts/lib/*.test.mjs step covers the test; without this path entry
+      # a solo edit to the test file pushes with ZERO CI (no scripts/lib/**
+      # broad glob — feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/content-quality.test.mjs'
+      # Shared browser-recovery date-plausibility guard (task #915) — wraps
+      # validateShowMentioned + evaluateDatePlausibility for every outlet's
+      # recover-*-browser.js. Colocated scripts/lib/*.test.mjs step covers
+      # the test; without these path entries a push to either file (source
+      # or test) triggers ZERO CI (same silent-gate class as content-quality
+      # above).
+      - 'scripts/lib/browser-recovery-helpers.js'
+      - 'scripts/lib/browser-recovery-helpers.test.mjs'
       # Synopsis quality detector (refusal/placeholder/stale/invalid). Shared by
       # the freshness gate, deploy-time self-heal, and Wikipedia re-enrichment.
       # Colocated scripts/lib/*.test.mjs step covers the test; without these path
