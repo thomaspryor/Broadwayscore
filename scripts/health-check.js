@@ -977,6 +977,85 @@ function checkQuality() {
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
     }),
 
+    // Silent-exclusion detectors (#1147 tracker, card #1188): a pipeline stage
+    // refuses to include a review and records nothing an operator would ever
+    // look at. Two live incidents, both fixed by hand with no detector left
+    // behind — this is that detector, wired into the existing daily digest
+    // rather than a new cron. Advisory `this-week` warns via the /^Quality:/
+    // playbook route, not a page: both predicates report CANDIDATES for a
+    // human to confirm, never write.
+    runCheck('Quality: missing contentTier', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
+      let hits = scanMissingContentTier(rtDir);
+      // rebuild-all-reviews.js reclassifies contentTier unconditionally on
+      // every pass (in-memory, before the review is pushed to reviews.json),
+      // so a source file missing contentTier does NOT necessarily mean the
+      // review is currently absent — only that its source file's write-back
+      // failed or hasn't run yet. Cross-check against the live reviews.json
+      // so this check reports the residual gap, not every stale source file.
+      const reviewsPath = path.join(DATA_DIR, 'reviews.json');
+      if (hits.length > 0 && fs.existsSync(reviewsPath)) {
+        try {
+          const live = readJSON(reviewsPath);
+          const liveKeys = new Set(
+            (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
+          );
+          hits = hits.filter((h) => !liveKeys.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`));
+        } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
+      }
+      if (hits.length === 0) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'No scored reviews missing contentTier' };
+      }
+      const worst = hits[0];
+      return {
+        name: 'Quality: missing contentTier',
+        status: 'warn',
+        message: `${hits.length} review(s) have fullText + a real byline + no rejection flags but NO contentTier, and are NOT in reviews.json (e.g. ${worst.showId}/${worst.file})`,
+        hint: 'A review-text file lost its contentTier without fullText changing, so rebuild never re-derives it. Run classifyContentTier on it and restore contentTier by hand, or add contentTier to the show\'s review file directly.',
+      };
+    }),
+
+    runCheck('Quality: outlet domain moves', () => {
+      const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
+      const censusPath = path.join(AUDIT_DIR, 'unknown-aggregator-outlets.json');
+      if (!fs.existsSync(registryPath) || !fs.existsSync(censusPath)) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: 'Skipped (registry or unknown-outlet census not present)' };
+      }
+      const { findProbableDomainMoves } = require('./lib/silent-exclusion-detectors');
+      let outlets, census;
+      try {
+        outlets = readJSON(registryPath)?.outlets;
+        census = readJSON(censusPath);
+      } catch (parseErr) {
+        // A malformed/mid-write file is a soft signal (retry next run), not a
+        // crash — matches the sibling checks' pattern (e.g. Sync: grosses
+        // weekEnding, Scoring: batch state) rather than falling through to
+        // runCheck's generic try/catch, which would report 'error' and feed
+        // the digest's escalation path for what's really a transient read.
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Could not parse registry or census: ${parseErr.message}`, hint: 'Likely a mid-write file — should clear on the next run' };
+      }
+      const ts = census?.generatedAt;
+      const age = ts ? hoursAgo(ts) : Infinity;
+      if (age > 48) {
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Unknown-outlet census is ${formatAge(age)} old (>48h)`, hint: 'The census that this check mines may be stale — check what writes data/audit/unknown-aggregator-outlets.json' };
+      }
+      const moves = findProbableDomainMoves(outlets, census?.outlets || []);
+      if (moves.length === 0) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: `No probable domain moves in ${census?.outlets?.length || 0} unregistered host(s)` };
+      }
+      const worst = moves[0];
+      return {
+        name: 'Quality: outlet domain moves',
+        status: 'warn',
+        message: `${moves.length} unregistered host(s) name-match a registered outlet (e.g. ${worst.host} → ${worst.outletId}) — probable domain move dropping reviews via domain-mismatch`,
+        hint: 'Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases in data/outlet-registry.json.',
+      };
+    }),
+
     // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
     // check-affiliate-health.js runs earlier in the same data-health-check.yml
     // job and writes this snapshot; this line is (a) the digest surface for
