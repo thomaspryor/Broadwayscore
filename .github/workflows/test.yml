@@ -1735,6 +1735,15 @@ on:
       - 'scripts/lib/dispatch-dead-launch-guard.js'
       - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
       - 'scripts/reconcile-dead-completions.js'
+      # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
+      # renders a terminal surface, so the injected command never runs. The
+      # retry layer hides it from every individual session, so only the
+      # aggregate rate can tell whether a cause fix worked. Colocated test runs
+      # in the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-health.js'
+      - 'scripts/lib/dispatch-health.test.mjs'
+      - 'scripts/audit-dispatch-dead-rate.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that

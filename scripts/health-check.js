@@ -2148,6 +2148,53 @@ function checkDispatchOutcomes() {
   })];
 }
 
+// --- Category I1b: Dispatch health (do dispatched sessions actually START?) ---
+//
+// checkDispatchOutcomes above asks whether dispatched work LANDED. This asks
+// the prior question: did the session ever start at all? Card #1199 — roughly
+// one bsc-next launch in five creates its cmux workspace, never renders a
+// terminal surface, and so never runs the injected command. The retry layer
+// recovers the WORK, so each session sees only its own 1-3 failures, retries,
+// succeeds, and truthfully reports success; nothing aggregated the ledger, so
+// a chronic ~20% rate ran unseen for a week and several "fixes" were judged
+// green by a single clean dispatch. Only the RATE over many launches can tell
+// whether a cause fix worked, which is what this row is for.
+//
+// Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
+// rather than passing on missing input (#1075 vacuous-gate class).
+
+function checkDispatchHealth() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  const { CHECK_NAME } = require('./lib/dispatch-health.js');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: CHECK_NAME,
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
+      hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
+    }];
+  }
+
+  return [runCheck(CHECK_NAME, () => {
+    const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
+    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
+    // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
+    // a RATE above the floor is a live defect every day it holds, and
+    // "unchanged since yesterday" silence is exactly the invisibility #1199
+    // exists to end. Repeat-day email noise is already handled downstream by
+    // owner-alert-router's conditionKey, which files one card per OPEN
+    // incident rather than one per run.
+    const { name, status, message, hint } = computeDispatchHealthDigest({
+      entries, nowMs: Date.now(),
+    });
+    return hint ? { name, status, message, hint } : { name, status, message };
+  })];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -3735,6 +3782,7 @@ async function main() {
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(),
+    ...checkDispatchHealth(),
     ...checkAutofixEffectiveness(),
   ];
 
