@@ -6,7 +6,7 @@
  * Counts duplicate reviews keyed by (showDir | outletId|outlet | criticName) —
  * the SAME definition generate-integrity-report.js uses for its
  * `report.current.duplicates` metric. Excluded files (duplicateOf /
- * wrongProduction / wrongShow / wrongUrl) are skipped.
+ * wrongProduction / wrongShow / wrongUrl / isRejectedNonReview) are skipped.
  *
  * This was a BLOCKING assertion (`report.current.duplicates <= 5`) in
  * tests/unit/data-quality-pipeline.test.js. But it asserts on a property of the
@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { isRejectedNonReview } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -62,7 +63,8 @@ function countKeyDuplicates(reviewTextsDir) {
       }
 
       const isExcluded =
-        data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl;
+        data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl ||
+        isRejectedNonReview(data);
       if (isExcluded) continue;
 
       const outletId = (data.outletId || '').toLowerCase();
