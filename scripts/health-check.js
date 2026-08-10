@@ -2064,7 +2064,7 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
-function checkDispatchOutcomes() {
+function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
     return [{
@@ -2132,12 +2132,18 @@ function checkDispatchOutcomes() {
     const currentAbandonedCount = classifyDispatches(
       dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
     ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
-    try {
-      fs.mkdirSync(AUDIT_DIR, { recursive: true });
-      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
-        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
-      }, null, 2) + '\n');
-    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    // dryRun (health-row-probe.js's live verification probe): compute the row
+    // exactly as normal but skip the trend-cache write — a probe run must never
+    // perturb the state a REAL health-check.js run compares "unchanged since
+    // last run" against, or it corrupts tomorrow's real digest message.
+    if (!dryRun) {
+      try {
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+          abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+        }, null, 2) + '\n');
+      } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    }
 
     if (row) return row;
     // currentAbandonedCount > 0 but unchanged from last run still counts as
@@ -3705,18 +3711,15 @@ function saveHistory(history) {
 
 // --- Main ---
 
-async function main() {
-  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
-
-  if (!isCI) {
-    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
-  }
-
-  console.log('=== Broadway Scorecard Daily Health Check ===\n');
-
-  purgeOldExclusionLogs();
-
-  const allResults = [
+// The 22 checks that make up the CORE digest (isCI-gated side effects, plus
+// checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
+// this same list can be re-run live and read-only by
+// scripts/lib/health-row-probe.js — see its header for why check-health-row-
+// absent.js can't just re-run scripts/health-check.js wholesale). This is the
+// ONLY place the check list is enumerated; main() and the probe both call it
+// so the two can never drift apart.
+async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
+  return [
     ...checkFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
@@ -3737,9 +3740,23 @@ async function main() {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
-    ...checkDispatchOutcomes(),
+    ...checkDispatchOutcomes(dryRun),
     ...checkAutofixEffectiveness(),
   ];
+}
+
+async function main() {
+  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
+
+  if (!isCI) {
+    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
+  }
+
+  console.log('=== Broadway Scorecard Daily Health Check ===\n');
+
+  purgeOldExclusionLogs();
+
+  const allResults = await computeCoreHealthResults(isCI);
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
@@ -3943,4 +3960,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
