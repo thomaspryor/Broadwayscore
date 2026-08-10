@@ -130,17 +130,16 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-09T13:27:03.013Z",
-      "lastNotifiedAt": "2026-08-09T12:11:17.607Z",
-      "notifyCount": 21,
+      "lastSeen": "2026-08-10T00:35:04.641Z",
+      "lastNotifiedAt": "2026-08-10T00:05:57.024Z",
+      "notifyCount": 22,
       "cardId": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-09T20:53:32.131Z"
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -224,22 +223,22 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-09T23:23:58.535Z",
+      "lastSeen": "2026-08-10T00:26:36.502Z",
       "lastNotifiedAt": "2026-08-09T02:55:34.053Z",
       "notifyCount": 11,
       "cardId": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-09T23:23:58.602Z",
+      "lastSeen": "2026-08-10T00:26:36.568Z",
       "lastNotifiedAt": "2026-08-09T14:39:39.237Z",
       "notifyCount": 13,
       "cardId": null,
-      "silentRefires": 19
+      "silentRefires": 21
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -597,33 +596,33 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on ISLA",
       "firstSeen": "2026-08-09T10:55:00.197Z",
-      "lastSeen": "2026-08-09T22:53:39.458Z",
+      "lastSeen": "2026-08-09T23:50:29.756Z",
       "lastNotifiedAt": "2026-08-09T10:55:00.197Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-remediation-exhausted-critic-consensus:death-note-the-musical-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
       "firstSeen": "2026-08-09T14:04:51.028Z",
-      "lastSeen": "2026-08-09T22:53:39.457Z",
+      "lastSeen": "2026-08-09T23:50:29.754Z",
       "lastNotifiedAt": "2026-08-09T14:04:51.028Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-remediation-exhausted-empty-cast:isla-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on isla-off-broadway-2026",
       "firstSeen": "2026-08-09T17:50:29.299Z",
-      "lastSeen": "2026-08-09T22:53:39.457Z",
+      "lastSeen": "2026-08-09T23:50:29.756Z",
       "lastNotifiedAt": "2026-08-09T17:50:29.299Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 5
+      "silentRefires": 6
     }
   }
 }

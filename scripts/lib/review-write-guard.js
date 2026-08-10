@@ -141,6 +141,15 @@ const PROTECTED_FIELDS = [
   'wrongProductionAutoCleared',
   'wrongProductionAutoClearedAt',
   'wrongProductionReason',
+  // When the *Reason fields were STAMPED. Every sibling *At above is protected;
+  // these two were not, so the timestamp on an audit-asserted flag was silently
+  // dropped by the push-time restore on the next rebase while the flag itself
+  // survived — leaving a protected flag with no provenance date, which is what
+  // the wrongProduction provenance lint (task #1109) exists to prevent.
+  // Written by scripts/audit-wrongshow-autoclear-conflicts.js --fix
+  // (ship-check finding, 2026-08-09).
+  'wrongShowReasonAt',
+  'wrongProductionReasonAt',
   // rediscover-review-urls.js breadcrumb: prior wrong-flag values recorded when a
   // URL is rediscovered and the flags are deleted for re-scrape. Protected so the
   // intentional-clear signal (CLEAR_BREADCRUMBS) survives a rebase rather than

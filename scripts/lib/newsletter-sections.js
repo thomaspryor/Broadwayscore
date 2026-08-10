@@ -68,7 +68,20 @@ function createSectionRunner() {
 
   function entriesSnapshot() { return entries.slice(); }
 
-  return { run, printSummary, writeMeta, entries: entriesSnapshot };
+  // Rewrites each entry's skipReason in place via `classifierFn(entry)` — the
+  // no-data-vs-no-access reclassification (scripts/newsletter/
+  // section-credential-guard.mjs's classifyEntry) runs through here so
+  // printSummary/writeMeta below always see the corrected reason, not the
+  // generic 'no-data' the runner recorded at call time. classifierFn may
+  // return the same entry unchanged for cases it doesn't apply to.
+  function reclassify(classifierFn) {
+    for (let i = 0; i < entries.length; i++) {
+      const next = classifierFn(entries[i]);
+      if (next) entries[i] = next;
+    }
+  }
+
+  return { run, printSummary, writeMeta, entries: entriesSnapshot, reclassify };
 }
 
 module.exports = { createSectionRunner };

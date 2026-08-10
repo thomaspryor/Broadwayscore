@@ -65,6 +65,11 @@ on:
       # that existence-based readers counted as art (2026-08-02).
       - 'scripts/lib/show-image-coverage.js'
       - 'scripts/lib/show-image-coverage.test.mjs'
+      # Gate T acceptance test (card #1153) — spawns the real fleet-wide
+      # ~/.claude/hooks/exit-status-gate.sh, not a repo helper, so a solo edit
+      # here needs its own path entry (the hook has no colocated source file
+      # in-repo to piggyback on). Runs in the scripts/lib/*.test.mjs glob.
+      - 'scripts/lib/exit-status-gate-taskref.test.mjs'
       # SERP-census recall metric + its weekly cadence (Coverage Verdict S1,
       # tasks #872/#898). The whole point of the sprint is that a regression in
       # a discovery arm must stop being invisible; a change to the metric or the
@@ -1006,6 +1011,37 @@ on:
       - 'scripts/lib/date-guard.js'
       - 'scripts/lib/date-guard.test.mjs'
       - 'scripts/lib/wrong-production-autoclear.js'
+      # Coverage-pipeline tracker #1147 (2026-08-09). None of these were path-listed,
+      # so an edit to any of them shipped with ZERO CI (feedback_test_yml_push_path_allowlist).
+      # audit-wrongshow-autoclear-conflicts.js in particular MUTATES the review-texts
+      # corpus under --fix, and its --strict mode is the standing gate for the
+      # auto-clear-vs-ensemble-verdict class.
+      - 'scripts/audit-wrongshow-autoclear-conflicts.js'
+      - 'scripts/lib/outlet-canonicalize.js'
+      - 'scripts/lib/outlet-canonicalize.test.mjs'
+      - 'scripts/lib/non-review-url-patterns.js'
+      - 'scripts/lib/domain-filters.js'
+      - 'scripts/lib/ingest-skip-classify.js'
+      - 'scripts/lib/ingest-skip-classify.test.mjs'
+      - 'scripts/lib/newsletter-preflight.js'
+      - 'scripts/lib/newsletter-preflight.test.mjs'
+      - 'scripts/newsletter/pre-send-check.mjs'
+      - 'scripts/audit-show-review-gap.js'
+      - 'scripts/audit-show-review-gap.test.mjs'
+      - 'tests/unit/wrong-production-autoclear.test.mjs'
+      # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
+      # must never silently override a unanimous LLM ensemble rejection.
+      # Colocated *.test.mjs corpus layers run explicitly below (Data
+      # Validation job, after checkout-review-texts); scan lib + audit CLI
+      # are path-listed so a solo edit triggers CI (allow-list gate).
+      # wrongshow-autoclear-ensemble.test.mjs (task #1146) covers the
+      # wrongShow-only case with its own self-contained corpus scan;
+      # autoclear-vs-ensemble.test.mjs (#1156) generalizes to both flags via
+      # the shared scan lib.
+      - 'scripts/lib/autoclear-vs-ensemble-scan.js'
+      - 'scripts/lib/autoclear-vs-ensemble.test.mjs'
+      - 'scripts/audit-autoclear-vs-ensemble.js'
+      - 'scripts/lib/wrongshow-autoclear-ensemble.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
       # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior
@@ -1424,6 +1460,13 @@ on:
       # colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/newsletter-regen-guard.js'
       - 'scripts/lib/newsletter-regen-guard.test.mjs'
+      # Structural guard: the refresh workflow's allowGaps input must stay a
+      # STRING ('1'), and the ADC fallback in popular-pages.mjs must stay gated
+      # to non-CI. Test-only (no lib file); runs in the scripts/lib/*.test.mjs
+      # glob step. Path-listed so a solo edit to the guard triggers CI, and so
+      # edits to the two files it guards do too.
+      - 'scripts/lib/newsletter-allow-gaps-wiring.test.mjs'
+      - 'scripts/newsletter/popular-pages.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter
@@ -1631,6 +1674,13 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Dead-dispatch completion guard (card #1144): a task whose latest
+      # dispatch is journaled dead must not be marked completed. Colocated
+      # test runs in the lib-test glob; path-listed so a solo edit triggers
+      # CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-dead-launch-guard.js'
+      - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
+      - 'scripts/reconcile-dead-completions.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
@@ -1716,6 +1766,12 @@ on:
       - 'scripts/lib/wrongproduction-provenance.js'
       - 'scripts/lib/autonomous-eligibility.js'
       - 'scripts/lib/autonomous-eligibility.test.mjs'
+      # owner-judgment marker (#1154) — one regex, three consumers
+      # (autonomous-eligibility excludes on it, verify-gate arms on it,
+      # headless-dispatchability blocks on it). Path-listed so a solo edit to
+      # the leaf or to verify-gate triggers CI instead of silently getting none.
+      - 'scripts/lib/owner-judgment-marker.js'
+      - 'scripts/lib/verify-gate.js'
       - 'scripts/lib/autonomous-state.js'
       - 'scripts/lib/autonomous-state.test.mjs'
       - 'scripts/lib/autonomous-triage-core.js'
@@ -3364,6 +3420,39 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/review-guards.explain.test.mjs
+
+      - name: Run autoclear-vs-ensemble corpus test (needs review-texts)
+        # #1146/#1156: an auto-clear path (allowEarlyDate/allowCrossMarket
+        # bypass, UK-URL/registry-region heuristic) must never silently
+        # override a unanimous LLM-ensemble content rejection. Same
+        # corpus-presence contract as the parity test above —
+        # REQUIRE_REVIEW_CORPUS=1 turns a missing checkout into a hard
+        # failure instead of a silent skip.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/autoclear-vs-ensemble.test.mjs
+
+      - name: Autoclear-vs-ensemble audit (strict)
+        # Standalone re-runnable audit alongside the corpus test above —
+        # same defect class, gate reports the violating files directly
+        # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
+        if: always()
+        run: node scripts/audit-autoclear-vs-ensemble.js --strict
+
+      - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
+        # Same corpus-missing trap as explainExclusion above, same fix: the
+        # scripts/lib/*.test.mjs glob in the unit-tests job never has
+        # data/review-texts, so this file's corpus test always t.skip()'d
+        # there. Re-run it HERE (after checkout-review-texts) with
+        # REQUIRE_REVIEW_CORPUS=1 so the task #1146 acceptance scan
+        # (rejectionReason=wrong_show + wrongShowAutoCleared + wrongShow!==true
+        # must be 0) is a real assertion, not a silent no-op. ship-check
+        # finding, task #1146.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/wrongshow-autoclear-ensemble.test.mjs
 
       - name: Run data validation
         if: always()

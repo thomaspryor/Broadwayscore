@@ -17,18 +17,34 @@
 // hook family at ~/.claude/hooks/tests/exit-status-gate/ (see that directory
 // for the canonical fixture-based suite this test complements, not
 // replaces).
+//
+// HOOK_PATH deliberately uses os.userInfo().homedir, NOT os.homedir(): this
+// project's own close-time verify (scripts/lib/autonomous-checks.js
+// checksEnv()) re-runs a card's acceptance command with $HOME pointed at a
+// throwaway temp dir (secret-free sandbox) — os.homedir() follows that fake
+// $HOME and silently can't find the real hook, failing every case here.
+// os.userInfo().homedir reads the real account home via getpwuid regardless
+// of $HOME, so this test resolves the same hook whether run by a developer
+// or by that sandboxed re-verify (confirmed: HOME=/tmp override changes
+// os.homedir() but not os.userInfo().homedir).
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import os from 'node:os';
 
-const HOOK_PATH = path.join(os.homedir(), '.claude', 'hooks', 'exit-status-gate.sh');
+const REAL_HOME = os.userInfo().homedir;
+const HOOK_PATH = path.join(REAL_HOME, '.claude', 'hooks', 'exit-status-gate.sh');
+// The hook's own python3 subprocess ALSO resolves its lib/ imports via
+// os.path.expanduser('~'), which follows $HOME — so a sandboxed caller
+// (checksEnv() above) must have the REAL HOME threaded through the whole
+// bash→python3 chain, not just used to locate this script.
+const HOOK_ENV = { ...process.env, HOME: REAL_HOME };
 
-function runGate(lastAssistantMessage) {
+function runGate(lastAssistantMessage, extraEnv = {}) {
   const dir = mkdtempSync(path.join(tmpdir(), 'esg-taskref-'));
   const transcriptPath = path.join(dir, 'transcript.jsonl');
   // A minimal real user turn — enough for the hook's transcript walker to
@@ -44,7 +60,9 @@ function runGate(lastAssistantMessage) {
     last_assistant_message: lastAssistantMessage,
   });
   try {
-    const result = spawnSync('bash', [HOOK_PATH], { input, encoding: 'utf8' });
+    const result = spawnSync('bash', [HOOK_PATH], {
+      input, encoding: 'utf8', env: { ...HOOK_ENV, ...extraEnv },
+    });
     return { status: result.status, stderr: result.stderr || '' };
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -98,4 +116,25 @@ test('Gate T exempts EXECUTED: lines (they quote a literal verification command)
   ].join('\n');
   const { status } = runGate(msg);
   assert.equal(status, 0);
+});
+
+test('Gate T surfaces a title for a task that only exists under archive/ (task-store-archive.js layout)', () => {
+  // task-store-archive.js moves (not copies) tasks completed >24h ago out of
+  // ~/.claude/tasks/<slug>/<id>.json into a sibling archive/<id>.json — the
+  // hook's title-hint lookup must check both, or every reference to an
+  // older completed task silently loses its hint.
+  const dir = mkdtempSync(path.join(tmpdir(), 'esg-taskref-archive-'));
+  const archiveDir = path.join(dir, 'archive');
+  try {
+    mkdirSync(archiveDir, { recursive: true });
+    writeFileSync(path.join(archiveDir, '9991.json'), JSON.stringify({
+      id: '9991', subject: 'Archived task title for gate T lookup test',
+    }));
+    const { status, stderr } = runGate(
+      'Follow-up needed on #9991 before closing.', { ESG_TASKS_DIR: dir });
+    assert.equal(status, 2);
+    assert.match(stderr, /Archived task title for gate T lookup test/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
