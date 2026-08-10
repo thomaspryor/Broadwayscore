@@ -27,6 +27,15 @@ export interface WatchlistEntry {
   user_id: string;
   show_id: string;
   planned_date: string | null; // ISO date string (YYYY-MM-DD)
+  /** How the curtain time was chosen. null = no time set (all-day entry). */
+  time_slot: 'matinee' | 'evening' | 'custom' | null;
+  /**
+   * Local wall-clock curtain time (HH:MM:SS as PostgREST returns a TIME column)
+   * in the SHOW's market timezone, not the viewer's. Null is legitimate even
+   * with a time_slot set — a matinee/evening slot can be known for a date
+   * without an exact clock time.
+   */
+  curtain_time: string | null;
   created_at: string;
 }
 
