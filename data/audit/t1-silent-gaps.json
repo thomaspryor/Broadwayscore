@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T05:21:42.554Z",
+  "generatedAt": "2026-08-10T06:57:17.281Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -18,10 +18,10 @@
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-10T05:15:27.347Z",
-      "fileAgeHours": 0.10419083333333333,
+      "firstSeen": null,
+      "fileAgeHours": null,
       "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 6.993345277777777
+      "nonTerminalAgeHours": 8.586324722222223
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 424.16834,
+      "fileAgeHours": 425.76132,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 383.4712827777778
+      "nonTerminalAgeHours": 385.0642622222222
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 87.77494416666667
+      "nonTerminalAgeHours": 89.36792361111111
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,26 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 114.61153,
+      "fileAgeHours": 116.20450916666667,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 113.97346666666667
-    },
-    {
-      "showId": "the-pass-off-broadway-2026",
-      "title": "The Pass",
-      "openingDate": "2026-08-04",
-      "file": "nytg--unknown.json",
-      "outletId": "nytg",
-      "tier": 2,
-      "type": "unscored",
-      "url": "https://www.newyorktheatreguide.com/show/47271-the-pass",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
-      "firstSeen": "2026-08-06T06:24:23.949Z",
-      "fileAgeHours": 94.95516277777777,
-      "gapSeenAt": "2026-08-10T05:21:42.554Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 115.5664461111111
     }
   ],
   "contradictions": []
