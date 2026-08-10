@@ -45,6 +45,7 @@ const {
   readGiveUps,
   planRemediations,
   executeRemediations,
+  findAbandonedRemediations,
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_LIFETIME_MAX_ATTEMPTS,
@@ -735,5 +736,138 @@ describe('remediation runner', () => {
     assert.equal(dispatched, 0);
     assert.equal(stats.killed, 1);
     assert.equal(ledger[0].action, 'killed');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The drain pass (task #1223) — the ISLA regression this suite exists to
+// prevent recurring: empty-cast:isla-off-broadway-2026 escalated twice, the
+// show aged out of the ±2-day window, and nothing ever looked at that key
+// again. Silence in the ledger became indistinguishable from "resolved".
+// ---------------------------------------------------------------------------
+describe('findAbandonedRemediations — drain pass for keys the window stopped collecting', () => {
+  const ISLA = 'isla-off-broadway-2026';
+  const now = new Date('2026-08-10T14:00:00Z');
+
+  function line(showId, key, action, overrides = {}) {
+    return JSON.stringify({
+      at: now.toISOString(),
+      kind: 'workflow',
+      key,
+      showId,
+      checkName: 'empty-cast',
+      action,
+      ...overrides,
+    });
+  }
+
+  it('does NOT terminalize a key whose show is still in the targeting window', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [line(ISLA, key, 'escalated', { attempts: 2 })];
+    const out = findAbandonedRemediations(lines, new Set([ISLA]), now);
+    assert.equal(out.length, 0, 'a show still being checked must not be drained out from under the normal run');
+  });
+
+  it('DOES terminalize a key whose show has left the window — the real isla-off-broadway-2026 case', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [
+      line(ISLA, key, 'waited', { waitMs: 7111602, attempts: 1 }),
+      line(ISLA, key, 'dispatched', { workflow: 'backfill-cast-web.yml', inputs: { show_filter: ISLA } }),
+      line(ISLA, key, 'escalated', { attempts: 2, routed: 'silent' }),
+    ];
+    const out = findAbandonedRemediations(lines, new Set(['some-other-show']), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].key, key);
+    assert.equal(out[0].showId, ISLA);
+    // 2 real attempts is well under the lifetime ceiling — budget remains,
+    // so this is an abandonment, not a give-up.
+    assert.equal(out[0].action, 'abandoned');
+    assert.equal(out[0].attempts, 1, 'only the ok:true dispatched line counts as a real attempt');
+  });
+
+  it('writes gave-up instead of abandoned when the lifetime budget was already spent', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, () => line(ISLA, key, 'dispatched'))
+      .concat([line(ISLA, key, 'escalated', { attempts: DEFAULT_LIFETIME_MAX_ATTEMPTS })]);
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].action, 'gave-up');
+    assert.equal(out[0].attempts, DEFAULT_LIFETIME_MAX_ATTEMPTS);
+  });
+
+  it('does NOT re-terminalize an already-terminal key — the ledger must stop growing', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [
+      line(ISLA, key, 'escalated', { attempts: 2 }),
+      line(ISLA, key, 'gave-up', { attempts: 2 }),
+    ];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 0, 'a key whose latest entry is already gave-up must be left alone');
+  });
+
+  it('an alert-kind key whose last line is dispatched is also drained as abandoned', () => {
+    const key = `stale-upcoming-tag:${ISLA}`;
+    const lines = [JSON.stringify({
+      at: now.toISOString(), kind: 'alert', key, showId: ISLA, checkName: 'stale-upcoming-tag', action: 'dispatched', conditionKey: `x-${ISLA}`,
+    })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].kind, 'alert');
+    // alert-kind remediations never hit the lifetime ceiling (planRemediations
+    // bypasses it entirely for kind:'alert') — always 'abandoned', never 'gave-up'.
+    assert.equal(out[0].action, 'abandoned');
+  });
+
+  it('a key resolved before the show left the window (no open trailing line) is not touched', () => {
+    const key = `empty-cast:${ISLA}`;
+    // The check passed on some later run — resolution leaves no ledger line at
+    // all (only failing checks remediate), so the LAST line in the ledger is
+    // still the old 'escalated' entry even though the problem is fixed. This
+    // guards against ever treating a genuinely-open key differently based on
+    // anything other than its own last line — there is nothing in the ledger
+    // to distinguish "fixed, no more lines" from "still broken, no more runs",
+    // which is exactly why this key SHOULD still be drained.
+    const lines = [line(ISLA, key, 'escalated', { attempts: 1 })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1, 'ledger silence alone cannot mean resolved — that ambiguity is the bug this drain closes');
+  });
+
+  it('does not drain a key with no showId or malformed lines', () => {
+    const malformed = ['not json', JSON.stringify({ key: 'x', action: 'dispatched' })];
+    assert.doesNotThrow(() => findAbandonedRemediations(malformed, new Set(), now));
+    assert.equal(findAbandonedRemediations(malformed, new Set(), now).length, 0);
+  });
+
+  it('a suppressed last line is drained too — same "unresolved" state as waited', () => {
+    const key = `stale-upcoming-tag:${ISLA}`;
+    const lines = [JSON.stringify({
+      at: now.toISOString(), kind: 'alert', key, showId: ISLA, checkName: 'stale-upcoming-tag', action: 'suppressed', why: 'alert-router cooldown',
+    })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1, 'a suppressed key must not go silent forever just like a waited one');
+    assert.equal(out[0].action, 'abandoned');
+  });
+
+  it('does not double-count attempts spent on an EXPIRED retirement into a fresh cycle', () => {
+    // Mirrors the exact scenario planRemediations.retiredAt guards against: a
+    // key gives up at the lifetime ceiling, its TTL later expires, one fresh
+    // dispatch happens (a real attempt in the NEW cycle), and then the show
+    // ages out before another run sees it. The drain pass must judge the new
+    // cycle on its own 1 attempt, not on the total across both cycles.
+    const key = `empty-cast:${ISLA}`;
+    const oldCycle = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) =>
+      JSON.stringify({ at: new Date(now.getTime() - (100 + i) * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'dispatched' })
+    );
+    const gaveUp = JSON.stringify({ at: new Date(now.getTime() - 99 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'gave-up' });
+    // One fresh dispatch well after the gave-up line (a new, post-TTL cycle),
+    // then one more open-state line (the run that must classify this key).
+    const freshDispatch = JSON.stringify({ at: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'dispatched' });
+    const freshEscalate = JSON.stringify({ at: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'escalated', attempts: 1 });
+    const lines = [...oldCycle, gaveUp, freshDispatch, freshEscalate];
+
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].action, 'abandoned', 'only 1 real attempt in the fresh cycle — must not re-trigger gave-up off the spent old cycle');
+    assert.equal(out[0].attempts, 1, 'the 4 pre-retirement attempts must not be recounted into the new cycle');
   });
 });

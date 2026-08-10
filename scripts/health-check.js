@@ -71,6 +71,17 @@ const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot
 // `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
 
 const AUTO_FIX_PLAYBOOK = [
+  // Card #1199. A check with NO playbook entry defaults to urgency 'low'
+  // (~L3271), which drops it out of `actionable` entirely: it never reaches
+  // routeAlert, and renders as an anonymous "+N low-priority items monitoring
+  // themselves (no action needed)" line — no name, no rate, no hint. For a
+  // check whose entire purpose is to end a chronic failure's invisibility,
+  // that would have shipped the measurement invisible, which is the exact
+  // defect the card exists to close (caught by the ship-check reviewer).
+  // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
+  // dead rate is expensive and worth chasing but never data loss.
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+    humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
@@ -1001,7 +1012,14 @@ function checkQuality() {
         return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
       }
       const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
-      let hits = scanMissingContentTier(rtDir);
+      let showsById = {};
+      try {
+        const showsArr = readJSON(path.join(DATA_DIR, 'shows.json'));
+        for (const s of (Array.isArray(showsArr) ? showsArr : showsArr.shows) || []) {
+          if (s && s.id) showsById[s.id] = s;
+        }
+      } catch { /* shows.json unreadable — scan degrades to no show-context checks */ }
+      let hits = scanMissingContentTier(rtDir, showsById);
       // rebuild-all-reviews.js reclassifies contentTier unconditionally on
       // every pass (in-memory, before the review is pushed to reviews.json),
       // so a source file missing contentTier does NOT necessarily mean the
@@ -1012,18 +1030,25 @@ function checkQuality() {
       if (hits.length > 0 && fs.existsSync(reviewsPath)) {
         try {
           const live = readJSON(reviewsPath);
-          const liveUrls = new Set((live.reviews || []).map((r) => r.url).filter(Boolean));
+          // Keyed by url+showId, not url alone (ship-check finding): a
+          // review URL reused across two DIFFERENT shows (rare, but review
+          // URLs aren't validated globally-unique) must not let one show's
+          // live entry suppress a genuine gap under a different show.
+          const liveUrlShowKeys = new Set(
+            (live.reviews || []).map((r) => (r.url ? `${r.url}|${r.showId}` : null)).filter(Boolean),
+          );
           const liveTriples = new Set(
             (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
           );
-          // Match on url FIRST when the hit has one: two review-text files can
-          // share showId+outletId+criticName (a republished article, or
-          // byline-enrichment landing on two separate URLs) — the coarser
-          // triple match alone would let one file already live in reviews.json
-          // mask the OTHER file's genuine gap (ship-check finding). Only fall
-          // back to the triple match when the hit has no url to compare.
+          // Match on url+showId FIRST when the hit has a url: two review-text
+          // files can share showId+outletId+criticName (a republished
+          // article, or byline-enrichment landing on two separate URLs) — the
+          // coarser triple match alone would let one file already live in
+          // reviews.json mask the OTHER file's genuine gap (ship-check
+          // finding). Only fall back to the triple match when the hit has no
+          // url to compare.
           hits = hits.filter((h) => {
-            if (h.url) return !liveUrls.has(h.url);
+            if (h.url) return !liveUrlShowKeys.has(`${h.url}|${h.showId}`);
             return !liveTriples.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`);
           });
         } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
@@ -2085,7 +2110,7 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
-function checkDispatchOutcomes() {
+function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
     return [{
@@ -2153,12 +2178,18 @@ function checkDispatchOutcomes() {
     const currentAbandonedCount = classifyDispatches(
       dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
     ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
-    try {
-      fs.mkdirSync(AUDIT_DIR, { recursive: true });
-      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
-        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
-      }, null, 2) + '\n');
-    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    // dryRun (health-row-probe.js's live verification probe): compute the row
+    // exactly as normal but skip the trend-cache write — a probe run must never
+    // perturb the state a REAL health-check.js run compares "unchanged since
+    // last run" against, or it corrupts tomorrow's real digest message.
+    if (!dryRun) {
+      try {
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+          abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+        }, null, 2) + '\n');
+      } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    }
 
     if (row) return row;
     // currentAbandonedCount > 0 but unchanged from last run still counts as
@@ -2169,6 +2200,53 @@ function checkDispatchOutcomes() {
     return currentAbandonedCount === 0
       ? { name: 'Dispatch outcomes: abandoned', status: 'pass', message: 'No abandoned dispatches' }
       : { name: 'Dispatch outcomes: abandoned', status: 'warn', message: `${currentAbandonedCount} abandoned dispatch(es), unchanged since last run — see \`node scripts/audit-dispatch-outcomes.js\`` };
+  })];
+}
+
+// --- Category I1b: Dispatch health (do dispatched sessions actually START?) ---
+//
+// checkDispatchOutcomes above asks whether dispatched work LANDED. This asks
+// the prior question: did the session ever start at all? Card #1199 — roughly
+// one bsc-next launch in five creates its cmux workspace, never renders a
+// terminal surface, and so never runs the injected command. The retry layer
+// recovers the WORK, so each session sees only its own 1-3 failures, retries,
+// succeeds, and truthfully reports success; nothing aggregated the ledger, so
+// a chronic ~20% rate ran unseen for a week and several "fixes" were judged
+// green by a single clean dispatch. Only the RATE over many launches can tell
+// whether a cause fix worked, which is what this row is for.
+//
+// Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
+// rather than passing on missing input (#1075 vacuous-gate class).
+
+function checkDispatchHealth() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  const { CHECK_NAME } = require('./lib/dispatch-health.js');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: CHECK_NAME,
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
+      hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
+    }];
+  }
+
+  return [runCheck(CHECK_NAME, () => {
+    const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
+    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
+    // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
+    // a RATE above the floor is a live defect every day it holds, and
+    // "unchanged since yesterday" silence is exactly the invisibility #1199
+    // exists to end. Repeat-day email noise is already handled downstream by
+    // owner-alert-router's conditionKey, which files one card per OPEN
+    // incident rather than one per run.
+    const { name, status, message, hint } = computeDispatchHealthDigest({
+      entries, nowMs: Date.now(),
+    });
+    return hint ? { name, status, message, hint } : { name, status, message };
   })];
 }
 
@@ -3726,18 +3804,15 @@ function saveHistory(history) {
 
 // --- Main ---
 
-async function main() {
-  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
-
-  if (!isCI) {
-    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
-  }
-
-  console.log('=== Broadway Scorecard Daily Health Check ===\n');
-
-  purgeOldExclusionLogs();
-
-  const allResults = [
+// The 22 checks that make up the CORE digest (isCI-gated side effects, plus
+// checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
+// this same list can be re-run live and read-only by
+// scripts/lib/health-row-probe.js — see its header for why check-health-row-
+// absent.js can't just re-run scripts/health-check.js wholesale). This is the
+// ONLY place the check list is enumerated; main() and the probe both call it
+// so the two can never drift apart.
+async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
+  return [
     ...checkFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
@@ -3758,9 +3833,23 @@ async function main() {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
-    ...checkDispatchOutcomes(),
+    ...checkDispatchOutcomes(dryRun),
     ...checkAutofixEffectiveness(),
   ];
+}
+
+async function main() {
+  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
+
+  if (!isCI) {
+    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
+  }
+
+  console.log('=== Broadway Scorecard Daily Health Check ===\n');
+
+  purgeOldExclusionLogs();
+
+  const allResults = await computeCoreHealthResults(isCI);
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
@@ -3964,4 +4053,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
