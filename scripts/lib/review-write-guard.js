@@ -224,6 +224,21 @@ const PROTECTED_FIELDS = [
   // getEffectiveProtectedFields(). Must self-protect so ingest-manual-review's
   // per-record locks can't be cleared by a rebase.
   'protectedFields',
+  // Task #97 audit: strip-stale-single-model-scores.js --before-opening mode
+  // nulls assignedScore/llmScore/llmMetadata/ensembleData to remove prior-
+  // production contamination (opening-night-express.yml), stamping these two
+  // breadcrumbs. Without protecting them, the SAME job's later push-review-
+  // texts restore step sees committed HEAD (checked out before the strip)
+  // still carrying the old score and resurrects it in the very run that
+  // cleared it — silently defeating the contamination strip every time.
+  // needsRescore is protected alongside so a lost stamp doesn't strand the
+  // file scoreless-and-unqueued. staleScoredBeforeOpeningAt is the freshness
+  // stamp the CLEAR_BREADCRUMBS predicate below gates on (codex adversarial
+  // review, task #97: a bare boolean with no reset would suppress restoring
+  // ANY future, unrelated score loss on this file forever).
+  'staleScoredBeforeOpening',
+  'staleScoredBeforeOpeningAt',
+  'needsRescore',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -336,6 +351,22 @@ const _freshWrongProductionAutoClear = (d) => {
   return (Date.now() - at) <= AUTO_CLEAR_FRESH_DAYS * 86400000;
 };
 
+// staleScoredBeforeOpening freshness gate (task #97 codex adversarial review).
+// Same shape as _freshWrongProductionAutoClear above but a shorter window: this
+// only needs to bridge opening-night-express.yml's two same-job push-review-
+// texts calls, not survive an ordinary rebuild cadence. rescore-lifecycle.js's
+// markRescoreComplete() is the primary clear path (deletes both fields the
+// moment a fresh score lands); this bounds the case where that path is never
+// reached (e.g. the show never gets rescored) so the stamp can't suppress
+// restoring a later, unrelated score loss indefinitely.
+const STALE_SCORE_FRESH_DAYS = 3;
+const _freshStaleScoredBeforeOpening = (d) => {
+  if (!d || d.staleScoredBeforeOpening !== true || !d.staleScoredBeforeOpeningAt) return false;
+  const at = Date.parse(String(d.staleScoredBeforeOpeningAt));
+  if (Number.isNaN(at)) return false;
+  return (Date.now() - at) <= STALE_SCORE_FRESH_DAYS * 86400000;
+};
+
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
@@ -392,6 +423,24 @@ const CLEAR_BREADCRUMBS = {
   originalScore: (d) => d.originalScoreCleared === true,
   originalScoreSource: (d) => d.originalScoreCleared === true,
   originalScoreNormalized: (d) => d.originalScoreCleared === true,
+  // strip-stale-single-model-scores.js --before-opening mode (opening-night-
+  // express.yml): removes prior-production score contamination and stamps
+  // staleScoredBeforeOpening(+At) so the restore doesn't undo it later in the
+  // same job. See PROTECTED_FIELDS comment above for the incident this
+  // prevents. FRESHNESS-GATED (codex adversarial review, task #97): the
+  // strip's own markRescoreComplete() success path clears both fields the
+  // moment a real score lands (rescore-lifecycle.js), but that's a second
+  // line of defense, not the only one — mirrors _freshWrongProductionAutoClear
+  // below. Without a bound, a stamp that outlives its job (e.g. a scoring
+  // failure that never reaches markRescoreComplete) would keep suppressing
+  // the restore of ANY future, unrelated score written to committed for this
+  // file, forever. 3 days comfortably covers the two same-job push-review-
+  // texts calls opening-night-express.yml makes (and any immediate retry)
+  // while still expiring long before it could mask a later real bug.
+  assignedScore: _freshStaleScoredBeforeOpening,
+  llmScore: _freshStaleScoredBeforeOpening,
+  llmMetadata: _freshStaleScoredBeforeOpening,
+  ensembleData: _freshStaleScoredBeforeOpening,
 };
 
 /**

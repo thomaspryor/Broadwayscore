@@ -48,6 +48,18 @@ function markRescoreComplete(fileData, completedAt) {
     delete fileData.needs_rescore;
     fileData.rescoreCompletedAt = completedAt || new Date().toISOString();
   }
+  // Task #97 adversarial review (codex, 2026-08-10): staleScoredBeforeOpening
+  // (strip-stale-single-model-scores.js --before-opening) is a CLEAR_BREADCRUMBS
+  // entry in review-write-guard.js that tells the push-review-texts restore not
+  // to resurrect assignedScore/llmScore/llmMetadata/ensembleData while the file
+  // is deliberately scoreless. Once a fresh score actually lands here, that
+  // justification is resolved — leaving the stamp would let it silently swallow
+  // any FUTURE unrelated score loss on this file forever. Clear it alongside
+  // needsRescore so the exception is scoped to "still pending", not permanent.
+  if (fileData.staleScoredBeforeOpening) {
+    delete fileData.staleScoredBeforeOpening;
+    delete fileData.staleScoredBeforeOpeningAt;
+  }
   return fileData;
 }
 
