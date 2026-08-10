@@ -210,14 +210,29 @@ function foldAttempts(entries) {
     const remapTs = tsOf(e);
     const candidates = idxByRef.get(e.workspaceRef) || [];
     for (let k = candidates.length - 1; k >= 0; k--) {
-      if (attempts[candidates[k]].ts <= remapTs) { superseded.add(candidates[k]); break; }
+      const idx = candidates[k];
+      if (attempts[idx].ts > remapTs) continue;
+      // A CONFIRMED-DEAD attempt is never superseded (adversarial review of
+      // the first cut of this fix, which had exactly this bug). The restart
+      // sweep in dispatch-ledger.js remaps a ref regardless of whether its
+      // occupant already died, so on the real ledger task #925's only launch
+      // — workspace:99, paired `dead` row 1ms later, "command injection never
+      // ran" — was erased by a remap NINE HOURS later, removing a real death
+      // from both `dead` and `deadTaskIds`. Superseding is for "this dispatch
+      // continued under a new ref", which a corpse by definition did not do.
+      if (!attempts[idx].dead) superseded.add(idx);
+      break;
     }
   }
 
   return {
     attempts: attempts.filter((_, i) => !superseded.has(i)),
     unattributedDeadCount,
-    supersededByRemapCount: superseded.size,
+    // The attempts themselves, not a bare count: computeDeadRate scopes them
+    // to its window like every other figure on the row. A lifetime total on a
+    // windowed row silently stops reconciling as remaps accumulate (same
+    // review).
+    supersededAttempts: [...superseded].map((i) => attempts[i]),
   };
 }
 
@@ -243,8 +258,10 @@ function computeDeadRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lan
     throw new Error('dispatch-health.computeDeadRate: nowMs (epoch ms) is required — this module takes no clock of its own');
   }
   const windowStart = nowMs - windowDays * DAY_MS;
-  const { attempts, unattributedDeadCount, supersededByRemapCount } = foldAttempts(entries);
+  const { attempts, unattributedDeadCount, supersededAttempts } = foldAttempts(entries);
   const inWindow = attempts.filter((a) => a.ts >= windowStart && a.ts <= nowMs);
+  const supersededByRemapCount = supersededAttempts
+    .filter((a) => a.ts >= windowStart && a.ts <= nowMs && a.lane === lane).length;
 
   const byLane = {};
   for (const a of inWindow) {
