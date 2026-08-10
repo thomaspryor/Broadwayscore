@@ -89,6 +89,65 @@ function containsTitle(haystack, title) {
   }
 }
 
+/**
+ * Every show title referenced anywhere in the draft's meta, whichever section
+ * it belongs to. Used to neutralise title-vs-title containment (below), which
+ * only matters when the longer title is in THIS email — so meta is exactly the
+ * right scope, and it stays correct as sections are added.
+ */
+function collectKnownTitles(meta) {
+  const out = new Set();
+  const seen = new Set();
+  const walk = (node, depth) => {
+    if (!node || typeof node !== 'object' || depth > 6) return;
+    if (seen.has(node)) return;
+    seen.add(node);
+    if (Array.isArray(node)) {
+      for (const v of node) walk(v, depth + 1);
+      return;
+    }
+    if (typeof node.title === 'string' && node.title.trim()) out.add(node.title.trim());
+    for (const v of Object.values(node)) walk(v, depth + 1);
+  };
+  walk(meta, 0);
+  return [...out];
+}
+
+/**
+ * Blank out occurrences of OTHER, LONGER titles that wholly contain `title`.
+ *
+ * Word boundaries alone are not enough. A reviewer swept the live corpus and
+ * found 321 real pairs where one show title is a whole phrase inside another:
+ * "Giant" ⊂ "The Smartest Giant in Town", "Home" ⊂ "Fun Home", "SIX" ⊂ "Six
+ * Degrees of Separation", "English" ⊂ five "... - English National Opera"
+ * titles. These are concurrently-tracked shows that legitimately co-occur
+ * across sections of one email.
+ *
+ * Without this, a genuinely DROPPED "Giant" is reported as rendered because
+ * "The Smartest Giant in Town" appears down in Closing this Week — the gate
+ * silently passes a bad send, which is worse than not having the gate at all.
+ * So: erase the longer titles first, then ask whether the short one survives
+ * anywhere on its own.
+ */
+function maskLongerTitles(text, title, knownTitles) {
+  const target = norm(title);
+  let masked = norm(text);
+  const longer = (Array.isArray(knownTitles) ? knownTitles : [])
+    .map((t) => norm(t))
+    .filter((t) => t && t !== target && t.length > target.length && containsTitle(t, target))
+    .sort((a, b) => b.length - a.length);
+  for (const other of longer) {
+    let from = 0;
+    for (;;) {
+      const idx = masked.indexOf(other, from);
+      if (idx === -1) break;
+      masked = masked.slice(0, idx) + ' '.repeat(other.length) + masked.slice(idx + other.length);
+      from = idx + other.length;
+    }
+  }
+  return masked;
+}
+
 /** Section headings with their byte offsets, in document order. */
 function sectionsOf(html) {
   const src = String(html || '');
@@ -144,14 +203,23 @@ function placementsOf(html, needle) {
  * entity-encoded in the HTML ("I'm Every Woman" is exactly such a title, and
  * was the show that went missing).
  */
-function findUnrenderedOpenings(html, openingShows) {
+function findUnrenderedOpenings(html, openingShows, knownTitles) {
   const text = textOf(html);
   const list = Array.isArray(openingShows) ? openingShows : [];
+  // Default to the openings themselves; callers pass the full meta title set so
+  // a longer title in ANY section (Closing this Week, Coming Up) is neutralised.
+  const known =
+    Array.isArray(knownTitles) && knownTitles.length
+      ? knownTitles
+      : list.map((s) => (s && s.title) || '').filter(Boolean);
   const missing = [];
   for (const s of list) {
     const title = String((s && s.title) || '').trim();
     if (!title) continue;
-    if (!containsTitle(text, title)) {
+    // Erase longer titles that contain this one before asking whether it
+    // survives on its own — otherwise "Giant" is "found" inside "The Smartest
+    // Giant in Town" and a real drop passes silently.
+    if (!containsTitle(maskLongerTitles(text, title, known), title)) {
       missing.push({ id: (s && s.id) || null, title });
     }
   }
@@ -181,8 +249,8 @@ function subjectShowMissingFromBody(subject, html, openingShows) {
   for (const t of titles) {
     // containsTitle, NOT includes: a subject reading "a smart pick this week"
     // must not match the show "Art" and hard-fail a perfectly good send.
-    if (containsTitle(subject, t)) {
-      return containsTitle(text, t) ? null : t;
+    if (containsTitle(maskLongerTitles(subject, t, titles), t)) {
+      return containsTitle(maskLongerTitles(text, t, titles), t) ? null : t;
     }
   }
   return null;
@@ -194,7 +262,8 @@ function subjectShowMissingFromBody(subject, html, openingShows) {
 function renderInvariantFailures({ html, meta }) {
   const failures = [];
   const openings = (meta && meta.openingShows) || [];
-  const unrendered = findUnrenderedOpenings(html, openings);
+  const knownTitles = collectKnownTitles(meta);
+  const unrendered = findUnrenderedOpenings(html, openings, knownTitles);
   for (const s of unrendered) {
     failures.push(
       `Featured opening "${s.title}"${s.id ? ` (${s.id})` : ''} is in meta.openingShows but does NOT appear in the rendered email. ` +
@@ -214,6 +283,10 @@ function renderInvariantFailures({ html, meta }) {
 
 module.exports = {
   textOf,
+  norm,
+  containsTitle,
+  collectKnownTitles,
+  maskLongerTitles,
   sectionsOf,
   placementsOf,
   findUnrenderedOpenings,
