@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T03:06:37.800Z",
+  "generatedAt": "2026-08-10T05:21:42.554Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -11,17 +11,17 @@
       "outletId": "independent",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
       "recovery": {
         "attempted": false,
         "reason": "circuit-breaker:per-file-cap"
       },
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": null,
-      "fileAgeHours": null,
+      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-08-10T05:15:27.347Z",
+      "fileAgeHours": 0.10419083333333333,
       "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 4.742024722222222
+      "nonTerminalAgeHours": 6.993345277777777
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 421.91701944444446,
+      "fileAgeHours": 424.16834,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 381.21996222222225
+      "nonTerminalAgeHours": 383.4712827777778
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 85.5236236111111
+      "nonTerminalAgeHours": 87.77494416666667
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,9 +70,26 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 112.36020944444445,
+      "fileAgeHours": 114.61153,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 111.72214611111112
+      "nonTerminalAgeHours": 113.97346666666667
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "title": "The Pass",
+      "openingDate": "2026-08-04",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "tier": 2,
+      "type": "unscored",
+      "url": "https://www.newyorktheatreguide.com/show/47271-the-pass",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-pass-off-broadway-2026",
+      "firstSeen": "2026-08-06T06:24:23.949Z",
+      "fileAgeHours": 94.95516277777777,
+      "gapSeenAt": "2026-08-10T05:21:42.554Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
