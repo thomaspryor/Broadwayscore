@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-10T18:30:45.165Z",
+  "generatedAt": "2026-08-10T19:50:11.284Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 147,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "twelfth-night-off-west-end-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-08-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.59 vs local 76.34 (Δ0.75)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12
-    }
-  ]
+  "clean": 148,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }
