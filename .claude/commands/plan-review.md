@@ -2,15 +2,20 @@ Most plans have serious gaps that a single reviewer won't catch. Six independent
 
 ## Instructions
 
-### Phase 0: Approach validation check
+### Phase 0: Approach validation check (MANDATORY — do not skip to Phase 2)
 
-Before critiquing HOW this is built, briefly check: does it make sense to build it THIS WAY at all?
+**Why this phase exists:** task #1218 (2026-08-10) — six reviewers passed a WE historical-backfill plan whose first gate was "5 shows through new tooling." None proposed the obviously wiser "2 shows by hand first." Every reviewer critiqued the plan AS FRAMED — hunting for missing guards inside the stated structure — because adversarial reviewers are tuned to find failure modes, not to shrink scope. The owner caught it in one read after the fact. This phase exists to force the framing challenge to happen BEFORE Phase 2, not rely on it emerging from six independent correctness lenses that were never asked to do it.
 
-- Has `/right-problem` been run? Look for evidence in the conversation (reviewer outputs, approach recommendation).
-- If not, scan the plan for red flags: Is there a simpler approach nobody considered? Is existing infrastructure being ignored?
-- If the approach seems questionable, flag it to the user BEFORE running the full critique. Don't spend 3 API calls optimizing a plan that should be rewritten.
+Before critiquing HOW this is built, answer these in writing (this is not optional scanning — write the answers, they get shown to the user in Phase 3):
 
-If the approach is sound (or already validated), proceed.
+1. **Has `/right-problem` actually been run?** Look for evidence in the conversation (reviewer outputs, approach recommendation) — not just "the plan looks considered." If it hasn't run and the plan represents >1 day of work (CLAUDE.md §10's own threshold), that is itself a Phase 0 finding: name it, don't silently proceed.
+2. **State the plan's first real execution step in units** (N shows, N files, N records, N users, N dollars). Then answer directly: could this be 1-2 units, done mostly by hand, before any batch tooling or automation gets built? If yes, that IS a finding — write it as "the plan should ramp: 1-2 by hand → first tooling run → full scope," not as a suggestion buried in Phase 2 output.
+3. **Is there a simpler approach nobody considered, or existing infrastructure being ignored?** (the original check — keep it.)
+4. **Is there a do-nothing or do-less option this plan skipped past?** What breaks if the scope is half as large, or the plan is deferred a sprint?
+
+If Phase 0 surfaces a scope/ramp/framing finding, put it at the TOP of Phase 3's output, before the six critiques — a framing fix found here changes what the six reviewers should even be reviewing. Don't let it get buried below or folded into the consensus table in Phase 4 (see the Phase 4 escalation rule).
+
+If the approach is sound (or already validated) and the first-increment size is already minimal, say so explicitly and proceed.
 
 ### Phase 1: Gather the plan and context
 
@@ -128,6 +133,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > 8. Hidden coupling: What parts of this plan are secretly dependent on each other? What changes in one place will silently break another?
    > 9. What is NOT in this plan that should be? (rollback plan, monitoring, feature flags, data backfill)
    > 10. What is the single dumbest way this plan could fail that nobody has considered?
+   > 10b. **Smallest viable first increment:** What is the SMALLEST first run that teaches the same lesson as the plan's first execution step? If the plan's first real run is N units (shows, files, records, users), could 1-2 units run mostly by hand first — before any batch tooling is built — and kill or validate the riskiest assumption for pennies? A plan whose first gate is "N units through new tooling" has usually skipped the "2 units by hand" step. Reviewers anchor on the plan's stated ramp; challenge the ramp itself. (Added 2026-08-09: six reviewers passed a backfill plan whose first gate was 5 shows through new tooling; the owner asked "wouldn't 2 shows by hand be wiser?" — it was.)
    >
    > **OPERATIONAL RISKS:**
    > 11. Are there shared resources (single JSON files, database rows, git branches) that parallel processes could corrupt? File-per-entity is safe; single-shared-file is not.
@@ -282,6 +288,11 @@ After presenting all critiques:
    - **Design Reviewer findings carry FULL weight even when raised alone.** This reviewer is the only one that read the existing codebase patterns — its findings about wrong abstraction, codebase fit, and deletion cost almost never show up in the other reviewers' output. A solo design finding is NOT a low-confidence finding; it's a high-signal finding from the only reviewer qualified to make it. Promote any design P0 to a blocker even if no other reviewer mentions it.
    - Any finding from the User Impact reviewer where real users would receive unexpected communication, be locked out, or experience irreversible harm is automatically P0. Cosmetic defaults and suboptimal experiences are P1.
    - Note the confidence level.
+
+1.5. **Restructure-the-ramp escalation (MANDATORY check — do not skip).** Scan every reviewer's output, including solo findings, for language suggesting the plan's SCOPE or SEQUENCING should shrink or change order — not just gain another guard. Signal phrases: "isolate the riskiest piece and verify alone," "should be tested standalone before combining," "this could be validated smaller/cheaper/faster first," "de-risk before building tooling," "prove this works before automating it." (Task #1218: a structure reviewer said exactly this about the highest-risk step and it got folded into a gate-criteria bullet in the revised plan instead of restructuring the ramp — the fix that actually mattered, "2 shows by hand first," only surfaced when the owner asked for it directly.)
+   - If found, do NOT fold it into the consensus table as one more P1/P2 row. Pull it out as its own labeled section — **"Restructure question"** — and explicitly ask in Phase 6/7: "should the plan's first increment be smaller, given this finding?" The user answers that question before the revised plan is finalized, not after.
+   - This is a distinct check from Phase 0 — Phase 0 catches framing problems visible before the six reviewers run; this catches framing problems a reviewer surfaced but that synthesis would otherwise quietly absorb into "add a gate/guard" language.
+   - **Stamp the outcome on the plan-verdict record (BWSC repo).** When this check fires (Phase 0 or here), the `record-plan` call at the end of this skill (below) must carry `--note="restructure-flag: adopted — <what shrank>"` if the user's answer changed the plan's scope/ramp, or `--note="restructure-flag: dismissed — <why the original scope stood>"` if they kept it as-is. Either way the note starts with `restructure-flag:` — that prefix is what `scripts/lib/infra-review-digest.js` counts to make this escalation's actual hit rate visible in the daily digest instead of disappearing the moment the session ends. A fired-but-unstamped escalation is invisible to every future audit of this skill.
 
 2. **Sharpest unique insights** — List 2-3 concerns raised by only one reviewer that are too good to ignore. Explain why they matter.
 
