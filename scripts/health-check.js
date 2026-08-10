@@ -1770,28 +1770,24 @@ async function checkAlertRouterDeadman(isCI) {
 function checkAutofixEffectiveness() {
   const name = 'Autofix: jobs actually succeeding';
   const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
-  // Cross-referenced against dispatch attempts on purpose: the ledger is
-  // UNTRACKED (verified 2026-08-10), so in CI it is simply absent. An
-  // outcomes-only check would then be permanently, silently green — the exact
-  // vacuous-gate failure this row was written to end.
-  let dispatchCount = null;
-  try {
-    dispatchCount = readDispatchAttempts({ days: 7 }).length;
-  } catch { /* attempts log unreadable — fall back to outcomes only */ }
-
   let raw;
   try {
     raw = fs.readFileSync(file, 'utf-8');
   } catch (err) {
     if (err.code === 'ENOENT') {
-      const r = assessAutofixEffectiveness([], { dispatchCount });
+      // WARN, never ERROR. The ledger is untracked, so in CI it is always absent:
+      // erroring here would paint the digest red every single morning forever —
+      // including after the loop is fully healthy — and burn one of the three
+      // daily auto-dispatch slots on a card no CI session can fix. That is the
+      // failure this row exists to prevent, so it must not commit it. Warn keeps
+      // the blind spot visible without escalating; tracking the ledger is the
+      // real fix (card "health digest is blind in CI — 6 untracked ledgers").
       return [{
         name,
-        status: r.status,
-        message: r.attempts === 0 && r.status === 'error'
-          ? r.message
-          : 'No auto-fix ledger and no dispatches to reconcile it against (nothing to judge)',
-        ...(r.status === 'error' ? { hint: 'Run `claude -p "hi"` on the dispatch host; "Not logged in" means every job dies on auth.' } : {}),
+        status: 'warn',
+        message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
+          + 'It is untracked, so CI never sees it — this row cannot judge the loop from this environment.',
+        hint: 'Track the ledger (or run this check on the dispatch host) so auto-fix success rate becomes visible where the digest is generated.',
       }];
     }
     // Fail loud: a check that cannot read its input must not report healthy —
