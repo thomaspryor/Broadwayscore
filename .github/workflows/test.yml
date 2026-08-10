@@ -477,6 +477,14 @@ on:
       # scripts/health-check.js (checkQuality "Quality: star-vs-score mismatch").
       - 'scripts/lib/star-score-mismatch.js'
       - 'scripts/lib/star-score-mismatch.test.mjs'
+      # Silent-exclusion detectors (task #1188): outlet domain moves + reviews
+      # with text and a byline but no contentTier. Pure predicates + colocated
+      # test run by the scripts/lib/*.test.mjs glob; path-listed so a solo edit
+      # triggers CI (allow-list gate). CLI + health-check wiring live in
+      # scripts/audit-silent-exclusions.js and scripts/health-check.js
+      # ("Quality: reviews missing contentTier", "Quality: outlet domain move").
+      - 'scripts/lib/silent-exclusion-detectors.js'
+      - 'scripts/lib/silent-exclusion-detectors.test.mjs'
       # extractScore()'s KNOWN_STAR_OUTLETS fallthrough (card #935): a combined
       # multi-show roundup column's per-show rating list ("Phaedra ***** Sylvia
       # *** ...") was resolved by blindly taking the FIRST anchored star group,

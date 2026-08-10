@@ -925,6 +925,49 @@ function checkQuality() {
       };
     }),
 
+    // Silent-exclusion half (b), task #1188. A review with real text, a real
+    // byline and no rejection flags that carries NO contentTier is a file that
+    // fell out of the classification path — nothing else in the pipeline says
+    // so, which is how a scored review sat absent from the corpus with no
+    // warning anywhere (rosie-odonnell-common-knowledge, 2026-08-09).
+    //
+    // Corpus was clean (0 findings / 42,276 files) when this shipped, so there
+    // is no baseline to seed — anything this reports is genuinely new. A scan
+    // that sees ZERO files is treated as a broken checkout rather than a clean
+    // corpus (task #1065): a gate that passes because it read nothing is worse
+    // than no gate. `/^Quality:/` playbook route = this-week warn, not a page.
+    runCheck('Quality: reviews missing contentTier', () => {
+      const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: reviews missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      let baselineKeys = [];
+      try {
+        const b = readJSON(path.join(AUDIT_DIR, 'silent-exclusions-baseline.json'));
+        if (b && Array.isArray(b.missingContentTier)) baselineKeys = b.missingContentTier;
+      } catch { /* no baseline yet — everything is "new" */ }
+      const { scanned, findings, baselinedCount } = scanMissingContentTier(rtDir, { baselineKeys });
+      if (scanned === 0) {
+        return {
+          name: 'Quality: reviews missing contentTier',
+          status: 'warn',
+          message: 'review-texts is present but the scan saw 0 files — broken checkout, not a clean corpus',
+          hint: 'Check the data/review-texts clone; a vacuous pass here would hide the whole class (task #1065).',
+        };
+      }
+      if (findings.length === 0) {
+        return { name: 'Quality: reviews missing contentTier', status: 'pass', message: `${scanned} files scanned, all classified (${baselinedCount} known/baselined)` };
+      }
+      const worst = findings[0];
+      return {
+        name: 'Quality: reviews missing contentTier',
+        status: 'warn',
+        message: `${findings.length} scored/unflagged review(s) carry text but no contentTier (worst: ${worst.showId}/${worst.file}, ${worst.criticName}, ${worst.chars} chars)`,
+        hint: 'Run `node scripts/audit-silent-exclusions.js` — these fell out of classification and are invisible to every contentTier consumer. Re-run classification for the show, then `--write-baseline` to ack.',
+      };
+    }),
+
     runCheck('Quality: scored review ratio', () => {
       const reviews = readJSON(path.join(DATA_DIR, 'reviews.json'));
       const stats = reviews._meta?.stats || {};
@@ -1312,6 +1355,51 @@ function checkOutletHealth() {
         status: 'warn',
         message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)`,
         hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged.',
+      };
+    }),
+
+    // Silent-exclusion half (a), task #1188. An outlet that moves host keeps
+    // publishing, but every review on the new host is refused by the
+    // domain-mismatch guard (review-file-writer.js:448) and that refusal is
+    // deliberately quiet — one-minute-critic's move to Substack cost weeks of
+    // that critic's reviews before a human noticed.
+    //
+    // Reads the registry + the unregistered-host census that
+    // audit-show-review-gap.js already writes; no new cron, no new fetch. Both
+    // are small committed JSONs, so this is a cheap read like its neighbours
+    // here — the corpus-walking half of #1188 lives in checkQuality() instead.
+    runCheck('Quality: outlet domain move', () => {
+      const { detectOutletDomainMoves } = require('./lib/silent-exclusion-detectors');
+      const unknownPath = path.join(AUDIT_DIR, 'unknown-aggregator-outlets.json');
+      if (!core || !core.outlets) {
+        return { name: 'Quality: outlet domain move', status: 'pass', message: 'Skipped (core data not checked out)' };
+      }
+      if (!fs.existsSync(unknownPath)) {
+        return { name: 'Quality: outlet domain move', status: 'warn', message: 'No unknown-aggregator-outlets.json (audit-aggregator-gap.yml may not have run)', hint: 'Trigger the "Audit Aggregator Review Gap" workflow' };
+      }
+      const unknown = readJSON(unknownPath);
+      let baselineKeys = [];
+      try {
+        const b = readJSON(path.join(AUDIT_DIR, 'silent-exclusions-baseline.json'));
+        if (b && Array.isArray(b.outletDomainMoves)) baselineKeys = b.outletDomainMoves;
+      } catch { /* no baseline yet — everything is "new" */ }
+
+      // loadOutletHealthCoreData() already unwraps `.outlets`, so this IS the
+      // id → entry map the detector expects.
+      const { findings, baselinedCount, domainlessMatches, scanned } = detectOutletDomainMoves({
+        outlets: core.outlets,
+        unknownHosts: (unknown && unknown.outlets) || [],
+        baselineKeys,
+      });
+      if (findings.length === 0) {
+        return { name: 'Quality: outlet domain move', status: 'pass', message: `${scanned} unregistered host(s) checked, no probable outlet domain moves (${baselinedCount} known/baselined, ${domainlessMatches} domainless-outlet matches out of scope)` };
+      }
+      const worst = findings[0];
+      return {
+        name: 'Quality: outlet domain move',
+        status: 'warn',
+        message: `${findings.length} unregistered host(s) look like a registered outlet's new home (worst: ${worst.host} → "${worst.outletId}", registered as ${worst.registeredDomain}, ${worst.occurrences} occurrence(s))`,
+        hint: 'Run `node scripts/audit-silent-exclusions.js` — if the host really is that outlet, add it to the outlet\'s domainAliases in data/outlet-registry.json, otherwise register it as its own outlet. Until then every review on that host is dropped by the domain-mismatch guard. `--write-baseline` acks the current backlog once triaged.',
       };
     }),
   ];
