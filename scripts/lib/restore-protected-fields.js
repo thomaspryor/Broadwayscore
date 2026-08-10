@@ -123,9 +123,11 @@ const MANUAL_CV_FIELDS = [
 // to the wrong top-level field would make the skip a no-op.
 // NOTE: this nested per-subfield restore is the -X theirs path only. The action.yml
 // push restore protects the WHOLE contentVerification object (it is in
-// PROTECTED_FIELDS) and has no CV-clear breadcrumb, so a breadcrumb-less reset that
-// deletes the whole object (review-normalization URL-replace ~line 619) can still
-// rehydrate it wholesale — tracked as a separate card (breadcrumb-less reset class).
+// PROTECTED_FIELDS) at the flat top level, not per sub-key. That whole-object path
+// is now covered too: review-write-guard.js's CLEAR_BREADCRUMBS has a
+// 'contentVerification' entry (task #97 audit) gated on the union of the same
+// governing top-level predicates used below, so a whole-object delete left behind
+// by e.g. sweep-revival-wrong-production.js's case C is honored there directly.
 const CV_FIELD_TO_TOPLEVEL = {
   wrongProduction: 'wrongProduction',
   wrongArticle: 'wrongShow',

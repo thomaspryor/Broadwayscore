@@ -224,6 +224,17 @@ const PROTECTED_FIELDS = [
   // getEffectiveProtectedFields(). Must self-protect so ingest-manual-review's
   // per-record locks can't be cleared by a rebase.
   'protectedFields',
+  // Task #97 audit: strip-stale-single-model-scores.js --before-opening mode
+  // nulls assignedScore/llmScore/llmMetadata/ensembleData to remove prior-
+  // production contamination (opening-night-express.yml), stamping these two
+  // breadcrumbs. Without protecting them, the SAME job's later push-review-
+  // texts restore step sees committed HEAD (checked out before the strip)
+  // still carrying the old score and resurrects it in the very run that
+  // cleared it — silently defeating the contamination strip every time.
+  // needsRescore is protected alongside so a lost stamp doesn't strand the
+  // file scoreless-and-unqueued.
+  'staleScoredBeforeOpening',
+  'needsRescore',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -392,6 +403,26 @@ const CLEAR_BREADCRUMBS = {
   originalScore: (d) => d.originalScoreCleared === true,
   originalScoreSource: (d) => d.originalScoreCleared === true,
   originalScoreNormalized: (d) => d.originalScoreCleared === true,
+  // strip-stale-single-model-scores.js --before-opening mode (opening-night-
+  // express.yml): removes prior-production score contamination and stamps
+  // staleScoredBeforeOpening so the restore doesn't undo it later in the same
+  // job. See PROTECTED_FIELDS comment above for the incident this prevents.
+  assignedScore: (d) => d.staleScoredBeforeOpening === true,
+  llmScore: (d) => d.staleScoredBeforeOpening === true,
+  llmMetadata: (d) => d.staleScoredBeforeOpening === true,
+  ensembleData: (d) => d.staleScoredBeforeOpening === true,
+  // Whole-object contentVerification clears NOT already covered by the
+  // _urlChangedClear breadcrumb (applyUrlChangeInvariant already records
+  // 'contentVerification' there and isIntentionalClear falls through to it
+  // generically — see _urlChangeCleared below). This entry covers the other
+  // path: one-off remediation scripts (e.g. sweep-revival-wrong-production.js
+  // case C) that delete contentVerification.wrongProduction and then the
+  // whole object once it's empty, alongside setting the canonical human-clear
+  // signal. The object only ever goes fully empty when every sub-flag it held
+  // was intentionally cleared, so gating on the union of the governing
+  // top-level predicates (mirroring CV_FIELD_TO_TOPLEVEL in
+  // restore-protected-fields.js) can't mask an unrelated genuine data loss.
+  contentVerification: (d) => _wrongProductionCleared(d) || _wrongShowCleared(d) || _wrongArticleCleared(d),
 };
 
 /**
