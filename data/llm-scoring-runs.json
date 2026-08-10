@@ -1,35 +1,5 @@
 [
   {
-    "startedAt": "2026-08-07T06:48:08.816Z",
-    "completedAt": "2026-08-07T06:48:23.353Z",
-    "totalReviews": 42110,
-    "processed": 1,
-    "skipped": 42105,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 8392,
-      "output": 481,
-      "total": 24155
-    },
-    "errorDetails": [
-      {
-        "showId": "hadestown-2019",
-        "outletId": "theatrely",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-book-of-mormon-west-end-2024",
-        "outletId": "timeout",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-        "outletId": "london-theatre",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-08-07T07:08:49.770Z",
     "completedAt": "2026-08-07T07:08:49.969Z",
     "totalReviews": 42110,
@@ -596894,5 +596864,19 @@
         "error": "Review text too short or missing"
       }
     ]
+  },
+  {
+    "startedAt": "2026-08-10T17:18:20.584Z",
+    "completedAt": "2026-08-10T17:18:27.301Z",
+    "totalReviews": 57,
+    "processed": 1,
+    "skipped": 56,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 7331,
+      "output": 325,
+      "total": 16881
+    },
+    "errorDetails": []
   }
 ]
