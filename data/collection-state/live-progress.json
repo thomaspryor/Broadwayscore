@@ -1,25 +1,36 @@
 {
-  "updatedAt": "2026-08-10T06:58:26.069Z",
-  "processed": 59,
-  "failed": 282,
-  "successRate": "17.3%",
+  "updatedAt": "2026-08-10T07:01:22.760Z",
+  "processed": 61,
+  "failed": 290,
+  "successRate": "17.4%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 6,
     "scrapingbee": 13,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 7
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-08-10T06:45:46.721Z",
       "event": "bb-session",
       "session": "cc448cd8",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/to-kill-a-mockingbird-broadway-"
+    },
+    {
+      "t": "2026-08-10T06:58:38.934Z",
+      "event": "bb-session",
+      "session": "8e5fae67",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-08-10T06:58:39.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

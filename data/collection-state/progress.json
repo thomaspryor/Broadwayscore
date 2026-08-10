@@ -58,7 +58,9 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
     "the-rocky-horror-show-2026/ew--dalton-ross.json",
-    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
   ],
   "failed": [
     "isla-off-broadway-2026/show-score--unknown.json",
@@ -342,7 +344,15 @@
     "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
-    "schmigadoon-2026/variety--clayton-davis.json"
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/wsj--john-anderson.json",
+    "schmigadoon-2026/latimes--charles-mcnulty.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -413,7 +423,8 @@
     ],
     "brightdata": [
       "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -421,17 +432,30 @@
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
       "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/wsj--john-anderson.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-08-10T04:54:03.295Z",
-  "lastProcessed": "schmigadoon-2026/variety--clayton-davis.json",
+  "lastProcessed": "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
   "log": [
     {
       "t": "2026-08-10T06:45:46.721Z",
       "event": "bb-session",
       "session": "cc448cd8",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/to-kill-a-mockingbird-broadway-"
+    },
+    {
+      "t": "2026-08-10T06:58:38.934Z",
+      "event": "bb-session",
+      "session": "8e5fae67",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-08-10T06:58:39.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
