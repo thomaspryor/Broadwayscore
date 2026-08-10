@@ -47,6 +47,7 @@ const {
   completenessFindings,
   gapSwapDecisions,
 } = require_('../lib/newsletter-preflight.js');
+const { renderInvariantFailures } = require_('../lib/newsletter-render-invariants.js');
 const { loadAcks, isAcked, addAck, saveAcks, cellKey } = require_('../lib/t1-scoreboard.js');
 const { resolveNewsletterEdition } = require_('../lib/email-templates.js');
 
@@ -342,6 +343,16 @@ if (!Array.isArray(meta.openingShows)) {
   for (const v of phantomImageViolations(meta.openingShows, rel => {
     try { return fs.statSync(path.join(repoRoot, rel)).size > 0; } catch { return false; }
   })) hardFailures.push(v);
+
+  // ── HARD: does the rendered email actually CONTAIN the openings it claims?
+  // 2026-08-09: the coverage-gap swap deleted featured openings from the HTML
+  // while meta.openingShows still listed them, and every check here passed
+  // because none of them compared the manifest to the render. A session then
+  // "verified" the draft by grepping for a show title, found it in the lede,
+  // and reported success while the show was absent from the openings block.
+  // The owner caught it by eye. This closes that gap at the gate, so no human
+  // or agent eyeball is load-bearing on send day.
+  for (const v of renderInvariantFailures({ html, meta })) hardFailures.push(v);
 
   // ── SOFT: review completeness — unverified (stale/no-data) entries only.
   // Gap entries were already swapped or reported above, BEFORE this draft was
