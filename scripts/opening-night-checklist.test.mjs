@@ -48,6 +48,7 @@ const {
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_LIFETIME_MAX_ATTEMPTS,
+  DEFAULT_RETIREMENT_TTL_MS,
 } = require('./lib/opening-night-remediation.js');
 const { MIN_SCORED_REVIEWS } = require('./lib/critic-consensus-eligibility.js');
 
@@ -492,6 +493,31 @@ describe('remediation runner', () => {
     assert.equal(planned.action, 'escalate');
   });
 
+  // A credential outage must not be able to retire the whole remediation
+  // layer. dispatchWorkflow() returns {ok:false,error:'no-token'} whenever the
+  // job runs without a token, which writes action:'failed' — nothing was ever
+  // dispatched, so it cannot count as an attempt the target had a chance at.
+  it('failed dispatches (no-token) never consume the LIFETIME budget', () => {
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS + 4 }, (_, i) => ledgerLine(i * 24 * 60 + 5000, 'failed'));
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now);
+    assert.equal(planned.action, 'dispatch', 'a token outage must be recoverable, not terminal');
+  });
+
+  it('mixed failures and real dispatches: only the real ones count toward the ceiling', () => {
+    const failures = Array.from({ length: 6 }, (_, i) => ledgerLine(i * 24 * 60 + 9000, 'failed'));
+    const dispatched = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS - 1 }, (_, i) => ledgerLine(i * 24 * 60 + 4000));
+    const [planned] = planRemediations([workflowAction], readAttempts([...failures, ...dispatched]), now);
+    assert.notEqual(planned.action, 'give-up', `${DEFAULT_LIFETIME_MAX_ATTEMPTS - 1} real attempts is still under the ceiling`);
+
+    const [atCeiling] = planRemediations(
+      [workflowAction],
+      readAttempts([...failures, ...dispatched, ledgerLine(3000)]),
+      now
+    );
+    assert.equal(atCeiling.action, 'give-up');
+    assert.equal(atCeiling.attempts, DEFAULT_LIFETIME_MAX_ATTEMPTS, 'the reported count is real attempts, not ledger lines');
+  });
+
   it('records the give-up exactly once, then goes fully silent', async () => {
     const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) => ledgerLine(i * 24 * 60 + 2000));
     const ledger = [];
@@ -526,11 +552,57 @@ describe('remediation runner', () => {
     assert.equal(calls.length, 0);
   });
 
-  it('readGiveUps only picks up gave-up lines', () => {
-    const lines = [ledgerLine(10, 'dispatched'), ledgerLine(9, 'escalated'), ledgerLine(8, 'gave-up')];
+  it('readGiveUps only picks up gave-up lines, and keeps the LATEST timestamp', () => {
+    const lines = [
+      ledgerLine(10, 'dispatched'),
+      ledgerLine(9, 'escalated'),
+      ledgerLine(8000, 'gave-up'),
+      ledgerLine(8, 'gave-up'),
+    ];
     const keys = readGiveUps(lines);
     assert.equal(keys.size, 1);
     assert.ok(keys.has(workflowAction.key));
+    assert.equal(
+      keys.get(workflowAction.key),
+      now.getTime() - 8 * 60 * 1000,
+      'the most recent retirement is what the TTL is measured from'
+    );
+  });
+
+  // Retirement is a cooling-off, not a life sentence. A show that gains the
+  // reviews it was missing must get another chance without a human noticing.
+  it('retirement expires, and the expired cycle starts clean', () => {
+    const retiredDaysAgo = (d) => JSON.stringify({
+      at: new Date(now.getTime() - d * 24 * 60 * 60 * 1000).toISOString(),
+      key: workflowAction.key,
+      action: 'gave-up',
+    });
+    // The 4 dispatches that earned the retirement, all older than it.
+    const spent = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) => ledgerLine((20 + i) * 24 * 60));
+
+    const insideTtl = [...spent, retiredDaysAgo(13)];
+    const [stillQuiet] = planRemediations([workflowAction], readAttempts(insideTtl), now, { gaveUpKeys: readGiveUps(insideTtl) });
+    assert.equal(stillQuiet.action, 'retired', 'one day before the TTL it is still cooling off');
+
+    const pastTtl = [...spent, retiredDaysAgo(15)];
+    const [revived] = planRemediations([workflowAction], readAttempts(pastTtl), now, { gaveUpKeys: readGiveUps(pastTtl) });
+    assert.equal(revived.action, 'dispatch', 'past the TTL it gets a genuinely fresh cycle');
+    assert.equal(revived.attempts, 0, 'attempts that bought the retirement must not be recounted');
+  });
+
+  it('a TTL that expires does not immediately re-retire on the same history', () => {
+    // The bug this guards: if pre-retirement attempts still counted, the key
+    // would come off cooling-off and hit the ceiling again on the same run —
+    // making the TTL cosmetic and the retirement permanent in practice.
+    const spent = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS + 6 }, (_, i) => ledgerLine((30 + i) * 24 * 60));
+    const lines = [...spent, JSON.stringify({
+      at: new Date(now.getTime() - (DEFAULT_RETIREMENT_TTL_MS + 60000)).toISOString(),
+      key: workflowAction.key,
+      action: 'gave-up',
+    })];
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now, { gaveUpKeys: readGiveUps(lines) });
+    assert.notEqual(planned.action, 'give-up');
+    assert.equal(planned.action, 'dispatch');
   });
 
   it('a give-up on one key does not retire a different key', () => {

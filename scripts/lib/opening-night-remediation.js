@@ -77,6 +77,23 @@ const DEFAULT_WINDOW_MS = 24 * 60 * 60 * 1000;
 // anything, so the honest state is "automation is done with this", recorded
 // once and then silent.
 const DEFAULT_LIFETIME_MAX_ATTEMPTS = 4;
+// How long a retired key stays quiet before it gets one more full budget cycle.
+//
+// Retirement is a COOLING-OFF, never a life sentence. Both pre-ship reviewers
+// independently landed on the same objection to a permanent one: the reason a
+// remediation could not succeed is usually a property of the show at that
+// moment, not forever. death-note has 1 scored review today; when the missing
+// West End reviews land it will have 4, and the Critics' Take it never got
+// becomes generatable. A terminal state with no way out would convert today's
+// noisy loop into tomorrow's silent permanent gap — trading a visible failure
+// for an invisible one, which is the worse trade.
+//
+// 14 days is chosen against the actual cost being controlled. The loop being
+// killed ran ~2 dispatches/day plus an hourly ledger line, indefinitely. One
+// budget cycle per fortnight is ~1/14th the dispatch rate and bounded ledger
+// growth, while still re-testing the world often enough that a show which
+// picks up reviews gets its Critics' Take within two weeks.
+const DEFAULT_RETIREMENT_TTL_MS = 14 * 24 * 60 * 60 * 1000;
 
 const VALID_KINDS = new Set(['workflow', 'alert']);
 
@@ -168,22 +185,33 @@ function readAttempts(lines) {
 }
 
 /**
- * Keys that have already been retired by the lifetime ceiling.
+ * When each key was last retired by the lifetime ceiling.
+ *
+ * Returns the LATEST 'gave-up' timestamp per key, not merely the fact of one,
+ * because retirement expires (DEFAULT_RETIREMENT_TTL_MS) and the attempts that
+ * earned it stop counting once it does — otherwise the first retirement would
+ * be permanent no matter what the TTL said.
  *
  * Read separately from readAttempts() rather than folded into its return shape
- * so the attempt budget and the terminal marker stay independently testable —
+ * so the attempt budget and the terminal marker stay independently testable,
  * and so adding this could not change what readAttempts() means to its existing
  * callers.
  *
  * @param {string[]} lines - raw JSONL lines
- * @returns {Set<string>}
+ * @returns {Map<string, number>} key -> epoch ms of the most recent give-up
  */
 function readGiveUps(lines) {
-  const out = new Set();
+  const out = new Map();
   for (const line of lines || []) {
     let entry;
     try { entry = JSON.parse(line); } catch (_) { continue; }
-    if (entry && entry.key && entry.action === 'gave-up') out.add(entry.key);
+    if (!entry || !entry.key || entry.action !== 'gave-up') continue;
+    const at = new Date(entry.at).getTime();
+    // A give-up line with an unparseable/absent `at` still means "retired" —
+    // fall back to now-equivalent 0 so it is treated as long expired rather
+    // than silently dropped (dropping it would resurrect the loop).
+    const stamp = Number.isFinite(at) ? at : 0;
+    if (!out.has(entry.key) || stamp > out.get(entry.key)) out.set(entry.key, stamp);
   }
   return out;
 }
@@ -202,7 +230,10 @@ function planRemediations(remediations, attemptsByKey, now, opts = {}) {
   const maxAttempts = opts.maxAttempts ?? DEFAULT_MAX_ATTEMPTS;
   const windowMs = opts.windowMs ?? DEFAULT_WINDOW_MS;
   const lifetimeMaxAttempts = opts.lifetimeMaxAttempts ?? DEFAULT_LIFETIME_MAX_ATTEMPTS;
-  const gaveUpKeys = opts.gaveUpKeys || new Set();
+  const retirementTtlMs = opts.retirementTtlMs ?? DEFAULT_RETIREMENT_TTL_MS;
+  // Map<key, epoch ms> from readGiveUps().
+  const gaveUpKeys = opts.gaveUpKeys || new Map();
+  const nowMs = (now || new Date()).getTime();
 
   return (remediations || []).map((remediation) => {
     // kind:'alert' has no cooldown here on purpose — routeAlert() owns its own
@@ -215,16 +246,40 @@ function planRemediations(remediations, attemptsByKey, now, opts = {}) {
 
     const attempts = attemptsByKey.get(remediation.key) || [];
 
-    // Already retired: stay silent. Not even a ledger line — an hourly cron
-    // writing "still given up" forever is the same noise in a new costume.
-    if (gaveUpKeys.has(remediation.key)) {
+    // Retired and still inside the cooling-off window: stay silent. Not even a
+    // ledger line — an hourly cron writing "still given up" forever is the same
+    // noise in a new costume.
+    const retiredAt = gaveUpKeys.get(remediation.key);
+    if (retiredAt != null && nowMs - retiredAt < retirementTtlMs) {
       return { remediation, action: 'retired', attempts: attempts.length };
     }
 
     // Lifetime ceiling, checked before the rolling budget so an aged-out window
     // cannot resurrect a remediation that has already had its full run.
-    if (attempts.length >= lifetimeMaxAttempts) {
-      return { remediation, action: 'give-up', attempts: attempts.length };
+    //
+    // Counts only attempts that actually REACHED the target (`ok`, i.e. ledger
+    // action 'dispatched'). A 'failed' line means the dispatch never happened —
+    // the commonest cause being 'no-token', which this module's own
+    // dispatchWorkflow() returns whenever the checklist job runs without a
+    // token and which the warning at the bottom of executeRemediations calls
+    // out as "the whole self-healing layer is inert". Counting those would let
+    // one credential outage burn the lifetime budget of EVERY key in about a
+    // day and retire all of them permanently, with no path back once the token
+    // was restored — turning a recoverable outage into silent, total loss of
+    // auto-remediation. Failed attempts still count against the ROLLING budget
+    // (below), which is what throttles a dispatch storm; that budget resets, so
+    // an outage there is self-healing.
+    //
+    // Attempts made BEFORE the last retirement are spent — they bought that
+    // retirement. Counting them again would make the TTL cosmetic: the key
+    // would come off cooling-off and be re-retired on the very next run,
+    // forever, which is the permanent-terminal-state design both pre-ship
+    // reviewers rejected. Each expiry therefore grants a fresh cycle.
+    const reachedTarget = attempts.filter(
+      a => a.ok && (retiredAt == null || new Date(a.at).getTime() > retiredAt)
+    ).length;
+    if (reachedTarget >= lifetimeMaxAttempts) {
+      return { remediation, action: 'give-up', attempts: reachedTarget };
     }
 
     const decision = decideRequeueAction(attempts, now, { cooldownMs, maxAttempts, windowMs });
@@ -300,9 +355,9 @@ async function executeRemediations(planned, deps) {
         action: 'gave-up',
         attempts,
         workflow: remediation.workflow || null,
-        why: `lifetime attempt ceiling reached (${attempts}) — no further automatic attempts for this key`,
+        why: `lifetime attempt ceiling reached (${attempts}) — cooling off for ${Math.round(DEFAULT_RETIREMENT_TTL_MS / 86400000)}d before any further automatic attempt`,
       });
-      console.warn(`::warning::opening-night remediation retired ${remediation.key} after ${attempts} attempts — ${remediation.workflow || remediation.kind} never resolved the check`);
+      console.warn(`::warning::opening-night remediation retired ${remediation.key} after ${attempts} attempts — ${remediation.workflow || remediation.kind} never resolved the check; retrying in ${Math.round(DEFAULT_RETIREMENT_TTL_MS / 86400000)}d`);
       continue;
     }
 
@@ -456,4 +511,5 @@ module.exports = {
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_WINDOW_MS,
   DEFAULT_LIFETIME_MAX_ATTEMPTS,
+  DEFAULT_RETIREMENT_TTL_MS,
 };
