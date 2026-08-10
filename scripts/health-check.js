@@ -38,6 +38,7 @@ const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = 
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
+const { assessAutofixEffectiveness } = require('./lib/autofix-effectiveness');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -1711,7 +1712,11 @@ async function checkAlertRouterDeadman(isCI) {
   // regardless of history; if it failed, that's live broken state even if
   // older attempts this week succeeded.
   if (mostRecent.ok) {
-    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded` }];
+    // "succeeded" here means the LAUNCH succeeded — not that the session did any
+    // work. Saying otherwise is what let a fully dead fleet read 42/42 green for
+    // 13 days (2026-08-10). Whether jobs actually fixed anything is the separate
+    // "Autofix: jobs actually succeeding" row, which reads outcomes.
+    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see "Autofix: jobs actually succeeding" for whether they fixed anything)` }];
   }
 
   // Most recent attempt failed. Surface the most recent REAL error
@@ -1748,6 +1753,66 @@ async function checkAlertRouterDeadman(isCI) {
     status: 'error',
     message,
     hint: 'Check the notion-brain.js shell-out first (workflow env/dependency gap, e.g. missing npm ci) before assuming NOTION_API_KEY — read the actual last error above, not a guess.',
+  }];
+}
+
+// --- Auto-fix effectiveness (2026-08-10 incident) ---
+//
+// The owner received a near-identical morning digest 13 days running. Cause: the
+// local `claude` CLI was logged out, so every headless auto-fix job started,
+// emitted zero bytes, and hit its own timeout — leaving cards `in_progress`
+// forever and the same ~31 issues re-reporting each morning.
+//
+// "Alert Router: dispatch deadman" did NOT catch it: it counts dispatch ATTEMPTS,
+// so it read `42/42 auto-dispatch attempts succeeded` while the true fix rate was
+// zero. This row reads the OUTCOMES the ledger already records (card-pass /
+// card-fail) and is the difference between noticing on day 2 and on day 13.
+function checkAutofixEffectiveness() {
+  const name = 'Autofix: jobs actually succeeding';
+  const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
+  // Cross-referenced against dispatch attempts on purpose: the ledger is
+  // UNTRACKED (verified 2026-08-10), so in CI it is simply absent. An
+  // outcomes-only check would then be permanently, silently green — the exact
+  // vacuous-gate failure this row was written to end.
+  let dispatchCount = null;
+  try {
+    dispatchCount = readDispatchAttempts({ days: 7 }).length;
+  } catch { /* attempts log unreadable — fall back to outcomes only */ }
+
+  let raw;
+  try {
+    raw = fs.readFileSync(file, 'utf-8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const r = assessAutofixEffectiveness([], { dispatchCount });
+      return [{
+        name,
+        status: r.status,
+        message: r.attempts === 0 && r.status === 'error'
+          ? r.message
+          : 'No auto-fix ledger and no dispatches to reconcile it against (nothing to judge)',
+        ...(r.status === 'error' ? { hint: 'Run `claude -p "hi"` on the dispatch host; "Not logged in" means every job dies on auth.' } : {}),
+      }];
+    }
+    // Fail loud: a check that cannot read its input must not report healthy —
+    // that is the failure mode this whole row exists to end.
+    return [{ name, status: 'warn', message: `Could not read the auto-fix ledger: ${err.message}` }];
+  }
+
+  const rows = [];
+  for (const line of raw.split('\n')) {
+    if (!line.trim()) continue;
+    try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
+  }
+
+  const r = assessAutofixEffectiveness(rows, { dispatchCount });
+  return [{
+    name,
+    status: r.status,
+    message: r.message,
+    ...(r.status === 'error' ? {
+      hint: 'Run `claude -p "hi"` on the dispatch host. "Not logged in · Please run /login" means every job dies on auth — re-login, then confirm the next digest run records a card-pass.',
+    } : {}),
   }];
 }
 
@@ -3595,6 +3660,7 @@ async function main() {
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(),
+    ...checkAutofixEffectiveness(),
   ];
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
