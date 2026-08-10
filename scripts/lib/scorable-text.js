@@ -82,4 +82,32 @@ function selectScorableText(data, options) {
   return null;
 }
 
-module.exports = { selectScorableText, DEFAULT_MIN_TEXT_LENGTH };
+/**
+ * True for a Theatre Record capsule review: TR-sourced fullText in the
+ * 100–999 char band. TR text is verbatim verified review content, and short
+ * TR entries are complete print capsules (Mail on Sunday / Sunday Telegraph),
+ * structurally equivalent to the curated aggregator excerpts that are exempt
+ * from score-input-validator.js's 1000-char body gate. Without this predicate
+ * they are permanently unscoreable: too long (≥100) to fall through to the
+ * excerpt path above, too short (<1000) for the fullText gate, and
+ * EXCERPT_FIELDS has no theatre-record entry (2026-08-10, Notion
+ * 3b8637c5-416f-81e9 / trainspotting daily-mail--georgina-brown).
+ *
+ * Scoped to source === 'theatre-record' ONLY — generalizing to all short
+ * fullText would reopen the gate the validator exists for: partial scrapes
+ * of long reviews must stay blocked.
+ *
+ * @param {Object} data - review-text record
+ * @returns {boolean}
+ */
+function isCapsuleReview(data) {
+  return !!(
+    data &&
+    data.source === 'theatre-record' &&
+    typeof data.fullText === 'string' &&
+    data.fullText.length >= 100 &&
+    data.fullText.length < 1000
+  );
+}
+
+module.exports = { selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH };
