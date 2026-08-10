@@ -210,6 +210,20 @@ function parseStreamLine(line) {
       usage: j.usage || null,
       costUSD: typeof j.total_cost_usd === 'number' ? j.total_cost_usd : null,
     };
+  } else if (j.type === undefined && typeof j.result === 'string' && j.session_id) {
+    // Legacy `--output-format json` single-envelope shape: no `type` field,
+    // the whole session in one JSON object. Still emitted by fake-claude test
+    // binaries (and any CLI version speaking the old contract) — the
+    // stream-json switch broke opening-night-monitor's runMonitorPass tests
+    // with stage parse-error on main (P0, task #1231, 2026-08-10). Accept it
+    // as a result event; empty resultText still routes to the EMPTY stage.
+    out.result = {
+      resultText: j.result,
+      sessionId: j.session_id || null,
+      usage: j.usage || null,
+      costUSD: typeof j.total_cost_usd === 'number' ? j.total_cost_usd : null,
+    };
+    out.sessionId = j.session_id || null;
   }
   return out;
 }
