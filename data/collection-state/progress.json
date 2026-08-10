@@ -76,7 +76,9 @@
     "six-2021/one-minute-critic--matthew-wexler.json",
     "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
     "hadestown-2019/theatrely--theatrely-staff.json",
-    "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json"
+    "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
+    "harry-potter-2021/cititour--brian-scott-lipton.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
@@ -1051,7 +1053,15 @@
     "six-the-musical-west-end-2021/chicagotribune--chris-jones.json",
     "six-the-musical-west-end-2021/nysr--bob-verini.json",
     "six-the-musical-west-end-2021/patriot-ledger--iris-fanger.json",
-    "six-the-musical-west-end-2021/wttw--hedy-weiss.json"
+    "six-the-musical-west-end-2021/wttw--hedy-weiss.json",
+    "magic-mike-live-west-end-2021/timeout--andrzej-lukowski.json",
+    "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+    "magic-mike-live-west-end-2021/timeout--nicola-dowse.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/british-theatre--unknown.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/whatsonstage--ben-hewis.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1098,7 +1108,8 @@
       "burlesque-west-end-2026/north-west-end--unknown.json",
       "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json",
       "hadestown-west-end-2024/columbus-dispatch--unknown.json",
-      "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json"
+      "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -1137,7 +1148,8 @@
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "schmigadoon-2026/wsj--john-anderson.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "maybe-happy-ending-2024/newyorker--conde-nast.json"
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "harry-potter-2021/cititour--brian-scott-lipton.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1156,7 +1168,7 @@
     ]
   },
   "startTime": "2026-08-10T10:15:58.760Z",
-  "lastProcessed": "six-the-musical-west-end-2021/wttw--hedy-weiss.json",
+  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
   "log": [
     {
       "t": "2026-08-10T11:50:30.437Z",
@@ -1166,17 +1178,6 @@
     },
     {
       "t": "2026-08-10T11:50:30.865Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-08-10T13:18:45.061Z",
-      "event": "bb-session",
-      "session": "5be4319f",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
-    },
-    {
-      "t": "2026-08-10T13:18:46.015Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
