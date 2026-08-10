@@ -546,7 +546,11 @@ export class EnsembleReviewScorer {
     // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
     // Prevents the TheaterMania incident (Proof 2026-04-16) where nav chrome was scored 95/Rave.
     const { validateScoreableText } = require('../lib/score-input-validator.js');
-    const isExcerpt = scoringInput.textQuality === 'excerpt-only';
+    const { isCapsuleReview } = require('../lib/scorable-text.js');
+    // Theatre Record print capsules are complete short reviews — exempt from
+    // the body-length gate like excerpts, without reclassifying textQuality
+    // (the prompt keeps its truncated-text caution framing).
+    const isExcerpt = scoringInput.textQuality === 'excerpt-only' || isCapsuleReview(reviewFile);
     const inputValidation = validateScoreableText(scoringInput.text, reviewFile.showTitle, { isExcerpt });
     if (!inputValidation.ok) {
       return {
