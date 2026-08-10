@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-03T13:04:38.250Z",
+  "generatedAt": "2026-08-10T12:16:40.756Z",
   "mode": "dry-run",
   "reviewTextSweep": {
-    "scanned": 38,
-    "showsWithNoTexts": 3,
+    "scanned": 37,
+    "showsWithNoTexts": 4,
     "candidates": [
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -37,7 +37,7 @@
         "showId": "the-whoopi-monologues-off-broadway-2026",
         "proposedClosingDate": "2026-08-30",
         "confidence": "high",
-        "reason": "10 reviews agree",
+        "reason": "11 reviews agree",
         "evidence": [
           {
             "reviewId": "the-whoopi-monologues-off-broadway-2026/culturesauce--thom-geier.json",
@@ -78,6 +78,11 @@
             "reviewId": "the-whoopi-monologues-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
             "isoDate": "2026-08-30",
             "quote": "through August 30, 2026"
+          },
+          {
+            "reviewId": "the-whoopi-monologues-off-broadway-2026/vulture--jackson-mchenry.json",
+            "isoDate": "2026-08-30",
+            "quote": "through August 30"
           },
           {
             "reviewId": "the-whoopi-monologues-off-broadway-2026/vulture--unknown.json",
@@ -240,36 +245,6 @@
             "quote": "through May 20"
           }
         ]
-      },
-      {
-        "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-        "mentions": [
-          {
-            "reviewId": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
-            "isoDate": "2026-08-08",
-            "quote": "through August 8, 2026"
-          },
-          {
-            "reviewId": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
-            "isoDate": "2025-08-10",
-            "quote": "through August 10, 2025"
-          }
-        ]
-      },
-      {
-        "showId": "the-gin-game-2026",
-        "mentions": [
-          {
-            "reviewId": "the-gin-game-2026/nysr--frank-scheck.json",
-            "isoDate": "2026-08-09",
-            "quote": "runs through August 9"
-          },
-          {
-            "reviewId": "the-gin-game-2026/wsj--charles-isherwood.json",
-            "isoDate": "2026-08-14",
-            "quote": "closes Aug. 14"
-          }
-        ]
       }
     ],
     "suppressed": [
@@ -304,11 +279,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-        "proposedClosingDate": "2026-08-02",
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
         "proposedClosingDate": "2026-09-07",
         "reason": "already-has-closing-date"
@@ -329,8 +299,8 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "sukkot-off-broadway-2026",
-        "proposedClosingDate": "2026-08-09",
+        "showId": "the-vessel-off-broadway-2026",
+        "proposedClosingDate": "2026-08-23",
         "reason": "already-has-closing-date"
       },
       {
@@ -344,13 +314,13 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "the-potluck-off-broadway-2026",
-        "proposedClosingDate": "2026-08-02",
+        "showId": "the-black-mirror-experience-off-broadway-2026",
+        "proposedClosingDate": "2026-09-06",
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "the-black-mirror-experience-off-broadway-2026",
-        "proposedClosingDate": "2026-09-06",
+        "showId": "disruption-off-broadway-2026",
+        "proposedClosingDate": "2026-09-27",
         "reason": "already-has-closing-date"
       },
       {
@@ -359,44 +329,54 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-        "proposedClosingDate": "2026-08-09",
+        "showId": "the-pass-off-broadway-2026",
+        "proposedClosingDate": "2026-09-04",
         "reason": "already-has-closing-date"
       }
     ]
   },
   "todaytixStaleness": {
-    "checked": 37,
+    "checked": 35,
     "skipped": false,
     "candidates": [
       {
+        "showId": "pied-a-terre-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-08-03"
+      },
+      {
         "showId": "drunk-shakespeare-off-broadway-2022",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "my-joy-is-heavy-off-broadway-2025",
-        "consecutiveMissingChecks": 4,
+        "consecutiveMissingChecks": 5,
         "firstMissingDate": "2026-07-13"
       },
       {
         "showId": "age-is-a-feeling-off-broadway-2024",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "the-whoopi-monologues-off-broadway-2026",
-        "consecutiveMissingChecks": 3,
+        "consecutiveMissingChecks": 4,
         "firstMissingDate": "2026-07-20"
       },
       {
+        "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+        "consecutiveMissingChecks": 2,
+        "firstMissingDate": "2026-08-03"
+      },
+      {
         "showId": "the-black-mirror-experience-off-broadway-2026",
-        "consecutiveMissingChecks": 5,
+        "consecutiveMissingChecks": 6,
         "firstMissingDate": "2026-07-12"
       },
       {
         "showId": "hungry-women-off-broadway-2026",
-        "consecutiveMissingChecks": 2,
+        "consecutiveMissingChecks": 3,
         "firstMissingDate": "2026-07-27"
       }
     ]
