@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-08-10T20:25:14.350Z",
+  "generatedAt": "2026-08-10T21:29:36.683Z",
   "windowDays": 1095,
-  "targets": 0,
-  "auditedThisRun": 0,
-  "carriedForward": 211,
+  "targets": 6,
+  "auditedThisRun": 6,
+  "carriedForward": 205,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 165,
-    "totalMissing": 1051,
+    "totalMissing": 1050,
     "totalCitedNoUrl": 1,
     "totalFlaggedMisses": 1071,
     "totalRecoverable": 22,
@@ -3886,7 +3886,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T09:16:06.645Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
@@ -16908,7 +16908,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T17:35:39.870Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -34517,11 +34517,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1199,
+        "count": 1182,
         "byReason": {
-          "not-http-url": 168,
           "non-review-host": 103,
-          "aggregator-internal-nav": 917,
+          "aggregator-internal-nav": 900,
+          "not-http-url": 168,
           "non-review-path": 11
         }
       },
@@ -34994,7 +34994,7 @@
         "liveCount": 17,
         "candidateCount": 32
       },
-      "computedAt": "2026-08-10T09:16:06.645Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -39072,63 +39072,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 22,
-        "byReason": {
-          "roundup-page": 2,
-          "non-review-host": 17,
-          "aggregator-internal-nav": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -39139,7 +39088,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T17:35:39.870Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -51068,32 +51017,25 @@
         "https://theatreandtonic.co.uk/blog/now-you-see-me-live-at-the-london-coliseum-review",
         "https://www.londontheatre.co.uk/reviews/now-you-see-me-live-review-london-coliseum",
         "https://www.thereviewshub.com/now-you-see-me-live-london-coliseum/",
-        "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
         "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
+        "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
         "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
-        "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
         "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
-        "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
         "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter",
         "https://thespyinthestalls.com/2026/08/now-you-see-me-live/",
-        "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
+        "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
+        "https://www.westendbestfriend.co.uk/news/review-now-you-see-me-live-london-coliseum",
+        "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
         "https://www.londontheatre1.com/reviews/now-you-see-me-live-london-coliseum/",
-        "http://www.londonlivinglarge.com/2026/08/now-you-see-me-live-london-coliseum-jul.html",
+        "https://www.londontheatredirect.com/concert/now-you-see-me-live",
         "https://www.londonboxoffice.co.uk/news/post/now-you-see-me-live-to-premiere-at-london-coliseum",
-        "https://www.theatrebookings.com/play/now-you-see-me-live",
+        "http://www.londonlivinglarge.com/2026/08/now-you-see-me-live-london-coliseum-jul.html",
         "https://www.broadwayworld.com/westend/article/Review-NOW-YOU-SEE-ME-LIVE-London-Coliseum-20260803"
       ],
-      "dirFiles": 35,
+      "dirFiles": 36,
       "dirClean": 19,
       "inReviewsJson": 19,
-      "missing": [
-        {
-          "url": "https://www.theatrebookings.com/play/now-you-see-me-live",
-          "host": "theatrebookings.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "adventuresintheatreland.com",
@@ -51110,17 +51052,13 @@
         {
           "host": "theatreweekly.com",
           "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-          "host": "jonathanbaz.com",
-          "knownOutletId": "jonathan-baz",
+          "url": "https://www.londontheatredirect.com/concert/now-you-see-me-live",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -51128,9 +51066,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "jonathan-baz--unknown.json",
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
               "flag": "wrongShow",
-              "urlInDir": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html"
+              "urlInDir": "https://www.londontheatredirect.com/concert/now-you-see-me-live"
             }
           ],
           "serpCensus": true
@@ -51209,7 +51147,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -51219,7 +51157,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -51239,7 +51177,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -51249,7 +51187,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -51259,7 +51197,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -51269,45 +51207,22 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 26,
         "byReason": {
-          "non-review-host": 20,
-          "ticketing-listing": 6,
-          "ticketing-reseller": 1
+          "non-review-host": 19,
+          "ticketing-listing": 7
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theatrebookings.com/play/now-you-see-me-live",
-          "host": "theatrebookings.com",
-          "outletId": "theatrebookings",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatrebookings.com",
-            "outlet": "theatrebookings.com",
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatrebookings.com/play/now-you-see-me-live"
-          },
-          {
-            "outletId": "jonathan-baz",
-            "outlet": "jonathan-baz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html"
+            "url": "https://www.londontheatredirect.com/concert/now-you-see-me-live"
           },
           {
             "outletId": "london-box-office",
@@ -51338,16 +51253,16 @@
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T15:48:01.636Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-now-you-see-me-live-london-coliseum",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
             "url": "https://www.timeout.com/london/comedy/now-you-see-me-live-review",
@@ -51356,22 +51271,10 @@
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
             "url": "https://liamodell.com/2026/08/03/now-you-see-me-live-review-london-coliseum/",
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-10T09:16:06.645Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter",
@@ -51382,6 +51285,24 @@
           {
             "url": "https://thespyinthestalls.com/2026/08/now-you-see-me-live/",
             "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-09T06:39:26.552Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T09:16:06.645Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-now-you-see-me-live-london-coliseum",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T21:29:36.683Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T06:39:26.552Z"
           },
@@ -51404,18 +51325,11 @@
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
-            "url": "https://www.theatrebookings.com/play/now-you-see-me-live",
-            "outletId": "theatrebookings.com",
+            "url": "https://www.londontheatredirect.com/concert/now-you-see-me-live",
+            "outletId": "londontheatredirect",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T09:16:06.645Z"
-          },
-          {
-            "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
-            "outletId": "jonathan-baz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T06:39:26.552Z"
+            "firstSeenAt": "2026-08-10T21:29:36.683Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/now-you-see-me-live-to-premiere-at-london-coliseum",
@@ -51425,10 +51339,10 @@
             "firstSeenAt": "2026-08-10T09:16:06.645Z"
           }
         ],
-        "liveCount": 14,
+        "liveCount": 15,
         "candidateCount": 17
       },
-      "computedAt": "2026-08-10T09:16:06.645Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -88394,7 +88308,7 @@
         "https://www.allthatdazzles.co.uk/post/review-titanique-criterion-theatre",
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
-      "dirFiles": 38,
+      "dirFiles": 39,
       "dirClean": 14,
       "inReviewsJson": 17,
       "missing": [
@@ -88868,13 +88782,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 760,
+        "count": 771,
         "byReason": {
-          "not-http-url": 167,
-          "non-review-host": 52,
-          "aggregator-internal-nav": 527,
+          "non-review-host": 53,
+          "aggregator-internal-nav": 533,
+          "not-http-url": 169,
           "non-review-path": 6,
-          "roundup-page": 8
+          "roundup-page": 10
         }
       },
       "dedupedVariants": [],
@@ -89467,7 +89381,7 @@
         "liveCount": 4,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-10T09:16:06.645Z"
+      "computedAt": "2026-08-10T21:29:36.683Z"
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
