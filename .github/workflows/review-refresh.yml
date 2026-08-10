@@ -345,7 +345,7 @@ jobs:
         run: node scripts/convert-show-score-to-review-texts.js
 
       - name: Extract Theatre Record reviews (WE shows)
-        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true' || inputs.tr_show_filter != ''
         continue-on-error: true
         env:
           TR_EMAIL: ${{ secrets.TR_EMAIL }}
@@ -359,9 +359,14 @@ jobs:
           if [ -n "$TR_SHOW_FILTER" ]; then
             echo "Extracting reviews from Theatre Record (per-show: $TR_SHOW_FILTER)..."
             IFS=',' read -ra TR_SHOWS <<< "$TR_SHOW_FILTER"
+            tr_failures=0
             for tr_show in "${TR_SHOWS[@]}"; do
-              node scripts/extract-theatre-record.js --show="$tr_show" --no-skip-existing
+              tr_show="$(echo "$tr_show" | xargs)"
+              [ -z "$tr_show" ] && continue
+              node scripts/extract-theatre-record.js --show="$tr_show" --no-skip-existing \
+                || { echo "::warning::Theatre Record extraction failed for $tr_show"; tr_failures=$((tr_failures+1)); }
             done
+            echo "Per-show TR extraction done: ${#TR_SHOWS[@]} requested, $tr_failures failed"
           else
             echo "Extracting reviews from Theatre Record (browse WE listing)..."
             node scripts/extract-theatre-record.js --browse-we --no-skip-existing
