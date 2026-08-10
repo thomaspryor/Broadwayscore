@@ -39,10 +39,13 @@ const MIN_FULLTEXT_LENGTH = 200; // below this, "missing tier" is not the bug �
 
 /**
  * True when a review-text file has everything a scored, includable review
- * needs EXCEPT a contentTier — the exact shape that silently drops out of
- * reviews.json (rebuild only re-derives contentTier when fullText changes;
- * a review whose fullText was already there before contentTier vanished
- * never re-triggers that path).
+ * needs EXCEPT a contentTier — the exact shape that let one real review sit
+ * OUT of reviews.json through a full scoring + rebuild run (card #1188).
+ * rebuild-all-reviews.js DOES run a reclassification safety net on every
+ * pass (line ~2049), so this gap is not the common case any more — this
+ * predicate exists for whatever narrow path let the real incident evade it
+ * (not fully root-caused), and for any future write path that clears
+ * contentTier without going through that safety net at all.
  *
  * @param {object} data - parsed review-text JSON
  * @returns {boolean}
@@ -50,6 +53,12 @@ const MIN_FULLTEXT_LENGTH = 200; // below this, "missing tier" is not the bug �
 function isMissingContentTierGap(data) {
   if (!data || typeof data !== 'object') return false;
   if (data.contentTier) return false; // has a tier — not the gap
+  // manualContentTier is a human override that classifyContentTier() (content-quality.js)
+  // resolves into contentTier on the next rebuild pass — a freshly manually-ingested
+  // review carries manualContentTier without contentTier yet and is NOT a silent gap,
+  // it just hasn't been rebuilt since ingest (ingest-manual-review.js sets
+  // manualContentTier='complete' but never writes contentTier itself).
+  if (data.manualContentTier) return false;
   if (typeof data.fullText !== 'string' || data.fullText.trim().length < MIN_FULLTEXT_LENGTH) return false;
   if (!data.criticName || data.criticName === 'Unknown') return false; // real byline required
   // Any known rejection/exclusion flag means this file is a deliberate
@@ -64,7 +73,7 @@ function isMissingContentTierGap(data) {
  * scan (memory: feedback_stray_symlink_crashes_pipeline.md).
  *
  * @param {string} reviewTextsDir - path to data/review-texts
- * @returns {Array<{showId: string, file: string, criticName: string, outlet: string|null, wordCount: number}>}
+ * @returns {Array<{showId: string, file: string, criticName: string, outletId: string|null, outlet: string|null, wordCount: number}>}
  */
 function scanMissingContentTier(reviewTextsDir) {
   const results = [];
@@ -88,6 +97,10 @@ function scanMissingContentTier(reviewTextsDir) {
           showId,
           file,
           criticName: data.criticName,
+          // outletId (the canonical registry key) is what reviews.json's
+          // entries carry — kept distinct from `outlet` (display name) so a
+          // caller can match against reviews.json without guessing which one.
+          outletId: data.outletId || null,
           outlet: data.outlet || data.outletId || null,
           wordCount: data.fullText.trim().split(/\s+/).length,
         });
@@ -109,7 +122,13 @@ const PLATFORM_SUFFIXES = /\.(substack\.com|wordpress\.com|medium\.com|blogspot\
 // wrong; must strip both labels).
 const TWO_LABEL_TLDS = /\.(co\.uk|com\.au|org\.uk|co\.nz|org\.au)$/i;
 
-const MIN_SLUG_LENGTH = 4; // below this, a normalized slug matches too much to be "probable"
+const MIN_SLUG_LENGTH = 4; // below this, a freeform alias/displayName match is too generic to be "probable"
+// The outletId itself is a curated identifier (not a freeform alias prone to
+// typos like AP's registry carrying "app" as an alias), so a shorter exact
+// match against JUST the outletId is safe down to this floor. Without this,
+// short-named real outlets (vox, cnn, gq, lbc) can never be matched at all —
+// every name variant they have normalizes under MIN_SLUG_LENGTH.
+const MIN_OUTLET_ID_LENGTH = 3;
 
 /**
  * Reduce a host to its bare outlet-identity slug: strip www., a hosting
@@ -156,7 +175,7 @@ function findProbableDomainMoves(outlets, unknownHosts) {
     const host = entry && entry.host;
     if (!host) continue;
     const slug = normalizeHostSlug(host);
-    if (slug.length < MIN_SLUG_LENGTH) continue;
+    if (slug.length < MIN_OUTLET_ID_LENGTH) continue;
     for (const [outletId, outlet] of Object.entries(outlets)) {
       if (!outlet) continue;
       // A "move" implies an OLD host is already on file. An outlet with no
@@ -173,10 +192,15 @@ function findProbableDomainMoves(outlets, unknownHosts) {
       );
       if (knownHosts.has(host.toLowerCase())) continue; // already registered — not a move
 
-      const candidateNames = [outletId, outlet.displayName, ...(outlet.aliases || [])]
+      // outletId alone is checked at the lower floor (curated identifier);
+      // displayName/aliases are freeform and stay at the higher floor to
+      // avoid matching a stray short alias typo (e.g. registry noise).
+      const normalizedOutletId = normalizeOutletName(outletId);
+      const matchesOutletId = normalizedOutletId.length >= MIN_OUTLET_ID_LENGTH && normalizedOutletId === slug;
+      const candidateNames = [outlet.displayName, ...(outlet.aliases || [])]
         .map(normalizeOutletName)
         .filter((n) => n.length >= MIN_SLUG_LENGTH);
-      if (candidateNames.includes(slug)) {
+      if (matchesOutletId || candidateNames.includes(slug)) {
         results.push({
           host,
           outletId,

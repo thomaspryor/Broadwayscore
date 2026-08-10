@@ -75,6 +75,13 @@ test('a review WITH a contentTier is not reported', () => {
   assert.equal(isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, contentTier: 'complete' }), false);
 });
 
+test('a freshly manually-ingested review (manualContentTier set, contentTier not yet backfilled) is NOT reported — ship-check finding, /ingest-manual-review.js sets manualContentTier but not contentTier itself, and classifyContentTier resolves it on the next rebuild', () => {
+  assert.equal(
+    isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, manualContentTier: 'complete' }),
+    false,
+  );
+});
+
 test('a review with a rejection flag set is not reported — it is a deliberate tombstone, not a silent drop', () => {
   assert.equal(isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, wrongProduction: true }), false);
   assert.equal(isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, duplicateOf: 'other.json' }), false);
@@ -213,6 +220,28 @@ test('an outlet with NO domain on file is never matched — a name coincidence i
     cleveland: { displayName: 'Cleveland', aliases: ['clevelandcom'] },
   };
   const unknownHosts = [{ host: 'cleveland.com', occurrences: 6 }];
+  assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
+});
+
+test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched via exact outletId, even though every alias/displayName normalizes under MIN_SLUG_LENGTH', () => {
+  // ship-check finding: a blanket MIN_SLUG_LENGTH=4 floor on ALL candidate
+  // names made short-brand outlets permanently unmatchable — every name
+  // variant they have is under 4 chars. outletId (curated, not freeform) is
+  // checked at a lower floor instead.
+  const outlets = { vox: { displayName: 'Vox', domain: 'vox.com' } };
+  const unknownHosts = [{ host: 'vox.substack.com', occurrences: 2 }];
+  const moves = findProbableDomainMoves(outlets, unknownHosts);
+  assert.equal(moves.length, 1);
+  assert.equal(moves[0].outletId, 'vox');
+});
+
+test('a short freeform ALIAS (not the outletId) is still ignored — the loosened floor only applies to outletId', () => {
+  // Real corpus case: outletId 'ap' (Associated Press) carries a stray
+  // 3-char alias typo "app" in its aliases array. Loosening the floor for
+  // aliases too would match app.com (an unrelated NJ news site) by pure
+  // accident — outletId-only exemption avoids that.
+  const outlets = { ap: { displayName: 'Associated Press', aliases: ['app'], domain: 'apnews.com' } };
+  const unknownHosts = [{ host: 'app.com', occurrences: 1 }];
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
 });
 

@@ -989,7 +989,23 @@ function checkQuality() {
         return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
       }
       const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
-      const hits = scanMissingContentTier(rtDir);
+      let hits = scanMissingContentTier(rtDir);
+      // rebuild-all-reviews.js reclassifies contentTier unconditionally on
+      // every pass (in-memory, before the review is pushed to reviews.json),
+      // so a source file missing contentTier does NOT necessarily mean the
+      // review is currently absent — only that its source file's write-back
+      // failed or hasn't run yet. Cross-check against the live reviews.json
+      // so this check reports the residual gap, not every stale source file.
+      const reviewsPath = path.join(DATA_DIR, 'reviews.json');
+      if (hits.length > 0 && fs.existsSync(reviewsPath)) {
+        try {
+          const live = readJSON(reviewsPath);
+          const liveKeys = new Set(
+            (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
+          );
+          hits = hits.filter((h) => !liveKeys.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`));
+        } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
+      }
       if (hits.length === 0) {
         return { name: 'Quality: missing contentTier', status: 'pass', message: 'No scored reviews missing contentTier' };
       }
@@ -997,7 +1013,7 @@ function checkQuality() {
       return {
         name: 'Quality: missing contentTier',
         status: 'warn',
-        message: `${hits.length} review(s) have fullText + a real byline + no rejection flags but NO contentTier — silently absent from reviews.json (e.g. ${worst.showId}/${worst.file})`,
+        message: `${hits.length} review(s) have fullText + a real byline + no rejection flags but NO contentTier, and are NOT in reviews.json (e.g. ${worst.showId}/${worst.file})`,
         hint: 'A review-text file lost its contentTier without fullText changing, so rebuild never re-derives it. Run classifyContentTier on it and restore contentTier by hand, or add contentTier to the show\'s review file directly.',
       };
     }),
@@ -1009,8 +1025,18 @@ function checkQuality() {
         return { name: 'Quality: outlet domain moves', status: 'pass', message: 'Skipped (registry or unknown-outlet census not present)' };
       }
       const { findProbableDomainMoves } = require('./lib/silent-exclusion-detectors');
-      const outlets = readJSON(registryPath)?.outlets;
-      const census = readJSON(censusPath);
+      let outlets, census;
+      try {
+        outlets = readJSON(registryPath)?.outlets;
+        census = readJSON(censusPath);
+      } catch (parseErr) {
+        // A malformed/mid-write file is a soft signal (retry next run), not a
+        // crash — matches the sibling checks' pattern (e.g. Sync: grosses
+        // weekEnding, Scoring: batch state) rather than falling through to
+        // runCheck's generic try/catch, which would report 'error' and feed
+        // the digest's escalation path for what's really a transient read.
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Could not parse registry or census: ${parseErr.message}`, hint: 'Likely a mid-write file — should clear on the next run' };
+      }
       const ts = census?.generatedAt;
       const age = ts ? hoursAgo(ts) : Infinity;
       if (age > 48) {
