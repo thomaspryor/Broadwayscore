@@ -1,20 +1,16 @@
 {
-  "generatedAt": "2026-08-09T11:54:49.027Z",
-  "subject": "BSC Daily: 3 known issues (unchanged, day 12)",
-  "bannerText": "3 errors, 21 warnings",
-  "consecutiveErrorDays": 12,
+  "generatedAt": "2026-08-10T08:19:24.788Z",
+  "subject": "BSC URGENT (day 13): 2 unresolved errors",
+  "bannerText": "2 errors, 22 warnings",
+  "consecutiveErrorDays": 13,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2821k credits left (71%) · 236k/day burn · renews in 25d · exhausts in ~12d (BEFORE renewal)"
+      "message": "2763k credits left (69%) · 206k/day burn · renews in 24d · exhausts in ~13d (BEFORE renewal)"
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Collect WE/OB Review Texts",
-      "message": "Collect WE/OB Review Texts failed 3 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -23,8 +19,16 @@
       "message": "1 open show(s) have audience data on a source that didn't link — Theatr: The Jonathan Larson Project (150 ratings ↔ The Jonathan Larson Project)"
     },
     {
+      "name": "Sync: baseline drift",
+      "message": "Reviews dropped: 19651 vs baseline 19659"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: take-me-out-2022 Theater Life 2/5 stars→40 vs LLM 84, gap 45)"
+    },
+    {
       "name": "Quality: corpus drift",
-      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
     },
     {
       "name": "Revenue: affiliate health",
@@ -43,8 +47,16 @@
       "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
     },
     {
+      "name": "Cron failed: Test Suite",
+      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+    },
+    {
+      "name": "Stuck work: paused P0/P1 cards",
+      "message": "11 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: content-quality.js Path-3 capsule-review fallback miscla (7d, parked past 7d window by 1d); Send-day gap-audit state is self-clobbering: per-show runs o (7d, parked past 7d window by 1d); P1: validateShowMentioned Check-3 rubber-stamps unrelated lo (7d, parked past 7d window by 1d) (12 awaiting recheck, earliest due 2026-08-08; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
+    },
+    {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "72 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Trainspotting: only 4 reviews on site + email said 7 (invest (17d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (16d)"
+      "message": "68 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (18d); Trainspotting: only 4 reviews on site + email said 7 (invest (18d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (17d)"
     },
     {
       "name": "Infra-review: gate telemetry",
@@ -55,12 +67,8 @@
       "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
       "name": "Feedback: needs-manual-review backlog",
-      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 8d). Newest: #504 Bug Diagnosis: User reports that Gotta Dance (Off-Broadway) has an inc"
+      "message": "2 open user-feedback issue(s) awaiting manual review (oldest 9d). Newest: #559 Bug Diagnosis: User reports that a BroadwayWorld review for '3 Summers"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -72,7 +80,7 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
+      "message": "4 discovered review(s) not reaching the composite score (3 T1). First: cats-west-end-2026 — independent (empty-body)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -83,8 +91,57 @@
       "message": "31 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P0 Now] Pull design and UX inspo from TodayTix predictions site"
     }
   ],
-  "queued": [],
+  "queued": [
+    {
+      "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
+      "description": "critics-take-present keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: update-critic-consensus.yml {\"show\":\"death-note-the-musical-west-end-2026\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "T1 Coverage Scoreboard",
+      "description": "broadway: 80.3% (453/564)\noff-broadway: 48.6% (154/317)\nwest-end: 71.3% (409/574)\n\nOldest gaps:\n1536 — guardian (418h)\n1536 — independent (418h)\nA Midsummer Night's Dream - Globe — financialtimes (418h)\nA Midsummer Night's Dream - Globe — telegraph (418h)\nA Midsummer Night's Dream — financialtimes (418h)\n… 203 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (418h)\nThe Book of Mormon — usatoday (418h)\nHeathers The Musical — dailybeast (418h)\nHeathers The Musical — ew (418h)\nSpamalot — dailybeast (418h)\n… 4 more circuit-open cell(s)",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Review-gap audit refused to write — 9.1% of shows changed coverage state",
+      "description": "review-gap blast radius 9.1% (2/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: horrible-histories-barmy-britain-the-best-bits-west-end-2026, isla-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Auto-remediation gave up on isla-off-broadway-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast.yml {\"show_filter\":\"isla-off-broadway-2026\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null
+    },
+    {
+      "title": "Deployed coverage — the site is serving stale coverage",
+      "description": "1/156 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nscore-drift: 1\nCats: missing-from-prod+score-drift",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31343382838"
+    },
+    {
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\n3 Summers of Lincoln (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please add back the BroadwayWorld review for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/559",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31349916135"
+    },
+    {
+      "title": "T1 Coverage — new gaps past 24h",
+      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+      "severity": "error",
+      "url": null
+    }
+  ],
   "autoFixedCount": 1,
-  "passedCount": 53,
-  "totalCount": 80
+  "passedCount": 51,
+  "totalCount": 79
 }
