@@ -1030,18 +1030,25 @@ function checkQuality() {
       if (hits.length > 0 && fs.existsSync(reviewsPath)) {
         try {
           const live = readJSON(reviewsPath);
-          const liveUrls = new Set((live.reviews || []).map((r) => r.url).filter(Boolean));
+          // Keyed by url+showId, not url alone (ship-check finding): a
+          // review URL reused across two DIFFERENT shows (rare, but review
+          // URLs aren't validated globally-unique) must not let one show's
+          // live entry suppress a genuine gap under a different show.
+          const liveUrlShowKeys = new Set(
+            (live.reviews || []).map((r) => (r.url ? `${r.url}|${r.showId}` : null)).filter(Boolean),
+          );
           const liveTriples = new Set(
             (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
           );
-          // Match on url FIRST when the hit has one: two review-text files can
-          // share showId+outletId+criticName (a republished article, or
-          // byline-enrichment landing on two separate URLs) — the coarser
-          // triple match alone would let one file already live in reviews.json
-          // mask the OTHER file's genuine gap (ship-check finding). Only fall
-          // back to the triple match when the hit has no url to compare.
+          // Match on url+showId FIRST when the hit has a url: two review-text
+          // files can share showId+outletId+criticName (a republished
+          // article, or byline-enrichment landing on two separate URLs) — the
+          // coarser triple match alone would let one file already live in
+          // reviews.json mask the OTHER file's genuine gap (ship-check
+          // finding). Only fall back to the triple match when the hit has no
+          // url to compare.
           hits = hits.filter((h) => {
-            if (h.url) return !liveUrls.has(h.url);
+            if (h.url) return !liveUrlShowKeys.has(`${h.url}|${h.showId}`);
             return !liveTriples.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`);
           });
         } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
@@ -2103,7 +2110,7 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
-function checkDispatchOutcomes() {
+function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
     return [{
@@ -2171,12 +2178,18 @@ function checkDispatchOutcomes() {
     const currentAbandonedCount = classifyDispatches(
       dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
     ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
-    try {
-      fs.mkdirSync(AUDIT_DIR, { recursive: true });
-      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
-        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
-      }, null, 2) + '\n');
-    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    // dryRun (health-row-probe.js's live verification probe): compute the row
+    // exactly as normal but skip the trend-cache write — a probe run must never
+    // perturb the state a REAL health-check.js run compares "unchanged since
+    // last run" against, or it corrupts tomorrow's real digest message.
+    if (!dryRun) {
+      try {
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+          abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+        }, null, 2) + '\n');
+      } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    }
 
     if (row) return row;
     // currentAbandonedCount > 0 but unchanged from last run still counts as
@@ -3791,18 +3804,15 @@ function saveHistory(history) {
 
 // --- Main ---
 
-async function main() {
-  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
-
-  if (!isCI) {
-    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
-  }
-
-  console.log('=== Broadway Scorecard Daily Health Check ===\n');
-
-  purgeOldExclusionLogs();
-
-  const allResults = [
+// The 22 checks that make up the CORE digest (isCI-gated side effects, plus
+// checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
+// this same list can be re-run live and read-only by
+// scripts/lib/health-row-probe.js — see its header for why check-health-row-
+// absent.js can't just re-run scripts/health-check.js wholesale). This is the
+// ONLY place the check list is enumerated; main() and the probe both call it
+// so the two can never drift apart.
+async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
+  return [
     ...checkFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
@@ -3823,10 +3833,23 @@ async function main() {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
-    ...checkDispatchOutcomes(),
-    ...checkDispatchHealth(),
+    ...checkDispatchOutcomes(dryRun),
     ...checkAutofixEffectiveness(),
   ];
+}
+
+async function main() {
+  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
+
+  if (!isCI) {
+    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
+  }
+
+  console.log('=== Broadway Scorecard Daily Health Check ===\n');
+
+  purgeOldExclusionLogs();
+
+  const allResults = await computeCoreHealthResults(isCI);
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
@@ -4030,4 +4053,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };
