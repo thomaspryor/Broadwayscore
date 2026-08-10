@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-09T23:23:49.126Z",
+  "generatedAt": "2026-08-10T00:26:28.011Z",
   "windowDays": 45,
-  "showsScanned": 60,
+  "showsScanned": 59,
   "gaps": [
     {
       "showId": "cats-west-end-2026",
@@ -21,7 +21,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 1.0285041666666668
+      "nonTerminalAgeHours": 2.0726388888888887
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 418.2026188888889,
+      "fileAgeHours": 419.247635,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 377.50644166666666
+      "nonTerminalAgeHours": 378.5505763888889
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,28 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 81.81010305555556
-    },
-    {
-      "showId": "im-every-woman-off-west-end-2026",
-      "title": "I'm Every Woman",
-      "openingDate": "2026-08-05",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 1,
-      "fix": "node scripts/ingest-review-from-url.js --show=im-every-woman-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/im-every-woman-review-the-songs-shimmer-but-theres-no-soul-2ql7mxbvd --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-05T11:42:28.708Z",
-      "fileAgeHours": 107.68898972222222,
-      "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 1.0285041666666668
+      "nonTerminalAgeHours": 82.85423777777778
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -91,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 108.64668861111112,
+      "fileAgeHours": 109.69082388888889,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 108.00862555555555
+      "nonTerminalAgeHours": 109.05276027777778
     }
   ],
   "contradictions": []

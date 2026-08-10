@@ -15,6 +15,11 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirnameCompat = path.dirname(fileURLToPath(import.meta.url));
 
 const require = createRequire(import.meta.url);
 const {
@@ -26,6 +31,8 @@ const {
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearStaleDateGuard,
+  hasEnsembleRejection,
+  shouldAutoClearWrongProductionTourLeg,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
@@ -903,6 +910,199 @@ describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () =
         {}
       ),
       false
+    );
+  });
+});
+
+// ── hasEnsembleRejection: the ensemble outranks the heuristic ────────────────
+// Coverage-pipeline tracker #2 / task #1146 (2026-08-09). A blanket domain
+// heuristic ("UK outlet URL on a London show") and the allowCrossMarket
+// override both deleted wrongShow even when the ensemble scoreability check had
+// rejected the file as wrong_show with claude + openai + gemini independently
+// naming a different production. 28 wrongShow files and 42 wrongProduction
+// files were in that state corpus-wide;
+// romeo-and-juliet-west-end-2026/london-theatre--holly-omahony.json was LIVE
+// serving Noughts & Crosses text.
+//
+// Fixture fields copied verbatim from that real file.
+const REAL_ROMEO_SHAPE = {
+  showId: 'romeo-and-juliet-west-end-2026',
+  outletId: 'london-theatre',
+  url: 'https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-sadie-sink-noah-jupe-rob-icke',
+  rejectedAt: '2026-04-27T09:03:25.185Z',
+  rejectedBy: 'ensemble-scoreability-check',
+  rejectionReason: 'wrong_show',
+  rejectionReasoning:
+    "claude: This review is about 'Noughts & Crosses' at Regent's Park Open Air Theatre, not 'Romeo and Juliet' at Harold Pinter Theatre; "
+    + "openai: The text is a review of 'Noughts & Crosses' at the Regent's Park Open Air Theatre, not 'Romeo and Juliet' at the Harold Pinter Theatre.; "
+    + 'gemini: This review is for Noughts & Crosses at Regent\'s Park Open Air Theatre, not Romeo and Juliet at Harold Pinter Theatre.',
+};
+
+describe('hasEnsembleRejection', () => {
+  it('recognises the real romeo-and-juliet file shape', () => {
+    assert.equal(hasEnsembleRejection(REAL_ROMEO_SHAPE, 'wrong_show'), true);
+  });
+
+  it('is scoped to the kind asked about', () => {
+    assert.equal(hasEnsembleRejection(REAL_ROMEO_SHAPE, 'wrong_production'), false);
+  });
+
+  it('reads STRUCTURED fields only — never the LLM prose', () => {
+    // Same verdict prose, but no structured rejection recorded. A prose parser
+    // would fire here; this must not, because rejectionReasoning is
+    // LLM-authored text that moves with PROMPT_VERSION.
+    const proseOnly = { rejectionReasoning: REAL_ROMEO_SHAPE.rejectionReasoning };
+    assert.equal(hasEnsembleRejection(proseOnly, 'wrong_show'), false);
+  });
+
+  it('ignores non-ensemble rejecters (human/manual/OCR triage)', () => {
+    for (const by of ['human-manual-cleanup', 'ocr-extraction', 'manual-contamination-triage']) {
+      assert.equal(
+        hasEnsembleRejection({ rejectionReason: 'wrong_show', rejectedBy: by }, 'wrong_show'),
+        false,
+        `${by} is not the ensemble`,
+      );
+    }
+  });
+
+  it('never throws on malformed input', () => {
+    for (const d of [null, undefined, {}, { rejectionReason: 'wrong_show' }, { rejectedBy: 42, rejectionReason: 'wrong_show' }]) {
+      assert.doesNotThrow(() => hasEnsembleRejection(d, 'wrong_show'));
+    }
+  });
+});
+
+describe('an ensemble verdict outranks every auto-clear heuristic', () => {
+  it('shouldAutoClearWrongShowUkUrl refuses to clear the real romeo-and-juliet file', () => {
+    // The exact call rebuild-all-reviews.js makes for that file: London market,
+    // UK outlet URL, no date mismatch. Pre-fix this returned true and the flag
+    // was deleted, which is why the file went live with another show's text.
+    assert.equal(
+      shouldAutoClearWrongShowUkUrl(
+        { ...REAL_ROMEO_SHAPE, wrongShow: true },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false },
+      ),
+      false,
+    );
+  });
+
+  it('shouldAutoClearWrongShow refuses even with allowCrossMarket set', () => {
+    assert.equal(
+      shouldAutoClearWrongShow({ ...REAL_ROMEO_SHAPE, wrongShow: true, allowCrossMarket: true }),
+      false,
+    );
+  });
+
+  it('shouldAutoClearWrongProduction refuses on the wrongProduction cousin', () => {
+    // The larger population (42 files): same hole, other flag. Fixing one and
+    // leaving the cousin is how this class keeps coming back.
+    const d = {
+      wrongProduction: true,
+      allowCrossMarket: true,
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
+    };
+    assert.equal(shouldAutoClearWrongProduction(d), false);
+  });
+
+  it('shouldAutoClearWrongProductionUrlYear refuses too', () => {
+    const d = {
+      wrongProduction: true,
+      wrongProductionNote: 'URL contains year 2019',
+      rejectedBy: 'ensemble-scoreability-check',
+      rejectionReason: 'wrong_production',
+      rejectionReasoning: 'claude: names a different production; openai: names a different production',
+    };
+    assert.equal(shouldAutoClearWrongProductionUrlYear(d, { isLondonOrOffBroadway: true }), false);
+  });
+
+  it('WITHOUT an ensemble rejection the heuristics still clear — the guard is narrow', () => {
+    // The UK-URL heuristic exists because LLM wrongShow false positives on
+    // London shows are real. This must not become a blanket "never clear".
+    assert.equal(
+      shouldAutoClearWrongShowUkUrl(
+        { wrongShow: true },
+        { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false },
+      ),
+      true,
+    );
+    assert.equal(shouldAutoClearWrongShow({ wrongShow: true, allowCrossMarket: true }), true);
+    assert.equal(shouldAutoClearWrongProduction({ wrongProduction: true, allowCrossMarket: true }), true);
+  });
+});
+
+// ship-check 2026-08-09: the first cut of the ensemble guard covered only 4 of
+// the 6 auto-clear paths. priorRuns/tourLegs answer "is this DATE legitimate
+// for this production" — they cannot answer "is this TEXT about a different
+// production", which is exactly what the ensemble asserts. Operator-trust over
+// CV (the Phase 1 design) does not extend to overruling three models that read
+// the text and named another show.
+describe('ensemble guard covers the priorRuns / tourLegs auto-clear paths too', () => {
+  const SHOW_PRIOR = { priorRuns: [{ openingDate: '2025-01-01', closingDate: '2025-06-01' }] };
+  const SHOW_TOUR = { tourLegs: [{ startDate: '2025-01-01', endDate: '2025-06-01' }] };
+  const dateOnlyFlag = {
+    wrongProduction: true,
+    wrongProductionNote: 'Pre-opening guard: review predates previews',
+    publishDate: '2025-03-01',
+  };
+
+  it('priorRun clear happens WITHOUT an ensemble rejection (guard stays narrow)', () => {
+    assert.equal(shouldAutoClearWrongProductionPriorRun({ ...dateOnlyFlag }, SHOW_PRIOR), true);
+  });
+
+  it('priorRun clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionPriorRun(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
+        SHOW_PRIOR,
+      ),
+      false,
+    );
+  });
+
+  it('tourLeg clear happens WITHOUT an ensemble rejection', () => {
+    assert.equal(shouldAutoClearWrongProductionTourLeg({ ...dateOnlyFlag }, SHOW_TOUR), true);
+  });
+
+  it('tourLeg clear is REFUSED when the ensemble rejected the file', () => {
+    assert.equal(
+      shouldAutoClearWrongProductionTourLeg(
+        { ...dateOnlyFlag, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_production',
+          rejectionReasoning: 'claude: different production; gemini: different production' },
+        SHOW_TOUR,
+      ),
+      false,
+    );
+  });
+});
+
+// The census guard: every auto-clear predicate this module exports must consult
+// hasEnsembleRejection. Structural, so a SEVENTH predicate added later cannot
+// quietly re-open the hole the way priorRun/tourLeg did.
+describe('no auto-clear predicate may skip the ensemble guard', () => {
+  it('every shouldAutoClear* function body references hasEnsembleRejection', () => {
+    const src = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    // Split on top-level function declarations and check each shouldAutoClear* body.
+    const bodies = src.split(/\nfunction /).slice(1);
+    const missing = [];
+    for (const b of bodies) {
+      const name = b.slice(0, b.indexOf('('));
+      if (!/^shouldAutoClear/.test(name)) continue;
+      // Stale-date-guard clears are re-evaluations of OUR OWN date guard against
+      // a corrected date; they carry no cross-production claim, so they are
+      // deliberately exempt. Named explicitly so the exemption is a decision.
+      if (name === 'shouldAutoClearStaleDateGuard' || name === 'shouldAutoClearDatelessRevival') continue;
+      if (!b.includes('hasEnsembleRejection')) missing.push(name);
+    }
+    assert.deepEqual(
+      missing, [],
+      `these auto-clear predicates do not consult hasEnsembleRejection: ${missing.join(', ')}. `
+        + 'A heuristic must never overrule a multi-model verdict that read the text (tracker #2).',
     );
   });
 });

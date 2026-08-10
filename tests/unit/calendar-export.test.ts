@@ -83,6 +83,54 @@ test('UK BST and GMT both resolve correctly', () => {
   );
 });
 
+test('a time inside the spring-forward GAP resolves forward, not backward', () => {
+  // 2:30 AM does not exist on 2026-03-08 in New York. A fixed two-pass loop
+  // silently returned 1:30 AM EST here — an event landing an hour BEFORE the
+  // requested time, before doors open. Forward resolution = 3:30 AM EDT.
+  const ts = wallTimeToUtc('2026-03-08', '02:30', 'America/New_York');
+  assert.equal(new Date(ts).toISOString(), '2026-03-08T07:30:00.000Z');
+  const readBack = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', hourCycle: 'h23', hour: '2-digit', minute: '2-digit',
+  }).format(new Date(ts));
+  assert.equal(readBack, '03:30');
+});
+
+test('an ambiguous fall-back time resolves to the first occurrence', () => {
+  // 1:30 AM happens twice on 2026-11-01 in New York. Take the earlier one.
+  const ts = wallTimeToUtc('2026-11-01', '01:30', 'America/New_York');
+  assert.equal(new Date(ts).toISOString(), '2026-11-01T05:30:00.000Z'); // EDT, the first 1:30
+});
+
+test('a CRLF in showId cannot inject calendar properties through UID', () => {
+  // UID is not a TEXT property, so it is written raw and escapeText never sees
+  // it. `s=x%0D%0ASUMMARY:INJECTED` really did emit an attacker-controlled
+  // SUMMARY line before this was fixed.
+  const evil = 'x\r\nSUMMARY:INJECTED\r\nX-EVIL:1';
+  assert.equal(
+    decodeEventParams(new URLSearchParams([['s', evil], ['n', 'T'], ['d', '2026-09-11'], ['u', 'https://a.com']])),
+    null,
+    'the codec must reject a showId containing control characters',
+  );
+  // Defence in depth: callers that build an event straight from a DB row skip
+  // the codec entirely, so the builder must scrub it too.
+  const out = ics({ showId: evil });
+  assert.ok(!/^SUMMARY:INJECTED/m.test(out), 'injected SUMMARY must not appear');
+  assert.ok(!/^X-EVIL:1/m.test(out), 'injected property must not appear');
+  // CR and LF are each replaced, hence the doubled dashes.
+  assert.equal(out.match(/^UID:(.+)$/m)![1], 'bsc-x--SUMMARY-INJECTED--X-EVIL-1@broadwayscorecard.com');
+  // Exactly one SUMMARY line in the whole calendar.
+  assert.equal((out.match(/^SUMMARY:/gm) ?? []).length, 1);
+});
+
+test('the runtime sanity cap applies to the colon form too', () => {
+  // "12:00" used to return 720 while the equivalent "12h" returned null — the
+  // same duration passing or failing purely on how it was written.
+  assert.equal(parseRuntimeMinutes('12:00'), null);
+  assert.equal(parseRuntimeMinutes('12h'), null);
+  assert.equal(parseRuntimeMinutes('8:00'), 480, '8h exactly is still allowed');
+  assert.equal(parseRuntimeMinutes('0:00'), null);
+});
+
 test('a late curtain rolls the end past midnight onto the next date', () => {
   const out = ics({ time: '23:00', durationMin: 150 });
   assert.match(out, /DTSTART;TZID=America\/New_York:20260911T230000/);

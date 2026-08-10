@@ -117,12 +117,23 @@ function zoneOffsetMs(instant: number, tz: string): number {
 /**
  * Convert a local wall-clock time in `tz` to a UTC instant.
  *
- * Two passes, because the offset depends on the instant we are solving for.
- * The first guess uses the offset at the naive-UTC reading; the second uses the
- * offset at that corrected instant, which is what makes DST-boundary dates come
- * out right. Times inside a spring-forward gap (2:30 AM on the second Sunday in
- * March in New York) do not exist; this resolves them forward, matching what
- * Apple and Google both do.
+ * The offset depends on the instant we are solving for, so this generates the
+ * two candidate instants (using the offset before and after correction) and
+ * then CHECKS which of them actually reads back as the requested wall time.
+ *
+ * A fixed two-pass loop is not enough, and got this wrong: across a DST
+ * boundary the two candidates oscillate, and stopping after the second pass
+ * silently returned the one an hour off. For 2:30 AM on 2026-03-08 in New York
+ * it produced 1:30 AM EST — the opposite of the forward resolution documented
+ * here, and an event landing before doors open.
+ *
+ * The two special cases, handled explicitly rather than by luck:
+ *  - GAP (spring forward): 2:30 AM does not exist on that date. Neither
+ *    candidate round-trips, so we shift FORWARD past the gap (→ 3:30 AM EDT),
+ *    which is what Apple and Google both do.
+ *  - AMBIGUOUS (fall back): 1:30 AM happens twice. Both candidates round-trip,
+ *    so we take the EARLIER occurrence — the first 1:30, again matching the
+ *    platforms.
  */
 export function wallTimeToUtc(
   date: string,
@@ -133,9 +144,17 @@ export function wallTimeToUtc(
   const [h, mi] = time.split(':').map(Number);
   const naive = Date.UTC(y, mo - 1, d, h, mi);
   if (!tz) return naive; // floating: caller must not treat this as a real instant
-  let ts = naive - zoneOffsetMs(naive, tz);
-  ts = naive - zoneOffsetMs(ts, tz);
-  return ts;
+
+  const candidateA = naive - zoneOffsetMs(naive, tz);
+  const candidateB = naive - zoneOffsetMs(candidateA, tz);
+  if (candidateA === candidateB) return candidateA; // ordinary case, no transition
+
+  // A candidate is real only if reading it back in `tz` gives the wall time asked for.
+  const readsBackCorrectly = (t: number) => t + zoneOffsetMs(t, tz) === naive;
+  const valid = [candidateA, candidateB].filter(readsBackCorrectly);
+
+  if (valid.length > 0) return Math.min(...valid); // ambiguous → first occurrence
+  return Math.max(candidateA, candidateB);         // gap → forward past it
 }
 
 /** Inverse of wallTimeToUtc: a UTC instant → {date, time} as read in `tz`. */

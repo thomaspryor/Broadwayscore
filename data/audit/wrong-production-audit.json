@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-09T23:29:49.439Z",
+  "timestamp": "2026-08-10T00:33:19.759Z",
   "stats": {
     "totalReviews": 41950,
-    "alreadyFlagged": 18241,
-    "dateGuardCatches": 139,
-    "directorMismatch": 963,
-    "tvFilmSignals": 1163,
-    "londonSignals": 836,
+    "alreadyFlagged": 18271,
+    "dateGuardCatches": 137,
+    "directorMismatch": 961,
+    "tvFilmSignals": 1161,
+    "londonSignals": 830,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3527
+    "noPublishDate": 3518
   },
   "findings": [
     {
@@ -2928,25 +2928,6 @@
     },
     {
       "showId": "brainiac-live-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "score": null,
-      "publishDate": "2026-06-07",
-      "url": "https://www.timeout.com/london/kids/brainiac-live",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 49d before show (2026-06-07 vs 2026-07-26)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "brainiac-live-west-end-2026",
       "file": "westendtheatre--west-end-theatre.json",
       "publishDate": null,
       "url": "https://www.westendtheatre.com/64763/shows/brainiac-live/",
@@ -4612,19 +4593,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "daily-mail--deborah-ross.json",
-      "publishDate": "2026-08-08",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -15287,25 +15255,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john caird\" from les-miserables-2006"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 60,
-      "publishDate": "2020-01-17",
-      "url": "https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -36552,20 +36501,6 @@
       ]
     },
     {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
-      "file": "whatsonstage--unknown.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/hamlet-starring-luke-thallon-at-the-rsc-review-shakespeare-meets-titanic_1665523/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
       "showId": "high-2011",
       "file": "timeout--david-cote.json",
       "score": 17,
@@ -37169,19 +37104,6 @@
       "score": 81,
       "publishDate": "2026-04-07",
       "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "loureviews--louise-penn.json",
-      "publishDate": "2026-08-02",
-      "url": "https://loureviews.blog/2026/08/02/theatre-review-inter-alia-nt-at-home/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -41139,6 +41061,20 @@
     },
     {
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "file": "nyt-theater--jonathan.json",
+      "score": 78,
+      "publishDate": "2026-06-14",
+      "url": "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 38d before show (2026-06-14 vs 2026-07-22)"
+        }
+      ]
+    },
+    {
+      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
       "file": "thecomicscomic--sean-l-mccarthy.json",
       "score": 76,
       "publishDate": "2025-08-04",
@@ -44336,20 +44272,6 @@
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
-      "file": "times-uk--clive-davis.json",
-      "score": 25,
-      "publishDate": "2024-12-06",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-devil-wears-prada-review-more-john-lewis-than-valentino-8jn7bgc76",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
       "score": 60,
       "publishDate": "2024-12-08",
@@ -44457,19 +44379,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "myshrewsbury--six-ticks-limited.json",
-      "publishDate": "2026-06-05",
-      "url": "https://www.myshrewsbury.co.uk/blog/roald-dahls-the-enormous-crocodile-brings-menace-mayhem-to-theatre-severn/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 53d before show (2026-06-05 vs 2026-07-28)"
         }
       ]
     },
@@ -44996,19 +44905,6 @@
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "file": "unknownkentandsussex--maria-bligh.json",
-      "publishDate": "2026-06-19",
-      "url": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 33d before show (2026-06-19 vs 2026-07-22)"
-        }
-      ]
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "file": "westendtheatre--west-end-theatre.json",
       "publishDate": "2026-07-01",
       "url": "https://www.westendtheatre.com/359461/shows/the-importance-of-being-oscar-tickets/",
@@ -45353,34 +45249,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "standard--alexander-games.json",
-      "score": 72,
-      "publishDate": "1999-10-14",
-      "url": "https://standard.co.uk/culture/theatre/the-lion-king-new-leads-posi-morakinyo-asha-parkerwallace-b1277912.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--claire-allfree.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hot-wing-king-nationals-dorfman-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -45869,20 +45737,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-p-word-off-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/krapp-s-last-tape-review-b1282049.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },

@@ -30,6 +30,14 @@ const TICKET_DOMAINS = new Set([
   'bookitplease.com', 'showpass.com', 'atgtickets.com', 'lovetheatre.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
+  // 2026-08-09: both were counted as MISSING REVIEWS for
+  // disruption-off-broadway-2026 by the SERP census. Two of the three openings
+  // the newsletter gate deleted from the 2026-08-03 issue were dropped over
+  // gaps that did not exist, and these two hosts are one of them. Verified
+  // zero hits across every scored review URL in reviews.json before adding
+  // (a deny-list entry that matches a real review is worse than the phantom
+  // gap it removes).
+  'ticketluck.com', 'etickets.com',
 ]);
 
 // Aggregator/listing sites — not direct review sources
