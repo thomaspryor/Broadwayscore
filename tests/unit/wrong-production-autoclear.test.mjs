@@ -1135,3 +1135,41 @@ describe('no auto-clear predicate may skip the ensemble guard', () => {
     );
   });
 });
+
+// The dead-code guard: this module has twice shipped a tested, exported
+// shouldAutoClear* predicate that no caller actually invoked — the real
+// rebuild-all-reviews.js call site ran its own diverging inline logic
+// instead (shouldAutoClearWrongProductionUrlYear, task #1193; the sibling
+// UK-dual-market predicate had the same defect class, task #1189). Tests
+// passing gave false confidence the predicate governed production behavior.
+// Structural, so an EIGHTH predicate added later cannot quietly repeat it.
+describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard)', () => {
+  it('every exported shouldAutoClear* name has at least one call site in a documented caller script', () => {
+    const libSrc = fs.readFileSync(
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'lib', 'wrong-production-autoclear.js'),
+      'utf8',
+    );
+    const exportsMatch = libSrc.match(/module\.exports\s*=\s*\{([\s\S]*?)\};/);
+    assert.ok(exportsMatch, 'expected a module.exports = { ... } block');
+    const exportedNames = exportsMatch[1]
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => /^shouldAutoClear\w+$/.test(s));
+    assert.ok(exportedNames.length > 0, 'expected at least one exported shouldAutoClear* name');
+
+    // The two production callers documented in this file's header docstring.
+    const callerPaths = [
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'rebuild-all-reviews.js'),
+      path.join(__dirnameCompat, '..', '..', 'scripts', 'flag-wrong-production-by-date.js'),
+    ];
+    const callerSrc = callerPaths.map(p => fs.readFileSync(p, 'utf8')).join('\n');
+
+    const unwired = exportedNames.filter(name => !callerSrc.includes(`${name}(`));
+    assert.deepEqual(
+      unwired, [],
+      `these exported predicates have zero call sites in rebuild-all-reviews.js or `
+        + `flag-wrong-production-by-date.js: ${unwired.join(', ')}. A predicate with unit `
+        + 'tests but no caller is dead code masquerading as tested production logic (#1193).',
+    );
+  });
+});

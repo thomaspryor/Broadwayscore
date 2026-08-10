@@ -114,11 +114,17 @@ test('an aggregator domain the registry maps to its own outlet is rerouted, not 
     source: 'submit-review-form',
     fields: { fullText: 'x'.repeat(400) },
   });
-  assert.notEqual(r.action, 'new-under-guardian');
+  // Behaviour narrowed 2026-08-09 (code review on 2c679ad4bb1): the reroute-to-dtli
+  // branch was itself the laundering — it filed a Guardian review as DTLI's own.
+  // Now the write is refused outright. Either refusal reason satisfies the
+  // invariant; what must never happen is a file landing under `guardian` with a
+  // didtheylikeit.com URL, which is the zero-tolerance validator error.
+  assert.equal(r.action, 'skipped', `expected a refusal, got ${JSON.stringify(r)}`);
   assert.ok(
-    r.reason === 'aggregator-url-mismatch' || /\/dtli--/.test(r.filepath || ''),
-    `expected refusal or reroute to dtli, got ${JSON.stringify(r)}`,
+    r.reason === 'aggregator-url-mismatch' || r.reason === 'aggregator-url-refinement-refused',
+    `expected an aggregator refusal reason, got ${JSON.stringify(r)}`,
   );
+  assert.ok(!/\/guardian--/.test(r.filepath || ''), 'must not file under the real outlet');
 });
 
 test('aggregator-SOURCE writes still land — they legitimately carry the roundup URL', () => {
