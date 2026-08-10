@@ -285,3 +285,28 @@ test('reconcileOutcomes: passes the job\'s OWN window to the commit-ref lookup, 
   assert.equal(seen[0].fromTs, '2026-08-04T22:00:00Z', 'window opens at the drain-dispatch, not epoch');
   assert.equal(seen[0].toTs, '2026-08-05T14:00:00Z', 'window closes at the job\'s terminal event');
 });
+
+// ── human-gated skip cache (task #1184 S3) ─────────────────────────────────
+// The scan window used to be starved to ZERO dispatches (8/5-8/9) by 8
+// permanently human-gated cards at the head of the oldest-first order, each
+// consuming a scan slot every tick. The TTL cache is what lets the loop skip
+// them without a fetch or a slot — and the TTL is the invalidation story
+// (plan-review design P1: a permanent ID set would skip a card forever even
+// after the owner edits it to become dispatchable).
+const { skipCacheFresh, loadSkipCache, HUMAN_GATED_CACHE_TTL_MS } = require('./backlog-drain.js');
+
+test('skipCacheFresh: fresh within TTL, stale past it, garbage never fresh', () => {
+  const now = Date.parse('2026-08-10T12:00:00.000Z');
+  const at = (h) => ({ ts: new Date(now - h * 3600e3).toISOString(), codes: ['VISUAL_QA_GATE'] });
+  assert.equal(skipCacheFresh(at(1), now), true);
+  assert.equal(skipCacheFresh(at(23), now), true, 'just inside the 24h TTL');
+  assert.equal(skipCacheFresh(at(25), now), false, 'past TTL — card gets re-evaluated');
+  assert.equal(skipCacheFresh(undefined, now), false);
+  assert.equal(skipCacheFresh({ ts: 'not-a-date' }, now), false);
+  assert.equal(skipCacheFresh(at(-2), now), false, 'a future-dated ts (clock skew/corruption) must never read as fresh');
+  assert.ok(HUMAN_GATED_CACHE_TTL_MS <= 24 * 3600e3, 'TTL must stay <= 24h so an edited card is picked up within a day');
+});
+
+test('loadSkipCache: missing/corrupt file degrades to empty (cache is an optimization only)', () => {
+  assert.deepEqual(loadSkipCache('/nonexistent/path/cache.json'), {});
+});
