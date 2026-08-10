@@ -1,0 +1,115 @@
+{
+  "base": "https://broadwayscorecard.com",
+  "pagesChecked": 5,
+  "pagesFailed": 0,
+  "destinationsChecked": 3,
+  "destinationsBroken": 0,
+  "destinationsSkipped": 0,
+  "allDestinationsSkipped": false,
+  "results": [
+    {
+      "id": "aladdin-2014",
+      "slug": "aladdin",
+      "status": "open",
+      "todaytixId": 105,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/aladdin",
+      "verdict": "pass",
+      "linksFound": 9,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470249",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470250",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470251",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470252",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470254",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470253",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470256",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470255",
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
+      ]
+    },
+    {
+      "id": "and-juliet-2022",
+      "slug": "and-juliet",
+      "status": "open",
+      "todaytixId": 25598,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/and-juliet",
+      "verdict": "pass",
+      "linksFound": 11,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352071",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352097",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352112",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352785",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352467",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352138",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352039",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352049",
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway"
+      ]
+    },
+    {
+      "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "slug": "austentatious-an-improvised-jane-austen-novel-west-end",
+      "status": "open",
+      "todaytixId": 43897,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": true,
+      "problems": [],
+      "destinations": []
+    },
+    {
+      "id": "a-walk-on-the-moon-off-broadway-2026",
+      "slug": "a-walk-on-the-moon-off-broadway",
+      "status": "open",
+      "todaytixId": 46799,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-walk-on-the-moon-off-broadway",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": true,
+      "problems": [],
+      "destinations": []
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "slug": "death-of-a-salesman",
+      "status": "closed",
+      "todaytixId": 45916,
+      "expectLinks": false,
+      "url": "https://broadwayscorecard.com/show/death-of-a-salesman",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": []
+    }
+  ],
+  "destChecks": [
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470249",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470250",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470251",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    }
+  ],
+  "updatedAt": "2026-08-10T13:32:39.300Z"
+}
