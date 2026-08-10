@@ -135,6 +135,17 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: 'An outlet\'s "does not review theatre" flag is stale or contradicted by actual coverage. Open Claude Code and say: "Check the coverageExpectation drift and re-decide the flagged outlets."' },
   { match: /^Quality: outlet-heartbeat red flags$/, urgency: 'this-week',
     humanAction: 'One or more critic outlets have gone quiet for 2+ straight weekly checks. Open Claude Code and say: "Check the outlet-heartbeat red flags and find out if the outlet stopped reviewing or an extractor broke."' },
+
+  // Silent-exclusion detectors (#1147 tracker, card #1188, ship-check
+  // finding). Without explicit entries these fall through to the generic
+  // /^Quality:/ route below and get described as a scored-review-percentage
+  // problem, which is not what either measures — same trap the SERP census
+  // recall entry above exists to avoid.
+  { match: /^Quality: missing contentTier$/, urgency: 'this-week',
+    humanAction: 'A review-text file has fullText + a real byline + no rejection flags but no contentTier, so it is not reaching reviews.json. Open Claude Code and say: "Check the missing contentTier gap named in this check and restore contentTier on that review-text file."' },
+  { match: /^Quality: outlet domain moves$/, urgency: 'this-week',
+    humanAction: 'An unregistered host name-matches a known outlet — probably that outlet moved to a new domain (e.g. a critic switching to Substack) and reviews on the new host are being silently dropped. Open Claude Code and say: "Check the probable outlet domain move named in this check, confirm it, and add the host to that outlet\'s domainAliases."' },
+
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
@@ -1012,10 +1023,20 @@ function checkQuality() {
       if (hits.length > 0 && fs.existsSync(reviewsPath)) {
         try {
           const live = readJSON(reviewsPath);
-          const liveKeys = new Set(
+          const liveUrls = new Set((live.reviews || []).map((r) => r.url).filter(Boolean));
+          const liveTriples = new Set(
             (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
           );
-          hits = hits.filter((h) => !liveKeys.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`));
+          // Match on url FIRST when the hit has one: two review-text files can
+          // share showId+outletId+criticName (a republished article, or
+          // byline-enrichment landing on two separate URLs) — the coarser
+          // triple match alone would let one file already live in reviews.json
+          // mask the OTHER file's genuine gap (ship-check finding). Only fall
+          // back to the triple match when the hit has no url to compare.
+          hits = hits.filter((h) => {
+            if (h.url) return !liveUrls.has(h.url);
+            return !liveTriples.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`);
+          });
         } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
       }
       if (hits.length === 0) {
@@ -1891,7 +1912,10 @@ function checkAutofixEffectiveness() {
     try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
   }
 
-  const r = assessAutofixEffectiveness(rows, { dispatchCount });
+  // No dispatchCount option: launches now come from this ledger's own
+  // `auto-dispatch` rows (see autofix-effectiveness.js header for why the
+  // alert-router coupling was removed).
+  const r = assessAutofixEffectiveness(rows);
   return [{
     name,
     status: r.status,

@@ -278,9 +278,11 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
     .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   if (!spawns.length) return null;
-  const jobId = spawns[0].jobId;
-  const jobs = dispatchLedger.foldJobs(dispatchLedgerEntries.filter(e => e.jobId === jobId));
-  return jobs.get(jobId) || null;
+  // Task #1184 S1: follow job-retried chains (shared, causal implementation —
+  // see dispatch-ledger.followRetryChain's header) so a live resume is never
+  // scored card-fail. A chain ending at RETRIED (successor not spawned yet)
+  // is handled by the caller as still-in-flight, with its own orphan bound.
+  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
@@ -303,6 +305,19 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       newEntries.push({
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+      });
+      resolvedKeys.add(key);
+      continue;
+    }
+    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
+      // Chain ends at a retry whose successor hasn't spawned yet: treat as
+      // still running inside the same orphan bound the no-spawn case uses —
+      // past it, the resume child died before spawning and the attempt fails.
+      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
+      if (ageH < ORPHAN_TIMEOUT_H) continue;
+      newEntries.push({
+        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       resolvedKeys.add(key);
       continue;

@@ -22,6 +22,7 @@ scripts/bsc-next-ci-red-claim.test.mjs
 scripts/bsc-next.test.mjs
 scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile.test.mjs
+scripts/backlog-drain.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/discover-new-shows.test.mjs
 scripts/enrich-card-acceptance.test.mjs
@@ -44,6 +45,7 @@ scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/newsletter/newsworthiness.test.mjs
 scripts/newsletter/section-credential-guard.test.mjs
 scripts/newsletter/we-openings-section.test.mjs
+scripts/notion-action-poll.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
@@ -269,6 +271,7 @@ tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
+tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/opening-night-checks-critics-take.test.mjs
 tests/unit/opening-night-checks-juan-a-ramirez-bypass.test.mjs
 tests/unit/opening-night-checks-metadata-completeness.test.mjs
