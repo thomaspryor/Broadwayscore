@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-10T16:48:37.492Z",
+  "generatedAt": "2026-08-10T17:35:39.870Z",
   "windowDays": 1095,
-  "targets": 14,
-  "auditedThisRun": 13,
-  "carriedForward": 198,
+  "targets": 3,
+  "auditedThisRun": 3,
+  "carriedForward": 208,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -396,7 +396,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T03:06:37.050Z"
+      "computedAt": "2026-08-10T17:35:39.870Z"
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
@@ -16747,7 +16747,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-10T17:35:39.870Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -38682,12 +38682,63 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"ISLA\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ISLA\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ISLA WP Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ISLA WP Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ISLA WP Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "roundup-page": 2,
+          "non-review-host": 17,
+          "aggregator-internal-nav": 3
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -38698,7 +38749,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-10T17:35:39.870Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
