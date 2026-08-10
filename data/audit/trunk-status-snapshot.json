@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-10T08:19:42.278Z",
+  "generatedAt": "2026-08-10T12:02:12.383Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "6564b8a8eb9e2ebabb700a5b2524bb7bde642bde",
+  "latestRunHeadSha": "4a7164ee59f54391cbfe4198a149a148ae0e310f",
   "state": "RED",
-  "consecutiveFailures": 24,
+  "consecutiveFailures": 27,
   "redSince": "2026-08-09T23:39:28Z",
-  "redForHours": 8.670632777777778,
+  "redForHours": 12.378995277777777,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-09T23:31:44Z",
-  "latestFailedRunId": "31367088712",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31367088712",
-  "decidedRuns": 98,
+  "latestFailedRunId": "31376938325",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31376938325",
+  "decidedRuns": 95,
   "failingJobs": [
     {
       "name": "Unit Tests",
@@ -31,19 +31,19 @@
     {
       "path": "tests/unit/cast-changes-real-data.test.mjs",
       "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
+      "step": "UNKNOWN STEP",
       "evidence": "not ok 1141 - no [AUTO-FLAGGED] entries older than 30 days in upcoming"
     },
     {
       "path": "scripts/lib/exit-status-gate-taskref.test.mjs",
       "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "step": "UNKNOWN STEP",
       "evidence": "not ok 1392 - Gate T BLOCKS a final message with \"task \\#1152\" and no nearby title"
     },
     {
       "path": "scripts/lib/ingest-skip-classify.test.mjs",
       "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "step": "UNKNOWN STEP",
       "evidence": "not ok 1602 - every skip reason review-file-writer.js emits is classified"
     }
   ],

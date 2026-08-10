@@ -42,11 +42,16 @@ const { loadChecks } = require('./lib/opening-night-checks/index.js');
 const {
   collectRemediations,
   readAttempts,
+  readGiveUps,
   planRemediations,
   executeRemediations,
+  findAbandonedRemediations,
   DEFAULT_COOLDOWN_MS,
   DEFAULT_MAX_ATTEMPTS,
+  DEFAULT_LIFETIME_MAX_ATTEMPTS,
+  DEFAULT_RETIREMENT_TTL_MS,
 } = require('./lib/opening-night-remediation.js');
+const { MIN_SCORED_REVIEWS } = require('./lib/critic-consensus-eligibility.js');
 
 const SHOW_ID = 'the-2026-04-15-show';
 const OPENING = '2026-04-15';
@@ -183,24 +188,41 @@ describe('catch 2: BWW Review Roundup count mismatch', () => {
 describe('catch 3: missing Critics Take', () => {
   const show = { id: SHOW_ID, title: 'The 2026-04-15 Show', compositeScore: 74 };
 
+  // Enough scored reviews that generate-critic-consensus.js would actually run.
+  // Below its floor the check deliberately stays quiet (see the loop test at
+  // the bottom of this block), so a fixture with an empty reviewsDoc would be
+  // asserting the wrong branch.
+  const scored = Array.from({ length: MIN_SCORED_REVIEWS }, (_, i) => ({ outletId: `o${i}`, assignedScore: 70 + i }));
+  const consensusContext = (overrides = {}) => makeContext({ reviewsDoc: { [SHOW_ID]: scored }, ...overrides });
+
   it('flags a scored show with no consensus text', () => {
-    const result = criticsTakePresent.run(show, makeContext({ criticConsensusDoc: {} }));
+    const result = criticsTakePresent.run(show, consensusContext({ criticConsensusDoc: {} }));
     assert.equal(result.ok, false);
     assert.match(result.message, /Critics Take is missing/);
   });
 
   it('does not flag a show that already has consensus text', () => {
-    const result = criticsTakePresent.run(show, makeContext({ criticConsensusDoc: { [SHOW_ID]: { text: 'Critics raved.' } } }));
+    const result = criticsTakePresent.run(show, consensusContext({ criticConsensusDoc: { [SHOW_ID]: { text: 'Critics raved.' } } }));
     assert.equal(result.ok, true);
   });
 
   it('triggers update-critic-consensus.yml for that one show', () => {
     const [action] = collectRemediations(
-      asShowResults(criticsTakePresent.run(show, makeContext()), 'critics-take-present')
+      asShowResults(criticsTakePresent.run(show, consensusContext()), 'critics-take-present')
     );
     assert.equal(action.kind, 'workflow');
     assert.equal(action.workflow, 'update-critic-consensus.yml');
     assert.equal(action.inputs.show, SHOW_ID, 'must be scoped to the show, not a corpus-wide regeneration');
+  });
+
+  // The 2026-08-09 regression this suite exists to prevent recurring: a show
+  // under the generator's own floor must produce NO remediation at all, or the
+  // hourly cron dispatches a workflow that is coded to skip it, forever.
+  it('declares no remediation for a show the generator would skip', () => {
+    const oneReview = makeContext({ reviewsDoc: { [SHOW_ID]: [{ outletId: 'o0', assignedScore: 44 }] } });
+    const result = criticsTakePresent.run(show, oneReview);
+    assert.equal(result.ok, true);
+    assert.equal(collectRemediations(asShowResults(result, 'critics-take-present')).length, 0);
   });
 });
 
@@ -446,6 +468,167 @@ describe('remediation runner', () => {
     assert.equal(planned.action, 'dispatch');
   });
 
+  // The failure this ceiling exists for: DEFAULT_MAX_ATTEMPTS is a ROLLING
+  // 24h budget, so a remediation whose target can never succeed re-dispatches
+  // two runs a day forever. critic-consensus:death-note-the-musical-west-end-2026
+  // did exactly that — 5 dispatches, 23 escalations, all in one ledger.
+  it('retires a key once the LIFETIME attempt ceiling is reached', () => {
+    // Spread across days so the rolling window is empty — the old code would
+    // read this as "no recent attempts, dispatch away".
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) => ledgerLine(i * 24 * 60 + 2000));
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now);
+    assert.equal(planned.action, 'give-up');
+    assert.equal(planned.attempts, DEFAULT_LIFETIME_MAX_ATTEMPTS);
+  });
+
+  it('the aged-out rolling window alone does NOT resurrect a retired key', () => {
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS + 3 }, (_, i) => ledgerLine(i * 24 * 60 + 5000));
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now);
+    assert.notEqual(planned.action, 'dispatch');
+    assert.equal(planned.action, 'give-up');
+  });
+
+  it('one attempt below the ceiling still escalates rather than giving up', () => {
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS - 1 }, (_, i) => ledgerLine(420 + i * 60));
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now);
+    assert.equal(planned.action, 'escalate');
+  });
+
+  // A credential outage must not be able to retire the whole remediation
+  // layer. dispatchWorkflow() returns {ok:false,error:'no-token'} whenever the
+  // job runs without a token, which writes action:'failed' — nothing was ever
+  // dispatched, so it cannot count as an attempt the target had a chance at.
+  it('failed dispatches (no-token) never consume the LIFETIME budget', () => {
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS + 4 }, (_, i) => ledgerLine(i * 24 * 60 + 5000, 'failed'));
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now);
+    assert.equal(planned.action, 'dispatch', 'a token outage must be recoverable, not terminal');
+  });
+
+  it('mixed failures and real dispatches: only the real ones count toward the ceiling', () => {
+    const failures = Array.from({ length: 6 }, (_, i) => ledgerLine(i * 24 * 60 + 9000, 'failed'));
+    const dispatched = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS - 1 }, (_, i) => ledgerLine(i * 24 * 60 + 4000));
+    const [planned] = planRemediations([workflowAction], readAttempts([...failures, ...dispatched]), now);
+    assert.notEqual(planned.action, 'give-up', `${DEFAULT_LIFETIME_MAX_ATTEMPTS - 1} real attempts is still under the ceiling`);
+
+    const [atCeiling] = planRemediations(
+      [workflowAction],
+      readAttempts([...failures, ...dispatched, ledgerLine(3000)]),
+      now
+    );
+    assert.equal(atCeiling.action, 'give-up');
+    assert.equal(atCeiling.attempts, DEFAULT_LIFETIME_MAX_ATTEMPTS, 'the reported count is real attempts, not ledger lines');
+  });
+
+  it('records the give-up exactly once, then goes fully silent', async () => {
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) => ledgerLine(i * 24 * 60 + 2000));
+    const ledger = [];
+    const calls = [];
+    const deps = {
+      now,
+      dispatchWorkflow: async (w, i) => { calls.push({ w, i }); return { ok: true }; },
+      routeAlert: async () => { calls.push({ alert: true }); return { action: 'digest' }; },
+      appendLedger: (e) => ledger.push(e),
+    };
+
+    // First run after the ceiling: one 'gave-up' line, no dispatch, no alert.
+    const first = await executeRemediations(
+      planRemediations([workflowAction], readAttempts(lines), now), deps
+    );
+    assert.equal(first.gaveUp, 1);
+    assert.equal(first.dispatched, 0);
+    assert.equal(first.escalated, 0);
+    assert.equal(calls.length, 0, 'nothing dispatched, nobody alerted');
+    assert.equal(ledger.length, 1);
+    assert.equal(ledger[0].action, 'gave-up');
+
+    // Every subsequent hourly run: not one more ledger line.
+    const replayLines = [...lines, JSON.stringify({ ...ledger[0], at: now.toISOString() })];
+    const second = await executeRemediations(
+      planRemediations([workflowAction], readAttempts(replayLines), now, { gaveUpKeys: readGiveUps(replayLines) }),
+      deps
+    );
+    assert.equal(second.retired, 1);
+    assert.equal(second.gaveUp, 0);
+    assert.equal(ledger.length, 1, 'the ledger must stop growing — that is the whole point');
+    assert.equal(calls.length, 0);
+  });
+
+  it('readGiveUps only picks up gave-up lines, and keeps the LATEST timestamp', () => {
+    const lines = [
+      ledgerLine(10, 'dispatched'),
+      ledgerLine(9, 'escalated'),
+      ledgerLine(8000, 'gave-up'),
+      ledgerLine(8, 'gave-up'),
+    ];
+    const keys = readGiveUps(lines);
+    assert.equal(keys.size, 1);
+    assert.ok(keys.has(workflowAction.key));
+    assert.equal(
+      keys.get(workflowAction.key),
+      now.getTime() - 8 * 60 * 1000,
+      'the most recent retirement is what the TTL is measured from'
+    );
+  });
+
+  // Retirement is a cooling-off, not a life sentence. A show that gains the
+  // reviews it was missing must get another chance without a human noticing.
+  it('retirement expires, and the expired cycle starts clean', () => {
+    const retiredDaysAgo = (d) => JSON.stringify({
+      at: new Date(now.getTime() - d * 24 * 60 * 60 * 1000).toISOString(),
+      key: workflowAction.key,
+      action: 'gave-up',
+    });
+    // The 4 dispatches that earned the retirement, all older than it.
+    const spent = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) => ledgerLine((20 + i) * 24 * 60));
+
+    const insideTtl = [...spent, retiredDaysAgo(13)];
+    const [stillQuiet] = planRemediations([workflowAction], readAttempts(insideTtl), now, { gaveUpKeys: readGiveUps(insideTtl) });
+    assert.equal(stillQuiet.action, 'retired', 'one day before the TTL it is still cooling off');
+
+    const pastTtl = [...spent, retiredDaysAgo(15)];
+    const [revived] = planRemediations([workflowAction], readAttempts(pastTtl), now, { gaveUpKeys: readGiveUps(pastTtl) });
+    assert.equal(revived.action, 'dispatch', 'past the TTL it gets a genuinely fresh cycle');
+    assert.equal(revived.attempts, 0, 'attempts that bought the retirement must not be recounted');
+  });
+
+  it('a TTL that expires does not immediately re-retire on the same history', () => {
+    // The bug this guards: if pre-retirement attempts still counted, the key
+    // would come off cooling-off and hit the ceiling again on the same run —
+    // making the TTL cosmetic and the retirement permanent in practice.
+    const spent = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS + 6 }, (_, i) => ledgerLine((30 + i) * 24 * 60));
+    const lines = [...spent, JSON.stringify({
+      at: new Date(now.getTime() - (DEFAULT_RETIREMENT_TTL_MS + 60000)).toISOString(),
+      key: workflowAction.key,
+      action: 'gave-up',
+    })];
+    const [planned] = planRemediations([workflowAction], readAttempts(lines), now, { gaveUpKeys: readGiveUps(lines) });
+    assert.notEqual(planned.action, 'give-up');
+    assert.equal(planned.action, 'dispatch');
+  });
+
+  it('a give-up on one key does not retire a different key', () => {
+    const other = { ...workflowAction, key: 'critic-consensus:some-other-show' };
+    const lines = [ledgerLine(8, 'gave-up')];
+    const [planned] = planRemediations([other], readAttempts(lines), now, { gaveUpKeys: readGiveUps(lines) });
+    assert.equal(planned.action, 'dispatch');
+  });
+
+  it('an escalation the alert-router suppressed is counted as suppressed, not escalated', async () => {
+    const lines = Array.from({ length: DEFAULT_MAX_ATTEMPTS }, (_, i) => ledgerLine(420 + i * 60));
+    const ledger = [];
+    const stats = await executeRemediations(planRemediations([workflowAction], readAttempts(lines), now), {
+      now,
+      dispatchWorkflow: async () => ({ ok: true }),
+      // routeAlert's own conditionKey cooldown swallowed it — the owner was
+      // NOT told again, and the hourly cron hits this branch every hour.
+      routeAlert: async () => ({ action: 'silent' }),
+      appendLedger: (e) => ledger.push(e),
+    });
+    assert.equal(stats.escalated, 0, 'nobody was told, so nothing was escalated');
+    assert.equal(stats.suppressed, 1);
+    assert.equal(ledger[0].action, 'suppressed');
+  });
+
   it('actually calls the dispatcher with the workflow and inputs', async () => {
     const calls = [];
     const ledger = [];
@@ -553,5 +736,138 @@ describe('remediation runner', () => {
     assert.equal(dispatched, 0);
     assert.equal(stats.killed, 1);
     assert.equal(ledger[0].action, 'killed');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The drain pass (task #1223) — the ISLA regression this suite exists to
+// prevent recurring: empty-cast:isla-off-broadway-2026 escalated twice, the
+// show aged out of the ±2-day window, and nothing ever looked at that key
+// again. Silence in the ledger became indistinguishable from "resolved".
+// ---------------------------------------------------------------------------
+describe('findAbandonedRemediations — drain pass for keys the window stopped collecting', () => {
+  const ISLA = 'isla-off-broadway-2026';
+  const now = new Date('2026-08-10T14:00:00Z');
+
+  function line(showId, key, action, overrides = {}) {
+    return JSON.stringify({
+      at: now.toISOString(),
+      kind: 'workflow',
+      key,
+      showId,
+      checkName: 'empty-cast',
+      action,
+      ...overrides,
+    });
+  }
+
+  it('does NOT terminalize a key whose show is still in the targeting window', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [line(ISLA, key, 'escalated', { attempts: 2 })];
+    const out = findAbandonedRemediations(lines, new Set([ISLA]), now);
+    assert.equal(out.length, 0, 'a show still being checked must not be drained out from under the normal run');
+  });
+
+  it('DOES terminalize a key whose show has left the window — the real isla-off-broadway-2026 case', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [
+      line(ISLA, key, 'waited', { waitMs: 7111602, attempts: 1 }),
+      line(ISLA, key, 'dispatched', { workflow: 'backfill-cast-web.yml', inputs: { show_filter: ISLA } }),
+      line(ISLA, key, 'escalated', { attempts: 2, routed: 'silent' }),
+    ];
+    const out = findAbandonedRemediations(lines, new Set(['some-other-show']), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].key, key);
+    assert.equal(out[0].showId, ISLA);
+    // 2 real attempts is well under the lifetime ceiling — budget remains,
+    // so this is an abandonment, not a give-up.
+    assert.equal(out[0].action, 'abandoned');
+    assert.equal(out[0].attempts, 1, 'only the ok:true dispatched line counts as a real attempt');
+  });
+
+  it('writes gave-up instead of abandoned when the lifetime budget was already spent', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, () => line(ISLA, key, 'dispatched'))
+      .concat([line(ISLA, key, 'escalated', { attempts: DEFAULT_LIFETIME_MAX_ATTEMPTS })]);
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].action, 'gave-up');
+    assert.equal(out[0].attempts, DEFAULT_LIFETIME_MAX_ATTEMPTS);
+  });
+
+  it('does NOT re-terminalize an already-terminal key — the ledger must stop growing', () => {
+    const key = `empty-cast:${ISLA}`;
+    const lines = [
+      line(ISLA, key, 'escalated', { attempts: 2 }),
+      line(ISLA, key, 'gave-up', { attempts: 2 }),
+    ];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 0, 'a key whose latest entry is already gave-up must be left alone');
+  });
+
+  it('an alert-kind key whose last line is dispatched is also drained as abandoned', () => {
+    const key = `stale-upcoming-tag:${ISLA}`;
+    const lines = [JSON.stringify({
+      at: now.toISOString(), kind: 'alert', key, showId: ISLA, checkName: 'stale-upcoming-tag', action: 'dispatched', conditionKey: `x-${ISLA}`,
+    })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].kind, 'alert');
+    // alert-kind remediations never hit the lifetime ceiling (planRemediations
+    // bypasses it entirely for kind:'alert') — always 'abandoned', never 'gave-up'.
+    assert.equal(out[0].action, 'abandoned');
+  });
+
+  it('a key resolved before the show left the window (no open trailing line) is not touched', () => {
+    const key = `empty-cast:${ISLA}`;
+    // The check passed on some later run — resolution leaves no ledger line at
+    // all (only failing checks remediate), so the LAST line in the ledger is
+    // still the old 'escalated' entry even though the problem is fixed. This
+    // guards against ever treating a genuinely-open key differently based on
+    // anything other than its own last line — there is nothing in the ledger
+    // to distinguish "fixed, no more lines" from "still broken, no more runs",
+    // which is exactly why this key SHOULD still be drained.
+    const lines = [line(ISLA, key, 'escalated', { attempts: 1 })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1, 'ledger silence alone cannot mean resolved — that ambiguity is the bug this drain closes');
+  });
+
+  it('does not drain a key with no showId or malformed lines', () => {
+    const malformed = ['not json', JSON.stringify({ key: 'x', action: 'dispatched' })];
+    assert.doesNotThrow(() => findAbandonedRemediations(malformed, new Set(), now));
+    assert.equal(findAbandonedRemediations(malformed, new Set(), now).length, 0);
+  });
+
+  it('a suppressed last line is drained too — same "unresolved" state as waited', () => {
+    const key = `stale-upcoming-tag:${ISLA}`;
+    const lines = [JSON.stringify({
+      at: now.toISOString(), kind: 'alert', key, showId: ISLA, checkName: 'stale-upcoming-tag', action: 'suppressed', why: 'alert-router cooldown',
+    })];
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1, 'a suppressed key must not go silent forever just like a waited one');
+    assert.equal(out[0].action, 'abandoned');
+  });
+
+  it('does not double-count attempts spent on an EXPIRED retirement into a fresh cycle', () => {
+    // Mirrors the exact scenario planRemediations.retiredAt guards against: a
+    // key gives up at the lifetime ceiling, its TTL later expires, one fresh
+    // dispatch happens (a real attempt in the NEW cycle), and then the show
+    // ages out before another run sees it. The drain pass must judge the new
+    // cycle on its own 1 attempt, not on the total across both cycles.
+    const key = `empty-cast:${ISLA}`;
+    const oldCycle = Array.from({ length: DEFAULT_LIFETIME_MAX_ATTEMPTS }, (_, i) =>
+      JSON.stringify({ at: new Date(now.getTime() - (100 + i) * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'dispatched' })
+    );
+    const gaveUp = JSON.stringify({ at: new Date(now.getTime() - 99 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'gave-up' });
+    // One fresh dispatch well after the gave-up line (a new, post-TTL cycle),
+    // then one more open-state line (the run that must classify this key).
+    const freshDispatch = JSON.stringify({ at: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'dispatched' });
+    const freshEscalate = JSON.stringify({ at: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(), kind: 'workflow', key, showId: ISLA, checkName: 'empty-cast', action: 'escalated', attempts: 1 });
+    const lines = [...oldCycle, gaveUp, freshDispatch, freshEscalate];
+
+    const out = findAbandonedRemediations(lines, new Set(), now);
+    assert.equal(out.length, 1);
+    assert.equal(out[0].action, 'abandoned', 'only 1 real attempt in the fresh cycle — must not re-trigger gave-up off the spent old cycle');
+    assert.equal(out[0].attempts, 1, 'the 4 pre-retirement attempts must not be recounted into the new cycle');
   });
 });

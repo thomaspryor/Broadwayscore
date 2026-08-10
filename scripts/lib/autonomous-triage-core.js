@@ -41,7 +41,12 @@ const SAFE_CHECK_FORMS = [
   // base64url token — no spaces or shell metachars can appear, which both
   // satisfies this injection gate and survives cardCheckArgv's quote-free
   // whitespace split (scripts/lib/autonomous-checks.js).
-  { re: /^node scripts\/check-health-row-absent\.js --row-b64 ([A-Za-z0-9_-]{1,200})$/ },
+  // Optional trailing ` --live` (Digest-autofix S5, task #1224): re-runs the
+  // core checks live via scripts/lib/health-row-probe.js instead of reading
+  // yesterday's snapshot, for same-day fix verification. Fixed literal
+  // suffix only — no new capture group, no widening of the row-token
+  // charset, so the injection surface is unchanged.
+  { re: /^node scripts\/check-health-row-absent\.js --row-b64 ([A-Za-z0-9_-]{1,200})( --live)?$/ },
   // Coverage Verdict S5 (task #903): read-only acceptance check for the
   // "two consecutive clean weeks" bar — reads a status file the weekly
   // adversarial-probe cron already wrote, no arguments, nothing to inject.
@@ -75,7 +80,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name>` (health-digest rows only), or `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance)';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), or `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test

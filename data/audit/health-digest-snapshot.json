@@ -1,16 +1,20 @@
 {
-  "generatedAt": "2026-08-10T08:19:24.788Z",
-  "subject": "BSC URGENT (day 13): 2 unresolved errors",
-  "bannerText": "2 errors, 22 warnings",
-  "consecutiveErrorDays": 13,
+  "generatedAt": "2026-08-10T12:01:03.171Z",
+  "subject": "BSC URGENT (day 14): 3 unresolved errors",
+  "bannerText": "3 errors, 22 warnings",
+  "consecutiveErrorDays": 14,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2763k credits left (69%) · 206k/day burn · renews in 24d · exhausts in ~13d (BEFORE renewal)"
+      "message": "2748k credits left (69%) · 209k/day burn · renews in 24d · exhausts in ~13d (BEFORE renewal)"
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test UGC Features",
+      "message": "Test UGC Features failed 3 times in the last 24h — likely broken, not transient."
     }
   ],
   "warns": [
@@ -20,7 +24,7 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19651 vs baseline 19659"
+      "message": "Reviews dropped: 19661 vs baseline 19669"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -45,14 +49,6 @@
     {
       "name": "SEO: health",
       "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
-    },
-    {
-      "name": "Cron failed: Test Suite",
-      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
-    },
-    {
-      "name": "Stuck work: paused P0/P1 cards",
-      "message": "11 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: P1: content-quality.js Path-3 capsule-review fallback miscla (7d, parked past 7d window by 1d); Send-day gap-audit state is self-clobbering: per-show runs o (7d, parked past 7d window by 1d); P1: validateShowMentioned Check-3 rubber-stamps unrelated lo (7d, parked past 7d window by 1d) (12 awaiting recheck, earliest due 2026-08-08; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
@@ -80,7 +76,7 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "4 discovered review(s) not reaching the composite score (3 T1). First: cats-west-end-2026 — independent (empty-body)"
+      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -93,55 +89,25 @@
   ],
   "queued": [
     {
-      "title": "Auto-remediation gave up on death-note-the-musical-west-end-2026",
-      "description": "critics-take-present keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: update-critic-consensus.yml {\"show\":\"death-note-the-musical-west-end-2026\",\"force\":\"true\"}",
+      "title": "Scraping spend over budget: brightdata $5.29 > $2.5 (1198 serp + 2328 unlocker reqs); scrapingdog 57212 credits > 45000",
+      "description": "Day 2026-08-09. 2026-08-09 · Browserbase: $2.3 (23 sessions) · 2026-08-09 · Bright Data: $5.29 (1198 serp / 2328 unlocker) · ScrapingBee: 26146 credits (113547 this cycle) · ScrapingDog: 57212 credits (1236534 this cycle) · Browserbase attribution: 4% attributed — top: collect-review-texts.js 1 · Bright Data attribution: 39% attributed — top: opening-night-poller.js 710, audit-show-review-gap.js 513, ingest-review-from-url.js 54, recover-explicit-ratings.js 40, recollect-for-scores.js 34 · ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 256, opening-night-poller.js 86, ingest-review-from-url.js 47, recollect-for-scores.js 34, recover-explicit-ratings.js 32 · ScrapingDog attribution: 10% attributed — top: audit-show-review-gap.js 3188, opening-night-poller.js 1138, collect-review-texts.js 604, recover-explicit-ratings.js 420, ingest-review-from-url.js 317. Verification streak reset to 0.",
+      "severity": "error",
+      "url": null
+    },
+    {
+      "title": "Stale 'upcoming' tag on Death Note: The Musical",
+      "description": "death-note-the-musical-west-end-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=death-note-the-musical-west-end-2026 --apply",
       "severity": "warning",
       "url": null
     },
     {
       "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80.3% (453/564)\noff-broadway: 48.6% (154/317)\nwest-end: 71.3% (409/574)\n\nOldest gaps:\n1536 — guardian (418h)\n1536 — independent (418h)\nA Midsummer Night's Dream - Globe — financialtimes (418h)\nA Midsummer Night's Dream - Globe — telegraph (418h)\nA Midsummer Night's Dream — financialtimes (418h)\n… 203 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (418h)\nThe Book of Mormon — usatoday (418h)\nHeathers The Musical — dailybeast (418h)\nHeathers The Musical — ew (418h)\nSpamalot — dailybeast (418h)\n… 4 more circuit-open cell(s)",
+      "description": "broadway: 80.8% (407/504)\noff-broadway: 46.4% (156/336)\nwest-end: 72% (420/583)\n\nOldest gaps:\n1536 — guardian (439h)\n1536 — independent (439h)\nA Midsummer Night's Dream - Globe — financialtimes (439h)\nA Midsummer Night's Dream - Globe — telegraph (439h)\nA Midsummer Night's Dream — financialtimes (439h)\n… 198 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (439h)\nThe Book of Mormon — usatoday (439h)\nBuena Vista Social Club — broadwaynews (439h)\nHeathers The Musical — dailybeast (439h)\nHeathers The Musical — ew (439h)\n… 17 more circuit-open cell(s)",
       "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "Review-gap audit refused to write — 9.1% of shows changed coverage state",
-      "description": "review-gap blast radius 9.1% (2/22 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: horrible-histories-barmy-britain-the-best-bits-west-end-2026, isla-off-broadway-2026\n\nThe previous /home/runner/work/Broadwayscore/Broadwayscore/data/audit/show-review-gap.json is intact — nothing was lost. Check the scraper/SERP providers and the core-data checkout, then re-run. To accept the change: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "Auto-remediation gave up on isla-off-broadway-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast.yml {\"show_filter\":\"isla-off-broadway-2026\",\"force\":\"true\"}",
-      "severity": "warning",
-      "url": null
-    },
-    {
-      "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "1/156 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nscore-drift: 1\nCats: missing-from-prod+score-drift",
-      "severity": "error",
-      "url": null
-    },
-    {
-      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31343382838"
-    },
-    {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\n3 Summers of Lincoln (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please add back the BroadwayWorld review for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/559",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31349916135"
-    },
-    {
-      "title": "T1 Coverage — new gaps past 24h",
-      "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-      "severity": "error",
       "url": null
     }
   ],
-  "autoFixedCount": 1,
+  "autoFixedCount": 2,
   "passedCount": 51,
-  "totalCount": 79
+  "totalCount": 80
 }

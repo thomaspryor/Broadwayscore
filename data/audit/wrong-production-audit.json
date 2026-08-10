@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T09:22:43.994Z",
+  "timestamp": "2026-08-10T16:54:33.023Z",
   "stats": {
-    "totalReviews": 41971,
-    "alreadyFlagged": 18305,
+    "totalReviews": 42017,
+    "alreadyFlagged": 18306,
     "dateGuardCatches": 134,
-    "directorMismatch": 959,
-    "tvFilmSignals": 1160,
-    "londonSignals": 828,
+    "directorMismatch": 961,
+    "tvFilmSignals": 1177,
+    "londonSignals": 833,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3520
+    "noPublishDate": 3523
   },
   "findings": [
     {
@@ -1842,6 +1842,109 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "british-theatre--howard-loxton.json",
+      "score": 76,
+      "publishDate": "2024-11-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "daily-mail--georgina-brown.json",
+      "score": 67,
+      "publishDate": "2024-10-31",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14022881/Barcelona-review-rom-com-Spanish-hunk-dark-twist.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 95,
+      "publishDate": "2024-10-31",
+      "url": "https://inews.co.uk/culture/arts/lily-collins-barcelona-review-3354734?srsltid=AfmBOoryeRFmjwleJM0WPXh-1cvMFp2Kluo063ENK28cNp1fWUPSwwX-",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "independent--annabel-nugent.json",
+      "score": 44,
+      "publishDate": "2024-10-31",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/barcelona-lily-collins-alvaro-morte-b2638352.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 72,
+      "publishDate": "2024-10-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "telegraph--claire-allfree.json",
+      "score": 71,
+      "publishDate": "2024-10-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 78,
+      "publishDate": "2024-10-30",
+      "url": "https://www.whatsonstage.com/news/barcelona-west-end-review-lily-collins-and-alvaro-morte-are-revelatory-in-enigmatic-drama_1647506/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -4579,14 +4682,20 @@
     },
     {
       "showId": "cats-west-end-2026",
-      "file": "daily-mail--unknown.json",
-      "publishDate": "2026-08-08",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
+      "file": "firstnightmagazine--unknown.json",
+      "score": 61,
+      "publishDate": "2026-08-09",
+      "url": "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/",
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
+          "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -14049,6 +14158,165 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "british-theatre--howard-loxton.json",
+      "score": 78,
+      "publishDate": "2024-10-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 64,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 51,
+      "publishDate": "2024-10-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "score": 75,
+      "publishDate": "2024-10-07",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/juno-and-the-paycock-mark-rylance-b2624634.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 76,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": 36,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 59,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "theatre-weekly--oliver-valentine.json",
+      "score": 87,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 45,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 49,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 40,
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -28849,7 +29117,7 @@
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-      "file": "boston-globe--unknown.json",
+      "file": "boston-globe--terry-byrne.json",
       "score": 68,
       "publishDate": "2025-05-30",
       "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
@@ -28867,6 +29135,20 @@
       "score": null,
       "publishDate": "November 20, 2025",
       "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "file": "nysr--bob-verini.json",
+      "score": 79,
+      "publishDate": "2025-06-05",
+      "url": "https://nystagereview.com/2025/06/05/from-massachusetts-two-strangers-carry-a-cake-across-new-york-and-fall-in-like/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33393,6 +33675,20 @@
       "file": "sunday-telegraph--tim-robey.json",
       "publishDate": "2026-07-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "telegraph--james-hall.json",
+      "score": 78,
+      "publishDate": "2026-08-06",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -44015,6 +44311,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "publishDate": "2026-08-09",
+      "url": "https://theatreandtonic.co.uk/blog/the-comedy-about-spies-adelphi-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },

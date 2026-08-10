@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-08-10T09:16:17.446Z",
+  "generatedAt": "2026-08-10T16:48:46.206Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 147,
-  "clean": 146,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "avenue-q-west-end-2026",
-      "title": "Avenue Q",
-      "openingDate": "2026-04-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.87 vs local 84.84 (Δ1.97)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    }
-  ]
+  "checked": 148,
+  "clean": 148,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

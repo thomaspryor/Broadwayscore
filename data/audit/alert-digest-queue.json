@@ -1,13 +1,46 @@
 [
   {
-    "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget: brightdata $5.29 > $2.5 (1198 serp + 2328 unlocker reqs); scrapingdog 57212 credits > 45000",
-    "description": "Day 2026-08-09. 2026-08-09 · Browserbase: $2.3 (23 sessions) · 2026-08-09 · Bright Data: $5.29 (1198 serp / 2328 unlocker) · ScrapingBee: 26146 credits (113547 this cycle) · ScrapingDog: 57212 credits (1236534 this cycle) · Browserbase attribution: 4% attributed — top: collect-review-texts.js 1 · Bright Data attribution: 39% attributed — top: opening-night-poller.js 710, audit-show-review-gap.js 513, ingest-review-from-url.js 54, recover-explicit-ratings.js 40, recollect-for-scores.js 34 · ScrapingBee attribution: 2% attributed — top: audit-show-review-gap.js 256, opening-night-poller.js 86, ingest-review-from-url.js 47, recollect-for-scores.js 34, recover-explicit-ratings.js 32 · ScrapingDog attribution: 10% attributed — top: audit-show-review-gap.js 3188, opening-night-poller.js 1138, collect-review-texts.js 604, recover-explicit-ratings.js 420, ingest-review-from-url.js 317. Verification streak reset to 0.",
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-01 and 2026-08-10.)",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-10T08:19:30.109Z"
+    "queuedAt": "2026-08-10T13:50:53.428Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 22 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31400031919",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-10T14:47:26.213Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 21 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31400329600",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "queuedAt": "2026-08-10T15:19:57.102Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/148 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAvenue Q: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-10T15:54:08.040Z"
   }
 ]

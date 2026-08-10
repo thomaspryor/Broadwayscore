@@ -1,8 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth } = require('./cmux-launch.js');
+const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
+  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // Card #856 (Session-system overhaul S3): launcher auth pre-check gate.
@@ -196,4 +200,75 @@ test('waitForLaunchOutcome: wake() sees isFirstWake=true only on the FIRST call,
   assert.ok(wakeCalls.length >= 2, 'the never-injects case must rewake more than once inside the grace window');
   assert.equal(wakeCalls[0], true);
   assert.ok(wakeCalls.slice(1).every(v => v === false), 'every call after the first must report isFirstWake=false');
+});
+
+// ── Idle-gated pre-wake (card #1199) ───────────────────────────────────────
+// Measured over 399 real cmux launches: deaths cluster on launches into an
+// IDLE app (>10m gap = 22% dead vs <5s gap = 8%; solo = 19% vs 1-2 concurrent
+// siblings = 7%; 00:00-05:00 ET = 31% vs 10:00-11:00 = 0%). The existing wake
+// is reactive — it only fires after the surface has already failed to render.
+
+test('shouldPreWake: wakes on a long-idle app, stays out of the way of a busy one', () => {
+  assert.equal(shouldPreWake({ idleSec: 600 }), true, '10m idle is the 22%-dead segment');
+  assert.equal(shouldPreWake({ idleSec: IDLE_GATE_SEC }), true, 'exactly at the gate wakes');
+  assert.equal(shouldPreWake({ idleSec: 3 }), false, 'a launch 3s after another is the 8%-dead segment');
+  assert.equal(shouldPreWake({ idleSec: IDLE_GATE_SEC - 1 }), false);
+});
+
+// The finally-clear in launchCmuxSession is launch-scoped and NOT refcounted,
+// so a concurrent launcher's clear can re-defer a sibling's still-unrendered
+// surface. Waking on EVERY launch would make that rare collision the common
+// case, and precisely in the regime the data says is already safest. The gate
+// is what keeps `woke` correlated with genuinely-idle launches.
+test('shouldPreWake: a concurrent batch does NOT wake, so the unrefcounted clear stays rare', () => {
+  const busy = [0, 1, 5, 30, 119].map(idleSec => shouldPreWake({ idleSec }));
+  assert.deepEqual(busy, [false, false, false, false, false]);
+});
+
+test('shouldPreWake: an unknown idle reading always wakes — the cheap flag is the safe answer', () => {
+  assert.equal(shouldPreWake({ idleSec: Infinity }), true, 'no marker = first launch since boot');
+  assert.equal(shouldPreWake({ idleSec: NaN }), true);
+  assert.equal(shouldPreWake({ idleSec: undefined }), true);
+  assert.equal(shouldPreWake({ idleSec: -50 }), true, 'marker stamped in the future by a clock step');
+});
+
+test('shouldPreWake: attempt 2 always wakes — a retry only happens after nothing ran', () => {
+  assert.equal(shouldPreWake({ idleSec: 0, attempt: 2 }), true);
+  assert.equal(shouldPreWake({ idleSec: 0, attempt: 1 }), false);
+});
+
+test('cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent', () => {
+  const marker = path.join(os.tmpdir(), `bsc-cmux-last-launch-test-${process.pid}`);
+  try { fs.unlinkSync(marker); } catch { /* fresh */ }
+  assert.equal(cmuxIdleSec(marker), Infinity, 'a missing marker must read as idle, not 0');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker) }), true);
+
+  noteLaunchAttempt(marker);
+  const idle = cmuxIdleSec(marker);
+  assert.ok(idle >= 0 && idle < 5, `a just-stamped marker must read as busy, got ${idle}`);
+  assert.equal(shouldPreWake({ idleSec: idle }), false, 'a sibling launcher one second later must skip its own pre-wake');
+
+  // 10 minutes ago → back over the gate.
+  const old = Date.now() - 600_000;
+  fs.utimesSync(marker, new Date(old), new Date(old));
+  assert.ok(cmuxIdleSec(marker) > IDLE_GATE_SEC);
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker) }), true);
+  fs.unlinkSync(marker);
+});
+
+test('cmuxIdleSec: sub-ms negative jitter clamps to 0, a real clock step reads as unknown', () => {
+  // Date.now() is ms-resolution, mtimeMs carries the filesystem's finer clock,
+  // so a marker stamped microseconds ago legitimately reads slightly negative.
+  // Unclamped, shouldPreWake's "negative = unknown = wake" rule would fire on
+  // a marker a concurrent launcher had JUST stamped — which is exactly the
+  // collision the idle gate exists to avoid. Found by this file's own
+  // round-trip test failing at -0.0005s.
+  const marker = path.join(os.tmpdir(), `bsc-cmux-jitter-test-${process.pid}`);
+  noteLaunchAttempt(marker);
+  const st = fs.statSync(marker);
+  assert.equal(cmuxIdleSec(marker, st.mtimeMs - 0.5), 0, 'half a millisecond in the future is jitter');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 0.5) }), false);
+  assert.equal(cmuxIdleSec(marker, st.mtimeMs - 60_000), Infinity, 'a minute in the future is a clock step, not jitter');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 60_000) }), true);
+  fs.unlinkSync(marker);
 });

@@ -272,7 +272,10 @@ export class ReviewScorer {
 
     // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
     const { validateScoreableText } = require('../lib/score-input-validator.js');
-    const isExcerpt = textSelection.type === 'excerpt';
+    const { isCapsuleReview } = require('../lib/scorable-text.js');
+    // Theatre Record print capsules are complete short reviews — exempt from
+    // the body-length gate like excerpts (see scorable-text.js).
+    const isExcerpt = textSelection.type === 'excerpt' || isCapsuleReview(reviewFile);
     const inputValidation = validateScoreableText(textSelection.text, reviewFile.showTitle, { isExcerpt });
     if (!inputValidation.ok) {
       return {

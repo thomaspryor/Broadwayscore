@@ -1,28 +1,8 @@
 {
-  "generatedAt": "2026-08-10T09:16:07.406Z",
+  "generatedAt": "2026-08-10T16:48:38.149Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
-    {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "file": "independent--alice-saville.json",
-      "outletId": "independent",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:per-file-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-08-10T09:09:08.420Z",
-      "fileAgeHours": 0.11635111111111111,
-      "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 10.900248333333334
-    },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
@@ -36,26 +16,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 428.0752430555556,
+      "fileAgeHours": 435.61712083333333,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 387.37818583333336
-    },
-    {
-      "showId": "trainspotting-the-musical-west-end-2026",
-      "title": "Trainspotting the musical",
-      "openingDate": "2026-07-22",
-      "file": "daily-mail--georgina-brown.json",
-      "outletId": "daily-mail",
-      "tier": 1,
-      "type": "unscored",
-      "url": null,
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=trainspotting-the-musical-west-end-2026",
-      "firstSeen": null,
-      "fileAgeHours": null,
-      "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 91.68184722222222
+      "nonTerminalAgeHours": 394.92005916666665
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -65,14 +28,14 @@
       "outletId": "wsj",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false",
       "recovery": null,
       "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d?eafs_enabled=false --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 118.51843222222222,
+      "fileAgeHours": 126.06030805555555,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 117.88036972222223
+      "nonTerminalAgeHours": 125.42224305555555
     }
   ],
   "contradictions": []

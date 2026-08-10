@@ -40,6 +40,16 @@ Launch a single Claude agent (subagent_type "general-purpose") with this prompt:
 >
 > ---
 >
+> ## PART 0 — IS THE FRAMING RIGHT? (answer this BEFORE Parts 1–2)
+>
+> Reviewers default to critiquing a plan as framed — finding missing guards inside its stated structure — instead of asking whether the structure itself is right. (Task #1218: six reviewers passed a plan whose first gate was "5 shows through new tooling"; nobody suggested "2 shows by hand first," because every reviewer was hunting for flaws inside that ramp, not questioning the ramp.) Answer directly:
+>
+> 0a. **State the plan's first real execution step in units** (N shows/files/records/users/dollars). Could 1-2 units run mostly by hand, before any tooling or automation is built, and validate the riskiest assumption for pennies? If yes, say so explicitly as a **DESIGN BLOCKER**, not a suggestion — "first gate should be 1-2 by hand, not N through new tooling."
+> 0b. Is there a simpler approach, or existing infrastructure, the plan is ignoring entirely?
+> 0c. What breaks if this is done at half the scope, or deferred? If "nothing, it's just not ideal," say that plainly — it's a real answer, not a non-answer.
+>
+> ---
+>
 > ## PART 1 — WILL IT WORK? (Correctness)
 >
 > 1. **Will it compile?** Every new reference (variable, function, import, constant) must exist or be created. Plans that reference things that don't exist yet are the #1 source of bugs.
@@ -123,6 +133,8 @@ node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion \
 ```
 
 This is what `~/.claude/hooks/infra-plan-review-gate.sh` checks before the session's first edit to shared infrastructure (task #1079, owner decision 2026-08-05). Without it the session stays blocked no matter how good the review was. `--result=fail` if you found blockers — a fail verdict does NOT unblock, and overturning it is the owner's call, recorded as `--reviewer=owner-override`.
+
+**If Part 0 (framing) fired an escalation:** prefix the `--note` with `restructure-flag: adopted — <what shrank>` or `restructure-flag: dismissed — <why the scope stood>`. `scripts/lib/infra-review-digest.js` counts that prefix so this check's real hit rate shows up in the daily digest instead of vanishing at session end (task #1218).
 
 For any issue you truly can't fix now, the bar is high: blocked on user decision, missing creds, different repo, or would push past ~2 hours. "Would take 30 min" is not blocked — that's just the work. For the rare genuine blocker, create a self-contained Notion card — and if it's technical + self-contained, dispatch it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) instead of leaving a paste-prompt — then KEEP WORKING on what you can. Never offer to "hand off to a new session" — that phrase is banned (see `feedback_no_premature_handoff.md`).
 
