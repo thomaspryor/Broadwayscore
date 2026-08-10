@@ -2,8 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 const require = createRequire(import.meta.url);
-const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor, siteNameForMarket, buildFromAddress, resolveNewsletterEdition } = require('./email-templates.js');
+const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor, siteNameForMarket, buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = require('./email-templates.js');
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('resolveNewsletterEdition rejects unknown editions instead of degrading to Broadway', () => {
   assert.equal(resolveNewsletterEdition('west-end'), 'west-end');
@@ -25,6 +30,35 @@ test('sender brand follows the market — WE never sends as "Broadway Scorecard"
   // Address must stay on the verified Resend domain for every market.
   assert.match(buildFromAddress('west-end'), /<updates@broadwayscorecard\.com>$/);
   assert.equal(buildFromAddress('broadway'), 'Broadway Scorecard <updates@broadwayscorecard.com>');
+});
+
+// Reply-To: `updates@` is a Resend-verified SENDER with no inbox behind it —
+// the domain's MX is ImprovMX and `updates@` is not a forwarding alias, so a
+// subscriber who hits Reply gets a bounce and the owner never sees it. Every
+// audience-facing send must carry a Reply-To that actually receives.
+test('reply-to address is an inbox that receives, never the send-only sender', () => {
+  assert.equal(buildReplyToAddress(), 'hi@broadwayscorecard.com');
+  assert.doesNotMatch(buildReplyToAddress(), /^(updates|noreply|alerts)@/);
+});
+
+test('every audience-facing sender sets reply_to on its Resend payload', () => {
+  // Source-level guard: these scripts build their payloads inline, so the only
+  // way to keep a future sender from silently shipping without Reply-To is to
+  // assert on the files themselves.
+  const senders = [
+    ['scripts/newsletter/create-broadcast-draft.mjs', 1], // weekly round-up broadcast
+    ['scripts/newsletter/send-test.mjs', 1],              // weekly round-up test send
+    ['scripts/send-opening-night-broadcast.js', 2],       // opening-night broadcast + preview
+    ['scripts/send-follow-notifications.js', 1],          // per-show follower alerts
+  ];
+  for (const [rel, minPayloads] of senders) {
+    const src = fs.readFileSync(path.join(repoRoot, rel), 'utf8');
+    const replyCount = (src.match(/\breply_to:/g) || []).length;
+    assert.ok(
+      replyCount >= minPayloads,
+      `${rel}: expected reply_to on >= ${minPayloads} Resend payload(s), found ${replyCount} — an audience-facing send would bounce replies`,
+    );
+  }
 });
 
 test('getScoreColor ROUNDS before tiering — matches the displayed score + the site', () => {

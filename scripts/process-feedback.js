@@ -15,7 +15,7 @@ import { createRequire } from 'module';
 import { diagnoseBug } from './diagnose-feedback-bug.js';
 
 const require = createRequire(import.meta.url);
-const { buildFeedbackThankYouEmail, postJSON } = require('./lib/email-templates.js');
+const { buildFeedbackThankYouEmail, postJSON, buildReplyToAddress } = require('./lib/email-templates.js');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 const { buildCategorizationPrompt, parseCategorizedResponse } = require('./lib/feedback-categorize.js');
@@ -208,6 +208,9 @@ async function sendThankYouEmail(email, name, category, showName) {
   try {
     await postJSON('https://api.resend.com/emails', {
       from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+      // Signed "Tom" and inviting a conversation — but `updates@` has no inbox
+      // (Resend sender only), so without this the reply bounces.
+      reply_to: buildReplyToAddress(),
       to: [email],
       subject,
       html,
