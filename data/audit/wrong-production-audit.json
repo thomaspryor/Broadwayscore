@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T05:23:48.404Z",
+  "timestamp": "2026-08-10T05:30:54.233Z",
   "stats": {
-    "totalReviews": 41951,
+    "totalReviews": 41952,
     "alreadyFlagged": 18304,
     "dateGuardCatches": 134,
     "directorMismatch": 959,
     "tvFilmSignals": 1160,
-    "londonSignals": 827,
+    "londonSignals": 828,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3501
+    "noPublishDate": 3502
   },
   "findings": [
     {
@@ -36661,6 +36661,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-08-08",
+      "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-im-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
