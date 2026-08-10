@@ -28,6 +28,17 @@ const {
   LIVE_CATALOG_QUERY,
 } = require('./lib/supabase-schema-expectations');
 
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  console.log(`verify-supabase-schema — fail loud when a committed migration is not applied to prod
+
+Usage:
+  node scripts/verify-supabase-schema.js               full check (queries the live catalog)
+  node scripts/verify-supabase-schema.js --parse-only  print derived assertions, no network
+
+Env: SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF (full check only)`);
+  process.exit(0);
+}
+
 const MIGRATIONS_DIR = path.join(__dirname, '..', 'supabase', 'migrations');
 const PARSE_ONLY = process.argv.includes('--parse-only');
 
