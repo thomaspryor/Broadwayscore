@@ -278,9 +278,24 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
     .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   if (!spawns.length) return null;
-  const jobId = spawns[0].jobId;
-  const jobs = dispatchLedger.foldJobs(dispatchLedgerEntries.filter(e => e.jobId === jobId));
-  return jobs.get(jobId) || null;
+  const jobsAll = dispatchLedger.foldJobs(
+    dispatchLedgerEntries.filter(e => String(e.taskId) === String(taskId)));
+  let job = jobsAll.get(spawns[0].jobId) || null;
+  // Task #1184 S1: a timed-out job the reconciler resumes ends 'job-retried'
+  // (terminal for the OLD jobId) while a successor job continues the SAME
+  // card. Without following the chain, a live resume scored card-fail here —
+  // parking a card whose fix session was still running. Follow retries to
+  // the newest link; a chain ending at RETRIED (successor not spawned yet)
+  // is handled by the caller as still-in-flight, with its own orphan bound.
+  const visited = new Set();
+  while (job && job.event === dispatchLedger.JOB_EVENTS.RETRIED && !visited.has(job.jobId)) {
+    visited.add(job.jobId);
+    const retriedMs = new Date(job.ts || 0).getTime();
+    const next = spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId && new Date(s.ts).getTime() >= retriedMs - 5000);
+    if (!next) break;
+    job = jobsAll.get(next.jobId) || null;
+  }
+  return job;
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
@@ -303,6 +318,19 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       newEntries.push({
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+      });
+      resolvedKeys.add(key);
+      continue;
+    }
+    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
+      // Chain ends at a retry whose successor hasn't spawned yet: treat as
+      // still running inside the same orphan bound the no-spawn case uses —
+      // past it, the resume child died before spawning and the attempt fails.
+      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
+      if (ageH < ORPHAN_TIMEOUT_H) continue;
+      newEntries.push({
+        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       resolvedKeys.add(key);
       continue;

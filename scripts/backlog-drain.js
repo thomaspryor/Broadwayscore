@@ -73,7 +73,43 @@ const LOG_DIR = path.join(AUDIT_DIR, 'backlog-drain-logs');
 // Cap live `notion-brain get` calls per tick (rate-limit friendliness) —
 // beyond this many unarmed/enrichment-needed candidates, stop scanning and
 // report "none found this scan" rather than walking the whole backlog.
-const MAX_CANDIDATE_SCAN = 20;
+//
+// Task #1184 S3: this cap used to bound CANDIDATES CONSIDERED, not fetches —
+// human-gated and unarmed cards each consumed a slot, and candidateOrder is
+// oldest-id-first, so 8 permanently human-gated rage-click cards at the head
+// of the queue starved the drain to ZERO dispatches from 8/5 to 8/9 while
+// ~200 dispatchable cards sat behind them. The cap now bounds live card
+// FETCHES (the thing that actually costs Notion quota); known-undispatchable
+// verdicts are cached below and skipped without a fetch or a slot.
+const MAX_CANDIDATE_SCAN = 60;
+
+// Cached "this card can't run unattended" verdicts (human-gated or unarmed),
+// so the same 8 cards stop being re-fetched and re-classified every tick.
+// TTL-based re-arm, NOT permanent (plan-review design P1: a bare persisted
+// ID set has no invalidation — a card edited to become dispatchable would
+// stay skipped forever; attempt-memory re-arms on content change, but card
+// notes aren't visible without the very fetch this cache avoids, so a 24h
+// re-evaluation bound is the invalidation). Cached skips still ride
+// humanGatedSkips into the metric/digest — cached must never mean invisible.
+const HUMAN_GATED_CACHE_PATH = path.join(AUDIT_DIR, 'drain-human-gated-cache.json');
+const HUMAN_GATED_CACHE_TTL_MS = 24 * 3600 * 1000;
+// Kill switch (rollout guard): legacy pre-#1184 window semantics.
+const WINDOW_FIX_DISABLED = process.env.DRAIN_WINDOW_FIX_DISABLED === '1';
+
+function loadSkipCache(p = HUMAN_GATED_CACHE_PATH) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')) || {}; } catch { return {}; }
+}
+
+function saveSkipCache(cache, p = HUMAN_GATED_CACHE_PATH) {
+  try {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, JSON.stringify(cache, null, 2));
+  } catch { /* cache is an optimization — losing it just costs re-fetches */ }
+}
+
+function skipCacheFresh(entry, nowMs, ttlMs = HUMAN_GATED_CACHE_TTL_MS) {
+  return Boolean(entry && Number.isFinite(Date.parse(entry.ts)) && nowMs - Date.parse(entry.ts) < ttlMs);
+}
 
 // How long to wait for a dispatched detached child to reach bsc-runner's
 // job-spawned event before giving up on it (ship-check adversarial finding):
@@ -431,16 +467,45 @@ async function main(argv = process.argv.slice(2)) {
       parkedIds, refusedNotionIds, notionIdOfFn: notionIdOf,
       inFlightIds: new Set(concurrency.aliveTaskIds),
     });
-    let scanned = 0;
+    const nowMs = Date.now();
+    const skipCache = WINDOW_FIX_DISABLED ? {} : loadSkipCache();
+    let cacheDirty = false;
+    let fetches = 0;
+    let fetchErrors = 0;
+    let cachedSkips = 0;
     for (const t of order) {
-      if (scanned >= MAX_CANDIDATE_SCAN) break;
-      scanned++;
+      if (fetches >= MAX_CANDIDATE_SCAN) break;
+      const id = String(t.id);
       const nid = notionIdOf(t);
       if (!nid) continue; // native task, no card to live-verify-gate — drain stays conservative
+      // Fresh cached undispatchable verdict: skip WITHOUT a fetch and WITHOUT
+      // consuming the window — this is the entire #1184 S3 fix. Still surfaced
+      // in the metric so the skip never goes invisible.
+      const cached = skipCache[id];
+      if (!WINDOW_FIX_DISABLED && skipCacheFresh(cached, nowMs)) {
+        cachedSkips++;
+        humanGatedSkips.push({ id, codes: cached.codes || ['CACHED'], cached: true });
+        continue;
+      }
+      fetches++;
       const card = fetchCard(nid);
-      if (!card || !card.notes) continue;
+      if (!card) {
+        // Fetch failure is NOT "unarmed" (Codex plan-review finding): a Notion
+        // rate-limit blip must not park a dispatchable card for 24h. Count it,
+        // report it, never cache it.
+        fetchErrors++;
+        continue;
+      }
+      if (!card.notes) {
+        if (!WINDOW_FIX_DISABLED) { skipCache[id] = { ts: new Date(nowMs).toISOString(), codes: ['NO_NOTES'] }; cacheDirty = true; }
+        continue;
+      }
       const gate = evaluateVerifiability(card.notes);
-      if (!gate.cmd) continue; // owner-judgment-only or genuinely unarmed — never unattended-dispatched
+      if (!gate.cmd) {
+        // owner-judgment-only or genuinely unarmed — never unattended-dispatched
+        if (!WINDOW_FIX_DISABLED) { skipCache[id] = { ts: new Date(nowMs).toISOString(), codes: ['UNARMED'] }; cacheDirty = true; }
+        continue;
+      }
       // Task #1004: armed is not the same as finishable. A card whose PUSH
       // needs the owner's visual-qa affirmative, or whose completion waits on
       // a cron/workflow that outlives the session, burns a full session and
@@ -454,17 +519,20 @@ async function main(argv = process.argv.slice(2)) {
         // snapshot into the daily digest, so a bad classification is visible and
         // the owner can dispatch it to a tab (or run bsc-next
         // --headless --allow-human-gated) instead of it just vanishing.
-        humanGatedSkips.push({ id: String(t.id), codes: hg.blockers.map(b => b.code) });
+        humanGatedSkips.push({ id, codes: hg.blockers.map(b => b.code) });
         console.log(`[backlog-drain] skipping #${t.id} (needs a human to finish): ${hg.reason}`);
+        if (!WINDOW_FIX_DISABLED) { skipCache[id] = { ts: new Date(nowMs).toISOString(), codes: hg.blockers.map(b => b.code) }; cacheDirty = true; }
         continue;
       }
       dispatchedTask = t;
       break;
     }
+    if (cacheDirty && !dryRun) saveSkipCache(skipCache);
     if (!dispatchedTask) {
-      const gatedNote = humanGatedSkips.length ? `, ${humanGatedSkips.length} needed a human to finish` : '';
+      const gatedNote = humanGatedSkips.length ? `, ${humanGatedSkips.length} needed a human to finish (${cachedSkips} from cache)` : '';
+      const fetchNote = fetchErrors ? `, ${fetchErrors} card fetch(es) FAILED (rate limit? not cached, retried next tick)` : '';
       skipReason = order.length
-        ? `scanned ${scanned} candidate(s), none dispatchable unattended${gatedNote}`
+        ? `fetched ${fetches} card(s), none dispatchable unattended${gatedNote}${fetchNote}`
         : 'no eligible pending cards (all human/parked/in-flight/enrichment-flagged)';
     }
   }
@@ -530,4 +598,5 @@ module.exports = {
   findMyJob, reconcileOutcomes, main, USAGE, jobBranchLanded, taskCommitLandedInWindow, RESOLVING_EVENTS,
   AUDIT_DIR, DRAIN_LEDGER_PATH, METRIC_PATH, VERIFIABILITY_REPORT_PATH, LOG_DIR,
   MAX_CANDIDATE_SCAN, ORPHAN_TIMEOUT_H,
+  loadSkipCache, saveSkipCache, skipCacheFresh, HUMAN_GATED_CACHE_PATH, HUMAN_GATED_CACHE_TTL_MS,
 };

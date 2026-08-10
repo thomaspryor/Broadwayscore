@@ -120,12 +120,30 @@ function teardownJobWorktree(wtPath, jobId) {
  * @param {string} [opts.model]          e.g. 'sonnet'/'opus' (fable refused by claude-cli)
  * @param {string} [opts.cwd]            working dir; ignored when isolate=true
  * @param {boolean} [opts.isolate=true]  run in a fresh per-job worktree
- * @param {number} [opts.timeoutMs]      default 30 min
+ * @param {number} [opts.timeoutMs]      default 120 min (owner decision 2026-08-10, task #1184)
  * @param {string} [opts.resumeSessionId] reconciler/owner-driven resume
  * @returns {Promise<{ok, jobId, stage, sessionId, resultText, logFile, cwd, keptWorktree}>}
  */
+
+// 30 min killed every non-trivial fix session with its work unrecoverable
+// (digest-autofix ledger 8/5-8/9: timeout was the top failure stage; the
+// sessions were SIGKILLed mid-work with no session id captured). Owner
+// approved 120 min on 2026-08-10 ("A, but with 120 min sessions").
+const DEFAULT_JOB_TIMEOUT_MS = 120 * 60 * 1000;
+
+// Told to the session up front so it can plan for the wall: commit early,
+// commit often, leave a resumable trail. This is a REQUEST to the model, not
+// a guarantee — resume-on-timeout (bsc-reconcile) is the actual backstop.
+function buildBudgetPreamble(timeoutMs) {
+  const min = Math.round(timeoutMs / 60000);
+  return `[UNATTENDED TIME BUDGET] This headless session is hard-killed after ${min} minutes of wall-clock time. `
+    + `Commit work-in-progress to your worktree branch after each meaningful step (never leave >15 min of work uncommitted). `
+    + `By minute ${Math.max(5, min - 10)}, stop starting new work: commit everything and write a short STATE.md at the repo root `
+    + `(what is done, what remains, exact next command) so a resumed session can continue without re-deriving context.\n\n`;
+}
+
 async function runJob(opts) {
-  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs, resumeSessionId } = opts;
+  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, resumeSessionId } = opts;
   if (process.env.BSC_RUNNER_DISABLED === '1') {
     return { ok: false, jobId: null, stage: 'runner-disabled', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
@@ -163,22 +181,43 @@ async function runJob(opts) {
     ledger.appendEntry({ event: ledger.JOB_EVENTS.SPAWNED, taskId, jobId, subject, cwd, logFile, model: model || null, resumed: Boolean(resumeSessionId) });
 
     const res = await runClaudeCli({
-      prompt, cwd, model, resumeSessionId, timeoutMs, logFile,
+      // Budget preamble on every job, resume included: the resumed session
+      // has a fresh clock and needs the same commit-early contract.
+      prompt: buildBudgetPreamble(timeoutMs) + prompt,
+      cwd, model, resumeSessionId, timeoutMs, logFile,
       onSpawn: (pid) => updateLease(taskId, { pid, cwd }),
+      // Persisted the moment the stream's first event lands (~1s in), so a
+      // later kill — timeout, crash, power loss — leaves a resumable session
+      // id on the lease AND lets bsc-reconcile resume instead of restarting.
+      onSessionId: (sessionId) => updateLease(taskId, { sessionId }),
     });
 
     if (res.sessionId) updateLease(taskId, { sessionId: res.sessionId });
     if (res.ok) {
       ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD });
     } else {
-      ledger.appendEntry({ event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage, sessionId: res.sessionId, detail: (res.errorDetail || '').slice(0, 300) });
+      // sessionId + cwd + cost ride the FAILED entry (task #1184 S1): the
+      // resume path keys off exactly these fields, and the spend breaker
+      // stops reading killed sessions as $0 (costEstimated marks the ones
+      // computed from streamed usage rather than the CLI's own total).
+      ledger.appendEntry({
+        event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage,
+        sessionId: res.sessionId, cwd, model: model || null,
+        costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,
+        detail: (res.errorDetail || '').slice(0, 300),
+      });
     }
     out = { ok: res.ok, jobId, stage: res.stage, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the
     // value is delivered — patching the SAME object keeps the field truthful.
-    const kept = wtPath ? !teardownJobWorktree(wtPath, jobId) : false;
+    // A timed-out job keeps its worktree even when clean: resume is
+    // cwd-scoped, so tearing it down here would make the recorded sessionId
+    // unresumable (Codex plan-review finding — the original resume design
+    // "would start in a deleted workspace").
+    const timedOutJob = out && out.stage === 'timeout';
+    const kept = wtPath ? (timedOutJob || !teardownJobWorktree(wtPath, jobId)) : false;
     if (out) out.keptWorktree = kept;
     releaseLease(taskId, jobId);
   }
@@ -187,4 +226,5 @@ async function runJob(opts) {
 module.exports = {
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
+  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
 };
