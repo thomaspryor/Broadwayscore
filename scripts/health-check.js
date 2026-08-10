@@ -71,6 +71,17 @@ const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot
 // `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
 
 const AUTO_FIX_PLAYBOOK = [
+  // Card #1199. A check with NO playbook entry defaults to urgency 'low'
+  // (~L3271), which drops it out of `actionable` entirely: it never reaches
+  // routeAlert, and renders as an anonymous "+N low-priority items monitoring
+  // themselves (no action needed)" line — no name, no rate, no hint. For a
+  // check whose entire purpose is to end a chronic failure's invisibility,
+  // that would have shipped the measurement invisible, which is the exact
+  // defect the card exists to close (caught by the ship-check reviewer).
+  // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
+  // dead rate is expensive and worth chasing but never data loss.
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+    humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
@@ -2172,6 +2183,53 @@ function checkDispatchOutcomes() {
   })];
 }
 
+// --- Category I1b: Dispatch health (do dispatched sessions actually START?) ---
+//
+// checkDispatchOutcomes above asks whether dispatched work LANDED. This asks
+// the prior question: did the session ever start at all? Card #1199 — roughly
+// one bsc-next launch in five creates its cmux workspace, never renders a
+// terminal surface, and so never runs the injected command. The retry layer
+// recovers the WORK, so each session sees only its own 1-3 failures, retries,
+// succeeds, and truthfully reports success; nothing aggregated the ledger, so
+// a chronic ~20% rate ran unseen for a week and several "fixes" were judged
+// green by a single clean dispatch. Only the RATE over many launches can tell
+// whether a cause fix worked, which is what this row is for.
+//
+// Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
+// rather than passing on missing input (#1075 vacuous-gate class).
+
+function checkDispatchHealth() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  const { CHECK_NAME } = require('./lib/dispatch-health.js');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: CHECK_NAME,
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
+      hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
+    }];
+  }
+
+  return [runCheck(CHECK_NAME, () => {
+    const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
+    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
+    // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
+    // a RATE above the floor is a live defect every day it holds, and
+    // "unchanged since yesterday" silence is exactly the invisibility #1199
+    // exists to end. Repeat-day email noise is already handled downstream by
+    // owner-alert-router's conditionKey, which files one card per OPEN
+    // incident rather than one per run.
+    const { name, status, message, hint } = computeDispatchHealthDigest({
+      entries, nowMs: Date.now(),
+    });
+    return hint ? { name, status, message, hint } : { name, status, message };
+  })];
+}
+
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
@@ -3759,6 +3817,7 @@ async function main() {
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(),
+    ...checkDispatchHealth(),
     ...checkAutofixEffectiveness(),
   ];
 
