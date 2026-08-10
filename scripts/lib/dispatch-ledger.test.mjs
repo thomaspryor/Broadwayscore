@@ -751,3 +751,46 @@ test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are 
   assert.equal(detectLauncherOutage(entries, { now }).outage, false,
     'a live-wrapper slow boot is not the launcher failing to inject — must not alarm on it');
 });
+
+// ── followRetryChain (task #1184 S1) ────────────────────────────────────────
+import { followRetryChain, JOB_EVENTS } from './dispatch-ledger.js';
+
+const chainSpawn = (jobId, ts, extra = {}) => ({ event: JOB_EVENTS.SPAWNED, taskId: '7', jobId, ts, ...extra });
+const chainRetried = (jobId, ts, sessionId) => ({ event: JOB_EVENTS.RETRIED, taskId: '7', jobId, ts, sessionId });
+const chainDone = (jobId, ts) => ({ event: JOB_EVENTS.DONE, taskId: '7', jobId, ts });
+
+test('followRetryChain: prefers the CAUSAL successor (resumeOfSession match) over any other spawn', () => {
+  const entries = [
+    chainSpawn('j1', '2026-08-10T10:00:00Z'),
+    chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A'),
+    // A manual headless job spawned in the gap — must NOT be credited.
+    chainSpawn('manual', '2026-08-10T12:01:00Z'),
+    chainSpawn('j2', '2026-08-10T12:02:00Z', { resumed: true, resumeOfSession: 'sess-A' }),
+    chainDone('j2', '2026-08-10T13:00:00Z'),
+  ];
+  const job = followRetryChain(entries, '7', 'j1');
+  assert.equal(job.jobId, 'j2');
+  assert.equal(job.event, JOB_EVENTS.DONE);
+});
+
+test('followRetryChain: fallback for pre-stamp entries requires the spawn be marked resumed', () => {
+  const entries = [
+    chainSpawn('j1', '2026-08-10T10:00:00Z'),
+    chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A'),
+    chainSpawn('manual', '2026-08-10T12:01:00Z'),                    // resumed absent — never credited
+    chainSpawn('j2', '2026-08-10T12:02:00Z', { resumed: true }),     // legacy resume, no session stamp
+  ];
+  assert.equal(followRetryChain(entries, '7', 'j1').jobId, 'j2');
+});
+
+test('followRetryChain: a chain ending at RETRIED (successor not spawned) returns the RETRIED job as-is', () => {
+  const entries = [chainSpawn('j1', '2026-08-10T10:00:00Z'), chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A')];
+  const job = followRetryChain(entries, '7', 'j1');
+  assert.equal(job.jobId, 'j1');
+  assert.equal(job.event, JOB_EVENTS.RETRIED, 'callers treat this as in-flight within their orphan bound');
+});
+
+test('followRetryChain: non-retried jobs pass through untouched', () => {
+  const entries = [chainSpawn('j1', '2026-08-10T10:00:00Z'), chainDone('j1', '2026-08-10T11:00:00Z')];
+  assert.equal(followRetryChain(entries, '7', 'j1').event, JOB_EVENTS.DONE);
+});
