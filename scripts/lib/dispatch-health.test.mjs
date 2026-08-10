@@ -245,3 +245,47 @@ test('a remapped row with no matching launch is ignored, not a crash', () => {
   assert.equal(r.launches, 0);
   assert.equal(r.supersededByRemapCount, 0);
 });
+
+// Adversarial review of the FIRST cut of the remap fix caught this: the
+// supersession loop matched "last launch at-or-before the remap" with no
+// regard for whether that launch had already DIED. Real shape from the
+// ledger (task #925): the only launch on workspace:99 is a confirmed
+// shape-1 death ("command injection never ran"), and a remapped row for the
+// same ref lands NINE HOURS later — erasing a real death from both `dead`
+// and `deadTaskIds`, i.e. undercounting the exact metric this card exists
+// to protect. Superseding means "this dispatch continued under a new ref",
+// which a corpse by definition did not do.
+const REMAPPED_OVER_A_CORPSE_925 = [
+  dead('2026-08-05T04:55:39.230Z', 'workspace:99', '925'),
+  launch('2026-08-05T04:55:39.231Z', 'workspace:99', '925', { unverified: true }),
+  { ts: '2026-08-05T13:52:30.047Z', event: 'remapped', taskId: '925', workspaceRef: 'workspace:99', newRef: 'workspace:105' },
+  launch('2026-08-05T13:52:30.100Z', 'workspace:105', '925'),
+];
+
+test('a remap NEVER supersedes a confirmed-dead attempt — the death still counts', () => {
+  const r = computeDeadRate(REMAPPED_OVER_A_CORPSE_925, { nowMs: NOW, windowDays: 7 });
+  assert.equal(r.dead, 1, 'the workspace:99 corpse must survive the remap');
+  assert.deepEqual(r.deadTaskIds, ['925']);
+  assert.equal(r.launches, 2, 'both the dead attempt and the fresh relaunch count');
+  assert.equal(r.supersededByRemapCount, 0, 'nothing was legitimately superseded here');
+  const { attempts } = foldAttempts(REMAPPED_OVER_A_CORPSE_925);
+  assert.ok(attempts.some((a) => a.workspaceRef === 'workspace:99' && a.dead),
+    'the dead attempt must remain in the fold, not be filtered out');
+});
+
+test('supersededByRemapCount is window-scoped like every other figure on the row', () => {
+  // The superseded launch sits OUTSIDE a 7-day window anchored at NOW; a
+  // lifetime total would report 1 here and silently stop reconciling with
+  // the windowed `launches` it is meant to explain.
+  const old = [
+    launch('2026-06-01T01:00:00.000Z', 'workspace:57', '895', { unverified: true }),
+    { ts: '2026-06-01T03:00:00.000Z', event: 'remapped', taskId: '895', workspaceRef: 'workspace:57', newRef: 'workspace:73' },
+    launch('2026-06-01T03:00:01.000Z', 'workspace:73', '895'),
+  ];
+  const narrow = computeDeadRate(old, { nowMs: NOW, windowDays: 7 });
+  assert.equal(narrow.launches, 0);
+  assert.equal(narrow.supersededByRemapCount, 0, 'out-of-window supersession must not leak into a 7d row');
+  const wide = computeDeadRate(old, { nowMs: NOW, windowDays: 120 });
+  assert.equal(wide.launches, 1);
+  assert.equal(wide.supersededByRemapCount, 1);
+});
