@@ -1000,7 +1000,14 @@ function checkQuality() {
         return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
       }
       const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
-      let hits = scanMissingContentTier(rtDir);
+      let showsById = {};
+      try {
+        const showsArr = readJSON(path.join(DATA_DIR, 'shows.json'));
+        for (const s of (Array.isArray(showsArr) ? showsArr : showsArr.shows) || []) {
+          if (s && s.id) showsById[s.id] = s;
+        }
+      } catch { /* shows.json unreadable — scan degrades to no show-context checks */ }
+      let hits = scanMissingContentTier(rtDir, showsById);
       // rebuild-all-reviews.js reclassifies contentTier unconditionally on
       // every pass (in-memory, before the review is pushed to reviews.json),
       // so a source file missing contentTier does NOT necessarily mean the
