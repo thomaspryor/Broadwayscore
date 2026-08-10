@@ -44,6 +44,15 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   if (title.length > MAX_TITLE) return null;
   if (!isHttpUrl(showUrl)) return null;
 
+  // showId is interpolated RAW into `UID:bsc-<id>@domain` — UID is not a TEXT
+  // property, so it is not escaped like SUMMARY/LOCATION are. A CRLF in it
+  // therefore terminates the UID line and everything after becomes new
+  // calendar properties: `s=x%0D%0ASUMMARY:INJECTED` really did emit an
+  // attacker-controlled SUMMARY. Restrict to the shape real show ids actually
+  // have (slug-with-year, e.g. wicked-2003) rather than merely stripping CRLF,
+  // so any other control character is refused too.
+  if (!/^[a-zA-Z0-9._-]{1,80}$/.test(showId)) return null;
+
   const time = qs.get('t')?.trim() || null;
   if (time !== null && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return null;
 
