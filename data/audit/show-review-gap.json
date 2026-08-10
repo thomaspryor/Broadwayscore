@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-10T12:47:34.277Z",
+  "generatedAt": "2026-08-10T14:22:04.271Z",
   "windowDays": 1095,
-  "targets": 66,
-  "auditedThisRun": 16,
-  "carriedForward": 193,
+  "targets": 54,
+  "auditedThisRun": 30,
+  "carriedForward": 181,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 165,
-    "totalMissing": 1045,
+    "totalMissing": 1047,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1070,
+    "totalFlaggedMisses": 1072,
     "totalRecoverable": 23,
     "totalRecovered": 5
   },
@@ -1624,12 +1624,13 @@
       "candidatesRejected": {
         "count": 316,
         "byReason": {
-          "not-http-url": 78,
           "aggregator-internal-nav": 220,
+          "not-http-url": 78,
           "non-review-host": 15,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -1702,7 +1703,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -4131,14 +4132,8 @@
       ],
       "dirFiles": 58,
       "dirClean": 30,
-      "inReviewsJson": 30,
-      "missing": [
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-          "host": "the-independent.com",
-          "knownOutletId": "independent"
-        }
-      ],
+      "inReviewsJson": 31,
+      "missing": [],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -4150,10 +4145,6 @@
         },
         {
           "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
           "count": 1
         },
         {
@@ -4313,38 +4304,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 88,
+        "count": 89,
         "byReason": {
+          "aggregator-internal-nav": 50,
           "not-http-url": 20,
-          "aggregator-internal-nav": 49,
           "non-review-host": 19
         }
       },
-      "ingestResults": [
-        {
-          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-          "host": "the-independent.com",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "independent",
-            "outlet": "independent",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html"
-          },
           {
             "outletId": "1883magazine.com",
             "outlet": "1883magazine.com",
@@ -4428,6 +4398,12 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+            "outletId": "the-independent.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/avenue-q-review-shaftesbury-theatre",
             "outletId": "londontheatre.co.uk",
             "state": "live",
@@ -4506,13 +4482,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
-            "outletId": "independent",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://1883magazine.com/avenue-q-review-london/",
             "outletId": "1883magazine.com",
             "state": "GAP",
@@ -4562,10 +4531,45 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
-        "liveCount": 18,
+        "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "title": "Barcelona",
+      "openingDate": "2024-10-30",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "beetlejuice-west-end-2026",
@@ -8188,12 +8192,14 @@
       "candidatesRejected": {
         "count": 385,
         "byReason": {
-          "aggregator-internal-nav": 309,
+          "aggregator-internal-nav": 307,
           "not-http-url": 39,
           "non-review-host": 34,
+          "roundup-page": 2,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-did-critics-think-of-buena-vista-social-club-off-broadway",
@@ -8406,7 +8412,7 @@
         "liveCount": 12,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -9991,10 +9997,9 @@
         "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
         "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
         "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
         "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+        "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
         "https://www.newyorktheatreguide.com/show/46802-cat-cohen-broad-strokes",
-        "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
         "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/"
       ],
       "dirFiles": 23,
@@ -10004,6 +10009,10 @@
       "dirOnly": [
         {
           "host": "broadwaybaby.com",
+          "count": 1
+        },
+        {
+          "host": "nyctheatreaddict.com",
           "count": 1
         },
         {
@@ -10035,24 +10044,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "show-score--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
           "host": "vanityfair.com",
           "knownOutletId": "vanityfair",
@@ -10066,6 +10057,24 @@
               "file": "vanityfair--kase-wickman.json",
               "flag": "nonReview",
               "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "show-score--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
             }
           ],
           "serpCensus": true
@@ -10103,7 +10112,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -10123,7 +10132,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -10143,7 +10152,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -10159,20 +10168,22 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 404,
+        "count": 411,
         "byReason": {
           "aggregator-internal-nav": 269,
           "not-http-url": 80,
-          "non-review-host": 49,
+          "non-review-host": 53,
+          "roundup-page": 2,
           "non-review-path": 3,
-          "roundup-page": 1,
+          "venue-production-page": 2,
           "ticketing-reseller": 2
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -10184,18 +10195,18 @@
             "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
-          },
-          {
             "outletId": "vanityfair",
             "outlet": "vanityfair",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
           },
           {
             "outletId": "variety",
@@ -10274,24 +10285,11 @@
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
           },
           {
-            "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
-            "outletId": "nyctheatreaddict.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T07:57:28.990Z"
-          },
-          {
             "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
             "outletId": "playbill",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
-          },
-          {
-            "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T23:53:17.243Z"
           },
           {
             "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
@@ -10301,6 +10299,13 @@
             "firstSeenAt": "2026-08-09T23:23:45.175Z"
           },
           {
+            "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-05T23:53:17.243Z"
+          },
+          {
             "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
             "outletId": "variety",
             "state": "GAP",
@@ -10308,10 +10313,10 @@
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 15
+        "liveCount": 10,
+        "candidateCount": 14
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -16896,7 +16901,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -32363,14 +32368,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 664,
+        "count": 670,
         "byReason": {
-          "aggregator-internal-nav": 522,
-          "not-http-url": 83,
-          "non-review-host": 53,
+          "aggregator-internal-nav": 524,
+          "not-http-url": 84,
+          "non-review-host": 54,
+          "roundup-page": 2,
           "non-review-path": 6
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
@@ -32755,7 +32762,7 @@
         "liveCount": 15,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
@@ -35430,13 +35437,86 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+        "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+        "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
+        "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
+        "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+      ],
+      "dirFiles": 9,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
+          "host": "birminghamstage.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "londontheatrereviews.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--s-norman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--christiana-rose.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -35470,25 +35550,179 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Horrible Histories: Barmy Britain - The Best Bits\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Horrible Histories: Barmy Britain - The Best Bits\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Horrible Histories: Barmy Britain - The Best Bits\" review apollo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Horrible Histories: Barmy Britain - The Best Bits\" Foster review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Horrible Histories: Barmy Britain - The Best Bits Apollo Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Horrible Histories: Barmy Britain - The Best Bits Apollo Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Horrible Histories: Barmy Britain - The Best Bits Apollo Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 30,
+          "non-review-path": 3,
+          "ticketing-listing": 4
+        }
       },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
+          "host": "birminghamstage.com",
+          "outletId": "birminghamstage",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "birminghamstage.com",
+            "outlet": "birminghamstage.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.londontheatre1.com/reviews/horrible-histories-barmy-britain-the-best-bits-apollo-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://birminghamstage.com/shows/horrible-histories-barmy-britain-the-best-bits/",
+            "outletId": "birminghamstage.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/horrible-histories-barmy-britain-the-best-bits-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-HORRIBLE-HISTORIES-BARMY-BRITAIN-THE-BEST-BITS-Apollo-Theatre-20250804",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 5
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -35762,9 +35996,11 @@
         "https://www.offoffonline.com/offoffonline/2026/7/25/hungry-women",
         "https://pagesonstages.com/2026/07/25/hungry-women/",
         "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
-        "https://www.newyorktheatreguide.com/show/47348-hungry-women",
+        "https://www.sohoplayhouse.com/see-a-show/hungry-women",
         "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
-        "https://www.show-score.com/off-broadway-shows/hungry-women",
+        "https://www.newyorktheatreguide.com/show/47348-hungry-women",
+        "https://www.melissamaney.com/hungry-women",
+        "https://donyc.com/events/2026/8/9/hungry-women-tickets",
         "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
         "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
       ],
@@ -35773,22 +36009,19 @@
       "inReviewsJson": 5,
       "missing": [
         {
+          "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets",
+          "host": "donyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
           "host": "theatricalindex.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "melissamaney.com",
-          "count": 1
-        },
-        {
-          "host": "sohoplayhouse.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
@@ -35822,24 +36055,6 @@
               "file": "broadwaypodcastnetwork--broadway-podcast-network.json",
               "flag": "clean",
               "urlInDir": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/hungry-women",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "show-score--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.show-score.com/off-broadway-shows/hungry-women"
             }
           ],
           "serpCensus": true
@@ -35887,7 +36102,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -35897,7 +36112,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -35917,26 +36132,39 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
         "count": 27,
         "byReason": {
-          "aggregator-internal-nav": 4,
+          "aggregator-internal-nav": 2,
           "non-review-host": 18,
+          "roundup-page": 4,
           "non-review-path": 1,
-          "roundup-page": 3,
-          "venue-production-page": 1
+          "venue-production-page": 2
         }
       },
+      "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~209633/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+        },
         {
           "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
           "host": "theatricalindex.com",
@@ -35947,13 +36175,20 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242990/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~209633/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "donyc.com",
+            "outlet": "donyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets"
+          },
           {
             "outletId": "theatricalindex.com",
             "outlet": "theatricalindex.com",
@@ -35974,13 +36209,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/hungry-women"
           },
           {
             "outletId": "this-week-in-new-york",
@@ -36023,10 +36251,29 @@
             "firstSeenAt": "2026-08-03T15:24:39.294Z"
           },
           {
+            "url": "https://www.sohoplayhouse.com/see-a-show/hungry-women",
+            "outletId": "sohoplayhouse.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/show/47348-hungry-women",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
+          },
+          {
+            "url": "https://www.melissamaney.com/hungry-women",
+            "outletId": "melissamaney.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets",
+            "outletId": "donyc.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
           },
           {
             "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
@@ -36050,13 +36297,6 @@
             "firstSeenAt": "2026-08-05T23:53:17.243Z"
           },
           {
-            "url": "https://www.show-score.com/off-broadway-shows/hungry-women",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T07:57:28.990Z"
-          },
-          {
             "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
             "outletId": "this-week-in-new-york",
             "state": "GAP",
@@ -36064,10 +36304,10 @@
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
           }
         ],
-        "liveCount": 5,
-        "candidateCount": 10
+        "liveCount": 7,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "iceboy-regional-2026",
@@ -36093,6 +36333,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -36101,7 +36342,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "im-almost-there-off-broadway-2026",
@@ -38706,155 +38947,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/",
-        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-      ],
-      "dirFiles": 3,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/",
-          "host": "picturethispost.com",
-          "knownOutletId": "picture-this-post",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "picture-this-post--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 21,
-        "byReason": {
-          "roundup-page": 1,
-          "non-review-host": 16,
-          "aggregator-internal-nav": 3,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "picture-this-post",
-            "outlet": "picture-this-post",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/"
-          },
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.picturethispost.com/hit-the-lights-company-presents-isla-preview/",
-            "outletId": "picture-this-post",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T11:06:44.430Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-            "outletId": "theatre-reviews-limited",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T11:06:44.430Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -42239,6 +42358,41 @@
       "computedAt": "2026-08-07T23:26:20.886Z"
     },
     {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "title": "Juno and the Paycock",
+      "openingDate": "2024-10-03",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-10T14:22:04.271Z"
+    },
+    {
       "showId": "just-in-time-2025",
       "title": "Just in Time",
       "openingDate": "2025-04-26",
@@ -42348,14 +42502,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 390,
+        "count": 389,
         "byReason": {
+          "aggregator-internal-nav": 304,
           "not-http-url": 45,
-          "aggregator-internal-nav": 305,
           "non-review-host": 37,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -42530,7 +42685,7 @@
         "liveCount": 22,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -42841,6 +42996,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -42849,7 +43005,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "la-sonnambula-off-broadway-2025",
@@ -43188,6 +43344,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -43209,7 +43366,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
@@ -44841,6 +44998,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -44849,7 +45007,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -46524,14 +46682,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 391,
+        "count": 390,
         "byReason": {
-          "aggregator-internal-nav": 300,
+          "aggregator-internal-nav": 299,
           "not-http-url": 48,
           "non-review-host": 40,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "ingestResults": [
         {
           "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
@@ -46543,7 +46702,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242937/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~209597/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
         },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
@@ -46555,7 +46714,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242937/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~209597/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -46771,7 +46930,7 @@
         "liveCount": 21,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
@@ -50152,6 +50311,7 @@
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-MUSIC-CITY-Returns-Off-Broadway-20260625",
@@ -50191,7 +50351,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -51545,14 +51705,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 895,
+        "count": 906,
         "byReason": {
-          "aggregator-internal-nav": 684,
-          "not-http-url": 114,
+          "aggregator-internal-nav": 691,
+          "not-http-url": 115,
           "non-review-host": 91,
+          "roundup-page": 3,
           "non-review-path": 6
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
@@ -52315,7 +52477,7 @@
         "liveCount": 27,
         "candidateCount": 52
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -56232,14 +56394,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 378,
+        "count": 377,
         "byReason": {
+          "aggregator-internal-nav": 298,
           "not-http-url": 39,
-          "aggregator-internal-nav": 301,
           "non-review-host": 35,
+          "roundup-page": 2,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-oliver-at-new-york-city-center-encores",
@@ -56402,7 +56566,7 @@
         "liveCount": 5,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -56547,14 +56711,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 399,
+        "count": 405,
         "byReason": {
-          "aggregator-internal-nav": 304,
-          "not-http-url": 52,
-          "non-review-host": 40,
+          "aggregator-internal-nav": 306,
+          "not-http-url": 53,
+          "non-review-host": 41,
+          "roundup-page": 2,
           "non-review-path": 3
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -56733,7 +56899,7 @@
         "liveCount": 19,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -60210,6 +60376,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -60267,7 +60434,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -60300,6 +60467,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -60315,7 +60483,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "porgy-and-bess-off-broadway-2025",
@@ -61868,12 +62036,14 @@
       "candidatesRejected": {
         "count": 879,
         "byReason": {
+          "aggregator-internal-nav": 603,
           "not-http-url": 186,
-          "aggregator-internal-nav": 607,
           "non-review-host": 80,
+          "roundup-page": 4,
           "non-review-path": 6
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
@@ -61895,7 +62065,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~242666/day) projects exhaustion in ~11d, before the 25d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~209554/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -62123,7 +62293,7 @@
         "liveCount": 23,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -62508,6 +62678,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -62516,7 +62687,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
@@ -71776,6 +71947,9 @@
         "https://ew.com/stranger-things-the-first-shadow-review-11715935",
         "https://www.newyorktheatreguide.com/reviews/stranger-things-the-first-shadow-broadway-review-hit-netflix-show-becomes-an",
         "https://www.theatrely.com/post/stranger-things-the-first-shadow-is-a-triumph-on-broadway-review",
+        "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+        "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
+        "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
         "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
         "https://people.com/broadway-stranger-things-cast-side-by-side-with-the-tv-actors-who-originated-the-roles-11732981",
         "https://www.vogue.com/article/stranger-things-the-first-shadow-review",
@@ -71803,6 +71977,13 @@
           "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+          "host": "ticker.tv",
+          "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -71978,6 +72159,44 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--olivia-rook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/stranger-things-the-first-shadow-announces-full-third-year-cast"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -72019,14 +72238,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 770,
+        "count": 774,
         "byReason": {
+          "aggregator-internal-nav": 602,
           "not-http-url": 92,
-          "aggregator-internal-nav": 600,
           "non-review-host": 72,
+          "roundup-page": 2,
           "non-review-path": 6
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-stranger-things-the-first-shadow-in-the-west-end",
@@ -72053,6 +72274,12 @@
         {
           "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
           "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+          "host": "ticker.tv",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -72082,6 +72309,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/"
+          },
+          {
+            "outletId": "ticker.tv",
+            "outlet": "ticker.tv",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/"
           },
           {
             "outletId": "variety",
@@ -72117,6 +72351,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre"
           },
           {
             "outletId": "nydailynews",
@@ -72319,6 +72567,13 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+            "outletId": "ticker.tv",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
             "url": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
             "outletId": "variety",
             "state": "GAP",
@@ -72354,6 +72609,20 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T14:22:04.271Z"
+          },
+          {
             "url": "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -72369,9 +72638,9 @@
           }
         ],
         "liveCount": 21,
-        "candidateCount": 30
+        "candidateCount": 33
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -78687,14 +78956,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1849,
+        "count": 1841,
         "byReason": {
-          "aggregator-internal-nav": 1356,
+          "aggregator-internal-nav": 1344,
           "not-http-url": 336,
           "non-review-host": 142,
+          "roundup-page": 4,
           "non-review-path": 15
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
@@ -79411,7 +79682,7 @@
         "liveCount": 25,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -83833,14 +84104,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1134,
+        "count": 1135,
         "byReason": {
-          "aggregator-internal-nav": 807,
-          "not-http-url": 228,
-          "non-review-host": 90,
+          "aggregator-internal-nav": 806,
+          "not-http-url": 229,
+          "non-review-host": 91,
           "non-review-path": 9
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-musical-adaptation-of-the-outsiders",
@@ -84277,7 +84549,7 @@
         "liveCount": 25,
         "candidateCount": 40
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "the-pass-off-broadway-2026",
@@ -85730,8 +86002,7 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJ1Z5F",
         "https://www.talkinbroadway.com/page/ob/07_27_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/",
-        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
-        "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/"
+        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc"
       ],
       "dirFiles": 30,
       "dirClean": 20,
@@ -85765,6 +86036,10 @@
         {
           "host": "theaterpizzazz.com",
           "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -85783,8 +86058,7 @@
               "flag": "wrongShow",
               "urlInDir": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/"
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
@@ -85876,7 +86150,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -85886,26 +86160,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 416,
+        "count": 419,
         "byReason": {
-          "aggregator-internal-nav": 272,
+          "aggregator-internal-nav": 271,
           "not-http-url": 81,
-          "non-review-host": 56,
-          "non-review-path": 3,
+          "non-review-host": 60,
           "roundup-page": 3,
+          "non-review-path": 3,
           "ticketing-reseller": 1
         }
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -86006,12 +86281,6 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
-            "url": "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T23:23:45.175Z"
-          },
-          {
             "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
             "outletId": "nysr",
             "state": "GAP",
@@ -86033,10 +86302,10 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 16
+        "liveCount": 12,
+        "candidateCount": 15
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -86241,6 +86510,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -86249,7 +86519,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T14:22:04.271Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
