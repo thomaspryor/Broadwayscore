@@ -87,6 +87,54 @@ test('copy: exit_intent/scroll_depth headings and body are market-aware (Broadwa
   assert.match(we.heading, /West End/);
 });
 
+// ─── Concrete example: task #1205 (gpt-5.4-mini fresh-eyes review flagged the
+// value-prop as abstract without a sample of the actual email content) ─────
+
+test('copy: exit_intent/scroll_depth include a concrete email-preview example', () => {
+  for (const trigger of ['exit_intent', 'scroll_depth']) {
+    for (const isWE of [false, true]) {
+      const { example } = getTriggerCopy(trigger, isWE);
+      assert.ok(example && example.trim().length > 0, `${trigger} (isWE=${isWE}) must have an example line`);
+      // Must show a real show name + a real score, not a placeholder like "X — N".
+      assert.match(example, /\d{2}/, `${trigger} example must include a numeric score`);
+      // "Sample:" (not "Example:") and no quote marks around the tagline — both
+      // caught by ship-check (2026-08-10): "Example:" + quoted text reads as a
+      // live score / a real critic's quote rather than an illustrative preview.
+      assert.match(example, /^Sample:/, `${trigger} example must be labeled "Sample:" so it doesn't read as live data`);
+      assert.doesNotMatch(example, /["“”]/, `${trigger} example must not use quote marks around the tagline (reads as an attributed critic quote)`);
+    }
+  }
+});
+
+test('copy: example score matches Hamilton\'s live canonical CriticScore (catches drift on rescore)', () => {
+  // The example is a hardcoded literal for a client-bundled file (gate-logic.ts
+  // ships to the browser — it can't do a runtime fs read the way
+  // scripts/lib/canonical-critic-scores.ts does). This test is the drift guard:
+  // it reads the same source JSON and re-derives the score with the same
+  // rounding convention, so a Hamilton rescore fails CI instead of shipping a
+  // silently stale example (ship-check 2026-08-10 finding).
+  const round = (cs) => Math.round(cs);
+  const bwayCs = JSON.parse(readFileSync(join(REPO_ROOT, 'public/data/shows/hamilton-2015.json'), 'utf8')).cs;
+  const weCs = JSON.parse(readFileSync(join(REPO_ROOT, 'public/data/shows/hamilton-west-end-2021.json'), 'utf8')).cs;
+
+  const bwayExample = getTriggerCopy('exit_intent', false).example;
+  const weExample = getTriggerCopy('exit_intent', true).example;
+  assert.match(bwayExample, new RegExp(`— ${round(bwayCs)} `), `Broadway example score is stale — hamilton-2015.json now rounds to ${round(bwayCs)}`);
+  assert.match(weExample, new RegExp(`— ${round(weCs)} `), `West End example score is stale — hamilton-west-end-2021.json now rounds to ${round(weCs)}`);
+});
+
+test('copy: other triggers do not carry an example line (scope stays limited to exit_intent/scroll_depth)', () => {
+  const TRIGGERS = ['csv_download', 'json_download', 'page_view_limit', 'return_visitor', 'recapture'];
+  for (const trigger of TRIGGERS) {
+    const { example } = getTriggerCopy(trigger, false);
+    assert.ok(!example, `${trigger} must not have an example line`);
+  }
+});
+
+test('copy: EmailCaptureModal renders copy.example when present', () => {
+  assert.match(MODAL_SRC, /copy\.example/, 'modal must render the optional example line from getTriggerCopy');
+});
+
 test('copy: every trigger still returns non-empty heading/subheading (no accidental blank state)', () => {
   const TRIGGERS = ['csv_download', 'json_download', 'page_view_limit', 'exit_intent', 'scroll_depth', 'return_visitor', 'recapture'];
   for (const trigger of TRIGGERS) {
