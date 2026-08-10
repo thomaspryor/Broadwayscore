@@ -53,7 +53,11 @@
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
     "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-    "the-rocky-horror-show-2026/ew--dalton-ross.json"
+    "the-rocky-horror-show-2026/ew--dalton-ross.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/wsj--john-anderson.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
   ],
   "failed": [
     "cats-west-end-2026/hollywood-reporter--angie-han.json",
@@ -441,7 +445,13 @@
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
     "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
     "the-lost-boys-2026/bloomberg--chris-rovzar.json",
-    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json"
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json",
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/latimes--charles-mcnulty.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -482,7 +492,8 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre-reviews--lola-phillips.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "the-rocky-horror-show-2026/ew--dalton-ross.json"
+      "the-rocky-horror-show-2026/ew--dalton-ross.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -508,7 +519,9 @@
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json"
     ],
     "brightdata": [
-      "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json"
+      "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "schmigadoon-2026/wsj--john-anderson.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -517,10 +530,23 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-08-10T10:15:58.760Z",
-  "lastProcessed": "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
-  "log": []
+  "lastProcessed": "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+  "log": [
+    {
+      "t": "2026-08-10T11:50:30.437Z",
+      "event": "bb-session",
+      "session": "a291bd40",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-08-10T11:50:30.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
