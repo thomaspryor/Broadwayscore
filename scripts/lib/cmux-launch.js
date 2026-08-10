@@ -58,6 +58,82 @@ const WRAPPER_MISS_STREAK = 2;
 // enough that the injection grace window still has its full meaning after.
 const WAKE_AFTER_SEC = 5;
 
+// ── Idle-gated PRE-wake (card #1199) ──────────────────────────────────────
+// WAKE_AFTER_SEC's wake is REACTIVE: it fires only after the wrapper has
+// already failed to appear, i.e. after the surface has already been deferred
+// and the --command already not run. Measured over 399 real cmux launches
+// (scripts/lib/dispatch-health.js, the aggregator this card added), the
+// deaths cluster on launches into an IDLE app, and the correlation is the
+// opposite of the "burst" theory the card originally proposed:
+//
+//   gap since previous cmux launch:  <5s 8%   5-30s 9%   30-120s 11%
+//                                    2-10m 18%   >10m 22%
+//   other launches in previous 60s:  solo 19%   1-2 others 7%
+//   hour (ET):  10:00 0/26   11:00 0/12   19:00 1/38   vs   00:00 12/47,
+//               21:00 7/13, 23:00 6/18
+//   model-independent (sonnet 17%, opus 13%), and deaths come in runs of up
+//   to 8 back-to-back — a persistent app state, not a per-launch coin flip.
+//   Machine sleep is ruled out: `pmset -g log` shows no Entering Sleep on
+//   2026-08-09/10, only powerd darkwake prediction assertions.
+//
+// So: assert the same socket-level flag BEFORE `new-workspace`, so the
+// surface renders at creation instead of being deferred and then rescued.
+//
+// IDLE-GATED rather than unconditional (pre-implementation review, #1079
+// gate). setAppFocus('active') is a persistent override that
+// launchCmuxSession clears in a finally, and that clear is launch-scoped, not
+// refcounted — a concurrent launcher's clear can re-defer another launch's
+// still-unrendered surface (see REWAKE_INTERVAL_SEC below). Waking on EVERY
+// launch would make `woke` true in busy concurrent batches, turning that rare
+// collision into the common case — and precisely in the regime the data shows
+// is currently SAFEST (7% dead with 1-2 concurrent siblings vs 19% solo).
+// Gating on "no other launch in the last IDLE_GATE_SEC" keeps `woke`
+// correlated with genuinely-idle conditions exactly as it is today (an idle
+// launch has, by construction, no concurrent sibling), while covering the
+// >2min-gap / solo / off-hours segment where nearly all the deaths are.
+const IDLE_GATE_SEC = 120;
+
+// Cross-PROCESS idleness signal: every bsc-next dispatch is its own node
+// process, so in-memory state can't see a sibling launcher. An mtime marker
+// in tmpdir is the smallest thing that works and needs no new schema. NOT the
+// dispatch ledger: the ledger's launch row is written by the CALLER after
+// this function returns, so it is always stale by exactly the window that
+// matters here.
+const LAST_LAUNCH_MARKER = path.join(os.tmpdir(), 'bsc-cmux-last-launch');
+
+// Seconds since the last launch attempt on this host, or Infinity when the
+// marker is missing (first launch after a reboot/tmp clear — treat as idle,
+// which is what it is).
+function cmuxIdleSec(markerPath = LAST_LAUNCH_MARKER, nowMs = Date.now()) {
+  let idle;
+  try { idle = (nowMs - fs.statSync(markerPath).mtimeMs) / 1000; } catch { return Infinity; }
+  // Sub-millisecond negative jitter is normal, not a clock anomaly: Date.now()
+  // has ms resolution while mtimeMs carries the filesystem's finer clock, so a
+  // marker stamped microseconds ago reads as ~-0.0005s. Caught by this file's
+  // own round-trip test. shouldPreWake treats a negative as "unknown → wake",
+  // so leaving it unclamped would make a just-stamped marker wake anyway —
+  // defeating the concurrency gate in exactly the window it exists to cover.
+  // A genuinely large negative IS a clock step, and stays "unknown".
+  if (idle < 0) return idle > -1 ? 0 : Infinity;
+  return idle;
+}
+
+function noteLaunchAttempt(markerPath = LAST_LAUNCH_MARKER) {
+  try { fs.writeFileSync(markerPath, new Date().toISOString()); } catch { /* advisory only */ }
+}
+
+// Pure decision (rule 15 — the test require()s this rather than re-deriving
+// it). Anything that is not a real, in-range idle reading pre-wakes: a
+// missing marker, a NaN, or a negative (marker stamped in the future by a
+// clock step) are all "we don't know", and the cheap socket flag is the safe
+// answer to not knowing. attempt >= 2 always pre-wakes — a retry only happens
+// after an attempt left nothing running, which is itself evidence of the
+// deferred-render state, and that population is already `woke` today.
+function shouldPreWake({ idleSec, attempt = 1, idleGateSec = IDLE_GATE_SEC }) {
+  if (attempt >= 2) return true;
+  return !(typeof idleSec === 'number' && idleSec >= 0 && idleSec < idleGateSec);
+}
+
 // Seconds between wake re-fires while the wrapper still has not appeared.
 // set-app-focus active is a persistent override, so one call normally
 // suffices — but a CONCURRENT launcher that also woke clears the override
@@ -453,6 +529,18 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     survivingWs = null;
     const before = new Set(cmuxws.listWorkspaces().map(w => w.ref));
+    // Idle-gated PRE-wake (card #1199 — see shouldPreWake). Marker is stamped
+    // BEFORE the wake, not after the spawn, so a sibling launcher starting a
+    // second later already reads "busy" and skips its own pre-wake: that is
+    // what keeps the finally-clear correlated with idle launches instead of
+    // firing across a concurrent batch.
+    const idleSec = (probes.idleSec || cmuxIdleSec)();
+    noteLaunchAttempt();
+    if (shouldPreWake({ idleSec, attempt })) {
+      console.error(`[cmux-launch] pre-waking cmux before create (${Number.isFinite(idleSec) ? `${Math.round(idleSec)}s since last launch` : 'no recent launch'}, attempt ${attempt}) — deferred surfaces never run their --command (card #1199)`);
+      wakeState.woke = true;
+      (probes.wake || (() => setAppFocus('active')))(true);
+    }
     const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', cwd, '--command', typed, '--focus', String(focus)],
       { encoding: 'utf8' });
     if (r.stdout) process.stdout.write(r.stdout);
@@ -550,4 +638,5 @@ module.exports = {
   hasSeedProcess, osProcessAliveForSeed, verifiedAlive, shouldRefuseForAuth,
   MAX_ATTEMPTS, PROBE_INTERVAL_SEC, WRAPPER_MISS_STREAK, WAKE_AFTER_SEC,
   REWAKE_INTERVAL_SEC,
+  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, LAST_LAUNCH_MARKER,
 };
