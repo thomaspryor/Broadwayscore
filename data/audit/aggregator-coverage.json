@@ -1,59 +1,59 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-03T07:04:12.326Z",
+    "generatedAt": "2026-08-10T06:27:09.261Z",
     "description": "Per-show per-aggregator review coverage audit (read-only)",
-    "totalShows": 2875,
-    "showsWithGaps": 1176,
-    "totalMissingReviews": 23292,
-    "totalTrulyMissing": 9131
+    "totalShows": 2884,
+    "showsWithGaps": 1184,
+    "totalMissingReviews": 23520,
+    "totalTrulyMissing": 9137
   },
   "summary": {
     "archiveCounts": {
-      "dtli": 857,
-      "showScore": 927,
-      "bww": 925,
-      "bwwReviews": 2015,
-      "playbillVerdict": 677,
-      "nycTheatre": 77
+      "dtli": 863,
+      "showScore": 936,
+      "bww": 931,
+      "bwwReviews": 2039,
+      "playbillVerdict": 681,
+      "nycTheatre": 79
     },
     "totalGaps": {
-      "dtli": 571,
-      "showScore": 356,
-      "bww": 685,
-      "bwwReviews": 701,
-      "playbillVerdict": 491,
+      "dtli": 584,
+      "showScore": 359,
+      "bww": 687,
+      "bwwReviews": 705,
+      "playbillVerdict": 493,
       "nycTheatre": 9
     },
     "totalMissing": {
-      "dtli": 2521,
-      "showScore": 7513,
+      "dtli": 2599,
+      "showScore": 7580,
       "bww": 4207,
-      "bwwReviews": 6251,
-      "playbillVerdict": 2777,
+      "bwwReviews": 6285,
+      "playbillVerdict": 2826,
       "nycTheatre": 23
     },
     "totalOverExtracted": {
-      "dtli": 39,
-      "showScore": 369,
-      "bww": 67,
-      "bwwReviews": 32,
-      "playbillVerdict": 23,
-      "nycTheatre": 43
+      "dtli": 37,
+      "showScore": 374,
+      "bww": 70,
+      "bwwReviews": 33,
+      "playbillVerdict": 24,
+      "nycTheatre": 45
     },
     "showsNeverSearched": {
-      "dtli": 2018,
+      "dtli": 2021,
       "showScore": 1813,
-      "bww": 1950,
-      "bwwReviews": 860,
-      "playbillVerdict": 2198,
-      "nycTheatre": 2798
+      "bww": 1953,
+      "bwwReviews": 845,
+      "playbillVerdict": 2203,
+      "nycTheatre": 2805
     }
   },
   "shows": {
     "the-lost-boys-2026": {
       "title": "The Lost Boys",
       "status": "open",
-      "totalLocal": 47,
+      "totalLocal": 48,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -674,7 +674,7 @@
       "title": "Death of a Salesman",
       "status": "open",
       "totalLocal": 45,
-      "pendingStrand": 1,
+      "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 47,
       "trulyMissing": 0,
@@ -730,7 +730,7 @@
         "bwwReviews-under-13",
         "playbillVerdict-under-20",
         "nycTheatre-wrong-page",
-        "pending-strand-1"
+        "pending-strand-2"
       ]
     },
     "cats-the-jellicle-ball-2026": {
@@ -1235,21 +1235,21 @@
       "status": "open",
       "totalLocal": 30,
       "pendingStrand": 0,
-      "hasGap": true,
-      "totalGap": 5,
+      "hasGap": false,
+      "totalGap": 0,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 13,
-          "extractedCount": 8,
-          "gap": 5,
+          "extractedCount": 13,
+          "gap": 0,
           "hasArchive": true,
           "method": "thumbs"
         },
         "showScore": {
           "archiveCount": 17,
-          "extractedCount": 19,
-          "gap": -2,
+          "extractedCount": 27,
+          "gap": -10,
           "hasArchive": true,
           "method": "heading"
         },
@@ -1282,8 +1282,7 @@
       },
       "maxAggregatorCount": 17,
       "flags": [
-        "dtli-under-5",
-        "showScore-over-2",
+        "showScore-over-10",
         "bww-over-1",
         "bwwReviews-over-1",
         "playbillVerdict-no-archive",
@@ -1895,16 +1894,16 @@
     "mamma-mia-2025": {
       "title": "Mamma Mia!",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 22,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 30,
+      "totalGap": 25,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 14,
-          "extractedCount": 8,
-          "gap": 6,
+          "extractedCount": 13,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -1944,7 +1943,7 @@
       },
       "maxAggregatorCount": 15,
       "flags": [
-        "dtli-under-6",
+        "dtli-under-1",
         "showScore-over-7",
         "bww-under-9",
         "bwwReviews-under-15",
@@ -2258,7 +2257,7 @@
     "stranger-things-2024": {
       "title": "Stranger Things: The First Shadow",
       "status": "open",
-      "totalLocal": 37,
+      "totalLocal": 38,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 5,
@@ -4461,7 +4460,7 @@
     "oh-mary-2024": {
       "title": "Oh, Mary!",
       "status": "open",
-      "totalLocal": 40,
+      "totalLocal": 41,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 9,
@@ -5355,20 +5354,20 @@
       "totalLocal": 38,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 6,
+      "totalGap": 2,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 14,
-          "extractedCount": 8,
-          "gap": 6,
+          "extractedCount": 12,
+          "gap": 2,
           "hasArchive": true,
           "method": "thumbs"
         },
         "showScore": {
           "archiveCount": 15,
-          "extractedCount": 24,
-          "gap": -9,
+          "extractedCount": 30,
+          "gap": -15,
           "hasArchive": true,
           "method": "heading"
         },
@@ -5401,8 +5400,8 @@
       },
       "maxAggregatorCount": 20,
       "flags": [
-        "dtli-under-6",
-        "showScore-over-9",
+        "dtli-under-2",
+        "showScore-over-15",
         "bww-over-2",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -8423,11 +8422,11 @@
     "take-me-out-2022": {
       "title": "Take Me Out",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 21,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 71,
-      "trulyMissing": 3,
+      "totalGap": 73,
+      "trulyMissing": 5,
       "aggregators": {
         "dtli": {
           "archiveCount": 16,
@@ -8438,8 +8437,8 @@
         },
         "showScore": {
           "archiveCount": 26,
-          "extractedCount": 12,
-          "gap": 14,
+          "extractedCount": 10,
+          "gap": 16,
           "hasArchive": true,
           "method": "heading"
         },
@@ -8474,7 +8473,7 @@
       "maxAggregatorCount": 26,
       "flags": [
         "dtli-under-10",
-        "showScore-under-14",
+        "showScore-under-16",
         "bww-under-16",
         "bwwReviews-under-18",
         "playbillVerdict-under-13",
@@ -12826,7 +12825,7 @@
     "hadestown-2019": {
       "title": "Hadestown",
       "status": "open",
-      "totalLocal": 58,
+      "totalLocal": 59,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 3,
@@ -18476,11 +18475,11 @@
     "cats-2016": {
       "title": "Cats",
       "status": "closed",
-      "totalLocal": 39,
+      "totalLocal": 50,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 27,
-      "trulyMissing": 8,
+      "totalGap": 12,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -18491,8 +18490,8 @@
         },
         "showScore": {
           "archiveCount": 47,
-          "extractedCount": 33,
-          "gap": 14,
+          "extractedCount": 67,
+          "gap": -20,
           "hasArchive": true,
           "method": "heading"
         },
@@ -18512,8 +18511,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 12,
-          "extractedCount": 11,
-          "gap": 1,
+          "extractedCount": 13,
+          "gap": -1,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -18527,10 +18526,10 @@
       "maxAggregatorCount": 47,
       "flags": [
         "dtli-under-4",
-        "showScore-under-14",
+        "showScore-over-20",
         "bww-under-4",
         "bwwReviews-under-4",
-        "playbillVerdict-under-1",
+        "playbillVerdict-over-1",
         "nycTheatre-no-archive"
       ]
     },
@@ -20457,7 +20456,7 @@
     "the-gin-game-2015": {
       "title": "The Gin Game",
       "status": "closed",
-      "totalLocal": 40,
+      "totalLocal": 41,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 1,
@@ -20638,11 +20637,11 @@
     "spring-awakening-2015": {
       "title": "Spring Awakening",
       "status": "closed",
-      "totalLocal": 42,
+      "totalLocal": 50,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 12,
-      "trulyMissing": 19,
+      "totalGap": 10,
+      "trulyMissing": 11,
       "aggregators": {
         "dtli": {
           "archiveCount": 6,
@@ -20653,15 +20652,15 @@
         },
         "showScore": {
           "archiveCount": 61,
-          "extractedCount": 71,
-          "gap": -10,
+          "extractedCount": 78,
+          "gap": -17,
           "hasArchive": true,
           "method": "heading"
         },
         "bww": {
           "archiveCount": 15,
-          "extractedCount": 12,
-          "gap": 3,
+          "extractedCount": 14,
+          "gap": 1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -20688,8 +20687,8 @@
       },
       "maxAggregatorCount": 61,
       "flags": [
-        "showScore-over-10",
-        "bww-under-3",
+        "showScore-over-17",
+        "bww-under-1",
         "bwwReviews-under-4",
         "playbillVerdict-under-5",
         "nycTheatre-no-archive"
@@ -20698,7 +20697,7 @@
     "hamilton-2015": {
       "title": "Hamilton",
       "status": "open",
-      "totalLocal": 45,
+      "totalLocal": 47,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 13,
@@ -20706,15 +20705,15 @@
       "aggregators": {
         "dtli": {
           "archiveCount": 4,
-          "extractedCount": 4,
-          "gap": 0,
+          "extractedCount": 5,
+          "gap": -1,
           "hasArchive": true,
           "method": "thumbs"
         },
         "showScore": {
           "archiveCount": 44,
-          "extractedCount": 71,
-          "gap": -27,
+          "extractedCount": 74,
+          "gap": -30,
           "hasArchive": true,
           "method": "heading"
         },
@@ -20734,7 +20733,7 @@
         },
         "playbillVerdict": {
           "archiveCount": null,
-          "extractedCount": 16,
+          "extractedCount": 17,
           "gap": null,
           "hasArchive": false
         },
@@ -20747,7 +20746,8 @@
       },
       "maxAggregatorCount": 44,
       "flags": [
-        "showScore-over-27",
+        "dtli-over-1",
+        "showScore-over-30",
         "bww-under-6",
         "bwwReviews-under-7",
         "playbillVerdict-no-archive",
@@ -24301,9 +24301,9 @@
       "title": "No Man's Land",
       "status": "closed",
       "totalLocal": 16,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
-      "totalGap": 11,
+      "totalGap": 10,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -24321,8 +24321,8 @@
         },
         "bww": {
           "archiveCount": 15,
-          "extractedCount": 12,
-          "gap": 3,
+          "extractedCount": 13,
+          "gap": 2,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -24350,7 +24350,7 @@
       "flags": [
         "dtli-under-1",
         "showScore-no-archive",
-        "bww-under-3",
+        "bww-under-2",
         "bwwReviews-no-archive",
         "playbillVerdict-under-7",
         "nycTheatre-no-archive"
@@ -26259,7 +26259,7 @@
     "vanya-and-sonia-and-masha-and-spike-2013": {
       "title": "Vanya and Sonia and Masha and Spike",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 24,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 1,
@@ -26280,8 +26280,8 @@
         },
         "bww": {
           "archiveCount": 12,
-          "extractedCount": 12,
-          "gap": 0,
+          "extractedCount": 13,
+          "gap": -1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -26310,6 +26310,7 @@
       "flags": [
         "dtli-no-archive",
         "showScore-wrong-page",
+        "bww-over-1",
         "bwwReviews-under-1",
         "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
@@ -26737,16 +26738,16 @@
     "the-anarchist-2012": {
       "title": "The Anarchist",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 15,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 14,
-      "trulyMissing": 1,
+      "totalGap": 15,
+      "trulyMissing": 2,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
-          "extractedCount": 2,
-          "gap": 3,
+          "extractedCount": 1,
+          "gap": 4,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -26786,7 +26787,7 @@
       },
       "maxAggregatorCount": 17,
       "flags": [
-        "dtli-under-3",
+        "dtli-under-4",
         "showScore-no-archive",
         "bww-under-7",
         "bwwReviews-under-4",
@@ -26797,16 +26798,16 @@
     "dead-accounts-2012": {
       "title": "Dead Accounts",
       "status": "closed",
-      "totalLocal": 13,
+      "totalLocal": 12,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 11,
-      "trulyMissing": 2,
+      "totalGap": 12,
+      "trulyMissing": 3,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
-          "extractedCount": 3,
-          "gap": 2,
+          "extractedCount": 2,
+          "gap": 3,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -26846,7 +26847,7 @@
       },
       "maxAggregatorCount": 15,
       "flags": [
-        "dtli-under-2",
+        "dtli-under-3",
         "showScore-no-archive",
         "bww-under-5",
         "bwwReviews-under-4",
@@ -27753,16 +27754,16 @@
     "leap-of-faith-2012": {
       "title": "Leap of Faith",
       "status": "closed",
-      "totalLocal": 17,
+      "totalLocal": 16,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 12,
-      "trulyMissing": 2,
+      "totalGap": 13,
+      "trulyMissing": 3,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
-          "extractedCount": 2,
-          "gap": 3,
+          "extractedCount": 1,
+          "gap": 4,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -27802,7 +27803,7 @@
       },
       "maxAggregatorCount": 19,
       "flags": [
-        "dtli-under-3",
+        "dtli-under-4",
         "bww-under-5",
         "bwwReviews-under-4",
         "playbillVerdict-no-archive",
@@ -27990,7 +27991,7 @@
     "the-lyons-2012": {
       "title": "The Lyons",
       "status": "closed",
-      "totalLocal": 14,
+      "totalLocal": 18,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 3,
@@ -28644,8 +28645,8 @@
     "once-2012": {
       "title": "Once",
       "status": "closed",
-      "totalLocal": 22,
-      "pendingStrand": 0,
+      "totalLocal": 23,
+      "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 21,
       "trulyMissing": 0,
@@ -30081,10 +30082,10 @@
     "the-house-of-blue-leaves-2011": {
       "title": "The House of Blue Leaves",
       "status": "closed",
-      "totalLocal": 22,
-      "pendingStrand": 0,
+      "totalLocal": 23,
+      "pendingStrand": 1,
       "hasGap": true,
-      "totalGap": 12,
+      "totalGap": 9,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -30102,8 +30103,8 @@
         },
         "bww": {
           "archiveCount": 15,
-          "extractedCount": 10,
-          "gap": 5,
+          "extractedCount": 13,
+          "gap": 2,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -30131,7 +30132,7 @@
       "maxAggregatorCount": 19,
       "flags": [
         "showScore-no-archive",
-        "bww-under-5",
+        "bww-under-2",
         "bwwReviews-under-7",
         "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
@@ -31326,16 +31327,16 @@
     "the-merchant-of-venice-2010": {
       "title": "The Merchant of Venice",
       "status": "closed",
-      "totalLocal": 12,
+      "totalLocal": 11,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 11,
+      "totalGap": 12,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 6,
-          "extractedCount": 1,
-          "gap": 5,
+          "extractedCount": 0,
+          "gap": 6,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -31376,7 +31377,7 @@
       },
       "maxAggregatorCount": 6,
       "flags": [
-        "dtli-under-5",
+        "dtli-under-6",
         "bww-under-2",
         "bwwReviews-over-3",
         "bwwReviews-wrong-page",
@@ -31387,7 +31388,7 @@
     "the-peewee-herman-show-2010": {
       "title": "The Pee-wee Herman Show",
       "status": "closed",
-      "totalLocal": 19,
+      "totalLocal": 20,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 8,
@@ -31562,16 +31563,16 @@
     "the-scottsboro-boys-2010": {
       "title": "The Scottsboro Boys",
       "status": "closed",
-      "totalLocal": 20,
-      "pendingStrand": 0,
+      "totalLocal": 27,
+      "pendingStrand": 1,
       "hasGap": true,
-      "totalGap": 13,
-      "trulyMissing": 2,
+      "totalGap": 10,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 7,
-          "extractedCount": 7,
-          "gap": 0,
+          "extractedCount": 8,
+          "gap": -1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -31583,8 +31584,8 @@
         },
         "bww": {
           "archiveCount": 13,
-          "extractedCount": 10,
-          "gap": 3,
+          "extractedCount": 14,
+          "gap": -1,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -31611,8 +31612,9 @@
       },
       "maxAggregatorCount": 22,
       "flags": [
+        "dtli-over-1",
         "showScore-no-archive",
-        "bww-under-3",
+        "bww-over-1",
         "bwwReviews-under-10",
         "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
@@ -32569,16 +32571,16 @@
     "la-cage-aux-folles-2010": {
       "title": "La Cage aux Folles",
       "status": "closed",
-      "totalLocal": 20,
+      "totalLocal": 19,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 17,
+      "totalGap": 18,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 9,
-          "extractedCount": 7,
-          "gap": 2,
+          "extractedCount": 6,
+          "gap": 3,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -32619,7 +32621,7 @@
       },
       "maxAggregatorCount": 14,
       "flags": [
-        "dtli-under-2",
+        "dtli-under-3",
         "showScore-wrong-page",
         "bww-under-4",
         "bwwReviews-over-1",
@@ -32631,7 +32633,7 @@
     "million-dollar-quartet-2010": {
       "title": "Million Dollar Quartet",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 26,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 10,
@@ -33581,8 +33583,8 @@
     "irving-berlins-white-christmas-2009": {
       "title": "Irving Berlin's White Christmas",
       "status": "closed",
-      "totalLocal": 3,
-      "pendingStrand": 0,
+      "totalLocal": 4,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -34683,8 +34685,8 @@
     "the-philanthropist-2009": {
       "title": "The Philanthropist",
       "status": "closed",
-      "totalLocal": 9,
-      "pendingStrand": 0,
+      "totalLocal": 10,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 6,
       "trulyMissing": 0,
@@ -35737,11 +35739,11 @@
     "pal-joey-2008": {
       "title": "Pal Joey",
       "status": "closed",
-      "totalLocal": 4,
-      "pendingStrand": 0,
+      "totalLocal": 7,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 10,
-      "trulyMissing": 1,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -35790,6 +35792,7 @@
         "dtli-under-5",
         "bww-under-2",
         "bwwReviews-under-3",
+        "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
       ]
     },
@@ -36266,16 +36269,16 @@
     "13-2008": {
       "title": "13",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 10,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 1,
+      "totalGap": 2,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 3,
-          "extractedCount": 2,
-          "gap": 1,
+          "extractedCount": 1,
+          "gap": 2,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -36313,7 +36316,7 @@
       },
       "maxAggregatorCount": 3,
       "flags": [
-        "dtli-under-1",
+        "dtli-under-2",
         "showScore-wrong-page",
         "bww-no-archive",
         "bwwReviews-no-archive",
@@ -38305,16 +38308,16 @@
     "a-bronx-tale-2007": {
       "title": "A Bronx Tale",
       "status": "closed",
-      "totalLocal": 6,
+      "totalLocal": 5,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 69,
-      "trulyMissing": 46,
+      "totalGap": 70,
+      "trulyMissing": 47,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -38355,9 +38358,9 @@
       },
       "maxAggregatorCount": 52,
       "flags": [
+        "dtli-under-1",
         "showScore-under-48",
         "bww-under-15",
-        "bwwReviews-wrong-page",
         "playbillVerdict-under-6",
         "nycTheatre-no-archive"
       ]
@@ -38421,10 +38424,10 @@
     "the-ritz-2007": {
       "title": "The Ritz",
       "status": "closed",
-      "totalLocal": 8,
+      "totalLocal": 9,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 3,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -38441,11 +38444,10 @@
           "hasArchive": false
         },
         "bww": {
-          "archiveCount": 6,
+          "archiveCount": null,
           "extractedCount": 4,
-          "gap": 2,
-          "hasArchive": true,
-          "method": "article-body"
+          "gap": null,
+          "hasArchive": false
         },
         "bwwReviews": {
           "archiveCount": 0,
@@ -38468,11 +38470,11 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 6,
+      "maxAggregatorCount": 1,
       "flags": [
         "dtli-under-1",
         "showScore-no-archive",
-        "bww-under-2",
+        "bww-no-archive",
         "bwwReviews-wrong-page",
         "nycTheatre-no-archive"
       ]
@@ -38826,8 +38828,8 @@
     "deuce-2007": {
       "title": "Deuce",
       "status": "closed",
-      "totalLocal": 6,
-      "pendingStrand": 0,
+      "totalLocal": 7,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -39750,16 +39752,16 @@
     "high-fidelity-2006": {
       "title": "High Fidelity",
       "status": "closed",
-      "totalLocal": 2,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 6,
-      "trulyMissing": 4,
+      "totalGap": 7,
+      "trulyMissing": 5,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -39800,6 +39802,7 @@
       },
       "maxAggregatorCount": 6,
       "flags": [
+        "dtli-under-1",
         "playbillVerdict-under-6",
         "nycTheatre-no-archive"
       ]
@@ -40098,11 +40101,11 @@
     "les-miserables-2006": {
       "title": "Les Misérables",
       "status": "closed",
-      "totalLocal": 7,
-      "pendingStrand": 0,
+      "totalLocal": 8,
+      "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 33,
-      "trulyMissing": 8,
+      "trulyMissing": 7,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -40273,16 +40276,16 @@
     "butley-2006": {
       "title": "Butley",
       "status": "closed",
-      "totalLocal": 5,
+      "totalLocal": 4,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 13,
-      "trulyMissing": 12,
+      "totalGap": 14,
+      "trulyMissing": 13,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -40322,6 +40325,7 @@
       },
       "maxAggregatorCount": 17,
       "flags": [
+        "dtli-under-1",
         "bww-under-13",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -40502,7 +40506,7 @@
     "martin-short-fame-becomes-me-2006": {
       "title": "Martin Short: Fame Becomes Me",
       "status": "closed",
-      "totalLocal": 7,
+      "totalLocal": 8,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -41307,8 +41311,8 @@
     "festen-2006": {
       "title": "Festen",
       "status": "closed",
-      "totalLocal": 5,
-      "pendingStrand": 0,
+      "totalLocal": 6,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -41356,6 +41360,7 @@
       "maxAggregatorCount": 1,
       "flags": [
         "bww-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -41815,16 +41820,16 @@
     "the-color-purple-2005": {
       "title": "The Color Purple",
       "status": "closed",
-      "totalLocal": 6,
+      "totalLocal": 5,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 106,
-      "trulyMissing": 53,
+      "totalGap": 107,
+      "trulyMissing": 54,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -41865,6 +41870,7 @@
       },
       "maxAggregatorCount": 59,
       "flags": [
+        "dtli-under-1",
         "showScore-under-56",
         "bww-under-11",
         "bwwReviews-under-21",
@@ -41988,16 +41994,16 @@
     "souvenir-2005": {
       "title": "Souvenir",
       "status": "closed",
-      "totalLocal": 6,
+      "totalLocal": 5,
       "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
+      "hasGap": true,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -42035,9 +42041,9 @@
       },
       "maxAggregatorCount": 1,
       "flags": [
+        "dtli-under-1",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -42163,16 +42169,16 @@
     "the-odd-couple-2005": {
       "title": "The Odd Couple",
       "status": "closed",
-      "totalLocal": 5,
+      "totalLocal": 4,
       "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
+      "hasGap": true,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -42211,6 +42217,7 @@
       },
       "maxAggregatorCount": 1,
       "flags": [
+        "dtli-under-1",
         "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -42443,16 +42450,16 @@
     "lennon-2005": {
       "title": "Lennon",
       "status": "closed",
-      "totalLocal": 9,
+      "totalLocal": 8,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 1,
+      "totalGap": 2,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -42492,6 +42499,7 @@
       },
       "maxAggregatorCount": 2,
       "flags": [
+        "dtli-under-1",
         "bww-under-1",
         "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
@@ -42788,11 +42796,11 @@
     "wicked-2003": {
       "title": "Wicked",
       "status": "open",
-      "totalLocal": 36,
+      "totalLocal": 35,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 53,
-      "trulyMissing": 15,
+      "trulyMissing": 16,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -42824,7 +42832,7 @@
         },
         "playbillVerdict": {
           "archiveCount": null,
-          "extractedCount": 3,
+          "extractedCount": 2,
           "gap": null,
           "hasArchive": false
         },
@@ -43023,11 +43031,11 @@
     "the-lion-king-1997": {
       "title": "The Lion King",
       "status": "open",
-      "totalLocal": 38,
+      "totalLocal": 37,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 39,
-      "trulyMissing": 0,
+      "totalGap": 40,
+      "trulyMissing": 1,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -43045,8 +43053,8 @@
         },
         "bww": {
           "archiveCount": 38,
-          "extractedCount": 1,
-          "gap": 37,
+          "extractedCount": 0,
+          "gap": 38,
           "hasArchive": true,
           "method": "article-body"
         },
@@ -43075,7 +43083,7 @@
       "flags": [
         "dtli-over-1",
         "showScore-over-17",
-        "bww-under-37",
+        "bww-under-38",
         "bwwReviews-under-1",
         "playbillVerdict-under-1",
         "nycTheatre-no-archive"
@@ -43325,11 +43333,11 @@
     "cats-1982": {
       "title": "Cats",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 85,
-      "trulyMissing": 46,
+      "totalGap": 86,
+      "trulyMissing": 47,
       "aggregators": {
         "dtli": {
           "archiveCount": 0,
@@ -43340,8 +43348,8 @@
         },
         "showScore": {
           "archiveCount": 47,
-          "extractedCount": 1,
-          "gap": 46,
+          "extractedCount": 0,
+          "gap": 47,
           "hasArchive": true,
           "method": "heading"
         },
@@ -43375,7 +43383,7 @@
       },
       "maxAggregatorCount": 47,
       "flags": [
-        "showScore-under-46",
+        "showScore-under-47",
         "bww-under-10",
         "bwwReviews-under-17",
         "playbillVerdict-under-12",
@@ -43673,7 +43681,7 @@
     "say-goodnight-gracie-2002": {
       "title": "Say Goodnight Gracie",
       "status": "closed",
-      "totalLocal": 2,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -43681,8 +43689,8 @@
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 2,
-          "gap": -1,
+          "extractedCount": 1,
+          "gap": 0,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -43720,7 +43728,6 @@
       },
       "maxAggregatorCount": 1,
       "flags": [
-        "dtli-over-1",
         "showScore-no-archive",
         "bww-no-archive",
         "playbillVerdict-no-archive",
@@ -44924,7 +44931,7 @@
       "title": "Enchanted April",
       "status": "closed",
       "totalLocal": 1,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -44980,7 +44987,7 @@
     "salome-2003": {
       "title": "Salome",
       "status": "closed",
-      "totalLocal": 2,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -44988,8 +44995,8 @@
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 2,
-          "gap": -1,
+          "extractedCount": 1,
+          "gap": 0,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -45027,7 +45034,6 @@
       },
       "maxAggregatorCount": 1,
       "flags": [
-        "dtli-over-1",
         "showScore-no-archive",
         "bww-no-archive",
         "playbillVerdict-no-archive",
@@ -45152,16 +45158,16 @@
     "long-days-journey-into-night-2003": {
       "title": "Long Day's Journey Into Night",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 40,
-      "trulyMissing": 38,
+      "trulyMissing": 39,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 2,
-          "gap": -1,
+          "extractedCount": 1,
+          "gap": 0,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -45199,7 +45205,6 @@
       },
       "maxAggregatorCount": 41,
       "flags": [
-        "dtli-over-1",
         "showScore-under-40",
         "bww-no-archive",
         "bwwReviews-no-archive",
@@ -45607,11 +45612,11 @@
     "mamma-mia-2001": {
       "title": "Mamma Mia!",
       "status": "closed",
-      "totalLocal": 7,
+      "totalLocal": 10,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 36,
-      "trulyMissing": 8,
+      "trulyMissing": 5,
       "aggregators": {
         "dtli": {
           "archiveCount": 0,
@@ -46124,7 +46129,7 @@
     "metamorphoses-2002": {
       "title": "Metamorphoses",
       "status": "closed",
-      "totalLocal": 2,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -46132,8 +46137,8 @@
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 2,
-          "gap": -1,
+          "extractedCount": 1,
+          "gap": 0,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -46171,7 +46176,6 @@
       },
       "maxAggregatorCount": 1,
       "flags": [
-        "dtli-over-1",
         "showScore-no-archive",
         "bww-no-archive",
         "playbillVerdict-no-archive",
@@ -46238,16 +46242,16 @@
     "the-crucible-2002": {
       "title": "The Crucible",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 92,
-      "trulyMissing": 48,
+      "totalGap": 93,
+      "trulyMissing": 49,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
-          "extractedCount": 1,
-          "gap": 0,
+          "extractedCount": 0,
+          "gap": 1,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -46287,6 +46291,7 @@
       },
       "maxAggregatorCount": 49,
       "flags": [
+        "dtli-under-1",
         "showScore-under-49",
         "bww-under-21",
         "bwwReviews-under-22",
@@ -47496,11 +47501,11 @@
     "into-the-woods-1997": {
       "title": "Into the Woods",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 3,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 23,
-      "trulyMissing": 23,
+      "totalGap": 22,
+      "trulyMissing": 21,
       "aggregators": {
         "dtli": {
           "archiveCount": 0,
@@ -47511,8 +47516,8 @@
         },
         "showScore": {
           "archiveCount": 24,
-          "extractedCount": 1,
-          "gap": 23,
+          "extractedCount": 2,
+          "gap": 22,
           "hasArchive": true,
           "method": "heading"
         },
@@ -47544,7 +47549,7 @@
       },
       "maxAggregatorCount": 24,
       "flags": [
-        "showScore-under-23",
+        "showScore-under-22",
         "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -47778,7 +47783,7 @@
       "title": "The Diary of Anne Frank",
       "status": "closed",
       "totalLocal": 0,
-      "pendingStrand": 0,
+      "pendingStrand": 3,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -49468,8 +49473,8 @@
     "bus-stop-1996": {
       "title": "Bus Stop",
       "status": "closed",
-      "totalLocal": 1,
-      "pendingStrand": 0,
+      "totalLocal": 2,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -50772,7 +50777,7 @@
     "smokey-joes-cafe-1995": {
       "title": "Smokey Joe's Cafe",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -54435,7 +54440,7 @@
       "title": "Kiss of the Spider Woman",
       "status": "closed",
       "totalLocal": 8,
-      "pendingStrand": 0,
+      "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 11,
       "trulyMissing": 3,
@@ -56123,11 +56128,11 @@
     "jellys-last-jam-1992": {
       "title": "Jelly's Last Jam",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 5,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 5,
-      "trulyMissing": 2,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -63362,11 +63367,11 @@
     "the-mystery-of-edwin-drood-1985": {
       "title": "The Mystery of Edwin Drood",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 30,
-      "trulyMissing": 14,
+      "totalGap": 28,
+      "trulyMissing": 13,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -63382,15 +63387,15 @@
         },
         "bww": {
           "archiveCount": 15,
-          "extractedCount": 0,
-          "gap": 15,
+          "extractedCount": 1,
+          "gap": 14,
           "hasArchive": true,
           "method": "article-body"
         },
         "bwwReviews": {
           "archiveCount": 15,
-          "extractedCount": 0,
-          "gap": 15,
+          "extractedCount": 1,
+          "gap": 14,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -63411,8 +63416,8 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bww-under-15",
-        "bwwReviews-under-15",
+        "bww-under-14",
+        "bwwReviews-under-14",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -70392,7 +70397,7 @@
     "talleys-folly-1980": {
       "title": "Talley's Folly",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -73708,7 +73713,7 @@
       "title": "The Importance of Being Earnest",
       "status": "closed",
       "totalLocal": 0,
-      "pendingStrand": 0,
+      "pendingStrand": 4,
       "hasGap": true,
       "totalGap": 31,
       "trulyMissing": 12,
@@ -74048,11 +74053,11 @@
     "the-gin-game-1977": {
       "title": "The Gin Game",
       "status": "closed",
-      "totalLocal": 0,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 54,
-      "trulyMissing": 40,
+      "totalGap": 53,
+      "trulyMissing": 39,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -74075,8 +74080,8 @@
         },
         "bwwReviews": {
           "archiveCount": 14,
-          "extractedCount": 0,
-          "gap": 14,
+          "extractedCount": 1,
+          "gap": 13,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -74098,7 +74103,7 @@
         "dtli-no-archive",
         "showScore-under-40",
         "bww-no-archive",
-        "bwwReviews-under-14",
+        "bwwReviews-under-13",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -74163,7 +74168,7 @@
       "title": "Dracula",
       "status": "closed",
       "totalLocal": 1,
-      "pendingStrand": 0,
+      "pendingStrand": 5,
       "hasGap": true,
       "totalGap": 5,
       "trulyMissing": 4,
@@ -75177,7 +75182,7 @@
     "deathtrap-1978": {
       "title": "Deathtrap",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 3,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -77826,11 +77831,11 @@
     "pacific-overtures-1976": {
       "title": "Pacific Overtures",
       "status": "closed",
-      "totalLocal": 0,
-      "pendingStrand": 0,
+      "totalLocal": 3,
+      "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 9,
-      "trulyMissing": 8,
+      "trulyMissing": 5,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
@@ -93564,7 +93569,7 @@
     "little-women-2005": {
       "title": "Little Women",
       "status": "closed",
-      "totalLocal": 3,
+      "totalLocal": 6,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -93613,6 +93618,7 @@
       "flags": [
         "showScore-no-archive",
         "bww-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -94133,8 +94139,8 @@
     "julius-caesar-2005": {
       "title": "Julius Caesar",
       "status": "closed",
-      "totalLocal": 0,
-      "pendingStrand": 0,
+      "totalLocal": 2,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -94357,11 +94363,11 @@
     "the-light-in-the-piazza-2005": {
       "title": "The Light in the Piazza",
       "status": "closed",
-      "totalLocal": 4,
-      "pendingStrand": 0,
+      "totalLocal": 7,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 5,
-      "trulyMissing": 1,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 1,
@@ -94407,6 +94413,7 @@
       "flags": [
         "showScore-no-archive",
         "bww-under-5",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -97487,7 +97494,7 @@
       "title": "Stones in His Pockets",
       "status": "closed",
       "totalLocal": 3,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -99294,11 +99301,11 @@
     "jesus-christ-superstar-2000": {
       "title": "Jesus Christ Superstar",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 36,
-      "trulyMissing": 15,
+      "totalGap": 35,
+      "trulyMissing": 14,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -99322,8 +99329,8 @@
         },
         "bwwReviews": {
           "archiveCount": 15,
-          "extractedCount": 0,
-          "gap": 15,
+          "extractedCount": 1,
+          "gap": 14,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -99345,7 +99352,7 @@
         "dtli-under-5",
         "showScore-no-archive",
         "bww-under-16",
-        "bwwReviews-under-15",
+        "bwwReviews-under-14",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -100312,7 +100319,7 @@
       "title": "Our Town",
       "status": "closed",
       "totalLocal": 0,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 38,
       "trulyMissing": 19,
@@ -100820,11 +100827,11 @@
     "lend-me-a-tenor-1989": {
       "title": "Lend Me a Tenor",
       "status": "closed",
-      "totalLocal": 0,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 27,
-      "trulyMissing": 21,
+      "trulyMissing": 20,
       "aggregators": {
         "dtli": {
           "archiveCount": 6,
@@ -112475,7 +112482,7 @@
       "title": "On the Town",
       "status": "closed",
       "totalLocal": 2,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 41,
       "trulyMissing": 17,
@@ -112925,11 +112932,11 @@
     "old-times-1971": {
       "title": "Old Times",
       "status": "closed",
-      "totalLocal": 0,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 77,
-      "trulyMissing": 38,
+      "totalGap": 73,
+      "trulyMissing": 36,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -112946,15 +112953,15 @@
         },
         "bww": {
           "archiveCount": 21,
-          "extractedCount": 0,
-          "gap": 21,
+          "extractedCount": 2,
+          "gap": 19,
           "hasArchive": true,
           "method": "article-body"
         },
         "bwwReviews": {
           "archiveCount": 18,
-          "extractedCount": 0,
-          "gap": 18,
+          "extractedCount": 2,
+          "gap": 16,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -112975,8 +112982,8 @@
       "flags": [
         "dtli-no-archive",
         "showScore-under-38",
-        "bww-under-21",
-        "bwwReviews-under-18",
+        "bww-under-19",
+        "bwwReviews-under-16",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -113712,11 +113719,11 @@
     "sticks-and-bones-1972": {
       "title": "Sticks and Bones",
       "status": "closed",
-      "totalLocal": 0,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 15,
-      "trulyMissing": 10,
+      "trulyMissing": 9,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -115427,10 +115434,11 @@
           "method": "article-body"
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 10,
@@ -115451,7 +115459,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-under-4",
-        "bwwReviews-no-archive",
         "playbillVerdict-under-10",
         "nycTheatre-no-archive"
       ]
@@ -116503,7 +116510,7 @@
     "little-shop-of-horrors-off-broadway-2019": {
       "title": "Little Shop of Horrors",
       "status": "open",
-      "totalLocal": 25,
+      "totalLocal": 26,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 3,
@@ -116621,7 +116628,7 @@
     "the-reservoir-off-broadway-2026": {
       "title": "The Reservoir",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 18,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 7,
@@ -116863,7 +116870,7 @@
     "mother-russia-off-broadway-2026": {
       "title": "Mother Russia",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 17,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 5,
@@ -118958,7 +118965,7 @@
     "girl-interrupted-off-broadway-2026": {
       "title": "Girl, Interrupted",
       "status": "closed",
-      "totalLocal": 26,
+      "totalLocal": 27,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -121160,8 +121167,8 @@
     "the-saviors-off-broadway-2026": {
       "title": "The Saviors",
       "status": "open",
-      "totalLocal": 21,
-      "pendingStrand": 3,
+      "totalLocal": 27,
+      "pendingStrand": 6,
       "hasGap": true,
       "totalGap": 2,
       "trulyMissing": 0,
@@ -121215,7 +121222,7 @@
         "bwwReviews-wrong-page",
         "playbillVerdict-under-2",
         "nycTheatre-no-archive",
-        "pending-strand-3"
+        "pending-strand-6"
       ]
     },
     "you-got-older-off-broadway-2026": {
@@ -121693,7 +121700,7 @@
     "the-whoopi-monologues-off-broadway-2026": {
       "title": "The Whoopi Monologues",
       "status": "open",
-      "totalLocal": 26,
+      "totalLocal": 28,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 1,
@@ -122047,7 +122054,7 @@
     },
     "giulia-the-poison-queen-of-palermo-off-broadway-2026": {
       "title": "Giulia: The Poison Queen of Palermo",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 28,
       "pendingStrand": 2,
       "hasGap": true,
@@ -122102,8 +122109,7 @@
         "showScore-wrong-page",
         "bwwReviews-wrong-page",
         "playbillVerdict-under-1",
-        "nycTheatre-no-archive",
-        "pending-strand-2"
+        "nycTheatre-no-archive"
       ]
     },
     "this-is-my-favorite-song-off-broadway-2024": {
@@ -122280,11 +122286,11 @@
     "hadestown-west-end-2024": {
       "title": "Hadestown",
       "status": "open",
-      "totalLocal": 29,
+      "totalLocal": 30,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 84,
-      "trulyMissing": 22,
+      "trulyMissing": 21,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -122341,10 +122347,10 @@
     "oh-mary-west-end-2025": {
       "title": "Oh, Mary!",
       "status": "open",
-      "totalLocal": 35,
+      "totalLocal": 41,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 74,
+      "totalGap": 72,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -122363,8 +122369,8 @@
         },
         "bww": {
           "archiveCount": 17,
-          "extractedCount": 2,
-          "gap": 15,
+          "extractedCount": 3,
+          "gap": 14,
           "hasArchive": true,
           "method": "blog-postings"
         },
@@ -122377,8 +122383,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 28,
-          "extractedCount": 1,
-          "gap": 27,
+          "extractedCount": 2,
+          "gap": 26,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -122394,9 +122400,9 @@
       "flags": [
         "dtli-under-16",
         "showScore-over-8",
-        "bww-under-15",
+        "bww-under-14",
         "bwwReviews-under-16",
-        "playbillVerdict-under-27",
+        "playbillVerdict-under-26",
         "nycTheatre-over-5",
         "nycTheatre-wrong-page"
       ]
@@ -122463,11 +122469,11 @@
     "the-play-that-goes-wrong-west-end-2021": {
       "title": "The Play That Goes Wrong",
       "status": "open",
-      "totalLocal": 15,
+      "totalLocal": 10,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 39,
-      "trulyMissing": 3,
+      "trulyMissing": 8,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -122579,10 +122585,10 @@
     "the-devil-wears-prada-west-end-2024": {
       "title": "The Devil Wears Prada",
       "status": "open",
-      "totalLocal": 38,
+      "totalLocal": 37,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 10,
+      "totalGap": 11,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -122593,8 +122599,8 @@
         },
         "showScore": {
           "archiveCount": 11,
-          "extractedCount": 19,
-          "gap": -8,
+          "extractedCount": 17,
+          "gap": -6,
           "hasArchive": true,
           "method": "heading"
         },
@@ -122614,8 +122620,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 18,
-          "extractedCount": 12,
-          "gap": 6,
+          "extractedCount": 11,
+          "gap": 7,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -122629,10 +122635,10 @@
       "maxAggregatorCount": 18,
       "flags": [
         "dtli-no-archive",
-        "showScore-over-8",
+        "showScore-over-6",
         "bww-under-4",
         "bwwReviews-wrong-page",
-        "playbillVerdict-under-6",
+        "playbillVerdict-under-7",
         "nycTheatre-no-archive"
       ]
     },
@@ -122697,7 +122703,7 @@
     "my-neighbour-totoro-west-end-2025": {
       "title": "My Neighbour Totoro",
       "status": "open",
-      "totalLocal": 23,
+      "totalLocal": 27,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -122711,8 +122717,8 @@
         },
         "showScore": {
           "archiveCount": 12,
-          "extractedCount": 17,
-          "gap": -5,
+          "extractedCount": 20,
+          "gap": -8,
           "hasArchive": true,
           "method": "heading"
         },
@@ -122746,7 +122752,7 @@
       "maxAggregatorCount": 12,
       "flags": [
         "dtli-no-archive",
-        "showScore-over-5",
+        "showScore-over-8",
         "bww-over-7",
         "bww-wrong-page",
         "bwwReviews-wrong-page",
@@ -122994,10 +123000,10 @@
     "avenue-q-west-end-2026": {
       "title": "Avenue Q",
       "status": "open",
-      "totalLocal": 38,
+      "totalLocal": 36,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 9,
+      "totalGap": 10,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -123029,8 +123035,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 26,
-          "extractedCount": 22,
-          "gap": 4,
+          "extractedCount": 21,
+          "gap": 5,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -123048,7 +123054,7 @@
         "showScore-wrong-page",
         "bww-no-archive",
         "bwwReviews-wrong-page",
-        "playbillVerdict-under-4",
+        "playbillVerdict-under-5",
         "nycTheatre-no-archive"
       ]
     },
@@ -123111,11 +123117,11 @@
     "the-book-of-mormon-west-end-2024": {
       "title": "The Book of Mormon",
       "status": "open",
-      "totalLocal": 21,
+      "totalLocal": 22,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 45,
-      "trulyMissing": 5,
+      "totalGap": 44,
+      "trulyMissing": 4,
       "aggregators": {
         "dtli": {
           "archiveCount": 7,
@@ -123126,8 +123132,8 @@
         },
         "showScore": {
           "archiveCount": 23,
-          "extractedCount": 11,
-          "gap": 12,
+          "extractedCount": 12,
+          "gap": 11,
           "hasArchive": true,
           "method": "heading"
         },
@@ -123162,7 +123168,7 @@
       "maxAggregatorCount": 26,
       "flags": [
         "dtli-under-7",
-        "showScore-under-12",
+        "showScore-under-11",
         "bww-under-1",
         "bwwReviews-under-25",
         "playbillVerdict-wrong-page",
@@ -123172,7 +123178,7 @@
     "the-lion-king-west-end-2021": {
       "title": "The Lion King",
       "status": "open",
-      "totalLocal": 23,
+      "totalLocal": 21,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 10,
@@ -123994,7 +124000,7 @@
     "1536-west-end-2026": {
       "title": "1536",
       "status": "closed",
-      "totalLocal": 21,
+      "totalLocal": 20,
       "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 8,
@@ -124169,7 +124175,7 @@
     "all-my-sons-west-end-2025": {
       "title": "All My Sons",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 31,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 33,
@@ -124284,7 +124290,7 @@
     "sinatra-the-musical-west-end-2026": {
       "title": "Sinatra The Musical",
       "status": "open",
-      "totalLocal": 42,
+      "totalLocal": 45,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -124305,8 +124311,8 @@
         },
         "bww": {
           "archiveCount": 8,
-          "extractedCount": 10,
-          "gap": -2,
+          "extractedCount": 11,
+          "gap": -3,
           "hasArchive": true,
           "method": "blog-postings"
         },
@@ -124335,7 +124341,7 @@
         "dtli-no-archive",
         "showScore-over-1",
         "showScore-wrong-page",
-        "bww-over-2",
+        "bww-over-3",
         "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive",
@@ -124345,7 +124351,7 @@
     "cyrano-de-bergerac-west-end-2026": {
       "title": "Cyrano de Bergerac",
       "status": "open",
-      "totalLocal": 42,
+      "totalLocal": 41,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 33,
@@ -124522,7 +124528,7 @@
     "wicked-west-end-2021": {
       "title": "Wicked",
       "status": "open",
-      "totalLocal": 19,
+      "totalLocal": 18,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 17,
@@ -124537,8 +124543,8 @@
         },
         "showScore": {
           "archiveCount": 6,
-          "extractedCount": 6,
-          "gap": 0,
+          "extractedCount": 7,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -124571,6 +124577,7 @@
       "maxAggregatorCount": 12,
       "flags": [
         "dtli-under-5",
+        "showScore-over-1",
         "bww-no-archive",
         "bwwReviews-under-12",
         "playbillVerdict-no-archive",
@@ -124580,7 +124587,7 @@
     "the-producers-west-end-2025": {
       "title": "The Producers",
       "status": "open",
-      "totalLocal": 27,
+      "totalLocal": 26,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 3,
@@ -124643,13 +124650,13 @@
       "totalLocal": 33,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 53,
+      "totalGap": 52,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
           "archiveCount": 17,
-          "extractedCount": 0,
-          "gap": 17,
+          "extractedCount": 1,
+          "gap": 16,
           "hasArchive": true,
           "method": "thumbs"
         },
@@ -124690,7 +124697,7 @@
       },
       "maxAggregatorCount": 21,
       "flags": [
-        "dtli-under-17",
+        "dtli-under-16",
         "showScore-over-2",
         "bwwReviews-under-15",
         "playbillVerdict-under-21",
@@ -124872,8 +124879,8 @@
     "the-boy-who-harnessed-the-wind-west-end-2026": {
       "title": "The Boy Who Harnessed the Wind",
       "status": "closed",
-      "totalLocal": 12,
-      "pendingStrand": 1,
+      "totalLocal": 17,
+      "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -124930,7 +124937,7 @@
     "black-is-the-color-of-my-voice-west-end-2026": {
       "title": "Black Is The Color Of My Voice",
       "status": "closed",
-      "totalLocal": 4,
+      "totalLocal": 3,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -125107,7 +125114,7 @@
       "totalLocal": 31,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 3,
+      "totalGap": 2,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -125138,8 +125145,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 18,
-          "extractedCount": 15,
-          "gap": 3,
+          "extractedCount": 16,
+          "gap": 2,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -125157,15 +125164,15 @@
         "bww-no-archive",
         "bwwReviews-over-1",
         "bwwReviews-wrong-page",
-        "playbillVerdict-under-3",
+        "playbillVerdict-under-2",
         "nycTheatre-no-archive"
       ]
     },
     "into-the-woods-west-end-2025": {
       "title": "Into the Woods",
       "status": "closed",
-      "totalLocal": 37,
-      "pendingStrand": 0,
+      "totalLocal": 35,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 16,
       "trulyMissing": 0,
@@ -125225,7 +125232,7 @@
     "witness-for-the-prosecution-west-end-2022": {
       "title": "Witness for the Prosecution",
       "status": "open",
-      "totalLocal": 17,
+      "totalLocal": 18,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -125282,7 +125289,7 @@
     "manic-street-creature-west-end-2026": {
       "title": "Manic Street Creature",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 14,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -125397,7 +125404,7 @@
     "driftwood-west-end-2026": {
       "title": "Driftwood",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 14,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -125455,7 +125462,7 @@
     "pride-west-end-2026": {
       "title": "Pride",
       "status": "open",
-      "totalLocal": 30,
+      "totalLocal": 29,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 8,
@@ -126043,7 +126050,7 @@
     "deep-azure-globe-west-end-2026": {
       "title": "Deep Azure - Globe",
       "status": "closed",
-      "totalLocal": 15,
+      "totalLocal": 14,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -126099,7 +126106,7 @@
     "dog-man-the-musical-west-end-2026": {
       "title": "Dog Man - The Musical",
       "status": "open",
-      "totalLocal": 0,
+      "totalLocal": 15,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -126148,6 +126155,7 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -126554,11 +126562,11 @@
     "les-liaisons-dangereuses-west-end-2026": {
       "title": "Les Liaisons Dangereuses",
       "status": "closed",
-      "totalLocal": 32,
+      "totalLocal": 31,
       "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 109,
-      "trulyMissing": 31,
+      "trulyMissing": 32,
       "aggregators": {
         "dtli": {
           "archiveCount": 5,
@@ -126615,7 +126623,7 @@
     "are-you-watching-west-end-2026": {
       "title": "Are You Watching?",
       "status": "closed",
-      "totalLocal": 18,
+      "totalLocal": 17,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -126731,8 +126739,8 @@
     "loves-labours-lost-globe-west-end-2026": {
       "title": "Love's Labour's Lost - Globe",
       "status": "open",
-      "totalLocal": 18,
-      "pendingStrand": 4,
+      "totalLocal": 20,
+      "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -126783,14 +126791,13 @@
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive",
-        "pending-strand-4"
+        "nycTheatre-no-archive"
       ]
     },
     "springwood-west-end-2026": {
       "title": "Springwood",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 22,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -127138,7 +127145,7 @@
     "blood-of-my-blood-west-end-2026": {
       "title": "Blood of my Blood",
       "status": "upcoming",
-      "totalLocal": 2,
+      "totalLocal": 4,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -127164,10 +127171,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 0,
@@ -127187,14 +127195,13 @@
       "flags": [
         "dtli-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "nycTheatre-no-archive"
       ]
     },
     "archduke-west-end-2026": {
       "title": "Archduke",
       "status": "closed",
-      "totalLocal": 29,
+      "totalLocal": 28,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 6,
@@ -127369,7 +127376,7 @@
     "the-enormous-crocodile-west-end-2026": {
       "title": "The Enormous Crocodile",
       "status": "open",
-      "totalLocal": 7,
+      "totalLocal": 15,
       "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
@@ -127428,7 +127435,7 @@
     "copenhagen-west-end-2026": {
       "title": "Copenhagen",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 15,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -127941,11 +127948,11 @@
     "john-proctor-is-the-villain-west-end-2026": {
       "title": "John Proctor Is the Villain",
       "status": "closed",
-      "totalLocal": 25,
+      "totalLocal": 24,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 83,
-      "trulyMissing": 0,
+      "trulyMissing": 1,
       "aggregators": {
         "dtli": {
           "archiveCount": 21,
@@ -128235,7 +128242,7 @@
     "dracula-west-end-2025": {
       "title": "Dracula",
       "status": "closed",
-      "totalLocal": 24,
+      "totalLocal": 25,
       "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 14,
@@ -128264,8 +128271,8 @@
         },
         "bwwReviews": {
           "archiveCount": 0,
-          "extractedCount": 0,
-          "gap": 0,
+          "extractedCount": 1,
+          "gap": -1,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -128288,6 +128295,7 @@
         "dtli-under-5",
         "showScore-over-6",
         "bww-under-6",
+        "bwwReviews-over-1",
         "bwwReviews-wrong-page",
         "playbillVerdict-under-3",
         "nycTheatre-no-archive"
@@ -128413,7 +128421,7 @@
     "operation-mincemeat-west-end-2024": {
       "title": "Operation Mincemeat",
       "status": "open",
-      "totalLocal": 27,
+      "totalLocal": 28,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 35,
@@ -129626,7 +129634,7 @@
     "a-woman-among-women-off-broadway-2026": {
       "title": "A Woman Among Women",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 14,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -129801,10 +129809,10 @@
     "to-kill-a-mockingbird-west-end-2026": {
       "title": "To Kill a Mockingbird",
       "status": "open",
-      "totalLocal": 30,
+      "totalLocal": 31,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 54,
+      "totalGap": 49,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -129821,22 +129829,22 @@
         },
         "bww": {
           "archiveCount": 18,
-          "extractedCount": 2,
-          "gap": 16,
+          "extractedCount": 4,
+          "gap": 14,
           "hasArchive": true,
           "method": "article-body"
         },
         "bwwReviews": {
           "archiveCount": 16,
-          "extractedCount": 1,
-          "gap": 15,
+          "extractedCount": 2,
+          "gap": 14,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 23,
-          "extractedCount": 0,
-          "gap": 23,
+          "extractedCount": 2,
+          "gap": 21,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -129852,9 +129860,9 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bww-under-16",
-        "bwwReviews-under-15",
-        "playbillVerdict-under-23",
+        "bww-under-14",
+        "bwwReviews-under-14",
+        "playbillVerdict-under-21",
         "nycTheatre-wrong-page"
       ]
     },
@@ -130986,7 +130994,7 @@
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026": {
       "title": "Here There Are Blueberries (Theatre Royal Stratford East)",
       "status": "closed",
-      "totalLocal": 14,
+      "totalLocal": 13,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 2,
@@ -131389,7 +131397,7 @@
     "tao-of-glass-west-end-2026": {
       "title": "Tao of Glass",
       "status": "open",
-      "totalLocal": 32,
+      "totalLocal": 36,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -131447,8 +131455,8 @@
     },
     "death-note-the-musical-west-end-2026": {
       "title": "Death Note: The Musical",
-      "status": "open",
-      "totalLocal": 4,
+      "status": "previews",
+      "totalLocal": 5,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -131913,7 +131921,7 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026": {
       "title": "The Truth",
       "status": "open",
-      "totalLocal": 34,
+      "totalLocal": 35,
       "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
@@ -132028,8 +132036,8 @@
     "the-gruffalo-west-end-2026": {
       "title": "The Gruffalo",
       "status": "open",
-      "totalLocal": 2,
-      "pendingStrand": 1,
+      "totalLocal": 5,
+      "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -132054,10 +132062,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -132076,10 +132085,8 @@
       "flags": [
         "dtli-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive",
-        "pending-strand-1"
+        "nycTheatre-no-archive"
       ]
     },
     "the-maids-off-broadway-2026": {
@@ -132371,7 +132378,7 @@
     "the-authenticator-west-end-2026": {
       "title": "The Authenticator",
       "status": "closed",
-      "totalLocal": 28,
+      "totalLocal": 27,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -132429,7 +132436,7 @@
     "mass-west-end-2026": {
       "title": "Mass",
       "status": "closed",
-      "totalLocal": 23,
+      "totalLocal": 22,
       "pendingStrand": 5,
       "hasGap": false,
       "totalGap": 0,
@@ -132488,11 +132495,11 @@
     "a-christmas-carol-west-end-2026": {
       "title": "A Christmas Carol",
       "status": "upcoming",
-      "totalLocal": 0,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 28,
-      "trulyMissing": 14,
+      "trulyMissing": 13,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -132714,30 +132721,33 @@
     },
     "cats-west-end-2026": {
       "title": "Cats",
-      "status": "previews",
-      "totalLocal": 0,
-      "pendingStrand": 0,
+      "status": "open",
+      "totalLocal": 47,
+      "pendingStrand": 3,
       "hasGap": true,
-      "totalGap": 39,
-      "trulyMissing": 22,
+      "totalGap": 101,
+      "trulyMissing": 0,
       "aggregators": {
         "dtli": {
-          "archiveCount": null,
+          "archiveCount": 17,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 17,
+          "hasArchive": true,
+          "method": "thumbs"
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 47,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 47,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 8,
+          "extractedCount": 10,
+          "gap": -2,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
           "archiveCount": 17,
@@ -132748,8 +132758,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 22,
-          "extractedCount": 0,
-          "gap": 22,
+          "extractedCount": 2,
+          "gap": 20,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -132761,19 +132771,21 @@
           "method": "none-found"
         }
       },
-      "maxAggregatorCount": 22,
+      "maxAggregatorCount": 47,
       "flags": [
-        "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-no-archive",
+        "dtli-under-17",
+        "showScore-under-47",
+        "bww-over-2",
         "bwwReviews-under-17",
-        "playbillVerdict-under-22"
+        "playbillVerdict-under-20",
+        "nycTheatre-wrong-page",
+        "pending-strand-3"
       ]
     },
     "dark-of-the-moon-west-end-2026": {
       "title": "Dark of the Moon",
       "status": "open",
-      "totalLocal": 18,
+      "totalLocal": 17,
       "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
@@ -132832,7 +132844,7 @@
     "evening-all-afternoon-west-end-2026": {
       "title": "Evening All Afternoon",
       "status": "closed",
-      "totalLocal": 11,
+      "totalLocal": 14,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -132846,8 +132858,8 @@
         },
         "showScore": {
           "archiveCount": 8,
-          "extractedCount": 8,
-          "gap": 0,
+          "extractedCount": 9,
+          "gap": -1,
           "hasArchive": true,
           "method": "heading"
         },
@@ -132879,6 +132891,7 @@
       "maxAggregatorCount": 8,
       "flags": [
         "dtli-no-archive",
+        "showScore-over-1",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -132944,7 +132957,7 @@
     "jesus-christ-superstar-west-end-2026": {
       "title": "Jesus Christ Superstar",
       "status": "open",
-      "totalLocal": 48,
+      "totalLocal": 49,
       "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 21,
@@ -133062,7 +133075,7 @@
     "the-guilty-west-end-2026": {
       "title": "The Guilty",
       "status": "open",
-      "totalLocal": 22,
+      "totalLocal": 23,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -133179,8 +133192,8 @@
     "the-misanthrope-west-end-2026": {
       "title": "The Misanthrope",
       "status": "closed",
-      "totalLocal": 26,
-      "pendingStrand": 2,
+      "totalLocal": 25,
+      "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 5,
       "trulyMissing": 0,
@@ -133350,8 +133363,8 @@
     "war-horse-west-end-2026": {
       "title": "War Horse",
       "status": "closed",
-      "totalLocal": 37,
-      "pendingStrand": 0,
+      "totalLocal": 36,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 29,
       "trulyMissing": 0,
@@ -133871,7 +133884,7 @@
     "the-p-word-off-west-end-2026": {
       "title": "The P Word",
       "status": "closed",
-      "totalLocal": 10,
+      "totalLocal": 8,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 6,
@@ -133929,8 +133942,8 @@
     "tender-off-west-end-2026": {
       "title": "Tender",
       "status": "closed",
-      "totalLocal": 19,
-      "pendingStrand": 0,
+      "totalLocal": 21,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -133986,7 +133999,7 @@
     "flyby-off-west-end-2026": {
       "title": "FLYBY",
       "status": "closed",
-      "totalLocal": 16,
+      "totalLocal": 17,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -134605,8 +134618,8 @@
     },
     "horrible-histories-barmy-britain-the-best-bits-west-end-2026": {
       "title": "Horrible Histories: Barmy Britain - The Best Bits",
-      "status": "previews",
-      "totalLocal": 0,
+      "status": "open",
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -134631,10 +134644,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -134654,7 +134668,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -135056,7 +135069,7 @@
     "the-car-man-west-end-2026": {
       "title": "The Car Man",
       "status": "open",
-      "totalLocal": 21,
+      "totalLocal": 40,
       "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
@@ -135170,7 +135183,7 @@
     "a-dolls-house-off-west-end-2026": {
       "title": "A Doll's House",
       "status": "announced",
-      "totalLocal": 1,
+      "totalLocal": 4,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -136010,7 +136023,7 @@
     "robin-hood-and-the-merry-mandem-off-west-end-2026": {
       "title": "Robin Hood and the Merry Mandem",
       "status": "announced",
-      "totalLocal": 3,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -138366,9 +138379,9 @@
     },
     "the-comedy-about-spies-west-end-2026": {
       "title": "The Comedy About Spies",
-      "status": "previews",
-      "totalLocal": 29,
-      "pendingStrand": 0,
+      "status": "open",
+      "totalLocal": 50,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -138419,7 +138432,8 @@
         "showScore-over-7",
         "bww-over-3",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-1"
       ]
     },
     "noda-map-320f-west-end-2026": {
@@ -138593,7 +138607,7 @@
     "trainspotting-the-musical-west-end-2026": {
       "title": "Trainspotting the musical",
       "status": "open",
-      "totalLocal": 42,
+      "totalLocal": 48,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -138826,9 +138840,9 @@
     },
     "now-you-see-me-live-west-end-2026": {
       "title": "Now You See Me Live",
-      "status": "previews",
-      "totalLocal": 0,
-      "pendingStrand": 0,
+      "status": "open",
+      "totalLocal": 30,
+      "pendingStrand": 7,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -138840,10 +138854,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 0,
+          "extractedCount": 5,
+          "gap": -5,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -138852,10 +138867,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -138873,21 +138889,23 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
+        "showScore-over-5",
+        "showScore-wrong-page",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-7"
       ]
     },
     "cinderella-west-end-2026": {
       "title": "Cinderella",
       "status": "upcoming",
-      "totalLocal": 1,
+      "totalLocal": 4,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 25,
-      "trulyMissing": 13,
+      "totalGap": 24,
+      "trulyMissing": 10,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -138910,8 +138928,8 @@
         },
         "bwwReviews": {
           "archiveCount": 11,
-          "extractedCount": 0,
-          "gap": 11,
+          "extractedCount": 1,
+          "gap": 10,
           "hasArchive": true,
           "method": "one-feed-blocks"
         },
@@ -138934,7 +138952,7 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-under-14",
-        "bwwReviews-under-11",
+        "bwwReviews-under-10",
         "nycTheatre-no-archive"
       ]
     },
@@ -138942,7 +138960,7 @@
       "title": "The Peculiar Patriot",
       "status": "closed",
       "totalLocal": 0,
-      "pendingStrand": 1,
+      "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 10,
       "trulyMissing": 10,
@@ -139393,8 +139411,8 @@
     "the-oresteia-west-end-2026": {
       "title": "The Oresteia",
       "status": "open",
-      "totalLocal": 36,
-      "pendingStrand": 2,
+      "totalLocal": 40,
+      "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 1,
       "trulyMissing": 0,
@@ -139447,8 +139465,7 @@
         "bww-under-1",
         "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive",
-        "pending-strand-2"
+        "nycTheatre-no-archive"
       ]
     },
     "lander-23-off-west-end-2026": {
@@ -140071,7 +140088,7 @@
       "title": "Glengarry Glen Ross",
       "status": "closed",
       "totalLocal": 33,
-      "pendingStrand": 3,
+      "pendingStrand": 4,
       "hasGap": true,
       "totalGap": 73,
       "trulyMissing": 0,
@@ -140190,7 +140207,7 @@
     "cat-cohen-broad-strokes-off-broadway-2026": {
       "title": "Cat Cohen: Broad Strokes",
       "status": "open",
-      "totalLocal": 17,
+      "totalLocal": 21,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -140204,8 +140221,8 @@
         },
         "showScore": {
           "archiveCount": 0,
-          "extractedCount": 14,
-          "gap": -14,
+          "extractedCount": 15,
+          "gap": -15,
           "hasArchive": true,
           "method": "none-found"
         },
@@ -140229,20 +140246,22 @@
           "method": "link-count"
         },
         "nycTheatre": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 0,
+          "extractedCount": 5,
+          "gap": -5,
+          "hasArchive": true,
+          "method": "none-found"
         }
       },
       "maxAggregatorCount": 12,
       "flags": [
         "dtli-no-archive",
-        "showScore-over-14",
+        "showScore-over-15",
         "showScore-wrong-page",
         "bww-no-archive",
         "bwwReviews-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-over-5",
+        "nycTheatre-wrong-page"
       ]
     },
     "chat-noir-off-west-end-2026": {
@@ -141940,7 +141959,7 @@
     "evita-west-end-2025": {
       "title": "Evita",
       "status": "closed",
-      "totalLocal": 30,
+      "totalLocal": 31,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -142164,7 +142183,7 @@
     },
     "be-like-blippi-off-west-end-2026": {
       "title": "Be Like Blippi",
-      "status": "upcoming",
+      "status": "previews",
       "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": false,
@@ -143852,8 +143871,8 @@
     },
     "im-every-woman-off-west-end-2026": {
       "title": "I'm Every Woman",
-      "status": "previews",
-      "totalLocal": 0,
+      "status": "open",
+      "totalLocal": 35,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -144697,7 +144716,7 @@
     "much-ado-about-nothing-globe-off-west-end-2026": {
       "title": "Much Ado About Nothing - Globe",
       "status": "open",
-      "totalLocal": 39,
+      "totalLocal": 37,
       "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 2,
@@ -144868,10 +144887,10 @@
     "the-vessel-off-broadway-2026": {
       "title": "The Vessel",
       "status": "open",
-      "totalLocal": 1,
+      "totalLocal": 6,
       "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
+      "hasGap": true,
+      "totalGap": 1,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -144882,22 +144901,24 @@
         },
         "showScore": {
           "archiveCount": 0,
-          "extractedCount": 0,
-          "gap": 0,
+          "extractedCount": 1,
+          "gap": -1,
           "hasArchive": true,
           "method": "none-found"
         },
         "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 3,
+          "extractedCount": 2,
+          "gap": 1,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 3,
+          "extractedCount": 3,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -144912,11 +144933,12 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 3,
       "flags": [
         "dtli-no-archive",
-        "bww-no-archive",
-        "bwwReviews-no-archive",
+        "showScore-over-1",
+        "showScore-wrong-page",
+        "bww-under-1",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -145540,10 +145562,10 @@
     "shifters-off-broadway-2026": {
       "title": "Shifters",
       "status": "open",
-      "totalLocal": 15,
+      "totalLocal": 16,
       "pendingStrand": 1,
       "hasGap": true,
-      "totalGap": 2,
+      "totalGap": 4,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -145566,10 +145588,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 6,
+          "extractedCount": 4,
+          "gap": 2,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 8,
@@ -145591,7 +145614,7 @@
         "showScore-over-4",
         "showScore-wrong-page",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-under-2",
         "playbillVerdict-under-2",
         "nycTheatre-no-archive",
         "pending-strand-1"
@@ -146275,8 +146298,8 @@
     },
     "dinosaur-world-live-off-west-end-2026": {
       "title": "Dinosaur World Live",
-      "status": "previews",
-      "totalLocal": 2,
+      "status": "open",
+      "totalLocal": 8,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -146289,10 +146312,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -146322,7 +146346,7 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
+        "showScore-wrong-page",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -147915,11 +147939,11 @@
     "heathers-the-musical-off-west-end-2026": {
       "title": "Heathers the Musical",
       "status": "open",
-      "totalLocal": 15,
+      "totalLocal": 16,
       "pendingStrand": 1,
       "hasGap": true,
-      "totalGap": 9,
-      "trulyMissing": 0,
+      "totalGap": 31,
+      "trulyMissing": 6,
       "aggregators": {
         "dtli": {
           "archiveCount": 7,
@@ -147942,10 +147966,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 22,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 22,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -147961,12 +147986,12 @@
           "method": "none-found"
         }
       },
-      "maxAggregatorCount": 7,
+      "maxAggregatorCount": 22,
       "flags": [
         "dtli-under-7",
         "showScore-under-2",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-under-22",
         "playbillVerdict-no-archive",
         "nycTheatre-over-1",
         "nycTheatre-wrong-page",
@@ -148136,62 +148161,6 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bww-no-archive",
-        "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
-      ]
-    },
-    "ectoplasm-spitandvigor-off-broadway-2026": {
-      "title": "Ectoplasm (spit&vigor)",
-      "status": "previews",
-      "totalLocal": 0,
-      "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
-      "aggregators": {
-        "dtli": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "showScore": {
-          "archiveCount": 0,
-          "extractedCount": 0,
-          "gap": 0,
-          "hasArchive": true,
-          "method": "none-found"
-        },
-        "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "playbillVerdict": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "nycTheatre": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        }
-      },
-      "maxAggregatorCount": 0,
-      "flags": [
-        "dtli-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -148425,7 +148394,7 @@
     "allegra-west-end-2026": {
       "title": "Allegra",
       "status": "open",
-      "totalLocal": 17,
+      "totalLocal": 20,
       "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
@@ -148484,7 +148453,7 @@
     "the-smile-of-her-off-west-end-2026": {
       "title": "The Smile Of Her",
       "status": "open",
-      "totalLocal": 17,
+      "totalLocal": 20,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -150122,7 +150091,7 @@
     "the-jonathan-larson-project-off-west-end-2026": {
       "title": "The Jonathan Larson Project",
       "status": "open",
-      "totalLocal": 29,
+      "totalLocal": 30,
       "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 5,
@@ -152493,11 +152462,11 @@
     },
     "disruption-off-broadway-2026": {
       "title": "Disruption",
-      "status": "previews",
-      "totalLocal": 1,
-      "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
+      "status": "open",
+      "totalLocal": 24,
+      "pendingStrand": 1,
+      "hasGap": true,
+      "totalGap": 6,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -152507,28 +152476,32 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 8,
+          "extractedCount": 4,
+          "gap": 4,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 9,
+          "extractedCount": 7,
+          "gap": 2,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 9,
+          "extractedCount": 9,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 10,
+          "extractedCount": 10,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -152537,14 +152510,13 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 10,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-no-archive",
-        "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "showScore-under-4",
+        "bww-under-2",
+        "nycTheatre-no-archive",
+        "pending-strand-1"
       ]
     },
     "dogstar-off-west-end-2026": {
@@ -152831,7 +152803,7 @@
       "title": "Romeo and Juliet",
       "status": "closed",
       "totalLocal": 16,
-      "pendingStrand": 0,
+      "pendingStrand": 1,
       "hasGap": true,
       "totalGap": 17,
       "trulyMissing": 1,
@@ -153059,7 +153031,7 @@
     "rosie-odonnell-common-knowledge-off-broadway-2026": {
       "title": "Rosie O'Donnell: Common Knowledge",
       "status": "open",
-      "totalLocal": 4,
+      "totalLocal": 9,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -153107,8 +153079,10 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
+        "showScore-wrong-page",
         "bww-no-archive",
         "bwwReviews-no-archive",
+        "playbillVerdict-wrong-page",
         "nycTheatre-no-archive"
       ]
     },
@@ -154124,9 +154098,9 @@
     },
     "matilda-the-musical-theatre-row-off-broadway-2026": {
       "title": "Matilda The Musical (Theatre Row)",
-      "status": "previews",
+      "status": "open",
       "totalLocal": 0,
-      "pendingStrand": 0,
+      "pendingStrand": 4,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -154175,7 +154149,8 @@
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-4"
       ]
     },
     "bone-wars-off-broadway-2026": {
@@ -154236,7 +154211,7 @@
     },
     "masticate-off-broadway-2026": {
       "title": "Masticate",
-      "status": "previews",
+      "status": "open",
       "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": false,
@@ -154250,10 +154225,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -154283,7 +154259,6 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -154565,62 +154540,6 @@
       },
       "maxAggregatorCount": 0,
       "flags": [
-        "showScore-no-archive",
-        "bww-no-archive",
-        "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
-      ]
-    },
-    "bone-wars-a-new-musical-off-broadway-2026": {
-      "title": "Bone Wars a New Musical",
-      "status": "closed",
-      "totalLocal": 0,
-      "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
-      "aggregators": {
-        "dtli": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "showScore": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "playbillVerdict": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        },
-        "nycTheatre": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
-        }
-      },
-      "maxAggregatorCount": 0,
-      "flags": [
-        "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
@@ -155586,7 +155505,7 @@
     "the-importance-of-being-oscar-off-west-end-2026": {
       "title": "The Importance of Being Oscar",
       "status": "open",
-      "totalLocal": 17,
+      "totalLocal": 26,
       "pendingStrand": 2,
       "hasGap": true,
       "totalGap": 1,
@@ -155612,10 +155531,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -155635,7 +155555,7 @@
         "dtli-no-archive",
         "showScore-under-1",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive",
         "pending-strand-2"
@@ -156261,7 +156181,7 @@
     "kings-2-off-west-end-2026": {
       "title": "Kings 2",
       "status": "announced",
-      "totalLocal": 3,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -156317,7 +156237,7 @@
     "crazysexycool-regional-2026": {
       "title": "CrazySexyCool: The TLC Musical",
       "status": "open",
-      "totalLocal": 7,
+      "totalLocal": 8,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -156429,7 +156349,7 @@
     },
     "bridget-everett-and-patti-lupone-knockouts-off-broadway-2026": {
       "title": "Bridget Everett & Patti LuPone: Knockouts",
-      "status": "previews",
+      "status": "closed",
       "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": false,
@@ -156486,7 +156406,7 @@
     "are-you-mad-at-me-off-broadway-2026": {
       "title": "Are You Mad At Me??",
       "status": "open",
-      "totalLocal": 3,
+      "totalLocal": 2,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -156511,10 +156431,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -156534,7 +156455,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -156767,7 +156687,7 @@
     "hungry-women-off-broadway-2026": {
       "title": "Hungry Women",
       "status": "open",
-      "totalLocal": 5,
+      "totalLocal": 11,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -156793,10 +156713,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -156816,7 +156737,7 @@
         "dtli-no-archive",
         "showScore-over-1",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -157608,9 +157529,9 @@
     },
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026": {
       "title": "We've Been Here Before: A One Woman Musical",
-      "status": "previews",
-      "totalLocal": 0,
-      "pendingStrand": 0,
+      "status": "open",
+      "totalLocal": 2,
+      "pendingStrand": 3,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -157622,10 +157543,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -157655,11 +157577,11 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-3"
       ]
     },
     "big-wheel-at-electric-summer-off-west-end-2026": {
@@ -157778,7 +157700,7 @@
       "title": "Vanya",
       "status": "closed",
       "totalLocal": 17,
-      "pendingStrand": 2,
+      "pendingStrand": 3,
       "hasGap": true,
       "totalGap": 5,
       "trulyMissing": 0,
@@ -158004,18 +157926,19 @@
     },
     "the-pass-off-broadway-2026": {
       "title": "The Pass",
-      "status": "previews",
-      "totalLocal": 0,
-      "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "status": "open",
+      "totalLocal": 9,
+      "pendingStrand": 5,
+      "hasGap": true,
+      "totalGap": 14,
+      "trulyMissing": 4,
       "aggregators": {
         "dtli": {
-          "archiveCount": null,
+          "archiveCount": 13,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 13,
+          "hasArchive": true,
+          "method": "thumbs"
         },
         "showScore": {
           "archiveCount": null,
@@ -158024,16 +157947,18 @@
           "hasArchive": false
         },
         "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 3,
+          "extractedCount": 2,
+          "gap": 1,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 3,
+          "extractedCount": 3,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -158048,14 +157973,14 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 13,
       "flags": [
-        "dtli-no-archive",
+        "dtli-under-13",
         "showScore-no-archive",
-        "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bww-under-1",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-5"
       ]
     },
     "steve-burns-alive-off-broadway-2026": {
@@ -158116,7 +158041,7 @@
     },
     "father-time-off-broadway-2026": {
       "title": "Father Time",
-      "status": "previews",
+      "status": "closed",
       "totalLocal": 0,
       "pendingStrand": 0,
       "hasGap": false,
@@ -158173,8 +158098,8 @@
     "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026": {
       "title": "The Wind in the Willows - Theatre On Kew",
       "status": "open",
-      "totalLocal": 2,
-      "pendingStrand": 0,
+      "totalLocal": 4,
+      "pendingStrand": 1,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -158223,7 +158148,8 @@
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-1"
       ]
     },
     "the-animals-come-to-the-table-globe-off-west-end-2026": {
@@ -159486,10 +159412,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -159509,7 +159436,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -159629,10 +159555,10 @@
     "midnight-at-the-never-get-west-end-2026": {
       "title": "Midnight at the Never Get",
       "status": "open",
-      "totalLocal": 33,
+      "totalLocal": 35,
       "pendingStrand": 4,
       "hasGap": true,
-      "totalGap": 1,
+      "totalGap": 3,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
@@ -159655,10 +159581,11 @@
           "method": "blog-postings"
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 10,
+          "extractedCount": 8,
+          "gap": 2,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 12,
@@ -159679,7 +159606,7 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-over-1",
-        "bwwReviews-no-archive",
+        "bwwReviews-under-2",
         "playbillVerdict-under-1",
         "nycTheatre-no-archive",
         "pending-strand-4"
@@ -160947,10 +160874,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -160970,7 +160898,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -160978,11 +160905,11 @@
     "no-mans-land-west-end-2026": {
       "title": "No Man’s Land",
       "status": "upcoming",
-      "totalLocal": 3,
+      "totalLocal": 1,
       "pendingStrand": 0,
       "hasGap": true,
-      "totalGap": 10,
-      "trulyMissing": 10,
+      "totalGap": 12,
+      "trulyMissing": 12,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -161010,8 +160937,8 @@
         },
         "playbillVerdict": {
           "archiveCount": 13,
-          "extractedCount": 3,
-          "gap": 10,
+          "extractedCount": 1,
+          "gap": 12,
           "hasArchive": true,
           "method": "link-count"
         },
@@ -161028,7 +160955,7 @@
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
-        "playbillVerdict-under-10",
+        "playbillVerdict-under-12",
         "nycTheatre-no-archive"
       ]
     },
@@ -161315,11 +161242,11 @@
     "the-gin-game-2026": {
       "title": "The Gin Game",
       "status": "open",
-      "totalLocal": 6,
+      "totalLocal": 9,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 15,
-      "trulyMissing": 9,
+      "trulyMissing": 6,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -161341,10 +161268,11 @@
           "method": "blog-postings"
         },
         "bwwReviews": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 4,
+          "extractedCount": 4,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": 15,
@@ -161364,7 +161292,6 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-under-15",
         "nycTheatre-no-archive"
       ]
@@ -161876,7 +161803,7 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026": {
       "title": "Les Misérables: The Arena Concert Spectacular",
       "status": "open",
-      "totalLocal": 12,
+      "totalLocal": 14,
       "pendingStrand": 0,
       "hasGap": true,
       "totalGap": 2,
@@ -161933,7 +161860,7 @@
     "the-family-album-regional-2026": {
       "title": "The Family Album",
       "status": "open",
-      "totalLocal": 4,
+      "totalLocal": 7,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -162045,8 +161972,8 @@
     "space-dogs-off-west-end-2026": {
       "title": "Space Dogs",
       "status": "open",
-      "totalLocal": 14,
-      "pendingStrand": 0,
+      "totalLocal": 17,
+      "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -162070,10 +161997,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -162093,9 +162021,10 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-2"
       ]
     },
     "in-honor-of-jean-michel-basquiat-off-broadway-2026": {
@@ -162127,10 +162056,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -162150,7 +162080,6 @@
         "dtli-no-archive",
         "showScore-under-1",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -162183,10 +162112,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -162206,7 +162136,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -162214,8 +162143,8 @@
     "brainiac-live-west-end-2026": {
       "title": "Brainiac Live",
       "status": "open",
-      "totalLocal": 10,
-      "pendingStrand": 0,
+      "totalLocal": 11,
+      "pendingStrand": 2,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
@@ -162265,7 +162194,8 @@
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "nycTheatre-no-archive",
+        "pending-strand-2"
       ]
     },
     "kimberly-akimbo-off-west-end-2026": {
@@ -162326,7 +162256,7 @@
     },
     "malory-towers-off-west-end-2026": {
       "title": "Malory Towers",
-      "status": "previews",
+      "status": "closed",
       "totalLocal": 3,
       "pendingStrand": 0,
       "hasGap": false,
@@ -162439,7 +162369,7 @@
     "hit-machine-off-west-end-2026": {
       "title": "Hit Machine",
       "status": "open",
-      "totalLocal": 13,
+      "totalLocal": 20,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -162464,10 +162394,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -162487,7 +162418,7 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
+        "bwwReviews-wrong-page",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -162662,24 +162593,26 @@
     },
     "twelfth-night-off-west-end-2026": {
       "title": "Twelfth Night",
-      "status": "previews",
-      "totalLocal": 1,
-      "pendingStrand": 0,
-      "hasGap": false,
-      "totalGap": 0,
+      "status": "open",
+      "totalLocal": 18,
+      "pendingStrand": 7,
+      "hasGap": true,
+      "totalGap": 34,
       "trulyMissing": 0,
       "aggregators": {
         "dtli": {
-          "archiveCount": null,
+          "archiveCount": 2,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 2,
+          "hasArchive": true,
+          "method": "thumbs"
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -162688,16 +162621,18 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 15,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 15,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 17,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 17,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -162706,14 +162641,15 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 17,
       "flags": [
-        "dtli-no-archive",
-        "showScore-no-archive",
+        "dtli-under-2",
+        "showScore-wrong-page",
         "bww-no-archive",
-        "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "bwwReviews-under-15",
+        "playbillVerdict-under-17",
+        "nycTheatre-no-archive",
+        "pending-strand-7"
       ]
     },
     "jane-eyre-off-west-end-2026": {
@@ -164567,7 +164503,7 @@
     "3-summers-of-lincoln-regional-2025": {
       "title": "3 Summers of Lincoln",
       "status": "closed",
-      "totalLocal": 1,
+      "totalLocal": 5,
       "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -164586,10 +164522,11 @@
           "hasArchive": false
         },
         "bww": {
-          "archiveCount": null,
-          "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "archiveCount": 3,
+          "extractedCount": 3,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "article-body"
         },
         "bwwReviews": {
           "archiveCount": null,
@@ -164610,11 +164547,10 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 3,
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -164961,7 +164897,633 @@
       "title": "Othello",
       "status": "closed",
       "totalLocal": 3,
-      "pendingStrand": 7,
+      "pendingStrand": 34,
+      "hasGap": true,
+      "totalGap": 20,
+      "trulyMissing": 17,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": 20,
+          "extractedCount": 0,
+          "gap": 20,
+          "hasArchive": true,
+          "method": "thumbs"
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 20,
+      "flags": [
+        "dtli-under-20",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "september-l-davis-the-apology-tour-off-broadway-2026": {
+      "title": "September L. Davis: The Apology Tour",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "cirque-alice-off-west-end-2026": {
+      "title": "Cirque Alice",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "almeida-for-free-cleansed-off-west-end-2026": {
+      "title": "Almeida For Free Cleansed",
+      "status": "announced",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026": {
+      "title": "THE BODY OF MARY: A PLAY IN THREE ACTS (OF GOD)",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "isla-off-broadway-2026": {
+      "title": "ISLA",
+      "status": "open",
+      "totalLocal": 1,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "bww-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-outsiders-world-premiere-regional-2023": {
+      "title": "The Outsiders",
+      "status": "closed",
+      "totalLocal": 6,
+      "pendingStrand": 14,
+      "hasGap": true,
+      "totalGap": 50,
+      "trulyMissing": 17,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": 14,
+          "extractedCount": 0,
+          "gap": 14,
+          "hasArchive": true,
+          "method": "thumbs"
+        },
+        "showScore": {
+          "archiveCount": 15,
+          "extractedCount": 1,
+          "gap": 14,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": 3,
+          "extractedCount": 3,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "article-body"
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": 23,
+          "extractedCount": 1,
+          "gap": 22,
+          "hasArchive": true,
+          "method": "link-count"
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 23,
+      "flags": [
+        "dtli-under-14",
+        "showScore-under-14",
+        "bwwReviews-no-archive",
+        "playbillVerdict-under-22",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025": {
+      "title": "Two Strangers (Carry A Cake Across New York)",
+      "status": "closed",
+      "totalLocal": 11,
+      "pendingStrand": 0,
+      "hasGap": true,
+      "totalGap": 53,
+      "trulyMissing": 8,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": 13,
+          "extractedCount": 0,
+          "gap": 13,
+          "hasArchive": true,
+          "method": "thumbs"
+        },
+        "showScore": {
+          "archiveCount": 17,
+          "extractedCount": 2,
+          "gap": 15,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": 17,
+          "extractedCount": 5,
+          "gap": 12,
+          "hasArchive": true,
+          "method": "blog-postings"
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": 19,
+          "extractedCount": 6,
+          "gap": 13,
+          "hasArchive": true,
+          "method": "link-count"
+        },
+        "nycTheatre": {
+          "archiveCount": 0,
+          "extractedCount": 3,
+          "gap": -3,
+          "hasArchive": true,
+          "method": "none-found"
+        }
+      },
+      "maxAggregatorCount": 19,
+      "flags": [
+        "dtli-under-13",
+        "showScore-under-15",
+        "bww-under-12",
+        "bwwReviews-no-archive",
+        "playbillVerdict-under-13",
+        "nycTheatre-over-3",
+        "nycTheatre-wrong-page"
+      ]
+    },
+    "after-all-these-years-off-broadway-2026": {
+      "title": "AFTER ALL THESE YEARS",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "electrapersona-west-end-2026": {
+      "title": "Electra/Persona",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "stiles-drewe-best-new-song-prize-2026-off-west-end-2026": {
+      "title": "Stiles Drewe Best New Song Prize 2026",
+      "status": "announced",
+      "totalLocal": 0,
+      "pendingStrand": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "a-ghost-in-your-ear-off-broadway-2026": {
+      "title": "A Ghost In Your Ear",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "pendingStrand": 0,
       "hasGap": false,
       "totalGap": 0,
       "trulyMissing": 0,
