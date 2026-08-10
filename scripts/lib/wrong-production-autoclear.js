@@ -286,17 +286,19 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
 }
 
 /**
- * Decide whether a wrongShow-rejected file carries a strong-evidence ensemble
- * verdict that no domain/market heuristic should be allowed to override.
+ * Decide whether a wrongProduction/wrongShow-rejected file carries a
+ * strong-evidence ensemble verdict that no domain/market heuristic should be
+ * allowed to override.
  *
- * Background (Notion 3b7637c5-416f-810a, task #1146): the rebuild's
- * UK/major-outlet and allowCrossMarket auto-clear paths strip wrongShow
- * unconditionally once their domain/market conditions match — including when
- * scripts/llm-scoring/index.ts already ran 3 independent models (claude +
- * openai + gemini) against the actual fetched text and >=2 of them
- * independently named a DIFFERENT show. ensemble-scorer.ts's
- * combineOutcomes() only produces a top-level `rejected` verdict (and
- * therefore only ever writes rejectionReason='wrong_show' + rejectedBy=
+ * Background (Notion 3b7637c5-416f-810a, task #1146; generalized to
+ * wrongProduction under #1156): the rebuild's UK/major-outlet and
+ * allowCrossMarket/allowEarlyDate auto-clear paths strip wrongProduction/
+ * wrongShow unconditionally once their domain/market conditions match —
+ * including when scripts/llm-scoring/index.ts already ran 3 independent
+ * models (claude + openai + gemini) against the actual fetched text and >=2
+ * of them independently rejected it. ensemble-scorer.ts's combineOutcomes()
+ * only produces a top-level `rejected` verdict (and therefore only ever
+ * writes rejectionReason='wrong_production'|'wrong_show' + rejectedBy=
  * 'ensemble-scoreability-check') when `rejections.length >= 2` — so the mere
  * presence of that pairing on disk is itself the >=2/3-model-agreement
  * receipt; rejectionReasoning's `model: reasoning; model: reasoning` shape
@@ -312,6 +314,7 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
  * models identified the fetched text as a Noughts & Crosses review).
  *
  * @param {object} data - the review JSON object
+ * @param {'wrong_production'|'wrong_show'} reason
  * @returns {boolean}
  */
 // The 4 model tags ensemble-scorer.ts's combineOutcomes() ever writes
@@ -324,9 +327,9 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
 // (task #1146): verified `8:00pm` alone satisfied the old `[\w-]+\s*:` test.
 const ENSEMBLE_MODEL_TAG_RE = /(?:^|;\s*)(claude|openai|gemini|kimi)\s*:/gi;
 
-function hasEnsembleWrongShowConsensus(data) {
+function hasEnsembleConsensus(data, reason) {
   if (!data) return false;
-  if (data.rejectionReason !== 'wrong_show') return false;
+  if (data.rejectionReason !== reason) return false;
   if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
   const reasoning = data.rejectionReasoning;
   if (!reasoning || typeof reasoning !== 'string') return false;
@@ -382,8 +385,9 @@ function isTextStaleRelativeToUrlRewrite(data) {
  *
  * Returns true ONLY if both conditions hold:
  *   - One of allowEarlyDate / allowCrossMarket is true (user explicit override)
- *   - There is NO explicit wrongProductionReason and NO high-confidence CV signal
- *     (so the flag is safe to clear)
+ *   - There is NO explicit wrongProductionReason, NO high-confidence CV signal,
+ *     and NO unanimous ensemble wrong_production rejection (so the flag is
+ *     safe to clear)
  *
  * @param {object} data - The review JSON object
  * @returns {boolean} - true if it's safe to delete wrongProduction
@@ -394,6 +398,8 @@ function shouldAutoClearWrongProduction(data) {
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -409,7 +415,7 @@ function shouldAutoClearWrongShow(data) {
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  if (hasEnsembleWrongShowConsensus(data)) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
@@ -440,6 +446,8 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } =
     && data.contentVerification?.confidence === 'high';
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
 }
 
@@ -468,7 +476,7 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   if (dateMismatchOver90d) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
-  if (hasEnsembleWrongShowConsensus(data)) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !isWrongArticle && !hasManualReason;
 }
@@ -536,11 +544,11 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
 }
 
 module.exports = {
+  hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
-  hasEnsembleWrongShowConsensus,
   isTextStaleRelativeToUrlRewrite,
   isWithinPriorRun,
   hasDeclaredPriorRuns,

@@ -37,9 +37,12 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const {
   shouldAutoClearWrongShowUkUrl,
-  hasEnsembleWrongShowConsensus,
+  hasEnsembleConsensus,
   isTextStaleRelativeToUrlRewrite,
 } = require('./wrong-production-autoclear.js');
+// Generalized to (data, reason) under #1156 — see scripts/lib/autoclear-vs-ensemble.test.mjs
+// for the wrongProduction-side coverage of the same functions.
+const hasEnsembleWrongShowConsensus = (data) => hasEnsembleConsensus(data, 'wrong_show');
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(HERE, '..', '..', 'data', 'review-texts');
