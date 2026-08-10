@@ -901,7 +901,17 @@
     "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
     "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
     "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
-    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json"
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "isla-off-broadway-2026/show-score--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -999,7 +1009,7 @@
     ]
   },
   "startTime": "2026-08-10T10:15:58.760Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-waite.json",
   "log": [
     {
       "t": "2026-08-10T11:50:30.437Z",
@@ -1009,6 +1019,17 @@
     },
     {
       "t": "2026-08-10T11:50:30.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-10T13:18:45.061Z",
+      "event": "bb-session",
+      "session": "5be4319f",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-10T13:18:46.015Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
