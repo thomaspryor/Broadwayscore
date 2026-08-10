@@ -11,6 +11,8 @@ const {
   findUnrenderedOpenings,
   subjectShowMissingFromBody,
   renderInvariantFailures,
+  collectKnownTitles,
+  containsTitle,
 } = require('./newsletter-render-invariants.js');
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -162,6 +164,53 @@ test('possessive/colon titles match', () => {
     findUnrenderedOpenings("<h3>Rosie O&#39;Donnell: Common Knowledge</h3>", shows),
     []
   );
+});
+
+// ── Title-vs-title containment (ship-check blocker) ──────────────────────
+// A reviewer swept the live corpus: 321 real pairs where one show title is a
+// whole phrase inside another. Without masking, the gate SILENTLY PASSES a
+// bad send — worse than not existing.
+
+test('BLOCKER 3: a dropped "Giant" is still caught when "The Smartest Giant in Town" is elsewhere', () => {
+  const meta = {
+    openingShows: [{ id: 'giant-2026', title: 'Giant' }],
+    closingShows: [{ id: 'smartest-giant', title: 'The Smartest Giant in Town' }],
+  };
+  const html = '<h2>Closing this Week</h2><p>The Smartest Giant in Town plays its last.</p>';
+  const failures = renderInvariantFailures({ html, meta });
+  assert.ok(
+    failures.some((f) => f.includes('"Giant"')),
+    'substring/boundary matching alone finds "Giant" inside the longer title and passes a bad send'
+  );
+});
+
+test('...and a genuinely rendered "Giant" alongside the longer title still passes', () => {
+  const meta = {
+    openingShows: [{ id: 'giant-2026', title: 'Giant' }],
+    closingShows: [{ id: 'smartest-giant', title: 'The Smartest Giant in Town' }],
+  };
+  const html =
+    '<h2>Opened</h2><h3>Giant</h3><h2>Closing this Week</h2><p>The Smartest Giant in Town</p>';
+  assert.deepEqual(renderInvariantFailures({ html, meta }), []);
+});
+
+test('collectKnownTitles finds titles in every meta section, not just openings', () => {
+  const titles = collectKnownTitles({
+    openingShows: [{ title: 'Giant' }],
+    closingShows: [{ title: 'Fun Home' }],
+    nested: { deeper: [{ title: 'Six Degrees of Separation' }] },
+  });
+  assert.ok(titles.includes('Giant'));
+  assert.ok(titles.includes('Fun Home'));
+  assert.ok(titles.includes('Six Degrees of Separation'));
+});
+
+test('containsTitle handles the punctuation and possessive cases directly', () => {
+  assert.equal(containsTitle('smart art show', 'Art'), true, '"art show" is a real standalone match');
+  assert.equal(containsTitle('a smart pick', 'Art'), false);
+  assert.equal(containsTitle('Elf: the musical', 'Elf'), true);
+  assert.equal(containsTitle('Schmigadoons', 'Schmigadoon!'), false);
+  assert.equal(containsTitle('I&#39;m Every Woman'.replace('&#39;', "'"), "I’m Every Woman"), true);
 });
 
 test('empty/malformed input degrades safely rather than throwing', () => {

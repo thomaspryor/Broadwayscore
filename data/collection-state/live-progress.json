@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-08-10T13:36:53.947Z",
-  "processed": 94,
-  "failed": 1156,
-  "successRate": "7.5%",
+  "updatedAt": "2026-08-10T13:49:28.564Z",
+  "processed": 108,
+  "failed": 1342,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 57,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 10,
-    "scrapingbee": 18,
+    "scrapingbee": 23,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 20
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-08-10T11:50:30.437Z",
@@ -25,6 +25,12 @@
       "t": "2026-08-10T11:50:30.865Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-08-10T13:47:31.707Z",
+      "event": "bb-session",
+      "session": "b28b61d9",
+      "url": "https://www.express.co.uk/showbiz/tv-radio/2092873/outlander-blood-my-blood-revi"
     }
   ]
 }

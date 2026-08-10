@@ -130,7 +130,7 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -359,13 +359,12 @@
     "arm-yield:workflow:scoring-audit": {
       "status": "open",
       "disposition": "digest",
-      "title": "Scoring Audit has stopped updating (185 days)",
+      "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-08-09T13:26:19.214Z",
-      "lastNotifiedAt": "2026-08-03T13:05:40.014Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "silentRefires": 7
+      "lastSeen": "2026-08-10T13:50:53.428Z",
+      "lastNotifiedAt": "2026-08-10T13:50:53.428Z",
+      "notifyCount": 2,
+      "cardId": null
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -639,10 +638,11 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Death Note: The Musical",
       "firstSeen": "2026-08-10T10:39:08.417Z",
-      "lastSeen": "2026-08-10T12:01:38.076Z",
+      "lastSeen": "2026-08-10T13:47:39.391Z",
       "lastNotifiedAt": "2026-08-10T10:39:08.417Z",
       "notifyCount": 1,
-      "cardId": null
+      "cardId": null,
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Test UGC Features": {
       "status": "open",
