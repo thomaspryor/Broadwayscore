@@ -31,7 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
-const { VALIDATOR_EXCLUSION_FLAGS } = require('./aggregator-url-latent');
+const { isIncludableForRebuild } = require('./review-guards');
 
 // ── (b) missing contentTier ─────────────────────────────────────────────
 
@@ -48,9 +48,12 @@ const MIN_FULLTEXT_LENGTH = 200; // below this, "missing tier" is not the bug �
  * contentTier without going through that safety net at all.
  *
  * @param {object} data - parsed review-text JSON
+ * @param {string} [filePath] - forwarded to isIncludableForRebuild for its
+ *   filePath-dependent checks (e.g. rejectedAt vs textFetchedAt re-fetch
+ *   detection); optional, matching isIncludableForRebuild's own signature.
  * @returns {boolean}
  */
-function isMissingContentTierGap(data) {
+function isMissingContentTierGap(data, filePath) {
   if (!data || typeof data !== 'object') return false;
   if (data.contentTier) return false; // has a tier — not the gap
   // manualContentTier is a human override that classifyContentTier() (content-quality.js)
@@ -61,9 +64,17 @@ function isMissingContentTierGap(data) {
   if (data.manualContentTier) return false;
   if (typeof data.fullText !== 'string' || data.fullText.trim().length < MIN_FULLTEXT_LENGTH) return false;
   if (!data.criticName || data.criticName === 'Unknown') return false; // real byline required
-  // Any known rejection/exclusion flag means this file is a deliberate
-  // tombstone, not a silently-dropped live review.
-  if (VALIDATOR_EXCLUSION_FLAGS.some((flag) => Boolean(data[flag]))) return false;
+  // Delegate exclusion-flag gating to the canonical predicate (memory:
+  // feedback_includability_predicates_must_be_canonical.md) rather than a
+  // hand-rolled flag list — isIncludableForRebuild's ~18 checks include
+  // stale-flag overrides (wrongShowCleared, wrongProductionManualClear,
+  // isLikelyStaleRoundupFlag) a flat Boolean(data[flag]) list would get
+  // wrong in both directions: false-flagging a file whose rejection was
+  // already cleared, and missing exclusion classes the flat list never
+  // knew about (isNonReview, fabricatedEntry, rejectedAt, ...). `{}` for
+  // `show` is the documented safe form when no show record is on hand —
+  // none of its exclusion checks require show-specific data to run.
+  if (!isIncludableForRebuild(data, {}, filePath)) return false;
   return true;
 }
 
@@ -73,11 +84,17 @@ function isMissingContentTierGap(data) {
  * scan (memory: feedback_stray_symlink_crashes_pipeline.md).
  *
  * @param {string} reviewTextsDir - path to data/review-texts
- * @returns {Array<{showId: string, file: string, criticName: string, outletId: string|null, outlet: string|null, wordCount: number}>}
+ * @returns {Array<{showId: string, file: string, criticName: string, outletId: string|null, outlet: string|null, url: string|null, wordCount: number}>}
  */
 function scanMissingContentTier(reviewTextsDir) {
   const results = [];
   for (const showId of listShowDirs(reviewTextsDir)) {
+    // `_`-prefixed dirs (e.g. `_superseded-misattributed`, `_pending`) are
+    // sentinel/staging directories, not real shows — same skip convention as
+    // url-ownership.js, review-file-writer.js, audit-cross-outlet-
+    // attributions.js. Reporting a hit as showId '_superseded-misattributed'
+    // would point an operator at a nonexistent show.
+    if (showId.startsWith('_')) continue;
     const showDir = path.join(reviewTextsDir, showId);
     let files;
     try {
@@ -86,13 +103,14 @@ function scanMissingContentTier(reviewTextsDir) {
       continue;
     }
     for (const file of files) {
+      const filePath = path.join(showDir, file);
       let data;
       try {
-        data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+        data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       } catch {
         continue;
       }
-      if (isMissingContentTierGap(data)) {
+      if (isMissingContentTierGap(data, filePath)) {
         results.push({
           showId,
           file,
@@ -102,6 +120,12 @@ function scanMissingContentTier(reviewTextsDir) {
           // caller can match against reviews.json without guessing which one.
           outletId: data.outletId || null,
           outlet: data.outlet || data.outletId || null,
+          // url disambiguates two review-text files sharing showId+outletId+
+          // criticName (a republished article, or byline-enrichment landing
+          // on two separate URLs) — a caller can match on url FIRST so one
+          // file already live in reviews.json doesn't mask the other file's
+          // genuine gap (ship-check finding).
+          url: data.url || null,
           wordCount: data.fullText.trim().split(/\s+/).length,
         });
       }
@@ -132,9 +156,19 @@ const MIN_OUTLET_ID_LENGTH = 3;
 
 /**
  * Reduce a host to its bare outlet-identity slug: strip www., a hosting
- * platform's own domain, the TLD, and any non-alphanumeric characters.
- *   '1minutecritic.substack.com' → '1minutecritic'
- *   'www.theatre-weekly.co.uk'   → 'theatreweekly'
+ * platform's own domain / the TLD, then take the LAST remaining dot-segment
+ * (any earlier segment is a subdomain/section prefix, not the identity).
+ *   '1minutecritic.substack.com'          → '1minutecritic'
+ *   'www.theatre-weekly.co.uk'            → 'theatreweekly'
+ *   'theater.jerryportwood.substack.com'  → 'jerryportwood'  (not 'theater')
+ *   'news.dancemagazine.co.uk'            → 'dancemagazine'  (not 'news')
+ *
+ * ship-check finding: applying the generic single-label-TLD strip
+ * UNCONDITIONALLY after the platform/two-label strip already ran ate the
+ * real identity label on any 3+-label host (e.g. the jerryportwood example
+ * above came back 'theater'). Exactly one suffix strip now runs — platform,
+ * else two-label TLD, else generic single-label TLD — and taking the last
+ * remaining segment handles any leftover subdomain prefix correctly.
  *
  * @param {string} host
  * @returns {string}
@@ -143,10 +177,16 @@ function normalizeHostSlug(host) {
   if (!host) return '';
   let h = String(host).toLowerCase().trim();
   h = h.replace(/^www\./, '');
-  h = h.replace(PLATFORM_SUFFIXES, '');
-  h = h.replace(TWO_LABEL_TLDS, '');
-  h = h.replace(/\.[a-z]{2,}$/i, ''); // remaining single-label TLD (.com, .org, .net, ...)
-  return h.replace(/[^a-z0-9]/g, '');
+  if (PLATFORM_SUFFIXES.test(h)) {
+    h = h.replace(PLATFORM_SUFFIXES, '');
+  } else if (TWO_LABEL_TLDS.test(h)) {
+    h = h.replace(TWO_LABEL_TLDS, '');
+  } else {
+    h = h.replace(/\.[a-z]{2,}$/i, ''); // remaining single-label TLD (.com, .org, .net, ...)
+  }
+  const segments = h.split('.').filter(Boolean);
+  const identity = segments.length ? segments[segments.length - 1] : h;
+  return identity.replace(/[^a-z0-9]/g, '');
 }
 
 /** Normalize an outlet id/displayName/alias for slug comparison. */
@@ -163,6 +203,20 @@ function normalizeOutletName(name) {
  * Pure: takes already-loaded registry `outlets` (the `.outlets` map of
  * data/outlet-registry.json) and an array of census entries
  * (data/audit/unknown-aggregator-outlets.json's `.outlets`), does no I/O.
+ *
+ * Known non-blocking follow-ups (ship-check, not fixed here — advisory
+ * detector already validated at 4/218 false positives on the real corpus):
+ *   - PLATFORM_SUFFIXES/TWO_LABEL_TLDS partially duplicate
+ *     outlet-canonicalize.js's PROVISIONAL_BLOG_PLATFORMS/
+ *     PROVISIONAL_MULTIPART_SUFFIXES (missing tumblr.com, .gov.uk, etc.) —
+ *     worth unifying if either list needs to grow again.
+ *   - A future alternative worth evaluating: review-file-writer.js already
+ *     computes an exact domain-mismatch CONFLICT signal at ingest time
+ *     (classified by ingest-skip-classify.js); a persisted census of THOSE
+ *     could replace this fuzzy name-matching approach with an exact one.
+ *   - On an ambiguous slug collision between two registered outlets, this
+ *     returns only the first match (Object.entries iteration order) — rare,
+ *     unhandled.
  *
  * @param {object} outlets - outletId -> {domain, domainAliases, aliases, displayName}
  * @param {Array<{host: string, occurrences?: number, sampleUrls?: string[]}>} unknownHosts
