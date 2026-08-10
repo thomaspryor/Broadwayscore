@@ -169,6 +169,19 @@ test('parseStreamLine: corrupt/blank lines return null (SIGKILL can sever the la
   assert.equal(parseStreamLine('{"type":"resu'), null);
 });
 
+test('parseStreamLine: legacy typeless single-envelope (old --output-format json / fake-claude test binaries) parses as a result event', () => {
+  // P0 task #1231: the stream-json switch made this shape a parse-error and
+  // broke runMonitorPass against its fake claude on main.
+  const ev = parseStreamLine(JSON.stringify({
+    is_error: false, result: 'pass complete', session_id: 'fake-session-123',
+    total_cost_usd: 0.0123, usage: { input_tokens: 10, output_tokens: 5 },
+  }));
+  assert.equal(ev.result.resultText, 'pass complete');
+  assert.equal(ev.result.sessionId, 'fake-session-123');
+  assert.equal(ev.result.costUSD, 0.0123);
+  assert.equal(ev.sessionId, 'fake-session-123');
+});
+
 test('addUsage accumulates across assistant events, starting from null', () => {
   let t = addUsage(null, { input_tokens: 10, output_tokens: 5 });
   t = addUsage(t, { input_tokens: 20, output_tokens: 7, cache_read_input_tokens: 100 });
