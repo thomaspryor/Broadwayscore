@@ -6,6 +6,13 @@ import TicketLink from '@/components/TicketLink';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import { getCurrencySymbol } from '@/lib/market-utils';
+// Extracted to src/lib/calendar so the showtime picker formats clock times
+// identically to this grid (it reads its suggestions from the same data).
+import {
+  formatTime,
+  parseYyyymmdd as parseMonday,
+  addDaysToYyyymmdd as getMondayPlusDayDate,
+} from '@/lib/calendar';
 
 interface ShowtimesCardProps {
   schedule: ShowSchedule;
@@ -21,15 +28,6 @@ interface ShowtimesCardProps {
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-/** Convert YYYYMMDD to Date */
-function parseMonday(yyyymmdd: string): Date {
-  return new Date(
-    parseInt(yyyymmdd.slice(0, 4)),
-    parseInt(yyyymmdd.slice(4, 6)) - 1,
-    parseInt(yyyymmdd.slice(6, 8))
-  );
-}
-
 /** Format date range: "Mar 9–15" or "Mar 30 – Apr 5" */
 function formatWeekRange(monday: Date): string {
   const sunday = new Date(monday);
@@ -42,14 +40,6 @@ function formatWeekRange(monday: Date): string {
   return `${monMonth} ${monday.getDate()} – ${sunMonth} ${sunday.getDate()}`;
 }
 
-/** Convert "14:00" → "2:00 PM" */
-function formatTime(time24: string): string {
-  const [h, m] = time24.split(':').map(Number);
-  const suffix = h >= 12 ? 'PM' : 'AM';
-  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
-  return `${h12}:${m.toString().padStart(2, '0')} ${suffix}`;
-}
-
 /** Get the week label: "This Week", "Next Week", or date range */
 function getWeekLabel(mondayStr: string, currentMonday: string): string {
   if (mondayStr === currentMonday) return 'This Week';
@@ -58,16 +48,6 @@ function getWeekLabel(mondayStr: string, currentMonday: string): string {
   const diffDays = Math.round((target.getTime() - current.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays === 7) return 'Next Week';
   return `Week of ${formatWeekRange(target)}`;
-}
-
-/** Convert YYYYMMDD monday + day index (0=Mon) to YYYY-MM-DD */
-function getMondayPlusDayDate(mondayKey: string, dayIndex: number): string {
-  const d = parseMonday(mondayKey);
-  d.setDate(d.getDate() + dayIndex);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
 }
 
 /** Get today's day index (0=Mon, 6=Sun) or -1 if not in this week */

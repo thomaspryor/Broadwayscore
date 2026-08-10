@@ -46,6 +46,14 @@ export interface ShowLookup {
   diaryOnly?: boolean;
   /** Tickets on sale for a not-yet-open show (watchlist bookability label). */
   ticketsOnSale?: boolean;
+  /** Street address for calendar LOCATION and the Get-directions link (~741 shows). */
+  theaterAddress?: string;
+  /**
+   * Parsed runtime in minutes (~631 shows). Absent for most entries, so the
+   * calendar path falls back to a generic default — see
+   * src/lib/calendar/duration.ts.
+   */
+  runtimeMin?: number;
 }
 
 export interface UserList {

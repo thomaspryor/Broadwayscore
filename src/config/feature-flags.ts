@@ -88,4 +88,19 @@ export const featureFlags = {
    *  and bottom "Where it ranks" card. Off by default — flip on per-market after
    *  smoke test. Enable via NEXT_PUBLIC_FEATURES=showRanks. */
   get showRanks() { return has('showRanks'); },
+  /**
+   * Add-to-Calendar and the showtime picker on diary entries.
+   *
+   * Deliberately its OWN flag rather than riding `userAccounts`. The sibling
+   * split for `diarySharing` was made so a decision to hold sharing could not
+   * hold the calendar hostage; without this one the reverse is unprotected —
+   * a timezone bug in .ics export would leave "turn off every user account" as
+   * the only kill switch, taking ratings, watchlist and lists down with it.
+   *
+   * CLIENT-SIDE ONLY. `GET /api/calendar.ics` is a server route and cannot read
+   * this (see the isDemo note at the top of this file — it returns false during
+   * SSR by design), so the route gates on the CALENDAR_EXPORT_ENABLED env var
+   * instead. Both must be on for the feature to work end to end.
+   */
+  get calendarExport() { return has('calendarExport'); },
 };
