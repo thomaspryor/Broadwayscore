@@ -309,3 +309,59 @@ test('computeResidualCounts: cited recoveries subtract from flaggedOut, uncited 
   assert.equal(c.recovered, 1);
   assert.equal(c.flaggedOut, 1);
 });
+
+// ── ship-check 2026-08-09, finding B ─────────────────────────────────────────
+// An unrecognised skip reason was counted and then dropped on the floor:
+// unclassifiedIngest never entered `residual`, and its warning printed only
+// inside `if (residualShows.length > 0)`. A run whose ONLY problem was contract
+// drift with review-file-writer.js therefore said nothing at all — the module
+// built to stop silent skips had a silent skip in its own reporting.
+test('computeResidualCounts: an unclassified skip reason IS residual — it can never be silent', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  const r = {
+    missing: [],
+    flaggedMisses: [],
+    citedNoUrl: [],
+    // Nothing else wrong: no failures, no uningested, no flagged. If
+    // unclassified did not count, residual would be 0 and the run would print
+    // nothing about a brand-new skip reason.
+    ingestResults: [{ ok: false, noop: true, unclassified: true, unclassifiedReason: 'some-future-reason' }],
+  };
+  const c = computeResidualCounts(r, true);
+  assert.equal(c.unclassifiedIngest, 1);
+  assert.ok(c.residual >= 1, 'contract drift must make the run non-silent');
+});
+
+// ── ship-check 2026-08-09, finding C ─────────────────────────────────────────
+// A cross-market refusal is correct and permanent. Counting it as a conflict
+// re-armed the chronic hourly alarm the 2026-08-06 ship-check removed: every
+// show with one legitimately-refused review would warn forever, with no action
+// available to clear it.
+test('computeResidualCounts: an expected rejection is counted but NOT residual', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  const r = {
+    missing: [],
+    flaggedMisses: [],
+    citedNoUrl: [],
+    ingestResults: [
+      { ok: false, noop: true, expected: true, expectedReason: 'cross-market' },
+      { ok: false, noop: true, expected: true, expectedReason: 'empty-unknown' },
+    ],
+  };
+  const c = computeResidualCounts(r, true);
+  assert.equal(c.expectedIngest, 2, 'still counted, so a spike is visible');
+  assert.equal(c.residual, 0, 'a permanently-correct refusal must never read as an unresolved gap');
+});
+
+test('computeResidualCounts: a conflict IS residual — it stays loud until resolved', () => {
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  const r = {
+    missing: [],
+    flaggedMisses: [],
+    citedNoUrl: [],
+    ingestResults: [{ ok: false, noop: true, conflict: true, conflictReason: 'cross-show-url-owned' }],
+  };
+  const c = computeResidualCounts(r, true);
+  assert.equal(c.conflictIngest, 1);
+  assert.equal(c.residual, 1);
+});
