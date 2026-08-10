@@ -3,52 +3,63 @@
   "showId": "mamma-mia-west-end-2021",
   "showTitle": "Mamma Mia!",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:34:00.442Z",
+  "fetchedAt": "2026-08-10T06:50:03.108Z",
   "tier": "Hidden",
-  "volume": 1,
-  "effectiveVolume": 0.1,
+  "volume": 12,
+  "effectiveVolume": 1,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 0.3,
+      "bluesky": 1
+    },
+    "overall": 0.36363636363636365,
+    "classified": 11
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -87,
-  "baselineMultiple": 0.13,
+  "positivePct": 50,
+  "opinionSample": 2,
+  "weekOverWeekPct": 1100,
+  "baselineMultiple": 2,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 3,
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Here's my interview with Lori Haley Fox, soon to be appearing in Transcendence Theatre Company's \"Mamma Mia!\" This…",
+      "platform": "bluesky",
+      "author": "@nbaystageandscreen.bsky.social",
+      "url": "https://bsky.app/profile/nbaystageandscreen.bsky.social/post/3msk3dsglqs2v"
+    },
+    {
+      "text": "Hadestown or Phantom? I’m looking to watch one of these two musicals in the West End with family sometime this month…",
+      "platform": "reddit",
+      "author": "u/sasageyo811",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1vfefrv/hadestown_or_phantom/"
+    }
+  ],
   "counters": {
-    "reddit": null,
-    "bluesky": 0,
-    "x": 1,
-    "wikipedia": 6428
+    "reddit": 10,
+    "bluesky": 2,
+    "x": 0,
+    "wikipedia": 6173
   },
   "wikipediaTitle": "Mamma Mia! (musical)",
   "baseline": {
-    "mean": 6,
-    "weeksOfHistory": 4
+    "mean": 7.2,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 10,
+    "bluesky": 2
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 30,
-    "total": 52,
-    "text": "30/52 West End"
+    "position": 17,
+    "total": 50,
+    "text": "17/50 West End"
   },
-  "compositeScore": 0.05
+  "compositeScore": 0.5
 }

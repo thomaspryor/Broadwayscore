@@ -3,47 +3,56 @@
   "showId": "the-devil-wears-prada-west-end-2024",
   "showTitle": "The Devil Wears Prada",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:44:17.583Z",
+  "fetchedAt": "2026-08-10T06:57:45.511Z",
   "tier": "Hidden",
-  "volume": 0,
-  "effectiveVolume": 0,
+  "volume": 5,
+  "effectiveVolume": 1.2,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 0.6666666666666666
+    },
+    "overall": 0.6666666666666666,
+    "classified": 3
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.67,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 2,
     "bluesky": 0
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "I met Mark (Michael Urie) I went to see the west end production of Oh Mary and Michael Urie was playing Mary’s…",
+      "platform": "reddit",
+      "author": "u/sailormui",
+      "url": "https://www.reddit.com/r/UglyBetty/comments/1vh1yl8/i_met_mark_michael_urie/"
+    }
+  ],
   "counters": {
-    "reddit": 0,
+    "reddit": 3,
     "bluesky": 0,
-    "x": 0,
-    "wikipedia": 1048
+    "x": 2,
+    "wikipedia": 973
   },
   "wikipediaTitle": "The Devil Wears Prada (musical)",
   "baseline": {
-    "mean": 3,
-    "weeksOfHistory": 4
+    "mean": 3.4,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 3,
     "bluesky": 0
   },
   "errors": [],
   "rank": {
-    "position": 46,
-    "total": 52,
-    "text": "46/52 West End"
+    "position": 15,
+    "total": 50,
+    "text": "15/50 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.6
 }

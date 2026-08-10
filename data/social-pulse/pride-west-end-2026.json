@@ -3,61 +3,50 @@
   "showId": "pride-west-end-2026",
   "showTitle": "Pride",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:40:13.309Z",
-  "tier": "Buzzing",
-  "volume": 76,
-  "effectiveVolume": 6.2,
+  "fetchedAt": "2026-08-10T06:54:47.973Z",
+  "tier": "Hidden",
+  "volume": 125,
+  "effectiveVolume": 1.2,
   "relevanceRates": {
     "byPlatform": {
-      "bluesky": 0.16666666666666666
+      "reddit": 0.015151515151515152,
+      "bluesky": 0.25
     },
-    "overall": 0.16666666666666666,
-    "classified": 6
+    "overall": 0.02857142857142857,
+    "classified": 70
   },
   "positivePct": 100,
   "opinionSample": 1,
-  "weekOverWeekPct": -33,
-  "baselineMultiple": 0.66,
+  "weekOverWeekPct": 64,
+  "baselineMultiple": 1.19,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 1
   },
-  "topQuotes": [
-    {
-      "text": "Review: Pride at the National Theatre. Despite my usual sceptical view of musicals this is an absolute joy! It's both…",
-      "platform": "bluesky",
-      "author": "@kriswither.bsky.social",
-      "url": "https://bsky.app/profile/kriswither.bsky.social/post/3ms3grtmvqc22"
-    }
-  ],
+  "topQuotes": [],
   "counters": {
-    "reddit": null,
-    "bluesky": 6,
-    "x": 70,
-    "wikipedia": 536
+    "reddit": 66,
+    "bluesky": 4,
+    "x": 55,
+    "wikipedia": 520
   },
   "wikipediaTitle": "Pride (musical)",
   "baseline": {
-    "mean": 104.75,
-    "weeksOfHistory": 4
+    "mean": 108.8,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 6
+    "reddit": 66,
+    "bluesky": 4
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 4,
-    "total": 52,
-    "text": "4/52 West End"
+    "position": 14,
+    "total": 50,
+    "text": "14/50 West End"
   },
-  "compositeScore": 3.1
+  "compositeScore": 0.6
 }
