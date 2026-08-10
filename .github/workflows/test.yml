@@ -1073,6 +1073,12 @@ on:
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
       - 'scripts/scoring-delta.js'
+      # Colocated test (task #1163: mandated inclusion replay had zero coverage
+      # of the wrongShow/wrongProduction auto-clear predicates). Root-level
+      # scripts/*.test.mjs files are NOT globbed — registered in
+      # tests/unit-test-manifest.txt and path-listed here so a solo edit
+      # triggers CI.
+      - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
