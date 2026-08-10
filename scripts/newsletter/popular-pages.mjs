@@ -70,6 +70,28 @@ export async function fetchTrendingShowPages({ repo, days = 7, limit = 5, asOf =
   } else if (process.env.GA_SERVICE_ACCOUNT_KEY) {
     const decoded = Buffer.from(process.env.GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
     client = new BetaAnalyticsDataClient({ credentials: JSON.parse(decoded) });
+  } else if (!process.env.CI && !process.env.GITHUB_ACTIONS) {
+    // Application Default Credentials — LAST resort, and LOCAL ONLY.
+    //
+    // Why it exists: without this, a dev machine can never render the Trending
+    // section, because the only other credential paths are a key file and a
+    // base64 secret that live solely in CI. On 2026-08-09 that forced a false
+    // choice — CI could build Trending but stripped the featured openings,
+    // while a local run kept the openings and silently dropped Trending. The
+    // owner had to ship a newsletter missing a section.
+    //
+    // Why it is gated to non-CI: in CI a missing secret MUST fail loudly. If a
+    // runner ever carries an ambient service identity (self-hosted, GCP-backed
+    // image), an ungated ADC fallback would quietly authenticate as whatever
+    // that identity is and query a GA4 property nobody chose — shipping a
+    // plausible-but-wrong Trending list instead of an obvious empty one. Silent
+    // wrong data is worse than a visible gap; that is the whole lesson of the
+    // 2026-08-09 incident. Locally the blast radius is one dev's preview.
+    try {
+      client = new BetaAnalyticsDataClient();
+    } catch {
+      return null;
+    }
   } else {
     return null;
   }

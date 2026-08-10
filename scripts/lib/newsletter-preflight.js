@@ -127,64 +127,77 @@ function completenessFindings(openingShows, checkpoint, nowMs, opts = {}) {
   return { hard, soft };
 }
 
-// Coverage Verdict S3 (task #905): a gapped featured show no longer hard-
-// blocks the send (task #823's behavior) — it gets SWAPPED with the next
-// eligible show among this issue's other openings, and the swap is always
-// named in the report. Never silent, never blocks (plan rule 1: fail open).
-// `allowGaps`/`ackedShowIds` both mean "send this show as-is, gap and all" —
-// the difference is scope (one-run env override vs. a persisted per-show
-// ack) — see pre-send-check.mjs for how each is populated.
+// Coverage-gap DISCLOSURE for the featured openings.
+//
+// Owner decision 2026-08-09: "include ALL shows that opened that week AND
+// collect all reviews. It is not one or the other."
+//
+// History, because the shape of this function is the whole point:
+//   task #823  — a gapped opening HARD-BLOCKED the send.
+//   task #905  — it was SWAPPED out instead: pre-send-check.mjs re-ran
+//                generate.mjs with NEWSLETTER_EXCLUDE_SHOWS=<gapped ids> and a
+//                market lead override, so the show was physically removed from
+//                the edition.
+//   2026-08-03 — that silently deleted THREE openings from one issue (The Pass,
+//                Disruption, The Comedy About Spies), and two of the three were
+//                triggered by gaps that did not exist (ticket-seller URLs and a
+//                duplicate-URL variant — see issue #4). Nobody reading the
+//                newsletter could tell an opening was missing.
+//
+// Swapping traded a VISIBLE incomplete answer for an INVISIBLE wrong one, which
+// is the class this whole tracker exists to close. So the mechanism is gone
+// rather than defanged: there is no code path here that can remove a show. The
+// gap is reported, loudly, and the show ships.
+//
+// `allowGaps`/`ackedShowIds` no longer change whether a show is sent (it always
+// is) — they only mark a gap as already-known, so the banner can say so instead
+// of reading like a new problem every week.
 //
 // @param openingShows  meta.openingShows, in render order
 // @param checkpoint    gap-audit-checkpoint.json ({showId: {at,gaps,uncollected}})
 // @param nowMs
 // @param opts { freshHours, ackedShowIds: Set<string>, allowGaps: boolean }
-// @returns {{swaps: Array<{from, to, reason}>, notes: string[]}}
-//   from/to are {id, title} — to is null when no eligible replacement exists.
-function gapSwapDecisions(openingShows, checkpoint, nowMs, opts = {}) {
+// @returns {{gapped: Array<{id,title,uncollected,acked}>, notes: string[]}}
+function gapDisclosureDecisions(openingShows, checkpoint, nowMs, opts = {}) {
   const { freshHours = 48, ackedShowIds = new Set(), allowGaps = false } = opts;
   const list = (openingShows || []).filter((s) => s && s.id);
-  const swaps = [];
+  const gapped = [];
   const notes = [];
-  const usedAsSwapTarget = new Set();
   for (const s of list) {
     const entry = (checkpoint || {})[s.id];
     const state = classifyGapEntry(entry, nowMs, { freshHours });
     if (state !== 'gap') continue;
-    if (allowGaps) {
-      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) — sending as-is (NEWSLETTER_ALLOW_GAPS=1).`);
-      continue;
-    }
-    if (ackedShowIds.has(s.id)) {
-      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) — acknowledged, sending as-is.`);
-      continue;
-    }
-    // Eligible target must be CONFIRMED clean ('ok'), not merely non-'gap' —
-    // 'stale'/'no-data' is unverified, not clean, and picking one would
-    // silently trade a known gap for an unverified one while the report
-    // reads as if the target is settled (ship-check finding). Also must
-    // share the gapped show's category: pre-send-check.mjs applies the swap
-    // via a market-specific editorial lead override (NEWSLETTER_OB_LEAD /
-    // NEWSLETTER_WE_LEAD) — picking a target from a different market means
-    // the override can never find it in that market's list, so the source
-    // gets excluded but the "swap" never actually promotes anything
-    // (Codex adversarial finding, 2026-08-03).
-    const eligible = list.find((c) => c.id !== s.id
-      && !usedAsSwapTarget.has(c.id)
-      && c.category === s.category
-      && classifyGapEntry((checkpoint || {})[c.id], nowMs, { freshHours }) === 'ok');
-    if (eligible) {
-      usedAsSwapTarget.add(eligible.id);
-      swaps.push({
-        from: { id: s.id, title: s.title },
-        to: { id: eligible.id, title: eligible.title },
-        reason: `coverage gap: ${entry.uncollected} review(s) already cited by aggregators are still uncollected`,
-      });
-    } else {
-      notes.push(`Featured opening "${s.title}" (${s.id}) has a coverage gap (${entry.uncollected} uncollected) and no eligible replacement exists among this issue's other openings — sending as-is.`);
-    }
+    const acked = allowGaps || ackedShowIds.has(s.id);
+    gapped.push({ id: s.id, title: s.title, uncollected: entry.uncollected, acked });
+    notes.push(
+      `COVERAGE GAP — INCLUDED WITH GAP: "${s.title}" (${s.id}) is missing ${entry.uncollected} review(s) `
+      + `already cited by aggregators, so its score is built on an incomplete set. The show STAYS in this issue `
+      + `(owner decision 2026-08-09: never drop an opening). Collect the rest with `
+      + `node scripts/audit-show-review-gap.js --show=${s.id} --checkpoint --ingest-missing, then re-run `
+      + `refresh-drafts.sh.${acked ? ' (Gap already acknowledged.)' : ''}`,
+    );
   }
-  return { swaps, notes };
+  return { gapped, notes };
+}
+
+// The invariant, as a function rather than a comment, so a caller can assert it
+// and a test can exercise it directly: whatever the gap state, the set of
+// openings that goes OUT is the set that came IN.
+//
+// Deliberately returns a verdict instead of throwing (house rule, mirrors
+// scripts/lib/coverage-gate.js: "if either helper can't reach a confident
+// answer it returns the permissive one"). An uncaught throw inside
+// pre-send-check.mjs would kill the entire send — a strictly worse outcome than
+// the dropped show it is meant to prevent. The caller logs ::error:: and
+// continues.
+//
+// @returns {{ok: boolean, droppedIds: string[], addedIds: string[]}}
+function openingsPreserved(inputShows, outputShows) {
+  const inIds = (inputShows || []).filter((s) => s && s.id).map((s) => s.id);
+  const outIds = new Set((outputShows || []).filter((s) => s && s.id).map((s) => s.id));
+  const droppedIds = inIds.filter((id) => !outIds.has(id));
+  const addedIds = [...outIds].filter((id) => !inIds.includes(id));
+  return { ok: droppedIds.length === 0, droppedIds, addedIds };
 }
 
 module.exports = {
@@ -195,5 +208,6 @@ module.exports = {
   extractSiteImageUrls,
   classifyGapEntry,
   completenessFindings,
-  gapSwapDecisions,
+  gapDisclosureDecisions,
+  openingsPreserved,
 };
