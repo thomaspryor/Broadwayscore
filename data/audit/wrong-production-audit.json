@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T12:52:54.934Z",
+  "timestamp": "2026-08-10T14:27:16.437Z",
   "stats": {
-    "totalReviews": 41975,
-    "alreadyFlagged": 18305,
+    "totalReviews": 42012,
+    "alreadyFlagged": 18308,
     "dateGuardCatches": 134,
     "directorMismatch": 960,
-    "tvFilmSignals": 1160,
-    "londonSignals": 830,
+    "tvFilmSignals": 1177,
+    "londonSignals": 832,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3519
+    "noPublishDate": 3518
   },
   "findings": [
     {
@@ -1842,6 +1842,102 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2024-11-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "daily-mail--georgina-brown.json",
+      "publishDate": "2024-10-31",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14022881/Barcelona-review-rom-com-Spanish-hunk-dark-twist.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-10-31",
+      "url": "https://inews.co.uk/culture/arts/lily-collins-barcelona-review-3354734?srsltid=AfmBOoryeRFmjwleJM0WPXh-1cvMFp2Kluo063ENK28cNp1fWUPSwwX-",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "independent--annabel-nugent.json",
+      "publishDate": "2024-10-31",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/barcelona-lily-collins-alvaro-morte-b2638352.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2024-10-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2024-10-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "barcelona-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2024-10-30",
+      "url": "https://www.whatsonstage.com/news/barcelona-west-end-review-lily-collins-and-alvaro-morte-are-revelatory-in-enigmatic-drama_1647506/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -4574,19 +4670,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "daily-mail--unknown.json",
-      "publishDate": "2026-08-08",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16033589/Alley-Cats-review-Ricky-Gervais-series-funny.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -14068,6 +14151,154 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2024-10-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-10-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2024-10-07",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/juno-and-the-paycock-mark-rylance-b2624634.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "theatre-weekly--oliver-valentine.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "thereviewshub--richard-maguire.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "thestage--dave-fargnoli.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2024-10-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
