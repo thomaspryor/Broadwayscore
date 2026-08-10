@@ -30,7 +30,6 @@ const {
   isMissingContentTierGap,
   scanMissingContentTier,
   normalizeHostSlug,
-  normalizeOutletName,
   findProbableDomainMoves,
 } = require_('./silent-exclusion-detectors.js');
 
@@ -173,11 +172,6 @@ test('normalizeHostSlug takes the LAST remaining segment on a 3+-label host — 
   assert.equal(normalizeHostSlug('news.dancemagazine.co.uk'), 'dancemagazine');
 });
 
-test('normalizeOutletName strips punctuation/case for comparison', () => {
-  assert.equal(normalizeOutletName('one-minute-critic'), 'oneminutecritic');
-  assert.equal(normalizeOutletName('1 Minute Critic'), '1minutecritic');
-});
-
 test('a host matching a registered outlet name, not yet in domainAliases, is reported (the real 1minutecritic incident, replayed pre-fix)', () => {
   // Registry state AS IT WAS before the by-hand fix: domain 1minutecritic.com,
   // domainAliases only has the earlier oneminutecritic.com typo-domain — the
@@ -244,11 +238,11 @@ test('an outlet with NO domain on file is never matched — a name coincidence i
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
 });
 
-test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched via exact outletId, even though every alias/displayName normalizes under MIN_SLUG_LENGTH', () => {
-  // ship-check finding: a blanket MIN_SLUG_LENGTH=4 floor on ALL candidate
-  // names made short-brand outlets permanently unmatchable — every name
-  // variant they have is under 4 chars. outletId (curated, not freeform) is
-  // checked at a lower floor instead.
+test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched — its OWN domain normalizes to the same short slug', () => {
+  // ship-check finding: matching against displayName/aliases needed a
+  // separate lower-floor carve-out for short outletIds, since every name
+  // variant they had was under the generic floor. Matching against the
+  // outlet's own domain (vox.com -> 'vox') needs no special case.
   const outlets = { vox: { displayName: 'Vox', domain: 'vox.com' } };
   const unknownHosts = [{ host: 'vox.substack.com', occurrences: 2 }];
   const moves = findProbableDomainMoves(outlets, unknownHosts);
@@ -256,19 +250,29 @@ test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched via exact outl
   assert.equal(moves[0].outletId, 'vox');
 });
 
-test('a short freeform ALIAS (not the outletId) is still ignored — the loosened floor only applies to outletId', () => {
-  // Real corpus case: outletId 'ap' (Associated Press) carries a stray
-  // 3-char alias typo "app" in its aliases array. Loosening the floor for
-  // aliases too would match app.com (an unrelated NJ news site) by pure
-  // accident — outletId-only exemption avoids that.
-  const outlets = { ap: { displayName: 'Associated Press', aliases: ['app'], domain: 'apnews.com' } };
-  const unknownHosts = [{ host: 'app.com', occurrences: 1 }];
-  assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
+test('a host that shares a generic descriptive word with an outlet\'s name, but not its domain text, is NOT matched (the real guardian.ng incident, task #1228)', () => {
+  // Confirmed live in production the day this shipped: 'guardian.ng' (The
+  // Guardian Nigeria — a real, distinct outlet) was flagged as a probable
+  // move of 'The Guardian' (UK) because the UK outlet's outletId AND an
+  // alias are literally 'guardian' — but its actual domain is
+  // 'theguardian.com', which normalizes to 'theguardian', not 'guardian'.
+  // Matching against the outlet's own domain text (not displayName/aliases)
+  // fixes this without a manual exclusion list.
+  const outlets = {
+    guardian: {
+      displayName: 'The Guardian',
+      aliases: ['guardian', 'the-guardian', 'theguardian'],
+      domain: 'theguardian.com',
+      domainAliases: ['guardian.co.uk'],
+    },
+  };
+  const unknownHosts = [{ host: 'guardian.ng', occurrences: 3 }];
+  assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), [], 'guardian.ng is a different real outlet, not a Guardian domain move');
 });
 
 test('a short/generic normalized slug is not matched — avoids over-broad false positives', () => {
   const outlets = { amny: { displayName: 'amNY', domain: 'amny.com' } };
-  const unknownHosts = [{ host: 'amy.org', occurrences: 1 }]; // 'amy' normalizes to len 3, below MIN_SLUG_LENGTH
+  const unknownHosts = [{ host: 'am.org', occurrences: 1 }]; // 'am' normalizes to len 2, below MIN_SLUG_LENGTH
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
 });
 
