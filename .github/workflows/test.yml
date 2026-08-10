@@ -1459,6 +1459,12 @@ on:
       - 'scripts/lib/digest-autofix.js'
       - 'scripts/lib/digest-autofix.test.mjs'
       - 'scripts/check-health-row-absent.js'
+      # Digest-autofix S5 (task #1224) — side-effect-free same-day (--live)
+      # re-verification, so a fix session doesn't have to wait for tomorrow's
+      # snapshot. Colocated test runs in the scripts/lib/*.test.mjs glob step;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/health-row-probe.js'
+      - 'scripts/lib/health-row-probe.test.mjs'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is

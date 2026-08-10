@@ -15,13 +15,24 @@
  * have side effects. Freshness is enforced instead: a snapshot older than
  * MAX_AGE_H is a verification failure (exit 3), never a silent pass.
  *
+ * --live (Digest-autofix S5, task #1224): re-runs the same core check list
+ * LIVE, via scripts/lib/health-row-probe.js, instead of reading yesterday's
+ * snapshot — the probe is itself side-effect-free (see its header), so this
+ * stays a safe verify command. Use this when a same-day fix needs proving
+ * before the next scheduled snapshot exists. Exit codes are unchanged, EXCEPT
+ * the probe's 'unknown' verdict (row not verifiable in this environment —
+ * e.g. no GH_TOKEN/NOTION_API_KEY here — see health-row-probe.js) maps to the
+ * same "cannot verify" exit 3 as a stale/missing snapshot, rather than a
+ * false pass.
+ *
  * The row name travels as base64url (--row-b64) because the check runner
  * (scripts/lib/autonomous-checks.js cardCheckArgv) splits commands on
  * whitespace with no quote parsing, and the safe-form regex in
  * autonomous-triage-core.js constrains args to a single [A-Za-z0-9_-] token.
  *
  * Exit codes: 0 row absent (fixed) · 1 row present · 2 usage/decode error
- *             3 snapshot missing or stale (cannot verify)
+ *             3 snapshot missing/stale, or (--live) cannot verify in this
+ *             environment
  */
 
 'use strict';
@@ -36,11 +47,12 @@ function b64urlDecode(s) {
   return Buffer.from(String(s).replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
 }
 
-function main(argv) {
+async function main(argv) {
   const args = argv.slice(2);
   if (args.includes('--help') || args.includes('-h')) {
-    console.log('Usage: node scripts/check-health-row-absent.js (--row "<name>" | --row-b64 <base64url>)');
+    console.log('Usage: node scripts/check-health-row-absent.js (--row "<name>" | --row-b64 <base64url>) [--live]');
     console.log('Exit 0 iff the named row is absent from the latest health-digest snapshot.');
+    console.log('--live re-runs the core checks live instead of reading the snapshot (scripts/lib/health-row-probe.js).');
     return 2;
   }
   let row = null;
@@ -56,6 +68,27 @@ function main(argv) {
     return 2;
   }
   row = row.trim();
+
+  if (args.includes('--live')) {
+    const { probeHealthRowLive } = require('./lib/health-row-probe.js');
+    let probe;
+    try {
+      probe = await probeHealthRowLive(row);
+    } catch (err) {
+      console.error(`[check-health-row-absent] --live probe crashed: ${err.message}`);
+      return 3;
+    }
+    if (probe.verdict === 'unknown') {
+      console.error(`[check-health-row-absent] --live CANNOT VERIFY: "${row}" did not appear (or only appeared as a credential-skip placeholder) in this environment's live check run — this environment is likely missing a credential the owning check needs (see scripts/lib/health-row-probe.js)`);
+      return 3;
+    }
+    if (probe.verdict === 'present') {
+      console.error(`[check-health-row-absent] --live FAIL: "${row}" still flagged (${probe.matched.status}): ${probe.matched.message}`);
+      return 1;
+    }
+    console.log(`[check-health-row-absent] --live PASS: "${row}" absent from the live check run (${probe.generatedAt})`);
+    return 0;
+  }
 
   let snap;
   try {
@@ -84,5 +117,10 @@ function main(argv) {
   return 0;
 }
 
-if (require.main === module) process.exit(main(process.argv));
+if (require.main === module) {
+  main(process.argv).then(
+    (code) => process.exit(code),
+    (err) => { console.error(`[check-health-row-absent] crashed: ${err.stack || err.message}`); process.exit(3); }
+  );
+}
 module.exports = { main, MAX_AGE_H };
