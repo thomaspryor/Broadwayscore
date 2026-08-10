@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-08-10T06:57:28.757Z",
+  "generatedAt": "2026-08-10T09:16:17.446Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 156,
-  "clean": 155,
+  "checked": 147,
+  "clean": 146,
   "defective": 1,
   "byType": {
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "im-every-woman-off-west-end-2026",
-      "title": "I'm Every Woman",
-      "openingDate": "2026-08-05",
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 52.06 vs local 51.87 (Δ0.19)"
+          "detail": "deployed cs 82.87 vs local 84.84 (Δ1.97)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
+      "localCount": 30,
+      "deployedCount": 30
     }
   ]
 }
