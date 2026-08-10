@@ -176,6 +176,17 @@ export interface TriggerCopy {
  */
 const EXAMPLE_SCORE = { broadway: 92, westEnd: 90 }; // hamilton-2015 cs:91.83, hamilton-west-end-2021 cs:90.07 — kept in sync by the test above
 
+/**
+ * Stamped as `copyVersion` on gate_modal_shown / email_captured /
+ * gate_modal_dismissed (task #1206) so the #586 copy rewrite's before/after
+ * effect on conversion/dismiss can be isolated from ordinary week-to-week
+ * trend — the 2026-08-24 recheck needs this to tell "copy change moved it"
+ * apart from "traffic mix moved it". Bump this string (new date suffix) on
+ * any future getTriggerCopy rewrite so old and new copy segment cleanly in
+ * scripts/analyze-email-gate-funnel.js's byCopyVersion breakdown.
+ */
+export const COPY_VERSION = 'v2-2026-08-10';
+
 export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy {
   const market = isWE ? 'West End' : 'Broadway';
   const exampleScore = isWE ? EXAMPLE_SCORE.westEnd : EXAMPLE_SCORE.broadway;

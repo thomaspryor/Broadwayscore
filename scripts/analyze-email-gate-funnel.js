@@ -50,6 +50,29 @@ async function hogql(query) {
 
 function pct(n, d) { return d > 0 ? +((n / d) * 100).toFixed(2) : null; }
 
+// Merges the shown/dismissed rows (grouped by copyVersion+event) and the
+// captured rows (grouped by copyVersion) into one per-version funnel, so a
+// version's dismiss/conversion rate can be read directly off the summary
+// instead of cross-referencing two tables by hand.
+function buildByCopyVersion(shownDismissedRows, capturedRows) {
+  const versions = {};
+  const bucket = (v) => (versions[v] ||= { shown: { n: 0, people: 0 }, dismissed: { n: 0, people: 0 }, captured: { n: 0, people: 0 } });
+  for (const [copyVersion, event, n, people] of shownDismissedRows) {
+    const key = copyVersion || '(none)';
+    const slot = event === 'gate_modal_shown' ? 'shown' : 'dismissed';
+    bucket(key)[slot] = { n: Number(n), people: Number(people) };
+  }
+  for (const [copyVersion, n, people] of capturedRows) {
+    const key = copyVersion || '(none)';
+    bucket(key).captured = { n: Number(n), people: Number(people) };
+  }
+  for (const v of Object.values(versions)) {
+    v.dismissRatePct = pct(v.dismissed.people, v.shown.people);
+    v.convRatePct = pct(v.captured.people, v.shown.people);
+  }
+  return versions;
+}
+
 async function main() {
   const say = (...a) => { if (!JSON_OUT) console.log(...a); };
   say(`Email gate funnel (overall) — last ${DAYS} days, real users, modal-only\n${'='.repeat(60)}`);
@@ -84,6 +107,26 @@ async function main() {
       AND ${REAL_USERS}
     GROUP BY trigger ORDER BY n DESC`);
 
+  // copyVersion dimension (task #1206) — isolates the #586 copy rewrite's
+  // effect on conversion/dismiss from general week-to-week trend. Events
+  // emitted before this landed carry no copyVersion property and group under ''.
+  const byCopyVersionShownDismissedRows = await hogql(`
+    SELECT JSONExtractString(properties,'copyVersion') AS copyVersion, event, count() AS n, count(DISTINCT person_id) AS people
+    FROM events
+    WHERE event IN ('gate_modal_shown', 'gate_modal_dismissed')
+      AND timestamp > now() - INTERVAL ${DAYS} DAY
+      AND ${REAL_USERS}
+    GROUP BY copyVersion, event`);
+
+  const byCopyVersionCapturedRows = await hogql(`
+    SELECT JSONExtractString(properties,'copyVersion') AS copyVersion, count() AS n, count(DISTINCT person_id) AS people
+    FROM events
+    WHERE event = 'email_captured'
+      AND ${MODAL_ONLY}
+      AND timestamp > now() - INTERVAL ${DAYS} DAY
+      AND ${REAL_USERS}
+    GROUP BY copyVersion`);
+
   const mobileVisitorsRows = await hogql(`
     SELECT count(DISTINCT person_id)
     FROM events
@@ -116,6 +159,7 @@ async function main() {
     capturesPerWeek: +((Number(capturedPeople) / DAYS) * 7).toFixed(2),
     mobileBouncePct: mobileVisitors > 0 ? +((bouncers / mobileVisitors) * 100).toFixed(2) : null,
     byTrigger: Object.fromEntries(byTriggerRows.map(([t, n, people]) => [t || '(none)', { n: Number(n), people: Number(people) }])),
+    byCopyVersion: buildByCopyVersion(byCopyVersionShownDismissedRows, byCopyVersionCapturedRows),
   };
 
   say(`Impressions (shown): ${summary.impressions} people (${summary.impressionEvents} events)`);
@@ -124,6 +168,7 @@ async function main() {
   say(`Captures/week (extrapolated from ${DAYS}d): ${summary.capturesPerWeek} — baseline ~0.93/day (~6.5/wk pre-cold-start-gate)`);
   say(`Mobile bounce: ${bouncers}/${mobileVisitors} (${summary.mobileBouncePct}%)`);
   say(`By trigger: ${JSON.stringify(summary.byTrigger)}`);
+  say(`By copy version: ${JSON.stringify(summary.byCopyVersion)}`);
 
   if (JSON_OUT) console.log(JSON.stringify(summary));
 }

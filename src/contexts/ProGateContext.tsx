@@ -26,6 +26,7 @@ import {
   getMobileGateParams,
   buildGateAbVariant,
   MOBILE_GATE_FLAG,
+  COPY_VERSION,
 } from '@/lib/gate-logic';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
@@ -284,8 +285,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     try {
       localStorage.setItem(GATE_DISMISSED_KEY, String(Date.now()));
     } catch { /* localStorage unavailable — cooldown just won't persist */ }
-    track('gate_modal_dismissed', { trigger: modalTrigger, ...gateFireMeta });
-    captureEvent('gate_modal_dismissed', { trigger: modalTrigger, ...gateFireMeta });
+    track('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
+    captureEvent('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
   }, [modalBlocking, modalTrigger, gateFireMeta]);
 
   // Recapture: fire non-blocking modal after 4s for pre-fix users who need re-submission to Formspree
