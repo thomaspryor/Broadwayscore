@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-10T05:21:41.829Z",
+  "generatedAt": "2026-08-10T06:57:16.520Z",
   "windowDays": 1095,
-  "targets": 7,
-  "auditedThisRun": 7,
-  "carriedForward": 202,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 207,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 165,
-    "totalMissing": 1057,
+    "withGap": 164,
+    "totalMissing": 1056,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1073,
+    "totalFlaggedMisses": 1072,
     "totalRecoverable": 25,
     "totalRecovered": 5
   },
@@ -17187,7 +17187,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T03:06:37.050Z"
+      "computedAt": "2026-08-10T06:57:16.520Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -39049,159 +39049,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-      ],
-      "dirFiles": 3,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-          "host": "westsidespirit.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"ISLA\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"ISLA\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "ISLA WP Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "ISLA WP Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "ISLA WP Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 20,
-        "byReason": {
-          "aggregator-internal-nav": 2,
-          "roundup-page": 1,
-          "non-review-host": 16,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-          "host": "westsidespirit.com",
-          "outletId": "westsidespirit",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~204027/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "westsidespirit.com",
-            "outlet": "westsidespirit.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617"
-          },
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
-            "outletId": "westsidespirit.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T03:06:37.050Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
-            "outletId": "theatre-reviews-limited",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T03:06:37.050Z"
-          }
-        ],
+        "candidates": [],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-10T03:06:37.050Z"
+      "computedAt": "2026-08-10T06:57:16.520Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
