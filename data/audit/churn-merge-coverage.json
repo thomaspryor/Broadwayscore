@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-10T07:58:19.255Z",
+    "generatedAt": "2026-08-10T08:16:09.559Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,19 +8,19 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 16,
+    "flaggedCount": 15,
     "exemptCount": 21,
     "coveredCount": 22,
-    "highChurnTracked": 59
+    "highChurnTracked": 58
   },
   "flagged": [
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 272
+      "churn": 271
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 126
+      "churn": 125
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/bd-circuit-breaker.json",
-      "churn": 63
+      "churn": 62
     },
     {
       "path": "data/audit/autoclear-shadow-report.json",
@@ -73,28 +73,24 @@
     {
       "path": "data/audit/url-collision-report.json",
       "churn": 31
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 30
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 236
+      "churn": 235
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 236
+      "churn": 235
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 236
+      "churn": 235
     },
     {
       "path": "public/data/shows/cats-west-end-2026.json",
-      "churn": 164
+      "churn": 163
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -122,7 +118,7 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 63
+      "churn": 62
     },
     {
       "path": "public/data/shows/the-car-man-west-end-2026.json",
@@ -162,18 +158,18 @@
     },
     {
       "path": "public/data/shows/tao-of-glass-west-end-2026.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 990,
+      "churn": 986,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 958,
+      "churn": 954,
       "mergeAttr": "ours"
     },
     {
@@ -188,27 +184,27 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 290,
+      "churn": 289,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 277,
+      "churn": 276,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 272,
+      "churn": 271,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 272,
+      "churn": 271,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 236,
+      "churn": 235,
       "mergeAttr": "ours"
     },
     {
@@ -218,7 +214,7 @@
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 155,
+      "churn": 154,
       "mergeAttr": "union"
     },
     {
@@ -253,7 +249,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 53,
+      "churn": 52,
       "mergeAttr": "ours"
     },
     {
@@ -273,7 +269,7 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 41,
+      "churn": 40,
       "mergeAttr": "ours"
     }
   ]
