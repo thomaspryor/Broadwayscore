@@ -1503,6 +1503,12 @@ on:
       # edits to the two files it guards do too.
       - 'scripts/lib/newsletter-allow-gaps-wiring.test.mjs'
       - 'scripts/newsletter/popular-pages.mjs'
+      # Render invariants: every show in meta.openingShows must actually appear
+      # in the rendered email, and the subject may not promise a show the body
+      # never covers. Closes the 2026-08-09 class where the coverage swap
+      # deleted openings and a substring grep reported success anyway.
+      - 'scripts/lib/newsletter-render-invariants.js'
+      - 'scripts/lib/newsletter-render-invariants.test.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter
