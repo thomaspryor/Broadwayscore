@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T00:26:28.011Z",
+  "generatedAt": "2026-08-10T03:06:37.800Z",
   "windowDays": 45,
   "showsScanned": 59,
   "gaps": [
@@ -11,17 +11,17 @@
       "outletId": "independent",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true",
       "recovery": {
         "attempted": false,
         "reason": "circuit-breaker:per-file-cap"
       },
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=cats-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cats-musical-regents-park-theatre-review-tour-b3029227.html?loginSuccessful=true --outlet=independent --critic=\"Alice Saville\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-09T22:22:06.511Z",
-      "nonTerminalAgeHours": 2.0726388888888887
+      "nonTerminalAgeHours": 4.742024722222222
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -36,9 +36,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=trainspotting-the-musical-west-end-2026 --url=https://www.broadwayworld.com/shows/Trainspotting-The-Musical-336005.html --outlet=broadwayworld --critic=\"Team Bww\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-07-23T13:11:36.452Z",
-      "fileAgeHours": 419.247635,
+      "fileAgeHours": 421.91701944444446,
       "gapSeenAt": "2026-07-25T05:53:25.936Z",
-      "nonTerminalAgeHours": 378.5505763888889
+      "nonTerminalAgeHours": 381.21996222222225
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
@@ -55,7 +55,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-08-06T13:35:12.755Z",
-      "nonTerminalAgeHours": 82.85423777777778
+      "nonTerminalAgeHours": 85.5236236111111
     },
     {
       "showId": "disruption-off-broadway-2026",
@@ -70,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=disruption-off-broadway-2026 --url=https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway-play-f116c42d --outlet=wsj   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-08-05T10:45:01.018Z",
-      "fileAgeHours": 109.69082388888889,
+      "fileAgeHours": 112.36020944444445,
       "gapSeenAt": "2026-08-05T11:23:18.074Z",
-      "nonTerminalAgeHours": 109.05276027777778
+      "nonTerminalAgeHours": 111.72214611111112
     }
   ],
   "contradictions": []

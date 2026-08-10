@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-10T00:26:27.272Z",
+  "generatedAt": "2026-08-10T03:06:37.050Z",
   "windowDays": 1095,
-  "targets": 25,
-  "auditedThisRun": 20,
-  "carriedForward": 189,
+  "targets": 7,
+  "auditedThisRun": 7,
+  "carriedForward": 202,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 163,
-    "totalMissing": 1047,
+    "withGap": 164,
+    "totalMissing": 1049,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 1065,
+    "totalFlaggedMisses": 1066,
     "totalRecoverable": 23,
     "totalRecovered": 6
   },
@@ -387,6 +387,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -395,7 +396,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T09:41:24.490Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
@@ -16965,6 +16966,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -16973,7 +16975,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T22:22:02.507Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -38718,32 +38720,159 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+        "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+      ],
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "westsidespirit.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"ISLA\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ISLA\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ISLA WP Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ISLA WP Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ISLA WP Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "roundup-page": 1,
+          "non-review-host": 16,
+          "venue-production-page": 1
+        }
       },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+          "host": "westsidespirit.com",
+          "outletId": "westsidespirit",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204027/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "westsidespirit.com",
+            "outlet": "westsidespirit.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.westsidespirit.com/news/cuban-odyssey-isla-makes-its-off-broadway-debut-XL6085617",
+            "outletId": "westsidespirit.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/tag/isla-oconnor-lu/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-08-09T23:23:45.175Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "jajas-african-hair-braiding-west-end-2026",
@@ -49791,6 +49920,7 @@
         "count": 0,
         "byReason": {}
       },
+      "dedupedVariants": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -49799,7 +49929,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-09T09:41:24.490Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "music-city-off-broadway-2026",
@@ -68295,19 +68425,22 @@
         "https://www.theatrely.com/post/space-dogs-aim-for-the-moon-land-in-the-stars-review",
         "https://www.timeout.com/newyork/theater/space-dogs-musical-review-laika",
         "https://theatreweekly.com/review-space-dogs-the-musical-at-the-other-palace-studio/",
-        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
         "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+        "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
         "https://www.thestage.co.uk/reviews/space-dogs-review-the-other-palace-laika-space-race-london",
         "https://www.thetheatreflyer.co.uk/review-space-dogs-at-the-other-palace-august-2026",
         "https://theatreandtonic.co.uk/blog/space-dogs-the-musical-at-the-other-palace-review",
+        "https://playstosee.com/reviews/space-dogs/",
         "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
         "https://www.thereviewshub.com/space-dogs-the-other-palace-london/",
+        "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
         "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
-        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
         "https://www.londontheatre1.com/reviews/space-dogs-the-musical-the-other-palace/",
+        "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
         "https://www.whatsonstage.com/news/new-musical-space-dogs-to-play-in-london-this-summer_1724195/",
-        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/"
+        "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
+        "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/"
       ],
       "dirFiles": 20,
       "dirClean": 16,
@@ -68378,14 +68511,6 @@
         },
         {
           "host": "operationlivetheatre.com",
-          "count": 1
-        },
-        {
-          "host": "playstosee.com",
-          "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
           "count": 1
         }
       ],
@@ -68464,7 +68589,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -68494,7 +68619,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -68504,23 +68629,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 136,
+        "count": 133,
         "byReason": {
-          "not-http-url": 4,
-          "aggregator-internal-nav": 93,
-          "non-review-host": 39
+          "aggregator-internal-nav": 92,
+          "non-review-host": 37,
+          "not-http-url": 4
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/read-reviews-for-off-broadways-space-dogs",
@@ -68567,7 +68693,10 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~233998/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204036/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
         },
         {
           "url": "https://www.uktw.co.uk/London/The-Other-Palace/Musical/Space-Dogs/L895838450/",
@@ -68576,7 +68705,10 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~233998/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204037/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
         },
         {
           "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
@@ -68585,6 +68717,9 @@
           "provisional": false,
           "ok": false,
           "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
@@ -68665,14 +68800,14 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-space-dogs-the-other-palace-studio",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/review-space-dogs-the-other-palace",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
@@ -68689,6 +68824,12 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
+            "url": "https://playstosee.com/reviews/space-dogs/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
+          },
+          {
             "url": "https://onin.london/space-dogs-the-musical-at-the-other-palace-review/",
             "outletId": "onin.london",
             "state": "live",
@@ -68701,14 +68842,14 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
-            "outletId": "stagedtheatre.co.uk",
+            "url": "https://readaboutstuff.com/2026/07/31/review-space-dogs-the-musical-the-other-palace-studio-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
-            "outletId": "broadwayworld.com",
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/space-dogs-review-the-other-palace-theatre",
+            "outletId": "stagedtheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
@@ -68717,6 +68858,18 @@
             "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T20:18:38.496Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-SPACE-DOGS-The-Other-Palace-20260730",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T17:49:33.869Z"
+          },
+          {
+            "url": "https://theatreweekly.com/space-dogs-the-musical-blasts-into-london-with-limited-run-at-the-other-palace-studio/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
           },
           {
             "url": "http://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
@@ -68782,10 +68935,10 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 19
+        "liveCount": 12,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-09T09:41:24.490Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "starlight-express-west-end-2024",
@@ -72541,12 +72694,13 @@
       "candidatesRejected": {
         "count": 772,
         "byReason": {
-          "not-http-url": 92,
           "aggregator-internal-nav": 602,
           "non-review-host": 72,
+          "not-http-url": 92,
           "non-review-path": 6
         }
       },
+      "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/read-the-reviews-for-stranger-things-the-first-shadow",
@@ -72565,7 +72719,10 @@
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~234046/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204052/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -72990,7 +73147,7 @@
         "liveCount": 13,
         "candidateCount": 32
       },
-      "computedAt": "2026-08-09T09:41:24.490Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "sukkot-off-broadway-2026",
@@ -78992,25 +79149,25 @@
         "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
         "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-oscar-park-theatre-review",
         "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-        "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
         "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
+        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
+        "https://www.stagesideuk.co.uk/ad-the-importance-of-being-oscar-review/",
+        "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
         "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
         "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
         "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
         "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
         "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
         "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
         "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
         "https://www.londontheatre.co.uk/reviews/the-importance-of-being-oscar",
+        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
         "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
-        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
         "http://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
-        "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
+        "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
+        "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
         "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
         "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
         "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
@@ -79029,14 +79186,14 @@
       "inReviewsJson": 16,
       "missing": [
         {
-          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-          "host": "redbuslondinium.uk",
+          "url": "https://www.stagesideuk.co.uk/ad-the-importance-of-being-oscar-review/",
+          "host": "stagesideuk.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-          "host": "theatreandartreviews.com",
+          "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "redbuslondinium.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -79049,6 +79206,12 @@
         {
           "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
           "host": "reviewsgate.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+          "host": "northernartsreview.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -79121,6 +79284,10 @@
         {
           "host": "shinylife.co.uk",
           "count": 1
+        },
+        {
+          "host": "thesetheatrethoughts.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -79136,7 +79303,7 @@
           "dirFlags": [
             {
               "file": "fairypoweredproductions--fairypoweredproductions.json",
-              "flag": "clean",
+              "flag": "wrongProduction",
               "urlInDir": "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/"
             }
           ],
@@ -79208,7 +79375,7 @@
           "dirFlags": [
             {
               "file": "unknownkentandsussex--maria-bligh.json",
-              "flag": "clean",
+              "flag": "wrongProduction",
               "urlInDir": "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/"
             }
           ],
@@ -79399,7 +79566,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 7,
             "error": null
           },
           {
@@ -79409,7 +79576,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -79419,7 +79586,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 5,
             "error": null
           },
           {
@@ -79439,12 +79606,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 9,
+        "count": 8,
         "byReason": {
-          "non-review-host": 7,
-          "ticketing-listing": 2
+          "non-review-host": 5,
+          "ticketing-listing": 2,
+          "ticketing-reseller": 1
         }
       },
+      "dedupedVariants": [],
       "weIngestBlocked": [
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
@@ -79479,22 +79648,28 @@
       ],
       "ingestResults": [
         {
+          "url": "https://www.stagesideuk.co.uk/ad-the-importance-of-being-oscar-review/",
+          "host": "stagesideuk.co.uk",
+          "outletId": "stagesideuk",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
           "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
           "host": "redbuslondinium.uk",
           "outletId": "redbuslondinium",
           "provisional": true,
           "ok": false,
           "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~234025/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
-        },
-        {
-          "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-          "host": "theatreandartreviews.com",
-          "outletId": "theatreandartreviews",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "reason": "⚠️  Scrapingdog pace (~234030/day) projects exhaustion in ~12d, before the 25d-out renewal — still u"
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204047/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
         },
         {
           "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
@@ -79503,6 +79678,9 @@
           "provisional": false,
           "ok": false,
           "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         },
         {
@@ -79512,7 +79690,22 @@
           "provisional": true,
           "ok": false,
           "noop": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "conflict": true,
+          "conflictReason": "domain-mismatch",
+          "unclassified": false,
+          "reason": "the-importance-of-being-oscar-off-west-end-2026: https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park was rejected because the resolved outlet's registered domain doesn't match the URL host — add the host to that outlet's domainAliases in data/outlet-registry.json, or pass the correct --outlet."
+        },
+        {
+          "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+          "host": "northernartsreview.co.uk",
+          "outletId": "northernartsreview",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~204048/day) projects exhaustion in ~14d, before the 24d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -79520,18 +79713,18 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "stagesideuk.co.uk",
+            "outlet": "stagesideuk.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.stagesideuk.co.uk/ad-the-importance-of-being-oscar-review/"
+          },
+          {
             "outletId": "redbuslondinium.uk",
             "outlet": "redbuslondinium.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
-          },
-          {
-            "outletId": "theatreandartreviews.com",
-            "outlet": "theatreandartreviews.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/"
           },
           {
             "outletId": "theatreandtonic",
@@ -79546,6 +79739,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park"
+          },
+          {
+            "outletId": "northernartsreview.co.uk",
+            "outlet": "northernartsreview.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/"
           },
           {
             "outletId": "sunday-telegraph",
@@ -79675,32 +79875,26 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-            "outletId": "fringereview.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
             "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
+            "url": "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -79717,6 +79911,12 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -79727,12 +79927,6 @@
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://thesetheatrethoughts.co.uk/2026/07/28/review-the-importance-of-being-oscar-at-park-theatre/",
-            "outletId": "thesetheatrethoughts.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T09:41:24.490Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-three-scene-stealers-make-this-a-comedy-cracker_1696568/",
@@ -79747,18 +79941,18 @@
             "firstSeenAt": "2026-08-07T17:49:33.869Z"
           },
           {
+            "url": "https://www.stagesideuk.co.uk/ad-the-importance-of-being-oscar-review/",
+            "outletId": "stagesideuk.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
+          },
+          {
             "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
             "outletId": "redbuslondinium.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
-            "outletId": "theatreandartreviews.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T09:41:24.490Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
@@ -79773,6 +79967,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
+            "url": "https://northernartsreview.co.uk/north-east/the-importance-of-being-oscar-in-wakefield/",
+            "outletId": "northernartsreview.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-10T03:06:37.050Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
@@ -79887,10 +80088,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 12,
+        "liveCount": 11,
         "candidateCount": 31
       },
-      "computedAt": "2026-08-09T09:41:24.490Z"
+      "computedAt": "2026-08-10T03:06:37.050Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
