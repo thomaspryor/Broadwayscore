@@ -2,7 +2,9 @@
   "processed": [
     "cats-west-end-2026/firstnightmagazine--unknown.json",
     "cats-west-end-2026/independent--alice-saville.json",
-    "cats-west-end-2026/north-west-end--michelle-knight.json"
+    "cats-west-end-2026/north-west-end--michelle-knight.json",
+    "cats-west-end-2026/telegraph--james-hall.json",
+    "cats-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "isla-off-broadway-2026/show-score--unknown.json",
@@ -42,7 +44,15 @@
     "cats-west-end-2026/nysr--melissa-rose-bernardo.json",
     "cats-west-end-2026/nysr--michael-sommers.json",
     "cats-west-end-2026/nysr--unknown.json",
-    "cats-west-end-2026/one-minute-critic--matthew-wexler.json"
+    "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cats-west-end-2026/radio-times--unknown.json",
+    "cats-west-end-2026/slantmagazine--dan-rubins.json",
+    "cats-west-end-2026/standard--west-end-theatre.json",
+    "cats-west-end-2026/thestage--jonathan-mandell.json",
+    "cats-west-end-2026/times-uk--carol-midgley.json",
+    "cats-west-end-2026/times-uk--donald-hutera.json",
+    "cats-west-end-2026/usatoday--patrick-ryan.json",
+    "cats-west-end-2026/whatsonstage--oliver-ainley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,12 +64,15 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "cats-west-end-2026/telegraph--james-hall.json",
+      "cats-west-end-2026/telegraph--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-08-10T04:54:03.295Z",
-  "lastProcessed": "cats-west-end-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "cats-west-end-2026/whatsonstage--oliver-ainley.json",
   "log": []
 }
