@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T00:33:19.759Z",
+  "timestamp": "2026-08-10T03:13:12.845Z",
   "stats": {
-    "totalReviews": 41950,
-    "alreadyFlagged": 18271,
-    "dateGuardCatches": 137,
-    "directorMismatch": 961,
-    "tvFilmSignals": 1161,
-    "londonSignals": 830,
+    "totalReviews": 41951,
+    "alreadyFlagged": 18303,
+    "dateGuardCatches": 134,
+    "directorMismatch": 959,
+    "tvFilmSignals": 1160,
+    "londonSignals": 827,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3518
+    "noPublishDate": 3502
   },
   "findings": [
     {
@@ -1688,25 +1688,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "file": "london-theatre--aliya-al-hassan.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-duke-of-yorks-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from arcadia-2011"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -14007,25 +13988,6 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "theupcoming--unknown.json",
-      "score": null,
-      "publishDate": "2026-04-23",
-      "url": "https://www.theupcoming.co.uk/2026/04/23/john-proctor-is-the-villain-at-wyndhams-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout--unknown.json",
       "score": 82,
       "publishDate": "2026-03-27",
@@ -17137,25 +17099,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "financialtimes--financial-times.json",
-      "score": 87,
-      "publishDate": "2022-10-19",
-      "url": "https://www.ft.com/content/a49309dc-bda1-4f26-93cf-274237764e15",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "independent--annabel-nugent.json",
       "score": 82,
       "publishDate": "October 26th, 2022",
@@ -19473,19 +19416,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "pride-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/pride-national-theatre-review-full-musical-aims-heart",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -41787,20 +41717,6 @@
       ]
     },
     {
-      "showId": "smokey-joes-cafe-1995",
-      "file": "newsday--linda-winer.json",
-      "score": 68,
-      "publishDate": "1994-11-18",
-      "url": "https://www.newspapers.com/image/158629857/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 83d before show (1994-11-18 vs 1995-02-09)"
-        }
-      ]
-    },
-    {
       "showId": "soldiers-of-tomorrow-off-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
       "score": 87,
@@ -43621,19 +43537,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 259d before show (2025-11-11 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "file": "east-midlands-theatre--unknown.json",
-      "publishDate": "2026-06-17",
-      "url": "https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 41d before show (2026-06-17 vs 2026-07-28)"
         }
       ]
     },
