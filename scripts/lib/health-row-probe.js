@@ -24,20 +24,29 @@
  *      write-stub does not need updating when the check list changes).
  *
  * WHY "unknown" exists as a third verdict, not just present/absent: several
- * of the 22 checks skip themselves under a missing credential (no GH_TOKEN /
+ * of the 22 checks skip themselves — under a missing credential (no GH_TOKEN /
  * NOTION_API_KEY / VERCEL_TOKEN / SCRAPINGBEE_API_KEY / SCRAPINGDOG_API_KEY —
  * exactly the environment scripts/lib/autonomous-checks.js's checksEnv()
- * hands this command when it runs as a card's checkableDone verify step) and
- * emit ONE placeholder row (e.g. 'Cron: health') instead of the per-item rows
- * they'd normally produce (e.g. 'Cron: Update Show Status'). In that case the
- * target row name never appears in the live results AT ALL, under any
- * status — indistinguishable, by name alone, from "genuinely fixed". Treating
- * that as a pass would be a false pass through the exact credential-stripped
- * path this feature exists to serve. The rule below instead requires the
- * target row to appear in the live results under SOME status (pass, to
- * verify fixed; warn/error, to verify still-broken) — no match at all, or a
- * match whose message is itself a "Skipped — " credential-skip placeholder,
- * means the live probe cannot speak to this row right now.
+ * hands this command when it runs as a card's checkableDone verify step), or
+ * because required local data isn't checked out in this worktree/sandbox
+ * (private review-texts, core data, an outlet registry) — and emit ONE
+ * placeholder row (e.g. 'Cron: health', status 'warn') or a benign-looking
+ * PASS placeholder (e.g. checkSync's "Sync: review-texts vs reviews.json"
+ * at status 'pass' when review-texts isn't checked out) instead of the
+ * per-item rows they'd normally produce (e.g. 'Cron: Update Show Status').
+ * Ship-check adversarial review (task #1224, two independent reviewers)
+ * caught the pass-status case: matching only `status:'warn'` skip rows let a
+ * card targeting one of the pass-status skip forms exit 0 in a sandbox that
+ * never actually re-ran the real check — a false pass through the exact
+ * credential/checkout-stripped path this feature exists to serve. Every
+ * self-skip message in health-check.js (grepped, not guessed) starts with
+ * the literal word "Skipped" regardless of status — isSkipPlaceholder()
+ * below matches on that prefix alone, independent of status, so the rule
+ * generalizes to future self-skips without a status/message registry.
+ * The rule below instead requires the target row to appear in the live
+ * results under SOME non-skip status (pass, to verify fixed; warn/error, to
+ * verify still-broken) — no match at all, or a match that's itself a skip
+ * placeholder, means the live probe cannot speak to this row right now.
  */
 
 'use strict';
@@ -50,29 +59,81 @@ function normalizeName(name) {
   return String(name || '').trim().slice(0, LIMIT);
 }
 
-function isCredentialSkip(result) {
-  return result.status === 'warn' && /^Skipped — /.test(String(result.message || ''));
+// See the module-header note above (ship-check finding, task #1224): every
+// self-skip in health-check.js — credential-gated ("Skipped — no GH_TOKEN"),
+// checkout-gated ("Skipped (review-texts not checked out)"), or CI-gated
+// ("Skipped in CI (...)") — starts with the word "Skipped", regardless of
+// which status it's stamped with. Matching status:'warn' only (the original,
+// narrower version of this function) missed every checkout-gated pass-status
+// form and produced false passes for them.
+function isSkipPlaceholder(result) {
+  return /^Skipped\b/.test(String(result.message || ''));
 }
 
-// Monkey-patches fs.writeFileSync/appendFileSync to no-ops for the duration
-// of `fn`, restoring the originals even if `fn` throws. Patches the shared
-// `fs` module object's methods, not a per-caller reference, so it also
-// blankets any require()d-at-call-time module (health-check.js is required
-// inside `fn`, after the patch is applied) without needing that module to
-// accept an injected fs.
-async function withWritesDisabled(fn) {
-  const originalWriteFileSync = fs.writeFileSync;
-  const originalAppendFileSync = fs.appendFileSync;
-  let writeAttempted = false;
-  fs.writeFileSync = (...args) => { writeAttempted = true; };
-  fs.appendFileSync = (...args) => { writeAttempted = true; };
-  try {
-    const result = await fn();
-    return { result, writeAttempted };
-  } finally {
-    fs.writeFileSync = originalWriteFileSync;
-    fs.appendFileSync = originalAppendFileSync;
+// Monkey-patches fs.writeFileSync/appendFileSync/unlinkSync/renameSync (sync
+// and fs.promises) to no-ops for the duration of `fn`, restoring the
+// originals even if `fn` throws. Patches the shared `fs` module object's
+// methods, not a per-caller reference, so it also blankets any
+// require()d-at-call-time module (health-check.js is required inside `fn`,
+// after the patch is applied) without needing that module to accept an
+// injected fs. Reentrant: a reference count means a call nested inside
+// another (or two concurrent in-process calls, e.g. via Promise.all) share
+// one patched window and only the outermost caller restores the real
+// methods — ship-check adversarial finding (task #1224): the original
+// non-reentrant version let the second of two overlapping calls restore real
+// writers while the first was still mid-flight, or vice versa, silently
+// un-protecting one of them.
+let disableDepth = 0;
+let originals = null;
+let blockedWriteCount = 0;
+function withWritesDisabled(fn) {
+  if (disableDepth === 0) {
+    blockedWriteCount = 0;
+    originals = {
+      writeFileSync: fs.writeFileSync,
+      appendFileSync: fs.appendFileSync,
+      unlinkSync: fs.unlinkSync,
+      renameSync: fs.renameSync,
+      promisesWriteFile: fs.promises.writeFile,
+      promisesAppendFile: fs.promises.appendFile,
+      promisesUnlink: fs.promises.unlink,
+      promisesRename: fs.promises.rename,
+    };
+    const noop = () => { blockedWriteCount++; };
+    const noopAsync = async () => { blockedWriteCount++; };
+    fs.writeFileSync = noop;
+    fs.appendFileSync = noop;
+    fs.unlinkSync = noop;
+    fs.renameSync = noop;
+    fs.promises.writeFile = noopAsync;
+    fs.promises.appendFile = noopAsync;
+    fs.promises.unlink = noopAsync;
+    fs.promises.rename = noopAsync;
   }
+  disableDepth++;
+  return (async () => {
+    try {
+      const result = await fn();
+      return { result, writeAttempted: blockedWriteCount > 0 };
+    } finally {
+      disableDepth--;
+      if (disableDepth === 0) {
+        Object.assign(fs, {
+          writeFileSync: originals.writeFileSync,
+          appendFileSync: originals.appendFileSync,
+          unlinkSync: originals.unlinkSync,
+          renameSync: originals.renameSync,
+        });
+        Object.assign(fs.promises, {
+          writeFile: originals.promisesWriteFile,
+          appendFile: originals.promisesAppendFile,
+          unlink: originals.promisesUnlink,
+          rename: originals.promisesRename,
+        });
+        originals = null;
+      }
+    }
+  })();
 }
 
 /**
@@ -103,7 +164,7 @@ async function probeHealthRowLive(rowName) {
   const match = allResults.find((r) => normalizeName(r.name) === target);
 
   let verdict;
-  if (!match || isCredentialSkip(match)) {
+  if (!match || isSkipPlaceholder(match)) {
     verdict = 'unknown';
   } else if (match.status === 'error' || match.status === 'warn') {
     verdict = 'present';
@@ -119,4 +180,4 @@ async function probeHealthRowLive(rowName) {
   };
 }
 
-module.exports = { probeHealthRowLive, normalizeName, isCredentialSkip, LIMIT };
+module.exports = { probeHealthRowLive, normalizeName, isSkipPlaceholder, LIMIT };
