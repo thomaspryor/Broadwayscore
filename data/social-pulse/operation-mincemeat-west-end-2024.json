@@ -3,49 +3,63 @@
   "showId": "operation-mincemeat-west-end-2024",
   "showTitle": "Operation Mincemeat",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:38:36.621Z",
+  "fetchedAt": "2026-08-10T06:53:05.686Z",
   "tier": "Hidden",
-  "volume": 3,
-  "effectiveVolume": 0.9,
+  "volume": 4,
+  "effectiveVolume": 1.4,
   "relevanceRates": {
     "byPlatform": {
+      "reddit": 1,
       "bluesky": 1
     },
     "overall": 1,
-    "classified": 1
+    "classified": 2
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -40,
-  "baselineMultiple": 0.53,
+  "positivePct": 100,
+  "opinionSample": 2,
+  "weekOverWeekPct": 33,
+  "baselineMultiple": 0.8,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Which shows have you seen this year? lighthearted post! which shows have you seen this year so far (professional or…",
+      "platform": "reddit",
+      "author": "u/quiet_poet_9744",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1vk07k8/which_shows_have_you_seen_this_year/"
+    },
+    {
+      "text": "“Operation Mincemeat” was a brilliant and hilarious romp through WWII history with five actors playing 80+ characters.…",
+      "platform": "bluesky",
+      "author": "@indyauntie.bsky.social",
+      "url": "https://bsky.app/profile/indyauntie.bsky.social/post/3mscmlzr5422b"
+    }
+  ],
   "counters": {
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 1,
     "x": 2,
-    "wikipedia": 6528
+    "wikipedia": 5454
   },
   "wikipediaTitle": "Operation Mincemeat (musical)",
   "baseline": {
-    "mean": 5,
-    "weeksOfHistory": 4
+    "mean": 4.8,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 14,
-    "total": 52,
-    "text": "14/52 West End"
+    "position": 11,
+    "total": 50,
+    "text": "11/50 West End"
   },
-  "compositeScore": 0.45
+  "compositeScore": 0.7
 }
