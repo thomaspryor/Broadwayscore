@@ -1880,7 +1880,10 @@ function checkAutofixEffectiveness() {
     try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
   }
 
-  const r = assessAutofixEffectiveness(rows, { dispatchCount });
+  // No dispatchCount option: launches now come from this ledger's own
+  // `auto-dispatch` rows (see autofix-effectiveness.js header for why the
+  // alert-router coupling was removed).
+  const r = assessAutofixEffectiveness(rows);
   return [{
     name,
     status: r.status,

@@ -21,6 +21,7 @@ const { createReviewFile } = require('./gather-reviews.js');
 const {
   collectRemediations,
   readAttempts,
+  readGiveUps,
   planRemediations,
   executeRemediations,
   dispatchWorkflow,
@@ -299,7 +300,9 @@ async function runSelfDeclaredRemediations(showResults, now) {
     ledgerLines = fs.readFileSync(REMEDIATION_LOG_PATH, 'utf8').split('\n').filter(Boolean);
   } catch (_) { /* first run — no ledger yet */ }
 
-  const planned = planRemediations(remediations, readAttempts(ledgerLines), now);
+  const planned = planRemediations(remediations, readAttempts(ledgerLines), now, {
+    gaveUpKeys: readGiveUps(ledgerLines),
+  });
 
   const stats = await executeRemediations(planned, {
     now,
@@ -309,7 +312,7 @@ async function runSelfDeclaredRemediations(showResults, now) {
     disabled: process.env.OPENING_NIGHT_REMEDIATION_DISABLED === 'true',
   });
 
-  console.log(`[remediation] self-declared: considered=${stats.considered} dispatched=${stats.dispatched} alerted=${stats.alerted} suppressed=${stats.suppressed} waited=${stats.waited} escalated=${stats.escalated} failed=${stats.failed} killed=${stats.killed}`);
+  console.log(`[remediation] self-declared: considered=${stats.considered} dispatched=${stats.dispatched} alerted=${stats.alerted} suppressed=${stats.suppressed} waited=${stats.waited} escalated=${stats.escalated} gaveUp=${stats.gaveUp} retired=${stats.retired} failed=${stats.failed} killed=${stats.killed}`);
 
   return {
     ...stats,
