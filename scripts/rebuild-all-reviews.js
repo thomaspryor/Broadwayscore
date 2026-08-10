@@ -59,6 +59,7 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
@@ -2592,8 +2593,8 @@ showDirs.forEach(showId => {
       // AND: Do NOT auto-clear if the review date is more than PRE_WINDOW_DAYS before the show — that's a prior production.
       // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
       // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
-      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
-      const wsHasManualReason = !!data.wrongShowReason;
+      // AND: Do NOT auto-clear if the ensemble independently named a different show, or the fetched
+      // text predates a later URL correction — see scripts/lib/wrong-production-autoclear.js (task #1146).
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
@@ -2601,7 +2602,11 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
+      if (shouldAutoClearWrongShowUkUrl(data, {
+        isLondonMarketShow: isLondonMarket(showCat),
+        isUkOutletUrl: isUkOutletUrl(data.url),
+        dateMismatchOver90d: wsDateMismatch,
+      })) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
