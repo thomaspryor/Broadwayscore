@@ -20,6 +20,7 @@ archived: true
 - `updates@broadwayscorecard.com` — opening-night broadcasts, brand-mention emails. Used in `scripts/send-opening-night-broadcast.js` and `scripts/lib/brand-mention-email.js`.
 - `alerts@broadwayscorecard.com` — Discord/alert-style notifications (`scripts/lib/discord-notify.js`).
 - These are domain-verified Resend senders only. They do NOT receive — bounces/replies go nowhere unless also added as ImprovMX aliases.
+- **Reply-To (added 2026-08-10):** every audience-facing send now sets `reply_to: hi@broadwayscorecard.com` via `buildReplyToAddress()` in `scripts/lib/email-templates.js` (weekly round-up broadcast + test send, opening-night broadcast + preview, follow notifications, feedback thank-yous). Before this, replies to the weekly went to `updates@` and bounced — which is why the owner had never seen a single reader reply. Guard test: `scripts/lib/email-templates-headline.test.mjs`.
 
 **Why:** `hi@` was set up via ImprovMX as the cheap path to a working inbox without paying for Google Workspace/Fastmail. Resend handles transactional/broadcast outbound separately because it needs a verified domain for deliverability, not an inbox.
 

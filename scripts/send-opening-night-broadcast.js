@@ -24,7 +24,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { routeAlert } = require('./lib/owner-alert-router');
 const {
-  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl, siteNameForMarket,
+  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl, siteNameForMarket, buildReplyToAddress,
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -89,6 +89,10 @@ const EXPRESS_COMPLETED_PATH = path.join(DATA_DIR, 'audit', 'opening-night-expre
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
+// `updates@` sends but does not receive (Resend-verified sender; the domain's
+// MX is ImprovMX and has no `updates@` alias). Every subscriber-facing send
+// carries a Reply-To that reaches the owner's inbox — see buildReplyToAddress.
+const REPLY_TO = buildReplyToAddress();
 const SITE_NAME = siteNameForMarket(MARKET);
 // WE has ~15 reliable outlets vs Broadway's 40+; median WE show gets 10 scored reviews
 const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
@@ -687,6 +691,7 @@ async function main() {
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
+        reply_to: REPLY_TO,
         to: [SEND_TO],
         subject: previewSubject,
         html,
@@ -755,6 +760,7 @@ async function main() {
         // SITE_NAME is market-aware ('West End Scorecard' for WE) — never hardcode
         // 'Broadway Scorecard' here or WE subscribers get a Broadway-branded sender.
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
+        reply_to: REPLY_TO,
         subject,
         html,
         // Resend caps the broadcast `name` (internal label) at 70 chars. Listing

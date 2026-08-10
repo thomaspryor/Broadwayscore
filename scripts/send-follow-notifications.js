@@ -30,7 +30,7 @@ Usage:
 `;
 const {
   postJSON, sleep, escapeHtml, getScoreColor, getChangeAnchor,
-  buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml, siteNameForMarket,
+  buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml, siteNameForMarket, buildReplyToAddress,
 } = require('./lib/email-templates');
 
 const DIGEST_PATH = path.join(__dirname, '..', 'data', 'audit', 'show-changes-digest.json');
@@ -216,6 +216,8 @@ async function main() {
     try {
       await postJSON('https://api.resend.com/emails', {
         from: `${siteName} <${FROM_EMAIL}>`,
+        // `updates@` is send-only — without this, a follower's reply bounces.
+        reply_to: buildReplyToAddress(),
         to: [email],
         subject,
         html,
