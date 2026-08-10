@@ -336,3 +336,133 @@ test('CLI: missing args fail OPEN (skip, exit 0) rather than blocking an otherwi
   assert.equal(code, 0);
   assert.match(out, /SKIP/);
 });
+
+// ── 'superseded' (Opening Night Poller incident, Aug 7-9 2026) ──────────────
+
+test('classifyFileSurvivalDeep: ambiguous + added lines missing + pushedBlob === finalBlob -> superseded (own resolution integrated a sibling version)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C', pushedBlob: 'C',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nSIBLING-VERSION\n',
+  });
+  assert.equal(status, 'superseded');
+});
+
+test('classifyFileSurvivalDeep: no pushedBlob -> unchanged pre-existing behavior (reverted)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'C',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nSIBLING-VERSION\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+test('classifyFileSurvivalDeep: null pushedBlob and null finalBlob must NOT satisfy the superseded comparison (deleted-file guard)', () => {
+  // finalContent is non-null here (unlike a real deleted file) purely to force
+  // the missing-added-lines path — addedLinesSurvived fails open on null.
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: null, pushedBlob: null,
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+test('classifyFileSurvivalDeep: pushedBlob differs from finalBlob (post-push clobber) still fails -> reverted (task #833 detection preserved)', () => {
+  const status = classifyFileSurvivalDeep({
+    baseBlob: 'A', localBlob: 'B', finalBlob: 'D', pushedBlob: 'B',
+    addedLines: ['OUR-LINE'],
+    baseContent: 'line1\n',
+    finalContent: 'line1\nCLOBBERED\n',
+  });
+  assert.equal(status, 'reverted');
+});
+
+// CLI end-state repro of the poller incident: our rebase integrated the
+// sibling pipeline's already-pushed version of the same review file, so the
+// commit we pushed (which IS the check-ref tip) lacks our exact added lines.
+// With --pushed-sha this must pass with a SUPERSEDED warning; without it, the
+// pre-fix behavior (exit 1) is preserved.
+function buildSupersedeRepro() {
+  const dir = mkdtempSync(join(tmpdir(), 'push-content-survival-supersede-'));
+  gitc(dir, 'init', '-q');
+  gitc(dir, 'config', 'user.email', 't@t');
+  gitc(dir, 'config', 'user.name', 't');
+
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'base');
+  gitc(dir, 'branch', '-M', 'main');
+  const baseSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // our run's commit: the poller's version of the review
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"POLLER-COLLECTED-TEXT"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'poller: collected review');
+  const beforeSha = gitc(dir, 'rev-parse', 'HEAD').trim();
+
+  // what our rebase actually produced and pushed: the sibling pipeline's
+  // version of the same review won during integration — our exact line is gone
+  gitc(dir, 'branch', 'pushed-tip', baseSha);
+  gitc(dir, 'checkout', '-q', 'pushed-tip');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"SIBLING-COLLECTED-TEXT","scored":true}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'rebased: sibling version integrated');
+  const pushedTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  return { dir, baseSha, beforeSha, pushedTip };
+}
+
+test('CLI: poller incident shape WITH --pushed-sha -> SUPERSEDED warning, exit 0', () => {
+  const { dir, baseSha, beforeSha, pushedTip } = buildSupersedeRepro();
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${pushedTip}`,
+    `--pushed-sha=${pushedTip}`,
+  ]);
+  assert.equal(code, 0, `expected superseded to pass. Output:\n${out}`);
+  assert.match(out, /SUPERSEDED/);
+  assert.match(out, /review\.json/);
+});
+
+test('CLI: poller incident shape WITHOUT --pushed-sha -> pre-existing behavior preserved (exit 1)', () => {
+  const { dir, baseSha, beforeSha, pushedTip } = buildSupersedeRepro();
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${pushedTip}`,
+  ]);
+  assert.equal(code, 1, `expected old behavior without the flag. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+});
+
+test('CLI: post-push clobber (check-ref moved past what we pushed, our lines gone) still fails WITH --pushed-sha', () => {
+  const { dir, baseSha, beforeSha } = buildSupersedeRepro();
+  // pushed commit carries OUR content (a healthy resolution)...
+  gitc(dir, 'branch', 'healthy-pushed', baseSha);
+  gitc(dir, 'checkout', '-q', 'healthy-pushed');
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"POLLER-COLLECTED-TEXT"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'pushed: our content intact');
+  const healthyPushed = gitc(dir, 'rev-parse', 'HEAD').trim();
+  // ...but the ref tip afterwards holds a clobbered third version
+  execFileSync('node', ['-e', `require('fs').writeFileSync(${JSON.stringify(join(dir, 'review.json'))}, '{"outlet":"thr","fullText":"STALE-CLOBBER"}\\n')`]);
+  gitc(dir, 'add', '-A');
+  gitc(dir, 'commit', '-q', '-m', 'concurrent: stale write clobbered us post-push');
+  const clobberTip = gitc(dir, 'rev-parse', 'HEAD').trim();
+  gitc(dir, 'checkout', '-q', 'main');
+
+  const { out, code } = runCli(dir, [
+    `--before-sha=${beforeSha}`,
+    `--base-sha=${baseSha}`,
+    `--check-ref=${clobberTip}`,
+    `--pushed-sha=${healthyPushed}`,
+  ]);
+  assert.equal(code, 1, `expected post-push clobber to still fail. Output:\n${out}`);
+  assert.match(out, /REVERTED/);
+});
