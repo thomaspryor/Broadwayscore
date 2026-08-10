@@ -143,7 +143,7 @@ function buildBudgetPreamble(timeoutMs) {
 }
 
 async function runJob(opts) {
-  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, resumeSessionId } = opts;
+  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, graceMs, resumeSessionId } = opts;
   if (process.env.BSC_RUNNER_DISABLED === '1') {
     return { ok: false, jobId: null, stage: 'runner-disabled', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
@@ -184,7 +184,7 @@ async function runJob(opts) {
       // Budget preamble on every job, resume included: the resumed session
       // has a fresh clock and needs the same commit-early contract.
       prompt: buildBudgetPreamble(timeoutMs) + prompt,
-      cwd, model, resumeSessionId, timeoutMs, logFile,
+      cwd, model, resumeSessionId, timeoutMs, graceMs, logFile,
       onSpawn: (pid) => updateLease(taskId, { pid, cwd }),
       // Persisted the moment the stream's first event lands (~1s in), so a
       // later kill — timeout, crash, power loss — leaves a resumable session

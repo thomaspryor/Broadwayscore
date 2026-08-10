@@ -406,18 +406,24 @@ function runClaudeCli(opts) {
           fs.closeSync(logFd);
         } catch { /* logging must never fail the job */ }
       }
-      const est = resultEvent && resultEvent.costUSD != null ? null : estimateCostUSD(usageTotal, model);
+      // Prefer the CLI's own total when a result event made it out before the
+      // kill (a session can finish its turn and still get wall-clock-killed
+      // during cleanup — observed live on the #810 fault-injection drill,
+      // where the estimate path discarded a known-real total_cost_usd).
+      const realCost = resultEvent && resultEvent.costUSD != null ? resultEvent.costUSD : null;
+      const est = realCost != null ? null : estimateCostUSD(usageTotal, model);
+      const cost = { costUSD: realCost != null ? realCost : est, costEstimated: realCost == null && est != null };
       if (timedOut) {
         return resolve(done({
           stage: STAGES.TIMEOUT, pid, exitCode: code, sessionId,
-          usage: usageTotal, costUSD: est, costEstimated: est != null,
+          usage: (resultEvent && resultEvent.usage) || usageTotal, ...cost,
           errorDetail: `killed at ${timeoutMs}ms (SIGTERM + ${graceMs}ms grace)`,
         }));
       }
       if (code !== 0) {
         return resolve(done({
           stage: STAGES.ERROR, pid, exitCode: code, sessionId,
-          usage: usageTotal, costUSD: est, costEstimated: est != null,
+          usage: usageTotal, ...cost,
           errorDetail: (stderr || tail).slice(-500) || `exit ${code}`,
         }));
       }
