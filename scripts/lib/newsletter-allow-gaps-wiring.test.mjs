@@ -62,6 +62,14 @@ test('allowGaps reaches NEWSLETTER_ALLOW_GAPS at JOB level, not step level', () 
     'NEWSLETTER_ALLOW_GAPS must be in the job-level env block (before steps:), or the pre-send regen will not inherit it');
 });
 
+test('the unattended cron cannot inherit a stale repo-variable waiver', () => {
+  const wf = read(REFRESH_WF);
+  const line = wf.split('\n').find((l) => l.includes('NEWSLETTER_ALLOW_GAPS:'));
+  assert.ok(line, 'NEWSLETTER_ALLOW_GAPS env line not found');
+  assert.doesNotMatch(line, /vars\.NEWSLETTER_ALLOW_GAPS/,
+    "this workflow's Sunday run is UNATTENDED — reading vars.NEWSLETTER_ALLOW_GAPS would let an escape hatch the owner set for a one-off manual send silently waive coverage gaps on an automated run. Only the per-run dispatch input may waive gaps here.");
+});
+
 test('the consumer still gates on the exact string 1 (the reason boolean fails)', () => {
   const src = read(PRE_SEND);
   assert.match(src, /NEWSLETTER_ALLOW_GAPS\s*===\s*'1'/,
