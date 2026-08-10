@@ -941,6 +941,12 @@ on:
       # someone re-forks them. Colocated test runs in the lib-test glob;
       # path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/review-guards.explain.test.mjs'
+      # Chokepoint guard parity (task #1150, 2026-08-09): asserts every write-decision
+      # guard gather-reviews.js's own chokepoint imports from review-guards.js is either
+      # hoisted into review-file-writer.js's shared chokepoint or has a documented
+      # exemption. Colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (allow-list gate).
+      - 'scripts/lib/chokepoint-guard-parity.test.mjs'
       # Coverage-gate kill switch + blast-radius guard shared by every verdict
       # consumer. A silent regression here disarms the guard for all of them.
       - 'scripts/lib/coverage-gate.js'
