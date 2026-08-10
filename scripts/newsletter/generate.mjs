@@ -27,6 +27,7 @@ const cjsRequire = createRequire(import.meta.url);
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
@@ -2653,6 +2654,11 @@ const slug = `A-${argDate}`;
 // click-tracking preserves the query string, so these survive the redirect.
 const { applyUtm } = cjsRequire('../lib/email-utm.js');
 fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `${BRAND.utm}-${weekEndStr}` }));
+// Reclassify credential-backed skips (e.g. most-read-pages when GA4 creds
+// are absent) from 'no-data' to 'no-access: <var> missing' BEFORE the report
+// is printed/written — see scripts/newsletter/section-credential-guard.mjs.
+sections.reclassify(classifyEntry);
+
 // Sidecar JSON with subject + section-by-section run report so the send
 // script can pick up the subject without parsing HTML, and so we can detect
 // silently-skipped sections in regression tests / CI.

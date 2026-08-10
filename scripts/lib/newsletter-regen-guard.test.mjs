@@ -243,10 +243,23 @@ test('does NOT flag spawns of other scripts', () => {
   assert.deepEqual(findUnpinnedGenerateSpawns(src, 'fixture.mjs'), []);
 });
 
-test('real call site: pre-send-check.mjs pins the edition on its coverage-swap regen', () => {
+// pre-send-check.mjs no longer spawns generate.mjs at all: its coverage-swap
+// regeneration block was deleted 2026-08-09 when the owner ruled that the gate
+// must never drop an opening (tracker #3). This test previously read as "the
+// spawn is correctly pinned" while actually finding zero spawns — a vacuous
+// pass (ship-check finding). Assert the REAL current invariant instead: the
+// file must contain no generator spawn whatsoever, so re-introducing one is a
+// deliberate, visible act rather than something this test quietly blesses.
+test('real call site: pre-send-check.mjs spawns no generator at all (swap block deleted)', () => {
   const p = path.join(repoRoot, 'scripts/newsletter/pre-send-check.mjs');
-  const v = findUnpinnedGenerateSpawns(fs.readFileSync(p, 'utf8'), p);
-  assert.deepEqual(v.map((x) => x.reason), []);
+  const src = fs.readFileSync(p, 'utf8');
+  assert.deepEqual(findUnpinnedGenerateSpawns(src, p).map((x) => x.reason), []);
+  assert.ok(
+    !/execFileSync|spawnSync|child_process/.test(src),
+    'pre-send-check.mjs must not spawn a subprocess — the only reason it ever did was the '
+      + 'coverage swap that deleted three real openings from the 2026-08-03 issue. If you are '
+      + 'adding a spawn back, make sure it cannot remove an opening (see openingsPreserved).',
+  );
 });
 
 test('real call site: regression-test.mjs pins the edition on its re-run', () => {

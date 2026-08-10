@@ -13,8 +13,13 @@ import { createRequire } from 'node:module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
-const { classifyIngestSkip, describeConflict, CONFLICT_REASONS, BENIGN_REASONS } =
-  require_('./ingest-skip-classify.js');
+const {
+  classifyIngestSkip,
+  describeSkip,
+  CONFLICT_REASONS,
+  EXPECTED_REJECTION_REASONS,
+  BENIGN_REASONS,
+} = require_('./ingest-skip-classify.js');
 
 test('cross-show URL ownership is a conflict, not a benign no-op', () => {
   // Real emitted shape: `cross-show-url-owned:<showId>` — no space, so the
@@ -70,36 +75,111 @@ test('empty/undefined stdout does not throw', () => {
   assert.equal(classifyIngestSkip(null).kind, 'unclassified');
 });
 
-test('conflict and benign reason lists are disjoint', () => {
-  const overlap = CONFLICT_REASONS.filter((r) => BENIGN_REASONS.includes(r));
-  assert.deepEqual(overlap, [], 'a reason cannot be both benign and a conflict');
+// ── Expected rejections: visible, never residual (ship-check finding C) ──────
+// A cross-market refusal is CORRECT and PERMANENT. Classifying it as a conflict
+// made every legitimately-refused review inflate the residual tally on every
+// hourly run — the chronic alarm the 2026-08-06 ship-check deliberately removed.
+test('cross-market is an expected rejection, not a conflict', () => {
+  const got = classifyIngestSkip('⚠️  Skipped: cross-market');
+  assert.equal(got.kind, 'expected');
+  assert.equal(got.reason, 'cross-market');
 });
+
+// The two literals the first version of the contract grep could not see.
+test('onMerge-aborted (capital M) classifies — the grep used to be lowercase-only', () => {
+  const got = classifyIngestSkip('⚠️  Skipped: onMerge-aborted');
+  assert.equal(got.kind, 'expected', 'must not fall through to unclassified');
+  assert.equal(got.reason, 'onmerge-aborted', 'reason is lower-cased for lookup');
+});
+
+test('empty-unknown with its real prose tail classifies — the grep used to reject colons', () => {
+  const got = classifyIngestSkip('⚠️  Skipped: empty-unknown: no URL, no text, unknown critic');
+  assert.equal(got.kind, 'expected');
+  assert.equal(got.reason, 'empty-unknown');
+  assert.equal(got.detail, null, 'prose after ": " is not a machine-readable detail');
+});
+
+test('the three reason lists are pairwise disjoint', () => {
+  const lists = { CONFLICT_REASONS, EXPECTED_REJECTION_REASONS, BENIGN_REASONS };
+  for (const [aName, a] of Object.entries(lists)) {
+    for (const [bName, b] of Object.entries(lists)) {
+      if (aName >= bName) continue;
+      assert.deepEqual(
+        a.filter((r) => b.includes(r)), [],
+        `a reason cannot be in both ${aName} and ${bName}`,
+      );
+    }
+  }
+});
+
+test('every classified reason is lower-case — classifyIngestSkip lower-cases before lookup', () => {
+  for (const r of [...CONFLICT_REASONS, ...EXPECTED_REJECTION_REASONS, ...BENIGN_REASONS]) {
+    assert.equal(r, r.toLowerCase(), `"${r}" can never match: lookups are lower-cased`);
+  }
+});
+
+// Scrape every skip reason review-file-writer.js can emit. Exported so the
+// count assertion and the classification assertion below read the SAME set,
+// and so a future caller can reuse it.
+//
+// The charset is [A-Za-z0-9-] (not [a-z0-9-]) and the literal may carry a
+// `: prose` tail: the first version of this grep was lowercase-only and
+// colon-intolerant, so it silently could not see `onMerge-aborted` (:752) or
+// `empty-unknown: no URL, no text, unknown critic` (:532) — two real reasons
+// that were therefore never contract-checked at all while this test reported
+// full coverage (ship-check 2026-08-09, finding A). If you narrow this regex,
+// you re-open that hole.
+function emittedSkipReasons() {
+  const writer = fs.readFileSync(path.join(__dirname, 'review-file-writer.js'), 'utf8');
+  const emitted = new Set();
+  // Quoted literals, with or without a `: prose` tail:
+  //   reason: 'no-changes'
+  //   reason: 'onMerge-aborted'
+  //   reason: 'empty-unknown: no URL, no text, unknown critic'
+  for (const m of writer.matchAll(/reason:\s*'([A-Za-z0-9-]+)(?::[^']*)?'/g)) emitted.add(m[1].toLowerCase());
+  // Template forms: `reason: \`domain-mismatch: ${...}\`` / `cross-show-url-owned:${...}`
+  for (const m of writer.matchAll(/reason:\s*`([A-Za-z0-9-]+)[:`]/g)) emitted.add(m[1].toLowerCase());
+  return emitted;
+}
 
 // The contract test. review-file-writer.js is the ONLY producer of these
 // strings; if someone adds a skip reason there and does not classify it here,
 // it would silently default to quiet — the exact bug this module removes.
 // Greps the real file so the two cannot drift apart unnoticed.
 test('every skip reason review-file-writer.js emits is classified', () => {
-  const writer = fs.readFileSync(path.join(__dirname, 'review-file-writer.js'), 'utf8');
-  const emitted = new Set();
-  // Plain literals: `reason: 'no-changes'`
-  for (const m of writer.matchAll(/reason:\s*'([a-z0-9-]+)'/g)) emitted.add(m[1]);
-  // Template forms: `reason: \`domain-mismatch: ${...}\`` / `cross-show-url-owned:${...}`
-  for (const m of writer.matchAll(/reason:\s*`([a-z0-9-]+)[:`]/g)) emitted.add(m[1]);
-  assert.ok(emitted.size >= 5, `expected to find skip reasons in review-file-writer.js, found ${emitted.size}`);
-  const known = new Set([...CONFLICT_REASONS, ...BENIGN_REASONS]);
+  const emitted = emittedSkipReasons();
+  assert.ok(emitted.size >= 8, `expected to find skip reasons in review-file-writer.js, found ${emitted.size}`);
+  const known = new Set([...CONFLICT_REASONS, ...EXPECTED_REJECTION_REASONS, ...BENIGN_REASONS]);
   const unclassified = [...emitted].filter((r) => !known.has(r));
   assert.deepEqual(
     unclassified,
     [],
     `review-file-writer.js emits skip reason(s) that ingest-skip-classify.js does not classify: ${unclassified.join(', ')}. `
-      + 'Add each to CONFLICT_REASONS (two records disagree; a human must resolve) or BENIGN_REASONS '
-      + '(desired end state already holds). Leaving one out makes it default to quiet.',
+      + 'Add each to CONFLICT_REASONS (two records disagree; a human must resolve), EXPECTED_REJECTION_REASONS '
+      + '(refusal is correct and permanent), or BENIGN_REASONS (desired end state already holds). '
+      + 'Leaving one out makes it default to quiet.',
   );
 });
 
-test('describeConflict names the owning show AND the fix, not just the symptom', () => {
-  const msg = describeConflict(
+// Anti-vacuity guard for the grep itself. The contract test above can only
+// protect reasons its regex can SEE, and a silently-narrowed regex looks
+// identical to a passing test. Name the two literals whose shapes broke it
+// before, so re-narrowing the charset or the colon tolerance fails HERE with a
+// message that says why, instead of quietly shrinking coverage.
+test('the producer grep can see the awkward literal shapes (capital letter, colon tail)', () => {
+  const emitted = emittedSkipReasons();
+  for (const reason of ['onmerge-aborted', 'empty-unknown']) {
+    assert.ok(
+      emitted.has(reason),
+      `the review-file-writer.js grep no longer sees "${reason}". Its literal has a capital letter and/or a `
+        + '": prose" tail; a lowercase-only or colon-intolerant regex misses it and the contract test then '
+        + 'reports coverage it does not have (the 2026-08-09 finding-A hole).',
+    );
+  }
+});
+
+test('describeSkip names the owning show AND the fix, not just the symptom', () => {
+  const msg = describeSkip(
     'im-every-woman-off-west-end-2026',
     'https://www.theguardian.com/stage/2026/aug/05/im-every-woman',
     { reason: 'cross-show-url-owned', detail: 'the-car-man-west-end-2026' },
@@ -109,9 +189,9 @@ test('describeConflict names the owning show AND the fix, not just the symptom',
   assert.doesNotMatch(msg, /no-op/i, 'a conflict must never be described as a no-op');
 });
 
-test('every conflict reason has a bespoke describeConflict message', () => {
-  for (const reason of CONFLICT_REASONS) {
-    const msg = describeConflict('some-show-2026', 'https://example.com/r', { reason, detail: null });
+test('every conflict AND expected-rejection reason has a bespoke describeSkip message', () => {
+  for (const reason of [...CONFLICT_REASONS, ...EXPECTED_REJECTION_REASONS]) {
+    const msg = describeSkip('some-show-2026', 'https://example.com/r', { reason, detail: null });
     assert.doesNotMatch(
       msg,
       /^some-show-2026: https:\/\/example\.com\/r skipped as /,

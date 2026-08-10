@@ -253,6 +253,11 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
+  // Defense-in-depth (#1156 ship-check): structurally, ensemble rejections
+  // never populate wrongProductionNote/Reason with a DATE_GUARD_PREFIXES/
+  // AUTO_REASON value, so this can't currently overlap with an ensemble
+  // verdict — but check explicitly rather than relying on that coincidence.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
 
@@ -282,6 +287,8 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
   const hasManualReason = !!reason && !reasonIsAuto;
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
+  // Defense-in-depth (#1156 ship-check) — see shouldAutoClearWrongProductionPriorRun.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
 
@@ -289,6 +296,15 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
  * Decide whether a wrongProduction/wrongShow-rejected file carries a
  * strong-evidence ensemble verdict that no domain/market heuristic should be
  * allowed to override.
+ *
+ * THE single definition of "the ensemble agreed", consulted by all six
+ * auto-clear predicates in this file plus audit-wrongshow-autoclear-conflicts.js
+ * and autoclear-vs-ensemble-scan.js. Two parallel #1146/#1156 sessions each
+ * landed a version of this predicate (hasEnsembleConsensus here,
+ * hasEnsembleRejection on the coverage-defects branch) with identical
+ * behaviour; they were collapsed into this one at merge (2026-08-09). Do not
+ * reintroduce a second copy — a divergence between them is exactly the kind of
+ * quiet inconsistency that lets an auto-clear overrule the models again.
  *
  * Background (Notion 3b7637c5-416f-810a, task #1146; generalized to
  * wrongProduction under #1156): the rebuild's UK/major-outlet and

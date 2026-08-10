@@ -101,7 +101,23 @@ function isExcludedCategory(task) {
 }
 
 // Notion-card shape ({name, category, tags[]}) — used by the nightly triage.
-// Returns { eligible, reason } — reason is always set when ineligible.
+// Returns { eligible, reason, kind } — reason/kind are always set when
+// ineligible, both null when eligible.
+//
+// kind classifies WHY, for callers that need to act differently on the reason
+// rather than just refuse to self-pick (task #1186): 'owner-judgment-marker'
+// (4) and 'human-territory' (1, 2, and the 'owner-action' deny-tag — see its
+// own docstring below, "cards that need the OWNER personally") both mean a
+// HUMAN must do or judge the work. 'deny-tag' (the other DENY_TAGS entries —
+// email/commercial/scoring/ios-app) means only that the UNATTENDED LOOP
+// shouldn't self-pick this domain for blast-radius reasons; the work itself
+// is still ordinary and machine-verifiable. enrich-card-acceptance.js was
+// stamping the same "VERIFY: owner-judgment" marker for both kinds, and after
+// #1154 made that marker a hard dispatch exclusion everywhere (not just the
+// loop's self-pick), the conflation started blocking P1 auto-dispatch and
+// manual `bsc-next --id` on technical deny-tagged cards that were never
+// actually owner-judgment cards. Additive only — eligible/reason are
+// unchanged, so existing callers that ignore `kind` see no behavior change.
 function isCardEligible(card) {
   // Same hard exclusion as isExcludedCategory, on the full card's notes rather
   // than the truncated task mirror (task #1154). Live for the callers that
@@ -110,27 +126,27 @@ function isCardEligible(card) {
   // no-op there by design: that caller already returns 'already armed' on the
   // marker before it ever reaches this predicate.
   if (hasOwnerJudgmentMarker(card.notes)) {
-    return { eligible: false, reason: 'card declares VERIFY: owner-judgment — only the owner can judge the outcome' };
+    return { eligible: false, reason: 'card declares VERIFY: owner-judgment — only the owner can judge the outcome', kind: 'owner-judgment-marker' };
   }
   const category = (card.category || '').trim().toLowerCase();
   if (EXCLUDED_CATEGORIES.has(category)) {
-    return { eligible: false, reason: `category "${card.category}" is human territory` };
+    return { eligible: false, reason: `category "${card.category}" is human territory`, kind: 'human-territory' };
   }
   // Same fail-closed rule as isExcludedCategory: an empty/'no-category' card
   // has no category to vouch for a long verb-led title, so the verb filter
   // applies without the ≤5-word bound ("Ask Dennis T to mentor (Tony voter +
   // coproducer path)" was card-eligible through the bounded check).
   if ((category === '' || category === 'no-category') && HUMAN_ACTION_RE.test((card.name || '').trim())) {
-    return { eligible: false, reason: `title is a human action and card has no category ("${(card.name || '').trim()}")` };
+    return { eligible: false, reason: `title is a human action and card has no category ("${(card.name || '').trim()}")`, kind: 'human-territory' };
   }
   if (isHumanActionSubject(card.name)) {
-    return { eligible: false, reason: `title is a human action ("${(card.name || '').trim()}")` };
+    return { eligible: false, reason: `title is a human action ("${(card.name || '').trim()}")`, kind: 'human-territory' };
   }
   const denied = (card.tags || []).find(t => DENY_TAGS.has(String(t).trim().toLowerCase()));
   if (denied) {
-    return { eligible: false, reason: `deny-tag "${denied}"` };
+    return { eligible: false, reason: `deny-tag "${denied}"`, kind: String(denied).trim().toLowerCase() === 'owner-action' ? 'human-territory' : 'deny-tag' };
   }
-  return { eligible: true, reason: null };
+  return { eligible: true, reason: null, kind: null };
 }
 
 // ── Path level (Tier 1) ─────────────────────────────────────────────────────

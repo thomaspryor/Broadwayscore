@@ -25,8 +25,13 @@
 # Usage:
 #   bash scripts/newsletter/refresh-drafts.sh [weekStart YYYY-MM-DD]
 #     weekStart defaults to the most recent Monday in America/New_York.
-#   Requires .env with RESEND_API_KEY (+ GA4_PROPERTY_ID/GA_KEY_FILE for the
-#   Trending section — without them that section silently no-ops).
+#   Requires .env with RESEND_API_KEY (+ GA4_PROPERTY_ID and either
+#   GA_KEY_FILE or GA_SERVICE_ACCOUNT_KEY for the Trending section). Those
+#   GA4 vars are GitHub secrets, not in local .env — without them pre-send-
+#   check.mjs's HARD no-access gate (card #1158) REFUSES to PATCH the Resend
+#   draft rather than silently shipping it with Trending deleted. Run
+#   newsletter-draft-refresh.yml (which holds the secrets) instead, or set
+#   NEWSLETTER_ALLOW_NO_ACCESS=1 to send without Trending on purpose.
 
 set -euo pipefail
 cd "$(dirname "$0")/../.."
