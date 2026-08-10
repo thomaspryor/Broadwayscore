@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-10T16:08:41.445Z",
+  "timestamp": "2026-08-10T16:54:33.023Z",
   "stats": {
     "totalReviews": 42017,
     "alreadyFlagged": 18306,
     "dateGuardCatches": 134,
     "directorMismatch": 961,
     "tvFilmSignals": 1177,
-    "londonSignals": 832,
+    "londonSignals": 833,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3523
@@ -29117,7 +29117,7 @@
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-      "file": "boston-globe--unknown.json",
+      "file": "boston-globe--terry-byrne.json",
       "score": 68,
       "publishDate": "2025-05-30",
       "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
@@ -44311,6 +44311,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "theatreandtonic--unknown.json",
+      "publishDate": "2026-08-09",
+      "url": "https://theatreandtonic.co.uk/blog/the-comedy-about-spies-adelphi-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
