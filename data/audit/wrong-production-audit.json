@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-10T09:22:43.994Z",
+  "timestamp": "2026-08-10T11:13:38.772Z",
   "stats": {
-    "totalReviews": 41971,
-    "alreadyFlagged": 18305,
+    "totalReviews": 41974,
+    "alreadyFlagged": 18308,
     "dateGuardCatches": 134,
-    "directorMismatch": 959,
+    "directorMismatch": 960,
     "tvFilmSignals": 1160,
-    "londonSignals": 828,
+    "londonSignals": 829,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3520
+    "noPublishDate": 3517
   },
   "findings": [
     {
@@ -4587,6 +4587,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "score": 61,
+      "publishDate": "2026-08-09",
+      "url": "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
