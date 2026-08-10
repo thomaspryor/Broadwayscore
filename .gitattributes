@@ -114,6 +114,44 @@ data/llm-scoring-runs.json merge-coverage=exempt
 data/llm-scoring-garbage-skips.json merge-coverage=exempt
 data/commercial-rss-state.json merge-coverage=exempt
 
+# Churn-coverage sweep (task #1213, corpus-drift monitor's churn-merge-coverage
+# audit, 2026-08-10): 16 files flagged by audit-churn-merge-coverage.js as
+# high-churn/no-driver. Classified per-file by reading each writer's actual
+# read/write shape (scripts/audit-churn-merge-coverage.js's own two rules):
+#   - a writer that ALWAYS computes a fresh full snapshot (no read of its own
+#     output first) is safe under `ours` — the next run regenerates it anyway.
+#   - a writer that reads its own output, mutates a key/counter/array, and
+#     writes it back is accumulate-state — `ours` would silently drop the
+#     other side's accrued rows (open alert conditions, processed-feedback
+#     ids, circuit-breaker trip state, run history). Those get
+#     `merge-coverage=exempt`, same as the existing accumulate-state block
+#     below, not a real merge driver.
+data/audit/cross-show-fingerprint-collisions.json merge=ours
+data/audit/autoclear-shadow-report.json merge=ours
+data/audit/deployed-coverage-diff.json merge=ours
+data/audit/t1-coverage-signals.json merge=ours
+data/audit/t1-coverage-stats.json merge=ours
+data/audit/t1-silent-gaps.json merge=ours
+data/audit/url-collision-report.json merge=ours
+data/audit/pipeline-health/collect-review-texts.last-success merge=ours
+
+# Append-only opening-night timeline entries (scripts/generate-status-page.js
+# appendFileSync), same shape as the other JSONL logs above.
+data/opening-night-timeline/*.jsonl merge=union
+
+# Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
+# `ours` would silently discard the other side's accrued state (open alert
+# conditions, processed-feedback ids, per-outlet/per-zone circuit-breaker trip
+# state, opening-night run history, WE gate proving counters). Exempt, not a
+# real driver — same rule as the block above.
+data/audit/alert-ledger.json merge-coverage=exempt
+data/audit/processed-feedback.json merge-coverage=exempt
+data/audit/bd-circuit-breaker.json merge-coverage=exempt
+data/audit/t1-outlet-breaker.json merge-coverage=exempt
+data/audit/opening-night-history.json merge-coverage=exempt
+data/audit/we-gate-proving.json merge-coverage=exempt
+data/audit/alert-digest-queue.json merge-coverage=exempt
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.

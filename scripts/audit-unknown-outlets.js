@@ -30,6 +30,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isRejectedNonReview } = require('./lib/review-guards');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -49,8 +50,11 @@ function buildValidOutlets(registry) {
 }
 
 // Pure: count resolvable unknowns across the review-texts corpus.
-// Skips excluded files (duplicateOf/wrongProduction/wrongShow/wrongUrl) and
-// inherently-unresolvable ids ("unknown", or >5 hyphens = junk/sentence id).
+// Skips excluded files (duplicateOf/wrongProduction/wrongShow/wrongUrl),
+// rejected non-reviews (isRejectedNonReview — ticket-vendor/venue/aggregator
+// pages and other garbage the pipeline already excludes from scoring, so
+// their outletId never needs a registry entry), and inherently-unresolvable
+// ids ("unknown", or >5 hyphens = junk/sentence id).
 function countResolvableUnknowns(reviewTextsDir, validOutlets) {
   let resolvableUnknowns = 0;
   let totalFiles = 0;
@@ -72,6 +76,7 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
           fs.readFileSync(path.join(reviewTextsDir, showDir, file), 'utf8')
         );
         if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl) continue;
+        if (isRejectedNonReview(data)) continue;
 
         const outletId = (data.outletId || '').toLowerCase();
         const hyphenCount = (outletId.match(/-/g) || []).length;
