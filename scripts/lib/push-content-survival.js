@@ -309,7 +309,18 @@ if (require.main === module) {
   }
   for (const c of superseded) {
     console.log(`[content-survival] SUPERSEDED: ${c.file} — our own conflict resolution integrated a concurrent fresh version of this file instead of ours (sibling-pipeline collision, e.g. two collectors pushing the same review). What we pushed IS what's on ${checkRef}; nothing clobbered us post-push. Not failing — but our version of this file was not the one that won.`);
-    console.log(`::warning::content-survival: ${c.file} superseded by a concurrent version integrated during conflict resolution (our change did not win; no data clobbered post-push)`);
+    // Inventory exactly which of our added lines did NOT land (adversarial
+    // review finding: without this, content our commit uniquely carried —
+    // beyond what the winning version also had — would vanish with only a
+    // generic warning). Capped so a large collected fullText doesn't flood
+    // the job log; the file path + count is enough to re-collect.
+    const e = entries.find((en) => en.file === c.file);
+    const lost = (e && e.addedLines) || [];
+    for (const line of lost.slice(0, 5)) {
+      console.log(`[content-survival]   lost line: ${line.length > 200 ? line.slice(0, 200) + '…' : line}`);
+    }
+    if (lost.length > 5) console.log(`[content-survival]   … and ${lost.length - 5} more added line(s) not in the winning version`);
+    console.log(`::warning::content-survival: ${c.file} superseded — ${lost.length} of our added line(s) are not in the version that won (integrated during our own conflict resolution; nothing clobbered post-push). If this file's content matters beyond what siblings collect, re-collect it.`);
   }
 
   if (reverted.length > 0) {

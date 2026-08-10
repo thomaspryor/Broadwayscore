@@ -653,18 +653,13 @@ verify_content_survived() {
   # reproduces exactly that pinned-refspec condition).
   git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 \
     || git_fetch origin "$PULL_BRANCH" >/dev/null 2>&1 || true
-  if [ -n "$pushed_sha" ]; then
-    node "$SCRIPT_DIR/push-content-survival.js" \
-      --before-sha="$SCRIPT_ENTRY_HEAD" \
-      --base-sha="$SCRIPT_ENTRY_BASE" \
-      --check-ref="origin/$PULL_BRANCH" \
-      --pushed-sha="$pushed_sha"
-  else
-    node "$SCRIPT_DIR/push-content-survival.js" \
-      --before-sha="$SCRIPT_ENTRY_HEAD" \
-      --base-sha="$SCRIPT_ENTRY_BASE" \
-      --check-ref="origin/$PULL_BRANCH"
-  fi
+  local survival_args=(
+    --before-sha="$SCRIPT_ENTRY_HEAD"
+    --base-sha="$SCRIPT_ENTRY_BASE"
+    --check-ref="origin/$PULL_BRANCH"
+  )
+  [ -n "$pushed_sha" ] && survival_args+=(--pushed-sha="$pushed_sha")
+  node "$SCRIPT_DIR/push-content-survival.js" "${survival_args[@]}"
 }
 
 pushed=false
