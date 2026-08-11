@@ -325,6 +325,27 @@ test('a host that shares a generic descriptive word with an outlet\'s name, but 
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), [], 'guardian.ng is a different real outlet, not a Guardian domain move');
 });
 
+test('a host that IS a different outlet\'s own registered domain is NOT matched, even when its slug collides with another outlet (the real dancemagazine.co.uk incident, task #1254)', () => {
+  // Confirmed live in production (task #1254): 'dancemagazine.co.uk' is Dance
+  // Informa Magazine UK's own domain — a real, distinct outlet from Dance
+  // Magazine (US, dancemagazine.com). Both normalize to the same slug
+  // ('dancemagazine'), so once dancemagazine.co.uk is registered as ITS OWN
+  // outlet's domain, it must stop matching dance-magazine's slug — the old
+  // per-outlet knownHosts check only suppressed the match against the outlet
+  // BEING compared, not against the whole registry, so registering the host
+  // elsewhere never suppressed this false positive before the fix.
+  const outlets = {
+    'dance-magazine': { displayName: 'Dance Magazine', domain: 'dancemagazine.com' },
+    'dance-informa-uk': { displayName: 'Dance Informa Magazine UK', domain: 'dancemagazine.co.uk' },
+  };
+  const unknownHosts = [{ host: 'dancemagazine.co.uk', occurrences: 1 }];
+  assert.deepEqual(
+    findProbableDomainMoves(outlets, unknownHosts),
+    [],
+    'dancemagazine.co.uk is already registered as its own outlet — not an unresolved move candidate',
+  );
+});
+
 test('a short/generic normalized slug is not matched — avoids over-broad false positives', () => {
   const outlets = { amny: { displayName: 'amNY', domain: 'amny.com' } };
   const unknownHosts = [{ host: 'am.org', occurrences: 1 }]; // 'am' normalizes to len 2, below MIN_SLUG_LENGTH
