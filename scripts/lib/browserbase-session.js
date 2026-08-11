@@ -118,7 +118,7 @@ async function createBbSession(opts) {
   // live-count caller in this codebase (a network hiccup must not look like
   // a clean budget).
   const maxPerDay = resolveMaxSessionsPerDay();
-  const liveSessionsToday = await browserbaseLiveUsage.fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
+  const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
   if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
     recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: 'day-cap-reached' });
     throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — session create blocked for ${opts.caller}`);

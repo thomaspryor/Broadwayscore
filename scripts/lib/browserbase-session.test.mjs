@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { sanitizeMetadataValue, createBbSession } = require('./browserbase-session.js');
+const { sanitizeMetadataValue, createBbSession, _resetDayCapCacheForTests } = require('./browserbase-session.js');
 const browserbaseLiveUsage = require('./browserbase-live-usage.js');
 
 test('createBbSession rejects when BROWSERBASE_KILL_SWITCH=true, before any network call', async () => {
@@ -43,6 +43,7 @@ test('createBbSession does not trip the kill-switch check when unset', async () 
 });
 
 test('createBbSession rejects when the live daily session count is at/over the cap (#1248)', async () => {
+  _resetDayCapCacheForTests();
   const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 10);
@@ -60,6 +61,7 @@ test('createBbSession rejects when the live daily session count is at/over the c
 });
 
 test('createBbSession proceeds past the day-cap check when the live count is under the cap', async () => {
+  _resetDayCapCacheForTests();
   const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 9);
@@ -81,6 +83,7 @@ test('createBbSession proceeds past the day-cap check when the live count is und
 });
 
 test('createBbSession does not block on a null live count (network hiccup treated as unknown, not zero)', async () => {
+  _resetDayCapCacheForTests();
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => null);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
     ok: true,
@@ -93,6 +96,34 @@ test('createBbSession does not block on a null live count (network hiccup treate
   } finally {
     fetchMock.mock.restore();
     liveMock.mock.restore();
+  }
+});
+
+test('createBbSession caches the live count briefly so back-to-back calls do not each hit the API (#1248 ship-check finding)', async () => {
+  // Without this cache, centralizing the check here means collect-review-texts.js's
+  // deliberate "re-check live count only every 5th session" cadence
+  // (scripts/collect-review-texts.js ~line 2109) gets bypassed — every single
+  // createBbSession() call would poll live, 5x'ing its API traffic on a big run.
+  _resetDayCapCacheForTests();
+  const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 3);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_789', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    assert.equal(liveMock.mock.callCount(), 1, 'three rapid calls should share one cached live-count fetch');
+  } finally {
+    fetchMock.mock.restore();
+    liveMock.mock.restore();
+    _resetDayCapCacheForTests();
+    if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+    else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
   }
 });
 
