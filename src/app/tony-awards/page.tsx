@@ -161,8 +161,12 @@ export default function TonyAwardsHubPage() {
             </div>
           ) : null}
 
-          {/* Winners 2026 Teaser */}
-          {nominationsAnnounced && (
+          {/* Winners 2026 Teaser — /tony-awards/winners-2026 is a hand-built page for
+              that ceremony only, so this must be pinned to ceremonyYear 2026. Gated on
+              nominationsAnnounced alone it would advertise "2026 Tony Winners" during
+              the 2027 season. Needs a winners-2027 page (or a dynamic winners/[season]
+              route) before it can move forward. See tony-nominees-premature, 2026-08-11. */}
+          {nominationsAnnounced && season.ceremonyYear === 2026 && (
             <Link href="/tony-awards/winners-2026" className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">2026 Tony Winners</h2>
