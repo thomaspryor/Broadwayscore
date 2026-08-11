@@ -22,7 +22,7 @@ const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-gu
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
+const { checkWrongShowGuard } = require('./lib/tr-wrongshow-guard');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 
 // ─── PDF review parser ───
@@ -778,23 +778,20 @@ async function main() {
     let newCount = 0;
     let skippedCount = 0;
 
-    // Lazily fetched once per show and reused across all its reviews — an
-    // independent corroboration source (critic+outlet already listed for
-    // this show) for the mention-count and film/TV guards below, which are
-    // prone to false-rejecting real reviews on common-word titles and
-    // multi-show columns (card #1227). Note: the wrong-production-date guard
-    // above already validated this specific review's own pubDate against the
-    // show's run window before we ever reach here, so a stale/prior-run WET
-    // roundup post can't smuggle a wrong-production review past corroboration
-    // — a review from a different run would already have skipReason set.
-    let roundupRowsPromise = null;
-    async function getRoundupRows() {
-      if (roundupRowsPromise === null) {
-        roundupRowsPromise = discoverWetRoundupRows(show)
-          .then(result => (result ? result.rows : []))
-          .catch(() => []);
+    // WET roundup rows, fetched once per show, used as a corroboration
+    // fallback for Guard 5 (wrong-show content) below — a review whose
+    // outlet appears in the show's WET roundup is real, even when the
+    // title-mention count is low (common-word titles like "Barcelona").
+    // Fetched eagerly (not lazily on first guard failure) so a WET fetch
+    // error surfaces once per show, not silently per-review. See #1227.
+    let wetOutletIds = new Set();
+    try {
+      const wetResult = await discoverWetRoundupRows(show, { log: () => {} });
+      if (wetResult && Array.isArray(wetResult.rows)) {
+        wetOutletIds = new Set(wetResult.rows.map(r => getOutletId(r.outlet)));
       }
-      return roundupRowsPromise;
+    } catch (e) {
+      console.log(`  WET corroboration fetch failed (non-fatal): ${e.message}`);
     }
 
     for (const review of reviews) {
@@ -885,18 +882,16 @@ async function main() {
       // Guard 5: Wrong-show content detection
       // Check if the review actually discusses our show (catches multi-column
       // PDF contamination AND misfiled HTML reviews on TR production pages).
-      // Below-threshold mention counts on common-word/single-word titles
-      // (e.g. "Barcelona") false-reject real reviews — before rejecting,
-      // corroborate against the show's WET roundup (card #1227).
+      // Below-threshold mention counts fall back to WET roundup corroboration
+      // (outlet present in the show's WET roundup) before rejecting — common-
+      // word titles (city names, etc.) break the raw mention-count heuristic
+      // on real reviews that just don't repeat the title (#1227).
       if (!skipReason) {
-        const mentionCheck = checkWrongShowMentionGuard(show, review.fullText);
-        if (mentionCheck.fails) {
-          const roundupRows = await getRoundupRows();
-          if (isCorroboratedByRoundup(review.outlet, review.critic, roundupRows)) {
-            console.log(`    (wrong-show guard bypassed — corroborated by WET roundup: ${filename}, ${mentionCheck.mentions} mention(s))`);
-          } else {
-            skipReason = mentionCheck.reason;
-          }
+        const guardResult = checkWrongShowGuard(review.fullText, show.title, { outletId, wetOutletIds });
+        if (!guardResult.pass) {
+          skipReason = guardResult.skipReason;
+        } else if (guardResult.corroborated) {
+          console.log(`    WET-corroborated despite ${guardResult.mentions} title mention(s): ${review.outlet}`);
         }
       }
 
