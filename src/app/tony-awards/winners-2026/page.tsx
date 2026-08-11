@@ -1,12 +1,18 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { getTonySeasonWindow, type TonyCategory, type SerializedTonyShow } from '@/lib/data-tony-predictions';
+import { getTonySeasonWindowFor, type TonyCategory, type SerializedTonyShow } from '@/lib/data-tony-predictions';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { SHOW_LEVEL_CATEGORIES, PERSON_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 
-const season = getTonySeasonWindow();
+// This route is the 2026 ceremony, permanently. Reading getTonySeasonWindow() here
+// meant that when the 2026-27 season opened, the page titled itself "2026 Tony Award
+// Winners — 2027 Tony Awards Results" and rendered Celebrity Autobiography (the only
+// 2026-27 show yet open) as a WINNER of Best Revival of a Play, because
+// getNomineesByCategory falls back to the type filter with no nominees to work from.
+// Same mis-pin fixed on press-picks. See tony-nominees-premature, 2026-08-11.
+const season = getTonySeasonWindowFor(2026);
 
 export const metadata: Metadata = {
   title: `2026 Tony Award Winners — ${season.ceremonyYear} Tony Awards Results`,

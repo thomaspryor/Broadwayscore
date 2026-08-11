@@ -105,7 +105,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const announcedNoDate = isCurrent
     ? allShows
         .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
-        .filter(s => !s.previewsStartDate || s.previewsStartDate >= season.start)
+        // Upper bound too: a dateless announcement whose previews start AFTER this
+        // season's window belongs to next season, not this one.
+        .filter(s => !s.previewsStartDate || (s.previewsStartDate >= season.start && s.previewsStartDate <= season.end))
         .sort((a, b) => a.title.localeCompare(b.title))
     : [];
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
@@ -159,6 +161,27 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     season,
   );
   const outcomes = getSeasonOutcomes(allShows, season);
+
+  // Shows with a confirmed opening date in this season that aren't scored yet.
+  // groupIntoCategories parks these in cat.upcoming, which CategorySection never
+  // renders — so before nominations they were completely invisible, and with only
+  // one show scored the page showed nothing but "Predictions coming soon". These
+  // are the MOST relevant shows on the page (dated, in-season, real contenders):
+  // Evita, The Sound of Music, Paddington, Dolly, School Girls, Gloria, and more.
+  // Deduped across categories and sorted by opening date, soonest first.
+  // See tony-nominees-premature, 2026-08-11 — "list all Broadway shows announced".
+  // Includes cat.shows (already opened) as well as cat.upcoming: with fewer than 2
+  // scored shows the category sections don't render at all, so listing only `upcoming`
+  // would still hide the one show that HAS opened. Both together = every dated show
+  // in the season, which is what "list all announced shows" actually means.
+  const openingThisSeason = isCurrent && !nominationsAnnounced
+    ? Array.from(
+        new Map(
+          categories
+            .flatMap(cat => [...cat.shows, ...cat.upcoming].map(s => [s.slug, s] as const))
+        ).values()
+      ).sort((a, b) => (a.openingDate ?? '').localeCompare(b.openingDate ?? ''))
+    : [];
 
   // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
   // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
@@ -369,7 +392,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Tony Awards Predictions
+                {/* Saying "Predictions" while the page states predictions aren't available
+                    was the same overclaim in the largest type on the page. */}
+                {isCurrent && !nominationsAnnounced ? 'Tony Awards Season Tracker' : 'Tony Awards Predictions'}
               </h1>
               <SeasonSelect
                 basePath="/tony-awards/predictions"
@@ -405,7 +430,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                   // Pre-nominations this page has no predictions on it, so the old
                   // "Data-driven predictions … Updated daily" line contradicted both the
                   // eligibility banner below and the FAQ schema. Describe the real content.
-                  ? `Every Broadway show that has opened so far in the ${season.label} season. Predictions start once Tony nominations are announced.`
+                  ? `Broadway shows opening in the ${season.label} season, tracked as they open. Predictions start once Tony nominations are announced.`
                   : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
           </p>
           {ceremonyDate && isCurrent && (
@@ -619,17 +644,20 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* Coming Soon — shown when the season has too few shows to make meaningful predictions */}
+        {/* Coming Soon — shown when the season has too few shows to make meaningful
+            predictions. Kept deliberately compact: it used to be the ONLY thing on the
+            page in this state, which is why a season with 9 dated shows looked empty.
+            The real season list renders below it. */}
         {totalScored < 2 && winnerCount === 0 ? (
-          <div className="rounded-xl border border-white/10 bg-surface-overlay p-8 text-center mb-10">
-            <p className="text-2xl mb-2">🎭</p>
-            <h2 className="text-lg font-bold text-white mb-2">Predictions coming soon</h2>
-            <p className="text-gray-400 text-sm max-w-md mx-auto">
-              The {season.label} Tony season is just getting started. Predictions will be available once enough shows have opened and been reviewed — Broadway&apos;s season runs September through April.
+          <div className="rounded-xl border border-white/10 bg-surface-overlay p-5 mb-8">
+            <h2 className="text-base font-bold text-white mb-1">Predictions start after nominations</h2>
+            <p className="text-gray-400 text-sm">
+              The {season.label} Tony season is still early &mdash; the shows below have been announced
+              or have opened, but our model doesn&apos;t rank them until Tony nominations are announced.
             </p>
             <Link
               href={`/tony-awards/predictions/${allSeasonLabels[1] ?? ''}`}
-              className="inline-block mt-5 text-sm text-brand hover:text-brand-hover transition-colors"
+              className="inline-block mt-3 text-sm text-brand hover:text-brand-hover transition-colors"
             >
               See {allSeasonLabels[1]} predictions and results &rarr;
             </Link>
@@ -669,6 +697,53 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               />
             )}
           </>
+        )}
+
+        {/* Dated and in-season, but not yet scored. These live in cat.upcoming, which
+            CategorySection doesn't render, so before this they were invisible — the page
+            showed only "Predictions coming soon" while 9 real dated shows sat hidden.
+            No scores or ranking: unopened shows have nothing to rank on. */}
+        {openingThisSeason.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-white mb-1">This season&apos;s Broadway shows</h2>
+            <p className="text-sm text-gray-400 mb-4">
+              {openingThisSeason.length} show{openingThisSeason.length !== 1 ? 's' : ''} with a
+              confirmed {season.label} opening date. Scores appear once each one opens and reviews land.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {openingThisSeason.map(show => (
+                <Link
+                  key={show.slug}
+                  href={`/show/${show.slug}`}
+                  className="flex items-center gap-3 p-2.5 rounded-lg bg-surface-raised border border-white/5 hover:bg-white/[0.03] transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-md overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.thumbnailPath ? (
+                      <img
+                        src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
+                        alt={show.title}
+                        className="w-full h-full object-cover"
+                        width={40}
+                        height={40}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-white truncate">{show.title}</p>
+                    <p className="text-xs text-gray-500 truncate">{show.venue || 'Venue TBA'}</p>
+                  </div>
+                  {show.openingDate && (
+                    <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0 tabular-nums">
+                      {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Announced with no opening date. Deliberately NOT titled "this season": with no
