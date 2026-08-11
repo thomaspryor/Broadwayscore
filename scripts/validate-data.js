@@ -2150,7 +2150,7 @@ function validateOutletRegistryDomainCollisions() {
   const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
   const collisions = findUndeclaredDomainCollisions(registry.outlets || registry);
   for (const c of collisions) {
-    error(`[domain-collision] ${c.domain} is claimed by ${c.outletIds.length} outlets (${c.outletIds.join(', ')}) — URL resolution is ambiguous. Merge the duplicates, fix the domain, or declare the pair in EDITION_PAIRS (scripts/lib/outlet-registry-domain-collisions.js)`);
+    error(`[domain-collision] ${c.domain} is claimed by ${c.outletIds.length} outlets (${c.outletIds.join(', ')}) — URL resolution is ambiguous. Merge the duplicates, fix the domain/domainAlias, or declare the pair in EDITION_PAIRS/DECLARED_ALIAS_OVERLAPS (scripts/lib/outlet-registry-domain-collisions.js)`);
   }
   if (collisions.length === 0) {
     ok('No undeclared primary-domain collisions in outlet-registry.json');
