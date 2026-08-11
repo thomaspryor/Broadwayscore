@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-11T21:44:22.665Z",
+  "generatedAt": "2026-08-11T22:27:26.378Z",
   "windowDays": 1095,
-  "targets": 11,
-  "auditedThisRun": 11,
-  "carriedForward": 202,
+  "targets": 6,
+  "auditedThisRun": 6,
+  "carriedForward": 209,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 165,
-    "totalMissing": 1060,
+    "withGap": 167,
+    "totalMissing": 1089,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1085,
+    "totalFlaggedMisses": 1110,
     "totalRecoverable": 22,
     "totalRecovered": 6
   },
@@ -3886,7 +3886,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T09:47:36.913Z"
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
@@ -7062,6 +7062,198 @@
         "candidateCount": 74
       },
       "computedAt": "2026-08-11T15:45:54.405Z"
+    },
+    {
+      "showId": "between-two-knees-off-broadway-2024",
+      "title": "Between Two Knees",
+      "openingDate": "2024-02-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-the-new-york-premiere-of-between-two-knees"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.adriandimanlig.com/the-hangover-report-the-1491s-inter-generational-naitive-american-saga-between-two-knees-wears-down-its-audience-into-submission/",
+        "https://newyorktheater.me/2024/02/13/between-two-knees-theater-review/",
+        "https://www.theatermania.com/news/review-between-two-knees-is-church-masquerading-as-comedy_1729921/",
+        "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html",
+        "https://www.wsj.com/articles/between-two-knees-review-indigenous-irreverence-perelman-performing-arts-center-08dc9309",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8L3E86",
+        "http://www.theaterscene.net/plays/offbway-plays/between-two-knees/victor-gluck/",
+        "https://culturesauce.com/2024/02/13/between-two-knees-off-broadway-review/",
+        "https://twi-ny.com/2024/02/16/between-two-knees/"
+      ],
+      "dirFiles": 11,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.adriandimanlig.com/the-hangover-report-the-1491s-inter-generational-naitive-american-saga-between-two-knees-wears-down-its-audience-into-submission/",
+          "host": "adriandimanlig.com",
+          "knownOutletId": "adriandimanlig"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--naveen-kumar.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html"
+            },
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html?eafs_enabled=false"
+            }
+          ]
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/13/between-two-knees-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturesauce--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://culturesauce.com/2024/02/13/between-two-knees-off-broadway-review/"
+            }
+          ]
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 90,
+        "byReason": {
+          "aggregator-internal-nav": 68,
+          "not-http-url": 3,
+          "non-review-host": 19
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.adriandimanlig.com/the-hangover-report-the-1491s-inter-generational-naitive-american-saga-between-two-knees-wears-down-its-audience-into-submission/",
+          "host": "adriandimanlig.com",
+          "outletId": "adriandimanlig",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~190863/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "adriandimanlig",
+            "outlet": "adriandimanlig",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.adriandimanlig.com/the-hangover-report-the-1491s-inter-generational-naitive-american-saga-between-two-knees-wears-down-its-audience-into-submission/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html"
+          },
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/2024/02/13/between-two-knees-off-broadway-review/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://newyorktheater.me/2024/02/13/between-two-knees-theater-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-between-two-knees-is-church-masquerading-as-comedy_1729921/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/between-two-knees-review-indigenous-irreverence-perelman-performing-arts-center-08dc9309",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8L3E86",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/between-two-knees/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://twi-ny.com/2024/02/16/between-two-knees/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.adriandimanlig.com/the-hangover-report-the-1491s-inter-generational-naitive-american-saga-between-two-knees-wears-down-its-audience-into-submission/",
+            "outletId": "adriandimanlig",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://culturesauce.com/2024/02/13/between-two-knees-off-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          }
+        ],
+        "liveCount": 6,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "birthright-off-broadway-2026",
@@ -34993,9 +35185,9 @@
       "candidatesRejected": {
         "count": 1183,
         "byReason": {
-          "non-review-host": 103,
           "aggregator-internal-nav": 901,
           "not-http-url": 168,
+          "non-review-host": 103,
           "non-review-path": 11
         }
       },
@@ -35468,7 +35660,7 @@
         "liveCount": 17,
         "candidateCount": 32
       },
-      "computedAt": "2026-08-11T09:47:36.913Z"
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -51746,15 +51938,24 @@
         "https://www.thetimes.com/culture/theatre-dance/article/now-you-see-me-live-review-fhpvzgkqz",
         "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
         "https://www.westendbestfriend.co.uk/news/review-now-you-see-me-live-london-coliseum",
-        "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
+        "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
         "https://www.londonboxoffice.co.uk/news/post/now-you-see-me-live-to-premiere-at-london-coliseum",
+        "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
+        "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/",
         "https://www.londontheatre1.com/reviews/now-you-see-me-live-london-coliseum/",
         "https://www.broadwayworld.com/westend/article/Review-NOW-YOU-SEE-ME-LIVE-London-Coliseum-20260803"
       ],
       "dirFiles": 37,
       "dirClean": 19,
       "inReviewsJson": 19,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/",
+          "host": "southlondon.co.uk",
+          "knownOutletId": "south-london",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "adventuresintheatreland.com",
@@ -51770,10 +51971,6 @@
         },
         {
           "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
           "count": 1
         }
       ],
@@ -51900,7 +52097,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -51910,7 +52107,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -51920,26 +52117,48 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 25,
         "byReason": {
-          "non-review-host": 21,
+          "non-review-host": 20,
           "ticketing-listing": 5
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/",
+          "host": "southlondon.co.uk",
+          "outletId": "south-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "south-london",
+            "outlet": "south-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/"
+          },
           {
             "outletId": "jonathan-baz",
             "outlet": "jonathan-baz",
@@ -52024,6 +52243,12 @@
             "firstSeenAt": "2026-08-10T21:29:36.683Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/now-you-see-me-live-at-the-london-coliseum-review_1728489/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
             "url": "https://firstnightmagazine.com/2026/08/03/review-of-now-you-see-me-live-2026-london-coliseum-charming-magic-show-does-the-trick-but-it-isnt-that-spellbinding/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
@@ -52042,6 +52267,13 @@
             "firstSeenAt": "2026-08-04T15:48:01.636Z"
           },
           {
+            "url": "https://southlondon.co.uk/lifestyle/review-now-you-see-me-coliseum/",
+            "outletId": "south-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
             "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
             "outletId": "jonathan-baz",
             "state": "GAP",
@@ -52056,10 +52288,10 @@
             "firstSeenAt": "2026-08-10T09:16:06.645Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 16
+        "liveCount": 15,
+        "candidateCount": 18
       },
-      "computedAt": "2026-08-11T09:47:36.913Z"
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -89193,12 +89425,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 771,
+        "count": 768,
         "byReason": {
-          "roundup-page": 10,
-          "non-review-host": 53,
-          "aggregator-internal-nav": 533,
+          "aggregator-internal-nav": 530,
           "not-http-url": 169,
+          "non-review-host": 53,
+          "roundup-page": 10,
           "non-review-path": 6
         }
       },
@@ -89792,7 +90024,7 @@
         "liveCount": 4,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-11T09:47:36.913Z"
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
@@ -95816,6 +96048,1875 @@
         "candidateCount": 15
       },
       "computedAt": "2026-08-06T05:08:53.116Z"
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "title": "Vanya",
+      "openingDate": "2025-03-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-uncle-vanya-on-broadway",
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-hyper-intimate-uncle-vanya-starring-david-cromer",
+        "https://playbill.com/article/read-the-reviews-for-off-broadways-vanya-starring-andrew-scott",
+        "https://playbill.com/article/read-reviews-for-uncle-vanya-at-the-hunter-theater-project",
+        "https://playbill.com/article/read-reviews-for-uncle-vanya-in-london-starring-toby-jones",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-andrew-scotts-solo-adaptation-of-chekhovs-uncle-vanya",
+        "https://playbill.com/article/read-reviews-for-uk-uncle-vanya-starring-and-directed-by-rupert-everett",
+        "https://www.broadwayworld.com/article/Review-Roundup-Steve-Carell-Stars-In-UNCLE-VANYA-Opening-On-Broadway-Tonight-20240424",
+        "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Scott-Stars-In-VANYA-Off-Broadway-20250318",
+        "https://www.broadwayworld.com/article/Review-Roundup-UNCLE-VANYA-Starring-David-Cromer-20230707",
+        "https://www.broadwayworld.com/article/Review-Roundup-VANYA-AND-SONIA-AND-MASHA-AND-SPIKE-Opens-on-Broadway-Updating-LIVE-20130314"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.broadwaynews.com/the-broadway-review-an-amorphous-uncle-vanya-straddles-different-times-and-genres/",
+        "https://cititour.com/NYC_Broadway/Uncle-Vanya/1229",
+        "https://www.thedailybeast.com/why-steve-carell-is-not-the-star-of-uncle-vanya-on-broadway",
+        "https://www.digitaljournal.com/entertainment/review-steve-carell-is-uncle-vanya-in-new-broadway-play-at-lincoln-center/article",
+        "https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350",
+        "https://exeuntnyc.com/reviews/review-uncle-vanya-at-the-vivian-beaumont-theater/",
+        "https://www.theguardian.com/stage/2024/apr/24/uncle-vanya-review-steve-carell",
+        "https://www.vulture.com/article/uncle-vanya-steve-carell-heidi-schreck.html",
+        "https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+        "https://nystagereview.com/2024/04/24/uncle-vanya-disoriented-scenes-from-a-country-life/",
+        "https://nystagereview.com/2024/04/24/uncle-vanya-anton-chekhovs-updated-bored-folks-more-boring-than-need-be/",
+        "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya",
+        "https://newyorktheater.me/2024/04/24/uncle-vanya-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/uncle-vanya-broadway-review-steve-carell",
+        "https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html",
+        "https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/",
+        "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/",
+        "https://www.shelbystar.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+        "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina",
+        "https://www.theatermania.com/news/review-steve-carell-leads-an-all-over-the-place-uncle-vanya-at-lincoln-center-theater_1738133/",
+        "https://www.theatrely.com/post/steve-carell-is-a-sad-clown-uncle-vanya-in-a-new-broadway-revival-review",
+        "https://www.timeout.com/newyork/theater/uncle-vanya-9",
+        "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+        "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+        "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
+        "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/",
+        "https://nystagereview.com/2023/07/06/uncle-vanya-misery-loves-company/",
+        "https://www.nytimes.com/2023/07/06/theater/uncle-vanya-review.html",
+        "https://www.thedailybeast.com/review-andrew-scotts-one-man-vanya-is-too-subtle-to-be-great/",
+        "https://www.vulture.com/article/vanya-review-andrew-scott.html",
+        "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
+        "https://nystagereview.com/2025/03/18/vanya-andrew-scott-goes-virtuoso-in-a-solo-show/",
+        "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting",
+        "https://newyorktheater.me/2025/03/18/vanya-review-andrew-scott-in-a-one-man-chekhov-play/",
+        "https://www.newyorktheatreguide.com/reviews/vanya-off-broadway-review-andrew-scott",
+        "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
+        "https://www.theatermania.com/news/review-andrew-scott-creates-a-world-out-of-nothing-in-vanya_1767985/",
+        "https://www.timeout.com/newyork/theater/vanya-review-andrew-scott-solo-simon-stephens-chekhov",
+        "https://www.thewrap.com/vanya-off-broadway-review-andrew-scott/",
+        "http://www.vulture.com/2018/09/theater-a-vanya-in-our-english-and-an-emperor-unseen.html",
+        "http://www.nytimes.com/2018/09/16/theater/review-uncle-vanya-richard-nelson.html",
+        "https://theartsdesk.com/theatre/uncle-vanya-harold-pinter-theatre-review-superlative-company-achievement",
+        "https://www.standard.co.uk/go/london/theatre/chekhov-uncle-vanya-review-london-harold-pinter-theatre-a4343421.html",
+        "https://www.theguardian.com/stage/2020/jan/23/uncle-vanya-review-harold-pinter-theatre-london-toby-jones",
+        "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/uncle-vanya-review-harold-pinter-theatre-cast-toby-jones-ciaran-hinds-a9300016.html",
+        "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre",
+        "https://www.thestage.co.uk/reviews/2020/uncle-vanya-toby-jones-review-at-the-harold-pinter-theatre-london/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
+        "https://www.timeout.com/london/theatre/uncle-vanya-review-1",
+        "https://www.thetimes.co.uk/article/uncle-vanya-review-new-adaptation-feels-almost-impossibly-contemporary-2nrbmcns6",
+        "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/",
+        "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html",
+        "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html",
+        "https://inews.co.uk/culture/arts/vanya-duke-of-york-theatre-review-andrew-scott-one-man-chekhov-2635475",
+        "https://www.newstatesman.com/culture/theatre/2023/09/andrew-scott-superhuman-vanya-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/",
+        "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq",
+        "https://www.timeout.com/london/theatre/uncle-vanya-20-review",
+        "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov",
+        "https://www.whatsonstage.com/news/vanya-review-andrew-scotts-solo-tour-de-force-in-the-west-end_1529237/",
+        "https://www.theguardian.com/stage/2019/jul/31/uncle-vanya-review-rupert-everett-chekhov-theatre-royal-bath-david-hare",
+        "http://www.hollywoodreporter.com/review/uncle-vanya-theater-1228214",
+        "http://www.metro.news/theatre-review-uncle-vanya/1656810/",
+        "http://www.thestage.co.uk/reviews/2019/uncle-vanya-review-rupert-everett-theatre-royal-bath/",
+        "http://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-theatre-royal-bath-review-rupert-everett-brings/",
+        "http://www.thetimes.co.uk/article/uncle-vanya-review-tantalising-set-shame-about-the-production-9np39qkcj",
+        "https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.htmlt",
+        "http://theater.nytimes.com/2013/03/15/theater/reviews/vanya-and-sonia-and-masha-and-spike-at-john-golden-theater.html",
+        "http://www.therepublic.com/view/story/1e8ee3829b5243719ba25deba6981ab5/US-Theater-Review-Vanya-and-Sonia-and-Masha-and-Spike",
+        "http://www.backstage.com/review/ny-theater/broadway/vanya-and-sonia-and-masha-and-spike-christopher-durang-sigourney-weaver-david-hyde-pierce-kristine-nielsen/",
+        "http://www.vulture.com/2013/03/theater-review-vanya-and-sonia-and.html",
+        "http://www.newjerseynewsroom.com/movies/vanya-and-sonia-and-masha-and-spike-broadway-review-durangs-new-comedy-sweetens-the-season",
+        "http://www.newsday.com/entertainment/theater/vanya-and-sonia-and-masha-and-spike-review-better-on-broadway-1.4808294",
+        "http://www.ny1.com/content/ny1_living/theater_reviews/178703/time-out-theater-review---vanya-and-sonia-and-masha-and-spike-",
+        "http://www.usatoday.com/story/life/2013/03/14/vanya-and-sonia-broadway-review/1984707/",
+        "http://www.amny.com/urbanite-1.812039/theater-review-vanya-and-sonia-and-masha-and-spike-3-5-stars-1.4816612",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3S9UX4",
+        "https://www.theaterscene.net/plays/solo-plays/vanya/joel-benjamin/",
+        "https://www.theatrereviews.com/off-broadway-review-vanya-at-the-lucille-lortel-theatre-through-sunday-may-11-2025/"
+      ],
+      "dirFiles": 36,
+      "dirClean": 16,
+      "inReviewsJson": 15,
+      "missing": [
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-an-amorphous-uncle-vanya-straddles-different-times-and-genres/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Uncle-Vanya/1229",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-steve-carell-is-uncle-vanya-in-new-broadway-play-at-lincoln-center/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-at-the-vivian-beaumont-theater/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.shelbystar.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+          "host": "shelbystar.com",
+          "knownOutletId": "shelby-star",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/uncle-vanya-harold-pinter-theatre-review-superlative-company-achievement",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newstatesman.com/culture/theatre/2023/09/andrew-scott-superhuman-vanya-review",
+          "host": "newstatesman.com",
+          "knownOutletId": "new-statesman",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/uncle-vanya-theater-1228214",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.metro.news/theatre-review-uncle-vanya/1656810/",
+          "host": "metro.news",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.therepublic.com/view/story/1e8ee3829b5243719ba25deba6981ab5/US-Theater-Review-Vanya-and-Sonia-and-Masha-and-Spike",
+          "host": "therepublic.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.backstage.com/review/ny-theater/broadway/vanya-and-sonia-and-masha-and-spike-christopher-durang-sigourney-weaver-david-hyde-pierce-kristine-nielsen/",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/movies/vanya-and-sonia-and-masha-and-spike-broadway-review-durangs-new-comedy-sweetens-the-season",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/vanya-and-sonia-and-masha-and-spike-review-better-on-broadway-1.4808294",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.ny1.com/content/ny1_living/theater_reviews/178703/time-out-theater-review---vanya-and-sonia-and-masha-and-spike-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/2013/03/14/vanya-and-sonia-broadway-review/1984707/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theguardian.com/stage/2024/apr/24/uncle-vanya-review-steve-carell",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/steve-carell-is-a-sad-clown-uncle-vanya-in-a-new-broadway-revival-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/andrew-scott-in-one-man-vanya-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/chekhov-uncle-vanya-review-london-harold-pinter-theatre-a4343421.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/jan/23/uncle-vanya-review-harold-pinter-theatre-london-toby-jones",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/uncle-vanya-review-harold-pinter-theatre-cast-toby-jones-ciaran-hinds-a9300016.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--alice-saville.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/uncle-vanya-toby-jones-review-at-the-harold-pinter-theatre-london/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--ben-lawren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/uncle-vanya-review-new-adaptation-feels-almost-impossibly-contemporary-2nrbmcns6",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--alice-saville.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/vanya-duke-of-york-theatre-review-andrew-scott-one-man-chekhov-2635475",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "i-paper--fiona-mountford.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://inews.co.uk/culture/arts/vanya-duke-of-york-theatre-review-andrew-scott-one-man-chekhov-2635475"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--ben-lawren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/uncle-vanya-20-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/uncle-vanya-20-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/vanya-review-andrew-scotts-solo-tour-de-force-in-the-west-end_1529237/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/vanya-review-andrew-scotts-solo-tour-de-force-in-the-west-end_1529237/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/jul/31/uncle-vanya-review-rupert-everett-chekhov-theatre-royal-bath-david-hare",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--arifa-akbar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thestage.co.uk/reviews/2019/uncle-vanya-review-rupert-everett-theatre-royal-bath/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-theatre-royal-bath-review-rupert-everett-brings/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--ben-lawren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thetimes.co.uk/article/uncle-vanya-review-tantalising-set-shame-about-the-production-9np39qkcj",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://theater.nytimes.com/2013/03/15/theater/reviews/vanya-and-sonia-and-masha-and-spike-at-john-golden-theater.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theater.nytimes.com/2013/03/15/theater/reviews/vanya-and-sonia-and-masha-and-spike-at-john-golden-theater.html?pagewanted=all&_r=0"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1934,
+        "byReason": {
+          "aggregator-internal-nav": 1506,
+          "not-http-url": 217,
+          "non-review-host": 195,
+          "roundup-page": 4,
+          "non-review-path": 12
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-uncle-vanya-on-broadway",
+          "publishDate": "2024-04-24"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-heres-what-critics-think-of-hyper-intimate-uncle-vanya-starring-david-cromer",
+          "publishDate": "2023-07-07"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-uncle-vanya-at-the-hunter-theater-project",
+          "publishDate": "2018-09-17"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-uncle-vanya-in-london-starring-toby-jones",
+          "publishDate": "2020-01-24"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-andrew-scotts-solo-adaptation-of-chekhovs-uncle-vanya",
+          "publishDate": "2023-09-22"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-uk-uncle-vanya-starring-and-directed-by-rupert-everett",
+          "publishDate": "2019-07-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Steve-Carell-Stars-In-UNCLE-VANYA-Opening-On-Broadway-Tonight-20240424",
+          "publishDate": "2024-04-24"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-UNCLE-VANYA-Starring-David-Cromer-20230707",
+          "publishDate": "2023-07-07"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-VANYA-AND-SONIA-AND-MASHA-AND-SPIKE-Opens-on-Broadway-Updating-LIVE-20130314",
+          "publishDate": "2013-03-14"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-an-amorphous-uncle-vanya-straddles-different-times-and-genres/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Uncle-Vanya/1229",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-steve-carell-is-uncle-vanya-in-new-broadway-play-at-lincoln-center/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-at-the-vivian-beaumont-theater/",
+          "host": "exeuntnyc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.shelbystar.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+          "host": "shelbystar.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/",
+          "host": "exeuntnyc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/uncle-vanya-harold-pinter-theatre-review-superlative-company-achievement",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newstatesman.com/culture/theatre/2023/09/andrew-scott-superhuman-vanya-review",
+          "host": "newstatesman.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/uncle-vanya-theater-1228214",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.metro.news/theatre-review-uncle-vanya/1656810/",
+          "host": "metro.news",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.therepublic.com/view/story/1e8ee3829b5243719ba25deba6981ab5/US-Theater-Review-Vanya-and-Sonia-and-Masha-and-Spike",
+          "host": "therepublic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.backstage.com/review/ny-theater/broadway/vanya-and-sonia-and-masha-and-spike-christopher-durang-sigourney-weaver-david-hyde-pierce-kristine-nielsen/",
+          "host": "backstage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/movies/vanya-and-sonia-and-masha-and-spike-broadway-review-durangs-new-comedy-sweetens-the-season",
+          "host": "newjerseynewsroom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/vanya-and-sonia-and-masha-and-spike-review-better-on-broadway-1.4808294",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.ny1.com/content/ny1_living/theater_reviews/178703/time-out-theater-review---vanya-and-sonia-and-masha-and-spike-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/2013/03/14/vanya-and-sonia-broadway-review/1984707/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting",
+          "host": "nysun.com",
+          "outletId": "new-york-sun",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~190860/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwaynews.com/the-broadway-review-an-amorphous-uncle-vanya-straddles-different-times-and-genres/"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Uncle-Vanya/1229"
+          },
+          {
+            "outletId": "digital-journal",
+            "outlet": "digital-journal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.digitaljournal.com/entertainment/review-steve-carell-is-uncle-vanya-in-new-broadway-play-at-lincoln-center/article"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-at-the-vivian-beaumont-theater/"
+          },
+          {
+            "outletId": "nypost",
+            "outlet": "nypost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/"
+          },
+          {
+            "outletId": "observer",
+            "outlet": "observer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/"
+          },
+          {
+            "outletId": "shelby-star",
+            "outlet": "shelby-star",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.shelbystar.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/uncle-vanya-harold-pinter-theatre-review-superlative-company-achievement"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre"
+          },
+          {
+            "outletId": "theupcoming",
+            "outlet": "theupcoming",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/"
+          },
+          {
+            "outletId": "new-statesman",
+            "outlet": "new-statesman",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newstatesman.com/culture/theatre/2023/09/andrew-scott-superhuman-vanya-review"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/uncle-vanya-theater-1228214"
+          },
+          {
+            "outletId": "metro.news",
+            "outlet": "metro.news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.metro.news/theatre-review-uncle-vanya/1656810/"
+          },
+          {
+            "outletId": "therepublic.com",
+            "outlet": "therepublic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.therepublic.com/view/story/1e8ee3829b5243719ba25deba6981ab5/US-Theater-Review-Vanya-and-Sonia-and-Masha-and-Spike"
+          },
+          {
+            "outletId": "backstage",
+            "outlet": "backstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.backstage.com/review/ny-theater/broadway/vanya-and-sonia-and-masha-and-spike-christopher-durang-sigourney-weaver-david-hyde-pierce-kristine-nielsen/"
+          },
+          {
+            "outletId": "new-jersey-newsroom",
+            "outlet": "new-jersey-newsroom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newjerseynewsroom.com/movies/vanya-and-sonia-and-masha-and-spike-broadway-review-durangs-new-comedy-sweetens-the-season"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/vanya-and-sonia-and-masha-and-spike-review-better-on-broadway-1.4808294"
+          },
+          {
+            "outletId": "ny1",
+            "outlet": "ny1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.ny1.com/content/ny1_living/theater_reviews/178703/time-out-theater-review---vanya-and-sonia-and-masha-and-spike-"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/2013/03/14/vanya-and-sonia-broadway-review/1984707/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2024/apr/24/uncle-vanya-review-steve-carell"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/steve-carell-is-a-sad-clown-uncle-vanya-in-a-new-broadway-revival-review"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/go/london/theatre/chekhov-uncle-vanya-review-london-harold-pinter-theatre-a4343421.html"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2020/jan/23/uncle-vanya-review-harold-pinter-theatre-london-toby-jones"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/uncle-vanya-review-harold-pinter-theatre-cast-toby-jones-ciaran-hinds-a9300016.html"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/2020/uncle-vanya-toby-jones-review-at-the-harold-pinter-theatre-london/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/uncle-vanya-review-new-adaptation-feels-almost-impossibly-contemporary-2nrbmcns6"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html"
+          },
+          {
+            "outletId": "i-paper",
+            "outlet": "i-paper",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://inews.co.uk/culture/arts/vanya-duke-of-york-theatre-review-andrew-scott-one-man-chekhov-2635475"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/uncle-vanya-20-review"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/vanya-review-andrew-scotts-solo-tour-de-force-in-the-west-end_1529237/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2019/jul/31/uncle-vanya-review-rupert-everett-chekhov-theatre-royal-bath-david-hare"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thestage.co.uk/reviews/2019/uncle-vanya-review-rupert-everett-theatre-royal-bath/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-theatre-royal-bath-review-rupert-everett-brings/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thetimes.co.uk/article/uncle-vanya-review-tantalising-set-shame-about-the-production-9np39qkcj"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theater.nytimes.com/2013/03/15/theater/reviews/vanya-and-sonia-and-masha-and-spike-at-john-golden-theater.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.thedailybeast.com/why-steve-carell-is-not-the-star-of-uncle-vanya-on-broadway",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/uncle-vanya-steve-carell-heidi-schreck.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/04/24/uncle-vanya-disoriented-scenes-from-a-country-life/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/04/24/uncle-vanya-anton-chekhovs-updated-bored-folks-more-boring-than-need-be/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/04/24/uncle-vanya-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/uncle-vanya-broadway-review-steve-carell",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-steve-carell-leads-an-all-over-the-place-uncle-vanya-at-lincoln-center-theater_1738133/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/uncle-vanya-9",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nystagereview.com/2023/07/06/uncle-vanya-misery-loves-company/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2023/07/06/theater/uncle-vanya-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/review-andrew-scotts-one-man-vanya-is-too-subtle-to-be-great/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/vanya-review-andrew-scott.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/18/vanya-andrew-scott-goes-virtuoso-in-a-solo-show/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/03/18/vanya-review-andrew-scott-in-a-one-man-chekhov-play/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/vanya-off-broadway-review-andrew-scott",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-andrew-scott-creates-a-world-out-of-nothing-in-vanya_1767985/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/vanya-review-andrew-scott-solo-simon-stephens-chekhov",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thewrap.com/vanya-off-broadway-review-andrew-scott/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/09/theater-a-vanya-in-our-english-and-an-emperor-unseen.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2018/09/16/theater/review-uncle-vanya-richard-nelson.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/uncle-vanya-review-1",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/04/24/theater/uncle-vanya-review-steve-carell.htmlt",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.vulture.com/2013/03/theater-review-vanya-and-sonia-and.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.amny.com/urbanite-1.812039/theater-review-vanya-and-sonia-and-masha-and-spike-3-5-stars-1.4816612",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3S9UX4",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/solo-plays/vanya/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-vanya-at-the-lucille-lortel-theatre-through-sunday-may-11-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.broadwaynews.com/the-broadway-review-an-amorphous-uncle-vanya-straddles-different-times-and-genres/",
+            "outletId": "broadwaynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Uncle-Vanya/1229",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.digitaljournal.com/entertainment/review-steve-carell-is-uncle-vanya-in-new-broadway-play-at-lincoln-center/article",
+            "outletId": "digital-journal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://ew.com/uncle-vanya-review-steve-carell-william-jackson-harper-wallow-in-misery-8637350",
+            "outletId": "ew",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-at-the-vivian-beaumont-theater/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://nypost.com/2024/04/24/entertainment/uncle-vanya-review-steve-carells-broadway-play-is-funny-not-feeling/",
+            "outletId": "nypost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/with-steve-carell-in-the-title-role-chekhovs-comedic-elements-stand-out-in-this-uncle-vanya",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/2024/04/24/broadway-review-uncle-vanya-is-disconnected-and-alienating-despite-steve-carrell-and-strong-cast/",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/",
+            "outletId": "observer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.shelbystar.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+            "outletId": "shelby-star",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/uncle-vanya-review-steve-carrell-broadway-1235980718/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/uncle-vanya-harold-pinter-theatre-review-superlative-company-achievement",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/uncle-vanya-theater-1272223",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/",
+            "outletId": "theupcoming",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.newstatesman.com/culture/theatre/2023/09/andrew-scott-superhuman-vanya-review",
+            "outletId": "new-statesman",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/uncle-vanya-theater-1228214",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.metro.news/theatre-review-uncle-vanya/1656810/",
+            "outletId": "metro.news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.therepublic.com/view/story/1e8ee3829b5243719ba25deba6981ab5/US-Theater-Review-Vanya-and-Sonia-and-Masha-and-Spike",
+            "outletId": "therepublic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.backstage.com/review/ny-theater/broadway/vanya-and-sonia-and-masha-and-spike-christopher-durang-sigourney-weaver-david-hyde-pierce-kristine-nielsen/",
+            "outletId": "backstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.newjerseynewsroom.com/movies/vanya-and-sonia-and-masha-and-spike-broadway-review-durangs-new-comedy-sweetens-the-season",
+            "outletId": "new-jersey-newsroom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/vanya-and-sonia-and-masha-and-spike-review-better-on-broadway-1.4808294",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.ny1.com/content/ny1_living/theater_reviews/178703/time-out-theater-review---vanya-and-sonia-and-masha-and-spike-",
+            "outletId": "ny1",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/2013/03/14/vanya-and-sonia-broadway-review/1984707/",
+            "outletId": "usatoday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2024/apr/24/uncle-vanya-review-steve-carell",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-vivian-beaumont-theater-steve-carell-alfred-molina",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/steve-carell-is-a-sad-clown-uncle-vanya-in-a-new-broadway-revival-review",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/go/london/theatre/chekhov-uncle-vanya-review-london-harold-pinter-theatre-a4343421.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2020/jan/23/uncle-vanya-review-harold-pinter-theatre-london-toby-jones",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/uncle-vanya-review-harold-pinter-theatre-cast-toby-jones-ciaran-hinds-a9300016.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/2020/uncle-vanya-toby-jones-review-at-the-harold-pinter-theatre-london/",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/uncle-vanya-review-new-adaptation-feels-almost-impossibly-contemporary-2nrbmcns6",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/vanya-duke-of-york-s-theatre-review-andrew-scott-chekhov-b1108641.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2023/sep/22/vanya-review-duke-of-yorks-theatre-london",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/andrew-scott-vanya-review-uncle-b2416618.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://inews.co.uk/culture/arts/vanya-duke-of-york-theatre-review-andrew-scott-one-man-chekhov-2635475",
+            "outletId": "i-paper",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/vanya-duke-of-yorks-theatre-review-andrew-scott/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/vanya-review-great-scott-show-is-less-than-the-sum-of-its-parts-0xdnk90jq",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/uncle-vanya-20-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/vanya-review-duke-of-yorks-theatre-london-andrew-scott-simon-stephens-anton-chekhov",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/vanya-review-andrew-scotts-solo-tour-de-force-in-the-west-end_1529237/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2019/jul/31/uncle-vanya-review-rupert-everett-chekhov-theatre-royal-bath-david-hare",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.thestage.co.uk/reviews/2019/uncle-vanya-review-rupert-everett-theatre-royal-bath/",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-theatre-royal-bath-review-rupert-everett-brings/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://www.thetimes.co.uk/article/uncle-vanya-review-tantalising-set-shame-about-the-production-9np39qkcj",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2013/03/15/theater/reviews/vanya-and-sonia-and-masha-and-spike-at-john-golden-theater.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T22:27:26.378Z"
+          }
+        ],
+        "liveCount": 13,
+        "candidateCount": 47
+      },
+      "computedAt": "2026-08-11T22:27:26.378Z"
     },
     {
       "showId": "vida-off-broadway-2026",
