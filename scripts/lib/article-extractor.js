@@ -378,6 +378,19 @@ const PATTERNS = [
   // manually). Verified against the La Cage review → 5631 chars clean.
   ['theatrely.com', /<div[^>]+class="[^"]*rich-text-block[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<div/, 300],
 
+  // pagesonstages.com — WordPress.com (Jetpack), entry-content. Body is a run of
+  // <p class="wp-block-paragraph"> blocks; a "<hr class="wp-block-separator">"
+  // consistently marks the end of the review prose, right before the "Thank you
+  // for reading…" sign-off and an inline Jetpack subscribe-block widget (itself
+  // followed by more nested <div>s for the social-links paragraph). Stopping at
+  // that <hr> avoids having to balance those nested divs. Verified against 3
+  // live reviews (Birthright/Small/Ragtime, 2026-08-10) → 5494/3043/3270 chars,
+  // clean start-to-"I attended this performance on a press pass" end, no bleed.
+  ['pagesonstages.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<hr[^>]+class="[^"]*wp-block-separator/, 300],
+  // Fallback for posts without the press-pass disclosure hr (older/rare shape):
+  // stop at the Jetpack subscribe widget div instead.
+  ['pagesonstages.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+class="[^"]*wp-block-jetpack-subscriptions/, 300],
+
   // WhatsOnStage (whatsonstage.com) — major West End outlet. Review body lives
   // in <div class="news-content">. Trailing social-share icons, the
   // "featured in this story" section, and article-tags all sit AFTER the body

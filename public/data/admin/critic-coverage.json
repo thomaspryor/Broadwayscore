@@ -1,76 +1,20 @@
 {
-  "generatedAt": "2026-08-09T23:58:51.201Z",
+  "generatedAt": "2026-08-11T22:57:13.908Z",
   "current": {
     "totalCritics": 82,
-    "totalGaps": 605,
+    "totalGaps": 1262,
     "gapsByBucket": {
-      "A": 31,
-      "B": 7,
-      "C": 560,
-      "D": 7,
+      "A": 51,
+      "B": 23,
+      "C": 1177,
+      "D": 11,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 605
+      "muckrack": 1262
     }
   },
   "history": [
-    {
-      "date": "2026-05-18",
-      "timestamp": "2026-05-18T10:52:20.309Z",
-      "totalCritics": 70,
-      "totalGaps": 871,
-      "gapsByBucket": {
-        "A": 20,
-        "B": 15,
-        "C": 829,
-        "D": 7,
-        "E": 0
-      },
-      "gapsBySource": {
-        "muckrack": 871
-      },
-      "perCritic": {
-        "Chris Jones": 120,
-        "Elysa Gardner": 109,
-        "Jesse Green": 95,
-        "Alice Saville": 36,
-        "David Rooney": 34,
-        "David Finkle": 34,
-        "Dan Rubins": 31,
-        "Roma Torre": 30,
-        "Frank Scheck": 28,
-        "Melissa Rose Bernardo": 26,
-        "Tim Bano": 26,
-        "Juan A. Ramirez": 25,
-        "Andrzej Lukowski": 25,
-        "Brittani Samuel": 22,
-        "Sarah Hemming": 22,
-        "Bob Verini": 21,
-        "Matt Wolf": 20,
-        "Pete Hempstead": 19,
-        "Helen Shaw": 17,
-        "Patrick Marmion": 17,
-        "Joey Sims": 15,
-        "Hayley Levitt": 15,
-        "Sam Marlowe": 14,
-        "Laura Collins-Hughes": 13,
-        "Matt Windman": 12,
-        "Johnny Oleksinski": 9,
-        "Charles Isherwood": 8,
-        "Tim Teeman": 6,
-        "Sara Holdren": 6,
-        "Mark Kennedy": 4,
-        "Charles McNulty": 3,
-        "Jackson McHenry": 2,
-        "David Gordon": 2,
-        "Joe Dziemianowicz": 1,
-        "Michael Musto": 1,
-        "Frank Rizzo": 1,
-        "Patrick Ryan": 1,
-        "Marianka Swain": 1
-      }
-    },
     {
       "date": "2026-05-25",
       "timestamp": "2026-05-25T11:01:30.997Z",
@@ -625,6 +569,72 @@
         "Jonathan Mandell": 1,
         "Dominic Maxwell": 1
       }
+    },
+    {
+      "date": "2026-08-10",
+      "timestamp": "2026-08-10T10:04:18.425Z",
+      "totalCritics": 82,
+      "totalGaps": 1262,
+      "gapsByBucket": {
+        "A": 51,
+        "B": 23,
+        "C": 1177,
+        "D": 11,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 1262
+      },
+      "perCritic": {
+        "Chris Jones": 121,
+        "Elysa Gardner": 108,
+        "Jesse Green": 82,
+        "Steven Suskin": 63,
+        "David Finkle": 61,
+        "Sarah Hemming": 52,
+        "Dan Rubins": 51,
+        "Frank Scheck": 50,
+        "Roma Torre": 48,
+        "Pete Hempstead": 47,
+        "Andrzej Lukowski": 40,
+        "Laura Collins-Hughes": 40,
+        "Bob Verini": 39,
+        "Austin Fimmano": 38,
+        "Melissa Rose Bernardo": 34,
+        "Tim Bano": 32,
+        "Joey Sims": 31,
+        "Brittani Samuel": 28,
+        "Juan A. Ramirez": 23,
+        "Helen Shaw": 20,
+        "Matt Windman": 18,
+        "Kyle Turner": 18,
+        "Johnny Oleksinski": 17,
+        "Patrick Marmion": 17,
+        "Sara Holdren": 16,
+        "Hayley Levitt": 16,
+        "Charles Isherwood": 15,
+        "Arifa Akbar": 15,
+        "Anya Ryan": 14,
+        "Tom Wicker": 12,
+        "Tim Teeman": 11,
+        "Jackson McHenry": 11,
+        "Alice Saville": 11,
+        "Christopher Kelly": 10,
+        "Matt Wolf": 10,
+        "Dave Fargnoli": 9,
+        "Sam Marlowe": 8,
+        "David Rooney": 7,
+        "Mark Kennedy": 5,
+        "Frank Rizzo": 5,
+        "Jonathan Mandell": 2,
+        "Joe Dziemianowicz": 1,
+        "Robert Hofler": 1,
+        "David Gordon": 1,
+        "Michael Musto": 1,
+        "Dominic Maxwell": 1,
+        "Marianka Swain": 1,
+        "Shania Russell": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -632,7 +642,7 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 117,
+      "missingCount": 121,
       "lastDate": "2026-07-29"
     },
     {
@@ -646,57 +656,57 @@
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 77,
+      "missingCount": 82,
       "lastDate": "2026-04-08"
     },
     {
-      "name": "Dan Rubins",
-      "outlet": "slantmagazine",
+      "name": "Steven Suskin",
+      "outlet": "nysr",
       "tier": 2,
-      "missingCount": 30,
-      "lastDate": "2026-07-21"
+      "missingCount": 63,
+      "lastDate": "2026-06-24"
     },
     {
       "name": "David Finkle",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 28,
-      "lastDate": "2026-06-29"
-    },
-    {
-      "name": "Tim Bano",
-      "outlet": "thestage",
-      "tier": 2,
-      "missingCount": 28,
-      "lastDate": "2026-07-15"
+      "missingCount": 61,
+      "lastDate": "2026-08-02"
     },
     {
       "name": "Sarah Hemming",
       "outlet": "financialtimes",
       "tier": 1,
-      "missingCount": 27,
-      "lastDate": "2026-07-23"
+      "missingCount": 52,
+      "lastDate": "2026-08-03"
     },
     {
-      "name": "Brittani Samuel",
-      "outlet": "broadwaynews",
-      "tier": 1,
-      "missingCount": 24,
-      "lastDate": "2026-07-14"
-    },
-    {
-      "name": "Andrzej Lukowski",
-      "outlet": "timeout-london",
+      "name": "Dan Rubins",
+      "outlet": "slantmagazine",
       "tier": 2,
-      "missingCount": 23,
-      "lastDate": "2026-07-15"
+      "missingCount": 51,
+      "lastDate": "2026-07-21"
     },
     {
-      "name": "Melissa Rose Bernardo",
+      "name": "Frank Scheck",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 18,
+      "missingCount": 50,
+      "lastDate": "2026-07-21"
+    },
+    {
+      "name": "Roma Torre",
+      "outlet": "ny1",
+      "tier": 2,
+      "missingCount": 48,
       "lastDate": "2026-07-29"
+    },
+    {
+      "name": "Pete Hempstead",
+      "outlet": "theatermania",
+      "tier": 2,
+      "missingCount": 47,
+      "lastDate": "2026-06-08"
     }
   ]
 }

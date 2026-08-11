@@ -8,17 +8,48 @@ in one week = $1,287, before any caps existed).
 ## Where the number lives
 
 ONE constant: `DEFAULT_MAX_SESSIONS_PER_DAY` in `scripts/lib/browserbase-caps.js`,
-read through `resolveMaxSessionsPerDay()` by **both** enforcement points:
+read through `resolveMaxSessionsPerDay()`.
+
+As of card #1248 (2026-08-11) it is enforced in the shared chokepoint itself —
+`createBbSession()` in `scripts/lib/browserbase-session.js` checks the live
+Browserbase API session count against the cap before every session create, so
+all 9 call sites are covered, not just the 2 that used to opt in:
 
 | Path | How it counts |
 |---|---|
-| `scripts/collect-review-texts.js` | local usage file (`data/collection-state/browserbase-usage.json`) |
-| `scripts/lib/bww-rr-discover.js` | live Browserbase API session count |
+| `scripts/lib/browserbase-session.js` (`createBbSession`) | live Browserbase API session count, checked on every call — covers all 9 callers |
+| `scripts/collect-review-texts.js` | ALSO keeps its own local usage file (`data/collection-state/browserbase-usage.json`), maxed against live count, for its per-run/per-domain caps |
+| `scripts/lib/bww-rr-discover.js` | ALSO keeps its own live-count pre-check ahead of `createBbSession` — redundant with the chokepoint now, kept for its distinct error message |
 
-They cap the *same account*. They used to each hard-code `250`, with
-bww-rr-discover.js only asserting the invariant in a comment — editing one would
-have left the other at 250, so the cap would read as lowered while half the
-spend stayed uncapped. Now there is one edit site.
+Per-run and per-domain caps are NOT centralized — they need per-process state
+the chokepoint doesn't have, so `collect-review-texts.js`'s own
+`checkBrowserbaseCaps()` call is still the only enforcement for those two.
+
+They cap the *same account*. Editing `DEFAULT_MAX_SESSIONS_PER_DAY` (or the
+`BROWSERBASE_MAX_SESSIONS_PER_DAY` repo variable) now changes the day cap for
+every caller in one edit — no per-caller wiring required for new scripts.
+
+**Known limitations (pre-existing, not new in #1248 — surfaced by ship-check
+adversarial review, documented rather than silently carried forward):**
+- **"Daily" is a rolling 24h window, not a UTC calendar day.** The live-count
+  check (`browserbase-live-usage.js`) counts sessions in the trailing 24h;
+  `collect-review-texts.js`'s local counter resets at UTC midnight. This
+  mismatch predates #1248 (both paths already existed) — just naming it here
+  so a future reader doesn't assume they mean the same window.
+- **Check-then-create is not atomic.** Two concurrent `createBbSession()`
+  calls can both read a live count under the cap and both proceed — this is
+  the same race `bww-rr-discover.js`'s pre-existing live-count check already
+  had; centralizing it doesn't add a new race, just a wider one (all 9
+  callers vs. 1). A hard ceiling would need a provider-side quota or a
+  distributed reservation, out of scope here.
+- **A live-usage API failure fails OPEN** (`fetchLiveBrowserbaseSessionsToday`
+  returns `null` on any error, and `null` is treated as "unknown," not "at
+  cap" — same convention the pre-existing bww-rr-discover.js check used).
+- The chokepoint caches the live count for 15s (`DAY_CAP_CACHE_TTL_MS` in
+  `browserbase-session.js`) so a burst of `createBbSession()` calls shares one
+  live-usage fetch instead of one-per-call — added specifically so
+  centralizing here doesn't defeat `collect-review-texts.js`'s own
+  "re-check live count only every 5th session" cadence.
 
 **Preferred lever is the repo variable, not the code default.**
 `opening-night-poller.yml` injects `BROWSERBASE_MAX_SESSIONS_PER_DAY` from

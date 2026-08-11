@@ -3,49 +3,57 @@
   "showId": "the-producers-west-end-2025",
   "showTitle": "The Producers",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:48:20.291Z",
+  "fetchedAt": "2026-08-10T07:00:55.744Z",
   "tier": "Hidden",
-  "volume": 10,
+  "volume": 12,
   "effectiveVolume": 1.4,
   "relevanceRates": {
     "byPlatform": {
-      "reddit": 0.4
+      "reddit": 0.2,
+      "bluesky": 0.8
     },
-    "overall": 0.4,
-    "classified": 5
+    "overall": 0.5,
+    "classified": 10
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": 150,
-  "baselineMultiple": 2.14,
+  "positivePct": 100,
+  "opinionSample": 1,
+  "weekOverWeekPct": 20,
+  "baselineMultiple": 2,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 2,
-    "bluesky": 0
+    "reddit": 1,
+    "bluesky": 4
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Interval at \"The Producers\" in the West End. So good. Really, really funny. I've never seen it before. Not even the…",
+      "platform": "bluesky",
+      "author": "@rchappo.bsky.social",
+      "url": "https://bsky.app/profile/rchappo.bsky.social/post/3msbqbuikxc2p"
+    }
+  ],
   "counters": {
     "reddit": 5,
-    "bluesky": 0,
-    "x": 5,
-    "wikipedia": 3537
+    "bluesky": 5,
+    "x": 2,
+    "wikipedia": 3312
   },
   "wikipediaTitle": "The Producers (musical)",
   "baseline": {
-    "mean": 6,
-    "weeksOfHistory": 4
+    "mean": 7.2,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
     "reddit": 5,
-    "bluesky": 0
+    "bluesky": 5
   },
   "errors": [],
   "rank": {
-    "position": 11,
-    "total": 52,
-    "text": "11/52 West End"
+    "position": 10,
+    "total": 50,
+    "text": "10/50 West End"
   },
   "compositeScore": 0.7
 }

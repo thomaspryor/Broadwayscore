@@ -732,12 +732,48 @@ function openJobs(entries) {
   return [...foldJobs(entries).values()].filter(j => !TERMINAL_JOB_EVENTS.has(j.event));
 }
 
+// Task #1184 S1: a timed-out job the reconciler resumes ends 'job-retried'
+// (terminal for the OLD jobId) while a SUCCESSOR job continues the same card.
+// Every reader that scores a dispatch by its job's terminal event must follow
+// the chain, or a live/successful resume reads as a failure (ship-check Codex
+// finding: digest-autofix and backlog-drain each scored resumed jobs
+// card-fail). ONE shared implementation here so the two readers cannot drift.
+//
+// Attribution is CAUSAL when possible: bsc-runner stamps the successor's
+// job-spawned entry with resumeOfSession (the session id it continued),
+// matched against the RETRIED entry's own sessionId — a manual `bsc-next
+// --headless` job spawned in the gap can never be credited as the resume
+// (Codex finding: time-ordering alone is not causal). Fallback for entries
+// predating the stamp: earliest spawn AFTER the retry that is itself marked
+// `resumed`. A chain ending at RETRIED (successor not spawned yet, or resume
+// child died pre-spawn) is returned as-is — callers treat it as in-flight
+// within their own orphan bound.
+function followRetryChain(entries, taskId, firstJobId) {
+  const taskEntries = (entries || []).filter(e => e && String(e.taskId) === String(taskId));
+  const jobs = foldJobs(taskEntries);
+  const spawns = taskEntries.filter(e => e.event === JOB_EVENTS.SPAWNED)
+    .sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  let job = jobs.get(firstJobId) || null;
+  const visited = new Set();
+  while (job && job.event === JOB_EVENTS.RETRIED && !visited.has(job.jobId)) {
+    visited.add(job.jobId);
+    const causal = spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId
+      && s.resumeOfSession && job.sessionId && s.resumeOfSession === job.sessionId);
+    const retriedMs = Date.parse(job.ts || '') || 0;
+    const next = causal || spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId
+      && s.resumed === true && (Date.parse(s.ts || '') || 0) >= retriedMs - 5000);
+    if (!next) break;
+    job = jobs.get(next.jobId) || null;
+  }
+  return job;
+}
+
 module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
-  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead,
+  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,

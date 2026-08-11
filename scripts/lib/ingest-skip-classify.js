@@ -79,6 +79,11 @@ const CONFLICT_REASONS = [
   // citation usually means the outlet's own URL was never resolved — the
   // roundup link stood in for it. Visible, not quiet.
   'aggregator-url-mismatch',
+  // Same class, refinement side: the URL's domain resolved to an AGGREGATOR
+  // outlet, so the writer refused to rewrite the real outlet onto it AND
+  // refused the write. Also a CONFLICT, not an expected rejection — a cited
+  // review was dropped and the roundup link stood in for the outlet's own URL.
+  'aggregator-url-refinement-refused',
 ];
 
 // EXPECTED REJECTION = the write was correctly refused and no human action
@@ -99,6 +104,12 @@ const EXPECTED_REJECTION_REASONS = [
   // review — but it stays visible, since a caller producing these in bulk
   // means an upstream extractor is returning empty.
   'empty-unknown',
+  // Tour/regional contamination guard refused the write
+  // (review-file-writer.js:396, hoisted from gather-reviews by task #1150).
+  // A tour-stop or regional-mounting review filed under this show is not a
+  // review of this production — the refusal is correct and permanent, same
+  // footing as cross-market.
+  'tour-review',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -171,10 +182,18 @@ function describeSkip(showId, url, { reason, detail }) {
   if (reason === 'empty-unknown') {
     return `${showId}: ${url} carried no URL, no text and no critic, so there was nothing to write. Expected rejection; if a caller produces these in bulk its extractor is returning empty.`;
   }
+  if (reason === 'tour-review') {
+    return `${showId}: ${url} looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js.`;
+  }
   if (reason === 'aggregator-url-mismatch') {
     return `${showId}: ${url} is an aggregator roundup page, so it was refused rather than filed as an outlet's own review `
       + `— find that outlet's own article URL (the roundup links to it) and ingest that instead. `
       + `Filing the roundup URL under a real outlet is the aggregator_url_mismatch defect validate-review-texts.js fails the trunk on.`;
+  }
+  if (reason === 'aggregator-url-refinement-refused') {
+    return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
+      + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
+      + `If this was a legitimate aggregator star-stub, its stars are lost until the validator gains the star-stub carve-out the write guard already has.`;
   }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }

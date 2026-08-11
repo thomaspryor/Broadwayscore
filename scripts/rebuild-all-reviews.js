@@ -59,6 +59,9 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearWrongProductionUrlYear,
+  hasEnsembleConsensus,
+  isTextStaleRelativeToUrlRewrite,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   isWithinTourLeg,
@@ -66,6 +69,7 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearWrongProductionUkDualMarket,
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
@@ -2260,21 +2264,24 @@ showDirs.forEach(showId => {
       // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
       // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
-      // GUARD: Respect manual reasons, high-confidence CV wrongProduction, and CV wrongArticle
-      // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
+      // Delegates to the named predicate (task #1193) — was inline-only and untested/unreplayed
+      // by scoring-delta.js; shouldAutoClearWrongProductionUrlYear existed but was dead code.
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
           && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
         // Shared with the UK-URL auto-clear below — includes the high-confidence
         // non-review articleType block (Times Sam Ryder interview, 2026-07-08).
         const wpCvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
-        const wpHasManualReason = !!data.wrongProductionReason;
         // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
         // aggregate/listing page is not a dated review, so a URL-year mismatch on
         // it is not a clearable false positive (cousin of the theo-bosanquet
         // /shows/ stub, 2026-07-05).
         const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
           || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
-        if (!wpCvBlocksClear && !wpHasManualReason && !wpIsShowListingUrl) {
+        if (shouldAutoClearWrongProductionUrlYear(data, {
+          isLondonOrOffBroadway: isLondonMarket(showCat) || showCat === 'off-broadway',
+          cvBlocksClear: wpCvBlocksClear,
+          isShowListingUrl: wpIsShowListingUrl,
+        })) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -2478,56 +2485,66 @@ showDirs.forEach(showId => {
             isDateMismatch = true;
           }
         }
+        // Everything below is skipped entirely for structural-flag/date-mismatch
+        // files — preserves the original short-circuit (matters because the try
+        // block below parses data.url with `new URL()`, which throws on malformed
+        // URLs; no need to pay that cost or risk on a file that can't clear anyway).
         if (!isStructuralFlag && !isDateMismatch) {
           // Compute outlet early for wrongProduction override check
           const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
           const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet)
             || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
+          // Registry region 'london' is as strong a signal as a UK URL: the cross-market
+          // flagger only fires when region !== 'london', so a london-region outlet carrying
+          // this flag means the region was backfilled AFTER flagging (or the flag is a
+          // dangling remnant of an interrupted clear). UK blogs on .com domains
+          // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
+          // so without this the flag can never self-heal. Dual-market outlets are
+          // deliberately NOT included — their wrongProduction flags can be genuine
+          // same-title other-market reviews.
+          const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
+            || outletRegionMap[earlyRawOutlet] === 'london';
           try {
             const hostname = new URL(data.url).hostname || '';
             // Use venue-classification's isUkOutletUrl for consistency (handles US outlet exclusions)
-            const { isUkOutletUrl: _isUkUrl } = require('./lib/venue-classification');
-            const isUkUrl = _isUkUrl(data.url);
-            if (isUkUrl || outletIsDualOrUk) {
-              // UK/dual-market outlet + London URL → clear false positive
-              // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
-              // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set.
-              // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
-              // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
-              // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
-              const cvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
-              const hasManualReason = !!data.wrongProductionReason;
-              // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
-              // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
-              // URL on it is not evidence of THIS production. Auto-clearing wp
-              // here re-scored a Birmingham-Rep whatsonstage /shows/ aggregate
-              // stub (4/5) on the Regent's Park Midsummer (2026-07-05). Reviews
-              // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
-              const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
-                || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
-              // Registry region 'london' is as strong a signal as a UK URL: the cross-market
-              // flagger only fires when region !== 'london', so a london-region outlet carrying
-              // this flag means the region was backfilled AFTER flagging (or the flag is a
-              // dangling remnant of an interrupted clear). UK blogs on .com domains
-              // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
-              // so without this the flag can never self-heal. Dual-market outlets are
-              // deliberately NOT included — their wrongProduction flags can be genuine
-              // same-title other-market reviews.
-              const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
-                || outletRegionMap[earlyRawOutlet] === 'london';
-              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
-                delete data.wrongProduction;
-                delete data.wrongProductionNote;
-                data.wrongProductionAutoCleared = isUkUrl
-                  ? `rebuild: UK URL on London show (${hostname})`
-                  : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
-                // At-stamp required: the push-time restore only honors FRESH
-                // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
-                data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
-                try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
-                stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
-              }
+            const isUkUrl = isUkOutletUrl(data.url);
+            // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
+            // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set.
+            // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
+            // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
+            // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
+            const cvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
+            // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
+            // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
+            // URL on it is not evidence of THIS production. Auto-clearing wp
+            // here re-scored a Birmingham-Rep whatsonstage /shows/ aggregate
+            // stub (4/5) on the Regent's Park Midsummer (2026-07-05). Reviews
+            // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
+            const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
+              || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
+            // shouldAutoClearWrongProductionUkDualMarket also checks ensemble
+            // consensus + URL-rewrite staleness internally (#1156/#1162) — no
+            // ctx needed for those since they only read `data`.
+            if (shouldAutoClearWrongProductionUkDualMarket(data, {
+              isLondonMarketShow: isLondonMarket(showCat),
+              isUkUrl,
+              outletIsDualOrUk,
+              outletIsLondonRegion,
+              isDateMismatch,
+              isShowListingUrl,
+              cvBlocksClear,
+            })) {
+              delete data.wrongProduction;
+              delete data.wrongProductionNote;
+              data.wrongProductionAutoCleared = isUkUrl
+                ? `rebuild: UK URL on London show (${hostname})`
+                : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
+              // At-stamp required: the push-time restore only honors FRESH
+              // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
+              data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+              try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+              stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
             }
           } catch {}
         }

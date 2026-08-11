@@ -1,56 +1,184 @@
 {
-  "generatedAt": "2026-08-05T16:17:31.345Z",
+  "generatedAt": "2026-08-10T12:32:28.852Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "hit-machine-off-west-end-2026",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
-    "tender-off-west-end-2026",
-    "rosie-odonnell-common-knowledge-off-broadway-2026",
-    "disruption-off-broadway-2026"
+    "the-family-album-regional-2026",
+    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+    "midnight-at-the-never-get-west-end-2026",
+    "shifters-off-broadway-2026",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "hit-machine-off-west-end-2026",
-      "title": "Hit Machine",
-      "openingDate": "2026-07-15",
+      "showId": "the-family-album-regional-2026",
+      "title": "The Family Album",
+      "openingDate": "2026-07-24",
       "sampleState": "measured",
-      "sampleReason": "opened 22d ago",
-      "naiveQuery": "Hit Machine Soho Theatre review",
+      "sampleReason": "opened 18d ago",
+      "naiveQuery": "The Family Album Sheila and Hughes Potiker Theatre, La Jolla Playhouse, San Diego, CA review",
       "candidates": [
         {
-          "url": "https://www.theguardian.com/stage/2026/jul/15/hit-machine-review-soho-theatre",
+          "url": "https://www.sandiegouniontribune.com/2026/07/27/review-la-jolla-playhouses-family-album-a-heartbreaking-but-moving-musical-about-self-acceptance/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-hit-machine-soho-theatre",
+          "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 8
+    },
+    {
+      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
+      "title": "The Wind in the Willows - Theatre On Kew",
+      "openingDate": "2026-07-25",
+      "sampleState": "measured",
+      "sampleReason": "opened 17d ago",
+      "naiveQuery": "The Wind in the Willows - Theatre On Kew Theatre on Kew review",
+      "candidates": [
+        {
+          "url": "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.londonpubtheatres.com/review-hit-machine-by-jonathan-caren-at-soho-theatre-8-july-15-august-2026",
+          "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://www.harrytheatrelife.co.uk/post/review-hit-machine-soho-theatre-london",
+          "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 9
+        }
+      ],
+      "onDiskCount": 6
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "title": "Midnight at the Never Get",
+      "openingDate": "2026-07-20",
+      "sampleState": "measured",
+      "sampleReason": "opened 22d ago",
+      "naiveQuery": "Midnight at the Never Get Menier Chocolate Factory review",
+      "candidates": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-midnight-at-the-never-get-menier-chocolate-factory",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://everything-theatre.co.uk/2026/07/review-hit-machine-soho-theatre/",
+          "url": "https://www.theguardian.com/stage/2026/jul/21/midnight-at-the-never-get-review-ben-platt-menier-chocolate-factory-london-",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://sohotheatre.com/events/hit-machine/",
+          "url": "https://theatreandtonic.co.uk/blog/midnight-at-the-never-get-menier-chocolate-factory-review",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/midnight-at-the-never-get-review-menier-chocolate-factory",
           "state": "excluded",
-          "reason": "rejectionReason"
+          "reason": "duplicateOf"
         },
         {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/hit-machine-by-jonathan-caren-soho-theatre",
-          "state": "gap",
+          "url": "https://lovelondonloveculture.com/2026/07/23/review-round-up-midnight-at-the-never-get-menier-chocolate-factory/",
+          "state": "excluded",
+          "reason": "blockedReviewUrl"
+        },
+        {
+          "url": "https://www.thereviewshub.com/midnight-at-the-never-get-menier-chocolate-factory-london/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 9
+        }
+      ],
+      "onDiskCount": 29
+    },
+    {
+      "showId": "shifters-off-broadway-2026",
+      "title": "Shifters",
+      "openingDate": "2026-07-16",
+      "sampleState": "measured",
+      "sampleReason": "opened 26d ago",
+      "naiveQuery": "Shifters Cherry Lane Theatre review",
+      "candidates": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-shifters-at-the-cherry-lane-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/shifters-off-broadway-review",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.nytimes.com/2026/07/17/theater/shifters-review.html",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://newyorktheater.me/2026/07/15/shifters-review/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-in-shifters-piecing-together-a-first-great-love_1845923/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 27
+    },
+    {
+      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "title": "Les Misérables: The Arena Concert Spectacular",
+      "openingDate": "2026-07-28",
+      "sampleState": "measured",
+      "sampleReason": "opened 14d ago",
+      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
+      "candidates": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/les-miserables-the-arena-concert-spectacular-review",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://1minutecritic.substack.com/p/les-miserables-the-arena-concert-spectacular-review",
+          "state": "live",
           "reason": null
         }
       ],
@@ -61,165 +189,15 @@
         }
       ],
       "onDiskCount": 15
-    },
-    {
-      "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
-      "title": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse)",
-      "openingDate": "2026-07-08",
-      "sampleState": "measured",
-      "sampleReason": "opened 29d ago",
-      "naiveQuery": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse) Soho Playhouse review",
-      "candidates": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-why-i-stuck-a-flare-up-my-arse-for-england-southwark-playhouse",
-          "state": "gap",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 11
-    },
-    {
-      "showId": "tender-off-west-end-2026",
-      "title": "Tender",
-      "openingDate": "2026-07-09",
-      "sampleState": "measured",
-      "sampleReason": "opened 28d ago",
-      "naiveQuery": "Tender Bush Theatre review",
-      "candidates": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/jul/15/tender-review-bush-theatre-london",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-tender-bush-theatre",
-          "state": "excluded",
-          "reason": "wrongShow"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/tender-review-bush-theatre-2026",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.thereviewshub.com/tender-bush-theatre-london/",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/07/19/review-round-up-tender-bush-theatre/",
-          "state": "excluded",
-          "reason": "isRoundupArticle"
-        },
-        {
-          "url": "https://saltertonartsreview.com/2026/07/tender-bush-theatre-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/tender-bush-theatre/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/07/review-tender-bush-theatre/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.bushtheatre.co.uk/event/tender-2026/",
-          "state": "gap",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 35
-    },
-    {
-      "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
-      "title": "Rosie O'Donnell: Common Knowledge",
-      "openingDate": "2026-07-25",
-      "sampleState": "measured",
-      "sampleReason": "opened 12d ago",
-      "naiveQuery": "Rosie O'Donnell: Common Knowledge Daryl Roth Theatre review",
-      "candidates": [
-        {
-          "url": "https://newyorktheater.me/2026/06/13/rosie-odonnells-common-knowledge-coming-to-nyc/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/common-knowledge-off-broadway-review-rosie-odonnell",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.darylroththeatre.com/production/rosie-odonnell-common-knowledge/",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 10
-    },
-    {
-      "showId": "disruption-off-broadway-2026",
-      "title": "Disruption",
-      "openingDate": "2026-08-02",
-      "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "naiveQuery": "Disruption The Romulus Linney Courtyard Theatre at The Pershing Square Signature Center review",
-      "candidates": [
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-disruption-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-september-27-2026/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/show/47049-disruption",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/disruption-pershing-square-signature-center",
-          "state": "excluded",
-          "reason": "aggregator-own-page"
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 22
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 6,
+    "gapCount": 4,
     "gapShows": [
-      "hit-machine-off-west-end-2026",
-      "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
-      "tender-off-west-end-2026",
-      "disruption-off-broadway-2026"
+      "the-family-album-regional-2026",
+      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
     ]
   }
 }

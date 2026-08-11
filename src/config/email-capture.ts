@@ -133,12 +133,20 @@ const presets: Record<string, EmailCaptureConfig> = {
     mobileScrollGate: {
       enabled: true,
       scrollThreshold: 0.65,
-      minTimeOnPageSec: 10,
+      // Raised 10 -> 30 (task #586, 2026-08-10): 659 shown/week at 0.6%
+      // conversion, 68% dismiss — a mobile visitor 10s into a page has
+      // shown no more engagement than the reflexive-fire cases the
+      // exit-intent dwell gate was built to exclude. NOT covered by the
+      // gate-cold-start experiment lock (only `enabled` is locked below;
+      // exitIntent.minTimeOnPageSec stays at 5 — that one IS locked, see
+      // the "EXPERIMENT LOCK" tests in gate-logic.test.mjs and
+      // docs/experiments/gate-cold-start.md, readout due 2026-08-18).
+      minTimeOnPageSec: 30,
     },
     passiveGateCooldownDays: 14,
     minPageViewsForPassiveGate: 2,
     mobileScrollGateVariants: {
-      control: { scrollThreshold: 0.65, minTimeOnPageSec: 10 },
+      control: { scrollThreshold: 0.65, minTimeOnPageSec: 30 },
       'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
     },
   },

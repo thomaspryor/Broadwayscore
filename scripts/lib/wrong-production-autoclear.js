@@ -253,13 +253,11 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  // A declared priorRuns/tourLegs window says 'this date is legitimate for this
-  // production'. It cannot answer 'this text is about a different production' —
-  // which is exactly what the ensemble verdict asserts. Operator-trust over CV
-  // (the Phase 1 design) does not extend to overruling three models that read
-  // the text and named another show (ship-check 2026-08-09: the first cut of
-  // this guard covered only 4 of the 6 auto-clear paths).
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
+  // Defense-in-depth (#1156 ship-check): structurally, ensemble rejections
+  // never populate wrongProductionNote/Reason with a DATE_GUARD_PREFIXES/
+  // AUTO_REASON value, so this can't currently overlap with an ensemble
+  // verdict — but check explicitly rather than relying on that coincidence.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
 
@@ -289,28 +287,34 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
   const hasManualReason = !!reason && !reasonIsAuto;
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  // A declared priorRuns/tourLegs window says 'this date is legitimate for this
-  // production'. It cannot answer 'this text is about a different production' —
-  // which is exactly what the ensemble verdict asserts. Operator-trust over CV
-  // (the Phase 1 design) does not extend to overruling three models that read
-  // the text and named another show (ship-check 2026-08-09: the first cut of
-  // this guard covered only 4 of the 6 auto-clear paths).
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
+  // Defense-in-depth (#1156 ship-check) — see shouldAutoClearWrongProductionPriorRun.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !hasManualReason && !cvConfirmedWrongArticle;
 }
 
 /**
- * Decide whether a wrongShow-rejected file carries a strong-evidence ensemble
- * verdict that no domain/market heuristic should be allowed to override.
+ * Decide whether a wrongProduction/wrongShow-rejected file carries a
+ * strong-evidence ensemble verdict that no domain/market heuristic should be
+ * allowed to override.
  *
- * Background (Notion 3b7637c5-416f-810a, task #1146): the rebuild's
- * UK/major-outlet and allowCrossMarket auto-clear paths strip wrongShow
- * unconditionally once their domain/market conditions match — including when
- * scripts/llm-scoring/index.ts already ran 3 independent models (claude +
- * openai + gemini) against the actual fetched text and >=2 of them
- * independently named a DIFFERENT show. ensemble-scorer.ts's
- * combineOutcomes() only produces a top-level `rejected` verdict (and
- * therefore only ever writes rejectionReason='wrong_show' + rejectedBy=
+ * THE single definition of "the ensemble agreed", consulted by all six
+ * auto-clear predicates in this file plus audit-wrongshow-autoclear-conflicts.js
+ * and autoclear-vs-ensemble-scan.js. Two parallel #1146/#1156 sessions each
+ * landed a version of this predicate (hasEnsembleConsensus here,
+ * hasEnsembleRejection on the coverage-defects branch) with identical
+ * behaviour; they were collapsed into this one at merge (2026-08-09). Do not
+ * reintroduce a second copy — a divergence between them is exactly the kind of
+ * quiet inconsistency that lets an auto-clear overrule the models again.
+ *
+ * Background (Notion 3b7637c5-416f-810a, task #1146; generalized to
+ * wrongProduction under #1156): the rebuild's UK/major-outlet and
+ * allowCrossMarket/allowEarlyDate auto-clear paths strip wrongProduction/
+ * wrongShow unconditionally once their domain/market conditions match —
+ * including when scripts/llm-scoring/index.ts already ran 3 independent
+ * models (claude + openai + gemini) against the actual fetched text and >=2
+ * of them independently rejected it. ensemble-scorer.ts's combineOutcomes()
+ * only produces a top-level `rejected` verdict (and therefore only ever
+ * writes rejectionReason='wrong_production'|'wrong_show' + rejectedBy=
  * 'ensemble-scoreability-check') when `rejections.length >= 2` — so the mere
  * presence of that pairing on disk is itself the >=2/3-model-agreement
  * receipt; rejectionReasoning's `model: reasoning; model: reasoning` shape
@@ -326,6 +330,7 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
  * models identified the fetched text as a Noughts & Crosses review).
  *
  * @param {object} data - the review JSON object
+ * @param {'wrong_production'|'wrong_show'} reason
  * @returns {boolean}
  */
 // The 4 model tags ensemble-scorer.ts's combineOutcomes() ever writes
@@ -338,9 +343,9 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
 // (task #1146): verified `8:00pm` alone satisfied the old `[\w-]+\s*:` test.
 const ENSEMBLE_MODEL_TAG_RE = /(?:^|;\s*)(claude|openai|gemini|kimi)\s*:/gi;
 
-function hasEnsembleWrongShowConsensus(data) {
+function hasEnsembleConsensus(data, reason) {
   if (!data) return false;
-  if (data.rejectionReason !== 'wrong_show') return false;
+  if (data.rejectionReason !== reason) return false;
   if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
   const reasoning = data.rejectionReasoning;
   if (!reasoning || typeof reasoning !== 'string') return false;
@@ -396,62 +401,21 @@ function isTextStaleRelativeToUrlRewrite(data) {
  *
  * Returns true ONLY if both conditions hold:
  *   - One of allowEarlyDate / allowCrossMarket is true (user explicit override)
- *   - There is NO explicit wrongProductionReason and NO high-confidence CV signal
- *     (so the flag is safe to clear)
+ *   - There is NO explicit wrongProductionReason, NO high-confidence CV signal,
+ *     and NO unanimous ensemble wrong_production rejection (so the flag is
+ *     safe to clear)
  *
  * @param {object} data - The review JSON object
  * @returns {boolean} - true if it's safe to delete wrongProduction
  */
-/**
- * Did the multi-model ensemble scoreability check reject this file for `kind`?
- *
- * The defect this closes (tracker #2 / task #1146, 2026-08-09): a blanket domain
- * heuristic ("UK outlet URL on a London show") and a user override
- * (allowCrossMarket) both deleted `wrongShow` even when claude + openai + gemini
- * had independently returned wrong_show AND named a different production. 28
- * corpus files were in that state; romeo-and-juliet-west-end-2026's London
- * Theatre file was LIVE serving Noughts & Crosses text. The identical hole
- * exists on wrongProduction (42 files by the same scan), so both are guarded
- * here rather than patching one flag and leaving its larger cousin.
- *
- * Reads STRUCTURED fields only — `rejectedBy` and `rejectionReason`, which the
- * scoreability check writes as a fixed vocabulary (rejectedBy:
- * 'ensemble-scoreability-check' on 2,101 corpus files). It deliberately does NOT
- * parse `rejectionReasoning`, which is LLM-authored prose that moves with
- * PROMPT_VERSION: a prose parser would be a second, drifting representation of
- * a fact the producer already records structurally, and its "couldn't parse →
- * assume no verdict" branch would silently restore this very bug.
- *
- * @param {object} data review JSON
- * @param {'wrong_show'|'wrong_production'} kind
- * @returns {boolean}
- */
-function hasEnsembleRejection(data, kind) {
-  if (!data || data.rejectionReason !== kind) return false;
-  if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
-  // Reuse the SAME >=2-distinct-model-tag rule hasEnsembleWrongShowConsensus
-  // applies, rather than accepting the rejectedBy pairing on its own. That
-  // function landed on origin/main from a parallel #1146 session while this
-  // branch was in flight; its model count is the defensive check for a future
-  // writer that reuses rejectedBy without going through combineOutcomes(), and
-  // quietly widening the rule here would have overridden a shipped decision
-  // with a merge. One definition of "the ensemble agreed", used by both.
-  const models = new Set();
-  ENSEMBLE_MODEL_TAG_RE.lastIndex = 0;
-  let m;
-  while ((m = ENSEMBLE_MODEL_TAG_RE.exec(String(data.rejectionReasoning || '')))) {
-    models.add(m[1].toLowerCase());
-  }
-  return models.size >= 2;
-}
-
 function shouldAutoClearWrongProduction(data) {
   if (data.wrongProduction !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
   const hasManualReason = !!data.wrongProductionReason;
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
 
@@ -464,11 +428,10 @@ function shouldAutoClearWrongProduction(data) {
 function shouldAutoClearWrongShow(data) {
   if (data.wrongShow !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
-  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   const hasManualReason = !!data.wrongShowReason;
   const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  if (hasEnsembleWrongShowConsensus(data)) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !hasManualReason && !cvConfirmedWrong;
 }
@@ -480,27 +443,31 @@ function shouldAutoClearWrongShow(data) {
  * that doesn't match the show's season. For West End and off-Broadway shows this
  * is a known false-positive source (transfers, unconventional year tags) and the
  * rebuild exempts them — but only if the flag wasn't set for some OTHER explicit
- * reason (manual audit, high-confidence CV).
+ * reason (manual audit, high-confidence CV, a show-listing/aggregate URL).
  *
  * Callers pass `isLondonOrOffBroadway` so this lib stays decoupled from
- * isLondonMarket() / show-category imports.
+ * isLondonMarket() / show-category imports. `cvBlocksClear` and
+ * `isShowListingUrl` are computed by the caller (rebuild-all-reviews.js) —
+ * same ctx shape as the sibling shouldAutoClearWrongProductionUkDualMarket —
+ * so this lib doesn't need to require review-guards.js / cross-production-guards.js.
  *
  * @param {object} data
  * @param {object} ctx
  * @param {boolean} ctx.isLondonOrOffBroadway - true if showCat is london/off-broadway
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {boolean} ctx.isShowListingUrl - true if data.url is a /shows/ aggregate/listing page
  * @returns {boolean}
  */
-function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway } = {}) {
+function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
   if (data.wrongProduction !== true) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
   if (!isLondonOrOffBroadway) return false;
-  if (hasEnsembleRejection(data, 'wrong_production')) return false;
-  const hasManualReason = !!data.wrongProductionReason;
-  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
-    && data.contentVerification?.confidence === 'high';
-  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-    && data.contentVerification?.confidence === 'high';
-  return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
+  if (cvBlocksClear) return false;
+  if (isShowListingUrl) return false;
+  if (data.wrongProductionReason) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
 }
 
 /**
@@ -526,10 +493,9 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   if (!isLondonMarketShow) return false;
   if (!isUkOutletUrl) return false;
   if (dateMismatchOver90d) return false;
-  if (hasEnsembleRejection(data, 'wrong_show')) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
-  if (hasEnsembleWrongShowConsensus(data)) return false;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
   return !isWrongArticle && !hasManualReason;
 }
@@ -596,13 +562,79 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
   return nowInWindow === true;
 }
 
+/**
+ * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
+ * strip wrongProduction from a London-market show reviewed by a UK or
+ * dual-market outlet.
+ *
+ * Background (task #1189): this was the largest wrongProduction auto-clear
+ * path (rebuild-all-reviews.js:2464-2534) but, unlike shouldAutoClearWrongProduction/
+ * shouldAutoClearWrongShowUkUrl/shouldAutoClearWrongShow, it was never
+ * extracted into a named, unit-testable predicate — leaving it invisible to
+ * scoring-delta.js's mandated inclusion replay (CLAUDE.md rule 12.7).
+ *
+ * A UK-outlet URL (or a dual-market/london-registry-region outlet) on a
+ * London-market show is a strong signal the wrongProduction flag is a
+ * cross-market false positive — but only when nothing else outranks that
+ * heuristic: a structural date/URL-year flag, a review that genuinely
+ * predates the show, explicit CV confirmation, a manual reason, a show-
+ * listing (not dated-review) URL, or a unanimous ensemble wrong_production
+ * verdict / stale-relative-to-URL-rewrite text (task #1156/#1162 generalized
+ * the ensemble-consensus guard — already used by shouldAutoClearWrongShowUkUrl
+ * — to this wrongProduction path too; landed on main while this extraction
+ * was in flight, reconciled here at merge time).
+ *
+ * Callers compute the URL/outlet/date classification (isUkUrl, outletIsDualOrUk,
+ * outletIsLondonRegion, isDateMismatch, isShowListingUrl, cvBlocksClear) so this
+ * module stays decoupled from venue-classification, review-normalization,
+ * cross-production-guards, and review-guards.js (which itself requires this
+ * module — see review-guards.js:598 — so importing back would be circular).
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.isLondonMarketShow - isLondonMarket(showCat)
+ * @param {boolean} ctx.isUkUrl - venue-classification's isUkOutletUrl(data.url)
+ * @param {boolean} ctx.outletIsDualOrUk - outlet is in DUAL_MARKET_OUTLETS or registry region 'london'
+ * @param {boolean} ctx.outletIsLondonRegion - registry region 'london' specifically (subset of outletIsDualOrUk)
+ * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
+ * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isLondonMarketShow) return false;
+  if (!data.url) return false;
+
+  const wpNote = data.wrongProductionNote || '';
+  const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
+    || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
+  if (isStructuralFlag) return false;
+  if (ctx.isDateMismatch) return false;
+
+  // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
+  // or specifically registry-region 'london' (dual-market outlets alone are
+  // NOT enough here — their flags can be genuine same-title other-market
+  // reviews, see the inline comment this predicate replaces).
+  if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
+  if (!ctx.isUkUrl && !ctx.outletIsLondonRegion) return false;
+
+  if (ctx.cvBlocksClear) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+
+  return true;
+}
+
 module.exports = {
-  hasEnsembleRejection,
+  hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
-  hasEnsembleWrongShowConsensus,
   isTextStaleRelativeToUrlRewrite,
   isWithinPriorRun,
   hasDeclaredPriorRuns,
@@ -612,4 +644,5 @@ module.exports = {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearWrongProductionUkDualMarket,
 };

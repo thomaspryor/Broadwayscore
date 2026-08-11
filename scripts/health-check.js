@@ -38,6 +38,7 @@ const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = 
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
+const { assessAutofixEffectiveness } = require('./lib/autofix-effectiveness');
 // Discord daily reports removed — email digest is the single notification channel.
 
 // Generate a signed one-tap approve URL for a fix workflow.
@@ -70,6 +71,17 @@ const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot
 // `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
 
 const AUTO_FIX_PLAYBOOK = [
+  // Card #1199. A check with NO playbook entry defaults to urgency 'low'
+  // (~L3271), which drops it out of `actionable` entirely: it never reaches
+  // routeAlert, and renders as an anonymous "+N low-priority items monitoring
+  // themselves (no action needed)" line — no name, no rate, no hint. For a
+  // check whose entire purpose is to end a chronic failure's invisibility,
+  // that would have shipped the measurement invisible, which is the exact
+  // defect the card exists to close (caught by the ship-check reviewer).
+  // 'this-week', not 'fix-now': the retry layer recovers the WORK, so a high
+  // dead rate is expensive and worth chasing but never data loss.
+  { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week',
+    humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
@@ -123,6 +135,19 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: 'An outlet\'s "does not review theatre" flag is stale or contradicted by actual coverage. Open Claude Code and say: "Check the coverageExpectation drift and re-decide the flagged outlets."' },
   { match: /^Quality: outlet-heartbeat red flags$/, urgency: 'this-week',
     humanAction: 'One or more critic outlets have gone quiet for 2+ straight weekly checks. Open Claude Code and say: "Check the outlet-heartbeat red flags and find out if the outlet stopped reviewing or an extractor broke."' },
+
+  // Silent-exclusion detectors (#1147 tracker, card #1188, ship-check
+  // finding). Without explicit entries these fall through to the generic
+  // /^Quality:/ route below and get described as a scored-review-percentage
+  // problem, which is not what either measures — same trap the SERP census
+  // recall entry above exists to avoid.
+  { match: /^Quality: missing contentTier$/, urgency: 'this-week',
+    humanAction: 'A review-text file has fullText + a real byline + no rejection flags but no contentTier, so it is not reaching reviews.json. Open Claude Code and say: "Check the missing contentTier gap named in this check and restore contentTier on that review-text file."' },
+  { match: /^Quality: outlet domain moves$/, urgency: 'this-week',
+    humanAction: 'An unregistered host name-matches a known outlet — probably that outlet moved to a new domain (e.g. a critic switching to Substack) and reviews on the new host are being silently dropped. Open Claude Code and say: "Check the probable outlet domain move named in this check, confirm it, and add the host to that outlet\'s domainAliases."' },
+  { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
+    humanAction: 'An outlet has a spike in stub-tier (0-char extraction) reviews collected in the last 30 days — the signature of a site redesign breaking its article-extractor.js pattern (this is exactly what happened with TheaterMania in 2026). Open Claude Code and say: "Check the outlet stub-rate flag named in this check, confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet."' },
+
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
@@ -976,6 +1001,141 @@ function checkQuality() {
       return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
     }),
 
+    // Silent-exclusion detectors (#1147 tracker, card #1188): a pipeline stage
+    // refuses to include a review and records nothing an operator would ever
+    // look at. Two live incidents, both fixed by hand with no detector left
+    // behind — this is that detector, wired into the existing daily digest
+    // rather than a new cron. Advisory `this-week` warns via the /^Quality:/
+    // playbook route, not a page: both predicates report CANDIDATES for a
+    // human to confirm, never write.
+    runCheck('Quality: missing contentTier', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
+      let showsById = {};
+      try {
+        const showsArr = readJSON(path.join(DATA_DIR, 'shows.json'));
+        for (const s of (Array.isArray(showsArr) ? showsArr : showsArr.shows) || []) {
+          if (s && s.id) showsById[s.id] = s;
+        }
+      } catch { /* shows.json unreadable — scan degrades to no show-context checks */ }
+      let hits = scanMissingContentTier(rtDir, showsById);
+      // rebuild-all-reviews.js reclassifies contentTier unconditionally on
+      // every pass (in-memory, before the review is pushed to reviews.json),
+      // so a source file missing contentTier does NOT necessarily mean the
+      // review is currently absent — only that its source file's write-back
+      // failed or hasn't run yet. Cross-check against the live reviews.json
+      // so this check reports the residual gap, not every stale source file.
+      const reviewsPath = path.join(DATA_DIR, 'reviews.json');
+      if (hits.length > 0 && fs.existsSync(reviewsPath)) {
+        try {
+          const live = readJSON(reviewsPath);
+          // Keyed by url+showId, not url alone (ship-check finding): a
+          // review URL reused across two DIFFERENT shows (rare, but review
+          // URLs aren't validated globally-unique) must not let one show's
+          // live entry suppress a genuine gap under a different show.
+          const liveUrlShowKeys = new Set(
+            (live.reviews || []).map((r) => (r.url ? `${r.url}|${r.showId}` : null)).filter(Boolean),
+          );
+          const liveTriples = new Set(
+            (live.reviews || []).map((r) => `${r.showId}|${String(r.outletId || '').toLowerCase()}|${String(r.criticName || '').toLowerCase().trim()}`),
+          );
+          // Match on url+showId FIRST when the hit has a url: two review-text
+          // files can share showId+outletId+criticName (a republished
+          // article, or byline-enrichment landing on two separate URLs) — the
+          // coarser triple match alone would let one file already live in
+          // reviews.json mask the OTHER file's genuine gap (ship-check
+          // finding). Only fall back to the triple match when the hit has no
+          // url to compare.
+          hits = hits.filter((h) => {
+            if (h.url) return !liveUrlShowKeys.has(`${h.url}|${h.showId}`);
+            return !liveTriples.has(`${h.showId}|${String(h.outletId || '').toLowerCase()}|${String(h.criticName || '').toLowerCase().trim()}`);
+          });
+        } catch { /* reviews.json unreadable — report the unfiltered (safe-direction) hit list */ }
+      }
+      if (hits.length === 0) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: 'No scored reviews missing contentTier' };
+      }
+      const worst = hits[0];
+      return {
+        name: 'Quality: missing contentTier',
+        status: 'warn',
+        message: `${hits.length} review(s) have fullText + a real byline + no rejection flags but NO contentTier, and are NOT in reviews.json (e.g. ${worst.showId}/${worst.file})`,
+        hint: 'A review-text file lost its contentTier without fullText changing, so rebuild never re-derives it. Run classifyContentTier on it and restore contentTier by hand, or add contentTier to the show\'s review file directly.',
+      };
+    }),
+
+    runCheck('Quality: outlet domain moves', () => {
+      const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
+      const censusPath = path.join(AUDIT_DIR, 'unknown-aggregator-outlets.json');
+      if (!fs.existsSync(registryPath) || !fs.existsSync(censusPath)) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: 'Skipped (registry or unknown-outlet census not present)' };
+      }
+      const { findProbableDomainMoves } = require('./lib/silent-exclusion-detectors');
+      let outlets, census;
+      try {
+        outlets = readJSON(registryPath)?.outlets;
+        census = readJSON(censusPath);
+      } catch (parseErr) {
+        // A malformed/mid-write file is a soft signal (retry next run), not a
+        // crash — matches the sibling checks' pattern (e.g. Sync: grosses
+        // weekEnding, Scoring: batch state) rather than falling through to
+        // runCheck's generic try/catch, which would report 'error' and feed
+        // the digest's escalation path for what's really a transient read.
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Could not parse registry or census: ${parseErr.message}`, hint: 'Likely a mid-write file — should clear on the next run' };
+      }
+      const ts = census?.generatedAt;
+      const age = ts ? hoursAgo(ts) : Infinity;
+      if (age > 48) {
+        return { name: 'Quality: outlet domain moves', status: 'warn', message: `Unknown-outlet census is ${formatAge(age)} old (>48h)`, hint: 'The census that this check mines may be stale — check what writes data/audit/unknown-aggregator-outlets.json' };
+      }
+      const moves = findProbableDomainMoves(outlets, census?.outlets || []);
+      if (moves.length === 0) {
+        return { name: 'Quality: outlet domain moves', status: 'pass', message: `No probable domain moves in ${census?.outlets?.length || 0} unregistered host(s)` };
+      }
+      const worst = moves[0];
+      return {
+        name: 'Quality: outlet domain moves',
+        status: 'warn',
+        message: `${moves.length} unregistered host(s) name-match a registered outlet (e.g. ${worst.host} → ${worst.outletId}) — probable domain move dropping reviews via domain-mismatch`,
+        hint: 'Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases in data/outlet-registry.json.',
+      };
+    }),
+
+    // Outlet stub-rate monitor (card #100): when an outlet redesigns its
+    // site, its article-extractor.js pattern can silently stop matching —
+    // extractArticleTextFromUrl returns 0 chars, the review saves as
+    // contentTier:stub, and it never scores. Nothing alerted on this until
+    // TheaterMania's 2026 Bootstrap redesign left 26 reviews stuck as stubs
+    // corpus-wide, caught only by accident chasing one unrelated show. A
+    // healthy outlet has old/legacy stub debt; a broken extractor produces a
+    // SPIKE in the stub rate among reviews collected in the last 30 days —
+    // that's the signal computeOutletStubRates() looks for. Advisory
+    // `this-week` warn via the /^Quality:/ playbook route, not a page: it
+    // reports a candidate for a human to confirm (real redesign vs. a run of
+    // genuinely un-extractable pages), never writes.
+    runCheck('Quality: outlet stub rate', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: outlet stub rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { collectReviewRecords, computeOutletStubRates } = require('./audit-outlet-stub-rate.js');
+      const records = collectReviewRecords(rtDir);
+      const { outlets, flaggedOutletIds } = computeOutletStubRates(records);
+      if (flaggedOutletIds.length === 0) {
+        return { name: 'Quality: outlet stub rate', status: 'pass', message: `No broken-extractor signature in ${outlets.length} outlet(s), ${records.length} review(s)` };
+      }
+      const worst = outlets.find((o) => o.outletId === flaggedOutletIds[0]);
+      return {
+        name: 'Quality: outlet stub rate',
+        status: 'warn',
+        message: `${flaggedOutletIds.length} outlet(s) show a broken-extractor signature (worst: ${worst.outletId} — ${worst.recentStubCount}/${worst.recentTotal} recent stubs, ${(worst.recentStubRate * 100).toFixed(0)}%)`,
+        hint: 'Run `node scripts/audit-outlet-stub-rate.js` — likely a redesigned article-extractor.js pattern no longer matching. See tests/unit/theatermania-extractor.test.mjs for the fix pattern (regression test + updated extraction pattern).',
+      };
+    }),
+
     // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
     // check-affiliate-health.js runs earlier in the same data-health-check.yml
     // job and writes this snapshot; this line is (a) the digest surface for
@@ -1711,7 +1871,11 @@ async function checkAlertRouterDeadman(isCI) {
   // regardless of history; if it failed, that's live broken state even if
   // older attempts this week succeeded.
   if (mostRecent.ok) {
-    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded` }];
+    // "succeeded" here means the LAUNCH succeeded — not that the session did any
+    // work. Saying otherwise is what let a fully dead fleet read 42/42 green for
+    // 13 days (2026-08-10). Whether jobs actually fixed anything is the separate
+    // "Autofix: jobs actually succeeding" row, which reads outcomes.
+    return [{ name: 'Alert Router: dispatch deadman', status: 'pass', message: `${succeeded}/${attempts.length} auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see "Autofix: jobs actually succeeding" for whether they fixed anything)` }];
   }
 
   // Most recent attempt failed. Surface the most recent REAL error
@@ -1748,6 +1912,65 @@ async function checkAlertRouterDeadman(isCI) {
     status: 'error',
     message,
     hint: 'Check the notion-brain.js shell-out first (workflow env/dependency gap, e.g. missing npm ci) before assuming NOTION_API_KEY — read the actual last error above, not a guess.',
+  }];
+}
+
+// --- Auto-fix effectiveness (2026-08-10 incident) ---
+//
+// The owner received a near-identical morning digest 13 days running. Cause: the
+// local `claude` CLI was logged out, so every headless auto-fix job started,
+// emitted zero bytes, and hit its own timeout — leaving cards `in_progress`
+// forever and the same ~31 issues re-reporting each morning.
+//
+// "Alert Router: dispatch deadman" did NOT catch it: it counts dispatch ATTEMPTS,
+// so it read `42/42 auto-dispatch attempts succeeded` while the true fix rate was
+// zero. This row reads the OUTCOMES the ledger already records (card-pass /
+// card-fail) and is the difference between noticing on day 2 and on day 13.
+function checkAutofixEffectiveness() {
+  const name = 'Autofix: jobs actually succeeding';
+  const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
+  let raw;
+  try {
+    raw = fs.readFileSync(file, 'utf-8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      // WARN, never ERROR. The ledger is untracked, so in CI it is always absent:
+      // erroring here would paint the digest red every single morning forever —
+      // including after the loop is fully healthy — and burn one of the three
+      // daily auto-dispatch slots on a card no CI session can fix. That is the
+      // failure this row exists to prevent, so it must not commit it. Warn keeps
+      // the blind spot visible without escalating; tracking the ledger is the
+      // real fix (card "health digest is blind in CI — 6 untracked ledgers").
+      return [{
+        name,
+        status: 'warn',
+        message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
+          + 'It is untracked, so CI never sees it — this row cannot judge the loop from this environment.',
+        hint: 'Track the ledger (or run this check on the dispatch host) so auto-fix success rate becomes visible where the digest is generated.',
+      }];
+    }
+    // Fail loud: a check that cannot read its input must not report healthy —
+    // that is the failure mode this whole row exists to end.
+    return [{ name, status: 'warn', message: `Could not read the auto-fix ledger: ${err.message}` }];
+  }
+
+  const rows = [];
+  for (const line of raw.split('\n')) {
+    if (!line.trim()) continue;
+    try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
+  }
+
+  // No dispatchCount option: launches now come from this ledger's own
+  // `auto-dispatch` rows (see autofix-effectiveness.js header for why the
+  // alert-router coupling was removed).
+  const r = assessAutofixEffectiveness(rows);
+  return [{
+    name,
+    status: r.status,
+    message: r.message,
+    ...(r.status === 'error' ? {
+      hint: 'Run `claude -p "hi"` on the dispatch host. "Not logged in · Please run /login" means every job dies on auth — re-login, then confirm the next digest run records a card-pass.',
+    } : {}),
   }];
 }
 
@@ -1921,7 +2144,7 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
-function checkDispatchOutcomes() {
+function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
     return [{
@@ -1989,12 +2212,18 @@ function checkDispatchOutcomes() {
     const currentAbandonedCount = classifyDispatches(
       dispatchLedgerEntries, tasksById, liveWorkspaceRefs ? { liveWorkspaceRefs } : {}
     ).filter((r) => r.outcome === OUTCOMES.ABANDONED).length;
-    try {
-      fs.mkdirSync(AUDIT_DIR, { recursive: true });
-      fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
-        abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
-      }, null, 2) + '\n');
-    } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    // dryRun (health-row-probe.js's live verification probe): compute the row
+    // exactly as normal but skip the trend-cache write — a probe run must never
+    // perturb the state a REAL health-check.js run compares "unchanged since
+    // last run" against, or it corrupts tomorrow's real digest message.
+    if (!dryRun) {
+      try {
+        fs.mkdirSync(AUDIT_DIR, { recursive: true });
+        fs.writeFileSync(DISPATCH_OUTCOME_STATE_FILE, JSON.stringify({
+          abandonedCount: currentAbandonedCount, updatedAt: new Date().toISOString(),
+        }, null, 2) + '\n');
+      } catch { /* best-effort persistence — a failed write here shouldn't fail the check */ }
+    }
 
     if (row) return row;
     // currentAbandonedCount > 0 but unchanged from last run still counts as
@@ -2005,6 +2234,53 @@ function checkDispatchOutcomes() {
     return currentAbandonedCount === 0
       ? { name: 'Dispatch outcomes: abandoned', status: 'pass', message: 'No abandoned dispatches' }
       : { name: 'Dispatch outcomes: abandoned', status: 'warn', message: `${currentAbandonedCount} abandoned dispatch(es), unchanged since last run — see \`node scripts/audit-dispatch-outcomes.js\`` };
+  })];
+}
+
+// --- Category I1b: Dispatch health (do dispatched sessions actually START?) ---
+//
+// checkDispatchOutcomes above asks whether dispatched work LANDED. This asks
+// the prior question: did the session ever start at all? Card #1199 — roughly
+// one bsc-next launch in five creates its cmux workspace, never renders a
+// terminal surface, and so never runs the injected command. The retry layer
+// recovers the WORK, so each session sees only its own 1-3 failures, retries,
+// succeeds, and truthfully reports success; nothing aggregated the ledger, so
+// a chronic ~20% rate ran unseen for a week and several "fixes" were judged
+// green by a single clean dispatch. Only the RATE over many launches can tell
+// whether a cause fix worked, which is what this row is for.
+//
+// Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
+// rather than passing on missing input (#1075 vacuous-gate class).
+
+function checkDispatchHealth() {
+  const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
+  const { CHECK_NAME } = require('./lib/dispatch-health.js');
+  if (!fs.existsSync(ledgerPath)) {
+    return [{
+      name: CHECK_NAME,
+      status: 'warn',
+      message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
+      hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
+    }];
+  }
+
+  return [runCheck(CHECK_NAME, () => {
+    const { computeDispatchHealthDigest } = require('./lib/dispatch-health.js');
+    const entries = fs.readFileSync(ledgerPath, 'utf8').trim().split('\n')
+      .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+
+    // No previous-value suppression on purpose (contrast checkDispatchOutcomes'
+    // DISPATCH_OUTCOME_STATE_FILE): a static abandoned COUNT is stale news, but
+    // a RATE above the floor is a live defect every day it holds, and
+    // "unchanged since yesterday" silence is exactly the invisibility #1199
+    // exists to end. Repeat-day email noise is already handled downstream by
+    // owner-alert-router's conditionKey, which files one card per OPEN
+    // incident rather than one per run.
+    const { name, status, message, hint } = computeDispatchHealthDigest({
+      entries, nowMs: Date.now(),
+    });
+    return hint ? { name, status, message, hint } : { name, status, message };
   })];
 }
 
@@ -3562,18 +3838,15 @@ function saveHistory(history) {
 
 // --- Main ---
 
-async function main() {
-  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
-
-  if (!isCI) {
-    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
-  }
-
-  console.log('=== Broadway Scorecard Daily Health Check ===\n');
-
-  purgeOldExclusionLogs();
-
-  const allResults = [
+// The 22 checks that make up the CORE digest (isCI-gated side effects, plus
+// checkDispatchOutcomes' own state-cache write, are opt-out via `dryRun` so
+// this same list can be re-run live and read-only by
+// scripts/lib/health-row-probe.js — see its header for why check-health-row-
+// absent.js can't just re-run scripts/health-check.js wholesale). This is the
+// ONLY place the check list is enumerated; main() and the probe both call it
+// so the two can never drift apart.
+async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
+  return [
     ...checkFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
@@ -3594,8 +3867,23 @@ async function main() {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
-    ...checkDispatchOutcomes(),
+    ...checkDispatchOutcomes(dryRun),
+    ...checkAutofixEffectiveness(),
   ];
+}
+
+async function main() {
+  const isCI = !!process.env.CI || !!process.env.GITHUB_ACTIONS;
+
+  if (!isCI) {
+    console.log('⚠️  LOCAL RUN — history/triage/alerts will NOT be updated (stale local data would corrupt CI state)\n');
+  }
+
+  console.log('=== Broadway Scorecard Daily Health Check ===\n');
+
+  purgeOldExclusionLogs();
+
+  const allResults = await computeCoreHealthResults(isCI);
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
@@ -3799,4 +4087,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork };
+module.exports = { diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, reverseDiscoveryBacklogResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, computeCoreHealthResults };

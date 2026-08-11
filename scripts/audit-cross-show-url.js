@@ -37,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { detectCrossShowUrlMismatch } = require('./lib/cross-show-url');
+const { isRejectedNonReview } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -61,7 +62,8 @@ function isAlreadyHandled(d) {
     d.wrongProductionOverride === true ||
     d.humanReviewedWrongProduction === false ||
     d.allowCrossMarket === true ||
-    (d.contentVerification && d.contentVerification.wrongProduction === false)
+    (d.contentVerification && d.contentVerification.wrongProduction === false) ||
+    isRejectedNonReview(d)
   );
 }
 

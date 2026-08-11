@@ -6,6 +6,7 @@ scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
+scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
@@ -17,6 +18,7 @@ scripts/autonomous-run.test.mjs
 scripts/autonomous-triage.test.mjs
 scripts/backfill-cast.test.mjs
 scripts/backfill-first-seen.test.mjs
+scripts/backlog-drain.test.mjs
 scripts/bsc-conductor.test.mjs
 scripts/bsc-next-ci-red-claim.test.mjs
 scripts/bsc-next.test.mjs
@@ -42,10 +44,13 @@ scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/newsletter/newsworthiness.test.mjs
+scripts/newsletter/section-credential-guard.test.mjs
 scripts/newsletter/we-openings-section.test.mjs
+scripts/notion-action-poll.test.mjs
 scripts/notion-tasks-sync.test.mjs
 scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
@@ -143,6 +148,7 @@ tests/unit/content-quality-nyt-bot-stub.test.mjs
 tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
+tests/unit/content-quality-wsj-capsule-review.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
 tests/unit/content-request-routing.test.mjs
 tests/unit/core-data-public-stage-exclusions.test.mjs
@@ -151,6 +157,7 @@ tests/unit/corpus-determinism.test.mjs
 tests/unit/corpus-scan-guard.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/creative-team-validator.test.mjs
+tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
@@ -391,12 +398,14 @@ tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
+tests/unit/stage-pagesonstages-extractor.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
 tests/unit/star-rating-outlet-aware.test.mjs
 tests/unit/stateless-candidates.test.mjs
 tests/unit/strip-stale-single-model-scores-locked.test.mjs
 tests/unit/stuck-rescore-flag.test.mjs
+tests/unit/supabase-schema-expectations.test.mjs
 tests/unit/sync-changed-files.test.mjs
 tests/unit/syndication-pairs-shared.test.mjs
 tests/unit/test-manifest-integrity.test.mjs

@@ -10,6 +10,10 @@ on:
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # Schema-drift parser (verify-schema.yml / supabase-functions.yml gate):
+      # its unit test is in tests/unit-test-manifest.txt (tests/** is globbed
+      # above) but a solo edit to the lib needs this listing to trigger CI.
+      - 'scripts/lib/supabase-schema-expectations.js'
       - 'scripts/validate-data.js'
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
@@ -122,6 +126,16 @@ on:
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/ingest-skip-classify.js'
       - 'scripts/lib/ingest-skip-classify.test.mjs'
+      # Silent-exclusion detectors (#1147 tracker, card #1188): a review with
+      # fullText + a real byline + no rejection flags but no contentTier stays
+      # OUT of reviews.json forever (rebuild only re-derives contentTier when
+      # fullText changes), and an outlet that migrates to a new host (e.g.
+      # Substack) silently drops every review on the new domain via
+      # domain-mismatch. Both wired into health-check.js's daily digest.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/silent-exclusion-detectors.js'
+      - 'scripts/lib/silent-exclusion-detectors.test.mjs'
       # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
       # raw-wrote over already-flagged review files, so ~155 excluded historical
       # DTLI excerpts re-entered reviews.json on every review-refresh and were
@@ -291,6 +305,10 @@ on:
       # shouldEscalateToFix decision table (task #1073): colocated test runs in
       # the scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/lib/plan-ready.test.mjs'
+      # Guards task #94's review-texts write-routing regression (runs the real
+      # lint-write-routing.sh gate). Registered in tests/unit-test-manifest.txt;
+      # path-listed so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/notion-action-poll.test.mjs'
       # --card single-card scope flag (task #725): pure filter predicate,
       # colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
@@ -941,6 +959,12 @@ on:
       # someone re-forks them. Colocated test runs in the lib-test glob;
       # path-listed so a solo edit triggers CI (allow-list gate).
       - 'scripts/lib/review-guards.explain.test.mjs'
+      # Chokepoint guard parity (task #1150, 2026-08-09): asserts every write-decision
+      # guard gather-reviews.js's own chokepoint imports from review-guards.js is either
+      # hoisted into review-file-writer.js's shared chokepoint or has a documented
+      # exemption. Colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (allow-list gate).
+      - 'scripts/lib/chokepoint-guard-parity.test.mjs'
       # Coverage-gate kill switch + blast-radius guard shared by every verdict
       # consumer. A silent regression here disarms the guard for all of them.
       - 'scripts/lib/coverage-gate.js'
@@ -956,6 +980,11 @@ on:
       - 'scripts/lib/outlet-canonicalize.js'
       - 'scripts/lib/aggregator-domains.js'
       - 'scripts/lib/aggregator-url-write-chokepoint.test.mjs'
+      # Same class, refinement side (2026-08-09): URL-based outlet refinement must
+      # never rewrite a real outlet's id ONTO an aggregator outlet — doing so both
+      # destroys the attribution and launders the file past the write guard above,
+      # which permits an aggregator URL precisely when outletId IS the aggregator.
+      - 'scripts/lib/aggregator-outlet-refinement.test.mjs'
       # Per-show merge for data/audit/show-review-gap.json (#893). Without it a
       # `--show=X` run wipes every other show's audited state.
       - 'scripts/lib/gap-audit-merge.js'
@@ -1023,16 +1052,26 @@ on:
       - 'scripts/lib/domain-filters.js'
       - 'scripts/lib/ingest-skip-classify.js'
       - 'scripts/lib/ingest-skip-classify.test.mjs'
+      - 'scripts/lib/silent-exclusion-detectors.js'
+      - 'scripts/lib/silent-exclusion-detectors.test.mjs'
       - 'scripts/lib/newsletter-preflight.js'
       - 'scripts/lib/newsletter-preflight.test.mjs'
       - 'scripts/newsletter/pre-send-check.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
       - 'tests/unit/wrong-production-autoclear.test.mjs'
-      # Ensemble-vs-heuristic guard for the UK-URL/allowCrossMarket wrongShow
-      # auto-clear paths (task #1146) + its live-corpus scan. Colocated
-      # .test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
-      # solo edit triggers CI.
+      # Autoclear-vs-ensemble defect class (#1146/#1156): an auto-clear path
+      # must never silently override a unanimous LLM ensemble rejection.
+      # Colocated *.test.mjs corpus layers run explicitly below (Data
+      # Validation job, after checkout-review-texts); scan lib + audit CLI
+      # are path-listed so a solo edit triggers CI (allow-list gate).
+      # wrongshow-autoclear-ensemble.test.mjs (task #1146) covers the
+      # wrongShow-only case with its own self-contained corpus scan;
+      # autoclear-vs-ensemble.test.mjs (#1156) generalizes to both flags via
+      # the shared scan lib.
+      - 'scripts/lib/autoclear-vs-ensemble-scan.js'
+      - 'scripts/lib/autoclear-vs-ensemble.test.mjs'
+      - 'scripts/audit-autoclear-vs-ensemble.js'
       - 'scripts/lib/wrongshow-autoclear-ensemble.test.mjs'
       # Corroboration guard for date-based wrongProduction flags (holds the
       # auto-flag when Theatre Record month contradicts a misparsed publishDate;
@@ -1065,6 +1104,12 @@ on:
       - 'scripts/opening-night-checklist.test.mjs'
       - 'scripts/lib/opening-night-checks/**'
       - 'scripts/lib/opening-night-remediation.js'
+      # The Critics' Take floor, shared by generate-critic-consensus.js and
+      # critics-take-present.check.js (#389). Editing either side without the
+      # other is how the death-note dispatch loop started.
+      - 'scripts/lib/critic-consensus-eligibility.js'
+      - 'tests/unit/critic-consensus-eligibility.test.mjs'
+      - 'scripts/generate-critic-consensus.js'
       - 'tests/unit/time-to-publish-sla.test.mjs'
       - 'tests/unit/stage-latency.test.mjs'
       - 'tests/unit/opening-night-sla.test.mjs'
@@ -1090,6 +1135,12 @@ on:
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
       - 'scripts/scoring-delta.js'
+      # Colocated test (task #1163: mandated inclusion replay had zero coverage
+      # of the wrongShow/wrongProduction auto-clear predicates). Root-level
+      # scripts/*.test.mjs files are NOT globbed — registered in
+      # tests/unit-test-manifest.txt and path-listed here so a solo edit
+      # triggers CI.
+      - 'scripts/scoring-delta-autoclear-coverage.test.mjs'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
@@ -1097,6 +1148,20 @@ on:
       - 'scripts/backfill-cast-web.js'
       - 'data/cast/**'
       - 'scripts/lib/content-quality.js'
+      # validateShowMentioned Check 3 + generic-idWords regression tests
+      # (task #895/#915/#947 — false-positive review recoveries). Colocated
+      # scripts/lib/*.test.mjs step covers the test; without this path entry
+      # a solo edit to the test file pushes with ZERO CI (no scripts/lib/**
+      # broad glob — feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/content-quality.test.mjs'
+      # Shared browser-recovery date-plausibility guard (task #915) — wraps
+      # validateShowMentioned + evaluateDatePlausibility for every outlet's
+      # recover-*-browser.js. Colocated scripts/lib/*.test.mjs step covers
+      # the test; without these path entries a push to either file (source
+      # or test) triggers ZERO CI (same silent-gate class as content-quality
+      # above).
+      - 'scripts/lib/browser-recovery-helpers.js'
+      - 'scripts/lib/browser-recovery-helpers.test.mjs'
       # Synopsis quality detector (refusal/placeholder/stale/invalid). Shared by
       # the freshness gate, deploy-time self-heal, and Wikipedia re-enrichment.
       # Colocated scripts/lib/*.test.mjs step covers the test; without these path
@@ -1286,6 +1351,7 @@ on:
       - 'src/contexts/ProGateContext.tsx'
       - 'src/components/EmailCaptureModal.tsx'
       - 'tests/unit/gate-logic.test.mjs'
+      - 'tests/unit/email-gate-conversion.test.mjs'
       # Advanced-filter score-tier predicates (card #479) — src/lib/** is
       # covered by the top-level 'src/**' entry, but its colocated test
       # needs a path entry so a solo test-only edit still triggers CI.
@@ -1393,6 +1459,12 @@ on:
       - 'scripts/lib/digest-autofix.js'
       - 'scripts/lib/digest-autofix.test.mjs'
       - 'scripts/check-health-row-absent.js'
+      # Digest-autofix S5 (task #1224) — side-effect-free same-day (--live)
+      # re-verification, so a fix session doesn't have to wait for tomorrow's
+      # snapshot. Colocated test runs in the scripts/lib/*.test.mjs glob step;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/health-row-probe.js'
+      - 'scripts/lib/health-row-probe.test.mjs'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
@@ -1452,6 +1524,19 @@ on:
       # colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/lib/newsletter-regen-guard.js'
       - 'scripts/lib/newsletter-regen-guard.test.mjs'
+      # Structural guard: the refresh workflow's allowGaps input must stay a
+      # STRING ('1'), and the ADC fallback in popular-pages.mjs must stay gated
+      # to non-CI. Test-only (no lib file); runs in the scripts/lib/*.test.mjs
+      # glob step. Path-listed so a solo edit to the guard triggers CI, and so
+      # edits to the two files it guards do too.
+      - 'scripts/lib/newsletter-allow-gaps-wiring.test.mjs'
+      - 'scripts/newsletter/popular-pages.mjs'
+      # Render invariants: every show in meta.openingShows must actually appear
+      # in the rendered email, and the subject may not promise a show the body
+      # never covers. Closes the 2026-08-09 class where the coverage swap
+      # deleted openings and a substring grep reported success anyway.
+      - 'scripts/lib/newsletter-render-invariants.js'
+      - 'scripts/lib/newsletter-render-invariants.test.mjs'
       # Coverage Verdict S3 (task #905) — email-gate swap logic lives in
       # newsletter-preflight.js above; the digest-line formatter + its
       # producer/workflow-step live outside scripts/lib and scripts/newsletter
@@ -1648,6 +1733,16 @@ on:
       - 'scripts/.alert-sender-baseline.json'
       - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
+      # Outlet stub-rate monitor (card #100): detects a broken article
+      # extractor (site redesign silently breaking extraction, e.g.
+      # TheaterMania's 2026 Bootstrap redesign) via a spike in the stub-tier
+      # rate among reviews collected in the last 30 days. Wired into
+      # health-check.js's daily digest (already path-listed above); the
+      # colocated test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-outlet-stub-rate.js'
+      - 'scripts/audit-outlet-stub-rate.test.mjs'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/market-label.test.mjs scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
@@ -1666,6 +1761,15 @@ on:
       - 'scripts/lib/dispatch-dead-launch-guard.js'
       - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
       - 'scripts/reconcile-dead-completions.js'
+      # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
+      # renders a terminal surface, so the injected command never runs. The
+      # retry layer hides it from every individual session, so only the
+      # aggregate rate can tell whether a cause fix worked. Colocated test runs
+      # in the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-health.js'
+      - 'scripts/lib/dispatch-health.test.mjs'
+      - 'scripts/audit-dispatch-dead-rate.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
@@ -2111,6 +2215,12 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/ci-red-dispatch-heuristic.js'
       - 'scripts/bsc-next-ci-red-claim.test.mjs'
+      # Cost-report parser (card #114): extracts/ranks the "Top SB Credit
+      # Consumers" table from scraper-cost-report.yml issue bodies. Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/cost-report-parser.js'
+      - 'scripts/lib/cost-report-parser.test.mjs'
   pull_request:
     branches: [main]
   schedule:
@@ -3405,6 +3515,25 @@ jobs:
         env:
           REQUIRE_REVIEW_CORPUS: '1'
         run: node --test scripts/lib/review-guards.explain.test.mjs
+
+      - name: Run autoclear-vs-ensemble corpus test (needs review-texts)
+        # #1146/#1156: an auto-clear path (allowEarlyDate/allowCrossMarket
+        # bypass, UK-URL/registry-region heuristic) must never silently
+        # override a unanimous LLM-ensemble content rejection. Same
+        # corpus-presence contract as the parity test above —
+        # REQUIRE_REVIEW_CORPUS=1 turns a missing checkout into a hard
+        # failure instead of a silent skip.
+        if: always()
+        env:
+          REQUIRE_REVIEW_CORPUS: '1'
+        run: node --test scripts/lib/autoclear-vs-ensemble.test.mjs
+
+      - name: Autoclear-vs-ensemble audit (strict)
+        # Standalone re-runnable audit alongside the corpus test above —
+        # same defect class, gate reports the violating files directly
+        # (scripts/audit-autoclear-vs-ensemble.js --fix restores them).
+        if: always()
+        run: node scripts/audit-autoclear-vs-ensemble.js --strict
 
       - name: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)
         # Same corpus-missing trap as explainExclusion above, same fix: the

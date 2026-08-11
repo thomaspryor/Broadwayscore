@@ -32,7 +32,7 @@
 
 const { JSDOM } = require('jsdom');
 const { slugify, levenshteinDistance } = require('./deduplication');
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, canonicalVenue } = require('./title-match');
 
 // Aggregator-infrastructure URLs that land in the unmatched audit but are not
 // shows (site nav, legal, feeds). Matched against the article slug.
@@ -600,6 +600,72 @@ function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
 }
 
 /**
+ * Remove already-classified candidates from the STAGING file
+ * (data/audit/ob-venue-candidates.json) whose (title, venue) now matches a
+ * show already in shows.json. This is the staging-file counterpart to
+ * pruneUnmatchedAudit (which cleans the *-unmatched.json audit inputs).
+ *
+ * Why this exists: the daily CI promotion (promote-ob-venue-candidates.js
+ * --regional-only) explicitly skips every non-regional candidate untouched —
+ * `if (regionalOnly && c.category !== 'regional') { remainingStaged.push(c);
+ * continue; }` — so findExistingMatch() (the jaccard/subtitle dedupe against
+ * shows.json) never runs for OB candidates on the scheduled path. The only
+ * code that removes a stale OB candidate is the operator-run default mode,
+ * which nothing schedules. A candidate whose show gets added to shows.json
+ * through ANY other route (manual add, feedback pipeline, a later promote run
+ * for a DIFFERENT batch) then sits in staging — and in the health-check "OB
+ * Discovery — Action Needed" digest — forever. Found 2026-08-11: "Dad Don't
+ * Read This" (closed 2026-06) and "Rosie O'Donnell: Common Knowledge" (closed)
+ * were both still staged, false-positive noise for shows that were never
+ * missing.
+ *
+ * MUST be venue-scoped, not title-only (adversarial ship-check review
+ * 2026-08-11): shows.json holds 2,800+ productions across every market and
+ * decade, so a bare slugCollidesWith(title) check would prune a brand-new
+ * production that merely shares a title with an unrelated closed show
+ * anywhere in the catalog ("Hamlet", "The Seagull", ...) — silently erasing
+ * exactly the discovery signal this task exists to surface. Requiring
+ * canonicalVenue(candidate.venue) === canonicalVenue(existing.venue) too
+ * means a title collision alone is never enough to delete.
+ *
+ * Deliberately exact (normalized-title + venue) match only — not the fuller
+ * jaccard/subtitle-variant match promote-ob-venue-candidates.js's
+ * findExistingMatch() uses. This runs on every extract-aggregator-
+ * candidates.js invocation (daily, no extra fetches) and only needs to catch
+ * the common case: the exact show, at the exact venue, now exists. A
+ * near-miss that only jaccard would catch stays staged for the operator
+ * path — a false negative here is harmless (residual staged noise); a false
+ * positive silently drops a real new show, so this stays conservative.
+ *
+ * @param {Array} staged  data/audit/ob-venue-candidates.json contents
+ * @param {Array} shows  shows.json shows array
+ * @returns {{kept: Array, pruned: Array}}
+ */
+function pruneStagedCandidates(staged, shows) {
+  const existing = [];
+  for (const s of Array.isArray(shows) ? shows : []) {
+    if (!s || (s.category !== 'off-broadway' && s.category !== 'regional')) continue;
+    if (!s.title) continue;
+    existing.push({ id: s.id, venueKey: canonicalVenue(s.venue), normalized: normalizeTitle(s.title) });
+  }
+  const kept = [];
+  const pruned = [];
+  for (const c of Array.isArray(staged) ? staged : []) {
+    if (!c || typeof c !== 'object') continue;
+    if (!c.title) { kept.push(c); continue; }
+    const venueKey = canonicalVenue(c.venue);
+    const normalized = normalizeTitle(c.title);
+    const match = existing.find(e => e.venueKey === venueKey && e.normalized === normalized);
+    if (match) {
+      pruned.push({ ...c, matchedShowId: match.id });
+    } else {
+      kept.push(c);
+    }
+  }
+  return { kept, pruned };
+}
+
+/**
  * The best title we can name BEFORE fetching: PV ships a `title` on the audit
  * record; BWW only a slug (parse it). Lets the driver skip a fetch when the
  * show is already in shows.json — which is the common case for an unmatched
@@ -804,6 +870,7 @@ module.exports = {
   slugCollidesWith,
   collisionSlugSet,
   pruneUnmatchedAudit,
+  pruneStagedCandidates,
   referenceTitle,
   classifyCandidate,
   titleCaseShout,

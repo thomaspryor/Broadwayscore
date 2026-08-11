@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-09T19:49:18.051Z",
+    "generatedAt": "2026-08-11T21:19:16.860Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,144 +8,132 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 13,
-    "exemptCount": 21,
-    "coveredCount": 23,
-    "highChurnTracked": 57
+    "flaggedCount": 3,
+    "exemptCount": 28,
+    "coveredCount": 30,
+    "highChurnTracked": 61
   },
   "flagged": [
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 271
-    },
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 100
-    },
-    {
-      "path": "data/audit/processed-feedback.json",
-      "churn": 83
-    },
-    {
-      "path": "data/audit/bd-circuit-breaker.json",
-      "churn": 59
-    },
-    {
-      "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/deployed-coverage-diff.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/t1-coverage-signals.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/t1-coverage-stats.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/t1-outlet-breaker.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/t1-silent-gaps.json",
-      "churn": 57
-    },
-    {
-      "path": "data/audit/opening-night-history.json",
+      "path": "data/audit/pipeline-health/test.last-success",
       "churn": 55
     },
     {
-      "path": "data/audit/we-gate-proving.json",
-      "churn": 50
+      "path": "data/audit/remediation-log.jsonl",
+      "churn": 49
     },
     {
-      "path": "data/opening-night-timeline/cats-west-end-2026.jsonl",
+      "path": "data/audit/validation-baseline.json",
       "churn": 30
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 236
+      "churn": 204
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 236
+      "churn": 204
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 236
+      "churn": 204
     },
     {
-      "path": "public/data/shows/cats-west-end-2026.json",
-      "churn": 153
+      "path": "data/audit/alert-ledger.json",
+      "churn": 175
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 152
+      "churn": 115
+    },
+    {
+      "path": "public/data/shows/cats-west-end-2026.json",
+      "churn": 113
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 94
-    },
-    {
-      "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
-      "churn": 85
+      "churn": 95
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 83
+      "churn": 90
     },
     {
-      "path": "public/data/shows/disruption-off-broadway-2026.json",
-      "churn": 76
+      "path": "data/audit/processed-feedback.json",
+      "churn": 78
     },
     {
-      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
-      "churn": 76
+      "path": "public/data/shows/the-comedy-about-spies-west-end-2026.json",
+      "churn": 68
+    },
+    {
+      "path": "data/audit/bd-circuit-breaker.json",
+      "churn": 60
     },
     {
       "path": "data/commercial-rss-state.json",
+      "churn": 60
+    },
+    {
+      "path": "public/data/shows/im-every-woman-off-west-end-2026.json",
       "churn": 59
     },
     {
-      "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
+      "path": "data/audit/t1-outlet-breaker.json",
       "churn": 56
     },
     {
-      "path": "public/data/shows/the-car-man-west-end-2026.json",
-      "churn": 50
+      "path": "data/audit/opening-night-history.json",
+      "churn": 54
     },
     {
-      "path": "public/data/shows/twelfth-night-off-west-end-2026.json",
+      "path": "data/audit/we-gate-proving.json",
+      "churn": 48
+    },
+    {
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
       "churn": 47
     },
     {
-      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "path": "public/data/shows/the-car-man-west-end-2026.json",
       "churn": 46
     },
     {
-      "path": "public/data/shows/tao-of-glass-west-end-2026.json",
-      "churn": 40
+      "path": "public/data/shows/now-you-see-me-live-west-end-2026.json",
+      "churn": 45
     },
     {
-      "path": "data/show-score-urls.json",
-      "churn": 33
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 41
     },
     {
-      "path": "public/data/shows/horrible-histories-barmy-britain-the-best-bits-west-end-2026.json",
-      "churn": 33
+      "path": "public/data/shows/disruption-off-broadway-2026.json",
+      "churn": 37
+    },
+    {
+      "path": "public/data/shows/trainspotting-the-musical-west-end-2026.json",
+      "churn": 35
     },
     {
       "path": "public/data/shows/the-pass-off-broadway-2026.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/the-devil-wears-prada-west-end-2024.json",
       "churn": 33
     },
     {
+      "path": "data/show-score-urls.json",
+      "churn": 32
+    },
+    {
       "path": "public/data/shows/the-importance-of-being-oscar-off-west-end-2026.json",
+      "churn": 32
+    },
+    {
+      "path": "public/data/shows/dog-man-the-musical-west-end-2026.json",
       "churn": 31
     },
     {
@@ -156,97 +144,127 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1010,
+      "churn": 1044,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 981,
+      "churn": 1008,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 653,
+      "churn": 635,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 603,
+      "churn": 605,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 286,
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 271,
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 271,
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 264,
+      "churn": 252,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 236,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-the-pass-off-broadway-2026.json",
-      "churn": 209,
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 249,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-cats-west-end-2026.json",
-      "churn": 206,
+      "churn": 204,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 204,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 143,
+      "churn": 159,
       "mergeAttr": "union"
     },
     {
+      "path": "data/audit/orphan-unscored-im-every-woman-off-west-end-2026.json",
+      "churn": 153,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 92,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 83,
+      "churn": 90,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 83,
+      "churn": 90,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 83,
+      "churn": 90,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/orphan-unscored-im-every-woman-off-west-end-2026.json",
-      "churn": 75,
+      "path": "data/audit/autoclear-shadow-report.json",
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/coverage-digest-snapshot.json",
-      "churn": 57,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 51,
+      "path": "data/audit/deployed-coverage-diff.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/t1-coverage-signals.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/t1-coverage-stats.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/t1-silent-gaps.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/show-review-gap.json",
+      "churn": 46,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/unknown-aggregator-outlets.json",
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
@@ -255,18 +273,23 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/show-review-gap.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 43,
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
       "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 38,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
+      "churn": 38,
       "mergeAttr": "ours"
     }
   ]

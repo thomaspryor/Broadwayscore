@@ -49,8 +49,10 @@ const {
   gapDisclosureDecisions,
   openingsPreserved,
 } = require_('../lib/newsletter-preflight.js');
+const { renderInvariantFailures } = require_('../lib/newsletter-render-invariants.js');
 const { loadAcks, isAcked, addAck, saveAcks, cellKey } = require_('../lib/t1-scoreboard.js');
 const { resolveNewsletterEdition } = require_('../lib/email-templates.js');
+const { hasNoAccessSection, noAccessSections } = await import('./section-credential-guard.mjs');
 
 const NEWSLETTER_GAP_NS = 'newsletter-gap'; // namespaced "outletId" in the shared ack store — see t1-scoreboard.js
 
@@ -191,6 +193,20 @@ if (!preserved.ok) {
 const hardFailures = [...hardFailuresEarly];  // stop the workflow entirely
 const softIssues = [...coverageGapNotes];     // inject into draft banner so owner sees them
 
+// ── HARD: no-access sections (card #1158) ─────────────────────────────────────
+// generate.mjs reclassifies a credential-backed section's skip from 'no-data'
+// to 'no-access: <var> missing' when its required env var is absent (see
+// section-credential-guard.mjs). That is a fetch that never ran, not an empty
+// week — a dev machine missing GA4_PROPERTY_ID silently deleted "Trending
+// This Week" from a subscriber-facing draft on 2026-08-09 and nothing caught
+// it. Refuse to PATCH the Resend draft in that state; NEWSLETTER_ALLOW_NO_ACCESS=1
+// is the explicit, opt-in override (mirrors NEWSLETTER_ALLOW_GAPS).
+if (Array.isArray(meta.sections) && hasNoAccessSection(meta.sections)) {
+  for (const s of noAccessSections(meta.sections)) {
+    hardFailures.push(`Section "${s.name}" skipped for ${s.skipReason} — the draft is missing real data, not just an empty week. Run from an environment with the credential (see refresh-drafts.sh usage comment), or set NEWSLETTER_ALLOW_NO_ACCESS=1 to send without it.`);
+  }
+}
+
 // ── HARD: unsubscribe placeholder ────────────────────────────────────────────
 if (!html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}')) {
   hardFailures.push('Unsubscribe placeholder {{{RESEND_UNSUBSCRIBE_URL}}} is missing — subscribers cannot opt out');
@@ -282,6 +298,16 @@ if (!Array.isArray(meta.openingShows)) {
   for (const v of phantomImageViolations(meta.openingShows, rel => {
     try { return fs.statSync(path.join(repoRoot, rel)).size > 0; } catch { return false; }
   })) hardFailures.push(v);
+
+  // ── HARD: does the rendered email actually CONTAIN the openings it claims?
+  // 2026-08-09: the coverage-gap swap deleted featured openings from the HTML
+  // while meta.openingShows still listed them, and every check here passed
+  // because none of them compared the manifest to the render. A session then
+  // "verified" the draft by grepping for a show title, found it in the lede,
+  // and reported success while the show was absent from the openings block.
+  // The owner caught it by eye. This closes that gap at the gate, so no human
+  // or agent eyeball is load-bearing on send day.
+  for (const v of renderInvariantFailures({ html, meta })) hardFailures.push(v);
 
   // ── SOFT: review completeness — unverified (stale/no-data) entries only.
   // Gap entries were already swapped or reported above, BEFORE this draft was

@@ -203,6 +203,70 @@ test('fresh auto-clear does NOT extend to wrongProductionReason (manual-reason c
   assert.equal(wouldRestore('wrongProductionReason', local, committed), true);
 });
 
+// ── Task #97 audit: staleScoredBeforeOpening (strip-stale-single-model-scores.js
+// --before-opening mode, run inline by opening-night-express.yml before the SAME
+// job's push-review-texts step). FRESHNESS-GATED (codex adversarial review,
+// 2026-08-10): a bare boolean with no expiry would suppress restoring ANY future,
+// unrelated score loss on the file forever — see _freshStaleScoredBeforeOpening. ──
+
+const scoreStripToday = new Date().toISOString();
+
+test('isIntentionalClear: fresh staleScoredBeforeOpening covers the score family it strips', () => {
+  const cleared = { staleScoredBeforeOpening: true, staleScoredBeforeOpeningAt: scoreStripToday };
+  for (const field of ['assignedScore', 'llmScore', 'llmMetadata', 'ensembleData']) {
+    assert.equal(isIntentionalClear(field, cleared), true, `expected clear for ${field}`);
+  }
+  // No stamp, a falsy stamp, or a stamp with no timestamp must NOT suppress the restore.
+  assert.equal(isIntentionalClear('assignedScore', {}), false);
+  assert.equal(isIntentionalClear('assignedScore', { staleScoredBeforeOpening: false }), false);
+  assert.equal(isIntentionalClear('assignedScore', { staleScoredBeforeOpening: true }), false);
+});
+
+test('isIntentionalClear: STALE staleScoredBeforeOpening (>3d old) does NOT suppress restore', () => {
+  const stale = {
+    staleScoredBeforeOpening: true,
+    staleScoredBeforeOpeningAt: new Date(Date.now() - 10 * 86400000).toISOString(),
+  };
+  assert.equal(isIntentionalClear('assignedScore', stale), false);
+});
+
+test('staleScoredBeforeOpening(+At) and needsRescore are themselves PROTECTED_FIELDs', () => {
+  assert.ok(PROTECTED_FIELDS.includes('staleScoredBeforeOpening'));
+  assert.ok(PROTECTED_FIELDS.includes('staleScoredBeforeOpeningAt'));
+  assert.ok(PROTECTED_FIELDS.includes('needsRescore'));
+});
+
+test('restore decision: opening-night score strip is NOT reverted by the same-job restore', () => {
+  // Reproduces the opening-night-express.yml shape: strip-stale-single-model-
+  // scores.js --before-opening nulls the score family in the SAME checkout
+  // whose HEAD (committed) still carries the pre-strip score — the exact
+  // "committed has content, local is empty" pattern the restore treats as
+  // data loss without this breadcrumb.
+  const local = {
+    assignedScore: null, llmScore: null, llmMetadata: null, ensembleData: null,
+    staleScoredBeforeOpening: true, staleScoredBeforeOpeningAt: scoreStripToday, needsRescore: true,
+  };
+  const committed = { assignedScore: 82, llmScore: { score: 82 }, llmMetadata: { model: 'x' }, ensembleData: { members: 3 } };
+  for (const field of ['assignedScore', 'llmScore', 'llmMetadata', 'ensembleData']) {
+    assert.equal(wouldRestore(field, local, committed), false,
+      `stale pre-opening ${field} must NOT be resurrected over an intentional strip`);
+  }
+});
+
+test('markRescoreComplete clears staleScoredBeforeOpening(+At) once a real score lands', () => {
+  const { markRescoreComplete } = require(path.join(repoRoot, 'scripts/lib/rescore-lifecycle.js'));
+  const scored = markRescoreComplete({
+    needsRescore: true,
+    staleScoredBeforeOpening: true,
+    staleScoredBeforeOpeningAt: scoreStripToday,
+    assignedScore: 91,
+  });
+  assert.equal(scored.staleScoredBeforeOpening, undefined);
+  assert.equal(scored.staleScoredBeforeOpeningAt, undefined);
+  // Post-rescore, a later unrelated null of the score IS treated as data loss again.
+  assert.equal(isIntentionalClear('assignedScore', { ...scored, assignedScore: null }), false);
+});
+
 test('re-flagging invalidates the auto-clear stamp (inverted-ping-pong guard, ship-check 2026-08-04)', async () => {
   const { invalidateWrongProductionAutoClear } =
     require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
