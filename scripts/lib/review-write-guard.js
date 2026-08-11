@@ -253,6 +253,34 @@ const PROTECTED_FIELDS = [
   // collect-review-texts.js and backfill-theaterlife-bylines.js.
   'fullTextWrongAuthor',
   'fullTextWrongAuthorAt',
+  // Task #1259 audit (same bug class as #97/#1237 above): audit-stuck-rescore-
+  // flags.js --fix deletes needsRescore/rescoreReason/lateStarAnchorBand when a
+  // flag is permanently stuck (the scorer would reject the file, so the flag
+  // can never clear itself). It runs in the SAME enrich-reviews.yml job that
+  // later calls push-review-texts — without protecting the breadcrumb + its
+  // freshness stamp, that restore step sees committed HEAD (checked out before
+  // the audit ran) still carrying the stuck flag and resurrects it, silently
+  // undoing the exact clear the audit exists to do. stuckRescoreClearedAt is
+  // the freshness stamp the CLEAR_BREADCRUMBS predicate below gates on (mirrors
+  // staleScoredBeforeOpeningAt/fullTextWrongAuthorAt — a bare boolean with no
+  // reset would suppress restoring ANY future, unrelated re-flag of this file
+  // forever). No reset path clears it: strip-stale-single-model-scores.js is
+  // the one producer that nulls needsRescore (rather than deleting it or
+  // writing a real `true`), but it never runs in the SAME job as
+  // audit-stuck-rescore-flags.js --fix, so it can't race this breadcrumb
+  // within the freshness window this stamp is scoped to bridge — every OTHER
+  // producer re-flags with a real (non-empty) `true`, which never reaches the
+  // empty-field restore-suppression path this breadcrumb guards (see
+  // review-write-guard test file).
+  'stuckRescoreCleared',
+  'stuckRescoreClearedAt',
+  // rescoreReason/lateStarAnchorBand were not previously protected — nothing
+  // needed to intentionally clear them until this fix. Both are cleared
+  // alongside needsRescore by audit-stuck-rescore-flags.js --fix and must be
+  // PROTECTED for the CLEAR_BREADCRUMBS entries above to have any effect (the
+  // restore loop only iterates PROTECTED fields).
+  'rescoreReason',
+  'lateStarAnchorBand',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -405,6 +433,30 @@ const _freshFullTextWrongAuthor = (d) => {
   return age >= 0 && age <= WRONG_AUTHOR_FRESH_DAYS * 86400000;
 };
 
+// stuckRescoreCleared freshness gate (task #1259, same shape as
+// _freshStaleScoredBeforeOpening/_freshFullTextWrongAuthor above).
+// audit-stuck-rescore-flags.js --fix is invoked by enrich-reviews.yml, the
+// same job that later calls push-review-texts — this only needs to bridge
+// that single job run, not survive an ordinary rebuild cadence. There is no
+// other clear path to retire the stamp (unlike the two siblings above, which
+// have a "real work landed" success path): every OTHER producer re-flags
+// needsRescore with a real (non-empty) `true`, which never reaches the
+// empty-field restore-suppression this breadcrumb guards. The one producer
+// that nulls it instead (strip-stale-single-model-scores.js) never runs in
+// the SAME job as audit-stuck-rescore-flags.js --fix, so it can't collide
+// with this stamp inside the freshness window. It only ever suppresses
+// restoring a genuinely-cleared, still-empty field, and expires on its own
+// after STUCK_RESCORE_FRESH_DAYS regardless.
+const STUCK_RESCORE_FRESH_DAYS = 3;
+const _freshStuckRescoreCleared = (d) => {
+  if (!d || d.stuckRescoreCleared !== true || !d.stuckRescoreClearedAt) return false;
+  const at = Date.parse(String(d.stuckRescoreClearedAt));
+  if (Number.isNaN(at)) return false;
+  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
+  const age = Date.now() - at;
+  return age >= 0 && age <= STUCK_RESCORE_FRESH_DAYS * 86400000;
+};
+
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
@@ -485,6 +537,13 @@ const CLEAR_BREADCRUMBS = {
   // CLEAR_BREADCRUMBS entry (unlike assignedScore/ensembleData, which are also
   // cleared by the unrelated stale-before-opening strip), so no OR needed.
   fullText: _freshFullTextWrongAuthor,
+  // audit-stuck-rescore-flags.js --fix (task #1259): deletes needsRescore/
+  // rescoreReason/lateStarAnchorBand when the flag is permanently stuck (the
+  // scorer would reject the file, so it could never clear itself). See
+  // PROTECTED_FIELDS comment above and _freshStuckRescoreCleared.
+  needsRescore: _freshStuckRescoreCleared,
+  rescoreReason: _freshStuckRescoreCleared,
+  lateStarAnchorBand: _freshStuckRescoreCleared,
 };
 
 /**
