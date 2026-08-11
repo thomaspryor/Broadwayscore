@@ -1,68 +1,13 @@
 [
   {
-    "conditionKey": "arm-yield:workflow:scoring-audit",
-    "title": "Scoring Audit has stopped updating (190 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-01 and 2026-08-10.)",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: brightdata $8.39 > $2.5 (3089 serp + 2502 unlocker reqs); scrapingdog 46825 credits > 45000",
+    "description": "Day 2026-08-10. 2026-08-10 · Browserbase: $2.4 (24 sessions) · 2026-08-10 · Bright Data: $8.39 (3089 serp / 2502 unlocker) · ScrapingBee: 18518 credits (136774 this cycle) · ScrapingDog: 46825 credits (1298765 this cycle) · Browserbase attribution: 4% attributed — top: collect-review-texts.js 1 · Bright Data attribution: 22% attributed — top: opening-night-poller.js 843, audit-show-review-gap.js 216, fetch-show-images-auto.js 144, ingest-review-from-url.js 30, enrich-stubhub-prices.js 8 · ScrapingBee attribution: 2% attributed — top: fetch-show-images-auto.js 144, opening-night-poller.js 130, audit-show-review-gap.js 109, ingest-review-from-url.js 24, enrich-stubhub-prices.js 7 · ScrapingDog attribution: 9% attributed — top: opening-night-poller.js 1407, audit-show-review-gap.js 1326, collect-outlet-reviews.js 450, fetch-show-images-auto.js 274, collect-review-texts.js 273. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "queuedAt": "2026-08-10T13:50:53.428Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/148 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAvenue Q: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-10T15:54:08.040Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-08-10T16:34:20.653767+00:00",
-    "title": "Feedback: 1 submission(s), all handled automatically",
-    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nTwo Strangers (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please correct Two Strangers (Carry a Cake Across New York)’s is from the Boston Flobe is the right paper but wrong critic, Don Aucion didn’t review it, Terry Byrne did.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/566",
-    "severity": "info",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31413897112",
-    "decision": true,
-    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
-    "model": null,
-    "queuedAt": "2026-08-10T17:27:20.294Z"
-  },
-  {
-    "conditionKey": "feedback-outcomes:2026-08-10T19:41:05.945753+00:00,2026-08-10T19:44:53.632124+00:00",
-    "title": "Feedback: 1 of 2 needs you",
-    "description": "2 messages from users came in. 1 of them stalled and needs a person.\n\n3 Summers of Lincoln (Regional) — The site deliberately did not act on this: show \"3 Summers of Lincoln\" (regional) already in catalog as 3-summers-of-lincoln-regional-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Vanguard Culture’s review from David Coddon to the Scorecard page for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/567\n\n3 Summers of Lincoln (Regional) — A review on the 3 Summers of Lincoln page is misattributed — David Coddon's review is credited to Vanguard Culture but should be attributed to Stage West.. You will get another email when it is live on the site.\n  They wrote: \"Update: David Coddon’s review is Stage West’s not Vanguard Culture’s\"",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31427249280",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-10T20:10:40.174Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 18 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31437562216",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "queuedAt": "2026-08-10T22:35:31.019Z"
-  },
-  {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "14 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-11T05:12:08.005Z"
+    "queuedAt": "2026-08-11T07:58:06.077Z"
   }
 ]
