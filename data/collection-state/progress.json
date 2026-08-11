@@ -430,7 +430,17 @@
     "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
     "oh-mary-west-end-2025/vulture--sara-holdren.json",
     "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
-    "oh-mary-west-end-2025/ew--christian-holub.json"
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "isla-off-broadway-2026/show-score--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/nytimes--alexis-soloski.json",
+    "the-pass-off-broadway-2026/talkinbroadway--unknown.json",
+    "weve-been-here-before-a-one-woman-musical-off-broadway-2026/show-score--unknown.json",
+    "disruption-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "disruption-off-broadway-2026/timeout-london--unknown.json",
+    "disruption-off-broadway-2026/wsj--unknown.json",
+    "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -517,7 +527,7 @@
     ]
   },
   "startTime": "2026-08-11T10:23:59.357Z",
-  "lastProcessed": "oh-mary-west-end-2025/ew--christian-holub.json",
+  "lastProcessed": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
   "log": [
     {
       "t": "2026-08-11T10:38:18.362Z",
@@ -553,6 +563,17 @@
       "event": "bb-session",
       "session": "e9af9b40",
       "url": "https://www.broadwayworld.com/reviews/hungry-women"
+    },
+    {
+      "t": "2026-08-11T12:52:26.013Z",
+      "event": "bb-session",
+      "session": "1263e48f",
+      "url": "https://www.wsj.com/articles/disruption-review-ai-guinea-pigs-in-an-off-broadway"
+    },
+    {
+      "t": "2026-08-11T12:52:26.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
