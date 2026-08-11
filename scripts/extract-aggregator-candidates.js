@@ -57,7 +57,7 @@ function readJsonArray(file) {
   } catch { return []; }
 }
 
-function loadExistingShowSlugs() {
+function loadExistingShows() {
   const candidates = [
     path.join(__dirname, '..', 'data', 'shows.json'),
     process.env.HOME ? path.join(process.env.HOME, 'broadway-scorecard-data', 'shows.json') : null,
@@ -65,16 +65,16 @@ function loadExistingShowSlugs() {
   for (const p of candidates) {
     try {
       const data = JSON.parse(fs.readFileSync(p, 'utf8'));
-      const shows = data.shows || data;
-      return collisionSlugSet(shows);
+      return data.shows || data;
     } catch { /* try next */ }
   }
   console.warn('::warning::shows.json not found locally — slug-collision guard disabled this run.');
-  return new Set();
+  return [];
 }
 
 async function main() {
-  const existingSlugs = loadExistingShowSlugs();
+  const shows = loadExistingShows();
+  const existingSlugs = collisionSlugSet(shows);
 
   // Prune staged candidates whose show has since landed in shows.json through
   // ANY path — not just this script's own promotion flow. The daily CI
@@ -86,7 +86,7 @@ async function main() {
   // 2026-08-11 — sits in staging (and the health-check "OB Discovery — Action
   // Needed" digest) forever. See pruneStagedCandidates() for the full story.
   const stagingBefore = loadStaging();
-  const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, existingSlugs);
+  const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, shows);
   if (stagingPruned.length > 0) {
     console.log(`Pruning ${stagingPruned.length} staged candidate(s) already in shows.json:`);
     for (const p of stagingPruned) console.log(`  - ${p.title} @ ${p.venue || '?'} (${p.source || '?'})`);
@@ -106,7 +106,7 @@ async function main() {
 
   if (records.length === 0) {
     console.log('No unmatched audit entries to process.');
-    return finish([], []);
+    return finish([], [], stagingPruned);
   }
   console.log(`Loaded ${records.length} unmatched audit entries (PV + BWW).`);
 
@@ -169,10 +169,10 @@ async function main() {
     }
   }
 
-  return finish(accepted, rejected);
+  return finish(accepted, rejected, stagingPruned);
 }
 
-async function finish(accepted, rejected) {
+async function finish(accepted, rejected, prunedStaged = []) {
   console.log('');
   console.log(`Summary: ${accepted.length} accepted / ${rejected.length} rejected.`);
   const byReason = {};
@@ -202,11 +202,15 @@ async function finish(accepted, rejected) {
   }
 
   // Always refresh the rejection log (so stale entries don't linger).
+  // prunedStaged carries a durable record of pruneStagedCandidates()'s deletes
+  // from data/audit/ob-venue-candidates.json — without it, that write has no
+  // audit trail at all (ship-check review 2026-08-11).
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
   const out = {
     generatedAt: new Date().toISOString(),
-    counts: { accepted: accepted.length, rejected: rejected.length, byReason },
+    counts: { accepted: accepted.length, rejected: rejected.length, prunedStaged: prunedStaged.length, byReason },
     rejected,
+    prunedStaged,
   };
   const tmp = REJECTIONS_FILE + '.tmp.' + process.pid;
   fs.writeFileSync(tmp, JSON.stringify(out, null, 2));

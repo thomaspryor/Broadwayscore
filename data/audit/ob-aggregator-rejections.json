@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-08-11T18:08:19.942Z",
+  "generatedAt": "2026-08-11T18:14:21.750Z",
   "counts": {
     "accepted": 0,
     "rejected": 14,
+    "prunedStaged": 0,
     "byReason": {
       "low-confidence-existing-match": 7,
       "fetch-failed": 7
@@ -93,5 +94,6 @@
       "source": "bww-roundup",
       "reason": "fetch-failed"
     }
-  ]
+  ],
+  "prunedStaged": []
 }
