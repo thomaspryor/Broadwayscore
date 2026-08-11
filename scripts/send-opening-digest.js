@@ -867,7 +867,18 @@ async function main() {
 // Exported for unit tests (tests/unit/opening-digest-gates.test.mjs + the
 // subject↔classifier parity test in scheduled-email-count-rules.test.mjs).
 // The display gates are the load-bearing trust logic — test the real fns.
-module.exports = { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS, buildSubject, buildDigestLead };
+// computeCriticScore/setOutletRegistryForTest exist so the digest-score
+// parity test (#1245: The Pass showed 73 in the email vs 70 on site) can
+// drive the real function instead of a reimplementation.
+module.exports = {
+  minReviewsToShowScore,
+  getAudience,
+  MIN_AUDIENCE_REVIEWS,
+  buildSubject,
+  buildDigestLead,
+  computeCriticScore,
+  setOutletRegistryForTest: (r) => { outletRegistry = r; },
+};
 
 if (require.main === module) {
   main().catch(err => {
