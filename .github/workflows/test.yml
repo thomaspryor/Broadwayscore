@@ -2215,6 +2215,12 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/ci-red-dispatch-heuristic.js'
       - 'scripts/bsc-next-ci-red-claim.test.mjs'
+      # Cost-report parser (card #114): extracts/ranks the "Top SB Credit
+      # Consumers" table from scraper-cost-report.yml issue bodies. Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/cost-report-parser.js'
+      - 'scripts/lib/cost-report-parser.test.mjs'
   pull_request:
     branches: [main]
   schedule:
