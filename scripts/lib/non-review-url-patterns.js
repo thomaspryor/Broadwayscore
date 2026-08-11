@@ -30,7 +30,7 @@
 // (no fs, no network), so this preserves this module's "safe for the S5 probe's
 // pure decision layer" load contract.
 const { TICKET_DOMAINS, matchesDomainSet } = require('./domain-filters');
-const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -224,7 +224,9 @@ function namedNonReviewReason(url) {
 
 // Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
 // or mobile host is the same outlet as its bare domain.
-const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
+// (mirror/format subdomain stripping now lives in host-suffix-lists.js's
+// stripCosmeticPrefixes, so all three host-identity functions strip the same
+// prefixes under the same "don't eat the publication label" guard.)
 // Which suffix a host sits on comes from host-suffix-lists.js — the SHARED
 // source of truth, also used by outlet-canonicalize.js (provisionalOutletIdFromHost)
 // and silent-exclusion-detectors.js (normalizeHostSlug). This file used to carry
@@ -240,8 +242,8 @@ const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
 // intact so they keep their per-publication provisional identity.
 function registrableHost(host) {
   if (!host || typeof host !== 'string') return host;
-  let h = host.replace(/^www\./, '').toLowerCase();
-  while (MIRROR_SUBDOMAIN_PREFIX.test(h)) h = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
+  const h = stripCosmeticPrefixes(host);
+  if (!h) return host;
   if (platformSuffixOf(h)) return h;
   const parts = h.split('.').filter(Boolean);
   const keep = multipartSuffixOf(h) ? 3 : 2;

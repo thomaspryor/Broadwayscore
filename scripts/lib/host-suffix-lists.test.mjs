@@ -23,6 +23,7 @@ const {
   MULTIPART_PUBLIC_SUFFIXES,
   platformSuffixOf,
   multipartSuffixOf,
+  stripCosmeticPrefixes,
 } = require('./host-suffix-lists.js');
 const { provisionalOutletIdFromHost } = require('./outlet-canonicalize.js');
 const { normalizeHostSlug } = require('./silent-exclusion-detectors.js');
@@ -128,6 +129,50 @@ test('registrableHost agrees with the other two on platform hosts', () => {
   // Non-platform hosts still collapse to the registrable domain.
   assert.equal(registrableHost('theater.nytimes.com'), 'nytimes.com');
   assert.equal(registrableHost('news.dancemagazine.co.uk'), 'dancemagazine.co.uk');
+});
+
+test('stripCosmeticPrefixes drops www/amp/m/mobile but never the publication label', () => {
+  assert.equal(stripCosmeticPrefixes('amp.theguardian.com'), 'theguardian.com');
+  assert.equal(stripCosmeticPrefixes('m.someblog.substack.com'), 'someblog.substack.com');
+  assert.equal(stripCosmeticPrefixes('mobile.m.amp.someblog.substack.com'), 'someblog.substack.com');
+  assert.equal(stripCosmeticPrefixes('www.theatre-weekly.co.uk'), 'theatre-weekly.co.uk');
+  // The guard: here 'm' IS the Blogger publication, not a mobile mirror.
+  assert.equal(stripCosmeticPrefixes('m.blogspot.co.id'), 'm.blogspot.co.id');
+  assert.equal(stripCosmeticPrefixes('m.co.uk'), 'm.co.uk');
+  // Malformed hosts must not slice down to nothing.
+  assert.equal(stripCosmeticPrefixes('.blogspot.co.id'), 'blogspot.co.id');
+  assert.equal(stripCosmeticPrefixes('example.com.'), 'example.com');
+  assert.equal(stripCosmeticPrefixes(null), '');
+});
+
+test('ALL THREE agree on mirror-prefixed hosts (ship-check regression)', () => {
+  // Found by ship-check, confirmed by direct execution against the first
+  // commit of this change: provisionalOutletIdFromHost stripped only www., so
+  // 'm.someblog.substack.com' minted the outletId 'm' while normalizeHostSlug
+  // said 'someblog' — a registration/detection split that makes a genuine
+  // domain move unrecognizable. registrableHost had the mirror bug: it
+  // stripped 'm.' unconditionally, so 'm.blogspot.co.id' collapsed onto the
+  // platform's own name.
+  const cases = [
+    ['m.someblog.substack.com', 'someblog', 'someblog.substack.com'],
+    ['amp.someblog.substack.com', 'someblog', 'someblog.substack.com'],
+    ['mobile.m.amp.someblog.substack.com', 'someblog', 'someblog.substack.com'],
+    ['amp.theguardian.com', 'theguardian', 'theguardian.com'],
+    // 'm' is the publication here — all three must preserve it.
+    ['m.blogspot.co.id', 'm', 'm.blogspot.co.id'],
+  ];
+  for (const [host, identity, registrable] of cases) {
+    const minted = String(provisionalOutletIdFromHost(host) || '').replace(/[^a-z0-9]/g, '');
+    assert.equal(minted, identity, `provisionalOutletIdFromHost(${host})`);
+    assert.equal(normalizeHostSlug(host), identity, `normalizeHostSlug(${host})`);
+    assert.equal(registrableHost(host), registrable, `registrableHost(${host})`);
+  }
+});
+
+test('normalizeHostSlug never returns an empty slug for a parseable host', () => {
+  for (const h of ['.blogspot.co.id', 'example.com.', 'substack.com', 'co.uk', 'm.co.uk']) {
+    assert.notEqual(normalizeHostSlug(h), '', `${h} normalized to empty`);
+  }
 });
 
 test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
