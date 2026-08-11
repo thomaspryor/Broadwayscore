@@ -1,9 +1,10 @@
-import { test } from 'node:test';
+import { test, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { sanitizeMetadataValue, createBbSession } = require('./browserbase-session.js');
+const browserbaseLiveUsage = require('./browserbase-live-usage.js');
 
 test('createBbSession rejects when BROWSERBASE_KILL_SWITCH=true, before any network call', async () => {
   const prev = process.env.BROWSERBASE_KILL_SWITCH;
@@ -38,6 +39,60 @@ test('createBbSession does not trip the kill-switch check when unset', async () 
     if (prevKs === undefined) delete process.env.BROWSERBASE_KILL_SWITCH; else process.env.BROWSERBASE_KILL_SWITCH = prevKs;
     if (prevKey === undefined) delete process.env.BROWSERBASE_API_KEY; else process.env.BROWSERBASE_API_KEY = prevKey;
     if (prevProject === undefined) delete process.env.BROWSERBASE_PROJECT_ID; else process.env.BROWSERBASE_PROJECT_ID = prevProject;
+  }
+});
+
+test('createBbSession rejects when the live daily session count is at/over the cap (#1248)', async () => {
+  const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 10);
+  try {
+    await assert.rejects(
+      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' }),
+      /Browserbase daily cap reached \(10\/10\)/,
+    );
+    assert.equal(liveMock.mock.callCount(), 1);
+  } finally {
+    liveMock.mock.restore();
+    if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+    else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
+  }
+});
+
+test('createBbSession proceeds past the day-cap check when the live count is under the cap', async () => {
+  const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 9);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_123', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    assert.equal(result.id, 'sess_123');
+    assert.equal(liveMock.mock.callCount(), 1);
+  } finally {
+    fetchMock.mock.restore();
+    liveMock.mock.restore();
+    if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+    else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
+  }
+});
+
+test('createBbSession does not block on a null live count (network hiccup treated as unknown, not zero)', async () => {
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => null);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_456', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    assert.equal(result.id, 'sess_456');
+  } finally {
+    fetchMock.mock.restore();
+    liveMock.mock.restore();
   }
 });
 

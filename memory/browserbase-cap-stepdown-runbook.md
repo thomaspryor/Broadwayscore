@@ -8,17 +8,26 @@ in one week = $1,287, before any caps existed).
 ## Where the number lives
 
 ONE constant: `DEFAULT_MAX_SESSIONS_PER_DAY` in `scripts/lib/browserbase-caps.js`,
-read through `resolveMaxSessionsPerDay()` by **both** enforcement points:
+read through `resolveMaxSessionsPerDay()`.
+
+As of card #1248 (2026-08-11) it is enforced in the shared chokepoint itself —
+`createBbSession()` in `scripts/lib/browserbase-session.js` checks the live
+Browserbase API session count against the cap before every session create, so
+all 9 call sites are covered, not just the 2 that used to opt in:
 
 | Path | How it counts |
 |---|---|
-| `scripts/collect-review-texts.js` | local usage file (`data/collection-state/browserbase-usage.json`) |
-| `scripts/lib/bww-rr-discover.js` | live Browserbase API session count |
+| `scripts/lib/browserbase-session.js` (`createBbSession`) | live Browserbase API session count, checked on every call — covers all 9 callers |
+| `scripts/collect-review-texts.js` | ALSO keeps its own local usage file (`data/collection-state/browserbase-usage.json`), maxed against live count, for its per-run/per-domain caps |
+| `scripts/lib/bww-rr-discover.js` | ALSO keeps its own live-count pre-check ahead of `createBbSession` — redundant with the chokepoint now, kept for its distinct error message |
 
-They cap the *same account*. They used to each hard-code `250`, with
-bww-rr-discover.js only asserting the invariant in a comment — editing one would
-have left the other at 250, so the cap would read as lowered while half the
-spend stayed uncapped. Now there is one edit site.
+Per-run and per-domain caps are NOT centralized — they need per-process state
+the chokepoint doesn't have, so `collect-review-texts.js`'s own
+`checkBrowserbaseCaps()` call is still the only enforcement for those two.
+
+They cap the *same account*. Editing `DEFAULT_MAX_SESSIONS_PER_DAY` (or the
+`BROWSERBASE_MAX_SESSIONS_PER_DAY` repo variable) now changes the day cap for
+every caller in one edit — no per-caller wiring required for new scripts.
 
 **Preferred lever is the repo variable, not the code default.**
 `opening-night-poller.yml` injects `BROWSERBASE_MAX_SESSIONS_PER_DAY` from
