@@ -86,6 +86,14 @@ const FLAG_MIN_RECENT_INVALID_COUNT = 3;
 const MIN_BASELINE_FOR_SPIKE_CHECK = 5; // need this many pre-window records to trust a baseline rate
 const MIN_BASELINE_SPIKE_DELTA = 0.3; // recent rate must exceed baseline rate by this much
 
+// contentTierReason values set by classifyContentTier()'s wrongProduction/wrongShow
+// gate (content-quality.js:~1558-1574) when contentTier:'invalid' — extractor is
+// fine, real article text, wrong show matched. Excluded by default from
+// computeOutletInvalidRates() (card #1266): that failure mode already has its own
+// FP sweep (tasks #24/#243) and isn't evidence of a broken article-extractor.js
+// pattern, which is what this monitor exists to catch.
+const WRONG_PRODUCTION_TIER_REASONS = ['Wrong production', 'Wrong show'];
+
 /**
  * Walk a review-texts tree and return one flat record per review file, with
  * just the fields the stub-rate computation needs. Uses listShowDirs() so a
@@ -167,6 +175,11 @@ function collectReviewRecords(reviewTextsDir) {
  *   (stable high rate, no actual change) from "newly broken" outlets (default false)
  * @param {number} [opts.minBaselineForSpikeCheck] - baseline sample size needed to trust it (default 5)
  * @param {number} [opts.minBaselineSpikeDelta] - required (recentRate - baselineRate) to flag (default 0.3)
+ * @param {string[]} [opts.excludeTierReasons] - records whose contentTierReason is in this
+ *   list are dropped entirely (from total/recent/baseline, not just the tier count) before
+ *   computation — for excluding a different failure mode that happens to share the same
+ *   contentTier value (e.g. wrongProduction/wrongShow-reasoned 'invalid' records, which
+ *   aren't extractor-health evidence). Default: no exclusion.
  * @returns {{outlets: Array<object>, flaggedOutletIds: string[]}}
  */
 function computeOutletTierRates(records, opts = {}) {
@@ -178,10 +191,12 @@ function computeOutletTierRates(records, opts = {}) {
   const requireBaselineSpike = opts.requireBaselineSpike ?? false;
   const minBaselineForSpikeCheck = opts.minBaselineForSpikeCheck ?? MIN_BASELINE_FOR_SPIKE_CHECK;
   const minBaselineSpikeDelta = opts.minBaselineSpikeDelta ?? MIN_BASELINE_SPIKE_DELTA;
+  const excludeTierReasons = new Set(opts.excludeTierReasons || []);
 
   const byOutlet = new Map();
   for (const r of Array.isArray(records) ? records : []) {
     if (!r || !r.outletId) continue;
+    if (excludeTierReasons.size > 0 && excludeTierReasons.has(r.contentTierReason)) continue;
     if (!byOutlet.has(r.outletId)) {
       byOutlet.set(r.outletId, { outletId: r.outletId, outlet: r.outlet || null, reviews: [], excludedReviews: [] });
     }
@@ -301,6 +316,16 @@ function computeOutletStubRates(records, opts = {}) {
  * Defaults requireBaselineSpike to true — see the module docstring for why
  * a flat rate threshold alone false-positives heavily on this tier.
  *
+ * Also defaults to excluding wrongProduction/wrongShow-reasoned records (card
+ * #1266): contentTier:'invalid' is set by TWO unrelated code paths in
+ * classifyContentTier() — a genuine broken extraction (isGarbageContent, e.g.
+ * a cookie wall or 404 rendered as 200) and the wrongProduction/wrongShow gate
+ * (extractor is fine, real article text, just the wrong show's review). Only
+ * the former is a broken-extractor signature; the latter belongs with the
+ * existing wrongProduction FP sweep (tasks #24/#243) and would otherwise
+ * inflate or single-handedly trigger a flag that has nothing to do with
+ * article-extractor.js.
+ *
  * @param {Array<object>} records - see computeOutletTierRates
  * @param {object} [opts]
  * @param {number} [opts.nowMs]
@@ -310,6 +335,8 @@ function computeOutletStubRates(records, opts = {}) {
  * @param {boolean} [opts.requireBaselineSpike] - default true
  * @param {number} [opts.minBaselineForSpikeCheck] - default 5
  * @param {number} [opts.minBaselineSpikeDelta] - default 0.3
+ * @param {string[]} [opts.excludeTierReasons] - default WRONG_PRODUCTION_TIER_REASONS;
+ *   pass [] to disable the exclusion
  * @returns {{outlets: Array<object>, flaggedOutletIds: string[]}}
  */
 function computeOutletInvalidRates(records, opts = {}) {
@@ -322,6 +349,7 @@ function computeOutletInvalidRates(records, opts = {}) {
     minBaselineSpikeDelta: opts.minBaselineSpikeDelta ?? MIN_BASELINE_SPIKE_DELTA,
     flagRecentTierRate: opts.flagRecentInvalidRate ?? FLAG_RECENT_INVALID_RATE,
     flagMinRecentTierCount: opts.flagMinRecentInvalidCount ?? FLAG_MIN_RECENT_INVALID_COUNT,
+    excludeTierReasons: opts.excludeTierReasons ?? WRONG_PRODUCTION_TIER_REASONS,
   });
   return {
     outlets: outlets.map((o) => ({
@@ -415,7 +443,7 @@ function main() {
     for (const o of invalid.outlets.filter((x) => x.flagged)) {
       console.log(`  - ${o.outletId} (${o.outlet}): ${o.recentInvalidCount}/${o.recentTotal} recent invalid (${(o.recentInvalidRate * 100).toFixed(0)}%) vs ${(o.baselineInvalidRate * 100).toFixed(0)}% baseline, ${o.invalidCount}/${o.total} all-time`);
     }
-    console.log('\nCheck each flagged file\'s contentTierReason before assuming a broken extractor: this tier catches BOTH a redesigned article-extractor.js pattern (reason "No text content"/garbage boilerplate — a scraper fix) AND a wrongProduction/wrongShow classification spike (extractor is fine, wrong show matched — belongs with the wrongProduction FP sweep, not article-extractor.js). A high all-time invalid rate alone is also common for paywalled/bot-blocked outlets — this list is filtered to outlets whose rate genuinely SPIKED over their own baseline.');
+    console.log('\nwrongProduction/wrongShow-reasoned records are excluded from this computation (they belong with the wrongProduction FP sweep, tasks #24/#243, not article-extractor.js) — a flag here should be a genuine extraction failure. Still worth a contentTierReason spot-check on the flagged files before diving into article-extractor.js. A high all-time invalid rate alone is also common for paywalled/bot-blocked outlets — this list is filtered to outlets whose rate genuinely SPIKED over their own baseline.');
   }
   console.log(`\nWritten to data/audit/outlet-invalid-content-rates.json`);
 
@@ -436,6 +464,7 @@ module.exports = {
   FLAG_MIN_RECENT_INVALID_COUNT,
   MIN_BASELINE_FOR_SPIKE_CHECK,
   MIN_BASELINE_SPIKE_DELTA,
+  WRONG_PRODUCTION_TIER_REASONS,
 };
 
 if (require.main === module) main();
