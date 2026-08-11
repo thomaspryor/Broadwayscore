@@ -1733,6 +1733,16 @@ on:
       - 'scripts/.alert-sender-baseline.json'
       - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
+      # Outlet stub-rate monitor (card #100): detects a broken article
+      # extractor (site redesign silently breaking extraction, e.g.
+      # TheaterMania's 2026 Bootstrap redesign) via a spike in the stub-tier
+      # rate among reviews collected in the last 30 days. Wired into
+      # health-check.js's daily digest (already path-listed above); the
+      # colocated test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-outlet-stub-rate.js'
+      - 'scripts/audit-outlet-stub-rate.test.mjs'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/market-label.test.mjs scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
