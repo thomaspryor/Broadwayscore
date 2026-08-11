@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 const require = createRequire(import.meta.url);
-const { EDITION_PAIRS, findUndeclaredDomainCollisions } =
+const { EDITION_PAIRS, DECLARED_ALIAS_OVERLAPS, findUndeclaredDomainCollisions } =
   require(resolve(ROOT, 'scripts/lib/outlet-registry-domain-collisions.js'));
 
 describe('findUndeclaredDomainCollisions', () => {
@@ -76,6 +76,49 @@ describe('findUndeclaredDomainCollisions', () => {
       ['sunday-telegraph', 'telegraph'],
       ['express-uk', 'sunday-express'],
       ['timeout', 'timeout-london'],
+    ]);
+  });
+
+  test('flags an outlet whose domainAliases claims another outlet\'s primary domain (task #1270)', () => {
+    const collisions = findUndeclaredDomainCollisions({
+      'real-outlet': { domain: 'realoutlet.com' },
+      'squatter': { domain: 'squatter.com', domainAliases: ['realoutlet.com'] },
+    });
+    assert.deepStrictEqual(collisions, [
+      { domain: 'realoutlet.com', outletIds: ['real-outlet', 'squatter'] },
+    ]);
+  });
+
+  test('two outlets whose domainAliases both claim the same third host still collide', () => {
+    const collisions = findUndeclaredDomainCollisions({
+      a: { domain: 'a.com', domainAliases: ['shared.com'] },
+      b: { domain: 'b.com', domainAliases: ['shared.com'] },
+    });
+    assert.deepStrictEqual(collisions, [
+      { domain: 'shared.com', outletIds: ['a', 'b'] },
+    ]);
+  });
+
+  test('an outlet is not flagged against itself when its own domain equals its own domainAlias', () => {
+    assert.deepStrictEqual(findUndeclaredDomainCollisions({
+      a: { domain: 'a.com', domainAliases: ['a.com', 'www.a.com'] },
+    }), []);
+  });
+
+  test('DECLARED_ALIAS_OVERLAPS pairs are covered (domainAliases-only collisions)', () => {
+    const collisions = findUndeclaredDomainCollisions({
+      ap: { domain: 'apnews.com', domainAliases: ['abcnews.go.com'] },
+      'abc-news': { domain: 'abcnews.go.com' },
+    });
+    assert.deepStrictEqual(collisions, []);
+  });
+
+  test('DECLARED_ALIAS_OVERLAPS is exactly the four known domain/domainAlias overlaps', () => {
+    assert.deepStrictEqual(DECLARED_ALIAS_OVERLAPS.map((p) => [...p].sort()), [
+      ['abc-news', 'ap'],
+      ['bobs-theater-blog', 'gotham-playgoer'],
+      ['dc-metro-theater-arts', 'dctheatrescene'],
+      ['chicago-sun-times', 'suntimes'],
     ]);
   });
 });

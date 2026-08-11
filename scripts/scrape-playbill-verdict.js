@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
-const { pruneUnmatchedAudit, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
+const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -713,8 +713,11 @@ async function scrapePlaybillVerdict() {
     }
     // Prune entries that no longer belong (already-in-shows by exact slug +
     // infrastructure) so the file doesn't grow unbounded across daily runs.
-    // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
-    const existingSlugs = collisionSlugSet(shows);
+    // MARKET-SCOPED (off-broadway/regional only) — see pruneUnmatchedAudit's
+    // header (P1 task #1246, 2026-08-11): a title-only prune against the FULL
+    // catalog would delete a brand-new OB show's audit entry just because an
+    // unrelated Broadway/West End show shares its title.
+    const existingSlugs = collisionSlugSet(obRegionalShows(shows));
     const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'playbill-verdict', existingSlugs });
     fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
     console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);

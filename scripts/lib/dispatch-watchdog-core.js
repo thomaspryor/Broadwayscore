@@ -30,8 +30,8 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, DEAD_ATTEMPT_LIMIT,
-  openTaskWorkspaceLaunches, deadAttemptsForTask, parkedTasks,
+  TERMINAL_LAUNCH_EVENTS,
+  openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
@@ -213,9 +213,22 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
-    const deaths = deadAttemptsForTask(id, entries).length;
-    const item = { taskId: id, subject: task.subject, deaths };
-    if (deaths >= DEAD_ATTEMPT_LIMIT) toPark.push(item);
+    // Card #1233: substantive deaths only count toward the park threshold —
+    // cmux's terminal-surface-never-rendered failures are free retries here
+    // too, bounded instead by dispatchCapDecision's own infra ceiling.
+    // `reason` rides along on the item so every downstream consumer (the
+    // digest line below, and the owner-paged message in dispatch-watchdog.js)
+    // can tell an infra park apart from a substantive one — `deaths` alone
+    // would read as "parked after 0 dead dispatch attempts" for a task
+    // parked purely on the infra ceiling, since cap.substantive.length is 0
+    // in that case (ship-check catch).
+    const cap = dispatchCapDecision(id, entries);
+    const item = {
+      taskId: id, subject: task.subject,
+      deaths: cap.reason === 'infra' ? cap.infra.length : cap.substantive.length,
+      reason: cap.reason,
+    };
+    if (cap.blocked) toPark.push(item);
     else retryable.push(item);
   }
   retryable.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
@@ -229,7 +242,7 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
-    if (deadAttemptsForTask(id, entries).length >= DEAD_ATTEMPT_LIMIT) continue;
+    if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
   }
   p01Queue.sort((a, b) => (a.priority < b.priority ? -1 : a.priority > b.priority ? 1 :
@@ -326,7 +339,7 @@ function renderNarrative(plan) {
   if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
     lines.push('');
     lines.push('Needs you:');
-    for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.deaths} dead attempts, parked (won't retry)`);
+    for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.reason === 'infra' ? `${p.deaths} infra dead-launches in a row (cmux itself looks wedged)` : `${p.deaths} dead attempts`}, parked (won't retry)`);
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }

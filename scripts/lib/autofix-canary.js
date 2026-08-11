@@ -175,6 +175,24 @@ function assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries, now = new
     };
   }
 
+  // 'job-done' with no recorded canary-pass/canary-fail means runAutofixCanary
+  // has not yet reached a verdict for this date (its own resolution step
+  // defers rather than guessing on a transient git-fetch/task-load failure —
+  // see markerExistsOnOriginMain's null case). That is AMBIGUOUS, not a
+  // confirmed pipeline failure: the job genuinely finished, and reporting a
+  // hard ERROR here could be a false alarm over this machine's own local
+  // resolution trouble rather than the dispatch pipeline (Codex re-review,
+  // task #1225). Every other stage (not-filed, card-filed, dispatched,
+  // job-failed, or an explicitly recorded canary-fail) IS a confirmed signal
+  // and stays an error.
+  if (stage === 'job-done') {
+    return {
+      name,
+      status: 'warn',
+      message: `Autofix pipeline canary for ${yesterday} finished its dispatch but is not yet confirmed (marker not yet verified on origin/main, or this machine could not check) — not a confirmed failure yet.`,
+    };
+  }
+
   return {
     name,
     status: 'error',
@@ -256,10 +274,22 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
 
   const dSum = dispatchedTotal.reduce((a, b) => a + b, 0);
   const pSum = passedTotal.reduce((a, b) => a + b, 0);
+  // A source being unreadable is partial blindness, not confirmed health —
+  // the visible source alone cannot prove the UNREADABLE source isn't
+  // starved. 'pass' must mean BOTH sources were actually checked (Codex
+  // re-review, task #1225: the earlier version could report 'pass' off one
+  // healthy source while the other silently starved).
+  if (digestNull || backlogNull) {
+    return {
+      name,
+      status: 'warn',
+      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
+    };
+  }
   return {
     name,
     status: 'pass',
-    message: `Autofix throughput over the last ${windowDays}d${partialNote}: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum}).`,
+    message: `Autofix throughput over the last ${windowDays}d: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum}).`,
   };
 }
 
@@ -341,10 +371,12 @@ function markerExistsOnOriginMain(dateStr, log = () => {}) {
  */
 function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), loadTasksFn = null } = {}) {
   let tasks = [];
+  let tasksLoadFailed = false;
   try {
     if (loadTasksFn) tasks = loadTasksFn();
     else { const bn = require('../bsc-next.js'); tasks = bn.loadTasks(bn.TASKS_DIR); }
   } catch (err) {
+    tasksLoadFailed = true;
     log(`[autofix-canary] WARN could not load tasks (dedup/resolution degraded): ${String(err.message).slice(0, 120)}`);
   }
   const tasksById = new Map(tasks.map((t) => [String(t.id), t]));
@@ -357,7 +389,14 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
   const yesterday = canaryDateStr(new Date(now.getTime() - 24 * 3600 * 1000));
   const yState = foldCanaryStage({ dateStr: yesterday, canaryLedgerEntries: ledgerEntries, dispatchLedgerEntries, now });
   const alreadyResolved = ledgerEntries.some((e) => e && (e.event === 'canary-pass' || e.event === 'canary-fail') && e.date === yesterday);
-  if (!alreadyResolved && yState.stage !== 'not-filed') {
+  if (tasksLoadFailed) {
+    // A broken task-list read must not masquerade as "task not completed" —
+    // that would record a false canary-fail for a genuinely successful
+    // canary purely because THIS run couldn't read local task state (Codex
+    // re-review, task #1225). Defer entirely, same as an unresolved marker
+    // check.
+    log(`[autofix-canary] ${yesterday} canary: task list unreadable this run — resolution deferred, not evidence of failure`);
+  } else if (!alreadyResolved && yState.stage !== 'not-filed') {
     const markerExists = markerExistsOnOriginMain(yesterday, log); // true | false | null (unresolved)
     const task = yState.taskId ? tasksById.get(String(yState.taskId)) : null;
     const taskCompleted = !!(task && task.status === 'completed');
