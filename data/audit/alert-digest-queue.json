@@ -1,8 +1,8 @@
 [
   {
-    "conditionKey": "arm-yield:workflow:scoring-audit",
-    "title": "Scoring Audit has stopped updating (190 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-01 and 2026-08-10.)",
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget: brightdata $8.39 > $2.5 (3089 serp + 2502 unlocker reqs); scrapingdog 46825 credits > 45000",
+    "description": "Day 2026-08-10. 2026-08-10 · Browserbase: $2.4 (24 sessions) · 2026-08-10 · Bright Data: $8.39 (3089 serp / 2502 unlocker) · ScrapingBee: 18518 credits (136774 this cycle) · ScrapingDog: 46825 credits (1298765 this cycle) · Browserbase attribution: 4% attributed — top: collect-review-texts.js 1 · Bright Data attribution: 22% attributed — top: opening-night-poller.js 843, audit-show-review-gap.js 216, fetch-show-images-auto.js 144, ingest-review-from-url.js 30, enrich-stubhub-prices.js 8 · ScrapingBee attribution: 2% attributed — top: fetch-show-images-auto.js 144, opening-night-poller.js 130, audit-show-review-gap.js 109, ingest-review-from-url.js 24, enrich-stubhub-prices.js 7 · ScrapingDog attribution: 9% attributed — top: opening-night-poller.js 1407, audit-show-review-gap.js 1326, collect-outlet-reviews.js 450, fetch-show-images-auto.js 274, collect-review-texts.js 273. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": false,

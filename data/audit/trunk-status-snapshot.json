@@ -1,23 +1,22 @@
 {
-  "generatedAt": "2026-08-10T12:02:12.383Z",
+  "generatedAt": "2026-08-11T07:58:23.245Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "4a7164ee59f54391cbfe4198a149a148ae0e310f",
+  "latestRunHeadSha": "7b4b168562d7a8514d541cd42a933ddb83b6d969",
   "state": "RED",
-  "consecutiveFailures": 27,
+  "consecutiveFailures": 41,
   "redSince": "2026-08-09T23:39:28Z",
-  "redForHours": 12.378995277777777,
+  "redForHours": 32.31534583333333,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-08-09T23:31:44Z",
-  "latestFailedRunId": "31376938325",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31376938325",
-  "decidedRuns": 95,
+  "latestFailedRunId": "31467850649",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31467850649",
+  "decidedRuns": 87,
   "failingJobs": [
     {
       "name": "Unit Tests",
       "steps": [
-        "Run unit tests (no-data-dependency)",
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+        "Run unit tests (no-data-dependency)"
       ]
     },
     {
@@ -29,22 +28,10 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/cast-changes-real-data.test.mjs",
+      "path": "tests/unit/review-guards.test.mjs",
       "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1141 - no [AUTO-FLAGGED] entries older than 30 days in upcoming"
-    },
-    {
-      "path": "scripts/lib/exit-status-gate-taskref.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1392 - Gate T BLOCKS a final message with \"task \\#1152\" and no nearby title"
-    },
-    {
-      "path": "scripts/lib/ingest-skip-classify.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1602 - every skip reason review-file-writer.js emits is classified"
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 2 - contentTier=invalid + fresh wrongProductionAutoCleared → includable"
     }
   ],
   "topFailingJob": "Unit Tests"
