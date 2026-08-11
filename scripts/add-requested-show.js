@@ -181,14 +181,13 @@ async function main() {
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
   const showsRaw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const shows = showsRaw.shows || showsRaw;
-  const existingSlugs = new Set(shows.map((s) => s && s.slug).filter(Boolean));
 
   const slug = roundupUrl.split('/').filter(Boolean).pop() || '';
   const classification = classifyCandidate({
     source: roundupSource,
     record: { url: roundupUrl, slug, firstSeen: new Date().toISOString() },
     html: fetched.content,
-    existingSlugs,
+    shows,
   });
 
   if (classification.status === 'reject') {
