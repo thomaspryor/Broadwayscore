@@ -51,6 +51,11 @@ const SAFE_CHECK_FORMS = [
   // "two consecutive clean weeks" bar — reads a status file the weekly
   // adversarial-probe cron already wrote, no arguments, nothing to inject.
   { re: /^node scripts\/check-coverage-probe-clean\.js$/ },
+  // Digest-autofix S6 (task #1225): the daily end-to-end canary's own
+  // acceptance command — read-only marker-file existence check. --date is a
+  // strict YYYY-MM-DD token (no shell metachars, no path segments), so this
+  // cannot reference or mutate anything outside data/audit/canary-*.marker.
+  { re: /^node scripts\/check-canary-marker\.js --date=(\d{4}-\d{2}-\d{2})$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -80,7 +85,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), or `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance)';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), or `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
