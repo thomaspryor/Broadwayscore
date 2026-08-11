@@ -497,6 +497,7 @@ module.exports = {
   extractByRegex,
   extractJsonLdTheaterEvents,
   writeStagingCandidates,
+  writeStaging,
   loadStaging,
   candidateHash,
 };

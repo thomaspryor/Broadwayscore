@@ -25,6 +25,7 @@ const {
   classifyCandidate,
   slugCollidesWith,
   pruneUnmatchedAudit,
+  pruneStagedCandidates,
   referenceTitle,
 } = require('./aggregator-candidate-extract.js');
 
@@ -254,6 +255,56 @@ test('pruneUnmatchedAudit tolerates junk input + empty slug set', () => {
   const r = pruneUnmatchedAudit([{ slug: 'site-map' }, { slug: 'real-show', title: 'Real Show' }], { source: 'playbill-verdict' });
   assert.equal(r.pruned, 1);
   assert.deepEqual(r.kept.map(e => e.slug), ['real-show']);
+});
+
+test('pruneStagedCandidates drops staged candidates already in shows.json at the SAME venue (2026-08-11 regression: Dad Dont Read This)', () => {
+  const staged = [
+    { title: "Dad Don't Read This", venue: "St. Luke's Theatre", source: 'bww-roundup' },
+    { title: 'Brand New Unstaged Show', venue: 'Some Theatre', source: 'playbill-verdict' },
+  ];
+  const shows = [
+    { id: 'dad-dont-read-this-off-broadway-2026', category: 'off-broadway', title: "Dad Don't Read This", venue: "St. Luke's Theatre" },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 1);
+  assert.equal(pruned[0].title, "Dad Don't Read This");
+  assert.equal(pruned[0].matchedShowId, 'dad-dont-read-this-off-broadway-2026');
+  assert.deepEqual(kept.map(c => c.title), ['Brand New Unstaged Show']);
+});
+
+test('pruneStagedCandidates does NOT prune a same-title candidate at a DIFFERENT venue (ship-check P0 2026-08-11: title-only match would erase a real new production)', () => {
+  const staged = [
+    { title: 'Hamlet', venue: 'A New Off-Broadway Space', source: 'bww-roundup' },
+  ];
+  // shows.json has an unrelated, long-closed "Hamlet" at a different venue —
+  // same title slug, but a title-only prune would wrongly delete the NEW
+  // Hamlet's discovery signal. Venue must also match.
+  const shows = [
+    { id: 'hamlet-2009', category: 'off-broadway', title: 'Hamlet', venue: 'Some Other Theatre' },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 0);
+  assert.deepEqual(kept.map(c => c.title), ['Hamlet']);
+});
+
+test('pruneStagedCandidates only matches off-broadway/regional shows, never a broadway/west-end namesake', () => {
+  const staged = [
+    { title: 'Chess', venue: 'A New Off-Broadway Space', source: 'bww-roundup' },
+  ];
+  const shows = [
+    { id: 'chess-2003', category: 'broadway', title: 'Chess', venue: 'A New Off-Broadway Space' },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 0);
+  assert.deepEqual(kept.map(c => c.title), ['Chess']);
+});
+
+test('pruneStagedCandidates tolerates junk input + missing shows', () => {
+  assert.deepEqual(pruneStagedCandidates(null, []), { kept: [], pruned: [] });
+  assert.deepEqual(pruneStagedCandidates([null, 'x', 42], []), { kept: [], pruned: [] });
+  const r = pruneStagedCandidates([{ title: 'Real Show', venue: 'X' }], undefined);
+  assert.equal(r.pruned.length, 0);
+  assert.deepEqual(r.kept.map(c => c.title), ['Real Show']);
 });
 
 test('low-confidence PV entries are not new candidates', () => {
