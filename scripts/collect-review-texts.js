@@ -4766,6 +4766,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.extractedByline;
       delete data.expectedCritic;
       delete data.fullTextWrongAuthor;
+      delete data.fullTextWrongAuthorAt;
       delete data._authorMismatch;
 
       // Rename the file to match the new canonical critic. On conflict,
@@ -4812,6 +4813,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         delete data.extractedByline;
         delete data.expectedCritic;
         delete data.fullTextWrongAuthor;
+        delete data.fullTextWrongAuthorAt;
         delete data._authorMismatch;
         // Rename the file to match the new canonical critic.
         renameReviewFileForCriticOverride(review, data, hcAuthor.name);
@@ -4836,6 +4838,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // Clear stale fullTextWrongAuthor if byline now matches (re-fetched correct text)
       if (data.fullTextWrongAuthor && data._authorMismatch && data._authorMismatch.startsWith('Byline at')) {
         delete data.fullTextWrongAuthor;
+        delete data.fullTextWrongAuthorAt;
         delete data._authorMismatch;
       }
     }

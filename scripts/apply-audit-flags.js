@@ -94,6 +94,12 @@ if (audit.authorMismatches && audit.authorMismatches.length > 0) {
 
     if (!dryRun) {
       data.fullTextWrongAuthor = true;
+      // Freshness stamp for review-write-guard.js's CLEAR_BREADCRUMBS (task
+      // #1237) — without it, the SAME job's later push-review-texts restore
+      // step sees committed HEAD (checked out before this ran) still carrying
+      // the wrong-author fullText/assignedScore/ensembleData and resurrects
+      // them, silently undoing the contamination removal below.
+      data.fullTextWrongAuthorAt = new Date().toISOString();
       data._authorMismatch = `Byline says ${m.detectedAuthor}, file says ${m.fileCritic}`;
       delete data.fullText;
       // Clear scores computed from wrong fullText
