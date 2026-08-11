@@ -6,6 +6,7 @@ scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
+scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
@@ -17,12 +18,12 @@ scripts/autonomous-run.test.mjs
 scripts/autonomous-triage.test.mjs
 scripts/backfill-cast.test.mjs
 scripts/backfill-first-seen.test.mjs
+scripts/backlog-drain.test.mjs
 scripts/bsc-conductor.test.mjs
 scripts/bsc-next-ci-red-claim.test.mjs
 scripts/bsc-next.test.mjs
 scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile.test.mjs
-scripts/backlog-drain.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/discover-new-shows.test.mjs
 scripts/enrich-card-acceptance.test.mjs
@@ -156,6 +157,7 @@ tests/unit/corpus-determinism.test.mjs
 tests/unit/corpus-scan-guard.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/creative-team-validator.test.mjs
+tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
@@ -271,7 +273,6 @@ tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
 tests/unit/opening-night-bypass-corpus.test.mjs
 tests/unit/opening-night-checks-bww-rr.test.mjs
-tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/opening-night-checks-critics-take.test.mjs
 tests/unit/opening-night-checks-juan-a-ramirez-bypass.test.mjs
 tests/unit/opening-night-checks-metadata-completeness.test.mjs
@@ -397,6 +398,7 @@ tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
+tests/unit/stage-pagesonstages-extractor.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
 tests/unit/star-rating-outlet-aware.test.mjs

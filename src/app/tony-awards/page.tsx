@@ -122,8 +122,11 @@ export default function TonyAwardsHubPage() {
 
         {/* Teaser Cards Grid */}
         <div className="grid sm:grid-cols-2 gap-4 mb-10">
-          {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal) */}
-          {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && eligible.length > 0 ? (
+          {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal),
+              and further gated on nominationsAnnounced so a brand-new season's first show
+              doesn't get teased as a category "leader" off a field of one. See plan in
+              tony-nominees-premature investigation, 2026-08-11. */}
+          {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && nominationsAnnounced && eligible.length > 0 ? (
             <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group relative">
               <Link href={`/tony-awards/predictions/${season.label}`} className="block">
                 <div className="flex items-center justify-between mb-2">
@@ -158,8 +161,12 @@ export default function TonyAwardsHubPage() {
             </div>
           ) : null}
 
-          {/* Winners 2026 Teaser */}
-          {nominationsAnnounced && (
+          {/* Winners 2026 Teaser — /tony-awards/winners-2026 is a hand-built page for
+              that ceremony only, so this must be pinned to ceremonyYear 2026. Gated on
+              nominationsAnnounced alone it would advertise "2026 Tony Winners" during
+              the 2027 season. Needs a winners-2027 page (or a dynamic winners/[season]
+              route) before it can move forward. See tony-nominees-premature, 2026-08-11. */}
+          {nominationsAnnounced && season.ceremonyYear === 2026 && (
             <Link href="/tony-awards/winners-2026" className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">2026 Tony Winners</h2>

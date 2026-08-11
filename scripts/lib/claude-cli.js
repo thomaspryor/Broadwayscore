@@ -210,6 +210,20 @@ function parseStreamLine(line) {
       usage: j.usage || null,
       costUSD: typeof j.total_cost_usd === 'number' ? j.total_cost_usd : null,
     };
+  } else if (j.type === undefined && typeof j.result === 'string' && j.session_id) {
+    // Legacy `--output-format json` single-envelope shape: no `type` field,
+    // the whole session in one JSON object. Still emitted by fake-claude test
+    // binaries (and any CLI version speaking the old contract) — the
+    // stream-json switch broke opening-night-monitor's runMonitorPass tests
+    // with stage parse-error on main (P0, task #1231, 2026-08-10). Accept it
+    // as a result event; empty resultText still routes to the EMPTY stage.
+    out.result = {
+      resultText: j.result,
+      sessionId: j.session_id || null,
+      usage: j.usage || null,
+      costUSD: typeof j.total_cost_usd === 'number' ? j.total_cost_usd : null,
+    };
+    out.sessionId = j.session_id || null;
   }
   return out;
 }
@@ -427,19 +441,23 @@ function runClaudeCli(opts) {
           errorDetail: (stderr || tail).slice(-500) || `exit ${code}`,
         }));
       }
+      // Every exit below carries `...cost` (code-review finding on the S1-S3
+      // merge: PARSE and success omitted it — a PARSE exit hid its spend from
+      // the breaker, and a result event lacking total_cost_usd shipped null
+      // instead of the estimate).
       if (!resultEvent) {
         // Exit 0 with no result event: stream ended without the terminal
         // envelope — same trust-nothing stance as the old PARSE stage.
-        return resolve(done({ stage: STAGES.PARSE, pid, exitCode: code, sessionId, usage: usageTotal, errorDetail: tail.slice(-300) }));
+        return resolve(done({ stage: STAGES.PARSE, pid, exitCode: code, sessionId, usage: usageTotal, ...cost, errorDetail: tail.slice(-300) }));
       }
       if (!resultEvent.resultText.trim()) {
         // Auth-expiry / silent no-op class: valid envelope, nothing produced.
-        return resolve(done({ stage: STAGES.EMPTY, pid, exitCode: code, sessionId: resultEvent.sessionId || sessionId, errorDetail: 'result event parsed but result text is empty' }));
+        return resolve(done({ stage: STAGES.EMPTY, pid, exitCode: code, sessionId: resultEvent.sessionId || sessionId, usage: resultEvent.usage || usageTotal, ...cost, errorDetail: 'result event parsed but result text is empty' }));
       }
       resolve(done({
         ok: true, stage: null, pid, exitCode: code,
         resultText: resultEvent.resultText, sessionId: resultEvent.sessionId || sessionId,
-        usage: resultEvent.usage || usageTotal, costUSD: resultEvent.costUSD,
+        usage: resultEvent.usage || usageTotal, ...cost,
       }));
     });
 

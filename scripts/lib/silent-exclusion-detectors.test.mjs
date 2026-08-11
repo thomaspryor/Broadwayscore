@@ -30,7 +30,6 @@ const {
   isMissingContentTierGap,
   scanMissingContentTier,
   normalizeHostSlug,
-  normalizeOutletName,
   findProbableDomainMoves,
 } = require_('./silent-exclusion-detectors.js');
 
@@ -71,6 +70,18 @@ test('BEFORE this module existed, nothing in the codebase flagged that shape —
   assert.equal(wouldHaveBeenSkippedByValidator, false, 'no rejection flag explains the drop — that IS the silent gap');
 });
 
+test('delegates to the canonical isIncludableForRebuild, not a hand-rolled flag list (ship-check finding: memory feedback_includability_predicates_must_be_canonical.md)', () => {
+  // isNonReview / fabricatedEntry / scoreStatus==='TO_BE_CALCULATED' are real
+  // exclusion classes explainExclusion() recognizes that a flat
+  // VALIDATOR_EXCLUSION_FLAGS-style list (9 rejection-flag fields) never
+  // covered — a bespoke predicate would have false-flagged these as silent
+  // gaps when they are deliberate, correct exclusions.
+  const base = { criticName: 'Jonathan', fullText: LONG_TEXT };
+  assert.equal(isMissingContentTierGap({ ...base, isNonReview: true }), false);
+  assert.equal(isMissingContentTierGap({ ...base, fabricatedEntry: true }), false);
+  assert.equal(isMissingContentTierGap({ ...base, scoreStatus: 'TO_BE_CALCULATED' }), false);
+});
+
 test('a review WITH a contentTier is not reported', () => {
   assert.equal(isMissingContentTierGap({ criticName: 'Jonathan', fullText: LONG_TEXT, contentTier: 'complete' }), false);
 });
@@ -103,6 +114,25 @@ test('null/non-object input does not throw', () => {
   assert.equal(isMissingContentTierGap(undefined), false);
 });
 
+test('a review published well before an unopened show\'s previews window IS excluded when the real show record is passed (card #1188 duplicate-dispatch review, 2026-08-10)', () => {
+  // Bug found by the OTHER session that independently worked card #1188:
+  // isPrematureReviewForUnopenedShow(data, show) reads show.status, and an
+  // always-{} show has status === '' forever, which never matches
+  // 'announced'/'upcoming'/'previews' — so this exclusion rule was
+  // permanently inert no matter what data/filePath said. Passing the real
+  // show record (status: 'previews', far-future previewsStartDate) restores
+  // the real exclusion: this is a deliberate "not includable yet" case, not
+  // a silent contentTier gap to flag.
+  const show = { id: 'some-future-show-2026', status: 'previews', previewsStartDate: '2026-12-01', openingDate: '2026-12-10' };
+  const data = { criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' }; // 11 months early
+  assert.equal(isMissingContentTierGap(data, show), false, 'a genuinely premature review must not be reported as a contentTier gap');
+});
+
+test('the SAME premature-review fixture is (wrongly) reported when show is {} — proving {} was not a safe default for this predicate', () => {
+  const data = { criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' };
+  assert.equal(isMissingContentTierGap(data, {}), true, 'demonstrates the bug: {} makes isPrematureReviewForUnopenedShow permanently inert');
+});
+
 test('scanMissingContentTier walks a review-texts tree and finds only the gap fixture', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'silent-exclusion-rt-'));
   try {
@@ -132,6 +162,27 @@ test('scanMissingContentTier walks a review-texts tree and finds only the gap fi
   }
 });
 
+test('scanMissingContentTier threads showsById per-file so a premature review under an unopened show is correctly excluded, not reported', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'silent-exclusion-rt-showctx-'));
+  try {
+    const showDir = path.join(tmp, 'some-future-show-2026');
+    fs.mkdirSync(showDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(showDir, 'nyt-theater--jonathan.json'),
+      JSON.stringify({ criticName: 'Jonathan', fullText: LONG_TEXT, publishDate: '2026-01-01' }),
+    );
+    const showsById = {
+      'some-future-show-2026': { id: 'some-future-show-2026', status: 'previews', previewsStartDate: '2026-12-01', openingDate: '2026-12-10' },
+    };
+    assert.deepEqual(scanMissingContentTier(tmp, showsById), [], 'a real show record must suppress the premature-review false positive');
+    // Without showsById (or with an id missing from it), the same file falls
+    // back to `show === undefined` — same as before this fix existed.
+    assert.equal(scanMissingContentTier(tmp).length, 1, 'documents the pre-fix/no-context behavior for comparison');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
 test('scanMissingContentTier tolerates a dangling symlink show dir (listShowDirs contract)', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'silent-exclusion-rt-symlink-'));
   try {
@@ -152,9 +203,28 @@ test('normalizeHostSlug strips www, a hosting platform suffix, and the TLD', () 
   assert.equal(normalizeHostSlug(null), '');
 });
 
-test('normalizeOutletName strips punctuation/case for comparison', () => {
-  assert.equal(normalizeOutletName('one-minute-critic'), 'oneminutecritic');
-  assert.equal(normalizeOutletName('1 Minute Critic'), '1minutecritic');
+test('normalizeHostSlug takes the LAST remaining segment on a 3+-label host — not the subdomain prefix (ship-check finding, confirmed by direct execution)', () => {
+  // Before the fix, the generic single-label-TLD strip ran UNCONDITIONALLY
+  // after the platform-suffix/two-label-TLD strip already removed a suffix,
+  // eating the real identity label instead: 'theater.jerryportwood.substack.com'
+  // came back 'theater' (wrong) instead of 'jerryportwood'.
+  assert.equal(normalizeHostSlug('theater.jerryportwood.substack.com'), 'jerryportwood');
+  assert.equal(normalizeHostSlug('news.dancemagazine.co.uk'), 'dancemagazine');
+});
+
+test('normalizeHostSlug handles two-label ccTLDs beyond UK/AU/NZ (ship-check finding: TWO_LABEL_TLDS allowlist was incomplete)', () => {
+  // Before this fix, any two-label ccTLD not in the original UK/AU/NZ-only
+  // list fell through to the generic single-label strip, which only removes
+  // the LAST label — leaving a generic 2-3 char fragment ('co', 'com') as
+  // "identity". Confirmed by direct execution pre-fix:
+  // normalizeHostSlug('guardian.co.za') === 'co', normalizeHostSlug('example.com.br') === 'com'.
+  // Both clear MIN_SLUG_LENGTH=3, so two unrelated outlets on an unlisted
+  // .com.xx-style ccTLD would collide on the generic slug and get falsely
+  // flagged as domain-moves of each other — the exact false-positive class
+  // the domain-vs-domain redesign (task #1228) exists to eliminate.
+  assert.equal(normalizeHostSlug('guardian.co.za'), 'guardian');
+  assert.equal(normalizeHostSlug('example.com.br'), 'example');
+  assert.equal(normalizeHostSlug('blogspot.co.id'), 'blogspot');
 });
 
 test('a host matching a registered outlet name, not yet in domainAliases, is reported (the real 1minutecritic incident, replayed pre-fix)', () => {
@@ -223,11 +293,11 @@ test('an outlet with NO domain on file is never matched — a name coincidence i
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
 });
 
-test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched via exact outletId, even though every alias/displayName normalizes under MIN_SLUG_LENGTH', () => {
-  // ship-check finding: a blanket MIN_SLUG_LENGTH=4 floor on ALL candidate
-  // names made short-brand outlets permanently unmatchable — every name
-  // variant they have is under 4 chars. outletId (curated, not freeform) is
-  // checked at a lower floor instead.
+test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched — its OWN domain normalizes to the same short slug', () => {
+  // ship-check finding: matching against displayName/aliases needed a
+  // separate lower-floor carve-out for short outletIds, since every name
+  // variant they had was under the generic floor. Matching against the
+  // outlet's own domain (vox.com -> 'vox') needs no special case.
   const outlets = { vox: { displayName: 'Vox', domain: 'vox.com' } };
   const unknownHosts = [{ host: 'vox.substack.com', occurrences: 2 }];
   const moves = findProbableDomainMoves(outlets, unknownHosts);
@@ -235,19 +305,29 @@ test('a short-named real outlet (vox/cnn/gq/lbc-class) IS matched via exact outl
   assert.equal(moves[0].outletId, 'vox');
 });
 
-test('a short freeform ALIAS (not the outletId) is still ignored — the loosened floor only applies to outletId', () => {
-  // Real corpus case: outletId 'ap' (Associated Press) carries a stray
-  // 3-char alias typo "app" in its aliases array. Loosening the floor for
-  // aliases too would match app.com (an unrelated NJ news site) by pure
-  // accident — outletId-only exemption avoids that.
-  const outlets = { ap: { displayName: 'Associated Press', aliases: ['app'], domain: 'apnews.com' } };
-  const unknownHosts = [{ host: 'app.com', occurrences: 1 }];
-  assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
+test('a host that shares a generic descriptive word with an outlet\'s name, but not its domain text, is NOT matched (the real guardian.ng incident, task #1228)', () => {
+  // Confirmed live in production the day this shipped: 'guardian.ng' (The
+  // Guardian Nigeria — a real, distinct outlet) was flagged as a probable
+  // move of 'The Guardian' (UK) because the UK outlet's outletId AND an
+  // alias are literally 'guardian' — but its actual domain is
+  // 'theguardian.com', which normalizes to 'theguardian', not 'guardian'.
+  // Matching against the outlet's own domain text (not displayName/aliases)
+  // fixes this without a manual exclusion list.
+  const outlets = {
+    guardian: {
+      displayName: 'The Guardian',
+      aliases: ['guardian', 'the-guardian', 'theguardian'],
+      domain: 'theguardian.com',
+      domainAliases: ['guardian.co.uk'],
+    },
+  };
+  const unknownHosts = [{ host: 'guardian.ng', occurrences: 3 }];
+  assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), [], 'guardian.ng is a different real outlet, not a Guardian domain move');
 });
 
 test('a short/generic normalized slug is not matched — avoids over-broad false positives', () => {
   const outlets = { amny: { displayName: 'amNY', domain: 'amny.com' } };
-  const unknownHosts = [{ host: 'amy.org', occurrences: 1 }]; // 'amy' normalizes to len 3, below MIN_SLUG_LENGTH
+  const unknownHosts = [{ host: 'am.org', occurrences: 1 }]; // 'am' normalizes to len 2, below MIN_SLUG_LENGTH
   assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts), []);
 });
 

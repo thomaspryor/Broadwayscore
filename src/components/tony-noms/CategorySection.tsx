@@ -6,7 +6,9 @@ import { getOutletConfig, getOutletLogoUrl } from '@/config/outlet-logos';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { featureFlags } from '@/config/feature-flags';
 
-const SHOW_OUR_PICK = featureFlags.tonyPredictionsOurPick;
+/** The raw launch flag. Only safe to pass as `showOurPick` when the season being
+ *  rendered is already past nominations — see the CategorySection prop docs. */
+export const SHOW_OUR_PICK_DEFAULT = featureFlags.tonyPredictionsOurPick;
 
 export const SHOW_LEVEL_CATEGORIES = new Set([
   'Best Musical',
@@ -219,7 +221,7 @@ function PressPicks({ picks }: { picks?: string[] }) {
   );
 }
 
-function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = false }: { isMajor: boolean; isPersonLevel?: boolean; hideMarketOdds?: boolean }) {
+function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = false, showOurPick }: { isMajor: boolean; isPersonLevel?: boolean; hideMarketOdds?: boolean; showOurPick: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
   const scoreW = 'w-11 lg:w-[68px]';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
@@ -230,7 +232,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
       <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
       <div className={`flex-1 min-w-0 ${titleMaxW}`} />
       <div className="flex items-end gap-2 flex-shrink-0">
-        {SHOW_OUR_PICK && isMajor && (
+        {showOurPick && isMajor && (
           <div className="flex flex-col items-center w-11 lg:w-[68px]">
             <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Our</span>
             <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Pick</span>
@@ -287,7 +289,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
   );
 }
 
-function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketOdds = false }: { show: TonyCategory['shows'][number]; winProbability?: number; rank?: number; ceremonyDate: string | null; hideMarketOdds?: boolean }) {
+function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketOdds = false, showOurPick }: { show: TonyCategory['shows'][number]; winProbability?: number; rank?: number; ceremonyDate: string | null; hideMarketOdds?: boolean; showOurPick: boolean }) {
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -311,9 +313,9 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketO
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
-        {(SHOW_OUR_PICK && rank === 1) || (show.precursorWins && show.precursorWins.length > 0) ? (
+        {(showOurPick && rank === 1) || (show.precursorWins && show.precursorWins.length > 0) ? (
           <div className="flex flex-wrap gap-1 mt-1">
-            {SHOW_OUR_PICK && rank === 1 && <PredictedWinnerPill />}
+            {showOurPick && rank === 1 && <PredictedWinnerPill />}
             {show.precursorWins?.map(w => (
               <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="sm:hidden text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
                 {w}
@@ -323,7 +325,7 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketO
         ) : null}
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
-        {SHOW_OUR_PICK && <OurPickBox winProbability={winProbability} isWinner={rank === 1} />}
+        {showOurPick && <OurPickBox winProbability={winProbability} isWinner={rank === 1} />}
         {!hideMarketOdds && (
           <>
             <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
@@ -506,7 +508,7 @@ export interface CategoryOutcome {
   predictedTitle: string | null;
 }
 
-export function CategorySection({ category, winProbs, ceremonyDate, sectionId, description, categoryOutcome, ineligible, hideMarketOdds = false }: {
+export function CategorySection({ category, winProbs, ceremonyDate, sectionId, description, categoryOutcome, ineligible, hideMarketOdds = false, showOurPick }: {
   category: TonyCategory;
   winProbs?: Map<string, number>;
   ceremonyDate: string | null;
@@ -517,11 +519,19 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
   /** When true, hide GD/Kalshi/Polymarket odds columns. Used by past-season Predictions
    *  pages where the markets are closed and the columns would render all '—'. */
   hideMarketOdds?: boolean;
+  /** Whether to render the Our Pick %/Predicted Winner column at all. REQUIRED and
+   *  deliberately not defaulted: the original bug was exactly a global flag that no
+   *  caller had to think about, which rendered a fake "100%" predicted winner off a
+   *  one-show category the moment a new season opened. Callers must decide per-season
+   *  (typically `flag && (!isCurrent || nominationsAnnounced)`). Use
+   *  SHOW_OUR_PICK_DEFAULT only where the season is already known to be nominated.
+   *  See tony-nominees-premature, 2026-08-11. */
+  showOurPick: boolean;
 }) {
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
   // When Our Pick is live, re-sort major-category nominees by win probability desc.
-  const nominees = (SHOW_OUR_PICK && isMajor && winProbs)
+  const nominees = (showOurPick && isMajor && winProbs)
     ? [...category.shows].sort((a, b) => (winProbs.get(b.slug) ?? 0) - (winProbs.get(a.slug) ?? 0))
     : category.shows;
 
@@ -533,7 +543,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
   // are hidden (3 boxes × w-11 + gaps). Tailwind JIT requires literal classes.
   let minW: string;
   if (isMajor) {
-    if (SHOW_OUR_PICK) minW = hideMarketOdds ? 'min-w-[624px] lg:min-w-[780px]' : 'min-w-[780px] lg:min-w-[1008px]';
+    if (showOurPick) minW = hideMarketOdds ? 'min-w-[624px] lg:min-w-[780px]' : 'min-w-[780px] lg:min-w-[1008px]';
     else               minW = hideMarketOdds ? 'min-w-[572px] lg:min-w-[712px]' : 'min-w-[728px] lg:min-w-[940px]';
   } else if (isPersonLevel) {
     minW = hideMarketOdds ? 'min-w-[384px] lg:min-w-[520px]' : 'min-w-[540px] lg:min-w-[748px]';
@@ -585,7 +595,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
       <div className="relative">
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
-        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} hideMarketOdds={hideMarketOdds} />
+        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} hideMarketOdds={hideMarketOdds} showOurPick={showOurPick} />
         {nominees.map((show, index) => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
@@ -593,7 +603,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
           return (
             <div key={key}>
               {isMajor ? (
-                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} />
+                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} showOurPick={showOurPick} />
               ) : isPersonLevel ? (
                 <PerformerRow show={show} hideMarketOdds={hideMarketOdds} />
               ) : (

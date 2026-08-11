@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-10T12:00:59.188Z",
+  "lastChecked": "2026-08-11T07:57:53.043Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,22 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (19661/19929)"
+      "message": "98.7% scored (19707/19965)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
       "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+    },
+    {
+      "name": "Quality: missing contentTier",
+      "status": "pass",
+      "message": "No scored reviews missing contentTier"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "status": "warn",
+      "message": "4 unregistered host(s) name-match a registered outlet (e.g. reviewsgate.co.uk → reviewsgate) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -34,7 +44,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 2h ago)"
+      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 22h ago)"
     }
   ]
 }

@@ -1459,6 +1459,12 @@ on:
       - 'scripts/lib/digest-autofix.js'
       - 'scripts/lib/digest-autofix.test.mjs'
       - 'scripts/check-health-row-absent.js'
+      # Digest-autofix S5 (task #1224) — side-effect-free same-day (--live)
+      # re-verification, so a fix session doesn't have to wait for tomorrow's
+      # snapshot. Colocated test runs in the scripts/lib/*.test.mjs glob step;
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/lib/health-row-probe.js'
+      - 'scripts/lib/health-row-probe.test.mjs'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
@@ -1727,6 +1733,16 @@ on:
       - 'scripts/.alert-sender-baseline.json'
       - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
+      # Outlet stub-rate monitor (card #100): detects a broken article
+      # extractor (site redesign silently breaking extraction, e.g.
+      # TheaterMania's 2026 Bootstrap redesign) via a spike in the stub-tier
+      # rate among reviews collected in the last 30 days. Wired into
+      # health-check.js's daily digest (already path-listed above); the
+      # colocated test is registered explicitly in tests/unit-test-manifest.txt
+      # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/audit-outlet-stub-rate.js'
+      - 'scripts/audit-outlet-stub-rate.test.mjs'
       - 'scripts/lib/exec-error-detail.js'
       - 'scripts/lib/market-label.test.mjs scripts/lib/exec-error-detail.test.mjs'
       - 'scripts/lib/workspace-naming.js'
@@ -1745,6 +1761,15 @@ on:
       - 'scripts/lib/dispatch-dead-launch-guard.js'
       - 'scripts/lib/dispatch-dead-launch-guard.test.mjs'
       - 'scripts/reconcile-dead-completions.js'
+      # Dead-LAUNCH RATE aggregator (card #1199): ~1 in 5 cmux dispatches never
+      # renders a terminal surface, so the injected command never runs. The
+      # retry layer hides it from every individual session, so only the
+      # aggregate rate can tell whether a cause fix worked. Colocated test runs
+      # in the lib-test glob; path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-health.js'
+      - 'scripts/lib/dispatch-health.test.mjs'
+      - 'scripts/audit-dispatch-dead-rate.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
@@ -2190,6 +2215,12 @@ on:
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/ci-red-dispatch-heuristic.js'
       - 'scripts/bsc-next-ci-red-claim.test.mjs'
+      # Cost-report parser (card #114): extracts/ranks the "Top SB Credit
+      # Consumers" table from scraper-cost-report.yml issue bodies. Colocated
+      # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
+      # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/cost-report-parser.js'
+      - 'scripts/lib/cost-report-parser.test.mjs'
   pull_request:
     branches: [main]
   schedule:

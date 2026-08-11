@@ -1,12 +1,19 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
-import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
+import { getTonySeasonWindowFor } from '@/lib/data-tony-predictions';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { PressPicksBoard, type BoardCategory, type BoardSource } from './PressPicksBoard';
 import criticPicksData from '../../../../data/tony-critic-picks.json';
 
-const season = getTonySeasonWindow();
+// Pin the page to the ceremony the picks data was actually collected for, NOT the
+// current season. tony-critic-picks.json is a hand-curated snapshot stamped with its
+// own _meta.ceremonyYear; reading getTonySeasonWindow() here meant that the moment the
+// 2026-27 season began, the page titled itself "2027 Tony Awards — Critic Press Picks"
+// and listed 2026-27 eligible shows while serving 2026 pick data — critics credited
+// with predictions they never made. See tony-nominees-premature, 2026-08-11.
+const PICKS_CEREMONY_YEAR = (criticPicksData as { _meta?: { ceremonyYear?: number } })._meta?.ceremonyYear ?? 2026;
+const season = getTonySeasonWindowFor(PICKS_CEREMONY_YEAR);
 
 interface PickSource { id: string; outlet: string; critic: string; shortName: string }
 const SOURCES = (criticPicksData as { sources: PickSource[] }).sources;

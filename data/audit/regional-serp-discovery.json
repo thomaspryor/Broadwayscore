@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-08-03T16:00:00.993Z",
+  "lastRun": "2026-08-10T15:28:30.094Z",
   "shows": [
     {
       "showId": "black-swan-regional-2026",
@@ -13,25 +13,31 @@
           "title": "Dave Malloy & Sonya Tayeh's Black Swan first preview thoughts"
         },
         {
-          "url": "https://www.boston-theater.com/shows/american_repertory_theater/black-swan",
-          "domain": "boston-theater.com",
-          "title": "Black Swan · American Repertory Theater - Boston Theater"
+          "url": "https://americanrepertorytheater.org/shows-events/black-swan/",
+          "domain": "americanrepertorytheater.org",
+          "title": "Black Swan | A.R.T. - American Repertory Theater"
         }
       ],
-      "skippedExisting": 5,
+      "skippedExisting": 6,
       "skippedUnregistered": 2,
-      "skippedNotReview": 2
+      "skippedNotReview": 1
     },
     {
       "showId": "wonder-regional-2026",
       "query": "\"Wonder\" review Cambridge",
-      "candidates": 10,
-      "ingested": [],
+      "candidates": 9,
+      "ingested": [
+        {
+          "url": "https://www.bostonglobe.com/2025/12/30/arts/wonder-art-rj-palacio/",
+          "outletId": "boston-globe",
+          "action": "new"
+        }
+      ],
       "newOutletCandidates": [
         {
-          "url": "https://www.reddit.com/r/Broadway/comments/1q1k5us/wonder_at_art/",
-          "domain": "reddit.com",
-          "title": "Wonder at A.R.T. : r/Broadway"
+          "url": "https://americanrepertorytheater.org/shows-events/wonder/",
+          "domain": "americanrepertorytheater.org",
+          "title": "Wonder | A.R.T. - American Repertory Theater"
         },
         {
           "url": "https://cambridgeusa.org/event/wonder-the-musical-2/",
@@ -39,38 +45,27 @@
           "title": "Wonder: The Musical - Cambridge Office for Tourism"
         },
         {
-          "url": "https://onbostonstages.blog/2025/12/30/arts-musical-wonder-is-promising-but-imperfect/",
-          "domain": "onbostonstages.blog",
-          "title": "ART's musical 'Wonder' is promising, but imperfect | onbostonstages"
-        },
-        {
-          "url": "https://americanrepertorytheater.org/shows-events/wonder/",
-          "domain": "americanrepertorytheater.org",
-          "title": "Wonder | A.R.T. - American Repertory Theater"
-        },
-        {
           "url": "https://www.netheatregeek.com/2025/12/30/when-kindness-and-representation-arent-enough-wonder-the-musical/",
           "domain": "netheatregeek.com",
           "title": "When kindness and representation aren't enough: “Wonder"
+        },
+        {
+          "url": "https://www.reddit.com/r/Broadway/comments/1q1k5us/wonder_at_art/",
+          "domain": "reddit.com",
+          "title": "Wonder at A.R.T. : r/Broadway"
         }
       ],
       "skippedExisting": 3,
-      "skippedUnregistered": 5,
-      "skippedNotReview": 1
+      "skippedUnregistered": 4,
+      "skippedNotReview": 0
     },
     {
       "showId": "crazysexycool-regional-2026",
       "query": "\"CrazySexyCool: The TLC Musical\" review Washington",
       "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-brings-bangers-tlc-deserves-bolder-musical-treatment/",
-          "outletId": "washpost",
-          "action": "new"
-        }
-      ],
+      "ingested": [],
       "newOutletCandidates": [],
-      "skippedExisting": 3,
+      "skippedExisting": 4,
       "skippedUnregistered": 0,
       "skippedNotReview": 6
     },
@@ -108,13 +103,18 @@
     {
       "showId": "millions-world-premiere-musical-regional-2025",
       "query": "\"Millions\" review Atlanta",
-      "candidates": 10,
+      "candidates": 9,
       "ingested": [],
       "newOutletCandidates": [
         {
           "url": "https://www.reddit.com/r/Broadway/comments/1ktjviq/millions_at_the_alliance_theater_in_atlanta_adam/",
           "domain": "reddit.com",
           "title": "Millions at the Alliance Theater in Atlanta — Adam Guettel, Bob ..."
+        },
+        {
+          "url": "https://www.ajc.com/arts-entertainment/2025/05/alliances-promising-premiere-millions-is-not-yet-money-in-the-bank/",
+          "domain": "ajc.com",
+          "title": "Alliance's promising premiere 'Millions' is not yet money in the bank"
         },
         {
           "url": "https://www.facebook.com/AllianceTheatre/posts/reviews-are-in-millions-is-a-hitcome-see-the-show-artsatlorg-says-touches-hearts/1207855391378759/",
@@ -127,8 +127,8 @@
           "title": "Millions Reviews — Positive 77/100 | Broadway Scorecard"
         }
       ],
-      "skippedExisting": 3,
-      "skippedUnregistered": 3,
+      "skippedExisting": 1,
+      "skippedUnregistered": 4,
       "skippedNotReview": 4
     },
     {
@@ -143,9 +143,9 @@
           "title": "Have any of you seen the new Dolly musical? What did you think?"
         },
         {
-          "url": "https://www.facebook.com/DollyMusical/posts/a-magical-night-at-the-first-preview-of-dolly-a-true-original-musical-/122168487098552882/",
+          "url": "https://www.facebook.com/DollyMusical/posts/dolly-parton-takes-the-stage-on-opening-night-of-dolly-a-true-original-musical-/122171496008552882/",
           "domain": "facebook.com",
-          "title": "A magical night at the first preview of DOLLY: A True Original Musical"
+          "title": "Dolly Parton takes the stage on opening night of DOLLY: A True ..."
         }
       ],
       "skippedExisting": 3,
@@ -172,16 +172,11 @@
           "url": "https://thefourthwalsh.com/2025/06/review-42-balloons-chicago-shakespeare-theater-quirky-and-uplifting/",
           "domain": "thefourthwalsh.com",
           "title": "Review “42 Balloons” (Chicago Shakespeare Theater): Quirky and ..."
-        },
-        {
-          "url": "https://www.chi-mt.com/reviews/chicago-shakes-42-balloons-theo-diana-bic-porchlight-titanique-jun-25",
-          "domain": "chi-mt.com",
-          "title": "Reviews: \"42 Balloons”; “Diana”; “and “Titanique” — Chi-MT.com"
         }
       ],
       "skippedExisting": 3,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 3
+      "skippedUnregistered": 3,
+      "skippedNotReview": 4
     },
     {
       "showId": "elephant-shoes-regional-2026",
@@ -205,14 +200,14 @@
           "title": "Daniel Durant (S31) in Elephant Shoes at Two River Theatre, Red ..."
         },
         {
-          "url": "https://www.tdf.org/shows/23296/elephant-shoes/",
-          "domain": "tdf.org",
-          "title": "Elephant Shoes | TDF"
+          "url": "https://www.facebook.com/TwoRiverTheater/posts/elephant-shoes-the-new-romantic-comedy-musical-from-two-river-theater-and-deaf-w/1459415779554531/",
+          "domain": "facebook.com",
+          "title": "Elephant Shoes, the new romantic comedy musical from Two River ..."
         },
         {
-          "url": "https://broadwayscorecard.com/show/elephant-shoes-regional-2026",
-          "domain": "broadwayscorecard.com",
-          "title": "Elephant Shoes Reviews — Positive 79/100 | Broadway Scorecard"
+          "url": "https://www.reddit.com/r/asl/comments/1u74mcz/elephant_shoes_a_romantic_musical_comedy/",
+          "domain": "reddit.com",
+          "title": "Elephant Shoes: A Romantic Musical Comedy : r/asl - Reddit"
         }
       ],
       "skippedExisting": 3,
@@ -222,7 +217,7 @@
     {
       "showId": "the-family-album-regional-2026",
       "query": "\"The Family Album\" review San Diego",
-      "candidates": 9,
+      "candidates": 10,
       "ingested": [],
       "newOutletCandidates": [
         {
@@ -231,14 +226,56 @@
           "title": "Review of 'The Family Album' at San Diego Theatre Critics Circle"
         },
         {
-          "url": "https://www.facebook.com/sandiegotheatrecriticscircle/posts/la-jolla-playhouses-world-premiere-90-minute-musical-the-family-album-is-the-sto/1507263998109812/",
+          "url": "https://sandiegomagazine.com/community-event/the-family-album/",
+          "domain": "sandiegomagazine.com",
+          "title": "The Family Album - San Diego Magazine"
+        },
+        {
+          "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
+          "domain": "musicconnection.com",
+          "title": "The Family Album at The La Jolla Playhouse"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "query": "\"Two Strangers (Carry A Cake Across New York)\" review Cambridge",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-two-strangers-carry-a-cake-across-new-york-at-the-longacre-theatre/",
+          "outletId": "exeunt-magazine",
+          "action": "new"
+        },
+        {
+          "url": "https://nystagereview.com/2025/06/05/from-massachusetts-two-strangers-carry-a-cake-across-new-york-and-fall-in-like/",
+          "outletId": "nysr",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.reddit.com/r/Broadway/comments/1kxh6x2/two_strangers_carry_a_cake_across_new_york/",
+          "domain": "reddit.com",
+          "title": "Two Strangers (Carry a Cake Across New York) Preview: ART in ..."
+        },
+        {
+          "url": "https://www.facebook.com/Playbill/posts/the-broadway-transfer-of-the-uk-hit-two-strangers-carry-a-cake-across-new-york-h/1244213134409383/",
           "domain": "facebook.com",
-          "title": "La Jolla Playhouse's 'The Family Album' musical review - Facebook"
+          "title": "The Broadway transfer of the U.K. hit Two Strangers (Carry A Cake ..."
+        },
+        {
+          "url": "https://www.facebook.com/BroadwayWorld/posts/two-strangers-carry-a-cake-across-new-york-opening-night-bows/1413586160384665/",
+          "domain": "facebook.com",
+          "title": "Two Strangers (Carry a Cake Across New York) Opening Night Bows"
         }
       ],
       "skippedExisting": 1,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 5
+      "skippedUnregistered": 3,
+      "skippedNotReview": 3
     }
   ]
 }
