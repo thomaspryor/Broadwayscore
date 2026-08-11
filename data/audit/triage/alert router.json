@@ -1,7 +1,7 @@
 {
   "system": "alert router",
   "status": "pass",
-  "lastChecked": "2026-08-10T12:00:59.188Z",
+  "lastChecked": "2026-08-11T07:57:53.044Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Alert Router: dispatch deadman",
       "status": "pass",
-      "message": "39/39 auto-dispatch attempts succeeded in the last 7d; most recent attempt succeeded"
+      "message": "37/37 auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see \"Autofix: jobs actually succeeding\" for whether they fixed anything)"
     }
   ]
 }
