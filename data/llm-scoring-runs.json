@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-08-07T14:50:59.112Z",
-    "completedAt": "2026-08-07T14:51:06.263Z",
-    "totalReviews": 63,
-    "processed": 1,
-    "skipped": 61,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 10699,
-      "output": 446,
-      "total": 27555
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-08-07T16:19:22.531Z",
     "completedAt": "2026-08-07T16:19:26.687Z",
     "totalReviews": 24,
@@ -641150,6 +641136,31 @@
       "total": 11183
     },
     "errorDetails": [
+      {
+        "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+        "outletId": "london-theatre",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-08-11T06:27:06.920Z",
+    "completedAt": "2026-08-11T06:27:19.628Z",
+    "totalReviews": 42325,
+    "processed": 1,
+    "skipped": 42320,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 13512,
+      "output": 604,
+      "total": 37256
+    },
+    "errorDetails": [
+      {
+        "showId": "hungry-women-off-broadway-2026",
+        "outletId": "melissamaney",
+        "error": "input_validation_failed:body_too_short"
+      },
       {
         "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
         "outletId": "london-theatre",
