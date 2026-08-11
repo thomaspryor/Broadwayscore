@@ -150,9 +150,11 @@ export default function TonyNomineesPage() {
           </div>
         )}
 
-        {/* Category sections */}
+        {/* Category sections. Passing SHOW_OUR_PICK (the raw flag) is safe here only
+            because this page returns early above unless hasNominationsBeenAnnounced(season)
+            — by this line the season has a real nominee field, not a one-show placeholder. */}
         {categories.map(cat => (
-          <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} ceremonyDate={ceremonyDate} />
+          <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} ceremonyDate={ceremonyDate} showOurPick={SHOW_OUR_PICK} />
         ))}
 
         {/* Legend */}

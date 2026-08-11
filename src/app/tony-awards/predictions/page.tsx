@@ -188,7 +188,7 @@ export default function TonyPredictionsOverviewPage() {
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <div className="text-xs font-semibold text-brand uppercase tracking-wider mb-1">
-                    {nominationsAnnounced ? 'Live · Winner Predictions' : 'Live · Predictions'}
+                    {nominationsAnnounced ? 'Live · Winner Predictions' : 'In progress · Eligible shows'}
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                     {currentSeason.label} Tony Awards
@@ -203,7 +203,13 @@ export default function TonyPredictionsOverviewPage() {
                     <span>Ceremony &sim; June {currentSeason.ceremonyYear}</span>
                   </div>
                   <p className="text-sm text-gray-300 mt-3 group-hover:text-white transition-colors">
-                    See our picks for all 4 categories &rarr;
+                    {/* Pre-nominations there are no picks to see — the season page
+                        lists eligible shows and says eligibility is undetermined.
+                        Promising "our picks" here sent users to a page that had
+                        none. See tony-nominees-premature, 2026-08-11. */}
+                    {nominationsAnnounced
+                      ? <>See our picks for all 4 categories &rarr;</>
+                      : <>See which shows have opened so far &rarr;</>}
                   </p>
                 </div>
                 <svg className="w-8 h-8 text-brand flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
