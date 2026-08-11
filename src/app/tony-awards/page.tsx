@@ -122,8 +122,11 @@ export default function TonyAwardsHubPage() {
 
         {/* Teaser Cards Grid */}
         <div className="grid sm:grid-cols-2 gap-4 mb-10">
-          {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal) */}
-          {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && eligible.length > 0 ? (
+          {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal),
+              and further gated on nominationsAnnounced so a brand-new season's first show
+              doesn't get teased as a category "leader" off a field of one. See plan in
+              tony-nominees-premature investigation, 2026-08-11. */}
+          {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && nominationsAnnounced && eligible.length > 0 ? (
             <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group relative">
               <Link href={`/tony-awards/predictions/${season.label}`} className="block">
                 <div className="flex items-center justify-between mb-2">

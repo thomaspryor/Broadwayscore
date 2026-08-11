@@ -78,6 +78,17 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const isCurrent = season.label === current.label;
 
   const allShows = getBroadwayShows();
+  // Broadway shows already announced but without a confirmed opening date yet —
+  // invisible to getEligibleShows() (it requires openingDate) so the current-season
+  // page otherwise only shows shows that have already opened. We can't assign these
+  // to a Tony season (or a category) without a date, so they're listed separately,
+  // unscored, current season only. See plan in tony-nominees-premature investigation,
+  // 2026-08-11 — user asked for "all Broadway shows announced for the season."
+  const announcedNoDate = isCurrent
+    ? allShows
+        .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
+        .sort((a, b) => a.title.localeCompare(b.title))
+    : [];
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
   const accuracyStats = computeBlendedAccuracyStats(allShows);
   // Summaries for the collapsible Track Record block — same data used by the
@@ -110,6 +121,12 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
   const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  // Our Pick %/Predicted Winner are real predictions, not eligibility trivia — showing
+  // them for the CURRENT season before real Tony nominations exist means a single show
+  // that happened to open first gets rendered as a "100%" predicted winner. Past seasons
+  // (isCurrent false) keep the full reveal since those are historical results, not
+  // premature predictions. See tony-nominees-premature investigation, 2026-08-11.
+  const showOurPick = featureFlags.tonyPredictionsOurPick && (!isCurrent || nominationsAnnounced);
   // Use nomineesOnly mode whenever Tony nominees are known: every past season,
   // and the current season once nominations are announced. This routes shows
   // by their actual nominated category from awards.json instead of the
@@ -362,10 +379,31 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           )}
         </div>
 
+        {/* Eligibility-not-yet-determined banner — current season, before nominations.
+            Shows here are grouped by opening date only; the Tony Awards Administration
+            Committee hasn't ruled on eligibility (new vs. revival, play vs. musical,
+            or eligible at all) for any of them yet. Those rulings land closer to
+            nominations (typically spring). See plan in tony-nominees-premature
+            investigation, 2026-08-11. */}
+        {isCurrent && !nominationsAnnounced && (
+          <div className="mb-4 px-4 py-3 rounded-xl border border-white/10 bg-surface-overlay text-sm text-gray-300">
+            <span className="font-semibold text-white">Eligibility not yet determined.</span>{' '}
+            Shows below are grouped by Broadway opening date only. The Tony Awards Administration
+            Committee hasn&apos;t ruled on category eligibility (new vs. revival, play vs. musical, or
+            eligible at all) for the {season.label} season — those rulings, and official nominations,
+            come later in the season.
+          </div>
+        )}
+
         {/* Link to winners page — visible for current season in the run-up to
-            the ceremony only. After the ceremony the retrospective below
-            replaces this forward-looking CTA. */}
-        {isCurrent && !ceremonyHasPassed && new Date() >= new Date('2026-05-23T00:00:00Z') && (
+            the ceremony only, and only once showOurPick is genuinely live (real
+            predictions exist, not a 1-2-show fake "100%"). /tony-awards/winners-2026
+            is a hand-built page for that ceremony specifically — there is no
+            dynamic winners/[season] route yet, so this CTA must stay hardcoded
+            to ceremonyYear 2026 until a winners-2027 page gets built (see plan in
+            tony-nominees-premature investigation, 2026-08-11). After the ceremony
+            the retrospective below replaces this forward-looking CTA. */}
+        {isCurrent && !ceremonyHasPassed && showOurPick && season.ceremonyYear === 2026 && (
           <div className="mb-4 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
             <span className="text-gray-300">See our #1 pick for all 26 categories on one page.</span>
             <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
@@ -570,6 +608,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                 ceremonyDate={ceremonyDate}
                 categoryOutcome={categoryOutcomeStatus[cat.key]}
                 ineligible={ineligibleByCategory[cat.key]}
+                showOurPick={showOurPick}
               />
             ))}
 
@@ -593,6 +632,46 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </>
         )}
 
+        {/* Also announced for this season, no opening date yet — can't be grouped into a
+            category or Tony season window without a date, so listed separately and unscored. */}
+        {isCurrent && announcedNoDate.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-lg font-bold text-white mb-1">Also announced for this season</h2>
+            <p className="text-sm text-gray-400 mb-4">
+              Broadway has announced these shows without a confirmed opening date yet — too early to
+              say which Tony season they&apos;ll land in.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {announcedNoDate.map(show => (
+                <Link
+                  key={show.id}
+                  href={`/show/${show.slug}`}
+                  className="flex items-center gap-3 p-2.5 rounded-lg bg-surface-raised border border-white/5 hover:bg-white/[0.03] transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-md overflow-hidden bg-surface-overlay flex-shrink-0">
+                    {show.images?.thumbnail ? (
+                      <img
+                        src={getOptimizedImageUrl(show.images.thumbnail, 'thumbnail')}
+                        alt={show.title}
+                        className="w-full h-full object-cover"
+                        width={40}
+                        height={40}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{show.title}</p>
+                    <p className="text-xs text-gray-500 truncate">{show.venue || 'Venue TBA'}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Performer + craft categories — no model predictions; data depends on season:
             - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
             - Past seasons: critic/audience/award scores only (markets are closed) */}
@@ -607,7 +686,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               </p>
             </div>
             {nonMajorCategories.map(cat => (
-              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} hideMarketOdds={!isCurrent} />
+              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} hideMarketOdds={!isCurrent} showOurPick={showOurPick} />
             ))}
           </section>
         )}
