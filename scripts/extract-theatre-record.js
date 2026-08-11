@@ -22,6 +22,8 @@ const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-gu
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
+const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -776,6 +778,25 @@ async function main() {
     let newCount = 0;
     let skippedCount = 0;
 
+    // Lazily fetched once per show and reused across all its reviews — an
+    // independent corroboration source (critic+outlet already listed for
+    // this show) for the mention-count and film/TV guards below, which are
+    // prone to false-rejecting real reviews on common-word titles and
+    // multi-show columns (card #1227). Note: the wrong-production-date guard
+    // above already validated this specific review's own pubDate against the
+    // show's run window before we ever reach here, so a stale/prior-run WET
+    // roundup post can't smuggle a wrong-production review past corroboration
+    // — a review from a different run would already have skipReason set.
+    let roundupRowsPromise = null;
+    async function getRoundupRows() {
+      if (roundupRowsPromise === null) {
+        roundupRowsPromise = discoverWetRoundupRows(show)
+          .then(result => (result ? result.rows : []))
+          .catch(() => []);
+      }
+      return roundupRowsPromise;
+    }
+
     for (const review of reviews) {
       if (!review.fullText || review.fullText.length < 100) continue;
 
@@ -850,42 +871,32 @@ async function main() {
       }
 
       if (!skipReason) {
-        const filmSignals = [/\b(?:in cinemas|on screen|film adaptation|movie version|streaming on)\b/i];
-        for (const pat of filmSignals) {
-          if (pat.test(review.fullText)) {
-            skipReason = `film/TV review (${pat.source.slice(0, 40)})`;
-            break;
+        const filmCheck = checkFilmTvGuard(review.fullText);
+        if (filmCheck.fails) {
+          const roundupRows = await getRoundupRows();
+          if (isCorroboratedByRoundup(review.outlet, review.critic, roundupRows)) {
+            console.log(`    (film/TV guard bypassed — corroborated by WET roundup: ${filename})`);
+          } else {
+            skipReason = filmCheck.reason;
           }
         }
       }
 
       // Guard 5: Wrong-show content detection
       // Check if the review actually discusses our show (catches multi-column
-      // PDF contamination AND misfiled HTML reviews on TR production pages)
+      // PDF contamination AND misfiled HTML reviews on TR production pages).
+      // Below-threshold mention counts on common-word/single-word titles
+      // (e.g. "Barcelona") false-reject real reviews — before rejecting,
+      // corroborate against the show's WET roundup (card #1227).
       if (!skipReason) {
-        const reviewLower = review.fullText.toLowerCase();
-        const showTitleLower = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-        const showWords = showTitleLower.split(/\s+/).filter(w => w.length > 3 && !['the', 'and', 'for', 'from', 'with'].includes(w));
-        // Also keep shorter core words (e.g., "six" from "SIX the Musical") for fallback
-        const coreWords = showTitleLower.split(/\s+/).filter(w => w.length >= 2 && !['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'].includes(w));
-
-        // Count title/word mentions
-        const titleRegex = new RegExp(`\\b${showTitleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
-        const titleMentions = (reviewLower.match(titleRegex) || []).length;
-        const wordMentions = showWords.length > 0
-          ? Math.max(...showWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
-          : 0;
-        // Always check core words as fallback (catches SIX, Cats, Rent where significantWords is insufficient)
-        const coreMentions = coreWords.length > 0
-          ? Math.max(...coreWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
-          : 0;
-
-        const mentions = Math.max(titleMentions, wordMentions, coreMentions);
-        // Single-word or very short titles need 2+ mentions (common words cause false positives)
-        // Multi-word titles with distinctive words need only 1
-        const minMentions = showWords.length >= 2 ? 1 : 2;
-        if (mentions < minMentions) {
-          skipReason = `wrong-show (only ${mentions} title mention(s) in review)`;
+        const mentionCheck = checkWrongShowMentionGuard(show, review.fullText);
+        if (mentionCheck.fails) {
+          const roundupRows = await getRoundupRows();
+          if (isCorroboratedByRoundup(review.outlet, review.critic, roundupRows)) {
+            console.log(`    (wrong-show guard bypassed — corroborated by WET roundup: ${filename}, ${mentionCheck.mentions} mention(s))`);
+          } else {
+            skipReason = mentionCheck.reason;
+          }
         }
       }
 

@@ -1,0 +1,160 @@
+name: Fix Auto-Clear vs Ensemble Conflicts
+
+# Backfill for the auto-clear-vs-ensemble-verdict class (coverage-pipeline
+# tracker item #2 / Notion 3b7637c5-416f-81be, tasks #1146 + #1156).
+#
+# Why this runs in CI and not on a laptop: --fix re-asserts wrongShow /
+# wrongProduction on real corpus files, which CHANGES LIVE PUBLIC CRITIC SCORES
+# once the next rebuild lands. Verifying that impact needs a rebuild, and
+# rebuild-all-reviews.js must never be run against a local review-texts clone
+# (memory: feedback_local_rebuild_stale_clone_hazard) — so the owner's decision
+# (2026-08-09, option A) was: run it here, where the corpus is a fresh checkout
+# and the score delta is observable in the same run.
+#
+# Shape borrowed from clear-stale-duplicate-of.yml, which is the same
+# report -> fix -> push-review-texts pattern for a different flag class.
+#
+# Default is DRY RUN. The fix only happens when dry_run=false is passed
+# explicitly — a backfill that moves public scores should never be one
+# mistyped dispatch away.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no writes (default true — set false to actually fix)'
+        required: false
+        default: 'true'
+        type: string
+      max_files:
+        description: 'Refuse to fix more than this many files in one run (surge guard)'
+        required: false
+        default: '80'
+        type: string
+      trigger_rebuild:
+        description: 'Dispatch Rebuild Reviews Data afterwards so the score delta is observable'
+        required: false
+        default: 'true'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: fix-autoclear-ensemble-conflicts
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    name: Re-assert flags the ensemble already rejected
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      # Deliberately NOT pinned to main: the auditor script ships on the
+      # feature branch until that branch merges, so this must run against
+      # whatever ref the dispatch names.
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Audit (before)
+        id: before
+        run: |
+          set +e
+          OUT=$(node scripts/audit-wrongshow-autoclear-conflicts.js --json 2>&1)
+          echo "$OUT" | head -5
+          COUNT=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).count)}catch{console.log('parse-error')}})")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Conflicts before: $COUNT"
+          exit 0
+
+      # Surge guard. A spike means a producer regression, not routine drift —
+      # in that case a bulk re-flag would move a lot of scores for the wrong
+      # reason. Stop and make a human look.
+      - name: Surge guard
+        if: inputs.dry_run != 'true'
+        run: |
+          COUNT='${{ steps.before.outputs.count }}'
+          MAX='${{ inputs.max_files }}'
+          case "$COUNT" in (*[!0-9]*|'') echo "::error::audit did not return a numeric count (got '$COUNT')"; exit 1;; esac
+          if [ "$COUNT" -gt "$MAX" ]; then
+            echo "::error::$COUNT conflicts exceeds max_files=$MAX — a spike this size usually means a producer regression, not drift. Investigate before bulk-fixing, or re-dispatch with a higher max_files."
+            exit 1
+          fi
+
+      - name: Apply fix
+        if: inputs.dry_run != 'true' && steps.before.outputs.count != '0'
+        run: node scripts/audit-wrongshow-autoclear-conflicts.js --fix
+
+      # The auditor re-scans after --fix and reports the POST-fix truth, but
+      # assert it independently here too: a partial write that reported success
+      # is exactly the failure mode the verify-after-write in the script exists
+      # to catch, and this is the cheap second opinion.
+      - name: Audit (after)
+        id: after
+        if: inputs.dry_run != 'true'
+        run: |
+          set +e
+          OUT=$(node scripts/audit-wrongshow-autoclear-conflicts.js --json 2>&1)
+          COUNT=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).count)}catch{console.log('parse-error')}})")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Conflicts after: $COUNT"
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.before.outputs.count != '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: re-assert ${{ steps.before.outputs.count }} flag(s) the ensemble rejected [autoclear-ensemble-backfill]
+
+      # Dispatched AFTER the push so the rebuild reads the re-flagged corpus.
+      # This is the step that makes the score movement observable — without it
+      # the backfill sits invisible until the next scheduled rebuild.
+      - name: Trigger rebuild so the score delta is observable
+        if: inputs.dry_run != 'true' && inputs.trigger_rebuild == 'true' && steps.before.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" \
+            -f reason="autoclear-ensemble backfill: ${{ steps.before.outputs.count }} flag(s) re-asserted" \
+            || echo "::warning::rebuild dispatch failed — run it manually: gh workflow run \"Rebuild Reviews Data\""
+
+      - name: Summary
+        run: |
+          {
+            echo "## Auto-clear vs ensemble-verdict backfill"
+            echo ""
+            echo "**Conflicts before:** ${{ steps.before.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** DRY RUN — nothing written. Re-dispatch with \`dry_run=false\` to apply."
+            else
+              echo "**Conflicts after:** ${{ steps.after.outputs.count }}"
+              echo "**Mode:** fixed + pushed to review-texts"
+              echo ""
+              echo "Each fixed file gets \`wrongShow\`/\`wrongProduction\` re-asserted plus a manual"
+              echo "\`*Reason\` + \`*ReasonAt\` (both PROTECTED_FIELDS), so the flag survives the next"
+              echo "rebuild AND the push-time restore instead of being auto-cleared again."
+              echo ""
+              echo "Watch the rebuild's drop analysis for the score movement."
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fix Auto-Clear vs Ensemble Conflicts Failed'
+          severity: 'warning'
