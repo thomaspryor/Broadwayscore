@@ -454,6 +454,19 @@ async function main() {
     console.error(`[digest] WARN autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }
 
+  // Digest-autofix S6 (task #1225, owner mandate 2026-08-10): daily
+  // end-to-end canary — resolves yesterday's synthetic dispatch-pipeline
+  // probe and files/dispatches today's, through the REAL pipeline (card
+  // filing -> notion-tasks-sync -> bsc-next --headless -> verify gate ->
+  // completion). Tomorrow's health-check reads the ledger this writes.
+  // Fail-soft: never blocks the digest send.
+  try {
+    const { runAutofixCanary } = require('./lib/autofix-canary.js');
+    runAutofixCanary({ dryRun, log: (m) => console.log(m) });
+  } catch (err) {
+    console.error(`[digest] WARN autofix canary failed (email still sends): ${String(err.message).slice(0, 160)}`);
+  }
+
   // One plain sentence of overnight activity (replaces the old commit-list block).
   let overnightLine = null;
   try {

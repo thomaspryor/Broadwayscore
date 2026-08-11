@@ -1981,6 +1981,47 @@ function checkAutofixEffectiveness() {
   }];
 }
 
+// --- Digest-autofix S6: daily canary + throughput (task #1225) ---
+//
+// checkAutofixEffectiveness above answers "of the jobs that reported back,
+// how many succeeded" over a 7-day window. It cannot answer "did the pipeline
+// dispatch anything AT ALL today" — the exact question that would have caught
+// the 8/5-8/9 starvation (task #1184) on day 2 instead of day 5. These two
+// rows close that gap: a live end-to-end canary (scripts/lib/autofix-canary.js)
+// and a daily throughput rollup with an explicit zero-activity alarm. Both
+// ledgers are gitignored/per-machine (same as digest-autofix-ledger.jsonl
+// above) — ENOENT reads as `null` (never `[]`) so the pure functions can tell
+// "absent here" from "present and empty", and both follow the same
+// warn-never-error-never-silent-pass rule task #1221 exists to enforce.
+function readJsonlLedgerOrNull(absPath) {
+  if (!fs.existsSync(absPath)) return null;
+  let raw;
+  try { raw = fs.readFileSync(absPath, 'utf8'); } catch { return null; }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return out;
+}
+
+function checkAutofixCanary() {
+  const { assessCanaryRow } = require('./lib/autofix-canary.js');
+  const dispatchLedger = require('./lib/dispatch-ledger.js');
+  const canaryLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'autofix-canary-ledger.jsonl'));
+  let dispatchLedgerEntries = [];
+  try { dispatchLedgerEntries = dispatchLedger.readEntries(); } catch { /* stage folding degrades to card-filed-only */ }
+  return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
+}
+
+function checkAutofixThroughput() {
+  const { assessThroughputRow } = require('./lib/autofix-canary.js');
+  const digestLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-autofix-ledger.jsonl'));
+  const backlogLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl'));
+  return [assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries })];
+}
+
 // --- Push-retry deadman (task #394) ---
 //
 // scripts/lib/push-with-retry.sh appends a JSONL record to
@@ -3876,6 +3917,8 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(dryRun),
     ...checkAutofixEffectiveness(),
+    ...checkAutofixCanary(),
+    ...checkAutofixThroughput(),
   ];
 }
 
