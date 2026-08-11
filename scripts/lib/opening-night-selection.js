@@ -112,7 +112,37 @@ function selectOpeningNightShows(shows, opts = {}) {
   });
 }
 
-module.exports = { selectOpeningNightShows };
+/**
+ * Count shows in an active opening-night window, reading shows.json from
+ * disk. Extracted from scripts/check-bd-breaker.js (2026-08) so both that
+ * script and scripts/check-sd-breaker.js consult the SAME implementation for
+ * their trip-severity decision — a hand-copied second version would let the
+ * two silently drift (a lesson the shared selectOpeningNightShows predicate
+ * above already encodes for the orchestrator/monitor pair).
+ *
+ * Used ONLY for alert severity by both callers — the actual provider
+ * carve-out is enforced elsewhere (brightdata-caps.js / scrapingdog-caps.js).
+ * lookbackDays 3 (not the selection default 21) because the question is "is a
+ * poller hammering this provider for a show tonight", not "did a show open
+ * this month".
+ *
+ * @param {string} showsPath - absolute path to data/shows.json
+ * @returns {number}
+ */
+function countShowsInOpeningWindow(showsPath) {
+  try {
+    const fs = require('fs');
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const list = Array.isArray(shows) ? shows : shows.shows || [];
+    return selectOpeningNightShows(list, { lookbackDays: 3 }).length;
+  } catch {
+    // Unknown → treated as "no active window" for severity only. A missing
+    // shows.json must never change whether a breaker trips.
+    return 0;
+  }
+}
+
+module.exports = { selectOpeningNightShows, countShowsInOpeningWindow };
 
 // CLI seam for opening-night-orchestrator.yml (replaces its inline node -e):
 //   node scripts/lib/opening-night-selection.js --market=broadway

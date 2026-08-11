@@ -258,6 +258,23 @@ function normalizeHostSlug(host) {
  *     identically), this returns only the first match (Object.entries
  *     iteration order), unhandled.
  *
+ * A host that is ALREADY some OTHER outlet's own registered domain (or
+ * domainAlias) is never a move candidate at all, no matter what it
+ * slug-matches — it is already correctly identified. Found live (task
+ * #1254): 'dancemagazine.co.uk' is Dance Informa Magazine UK's own domain
+ * (real, distinct outlet from Dance Magazine US), but it still slug-matched
+ * dance-magazine.com ('dancemagazine' === 'dancemagazine') and got flagged
+ * as a probable move — the same-brand-word-across-TLDs class the #1228
+ * domain-vs-domain redesign could not separate on slug text alone. The old
+ * per-outlet `knownHosts.has(host)` check only skipped comparison against
+ * THE OUTLET BEING COMPARED, not the whole host — so registering the host
+ * as ITS OWN outlet's domain never suppressed a slug match against a
+ * DIFFERENT outlet later in the same Object.entries() iteration. Checking
+ * exact host membership against the registry's FULL known-host set once,
+ * before any slug comparison, closes that gap without touching the
+ * legitimate slug-match path (a genuinely unregistered host is absent from
+ * this set entirely).
+ *
  * @param {object} outlets - outletId -> {domain, domainAliases}
  * @param {Array<{host: string, occurrences?: number, sampleUrls?: string[]}>} unknownHosts
  * @returns {Array<{host: string, outletId: string, occurrences: number|null, sampleUrls: string[]}>}
@@ -265,9 +282,30 @@ function normalizeHostSlug(host) {
 function findProbableDomainMoves(outlets, unknownHosts) {
   const results = [];
   if (!outlets || !Array.isArray(unknownHosts)) return results;
+
+  const allKnownHosts = new Set();
+  for (const outlet of Object.values(outlets)) {
+    if (!outlet) continue;
+    // Also honors the 2 legacy `domains`/`alternateDomains` fields still live
+    // on a couple of outlets (gay-city-news, metrosource) — the census
+    // producer's own getKnownDomainMap() (audit-show-review-gap.js) reads all
+    // four fields before writing a host as "unknown", so this set must match
+    // that contract or it silently re-alerts a host the producer already
+    // considers known (ship-check finding, task #1254).
+    for (const h of [
+      outlet.domain,
+      ...(outlet.domainAliases || []),
+      ...(outlet.domains || []),
+      ...(outlet.alternateDomains || []),
+    ]) {
+      if (h) allKnownHosts.add(String(h).toLowerCase());
+    }
+  }
+
   for (const entry of unknownHosts) {
     const host = entry && entry.host;
     if (!host) continue;
+    if (allKnownHosts.has(host.toLowerCase())) continue; // already registered SOMEWHERE — not a move
     const slug = normalizeHostSlug(host);
     if (slug.length < MIN_SLUG_LENGTH) continue;
     for (const [outletId, outlet] of Object.entries(outlets)) {
@@ -278,10 +316,6 @@ function findProbableDomainMoves(outlets, unknownHosts) {
       // gap (missing domain), and there is nothing to compare the census
       // host against.
       if (!outlet.domain) continue;
-      const knownHosts = new Set(
-        [outlet.domain, ...(outlet.domainAliases || [])].filter(Boolean).map((h) => String(h).toLowerCase()),
-      );
-      if (knownHosts.has(host.toLowerCase())) continue; // already registered — not a move
 
       const domainSlug = normalizeHostSlug(outlet.domain);
       if (domainSlug.length >= MIN_SLUG_LENGTH && domainSlug === slug) {
