@@ -1969,7 +1969,14 @@ function checkAutofixEffectiveness() {
     status: r.status,
     message: r.message,
     ...(r.status === 'error' ? {
-      hint: 'Run `claude -p "hi"` on the dispatch host. "Not logged in · Please run /login" means every job dies on auth — re-login, then confirm the next digest run records a card-pass.',
+      // NOT `claude auth status` / a bare `claude -p`: the fleet does not use the
+      // CLI's stored login. claude-cli.js injects ANTHROPIC_API_KEY /
+      // CLAUDE_CODE_OAUTH_TOKEN from .env into every spawned job (resolveAuthEnv
+      // + strippedEnv), because under launchd process.env carries only the
+      // plist's block. A bare probe from an interactive shell therefore reports
+      // "Not logged in" even while the fleet is healthy — 2026-08-11: that false
+      // reading was reported to the owner as a total outage, twice.
+      hint: 'Read the newest log in ~/Library/Logs/bsc-jobs/ — empty apart from a TIMEOUT marker means the job produced nothing. Then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN (claude-cli.js forwards these; the CLI\'s own stored login is NOT what the fleet uses).',
     } : {}),
   }];
 }
