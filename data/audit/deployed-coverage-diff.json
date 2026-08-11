@@ -1,32 +1,57 @@
 {
-  "generatedAt": "2026-08-11T18:43:24.885Z",
+  "generatedAt": "2026-08-11T19:59:52.065Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 147,
-  "defective": 1,
+  "clean": 146,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 1
+    "missing-from-prod": 2,
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "title": "The Comedy About Spies",
+      "showId": "cats-west-end-2026",
+      "title": "Cats",
       "openingDate": "2026-08-06",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: allthingstheatre, theupcoming"
+          "detail": "1 scored outlet(s) absent from the deployed payload: independent"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.16 vs local 73.39 (Δ0.77)"
         }
       ],
       "missingFromProd": [
-        "allthingstheatre",
-        "theupcoming"
+        "independent"
       ],
-      "localCount": 38,
-      "deployedCount": 36
+      "localCount": 31,
+      "deployedCount": 30
+    },
+    {
+      "showId": "twelfth-night-off-west-end-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-08-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.03 vs local 72.97 (Δ2.06)"
+        }
+      ],
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 13,
+      "deployedCount": 12
     }
   ]
 }
