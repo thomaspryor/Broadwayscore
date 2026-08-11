@@ -149,6 +149,14 @@ function main() {
       delete d.needsRescore;
       delete d.rescoreReason;
       delete d.lateStarAnchorBand;
+      // Freshness-gated breadcrumb (task #1259, same shape as tasks #97/#1237):
+      // this runs in enrich-reviews.yml's single job, which later calls
+      // push-review-texts — without this stamp, the restore step sees
+      // committed HEAD (checked out before this ran) still carrying the
+      // stuck flag and resurrects it. review-write-guard.js CLEAR_BREADCRUMBS
+      // honors it for needsRescore/rescoreReason/lateStarAnchorBand.
+      d.stuckRescoreCleared = true;
+      d.stuckRescoreClearedAt = new Date().toISOString();
       safeWriteReview(s.path, d, { force: true });
     }
   }

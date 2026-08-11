@@ -33,12 +33,51 @@
  * scrape-stagedoor-critics.js, gather-reviews.js) could keep creating paid
  * sessions after the owner flipped the emergency stop. Checking once in the
  * shared chokepoint closes the gap for every current AND future caller.
+ *
+ * Card #1248 (2026-08-11): the numeric $25/day account-wide ceiling had the
+ * SAME gap — only collect-review-texts.js (local usage-file counter, maxed
+ * against live count) and bww-rr-discover.js (live count only) enforced it;
+ * the other 7 callers could blow through it uncapped. #114 deliberately left
+ * this out to keep that fix surgical (needs a live session count, not just an
+ * env-var read). Enforced HERE now using the live-count check, the same
+ * mechanism bww-rr-discover.js already used — the shared chokepoint doesn't
+ * have a durable local counter of its own (short-lived CLI processes), so the
+ * live Browserbase API count (which reflects every caller's spend already) is
+ * the one source of truth available here. Per-run/per-domain caps stay
+ * caller-side (scripts/lib/browserbase-caps.js) — they need per-process state
+ * this chokepoint doesn't have.
  */
 'use strict';
 
 const { recordBbCall } = require('./provider-telemetry');
+// Not destructured — kept as a module reference so tests can mock.method()
+// the export in place (browserbase-session.test.mjs).
+const browserbaseLiveUsage = require('./browserbase-live-usage');
+const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 
 const SESSIONS_URL = 'https://api.browserbase.com/v1/sessions';
+
+// Short TTL cache for the live day-cap count (#1248 ship-check finding):
+// without this, every createBbSession() call hits the live-usage API, which
+// defeats collect-review-texts.js's own deliberate "only re-check live count
+// every 5th session, to bound API calls" cadence (scripts/collect-review-texts.js
+// ~line 2109) — a big collection run would 5x its live-usage API traffic.
+// 15s keeps the check genuinely "live" (a burst can admit at most a handful
+// of extra sessions during the window, negligible against the $25/day
+// ceiling's own headroom) while collapsing rapid-fire creates to one fetch.
+const DAY_CAP_CACHE_TTL_MS = 15000;
+let _dayCapCache = { key: null, count: null, ts: 0 };
+
+async function getCachedLiveSessionsToday(apiKey, projectId) {
+  const key = `${apiKey}:${projectId}`;
+  const now = Date.now();
+  if (_dayCapCache.key === key && now - _dayCapCache.ts < DAY_CAP_CACHE_TTL_MS) {
+    return _dayCapCache.count;
+  }
+  const count = await browserbaseLiveUsage.fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
+  _dayCapCache = { key, count, ts: now };
+  return count;
+}
 
 // Browserbase 400s on userMetadata values containing anything outside this
 // set (spaces, colons, slashes all rejected — confirmed live 2026-08-02).
@@ -71,6 +110,18 @@ async function createBbSession(opts) {
   }
   if (!opts.caller) {
     throw new Error('createBbSession: opts.caller is required (attribution would be lost otherwise)');
+  }
+
+  // Account-wide daily ceiling (#1248). Live count already reflects every
+  // caller's spend, so no local counter is needed here. null means the API
+  // call itself failed — treat as unknown, not zero, same as every other
+  // live-count caller in this codebase (a network hiccup must not look like
+  // a clean budget).
+  const maxPerDay = resolveMaxSessionsPerDay();
+  const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
+  if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
+    recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: 'day-cap-reached' });
+    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — session create blocked for ${opts.caller}`);
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
@@ -122,4 +173,12 @@ async function createBbSession(opts) {
   return { id: session.id, connectUrl, raw: session };
 }
 
-module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue };
+// Test-only escape hatch: the day-cap cache is module-level state, so tests
+// that stub fetchLiveBrowserbaseSessionsToday with different return values
+// back-to-back need to clear it between cases or they'll read a stale value
+// cached by the previous test's mock.
+function _resetDayCapCacheForTests() {
+  _dayCapCache = { key: null, count: null, ts: 0 };
+}
+
+module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, _resetDayCapCacheForTests };
