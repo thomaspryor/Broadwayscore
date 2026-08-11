@@ -23,6 +23,7 @@
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
+const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -193,18 +194,12 @@ function getCvStyle(outletId) {
  * @param {string} host - hostname (with or without leading www.)
  * @returns {string|null} provisional slug, or null if no usable label
  */
-// Blog/newsletter platforms where the publication identity is the SUBDOMAIN, not
-// the platform domain. host "pub.wordpress.com" -> "pub".
-const PROVISIONAL_BLOG_PLATFORMS = [
-  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
-  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
-];
-// Multi-part public suffixes where the registrable label sits one level deeper
-// (so .co.uk/.org.uk/.com.au/etc. don't collapse to "co"/"org"/"com").
-const PROVISIONAL_MULTIPART_SUFFIXES = [
-  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
-  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
-];
+// Which suffix a host sits on (blog platform vs multi-part public suffix) comes
+// from host-suffix-lists.js — the SHARED source of truth. It used to be a local
+// literal list here, forked from an identical one in silent-exclusion-detectors.js;
+// the two drifted (this side lacked co.id, that side lacked tumblr.com) and a host
+// classified one way at registration and the other at detection is a silent
+// exclusion. Do not reintroduce a local list — the colocated test fails if you do.
 // host is a URL hostname (DNS domains are ASCII/punycode by construction) —
 // no diacritic fold needed here, unlike the outletArg slug fallback above.
 // host is a URL hostname (DNS domains are ASCII/punycode by construction) —
@@ -219,11 +214,11 @@ function provisionalOutletIdFromHost(host) {
   const parts = h.split('.').filter(Boolean);
   if (parts.length < 2) return null;
   let label;
-  const platform = PROVISIONAL_BLOG_PLATFORMS.find((p) => h.endsWith('.' + p));
+  const platform = platformSuffixOf(h);
   if (platform && parts.length >= 3) {
     // pub.<platform> -> the publication subdomain
     label = parts[0];
-  } else if (PROVISIONAL_MULTIPART_SUFFIXES.some((s) => h.endsWith('.' + s)) && parts.length >= 3) {
+  } else if (multipartSuffixOf(h) && parts.length >= 3) {
     // <label>.co.uk -> the label before the 2-part suffix
     label = parts[parts.length - 3];
   } else {

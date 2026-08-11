@@ -30,6 +30,7 @@
 // (no fs, no network), so this preserves this module's "safe for the S5 probe's
 // pure decision layer" load contract.
 const { TICKET_DOMAINS, matchesDomainSet } = require('./domain-filters');
+const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -224,19 +225,14 @@ function namedNonReviewReason(url) {
 // Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
 // or mobile host is the same outlet as its bare domain.
 const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
-// Blog/newsletter platforms where the publication identity IS the subdomain
-// (pub.substack.com). These must NOT collapse. Mirrors
-// PROVISIONAL_BLOG_PLATFORMS in outlet-canonicalize.js.
-const COLLAPSE_BLOG_PLATFORMS = [
-  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
-  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
-];
-// Multi-part public suffixes — registrable domain keeps 3 labels (foo.co.uk),
-// not 2 (co.uk). Mirrors PROVISIONAL_MULTIPART_SUFFIXES in outlet-canonicalize.js.
-const COLLAPSE_MULTIPART_SUFFIXES = [
-  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
-  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
-];
+// Which suffix a host sits on comes from host-suffix-lists.js — the SHARED
+// source of truth, also used by outlet-canonicalize.js (provisionalOutletIdFromHost)
+// and silent-exclusion-detectors.js (normalizeHostSlug). This file used to carry
+// a third literal copy whose comments read "Mirrors PROVISIONAL_BLOG_PLATFORMS
+// in outlet-canonicalize.js" — and it had already fallen out of sync: it lacked
+// any Blogger country mirror, so registrableHost('showshowdown.blogspot.co.id')
+// returned the bare public suffix 'co.id' as if that were a registrable domain.
+// Three functions that must agree cannot each keep a private list.
 
 // Collapse a hostname to its registrable domain so section subdomains
 // (theater.nytimes.com) and mirror hosts (amp.theguardian.com) look up the same
@@ -246,9 +242,9 @@ function registrableHost(host) {
   if (!host || typeof host !== 'string') return host;
   let h = host.replace(/^www\./, '').toLowerCase();
   while (MIRROR_SUBDOMAIN_PREFIX.test(h)) h = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
-  if (COLLAPSE_BLOG_PLATFORMS.some(p => h.endsWith('.' + p))) return h;
+  if (platformSuffixOf(h)) return h;
   const parts = h.split('.').filter(Boolean);
-  const keep = COLLAPSE_MULTIPART_SUFFIXES.some(s => h.endsWith('.' + s)) ? 3 : 2;
+  const keep = multipartSuffixOf(h) ? 3 : 2;
   return parts.length > keep ? parts.slice(-keep).join('.') : h;
 }
 
