@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-10T22:15:19.940Z",
+  "timestamp": "2026-08-11T00:01:48.546Z",
   "stats": {
     "totalReviews": 42017,
     "alreadyFlagged": 18306,
     "dateGuardCatches": 134,
-    "directorMismatch": 961,
+    "directorMismatch": 962,
     "tvFilmSignals": 1177,
-    "londonSignals": 835,
+    "londonSignals": 839,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3522
@@ -29131,6 +29131,19 @@
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
       "file": "nydailynews--chris-jones.json",
       "score": null,
       "publishDate": "November 20, 2025",
@@ -33964,10 +33977,52 @@
     },
     {
       "showId": "cleansed-off-west-end-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-CLEANSED-Almeida-20260730",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 53,
+      "publishDate": null,
+      "url": "https://www.dailymail.com/tvshowbiz/article-16018123/Patrick-Marmion-star-rating-veto-sex-depravity-cleansed.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 40,
       "publishDate": "2026-07-30",
       "url": "https://www.londonboxoffice.co.uk/news/post/cleansed-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/cleansed-at-the-almeida-review-b1292219.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -37780,6 +37835,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "juno-and-the-paycock-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/juno-and-the-paycock-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },

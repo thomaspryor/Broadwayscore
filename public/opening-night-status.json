@@ -1,7 +1,121 @@
 {
-  "generatedAt": "2026-08-10T22:15:26.198Z",
+  "generatedAt": "2026-08-11T00:01:54.885Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-08-11",
+      "status": "open",
+      "slug": "death-note-the-musical-west-end",
+      "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 44,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-08-11T00:01:54.885Z",
+          "rc": 1,
+          "s": 44,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "isla-off-broadway-2026",
       "title": "ISLA",
@@ -389,31 +503,6 @@
   ],
   "upcoming": [
     {
-      "id": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-08-11",
-      "status": "open",
-      "slug": "death-note-the-musical-west-end",
-      "thumbnail": "/images/shows/death-note-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
       "id": "marlise-off-broadway-2026",
       "title": "Marlise",
       "market": "broadway",
@@ -423,7 +512,7 @@
       "status": "previews",
       "slug": "marlise-off-broadway",
       "thumbnail": "/images/shows/marlise-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -462,7 +551,7 @@
       "status": "upcoming",
       "slug": "as-you-like-it-globe-west-end",
       "thumbnail": "/images/shows/as-you-like-it-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -487,7 +576,7 @@
       "status": "previews",
       "slug": "the-house-of-the-negro-insane-off-broadway",
       "thumbnail": "/images/shows/the-house-of-the-negro-insane-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -526,7 +615,32 @@
       "status": "upcoming",
       "slug": "anansi-the-spider-west-end",
       "thumbnail": "/images/shows/anansi-the-spider-west-end-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "jeeves-takes-charge-west-end-2026",
+      "title": "Jeeves Takes Charge",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-08-18",
+      "status": "upcoming",
+      "slug": "jeeves-takes-charge-west-end",
+      "thumbnail": "/images/shows/jeeves-takes-charge-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
