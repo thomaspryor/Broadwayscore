@@ -145,6 +145,8 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: 'A review-text file has fullText + a real byline + no rejection flags but no contentTier, so it is not reaching reviews.json. Open Claude Code and say: "Check the missing contentTier gap named in this check and restore contentTier on that review-text file."' },
   { match: /^Quality: outlet domain moves$/, urgency: 'this-week',
     humanAction: 'An unregistered host name-matches a known outlet — probably that outlet moved to a new domain (e.g. a critic switching to Substack) and reviews on the new host are being silently dropped. Open Claude Code and say: "Check the probable outlet domain move named in this check, confirm it, and add the host to that outlet\'s domainAliases."' },
+  { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
+    humanAction: 'An outlet has a spike in stub-tier (0-char extraction) reviews collected in the last 30 days — the signature of a site redesign breaking its article-extractor.js pattern (this is exactly what happened with TheaterMania in 2026). Open Claude Code and say: "Check the outlet stub-rate flag named in this check, confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet."' },
 
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
@@ -1099,6 +1101,38 @@ function checkQuality() {
         status: 'warn',
         message: `${moves.length} unregistered host(s) name-match a registered outlet (e.g. ${worst.host} → ${worst.outletId}) — probable domain move dropping reviews via domain-mismatch`,
         hint: 'Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases in data/outlet-registry.json.',
+      };
+    }),
+
+    // Outlet stub-rate monitor (card #100): when an outlet redesigns its
+    // site, its article-extractor.js pattern can silently stop matching —
+    // extractArticleTextFromUrl returns 0 chars, the review saves as
+    // contentTier:stub, and it never scores. Nothing alerted on this until
+    // TheaterMania's 2026 Bootstrap redesign left 26 reviews stuck as stubs
+    // corpus-wide, caught only by accident chasing one unrelated show. A
+    // healthy outlet has old/legacy stub debt; a broken extractor produces a
+    // SPIKE in the stub rate among reviews collected in the last 30 days —
+    // that's the signal computeOutletStubRates() looks for. Advisory
+    // `this-week` warn via the /^Quality:/ playbook route, not a page: it
+    // reports a candidate for a human to confirm (real redesign vs. a run of
+    // genuinely un-extractable pages), never writes.
+    runCheck('Quality: outlet stub rate', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: outlet stub rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { collectReviewRecords, computeOutletStubRates } = require('./audit-outlet-stub-rate.js');
+      const records = collectReviewRecords(rtDir);
+      const { outlets, flaggedOutletIds } = computeOutletStubRates(records);
+      if (flaggedOutletIds.length === 0) {
+        return { name: 'Quality: outlet stub rate', status: 'pass', message: `No broken-extractor signature in ${outlets.length} outlet(s), ${records.length} review(s)` };
+      }
+      const worst = outlets.find((o) => o.outletId === flaggedOutletIds[0]);
+      return {
+        name: 'Quality: outlet stub rate',
+        status: 'warn',
+        message: `${flaggedOutletIds.length} outlet(s) show a broken-extractor signature (worst: ${worst.outletId} — ${worst.recentStubCount}/${worst.recentTotal} recent stubs, ${(worst.recentStubRate * 100).toFixed(0)}%)`,
+        hint: 'Run `node scripts/audit-outlet-stub-rate.js` — likely a redesigned article-extractor.js pattern no longer matching. See tests/unit/theatermania-extractor.test.mjs for the fix pattern (regression test + updated extraction pattern).',
       };
     }),
 
