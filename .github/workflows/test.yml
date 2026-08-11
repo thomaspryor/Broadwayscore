@@ -910,6 +910,11 @@ on:
       - 'scripts/lib/failed-fetch-policy.js'
       - 'scripts/lib/failed-fetch-policy.test.mjs'
       - 'scripts/check-bd-breaker.js'
+      # Card #1252 — ScrapingDog's equivalent daily breaker (same allow-list
+      # gate reasoning as the Bright Data entries above).
+      - 'scripts/lib/scrapingdog-caps.js'
+      - 'scripts/lib/scrapingdog-caps.test.mjs'
+      - 'scripts/check-sd-breaker.js'
       - 'scripts/lib/opening-night-budget.js'
       - 'scripts/test-opening-night-budget.js'
       # TodayTix runtime extraction (page CMS field is authoritative, API is

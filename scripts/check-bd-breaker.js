@@ -34,7 +34,7 @@ const {
 } = require('./lib/brightdata-caps');
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
-const { selectOpeningNightShows } = require('./lib/opening-night-selection');
+const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
 
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -56,24 +56,6 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const STATE_PATH = process.env.BD_BREAKER_STATE_PATH
   || path.join(__dirname, '..', 'data', 'audit', 'bd-circuit-breaker.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-
-/**
- * Shows whose opening-night discovery is live right now. Used ONLY for alert
- * severity — the carve-out itself is enforced in brightdata-caps.js, not here.
- * lookbackDays 3 (not the selection default 21) because the question is "is the
- * poller hammering BD for a show tonight", not "did a show open this month".
- */
-function countShowsInOpeningWindow() {
-  try {
-    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-    const list = Array.isArray(shows) ? shows : shows.shows || [];
-    return selectOpeningNightShows(list, { lookbackDays: 3 }).length;
-  } catch {
-    // Unknown → treated as "no active window" for severity only. A missing
-    // shows.json must never change whether the breaker trips.
-    return 0;
-  }
-}
 
 function loadState() {
   try {
@@ -159,7 +141,7 @@ async function main() {
     return;
   }
 
-  const openingWindowShows = countShowsInOpeningWindow();
+  const openingWindowShows = countShowsInOpeningWindow(SHOWS_PATH);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const change of changes) {
     const conditionKey = `bd-circuit-breaker-${change.zone}`;

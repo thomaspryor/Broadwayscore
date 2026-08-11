@@ -24,6 +24,7 @@ const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
+const { consultScrapingdog } = require('./scrapingdog-caps');
 
 // Scrapingdog SERP — cheap primary ahead of BD/SB SERP. Google Light Search =
 // 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default ON (see scraper.js for
@@ -334,6 +335,12 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   // SERP discovery (see scraper.js's fetchWithScrapingdog).
   scraper.checkScrapingdogQuotaOnce();
   if (scraper.sdQuotaExceeded) return null;
+
+  // Daily circuit breaker (card #1252) — second SD chokepoint, mirrors
+  // fetchWithScrapingdog's consultScrapingdog() check in scraper.js. Blocked
+  // → return null, same shape as every other miss in this function, so the
+  // caller's BD/SB fallback chain (line ~803) routes around it.
+  if (!consultScrapingdog().allowed) return null;
 
   const axios = require('axios');
   let q = query;
