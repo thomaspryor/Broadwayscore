@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 
 // Hardcoded (not path.join(__dirname, '..', '..')) on purpose: both callers
 // of this module (bsc-next.js, bsc-prune.js) are interactive tools an owner
@@ -114,61 +115,108 @@ function deadAttemptsForTask(taskId, entries) {
   return entries.filter(e => isDeadlikeEvent(e.event) && String(e.taskId) === String(taskId));
 }
 
-// Card #1233: single decision point for "has this task died enough to stop
-// auto-redispatching it" — six call sites (bsc-next.js's deadDispatchGuard;
-// dispatch-watchdog-core.js's toPark list and P0/P1 backlog gate; bsc-prune.js's
-// zombie-tab revival guard; bsc-reconcile.js's task-session and stalled-task
-// redispatch gates) each independently compared deadAttemptsForTask(...).length
-// against DEAD_ATTEMPT_LIMIT. Centralizing here means the infra/substantive
-// split below can never drift between callers — the exact failure this file's
-// own "one ledger, one guard" doctrine (see JOB_EVENTS below) exists to
-// prevent.
+// ── INFRA vs SUBSTANTIVE dead attempts (card #1233) ─────────────────────────
+// deadAttemptsForTask above (and DEAD_ATTEMPT_LIMIT below) treat every dead
+// attempt as equal evidence about the TASK. dispatch-health.js's own
+// measurement (card #1199) put the true cmux dead-launch rate at ~21% —
+// almost entirely "the terminal surface never rendered, so the injected
+// command never ran" (INFRA, nothing about the task) rather than "the
+// session booted and then died" (SUBSTANTIVE, a real signal). At a 21%
+// per-attempt infra rate, a perfectly healthy task draws two infra deaths in
+// a row ~4.5% of the time and was getting permanently parked by
+// deadDispatchGuard with advice ("shrink the scope") that has nothing to do
+// with why it died.
 //
-// Card #1199 measured the cmux dead-launch rate at ~21% over 7 days and found
-// it PURE INFRA: the workspace terminal surface never renders, so the
-// injected command never fires — nothing to do with the task. At that rate a
-// perfectly healthy task draws 2 such deaths ~4.5% of the time and used to get
-// permanently parked with a refusal blaming its scope.
+// dispatch-attempts.js's foldAttempts (moved out of dispatch-health.js for
+// exactly this — see that file's header) already computes the INFRA/
+// SUBSTANTIVE split per launch attempt: a folded attempt with dead:true and
+// unverified:true is the shape-1 pair (dead row + its own unverified launch
+// row, written ~1-2ms apart — the wrapper process never appeared); dead:true
+// with unverified:false is a shape-2 breadcrumb (a verified launch, found
+// dead later by a sweep — the session ran before dying/going idle).
+// classifyDeadAttemptsForTask reuses THAT classification rather than
+// re-deriving the pairing window itself, matching this file's own
+// "isDeadlikeEvent ... must all agree on what DEAD means" doctrine above.
 //
-// isInfraDeadEntry reuses OUTAGE_REASON_RE (below, detectLauncherOutage)
-// rather than a second regex with the same pattern — same signature, same
-// deliberate exclusion of 'wrapper exited' (that means the typed command DID
-// run and then failed: task-attributable, not launcher-attributable). Only
-// failedLaunchEntries() (above) ever writes that failureReason text;
-// deadBreadcrumbs() (bsc-prune's idle sweep) never sets failureReason at all,
-// so a shape-2 death — a launch that verified fine and only went idle later,
-// once real work may have happened — is always substantive by default.
-// (Referencing OUTAGE_REASON_RE here before its declaration below is safe:
-// same lazy-reference pattern isDeadlikeEvent already uses for JOB_EVENTS —
-// this function only reads it when CALLED, by which point the module has
-// finished loading.)
-function isInfraDeadEntry(entry) {
-  return Boolean(entry) && entry.event === 'dead'
-    && OUTAGE_REASON_RE.test(String(entry.failureReason || ''));
+// Grouped by (taskId, workspaceRef) rather than matched by raw dead-row
+// timestamp: foldAttempts already does the hard part (claiming each dead row
+// against exactly one attempt, handling recycled-ref ambiguity with its own
+// last-match-at-or-before rule and excluding remap-superseded attempts) —
+// re-deriving that matching a second time here previously risked
+// mismatching a dead row against an unrelated attempt on a reused ref
+// (caught in this card's own plan review). Scoping candidates to this task's
+// own workspaceRef collapses that ambiguity to "exactly one candidate" in
+// every real case; if a ref is somehow reused twice for the SAME task with
+// two different outcomes (candidates.length !== 1), or the dead row can't be
+// matched to any folded attempt at all (e.g. a rotated/truncated ledger),
+// this fails CLOSED to SUBSTANTIVE — never silently drops a death, and never
+// risks misreading an unclassifiable one as a free infra retry.
+function classifyDeadAttemptsForTask(taskId, entries) {
+  const all = deadAttemptsForTask(taskId, entries);
+  if (!all.length) return { substantive: [], infra: [] };
+  // job-*-class deaths (job-failed/job-orphaned) have no workspaceRef and
+  // only ever fire after job-spawned already ran — the wrapper unambiguously
+  // executed, so these are always substantive.
+  const jobDeaths = all.filter(e => e.event !== 'dead');
+  const workspaceDeaths = all.filter(e => e.event === 'dead');
+  if (!workspaceDeaths.length) return { substantive: jobDeaths, infra: [] };
+
+  const { attempts } = foldAttempts(entries);
+  const candidatesByRef = new Map();
+  for (const a of attempts) {
+    if (!a.dead || !a.workspaceRef || String(a.taskId) !== String(taskId)) continue;
+    if (!candidatesByRef.has(a.workspaceRef)) candidatesByRef.set(a.workspaceRef, []);
+    candidatesByRef.get(a.workspaceRef).push(a);
+  }
+
+  const substantive = [...jobDeaths];
+  const infra = [];
+  for (const e of workspaceDeaths) {
+    const matches = candidatesByRef.get(e.workspaceRef) || [];
+    if (matches.length !== 1) { substantive.push(e); continue; } // fail closed
+    const match = matches[0];
+    // unverified:true alone is not sufficient: foldAttempts also marks a
+    // shape-3 launch (#705 slow-boot — wrapper was STILL RUNNING at write
+    // time, so unverified but no immediate dead pair) as dead+unverified if
+    // an UNRELATED sweep later finds it idle and attaches a breadcrumb via
+    // its shape-2 last-match-at-or-before fallback — that breadcrumb can
+    // land minutes, hours, or days later. That is not "the terminal surface
+    // never rendered"; the wrapper was observed running, so it belongs in
+    // SUBSTANTIVE. Verified against the real ledger (2026-08-11): 2 of 56
+    // dead+unverified attempts have a >PAIR_WINDOW_MS gap to their dead row
+    // (up to ~9 days) — without this second check those wrongly read as free
+    // infra retries. Require the SAME proximity foldAttempts itself uses to
+    // call something a genuine shape-1 pair.
+    const deadTs = Date.parse(e.ts || '');
+    const isInfra = match.unverified && Number.isFinite(deadTs) && Math.abs(match.ts - deadTs) <= PAIR_WINDOW_MS;
+    (isInfra ? infra : substantive).push(e);
+  }
+  return { substantive, infra };
 }
 
-// A separate, higher ceiling on TOTAL deaths (infra + substantive) so a
-// genuinely wedged host — cmux itself actually down, not just flaky — still
-// stops eventually instead of retrying forever. Even at the measured ~21%
-// infra rate, a healthy task accumulating INFRA_DEAD_ATTEMPT_LIMIT infra
-// deaths in a row without ever completing is vanishingly unlikely by chance
-// (0.21^8 ≈ 4e-6) — that many is the launcher, not luck.
-const INFRA_DEAD_ATTEMPT_LIMIT = 8;
+function substantiveDeadAttemptsForTask(taskId, entries) {
+  return classifyDeadAttemptsForTask(taskId, entries).substantive;
+}
 
-// The single call every dispatch-cap enforcement point should make. `capped`
-// is true when either ceiling above is met; substantiveCount/infraCount let
-// callers write a refusal message that blames the right thing.
-function deadDispatchCapStatus(taskId, entries) {
-  const all = deadAttemptsForTask(taskId, entries);
-  const infraCount = all.filter(isInfraDeadEntry).length;
-  const substantiveCount = all.length - infraCount;
-  return {
-    entries: all,
-    total: all.length,
-    infraCount,
-    substantiveCount,
-    capped: substantiveCount >= DEAD_ATTEMPT_LIMIT || all.length >= INFRA_DEAD_ATTEMPT_LIMIT,
-  };
+// A genuinely wedged host (cmux itself broken, not any one task) must still
+// stop retrying eventually instead of hammering a dead launcher forever, even
+// though infra deaths no longer count toward DEAD_ATTEMPT_LIMIT. At the
+// measured ~21% true infra rate, INFRA_DEAD_ATTEMPT_LIMIT consecutive infra
+// deaths with zero successes in between is astronomically unlikely
+// (0.21^10 ≈ 1.7e-7) for a task that isn't actually wedged — this is a
+// circuit breaker, not a normal-operation ceiling.
+const INFRA_DEAD_ATTEMPT_LIMIT = 10;
+
+// The single decision every DEAD_ATTEMPT_LIMIT enforcement site in this
+// codebase should compute from, so the substantive/infra split (and the
+// infra ceiling) can't drift between bsc-next.js, bsc-prune.js,
+// bsc-reconcile.js and dispatch-watchdog-core.js. Callers own their own
+// message wording; this owns only the counts and the blocked/reason verdict.
+function dispatchCapDecision(taskId, entries) {
+  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries);
+  if (substantive.length >= DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'substantive', substantive, infra };
+  if (infra.length >= INFRA_DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'infra', substantive, infra };
+  return { blocked: false, reason: null, substantive, infra };
 }
 
 // Events that represent one dispatch ATTEMPT for a task, across both the
@@ -830,6 +878,8 @@ module.exports = {
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, isInfraDeadEntry, deadDispatchCapStatus, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
+  classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask,
+  INFRA_DEAD_ATTEMPT_LIMIT, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,

@@ -222,35 +222,20 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
 // completedLaunchGuard's carve-outs.
 function deadDispatchGuard(task, ledgerEntries, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  // Card #1233: cmux's ~21% infra dead-launch rate (card #1199 — the
-  // terminal surface never renders, so the injected command never fires)
-  // used to count identically to a death where the session actually booted
-  // and then failed doing real work, permanently parking healthy tasks with
-  // a message blaming their scope. deadDispatchCapStatus splits the two;
-  // only SUBSTANTIVE deaths count toward DEAD_ATTEMPT_LIMIT, with a separate
-  // higher ceiling on the total so a truly wedged host still stops.
-  const status = dispatchLedger.deadDispatchCapStatus(task.id, ledgerEntries);
-  if (!status.capped) return null;
-  const refs = status.entries.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
-  if (status.substantiveCount >= dispatchLedger.DEAD_ATTEMPT_LIMIT) {
-    const infraNote = status.infraCount
-      ? ` (plus ${status.infraCount} infra-only death${status.infraCount === 1 ? '' : 's'} — cmux terminal-surface failures — that don't count toward this)`
-      : '';
-    return `task #${task.id} has died ${status.substantiveCount}x already without finishing${infraNote} (dead workspaces: ${refs}). ` +
-      `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
-      `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
-      `handling — see task #289). Re-run with --force to dispatch anyway.`;
+  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries);
+  if (!cap.blocked) return null;
+  if (cap.reason === 'infra') {
+    const refs = cap.infra.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+    return `task #${task.id}'s cmux launch has failed to even start ${cap.infra.length}x in a row (dead workspaces: ${refs}) — ` +
+      `every one of those is 'terminal surface never rendered', not a task failure. That many in a row with zero ` +
+      `successful boots suggests cmux itself is wedged right now, not bad luck on this card. Bring cmux to the ` +
+      `foreground (or restart it) before dispatching anything else. Re-run with --force to try again anyway.`;
   }
-  // Reached only when substantiveCount < DEAD_ATTEMPT_LIMIT (0 or 1) but the
-  // TOTAL still hit INFRA_DEAD_ATTEMPT_LIMIT. Ship-check catch: claiming "all
-  // of them" here was a lie whenever substantiveCount was 1, not 0 — this
-  // must describe the actual mix, not assume it's pure infra.
-  const mix = status.substantiveCount === 0
-    ? `all of them cmux terminal-surface failures (infra, not the task's fault)`
-    : `${status.infraCount} of them cmux terminal-surface failures (infra) and ${status.substantiveCount} real failure${status.substantiveCount === 1 ? '' : 's'}`;
-  return `task #${task.id} has died ${status.total}x total — ${mix} — but that's over the ` +
-    `${dispatchLedger.INFRA_DEAD_ATTEMPT_LIMIT}-death infra ceiling, so something is likely wedged. Check cmux ` +
-    `itself before dispatching anything else (dead workspaces: ${refs}). Re-run with --force to dispatch anyway.`;
+  const refs = cap.substantive.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+  return `task #${task.id} has died ${cap.substantive.length}x already without finishing (dead workspaces: ${refs}). ` +
+    `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
+    `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
+    `handling — see task #289). Re-run with --force to dispatch anyway.`;
 }
 
 // Owner-close park (task #578). The duplicate-dispatch guard only fires while

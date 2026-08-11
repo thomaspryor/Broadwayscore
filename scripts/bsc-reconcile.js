@@ -291,20 +291,18 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     // stealing cmux focus (wakeFn) and spamming the digest for no gain. It
     // genuinely needs a human (or --force) now; surface that once per tick,
     // not retry it.
-    // Card #1233: infra deaths (cmux terminal surface never rendered, card
-    // #1199's measured ~21% rate) are free retries here too — only
-    // substantive deaths (plus the separate, higher total ceiling for a
-    // truly wedged host) block redispatch. See dispatch-ledger.js's
-    // deadDispatchCapStatus. Message must name the real cause — hardcoding
-    // "died Nx" here would blame the task even when the block fired on the
-    // infra ceiling with mostly/all infra deaths (ship-check catch).
-    const capStatus = ledger.deadDispatchCapStatus(task.id, entries);
-    if (capStatus.capped) {
-      const cause = capStatus.substantiveCount >= ledger.DEAD_ATTEMPT_LIMIT
-        ? `died ${capStatus.substantiveCount} substantive time(s)`
-        : `died ${capStatus.total} time(s) total (mostly cmux infra, over the wedged-host ceiling)`;
-      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already ${cause} — needs investigation or --force, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: count only SUBSTANTIVE deaths toward the recurrence cap
+      // — a task whose only failures are cmux's terminal surface never
+      // rendering isn't the thing that needs investigating.
+      const cap = ledger.dispatchCapDecision(task.id, entries);
+      if (cap.blocked) {
+        const detail = cap.reason === 'infra'
+          ? `#${task.id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs investigation or --force, not another automatic retry`
+          : `#${task.id} has already died ${cap.substantive.length}x — needs investigation or --force, not another automatic retry`;
+        reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       reportFn({ kind: 'task-redispatch-throttled', taskId: task.id, detail: `#${task.id} deferred — this tick's redispatch budget (${MAX_REDISPATCH_PER_TICK}) is spent; will retry next tick` });
@@ -405,19 +403,19 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
       reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
       continue;
     }
-    // Card #1233: same infra-vs-substantive split as reconcileTaskSessions
-    // above — infra deaths don't block a stall redispatch, and the message
-    // must say so rather than always blaming the task's death count.
-    const stallCapStatus = ledger.deadDispatchCapStatus(id, entries);
-    if (stallCapStatus.capped) {
-      // Marker stamped: this verdict is stable, so surface it once per stall,
-      // not every 5-minute tick.
-      appendLedgerFn({ event: STALL_EVENT, taskId: id });
-      const cause = stallCapStatus.substantiveCount >= ledger.DEAD_ATTEMPT_LIMIT
-        ? `died ${stallCapStatus.substantiveCount} substantive time(s)`
-        : `died ${stallCapStatus.total} time(s) total (mostly cmux infra, over the wedged-host ceiling)`;
-      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already ${cause} — needs a human look, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: same substantive-only cap as the redispatch guard above.
+      const cap = ledger.dispatchCapDecision(id, entries);
+      if (cap.blocked) {
+        // Marker stamped: this verdict is stable, so surface it once per
+        // stall, not every 5-minute tick.
+        appendLedgerFn({ event: STALL_EVENT, taskId: id });
+        const detail = cap.reason === 'infra'
+          ? `#${id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs a human look, not another automatic retry`
+          : `#${id} already died ${cap.substantive.length}+ times — needs a human look, not another automatic retry`;
+        reportFn({ kind: 'task-stall-blocked', taskId: id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       // NO marker on throttle: the budget is per-tick, so the next tick must
