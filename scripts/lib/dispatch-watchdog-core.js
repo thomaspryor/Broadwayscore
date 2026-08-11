@@ -30,8 +30,8 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, DEAD_ATTEMPT_LIMIT,
-  openTaskWorkspaceLaunches, deadAttemptsForTask, parkedTasks,
+  TERMINAL_LAUNCH_EVENTS,
+  openTaskWorkspaceLaunches, deadDispatchCapStatus, parkedTasks,
   detectLauncherOutage,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
@@ -213,9 +213,14 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
-    const deaths = deadAttemptsForTask(id, entries).length;
-    const item = { taskId: id, subject: task.subject, deaths };
-    if (deaths >= DEAD_ATTEMPT_LIMIT) toPark.push(item);
+    // Card #1233: only SUBSTANTIVE deaths count toward the park threshold —
+    // infra deaths (cmux terminal surface never rendered, card #1199's
+    // measured ~21% rate) are free retries, with a separate higher ceiling
+    // on the total so a truly wedged host still stops. See
+    // deadDispatchCapStatus's header comment in dispatch-ledger.js.
+    const status = deadDispatchCapStatus(id, entries);
+    const item = { taskId: id, subject: task.subject, deaths: status.total, substantiveDeaths: status.substantiveCount, infraDeaths: status.infraCount };
+    if (status.capped) toPark.push(item);
     else retryable.push(item);
   }
   retryable.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
@@ -229,7 +234,7 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
-    if (deadAttemptsForTask(id, entries).length >= DEAD_ATTEMPT_LIMIT) continue;
+    if (deadDispatchCapStatus(id, entries).capped) continue; // card #1233: infra deaths don't count here either
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
   }
   p01Queue.sort((a, b) => (a.priority < b.priority ? -1 : a.priority > b.priority ? 1 :
@@ -326,7 +331,12 @@ function renderNarrative(plan) {
   if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
     lines.push('');
     lines.push('Needs you:');
-    for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.deaths} dead attempts, parked (won't retry)`);
+    for (const p of plan.toPark) {
+      // Card #1233: name the substantive/infra split so the digest doesn't
+      // imply the task is at fault when a park fired on the infra ceiling.
+      const breakdown = p.infraDeaths ? ` (${p.substantiveDeaths} substantive + ${p.infraDeaths} infra)` : '';
+      lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.deaths} dead attempts${breakdown}, parked (won't retry)`);
+    }
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }

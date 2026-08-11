@@ -291,8 +291,19 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     // stealing cmux focus (wakeFn) and spamming the digest for no gain. It
     // genuinely needs a human (or --force) now; surface that once per tick,
     // not retry it.
-    if (ledger.deadAttemptsForTask(task.id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
-      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs investigation or --force, not another automatic retry` });
+    // Card #1233: infra deaths (cmux terminal surface never rendered, card
+    // #1199's measured ~21% rate) are free retries here too — only
+    // substantive deaths (plus the separate, higher total ceiling for a
+    // truly wedged host) block redispatch. See dispatch-ledger.js's
+    // deadDispatchCapStatus. Message must name the real cause — hardcoding
+    // "died Nx" here would blame the task even when the block fired on the
+    // infra ceiling with mostly/all infra deaths (ship-check catch).
+    const capStatus = ledger.deadDispatchCapStatus(task.id, entries);
+    if (capStatus.capped) {
+      const cause = capStatus.substantiveCount >= ledger.DEAD_ATTEMPT_LIMIT
+        ? `died ${capStatus.substantiveCount} substantive time(s)`
+        : `died ${capStatus.total} time(s) total (mostly cmux infra, over the wedged-host ceiling)`;
+      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already ${cause} — needs investigation or --force, not another automatic retry` });
       continue;
     }
     if (dispatchBudget <= 0) {
@@ -394,11 +405,18 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
       reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
       continue;
     }
-    if (ledger.deadAttemptsForTask(id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
+    // Card #1233: same infra-vs-substantive split as reconcileTaskSessions
+    // above — infra deaths don't block a stall redispatch, and the message
+    // must say so rather than always blaming the task's death count.
+    const stallCapStatus = ledger.deadDispatchCapStatus(id, entries);
+    if (stallCapStatus.capped) {
       // Marker stamped: this verdict is stable, so surface it once per stall,
       // not every 5-minute tick.
       appendLedgerFn({ event: STALL_EVENT, taskId: id });
-      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs a human look, not another automatic retry` });
+      const cause = stallCapStatus.substantiveCount >= ledger.DEAD_ATTEMPT_LIMIT
+        ? `died ${stallCapStatus.substantiveCount} substantive time(s)`
+        : `died ${stallCapStatus.total} time(s) total (mostly cmux infra, over the wedged-host ceiling)`;
+      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already ${cause} — needs a human look, not another automatic retry` });
       continue;
     }
     if (dispatchBudget <= 0) {

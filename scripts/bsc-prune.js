@@ -434,8 +434,13 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
   const guarded = [];
   const revivable = [];
   for (const r of revive) {
-    const priorDeaths = dispatchLedger.deadAttemptsForTask(r.taskId, freshEntries);
-    (priorDeaths.length >= dispatchLedger.DEAD_ATTEMPT_LIMIT ? guarded : revivable).push({ ...r, deaths: priorDeaths.length });
+    // Card #1233: only SUBSTANTIVE deaths count toward the guard — infra
+    // deaths (cmux terminal surface never rendered, card #1199's measured
+    // ~21% rate) are free retries, with a separate higher ceiling on the
+    // total so a truly wedged host still stops. See dispatch-ledger.js's
+    // deadDispatchCapStatus.
+    const status = dispatchLedger.deadDispatchCapStatus(r.taskId, freshEntries);
+    (status.capped ? guarded : revivable).push({ ...r, deaths: status.total });
   }
   const toRevive = revivable.slice(0, REVIVE_CAP_PER_TICK);
   const deferred = revivable.slice(REVIVE_CAP_PER_TICK);

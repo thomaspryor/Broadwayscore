@@ -114,6 +114,63 @@ function deadAttemptsForTask(taskId, entries) {
   return entries.filter(e => isDeadlikeEvent(e.event) && String(e.taskId) === String(taskId));
 }
 
+// Card #1233: single decision point for "has this task died enough to stop
+// auto-redispatching it" — six call sites (bsc-next.js's deadDispatchGuard;
+// dispatch-watchdog-core.js's toPark list and P0/P1 backlog gate; bsc-prune.js's
+// zombie-tab revival guard; bsc-reconcile.js's task-session and stalled-task
+// redispatch gates) each independently compared deadAttemptsForTask(...).length
+// against DEAD_ATTEMPT_LIMIT. Centralizing here means the infra/substantive
+// split below can never drift between callers — the exact failure this file's
+// own "one ledger, one guard" doctrine (see JOB_EVENTS below) exists to
+// prevent.
+//
+// Card #1199 measured the cmux dead-launch rate at ~21% over 7 days and found
+// it PURE INFRA: the workspace terminal surface never renders, so the
+// injected command never fires — nothing to do with the task. At that rate a
+// perfectly healthy task draws 2 such deaths ~4.5% of the time and used to get
+// permanently parked with a refusal blaming its scope.
+//
+// isInfraDeadEntry reuses OUTAGE_REASON_RE (below, detectLauncherOutage)
+// rather than a second regex with the same pattern — same signature, same
+// deliberate exclusion of 'wrapper exited' (that means the typed command DID
+// run and then failed: task-attributable, not launcher-attributable). Only
+// failedLaunchEntries() (above) ever writes that failureReason text;
+// deadBreadcrumbs() (bsc-prune's idle sweep) never sets failureReason at all,
+// so a shape-2 death — a launch that verified fine and only went idle later,
+// once real work may have happened — is always substantive by default.
+// (Referencing OUTAGE_REASON_RE here before its declaration below is safe:
+// same lazy-reference pattern isDeadlikeEvent already uses for JOB_EVENTS —
+// this function only reads it when CALLED, by which point the module has
+// finished loading.)
+function isInfraDeadEntry(entry) {
+  return Boolean(entry) && entry.event === 'dead'
+    && OUTAGE_REASON_RE.test(String(entry.failureReason || ''));
+}
+
+// A separate, higher ceiling on TOTAL deaths (infra + substantive) so a
+// genuinely wedged host — cmux itself actually down, not just flaky — still
+// stops eventually instead of retrying forever. Even at the measured ~21%
+// infra rate, a healthy task accumulating INFRA_DEAD_ATTEMPT_LIMIT infra
+// deaths in a row without ever completing is vanishingly unlikely by chance
+// (0.21^8 ≈ 4e-6) — that many is the launcher, not luck.
+const INFRA_DEAD_ATTEMPT_LIMIT = 8;
+
+// The single call every dispatch-cap enforcement point should make. `capped`
+// is true when either ceiling above is met; substantiveCount/infraCount let
+// callers write a refusal message that blames the right thing.
+function deadDispatchCapStatus(taskId, entries) {
+  const all = deadAttemptsForTask(taskId, entries);
+  const infraCount = all.filter(isInfraDeadEntry).length;
+  const substantiveCount = all.length - infraCount;
+  return {
+    entries: all,
+    total: all.length,
+    infraCount,
+    substantiveCount,
+    capped: substantiveCount >= DEAD_ATTEMPT_LIMIT || all.length >= INFRA_DEAD_ATTEMPT_LIMIT,
+  };
+}
+
 // Events that represent one dispatch ATTEMPT for a task, across both the
 // cmux-tab path (bsc-next.js's 'launch'/'dead') and the --headless path
 // (bsc-runner.js's job-* vocabulary). Other ledger events ('prune',
@@ -769,9 +826,9 @@ function followRetryChain(entries, taskId, firstJobId) {
 }
 
 module.exports = {
-  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
+  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
-  appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
+  appendEntry, readEntries, deadAttemptsForTask, isInfraDeadEntry, deadDispatchCapStatus, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
