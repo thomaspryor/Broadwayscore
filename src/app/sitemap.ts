@@ -271,15 +271,25 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
         changeFrequency: 'weekly' as const,
         priority: 0.85,
       },
-      ...getAllPredictionSeasons().map(s => {
-        const isCurrent = s.label === getTonySeasonWindow().label;
-        return {
-          url: `${BASE_URL}/tony-awards/predictions/${s.label}`,
-          lastModified: isCurrent ? ctx.latestDate : ctx.showsDate,
-          changeFrequency: isCurrent ? 'weekly' as const : 'monthly' as const,
-          priority: isCurrent ? 0.85 : 0.7,
-        };
-      }),
+      // Skip the current season before nominations: that page sets robots noindex
+      // (it has no predictions yet), and submitting a noindex URL in the sitemap
+      // produces a "Submitted URL marked noindex" error in Search Console and slows
+      // the de-indexing we actually want. It re-enters the sitemap automatically the
+      // moment nominations land. See tony-nominees-premature, 2026-08-11.
+      ...getAllPredictionSeasons()
+        .filter(s => {
+          const isCurrent = s.label === getTonySeasonWindow().label;
+          return !isCurrent || hasNominationsBeenAnnounced(s);
+        })
+        .map(s => {
+          const isCurrent = s.label === getTonySeasonWindow().label;
+          return {
+            url: `${BASE_URL}/tony-awards/predictions/${s.label}`,
+            lastModified: isCurrent ? ctx.latestDate : ctx.showsDate,
+            changeFrequency: isCurrent ? 'weekly' as const : 'monthly' as const,
+            priority: isCurrent ? 0.85 : 0.7,
+          };
+        }),
     ] : []),
     ...(featureFlags.tonyPeople ? [{
       url: `${BASE_URL}/tony-awards/people`,
