@@ -136,6 +136,14 @@ on:
       # path-listed so a solo edit triggers CI.
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      # Shared host-suffix source of truth: which dot-label of a hostname is the
+      # outlet identity. provisionalOutletIdFromHost (registration),
+      # normalizeHostSlug (domain-move detection) and registrableHost (review-gap
+      # audit) must agree, or an outlet registers under one slug while another
+      # stage reasons about a different one and a real move is never recognized.
+      # All three forked these lists and had already drifted.
+      - 'scripts/lib/host-suffix-lists.js'
+      - 'scripts/lib/host-suffix-lists.test.mjs'
       # reviews.json corpus non-determinism (task #653): extract-dtli-reviews.js
       # raw-wrote over already-flagged review files, so ~155 excluded historical
       # DTLI excerpts re-entered reviews.json on every review-refresh and were
@@ -1054,6 +1062,8 @@ on:
       - 'scripts/lib/ingest-skip-classify.test.mjs'
       - 'scripts/lib/silent-exclusion-detectors.js'
       - 'scripts/lib/silent-exclusion-detectors.test.mjs'
+      - 'scripts/lib/host-suffix-lists.js'
+      - 'scripts/lib/host-suffix-lists.test.mjs'
       - 'scripts/lib/newsletter-preflight.js'
       - 'scripts/lib/newsletter-preflight.test.mjs'
       - 'scripts/newsletter/pre-send-check.mjs'
