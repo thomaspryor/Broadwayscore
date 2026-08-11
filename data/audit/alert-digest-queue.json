@@ -11,17 +11,6 @@
     "queuedAt": "2026-08-10T13:50:53.428Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "1/148 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAvenue Q: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "queuedAt": "2026-08-10T15:54:08.040Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-08-10T16:34:20.653767+00:00",
     "title": "Feedback: 1 submission(s), all handled automatically",
     "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nTwo Strangers (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please correct Two Strangers (Carry a Cake Across New York)’s is from the Boston Flobe is the right paper but wrong critic, Don Aucion didn’t review it, Terry Byrne did.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/566",
@@ -75,5 +64,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-11T07:58:36.504Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/148 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nJust in Time: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-11T15:46:03.958Z"
   }
 ]

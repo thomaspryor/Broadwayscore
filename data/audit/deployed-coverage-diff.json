@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-08-11T14:12:20.609Z",
+  "generatedAt": "2026-08-11T15:46:03.953Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 148,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 147,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "just-in-time-2025",
+      "title": "Just in Time",
+      "openingDate": "2025-04-26",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.48 vs local 79.31 (Δ0.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 31,
+      "deployedCount": 31
+    }
+  ]
 }
