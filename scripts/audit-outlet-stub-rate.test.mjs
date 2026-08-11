@@ -30,7 +30,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { collectReviewRecords, computeOutletStubRates, computeOutletInvalidRates } = require('./audit-outlet-stub-rate.js');
+const { collectReviewRecords, computeOutletStubRates, computeOutletInvalidRates, computeOutletTierRates } = require('./audit-outlet-stub-rate.js');
 
 const NOW = Date.parse('2026-08-11T12:00:00.000Z');
 const DAY = 24 * 60 * 60 * 1000;
@@ -39,8 +39,8 @@ function daysAgo(n) {
   return new Date(NOW - n * DAY).toISOString();
 }
 
-function rec(outletId, contentTier, textFetchedAt, outlet) {
-  return { outletId, outlet: outlet || null, contentTier, textFetchedAt };
+function rec(outletId, contentTier, textFetchedAt, outlet, contentTierReason) {
+  return { outletId, outlet: outlet || null, contentTier, textFetchedAt, contentTierReason: contentTierReason || null };
 }
 
 // ── computeOutletStubRates: happy path ──────────────────────────────────
@@ -469,4 +469,92 @@ test('invalid: collectReviewRecords + computeOutletInvalidRates walk a real revi
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+});
+
+// ── computeOutletInvalidRates (card #1266): excludes wrongProduction/
+// wrongShow-reasoned records so this extractor-health check doesn't conflate
+// with the unrelated wrongProduction FP sweep (tasks #24/#243) ────────────
+
+test('invalid: an outlet whose recent invalid spike is 100% wrongProduction-reasoned is NOT flagged', () => {
+  const records = [
+    // All 4 recent "invalid" records are the wrongProduction/wrongShow gate,
+    // not a broken extractor — real article text, wrong show matched.
+    rec('cross-market-outlet', 'invalid', daysAgo(1), null, 'Wrong production'),
+    rec('cross-market-outlet', 'invalid', daysAgo(2), null, 'Wrong production'),
+    rec('cross-market-outlet', 'invalid', daysAgo(3), null, 'Wrong show'),
+    rec('cross-market-outlet', 'invalid', daysAgo(4), null, 'Wrong show'),
+    rec('cross-market-outlet', 'complete', daysAgo(10)),
+    rec('cross-market-outlet', 'complete', daysAgo(60)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, []);
+  const o = outlets.find((x) => x.outletId === 'cross-market-outlet');
+  // The wrongProduction/wrongShow records are excluded from the pool
+  // entirely, not just uncounted as invalid — total shrinks accordingly.
+  assert.equal(o.total, 2);
+  assert.equal(o.recentTotal, 1); // daysAgo(10) is within the 30-day window
+  assert.equal(o.invalidCount, 0);
+  assert.equal(o.flagged, false);
+});
+
+test('invalid: a genuine extractor-failure spike is still flagged when a wrongProduction spike coexists at the same outlet', () => {
+  const records = [
+    // Genuine broken-extractor signature: 3 recent invalid with a real
+    // extraction-failure reason.
+    rec('mixed-outlet', 'invalid', daysAgo(1), null, 'Garbage content: Cookie consent/GDPR banner'),
+    rec('mixed-outlet', 'invalid', daysAgo(2), null, 'Garbage content: Cookie consent/GDPR banner'),
+    rec('mixed-outlet', 'invalid', daysAgo(3), null, 'Garbage content: Cookie consent/GDPR banner'),
+    // Plus a batch of wrongProduction noise that must not dilute or hide the signal.
+    rec('mixed-outlet', 'invalid', daysAgo(1), null, 'Wrong production'),
+    rec('mixed-outlet', 'invalid', daysAgo(2), null, 'Wrong production'),
+    rec('mixed-outlet', 'complete', daysAgo(60)),
+    rec('mixed-outlet', 'complete', daysAgo(90)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, ['mixed-outlet']);
+  const o = outlets.find((x) => x.outletId === 'mixed-outlet');
+  assert.equal(o.recentTotal, 3);
+  assert.equal(o.recentInvalidCount, 3);
+});
+
+test('invalid: wrongProduction exclusion can be disabled via opts.excludeTierReasons for callers that want the raw rate', () => {
+  const records = [
+    rec('cross-market-outlet', 'invalid', daysAgo(1), null, 'Wrong production'),
+    rec('cross-market-outlet', 'invalid', daysAgo(2), null, 'Wrong production'),
+    rec('cross-market-outlet', 'invalid', daysAgo(3), null, 'Wrong show'),
+    rec('cross-market-outlet', 'complete', daysAgo(10)),
+  ];
+  const excluded = computeOutletInvalidRates(records, { nowMs: NOW });
+  const included = computeOutletInvalidRates(records, { nowMs: NOW, excludeTierReasons: [] });
+  assert.deepEqual(excluded.flaggedOutletIds, []);
+  assert.deepEqual(included.flaggedOutletIds, ['cross-market-outlet']);
+});
+
+test('invalid: computeOutletStubRates is unaffected by the wrongProduction exclusion (stub tier never carries those reasons)', () => {
+  const records = [
+    rec('stub-outlet', 'stub', daysAgo(1), null, 'Wrong production'), // synthetic; stub-tier never actually gets this reason
+    rec('stub-outlet', 'stub', daysAgo(2), null, 'Wrong production'),
+    rec('stub-outlet', 'stub', daysAgo(3), null, 'Wrong production'),
+    rec('stub-outlet', 'complete', daysAgo(10)),
+  ];
+  const { flaggedOutletIds } = computeOutletStubRates(records, { nowMs: NOW });
+  // computeOutletStubRates has no excludeTierReasons default — it still flags.
+  assert.deepEqual(flaggedOutletIds, ['stub-outlet']);
+});
+
+test('computeOutletTierRates: excludeTierReasons removes matching records from total/recent/baseline, not just the tier count', () => {
+  const records = [
+    rec('outlet-x', 'invalid', daysAgo(1), null, 'Wrong production'),
+    rec('outlet-x', 'complete', daysAgo(2)),
+    rec('outlet-x', 'complete', daysAgo(60)),
+  ];
+  const { outlets } = computeOutletTierRates(records, {
+    nowMs: NOW,
+    tier: 'invalid',
+    excludeTierReasons: ['Wrong production'],
+  });
+  const o = outlets.find((x) => x.outletId === 'outlet-x');
+  assert.equal(o.total, 2);
+  assert.equal(o.recentTotal, 1);
+  assert.equal(o.baselineTotal, 1);
 });
