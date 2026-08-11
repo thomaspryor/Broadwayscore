@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-11T02:58:42.803Z",
+  "generatedAt": "2026-08-11T05:11:59.987Z",
   "windowDays": 1095,
-  "targets": 42,
-  "auditedThisRun": 13,
-  "carriedForward": 200,
+  "targets": 57,
+  "auditedThisRun": 39,
+  "carriedForward": 174,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 163,
-    "totalMissing": 1048,
+    "totalMissing": 1046,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1071,
+    "totalFlaggedMisses": 1072,
     "totalRecoverable": 28,
     "totalRecovered": 5
   },
@@ -1622,9 +1622,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 316,
+        "count": 320,
         "byReason": {
-          "aggregator-internal-nav": 220,
+          "aggregator-internal-nav": 224,
           "not-http-url": 78,
           "non-review-host": 15,
           "non-review-path": 3
@@ -1703,7 +1703,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -3952,7 +3952,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209183/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~183892/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4022,7 +4022,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-10T12:47:34.277Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
@@ -4169,7 +4169,7 @@
       ],
       "dirFiles": 58,
       "dirClean": 30,
-      "inReviewsJson": 31,
+      "inReviewsJson": 30,
       "missing": [],
       "dirOnly": [
         {
@@ -4182,6 +4182,10 @@
         },
         {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
           "count": 1
         },
         {
@@ -4348,7 +4352,15 @@
           "non-review-host": 19
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "host": "the-independent.com",
+          "matchedUrl": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+          "outletId": "independent",
+          "reason": "same outlet \"independent\" already held at independent.co.uk; the-independent.com is a registered alias of it"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -4571,7 +4583,7 @@
         "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "barcelona-west-end-2024",
@@ -8269,10 +8281,9 @@
       "candidatesRejected": {
         "count": 385,
         "byReason": {
-          "aggregator-internal-nav": 307,
+          "aggregator-internal-nav": 309,
           "not-http-url": 39,
           "non-review-host": 34,
-          "roundup-page": 2,
           "non-review-path": 3
         }
       },
@@ -8489,7 +8500,7 @@
         "liveCount": 12,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -10074,24 +10085,17 @@
         "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
         "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
         "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-        "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
         "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
-        "https://www.newyorktheatreguide.com/show/46802-cat-cohen-broad-strokes",
-        "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/"
+        "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+        "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
+        "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
+        "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720"
       ],
       "dirFiles": 23,
       "dirClean": 15,
       "inReviewsJson": 15,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "broadwaybaby.com",
-          "count": 1
-        },
-        {
-          "host": "nyctheatreaddict.com",
-          "count": 1
-        },
         {
           "host": "nypost.com",
           "count": 1
@@ -10121,24 +10125,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
-          "host": "vanityfair.com",
-          "knownOutletId": "vanityfair",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vanityfair--kase-wickman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
           "host": "show-score.com",
           "knownOutletId": null,
@@ -10152,6 +10138,24 @@
               "file": "show-score--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vanityfair--kase-wickman.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
             }
           ],
           "serpCensus": true
@@ -10199,7 +10203,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -10209,7 +10213,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -10219,7 +10223,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -10229,7 +10233,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -10239,23 +10243,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 411,
+        "count": 409,
         "byReason": {
-          "aggregator-internal-nav": 269,
+          "aggregator-internal-nav": 266,
           "not-http-url": 80,
-          "non-review-host": 53,
-          "roundup-page": 2,
+          "non-review-host": 54,
           "non-review-path": 3,
+          "roundup-page": 2,
           "venue-production-page": 2,
           "ticketing-reseller": 2
         }
@@ -10272,18 +10276,18 @@
             "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway"
           },
           {
-            "outletId": "vanityfair",
-            "outlet": "vanityfair",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
-          },
-          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes"
+          },
+          {
+            "outletId": "vanityfair",
+            "outlet": "vanityfair",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes"
           },
           {
             "outletId": "variety",
@@ -10356,10 +10360,16 @@
             "firstSeenAt": "2026-08-03T15:13:06.915Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/show/46802-cat-cohen-broad-strokes",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://nyctheatreaddict.com/cat-cohen-broad-strokes/",
+            "outletId": "nyctheatreaddict.com",
             "state": "live",
-            "firstSeenAt": "2026-08-07T15:52:55.659Z"
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/cat-cohen-broad-strokes/829720",
+            "outletId": "broadwaybaby.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
           },
           {
             "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
@@ -10369,18 +10379,18 @@
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
           },
           {
-            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
-            "outletId": "vanityfair",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T23:23:45.175Z"
-          },
-          {
             "url": "https://www.show-score.com/off-broadway-shows/cat-cohen-broad-strokes",
             "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-05T23:53:17.243Z"
+          },
+          {
+            "url": "https://www.vanityfair.com/story/cat-cohen-broad-strokes",
+            "outletId": "vanityfair",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T23:23:45.175Z"
           },
           {
             "url": "https://variety.com/2026/legit/news/cat-cohen-broad-strokes-off-broadway-debut-1236721465/",
@@ -10390,10 +10400,10 @@
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 14
+        "liveCount": 12,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -17157,7 +17167,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T02:58:42.803Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -21212,7 +21222,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "dukes-off-broadway-2026",
@@ -21247,7 +21257,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "elephant-shoes-regional-2026",
@@ -32658,10 +32668,9 @@
       "candidatesRejected": {
         "count": 670,
         "byReason": {
-          "aggregator-internal-nav": 524,
+          "aggregator-internal-nav": 526,
           "not-http-url": 84,
           "non-review-host": 54,
-          "roundup-page": 2,
           "non-review-path": 6
         }
       },
@@ -33050,7 +33059,7 @@
         "liveCount": 15,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "heathers-the-musical-off-west-end-2026",
@@ -35719,7 +35728,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
@@ -35877,7 +35886,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -35887,7 +35896,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -35920,9 +35929,9 @@
       "candidatesRejected": {
         "count": 37,
         "byReason": {
-          "non-review-host": 30,
+          "non-review-host": 29,
           "non-review-path": 3,
-          "ticketing-listing": 4
+          "ticketing-listing": 5
         }
       },
       "dedupedVariants": [],
@@ -36013,7 +36022,7 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
@@ -36288,12 +36297,11 @@
         "https://pagesonstages.com/2026/07/25/hungry-women/",
         "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
         "https://www.sohoplayhouse.com/see-a-show/hungry-women",
-        "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
         "https://www.newyorktheatreguide.com/show/47348-hungry-women",
         "https://www.melissamaney.com/hungry-women",
         "https://donyc.com/events/2026/8/9/hungry-women-tickets",
-        "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
-        "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
+        "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
+        "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/"
       ],
       "dirFiles": 14,
       "dirClean": 7,
@@ -36302,12 +36310,6 @@
         {
           "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets",
           "host": "donyc.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
-          "host": "theatricalindex.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -36333,24 +36335,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwaypodcastnetwork--broadway-podcast-network.json",
-              "flag": "clean",
-              "urlInDir": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
           "host": "twi-ny.com",
           "knownOutletId": "this-week-in-new-york",
@@ -36364,6 +36348,24 @@
               "file": "this-week-in-new-york--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+          "host": "iloveny.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "iloveny--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/"
             }
           ],
           "serpCensus": true
@@ -36423,23 +36425,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
         "count": 27,
         "byReason": {
-          "aggregator-internal-nav": 2,
+          "aggregator-internal-nav": 4,
           "non-review-host": 18,
-          "roundup-page": 4,
           "non-review-path": 1,
-          "venue-production-page": 2
+          "roundup-page": 3,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -36454,19 +36456,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209633/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
-        },
-        {
-          "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
-          "host": "theatricalindex.com",
-          "outletId": "theatricalindex",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209633/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~183965/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -36481,13 +36471,6 @@
             "url": "https://donyc.com/events/2026/8/9/hungry-women-tickets"
           },
           {
-            "outletId": "theatricalindex.com",
-            "outlet": "theatricalindex.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026"
-          },
-          {
             "outletId": "theatrely",
             "outlet": "theatrely",
             "critic": "Unknown",
@@ -36495,18 +36478,18 @@
             "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup"
           },
           {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46"
-          },
-          {
             "outletId": "this-week-in-new-york",
             "outlet": "this-week-in-new-york",
             "critic": "Unknown",
             "stars": null,
             "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/"
+          },
+          {
+            "outletId": "iloveny.com",
+            "outlet": "iloveny.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/"
           }
         ],
         "suppressedMissing": [],
@@ -36567,13 +36550,6 @@
             "firstSeenAt": "2026-08-10T14:22:04.271Z"
           },
           {
-            "url": "https://theatricalindex.com/show/hungry-women/hungry-women-soho-playhouse-2026",
-            "outletId": "theatricalindex.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T19:30:49.460Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
             "outletId": "theatrely",
             "state": "GAP",
@@ -36581,24 +36557,24 @@
             "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-05T23:53:17.243Z"
-          },
-          {
             "url": "https://twi-ny.com/2026/07/25/hungry-women-soho-playhouse/",
             "outletId": "this-week-in-new-york",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-09T07:57:28.990Z"
+          },
+          {
+            "url": "https://www.iloveny.com/thebeat/post/julia-lester-to-star-in-hungry-women-off-broadway/",
+            "outletId": "iloveny.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
           }
         ],
         "liveCount": 7,
-        "candidateCount": 12
+        "candidateCount": 11
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "iceboy-regional-2026",
@@ -36633,7 +36609,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "im-almost-there-off-broadway-2026",
@@ -42786,9 +42762,9 @@
         "https://www.newyorktheatreguide.com/theatre-news/news/how-two-broadway-musicals-embrace-immersive-designs",
         "https://www.newyorktheatreguide.com/theatre-news/news/our-favorite-jonathan-groff-theatre-roles"
       ],
-      "dirFiles": 38,
+      "dirFiles": 39,
       "dirClean": 33,
-      "inReviewsJson": 32,
+      "inReviewsJson": 33,
       "missing": [],
       "dirOnly": [
         {
@@ -43041,7 +43017,7 @@
         "liveCount": 22,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -43327,7 +43303,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "la-llamada-off-broadway-2024",
@@ -43362,7 +43338,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "la-sonnambula-off-broadway-2025",
@@ -43723,7 +43699,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
@@ -45364,7 +45340,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -46529,9 +46505,9 @@
       "candidatesRejected": {
         "count": 407,
         "byReason": {
+          "aggregator-internal-nav": 304,
           "not-http-url": 65,
           "non-review-host": 35,
-          "aggregator-internal-nav": 304,
           "non-review-path": 3
         }
       },
@@ -46682,7 +46658,7 @@
         "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "masticate-off-broadway-2026",
@@ -47061,7 +47037,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209597/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~183935/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://www.today.com/video/darren-criss-and-helen-j-shen-perform-rainy-day-we-met-238706245710",
@@ -47073,7 +47049,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209597/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~183935/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -47289,7 +47265,7 @@
         "liveCount": 21,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
@@ -50711,7 +50687,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -52033,11 +52009,11 @@
       "candidatesRejected": {
         "count": 906,
         "byReason": {
-          "aggregator-internal-nav": 691,
+          "aggregator-internal-nav": 693,
           "not-http-url": 115,
           "non-review-host": 91,
-          "roundup-page": 3,
-          "non-review-path": 6
+          "non-review-path": 6,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -52803,7 +52779,7 @@
         "liveCount": 27,
         "candidateCount": 52
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -56721,12 +56697,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 377,
+        "count": 378,
         "byReason": {
-          "aggregator-internal-nav": 298,
+          "aggregator-internal-nav": 301,
           "not-http-url": 39,
           "non-review-host": 35,
-          "roundup-page": 2,
           "non-review-path": 3
         }
       },
@@ -56893,7 +56868,7 @@
         "liveCount": 5,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "operation-mincemeat-2025",
@@ -57040,10 +57015,9 @@
       "candidatesRejected": {
         "count": 405,
         "byReason": {
-          "aggregator-internal-nav": 306,
+          "aggregator-internal-nav": 308,
           "not-http-url": 53,
           "non-review-host": 41,
-          "roundup-page": 2,
           "non-review-path": 3
         }
       },
@@ -57226,7 +57200,7 @@
         "liveCount": 19,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
@@ -60761,7 +60735,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -60810,7 +60784,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "porgy-and-bess-off-broadway-2025",
@@ -62364,10 +62338,9 @@
       "candidatesRejected": {
         "count": 879,
         "byReason": {
-          "aggregator-internal-nav": 603,
+          "aggregator-internal-nav": 607,
           "not-http-url": 186,
           "non-review-host": 80,
-          "roundup-page": 4,
           "non-review-path": 6
         }
       },
@@ -62393,7 +62366,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~209554/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~183898/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -62621,7 +62594,7 @@
         "liveCount": 23,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "relics-west-end-2026",
@@ -63015,7 +62988,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
@@ -72569,10 +72542,9 @@
       "candidatesRejected": {
         "count": 774,
         "byReason": {
-          "aggregator-internal-nav": 602,
+          "aggregator-internal-nav": 604,
           "not-http-url": 92,
           "non-review-host": 72,
-          "roundup-page": 2,
           "non-review-path": 6
         }
       },
@@ -72969,7 +72941,7 @@
         "liveCount": 21,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -74971,9 +74943,9 @@
       "candidatesRejected": {
         "count": 319,
         "byReason": {
+          "aggregator-internal-nav": 223,
           "not-http-url": 74,
           "non-review-host": 19,
-          "aggregator-internal-nav": 223,
           "non-review-path": 3
         }
       },
@@ -75046,7 +75018,7 @@
         "liveCount": 5,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -78584,8 +78556,8 @@
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
-        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
+        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024"
       ],
       "aggregatorListedUrls": [
         "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
@@ -79244,12 +79216,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1841,
+        "count": 1840,
         "byReason": {
-          "aggregator-internal-nav": 1344,
+          "aggregator-internal-nav": 1347,
           "not-http-url": 336,
           "non-review-host": 142,
-          "roundup-page": 4,
           "non-review-path": 15
         }
       },
@@ -79272,12 +79243,12 @@
           "publishDate": "2025-04-24"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
-          "publishDate": "2023-10-24"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
           "publishDate": "2023-06-27"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
+          "publishDate": "2023-10-24"
         }
       ],
       "weIngestBlocked": [
@@ -79970,7 +79941,7 @@
         "liveCount": 25,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -81458,9 +81429,9 @@
       "candidatesRejected": {
         "count": 384,
         "byReason": {
+          "aggregator-internal-nav": 299,
           "not-http-url": 47,
           "non-review-host": 35,
-          "aggregator-internal-nav": 299,
           "non-review-path": 3
         }
       },
@@ -81727,7 +81698,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-10T12:47:34.277Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-karate-kid-the-musical-west-end-2026",
@@ -83864,11 +83835,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 119,
+        "count": 120,
         "byReason": {
+          "aggregator-internal-nav": 86,
           "not-http-url": 4,
           "non-review-host": 20,
-          "aggregator-internal-nav": 85,
           "roundup-page": 10
         }
       },
@@ -84054,7 +84025,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-outsiders-2024",
@@ -84848,7 +84819,7 @@
         "liveCount": 25,
         "candidateCount": 40
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-pass-off-broadway-2026",
@@ -86154,7 +86125,8 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TJ1Z5F",
         "https://www.talkinbroadway.com/page/ob/07_27_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/",
-        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc"
+        "https://www.wsj.com/articles/the-saviors-review-faith-and-friendship-at-the-atlantic-theater-company-8a81bbbc",
+        "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/"
       ],
       "dirFiles": 30,
       "dirClean": 20,
@@ -86188,10 +86160,6 @@
         {
           "host": "theaterpizzazz.com",
           "count": 1
-        },
-        {
-          "host": "theatrereviews.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -86210,7 +86178,8 @@
               "flag": "wrongShow",
               "urlInDir": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/"
             }
-          ]
+          ],
+          "serpCensus": true
         },
         {
           "url": "https://www.theatermania.com/news/review-the-saviors-bubba-weilers-heartbreaking-drama-of-truth-and-lies_1847170/",
@@ -86291,8 +86260,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -86312,24 +86281,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 419,
+        "count": 418,
         "byReason": {
-          "aggregator-internal-nav": 271,
+          "aggregator-internal-nav": 275,
           "not-http-url": 81,
-          "non-review-host": 60,
-          "roundup-page": 3,
+          "non-review-host": 56,
           "non-review-path": 3,
-          "ticketing-reseller": 1
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -86433,6 +86401,12 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           },
           {
+            "url": "https://www.theatrereviews.com/off-broadway-review-the-saviors-at-the-atlantic-theatre-company-extended-through-saturday-august-15-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/07/27/the-saviors-you-gotta-have-faith/",
             "outletId": "nysr",
             "state": "GAP",
@@ -86454,10 +86428,10 @@
             "firstSeenAt": "2026-08-03T14:29:48.314Z"
           }
         ],
-        "liveCount": 12,
-        "candidateCount": 15
+        "liveCount": 13,
+        "candidateCount": 16
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-smile-of-her-off-west-end-2026",
@@ -86671,7 +86645,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T14:22:04.271Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
@@ -87143,11 +87117,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 400,
+        "count": 399,
         "byReason": {
+          "aggregator-internal-nav": 266,
           "not-http-url": 93,
           "non-review-host": 37,
-          "aggregator-internal-nav": 267,
           "non-review-path": 3
         }
       },
@@ -87251,7 +87225,7 @@
         "liveCount": 14,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
@@ -87265,33 +87239,21 @@
         "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
         "https://www.broadwayworld.com/translate/nl/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
         "https://www.broadwayworld.com/translate/sv/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
-        "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
+        "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
         "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
-        "https://www.toddlerldn.com/events/theatre-on-kew-the-wind-in-the-willows-2406202461",
         "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
         "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
         "https://discovernearme.co.uk/things-to-do/kew/the-wind-in-the-willows-evt-theatreonkew-658b3ef53a607efb",
-        "https://theatrematters.com.au/Reviews/the-wind-in-the-willows/"
+        "https://theatrematters.com.au/Reviews/the-wind-in-the-willows/",
+        "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words"
       ],
       "dirFiles": 5,
       "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [
         {
-          "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
-          "host": "ticketline.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
           "host": "shakespeareaustralia.com.au",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.toddlerldn.com/events/theatre-on-kew-the-wind-in-the-willows-2406202461",
-          "host": "toddlerldn.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -87312,10 +87274,34 @@
           "host": "theatrematters.com.au",
           "knownOutletId": null,
           "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://discovernearme.co.uk/things-to-do/kew/the-wind-in-the-willows-evt-theatreonkew-658b3ef53a607efb",
           "host": "discovernearme.co.uk",
@@ -87394,7 +87380,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -87405,7 +87391,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -87415,7 +87401,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -87425,26 +87411,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 20,
         "byReason": {
-          "non-review-host": 15,
+          "non-review-host": 17,
           "ticketing-listing": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
-          "host": "ticketline.co.uk",
-          "outletId": "ticketline",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210349/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
-        },
         {
           "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
           "host": "shakespeareaustralia.com.au",
@@ -87455,19 +87429,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210349/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
-        },
-        {
-          "url": "https://www.toddlerldn.com/events/theatre-on-kew-the-wind-in-the-willows-2406202461",
-          "host": "toddlerldn.com",
-          "outletId": "toddlerldn",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210349/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~184006/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
@@ -87479,7 +87441,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210349/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~184006/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
@@ -87491,39 +87453,43 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210350/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
-        }
-      ],
-      "ingestSkippedByCap": [
+          "reason": "⚠️  Scrapingdog pace (~184006/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
+        },
         {
           "url": "https://theatrematters.com.au/Reviews/the-wind-in-the-willows/",
           "host": "theatrematters.com.au",
-          "outletId": "theatrematters"
+          "outletId": "theatrematters",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "ticketline.co.uk",
-            "outlet": "ticketline.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1"
-          },
           {
             "outletId": "shakespeareaustralia.com.au",
             "outlet": "shakespeareaustralia.com.au",
             "critic": "Unknown",
             "stars": null,
             "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew"
-          },
-          {
-            "outletId": "toddlerldn.com",
-            "outlet": "toddlerldn.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.toddlerldn.com/events/theatre-on-kew-the-wind-in-the-willows-2406202461"
           },
           {
             "outletId": "timeandleisure.co.uk",
@@ -87545,6 +87511,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatrematters.com.au/Reviews/the-wind-in-the-willows/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8"
           },
           {
             "outletId": "discovernearme.co.uk",
@@ -87581,25 +87561,11 @@
             "firstSeenAt": "2026-08-09T23:23:45.175Z"
           },
           {
-            "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
-            "outletId": "ticketline.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T06:43:20.310Z"
-          },
-          {
             "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
             "outletId": "shakespeareaustralia.com.au",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T15:26:22.639Z"
-          },
-          {
-            "url": "https://www.toddlerldn.com/events/theatre-on-kew-the-wind-in-the-willows-2406202461",
-            "outletId": "toddlerldn.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T15:53:58.444Z"
           },
           {
             "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
@@ -87623,6 +87589,20 @@
             "firstSeenAt": "2026-08-09T23:23:45.175Z"
           },
           {
+            "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-11T05:11:59.987Z"
+          },
+          {
             "url": "https://discovernearme.co.uk/things-to-do/kew/the-wind-in-the-willows-evt-theatreonkew-658b3ef53a607efb",
             "outletId": "discovernearme.co.uk",
             "state": "GAP",
@@ -87633,7 +87613,7 @@
         "liveCount": 2,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-10T15:53:58.444Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "three-houses-off-broadway-2026",
@@ -94660,9 +94640,9 @@
         "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
       ],
-      "dirFiles": 49,
-      "dirClean": 29,
-      "inReviewsJson": 27,
+      "dirFiles": 50,
+      "dirClean": 30,
+      "inReviewsJson": 28,
       "missing": [
         {
           "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
@@ -94673,6 +94653,10 @@
       "dirOnly": [
         {
           "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
           "count": 1
         },
         {
@@ -94744,9 +94728,9 @@
       "candidatesRejected": {
         "count": 664,
         "byReason": {
+          "aggregator-internal-nav": 519,
           "not-http-url": 86,
           "non-review-host": 53,
-          "aggregator-internal-nav": 519,
           "non-review-path": 6
         }
       },
@@ -94912,7 +94896,7 @@
         "liveCount": 16,
         "candidateCount": 18
       },
-      "computedAt": "2026-08-10T12:47:34.277Z"
+      "computedAt": "2026-08-11T05:11:59.987Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
