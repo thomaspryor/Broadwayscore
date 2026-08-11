@@ -178,8 +178,22 @@ async function main() {
     process.exit(1);
   }
 
-  const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
-  const showsRaw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  // Fall back to the local core-data clone (~/broadway-scorecard-data) the
+  // way extract-aggregator-candidates.js's loadExistingShows() does — a
+  // worktree session without the private data repo checked out under data/
+  // otherwise can't run this script at all (found while verifying #1246).
+  const showsPathCandidates = [
+    path.join(__dirname, '..', 'data', 'shows.json'),
+    process.env.HOME ? path.join(process.env.HOME, 'broadway-scorecard-data', 'shows.json') : null,
+  ].filter(Boolean);
+  let showsRaw = null;
+  for (const p of showsPathCandidates) {
+    try { showsRaw = JSON.parse(fs.readFileSync(p, 'utf8')); break; } catch { /* try next */ }
+  }
+  if (!showsRaw) {
+    console.log('shows.json not found locally (checked data/shows.json and ~/broadway-scorecard-data/shows.json).');
+    process.exit(1);
+  }
   const shows = showsRaw.shows || showsRaw;
 
   const slug = roundupUrl.split('/').filter(Boolean).pop() || '';
