@@ -2221,6 +2221,16 @@ on:
       # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/cost-report-parser.js'
       - 'scripts/lib/cost-report-parser.test.mjs'
+      # TR wrong-show guard corroboration (card #1227): the title-mention-count
+      # and film/TV guards in extract-theatre-record.js false-rejected 6 real
+      # T1/T2 Barcelona reviews on a common-word single-word title. Predicates
+      # extracted to a lib file per rule 15. Colocated *.test.mjs runs in the
+      # scripts/lib/*.test.mjs glob; path-listed (with extract-theatre-record.js,
+      # which has no other CI trigger) so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/tr-wrongshow-guard.js'
+      - 'scripts/lib/tr-wrongshow-guard.test.mjs'
+      - 'scripts/extract-theatre-record.js'
   pull_request:
     branches: [main]
   schedule:
