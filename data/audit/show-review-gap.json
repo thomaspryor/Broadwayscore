@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-10T23:29:57.355Z",
+  "generatedAt": "2026-08-11T00:22:10.633Z",
   "windowDays": 1095,
-  "targets": 37,
-  "auditedThisRun": 23,
-  "carriedForward": 188,
+  "targets": 17,
+  "auditedThisRun": 17,
+  "carriedForward": 196,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 162,
-    "totalMissing": 1042,
+    "withGap": 163,
+    "totalMissing": 1047,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1062,
+    "totalFlaggedMisses": 1066,
     "totalRecoverable": 26,
     "totalRecovered": 5
   },
@@ -4023,6 +4023,41 @@
         "candidateCount": 8
       },
       "computedAt": "2026-08-10T12:47:34.277Z"
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "openingDate": "2026-08-14",
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -16207,7 +16242,7 @@
         "liveCount": 8,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "dad-dont-read-this-off-broadway-2026",
@@ -16816,33 +16851,494 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
+      "aggregatorListedUrls": [
+        "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+        "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
+        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+        "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+        "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
+        "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+        "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+        "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+        "https://www.timeout.com/london/theatre/death-note-the-musical",
+        "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
+      ],
+      "dirFiles": 11,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+          "host": "stanservice.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+          "host": "rhombusrota.co.uk",
+          "knownOutletId": "rhombus-rota",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+          "host": "londonbornandbred.co.uk",
+          "knownOutletId": "londonbornandbred",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westendtheatre--julianna-barnaby.json",
+              "flag": "clean",
+              "urlInDir": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+          "host": "barbican.org.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "barbican--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-box-office--stuart-king.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/death-note-review"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 0,
+            "emptyParse": true,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Death Note: The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Death Note: The Musical\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Death Note: The Musical\" review barbican",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Death Note: The Musical Barbican Centre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 29,
+        "byReason": {
+          "non-review-host": 28,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+          "host": "stanservice.substack.com",
+          "outletId": "stanservice",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog pace (~182775/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+          "host": "rhombusrota.co.uk",
+          "outletId": "rhombus-rota",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "stanservice.substack.com",
+            "outlet": "stanservice.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
+          },
+          {
+            "outletId": "rhombus-rota",
+            "outlet": "rhombus-rota",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican"
+          },
+          {
+            "outletId": "londonbornandbred",
+            "outlet": "londonbornandbred",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/death-note-the-musical"
+          },
+          {
+            "outletId": "bestoftheatre.co.uk",
+            "outlet": "bestoftheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
+          },
+          {
+            "outletId": "barbican.org.uk",
+            "outlet": "barbican.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
+          },
+          {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
+            "outletId": "stanservice.substack.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
+            "outletId": "musical-theatre-review",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
+            "outletId": "rhombus-rota",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+            "outletId": "londontheatredirect",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/death-note-the-musical-our-review-of-the-concert-at-the-london-palladium",
+            "outletId": "londonbornandbred",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+            "outletId": "bestoftheatre.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
+            "outletId": "westendtheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
+            "outletId": "barbican.org.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
+            "outletId": "london-box-office",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 12
       },
-      "computedAt": "2026-08-10T21:29:36.683Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -39992,10 +40488,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1146,
+        "count": 1159,
         "byReason": {
           "non-review-host": 84,
-          "aggregator-internal-nav": 825,
+          "aggregator-internal-nav": 838,
           "not-http-url": 227,
           "non-review-path": 9,
           "unparseable-url": 1
@@ -40720,7 +41216,7 @@
         "liveCount": 1,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "joe-turners-come-and-gone-2026",
@@ -50351,10 +50847,10 @@
       "candidatesRejected": {
         "count": 120,
         "byReason": {
-          "roundup-page": 8,
           "non-review-host": 19,
-          "aggregator-internal-nav": 89,
-          "not-http-url": 4
+          "aggregator-internal-nav": 87,
+          "not-http-url": 4,
+          "roundup-page": 10
         }
       },
       "dedupedVariants": [],
@@ -50462,7 +50958,7 @@
         "liveCount": 5,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -55028,12 +55524,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 896,
+        "count": 905,
         "byReason": {
           "non-review-host": 91,
-          "aggregator-internal-nav": 685,
-          "not-http-url": 114,
-          "non-review-path": 6
+          "aggregator-internal-nav": 692,
+          "not-http-url": 115,
+          "non-review-path": 6,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [
@@ -55850,7 +56347,7 @@
         "liveCount": 24,
         "candidateCount": 54
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -59799,10 +60296,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 290,
+        "count": 294,
         "byReason": {
           "non-review-host": 15,
-          "aggregator-internal-nav": 221,
+          "aggregator-internal-nav": 225,
           "not-http-url": 51,
           "non-review-path": 3
         }
@@ -59964,7 +60461,7 @@
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "paranormal-activity-west-end-2025",
@@ -61358,12 +61855,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 467,
+        "count": 476,
         "byReason": {
           "non-review-host": 55,
-          "aggregator-internal-nav": 366,
+          "aggregator-internal-nav": 373,
           "not-http-url": 43,
-          "non-review-path": 3
+          "non-review-path": 3,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [
@@ -61579,7 +62077,7 @@
         "liveCount": 5,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "ragtime-2025",
@@ -67626,7 +68124,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~208212/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~182858/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -67724,7 +68222,7 @@
         "liveCount": 7,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
@@ -73620,23 +74118,24 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/tao-of-glass-review-soho-place",
-        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
         "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
-        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
+        "https://www.theguardian.com/stage/2026/jul/31/tao-of-glass-review-soho-place-theatre-london",
         "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
+        "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt",
         "https://www.allthatdazzles.co.uk/post/review-tao-of-glass-sohoplace",
         "https://www.timeout.com/london/theatre/tao-of-glass-review",
+        "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
         "https://www.london-unattached.com/tao-of-glass-soho-place/",
-        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
         "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
-        "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
         "https://liamodell.com/2026/07/31/tao-of-glass-review-soho-place-phelim-mcdermott-philip-glass/",
+        "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
+        "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
         "https://www.thenerve.news/p/review-theatre-tao-of-glass-soho-place-phelim-mcdermott-philip-glass-dorian-lynskey",
-        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
         "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
-        "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
         "https://playstosee.com/reviews/uk-reviews/tao-of-glass/",
+        "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
         "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
+        "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
         "https://www.standard.co.uk/culture/theatre/the-tao-of-glass-review-b1291929.html"
       ],
       "dirFiles": 44,
@@ -73648,19 +74147,9 @@
           "host": "thenerve.news",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-          "host": "totaltheatre.org.uk",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
         {
           "host": "ft.com",
           "count": 1
@@ -73687,10 +74176,6 @@
         },
         {
           "host": "theatreweekly.com",
-          "count": 1
-        },
-        {
-          "host": "theupcoming.co.uk",
           "count": 1
         },
         {
@@ -73736,24 +74221,6 @@
           "serpCensus": true
         },
         {
-          "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--helen-hawkins.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
@@ -73767,6 +74234,24 @@
               "file": "bachtrack--unknown.json",
               "flag": "emptyBody",
               "urlInDir": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--helen-hawkins.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
             }
           ],
           "serpCensus": true
@@ -73837,7 +74322,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -73847,7 +74332,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -73857,7 +74342,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -73895,19 +74380,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~208226/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
-        },
-        {
-          "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-          "host": "totaltheatre.org.uk",
-          "outletId": "totaltheatre",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "⚠️  Scrapingdog pace (~182875/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -73920,13 +74393,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thenerve.news/p/review-theatre-tao-of-glass-soho-place-phelim-mcdermott-philip-glass-dorian-lynskey"
-          },
-          {
-            "outletId": "totaltheatre.org.uk",
-            "outlet": "totaltheatre.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/"
           },
           {
             "outletId": "bachtrack",
@@ -73943,18 +74409,18 @@
             "url": "https://www.thetimes.com/culture/theatre-dance/article/phelim-mcdermott-interview-philip-glass-tao-theatre-soho-place-london-2wsd83jmt"
           },
           {
-            "outletId": "artsdesk",
-            "outlet": "artsdesk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
-          },
-          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
             "stars": null,
             "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell"
           }
         ],
         "suppressedMissing": [],
@@ -73990,14 +74456,14 @@
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
           {
-            "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
-            "outletId": "london-unattached.com",
+            "url": "https://www.theupcoming.co.uk/2026/07/31/tao-of-glass-at-soho-place-theatre-review/",
+            "outletId": "theupcoming.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-08-07T09:59:50.346Z"
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
-            "outletId": "britishtheatreguide.info",
+            "url": "https://www.london-unattached.com/tao-of-glass-soho-place/",
+            "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
@@ -74008,10 +74474,10 @@
             "firstSeenAt": "2026-08-09T22:22:02.507Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.britishtheatreguide.info/reviews/tao-of-glass-sohoplace-thea-25776",
+            "outletId": "britishtheatreguide.info",
             "state": "live",
-            "firstSeenAt": "2026-08-04T11:48:45.134Z"
+            "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/tao-of-glass-soho-place-theatre-review",
@@ -74026,8 +74492,20 @@
             "firstSeenAt": "2026-08-07T09:59:50.346Z"
           },
           {
+            "url": "https://everything-theatre.co.uk/2026/07/review-tao-of-glass-sohoplace/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/tao-of-glass-review-sohoplace-london-phelim-mcdermott-philip-glass",
             "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T11:48:45.134Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/tao-of-glass-at-sohoplace-in-the-west-end-review_1728418/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T11:48:45.134Z"
           },
@@ -74045,13 +74523,6 @@
             "firstSeenAt": "2026-08-09T22:22:02.507Z"
           },
           {
-            "url": "https://totaltheatre.org.uk/philip-glass-phelim-mc-dermott-improbable-the-tao-of-glass/",
-            "outletId": "totaltheatre.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T11:06:44.430Z"
-          },
-          {
             "url": "https://bachtrack.com/review-tao-of-glass-mcdermott-improbable-sohoplace-london-july-2026",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -74066,24 +74537,24 @@
             "firstSeenAt": "2026-08-07T22:23:50.667Z"
           },
           {
-            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
-            "outletId": "artsdesk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T00:11:00.874Z"
-          },
-          {
             "url": "https://bachtrack.com/concert-event/tao-of-glass-sohoplace-25-july-2026/440735",
             "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-10T11:06:44.430Z"
+          },
+          {
+            "url": "http://theartsdesk.com/theatre/tao-glass-soho-place-review-crafty-storyteller-mesmerising-tale-tell",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T00:11:00.874Z"
           }
         ],
-        "liveCount": 13,
-        "candidateCount": 18
+        "liveCount": 15,
+        "candidateCount": 19
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "teeth-n-smiles-west-end-2026",
@@ -75934,7 +76405,7 @@
       ],
       "dirFiles": 53,
       "dirClean": 24,
-      "inReviewsJson": 27,
+      "inReviewsJson": 28,
       "missing": [
         {
           "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-devil-wears-prada-musical-chicago-review-20220808-y6nxcuksa5byvp25obrbonuiza-story.html",
@@ -76075,10 +76546,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 406,
+        "count": 404,
         "byReason": {
           "non-review-host": 34,
-          "aggregator-internal-nav": 304,
+          "aggregator-internal-nav": 302,
           "not-http-url": 65,
           "non-review-path": 3
         }
@@ -76244,7 +76715,7 @@
         "liveCount": 9,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -76894,9 +77365,9 @@
         "https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728",
         "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/",
         "https://makaylahoppe.com/2026/08/01/the-family-album/",
-        "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
-        "https://thewordsd.news/the-family-album/"
+        "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118",
+        "https://thewordsd.news/the-family-album/",
+        "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
       ],
       "dirFiles": 9,
       "dirClean": 4,
@@ -76909,8 +77380,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-          "host": "lajolla.ca",
+          "url": "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118",
+          "host": "viagogo.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -76922,24 +77393,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
-          "host": "tickpick.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickpick--tickpick.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://thewordsd.news/the-family-album/",
           "host": "thewordsd.news",
@@ -76954,6 +77407,24 @@
               "file": "thewordsd--cesar-a.json",
               "flag": "clean",
               "urlInDir": "https://thewordsd.news/the-family-album/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+          "host": "tickpick.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tickpick--tickpick.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
             }
           ],
           "serpCensus": true
@@ -77013,7 +77484,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -77023,7 +77494,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -77035,11 +77506,11 @@
       "candidatesRejected": {
         "count": 43,
         "byReason": {
-          "non-review-host": 32,
-          "aggregator-internal-nav": 7,
-          "venue-production-page": 1,
-          "non-review-path": 2,
-          "ticketing-reseller": 1
+          "non-review-host": 34,
+          "aggregator-internal-nav": 5,
+          "non-review-path": 1,
+          "ticketing-reseller": 2,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -77054,19 +77525,19 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~208189/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~182830/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
-          "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-          "host": "lajolla.ca",
-          "outletId": "lajolla",
+          "url": "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118",
+          "host": "viagogo.co.uk",
+          "outletId": "viagogo",
           "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~208191/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~182831/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -77081,18 +77552,11 @@
             "url": "https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/"
           },
           {
-            "outletId": "lajolla.ca",
-            "outlet": "lajolla.ca",
+            "outletId": "viagogo.co.uk",
+            "outlet": "viagogo.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/"
-          },
-          {
-            "outletId": "tickpick.com",
-            "outlet": "tickpick.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
+            "url": "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118"
           },
           {
             "outletId": "thewordsd.news",
@@ -77100,6 +77564,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://thewordsd.news/the-family-album/"
+          },
+          {
+            "outletId": "tickpick.com",
+            "outlet": "tickpick.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/"
           }
         ],
         "suppressedMissing": [],
@@ -77130,18 +77601,11 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "https://lajolla.ca/events/the-family-album-world-premiere-musical/",
-            "outletId": "lajolla.ca",
+            "url": "https://www.viagogo.co.uk/Theatre-Tickets/Cast-Recordings/Musicals/The-Family-Album-Musical-Tickets/E-161290118",
+            "outletId": "viagogo.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-10T11:06:44.430Z"
-          },
-          {
-            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
-            "outletId": "tickpick.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T21:25:48.062Z"
+            "firstSeenAt": "2026-08-11T00:22:10.633Z"
           },
           {
             "url": "https://thewordsd.news/the-family-album/",
@@ -77149,12 +77613,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-07T08:57:29.253Z"
+          },
+          {
+            "url": "https://www.tickpick.com/buy-the-family-album-tickets-sheila-hughes-potiker-theatre-at-mandell-weiss-center-8-7-26-7pm/7860272/",
+            "outletId": "tickpick.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-09T21:25:48.062Z"
           }
         ],
         "liveCount": 3,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "the-fear-of-13-2026",
@@ -78978,7 +79449,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "the-guilty-west-end-2026",
@@ -79014,6 +79485,41 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-10T15:53:58.444Z"
+    },
+    {
+      "showId": "the-house-of-the-negro-insane-off-broadway-2026",
+      "title": "The House of the Negro Insane",
+      "openingDate": "2026-08-14",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
@@ -85430,7 +85936,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -86954,13 +87460,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 760,
+        "count": 771,
         "byReason": {
-          "roundup-page": 8,
-          "non-review-host": 52,
-          "aggregator-internal-nav": 527,
-          "not-http-url": 167,
-          "non-review-path": 6
+          "non-review-host": 53,
+          "aggregator-internal-nav": 533,
+          "not-http-url": 169,
+          "non-review-path": 6,
+          "roundup-page": 10
         }
       },
       "dedupedVariants": [],
@@ -86985,7 +87491,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~208177/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~182818/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -87250,7 +87756,7 @@
         "liveCount": 19,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -90576,28 +91082,22 @@
       "openingDate": "2026-07-22",
       "status": "open",
       "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-trainspotting-live-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.nytimes.com/2018/07/15/theater/trainspotting-live-review.html",
-        "http://www.timeout.com/newyork/theater/trainspotting-live",
-        "http://www.thewrap.com/trainspotting-theater-review-needles-real-stuff-not/",
         "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
         "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
         "https://www.thereviewshub.com/trainspotting-the-musical-theatre-royal-haymarket-london/",
         "https://www.allthatdazzles.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket",
         "https://theatreandtonic.co.uk/blog/trainspotting-the-musical-at-theatre-royal-haymarket-review",
+        "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
         "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
         "https://www.harrytheatrelife.co.uk/post/review-trainspotting-the-musical-theatre-royal-haymarket-london",
-        "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
         "https://www.telegraph.co.uk/theatre/what-to-see/irvine-welsh-cast-proper-old-school-musical-trainspotting/",
         "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
-        "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
         "https://rolandcat.substack.com/p/review-trainspotting-theatre-royal",
         "https://www.westendbestfriend.co.uk/news/review-trainspotting-the-musical-theatre-royal-haymarket",
-        "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
         "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
+        "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
         "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
         "https://theatreweekly.com/review-trainspotting-the-musical-at-theatre-royal-haymarket/",
         "https://www.thestage.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
@@ -90608,15 +91108,8 @@
       ],
       "dirFiles": 57,
       "dirClean": 33,
-      "inReviewsJson": 33,
+      "inReviewsJson": 34,
       "missing": [
-        {
-          "url": "http://www.thewrap.com/trainspotting-theater-review-needles-real-stuff-not/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
           "host": "theatre.reviews",
@@ -90638,11 +91131,19 @@
           "count": 1
         },
         {
+          "host": "jonathanbaz.com",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
         {
           "host": "londontheatredirect.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
           "count": 1
         },
         {
@@ -90774,7 +91275,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -90785,7 +91286,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -90801,33 +91302,17 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 17,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 115,
+        "count": 18,
         "byReason": {
-          "non-review-host": 35,
-          "aggregator-internal-nav": 74,
-          "not-http-url": 4,
-          "ticketing-listing": 2
+          "non-review-host": 17,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-trainspotting-live-off-broadway",
-          "publishDate": "2018-07-16"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.thewrap.com/trainspotting-theater-review-needles-real-stuff-not/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
@@ -90847,13 +91332,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.thewrap.com/trainspotting-theater-review-needles-real-stuff-not/"
-          },
-          {
             "outletId": "theatre.reviews",
             "outlet": "theatre.reviews",
             "critic": "Unknown",
@@ -90870,18 +91348,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "http://www.nytimes.com/2018/07/15/theater/trainspotting-live-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T21:25:48.062Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/trainspotting-live",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-09T21:25:48.062Z"
-          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/trainspotting-the-musical-review-theatre-royal-haymarket",
             "outletId": "londontheatre.co.uk",
@@ -90907,6 +91373,12 @@
             "firstSeenAt": "2026-08-07T08:57:29.253Z"
           },
           {
+            "url": "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
+            "outletId": "voicemag.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T12:40:15.327Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/jul/23/trainspotting-the-musical-review-forgettable-songs-make-this-a-bad-trip",
             "outletId": "theguardian.com",
             "state": "live",
@@ -90919,22 +91391,10 @@
             "firstSeenAt": "2026-08-09T21:25:48.062Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/16727/theatre-review-trainspotting-the-musical",
-            "outletId": "voicemag.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T12:40:15.327Z"
-          },
-          {
             "url": "https://musicaltheatrereview.com/trainspotting-the-musical-theatre-royal-haymarket/",
             "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-08-09T21:25:48.062Z"
-          },
-          {
-            "url": "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://rolandcat.substack.com/p/review-trainspotting-theatre-royal",
@@ -90949,16 +91409,16 @@
             "firstSeenAt": "2026-08-08T23:11:37.077Z"
           },
           {
-            "url": "http://www.jonathanbaz.com/2026/07/trainspotting-musical-review.html",
-            "outletId": "jonathanbaz.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-05T20:33:15.309Z"
-          },
-          {
             "url": "https://www.unmissabletheatre.co.uk/reviews/review-trainspotting-the-musical-at-theatre-royal-haymarket",
             "outletId": "unmissabletheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-09T21:25:48.062Z"
+          },
+          {
+            "url": "http://theartsdesk.com/theatre/trainspotting-musical-theatre-royal-haymarket-review-irvine-welshs-junkie-saga-comes-stage",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-05T20:33:15.309Z"
           },
           {
             "url": "https://www.crazychris.net/post/trainspotting-the-musical-theatre-royal-haymarket",
@@ -91003,13 +91463,6 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
           {
-            "url": "http://www.thewrap.com/trainspotting-theater-review-needles-real-stuff-not/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-09T21:25:48.062Z"
-          },
-          {
             "url": "https://theatre.reviews/reviews-roundup/trainspotting-the-musical-reviews/",
             "outletId": "theatre.reviews",
             "state": "GAP",
@@ -91024,10 +91477,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 21,
-        "candidateCount": 24
+        "liveCount": 19,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-10T11:06:44.430Z"
+      "computedAt": "2026-08-11T00:22:10.633Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
