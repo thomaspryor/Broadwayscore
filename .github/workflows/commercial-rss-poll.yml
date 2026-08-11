@@ -131,6 +131,23 @@ jobs:
           BRIGHTDATA_SERP_ZONE: ${{ secrets.BRIGHTDATA_SERP_ZONE }}
         run: node scripts/check-bd-breaker.js
 
+      - name: ScrapingDog daily circuit-breaker check
+        # Card #1252 — same rationale as the Bright Data step above: hosted
+        # here because this is the hourly cron that already carries scraping
+        # secrets, and the plan (mirroring S2-T2) forbids adding a new cron.
+        # Must run BEFORE the commit step so the state file (and any
+        # digest-queue alert) reaches main within the hour.
+        # continue-on-error: an /account API blip must not red this CRITICAL
+        # data cron. The script fails open on unknown billing (leaves any
+        # existing trip in place), so a skipped run means "no new decision".
+        # hygiene-run-budget-ok: 1 bounded /account API read with an
+        # AbortSignal timeout (provider-billing.js) — no per-item fetch loop.
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/check-sd-breaker.js
+
       - name: Commit data changes
         if: always() && inputs.dry_run != true
         # Task #574: commits commercial-pending-review.json (union-merged

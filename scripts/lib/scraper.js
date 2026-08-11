@@ -36,6 +36,7 @@ const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
+const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -324,6 +325,7 @@ const _scraperStats = {
 
 function getScraperStats() {
   const bd = getBrightDataRunStats();
+  const sd = getScrapingdogCapStats();
   return {
     ..._scraperStats,
     // Bright Data cap telemetry (S2-T3). bdBlocked > 0 means at least one BD
@@ -333,6 +335,10 @@ function getScraperStats() {
     bdBlocked: bd.blocked,
     bdBlockedByBreaker: bd.blockedByBreaker,
     bdBlockedByBudget: bd.blockedByBudget,
+    // Scrapingdog daily-breaker telemetry (card #1252) — same shape as BD's,
+    // one counter narrower (SD has no separate per-run bulk/exempt pools;
+    // SD_CREDIT_BUDGET already covers that role).
+    sdBlockedByBreaker: sd.blockedByBreaker,
   };
 }
 
@@ -449,6 +455,18 @@ async function fetchWithScrapingdog(url, options = {}) {
   // also trips the reactive HTTP-status latch below on the first failure.
   _checkScrapingdogQuotaOnce();
   if (_sdQuotaExceeded) {
+    return null;
+  }
+
+  // Daily circuit breaker (card #1252) — mirrors fetchWithBrightData's
+  // consultBrightData() check. Blocking here returns null, same shape as
+  // every other SD miss in this function, so fetchPage()'s fallback chain
+  // (SD -> BD -> SB -> Playwright) routes around it automatically.
+  const sdBreakerVerdict = consultScrapingdog();
+  if (!sdBreakerVerdict.allowed) {
+    if (sdBreakerVerdict.firstBlock) {
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+    }
     return null;
   }
 
