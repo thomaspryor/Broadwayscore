@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
+import { getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
@@ -43,6 +44,16 @@ function formatCeremonyDate(iso: string): string {
 // --- Page ---
 
 export default function TonyNomineesPage() {
+  // Official Tony nominees for the season aren't announced until ~May — before
+  // that, getNomineesByCategory() falls back to "all eligible shows so far"
+  // (often just 1-2 shows early in the season), which this page would render
+  // under "Nominations Center" framing with fake 100% "predicted winner" odds.
+  // Redirect to the predictions page, which already lists the season's
+  // eligible/announced shows without claiming they're official nominees.
+  if (!hasNominationsBeenAnnounced(season)) {
+    redirect(`/tony-awards/predictions/${season.label}`);
+  }
+
   const categories = getNomineesByCategory(season);
   const totalCategories = categories.filter(c => c.shows.length > 0).length;
 
