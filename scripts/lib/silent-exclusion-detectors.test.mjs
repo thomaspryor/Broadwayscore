@@ -346,6 +346,29 @@ test('a host that IS a different outlet\'s own registered domain is NOT matched,
   );
 });
 
+test('a host registered only via the legacy domains/alternateDomains fields is honored the same as domain/domainAliases (codex ship-check finding, task #1254)', () => {
+  // The census producer (audit-show-review-gap.js getKnownDomainMap) reads
+  // domain + domainAliases + the 2 legacy fields still live on a couple of
+  // real outlets (gay-city-news.alternateDomains, metrosource.domains) before
+  // ever calling a host "unknown". The known-host set here must honor the
+  // same 4 fields, or it silently re-alerts a host the producer already
+  // considers known.
+  const outlets = {
+    'gay-city-news': { displayName: 'Gay City News', domain: 'gaycitynews.com', alternateDomains: ['gaycitynews.nyc'] },
+    metrosource: { displayName: 'Metrosource', domains: ['metrosource.com'] },
+    'some-other-outlet': { displayName: 'Some Other Outlet', domain: 'gaycitynews.co.uk' }, // slug-collides with gaycitynews.nyc
+  };
+  const unknownHosts = [
+    { host: 'gaycitynews.nyc', occurrences: 1 },
+    { host: 'metrosource.com', occurrences: 1 },
+  ];
+  assert.deepEqual(
+    findProbableDomainMoves(outlets, unknownHosts),
+    [],
+    'both hosts are already registered via legacy fields — neither is an unresolved move candidate',
+  );
+});
+
 test('a short/generic normalized slug is not matched — avoids over-broad false positives', () => {
   const outlets = { amny: { displayName: 'amNY', domain: 'amny.com' } };
   const unknownHosts = [{ host: 'am.org', occurrences: 1 }]; // 'am' normalizes to len 2, below MIN_SLUG_LENGTH

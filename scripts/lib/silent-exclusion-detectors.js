@@ -286,7 +286,18 @@ function findProbableDomainMoves(outlets, unknownHosts) {
   const allKnownHosts = new Set();
   for (const outlet of Object.values(outlets)) {
     if (!outlet) continue;
-    for (const h of [outlet.domain, ...(outlet.domainAliases || [])]) {
+    // Also honors the 2 legacy `domains`/`alternateDomains` fields still live
+    // on a couple of outlets (gay-city-news, metrosource) — the census
+    // producer's own getKnownDomainMap() (audit-show-review-gap.js) reads all
+    // four fields before writing a host as "unknown", so this set must match
+    // that contract or it silently re-alerts a host the producer already
+    // considers known (ship-check finding, task #1254).
+    for (const h of [
+      outlet.domain,
+      ...(outlet.domainAliases || []),
+      ...(outlet.domains || []),
+      ...(outlet.alternateDomains || []),
+    ]) {
       if (h) allKnownHosts.add(String(h).toLowerCase());
     }
   }
