@@ -230,6 +230,16 @@ test('isIntentionalClear: STALE staleScoredBeforeOpening (>3d old) does NOT supp
   assert.equal(isIntentionalClear('assignedScore', stale), false);
 });
 
+test('isIntentionalClear: FUTURE-dated staleScoredBeforeOpeningAt does NOT suppress restore (codex review, task #1237)', () => {
+  // A negative age (future timestamp — malformed write or clock skew) must not
+  // pass the `<= FRESH_DAYS` check and suppress restoring data loss forever.
+  const future = {
+    staleScoredBeforeOpening: true,
+    staleScoredBeforeOpeningAt: new Date(Date.now() + 30 * 86400000).toISOString(),
+  };
+  assert.equal(isIntentionalClear('assignedScore', future), false);
+});
+
 test('staleScoredBeforeOpening(+At) and needsRescore are themselves PROTECTED_FIELDs', () => {
   assert.ok(PROTECTED_FIELDS.includes('staleScoredBeforeOpening'));
   assert.ok(PROTECTED_FIELDS.includes('staleScoredBeforeOpeningAt'));
@@ -265,6 +275,89 @@ test('markRescoreComplete clears staleScoredBeforeOpening(+At) once a real score
   assert.equal(scored.staleScoredBeforeOpeningAt, undefined);
   // Post-rescore, a later unrelated null of the score IS treated as data loss again.
   assert.equal(isIntentionalClear('assignedScore', { ...scored, assignedScore: null }), false);
+});
+
+// ── Task #1237 audit: fullTextWrongAuthor (apply-audit-flags.js, run by the SAME
+// rebuild-reviews.yml job that later calls push-review-texts twice). Same shape
+// as staleScoredBeforeOpening above: FRESHNESS-GATED so a bare boolean with no
+// expiry can't suppress restoring ANY future, unrelated data loss on the file. ──
+
+const wrongAuthorToday = new Date().toISOString();
+
+test('isIntentionalClear: fresh fullTextWrongAuthor covers fullText/assignedScore/ensembleData', () => {
+  const cleared = { fullTextWrongAuthor: true, fullTextWrongAuthorAt: wrongAuthorToday };
+  for (const field of ['fullText', 'assignedScore', 'ensembleData']) {
+    assert.equal(isIntentionalClear(field, cleared), true, `expected clear for ${field}`);
+  }
+  // No stamp, a falsy stamp, or a stamp with no timestamp must NOT suppress the restore.
+  assert.equal(isIntentionalClear('fullText', {}), false);
+  assert.equal(isIntentionalClear('fullText', { fullTextWrongAuthor: false }), false);
+  assert.equal(isIntentionalClear('fullText', { fullTextWrongAuthor: true }), false);
+});
+
+test('isIntentionalClear: STALE fullTextWrongAuthor (>3d old) does NOT suppress restore', () => {
+  const stale = {
+    fullTextWrongAuthor: true,
+    fullTextWrongAuthorAt: new Date(Date.now() - 10 * 86400000).toISOString(),
+  };
+  for (const field of ['fullText', 'assignedScore', 'ensembleData']) {
+    assert.equal(isIntentionalClear(field, stale), false);
+  }
+});
+
+test('isIntentionalClear: FUTURE-dated fullTextWrongAuthorAt does NOT suppress restore (codex review, task #1237)', () => {
+  const future = {
+    fullTextWrongAuthor: true,
+    fullTextWrongAuthorAt: new Date(Date.now() + 30 * 86400000).toISOString(),
+  };
+  for (const field of ['fullText', 'assignedScore', 'ensembleData']) {
+    assert.equal(isIntentionalClear(field, future), false);
+  }
+});
+
+test('fullTextWrongAuthor(+At) is itself a PROTECTED_FIELD', () => {
+  assert.ok(PROTECTED_FIELDS.includes('fullTextWrongAuthor'));
+  assert.ok(PROTECTED_FIELDS.includes('fullTextWrongAuthorAt'));
+});
+
+test('restore decision: apply-audit-flags.js wrong-author strip is NOT reverted by the same-job restore', () => {
+  // Reproduces the rebuild-reviews.yml shape: apply-audit-flags.js deletes
+  // fullText/assignedScore/ensembleData in the SAME checkout whose HEAD
+  // (committed) still carries the wrong-author content — the exact
+  // "committed has content, local is empty" pattern the restore treats as
+  // data loss without this breadcrumb.
+  const local = {
+    fullTextWrongAuthor: true, fullTextWrongAuthorAt: wrongAuthorToday, needsRescore: 'fullTextWrongAuthor-applied',
+  };
+  const committed = { fullText: 'wrong-author article text', assignedScore: 82, ensembleData: { members: 3 } };
+  for (const field of ['fullText', 'assignedScore', 'ensembleData']) {
+    assert.equal(wouldRestore(field, local, committed), false,
+      `stale wrong-author ${field} must NOT be resurrected over an intentional strip`);
+  }
+});
+
+test('fullTextWrongAuthor breadcrumb does NOT extend to llmScore/llmMetadata (apply-audit-flags.js does not clear those)', () => {
+  const cleared = { fullTextWrongAuthor: true, fullTextWrongAuthorAt: wrongAuthorToday };
+  assert.equal(isIntentionalClear('llmScore', cleared), false);
+  assert.equal(isIntentionalClear('llmMetadata', cleared), false);
+});
+
+test('collect-review-texts.js / backfill-theaterlife-bylines.js reset paths clear fullTextWrongAuthor(+At) together', () => {
+  const collectSrc = require('node:fs').readFileSync(
+    path.join(repoRoot, 'scripts/collect-review-texts.js'), 'utf8');
+  const backfillSrc = require('node:fs').readFileSync(
+    path.join(repoRoot, 'scripts/backfill-theaterlife-bylines.js'), 'utf8');
+  // Every site that deletes the flag must delete the freshness stamp alongside
+  // it, or a stale stamp survives the "corrected" write and keeps suppressing
+  // restores of a LATER, unrelated data loss on the same file.
+  const collectClearSites = collectSrc.split('delete data.fullTextWrongAuthor;').length - 1;
+  const collectAtClearSites = collectSrc.split('delete data.fullTextWrongAuthorAt;').length - 1;
+  assert.equal(collectAtClearSites, collectClearSites,
+    'every delete data.fullTextWrongAuthor; site in collect-review-texts.js must also delete fullTextWrongAuthorAt');
+  assert.ok(collectClearSites >= 3, 'expected the 3 known reset sites in collect-review-texts.js');
+  assert.ok(backfillSrc.includes('delete newData.fullTextWrongAuthor;\n  delete newData.fullTextWrongAuthorAt;')
+    || backfillSrc.includes('delete newData.fullTextWrongAuthor;\n\tdelete newData.fullTextWrongAuthorAt;'),
+    'backfill-theaterlife-bylines.js must clear fullTextWrongAuthorAt alongside fullTextWrongAuthor');
 });
 
 test('re-flagging invalidates the auto-clear stamp (inverted-ping-pong guard, ship-check 2026-08-04)', async () => {

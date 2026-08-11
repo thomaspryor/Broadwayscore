@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-08-10T13:26:05.052Z",
+    "lastUpdated": "2026-08-11T23:13:41.000Z",
     "version": "2.1.0",
-    "lastChange": "merge auto-registered ayoungishperspective into a-youngish-perspective (alias already present)"
+    "lastChange": "task #1254: domain-move aliases (metro.news, reviewsgate.co.uk, dailymail.com) + register dance-informa-uk (dancemagazine.co.uk false positive, distinct from dance-magazine)"
   },
   "outlets": {
     "westendtheatre": {
@@ -3217,6 +3217,9 @@
         "metro uk"
       ],
       "domain": "metro.co.uk",
+      "domainAliases": [
+        "metro.news"
+      ],
       "region": "london",
       "accessModel": "free",
       "defaultCritic": "Brooke Ivey Johnson",
@@ -8387,6 +8390,9 @@
         "mail-on-sunday"
       ],
       "domain": "dailymail.co.uk",
+      "domainAliases": [
+        "dailymail.com"
+      ],
       "accessModel": "free",
       "starScale": 5
     },
@@ -9968,6 +9974,9 @@
         "reviewsgate"
       ],
       "domain": "reviewsgate.com",
+      "domainAliases": [
+        "reviewsgate.co.uk"
+      ],
       "region": "london"
     },
     "fjord-review": {
@@ -9986,6 +9995,16 @@
       ],
       "domain": "dancemagazine.com",
       "region": "us"
+    },
+    "dance-informa-uk": {
+      "displayName": "Dance Informa Magazine UK",
+      "tier": 4,
+      "aliases": [
+        "dance-informa-uk",
+        "dance informa"
+      ],
+      "domain": "dancemagazine.co.uk",
+      "region": "uk"
     },
     "pointe-magazine": {
       "displayName": "Pointe Magazine",
@@ -10716,6 +10735,60 @@
         "lsbo"
       ],
       "domain": "lsbo.co.uk",
+      "region": "london"
+    },
+    "seatplan": {
+      "displayName": "Seatplan",
+      "tier": 3,
+      "aliases": [
+        "seatplan"
+      ],
+      "domain": "seatplan.com",
+      "region": "london"
+    },
+    "stanservice": {
+      "displayName": "Stanservice",
+      "tier": 3,
+      "aliases": [
+        "stanservice"
+      ],
+      "domain": "stanservice.substack.com",
+      "region": "london"
+    },
+    "london-theatre-barbican": {
+      "displayName": "London Theatre Barbican",
+      "tier": 3,
+      "aliases": [
+        "london-theatre-barbican"
+      ],
+      "domain": null,
+      "region": "london"
+    },
+    "the-upcoming-barbican": {
+      "displayName": "The Upcoming Barbican",
+      "tier": 3,
+      "aliases": [
+        "the-upcoming-barbican"
+      ],
+      "domain": null,
+      "region": "london"
+    },
+    "time-out-garrick": {
+      "displayName": "Time Out Garrick",
+      "tier": 3,
+      "aliases": [
+        "time-out-garrick"
+      ],
+      "domain": null,
+      "region": "london"
+    },
+    "allthingstheatre": {
+      "displayName": "Allthingstheatre",
+      "tier": 3,
+      "aliases": [
+        "allthingstheatre"
+      ],
+      "domain": "allthingstheatre.uk",
       "region": "london"
     }
   },
