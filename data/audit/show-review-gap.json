@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-11T06:53:48.475Z",
+  "generatedAt": "2026-08-11T07:58:30.871Z",
   "windowDays": 1095,
-  "targets": 26,
-  "auditedThisRun": 22,
-  "carriedForward": 191,
+  "targets": 5,
+  "auditedThisRun": 5,
+  "carriedForward": 208,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 163,
-    "totalMissing": 1043,
+    "withGap": 162,
+    "totalMissing": 1040,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1069,
+    "totalFlaggedMisses": 1064,
     "totalRecoverable": 25,
     "totalRecovered": 5
   },
@@ -396,7 +396,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T17:35:39.870Z"
+      "computedAt": "2026-08-11T07:58:30.871Z"
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
@@ -16820,135 +16820,13 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-        "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
-        "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-        "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-        "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-        "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-        "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-        "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-        "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-        "https://www.timeout.com/london/theatre/death-note-the-musical",
-        "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
-      ],
-      "dirFiles": 15,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        }
-      ],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "westendtheatre--julianna-barnaby.json",
-              "flag": "clean",
-              "urlInDir": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-          "host": "barbican.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "barbican--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-theatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "london-box-office--stuart-king.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/death-note-review"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -16982,260 +16860,26 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Death Note: The Musical\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Death Note: The Musical\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Death Note: The Musical\" review barbican",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Death Note: The Musical Barbican Centre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 11,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 30,
-        "byReason": {
-          "non-review-host": 29,
-          "non-review-path": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~184736/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/death-note-the-musical"
-          },
-          {
-            "outletId": "bestoftheatre.co.uk",
-            "outlet": "bestoftheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/"
-          },
-          {
-            "outletId": "barbican.org.uk",
-            "outlet": "barbican.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
-            "outletId": "stanservice.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
-            "outletId": "rhombusrota.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/barbican-premiere-for-major-new-production-of-manga-musical-death-note-the-musical/",
-            "outletId": "musical-theatre-review",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-in-concert-review",
-            "outletId": "theatreandtonic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/death-note-the-musical",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
-            "outletId": "bestoftheatre.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
-            "outletId": "westendtheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
-            "outletId": "barbican.org.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/death-note-the-musical-to-come-to-barbican-theatre",
-            "outletId": "london-box-office",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-08-11T06:53:48.475Z"
-          }
-        ],
-        "liveCount": 3,
-        "candidateCount": 11
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-08-11T06:53:48.475Z"
+      "computedAt": "2026-08-11T07:58:30.871Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -50338,7 +49982,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-10T16:48:37.492Z"
+      "computedAt": "2026-08-11T07:58:30.871Z"
     },
     {
       "showId": "music-city-off-broadway-2026",
@@ -73196,11 +72840,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 773,
+        "count": 774,
         "byReason": {
-          "aggregator-internal-nav": 603,
-          "not-http-url": 92,
           "non-review-host": 72,
+          "aggregator-internal-nav": 604,
+          "not-http-url": 92,
           "non-review-path": 6
         }
       },
@@ -73226,7 +72870,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210427/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~185528/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -73665,7 +73309,7 @@
         "liveCount": 13,
         "candidateCount": 33
       },
-      "computedAt": "2026-08-10T16:48:37.492Z"
+      "computedAt": "2026-08-11T07:58:30.871Z"
     },
     {
       "showId": "sukkot-off-broadway-2026",
@@ -79568,26 +79212,25 @@
       "aggregatorListedUrls": [
         "https://fairypoweredproductions.com/the-importance-of-being-oscar-review-2/",
         "https://www.londonpubtheatres.com/review-the-importance-of-being-oscar-at-park-theatre-until-22-august-2026",
-        "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-        "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
         "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-        "https://www.thereviewshub.com/the-importance-of-being-oscar-darlington-hippodrome/",
+        "https://www.shinylife.co.uk/2026/07/28/the-importance-of-being-oscar/",
+        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-importance-of-being-oscar_1726382/",
         "https://parktheatre.co.uk/events/the-importance-of-being-oscar/",
         "https://lovelondonloveculture.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre/",
         "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
+        "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
         "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
-        "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
         "https://www.thetimes.com/culture/theatre-dance/article/the-importance-of-being-oscar-review-psgbp5xrs",
+        "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
         "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
-        "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
         "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
         "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
-        "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
         "https://www.londontheatre.co.uk/reviews/the-importance-of-being-oscar",
-        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
         "https://unknownkentandsussex.co.uk/the-importance-of-being-oscar-review-alastair-whatley-shines-at-eastbournes-devonshire-park-theatre/",
         "http://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
+        "https://liamodell.com/2026/07/27/the-importance-of-being-oscar-review-park-theatre-reading-rep-theatre-original-theatre-alastair-whatley-micheal-mac-liammoir-oscar-wilde/",
         "https://www.reviewsgate.co.uk/all-reviews/the-importance-of-being-oscar-by-michal-mac-liammir-uk-tour-park-theatre-clifton-terrace-finsbury-park",
         "https://www.telegraph.co.uk/theatre/what-to-see/stephen-fry-importance-of-being-earnest/",
         "https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html",
@@ -79694,6 +79337,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
         {
           "host": "britishtheatreguide.info",
           "count": 1
@@ -79972,8 +79619,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -79993,20 +79640,20 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 9,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 23,
+        "resultCount": 22,
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 9,
         "byReason": {
-          "non-review-host": 8,
-          "ticketing-listing": 2
+          "ticketing-listing": 2,
+          "non-review-host": 7
         }
       },
       "dedupedVariants": [],
@@ -80053,7 +79700,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210422/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~185518/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://theatreandartreviews.com/2026/07/28/the-importance-of-being-oscar-park-theatre/",
@@ -80065,7 +79712,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210423/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~185518/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://redbuslondinium.uk/2026/07/28/review-the-importance-of-being-oscar-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -80077,7 +79724,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~210423/day) projects exhaustion in ~13d, before the 24d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~185518/day) projects exhaustion in ~15d, before the 23d-out renewal — still u"
         },
         {
           "url": "https://theatreandtonic.co.uk/blog/the-importance-of-being-oscar-jermyn-street-theatre-review",
@@ -80252,8 +79899,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
-            "outletId": "whatsonstage.com",
+            "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -80264,26 +79911,26 @@
             "firstSeenAt": "2026-08-10T16:48:37.492Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/07/review-the-importance-of-being-oscar-park-theatre/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-darlington-hippodrome/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-importance-of-being-oscar_1726382/",
+            "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-08-10T16:48:37.492Z"
+            "firstSeenAt": "2026-08-11T07:58:30.871Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-importance-of-being-oscar-at-the-park-theatre-review_1728223/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
             "url": "http://fringereview.co.uk/review/fringereview-uk/2026/the-importance-of-being-oscar-2/",
             "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
-            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -80294,26 +79941,20 @@
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/the-importance-of-being-oscar-park-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-04T23:55:15.646Z"
+          },
+          {
             "url": "https://readaboutstuff.com/2026/07/28/review-the-importance-of-being-oscar-park-theatre-london/",
             "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-importance-of-being-oscar-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/the-importance-of-being-oscar-theatre-royal-wakefield/",
             "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-04T23:55:15.646Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-importance-of-being-oscar-the-park-theatre",
-            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-04T23:55:15.646Z"
           },
@@ -80482,10 +80123,10 @@
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 30
+        "liveCount": 10,
+        "candidateCount": 29
       },
-      "computedAt": "2026-08-10T16:48:37.492Z"
+      "computedAt": "2026-08-11T07:58:30.871Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
