@@ -1162,7 +1162,7 @@ function checkQuality() {
         name: 'Quality: outlet invalid-content rate',
         status: 'warn',
         message: `${flaggedOutletIds.length} outlet(s) show a broken-extractor signature (worst: ${worst.outletId} — ${worst.recentInvalidCount}/${worst.recentTotal} recent invalid, ${(worst.recentInvalidRate * 100).toFixed(0)}% vs ${(worst.baselineInvalidRate * 100).toFixed(0)}% baseline)`,
-        hint: 'Run `node scripts/audit-outlet-stub-rate.js` — likely a redesigned article-extractor.js pattern now landing on a cookie wall, 404, or boilerplate instead of the article. See tests/unit/theatermania-extractor.test.mjs for the fix pattern.',
+        hint: 'Run `node scripts/audit-outlet-stub-rate.js` and check each flagged file\'s contentTierReason — this tier catches BOTH a redesigned article-extractor.js pattern (reason "No text content"/garbage boilerplate) AND a wrongProduction/wrongShow classification spike (extractor is fine, wrong show matched — see tasks #24/#243). Only the former is a scraper fix; the latter belongs with the wrongProduction FP sweep.',
       };
     }),
 

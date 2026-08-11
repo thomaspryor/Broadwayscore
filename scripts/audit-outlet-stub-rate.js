@@ -409,7 +409,7 @@ function main() {
     for (const o of invalid.outlets.filter((x) => x.flagged)) {
       console.log(`  - ${o.outletId} (${o.outlet}): ${o.recentInvalidCount}/${o.recentTotal} recent invalid (${(o.recentInvalidRate * 100).toFixed(0)}%) vs ${(o.baselineInvalidRate * 100).toFixed(0)}% baseline, ${o.invalidCount}/${o.total} all-time`);
     }
-    console.log('\nLikely a redesigned article-extractor.js pattern now landing on a cookie wall / 404 / boilerplate instead of the article. A high all-time invalid rate alone is common for paywalled/bot-blocked outlets — this list is filtered to outlets whose rate genuinely SPIKED over their own baseline.');
+    console.log('\nCheck each flagged file\'s contentTierReason before assuming a broken extractor: this tier catches BOTH a redesigned article-extractor.js pattern (reason "No text content"/garbage boilerplate — a scraper fix) AND a wrongProduction/wrongShow classification spike (extractor is fine, wrong show matched — belongs with the wrongProduction FP sweep, not article-extractor.js). A high all-time invalid rate alone is also common for paywalled/bot-blocked outlets — this list is filtered to outlets whose rate genuinely SPIKED over their own baseline.');
   }
   console.log(`\nWritten to data/audit/outlet-invalid-content-rates.json`);
 
