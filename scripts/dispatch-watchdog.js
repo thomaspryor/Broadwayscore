@@ -269,11 +269,22 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
   if (dryRun) return results;
 
   for (const item of plan.toPark) {
-    dispatchLedger.appendEntry({ event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject, reason: `${item.deaths} dead attempts — retries exhausted` });
+    // Card #1233: item.deaths is substantive-only unless the park itself was
+    // triggered by the infra ceiling (item.reason === 'infra'), in which case
+    // it's the infra count instead — never build this message from a raw
+    // "total deaths" assumption, or an infra-only park reads as "parked
+    // after 0 dead dispatch attempts" (ship-check catch).
+    const isInfra = item.reason === 'infra';
+    const countPhrase = isInfra
+      ? `${item.deaths} infra-only dead-launch attempts in a row`
+      : `${item.deaths} dead dispatch attempts`;
+    dispatchLedger.appendEntry({ event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject, reason: `${countPhrase} — retries exhausted` });
     pageOwner({
       conditionKey: `watchdog-park:${item.taskId}`,
-      title: `Watchdog parked #${item.taskId} after ${item.deaths} dead dispatch attempts`,
-      description: `Watchdog: card "${item.subject}" was dispatched ${item.deaths} times and every session died. It will NOT be retried automatically — it needs your look (or a fresh dispatch with bsc-next --id ${item.taskId} --force once fixed).`,
+      title: `Watchdog parked #${item.taskId} after ${countPhrase}`,
+      description: isInfra
+        ? `Watchdog: card "${item.subject}" failed to even boot ${item.deaths}x in a row — every attempt was cmux's terminal surface never rendering, not the task itself. It will NOT be retried automatically — bring cmux to the foreground (or restart it), then re-dispatch with bsc-next --id ${item.taskId} --force.`
+        : `Watchdog: card "${item.subject}" was dispatched ${item.deaths} times and every session died. It will NOT be retried automatically — it needs your look (or a fresh dispatch with bsc-next --id ${item.taskId} --force once fixed).`,
     });
     results.parked.push(item.taskId);
   }

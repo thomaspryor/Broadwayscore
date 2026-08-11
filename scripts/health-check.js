@@ -1136,6 +1136,40 @@ function checkQuality() {
       };
     }),
 
+    // Outlet invalid-content-rate monitor (card #1244, generalizing #100):
+    // same broken-extractor failure mode as the stub check above, but for
+    // extractions that DID return something — just not real article text
+    // (cookie wall, 404-as-200, boilerplate; isGarbageContent() in
+    // content-quality.js). 'invalid' is 23x larger corpus-wide than 'stub'
+    // and includes outlets that are chronically near-100% invalid
+    // (paywalled/bot-blocked, not newly broken) — computeOutletInvalidRates()
+    // additionally requires the recent rate to SPIKE over the outlet's own
+    // pre-window baseline so those don't cry wolf every day. It also excludes
+    // wrongProduction/wrongShow-reasoned 'invalid' records by default (card
+    // #1266) — that's a different classifyContentTier() code path (extractor
+    // is fine, wrong show matched) with its own FP sweep (tasks #24/#243), not
+    // an extractor-health signal. Same advisory `this-week` warn via the
+    // /^Quality:/ playbook route, never writes.
+    runCheck('Quality: outlet invalid-content rate', () => {
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const { collectReviewRecords, computeOutletInvalidRates } = require('./audit-outlet-stub-rate.js');
+      const records = collectReviewRecords(rtDir);
+      const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records);
+      if (flaggedOutletIds.length === 0) {
+        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: `No broken-extractor signature in ${outlets.length} outlet(s), ${records.length} review(s)` };
+      }
+      const worst = outlets.find((o) => o.outletId === flaggedOutletIds[0]);
+      return {
+        name: 'Quality: outlet invalid-content rate',
+        status: 'warn',
+        message: `${flaggedOutletIds.length} outlet(s) show a broken-extractor signature (worst: ${worst.outletId} — ${worst.recentInvalidCount}/${worst.recentTotal} recent invalid, ${(worst.recentInvalidRate * 100).toFixed(0)}% vs ${(worst.baselineInvalidRate * 100).toFixed(0)}% baseline)`,
+        hint: 'Run `node scripts/audit-outlet-stub-rate.js` — wrongProduction/wrongShow-reasoned records are excluded from this check (see tasks #24/#243 for that FP sweep), so a flag here should be a genuine article-extractor.js regression. Spot-check contentTierReason on the flagged files to confirm before diving in.',
+      };
+    }),
+
     // Affiliate revenue-stream monitor (affiliate hardening plan 2026-08-03).
     // check-affiliate-health.js runs earlier in the same data-health-check.yml
     // job and writes this snapshot; this line is (a) the digest surface for
@@ -1972,6 +2006,47 @@ function checkAutofixEffectiveness() {
       hint: 'Run `claude -p "hi"` on the dispatch host. "Not logged in · Please run /login" means every job dies on auth — re-login, then confirm the next digest run records a card-pass.',
     } : {}),
   }];
+}
+
+// --- Digest-autofix S6: daily canary + throughput (task #1225) ---
+//
+// checkAutofixEffectiveness above answers "of the jobs that reported back,
+// how many succeeded" over a 7-day window. It cannot answer "did the pipeline
+// dispatch anything AT ALL today" — the exact question that would have caught
+// the 8/5-8/9 starvation (task #1184) on day 2 instead of day 5. These two
+// rows close that gap: a live end-to-end canary (scripts/lib/autofix-canary.js)
+// and a daily throughput rollup with an explicit zero-activity alarm. Both
+// ledgers are gitignored/per-machine (same as digest-autofix-ledger.jsonl
+// above) — ENOENT reads as `null` (never `[]`) so the pure functions can tell
+// "absent here" from "present and empty", and both follow the same
+// warn-never-error-never-silent-pass rule task #1221 exists to enforce.
+function readJsonlLedgerOrNull(absPath) {
+  if (!fs.existsSync(absPath)) return null;
+  let raw;
+  try { raw = fs.readFileSync(absPath, 'utf8'); } catch { return null; }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return out;
+}
+
+function checkAutofixCanary() {
+  const { assessCanaryRow } = require('./lib/autofix-canary.js');
+  const dispatchLedger = require('./lib/dispatch-ledger.js');
+  const canaryLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'autofix-canary-ledger.jsonl'));
+  let dispatchLedgerEntries = [];
+  try { dispatchLedgerEntries = dispatchLedger.readEntries(); } catch { /* stage folding degrades to card-filed-only */ }
+  return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
+}
+
+function checkAutofixThroughput() {
+  const { assessThroughputRow } = require('./lib/autofix-canary.js');
+  const digestLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-autofix-ledger.jsonl'));
+  const backlogLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl'));
+  return [assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries })];
 }
 
 // --- Push-retry deadman (task #394) ---
@@ -3869,6 +3944,8 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkInfraReviewGate(),
     ...checkDispatchOutcomes(dryRun),
     ...checkAutofixEffectiveness(),
+    ...checkAutofixCanary(),
+    ...checkAutofixThroughput(),
   ];
 }
 

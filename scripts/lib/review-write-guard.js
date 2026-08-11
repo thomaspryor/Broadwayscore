@@ -239,6 +239,48 @@ const PROTECTED_FIELDS = [
   'staleScoredBeforeOpening',
   'staleScoredBeforeOpeningAt',
   'needsRescore',
+  // Task #1237 audit (same bug class as #97 above): apply-audit-flags.js deletes
+  // fullText/assignedScore/ensembleData and sets fullTextWrongAuthor=true when a
+  // review's byline doesn't match its critic (contamination removal). Without
+  // protecting the flag + its freshness stamp, the SAME job's later push-review-
+  // texts restore step sees committed HEAD (checked out before apply-audit-flags.js
+  // ran) still carrying the wrong-author fullText/score and resurrects it —
+  // silently undoing the exact contamination removal this script exists to do.
+  // fullTextWrongAuthorAt is the freshness stamp the CLEAR_BREADCRUMBS predicate
+  // below gates on (mirrors staleScoredBeforeOpeningAt — a bare boolean with no
+  // reset would suppress restoring ANY future, unrelated data loss on this file
+  // forever). Reset alongside fullTextWrongAuthor by the byline-recovery paths in
+  // collect-review-texts.js and backfill-theaterlife-bylines.js.
+  'fullTextWrongAuthor',
+  'fullTextWrongAuthorAt',
+  // Task #1259 audit (same bug class as #97/#1237 above): audit-stuck-rescore-
+  // flags.js --fix deletes needsRescore/rescoreReason/lateStarAnchorBand when a
+  // flag is permanently stuck (the scorer would reject the file, so the flag
+  // can never clear itself). It runs in the SAME enrich-reviews.yml job that
+  // later calls push-review-texts — without protecting the breadcrumb + its
+  // freshness stamp, that restore step sees committed HEAD (checked out before
+  // the audit ran) still carrying the stuck flag and resurrects it, silently
+  // undoing the exact clear the audit exists to do. stuckRescoreClearedAt is
+  // the freshness stamp the CLEAR_BREADCRUMBS predicate below gates on (mirrors
+  // staleScoredBeforeOpeningAt/fullTextWrongAuthorAt — a bare boolean with no
+  // reset would suppress restoring ANY future, unrelated re-flag of this file
+  // forever). No reset path clears it: strip-stale-single-model-scores.js is
+  // the one producer that nulls needsRescore (rather than deleting it or
+  // writing a real `true`), but it never runs in the SAME job as
+  // audit-stuck-rescore-flags.js --fix, so it can't race this breadcrumb
+  // within the freshness window this stamp is scoped to bridge — every OTHER
+  // producer re-flags with a real (non-empty) `true`, which never reaches the
+  // empty-field restore-suppression path this breadcrumb guards (see
+  // review-write-guard test file).
+  'stuckRescoreCleared',
+  'stuckRescoreClearedAt',
+  // rescoreReason/lateStarAnchorBand were not previously protected — nothing
+  // needed to intentionally clear them until this fix. Both are cleared
+  // alongside needsRescore by audit-stuck-rescore-flags.js --fix and must be
+  // PROTECTED for the CLEAR_BREADCRUMBS entries above to have any effect (the
+  // restore loop only iterates PROTECTED fields).
+  'rescoreReason',
+  'lateStarAnchorBand',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -364,7 +406,55 @@ const _freshStaleScoredBeforeOpening = (d) => {
   if (!d || d.staleScoredBeforeOpening !== true || !d.staleScoredBeforeOpeningAt) return false;
   const at = Date.parse(String(d.staleScoredBeforeOpeningAt));
   if (Number.isNaN(at)) return false;
-  return (Date.now() - at) <= STALE_SCORE_FRESH_DAYS * 86400000;
+  // age >= 0 excludes future-dated stamps (malformed or clock-skewed), which
+  // would otherwise pass `<= FRESH_DAYS` via a negative age and suppress
+  // restoring a data-loss forever, not just for the intended window (codex
+  // adversarial review, task #1237).
+  const age = Date.now() - at;
+  return age >= 0 && age <= STALE_SCORE_FRESH_DAYS * 86400000;
+};
+
+// fullTextWrongAuthor freshness gate (task #1237, same shape as
+// _freshStaleScoredBeforeOpening above). apply-audit-flags.js is invoked by
+// rebuild-reviews.yml, the same job that later calls push-review-texts twice —
+// this only needs to bridge that single job run, not survive an ordinary
+// rebuild cadence. The byline-recovery paths (collect-review-texts.js,
+// backfill-theaterlife-bylines.js) are the primary clear path and delete both
+// fields the moment a byline is corrected; this bounds the case where that
+// never happens (file never re-collected) so the stamp can't suppress
+// restoring a later, unrelated fullText/score loss on this file indefinitely.
+const WRONG_AUTHOR_FRESH_DAYS = 3;
+const _freshFullTextWrongAuthor = (d) => {
+  if (!d || d.fullTextWrongAuthor !== true || !d.fullTextWrongAuthorAt) return false;
+  const at = Date.parse(String(d.fullTextWrongAuthorAt));
+  if (Number.isNaN(at)) return false;
+  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
+  const age = Date.now() - at;
+  return age >= 0 && age <= WRONG_AUTHOR_FRESH_DAYS * 86400000;
+};
+
+// stuckRescoreCleared freshness gate (task #1259, same shape as
+// _freshStaleScoredBeforeOpening/_freshFullTextWrongAuthor above).
+// audit-stuck-rescore-flags.js --fix is invoked by enrich-reviews.yml, the
+// same job that later calls push-review-texts — this only needs to bridge
+// that single job run, not survive an ordinary rebuild cadence. There is no
+// other clear path to retire the stamp (unlike the two siblings above, which
+// have a "real work landed" success path): every OTHER producer re-flags
+// needsRescore with a real (non-empty) `true`, which never reaches the
+// empty-field restore-suppression this breadcrumb guards. The one producer
+// that nulls it instead (strip-stale-single-model-scores.js) never runs in
+// the SAME job as audit-stuck-rescore-flags.js --fix, so it can't collide
+// with this stamp inside the freshness window. It only ever suppresses
+// restoring a genuinely-cleared, still-empty field, and expires on its own
+// after STUCK_RESCORE_FRESH_DAYS regardless.
+const STUCK_RESCORE_FRESH_DAYS = 3;
+const _freshStuckRescoreCleared = (d) => {
+  if (!d || d.stuckRescoreCleared !== true || !d.stuckRescoreClearedAt) return false;
+  const at = Date.parse(String(d.stuckRescoreClearedAt));
+  if (Number.isNaN(at)) return false;
+  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
+  const age = Date.now() - at;
+  return age >= 0 && age <= STUCK_RESCORE_FRESH_DAYS * 86400000;
 };
 
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
@@ -437,10 +527,23 @@ const CLEAR_BREADCRUMBS = {
   // file, forever. 3 days comfortably covers the two same-job push-review-
   // texts calls opening-night-express.yml makes (and any immediate retry)
   // while still expiring long before it could mask a later real bug.
-  assignedScore: _freshStaleScoredBeforeOpening,
+  assignedScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
   llmScore: _freshStaleScoredBeforeOpening,
   llmMetadata: _freshStaleScoredBeforeOpening,
-  ensembleData: _freshStaleScoredBeforeOpening,
+  ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
+  // apply-audit-flags.js (task #1237): deletes fullText alongside assignedScore/
+  // ensembleData when a byline mismatch is detected — see PROTECTED_FIELDS
+  // comment above and _freshFullTextWrongAuthor. fullText has no other
+  // CLEAR_BREADCRUMBS entry (unlike assignedScore/ensembleData, which are also
+  // cleared by the unrelated stale-before-opening strip), so no OR needed.
+  fullText: _freshFullTextWrongAuthor,
+  // audit-stuck-rescore-flags.js --fix (task #1259): deletes needsRescore/
+  // rescoreReason/lateStarAnchorBand when the flag is permanently stuck (the
+  // scorer would reject the file, so it could never clear itself). See
+  // PROTECTED_FIELDS comment above and _freshStuckRescoreCleared.
+  needsRescore: _freshStuckRescoreCleared,
+  rescoreReason: _freshStuckRescoreCleared,
+  lateStarAnchorBand: _freshStuckRescoreCleared,
 };
 
 /**

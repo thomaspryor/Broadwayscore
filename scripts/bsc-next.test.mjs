@@ -167,6 +167,33 @@ test('deadDispatchGuard allows dispatch under the limit, and ignores deaths for 
   assert.equal(deadDispatchGuard(task, [], {}), null);
 });
 
+// Card #1233: the dead-launch rate is ~21% infra (cmux's terminal surface
+// never rendered), and a task shouldn't get the "investigate the scope"
+// refusal for dying that way twice. deadDispatchGuard must let it through.
+test('deadDispatchGuard does NOT refuse a task whose 2 deaths are both infra (paired unverified launch)', () => {
+  const task = TASKS[0]; // id '1'
+  const infraOnly = [
+    { ts: '2026-08-10T10:00:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:301', failureReason: 'command injection never ran' },
+    { ts: '2026-08-10T10:00:00.002Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:301', unverified: true },
+    { ts: '2026-08-10T11:00:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:302', failureReason: 'command injection never ran' },
+    { ts: '2026-08-10T11:00:00.002Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:302', unverified: true },
+  ];
+  assert.equal(deadDispatchGuard(task, infraOnly, {}), null);
+});
+
+test('deadDispatchGuard still refuses a task whose 2 deaths are substantive (verified launch, later found dead)', () => {
+  const task = TASKS[0]; // id '1'
+  const substantiveOnly = [
+    { ts: '2026-08-10T09:00:00.000Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:401' },
+    { ts: '2026-08-10T11:30:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:401', failureReason: 'workspace idle, never booted' },
+    { ts: '2026-08-10T12:00:00.000Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:402' },
+    { ts: '2026-08-10T14:30:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:402', failureReason: 'workspace idle, never booted' },
+  ];
+  const msg = deadDispatchGuard(task, substantiveOnly, {});
+  assert.match(msg, /died 2x already/);
+  assert.match(msg, /workspace:401, workspace:402/);
+});
+
 // Ship-check adversarial finding (2026-07-22): a 'dead' breadcrumb written
 // ONLY by bsc-prune.js's own sweep would miss a same-SESSION burst — the
 // actual #297 incident shape (3 dispatches in one sitting, no sweep in

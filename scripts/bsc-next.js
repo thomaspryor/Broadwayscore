@@ -222,10 +222,17 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
 // completedLaunchGuard's carve-outs.
 function deadDispatchGuard(task, ledgerEntries, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const dead = dispatchLedger.deadAttemptsForTask(task.id, ledgerEntries);
-  if (dead.length < dispatchLedger.DEAD_ATTEMPT_LIMIT) return null;
-  const refs = dead.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
-  return `task #${task.id} has died ${dead.length}x already without finishing (dead workspaces: ${refs}). ` +
+  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries);
+  if (!cap.blocked) return null;
+  if (cap.reason === 'infra') {
+    const refs = cap.infra.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+    return `task #${task.id}'s cmux launch has failed to even start ${cap.infra.length}x in a row (dead workspaces: ${refs}) — ` +
+      `every one of those is 'terminal surface never rendered', not a task failure. That many in a row with zero ` +
+      `successful boots suggests cmux itself is wedged right now, not bad luck on this card. Bring cmux to the ` +
+      `foreground (or restart it) before dispatching anything else. Re-run with --force to try again anyway.`;
+  }
+  const refs = cap.substantive.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+  return `task #${task.id} has died ${cap.substantive.length}x already without finishing (dead workspaces: ${refs}). ` +
     `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
     `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
     `handling — see task #289). Re-run with --force to dispatch anyway.`;
