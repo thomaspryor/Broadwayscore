@@ -35,6 +35,13 @@ test('recordsAgree: rejects title mismatch', () => {
   assert.equal(recordsAgree(a, b), false);
 });
 
+test('recordsAgree: fails closed when either side is missing an opening date (title+venue alone is not enough — venues restage the same title years apart)', () => {
+  const a = { title: 'Cats', venue: 'London Palladium', openingDate: null };
+  const b = { title: 'Cats', venue: 'London Palladium', openingDate: '2019-06-01' };
+  assert.equal(recordsAgree(a, b), false);
+  assert.equal(recordsAgree(b, a), false);
+});
+
 test('recordsAgree: normalizes accents/case in title and venue', () => {
   const a = { title: 'JUNO AND THE PAYCOCK', venue: 'gielgud theatre', openingDate: '2024-10-03' };
   const b = { title: 'Juno and the Paycock', venue: 'Gielgud Theatre', openingDate: '2024-10-03' };
