@@ -97,9 +97,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // to a Tony season (or a category) without a date, so they're listed separately,
   // unscored, current season only. See plan in tony-nominees-premature investigation,
   // 2026-08-11 — user asked for "all Broadway shows announced for the season."
+  // Exclude stale announcements. A dateless show whose previews were supposed to start
+  // BEFORE this season began never happened (or quietly died) — wanted-2022 and
+  // 10-things-2024 are still sitting in shows.json with 2022/2024 preview dates and
+  // would otherwise render as fresh 2026-27 announcements. No previewsStartDate at all
+  // is fine: that's a genuinely undated future announcement (Dreamgirls, Purple Rain).
   const announcedNoDate = isCurrent
     ? allShows
         .filter(s => (s.status === 'announced' || s.status === 'upcoming') && !s.openingDate)
+        .filter(s => !s.previewsStartDate || s.previewsStartDate >= season.start)
         .sort((a, b) => a.title.localeCompare(b.title))
     : [];
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
@@ -306,12 +312,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // The on-page "Predicted Winner" pill is gated on showOurPick, but this structured
   // data is a separate ranking claim aimed at Google — it was still emitting
   // "position 1: Celebrity Autobiography, Best Revival of a Play 2026-2027" off a
-  // one-show category. A ranking over 1-2 shows is not a ranking; hold the schema
-  // until there is a real field. See tony-nominees-premature, 2026-08-11.
-  const MIN_ITEMLIST_SHOWS = 3;
+  // one-show category. See tony-nominees-premature, 2026-08-11.
+  //
+  // Deliberately NO minimum-size floor beyond this gate: once nominees are real, a
+  // 1-2 nominee category is a real Tony category, not a thin ranking. 2018-19 Best
+  // Revival of a Musical had 2 nominees and the COVID-truncated 2020-21 has 11
+  // single-nominee categories — a blanket floor would strip valid schema from them.
   const suppressItemLists = isCurrent && !nominationsAnnounced;
   const allItemListCategories = suppressItemLists ? [] : [...categories, ...nonMajorCategories];
-  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length >= MIN_ITEMLIST_SHOWS).map(cat => {
+  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length > 0).map(cat => {
     const winnerShowId = majorWinnersByCategory?.get(cat.title);
     const winnerSlug = winnerShowId ? showIdToSlug.get(winnerShowId) ?? null : null;
     const ordered = orderForItemList(cat.shows, winnerSlug);
@@ -392,7 +401,12 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                 })()}</>
               : winnerCount > 0
                 ? `How our per-category model would have predicted the ${season.ceremonyYear} Tony Awards.`
-                : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
+                : isCurrent
+                  // Pre-nominations this page has no predictions on it, so the old
+                  // "Data-driven predictions … Updated daily" line contradicted both the
+                  // eligibility banner below and the FAQ schema. Describe the real content.
+                  ? `Every Broadway show that has opened so far in the ${season.label} season. Predictions start once Tony nominations are announced.`
+                  : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
           </p>
           {ceremonyDate && isCurrent && (
             <div className="mt-2 flex items-center gap-2">
@@ -663,10 +677,13 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             Listed separately and unscored. See tony-nominees-premature, 2026-08-11. */}
         {isCurrent && announcedNoDate.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-lg font-bold text-white mb-1">Announced, no opening date yet</h2>
+            <h2 className="text-lg font-bold text-white mb-1">Announced, no opening night yet</h2>
             <p className="text-sm text-gray-400 mb-4">
-              Broadway has announced these shows but not dated them. Until an opening date is set
-              there is no way to say which Tony season they&apos;ll fall in.
+              {/* Most of these DO have a previews date — saying they are "not dated" was
+                  wrong. Tony eligibility keys off opening night specifically, which is
+                  what these are missing. */}
+              These have been announced without a confirmed opening night. Tony eligibility runs
+              off opening date, so they can&apos;t be placed in a category yet.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {announcedNoDate.map(show => (

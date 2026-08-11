@@ -528,11 +528,10 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
    *  See tony-nominees-premature, 2026-08-11. */
   showOurPick: boolean;
 }) {
-  const resolvedShowOurPick = showOurPick;
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
   // When Our Pick is live, re-sort major-category nominees by win probability desc.
-  const nominees = (resolvedShowOurPick && isMajor && winProbs)
+  const nominees = (showOurPick && isMajor && winProbs)
     ? [...category.shows].sort((a, b) => (winProbs.get(b.slug) ?? 0) - (winProbs.get(a.slug) ?? 0))
     : category.shows;
 
@@ -544,7 +543,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
   // are hidden (3 boxes × w-11 + gaps). Tailwind JIT requires literal classes.
   let minW: string;
   if (isMajor) {
-    if (resolvedShowOurPick) minW = hideMarketOdds ? 'min-w-[624px] lg:min-w-[780px]' : 'min-w-[780px] lg:min-w-[1008px]';
+    if (showOurPick) minW = hideMarketOdds ? 'min-w-[624px] lg:min-w-[780px]' : 'min-w-[780px] lg:min-w-[1008px]';
     else               minW = hideMarketOdds ? 'min-w-[572px] lg:min-w-[712px]' : 'min-w-[728px] lg:min-w-[940px]';
   } else if (isPersonLevel) {
     minW = hideMarketOdds ? 'min-w-[384px] lg:min-w-[520px]' : 'min-w-[540px] lg:min-w-[748px]';
@@ -596,7 +595,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
       <div className="relative">
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
-        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} hideMarketOdds={hideMarketOdds} showOurPick={resolvedShowOurPick} />
+        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} hideMarketOdds={hideMarketOdds} showOurPick={showOurPick} />
         {nominees.map((show, index) => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
@@ -604,7 +603,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
           return (
             <div key={key}>
               {isMajor ? (
-                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} showOurPick={resolvedShowOurPick} />
+                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} showOurPick={showOurPick} />
               ) : isPersonLevel ? (
                 <PerformerRow show={show} hideMarketOdds={hideMarketOdds} />
               ) : (

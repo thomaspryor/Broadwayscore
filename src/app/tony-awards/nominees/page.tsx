@@ -140,8 +140,12 @@ export default function TonyNomineesPage() {
           </div>
         )}
 
-        {/* Link to winners page — visible near ceremony */}
-        {new Date() >= new Date('2026-05-23T00:00:00Z') && (
+        {/* Link to winners page — visible near ceremony. Pinned to ceremonyYear 2026:
+            /tony-awards/winners-2026 is hand-built for that ceremony and there is no
+            dynamic winners/[season] route, so on the old date-only gate the 2027
+            Nominations Center would link to the 2026 winners page. Same fix already
+            applied on predictions/[season] and the hub. See tony-nominees-premature. */}
+        {season.ceremonyYear === 2026 && new Date() >= new Date('2026-05-23T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
             <span className="text-gray-300">See who we think wins each of the 26 categories.</span>
             <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
