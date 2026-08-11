@@ -34,7 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
+const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, obRegionalShows, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
 const { writeStagingCandidates, writeStaging, loadStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -74,7 +74,13 @@ function loadExistingShows() {
 
 async function main() {
   const shows = loadExistingShows();
-  const existingSlugs = collisionSlugSet(shows);
+  // MARKET-SCOPED (off-broadway/regional only), not the full catalog: this
+  // pipeline only ever discovers OB/regional candidates, so a same-titled
+  // Broadway/West End show must never gate a pre-fetch skip. Still title-only
+  // (no venue at this stage — see the pre-fetch gate below) — the residual
+  // same-market cross-venue risk is documented there and at
+  // findKnownObShow/pruneUnmatchedAudit in the lib (P1 task #1246, 2026-08-11).
+  const existingSlugs = collisionSlugSet(obRegionalShows(shows));
 
   // Prune staged candidates whose show has since landed in shows.json through
   // ANY path — not just this script's own promotion flow. The daily CI
@@ -132,7 +138,7 @@ async function main() {
 
     // Cheap pre-filter: classify without HTML first to catch infrastructure /
     // low-confidence without spending a fetch.
-    const pre = classifyCandidate({ source, record, html: null, existingSlugs });
+    const pre = classifyCandidate({ source, record, html: null, shows });
     if (pre.status === 'reject' && pre.reason !== 'fetch-failed') {
       rejected.push({ url: record.url, slug: record.slug, source, reason: pre.reason, detail: pre.detail });
       continue;
@@ -141,6 +147,19 @@ async function main() {
     // Pre-fetch shows.json check: if the title already maps to an existing
     // show slug, the URL is a leftover for an already-promoted show — skip the
     // fetch entirely. (ship-check P0: stops promoted shows re-fetching weekly.)
+    //
+    // TITLE-ONLY, deliberately (P1 task #1246, 2026-08-11): the audit record
+    // has no venue pre-fetch, so this can't use the fully venue-scoped
+    // findKnownObShow() the way classifyCandidate() does below once HTML is
+    // in hand. existingSlugs is already MARKET-SCOPED (off-broadway/regional
+    // only, built above), closing the cross-market half of the blind spot; a
+    // new OB show that merely shares a title with an unrelated, different-
+    // venue OB/regional show is the residual risk (documented at
+    // findKnownObShow / pruneUnmatchedAudit in the lib). A hit here means the
+    // fetch is skipped and the record stays in the audit file for a future
+    // run to re-evaluate — it is not deleted — so the fix is bounded to a
+    // deferred rather than a lost discovery unless pruneUnmatchedAudit's own
+    // (also market-scoped, not venue-scoped) sweep removes it first.
     const refTitle = referenceTitle(source, record);
     if (slugCollidesWith(refTitle, existingSlugs)) {
       rejected.push({ url: record.url, slug: record.slug, source, reason: 'already-in-shows', detail: refTitle });
@@ -163,7 +182,7 @@ async function main() {
       fetches++;
     }
 
-    const r = classifyCandidate({ source, record, html, existingSlugs });
+    const r = classifyCandidate({ source, record, html, shows });
     if (r.status === 'accept') {
       accepted.push(r.candidate);
       console.log(`  [accept] ${r.candidate.title} @ ${r.candidate.venue} (${source})`);

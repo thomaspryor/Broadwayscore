@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -106,6 +106,71 @@ test('launchByRef is LAST-match, not first — a recycled ref attributes to the 
 
 test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells existed before the 3rd)', () => {
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
+});
+
+// Card #1233: a healthy task that draws 2 cmux-infra deaths (card #1199's
+// measured ~21% "terminal surface never rendered" rate) must NOT hit the
+// same cap as a task that actually died twice doing real work. Fixture shape
+// matches failedLaunchEntries()'s real output: a 'dead' row immediately
+// followed by its own unverified:true 'launch' row, same failureReason text.
+test('isInfraDeadEntry / deadDispatchCapStatus: 2 infra-class deaths do not cap — still dispatchable', () => {
+  const entries = [
+    { event: 'dead', taskId: '973', workspaceRef: 'workspace:501', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:501' },
+    { event: 'launch', taskId: '973', workspaceRef: 'workspace:501', unverified: true },
+    { event: 'dead', taskId: '973', workspaceRef: 'workspace:502', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:502' },
+    { event: 'launch', taskId: '973', workspaceRef: 'workspace:502', unverified: true },
+  ];
+  const deaths = deadAttemptsForTask('973', entries);
+  assert.equal(deaths.length, 2);
+  assert.ok(deaths.every(isInfraDeadEntry));
+  const status = deadDispatchCapStatus('973', entries);
+  assert.equal(status.total, 2);
+  assert.equal(status.infraCount, 2);
+  assert.equal(status.substantiveCount, 0);
+  assert.equal(status.capped, false);
+});
+
+// A task that died twice with the session actually booting (deadBreadcrumbs
+// shape — bsc-prune's idle sweep, no failureReason at all) is real signal
+// about the task and must still trip the cap.
+test('isInfraDeadEntry / deadDispatchCapStatus: 2 substantive-class deaths still cap', () => {
+  const entries = [
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:227' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:227', title: 'T1-retrieval Sprint 2' }, // deadBreadcrumbs shape
+    { event: 'launch', taskId: '297', workspaceRef: 'workspace:229' },
+    { event: 'dead', taskId: '297', workspaceRef: 'workspace:229', title: 'T1-retrieval Sprint 2' },
+  ];
+  const deaths = deadAttemptsForTask('297', entries);
+  assert.equal(deaths.length, 2);
+  assert.ok(deaths.every(e => !isInfraDeadEntry(e)));
+  const status = deadDispatchCapStatus('297', entries);
+  assert.equal(status.substantiveCount, 2);
+  assert.equal(status.capped, true);
+});
+
+// 'wrapper exited without claude registering' means the command DID run and
+// then failed — task-attributable, not launcher-attributable — so it must
+// NOT be classified infra even though it's also a cmux-launch failure.
+test('isInfraDeadEntry: WRAPPER_EXITED failureReason is substantive, not infra', () => {
+  const entry = { event: 'dead', taskId: '1', workspaceRef: 'workspace:1', failureReason: 'launch wrapper exited without claude registering in workspace:1' };
+  assert.equal(isInfraDeadEntry(entry), false);
+});
+
+test('deadDispatchCapStatus: a mix under both individual limits is not capped, but 8 infra deaths trip INFRA_DEAD_ATTEMPT_LIMIT', () => {
+  assert.equal(INFRA_DEAD_ATTEMPT_LIMIT, 8);
+  const oneSubstantive = [
+    { event: 'dead', taskId: '5', workspaceRef: 'workspace:1' }, // substantive
+    { event: 'dead', taskId: '5', workspaceRef: 'workspace:2', failureReason: 'command injection never ran (no wrapper process appeared) in workspace:2' }, // infra
+  ];
+  assert.equal(deadDispatchCapStatus('5', oneSubstantive).capped, false);
+
+  const eightInfra = Array.from({ length: 8 }, (_, i) => (
+    { event: 'dead', taskId: '5', workspaceRef: `workspace:${i}`, failureReason: `command injection never ran (no wrapper process appeared) in workspace:${i}` }
+  ));
+  const status = deadDispatchCapStatus('5', eightInfra);
+  assert.equal(status.substantiveCount, 0);
+  assert.equal(status.total, 8);
+  assert.equal(status.capped, true); // the wedged-host ceiling, not the per-task one
 });
 
 test('deadBreadcrumbs: only idle workspaces with a matching launch record produce breadcrumbs', () => {
@@ -793,4 +858,99 @@ test('followRetryChain: a chain ending at RETRIED (successor not spawned) return
 test('followRetryChain: non-retried jobs pass through untouched', () => {
   const entries = [chainSpawn('j1', '2026-08-10T10:00:00Z'), chainDone('j1', '2026-08-10T11:00:00Z')];
   assert.equal(followRetryChain(entries, '7', 'j1').event, JOB_EVENTS.DONE);
+});
+
+// ── classifyDeadAttemptsForTask / dispatchCapDecision (card #1233) ─────────
+// The 2-death dispatch cap used to count EVERY dead attempt equally, so a
+// task that died twice because cmux's terminal surface never rendered got
+// the same "investigate the task" refusal as one that actually booted and
+// crashed twice. These reuse dispatch-attempts.js's own dead/unverified
+// classification (not a re-derived pairing window) to tell the two apart.
+const cmuxLaunch = (ts, ref, taskId, extra = {}) => ({
+  ts, event: 'launch', taskId, subject: `task ${taskId}`, workspaceRef: ref, model: 'sonnet', ...extra,
+});
+const cmuxDead = (ts, ref, taskId, failureReason = 'command injection never ran') => ({
+  ts, event: 'dead', taskId, subject: `task ${taskId}`, workspaceRef: ref, failureReason, title: null,
+});
+
+test('classifyDeadAttemptsForTask: 2 infra deaths (paired unverified launch, terminal surface never rendered) are not substantive', () => {
+  const entries = [
+    cmuxDead('2026-08-10T10:00:00.000Z', 'workspace:501', '1233a'),
+    cmuxLaunch('2026-08-10T10:00:00.002Z', 'workspace:501', '1233a', { unverified: true }),
+    cmuxDead('2026-08-10T11:00:00.000Z', 'workspace:502', '1233a'),
+    cmuxLaunch('2026-08-10T11:00:00.002Z', 'workspace:502', '1233a', { unverified: true }),
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233a', entries);
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 2);
+  assert.equal(substantiveDeadAttemptsForTask('1233a', entries).length, 0);
+});
+
+test('classifyDeadAttemptsForTask: 2 substantive deaths (verified launch, later dead breadcrumb) stay substantive', () => {
+  const entries = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:601', '1233b'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:601', '1233b', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-10T12:00:00.000Z', 'workspace:602', '1233b'),
+    cmuxDead('2026-08-10T14:30:00.000Z', 'workspace:602', '1233b', 'workspace idle, never booted'),
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233b', entries);
+  assert.equal(substantive.length, 2);
+  assert.equal(infra.length, 0);
+  assert.equal(substantiveDeadAttemptsForTask('1233b', entries).length, 2);
+});
+
+test('dispatchCapDecision: 2 infra deaths do not block dispatch; 2 substantive deaths do', () => {
+  const infraOnly = [
+    cmuxDead('2026-08-10T10:00:00.000Z', 'workspace:701', '1233c'),
+    cmuxLaunch('2026-08-10T10:00:00.002Z', 'workspace:701', '1233c', { unverified: true }),
+    cmuxDead('2026-08-10T11:00:00.000Z', 'workspace:702', '1233c'),
+    cmuxLaunch('2026-08-10T11:00:00.002Z', 'workspace:702', '1233c', { unverified: true }),
+  ];
+  const infraDecision = dispatchCapDecision('1233c', infraOnly);
+  assert.equal(infraDecision.blocked, false);
+
+  const substantiveOnly = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:801', '1233d'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:801', '1233d', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-10T12:00:00.000Z', 'workspace:802', '1233d'),
+    cmuxDead('2026-08-10T14:30:00.000Z', 'workspace:802', '1233d', 'workspace idle, never booted'),
+  ];
+  const substantiveDecision = dispatchCapDecision('1233d', substantiveOnly);
+  assert.equal(substantiveDecision.blocked, true);
+  assert.equal(substantiveDecision.reason, 'substantive');
+});
+
+test('classifyDeadAttemptsForTask: an unpairable dead row (no ts, no matching launch) fails closed as substantive, never silently dropped', () => {
+  const entries = [
+    { event: 'dead', taskId: '1233e', workspaceRef: 'workspace:900' },
+    { event: 'dead', taskId: '1233e', workspaceRef: 'workspace:901' },
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233e', entries);
+  assert.equal(substantive.length, 2, 'both entries preserved — deadAttemptsForTask\'s full list, just partitioned');
+  assert.equal(infra.length, 0);
+});
+
+test('classifyDeadAttemptsForTask: job-failed/job-orphaned deaths are always substantive (the wrapper already ran)', () => {
+  const entries = [
+    { ts: '2026-08-10T10:00:00.000Z', event: JOB_EVENTS.SPAWNED, taskId: '1233f', jobId: 'j1' },
+    { ts: '2026-08-10T10:05:00.000Z', event: JOB_EVENTS.FAILED, taskId: '1233f', jobId: 'j1' },
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233f', entries);
+  assert.equal(substantive.length, 1);
+  assert.equal(infra.length, 0);
+});
+
+test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT tasks does not cross-contaminate infra/substantive', () => {
+  // Same ref, one infra death for task A, one substantive death for task B —
+  // scoping candidates to (taskId, workspaceRef) must keep them apart.
+  const entries = [
+    cmuxDead('2026-08-01T10:00:00.000Z', 'workspace:55', 'A'),
+    cmuxLaunch('2026-08-01T10:00:00.002Z', 'workspace:55', 'A', { unverified: true }),
+    cmuxLaunch('2026-08-05T10:00:00.000Z', 'workspace:55', 'B'),
+    cmuxDead('2026-08-05T12:00:00.000Z', 'workspace:55', 'B', 'workspace idle, never booted'),
+  ];
+  assert.equal(classifyDeadAttemptsForTask('A', entries).infra.length, 1);
+  assert.equal(classifyDeadAttemptsForTask('A', entries).substantive.length, 0);
+  assert.equal(classifyDeadAttemptsForTask('B', entries).infra.length, 0);
+  assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
 });
