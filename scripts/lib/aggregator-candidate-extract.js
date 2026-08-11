@@ -600,6 +600,51 @@ function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
 }
 
 /**
+ * Remove already-classified candidates from the STAGING file
+ * (data/audit/ob-venue-candidates.json) whose title now collides with a show
+ * already in shows.json. This is the staging-file counterpart to
+ * pruneUnmatchedAudit (which cleans the *-unmatched.json audit inputs).
+ *
+ * Why this exists: the daily CI promotion (promote-ob-venue-candidates.js
+ * --regional-only) explicitly skips every non-regional candidate untouched —
+ * `if (regionalOnly && c.category !== 'regional') { remainingStaged.push(c);
+ * continue; }` — so findExistingMatch() (the jaccard/subtitle dedupe against
+ * shows.json) never runs for OB candidates on the scheduled path. The only
+ * code that removes a stale OB candidate is the operator-run default mode,
+ * which nothing schedules. A candidate whose show gets added to shows.json
+ * through ANY other route (manual add, feedback pipeline, a later promote run
+ * for a DIFFERENT batch) then sits in staging — and in the health-check "OB
+ * Discovery — Action Needed" digest — forever. Found 2026-08-11: "Dad Don't
+ * Read This" (closed 2026-06) and "Rosie O'Donnell: Common Knowledge" (closed)
+ * were both still staged, false-positive noise for shows that were never
+ * missing.
+ *
+ * Deliberately title-slug collision only (not the fuller jaccard/venue match
+ * promote-ob-venue-candidates.js uses) — this runs on every extract-
+ * aggregator-candidates.js invocation (daily, no extra fetches) and only
+ * needs to catch the common case: the exact show now exists. A near-miss
+ * that only jaccard would catch stays staged for the operator path, which is
+ * the existing, more conservative behavior.
+ *
+ * @param {Array} staged  data/audit/ob-venue-candidates.json contents
+ * @param {Set<string>} existingSlugs  slugs already in shows.json
+ * @returns {{kept: Array, pruned: Array}}
+ */
+function pruneStagedCandidates(staged, existingSlugs) {
+  const slugs = existingSlugs instanceof Set ? existingSlugs : new Set();
+  const kept = [];
+  const pruned = [];
+  for (const c of Array.isArray(staged) ? staged : []) {
+    if (c && typeof c === 'object' && c.title && slugCollidesWith(c.title, slugs)) {
+      pruned.push(c);
+    } else if (c && typeof c === 'object') {
+      kept.push(c);
+    }
+  }
+  return { kept, pruned };
+}
+
+/**
  * The best title we can name BEFORE fetching: PV ships a `title` on the audit
  * record; BWW only a slug (parse it). Lets the driver skip a fetch when the
  * show is already in shows.json — which is the common case for an unmatched
@@ -804,6 +849,7 @@ module.exports = {
   slugCollidesWith,
   collisionSlugSet,
   pruneUnmatchedAudit,
+  pruneStagedCandidates,
   referenceTitle,
   classifyCandidate,
   titleCaseShout,

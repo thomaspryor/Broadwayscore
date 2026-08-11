@@ -25,6 +25,7 @@ const {
   classifyCandidate,
   slugCollidesWith,
   pruneUnmatchedAudit,
+  pruneStagedCandidates,
   referenceTitle,
 } = require('./aggregator-candidate-extract.js');
 
@@ -254,6 +255,28 @@ test('pruneUnmatchedAudit tolerates junk input + empty slug set', () => {
   const r = pruneUnmatchedAudit([{ slug: 'site-map' }, { slug: 'real-show', title: 'Real Show' }], { source: 'playbill-verdict' });
   assert.equal(r.pruned, 1);
   assert.deepEqual(r.kept.map(e => e.slug), ['real-show']);
+});
+
+test('pruneStagedCandidates drops staged candidates already in shows.json (2026-08-11 regression: Dad Dont Read This / Rosie ODonnell)', () => {
+  const staged = [
+    { title: "Dad Don't Read This", venue: "St. Luke's Theatre", source: 'bww-roundup' },
+    { title: "Rosie O'Donnell's COMMON KNOWLEDGE", venue: 'Daryl Roth Theatre', source: 'bww-roundup' },
+    { title: 'Brand New Unstaged Show', venue: 'Some Theatre', source: 'playbill-verdict' },
+  ];
+  // Both promoted shows are in shows.json under their own titles/slugs.
+  const existingSlugs = new Set(['dad-dont-read-this', "rosie-odonnells-common-knowledge"]);
+  const { kept, pruned } = pruneStagedCandidates(staged, existingSlugs);
+  assert.equal(pruned.length, 2);
+  assert.deepEqual(pruned.map(p => p.title), ["Dad Don't Read This", "Rosie O'Donnell's COMMON KNOWLEDGE"]);
+  assert.deepEqual(kept.map(c => c.title), ['Brand New Unstaged Show']);
+});
+
+test('pruneStagedCandidates tolerates junk input + empty slug set', () => {
+  assert.deepEqual(pruneStagedCandidates(null, new Set()), { kept: [], pruned: [] });
+  assert.deepEqual(pruneStagedCandidates([null, 'x', 42], new Set()), { kept: [], pruned: [] });
+  const r = pruneStagedCandidates([{ title: 'Real Show', venue: 'X' }], undefined);
+  assert.equal(r.pruned.length, 0);
+  assert.deepEqual(r.kept.map(c => c.title), ['Real Show']);
 });
 
 test('low-confidence PV entries are not new candidates', () => {

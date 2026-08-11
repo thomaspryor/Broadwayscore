@@ -34,8 +34,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
-const { writeStagingCandidates, loadStaging } = require('./lib/venue-listing-discover');
+const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
+const { writeStagingCandidates, writeStaging, loadStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const PV_FILE = path.join(AUDIT_DIR, 'playbill-verdict-unmatched.json');
@@ -75,8 +75,26 @@ function loadExistingShowSlugs() {
 
 async function main() {
   const existingSlugs = loadExistingShowSlugs();
+
+  // Prune staged candidates whose show has since landed in shows.json through
+  // ANY path — not just this script's own promotion flow. The daily CI
+  // promotion (promote-ob-venue-candidates.js --regional-only) explicitly
+  // skips every non-regional candidate untouched, so nothing else ever
+  // dedupes an OB candidate against shows.json on the scheduled path. Without
+  // this sweep, a staged "Dad Don't Read This" or "Rosie O'Donnell: Common
+  // Knowledge" — both already-closed shows in shows.json when this was added
+  // 2026-08-11 — sits in staging (and the health-check "OB Discovery — Action
+  // Needed" digest) forever. See pruneStagedCandidates() for the full story.
+  const stagingBefore = loadStaging();
+  const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, existingSlugs);
+  if (stagingPruned.length > 0) {
+    console.log(`Pruning ${stagingPruned.length} staged candidate(s) already in shows.json:`);
+    for (const p of stagingPruned) console.log(`  - ${p.title} @ ${p.venue || '?'} (${p.source || '?'})`);
+    if (!dryRun) writeStaging(stagingKept);
+  }
+
   // URLs already staged → don't re-fetch (idempotency without a bespoke cache).
-  const stagedUrls = new Set(loadStaging().map(c => c.sourceUrl).filter(Boolean));
+  const stagedUrls = new Set(stagingKept.map(c => c.sourceUrl).filter(Boolean));
 
   const records = [];
   if (onlySource !== 'bww') {
