@@ -167,6 +167,15 @@ const PROTECTED_FIELDS = [
   'isCriticsPick',
   'duplicateOf',
   'duplicateReason',
+  // Task #1256 — duplicate-of-flagged-twin inheritance breadcrumb. A human
+  // (or self-heal script) verified this file's content is genuinely distinct
+  // from its duplicateOf sibling's content-wrongness flag (wrongShow/
+  // wrongProduction/isNonReview), so scripts/lib/review-guards.js's
+  // duplicateOfInheritedFlag() should NOT propagate that flag onto this
+  // file. Same failure mode as duplicateClearReason above (PROTECTED_FIELDS
+  // comment): an unprotected breadcrumb gets silently dropped on rebase and
+  // resurrects the exclusion on a genuinely-cleared file.
+  'duplicateOfFlagInheritanceCleared',
   'publishDateVerified',
   'publishDateSource',
   // Opening-night manual-ingest overrides — rebuild guards read these to bypass

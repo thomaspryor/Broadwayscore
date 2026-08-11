@@ -2929,6 +2929,71 @@ function isIncludableForRebuild(data, show, filePath) {
 }
 
 /**
+ * Task #1256 — duplicate-of-flagged-twin inheritance.
+ *
+ * explainExclusion()'s own duplicateOf branch (above) only asks whether the
+ * referenced sibling is ALSO a dupe/excluded — it never looks at WHY the
+ * sibling is excluded. rebuild-all-reviews.js's inline duplicate-handling
+ * loop goes further: when the sibling turns out to be excluded (refExcluded),
+ * it treats that as a RECOVERY signal and lets the duplicateOf file straight
+ * through — a design built for the legitimate case (a wrongly-excluded twin
+ * whose sibling is a genuinely different, valid review; e.g. the Heated
+ * Rivalry circular-duplicate pair). It does not distinguish that from the
+ * sibling being excluded because its OWN CONTENT is wrong (wrongShow /
+ * wrongProduction / isNonReview): two files sharing the same source URL,
+ * where the flagged file's content is mis-scraped/mis-attributed and the
+ * "duplicate" file is just a second copy of the same bad content under a
+ * different filename. Confirmed live on The Play That Goes Wrong (West End
+ * 2021): guardian--unknown.json's duplicateOf twin was wrongShow-flagged as
+ * A Christmas Carol Goes Wrong content, but the twin's exclusion let this
+ * file's IDENTICAL bad content promote into reviews.json and score.
+ *
+ * This does not replace refExcluded's recovery path — it narrows it. Content-
+ * wrongness flags (wrongShow/wrongProduction/nonReview) on the sibling
+ * propagate onto the duplicateOf file too, UNLESS that file carries an
+ * explicit clear breadcrumb (duplicateOfFlagInheritanceCleared) proving a
+ * human verified its content is genuinely distinct from the flagged sibling's
+ * — the "GOOD outcome" case (cats-west-end-2026's guardian--unknown.json and
+ * london-theatre--marianka-swain.json, where the correct review survived a
+ * stale flag on its twin) must still be recoverable. Every other refExcluded
+ * reason (pre-window date exclusion, blocked URL, etc.) is untouched — those
+ * are not "this content is wrong" signals and stay in the existing recovery
+ * path.
+ *
+ * Scope: one hop only (data -> refData), matching the existing isCircular
+ * check a few lines up in explainExclusion, which is also deliberately
+ * one-hop — a longer duplicateOf chain (A -> B -> C, where C carries the
+ * wrongShow flag but B is clean) is not covered here. That N-node case has
+ * its own dedicated mechanism elsewhere (findDuplicateOfCycle /
+ * resolveCycleTiebreak in duplicate-cycle.js) for the structurally different
+ * "which one file survives a cycle" question; extending inheritance through
+ * a chain is a separate follow-up, not required by the corpus evidence this
+ * fix was built from (the 103 live cases are all direct A->B pairs sharing
+ * one URL).
+ *
+ * @param {object} data - the file that carries duplicateOf (the "twin")
+ * @param {object} refData - the file data.duplicateOf points at
+ * @param {object} [show] - forwarded to explainExclusion for refData's own
+ *   show-context checks
+ * @param {string} [refPath] - path to refData, forwarded to explainExclusion
+ *   for its filePath-dependent checks (e.g. if refData itself has a
+ *   duplicateOf pointing at a third file)
+ * @returns {string|null} the flag reason inherited from refData
+ *   ('wrongShow'|'wrongProduction'|'nonReview'), or null when nothing should
+ *   be inherited (no content-wrongness flag on refData, or data carries the
+ *   explicit clear breadcrumb)
+ */
+function duplicateOfInheritedFlag(data, refData, show, refPath) {
+  if (!data || !refData) return null;
+  if (data.duplicateOfFlagInheritanceCleared === true) return null;
+  const refReason = explainExclusion(refData, show, refPath);
+  if (refReason === 'wrongShow' || refReason === 'wrongProduction' || refReason === 'nonReview') {
+    return refReason;
+  }
+  return null;
+}
+
+/**
  * Pattern Card #4 (gather-reviews.js) — Pending-strand routing decision.
  *
  * `createReviewFile()` routes byline-less reviews (criticName="Unknown") with a URL
@@ -3514,6 +3579,7 @@ module.exports = {
   pickRerouteTarget,
   isIncludableForRebuild,
   explainExclusion,
+  duplicateOfInheritedFlag,
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,
