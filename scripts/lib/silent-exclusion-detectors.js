@@ -32,7 +32,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
-const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
 // ── (b) missing contentTier ─────────────────────────────────────────────
 
@@ -200,8 +200,8 @@ const MIN_SLUG_LENGTH = 3;
  */
 function normalizeHostSlug(host) {
   if (!host) return '';
-  let h = String(host).toLowerCase().trim();
-  h = h.replace(/^www\./, '');
+  let h = stripCosmeticPrefixes(host);
+  if (!h) return '';
   const platform = platformSuffixOf(h);
   const multipart = platform ? null : multipartSuffixOf(h);
   if (platform) {

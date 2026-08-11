@@ -23,7 +23,7 @@
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
-const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -206,7 +206,11 @@ function getCvStyle(outletId) {
 // no diacritic fold needed here, unlike the outletArg slug fallback above.
 function provisionalOutletIdFromHost(host) {
   if (!host || typeof host !== 'string') return null;
-  const h = host.replace(/^www\./, '').toLowerCase().trim();
+  // stripCosmeticPrefixes, not a bare www. strip: an amp./m./mobile. mirror is
+  // the same outlet as its bare domain, and minting from the raw host made
+  // 'm.someblog.substack.com' register under the outletId 'm' (ship-check
+  // 2026-08-11) while the other two host-identity functions said 'someblog'.
+  const h = stripCosmeticPrefixes(host);
   // Aggregators are not outlets — see the header note. Required import: a
   // silently-empty set here would make this guard vacuous, so aggregator-domains.js
   // throws at load if its sets are empty.

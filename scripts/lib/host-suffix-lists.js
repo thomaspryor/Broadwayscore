@@ -59,10 +59,69 @@ const MULTIPART_PUBLIC_SUFFIXES = Object.freeze([
   'org.uk',
 ]);
 
-/** Normalize for suffix testing: lowercase, trimmed, no leading www. */
+/**
+ * Normalize for suffix testing: lowercase, trimmed, no leading www.
+ *
+ * Leading dots are stripped and a trailing root dot (the FQDN form
+ * 'example.com.') is dropped, so a malformed host cannot slice down to an
+ * empty identity: '.blogspot.co.id' used to normalize to '' rather than to
+ * the publication label (ship-check 2026-08-11).
+ */
 function cleanHost(host) {
   if (!host || typeof host !== 'string') return '';
-  return host.toLowerCase().trim().replace(/^www\./, '');
+  return host
+    .toLowerCase()
+    .trim()
+    .replace(/^\.+/, '')
+    .replace(/\.+$/, '')
+    .replace(/^www\./, '');
+}
+
+// Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
+// or mobile host is the same outlet as its bare domain.
+const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
+
+/**
+ * Is this host nothing BUT a suffix — no identity label left?
+ * Used to stop prefix-stripping before it eats the publication label.
+ */
+function isBareSuffix(host) {
+  const h = cleanHost(host);
+  if (!h) return true;
+  if (PLATFORM_HOST_SUFFIXES.includes(h)) return true;
+  if (MULTIPART_PUBLIC_SUFFIXES.includes(h)) return true;
+  return /^blogspot\.[a-z.]{2,}$/.test(h);
+}
+
+/**
+ * Strip www. and any amp./m./mobile. mirror prefixes — the cosmetic labels that
+ * never carry outlet identity.
+ *
+ * ship-check finding (2026-08-11, confirmed by direct execution): the three
+ * consumers disagreed on this step, which reintroduced the very garbage-slug
+ * class the shared lists close. provisionalOutletIdFromHost stripped only www.,
+ * so 'm.someblog.substack.com' minted the outletId 'm' while normalizeHostSlug
+ * and registrableHost both resolved 'someblog'. Meanwhile registrableHost
+ * stripped mirror prefixes UNCONDITIONALLY, so a Blogger mirror whose
+ * publication label happens to be 'm' ('m.blogspot.co.id') lost that label and
+ * collapsed to the platform's own name.
+ *
+ * Hence the isBareSuffix guard: a prefix is only cosmetic if something is left
+ * underneath it. If stripping would leave nothing but a public/platform suffix,
+ * the label we were about to remove WAS the publication.
+ *
+ * @param {string} host
+ * @returns {string}
+ */
+function stripCosmeticPrefixes(host) {
+  let h = cleanHost(host);
+  if (!h) return '';
+  while (MIRROR_SUBDOMAIN_PREFIX.test(h)) {
+    const candidate = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
+    if (isBareSuffix(candidate)) break;
+    h = candidate;
+  }
+  return h;
 }
 
 /**
@@ -106,4 +165,6 @@ module.exports = {
   MULTIPART_PUBLIC_SUFFIXES,
   platformSuffixOf,
   multipartSuffixOf,
+  stripCosmeticPrefixes,
+  isBareSuffix,
 };
