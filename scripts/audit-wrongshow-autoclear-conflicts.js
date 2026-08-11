@@ -39,7 +39,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasEnsembleConsensus } = require('./lib/wrong-production-autoclear');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -139,6 +139,22 @@ function applyFix(findings) {
     // simply clears the flag again.
     data[c.reasonField] = `ensemble-unanimous-${f.kind.replace('_', '-')} (audit-wrongshow-autoclear-conflicts, task #1146)`;
     data[c.atField] = today;
+    // Invalidate the auto-clear breadcrumb we are overturning. review-write-guard.js
+    // states the contract outright: "Every wrongProduction = true writer should call
+    // this." Without it, _freshWrongProductionAutoClear stays true for
+    // AUTO_CLEAR_FRESH_DAYS, so isIntentionalClear() reports the field as
+    // DELIBERATELY CLEARED for up to a week — and the next push-review-texts restore
+    // that finds the flag locally absent (rebase, concurrent writer, another
+    // workflow's checkout) re-clears it as "intentional" instead of restoring this
+    // fix. That is the inverted-ping-pong bug the helper was written to prevent
+    // (ship-check 2026-08-10); re-asserting a flag without it would have quietly
+    // undone this entire backfill within 7 days.
+    if (c.flag === 'wrongProduction') {
+      invalidateWrongProductionAutoClear(data);
+    } else {
+      delete data.wrongShowAutoCleared;
+      delete data.wrongShowAutoClearedAt;
+    }
     try {
       safeWriteReview(fp, data, { force: true });
     } catch (e) {
