@@ -43,12 +43,25 @@ export function generateMetadata({ params }: { params: { season: string } }): Me
   const season = allSeasons.find(s => s.label === params.season);
   if (!season) return {};
 
-  const title = `Tony Awards ${season.ceremonyYear} Predictions, Odds & Predicted Winners`;
-  const description = `${season.ceremonyYear} Tony Award odds and predicted winners for every category. Per-category model blends critic, audience, and precursor signal — tuned on 11 years of Tony history. Updated daily.`;
+  // A current season with no Tony nominations yet has no predictions to offer.
+  // Titling that page "Predictions, Odds & Predicted Winners" is what put it in
+  // Google's index for "2027 tony predictions" — someone searched that, landed
+  // here, and found a single show flagged as a 100% predicted winner. Describe
+  // the page as what it actually is, and keep it out of the index until the
+  // model has something to say. See tony-nominees-premature, 2026-08-11.
+  const preSeason = season.label === getTonySeasonWindow().label && !hasNominationsBeenAnnounced(season);
+
+  const title = preSeason
+    ? `Tony Awards ${season.ceremonyYear} — Eligible Shows So Far`
+    : `Tony Awards ${season.ceremonyYear} Predictions, Odds & Predicted Winners`;
+  const description = preSeason
+    ? `Broadway shows that have opened in the ${season.label} Tony season so far, plus those announced without a date. Tony eligibility has not been ruled on yet and predictions are not available until nominations are announced.`
+    : `${season.ceremonyYear} Tony Award odds and predicted winners for every category. Per-category model blends critic, audience, and precursor signal — tuned on 11 years of Tony history. Updated daily.`;
 
   return {
     title,
     description,
+    ...(preSeason && { robots: { index: false, follow: true } }),
     alternates: {
       canonical: `${BASE_URL}/tony-awards/predictions/${season.label}`,
     },
@@ -232,12 +245,16 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     mainEntity: [
       {
         '@type': 'Question',
-        name: isCurrent
-          ? `What Broadway shows are likely to win Tony Awards in ${season.ceremonyYear}?`
-          : `Which shows won Tony Awards in the ${season.label} season?`,
+        name: isCurrent && !nominationsAnnounced
+          ? `Which Broadway shows are eligible for the ${season.ceremonyYear} Tony Awards?`
+          : isCurrent
+            ? `What Broadway shows are likely to win Tony Awards in ${season.ceremonyYear}?`
+            : `Which shows won Tony Awards in the ${season.label} season?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: isCurrent
+          text: isCurrent && !nominationsAnnounced
+            ? `The ${season.label} Tony season is still in progress. Shows are listed by Broadway opening date; the Tony Awards Administration Committee has not ruled on category eligibility yet, and Broadway Scorecard does not publish predictions for a season until nominations are announced.`
+            : isCurrent
             ? `Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season using a per-category blend of critic scores, audience grades, and (for Best Play) a precursor Awards Score. The model was tuned against 11 years of Tony history.`
             : winnerCount > 0
               ? `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`
@@ -285,8 +302,16 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     const reordered = [shows[winnerIdx], ...shows.slice(0, winnerIdx), ...shows.slice(winnerIdx + 1)];
     return reordered.slice(0, 10);
   }
-  const allItemListCategories = [...categories, ...nonMajorCategories];
-  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length > 0).map(cat => {
+  // Suppress the ranked ItemList entirely for a current season with no nominations.
+  // The on-page "Predicted Winner" pill is gated on showOurPick, but this structured
+  // data is a separate ranking claim aimed at Google — it was still emitting
+  // "position 1: Celebrity Autobiography, Best Revival of a Play 2026-2027" off a
+  // one-show category. A ranking over 1-2 shows is not a ranking; hold the schema
+  // until there is a real field. See tony-nominees-premature, 2026-08-11.
+  const MIN_ITEMLIST_SHOWS = 3;
+  const suppressItemLists = isCurrent && !nominationsAnnounced;
+  const allItemListCategories = suppressItemLists ? [] : [...categories, ...nonMajorCategories];
+  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length >= MIN_ITEMLIST_SHOWS).map(cat => {
     const winnerShowId = majorWinnersByCategory?.get(cat.title);
     const winnerSlug = winnerShowId ? showIdToSlug.get(winnerShowId) ?? null : null;
     const ordered = orderForItemList(cat.shows, winnerSlug);
@@ -632,14 +657,16 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </>
         )}
 
-        {/* Also announced for this season, no opening date yet — can't be grouped into a
-            category or Tony season window without a date, so listed separately and unscored. */}
+        {/* Announced with no opening date. Deliberately NOT titled "this season": with no
+            date we genuinely cannot place a show in a Tony season window, so claiming these
+            belong to the current one would be the same overclaim this page just removed.
+            Listed separately and unscored. See tony-nominees-premature, 2026-08-11. */}
         {isCurrent && announcedNoDate.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-lg font-bold text-white mb-1">Also announced for this season</h2>
+            <h2 className="text-lg font-bold text-white mb-1">Announced, no opening date yet</h2>
             <p className="text-sm text-gray-400 mb-4">
-              Broadway has announced these shows without a confirmed opening date yet — too early to
-              say which Tony season they&apos;ll land in.
+              Broadway has announced these shows but not dated them. Until an opening date is set
+              there is no way to say which Tony season they&apos;ll fall in.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {announcedNoDate.map(show => (

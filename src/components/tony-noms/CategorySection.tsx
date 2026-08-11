@@ -6,7 +6,9 @@ import { getOutletConfig, getOutletLogoUrl } from '@/config/outlet-logos';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { featureFlags } from '@/config/feature-flags';
 
-const SHOW_OUR_PICK_DEFAULT = featureFlags.tonyPredictionsOurPick;
+/** The raw launch flag. Only safe to pass as `showOurPick` when the season being
+ *  rendered is already past nominations — see the CategorySection prop docs. */
+export const SHOW_OUR_PICK_DEFAULT = featureFlags.tonyPredictionsOurPick;
 
 export const SHOW_LEVEL_CATEGORIES = new Set([
   'Best Musical',
@@ -517,13 +519,16 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
   /** When true, hide GD/Kalshi/Polymarket odds columns. Used by past-season Predictions
    *  pages where the markets are closed and the columns would render all '—'. */
   hideMarketOdds?: boolean;
-  /** Whether to render the Our Pick %/Predicted Winner column at all. Defaults to the
-   *  raw tonyPredictionsOurPick flag, but callers rendering the CURRENT (not-yet-nominated)
-   *  season must pass a season-aware value — the raw flag alone shows a fake "100%" pick
-   *  off 1-2 shows the moment a new season's first show opens (see #tony-nominees-premature). */
-  showOurPick?: boolean;
+  /** Whether to render the Our Pick %/Predicted Winner column at all. REQUIRED and
+   *  deliberately not defaulted: the original bug was exactly a global flag that no
+   *  caller had to think about, which rendered a fake "100%" predicted winner off a
+   *  one-show category the moment a new season opened. Callers must decide per-season
+   *  (typically `flag && (!isCurrent || nominationsAnnounced)`). Use
+   *  SHOW_OUR_PICK_DEFAULT only where the season is already known to be nominated.
+   *  See tony-nominees-premature, 2026-08-11. */
+  showOurPick: boolean;
 }) {
-  const resolvedShowOurPick = showOurPick ?? SHOW_OUR_PICK_DEFAULT;
+  const resolvedShowOurPick = showOurPick;
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
   // When Our Pick is live, re-sort major-category nominees by win probability desc.
