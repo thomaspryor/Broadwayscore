@@ -1,7 +1,9 @@
-// Tests for the outlet stub-rate monitor (scripts/audit-outlet-stub-rate.js,
-// card #100). Requires the REAL collectReviewRecords/computeOutletStubRates
-// per CLAUDE.md §15 — no logic copies. Registered explicitly in
-// tests/unit-test-manifest.txt (root-level scripts/*.test.mjs is not globbed).
+// Tests for the outlet stub-rate & invalid-content-rate monitor
+// (scripts/audit-outlet-stub-rate.js, card #100, generalized by card #1244).
+// Requires the REAL collectReviewRecords/computeOutletStubRates/
+// computeOutletInvalidRates per CLAUDE.md §15 — no logic copies. Registered
+// explicitly in tests/unit-test-manifest.txt (root-level scripts/*.test.mjs
+// is not globbed).
 //
 // Born from TheaterMania's 2026 Bootstrap redesign: its article-extractor.js
 // pattern silently stopped matching, 26 reviews corpus-wide sat as
@@ -9,6 +11,16 @@
 // unrelated show. computeOutletStubRates() is the detector that should have
 // caught it: a spike in the STUB rate among RECENTLY collected reviews for
 // one outlet, distinct from legacy/pre-collection-era stub debt.
+//
+// computeOutletInvalidRates() (card #1244) generalizes the same idea to
+// contentTier:'invalid' (extraction returned something, just not real
+// article text). Corpus probe on 2026-08-11 found 'invalid' is 23x larger
+// than 'stub' and includes outlets that are CHRONICALLY near-100% invalid
+// (paywalled/bot-blocked) — a flat rate threshold false-positived on 22
+// outlets including Variety, Deadline, Hollywood Reporter, Daily Mail. So
+// computeOutletInvalidRates additionally requires the recent rate to SPIKE
+// over the outlet's own pre-window baseline; the tests below cover both the
+// shared threshold behavior and that baseline-spike differentiator.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,7 +30,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { collectReviewRecords, computeOutletStubRates } = require('./audit-outlet-stub-rate.js');
+const { collectReviewRecords, computeOutletStubRates, computeOutletInvalidRates } = require('./audit-outlet-stub-rate.js');
 
 const NOW = Date.parse('2026-08-11T12:00:00.000Z');
 const DAY = 24 * 60 * 60 * 1000;
@@ -260,6 +272,200 @@ test('collectReviewRecords walks a real review-texts fixture tree end-to-end', (
     const { outlets } = computeOutletStubRates(records, { nowMs: NOW });
     assert.equal(outlets.length, 1);
     assert.equal(outlets[0].total, 2);
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+// ── computeOutletInvalidRates (card #1244): shared threshold behavior ─────
+
+test('invalid: flags an outlet whose recent reviews are mostly invalid, spiking from a clean baseline', () => {
+  const records = [
+    // broken-outlet: clean baseline (0/2 invalid), then a recent spike to
+    // 3/4 invalid (75% > 50%, count 3 >= 3, spike 75%-0%=75% >= 30pt delta)
+    rec('broken-outlet', 'invalid', daysAgo(1), 'Broken Outlet'),
+    rec('broken-outlet', 'invalid', daysAgo(2)),
+    rec('broken-outlet', 'invalid', daysAgo(5)),
+    rec('broken-outlet', 'complete', daysAgo(10)),
+    rec('broken-outlet', 'complete', daysAgo(60)),
+    rec('broken-outlet', 'complete', daysAgo(90)),
+    // healthy-outlet: mixed, mostly complete — not flagged
+    rec('healthy-outlet', 'complete', daysAgo(1), 'Healthy Outlet'),
+    rec('healthy-outlet', 'complete', daysAgo(3)),
+    rec('healthy-outlet', 'invalid', daysAgo(4)),
+    rec('healthy-outlet', 'complete', daysAgo(6)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+
+  assert.deepEqual(flaggedOutletIds, ['broken-outlet']);
+
+  const broken = outlets.find((o) => o.outletId === 'broken-outlet');
+  assert.equal(broken.flagged, true);
+  assert.equal(broken.recentTotal, 4);
+  assert.equal(broken.recentInvalidCount, 3);
+  assert.equal(broken.recentInvalidRate, 0.75);
+  assert.equal(broken.baselineInvalidRate, 0);
+  assert.equal(broken.outlet, 'Broken Outlet');
+
+  const healthy = outlets.find((o) => o.outletId === 'healthy-outlet');
+  assert.equal(healthy.flagged, false);
+});
+
+test('invalid: a chronically-invalid outlet (steady rate, no spike) is NOT flagged even above 50%/3 — the false-positive class this tier exists to filter', () => {
+  // Mirrors the corpus probe finding (2026-08-11): major outlets like
+  // Variety/Daily Mail sit at a high invalid rate for a long time
+  // (paywalled/bot-blocked) without a new break. Recent rate alone clears
+  // the >50%/>=3 bar, but it's flat vs. baseline, so it must not flag.
+  const records = [
+    rec('chronic-outlet', 'invalid', daysAgo(1)),
+    rec('chronic-outlet', 'invalid', daysAgo(2)),
+    rec('chronic-outlet', 'invalid', daysAgo(3)),
+    rec('chronic-outlet', 'complete', daysAgo(5)),
+    // baseline: same ~70% invalid rate as recent, well past minBaseline
+    rec('chronic-outlet', 'invalid', daysAgo(60)),
+    rec('chronic-outlet', 'invalid', daysAgo(90)),
+    rec('chronic-outlet', 'invalid', daysAgo(120)),
+    rec('chronic-outlet', 'invalid', daysAgo(150)),
+    rec('chronic-outlet', 'invalid', daysAgo(180)),
+    rec('chronic-outlet', 'invalid', daysAgo(210)),
+    rec('chronic-outlet', 'invalid', daysAgo(240)),
+    rec('chronic-outlet', 'complete', daysAgo(270)),
+    rec('chronic-outlet', 'complete', daysAgo(300)),
+    rec('chronic-outlet', 'complete', daysAgo(330)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets.find((x) => x.outletId === 'chronic-outlet');
+  assert.ok(o.recentInvalidRate > 0.5 && o.recentInvalidCount >= 3, 'sanity: clears the flat threshold');
+  assert.ok(o.baselineTotal >= 5, 'sanity: baseline sample is large enough to trust');
+  assert.ok(o.recentInvalidRate - o.baselineInvalidRate < 0.3, 'sanity: no real spike over baseline');
+  assert.equal(o.flagged, false);
+  assert.deepEqual(flaggedOutletIds, []);
+});
+
+test('invalid: a brand-new outlet with no baseline history (insufficient sample) still flags on the plain threshold', () => {
+  // No baseline signal exists yet to compare against — computeOutletTierRates
+  // falls back to the flat rate+count threshold rather than silently passing
+  // outlets too new to have a trustworthy baseline.
+  const records = [
+    rec('new-outlet', 'invalid', daysAgo(1)),
+    rec('new-outlet', 'invalid', daysAgo(2)),
+    rec('new-outlet', 'invalid', daysAgo(3)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets.find((x) => x.outletId === 'new-outlet');
+  assert.equal(o.baselineTotal, 0);
+  assert.equal(o.flagged, true);
+  assert.deepEqual(flaggedOutletIds, ['new-outlet']);
+});
+
+test('invalid: old pre-collection-era invalid records do not count toward the recent window', () => {
+  const records = [
+    rec('legacy-outlet', 'invalid', daysAgo(400)),
+    rec('legacy-outlet', 'invalid', daysAgo(500)),
+    rec('legacy-outlet', 'invalid', daysAgo(600)),
+    rec('legacy-outlet', 'invalid', daysAgo(700)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, []);
+  const legacy = outlets.find((o) => o.outletId === 'legacy-outlet');
+  assert.equal(legacy.invalidRate, 1);
+  assert.equal(legacy.recentTotal, 0);
+  assert.equal(legacy.recentInvalidRate, 0);
+  assert.equal(legacy.flagged, false);
+});
+
+test('invalid: an outlet with fewer than 3 recent invalid records is not flagged even at 100% recent rate', () => {
+  const records = [
+    rec('small-outlet', 'invalid', daysAgo(1)),
+    rec('small-outlet', 'invalid', daysAgo(2)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  assert.deepEqual(flaggedOutletIds, []);
+  const small = outlets.find((o) => o.outletId === 'small-outlet');
+  assert.equal(small.recentInvalidRate, 1);
+  assert.equal(small.recentInvalidCount, 2);
+  assert.equal(small.flagged, false);
+});
+
+test('invalid: an outlet at exactly 50% recent invalid rate is not flagged (threshold is strictly greater than 50%)', () => {
+  const records = [
+    rec('half-outlet', 'invalid', daysAgo(1)),
+    rec('half-outlet', 'invalid', daysAgo(1)),
+    rec('half-outlet', 'invalid', daysAgo(1)),
+    rec('half-outlet', 'complete', daysAgo(1)),
+    rec('half-outlet', 'complete', daysAgo(1)),
+    rec('half-outlet', 'complete', daysAgo(1)),
+  ];
+  const { outlets } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets.find((x) => x.outletId === 'half-outlet');
+  assert.equal(o.recentInvalidRate, 0.5);
+  assert.equal(o.flagged, false);
+});
+
+test('invalid: requireBaselineSpike can be disabled via opts to fall back to the plain threshold shape', () => {
+  const records = [
+    rec('chronic-outlet', 'invalid', daysAgo(1)),
+    rec('chronic-outlet', 'invalid', daysAgo(2)),
+    rec('chronic-outlet', 'invalid', daysAgo(3)),
+    rec('chronic-outlet', 'invalid', daysAgo(60)),
+    rec('chronic-outlet', 'invalid', daysAgo(90)),
+    rec('chronic-outlet', 'invalid', daysAgo(120)),
+    rec('chronic-outlet', 'invalid', daysAgo(150)),
+    rec('chronic-outlet', 'invalid', daysAgo(180)),
+  ];
+  const withSpikeCheck = computeOutletInvalidRates(records, { nowMs: NOW });
+  const withoutSpikeCheck = computeOutletInvalidRates(records, { nowMs: NOW, requireBaselineSpike: false });
+  assert.deepEqual(withSpikeCheck.flaggedOutletIds, []);
+  assert.deepEqual(withoutSpikeCheck.flaggedOutletIds, ['chronic-outlet']);
+});
+
+test('invalid: every outlet record has the expected schema, including baseline fields, and value ranges', () => {
+  const records = [
+    rec('schema-outlet', 'invalid', daysAgo(1)),
+    rec('schema-outlet', 'complete', daysAgo(40)),
+  ];
+  const { outlets } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets[0];
+  const expectedKeys = [
+    'outletId', 'outlet', 'total', 'invalidCount', 'invalidRate',
+    'recentTotal', 'recentInvalidCount', 'recentInvalidRate',
+    'baselineTotal', 'baselineInvalidCount', 'baselineInvalidRate', 'flagged',
+  ].sort();
+  assert.deepEqual(Object.keys(o).sort(), expectedKeys);
+  assert.equal(typeof o.outletId, 'string');
+  assert.equal(typeof o.outlet, 'string');
+  assert.equal(typeof o.flagged, 'boolean');
+  for (const rate of [o.invalidRate, o.recentInvalidRate, o.baselineInvalidRate]) {
+    assert.ok(rate >= 0 && rate <= 1, `rate ${rate} out of [0,1] range`);
+  }
+  assert.ok(o.invalidCount <= o.total);
+  assert.ok(o.recentInvalidCount <= o.recentTotal);
+  assert.ok(o.recentTotal <= o.total);
+  assert.ok(o.baselineInvalidCount <= o.baselineTotal);
+  assert.equal(o.baselineTotal + o.recentTotal, o.total);
+});
+
+test('invalid: collectReviewRecords + computeOutletInvalidRates walk a real review-texts fixture tree end-to-end', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'outlet-invalid-rate-test-'));
+  try {
+    const showDir = path.join(tmpDir, 'some-show-2026');
+    fs.mkdirSync(showDir);
+    fs.writeFileSync(
+      path.join(showDir, 'broken-outlet--critic-a.json'),
+      JSON.stringify({ outletId: 'broken-outlet', outlet: 'Broken Outlet', contentTier: 'invalid', textFetchedAt: daysAgo(1) }),
+    );
+    fs.writeFileSync(
+      path.join(showDir, 'broken-outlet--critic-b.json'),
+      JSON.stringify({ outletId: 'broken-outlet', contentTier: 'complete', textFetchedAt: daysAgo(2) }),
+    );
+
+    const records = collectReviewRecords(tmpDir);
+    assert.equal(records.length, 2);
+
+    const { outlets } = computeOutletInvalidRates(records, { nowMs: NOW });
+    assert.equal(outlets.length, 1);
+    assert.equal(outlets[0].total, 2);
+    assert.equal(outlets[0].invalidCount, 1);
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
