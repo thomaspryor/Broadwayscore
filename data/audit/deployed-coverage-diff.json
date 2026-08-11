@@ -1,11 +1,32 @@
 {
-  "generatedAt": "2026-08-11T17:54:46.352Z",
+  "generatedAt": "2026-08-11T18:43:24.885Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 148,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 147,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "title": "The Comedy About Spies",
+      "openingDate": "2026-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: allthingstheatre, theupcoming"
+        }
+      ],
+      "missingFromProd": [
+        "allthingstheatre",
+        "theupcoming"
+      ],
+      "localCount": 38,
+      "deployedCount": 36
+    }
+  ]
 }
