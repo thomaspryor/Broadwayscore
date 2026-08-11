@@ -24,6 +24,15 @@
  *
  * A NEW Browserbase session-create call site outside this module fails the
  * direct-provider-call CI gate under --strict (scripts/lib/direct-provider-detector.js).
+ *
+ * BROWSERBASE_KILL_SWITCH is enforced HERE, not per-caller (card #114 audit,
+ * 2026-08-11): only collect-review-texts.js and bww-rr-discover.js checked it
+ * themselves — the other 7 call sites (opening-night-poller.js,
+ * sweep-we-aggregators.js, scrape-thestage-roundups.js,
+ * newspapers-com-extract.js, newspapers-browserbase-login.js,
+ * scrape-stagedoor-critics.js, gather-reviews.js) could keep creating paid
+ * sessions after the owner flipped the emergency stop. Checking once in the
+ * shared chokepoint closes the gap for every current AND future caller.
  */
 'use strict';
 
@@ -52,6 +61,9 @@ function sanitizeMetadataValue(value) {
  * @returns {Promise<{id: string, connectUrl: string, raw: Object}>}
  */
 async function createBbSession(opts) {
+  if (process.env.BROWSERBASE_KILL_SWITCH === 'true') {
+    throw new Error('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
+  }
   const apiKey = opts.apiKey || process.env.BROWSERBASE_API_KEY;
   const projectId = opts.projectId || process.env.BROWSERBASE_PROJECT_ID;
   if (!apiKey || !projectId) {
