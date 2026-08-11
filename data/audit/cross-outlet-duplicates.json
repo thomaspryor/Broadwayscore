@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-04T06:10:59.663Z",
+    "generatedAt": "2026-08-11T05:32:47.884Z",
     "threshold": 40,
-    "showsScanned": 1771,
-    "reviewsScanned": 34104,
-    "duplicatesFound": 73,
+    "showsScanned": 1780,
+    "reviewsScanned": 34402,
+    "duplicatesFound": 69,
     "byMethod": {
       "similarity": [
         {
@@ -218,21 +218,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "fela-2009",
-          "method": "similarity",
-          "similarity": 77,
-          "primaryFile": "about-entertainment--unknown.json",
-          "primaryOutlet": "About Entertainment",
-          "primaryCritic": "",
-          "secondaryFile": "nytimes--ben-brantley.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Ben Brantley",
-          "primaryScore": 93,
-          "secondaryScore": 94,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
           "method": "similarity",
           "similarity": 86,
@@ -245,21 +230,6 @@
           "primaryScore": 88,
           "secondaryScore": 85,
           "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "ghost-the-musical-2012",
-          "method": "similarity",
-          "similarity": 77,
-          "primaryFile": "about-entertainment--charles-isherwood.json",
-          "primaryOutlet": "About Entertainment",
-          "primaryCritic": "Charles Isherwood",
-          "secondaryFile": "nytimes--ben-brantley.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Ben Brantley",
-          "primaryScore": 55,
-          "secondaryScore": 38,
-          "scoreDiff": 17,
           "textSource": "fullText"
         },
         {
@@ -413,21 +383,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "irenas-vow-2009",
-          "method": "similarity",
-          "similarity": 88,
-          "primaryFile": "about-entertainment--unknown.json",
-          "primaryOutlet": "About Entertainment",
-          "primaryCritic": "",
-          "secondaryFile": "nytimes--charles-isherwood.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Charles Isherwood",
-          "primaryScore": 44,
-          "secondaryScore": 43,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "king-charles-iii-2015",
           "method": "similarity",
           "similarity": 79,
@@ -470,21 +425,6 @@
           "primaryScore": 44,
           "secondaryScore": 52,
           "scoreDiff": 8,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "la-bete-2010",
-          "method": "similarity",
-          "similarity": 84,
-          "primaryFile": "about-entertainment--ben-brantley.json",
-          "primaryOutlet": "About Entertainment",
-          "primaryCritic": "Ben Brantley",
-          "secondaryFile": "nytimes--charles-isherwood.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Charles Isherwood",
-          "primaryScore": 78,
-          "secondaryScore": 77,
-          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -590,21 +530,6 @@
           "primaryScore": 14,
           "secondaryScore": 15,
           "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "on-the-twentieth-century-2015",
-          "method": "similarity",
-          "similarity": 58,
-          "primaryFile": "front-row-center--tulis-mccall.json",
-          "primaryOutlet": "The Front Row Center",
-          "primaryCritic": "Tulis McCall",
-          "secondaryFile": "nytg--brian-scott-lipton.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Brian Scott Lipton",
-          "primaryScore": 93,
-          "secondaryScore": 91,
-          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -1105,6 +1030,21 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
+        },
+        {
+          "showId": "the-devil-wears-prada-west-end-2024",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "guardian--susannah-clapp.json",
+          "primaryOutlet": "The Guardian",
+          "primaryCritic": "Susannah Clapp",
+          "secondaryFile": "observer--susannah-clapp.json",
+          "secondaryOutlet": "Observer",
+          "secondaryCritic": "Susannah Clapp",
+          "primaryScore": 45,
+          "secondaryScore": 42,
+          "scoreDiff": 3,
+          "textSource": "fullText"
         }
       ]
     }
@@ -1381,21 +1321,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "fela-2009",
-      "method": "similarity",
-      "similarity": 77,
-      "primaryFile": "about-entertainment--unknown.json",
-      "primaryOutlet": "About Entertainment",
-      "primaryCritic": "",
-      "secondaryFile": "nytimes--ben-brantley.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Ben Brantley",
-      "primaryScore": 93,
-      "secondaryScore": 94,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "first-date-2013",
       "method": "similarity+llm",
       "similarity": 61,
@@ -1438,21 +1363,6 @@
       "primaryScore": 88,
       "secondaryScore": 85,
       "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "ghost-the-musical-2012",
-      "method": "similarity",
-      "similarity": 77,
-      "primaryFile": "about-entertainment--charles-isherwood.json",
-      "primaryOutlet": "About Entertainment",
-      "primaryCritic": "Charles Isherwood",
-      "secondaryFile": "nytimes--ben-brantley.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Ben Brantley",
-      "primaryScore": 55,
-      "secondaryScore": 38,
-      "scoreDiff": 17,
       "textSource": "fullText"
     },
     {
@@ -1606,21 +1516,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "irenas-vow-2009",
-      "method": "similarity",
-      "similarity": 88,
-      "primaryFile": "about-entertainment--unknown.json",
-      "primaryOutlet": "About Entertainment",
-      "primaryCritic": "",
-      "secondaryFile": "nytimes--charles-isherwood.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Charles Isherwood",
-      "primaryScore": 44,
-      "secondaryScore": 43,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "jitney-2017",
       "method": "similarity+llm",
       "similarity": 60,
@@ -1678,21 +1573,6 @@
       "primaryScore": 44,
       "secondaryScore": 52,
       "scoreDiff": 8,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "la-bete-2010",
-      "method": "similarity",
-      "similarity": 84,
-      "primaryFile": "about-entertainment--ben-brantley.json",
-      "primaryOutlet": "About Entertainment",
-      "primaryCritic": "Ben Brantley",
-      "secondaryFile": "nytimes--charles-isherwood.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Charles Isherwood",
-      "primaryScore": 78,
-      "secondaryScore": 77,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -1858,21 +1738,6 @@
       "primaryScore": 90,
       "secondaryScore": 87,
       "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "on-the-twentieth-century-2015",
-      "method": "similarity",
-      "similarity": 58,
-      "primaryFile": "front-row-center--tulis-mccall.json",
-      "primaryOutlet": "The Front Row Center",
-      "primaryCritic": "Tulis McCall",
-      "secondaryFile": "nytg--brian-scott-lipton.json",
-      "secondaryOutlet": "New York Theatre Guide",
-      "secondaryCritic": "Brian Scott Lipton",
-      "primaryScore": 93,
-      "secondaryScore": 91,
-      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -2128,6 +1993,21 @@
       "primaryScore": 42,
       "secondaryScore": 56,
       "scoreDiff": 14,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "guardian--susannah-clapp.json",
+      "primaryOutlet": "The Guardian",
+      "primaryCritic": "Susannah Clapp",
+      "secondaryFile": "observer--susannah-clapp.json",
+      "secondaryOutlet": "Observer",
+      "secondaryCritic": "Susannah Clapp",
+      "primaryScore": 45,
+      "secondaryScore": 42,
+      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
