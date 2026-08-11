@@ -19,7 +19,11 @@
     "heathers-the-musical-off-broadway-2025/thereviewshub--the-reviews-hub.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-    "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+    "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+    "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/telegraph--unknown.json",
@@ -111,7 +115,13 @@
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
-    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json"
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -131,23 +141,36 @@
       "heathers-the-musical-off-broadway-2025/thereviewshub--the-reviews-hub.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json"
+      "that-math-show-off-broadway-2026/theater-scene--victor-gluck.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-saviors-off-broadway-2026/acsntn--august-cosentino.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "hungry-women-off-broadway-2026/melissamaney--unknown.json"
+      "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
     ]
   },
   "startTime": "2026-08-11T09:06:09.756Z",
-  "lastProcessed": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-  "log": []
+  "lastProcessed": "medea-off-broadway-2026/standard--nick-curtis.json",
+  "log": [
+    {
+      "t": "2026-08-11T09:16:51.761Z",
+      "event": "bb-session",
+      "session": "c8d8d875",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-"
+    }
+  ]
 }
