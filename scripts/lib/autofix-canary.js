@@ -49,6 +49,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const { fileCard, syncTasks, dispatchDetached } = require('./digest-autofix.js');
+const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const CANARY_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
@@ -298,8 +299,24 @@ function readJsonlLedger(p) {
 //   as "still unresolved", same as an in-flight dispatch under the orphan
 //   bound — not as failure evidence.
 function markerExistsOnOriginMain(dateStr, log = () => {}) {
+  // Depth-bound the fetch (task #466 class): reachable from ~170 shallow
+  // (fetch-depth: 1) CI checkouts, where an unbounded `git fetch origin
+  // main` pulls the WHOLE ~2.1 GB / 165k-commit repo instead of the small
+  // delta and stalls until timeout. Same helper acceptance-check-core.js
+  // uses for the identical reason.
+  let depthArgs = [];
   try {
-    execFileSync('git', ['fetch', '--quiet', 'origin', 'main'], { cwd: REPO, timeout: 30000, stdio: 'pipe' });
+    const isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim() === 'true';
+    let oldestCommitEpoch = 0;
+    if (isShallow) {
+      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim().split('\n').pop();
+      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: REPO, encoding: 'utf8', timeout: 10000 }).trim());
+    }
+    depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  } catch { /* fail open — treat as a complete clone, no extra flags */ }
+  try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: REPO, timeout: 30000, stdio: 'pipe' });
   } catch (err) {
     log(`[autofix-canary] WARN could not fetch origin/main to check the ${dateStr} marker (network/git issue) — unresolved this run, not evidence of absence: ${String(err.message).slice(0, 120)}`);
     return null;
