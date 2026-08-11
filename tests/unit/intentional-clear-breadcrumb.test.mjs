@@ -378,3 +378,89 @@ test('re-flagging invalidates the auto-clear stamp (inverted-ping-pong guard, sh
   const staleLocal = {};
   assert.equal(wouldRestore('wrongProduction', staleLocal, { wrongProduction: true }), true);
 });
+
+// ── Task #1259 audit: stuckRescoreCleared (audit-stuck-rescore-flags.js --fix,
+// run by the SAME enrich-reviews.yml job that later calls push-review-texts).
+// Same shape as staleScoredBeforeOpening/fullTextWrongAuthor above:
+// FRESHNESS-GATED so a bare boolean with no expiry can't suppress restoring
+// ANY future, unrelated re-flag of needsRescore on the file. ──
+
+const stuckRescoreToday = new Date().toISOString();
+
+test('isIntentionalClear: fresh stuckRescoreCleared covers needsRescore/rescoreReason/lateStarAnchorBand', () => {
+  const cleared = { stuckRescoreCleared: true, stuckRescoreClearedAt: stuckRescoreToday };
+  for (const field of ['needsRescore', 'rescoreReason', 'lateStarAnchorBand']) {
+    assert.equal(isIntentionalClear(field, cleared), true, `expected clear for ${field}`);
+  }
+  // No stamp, a falsy stamp, or a stamp with no timestamp must NOT suppress the restore.
+  assert.equal(isIntentionalClear('needsRescore', {}), false);
+  assert.equal(isIntentionalClear('needsRescore', { stuckRescoreCleared: false }), false);
+  assert.equal(isIntentionalClear('needsRescore', { stuckRescoreCleared: true }), false);
+});
+
+test('isIntentionalClear: STALE stuckRescoreCleared (>3d old) does NOT suppress restore', () => {
+  const stale = {
+    stuckRescoreCleared: true,
+    stuckRescoreClearedAt: new Date(Date.now() - 10 * 86400000).toISOString(),
+  };
+  for (const field of ['needsRescore', 'rescoreReason', 'lateStarAnchorBand']) {
+    assert.equal(isIntentionalClear(field, stale), false);
+  }
+});
+
+test('isIntentionalClear: FUTURE-dated stuckRescoreClearedAt does NOT suppress restore (mirrors codex review, task #1237)', () => {
+  const future = {
+    stuckRescoreCleared: true,
+    stuckRescoreClearedAt: new Date(Date.now() + 30 * 86400000).toISOString(),
+  };
+  for (const field of ['needsRescore', 'rescoreReason', 'lateStarAnchorBand']) {
+    assert.equal(isIntentionalClear(field, future), false);
+  }
+});
+
+test('stuckRescoreCleared(+At) is itself a PROTECTED_FIELD', () => {
+  assert.ok(PROTECTED_FIELDS.includes('stuckRescoreCleared'));
+  assert.ok(PROTECTED_FIELDS.includes('stuckRescoreClearedAt'));
+});
+
+test('restore decision: audit-stuck-rescore-flags.js --fix is NOT reverted by the same-job restore', () => {
+  // Reproduces the enrich-reviews.yml shape: audit-stuck-rescore-flags.js --fix
+  // deletes needsRescore/rescoreReason/lateStarAnchorBand in the SAME checkout
+  // whose HEAD (committed) still carries the stuck flag — the exact
+  // "committed has content, local is empty" pattern the restore treats as
+  // data loss without this breadcrumb.
+  const local = {
+    stuckRescoreCleared: true, stuckRescoreClearedAt: stuckRescoreToday,
+  };
+  const committed = { needsRescore: true, rescoreReason: 'bw-v6-decompression', lateStarAnchorBand: 'B' };
+  for (const field of ['needsRescore', 'rescoreReason', 'lateStarAnchorBand']) {
+    assert.equal(wouldRestore(field, local, committed), false,
+      `stuck ${field} must NOT be resurrected over an intentional clear`);
+  }
+});
+
+test('stuckRescoreCleared breadcrumb does NOT extend to assignedScore/llmScore (audit-stuck-rescore-flags.js does not clear those)', () => {
+  const cleared = { stuckRescoreCleared: true, stuckRescoreClearedAt: stuckRescoreToday };
+  assert.equal(isIntentionalClear('assignedScore', cleared), false);
+  assert.equal(isIntentionalClear('llmScore', cleared), false);
+});
+
+test('a later legitimate needsRescore re-flag is a non-empty write, so no reset path is needed to invalidate the stamp', () => {
+  // Unlike wrongProduction (a boolean that can be re-flagged true over a still-
+  // fresh auto-clear stamp, requiring invalidateWrongProductionAutoClear),
+  // every producer that RE-FLAGS needsRescore writes a real `true` (grep
+  // `needsRescore = true` across scripts/). One producer,
+  // strip-stale-single-model-scores.js, nulls it instead of deleting/setting
+  // true — but it never runs in the same job as audit-stuck-rescore-flags.js
+  // --fix, so it can't collide with this stamp inside the freshness window.
+  // wouldRestore only fires when the LOCAL field is empty; an ordinary
+  // re-flag writes needsRescore=true directly, which is never empty, so the
+  // still-fresh stuckRescoreCleared stamp never gets a chance to suppress it.
+  const reflagged = {
+    needsRescore: true,
+    rescoreReason: 'bw-v6-decompression',
+    stuckRescoreCleared: true,
+    stuckRescoreClearedAt: stuckRescoreToday,
+  };
+  assert.equal(wouldRestore('needsRescore', reflagged, { needsRescore: false }), false);
+});
