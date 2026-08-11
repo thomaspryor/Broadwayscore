@@ -35,7 +35,7 @@ const path = require('path');
 
 const { fetchPage } = require('./lib/scraper');
 const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
-const { validateSeason, getSeasonDates } = require('./lib/we-seasons');
+const { validateSeason, getSeasonDates, isDateInSeason } = require('./lib/we-seasons');
 const { isCorroborated } = require('./lib/we-historical-corroboration');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -200,6 +200,16 @@ async function main() {
   for (const [key, base] of byKey) {
     if (existingKeys.has(key)) {
       if (verbose) console.log(`  [in shows.json] ${base.title}`);
+      continue;
+    }
+    // A parsed date outside the requested season window means either a
+    // parser mismatch or a boundary-adjacent transfer from an adjacent
+    // season — don't silently tag it with the wrong season (promote-
+    // historical-we.js trusts `candidate.season` verbatim to build the
+    // show id). A missing date can't be checked either way and is left to
+    // isCorroborated (which now fails closed on missing dates too).
+    if (base.openingDate && !isDateInSeason(base.openingDate, seasonArg)) {
+      console.log(`  ✗ ${base.title} | ${base.venue} | ${base.openingDate} — outside ${seasonArg} window, skipped`);
       continue;
     }
     const corroboration = isCorroborated(

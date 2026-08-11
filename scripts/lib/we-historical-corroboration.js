@@ -43,13 +43,16 @@ function recordsAgree(a, b, opts = {}) {
   if (normalizeTitle(a.title) !== normalizeTitle(b.title)) return false;
   if (canonicalVenue(a.venue) !== canonicalVenue(b.venue)) return false;
 
-  if (a.openingDate && b.openingDate) {
-    const da = new Date(a.openingDate);
-    const db = new Date(b.openingDate);
-    if (isNaN(da.getTime()) || isNaN(db.getTime())) return false;
-    const diffDays = Math.abs(da - db) / 86400000;
-    if (diffDays > dayTolerance) return false;
-  }
+  // Fail closed on a missing date rather than skipping the window check —
+  // West End venues restage the same title+venue combo years or decades
+  // apart (Cats, Chess, pantomimes), so title+venue alone is not enough to
+  // call two records the same production when neither confirms the year.
+  if (!a.openingDate || !b.openingDate) return false;
+  const da = new Date(a.openingDate);
+  const db = new Date(b.openingDate);
+  if (isNaN(da.getTime()) || isNaN(db.getTime())) return false;
+  const diffDays = Math.abs(da - db) / 86400000;
+  if (diffDays > dayTolerance) return false;
 
   return true;
 }
