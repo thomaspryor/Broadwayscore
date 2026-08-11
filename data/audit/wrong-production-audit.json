@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-11T00:01:48.546Z",
+  "timestamp": "2026-08-11T00:26:54.129Z",
   "stats": {
-    "totalReviews": 42017,
+    "totalReviews": 42021,
     "alreadyFlagged": 18306,
-    "dateGuardCatches": 134,
+    "dateGuardCatches": 135,
     "directorMismatch": 962,
-    "tvFilmSignals": 1177,
-    "londonSignals": 839,
+    "tvFilmSignals": 1180,
+    "londonSignals": 843,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
     "noPublishDate": 3522
@@ -6005,10 +6005,69 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-death-note-the-musical",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 50d before show (2026-06-10 vs 2026-07-30)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "publishDate": "2026-08-05",
+      "url": "https://www.londontheatredirect.com/news/the-lowdown-on-death-note-the-musical-at-the-barbican",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 44,
       "publishDate": "2026-08-03",
       "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "rhombus-rota--mark.json",
+      "publishDate": "2026-08-04",
+      "url": "https://rhombusrota.co.uk/2026/08/04/death-note-the-musical-at-the-barbican-theatre-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34484,6 +34543,19 @@
       "file": "bestoftheatre--unknown.json",
       "publishDate": null,
       "url": "https://www.bestoftheatre.co.uk/death-note-the-musical-in-concert",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "stanservice--molly-wilson.json",
+      "publishDate": "2026-08-09",
+      "url": "https://stanservice.substack.com/p/death-note-the-musical-2026-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
