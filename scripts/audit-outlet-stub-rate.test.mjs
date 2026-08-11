@@ -558,3 +558,48 @@ test('computeOutletTierRates: excludeTierReasons removes matching records from t
   assert.equal(o.recentTotal, 1);
   assert.equal(o.baselineTotal, 1);
 });
+
+test('invalid: exclusion shrinking baselineTotal below the trust floor does NOT reopen the no-history bypass — outlet is NOT flagged', () => {
+  // established-outlet has a real 6-record baseline (>= minBaselineForSpikeCheck),
+  // but 5 of those 6 are wrongProduction noise. After exclusion, the clean
+  // baseline is just 1 record — below the trust floor. Recent is a modest,
+  // stable-looking genuine-invalid rate (not an actual spike vs. what little
+  // clean baseline exists). Before the #1273-class fix, shrinking
+  // baselineTotal below 5 would fall through to the plain-threshold bypass
+  // and flag this outlet purely because exclusion thinned its clean sample —
+  // not because anything about its extractor actually changed.
+  const records = [
+    rec('established-outlet', 'invalid', daysAgo(1), null, undefined), // genuine, recent
+    rec('established-outlet', 'invalid', daysAgo(2), null, undefined), // genuine, recent
+    rec('established-outlet', 'invalid', daysAgo(3), null, undefined), // genuine, recent
+    rec('established-outlet', 'complete', daysAgo(4)), // recent
+    rec('established-outlet', 'invalid', daysAgo(60), null, undefined), // genuine, baseline (1 clean baseline record)
+    rec('established-outlet', 'invalid', daysAgo(70), null, 'Wrong production'), // baseline, excluded
+    rec('established-outlet', 'invalid', daysAgo(80), null, 'Wrong production'), // baseline, excluded
+    rec('established-outlet', 'invalid', daysAgo(90), null, 'Wrong show'), // baseline, excluded
+    rec('established-outlet', 'invalid', daysAgo(100), null, 'Wrong production'), // baseline, excluded
+    rec('established-outlet', 'invalid', daysAgo(110), null, 'Wrong production'), // baseline, excluded
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets.find((x) => x.outletId === 'established-outlet');
+  assert.ok(o.recentInvalidRate > 0.5 && o.recentInvalidCount >= 3, 'sanity: clears the plain rate threshold');
+  assert.equal(o.baselineTotal, 1, 'sanity: clean baseline shrank below the trust floor');
+  assert.equal(o.flagged, false);
+  assert.deepEqual(flaggedOutletIds, []);
+});
+
+test('invalid: a genuinely thin/new outlet (no real history either way) still flags on the plain threshold after exclusion', () => {
+  // Contrast with the previous test: here there is NO baseline at all, with
+  // or without exclusion — a brand-new outlet, not one whose baseline was
+  // thinned by exclusion. The pre-#1266 bypass must still apply.
+  const records = [
+    rec('new-outlet-2', 'invalid', daysAgo(1)),
+    rec('new-outlet-2', 'invalid', daysAgo(2)),
+    rec('new-outlet-2', 'invalid', daysAgo(3)),
+  ];
+  const { outlets, flaggedOutletIds } = computeOutletInvalidRates(records, { nowMs: NOW });
+  const o = outlets.find((x) => x.outletId === 'new-outlet-2');
+  assert.equal(o.baselineTotal, 0);
+  assert.equal(o.flagged, true);
+  assert.deepEqual(flaggedOutletIds, ['new-outlet-2']);
+});

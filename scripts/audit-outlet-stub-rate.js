@@ -196,7 +196,6 @@ function computeOutletTierRates(records, opts = {}) {
   const byOutlet = new Map();
   for (const r of Array.isArray(records) ? records : []) {
     if (!r || !r.outletId) continue;
-    if (excludeTierReasons.size > 0 && excludeTierReasons.has(r.contentTierReason)) continue;
     if (!byOutlet.has(r.outletId)) {
       byOutlet.set(r.outletId, { outletId: r.outletId, outlet: r.outlet || null, reviews: [], excludedReviews: [] });
     }
@@ -214,8 +213,15 @@ function computeOutletTierRates(records, opts = {}) {
     if (!entry.outlet && r.outlet) entry.outlet = r.outlet;
   }
 
+  const isBaselineRecord = (r) => {
+    if (!r.textFetchedAt) return true; // missing/unparseable timestamp: not recent, not future
+    const t = Date.parse(r.textFetchedAt);
+    if (Number.isNaN(t)) return true;
+    return nowMs - t > recentWindowMs; // strictly older than the window (and not future)
+  };
+
   const outlets = [];
-  for (const { outletId, outlet, reviews } of byOutlet.values()) {
+  for (const { outletId, outlet, reviews, excludedReviews } of byOutlet.values()) {
     const total = reviews.length;
     const tierCount = reviews.filter((r) => r.contentTier === tier).length;
     const tierRate = total > 0 ? tierCount / total : 0;
@@ -244,10 +250,31 @@ function computeOutletTierRates(records, opts = {}) {
     const baselineTierCount = tierCount - recentTierCount - future.filter((r) => r.contentTier === tier).length;
     const baselineTierRate = baselineTotal > 0 ? baselineTierCount / baselineTotal : 0;
 
+    // Pre-exclusion baseline sample size — used ONLY to distinguish "this
+    // outlet genuinely has no history" from "exclusion ate its baseline
+    // sample" below. Excluding wrongProduction/wrongShow noise can shrink
+    // baselineTotal under the trust floor even for a well-established
+    // outlet; without this check, that shrinkage would silently reopen the
+    // no-baseline-history bypass — exactly the false-positive class
+    // requireBaselineSpike exists to filter, just for a narrower signal.
+    const rawBaselineTotal = baselineTotal + excludedReviews.filter(isBaselineRecord).length;
+
     const passesRateThreshold = recentTierRate > flagRecentTierRate && recentTierCount >= flagMinRecentTierCount;
-    const passesSpikeCheck = !requireBaselineSpike
-      || baselineTotal < minBaselineForSpikeCheck
-      || (recentTierRate - baselineTierRate) >= minBaselineSpikeDelta;
+    let passesSpikeCheck;
+    if (!requireBaselineSpike) {
+      passesSpikeCheck = true;
+    } else if (baselineTotal >= minBaselineForSpikeCheck) {
+      passesSpikeCheck = (recentTierRate - baselineTierRate) >= minBaselineSpikeDelta;
+    } else if (rawBaselineTotal >= minBaselineForSpikeCheck) {
+      // Real history exists, but not enough of it survived exclusion to
+      // trust a clean baseline rate — don't flag rather than falling back
+      // to the no-history bypass.
+      passesSpikeCheck = false;
+    } else {
+      // Genuinely thin/new outlet, not caused by exclusion — preserve the
+      // pre-#1266 no-baseline-history bypass.
+      passesSpikeCheck = true;
+    }
     const flagged = passesRateThreshold && passesSpikeCheck;
 
     outlets.push({
