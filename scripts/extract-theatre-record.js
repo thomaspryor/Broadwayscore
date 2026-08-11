@@ -778,20 +778,30 @@ async function main() {
     let newCount = 0;
     let skippedCount = 0;
 
-    // WET roundup rows, fetched once per show, used as a corroboration
-    // fallback for Guard 5 (wrong-show content) below — a review whose
-    // outlet appears in the show's WET roundup is real, even when the
-    // title-mention count is low (common-word titles like "Barcelona").
-    // Fetched eagerly (not lazily on first guard failure) so a WET fetch
-    // error surfaces once per show, not silently per-review. See #1227.
-    let wetOutletIds = new Set();
-    try {
-      const wetResult = await discoverWetRoundupRows(show, { log: () => {} });
-      if (wetResult && Array.isArray(wetResult.rows)) {
-        wetOutletIds = new Set(wetResult.rows.map(r => getOutletId(r.outlet)));
+    // WET roundup rows, used as a corroboration fallback for Guard 5
+    // (wrong-show content) below — a review whose outlet appears in the
+    // show's WET roundup is real, even when the title-mention count is low
+    // (common-word titles like "Barcelona"). Fetched LAZILY, on the first
+    // review that actually needs it, and memoized per show — most shows
+    // never hit a low-mention-count review, so --browse-we (which processes
+    // ~80+ shows/week) shouldn't pay a WET fetch on every one. See #1227.
+    let wetOutletIds = null; // null = not yet fetched this show
+
+    async function getWetOutletIds() {
+      if (wetOutletIds !== null) return wetOutletIds;
+      wetOutletIds = new Set();
+      try {
+        const wetResult = await discoverWetRoundupRows(show, { log: (msg) => console.log(`    [WET] ${msg}`) });
+        if (wetResult && Array.isArray(wetResult.rows)) {
+          wetOutletIds = new Set(wetResult.rows.map(r => getOutletId(r.outlet)));
+        }
+        if (wetOutletIds.size === 0) {
+          console.log(`    [WET] no roundup rows found for corroboration — check WET credentials/roundup existence if this show has real low-mention rejects`);
+        }
+      } catch (e) {
+        console.log(`    [WET] corroboration fetch failed (non-fatal): ${e.message}`);
       }
-    } catch (e) {
-      console.log(`  WET corroboration fetch failed (non-fatal): ${e.message}`);
+      return wetOutletIds;
     }
 
     for (const review of reviews) {
@@ -885,7 +895,14 @@ async function main() {
       // word titles (city names, etc.) break the raw mention-count heuristic
       // on real reviews that just don't repeat the title (#1227).
       if (!skipReason) {
-        const guardResult = checkWrongShowGuard(review.fullText, show.title, { outletId, wetOutletIds });
+        let guardResult = checkWrongShowGuard(review.fullText, show.title, { outletId, wetOutletIds: new Set() });
+        if (!guardResult.pass) {
+          // Below threshold on the raw mention count — only now fetch WET
+          // rows (lazily, memoized per show) and give corroboration a
+          // chance before rejecting.
+          const wetIds = await getWetOutletIds();
+          guardResult = checkWrongShowGuard(review.fullText, show.title, { outletId, wetOutletIds: wetIds });
+        }
         if (!guardResult.pass) {
           skipReason = guardResult.skipReason;
         } else if (guardResult.corroborated) {
