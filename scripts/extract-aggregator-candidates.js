@@ -85,6 +85,10 @@ async function main() {
   // Knowledge" — both already-closed shows in shows.json when this was added
   // 2026-08-11 — sits in staging (and the health-check "OB Discovery — Action
   // Needed" digest) forever. See pruneStagedCandidates() for the full story.
+  // This read-modify-write joins the existing race surface on this same file
+  // (promote-ob-venue-candidates.js's own rewriteStaging()) — tracked as its
+  // own problem at task #999 (OB discovery S5: ob-venue-candidates.json
+  // concurrency), not solved here.
   const stagingBefore = loadStaging();
   const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, shows);
   if (stagingPruned.length > 0) {
