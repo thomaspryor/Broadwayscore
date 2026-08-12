@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-08-11T07:57:53.043Z",
+  "lastChecked": "2026-08-12T08:06:35.809Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.7% scored (19707/19965)"
+      "message": "98.7% scored (19571/19823)"
     },
     {
       "name": "Quality: corpus drift",
@@ -28,8 +28,18 @@
     },
     {
       "name": "Quality: outlet domain moves",
+      "status": "pass",
+      "message": "No probable domain moves in 225 unregistered host(s)"
+    },
+    {
+      "name": "Quality: outlet stub rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1100 outlet(s), 42319 review(s)"
+    },
+    {
+      "name": "Quality: outlet invalid-content rate",
       "status": "warn",
-      "message": "4 unregistered host(s) name-match a registered outlet (e.g. reviewsgate.co.uk → reviewsgate) — probable domain move dropping reviews via domain-mismatch"
+      "message": "8 outlet(s) show a broken-extractor signature (worst: metrmag — 5/5 recent invalid, 100% vs 0% baseline)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -44,7 +54,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 22h ago)"
+      "message": "106 outlet×market rows checked, none NEW silent 2+ consecutive weeks (26 known/baselined, 2d ago)"
     }
   ]
 }

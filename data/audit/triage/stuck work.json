@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-08-11T07:57:53.044Z",
+  "lastChecked": "2026-08-12T08:06:35.810Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (9d, stamp overdue 3d); Scraping v2: T4 was a yield regression — reviews.php is not  (9d, stamp overdue 3d); Generalize recover-serp-text.js urlless sweep beyond Telegra (6d, stamp overdue 3d) (14 awaiting recheck, earliest due 2026-08-09; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
+      "message": "7 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (10d, stamp overdue 4d); Scraping v2: T4 was a yield regression — reviews.php is not  (10d, stamp overdue 4d); Generalize recover-serp-text.js urlless sweep beyond Telegra (7d, stamp overdue 4d) (12 awaiting recheck, earliest due 2026-08-10; 62 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "42 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (19d); Trainspotting: only 4 reviews on site + email said 7 (invest (19d); cmux-launch: adopt a late-alive workspace instead of close-a (18d)"
+      "message": "32 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (20d); Trainspotting: only 4 reviews on site + email said 7 (invest (20d); cmux-launch: adopt a late-alive workspace instead of close-a (19d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",
       "status": "warn",
-      "message": "1 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
+      "message": "2 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
     }
   ]
 }
