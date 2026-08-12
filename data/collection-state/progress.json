@@ -59,7 +59,10 @@
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "the-producers-west-end-2025/variety--ellise-shafer.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--unknown.json",
+    "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -1253,7 +1256,14 @@
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
     "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
-    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json"
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--stacey-tyler.json",
+    "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json",
+    "operation-mincemeat-2025/musical-theatre-review--unknown.json",
+    "operation-mincemeat-2025/thereviewshub--mike-wells.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1294,10 +1304,14 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
       "loves-labours-lost-globe-west-end-2026/times-uk--clive-davis.json",
@@ -1328,11 +1342,12 @@
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+      "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+      "murder-she-didnt-write-west-end-2025/thereviewshub--the-reviews-hub-london.json"
     ]
   },
   "startTime": "2026-08-12T05:07:25.885Z",
-  "lastProcessed": "just-in-time-2025/newyorker--conde-nast.json",
+  "lastProcessed": "operation-mincemeat-2025/thereviewshub--mike-wells.json",
   "log": [
     {
       "t": "2026-08-12T05:41:32.904Z",
@@ -1369,6 +1384,12 @@
       "event": "bb-session",
       "session": "f10d2091",
       "url": "http://www.jonathanbaz.com/2026/08/im-every-woman-chaka-kahn-musical-review.html"
+    },
+    {
+      "t": "2026-08-12T08:49:00.570Z",
+      "event": "bb-session",
+      "session": "6b9cbfd9",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
     }
   ]
 }
