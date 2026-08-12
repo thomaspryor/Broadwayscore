@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-12T22:35:51.688Z",
+    "generatedAt": "2026-08-12T22:45:31.104Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 25 exempt, 40 covered\n  ⚠️    96  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    49  data/audit/remediation-log.jsonl  — no merge driver; needs a decision\n  ⚠️    38  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    37  tests/unit-test-manifest.txt  — no merge driver; needs a decision\n  ⚠️    35  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    31  scripts/health-check.js  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 25 exempt, 40 covered\n  ⚠️    96  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    49  data/audit/remediation-log.jsonl  — no merge driver; needs a decision\n  ⚠️    38  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    38  tests/unit-test-manifest.txt  — no merge driver; needs a decision\n  ⚠️    35  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    31  scripts/health-check.js  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
