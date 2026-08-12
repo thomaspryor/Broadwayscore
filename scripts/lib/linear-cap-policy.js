@@ -7,6 +7,13 @@
  *
  * No fetch, no fs, no Date.now() — callers pass `now` in so this stays a pure
  * function CLAUDE.md rule 15 requires tests to require() directly.
+ *
+ * Scope note: the 250-issue cap is workspace-wide, but every caller counts
+ * only team BRO's issues (scripts/lib/linear-client.js's TEAM_KEY) — the same
+ * team-scoped assumption every other Linear script in this repo already
+ * makes. Correct today because BRO is the only team in the workspace; if a
+ * second team is ever added, this stops being an accurate proxy for the real
+ * cap and needs a workspace-wide count instead.
  */
 
 'use strict';
@@ -24,12 +31,14 @@ function isOverCapThreshold(count, threshold = WARN_THRESHOLD) {
 }
 
 // issue: { stateType, completedAt, canceledAt } (the shape linear-client.js's
-// listIssues() returns). Prefers completedAt when an issue somehow carries
-// both timestamps — intentional, not a bug to "fix": completedAt is the more
-// recent/authoritative close event on a Done issue.
+// listIssues() returns). closedAt is picked by CURRENT stateType, not by an
+// completedAt-wins fallback — an issue moved Done -> Canceled can carry a
+// stale completedAt from its earlier Done pass, and blindly preferring it
+// would archive on the wrong (older) timestamp, undercutting the 48h reopen
+// buffer for the transition that actually made it terminal.
 function isArchivableIssue(issue, now, ageHours = ARCHIVE_AGE_HOURS) {
   if (!issue || (issue.stateType !== 'completed' && issue.stateType !== 'canceled')) return false;
-  const closedAt = issue.completedAt || issue.canceledAt;
+  const closedAt = issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
   if (!closedAt) return false;
   const ageMs = now - new Date(closedAt).getTime();
   return ageMs >= ageHours * 60 * 60 * 1000;

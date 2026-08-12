@@ -53,13 +53,42 @@ test('isArchivableIssue: false when completed/canceled but no timestamp present'
   assert.equal(isArchivableIssue(issue, NOW), false);
 });
 
-test('isArchivableIssue: prefers completedAt when both timestamps are present', () => {
+test('isArchivableIssue: uses completedAt (not canceledAt) when stateType is completed, even if canceledAt is also set', () => {
+  // A recent canceledAt from an earlier pass through Canceled shouldn't matter
+  // once the issue is back at Done — old canceledAt would wrongly make this
+  // look archivable-since-the-stale-cancellation instead of the real close.
   const issue = {
     stateType: 'completed',
+    completedAt: new Date(NOW - 1 * HOUR_MS).toISOString(),
+    canceledAt: new Date(NOW - 49 * HOUR_MS).toISOString(),
+  };
+  assert.equal(isArchivableIssue(issue, NOW), false);
+});
+
+test('isArchivableIssue: uses canceledAt (not a stale completedAt) when stateType is canceled', () => {
+  // Issue went Done -> Canceled: completedAt is stale from the earlier Done
+  // pass. Must not archive on that old timestamp — only the actual
+  // cancellation, which happened recently, governs the 48h buffer.
+  const issue = {
+    stateType: 'canceled',
     completedAt: new Date(NOW - 49 * HOUR_MS).toISOString(),
     canceledAt: new Date(NOW - 1 * HOUR_MS).toISOString(),
   };
+  assert.equal(isArchivableIssue(issue, NOW), false);
+});
+
+test('isArchivableIssue: exact age boundary is inclusive (>=)', () => {
+  const issue = { stateType: 'completed', completedAt: new Date(NOW - ARCHIVE_AGE_HOURS * HOUR_MS).toISOString() };
   assert.equal(isArchivableIssue(issue, NOW), true);
+});
+
+test('isArchivableIssue: false for a bare object with no stateType at all', () => {
+  assert.equal(isArchivableIssue({}, NOW), false);
+});
+
+test('isOverCapThreshold: uses WARN_THRESHOLD when no threshold argument is passed', () => {
+  assert.equal(isOverCapThreshold(WARN_THRESHOLD - 1), false);
+  assert.equal(isOverCapThreshold(WARN_THRESHOLD), true);
 });
 
 test('isArchivableIssue: respects a custom ageHours override', () => {

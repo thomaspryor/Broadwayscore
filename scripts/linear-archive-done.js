@@ -14,6 +14,12 @@
  * outside that file's small allowlist fails the CI gate at
  * scripts/audit-linear-issuecreate-chokepoint.js.
  *
+ * Note: Linear's issues() connection excludes archived issues by default, so
+ * an issue archived here drops out of scripts/linear-import.js --reconcile's
+ * view too. That's fine — --reconcile only ever reports a vanished issue as
+ * "missing" (console.error, not a re-create) — but don't be surprised if a
+ * reconcile run's missing-count ticks up right after an archive run.
+ *
  * Usage:
  *   node scripts/linear-archive-done.js             # archives eligible issues
  *   node scripts/linear-archive-done.js --dry-run    # lists eligible issues only
@@ -59,20 +65,33 @@ async function main() {
     return;
   }
 
+  // Per-issue try/catch: one failing archiveIssue() call (network blip, an
+  // issue already archived by a concurrent run) must not abort the rest of
+  // the batch — and the log entry is written AFTER the mutation attempt,
+  // recording what actually happened, not what was about to be attempted.
   let archived = 0;
+  let failed = 0;
   for (const issue of candidates) {
-    logArchive({
-      identifier: issue.identifier,
-      id: issue.id,
-      title: issue.title,
-      stateType: issue.stateType,
-      closedAt: issue.completedAt || issue.canceledAt,
-      archivedAt: new Date(now).toISOString(),
-    });
-    await linear.archiveIssue(issue.id);
-    archived += 1;
+    const closedAt = issue.stateType === 'completed' ? issue.completedAt : issue.canceledAt;
+    try {
+      await linear.archiveIssue(issue.id);
+      logArchive({
+        identifier: issue.identifier, id: issue.id, title: issue.title,
+        stateType: issue.stateType, closedAt, archivedAt: new Date(now).toISOString(), outcome: 'archived',
+      });
+      archived += 1;
+    } catch (err) {
+      logArchive({
+        identifier: issue.identifier, id: issue.id, title: issue.title,
+        stateType: issue.stateType, closedAt, archivedAt: new Date(now).toISOString(),
+        outcome: 'failed', error: err.message,
+      });
+      console.error(`linear-archive-done: failed to archive ${issue.identifier}: ${err.message}`);
+      failed += 1;
+    }
   }
-  console.log(`linear-archive-done: archived ${archived} issue(s). Log: ${ARCHIVE_LOG_PATH}`);
+  console.log(`linear-archive-done: archived ${archived} issue(s), ${failed} failed. Log: ${ARCHIVE_LOG_PATH}`);
+  if (failed > 0) process.exitCode = 1;
 }
 
 if (require.main === module) {
