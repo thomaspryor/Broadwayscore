@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { sanitizeMetadataValue, createBbSession, _resetDayCapCacheForTests } = require('./browserbase-session.js');
 const browserbaseLiveUsage = require('./browserbase-live-usage.js');
+const openingNightSelection = require('./opening-night-selection.js');
 
 test('createBbSession rejects when BROWSERBASE_KILL_SWITCH=true, before any network call', async () => {
   const prev = process.env.BROWSERBASE_KILL_SWITCH;
@@ -122,6 +123,59 @@ test('createBbSession caches the live count briefly so back-to-back calls do not
     fetchMock.mock.restore();
     liveMock.mock.restore();
     _resetDayCapCacheForTests();
+    if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+    else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
+  }
+});
+
+test('createBbSession (#1333): a bulk caller is blocked below the raw ceiling once the opening-window reserve is applied', async () => {
+  _resetDayCapCacheForTests();
+  const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+  const prevArgv1 = process.argv[1];
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  process.argv[1] = '/some/path/collect-review-texts.js'; // not on the exempt allowlist
+  // 1 show in window * reservePerShow(5) = ceiling 10 -> effective 5. A live
+  // count of 6 is UNDER the raw ceiling (would have been allowed pre-#1333)
+  // but AT/OVER the reduced one (must be blocked now).
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 1);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 6);
+  try {
+    await assert.rejects(
+      () => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' }),
+      /Browserbase daily cap reached \(6\/5 \(raw ceiling 10, reduced for opening-window reserve\)\)/,
+    );
+  } finally {
+    windowMock.mock.restore();
+    liveMock.mock.restore();
+    process.argv[1] = prevArgv1;
+    if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+    else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
+  }
+});
+
+test('createBbSession (#1333): an exempt opening-night caller is NOT blocked by the same reduced ceiling', async () => {
+  _resetDayCapCacheForTests();
+  const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
+  const prevArgv1 = process.argv[1];
+  process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  process.argv[1] = '/some/path/opening-night-poller.js'; // on the exempt allowlist
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 1);
+  const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 6);
+  const fetchMock = mock.method(globalThis, 'fetch', async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({ id: 'sess_exempt', connectUrl: 'wss://example.test' }),
+  }));
+  try {
+    // Same live count (6) that blocked the bulk caller above must succeed
+    // here — the exempt caller checks the RAW ceiling (10), not the reduced one (5).
+    const result = await createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller' });
+    assert.equal(result.id, 'sess_exempt');
+  } finally {
+    fetchMock.mock.restore();
+    windowMock.mock.restore();
+    liveMock.mock.restore();
+    process.argv[1] = prevArgv1;
     if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
     else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
   }

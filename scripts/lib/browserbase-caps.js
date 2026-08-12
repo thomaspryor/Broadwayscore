@@ -47,6 +47,50 @@ function resolveMaxSessionsPerDay(env = process.env) {
 }
 
 /**
+ * Per-show reservation carved OUT of the daily ceiling for bulk (non-exempt)
+ * callers whenever a show is in its opening window (#1333, the Browserbase
+ * half of #1315/#1330's fix — the identical flat-ceiling starvation gap:
+ * createBbSession's account-wide day cap had no opening-window carve-out, so
+ * a routine bulk sweep could exhaust the day's sessions a show needs for its
+ * opening-night BWW reviews.php / paywall-login flow).
+ *
+ * Reuses opening-night-budget.js's own DEFAULT_PER_SHOW.browserbase estimate
+ * (5 sessions/show) rather than inventing a new sizing scheme, per the card's
+ * suggested approach — kept as an independent literal rather than a shared
+ * import for the same reason brightdata-caps.js documents for its own
+ * DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW: this file is the low-level
+ * per-session chokepoint dependency and must not pull in
+ * opening-night-budget.js's higher-level estimator just to read one number.
+ */
+const DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW = 5;
+
+/**
+ * Opening-window per-show reserve: BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW,
+ * else the default. Same garbage/negative/zero fallback rule as
+ * resolveMaxSessionsPerDay.
+ * @param {NodeJS.ProcessEnv} [env]
+ * @returns {number}
+ */
+function resolveOpeningWindowReservePerShow(env = process.env) {
+  const raw = parseInt(env.BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW, 10);
+  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW;
+}
+
+/**
+ * Exempt-script allowlist: BROWSERBASE_EXEMPT_SCRIPTS (comma-separated)
+ * overrides, else brightdata-caps.js's own list (imported, not copied — same
+ * scripts do opening-night discovery across all three providers; mirrors
+ * scrapingdog-caps.js's resolveExemptScripts).
+ * @param {NodeJS.ProcessEnv} [env]
+ * @returns {string[]}
+ */
+function resolveExemptScripts(env = process.env) {
+  const raw = (env.BROWSERBASE_EXEMPT_SCRIPTS || '').trim();
+  if (!raw) return require('./brightdata-caps').DEFAULT_EXEMPT_SCRIPTS.slice();
+  return raw.split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+/**
  * @param {object} params
  * @param {number} params.sessionsToday - Sessions consumed across all runs today
  * @param {number} params.sessionsThisRun - Sessions consumed in the current run
@@ -82,5 +126,8 @@ function checkBrowserbaseCaps({
 module.exports = {
   checkBrowserbaseCaps,
   resolveMaxSessionsPerDay,
+  resolveOpeningWindowReservePerShow,
+  resolveExemptScripts,
   DEFAULT_MAX_SESSIONS_PER_DAY,
+  DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW,
 };

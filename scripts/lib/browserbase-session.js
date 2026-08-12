@@ -46,6 +46,22 @@
  * the one source of truth available here. Per-run/per-domain caps stay
  * caller-side (scripts/lib/browserbase-caps.js) — they need per-process state
  * this chokepoint doesn't have.
+ *
+ * Card #1333 (2026-08-12): the flat day-cap above had the SAME opening-window
+ * starvation gap #1315 fixed for Bright Data and #1330 fixed for ScrapingDog
+ * — a routine bulk sweep could exhaust the day's Browserbase sessions a show
+ * needs for its opening-night BWW reviews.php / paywall-login flow. Bulk
+ * (non-exempt) callers now check the live count against a REDUCED ceiling
+ * (raw ceiling minus reservePerShow * shows-in-window, brightdata-caps.js's
+ * own effectiveCeilingForOpeningWindow, reused rather than duplicated —
+ * already the pattern scrapingdog-caps.js's check-sd-breaker.js follows).
+ * Exempt (opening-night) callers keep checking the RAW ceiling, unchanged
+ * from before this card — unlike BD/SD's breaker, this chokepoint has no
+ * separate exempt per-run budget to fall back to, so bypassing the check
+ * entirely for exempt callers would remove the only real-dollar backstop on
+ * Browserbase's $0.10/session cost; checking them against the raw ceiling
+ * preserves that backstop while still freeing the reserved slice from the
+ * bulk callers that were starving them.
  */
 'use strict';
 
@@ -53,9 +69,13 @@ const { recordBbCall } = require('./provider-telemetry');
 // Not destructured — kept as a module reference so tests can mock.method()
 // the export in place (browserbase-session.test.mjs).
 const browserbaseLiveUsage = require('./browserbase-live-usage');
-const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
+const openingNightSelection = require('./opening-night-selection');
+const path = require('path');
+const { resolveMaxSessionsPerDay, resolveOpeningWindowReservePerShow, resolveExemptScripts } = require('./browserbase-caps');
+const { isExemptCaller, effectiveCeilingForOpeningWindow } = require('./brightdata-caps');
 
 const SESSIONS_URL = 'https://api.browserbase.com/v1/sessions';
+const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
 // Short TTL cache for the live day-cap count (#1248 ship-check finding):
 // without this, every createBbSession() call hits the live-usage API, which
@@ -76,6 +96,24 @@ async function getCachedLiveSessionsToday(apiKey, projectId) {
   }
   const count = await browserbaseLiveUsage.fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
   _dayCapCache = { key, count, ts: now };
+  return count;
+}
+
+// Opening-window show count changes on the order of minutes, not seconds —
+// a much longer TTL than the live-session cache above, since this reads and
+// parses the full shows.json (2,800+ shows) off disk rather than hitting an
+// API. Without this cache a big collection run (potentially hundreds of
+// createBbSession calls) would re-read and re-parse shows.json every call.
+const OPENING_WINDOW_CACHE_TTL_MS = 5 * 60 * 1000;
+let _openingWindowCache = { count: null, ts: 0 };
+
+function getCachedOpeningWindowShows() {
+  const now = Date.now();
+  if (_openingWindowCache.count !== null && now - _openingWindowCache.ts < OPENING_WINDOW_CACHE_TTL_MS) {
+    return _openingWindowCache.count;
+  }
+  const count = openingNightSelection.countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
+  _openingWindowCache = { count, ts: now };
   return count;
 }
 
@@ -118,10 +156,32 @@ async function createBbSession(opts) {
   // live-count caller in this codebase (a network hiccup must not look like
   // a clean budget).
   const maxPerDay = resolveMaxSessionsPerDay();
+
+  // Opening-window reserve (#1333). Bulk (non-exempt) callers get checked
+  // against a ceiling reduced by reservePerShow * shows-in-window, so a
+  // routine sweep stops before it can eat into the slice an opening-window
+  // show needs. Exempt callers (opening-night scripts/workflows) keep
+  // checking the RAW ceiling — see module docstring for why this chokepoint
+  // doesn't bypass the check entirely for them the way BD/SD's breakers do.
+  const exempt = isExemptCaller(
+    process.argv[1] || null,
+    resolveExemptScripts(),
+    process.env.GITHUB_WORKFLOW || null,
+    process.env.BD_OPENING_NIGHT || null,
+  );
+  const effectiveMaxPerDay = exempt
+    ? maxPerDay
+    : effectiveCeilingForOpeningWindow({
+      ceiling: maxPerDay,
+      openingWindowShows: getCachedOpeningWindowShows(),
+      reservePerShow: resolveOpeningWindowReservePerShow(),
+    });
+
   const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
-  if (liveSessionsToday !== null && liveSessionsToday >= maxPerDay) {
+  if (liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay) {
     recordBbCall({ caller: opts.caller, purpose: opts.purpose, success: false, status: 'day-cap-reached' });
-    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${maxPerDay}) — session create blocked for ${opts.caller}`);
+    const reserveNote = effectiveMaxPerDay !== maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
+    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${effectiveMaxPerDay}${reserveNote}) — session create blocked for ${opts.caller}`);
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
@@ -179,6 +239,7 @@ async function createBbSession(opts) {
 // cached by the previous test's mock.
 function _resetDayCapCacheForTests() {
   _dayCapCache = { key: null, count: null, ts: 0 };
+  _openingWindowCache = { count: null, ts: 0 };
 }
 
 module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, _resetDayCapCacheForTests };
