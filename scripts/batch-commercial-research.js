@@ -111,24 +111,17 @@ function sleep(ms) {
 }
 
 /**
- * Fetch a URL via ScrapingBee.
+ * Fetch a URL's HTML via the shared fetchPage() fallback chain (Scrapingdog →
+ * Bright Data → ScrapingBee → Playwright). Previously hit ScrapingBee directly
+ * with premium_proxy=true ($2.48/1k) on every citation-verification fetch —
+ * these are arbitrary news/financial-press URLs, not sites that need premium
+ * anti-bot bypass, so the plain fetchPage() chain (which tries much cheaper
+ * tiers first) covers it (task #5).
  */
-function fetchViaScrapingBee(url) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY required'));
-      return;
-    }
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee ${res.statusCode}: ${data.slice(0, 200)}`));
-      });
-    }).on('error', reject);
-  });
+async function fetchViaScrapingBee(url) {
+  if (!universalScraper) throw new Error('scraper module not available');
+  const result = await universalScraper.fetchPage(url);
+  return result.content;
 }
 
 /**

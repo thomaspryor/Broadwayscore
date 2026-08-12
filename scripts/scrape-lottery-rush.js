@@ -28,6 +28,7 @@ const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { fetchPage } = require('./lib/scraper');
 
 // ==================== Configuration ====================
 
@@ -100,67 +101,24 @@ function httpsRequest(url, options = {}) {
 }
 
 /**
- * Fetch a URL as markdown (Bright Data) or HTML (ScrapingBee fallback).
+ * Fetch a URL's HTML via the shared fetchPage() fallback chain (Scrapingdog →
+ * Bright Data → ScrapingBee → Playwright). premiumProxy maps to fetchPage's
+ * options.premium, which tries Scrapingdog's premium tier (~$0.90/1k) and
+ * Bright Data ($1.50/1k) before ever considering ScrapingBee — SB's own
+ * premium_proxy=true costs $2.48/1k, more than Bright Data, so a direct SB
+ * premium call is never worth it (task #5).
  * Returns { content, format } or null.
  */
 async function fetchContent(url, { renderJs = true, premiumProxy = false } = {}) {
-  // Try Bright Data first (returns markdown natively)
-  if (BRIGHTDATA_TOKEN) {
-    try {
-      const result = await httpsRequest('https://api.brightdata.com/request', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ zone: 'mcp_browser', url, format: 'raw' }),
-      });
-      if (result && result.length > 500) {
-        if (verbose) console.log(`  [Bright Data] Success (${result.length} chars HTML)`);
-        return { content: result, format: 'html' };
-      }
-    } catch (err) {
-      console.error(`  [Bright Data] Failed: ${err.message}`);
-    }
-  }
-
-  // Fallback: ScrapingBee (returns HTML, converted to pseudo-markdown for link parsing)
-  if (SCRAPINGBEE_KEY) {
-    try {
-      const params = new URLSearchParams({
-        api_key: SCRAPINGBEE_KEY,
-        url,
-        render_js: String(renderJs),
-      });
-      if (premiumProxy) params.set('premium_proxy', 'true');
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-      const result = await httpsRequest(apiUrl);
-      if (result && result.length > 500) {
-        if (verbose) console.log(`  [ScrapingBee] Success (${result.length} chars HTML)`);
-        return { content: result, format: 'html' };
-      }
-    } catch (err) {
-      console.error(`  [ScrapingBee] Failed: ${err.message}`);
-    }
-  }
-
-  // Last resort: direct fetch (no proxy — works for sites that don't block)
   try {
-    if (verbose) console.log(`  [Direct] Trying direct fetch for ${url}...`);
-    const result = await httpsRequest(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      },
-    });
-    if (result && result.length > 500) {
-      if (verbose) console.log(`  [Direct] Success (${result.length} chars HTML)`);
-      return { content: result, format: 'html' };
+    const result = await fetchPage(url, { renderJs, premium: premiumProxy });
+    if (result && result.content && result.content.length > 500) {
+      if (verbose) console.log(`  [fetchPage] Success (${result.content.length} chars, source=${result.source})`);
+      return { content: result.content, format: 'html' };
     }
   } catch (err) {
-    console.error(`  [Direct] Failed: ${err.message}`);
+    console.error(`  [fetchPage] Failed: ${err.message}`);
   }
-
   return null;
 }
 

@@ -2,7 +2,7 @@
  * Broadway Grosses Scraper
  *
  * Scrapes weekly box office data from BroadwayWorld.
- * Two-tier fallback: ScrapingBee CSS extraction (primary) → Playwright (fallback).
+ * Tiered fallback: Bright Data → Scrapingdog → Playwright.
  * Uses shared show-matching.js library (260+ aliases) for title matching.
  *
  * Safety guards: minimum show count, gross sanity, WoW delta check, pre-write backup.
@@ -15,22 +15,21 @@
 import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as https from 'https';
 import * as cheerio from 'cheerio';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
 // Pure BWW row parser — extracted for unit testing (see tests/unit/parse-bww-grosses-row.test.mjs)
 const { parseBwwGrossesRow } = require('./lib/parse-bww-grosses-row');
-// Bright Data / Scrapingdog fetchers — proxy through non-CI IPs. ScrapingBee
-// (Tier 1) and this script's own Playwright (Tier 4) both fail identically
-// when BroadwayWorld throttles/blocks the GitHub Actions IP range: SB returns
-// 401 quota errors independent of IP, but the bare Playwright fallback launches
-// straight from the CI runner's own IP with no proxy, so a BWW-side IP block
-// reproduces as a silent `.all-gross-data .row` timeout (2026-07-21/22
-// incident — confirmed the page is static server-rendered HTML that loads
-// fine from a non-CI IP). BD/SD route through proxy IPs that aren't in that
-// blocklist, so they belong ahead of Playwright, not just as review-text tiers.
+// Bright Data / Scrapingdog fetchers — proxy through non-CI IPs. This
+// script's own Playwright (last-resort tier) fails identically to a direct
+// ScrapingBee call when BroadwayWorld throttles/blocks the GitHub Actions IP
+// range: the bare Playwright fallback launches straight from the CI runner's
+// own IP with no proxy, so a BWW-side IP block reproduces as a silent
+// `.all-gross-data .row` timeout (2026-07-21/22 incident — confirmed the
+// page is static server-rendered HTML that loads fine from a non-CI IP).
+// BD/SD route through proxy IPs that aren't in that blocklist, so they
+// belong ahead of Playwright, not just as review-text tiers.
 const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
@@ -348,82 +347,7 @@ function extractWeekEndingFromTitle(title: string): string | null {
 }
 
 // ============================================================
-// Tier 1: ScrapingBee CSS Extraction
-// ============================================================
-
-function scrapingBeeRequest(url: string, extractRules: Record<string, any>): Promise<string> {
-  const key = process.env.SCRAPINGBEE_API_KEY;
-  if (!key) throw new Error('SCRAPINGBEE_API_KEY not set');
-
-  const params = new URLSearchParams({
-    api_key: key,
-    url,
-    premium_proxy: 'true',
-    extract_rules: JSON.stringify(extractRules),
-  });
-
-  return new Promise((resolve, reject) => {
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', (chunk: Buffer) => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) resolve(data);
-        else reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.substring(0, 200)}`));
-      });
-      res.on('error', reject);
-    }).on('error', reject);
-  });
-}
-
-async function fetchWithScrapingBee(): Promise<ScrapeResult | null> {
-  const key = process.env.SCRAPINGBEE_API_KEY;
-  if (!key) {
-    console.log('  SCRAPINGBEE_API_KEY not set, skipping');
-    return null;
-  }
-
-  const extractRules = {
-    title: 'title',
-    rows: {
-      selector: '.all-gross-data .row',
-      type: 'list',
-      output: {
-        cells: { selector: '.cell', type: 'list', output: 'text' }
-      }
-    }
-  };
-
-  const raw = await scrapingBeeRequest(GROSSES_URL, extractRules);
-  const parsed = JSON.parse(raw);
-
-  // Extract week ending from page title
-  const weekEnding = extractWeekEndingFromTitle(parsed.title || '');
-  if (!weekEnding) {
-    console.warn('  ⚠ Could not extract week ending from page title');
-    return null;
-  }
-
-  // Parse rows, skip header and total/empty rows
-  const rows: BWWRowData[] = [];
-  for (const rowData of (parsed.rows || [])) {
-    const cells = rowData.cells || [];
-    // Skip header row
-    if (cells[0]?.trim()?.startsWith('Show')) continue;
-    // Skip total/average row
-    if (cells[0]?.trim()?.startsWith('Total')) continue;
-    // Skip empty rows
-    if (!cells[0]?.trim()) continue;
-
-    const row = parseExtractedRow(cells);
-    if (row) rows.push(row);
-  }
-
-  return { rows, weekEnding, source: 'scrapingbee-css' };
-}
-
-// ============================================================
-// Tier 2 & 3: Bright Data / Scrapingdog (raw HTML + cheerio parse)
+// Tier 1 & 2: Bright Data / Scrapingdog (raw HTML + cheerio parse)
 // ============================================================
 
 // Shared parser for any provider that returns raw HTML (BD, Scrapingdog).
@@ -772,27 +696,26 @@ async function scrapeGrosses(): Promise<void> {
   // Try scraping tiers in order
   let result: ScrapeResult | null = null;
 
-  // Tier 1: ScrapingBee CSS extraction
-  console.log('\n[Tier 1] ScrapingBee CSS extraction...');
-  result = await fetchWithRetry('ScrapingBee', fetchWithScrapingBee);
+  // Tier 1: Bright Data (proxied — survives a BWW-side block of the CI IP).
+  // Previously tried ScrapingBee's CSS-extraction feature first with
+  // premium_proxy=true (10cr, $2.48/1k) — more expensive than Bright Data
+  // ($1.50/1k), and parseHtmlRows() below already parses the same table
+  // from raw HTML, so the SB-specific extraction added cost without adding
+  // capability (task #5).
+  console.log('\n[Tier 1] Bright Data...');
+  result = await fetchWithRetry('BrightData', () => fetchWithHtmlProvider('brightdata', fetchWithBrightData));
 
-  // Tier 2: Bright Data (proxied — survives a BWW-side block of the CI IP)
+  // Tier 2: Scrapingdog (proxied, cheaper than BD for a static page)
   if (!result) {
-    console.log('\n[Tier 2] Bright Data...');
-    result = await fetchWithRetry('BrightData', () => fetchWithHtmlProvider('brightdata', fetchWithBrightData));
-  }
-
-  // Tier 3: Scrapingdog (proxied, cheaper than BD for a static page)
-  if (!result) {
-    console.log('\n[Tier 3] Scrapingdog...');
+    console.log('\n[Tier 2] Scrapingdog...');
     result = await fetchWithRetry('Scrapingdog', () =>
       fetchWithHtmlProvider('scrapingdog', (url: string) => fetchWithScrapingdog(url, { renderJs: false }))
     );
   }
 
-  // Tier 4: Playwright (last resort, no proxy)
+  // Tier 3: Playwright (last resort, no proxy)
   if (!result) {
-    console.log('\n[Tier 4] Playwright (fallback)...');
+    console.log('\n[Tier 3] Playwright (fallback)...');
     result = await fetchWithRetry('Playwright', fetchWithPlaywright);
   }
 
