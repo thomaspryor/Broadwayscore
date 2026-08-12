@@ -151,6 +151,18 @@ function findSourceFile(showId, outletId, criticName) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.criticName && data.criticName.toLowerCase() === criticName.toLowerCase()) {
+          // Card #190: rebuild-all-reviews.js can now display a same-URL
+          // sibling's recovered name for a review whose SCORED source file is
+          // still "Unknown" on disk (never written back — see byline-recovery.js).
+          // A flagged sibling file can therefore carry the exact on-disk
+          // criticName this lookup is searching for, even though it is NOT the
+          // file that was actually scored under that name. Using its fullText
+          // here would compare the wrong article and could get a genuinely
+          // scored review at another outlet wrongly marked isSyndicatedDuplicate
+          // (a silent review-loss on the next rebuild — the same failure class
+          // this whole recovery feature exists to fix). Skip flagged matches;
+          // a missed syndication detection is far safer than a wrong one.
+          if (data.wrongProduction || data.wrongShow || data.isNonReview || data.contentTier === 'invalid') continue;
           return { path: filePath, filename: file, data };
         }
       } catch { /* skip corrupt files */ }

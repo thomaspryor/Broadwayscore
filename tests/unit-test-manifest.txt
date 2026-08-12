@@ -62,6 +62,7 @@ scripts/tests/hook-liveness.test.mjs
 scripts/tests/infra-gate-registration.test.mjs
 scripts/tests/infra-review-digest.test.mjs
 scripts/tests/infra-review-gate.test.mjs
+scripts/tests/merge-gate-hook.test.mjs
 scripts/tests/observable-before-absence.test.mjs
 scripts/tests/trunk-status.test.mjs
 scripts/verify-contamination-gate.test.mjs
@@ -293,6 +294,7 @@ tests/unit/opening-night-poll-cadence.test.mjs
 tests/unit/opening-night-serp-backup-integration.test.mjs
 tests/unit/opening-night-sla.test.mjs
 tests/unit/opening-window-backoff.test.mjs
+tests/unit/opening-window-budget-reserve.test.mjs
 tests/unit/opera-prompt-context.test.mjs
 tests/unit/orchestrator-guardian-dispatch.test.mjs
 tests/unit/orphan-pending-decision.test.mjs
