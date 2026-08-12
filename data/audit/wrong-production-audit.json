@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T08:29:10.382Z",
+  "timestamp": "2026-08-12T09:28:03.973Z",
   "stats": {
-    "totalReviews": 42069,
-    "alreadyFlagged": 18316,
+    "totalReviews": 42070,
+    "alreadyFlagged": 18321,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
     "tvFilmSignals": 1185,
-    "londonSignals": 846,
+    "londonSignals": 847,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3538
+    "noPublishDate": 3535
   },
   "findings": [
     {
@@ -34125,6 +34125,20 @@
       "score": 53,
       "publishDate": null,
       "url": "https://www.dailymail.com/tvshowbiz/article-16018123/Patrick-Marmion-star-rating-veto-sex-depravity-cleansed.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jul/30/cleansed-review-almeida-theatre-london-rebecca-frecknall",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
