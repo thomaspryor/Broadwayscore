@@ -50,12 +50,17 @@ test('buildIssueQuery: parameterized on $id, fetches the fields the dispatcher n
   assert.doesNotMatch(q, /issueCreate/);
 });
 
-test('buildOpenIssuesQuery: parameterized on $teamKey, excludes completed/canceled', () => {
+test('buildOpenIssuesQuery: parameterized on $teamKey, excludes completed/canceled, cursor-paginated', () => {
   const q = buildOpenIssuesQuery();
   assert.match(q, /\$teamKey: String!/);
   assert.match(q, /team: \{ key: \{ eq: \$teamKey \} \}/);
   assert.match(q, /"completed", "canceled"/);
   assert.match(q, /orderBy: updatedAt/);
+  // 200+ issue workspace: a single first:100 page silently truncates — the
+  // query must expose the cursor machinery linear-client.js's loop consumes.
+  assert.match(q, /\$after: String/);
+  assert.match(q, /after: \$after/);
+  assert.match(q, /pageInfo \{ hasNextPage endCursor \}/);
 });
 
 test('buildCommentMutation: parameterized on $issueId/$body, uses commentCreate', () => {
@@ -67,12 +72,17 @@ test('buildCommentMutation: parameterized on $issueId/$body, uses commentCreate'
 
 // ── Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341) ──────
 
-test('buildOpenIssuesWithDescriptionsQuery: parameterized on $teamKey, excludes completed/canceled, fetches description', () => {
+test('buildOpenIssuesWithDescriptionsQuery: parameterized on $teamKey, excludes completed/canceled, fetches description, cursor-paginated', () => {
   const q = buildOpenIssuesWithDescriptionsQuery();
   assert.match(q, /\$teamKey: String!/);
   assert.match(q, /team: \{ key: \{ eq: \$teamKey \} \}/);
   assert.match(q, /"completed", "canceled"/);
   assert.match(q, /description/);
+  // Dedupe must see EVERY open issue: missing a page-2 match means filing the
+  // exact duplicate tracker rail 2 exists to prevent.
+  assert.match(q, /\$after: String/);
+  assert.match(q, /after: \$after/);
+  assert.match(q, /pageInfo \{ hasNextPage endCursor \}/);
   // Never a raw issueCreate/api.linear.app literal — same chokepoint rule
   // as buildIssueQuery's test above.
   assert.doesNotMatch(q, /issueCreate/);
