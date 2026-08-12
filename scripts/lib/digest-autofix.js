@@ -251,7 +251,7 @@ function fileCard(title, notes, { log = () => {} } = {}) {
   // working. Fail-open: a find error just means we file (worst case one
   // duplicate, same as a transient Linear outage).
   try {
-    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title],
+    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title, '--exact-title'],
       { cwd: REPO, encoding: 'utf8', timeout: 30000 });
     const fm = found.match(/"identifier":\s*"([A-Z]+-\d+)"/);
     if (fm) {

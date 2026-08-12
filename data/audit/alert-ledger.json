@@ -134,11 +134,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-12T22:51:34.760Z",
+      "lastSeen": "2026-08-12T23:27:35.524Z",
       "lastNotifiedAt": "2026-08-12T15:00:21.002Z",
       "notifyCount": 27,
       "cardId": null,
-      "silentRefires": 15
+      "silentRefires": 17
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -222,22 +222,22 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-12T22:34:32.816Z",
+      "lastSeen": "2026-08-12T23:25:35.272Z",
       "lastNotifiedAt": "2026-08-12T06:23:06.730Z",
       "notifyCount": 14,
       "cardId": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-12T22:34:32.876Z",
+      "lastSeen": "2026-08-12T23:25:35.343Z",
       "lastNotifiedAt": "2026-08-12T04:09:38.816Z",
       "notifyCount": 16,
       "cardId": null,
-      "silentRefires": 27
+      "silentRefires": 29
     },
     "deployed-coverage:stale": {
       "status": "open",
@@ -639,11 +639,11 @@
       "disposition": "digest",
       "title": "Stale 'upcoming' tag on Death Note: The Musical",
       "firstSeen": "2026-08-10T10:39:08.417Z",
-      "lastSeen": "2026-08-12T22:05:23.915Z",
+      "lastSeen": "2026-08-12T23:05:09.376Z",
       "lastNotifiedAt": "2026-08-10T10:39:08.417Z",
       "notifyCount": 1,
       "cardId": null,
-      "silentRefires": 41
+      "silentRefires": 42
     },
     "health-check:Workflow repeat-failure: Test UGC Features": {
       "status": "open",
@@ -756,11 +756,12 @@
       "disposition": "auto",
       "title": "main test.yml red on 2+ consecutive pushes",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-08-12T22:51:32.068Z",
+      "lastSeen": "2026-08-12T23:27:35.524Z",
       "lastNotifiedAt": "2026-08-12T22:51:32.068Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-296"
+      "linearIdentifier": "BRO-296",
+      "silentRefires": 2
     }
   }
 }
