@@ -33,6 +33,7 @@ const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { registrableHost } = require('./non-review-url-patterns');
 
 // ── (b) missing contentTier ─────────────────────────────────────────────
 
@@ -295,14 +296,23 @@ function findProbableDomainMoves(outlets, unknownHosts) {
       ...(outlet.domains || []),
       ...(outlet.alternateDomains || []),
     ]) {
-      if (h) allKnownHosts.add(String(h).toLowerCase());
+      // Normalize to the SAME shape the census producer writes. Census hosts
+      // are hostOf(url) = registrableHost(hostname), and getKnownDomainMap()
+      // keys by registrableHost(d) — but 20 live registry domains are stored
+      // un-normalized ('www.newyorktheaterguide.com', 'amp.theguardian.com',
+      // 'theater.nytimes.com', ...). Comparing raw strings let a registered
+      // outlet slip past this pre-filter and get re-reported as a "probable
+      // move" — the false positive this set was added to kill (ship-check
+      // 2026-08-12).
+      if (h) allKnownHosts.add(registrableHost(String(h).toLowerCase()));
     }
   }
 
   for (const entry of unknownHosts) {
     const host = entry && entry.host;
     if (!host) continue;
-    if (allKnownHosts.has(host.toLowerCase())) continue; // already registered SOMEWHERE — not a move
+    // Compare in registrable form on BOTH sides (see the set-build comment).
+    if (allKnownHosts.has(registrableHost(host.toLowerCase()))) continue; // already registered SOMEWHERE — not a move
     const slug = normalizeHostSlug(host);
     if (slug.length < MIN_SLUG_LENGTH) continue;
     for (const [outletId, outlet] of Object.entries(outlets)) {
