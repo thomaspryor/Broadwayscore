@@ -108,6 +108,24 @@ test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells exist
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
 });
 
+// Regression guard for the 2026-08-11 P0: module.exports named two functions a
+// competing implementation of card #1233 had deleted, so require() threw
+// ReferenceError and backlog-drain, bsc-runner, bsc-next, dispatch-watchdog and
+// the S6 canary all died on load. A name that survives the ReferenceError but
+// resolves to undefined (declared-later var, renamed helper) fails the same way
+// at the call site, silently — assert every export actually carries a value.
+test('every module.exports name resolves to a defined value (no stale/renamed exports)', () => {
+  const mod = require('./dispatch-ledger.js');
+  const undefinedExports = Object.keys(mod).filter((k) => mod[k] === undefined);
+  assert.deepEqual(undefinedExports, [], `exported but undefined: ${undefinedExports.join(', ')}`);
+});
+
+// Card #1233's infra-vs-substantive coverage now lives with the v2 API at the
+// bottom of this file (classifyDeadAttemptsForTask + dispatchCapDecision).
+// The four tests that stood here called the v1 API (isInfraDeadEntry /
+// deadDispatchCapStatus), which commit ba2a4f22d3f deleted — two racing
+// sessions on the same card left them behind, and they threw ReferenceError
+// on every run. Do not restore them from an old branch during a merge.
 test('deadBreadcrumbs: only idle workspaces with a matching launch record produce breadcrumbs', () => {
   const entries = [
     { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:227' },

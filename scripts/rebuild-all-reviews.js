@@ -44,7 +44,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isNonReviewDemotedByFreshCV, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -2107,6 +2107,10 @@ showDirs.forEach(showId => {
         const refPath = path.join(showDir, data.duplicateOf);
         let refAlsoDupe = false;
         let refExcluded = false;
+        // Task #1256 — set only inside the try block below (stays null on a
+        // missing/corrupt refPath, matching refAlsoDupe/refExcluded's own
+        // catch-path defaults: a stale pointer must not exclude this file).
+        let refInheritedFlag = null;
         let isCircular = false;
         let circularSameText = false;
         // N-node cycle detection (Notion #967, write-time cousin of #941): the
@@ -2167,12 +2171,42 @@ showDirs.forEach(showId => {
             if (preWindow.exclude) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
+          // Task #1256 — duplicate-of-flagged-twin inheritance. refExcluded
+          // above treats ANY exclusion reason on the reference as a recovery
+          // signal (see the block comment above this try). That's wrong when
+          // the reference is excluded because its OWN CONTENT is flagged
+          // wrong (wrongShow/wrongProduction/isNonReview) — this file is
+          // often just a second copy of that same bad content under a
+          // different filename (confirmed live on The Play That Goes Wrong
+          // West End 2021). duplicateOfInheritedFlag narrows the recovery:
+          // it returns non-null only for those content-wrongness reasons,
+          // and respects data.duplicateOfFlagInheritanceCleared as an
+          // explicit human override for the legitimate-divergent-content case.
+          refInheritedFlag = duplicateOfInheritedFlag(data, refData, showById[showId], refPath);
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
         if (!refAlsoDupe && !refExcluded) {
           logExclusion("skippedDuplicateOf", showId, file, data);
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+          return;
+        }
+        // ship-check finding: a mutual circular pair (A<->B) with CONFIRMED
+        // different text is the exact case circularSameText/oneHopTiebreakExclude
+        // below exists to protect (duplicateOf wrongly set on two legitimately
+        // separate reviews) — B independently carrying wrongShow for reasons
+        // unrelated to A must not exclude A here. Only apply inheritance when
+        // NOT circular (the ordinary A->B pointer, where a non-circular
+        // duplicateOf has always meant "same content" — the ungated
+        // `!refAlsoDupe && !refExcluded` skip above makes that same assumption
+        // with no fingerprint check), or when circular AND content is
+        // CONFIRMED the same. An unconfirmed circular pair (missing fullText
+        // on either side) also skips inheritance here — conservative, matches
+        // this block's existing bias toward not dropping possibly-legitimate
+        // reviews on uncertain evidence.
+        if (refInheritedFlag && !(isCircular && !circularSameText)) {
+          logExclusion("skippedDuplicateOfInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateOf, inheritedReason: refInheritedFlag });
+          stats.skippedDuplicateOfInheritedFlag = (stats.skippedDuplicateOfInheritedFlag || 0) + 1;
           return;
         }
         // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A AND texts match,
@@ -2204,6 +2238,12 @@ showDirs.forEach(showId => {
         let staleFlag = false;
         let isCircular = false;
         let circularSameText = false;
+        // Task #1256 — same inheritance rule as the duplicateOf block above,
+        // ported here (ship-check finding: this sibling field had the
+        // identical unpatched "any exclusion reason on the reference =
+        // recovery" bug). Set only inside the try block; stays null on a
+        // missing/corrupt refPath.
+        let refInheritedFlag = null;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
@@ -2240,6 +2280,7 @@ showDirs.forEach(showId => {
               staleFlag = true;
             }
           }
+          refInheritedFlag = duplicateOfInheritedFlag(data, refData, showById[showId], refPath);
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
@@ -2249,6 +2290,16 @@ showDirs.forEach(showId => {
         } else if (!refAlsoDupe && !refWouldBeExcluded) {
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
+          return;
+        } else if (refInheritedFlag && !(isCircular && !circularSameText)) {
+          // Same content-wrongness-vs-structural-exclusion distinction as the
+          // duplicateOf block above. staleFlag already handles "content
+          // genuinely diverged" for the non-circular case here (unlike plain
+          // duplicateOf, which has no fingerprint check at all) — reaching
+          // this branch means content still matches (or comparison wasn't
+          // possible), so inheriting the twin's content-wrongness flag is safe.
+          logExclusion("skippedDuplicateTextInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateTextOf, inheritedReason: refInheritedFlag });
+          stats.skippedDuplicateTextInheritedFlag = (stats.skippedDuplicateTextInheritedFlag || 0) + 1;
           return;
         } else if (isCircular && circularSameText && !refWouldBeExcluded && file > data.duplicateTextOf) {
           // Circular tiebreaker — only when texts truly match (avoid dropping legitimate separate critics)

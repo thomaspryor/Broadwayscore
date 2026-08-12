@@ -878,6 +878,13 @@ module.exports = {
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
+  // isInfraDeadEntry/deadDispatchCapStatus were card #1233's v1 API. The v2
+  // implementation (ba2a4f22d3f) replaced both with classifyDeadAttemptsForTask
+  // + dispatchCapDecision and deleted their definitions, but two racing
+  // sessions on the same card left the v1 names in this list: require() then
+  // threw ReferenceError and EVERY consumer (backlog-drain, bsc-runner,
+  // bsc-next, dispatch-watchdog, the S6 canary) died on load. Do not re-add
+  // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
