@@ -225,6 +225,74 @@ test('createOrMergeReviewFile: an unscored write on an aggregator URL is still r
   assert.equal(unscored.reason, 'aggregator-url-refinement-refused');
 });
 
+// ------------------------------------------------- write-guard/validator agreement
+// Task #1337 (#1325 follow-up): shouldSkipAggregatorUrlWrite() exempted ANY write
+// whose source isAggregatorReviewSource(), regardless of score or text. The
+// validator's canonical predicate (hasAggregatorUrlMismatch, aggregator-url-latent.js)
+// has no concept of source at all — only hostname/outletId/score. So an
+// aggregator-source write with a domainless real outletId, no score, no text, on an
+// aggregator-domain URL resolveOutletFromUrl() can't classify, landed at write time
+// only to be flagged post-hoc as a zero-tolerance aggregator_url_mismatch ERROR.
+test('createOrMergeReviewFile: aggregator-source write with NO score and NO text is now refused', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const { hasAggregatorUrlMismatch } = require('./aggregator-url-latent.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  const url = 'https://theatre.reviews/some-random-non-roundup-path/xyz';
+  const outletId = 'from-the-fourth-row';
+  // Confirms the URL is genuinely unclassifiable (doesn't resolve to the aggregator
+  // outlet, so the earlier refiningOntoAggregator refusal never fires — this test
+  // exercises shouldSkipAggregatorUrlWrite specifically, not that other guard) and
+  // that the validator WOULD flag this exact shape if it ever landed.
+  assert.equal(hasAggregatorUrlMismatch({ url, outletId }), true);
+
+  const result = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId, outlet: 'From the Fourth Row', criticName: 'X',
+    url, source: 'theatre-reviews',
+    fields: {},
+  }, { dryRun: true }));
+  assert.equal(result.action, 'skipped');
+  assert.equal(result.reason, 'aggregator-url-mismatch');
+});
+
+test('createOrMergeReviewFile: aggregator-source write with text but NO score still lands (production parity)', () => {
+  // Regression fence for the corpus-verified real pattern: WET roundups populate
+  // westEndTheatreExcerpt before a star rating is parsed/attached. A score-only gate
+  // would refuse this and break real ingestion (dracula-west-end-2025/
+  // telegraph--paul-raven.json is a live example of exactly this shape).
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  const result = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row', outlet: 'From the Fourth Row', criticName: 'X',
+    url: 'https://theatre.reviews/some-random-non-roundup-path/xyz',
+    source: 'theatre-reviews',
+    fields: { fullText: 'x'.repeat(400) },
+  }, { dryRun: true }));
+  assert.equal(result.action, 'new');
+});
+
+test('shouldSkipAggregatorUrlWrite: text-or-score truth table', () => {
+  const { shouldSkipAggregatorUrlWrite } = require('./aggregator-domains.js');
+  const base = { source: 'theatre-reviews', url: 'https://theatre.reviews/x/y' };
+  assert.equal(shouldSkipAggregatorUrlWrite({ ...base }, 'from-the-fourth-row'), true,
+    'no score, no text -> refused');
+  assert.equal(shouldSkipAggregatorUrlWrite({ ...base, fullText: 'x'.repeat(400) }, 'from-the-fourth-row'), false,
+    'text alone -> exempt');
+  assert.equal(shouldSkipAggregatorUrlWrite({ ...base, aggregatorStars: '4/5' }, 'from-the-fourth-row'), false,
+    'score alone -> exempt');
+  assert.equal(shouldSkipAggregatorUrlWrite({ ...base, westEndTheatreExcerpt: 'a quote' }, 'from-the-fourth-row'), false,
+    'per-aggregator excerpt field -> exempt');
+  assert.equal(shouldSkipAggregatorUrlWrite({ source: 'serp-discovery', url: base.url }, 'from-the-fourth-row'), true,
+    'non-aggregator source, no score, no text -> refused (unchanged behavior)');
+});
+
 test('the refusal is classified as a CONFLICT skip, not an expected rejection', () => {
   // The writer returns {action:'skipped', reason:'aggregator-url-refinement-refused'}.
   // Every skip reason review-file-writer.js emits must be classified — an

@@ -37,6 +37,7 @@
  */
 
 const { normalizeOutlet } = require('./review-normalization');
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 // Known aggregator domains (hostname with leading www. stripped, lowercased).
 const AGGREGATOR_DOMAINS = new Set([
@@ -135,23 +136,79 @@ function hasPreservableAggregatorScore(reviewData) {
 }
 
 /**
+ * True when a review carries extracted text worth preserving — the generic
+ * fullText/text/excerpt fields, or a per-aggregator excerpt field (dtliExcerpt,
+ * bwwExcerpt, westEndTheatreExcerpt, ...; canonical list in excerpt-fields.js).
+ * The signal that makes a source-labeled aggregator write worth trusting even
+ * without a score (task #1337) — mirrors hasPreservableAggregatorScore's role
+ * for the scored case.
+ *
+ * Requires a non-whitespace string of at least one real character per field —
+ * hasExcerpt()/plain truthy checks alone would bless " " or a stray HTML entity
+ * as "substantive," letting a write with nothing readable through (Codex
+ * adversarial finding, #1337 ship-check).
+ *
+ * @param {object} reviewData
+ */
+function isNonBlankString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function hasSubstantiveReviewText(reviewData) {
+  if (!reviewData) return false;
+  if (isNonBlankString(reviewData.fullText) || isNonBlankString(reviewData.text) || isNonBlankString(reviewData.excerpt)) {
+    return true;
+  }
+  return EXCERPT_FIELDS.some((f) => isNonBlankString(reviewData[f]));
+}
+
+/**
  * Should createReviewFile REFUSE to write this review because it would create an
  * aggregator_url_mismatch contamination file?
  *
  * Block ONLY the contamination class: a non-aggregator-source path (serp-discovery,
  * generic/manual) attaching an aggregator-domain URL to a real outlet with NO score
  * to preserve. We must NOT block:
- *   - aggregator-source writes (they legitimately carry the aggregator URL), nor
  *   - any write carrying a real star/score (blocking would drop a legit aggregator
- *     star-stub — the regression caught in review 2026-06-21).
+ *     star-stub — the regression caught in review 2026-06-21), nor
+ *   - an aggregator-source write that ALSO carries extracted text worth preserving.
  *
- * @param {object} reviewData - {source, originalScore, aggregatorStars, url}
+ * An aggregator-source write with NEITHER a score NOR extracted text is NOT exempt
+ * (task #1337): the `source` label alone was previously enough to bypass this guard,
+ * which let a write with a domainless real outletId + no score + no text + an
+ * aggregator-domain URL land, only for validate-review-texts.js's
+ * hasAggregatorUrlMismatch() (aggregator-url-latent.js — the validator's canonical,
+ * source-blind predicate) to flag it post-hoc as a zero-tolerance ERROR.
+ *
+ * Text does NOT fully close the write-guard/validator gap — the validator's
+ * predicate has no concept of text, only score, so a text-only aggregator-source
+ * write can still land here and later trip hasAggregatorUrlMismatch() if it's ever
+ * promoted into the validated population. That residual gap is accepted, not
+ * missed: a corpus scan (2026-08-12, 42,367 files) found ZERO files with the true
+ * gap shape this guard exists to close (aggregator-source, no score, NO text), so
+ * closing it is pure risk-reduction. Score-alone (matching the validator exactly)
+ * was considered and rejected: it would break an established, deliberately-tested
+ * contract — aggregator-url-write-chokepoint.test.mjs's "aggregator-SOURCE writes
+ * still land" test and tests/unit/aggregator-url-mismatch-guard.test.mjs both
+ * assert a text-bearing, unscored aggregator-source write on an UNCLASSIFIABLE
+ * aggregator-domain URL must land (a classifiable one — the URL resolves to a
+ * known aggregator outlet — is already refused upstream by
+ * shouldRefuseAggregatorOutletRefinement's score-only refusal in
+ * review-file-writer.js, so this predicate's text branch matters only for the
+ * narrower, resolveOutletFromUrl()-can't-classify case). Text-or-score is the
+ * smallest change that closes the zero-occurrence gap without breaking that
+ * pre-existing, intentional test coverage. Canonical for TWO call sites that must
+ * not drift apart: this one and gather-reviews.js createReviewFile (~line 3127,
+ * passes its full reviewData object directly so this text gate applies there
+ * unchanged).
+ *
+ * @param {object} reviewData - {source, originalScore, aggregatorStars, url, fullText, excerpt, ...}
  * @param {string} normalizedOutletId
  */
 function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
   if (!reviewData) return false;
-  if (isAggregatorReviewSource(reviewData.source)) return false;
   if (hasPreservableAggregatorScore(reviewData)) return false;
+  if (isAggregatorReviewSource(reviewData.source) && hasSubstantiveReviewText(reviewData)) return false;
   return isAggregatorUrlMismatch(reviewData.url, normalizedOutletId);
 }
 
@@ -253,4 +310,5 @@ module.exports = {
   hostnameOf,
   isAggregatorUrlMismatch,
   hasPreservableAggregatorScore,
+  hasSubstantiveReviewText,
 };

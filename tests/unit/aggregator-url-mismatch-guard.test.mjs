@@ -110,13 +110,30 @@ describe('shouldSkipAggregatorUrlWrite — value-first + source-aware (the regre
     assert.equal(shouldSkipAggregatorUrlWrite(
       { source: 'serp-discovery', url: 'https://theatre.reviews/roundup' }, 'chichester-observer'), true);
   });
-  test('does NOT block an aggregator-source write (legit roundup URL at ingest)', () => {
+  test('does NOT block an aggregator-source write that also carries extracted text', () => {
+    // Task #1337: an aggregator-source write with NEITHER score NOR text is now
+    // its own contamination class (below) — the source label alone stopped being
+    // enough once the validator's canonical predicate (hasAggregatorUrlMismatch,
+    // aggregator-url-latent.js) was found to have no concept of source at all, only
+    // score. These assertions add the text signal these writes actually carry at
+    // ingest (an aggregator-extracted excerpt), matching production shape.
     assert.equal(shouldSkipAggregatorUrlWrite(
-      { source: 'stagedoor', url: aggUrl }, 'guardian'), false);
+      { source: 'stagedoor', url: aggUrl, stagedoorExcerpt: 'A five-star triumph.' }, 'guardian'), false);
     assert.equal(shouldSkipAggregatorUrlWrite(
-      { source: 'show-score', url: 'https://show-score.com/x' }, 'guardian-uk'), false);
+      { source: 'show-score', url: 'https://show-score.com/x', showScoreExcerpt: 'Audiences loved it.' }, 'guardian-uk'), false);
     assert.equal(shouldSkipAggregatorUrlWrite(
-      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x' }, 'standard'), false);
+      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x', westEndTheatreExcerpt: 'A must-see.' }, 'standard'), false);
+  });
+  test('BLOCKS an aggregator-source write with NEITHER score NOR text (task #1337)', () => {
+    // The gap #1337 closed: source alone used to be sufficient here, which let a
+    // write with nothing worth preserving land, only for validate-review-texts.js's
+    // hasAggregatorUrlMismatch() (source-blind, score-only) to flag it post-hoc.
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'stagedoor', url: aggUrl }, 'guardian'), true);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'show-score', url: 'https://show-score.com/x' }, 'guardian-uk'), true);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x' }, 'standard'), true);
   });
   test('does NOT block a write carrying a real star/score (would drop the rating)', () => {
     assert.equal(shouldSkipAggregatorUrlWrite(
