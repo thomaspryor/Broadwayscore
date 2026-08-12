@@ -518,11 +518,18 @@ async function discoverShowScoreUrl(show) {
     try {
       if (verbose) console.log(`  Trying: ${url}`);
       const html = await fetchWithFallback(url, 0); // No retries during discovery
+      // isValidShowScorePage already requires a JSON-LD titlesMatch() pass
+      // (the page's own declared show name) before returning true — a
+      // deterministic, more reliable signal than the LLM heading tiebreaker,
+      // which was rejecting genuinely correct pages (see page-validator.js).
+      // Still run validatePageMatchesShow with skipLlm — titlesMatch() alone
+      // has no year-mismatch or short-title-partial-match guard, so a
+      // same-title-different-year revival, or a listing-page JSON-LD name
+      // that loosely contains the show title, wouldn't otherwise be caught.
       if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
-        // Additional heading-based validation with LLM tiebreaker
-        const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
         if (!pageValidation.valid) {
-          console.log(`  ✗ Page validator rejected: ${pageValidation.reason}`);
+          if (verbose) console.log(`  ✗ Page validator rejected (deterministic): ${pageValidation.reason}`);
           continue;
         }
         console.log(`  ✓ Discovered: ${url}`);
@@ -794,14 +801,23 @@ async function processShow(show) {
       return null;
     }
 
-    // Additional heading-based validation with LLM tiebreaker
-    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    // Deterministic checks (year-mismatch, short-title partial-match guard —
+    // titlesMatch() above has no year logic, so a same-title different-year
+    // revival wouldn't otherwise be caught). skipLlm avoids the flaky LLM
+    // heading tiebreaker (see page-validator.js), which was rejecting
+    // genuinely correct pages.
+    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
     if (!pageValidation.valid) {
-      console.log(`  SKIP: Page validator rejected — ${pageValidation.reason}`);
-      console.log(`  Removing bad cached URL for ${show.id}`);
-      if (urlData.shows) delete urlData.shows[show.id];
-      if (!dryRun) saveUrlCache();
-      return null;
+      // No JSON-LD to fall back on — give the LLM tiebreaker a shot rather
+      // than rejecting on word-match alone.
+      const llmValidation = jsonLdName ? null : await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator' });
+      if (!llmValidation || !llmValidation.valid) {
+        console.log(`  SKIP: Page validator rejected — ${(llmValidation || pageValidation).reason}`);
+        console.log(`  Removing bad cached URL for ${show.id}`);
+        if (urlData.shows) delete urlData.shows[show.id];
+        if (!dryRun) saveUrlCache();
+        return null;
+      }
     }
 
     const data = extractAudienceData(html, show.id);
