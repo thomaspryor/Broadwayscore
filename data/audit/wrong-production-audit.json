@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T09:44:10.133Z",
+  "timestamp": "2026-08-12T10:10:15.786Z",
   "stats": {
     "totalReviews": 42070,
     "alreadyFlagged": 18320,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
     "tvFilmSignals": 1185,
-    "londonSignals": 847,
+    "londonSignals": 848,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3536
+    "noPublishDate": 3535
   },
   "findings": [
     {
@@ -34660,6 +34660,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
