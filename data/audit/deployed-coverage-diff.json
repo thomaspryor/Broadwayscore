@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T10:04:48.702Z",
+  "generatedAt": "2026-08-12T11:46:33.270Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,23 +7,25 @@
   "clean": 147,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "openingDate": "2026-06-25",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 74.16 vs local 73.31 (Δ0.85)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: timeout-london"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
+      "missingFromProd": [
+        "timeout-london"
+      ],
+      "localCount": 21,
+      "deployedCount": 20
     }
   ]
 }
