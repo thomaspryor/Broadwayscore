@@ -94,7 +94,10 @@ async function listIssues(teamId) {
       `query($teamId: String!, $after: String) {
         team(id: $teamId) {
           issues(first: 100, after: $after) {
-            nodes { id identifier title url project { name } state { name } }
+            nodes {
+              id identifier title url project { name } state { name type }
+              completedAt canceledAt
+            }
             pageInfo { hasNextPage endCursor }
           }
         }
@@ -110,6 +113,13 @@ async function listIssues(teamId) {
         url: n.url,
         project: n.project ? n.project.name : null,
         state: n.state ? n.state.name : null,
+        // stateType/completedAt/canceledAt: added for the issue-cap monitor
+        // (BRO-285) to classify archive candidates without a second query —
+        // additive fields, existing callers (scripts/linear-import.js) only
+        // read id/identifier/title/url/project/state and are unaffected.
+        stateType: n.state ? n.state.type : null,
+        completedAt: n.completedAt || null,
+        canceledAt: n.canceledAt || null,
       });
     }
     if (!pageInfo.hasNextPage) break;
@@ -143,6 +153,22 @@ async function createComment(issueId, body) {
   const data = await graphql(linearDispatch.buildCommentMutation(), { issueId, body });
   if (!data.commentCreate.success) throw new Error(`commentCreate failed for issue ${issueId}`);
   return data.commentCreate;
+}
+
+// Archive a Done/Canceled issue so it stops counting against the free-tier
+// 250-unarchived-issue cap (BRO-285). Archiving is reversible in Linear's UI
+// (unarchive), unlike delete, so this carries a lower bar than updateIssue's
+// board-reprojection mutations — callers still keep their own audit trail
+// (see scripts/linear-archive-done.js) before calling this.
+async function archiveIssue(id) {
+  const data = await graphql(
+    `mutation($id: String!) {
+      issueArchive(id: $id) { success }
+    }`,
+    { id }
+  );
+  if (!data.issueArchive.success) throw new Error(`issueArchive failed for ${id}`);
+  return data.issueArchive;
 }
 
 async function updateIssue(id, input) {
@@ -192,6 +218,7 @@ module.exports = {
   listOpenIssues,
   createComment,
   updateIssue,
+  archiveIssue,
   listProjects,
   createProject,
   createIssue,
