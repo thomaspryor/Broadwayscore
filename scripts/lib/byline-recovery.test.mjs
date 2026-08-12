@@ -150,3 +150,45 @@ test('nameCorroboratedBy accepts an honorific + surname byline (WSJ house style)
   assert.equal(nameCorroboratedBy('Christopher Isherwood', 'By Charles Isherwood. The play works.'), false);
   assert.equal(nameCorroboratedBy('Charles Isherwood', 'isherwood is great'), false, 'surname alone with no honorific still rejected');
 });
+
+test('nameCorroboratedBy allowHonorific:false forces the full-name check even with a matching honorific', () => {
+  assert.equal(
+    nameCorroboratedBy('Christopher Isherwood', "Mr. Isherwood is the Journal's critic", { allowHonorific: false }),
+    false,
+    'surname-only evidence must not corroborate when the caller has flagged this surname as ambiguous'
+  );
+  assert.equal(
+    nameCorroboratedBy('Charles Isherwood', 'By Charles Isherwood himself.', { allowHonorific: false }),
+    true,
+    'full-name match still works regardless of allowHonorific'
+  );
+});
+
+test('recoverBylinesForShow refuses the honorific fallback when a competing surname spelling exists in the show (adversarial review, card #190)', () => {
+  // Same surname, two DIFFERENT first names on file for this show: "Christopher
+  // Isherwood" (the candidate) and "Charles Isherwood" (a distinct, real critic
+  // named elsewhere in the show). Body text only ever uses honorific+surname
+  // style, so without the surname-ambiguity gate the wrong first name would be
+  // corroborated via the honorific fallback alone.
+  const out = recoverBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'Mr. Isherwood is the critic.' },
+    { file: 'wsj--christopher-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Christopher Isherwood', fullText: 'Mr. Isherwood is the critic.' },
+    { file: 'nytimes--charles-isherwood.json', outletId: 'nytimes', url: 'https://nytimes.com/b', criticName: 'Charles Isherwood', fullText: 'A review by Charles Isherwood.' },
+  ]);
+  assert.deepEqual(out, [], 'ambiguous surname (two spellings on file) blocks the honorific-only corroboration path');
+});
+
+test('recoverDisplayBylinesForShow catches a same-outlet-different-URL collision WITHIN the same recovery batch', () => {
+  // Two independent Unknown files at the same outlet, each with its own flagged
+  // same-URL sibling that happens to carry the SAME recovered name — gate 5's
+  // check against the raw `list` cannot see this since neither original
+  // criticName is the recovered name; only comparing recovered results to each
+  // other catches it (adversarial review finding, card #190).
+  const out = recoverDisplayBylinesForShow([
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood.' },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+    { file: 'wsj--unknown-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Unknown', fullText: 'By Charles Isherwood.' },
+    { file: 'wsj--charles-isherwood-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+  ]);
+  assert.equal(out.length, 1, 'only the first-processed recovery is kept; the second is held back as a same-name/same-outlet collision');
+});
