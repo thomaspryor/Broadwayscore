@@ -402,6 +402,7 @@ test('fileCard: dedups via linear-brain find, then files via create --park, retu
     assert.equal(calls.execFileSync.length, 2, 'find then create');
     const findArgv = calls.execFileSync[0][1];
     assert.ok(String(findArgv[0]).endsWith('linear-brain.js') && findArgv.includes('find'));
+    assert.ok(findArgv.includes('--exact-title'), 'dedup must match the exact title — substring matching misroutes rows onto wrong issues (verify-pass P2)');
     const argv = calls.execFileSync[1][1];
     assert.ok(String(argv[0]).endsWith('linear-brain.js'), `expected linear-brain.js, got ${argv[0]}`);
     assert.ok(argv.includes('--park'), 'digest-autofix filings are parked; dispatchDetached is the real dispatch');

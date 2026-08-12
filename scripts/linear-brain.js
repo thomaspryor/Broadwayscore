@@ -70,14 +70,26 @@ async function main() {
   if (command === 'find') {
     const term = args._positional[1];
     if (!term) {
-      console.error('Usage: linear-brain find "search term"');
+      console.error('Usage: linear-brain find "search term" [--exact-title]');
       process.exit(1);
     }
-    // Read-only: linear-client.searchIssues walks the team's open issues
-    // (cursor-paginated) and returns the first title/body substring match.
+    // Read-only. Two modes (verify-pass P2, 2026-08-12):
+    //  --exact-title: issue.title === term over the paginated open-issue list
+    //    — the dedup mode digest-autofix's fileCard needs. Substring matching
+    //    here misrouted: a hand-filed issue QUOTING a row title in its body,
+    //    or a superset title ("Cron failed: X (WE)" vs "Cron failed: X"),
+    //    would reattach the row to the wrong issue and silently never file.
+    //  default: searchIssues' first title/body substring match — the
+    //    conditionKey-marker semantics the alert-router dedupe uses.
     const linearClient = require('./lib/linear-client');
     try {
-      const match = await linearClient.searchIssues(term);
+      let match;
+      if (args['exact-title']) {
+        const open = await linearClient.listOpenIssues();
+        match = open.find((i) => i && i.title === term) || null;
+      } else {
+        match = await linearClient.searchIssues(term);
+      }
       console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url }, null, 2) : 'null');
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
