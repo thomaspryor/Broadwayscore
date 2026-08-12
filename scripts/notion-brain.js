@@ -631,11 +631,14 @@ async function createCard(args) {
 
   if (disposition.mode === 'dispatch') {
     if (args['no-spawn']) {
-      // Escape hatch for the self-tracking case: a session that's already
-      // actively running the work (e.g. its own CLAUDE.md §6 session card)
-      // is dispatched by definition — running the pull -> bsc-next chain
-      // here would spawn a REDUNDANT second workspace on the same work.
-      console.error(`DISPATCHED (self, no spawn): "${title}" — session already actively working this`);
+      // Escape hatch: --dispatch means "this is being worked", but not every
+      // dispatch needs a NEW bsc-next workspace — a session filing its own
+      // CLAUDE.md §6 tracking card is dispatched by definition (it's already
+      // running), and a standing owner-review-status card (e.g. commercial
+      // data awaiting manual review) is intentionally never autonomously
+      // worked. Both would spawn a REDUNDANT or nonsensical workspace via
+      // the normal pull -> bsc-next chain, so the caller opts out of it here.
+      console.error(`DISPATCHED (no-spawn): "${title}" — created without launching a new bsc-next workspace`);
     } else {
       dispatchCreatedCard({ pageId: page.id, title });
     }
