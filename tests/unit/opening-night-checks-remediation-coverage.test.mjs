@@ -127,7 +127,7 @@ describe('publish-date-pre-opening check', () => {
     const remediation = result.details.remediation;
     assert.equal(remediation.kind, 'alert');
     assert.equal(remediation.key, `publish-date-pre-opening:${show.id}`);
-    assert.equal(remediation.conditionKey, `opening-night-publish-date-pre-opening-${show.id}`);
+    assert.equal(remediation.conditionKey, `opening-night-publish-date-pre-opening:${show.id}`);
     assert.equal(remediation.description, result.message);
   });
 
@@ -145,7 +145,42 @@ describe('publish-date-pre-opening check', () => {
     const remediation = result.details.remediation;
     assert.equal(remediation.kind, 'alert');
     assert.equal(remediation.key, `publish-date-pre-opening-missing:${show.id}`);
+    assert.equal(remediation.conditionKey, `opening-night-publish-date-pre-opening:missing:${show.id}`);
     assert.equal(remediation.description, result.message);
+  });
+
+  // Codex adversarial review (BRO-219): a hyphen-only join between the state
+  // segment and show.id let the "main" conditionKey for a show literally
+  // named "missing-X" collide with the "-missing" conditionKey for show "X".
+  // routeAlert() dedups by conditionKey, so the collision would have silently
+  // swallowed one show's alert. The colon-delimited fix makes this
+  // structurally impossible (show IDs never contain colons) — this test
+  // proves it rather than just asserting the string shape.
+  it('conditionKey cannot collide between the missing-date and pre-opening-date variants', () => {
+    const collidingShow = { id: 'missing-test-2026-b', openingDate: '2026-04-15' };
+    const context = makeContext({
+      reviewTextsRoot: tmpRoot,
+      reviewsDoc: {
+        [collidingShow.id]: [{
+          outletId: 'frontmezzjunkies', criticName: 'Test Critic',
+          url: 'https://example.com/anticipatory', publishDate: '2026-03-30',
+        }],
+      },
+    });
+    const mainResult = publishDatePreOpening.run(collidingShow, context);
+    const missingShow = { id: 'test-2026-b', openingDate: '2026-04-15' };
+    const missingContext = makeContext({
+      reviewTextsRoot: tmpRoot,
+      reviewsDoc: {
+        [missingShow.id]: [{ outletId: 'some-outlet', criticName: 'Test Critic', url: 'https://example.com/no-date' }],
+      },
+    });
+    const missingResult = publishDatePreOpening.run(missingShow, missingContext);
+    assert.notEqual(
+      mainResult.details.remediation.conditionKey,
+      missingResult.details.remediation.conditionKey,
+      'main-variant conditionKey for "missing-test-2026-b" must not equal the -missing-variant conditionKey for "test-2026-b"'
+    );
   });
 
   it('review published within grace window → ok, no remediation', () => {

@@ -116,7 +116,10 @@ function run(show, context) {
         remediation: {
           kind: 'alert',
           key: `publish-date-pre-opening-missing:${show.id}`,
-          conditionKey: `opening-night-publish-date-pre-opening-missing-${show.id}`,
+          // Colon (not hyphen) before the state segment: show IDs never
+          // contain colons, so this can't collide with the main variant's
+          // conditionKey below for a differently-named show (Codex review).
+          conditionKey: `opening-night-publish-date-pre-opening:missing:${show.id}`,
           title: `Shipped review missing publishDate on ${show.title || show.id}`,
           description: warnMessage,
           severity: 'warning',
@@ -148,7 +151,7 @@ function run(show, context) {
       remediation: {
         kind: 'alert',
         key: `publish-date-pre-opening:${show.id}`,
-        conditionKey: `opening-night-publish-date-pre-opening-${show.id}`,
+        conditionKey: `opening-night-publish-date-pre-opening:${show.id}`,
         title: `Pre-opening publishDate on ${show.title || show.id}`,
         description: message,
         severity: 'error',

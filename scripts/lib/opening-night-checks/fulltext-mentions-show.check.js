@@ -120,7 +120,10 @@ function run(show, context) {
         remediation: {
           kind: 'alert',
           key: `fulltext-mentions-show-short:${show.id}`,
-          conditionKey: `opening-night-fulltext-mentions-show-short-${show.id}`,
+          // Colon (not hyphen) before the state segment: show IDs never
+          // contain colons, so this can't collide with the main variant's
+          // conditionKey below for a differently-named show (Codex review).
+          conditionKey: `opening-night-fulltext-mentions-show:short:${show.id}`,
           title: `Shipped review too short to verify on ${show.title || show.id}`,
           description: warnMessage,
           severity: 'warning',
@@ -152,7 +155,7 @@ function run(show, context) {
       remediation: {
         kind: 'alert',
         key: `fulltext-mentions-show:${show.id}`,
-        conditionKey: `opening-night-fulltext-mentions-show-${show.id}`,
+        conditionKey: `opening-night-fulltext-mentions-show:${show.id}`,
         title: `Content mismatch on ${show.title || show.id}`,
         description: message,
         severity: 'error',
