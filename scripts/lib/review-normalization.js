@@ -1105,13 +1105,42 @@ function buildDomainToOutletIndex() {
       }
       console.warn(`  ⚠️  Domain collision on "${key}": keeping ${existing.outletId}, ignoring ${entry.outletId}`);
     };
+    // Pass 1a: claim every outlet's primary FULL host. Genuine same-full-host
+    // collisions (edition splits that literally share one host — telegraph.co.uk
+    // for telegraph/sunday-telegraph, express.co.uk, timeout.com) resolve via
+    // the eponymous rule above and warn, because a URL on that host truly cannot
+    // name the edition. Also record which full host(s) each bare domainBase is
+    // claimed by, so Pass 1b can tell edition splits apart from the
+    // same-brand-word-across-TLDs class below.
+    const _baseToHosts = new Map(); // domainBase -> Set(fullHost)
     for (const [outletId, outletData] of Object.entries(registry.outlets)) {
       if (!outletData.domain) continue;
       const entry = { outletId, displayName: outletData.displayName };
       const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
       const domainBase = fullHost.split('.')[0];
       _claimDomain(fullHost, entry, domainBase);
-      _claimDomain(domainBase, entry, domainBase);
+      if (!_baseToHosts.has(domainBase)) _baseToHosts.set(domainBase, new Set());
+      _baseToHosts.get(domainBase).add(fullHost);
+    }
+
+    // Pass 1b: claim bare domain bases (the TLD-stripped fallback key). A base
+    // reached from a SINGLE full host registers to that host's resolved winner
+    // (so the eponymous rule stays authoritative for edition splits). But a base
+    // claimed by 2+ DISTINCT full hosts is the same-brand-word-across-TLDs class
+    // task #1254 fixed elsewhere: dancemagazine.com (dance-magazine) vs
+    // dancemagazine.co.uk (dance-informa-uk), independent.com vs independent.co.uk,
+    // donshewey.com vs donshewey.substack.com, boston.com vs
+    // boston.edgemedianetwork.com — legitimately distinct outlets that each
+    // already resolve by their own full host. The bare base is genuinely
+    // ambiguous, so we map it to no one and do NOT warn: it is expected registry
+    // data, not a conflict to resolve. (Real URLs carry a TLD and hit the
+    // exact-host match; only a bare-base fallback is affected, and returning
+    // nothing beats silently handing it to whichever outlet was iterated first.)
+    for (const [domainBase, hosts] of _baseToHosts) {
+      if (hosts.size !== 1) continue; // cross-TLD brand collision — leave ambiguous
+      const fullHost = [...hosts][0];
+      const winner = _domainToOutletCache.get(fullHost);
+      if (winner) _claimDomain(domainBase, winner, domainBase);
     }
 
     // Pass 2: register domainAliases ONLY where the key is not already taken
