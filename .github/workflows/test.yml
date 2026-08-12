@@ -770,6 +770,14 @@ on:
       # 2026-07-09; its test runs in the line-1767 batch.
       - 'scripts/lib/review-normalization.js'
       - 'tests/unit/review-normalization.test.js'
+      # URL-change invariant (#483) — maybeUpgradeUrl's force:true escape fix.
+      # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
+      # so a solo edit triggers CI.
+      - 'scripts/lib/url-change-invariant.js'
+      - 'scripts/lib/url-change-invariant.test.mjs'
+      - 'scripts/lib/stale-flag-after-url-correction.js'
+      - 'scripts/lib/stale-flag-after-url-correction.test.mjs'
+      - 'scripts/audit-stale-flag-after-url-correction.js'
       # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
       # until 2026-07-10; its test runs in the line-1715 batch.
       - 'scripts/lib/content-verifier.js'
@@ -3760,6 +3768,23 @@ jobs:
         # not resurrect what --fix removed — that contract is pinned by
         # tests/unit/self-contradictory-clear.test.mjs, not assumed.
         # Pairs: scripts/lib/flag-contradiction.js SELF_CLEAR_PAIRS.
+
+      - name: Audit stale flag after URL correction
+        if: always()
+        run: node scripts/audit-stale-flag-after-url-correction.js --gate
+        # #483: an exclusion flag (wrongProduction/wrongShow) surviving past an
+        # _urlChangedClear URL-correction breadcrumb with an empty body — the
+        # 112-file class from 2026-07-26, caused by maybeUpgradeUrl's write
+        # path (scripts/lib/review-normalization.js) not clearing the flag
+        # family when the "upgrade" url normalized equal to the old one
+        # (tracking params/protocol/AMP suffix), so the flag-clearing
+        # invariant (scripts/lib/url-change-invariant.js) never fired even
+        # though the body was wiped and needsRefetch was set. Forward fix:
+        # maybeUpgradeUrl now runs applyUrlChangeInvariant(..., {force: true}).
+        # Backlog (157 files, drifted since the original 112-file remediation)
+        # drained 2026-08-12 via `--fix`; blocking (`--gate`, no baseline) from
+        # day one since the corpus is genuinely clean. Detector: scripts/lib/
+        # stale-flag-after-url-correction.js.
 
       - name: Audit cast contamination
         if: always()
