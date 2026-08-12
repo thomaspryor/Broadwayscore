@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T19:59:33.196Z",
+  "timestamp": "2026-08-12T20:42:32.902Z",
   "stats": {
     "totalReviews": 42116,
-    "alreadyFlagged": 18284,
-    "dateGuardCatches": 138,
+    "alreadyFlagged": 18291,
+    "dateGuardCatches": 137,
     "directorMismatch": 963,
     "tvFilmSignals": 1188,
-    "londonSignals": 859,
+    "londonSignals": 860,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3560
+    "noPublishDate": 3556
   },
   "findings": [
     {
@@ -34862,6 +34862,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "west-end-best-friend--oli-burgin.json",
+      "score": 79,
+      "publishDate": "2026-08-12",
+      "url": "https://www.westendbestfriend.co.uk/news/review-death-note-the-musical-barbican-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "westendtheatre--julianna-barnaby.json",
       "publishDate": "2026-07-28",
       "url": "https://www.westendtheatre.com/360914/news/death-note-the-musical-releases-first-listen/",
@@ -44381,17 +44395,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-car-man-west-end-2026",
-      "file": "londontheatre1--terry-eastham.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
         }
       ]
     },
