@@ -170,7 +170,13 @@ function sleep(ms) {
 // first 401 (task #688). Throws on total failure, same as the old fallback.
 async function fetchPageWithFallback(url, opts = {}) {
   if (!url) throw new Error('fetchPageWithFallback: no URL provided');
-  const result = await fetchPage(url, opts.renderJs != null ? { renderJs: opts.renderJs } : {});
+  const fetchOpts = {};
+  if (opts.renderJs != null) fetchOpts.renderJs = opts.renderJs;
+  // premiumProxy maps to fetchPage's options.premium — routes through
+  // Scrapingdog's premium tier and Bright Data before ever considering
+  // ScrapingBee's own (more expensive) premium_proxy tier (task #5).
+  if (opts.premiumProxy) fetchOpts.premium = true;
+  const result = await fetchPage(url, fetchOpts);
   return result.content;
 }
 

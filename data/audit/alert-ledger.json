@@ -130,16 +130,17 @@
       "cardId": "3a8637c5-416f-815f-989d-f513f29369a5"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-12T02:07:28.891Z",
+      "lastSeen": "2026-08-12T04:37:33.715Z",
       "lastNotifiedAt": "2026-08-11T18:47:15.920Z",
       "notifyCount": 26,
       "cardId": null,
-      "silentRefires": 8
+      "silentRefires": 10,
+      "resolvedAt": "2026-08-12T04:43:25.783Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -223,22 +224,22 @@
       "requestedDisposition": "human",
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-08-12T00:59:46.274Z",
+      "lastSeen": "2026-08-12T04:09:43.365Z",
       "lastNotifiedAt": "2026-08-11T05:12:08.005Z",
       "notifyCount": 13,
       "cardId": null,
-      "silentRefires": 16
+      "silentRefires": 17
     },
     "t1-coverage:scoreboard": {
       "status": "open",
       "disposition": "digest",
       "title": "T1 Coverage Scoreboard",
       "firstSeen": "2026-07-30T05:52:09.260Z",
-      "lastSeen": "2026-08-12T00:59:46.342Z",
-      "lastNotifiedAt": "2026-08-11T07:58:36.504Z",
-      "notifyCount": 15,
+      "lastSeen": "2026-08-12T04:09:43.425Z",
+      "lastNotifiedAt": "2026-08-12T04:09:38.816Z",
+      "notifyCount": 16,
       "cardId": null,
-      "silentRefires": 29
+      "silentRefires": 1
     },
     "deployed-coverage:stale": {
       "status": "open",

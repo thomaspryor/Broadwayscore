@@ -1,3 +1,9 @@
+// timebomb-audit-exempt: ttl-cache.js:52 measures freshness as
+//   Date.now() - stat.mtimeMs. audit-time-bomb-tests.js shifts the PROCESS clock
+//   but cannot shift the FILESYSTEM, so under a shifted run every cache entry
+//   reads as expired. Not a real time bomb — production compares two readings of
+//   the same real clock. Proper fix is an injectable clock on ttl-cache.js (the
+//   way detectCWVAnomalies takes `today`), which would retire this exemption.
 /**
  * Tests for scripts/lib/ttl-cache.js — the generic disk-backed TTL cache
  * generalized from serp-cache.js (Scraping v2 Sprint 1 T5). serp-cache.js's

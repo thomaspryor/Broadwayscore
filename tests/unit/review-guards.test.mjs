@@ -26,6 +26,18 @@ const {
   cvBlocksUkWrongProductionAutoClear,
 } = require('../../scripts/lib/review-guards.js');
 
+// Freshness stamps MUST be relative to run time, never a hardcoded literal.
+// AUTO_CLEAR_FRESH_DAYS (review-write-guard.js) is a rolling 7-day window
+// measured against Date.now(), so a literal like '2026-08-04' is "fresh" the
+// day it is written and silently ages out a week later — turning a passing
+// test into a calendar-triggered CI failure with no code change. That is
+// exactly what held main red from 2026-08-11: two tests below expired, and
+// because work lands directly on main from many parallel sessions
+// (~25 test.yml runs/day), every subsequent code push re-reported the same
+// two failures — 160 red runs out of 200 from one expiry.
+// scripts/audit-time-bomb-tests.js exists to catch this class in advance.
+const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+
 describe('isLikelyWrongProduction', () => {
   test('review 91 days before show -> true', () => {
     // 91 days before 2026-06-01 = 2026-03-02
@@ -970,7 +982,7 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     const data = {
       contentTier: 'invalid',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show (balletcoforum)",
-      wrongProductionAutoClearedAt: '2026-08-04',
+      wrongProductionAutoClearedAt: daysAgoISO(1),
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);
@@ -984,7 +996,7 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     const data = {
       contentTier: 'invalid',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
-      wrongProductionAutoClearedAt: '2026-01-01',
+      wrongProductionAutoClearedAt: daysAgoISO(365),
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), false);
@@ -1018,7 +1030,7 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     const data = {
       rejectedAt: '2026-08-01T00:00:00.000Z',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
-      wrongProductionAutoClearedAt: '2026-08-04',
+      wrongProductionAutoClearedAt: daysAgoISO(1),
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);
@@ -1042,7 +1054,7 @@ describe('wrongProductionAutoCleared bypasses stale downstream flags (task #1017
     const data = {
       incompleteReason: 'wrong_content',
       wrongProductionAutoCleared: "rebuild: registry region 'london' outlet on London show",
-      wrongProductionAutoClearedAt: '2026-08-04',
+      wrongProductionAutoClearedAt: daysAgoISO(1),
       fullText: 'x'.repeat(900),
     };
     assert.strictEqual(_isIncludable(data), true);

@@ -31,9 +31,21 @@ test('all outcomes failing is an ERROR', () => {
   assert.match(r.message, /DEAD/);
 });
 
-test('the error names the logged-out CLI as the first thing to check', () => {
+test('the error points at the job logs and .env, NOT at the CLI login', () => {
+  // 2026-08-11: the original wording told the reader to run `claude -p` and look
+  // for "Not logged in". That is the wrong check — the fleet does not use the
+  // CLI's stored login at all; claude-cli.js injects ANTHROPIC_API_KEY /
+  // CLAUDE_CODE_OAUTH_TOKEN from .env into every spawned job. A bare probe from
+  // an interactive shell reports "Not logged in" even while the fleet is healthy,
+  // and that false reading was escalated to the owner as a total outage twice in
+  // one session. The remediation must name what is actually diagnostic.
   const r = assessAutofixEffectiveness([...many(3, launch), fail(), fail(), fail()], { now: NOW });
-  assert.match(r.message, /Not logged in/);
+  assert.match(r.message, /bsc-jobs/);
+  assert.match(r.message, /ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN/);
+  assert.ok(!/Not logged in/.test(r.message),
+    'must not send the reader to the CLI login, which the fleet does not use');
+  assert.ok(!/claude -p/.test(r.message),
+    'a bare `claude -p` probe reports logged-out even on a healthy fleet');
 });
 
 test('REGRESSION: jobs launched that never report back is an ERROR, not "not enough to judge"', () => {

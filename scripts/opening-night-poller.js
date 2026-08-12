@@ -564,8 +564,14 @@ async function runAggregators(show) {
     console.log('  Checking Show Score...');
     const ss = await searchShowScore(show);
     if (ss && ss.html) {
+      // skipLlm: the LLM tiebreaker was rejecting genuinely correct Show
+      // Score pages (see page-validator.js / scrape-show-score-audience.js
+      // fix) — keeps the deterministic year-mismatch + short-title guards,
+      // drops only the flaky LLM step.
       const validation = await validatePageMatchesShow(ss.html, show.title, {
         openingYear: year,
+        pageType: 'audience-aggregator',
+        skipLlm: true,
       });
       if (validation.valid) {
         // Playwright-extracted reviews take priority

@@ -188,9 +188,17 @@ describe('detectCWVAnomalies — lab Lighthouse severity', () => {
  * tracked warning instead of silently dropping the anomaly.
  */
 describe('detectCWVAnomalies — field-LCP acknowledgment (#368)', () => {
+  // Pinned to a date inside the ack's window on purpose. The ack expires by
+  // design (2026-08-18), so asserting "acknowledged → warning" against the real
+  // clock makes this test fail on that date with no commit behind it. The
+  // expiry behaviour itself is covered separately by
+  // 'findCWVFieldAcknowledgment returns null once expired' below, which pins
+  // the other side of the boundary.
+  const WITHIN_ACK_WINDOW = '2026-07-24';
+
   test('/west-end field-LCP regression is acknowledged → warning, not error', () => {
     const cwv = [{ url: `${HOST}/west-end`, performanceScore: 69, lcp: 2512, inp: null, cls: 0 }];
-    const issues = detectCWVAnomalies(cwv, []);
+    const issues = detectCWVAnomalies(cwv, [], WITHIN_ACK_WINDOW);
     const lh = issues.find(i => i.type === 'cwv_lighthouse_low');
     assert.ok(lh, 'should still flag the low Lighthouse score');
     assert.strictEqual(lh.severity, 'warning', 'acknowledged field regression → warning, not error');

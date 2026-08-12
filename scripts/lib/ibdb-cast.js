@@ -29,67 +29,29 @@ const https = require('https');
  */
 
 const { JSDOM } = require('jsdom');
-const { fetchPage, isChallengeOrGarbage } = require('./scraper');
+const { fetchPage } = require('./scraper');
 const { isBroadwayCategory } = require('./venue-classification');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 const RATE_LIMIT_MS = 1500;
 
 /**
- * Fetch raw HTML from an IBDB production page.
- * Tries ScrapingBee with premium proxy first, falls back to shared scraper.
+ * Fetch raw HTML from an IBDB production page via the shared fetchPage()
+ * fallback chain. ibdb.com is a free Playwright-first public site in
+ * scraper.js — no anti-bot, so a direct ScrapingBee premium_proxy=true call
+ * here paid $2.48/1k for a page that doesn't need proxying at all (task #5).
  *
  * @param {string} url - IBDB production URL
  * @returns {Promise<string|null>} Raw HTML content or null
  */
 async function fetchIBDBPageHTML(url) {
-  let content = null;
-
-  // Try ScrapingBee with premium proxy + JS render
   try {
-    const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY;
-    if (scrapingBeeKey) {
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?` +
-        `api_key=${scrapingBeeKey}` +
-        `&url=${encodeURIComponent(url)}` +
-        `&premium_proxy=true` +
-        `&render_js=true`;
-
-      const resp = await fetch(apiUrl);
-      if (resp.ok) {
-        content = await resp.text();
-        if (content && isChallengeOrGarbage(content)) {
-          // Cloudflare (or similar) challenge page — same detection scraper.js
-          // uses for every other tier (task #712). Discard so the fallback
-          // path below runs instead of returning challenge HTML as "content".
-          console.log(`  ⚠️  ScrapingBee returned challenge/garbage (${content.length} bytes)`);
-          content = null;
-        } else if (content && content.includes('OpeningNightCast')) {
-          return content;
-        } else if (content && !content.includes('broadway-cast-staff')) {
-          // If page loaded but no cast tabs, may be wrong page or redirected
-          console.log(`  ⚠️  Page loaded but no cast data found (may be redirected)`);
-        }
-      } else {
-        console.log(`  ⚠️  ScrapingBee HTTP ${resp.status}`);
-      }
-    }
+    const pageResult = await fetchPage(url, { renderJs: true });
+    return pageResult.content;
   } catch (e) {
-    console.log(`  ⚠️  ScrapingBee page fetch failed: ${e.message}`);
+    console.log(`  ⚠️  Scraper fetch failed: ${e.message}`);
+    return null;
   }
-
-  // Fallback: shared scraper
-  if (!content || !content.includes('broadway-cast-staff')) {
-    try {
-      const pageResult = await fetchPage(url, { renderJs: true });
-      content = pageResult.content;
-    } catch (e) {
-      console.log(`  ⚠️  Scraper fallback failed: ${e.message}`);
-      return null;
-    }
-  }
-
-  return content;
 }
 
 /**
