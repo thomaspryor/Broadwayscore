@@ -163,6 +163,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     getIssue: getIssueFn = linear.getIssue,
     launchCmux: launchCmuxFn = launchCmuxSession,
     runJobFn = null, // lazily required below (bsc-runner.js) — test seam
+    // cmux + ledger I/O — injectable test seams, same naming convention
+    // bsc-next.js's own main() uses for the identical guards (findLiveWorkspaceForTask
+    // et al are pure over whatever these return, so no other seam is needed).
+    cmuxAvailable: cmuxAvailableFn = cmuxws.cmuxAvailable,
+    listWorkspaces: listWorkspacesFn = cmuxws.listWorkspaces,
+    isDoneTitle: isDoneTitleFn = cmuxws.isDoneTitle,
+    claudeAliveIn: claudeAliveInFn = cmuxws.claudeAliveIn,
+    terminalSurfaceAliveIn: surfaceAliveInFn = cmuxws.terminalSurfaceAliveIn,
+    readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
+    appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -250,7 +260,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // already looks dispatched" signals, checked before any launch attempt.
   // See linear-dispatch.js's findUnresolvedDispatchComment/hasLiveLedgerEntry
   // for why both exist (cross-machine vs. host-local).
-  const entries0 = dispatchLedger.readEntries();
+  const entries0 = readLedgerEntriesFn();
   if (!args.force) {
     const priorComment = ld.findUnresolvedDispatchComment(issue);
     const liveLedger = ld.hasLiveLedgerEntry(taskId, entries0);
@@ -272,25 +282,32 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     } catch (e) { console.error(`[linear-next] park check failed (continuing): ${e.message}`); }
   }
 
-  // Dead-dispatch self-heal + duplicate-dispatch guard — cmux-tab-only (the
-  // headless runner has its own cross-dispatcher lease in bsc-runner.js's
-  // acquireLease(), same as bsc-next.js's --headless path).
-  if (cmuxws.cmuxAvailable()) {
+  // Dead-dispatch self-heal (both routing modes — task-level, not mode-
+  // specific) + duplicate-cmux-tab guard. The duplicate-tab check below runs
+  // for --headless too, on purpose: bsc-runner's cross-dispatcher lease
+  // (bsc-runner.js's acquireLease()) is keyed by taskId ONLY and only ever
+  // sees OTHER headless jobs — it is blind to a live cmux TAB on the same
+  // task. bsc-next.js's own --headless branch keeps this exact
+  // findLiveWorkspaceForTask check for precisely that reason (ship-check
+  // Codex blocker, see bsc-next.js's --headless block comment) — skipping it
+  // here for headless would silently reopen that same duplicate-dispatch
+  // hole a headless Linear dispatch has no other guard against.
+  if (cmuxAvailableFn()) {
     let workspaces = null;
-    try { workspaces = cmuxws.listWorkspaces(); } catch (e) { console.error(`[linear-next] workspace list failed (continuing): ${e.message}`); }
+    try { workspaces = listWorkspacesFn(); } catch (e) { console.error(`[linear-next] workspace list failed (continuing): ${e.message}`); }
     if (workspaces) {
       try {
         const { freshDead, refusal } = checkDeadDispatch(
-          pseudoTask, workspaces, dispatchLedger.readEntries(),
-          cmuxws.isDoneTitle, cmuxws.claudeAliveIn, cmuxws.terminalSurfaceAliveIn, args,
+          pseudoTask, workspaces, readLedgerEntriesFn(),
+          isDoneTitleFn, claudeAliveInFn, surfaceAliveInFn, args,
         );
-        freshDead.forEach((b) => { try { dispatchLedger.appendEntry(b); } catch (e) { console.error(`[linear-next] WARN ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
+        freshDead.forEach((b) => { try { appendLedgerEntryFn(b); } catch (e) { console.error(`[linear-next] WARN ledger self-heal write failed for ${b.workspaceRef}: ${e.message}`); } });
         if (refusal) { console.error(`[linear-next] ${refusal}`); process.exit(1); }
       } catch (e) { console.error(`[linear-next] dead-dispatch check failed (continuing): ${e.message}`); }
 
-      if (!args.force && routing.mode !== 'headless') {
+      if (!args.force) {
         try {
-          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, cmuxws.isDoneTitle);
+          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, isDoneTitleFn);
           if (dup) {
             console.error(`[linear-next] a live workspace already matches ${identifier}: ${dup.ref} "${dup.title}".`);
             console.error(`  Another session may be on this issue. Check it (cmux read-screen --workspace ${dup.ref}),`);
@@ -335,7 +352,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // ordering this file's header describes: the ledger is the durable
     // record of intent, written before anything that could fail partway.
     try {
-      dispatchLedger.appendEntry({
+      appendLedgerEntryFn({
         event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
@@ -379,7 +396,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         verifyCmd: gate.cmd, verifyReason: gate.reason,
         failureReason: res.reason, deadConfirmed: res.deadConfirmed !== false,
       });
-      failedEntries.forEach((e) => dispatchLedger.appendEntry({ ...e, linearId: issue.identifier, correlationId }));
+      failedEntries.forEach((e) => appendLedgerEntryFn({ ...e, linearId: issue.identifier, correlationId }));
     } catch (e) { console.error(`[linear-next] WARN ledger dead write failed (non-fatal): ${e.message}`); }
     if (res.workspaceRef) console.error(`  workspace: ${res.workspaceRef} (left open for inspection)`);
     console.error(`  command that should have run:`);
@@ -392,7 +409,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // header for why (crash-safety: a crash here still leaves a live ledger
   // entry a retry's hasLiveLedgerEntry() check will find).
   try {
-    dispatchLedger.appendEntry({
+    appendLedgerEntryFn({
       event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,

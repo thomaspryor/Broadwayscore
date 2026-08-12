@@ -7,6 +7,8 @@
 // silently past it.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import {
   MAC_ONLY_LABEL,
   buildIssueQuery,
@@ -25,6 +27,11 @@ import {
   hasLiveLedgerEntry,
 } from '../../scripts/lib/linear-dispatch.js';
 import { parseArgs, ledgerTaskId } from '../../scripts/linear-next.js';
+
+// REPO root for the subprocess regression test below — spawned from a fixed
+// cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
+// normally, same as running the CLI for real.
+const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
 // ── GraphQL query/mutation builders ─────────────────────────────────────────
 
@@ -282,4 +289,60 @@ test('parseArgs: a flag immediately followed by another flag is boolean, not a v
   const a = parseArgs(['--dry-run', '--id', 'BRO-1']);
   assert.equal(a['dry-run'], true);
   assert.equal(a.id, 'BRO-1');
+});
+
+// ── guard-parity regression (ship-check P1) ─────────────────────────────────
+//
+// bsc-next.js's own --headless branch runs the findLiveWorkspaceForTask
+// duplicate-tab check ON PURPOSE (see its comment at the top of the
+// --headless block): bsc-runner's cross-dispatcher lease is keyed by taskId
+// ONLY, so it only ever sees OTHER headless jobs — it has no visibility into
+// a live cmux TAB already open on the same task. A prior version of
+// linear-next.js's main() skipped this exact check for `routing.mode ===
+// 'headless'`, which is the inverse of the reason the check exists.
+//
+// This drives main() end-to-end IN A REAL SUBPROCESS, not an in-process call
+// with process.exit stubbed to throw: the guard's own `try { ... } catch (e)
+// { console.error('...continuing...') }` wraps the process.exit(1) call, so a
+// throwing stub is swallowed by that SAME catch (bsc-next-ci-red-claim.test.mjs
+// documents this exact unobservability for bsc-next.js's identical guard
+// shape, which is why that suite uses structural source assertions instead).
+// A real child process lets process.exit(1) actually terminate — genuine
+// behavioral proof, not a structural stand-in.
+test('guard parity: --headless dispatch is refused (real process exit) when a live cmux tab already matches the issue', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-guard-parity', identifier: 'BRO-9001',
+      title: 'Guard parity regression fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9001/guard-parity-regression-fixture-issue',
+      priority: 2,
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    // findLiveWorkspaceForTask/titleMatchesSubject matches on the launch
+    // title (task.subject = "<identifier> <title>"), so the fixture
+    // workspace's title is exactly that string — a real live-title match.
+    const subject = issue.identifier + ' ' + issue.title;
+    const liveWorkspace = { ref: 'workspace:77', title: subject };
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      launchCmux: () => { throw new Error('launchCmux must not be called — refusal happens before any launch attempt'); },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [liveWorkspace],
+      isDoneTitle: () => false,
+      // workspace reads as LIVE — checkDeadDispatch must not self-heal it
+      // into a 'dead' breadcrumb before the duplicate-tab check even runs.
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 1, `expected exit 1 (duplicate-tab refusal), got ${res.status}. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.match(res.stderr, /a live workspace already matches/, 'must report the duplicate-tab refusal, not some other gate');
+  assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called once the duplicate-tab guard refuses — this is the regression the guard-parity fix closes');
 });

@@ -1,12 +1,27 @@
 /**
  * dispatch-guards.js — the shared pre-launch guard/gate predicates every
  * dispatcher (bsc-next.js for Notion-mirror tasks, linear-next.js for Linear
- * issues) must run before opening a workspace. Extracted verbatim out of
- * bsc-next.js (task #1303 plan review, 2026-08-12) so a second dispatcher
- * never re-derives — and inevitably drifts from — these refusals. bsc-next.js
- * re-exports every name below unchanged for back-compat; this file is what
- * makes its Notion-mirror path deletable later without taking the guards
- * with it.
+ * issues) must run before opening a workspace. Extracted out of bsc-next.js
+ * (task #1303 plan review, 2026-08-12) so a second dispatcher never
+ * re-derives — and inevitably drifts from — these refusals. bsc-next.js
+ * re-exports every name below for back-compat; this file is what makes its
+ * Notion-mirror path deletable later without taking the guards with it.
+ *
+ * NOT byte-for-byte verbatim (ship-check finding, ci = false claim caught):
+ * the logic in every function is unchanged, but two return strings were
+ * deliberately generalized for a second, non-bsc-next caller —
+ *   - parkedGuard()'s escape-hatch line now takes a `cliName` param
+ *     (defaults to bsc-next.js's own invocation, preserving its exact
+ *     pre-extraction text — bsc-next.test.mjs asserts on it byte-for-byte);
+ *     linear-next.js passes its own script name so the printed command is
+ *     actually runnable for the dispatcher that hit the guard.
+ *   - staleOutcomeGuard()'s Notion remediation line is now conditional on
+ *     notionIdOf(task) actually finding a `[notion:<uuid>]` tag, instead of
+ *     always printing `--status Done <pid>` with pid=null for a caller (a
+ *     Linear pseudoTask) that never carries one.
+ * Both call sites also lost their hardcoded `[bsc-next] ` message prefix —
+ * callers prepend their own (bsc-next.js and linear-next.js both already
+ * did this at their call sites before the extraction).
  *
  * Six guards, two families:
  *   - DUPLICATE / DEAD / PARKED (workspace-shaped): findLiveWorkspaceForTask,
