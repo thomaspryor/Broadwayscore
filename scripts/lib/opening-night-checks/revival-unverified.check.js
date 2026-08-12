@@ -57,11 +57,29 @@ function run(show, context) {
     ? `shares canonical title with another show in the same market`
     : `review text mentions "revival" ${mentionCount}x`;
 
+  const message = `${show.id} ${signal} but isRevival is not true — verify and set isRevival if this is a revival`;
+
   return {
     ok: false,
     severity: 'warning',
-    message: `${show.id} ${signal} but isRevival is not true — verify and set isRevival if this is a revival`,
-    details: { showId: show.id, titleMatch, mentionCount },
+    message,
+    details: {
+      showId: show.id,
+      titleMatch,
+      mentionCount,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: isRevival affects scoring (curated-historical
+      // threshold) — a heuristic must not flip it unattended.
+      remediation: {
+        kind: 'alert',
+        key: `revival-unverified:${show.id}`,
+        conditionKey: `opening-night-revival-unverified-${show.id}`,
+        title: `Unverified revival on ${show.title || show.id}`,
+        description: message,
+        severity: 'warning',
+        reason: signal,
+      },
+    },
   };
 }
 

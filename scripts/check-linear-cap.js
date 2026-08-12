@@ -47,7 +47,7 @@ async function main() {
         // head (headStandsAlone), so a dynamic count in the title would make
         // every prompt fail the clip check.
         title: 'Linear board near its free-plan issue cap',
-        description: `The Linear workspace holds ${count} unarchived issues against the free-tier hard cap of 250; at the cap, issueCreate fails with USAGE_LIMIT_EXCEEDED and the alert/dispatch intake front door jams. linear-archive-done.js already archives Done/Canceled issues older than 48h on each scheduled run, so a sustained breach means the OPEN backlog itself is the driver.`,
+        description: `The Linear workspace holds ${count} unarchived issues against the free-tier hard cap of 250; at the cap, new-issue creation fails with USAGE_LIMIT_EXCEEDED and the alert/dispatch intake front door jams. linear-archive-done.js already archives Done/Canceled issues older than 48h on each scheduled run, so a sustained breach means the OPEN backlog itself is the driver.`,
         hint: 'Close or archive open issues, or decide on the Linear paid tier. node scripts/linear-archive-done.js --dry-run shows what auto-archive can still reclaim.',
         disposition: 'digest',
         severity: 'warning',

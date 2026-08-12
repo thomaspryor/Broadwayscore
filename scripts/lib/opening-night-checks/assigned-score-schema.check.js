@@ -34,13 +34,30 @@ function run(show, context) {
     };
   }
 
+  const message = violations.map(v =>
+    `${v.outletId}/${v.criticName}: assignedScore is ${v.assignedScoreType} (${JSON.stringify(v.assignedScore)}), expected number — ${v.url}`
+  ).join('\n');
+
   return {
     ok: false,
     severity: 'error',
-    message: violations.map(v =>
-      `${v.outletId}/${v.criticName}: assignedScore is ${v.assignedScoreType} (${JSON.stringify(v.assignedScore)}), expected number — ${v.url}`
-    ).join('\n'),
-    details: { violations, showId: show.id },
+    message,
+    details: {
+      violations,
+      showId: show.id,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: schema drift is a parser bug on a specific
+      // source file — a heuristic re-run cannot know the correct fix.
+      remediation: {
+        kind: 'alert',
+        key: `assigned-score-schema:${show.id}`,
+        conditionKey: `opening-night-assigned-score-schema-${show.id}`,
+        title: `Non-numeric assignedScore on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${violations.length} review(s) with non-numeric assignedScore`,
+      },
+    },
   };
 }
 
