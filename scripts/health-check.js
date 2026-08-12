@@ -3528,8 +3528,12 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
                 // is what sent every session chasing the wrong cause during
                 // the 2026-07-24 npm-ci incident (the real error was
                 // "Cannot find module '@notionhq/client'").
-                ? `${entry.humanAction} — Action Queue dispatch failed, will retry next run. Error: ${(dispatch.dispatchError || '(no error captured)').slice(0, 200)}`
-                : `${entry.humanAction} — dispatched to the Action Queue; it'll work this hands-free.`)
+                ? `${entry.humanAction} — tracker filing failed, will retry next run. Error: ${(dispatch.dispatchError || '(no error captured)').slice(0, 200)}`
+                // BRO-286 honesty: name the filed issue; never claim
+                // hands-free work without a journaled dispatch.
+                : (dispatch.linearIdentifier
+                    ? `${entry.humanAction} — filed as ${dispatch.linearIdentifier} in Linear; the automation queue works it from there.`
+                    : `${entry.humanAction} — tracker filed; the automation queue works it from there.`))
           : entry
             ? (entry.humanAction || entry.humanFallback || r.message)
             : r.message;

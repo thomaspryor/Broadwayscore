@@ -48,7 +48,9 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
-const { fileCard, syncTasks, dispatchDetached } = require('./digest-autofix.js');
+// syncTasks no longer imported: Linear filings need no task-mirror sync
+// (BRO-286) — the identifier fileCard returns is directly dispatchable.
+const { fileCard, dispatchDetached } = require('./digest-autofix.js');
 const { repoDepthArgs } = require('./shallow-fetch-args.js');
 
 const REPO = path.join(__dirname, '..', '..');
@@ -394,8 +396,13 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
     log(`[autofix-canary] ${yesterday} canary: task list unreadable this run — resolution deferred, not evidence of failure`);
   } else if (!alreadyResolved && yState.stage !== 'not-filed') {
     const markerExists = markerExistsOnOriginMain(yesterday, log); // true | false | null (unresolved)
-    const task = yState.taskId ? tasksById.get(String(yState.taskId)) : null;
-    const taskCompleted = !!(task && task.status === 'completed');
+    // BRO-286: Linear-tracked canaries ('linear:BRO-N' taskIds) have no
+    // Notion-mirror task to check — the committed marker + job DONE already
+    // prove the pipeline end-to-end, and the Phase-3 board Done-audit is the
+    // independent check that the issue itself closed.
+    const isLinearCanary = /^linear:/.test(String(yState.taskId || ''));
+    const task = (!isLinearCanary && yState.taskId) ? tasksById.get(String(yState.taskId)) : null;
+    const taskCompleted = isLinearCanary ? true : !!(task && task.status === 'completed');
     if (yState.stage === 'job-done' && markerExists === true && taskCompleted) {
       if (!dryRun) appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'canary-pass', date: yesterday, taskId: yState.taskId });
       log(`[autofix-canary] ${yesterday} canary PASSED (marker committed to origin/main, task completed)`);
@@ -461,33 +468,23 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
     }
   }
 
-  if (!fileCard(title, buildCanaryCardNotes(today), { log })) return { filed: false, reason: 'card create failed' };
-  syncTasks({ log });
-
-  let freshTasks = tasks;
-  try {
-    if (loadTasksFn) freshTasks = loadTasksFn();
-    else { const bn = require('../bsc-next.js'); freshTasks = bn.loadTasks(bn.TASKS_DIR); }
-  } catch { /* falls through to the pre-sync snapshot */ }
-  const match = (freshTasks || []).find((t) => t && (t.status === 'pending' || t.status === 'in_progress') && t.subject === title);
-  if (!match) {
-    // Sync lag: card exists in Notion but hasn't synced into the shared task
-    // list yet. Deliberately do NOT record card-filed here — tomorrow's live
-    // task-list cross-check above (not just the ledger) is what catches this
-    // on retry once sync has caught up, instead of silently losing the dedup
-    // record the way an unconditional ledger write would.
-    log(`[autofix-canary] WARN card filed but taskId not resolved yet (sync lag) — dispatch skipped this run`);
-    return { filed: true, dispatched: false, reason: 'taskId not resolved' };
-  }
+  // BRO-286: fileCard files a Linear issue and returns its identifier
+  // immediately — the old syncTasks → reload → title-match → sync-lag dance
+  // existed only because Notion card ids had to round-trip through the task
+  // mirror to become dispatchable numbers. The Linear identifier is
+  // dispatchable the moment it exists.
+  const filedIssue = fileCard(title, buildCanaryCardNotes(today), { log });
+  if (!filedIssue.ok) return { filed: false, reason: 'card create failed' };
+  const canaryTaskId = `linear:${filedIssue.identifier}`;
 
   try {
-    dispatchDetached(match.id, log, 0, null);
-    appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: String(match.id) });
-    return { filed: true, dispatched: true, taskId: String(match.id) };
+    dispatchDetached(canaryTaskId, log, 0, null);
+    appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: canaryTaskId });
+    return { filed: true, dispatched: true, taskId: canaryTaskId };
   } catch (err) {
-    log(`[autofix-canary] WARN dispatch spawn failed for canary #${match.id}: ${String(err.message).slice(0, 120)}`);
-    appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: String(match.id) });
-    return { filed: true, dispatched: false, taskId: String(match.id) };
+    log(`[autofix-canary] WARN dispatch spawn failed for canary ${canaryTaskId}: ${String(err.message).slice(0, 120)}`);
+    appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-filed', date: today, taskId: canaryTaskId });
+    return { filed: true, dispatched: false, taskId: canaryTaskId };
   }
 }
 

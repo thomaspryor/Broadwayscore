@@ -234,23 +234,37 @@ function buildCardNotes(row) {
 // conditionKey with a hand-filed Linear issue in practice (they're filed by
 // name, not conditionKey, prior to this rail), so the exposure this leaves
 // open is narrow.
+// BRO-286 Phase 2 intake repoint (2026-08-12): files a LINEAR issue via the
+// linear-brain.js CLI (single createLinearIssue() chokepoint underneath,
+// CI-gated) instead of a Notion card. Returns { ok, identifier } — identifier
+// is the human id ("BRO-287") the caller threads straight onto its row as
+// `linear:BRO-287`, REPLACING the old file→syncTasks→matchOpenTask numeric-
+// task resolution dance (there is no Notion mirror card to resolve anymore).
 function fileCard(title, notes, { log = () => {} } = {}) {
   try {
-    execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', title,
-      '--priority', 'P1', '--status', 'Not started',
+    const out = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'create', title,
+      // Linear priority 2 = High (scale: 1 Urgent / 2 High / 3 Medium / 4
+      // Low) — same intent as the old 'P1' Notion priority: auto-fix rows
+      // are dispatch-eligible immediately.
+      '--priority', '2',
       '--notes', notes,
       // task #1310: filing and dispatching are deliberately separate steps
-      // here (see header comment above) — this call only ever files. The
-      // caller's own syncTasks() + dispatchDetached() (below) is the real
-      // dispatch; --park states that split so the card never reads as
-      // already-in-progress in the gap between the two.
-      '--park', 'Auto-filed by digest-autofix; runAutofix syncs the task mirror and dispatches separately in the same pass.',
+      // here (see header comment above) — this call only ever files; the
+      // caller's own dispatchDetached() (below) is the real dispatch.
+      '--park', 'Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.',
     ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
-    log(`[digest-autofix] filed card: ${title}`);
-    return true;
+    // linear-brain prints the issue JSON then a PARKED: line — the field is
+    // `.identifier` (NOT `.id`, which is the opaque UUID).
+    const m = out.match(/"identifier":\s*"([A-Z]+-\d+)"/);
+    if (!m) {
+      log(`[digest-autofix] WARN issue created but identifier not found in output for "${title}"`);
+      return { ok: false, identifier: null };
+    }
+    log(`[digest-autofix] filed issue ${m[1]}: ${title}`);
+    return { ok: true, identifier: m[1] };
   } catch (err) {
-    log(`[digest-autofix] WARN card create failed for "${title}": ${String(err.message).slice(0, 120)}`);
-    return false;
+    log(`[digest-autofix] WARN issue create failed for "${title}": ${String(err.message).slice(0, 120)}`);
+    return { ok: false, identifier: null };
   }
 }
 
@@ -276,28 +290,39 @@ function syncTasks({ log = () => {} } = {}) {
 function dispatchDetached(taskId, log, delaySec = 0, model = null) {
   // Validate BEFORE opening the log fd — throwing after openSync leaked a
   // file descriptor per rejected dispatch (Codex review, 2026-08-02).
+  //
+  // Two id shapes (BRO-286): 'linear:BRO-287' rows (the repointed fileCard
+  // path) spawn linear-next.js with the bare Linear identifier; legacy
+  // numeric ids keep the bsc-next.js path (rows resolved against the old
+  // Notion mirror during the parallel run). Both regexes make the sh -c
+  // interpolation injection-safe — anything else throws.
+  const linearMatch = /^linear:([A-Z]+-\d+)$/.exec(String(taskId));
   const idNumEarly = Number(taskId);
-  if (!Number.isSafeInteger(idNumEarly) || idNumEarly <= 0) throw new Error(`invalid taskId for dispatch: ${String(taskId).slice(0, 40)}`);
+  if (!linearMatch && (!Number.isSafeInteger(idNumEarly) || idNumEarly <= 0)) {
+    throw new Error(`invalid taskId for dispatch: ${String(taskId).slice(0, 40)}`);
+  }
   fs.mkdirSync(LOG_DIR, { recursive: true });
-  const logPath = path.join(LOG_DIR, `${taskId}-${Date.now()}.log`);
+  const logPath = path.join(LOG_DIR, `${String(taskId).replace(/[^A-Za-z0-9_-]/g, '_')}-${Date.now()}.log`);
   const logFd = fs.openSync(logPath, 'a');
   // Staggered start: simultaneous detached spawns race on the main repo's
   // `git worktree add` lock and all but one die 'worktree-error' (live-run
-  // finding 2026-08-02: 3 same-instant dispatches → 2 failed). taskId is
-  // numeric and delaySec is internal, so the sh -c line is injection-safe.
-  // Codex hardening (2026-08-02): validate the id as a real integer (parseInt
-  // silently truncates junk), and pass the script path as a positional shell
-  // arg instead of interpolating it (JSON.stringify is NOT shell quoting —
-  // $() would survive inside double quotes).
-  const id = String(idNumEarly);
+  // finding 2026-08-02: 3 same-instant dispatches → 2 failed). Both id forms
+  // are regex-validated above and delaySec is internal, so the sh -c line is
+  // injection-safe. Codex hardening (2026-08-02): pass the script path as a
+  // positional shell arg instead of interpolating it (JSON.stringify is NOT
+  // shell quoting — $() would survive inside double quotes).
+  const id = linearMatch ? linearMatch[1] : String(idNumEarly);
+  const scriptPath = linearMatch
+    ? path.join(REPO, 'scripts', 'linear-next.js')
+    : path.join(REPO, 'scripts', 'bsc-next.js');
   const safeModel = model && VALID_MODELS.has(model) ? model : null;
   const modelArg = safeModel ? ` --model ${safeModel}` : '';
   const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${modelArg}`;
-  const child = spawn('sh', ['-c', cmd, 'sh', path.join(REPO, 'scripts', 'bsc-next.js')],
+  const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
   fs.closeSync(logFd);
-  log(`[digest-autofix] dispatch attempted for #${id} (headless, detached${safeModel ? `, model ${safeModel}` : ''}, +${delaySec}s stagger; log: ${logPath})`);
+  log(`[digest-autofix] dispatch attempted for ${linearMatch ? id : `#${id}`} (${linearMatch ? 'linear-next' : 'bsc-next'} headless, detached${safeModel ? `, model ${safeModel}` : ''}, +${delaySec}s stagger; log: ${logPath})`);
 }
 
 // ── attempt-memory plumbing (own ledger, shared dispatch-ledger for job outcomes) ──
@@ -375,16 +400,21 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       continue;
     }
     if (!dispatchLedger.TERMINAL_JOB_EVENTS.has(job.event)) continue; // still running
-    const task = tasksById.get(String(d.taskId));
-    const completed = !!(task && task.status === 'completed');
     const sessionOk = job.event === dispatchLedger.JOB_EVENTS.DONE;
+    const isLinear = /^linear:/.test(String(d.taskId));
+    // Completion criterion differs by tracker (BRO-286): Notion-mirror rows
+    // check the mirror task's status; Linear rows have no mirror — session
+    // DONE is the pass signal here, and the board-level Done audit (Phase 3
+    // teeth) is the independent check that the issue actually closed.
+    const task = isLinear ? null : tasksById.get(String(d.taskId));
+    const completed = isLinear ? sessionOk : !!(task && task.status === 'completed');
     const outcome = (sessionOk && completed) ? 'card-pass' : 'card-fail';
     newEntries.push({
       event: outcome,
       cardId: String(d.taskId),
       contentHash: d.contentHash,
       note: outcome === 'card-pass'
-        ? 'session finished, task marked completed'
+        ? (isLinear ? 'session finished (Linear-tracked; board Done-audit verifies closure separately)' : 'session finished, task marked completed')
         : (sessionOk ? 'session finished but task still not completed' : `job ${job.event}${job.stage ? `: ${job.stage}` : ''}`),
     });
     resolvedKeys.add(key);
@@ -415,28 +445,25 @@ function runAutofix({
     return plan;
   }
 
-  // 1. File missing cards (dedup already done in planAutofix). notion-brain
-  //    create is the same card-creation path every session uses; VERIFY line
-  //    keeps the card dispatchable through the verify gate (#480) — re-running
-  //    the health check IS the acceptance test for a health-row fix.
-  let filedAny = false;
+  // 1. File missing trackers (dedup already done in planAutofix). BRO-286:
+  //    fileCard files a LINEAR issue and returns its identifier, which is
+  //    threaded straight onto the row as `linear:BRO-N` — no task-mirror
+  //    sync/resolution step exists for these rows (the old notion-brain →
+  //    syncTasks → matchOpenTask dance applied only to Notion cards). The
+  //    "## Acceptance criteria" backticked command in buildCardNotes keeps
+  //    the issue dispatchable through linear-next's verify gate, same
+  //    contract the Notion verify gate had (#480).
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    // P1, not P2: notion-tasks-sync pull mirrors ONLY P0/P1 cards into the
-    // shared task list — a P2 card never gets a task number, so it can
-    // never dispatch and gets re-filed as a duplicate every morning
-    // (live-run finding 2026-08-02). P1 also matches the owner rule that
-    // P0/P1 auto-dispatch at creation.
-    if (fileCard(row.title, buildCardNotes(row), { log })) {
+    const filed = fileCard(row.title, buildCardNotes(row), { log });
+    if (filed.ok) {
       row.state = 'card-filed';
-      filedAny = true;
+      row.taskId = `linear:${filed.identifier}`;
+      row.linearIdentifier = filed.identifier;
     } else {
       row.state = 'card-failed';
     }
   }
-
-  // 2. Sync newly filed cards into the shared task list so they get numbers.
-  if (filedAny) syncTasks({ log });
 
   // 3. Re-resolve task ids. Rows whose card just got filed pick up their
   //    fresh task id here.
