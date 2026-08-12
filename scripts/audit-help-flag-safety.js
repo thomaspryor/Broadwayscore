@@ -548,8 +548,46 @@ function checkFile(file, src) {
   return null;
 }
 
+/**
+ * Is the acorn tokenizer (the precise string-blanking path) actually usable
+ * in THIS process? blankStringContentsViaAcorn() falls back to the naive
+ * hand-rolled scanner when acorn cannot be required — and that fallback is
+ * NOT harmless. Measured 2026-08-12 on a checkout with no node_modules:
+ * two clean files (audit-digest-clip-safety.js, audit-fetchpage-cleanup.js)
+ * were reported as blocking Rule A / Rule B violations, exit 1, byte-identical
+ * scripts/ tree to a checkout that passed. The doc comment above calls that
+ * "FAILS OPEN"; from CI's point of view it fails CLOSED, and it points the
+ * next session at two files that have nothing wrong with them.
+ *
+ * lint-workflows already runs `npm ci` for exactly this reason (task #684),
+ * so this guard should never fire there. It exists so that when the install
+ * step is skipped, cached wrong, or the audit is run from a fresh clone, the
+ * failure names its real cause instead of manufacturing file-level findings.
+ */
+function tokenizerStatus() {
+  try {
+    require.resolve('acorn');
+    return { ok: true, detail: 'acorn resolved — precise tokenizer path active' };
+  } catch {
+    return {
+      ok: false,
+      detail:
+        'acorn is not installed, so string CONTENT cannot be told apart from a real call. ' +
+        'Any Rule A/Rule B findings from this run would be unreliable. Run `npm ci` and re-run.',
+    };
+  }
+}
+
 function main() {
   const updateBaseline = process.argv.includes('--update-baseline');
+
+  const tokenizer = tokenizerStatus();
+  if (!tokenizer.ok) {
+    console.error(`🚨 Help-flag safety guard cannot run: ${tokenizer.detail}`);
+    process.exitCode = 1;
+    return;
+  }
+
   const files = fs
     .readdirSync(SCRIPTS_DIR)
     .filter((f) => f.endsWith('.js'))
@@ -620,6 +658,7 @@ if (require.main === module) main();
 module.exports = {
   checkFile,
   checkOrdering,
+  tokenizerStatus,
   stripCommentsAndStrings,
   blankStringContents,
   blankStringContentsViaAcorn,

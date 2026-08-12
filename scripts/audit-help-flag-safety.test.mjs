@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   checkFile,
   blankStringContents,
+  tokenizerStatus,
   RISKY_CALL_RE,
 } = require('./audit-help-flag-safety.js');
 
@@ -109,4 +110,20 @@ test('Rule A still fires on a REAL call before the gate', () => {
 test('Rule B still fires on risky work with no --help check anywhere', () => {
   const finding = checkFile('tool.js', `function main() { execSync('date'); }\nmain();`);
   assert.equal(finding?.rule, 'B');
+});
+
+// --- degraded mode must name itself, not manufacture findings (2026-08-12) ---
+//
+// Without acorn, blankStringContentsViaAcorn() returns null and the naive
+// fallback reports audit-digest-clip-safety.js (Rule A) and
+// audit-fetchpage-cleanup.js (Rule B) as blocking violations on a tree where
+// both files are clean — reproduced on two byte-identical checkouts of
+// a058762fb37 (one with node_modules: exit 0; one without: exit 1, same two
+// files). main() now refuses to emit findings it cannot trust. This test is
+// the regression guard for the dependency itself: if acorn is ever dropped
+// from package.json, THIS fails with a readable reason instead of Lint
+// Workflows going red against two innocent files.
+test('the precise tokenizer is available in this repo (acorn is a real dependency)', () => {
+  const status = tokenizerStatus();
+  assert.equal(status.ok, true, status.detail);
 });
