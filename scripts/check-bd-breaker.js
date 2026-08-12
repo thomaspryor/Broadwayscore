@@ -31,6 +31,8 @@ const {
   isBreakerActiveForZone,
   breakerAlertSeverity,
   utcDay,
+  effectiveCeilingForOpeningWindow,
+  resolveOpeningWindowReservePerShow,
 } = require('./lib/brightdata-caps');
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
@@ -91,6 +93,19 @@ async function main() {
     process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1',
   ];
 
+  // Task #1315: shows within [today-1, today+3] get an absolute request
+  // reserve carved out of the bulk (non-exempt) ceiling — a DIFFERENT, wider
+  // window than the severity check below (which asks "is a poller hammering
+  // this provider tonight"). Exempt opening-night callers never consult the
+  // breaker at all (brightdata-caps.js consultBrightData), so this only
+  // throttles the routine sweeps that were starving them.
+  const reserveShows = countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
+  const effectiveCeiling = effectiveCeilingForOpeningWindow({
+    ceiling,
+    openingWindowShows: reserveShows,
+    reservePerShow: resolveOpeningWindowReservePerShow(),
+  });
+
   const state = loadState();
   const changes = [];
 
@@ -99,11 +114,12 @@ async function main() {
     const wasActive = isBreakerActiveForZone(state, { zone, day });
     const billing = await fetchBdZoneCostDay(zone, day, token);
     const billedReqs = billing ? billing.reqs : null;
-    const verdict = shouldTripBreaker({ billedReqs, ceiling });
+    const verdict = shouldTripBreaker({ billedReqs, ceiling: effectiveCeiling });
 
     console.log(`${zone}: ${billedReqs == null ? 'billing unknown' : `${billedReqs} reqs`}`
       + `${billing ? ` / $${billing.cost.toFixed(2)}` : ''} — ${verdict.reason}`
-      + `${verdict.tripped ? ' → TRIPPED' : ''}`);
+      + `${verdict.tripped ? ' → TRIPPED' : ''}`
+      + `${effectiveCeiling !== ceiling ? ` (ceiling ${ceiling}→${effectiveCeiling}: ${reserveShows} show(s) in the budget-reservation window)` : ''}`);
 
     if (billedReqs == null) {
       // Unknown is not "under". Leave any existing trip in place rather than
@@ -118,9 +134,9 @@ async function main() {
     const trippedAt = verdict.tripped
       ? (wasActive && prev.trippedAt) || new Date().toISOString()
       : null;
-    state.zones[zone] = { day, trippedAt, billedReqs, ceiling, cost: billing.cost };
+    state.zones[zone] = { day, trippedAt, billedReqs, ceiling: effectiveCeiling, cost: billing.cost };
     if (verdict.tripped !== wasActive) {
-      changes.push({ zone, tripped: verdict.tripped, billedReqs, ceiling });
+      changes.push({ zone, tripped: verdict.tripped, billedReqs, ceiling: effectiveCeiling });
     }
   }
 
@@ -164,8 +180,8 @@ async function main() {
         `Zone ${change.zone} billed ${change.billedReqs} requests today against a ceiling of ${change.ceiling}.`,
         `Bulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.`,
         openingWindowShows > 0
-          ? `${openingWindowShows} show(s) are in an active opening window — bulk review collection for them is capped.`
-          : 'No show is in an active opening window.',
+          ? `${openingWindowShows} show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.`
+          : 'No show is in an active opening window (tonight-focused; a wider budget-reservation window may still apply — see the ceiling line above).',
         `Top attributed BD callers today: ${topSpenders(day)}.`,
       ].join('\n')
       : `Zone ${change.zone} is back under its ${change.ceiling}-request daily ceiling (${change.billedReqs} today).`;

@@ -50,6 +50,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
+const { recoverDisplayBylinesForShow } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -1918,6 +1919,11 @@ showDirs.forEach(showId => {
 
   // Pre-read sort metadata once per file (avoids O(N log N) repeated reads in comparator)
   const sortMeta = new Map();
+  // Byline recovery (card #190): every file's {outletId, url, criticName, fullText,
+  // flagged} record, collected during this same read pass so recoverBylinesForShow
+  // can see EVERY sibling — including ones later excluded (wrongProduction/invalid) —
+  // which the main filtering loop below would otherwise make invisible to each other.
+  const bylineRecoveryRecords = [];
   for (const f of allJsonFiles) {
     const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0 };
     try {
@@ -1938,9 +1944,33 @@ showDirs.forEach(showId => {
           meta.isOutletAsCritic = 1;
         }
       }
+      bylineRecoveryRecords.push({
+        file: f,
+        outletId: normalizeOutletCanonical(d.outletId || d.outlet),
+        url: d.url,
+        criticName: d.criticName,
+        fullText: d.fullText,
+        flagged: !isIncludableForRebuild(d, showById[showId]),
+      });
     } catch { /* defaults are conservative */ }
     sortMeta.set(f, meta);
   }
+
+  // Read-only lookup: file -> recoverable criticName, used ONLY at reviews.json
+  // emission time (see the `review.criticName` build below) to display the real
+  // byline for a scored "Unknown" file when a same-URL sibling (often flagged
+  // wrongProduction/invalid and therefore excluded from scoring) already carries
+  // it. Never written back to the source JSON file — renaming outlet--unknown.json
+  // on disk is what caused the #27 incident (giant-2026/wsj: once the scored file
+  // and its flagged twin shared name+URL, the rebuild's own rename/dedup collapse
+  // let the flagged twin win and DROPPED the scored review entirely). Uses the
+  // display-only recovery variant (skips the write-path's clean-source gate) —
+  // safe here specifically because this never touches the source file, so the
+  // name+URL collision that gate exists to prevent can't happen. See
+  // recoverDisplayBylinesForShow's doc comment in byline-recovery.js.
+  const recoveredNameByFile = new Map(
+    recoverDisplayBylinesForShow(bylineRecoveryRecords).map((r) => [r.file, r.recoveredName])
+  );
 
   // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
   // Priority: non-duplicate > non-unknown > non-outlet-as-critic > verified > ensemble-scored > alphabetical
@@ -4126,7 +4156,20 @@ showDirs.forEach(showId => {
         // Normalize URL-as-critic-name (scraper captured the byline href, not
         // the text — e.g. "https://www.nytimes.com/by/laura-collins-hughes").
         // Derives a clean name from the slug, or null when unresolvable.
-        criticName: normalizeCriticName(data.criticName) || null,
+        // Byline recovery (card #190): when this file scored as "Unknown", prefer
+        // the real name a same-URL sibling carries (recoveredNameByFile, built
+        // above from ALL siblings including excluded ones). Display-only — never
+        // written back to the source JSON file.
+        criticName: (() => {
+          const normalized = normalizeCriticName(data.criticName);
+          const isUnknown = !normalized || /^unknown$/i.test(normalized.trim());
+          const recovered = isUnknown && recoveredNameByFile.get(file);
+          if (recovered) {
+            stats.bylineRecoveredFromSibling = (stats.bylineRecoveredFromSibling || 0) + 1;
+            return recovered;
+          }
+          return normalized || null;
+        })(),
         url: data.url || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {
           // Backfill: extract date from URL when source file has no publishDate
@@ -4766,6 +4809,7 @@ const output = {
       skippedNoScore: stats.skippedNoScore,
       skippedDuplicate: stats.skippedDuplicate,
       skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
+      bylineRecoveredFromSibling: stats.bylineRecoveredFromSibling || 0,
       allowedMultiCriticUrl: stats.allowedMultiCriticUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       allowedMultiCriticUrlCrossOutlet: stats.allowedMultiCriticUrlCrossOutlet || 0,
@@ -5113,6 +5157,7 @@ console.log(`Total reviews INCLUDED: ${stats.totalReviews}`);
 console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
+console.log(`  Byline recovered from same-URL sibling: ${stats.bylineRecoveredFromSibling || 0}`);
 console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);

@@ -23,6 +23,7 @@ const https = require('https');
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 const { setExtractedScore } = require('./lib/score-routing');
+const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -224,8 +225,7 @@ async function main() {
         // Skip reviews where URL points to an aggregator (contaminated data)
         try {
           const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
-          const aggDomains = ['show-score.com','showscore.com','westendtheatre.co.uk','theatrereviews.wordpress.com','theatre.reviews','didtheylikeit.com','londonboxoffice.co.uk','nyctheatre.com','stagedoor.com'];
-          if (aggDomains.includes(urlHost)) continue;
+          if (AGGREGATOR_DOMAINS.has(urlHost)) continue;
         } catch {}
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
