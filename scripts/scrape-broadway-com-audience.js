@@ -170,24 +170,17 @@ async function discoverFromSitemap() {
   if (!isBotChallenge(rawXml) && rawXml.includes('<url>')) {
     xml = rawXml;
   } else {
-    // Bot-challenged — use ScrapingBee (returns raw XML, no JS rendering needed)
-    const sbKey = process.env.SCRAPINGBEE_API_KEY;
-    if (sbKey) {
-      console.log('  Sitemap bot-challenged, trying ScrapingBee...');
-      try {
-        const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${sbKey}&url=${encodeURIComponent(sitemapUrl)}&render_js=false&premium_proxy=true`;
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30000);
-        const res = await fetch(apiUrl, { signal: controller.signal });
-        clearTimeout(timeout);
-        if (res.status === 200) {
-          xml = await res.text();
-        } else {
-          console.log(`  ScrapingBee returned ${res.status} for sitemap`);
-        }
-      } catch (e) {
-        console.log(`  ScrapingBee sitemap fetch failed: ${e.message}`);
-      }
+    // Bot-challenged — fall through to the shared fetchPage() chain (tries
+    // free Playwright first for broadway.com, then Scrapingdog/Bright Data,
+    // before ever considering ScrapingBee). Previously called ScrapingBee
+    // directly with premium_proxy=true ($2.48/1k, more than Bright Data's
+    // $1.50/1k) for a page that's just static XML (task #5).
+    console.log('  Sitemap bot-challenged, trying shared fetchPage()...');
+    try {
+      const result = await fetchPage(sitemapUrl, { renderJs: false });
+      xml = result.content;
+    } catch (e) {
+      console.log(`  fetchPage sitemap fetch failed: ${e.message}`);
     }
   }
 

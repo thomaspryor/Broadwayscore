@@ -631,7 +631,15 @@ async function fetchWithScrapingBee(url, options = {}) {
   const renderJs = options.renderJs === true ? true :
                    options.renderJs === false ? false :
                    _isJsRequiredDomain(url);
-  const creditCost = renderJs ? 5 : 1;
+  // premium_proxy (10cr) is opt-in only — task #5/B0. options.premium:true is
+  // meant to reach Scrapingdog's premium tier (~$0.90/1k) and Bright Data
+  // ($1.50/1k) FIRST via fetchPage()'s earlier tiers; ScrapingBee's own
+  // premium_proxy costs $2.48/1k, the most expensive of the three, so it's
+  // only worth paying for as the last-resort tier — but it must still be a
+  // REAL premium request when it gets there, not a silent non-premium
+  // downgrade that could return a blocked/garbage page unflagged.
+  const premium = options.premium === true;
+  const creditCost = premium ? 10 : (renderJs ? 5 : 1);
 
   // Per-run budget guard — skip SB if budget would be exceeded
   if (_scraperStats.sbCredits + creditCost > SB_CREDIT_BUDGET) {
@@ -648,6 +656,7 @@ async function fetchWithScrapingBee(url, options = {}) {
 
   try {
     let apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
+    if (premium) apiUrl += '&premium_proxy=true';
     // Attach subscriber cookies so SB's proxied request carries them. SB expects
     // semicolon-separated "name=value" pairs URL-encoded as one value. WSJ cookie
     // payloads can be large (~1-2KB); SB caps URL length around 8KB so this is fine.
@@ -677,7 +686,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
     });
 
-    recordSbCall({ url, fn: renderJs ? 'render' : 'page', success: true, status: 200, credits: creditCost });
+    recordSbCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost });
     return {
       content: response,
       format: 'html',
@@ -685,8 +694,8 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-    recordSbCall({ host: hostname, fn: renderJs ? 'render' : 'page', success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
-    console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}, domain=${hostname}): ${error.message}`);
+    recordSbCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
+    console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
     // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
     // asking SB for the rest of this process" — a monthly-cap 401 doesn't

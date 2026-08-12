@@ -270,55 +270,19 @@ async function fetchRedditJsonDirect(url, retries = 2) {
 }
 
 /**
- * Fetch a URL through ScrapingBee proxy.
- *
- * @param {string} url - URL to fetch
- * @param {Object} options
- * @param {boolean} [options.renderJs=false] - Whether to render JavaScript
- * @param {boolean} [options.premiumProxy=true] - Whether to use premium proxy
- * @returns {Promise<string|Object>} Response body (parsed JSON if possible, otherwise string)
- */
-function fetchViaScrapingBeeRaw(url, options = {}) {
-  const renderJs = options.renderJs === true ? 'true' : 'false';
-  const premiumProxy = options.premiumProxy !== false ? 'true' : 'false';
-
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_KEY) {
-      reject(new Error('ScrapingBee unavailable (no API key)'));
-      return;
-    }
-
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}&premium_proxy=${premiumProxy}`;
-
-    https.get(apiUrl, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            resolve(JSON.parse(data));
-          } catch (e) {
-            // Not JSON -- return raw string
-            resolve(data);
-          }
-        } else {
-          reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    }).on('error', reject);
-  });
-}
-
-/**
  * Fetch a URL with automatic fallback chain.
  *
- * For Reddit .json URLs: direct fetch -> ScrapingBee -> BrightData -> Playwright
- * For other URLs: ScrapingBee -> BrightData/Playwright (via universal scraper)
+ * For Reddit .json URLs: direct fetch -> shared fetchPage() chain
+ * For other URLs: shared fetchPage() chain (Scrapingdog premium -> Bright
+ * Data -> ScrapingBee -> Playwright)
+ *
+ * Previously hit ScrapingBee directly with premium_proxy=true by default
+ * ($2.48/1k) before ever trying Bright Data ($1.50/1k) — fetchPage() tries
+ * the cheaper premium tiers first (task #5).
  *
  * @param {string} url - URL to fetch
  * @param {Object} options
  * @param {boolean} [options.renderJs=false] - Whether to render JavaScript
- * @param {boolean} [options.premiumProxy=true] - Whether to use premium proxy
  * @returns {Promise<string|Object>} Response body (parsed JSON if possible, otherwise string)
  */
 async function fetchViaScrapingBee(url, options = {}) {
@@ -333,39 +297,23 @@ async function fetchViaScrapingBee(url, options = {}) {
     console.log('  Direct Reddit JSON fetch failed, trying proxied fallbacks...');
   }
 
-  // Try ScrapingBee if available
-  if (SCRAPINGBEE_KEY) {
-    try {
-      return await fetchViaScrapingBeeRaw(url, options);
-    } catch (e) {
-      console.log(`  ScrapingBee failed: ${e.message}`);
-    }
-  }
-
-  // Try universal scraper (BrightData -> Playwright fallback chain)
   if (universalScraper) {
     try {
-      const result = await universalScraper.fetchPage(url, { renderJs: options.renderJs });
+      const result = await universalScraper.fetchPage(url, { renderJs: options.renderJs, premium: true });
       if (result && result.content) {
-        // For Reddit JSON endpoints, try to parse as JSON
-        if (isRedditJson) {
-          try {
-            return JSON.parse(result.content);
-          } catch (e) {
+        try {
+          return JSON.parse(result.content);
+        } catch (e) {
+          if (isRedditJson) {
             // HTML response from Reddit -- not useful for JSON endpoints
-            console.log('  Universal scraper returned HTML for Reddit JSON endpoint, skipping');
-          }
-        } else {
-          // For non-JSON endpoints, try JSON parse, fall back to raw string
-          try {
-            return JSON.parse(result.content);
-          } catch (e) {
+            console.log('  fetchPage returned HTML for Reddit JSON endpoint, skipping');
+          } else {
             return result.content;
           }
         }
       }
     } catch (e) {
-      console.log(`  Universal scraper failed: ${e.message}`);
+      console.log(`  fetchPage failed: ${e.message}`);
     }
   }
 
@@ -1076,25 +1024,13 @@ async function scrapeArticle(url, fallbackSnippet) {
       .trim();
   };
 
-  // Try ScrapingBee first
-  if (SCRAPINGBEE_KEY) {
-    try {
-      const result = await fetchViaScrapingBeeRaw(url, { renderJs: true, premiumProxy: true });
-      if (typeof result === 'string' && result.length > 200) {
-        const text = htmlToText(result);
-        if (text.length > 200) {
-          return text.slice(0, 3000);
-        }
-      }
-    } catch (e) {
-      console.log(`  ScrapingBee article scrape failed: ${e.message}`);
-    }
-  }
-
-  // Fallback: universal scraper (BrightData -> Playwright)
+  // Shared fetchPage() chain (Scrapingdog premium -> Bright Data ->
+  // ScrapingBee -> Playwright). Previously called ScrapingBee directly with
+  // premium_proxy=true ($2.48/1k) before Bright Data ($1.50/1k) — fetchPage()
+  // tries the cheaper premium tiers first (task #5).
   if (universalScraper) {
     try {
-      const result = await universalScraper.fetchPage(url, { renderJs: true });
+      const result = await universalScraper.fetchPage(url, { renderJs: true, premium: true });
       if (result && result.content && result.content.length > 200) {
         const text = htmlToText(result.content);
         if (text.length > 200) {
@@ -1102,7 +1038,7 @@ async function scrapeArticle(url, fallbackSnippet) {
         }
       }
     } catch (e) {
-      console.log(`  Universal scraper article scrape failed: ${e.message}`);
+      console.log(`  fetchPage article scrape failed: ${e.message}`);
     }
   }
 

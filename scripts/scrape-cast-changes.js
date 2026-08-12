@@ -46,6 +46,8 @@ const {
   buildHistoryEntryFromExpiredArrival,
 } = require('./lib/cast-changes-apply');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { fetchPage } = require('./lib/scraper');
+const { fetchWithFallback: fetchRedditWithFallback } = require('./lib/reddit-api');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -170,36 +172,19 @@ function httpsRequest(url, options = {}) {
 }
 
 /**
- * Fetch HTML via ScrapingBee with retry
+ * Fetch HTML via the shared fetchPage() fallback chain, with retry. Routed
+ * off a direct ScrapingBee call (task #66) — fetchPage() already tries
+ * Scrapingdog/Bright Data/Playwright ahead of ScrapingBee, so this keeps the
+ * retry/backoff wrapper but no longer hardcodes a single provider.
  */
 async function fetchViaScrapingBee(url, options = {}) {
-  if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
-
   const maxRetries = options.maxRetries ?? 2;  // nullish: allow an explicit 0 (no retries)
-  const premiumProxy = options.premiumProxy ? '&premium_proxy=true' : '';
-  const renderJs = options.renderJs ? '&render_js=true' : '&render_js=false';
 
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}${renderJs}${premiumProxy}`;
-      return await new Promise((resolve, reject) => {
-        const req = https.get(apiUrl, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            if (res.statusCode === 200) {
-              resolve(data);
-            } else {
-              const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
-              err.statusCode = res.statusCode;
-              reject(err);
-            }
-          });
-        });
-        req.on('error', reject);
-        req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
-      });
+      const result = await fetchPage(url, { renderJs: !!options.renderJs });
+      return result.content;
     } catch (e) {
       lastError = e;
       // Don't retry on 4xx — the URL doesn't exist or we're forbidden,
@@ -220,36 +205,18 @@ async function fetchViaScrapingBee(url, options = {}) {
 }
 
 /**
- * Fetch Reddit JSON via ScrapingBee premium proxy (same pattern as reddit scraper)
+ * Fetch Reddit JSON via the shared reddit-api.js fallback chain (OAuth →
+ * direct → Bright Data → Scrapingdog → ScrapingBee). Previously hand-rolled
+ * a direct ScrapingBee premium_proxy=true call here — that's $2.48/1k,
+ * more expensive than Bright Data's $1.50/1k, and reddit-api.js already
+ * implements the cheaper-tiers-first chain plus adaptive rate limiting and
+ * a circuit breaker (task #5).
  */
 async function fetchRedditJson(url, maxRetries = 2) {
-  if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
-
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false&premium_proxy=true`;
-      const data = await new Promise((resolve, reject) => {
-        https.get(apiUrl, (res) => {
-          let d = '';
-          res.on('data', chunk => d += chunk);
-          res.on('end', () => {
-            if (res.statusCode === 200) {
-              try { resolve(JSON.parse(d)); }
-              catch (e) {
-                if (d.includes('<html') || d.includes('<!DOCTYPE')) {
-                  reject(new Error('Got HTML instead of JSON — Reddit may be blocking'));
-                } else {
-                  reject(new Error(`Failed to parse JSON: ${d.slice(0, 100)}`));
-                }
-              }
-            } else {
-              reject(new Error(`HTTP ${res.statusCode}: ${d.slice(0, 100)}`));
-            }
-          });
-        }).on('error', reject);
-      });
-      return data;
+      return await fetchRedditWithFallback(url);
     } catch (e) {
       lastError = e;
       if (attempt < maxRetries) {

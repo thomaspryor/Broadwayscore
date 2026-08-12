@@ -27,6 +27,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
+const { fetchPage } = require('./lib/scraper');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -146,6 +147,15 @@ function sleep(ms) {
 /**
  * Fetch URL through ScrapingBee (single attempt).
  * Returns HTML string or throws on failure. Returns null if no API key.
+ *
+ * Kept as a direct ScrapingBee call rather than routed through fetchPage()
+ * (task #5) — Show Score is a React SPA and this endpoint depends on SB's
+ * `wait=3000` param to let scores hydrate before the HTML is captured;
+ * fetchPage()'s Scrapingdog/Bright Data tiers have no equivalent settle-time
+ * option, so routing through them risked silently capturing pre-hydration
+ * HTML and under-counting audience scores. premium_proxy=true (10cr,
+ * $2.48/1k) is dropped — render_js=true (5cr, ~$0.12/1k) is the cheapest
+ * tier that still gets the wait param, well under Bright Data's $1.50/1k.
  */
 function fetchViaScrapingBeeSingle(url) {
   return new Promise((resolve, reject) => {
@@ -154,7 +164,7 @@ function fetchViaScrapingBeeSingle(url) {
       return;
     }
 
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
 
     https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
