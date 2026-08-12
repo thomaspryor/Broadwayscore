@@ -20,5 +20,16 @@
     "decisionPrompt": null,
     "model": null,
     "queuedAt": "2026-08-12T08:41:26.348Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "1/148 show(s) differ between internal state and what prod serves.\nmissing-from-prod: 1\nPride: missing-from-prod",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "queuedAt": "2026-08-12T11:46:33.275Z"
   }
 ]
