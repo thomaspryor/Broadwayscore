@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T14:38:09.371Z",
+  "timestamp": "2026-08-12T15:57:57.621Z",
   "stats": {
-    "totalReviews": 42094,
-    "alreadyFlagged": 18329,
+    "totalReviews": 42107,
+    "alreadyFlagged": 18323,
     "dateGuardCatches": 135,
     "directorMismatch": 962,
-    "tvFilmSignals": 1185,
-    "londonSignals": 850,
+    "tvFilmSignals": 1186,
+    "londonSignals": 852,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3539
+    "noPublishDate": 3550
   },
   "findings": [
     {
@@ -6069,6 +6069,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.allthatdazzles.co.uk/post/review-death-note-the-musical-barbican-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -34612,6 +34625,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "attitude--jamie-tabberer.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.attitude.co.uk/culture/death-note-at-the-barbican-london-review-531265/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "barbican--unknown.json",
       "publishDate": null,
       "url": "https://www.barbican.org.uk/whats-on/2026/event/death-note-the-musical",
@@ -34638,7 +34664,21 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "city-am--anna-moloney.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.cityam.com/death-note-the-musical-review-a-high-shine-high-school-take-on-the-trolley-problem/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
