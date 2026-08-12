@@ -169,6 +169,25 @@ test('parse: `bash -c` payload bails rather than guessing (fail open)', () => {
   assert.equal(r.isMerge, false);
 });
 
+test('parse: interpreter flags do not hide the wrapper (`bash -x <wrapper>`)', () => {
+  // QA review 2026-08-12: bailing on ANY leading interpreter flag let
+  // `bash -x scripts/merge-worktree-to-main.sh` escape the gate entirely.
+  for (const cmd of [
+    'bash -x scripts/merge-worktree-to-main.sh wt-x',
+    'bash -e -u scripts/merge-worktree-to-main.sh wt-x',
+    'sh -x ./scripts/merge-worktree-to-main.sh wt-x',
+  ]) {
+    const r = parseMergeIngress(cmd, { currentBranch: 'main' });
+    assert.equal(r.targetsMain, true, `${cmd} must still gate`);
+    assert.deepEqual(r.sources, ['wt-x']);
+  }
+});
+
+test('parse: `-c` inside a short-flag cluster still bails (fail open)', () => {
+  const r = parseMergeIngress(`bash -xc 'git merge feat'`, { currentBranch: 'main' });
+  assert.equal(r.isMerge, false, 'a -c payload must never be guessed at');
+});
+
 // ── parseMergeIngress: the wrapper script, the REAL call site ───────────────
 
 test('parse: merge-worktree-to-main.sh with an explicit branch targets main', () => {
