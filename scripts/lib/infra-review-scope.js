@@ -512,6 +512,14 @@ module.exports = {
   KNOWN_GAPS,
   VERDICT_TTL_MS,
   MAX_BLOCKS_PER_FILE,
+  // Exported for review-gate.mjs's merge-ingress parser (task #1304). It needs
+  // exactly this "split a command into simple commands, then tokenize with
+  // quote awareness" primitive; a second copy there would be two divergent
+  // definitions of where one command ends and the next begins — the same
+  // split-brain the plan-verdict ledger comment (review-gate.mjs) refuses for
+  // verdict storage. One tokenizer, two callers.
+  shellSegments,
+  tokenize,
   toRepoRelative,
   classifyPath,
   classifyChange,

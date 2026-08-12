@@ -522,6 +522,319 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   };
 }
 
+// ── the MERGE gate (task #1304, owner-approved 2026-08-12) ──────────────────
+//
+// queryPushAllowed above guards the PUSH. That is one step too late. The
+// documented worktree flow is `worktree → merge the branch into the SHARED
+// local main checkout → push`, and ~20 parallel sessions share the one
+// checkout at /Users/tompryor/Broadwayscore. So by the time the push gate
+// blocks, the unreviewed merge commit is ALREADY on shared local main — and
+// the next session to run push-with-retry.sh pushes `main` wholesale and
+// carries it to origin. Observed 3× in one session on 2026-08-12: two commits
+// reached origin/main while the authoring session's own push was still
+// blocked, and /code-review could not even review that session's diff because
+// `git diff @{upstream}...HEAD` had already gone empty.
+//
+// The dangerous state is created by the MERGE, so the gate belongs there too.
+//
+// DIVISION OF LABOUR WITH THE PUSH GATE — load-bearing, do not collapse.
+// pre-push-review-gate.sh:187-211 ALREADY awk-parses the merge source out of
+// a compound `git merge X && git push origin main` and gates on it. That case
+// is fully covered and stays the push gate's. This gate owns only what the
+// push gate structurally cannot see:
+//   - a STANDALONE `git merge X` (no push in the same command)
+//   - `scripts/merge-worktree-to-main.sh [branch]` — the real call site, whose
+//     command string contains no `git merge` token AND matches no
+//     PUSH_INGRESS_RE pattern (the name has no "push" in it), so today it
+//     reaches shared main completely ungated.
+// The hook enforces the split by deferring (exit 0) whenever the command
+// carries a push ingress. Letting both gates fire on one command is not merely
+// redundant: queryOverrideActiveForPush's consume marker is one-shot per
+// (sessionId, markerNs), so whichever gate consumed it first would starve the
+// other into blocking a push the user had explicitly overridden — a FALSE
+// BLOCK on the primary documented flow. The merge gate also uses its own
+// markerNs ('merge-gate') as defence in depth.
+//
+// KNOWN GAP (documented, not chased — same convention as
+// infra-review-scope.js's KNOWN_GAPS): scripts/autonomous-merge.js:455,594
+// runs `git merge --ff-only` through execFileSync, so no string-matching hook
+// can see it. It is dispatched only via `gh workflow run autonomous-merge.yml`
+// (autonomous-run.js:155) and never from a session Bash call, and its result
+// still faces the push gate downstream.
+//
+// Fail-open is load-bearing here in a way it is not for the push gate: a
+// wedged merge blocks every session's only integration path, not one push.
+// Every error path below returns allowed:true.
+
+// The merge wrapper script — the real call site (merge-worktree-to-main.sh:203).
+const MERGE_WRAPPER_BASENAME = 'merge-worktree-to-main.sh';
+
+// Interpreters that can carry a script path as their first argument.
+const SCRIPT_INTERPRETERS = new Set(['bash', 'sh', 'zsh', 'env', 'nohup', 'time']);
+
+// `git merge` flags that consume a FOLLOWING value; that value must not be
+// mistaken for the merge source ref. (`--flag=value` forms are single tokens
+// and are dropped by the generic leading-dash test.)
+const MERGE_VALUE_FLAGS = new Set([
+  '-m', '--message', '-F', '--file', '-s', '--strategy', '-X', '--strategy-option',
+  '-S', '--gpg-sign', '--into-name',
+]);
+
+// `git merge` forms that finish or abandon an in-progress merge. They carry no
+// source ref and must NEVER be gated: blocking `git merge --abort` would
+// strand the shared main worktree mid-conflict, which is strictly worse than
+// the problem this gate exists to solve (cf. task #916, stale MERGE_HEAD on
+// shared main blocking all pushes with no recovery path).
+const MERGE_CONTROL_FLAGS = new Set(['--abort', '--continue', '--quit']);
+
+// git global options taking a separate value, skipped when locating the
+// subcommand (`git -C <path> merge X`).
+const GIT_GLOBAL_VALUE_OPTS = new Set(['-C', '-c', '--exec-path', '--git-dir', '--work-tree', '--namespace']);
+
+// Lazily loaded shell tokenizer, shared with infra-review-scope.js so there is
+// exactly one definition of "where does one command end". Same degrade-don't-
+// crash contract as the ci-red-claims require above: a checkout carrying this
+// file without its sibling must fail OPEN, not throw.
+let _shellLex = null;
+function shellLex() {
+  if (_shellLex !== null) return _shellLex;
+  try {
+    const { shellSegments, tokenize } = require('./infra-review-scope.js');
+    if (typeof shellSegments !== 'function' || typeof tokenize !== 'function') throw new Error('missing exports');
+    _shellLex = { shellSegments, tokenize };
+  } catch (e) {
+    process.stderr.write(`review-gate: infra-review-scope.js tokenizer unavailable (${e.code || e.message}) — merge gate degraded to no-op\n`);
+    _shellLex = false;
+  }
+  return _shellLex;
+}
+
+// infra-review-scope's shellSegments splits on `; && || |` and newlines but
+// not on subshell parens, so `(cd x && git merge y)` leaves a stray `(` on the
+// first token and `)` on the last. Strip them — a ref name can never contain
+// either, so this can only ever repair a token, never corrupt one.
+function stripShellNoise(value) {
+  return String(value).replace(/^[(]+/, '').replace(/[)]+$/, '');
+}
+
+function basename(p) {
+  const s = String(p || '');
+  return s.slice(s.lastIndexOf('/') + 1);
+}
+
+// Drop leading `FOO=bar` environment assignments. `DRY_RUN=1 scripts/merge-…`
+// skips the wrapper's PUSH but still performs the MERGE, so it must still gate.
+function withoutEnvPrefix(tokens) {
+  let i = 0;
+  while (i < tokens.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[i])) i++;
+  return tokens.slice(i);
+}
+
+// Classify ONE simple command. Returns null when it is not merge-relevant.
+function classifySegment(rawTokens) {
+  let toks = withoutEnvPrefix(rawTokens);
+  if (toks.length === 0) return null;
+
+  // `bash scripts/merge-worktree-to-main.sh …`, `env FOO=1 bash …`
+  while (toks.length > 1 && SCRIPT_INTERPRETERS.has(basename(toks[0]))) {
+    toks = withoutEnvPrefix(toks.slice(1));
+    // `bash -c '<payload>'`: the payload is a quoted sub-script this shallow
+    // parser will not read. Bail (fail open) rather than guess at it.
+    if (toks.length && toks[0].startsWith('-')) return null;
+  }
+  if (toks.length === 0) return null;
+
+  if (basename(toks[0]) === MERGE_WRAPPER_BASENAME) {
+    // Args: [branch] [-- files…]. First non-flag token before `--` is the
+    // branch; absent, the wrapper defaults to the invoking cwd's branch
+    // (merge-worktree-to-main.sh:54).
+    let branch = null;
+    for (const t of toks.slice(1)) {
+      if (t === '--') break;
+      if (t.startsWith('-')) continue;
+      branch = t;
+      break;
+    }
+    return { kind: 'wrapper', branch };
+  }
+
+  if (basename(toks[0]) !== 'git') return null;
+
+  let i = 1;
+  while (i < toks.length) {
+    const t = toks[i];
+    if (!t.startsWith('-')) break;
+    if (GIT_GLOBAL_VALUE_OPTS.has(t)) { i += 2; continue; }
+    i += 1;
+  }
+  const sub = toks[i];
+  if (!sub) return null;
+  const rest = toks.slice(i + 1);
+
+  if (sub === 'checkout' || sub === 'switch') {
+    // The branch this switches to becomes the merge destination for a later
+    // `git merge` in the same compound command (`git checkout main && git
+    // merge X`) — the shape the documented flow uses, and the one the repo's
+    // CURRENT branch cannot reveal at hook time.
+    for (let j = 0; j < rest.length; j++) {
+      const t = rest[j];
+      if (t === '--') break;
+      if (t === '-b' || t === '-B' || t === '-c' || t === '-C') { j += 1; continue; }
+      if (t.startsWith('-')) continue;
+      return { kind: 'checkout', branch: t };
+    }
+    return null;
+  }
+
+  if (sub !== 'merge') return null;   // `git pull` is deliberately not here
+
+  const sources = [];
+  for (let j = 0; j < rest.length; j++) {
+    const t = rest[j];
+    if (MERGE_CONTROL_FLAGS.has(t)) return { kind: 'merge-control' };
+    if (MERGE_VALUE_FLAGS.has(t)) { j += 1; continue; }
+    if (t === '--') continue;
+    if (t.startsWith('-')) continue;
+    sources.push(t);
+  }
+  return { kind: 'merge', sources };
+}
+
+// Does this Bash command merge something INTO the default branch, and what
+// will land? Pure: `currentBranch` (of the repo the command runs in) and
+// `defaultBranch` are injected, so this is unit-testable without a fixture.
+// The hook resolves them exactly as the push gate resolves its own.
+export function parseMergeIngress(command, { currentBranch = null, defaultBranch = 'main' } = {}) {
+  const notMerge = (reason) => ({ isMerge: false, targetsMain: false, sources: [], via: null, destination: null, reason });
+  const cmd = String(command || '');
+  if (!cmd.trim()) return notMerge('empty command');
+  // Cheap pre-filter — keeps the gate off the hot path for the ~99% of Bash
+  // calls that are not merges.
+  if (!/\bmerge\b/.test(cmd)) return notMerge('no merge ingress in command');
+  const lex = shellLex();
+  if (!lex) return notMerge('tokenizer unavailable — fail open');
+
+  let destination = currentBranch;   // `git merge X` merges into the checked-out branch
+  let segments;
+  try {
+    segments = lex.shellSegments(cmd).map(seg => lex.tokenize(seg).map(t => stripShellNoise(t.value)).filter(Boolean));
+  } catch (e) {
+    return notMerge(`tokenizer threw (${e.message}) — fail open`);
+  }
+  for (const tokens of segments) {
+    if (tokens.length === 0) continue;
+    const seg = classifySegment(tokens);
+    if (!seg) continue;
+    if (seg.kind === 'checkout') { destination = seg.branch; continue; }
+    if (seg.kind === 'merge-control') return notMerge('git merge --abort/--continue/--quit carries no source ref');
+    if (seg.kind === 'wrapper') {
+      // The wrapper locates the main worktree itself and merges into the
+      // default branch by construction, so the session's own cwd cannot make
+      // it target anything else.
+      const branch = seg.branch || currentBranch;
+      if (!branch) return notMerge('merge wrapper with no resolvable source branch');
+      // The wrapper itself refuses this ("nothing to integrate", :56).
+      if (branch === defaultBranch) return notMerge(`merge wrapper source is ${defaultBranch} — the wrapper refuses this`);
+      return {
+        isMerge: true, targetsMain: true, sources: [branch], via: 'wrapper',
+        destination: defaultBranch, reason: `${MERGE_WRAPPER_BASENAME} integrates ${branch} into ${defaultBranch}`,
+      };
+    }
+    if (seg.kind === 'merge') {
+      if (seg.sources.length === 0) return notMerge('git merge with no source ref');
+      if (destination !== defaultBranch) {
+        return {
+          isMerge: true, targetsMain: false, sources: seg.sources, via: 'git-merge', destination,
+          reason: `merge destination is ${destination || 'unknown'}, not ${defaultBranch}`,
+        };
+      }
+      return {
+        isMerge: true, targetsMain: true, sources: seg.sources, via: 'git-merge', destination,
+        reason: `git merge into ${defaultBranch}`,
+      };
+    }
+  }
+  return notMerge('no merge ingress parsed');
+}
+
+// The merge-gate decision. Evaluates every source ref that would land and
+// returns the STRICTEST verdict, reusing queryPushAllowed() so that "reviewed"
+// means byte-identically the same thing at merge time as at push time — the
+// two gates cannot drift apart in what they accept.
+//
+// Never throws: every failure path returns allowed:true (see the fail-open
+// note at the top of this section). Each source is evaluated in its own
+// try/catch so one bad ref cannot take the whole loop down with it.
+export function queryMergeAllowed({ repoRoot, ledgerRoot = null, sources = [] }) {
+  const evaluated = [];
+  if (!Array.isArray(sources) || sources.length === 0) {
+    return { allowed: true, reason: 'no merge sources to evaluate', evaluated };
+  }
+  let root;
+  try {
+    root = ledgerRoot || canonicalRoot(repoRoot);
+  } catch (e) {
+    return { allowed: true, reason: `could not resolve ledger root (${e.message}) — fail open`, evaluated };
+  }
+  for (const src of sources) {
+    // An unresolvable ref is a parse/infra failure, never a violation.
+    try {
+      git(repoRoot, ['rev-parse', '--verify', '--quiet', `${src}^{commit}`]);
+    } catch {
+      evaluated.push({ ref: src, allowed: true, reason: 'ref does not resolve — fail open' });
+      continue;
+    }
+    let verdict;
+    try {
+      verdict = queryPushAllowed({ repoRoot, ledgerRoot: root, ref: src });
+    } catch (e) {
+      evaluated.push({ ref: src, allowed: true, reason: `gate threw (${e.message}) — fail open` });
+      continue;
+    }
+    if (!verdict || typeof verdict.allowed !== 'boolean') {
+      evaluated.push({ ref: src, allowed: true, reason: 'gate returned no verdict — fail open' });
+      continue;
+    }
+    evaluated.push({ ref: src, ...verdict });
+    if (verdict.allowed === false) {
+      return {
+        allowed: false,
+        blockingRef: src,
+        reason: verdict.reason,
+        gatedLines: verdict.gatedLines,
+        gatedFiles: verdict.gatedFiles,
+        diffHash: verdict.diffHash,
+        evaluated,
+      };
+    }
+  }
+  return { allowed: true, reason: 'all merge sources reviewed or under budget', evaluated };
+}
+
+// One-call entrypoint for the hook: parse the command and decide, so the hook
+// pays a single node startup instead of two. `currentBranch` is read from the
+// repo when not supplied. Never throws.
+export function queryMergeGate({ repoRoot, ledgerRoot = null, command, currentBranch = undefined, defaultBranch = 'main' }) {
+  let branch = currentBranch;
+  if (branch === undefined) {
+    try {
+      branch = git(repoRoot, ['branch', '--show-current']).trim() || null;
+    } catch {
+      branch = null;   // detached HEAD or unreadable repo — parse still runs
+    }
+  }
+  let ingress;
+  try {
+    ingress = parseMergeIngress(command, { currentBranch: branch, defaultBranch });
+  } catch (e) {
+    return { allowed: true, reason: `merge-ingress parse threw (${e.message}) — fail open` };
+  }
+  if (!ingress.isMerge || !ingress.targetsMain) {
+    return { allowed: true, ingress, reason: ingress.reason };
+  }
+  return { ...queryMergeAllowed({ repoRoot, ledgerRoot, sources: ingress.sources }), ingress };
+}
+
 // ── CI-red claim conflict (task #584) ───────────────────────────────────────
 // Closes the gap task #542's evaluateCiRedClaim shipped with: nothing called
 // it, because a PreToolUse hook can't query the shared task-list tool.
@@ -621,6 +934,13 @@ Queries:
   record         append a review verdict to the ledger
                    --reviewer=ship-check|code-review|second-opinion --result=pass|fail
   push-allowed   should a push of --ref be allowed without a fresh review?
+  merge-gate     should this Bash --command be allowed to merge into main
+                   without a fresh review? Parses the merge ingress (git merge
+                   into main, or ${MERGE_WRAPPER_BASENAME}) and
+                   evaluates each source ref with push-allowed's own logic.
+                   --current-branch=<b>  branch the command runs on (default:
+                                         read from --repo)
+                   --default-branch=<b>  merge destination to gate (default: main)
   ci-red-claim-conflict   does --ref's gated diff conflict with an active
                    CI-red claim from another task? --own-task=<id> excludes
                    the caller's own claim (task #584).
@@ -690,6 +1010,17 @@ if (__isMain) {
       break;
     case 'push-allowed':
       result = queryPushAllowed({ repoRoot, ledgerRoot, ref });
+      break;
+    case 'merge-gate':
+      // No --command → nothing to evaluate. Fail OPEN (a missing arg must not
+      // read as "blocked"), matching every other error path in this section.
+      result = args.command
+        ? queryMergeGate({
+            repoRoot, ledgerRoot, command: args.command,
+            currentBranch: args['current-branch'] !== undefined ? args['current-branch'] : undefined,
+            defaultBranch: args['default-branch'] || 'main',
+          })
+        : { allowed: true, reason: 'no --command given — fail open' };
       break;
     case 'ci-red-claim-conflict':
       result = queryCiRedClaimConflict({ repoRoot, ref, ownTaskId: args['own-task'] || null });
