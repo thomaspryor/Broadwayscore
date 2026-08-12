@@ -156,7 +156,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const {
   findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
-  HEADLESS_BLOCKERS,
+  HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard,
 } = require('./lib/dispatch-guards.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
@@ -683,6 +683,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     readLedgerEntries: readLedgerEntriesFn = dispatchLedger.readEntries,
     appendLedgerEntry: appendLedgerEntryFn = dispatchLedger.appendEntry,
     appendCiRedClaim: appendCiRedClaimFn = appendClaim,
+    loadLinearMirrorMapping: loadLinearMirrorMappingFn = loadLinearMirrorMapping,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -756,6 +757,15 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
   const guardErr = completedLaunchGuard(task, args);
   if (guardErr) { console.error(`[bsc-next] ${guardErr}`); process.exit(1); }
+
+  // Single-dispatch-side guard (Phase 0 rail 1, plan 2026-08-12, task #1341):
+  // a task already mapped to a LIVE Linear issue is worked from Linear only —
+  // see dispatch-guards.js's linearMirrorGuard() header for the mapping-vs-
+  // mirror-field rationale. Runs before --succession too: succession still
+  // opens a fresh cmux/headless session, which is exactly the overlap this
+  // guard exists to prevent.
+  const linearMirrorErr = linearMirrorGuard(task, loadLinearMirrorMappingFn(), args);
+  if (linearMirrorErr) { console.error(`[bsc-next] ${linearMirrorErr}`); process.exit(1); }
 
   // Context-limit succession (card #856) is a continuation of THIS task, not
   // a fresh dispatch decision — it skips the overlap/verify-gate/duplicate-
@@ -1100,4 +1110,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock, linearMirrorGuard, loadLinearMirrorMapping };
