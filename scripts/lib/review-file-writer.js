@@ -44,7 +44,7 @@ const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
-const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore } = require('./aggregator-domains');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -253,12 +253,13 @@ function _getShowById(showId) {
 function createOrMergeReviewFile(showId, input, options = {}) {
   const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
   const fields = input.fields || {};
-  // Set below when a write is kept under its TRUE outlet on an aggregator URL
-  // because it carries a preservable score (see refiningOntoAggregator below).
-  // Read again by the domain-validation guard further down: that guard's job is
-  // to catch a MISTAKEN outlet/URL pairing, but this pairing is a deliberate,
-  // already-vetted exception, not a mistake — the outlet's own domain will never
-  // match an aggregator's domain by definition.
+  // Set below when a write is kept under its TRUE outlet on an aggregator URL,
+  // either because it carries a preservable score OR because the write is
+  // aggregator-SOURCED (task #1335) — see refiningOntoAggregator /
+  // aggregatorSourceExempt below. Read again by the domain-validation guard
+  // further down: that guard's job is to catch a MISTAKEN outlet/URL pairing,
+  // but this pairing is a deliberate, already-vetted exception, not a mistake —
+  // the outlet's own domain will never match an aggregator's domain by definition.
   let aggregatorScoreStub = false;
 
   // --- Guard: normalize outlet ---
@@ -294,8 +295,17 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // ("Did They Like It", "WestEndTheatre.com", "Theatre Reviews Limited",
     // "London Box Office") already normalize to their own outletId, so
     // urlResolved.outletId === outletId and this block never runs for them.
-    const refiningOntoAggregator = urlResolved
+    const urlResolvesToAggregator = urlResolved
       && shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId);
+    // An aggregator-SOURCE write (source='westendtheatre', 'dtli', etc.) legitimately
+    // carries the roundup's own URL even when citing a real outlet's article — that's
+    // the exact shape shouldSkipAggregatorUrlWrite() (below) already exempts by
+    // checking isAggregatorReviewSource(source) FIRST, before ever looking at score.
+    // This refusal previously had no equivalent exemption, so a genuine
+    // aggregator-source citation with no extractable score (no aggregatorStars/
+    // originalScore) was refused here before it ever reached that source-aware
+    // guard (task #1335, found during #1325's /ship-check).
+    const refiningOntoAggregator = urlResolvesToAggregator && !isAggregatorReviewSource(input.source);
     if (refiningOntoAggregator) {
       // Refuse the WRITE, not just the refinement (code review on 2c679ad4bb1).
       // Keeping the name-derived outlet leaves a real outletId on an aggregator
@@ -322,12 +332,28 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       aggregatorScoreStub = true;
       console.warn(`  ⚠️  Keeping true outlet "${outletId}" on aggregator URL ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — scored star-stub, not refining/refusing`);
     }
-    // refiningOntoAggregator, whether refused above or kept as a scored star-stub,
-    // has already decided outletId must NOT become the aggregator's — skip the
-    // general refinement logic below entirely, or the cross-domain "Case 2"
-    // branch just below would immediately undo that decision and reassign
-    // outletId to urlResolved.outletId (the aggregator) anyway.
-    if (!refiningOntoAggregator && urlResolved && urlResolved.outletId !== outletId) {
+    if (urlResolvesToAggregator && !aggregatorScoreStub) {
+      // Reached only when refiningOntoAggregator was false because the write is
+      // aggregator-SOURCED (task #1335, found during #1325's /ship-check) — the
+      // score-stub case already logged its own message above, inside the
+      // refiningOntoAggregator branch. Keep the name-derived outletId as-is and
+      // skip the general refinement logic below entirely — the Case 2
+      // cross-domain branch would otherwise immediately reassign outletId to the
+      // aggregator, exactly the laundering this whole block exists to prevent.
+      // Also set aggregatorScoreStub so the domain-validation guard further down
+      // tolerates the same EXPECTED domain mismatch it already tolerates for
+      // scored star-stubs (an aggregator-sourced write on a domain-registered
+      // outlet, e.g. guardian, would otherwise be re-refused there as
+      // domain-mismatch immediately after being exempted here).
+      aggregatorScoreStub = true;
+      console.warn(`  ⚠️  Keeping true outlet "${outletId}" on aggregator URL ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — aggregator-source write, not refining/refusing`);
+    }
+    // refiningOntoAggregator/aggregatorScoreStub (score exemption) and the
+    // isAggregatorReviewSource exemption just above both mean outletId must NOT
+    // become the aggregator's — skip the general refinement logic below entirely
+    // whenever the URL resolved onto an aggregator at all, or the cross-domain
+    // "Case 2" branch would immediately undo that decision.
+    if (!urlResolvesToAggregator && urlResolved && urlResolved.outletId !== outletId) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
@@ -465,18 +491,20 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   const domainCheck = validateUrlDomain(input.url, outletId);
   if (!domainCheck.valid) {
     // aggregatorScoreStub means outletId is deliberately kept as the TRUE outlet
-    // on an aggregator-domain URL (see refiningOntoAggregator above) — a mismatch
-    // here is EXPECTED (the outlet's real domain, e.g. theguardian.com, will
-    // never match the aggregator's, e.g. westendtheatre.com), not a defect.
-    // Without this, the domain guard would silently re-refuse the exact write
-    // the relaxation above was just made to allow through, for every outlet that
-    // HAS a registered domain — i.e. most of the target population (task #1325).
+    // on an aggregator-domain URL — either a scored star-stub (see
+    // refiningOntoAggregator above, task #1325) or an aggregator-SOURCED write
+    // (see aggregatorSourceExempt above, task #1335) — a mismatch here is
+    // EXPECTED (the outlet's real domain, e.g. theguardian.com, will never
+    // match the aggregator's, e.g. westendtheatre.com), not a defect. Without
+    // this, the domain guard would silently re-refuse the exact write the
+    // relaxation above was just made to allow through, for every outlet that
+    // HAS a registered domain — i.e. most of the target population.
     if (!aggregatorScoreStub) {
       return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
     }
     fields.domainUnvalidated = true;
-    fields.domainUnvalidatedReason = `aggregator-url score-stub (expected mismatch): ${domainCheck.reason}`;
-    console.warn(`  ⚠️  Tolerating expected domain mismatch for scored aggregator star-stub: ${showId}/${outletId} — ${domainCheck.reason}`);
+    fields.domainUnvalidatedReason = `aggregator-url stub (expected mismatch): ${domainCheck.reason}`;
+    console.warn(`  ⚠️  Tolerating expected domain mismatch for aggregator-url stub: ${showId}/${outletId} — ${domainCheck.reason}`);
   }
   // Domainless registry outlet (task #782, cousin of #766's read-path fix): the guard
   // above passed with nothing actually checked. Stamp + log so this stays visible for
