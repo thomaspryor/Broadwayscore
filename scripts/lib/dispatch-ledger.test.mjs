@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -108,6 +108,24 @@ test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells exist
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
 });
 
+// Regression guard for the 2026-08-11 P0: module.exports named two functions a
+// competing implementation of card #1233 had deleted, so require() threw
+// ReferenceError and backlog-drain, bsc-runner, bsc-next, dispatch-watchdog and
+// the S6 canary all died on load. A name that survives the ReferenceError but
+// resolves to undefined (declared-later var, renamed helper) fails the same way
+// at the call site, silently — assert every export actually carries a value.
+test('every module.exports name resolves to a defined value (no stale/renamed exports)', () => {
+  const mod = require('./dispatch-ledger.js');
+  const undefinedExports = Object.keys(mod).filter((k) => mod[k] === undefined);
+  assert.deepEqual(undefinedExports, [], `exported but undefined: ${undefinedExports.join(', ')}`);
+});
+
+// Card #1233's infra-vs-substantive coverage now lives with the v2 API at the
+// bottom of this file (classifyDeadAttemptsForTask + dispatchCapDecision).
+// The four tests that stood here called the v1 API (isInfraDeadEntry /
+// deadDispatchCapStatus), which commit ba2a4f22d3f deleted — two racing
+// sessions on the same card left them behind, and they threw ReferenceError
+// on every run. Do not restore them from an old branch during a merge.
 test('deadBreadcrumbs: only idle workspaces with a matching launch record produce breadcrumbs', () => {
   const entries = [
     { event: 'launch', taskId: '297', subject: 'T1-retrieval Sprint 2', workspaceRef: 'workspace:227' },
@@ -312,13 +330,18 @@ const {
 const EPOCH = '2026-08-01T00:00:00.000Z';
 const AFTER = '2026-08-02T12:00:00.000Z';
 const BEFORE = '2026-07-20T12:00:00.000Z';
+// `now` for tests that don't care about the historical-exclusion grace: well
+// after EPOCH but still comfortably inside HISTORICAL_EXCLUSION_GRACE_MS
+// (72h), so pre-epoch behavior is unaffected and these tests exercise
+// everything else unchanged.
+const NOW = Date.parse(AFTER);
 const launch = (o) => ({ event: 'launch', taskId: '1', subject: 's', ...o });
 
 test('vanishedBreadcrumbs: absent workspace after the epoch parks its task', () => {
   const out = vanishedBreadcrumbs(
     new Set(['workspace:2']),
     [launch({ workspaceRef: 'workspace:1', ts: AFTER, notionId: 'abc' })],
-    { epochTs: EPOCH });
+    { epochTs: EPOCH, now: NOW });
   assert.equal(out.length, 1);
   assert.equal(out[0].event, 'vanished');
   assert.equal(out[0].workspaceRef, 'workspace:1');
@@ -329,23 +352,84 @@ test('vanishedBreadcrumbs: a workspace still listed never parks', () => {
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:1']),
     [launch({ workspaceRef: 'workspace:1', ts: AFTER })],
-    { epochTs: EPOCH }), []);
+    { epochTs: EPOCH, now: NOW }), []);
 });
 
-test('vanishedBreadcrumbs: pre-epoch launches are history, not parks', () => {
+test('vanishedBreadcrumbs: pre-epoch launches are history, not parks (within the grace window)', () => {
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:9']),
     [launch({ workspaceRef: 'workspace:1', ts: BEFORE })],
-    { epochTs: EPOCH }), []);
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 1000 }), []);
+});
+
+test('vanishedBreadcrumbs: pre-epoch launches become eligible once the historical-exclusion grace elapses (card #801)', () => {
+  // Card #801 root cause: the epoch's ONLY job is protecting the FIRST sweep
+  // from mass-parking historical tabs. A permanent exclusion instead made
+  // any pre-epoch launch immortal — never reconciled no matter how long its
+  // tab was actually gone. Past the grace, it rejoins the normal path.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: BEFORE, notionId: 'abc' })],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].workspaceRef, 'workspace:1');
+});
+
+test('vanishedBreadcrumbs: a pre-epoch ref superseded by a newer OPEN launch for the same task never parks, even past the grace', () => {
+  // Per-ref iteration alone would treat the dead pre-epoch ref as an
+  // independent candidate once the grace expires — but the task itself
+  // moved on to workspace:2, which is still open (no terminal event, still
+  // live in liveRefs). Parking the stale workspace:1 candidate would
+  // incorrectly flip that task's Notion card to Paused mid-flight.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:2']),
+    [
+      launch({ taskId: '1', workspaceRef: 'workspace:1', ts: BEFORE }),
+      launch({ taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }),
+    ],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  assert.deepEqual(out, []);
+});
+
+test('vanishedBreadcrumbs: a pre-epoch ref is NOT suppressed when the "newer" launch for the task is also dead (Codex adversarial-review catch, card #801 ship-check)', () => {
+  // Both refs are absent from liveRefs — the newer launch is exactly as
+  // dead as the older one, so "a newer launch exists" alone must NOT
+  // suppress the older, notionId-bearing ref. Requiring liveRefs.has() on
+  // the newer launch's ref (not just "no terminal event yet") is what makes
+  // this distinguishable from the genuinely-superseded case above.
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']), // neither workspace:1 nor workspace:2 is live
+    [
+      launch({ taskId: '1', workspaceRef: 'workspace:1', ts: BEFORE, notionId: 'abc' }),
+      launch({ taskId: '1', workspaceRef: 'workspace:2', ts: AFTER }), // also dead, no notionId
+    ],
+    { epochTs: EPOCH, now: Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1 });
+  const refs = out.map(b => b.workspaceRef).sort();
+  assert.deepEqual(refs, ['workspace:1', 'workspace:2'], 'both dead refs become candidates — the notionId-bearing one must not be silently swallowed');
+  assert.equal(out.find(b => b.workspaceRef === 'workspace:1').notionId, 'abc');
+});
+
+test('vanishedBreadcrumbs: requires now (ms epoch)', () => {
+  const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
+  assert.throws(() => vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH }), /now/);
+  assert.throws(() => vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH, now: NaN }), /now/);
+});
+
+test('vanishedBreadcrumbs: a malformed epoch timestamp fails closed (never expires the grace)', () => {
+  const out = vanishedBreadcrumbs(
+    new Set(['workspace:9']),
+    [launch({ workspaceRef: 'workspace:1', ts: BEFORE })],
+    { epochTs: 'not-a-date', now: Date.parse(EPOCH) + 365 * 24 * 60 * 60 * 1000 });
+  assert.deepEqual(out, [], 'NaN epochMs must never let pre-epoch history through');
 });
 
 test('vanishedBreadcrumbs: fails closed with no epoch and on an empty cmux listing', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
-  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: null }), [],
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: null, now: NOW }), [],
     'no epoch recorded must never park');
-  assert.deepEqual(vanishedBreadcrumbs(new Set(), entries, { epochTs: EPOCH }), [],
+  assert.deepEqual(vanishedBreadcrumbs(new Set(), entries, { epochTs: EPOCH, now: NOW }), [],
     'empty listing = cmux restarted/crashed, not 200 closed tabs');
-  assert.throws(() => vanishedBreadcrumbs(['workspace:9'], entries, { epochTs: EPOCH }), /Set/);
+  assert.throws(() => vanishedBreadcrumbs(['workspace:9'], entries, { epochTs: EPOCH, now: NOW }), /Set/);
 });
 
 test('vanishedBreadcrumbs: headless and ref-less launches are never workspace-shaped', () => {
@@ -355,7 +439,7 @@ test('vanishedBreadcrumbs: headless and ref-less launches are never workspace-sh
   assert.deepEqual(vanishedBreadcrumbs(
     new Set(['workspace:9']),
     [launch({ workspaceRef: 'headless:1', ts: AFTER }), launch({ taskId: '2', ts: AFTER })],
-    { epochTs: EPOCH }), [], 'headless dispatches are never in a cmux listing — parking them is the #578 bug');
+    { epochTs: EPOCH, now: NOW }), [], 'headless dispatches are never in a cmux listing — parking them is the #578 bug');
 });
 
 test('vanishedBreadcrumbs: a terminal entry after the launch means already reconciled', () => {
@@ -364,7 +448,7 @@ test('vanishedBreadcrumbs: a terminal entry after the launch means already recon
       new Set(['workspace:9']),
       [launch({ workspaceRef: 'workspace:1', ts: AFTER }),
         { event: ev, taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T13:00:00.000Z' }],
-      { epochTs: EPOCH }), [], `${ev} should terminate the launch`);
+      { epochTs: EPOCH, now: NOW }), [], `${ev} should terminate the launch`);
   }
 });
 
@@ -374,17 +458,17 @@ test('vanishedBreadcrumbs: a ref relaunched after its close parks again (cmux re
     [launch({ workspaceRef: 'workspace:1', ts: '2026-08-02T10:00:00.000Z' }),
       { event: 'prune-closed', taskId: '1', workspaceRef: 'workspace:1', ts: '2026-08-02T11:00:00.000Z' },
       launch({ taskId: '77', workspaceRef: 'workspace:1', ts: '2026-08-02T12:00:00.000Z' })],
-    { epochTs: EPOCH });
+    { epochTs: EPOCH, now: NOW });
   assert.equal(out.length, 1);
   assert.equal(out[0].taskId, '77', 'the LATEST launch owns the ref, not the first');
 });
 
 test('vanishedBreadcrumbs is idempotent: its own output terminates the next sweep', () => {
   const entries = [launch({ workspaceRef: 'workspace:1', ts: AFTER })];
-  const first = vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH });
+  const first = vanishedBreadcrumbs(new Set(['workspace:9']), entries, { epochTs: EPOCH, now: NOW });
   assert.equal(first.length, 1);
   const replayed = entries.concat(first.map(e => ({ ...e, ts: '2026-08-02T14:00:00.000Z' })));
-  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH }), []);
+  assert.deepEqual(vanishedBreadcrumbs(new Set(['workspace:9']), replayed, { epochTs: EPOCH, now: NOW }), []);
 });
 
 test('vanishEpoch reads the stamp; vanishEpochEntry is appendEntry-shaped', () => {
@@ -431,8 +515,20 @@ test('openWorkspaceLaunchCount: counts post-epoch, non-terminal workspace launch
     launch({ taskId: '3', workspaceRef: 'workspace:3', ts: BEFORE }), // pre-epoch
     launch({ taskId: '4', workspaceRef: 'headless:4', ts: AFTER }),  // not workspace-shaped
   ];
-  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH }), 1);
-  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: null }), 0, 'no epoch = nothing counted');
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: NOW }), 1);
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: null, now: NOW }), 0, 'no epoch = nothing counted');
+  assert.throws(() => openWorkspaceLaunchCount(entries, { epochTs: EPOCH }), /now/);
+});
+
+test('openWorkspaceLaunchCount: pre-epoch launches join the count once the grace elapses, matching vanishedBreadcrumbs (card #801 ship-check)', () => {
+  const entries = [
+    launch({ taskId: '1', workspaceRef: 'workspace:1', ts: AFTER }),
+    launch({ taskId: '3', workspaceRef: 'workspace:3', ts: BEFORE }), // pre-epoch
+  ];
+  const withinGrace = Date.parse(EPOCH) + 1000;
+  const pastGrace = Date.parse(EPOCH) + 72 * 60 * 60 * 1000 + 1;
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: withinGrace }), 1, 'pre-epoch launch not yet counted');
+  assert.equal(openWorkspaceLaunchCount(entries, { epochTs: EPOCH, now: pastGrace }), 2, 'pre-epoch launch now counted — same population vanishedBreadcrumbs draws candidates from');
 });
 
 test('looksLikeRestart: requires both a minimum absolute count and a majority fraction', () => {
@@ -672,4 +768,142 @@ test('detectLauncherOutage: slow-boot-timeout deaths (claude still booting) are 
   const entries = ['1', '2', '3'].map((t, i) => bootDeath(t, `workspace:${i}`));
   assert.equal(detectLauncherOutage(entries, { now }).outage, false,
     'a live-wrapper slow boot is not the launcher failing to inject — must not alarm on it');
+});
+
+// ── followRetryChain (task #1184 S1) ────────────────────────────────────────
+import { followRetryChain, JOB_EVENTS } from './dispatch-ledger.js';
+
+const chainSpawn = (jobId, ts, extra = {}) => ({ event: JOB_EVENTS.SPAWNED, taskId: '7', jobId, ts, ...extra });
+const chainRetried = (jobId, ts, sessionId) => ({ event: JOB_EVENTS.RETRIED, taskId: '7', jobId, ts, sessionId });
+const chainDone = (jobId, ts) => ({ event: JOB_EVENTS.DONE, taskId: '7', jobId, ts });
+
+test('followRetryChain: prefers the CAUSAL successor (resumeOfSession match) over any other spawn', () => {
+  const entries = [
+    chainSpawn('j1', '2026-08-10T10:00:00Z'),
+    chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A'),
+    // A manual headless job spawned in the gap — must NOT be credited.
+    chainSpawn('manual', '2026-08-10T12:01:00Z'),
+    chainSpawn('j2', '2026-08-10T12:02:00Z', { resumed: true, resumeOfSession: 'sess-A' }),
+    chainDone('j2', '2026-08-10T13:00:00Z'),
+  ];
+  const job = followRetryChain(entries, '7', 'j1');
+  assert.equal(job.jobId, 'j2');
+  assert.equal(job.event, JOB_EVENTS.DONE);
+});
+
+test('followRetryChain: fallback for pre-stamp entries requires the spawn be marked resumed', () => {
+  const entries = [
+    chainSpawn('j1', '2026-08-10T10:00:00Z'),
+    chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A'),
+    chainSpawn('manual', '2026-08-10T12:01:00Z'),                    // resumed absent — never credited
+    chainSpawn('j2', '2026-08-10T12:02:00Z', { resumed: true }),     // legacy resume, no session stamp
+  ];
+  assert.equal(followRetryChain(entries, '7', 'j1').jobId, 'j2');
+});
+
+test('followRetryChain: a chain ending at RETRIED (successor not spawned) returns the RETRIED job as-is', () => {
+  const entries = [chainSpawn('j1', '2026-08-10T10:00:00Z'), chainRetried('j1', '2026-08-10T12:00:00Z', 'sess-A')];
+  const job = followRetryChain(entries, '7', 'j1');
+  assert.equal(job.jobId, 'j1');
+  assert.equal(job.event, JOB_EVENTS.RETRIED, 'callers treat this as in-flight within their orphan bound');
+});
+
+test('followRetryChain: non-retried jobs pass through untouched', () => {
+  const entries = [chainSpawn('j1', '2026-08-10T10:00:00Z'), chainDone('j1', '2026-08-10T11:00:00Z')];
+  assert.equal(followRetryChain(entries, '7', 'j1').event, JOB_EVENTS.DONE);
+});
+
+// ── classifyDeadAttemptsForTask / dispatchCapDecision (card #1233) ─────────
+// The 2-death dispatch cap used to count EVERY dead attempt equally, so a
+// task that died twice because cmux's terminal surface never rendered got
+// the same "investigate the task" refusal as one that actually booted and
+// crashed twice. These reuse dispatch-attempts.js's own dead/unverified
+// classification (not a re-derived pairing window) to tell the two apart.
+const cmuxLaunch = (ts, ref, taskId, extra = {}) => ({
+  ts, event: 'launch', taskId, subject: `task ${taskId}`, workspaceRef: ref, model: 'sonnet', ...extra,
+});
+const cmuxDead = (ts, ref, taskId, failureReason = 'command injection never ran') => ({
+  ts, event: 'dead', taskId, subject: `task ${taskId}`, workspaceRef: ref, failureReason, title: null,
+});
+
+test('classifyDeadAttemptsForTask: 2 infra deaths (paired unverified launch, terminal surface never rendered) are not substantive', () => {
+  const entries = [
+    cmuxDead('2026-08-10T10:00:00.000Z', 'workspace:501', '1233a'),
+    cmuxLaunch('2026-08-10T10:00:00.002Z', 'workspace:501', '1233a', { unverified: true }),
+    cmuxDead('2026-08-10T11:00:00.000Z', 'workspace:502', '1233a'),
+    cmuxLaunch('2026-08-10T11:00:00.002Z', 'workspace:502', '1233a', { unverified: true }),
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233a', entries);
+  assert.equal(substantive.length, 0);
+  assert.equal(infra.length, 2);
+  assert.equal(substantiveDeadAttemptsForTask('1233a', entries).length, 0);
+});
+
+test('classifyDeadAttemptsForTask: 2 substantive deaths (verified launch, later dead breadcrumb) stay substantive', () => {
+  const entries = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:601', '1233b'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:601', '1233b', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-10T12:00:00.000Z', 'workspace:602', '1233b'),
+    cmuxDead('2026-08-10T14:30:00.000Z', 'workspace:602', '1233b', 'workspace idle, never booted'),
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233b', entries);
+  assert.equal(substantive.length, 2);
+  assert.equal(infra.length, 0);
+  assert.equal(substantiveDeadAttemptsForTask('1233b', entries).length, 2);
+});
+
+test('dispatchCapDecision: 2 infra deaths do not block dispatch; 2 substantive deaths do', () => {
+  const infraOnly = [
+    cmuxDead('2026-08-10T10:00:00.000Z', 'workspace:701', '1233c'),
+    cmuxLaunch('2026-08-10T10:00:00.002Z', 'workspace:701', '1233c', { unverified: true }),
+    cmuxDead('2026-08-10T11:00:00.000Z', 'workspace:702', '1233c'),
+    cmuxLaunch('2026-08-10T11:00:00.002Z', 'workspace:702', '1233c', { unverified: true }),
+  ];
+  const infraDecision = dispatchCapDecision('1233c', infraOnly);
+  assert.equal(infraDecision.blocked, false);
+
+  const substantiveOnly = [
+    cmuxLaunch('2026-08-10T09:00:00.000Z', 'workspace:801', '1233d'),
+    cmuxDead('2026-08-10T11:30:00.000Z', 'workspace:801', '1233d', 'workspace idle, never booted'),
+    cmuxLaunch('2026-08-10T12:00:00.000Z', 'workspace:802', '1233d'),
+    cmuxDead('2026-08-10T14:30:00.000Z', 'workspace:802', '1233d', 'workspace idle, never booted'),
+  ];
+  const substantiveDecision = dispatchCapDecision('1233d', substantiveOnly);
+  assert.equal(substantiveDecision.blocked, true);
+  assert.equal(substantiveDecision.reason, 'substantive');
+});
+
+test('classifyDeadAttemptsForTask: an unpairable dead row (no ts, no matching launch) fails closed as substantive, never silently dropped', () => {
+  const entries = [
+    { event: 'dead', taskId: '1233e', workspaceRef: 'workspace:900' },
+    { event: 'dead', taskId: '1233e', workspaceRef: 'workspace:901' },
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233e', entries);
+  assert.equal(substantive.length, 2, 'both entries preserved — deadAttemptsForTask\'s full list, just partitioned');
+  assert.equal(infra.length, 0);
+});
+
+test('classifyDeadAttemptsForTask: job-failed/job-orphaned deaths are always substantive (the wrapper already ran)', () => {
+  const entries = [
+    { ts: '2026-08-10T10:00:00.000Z', event: JOB_EVENTS.SPAWNED, taskId: '1233f', jobId: 'j1' },
+    { ts: '2026-08-10T10:05:00.000Z', event: JOB_EVENTS.FAILED, taskId: '1233f', jobId: 'j1' },
+  ];
+  const { substantive, infra } = classifyDeadAttemptsForTask('1233f', entries);
+  assert.equal(substantive.length, 1);
+  assert.equal(infra.length, 0);
+});
+
+test('classifyDeadAttemptsForTask: recycled workspaceRef across two DIFFERENT tasks does not cross-contaminate infra/substantive', () => {
+  // Same ref, one infra death for task A, one substantive death for task B —
+  // scoping candidates to (taskId, workspaceRef) must keep them apart.
+  const entries = [
+    cmuxDead('2026-08-01T10:00:00.000Z', 'workspace:55', 'A'),
+    cmuxLaunch('2026-08-01T10:00:00.002Z', 'workspace:55', 'A', { unverified: true }),
+    cmuxLaunch('2026-08-05T10:00:00.000Z', 'workspace:55', 'B'),
+    cmuxDead('2026-08-05T12:00:00.000Z', 'workspace:55', 'B', 'workspace idle, never booted'),
+  ];
+  assert.equal(classifyDeadAttemptsForTask('A', entries).infra.length, 1);
+  assert.equal(classifyDeadAttemptsForTask('A', entries).substantive.length, 0);
+  assert.equal(classifyDeadAttemptsForTask('B', entries).infra.length, 0);
+  assert.equal(classifyDeadAttemptsForTask('B', entries).substantive.length, 1);
 });

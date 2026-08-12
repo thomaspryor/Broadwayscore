@@ -35,6 +35,16 @@ on:
         description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday in America/New_York.'
         required: false
         default: ''
+      # String, NOT type:boolean. pre-send-check.mjs gates on
+      # NEWSLETTER_ALLOW_GAPS === '1' (strict), and GitHub renders a boolean
+      # input as "true"/"false" — which is not '1', so a boolean here would
+      # render a toggle that silently does nothing and the coverage swap would
+      # still strip every featured opening. Same '1'-or-empty convention as
+      # newsletter-draft.yml's allowGaps input. Do not "modernize" to boolean.
+      allowGaps:
+        description: "Set to 1 to keep featured openings whose reviews are uncollected (skips the coverage-gap swap). Empty = swap as usual."
+        required: false
+        default: ''
 
 concurrency:
   group: newsletter-draft
@@ -48,6 +58,35 @@ jobs:
       fail-fast: false
       matrix:
         edition: [broadway, west-end]
+
+    # Job-level so EVERY step that touches the draft sees the same generator
+    # environment — including pre-send-check.mjs, which re-invokes generate.mjs
+    # when it applies a coverage swap. When its step env omitted
+    # NEWSLETTER_EDITION, that regen silently rewrote a west-end draft as the
+    # Broadway edition (see newsletter-draft.yml for the 2026-08-08 incident).
+    # The scripts now pin the edition themselves, so this is defense in depth —
+    # and it's what gets GA creds to the regen so it keeps the Trending section.
+    # Step-level env still wins where a step needs something different.
+    env:
+      NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+      NEWSLETTER_EDITION: ${{ matrix.edition }}
+      # Job-level so the pre-send-check regen inherits it too — a step-level
+      # value would be lost in exactly the way NEWSLETTER_EDITION was.
+      # Consumed as a strict === '1' test; see the allowGaps input comment.
+      #
+      # Deliberately reads ONLY the dispatch input — NOT vars.NEWSLETTER_ALLOW_GAPS,
+      # which newsletter-draft.yml uses as a persistent, manually-toggled escape
+      # hatch. This workflow's Sunday cron is UNATTENDED: honouring that repo
+      # variable would mean an owner who set it for a one-off manual send, and
+      # forgot to unset it, silently ships a featured opening with an incomplete
+      # review set with nobody in the loop. On a cron run this expression yields
+      # '' (missing inputs resolve to null, not an error), so the swap applies
+      # exactly as it did before this input existed. Waiving gaps here must
+      # always be a deliberate, per-run human act.
+      NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || '' }}
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -104,7 +143,6 @@ jobs:
         id: status
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           status=$(node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" --status)
           echo "status=$status" >> "$GITHUB_OUTPUT"
@@ -112,25 +150,16 @@ jobs:
 
       - name: Generate newsletter HTML + meta.json
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Pre-send check (HTML invariants, UTMs, subject, lede)
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Mobile overflow gate
         if: steps.status.outputs.status == 'draft'
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
 
@@ -140,8 +169,6 @@ jobs:
         if: steps.status.outputs.status == 'draft'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          NEWSLETTER_EDITION: ${{ matrix.edition }}
         run: |
           node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
             --create --audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}"

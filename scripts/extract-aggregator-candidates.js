@@ -34,8 +34,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
-const { writeStagingCandidates, loadStaging } = require('./lib/venue-listing-discover');
+const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, obRegionalShows, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
+const { writeStagingCandidates, writeStaging, loadStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const PV_FILE = path.join(AUDIT_DIR, 'playbill-verdict-unmatched.json');
@@ -57,7 +57,7 @@ function readJsonArray(file) {
   } catch { return []; }
 }
 
-function loadExistingShowSlugs() {
+function loadExistingShows() {
   const candidates = [
     path.join(__dirname, '..', 'data', 'shows.json'),
     process.env.HOME ? path.join(process.env.HOME, 'broadway-scorecard-data', 'shows.json') : null,
@@ -65,18 +65,46 @@ function loadExistingShowSlugs() {
   for (const p of candidates) {
     try {
       const data = JSON.parse(fs.readFileSync(p, 'utf8'));
-      const shows = data.shows || data;
-      return collisionSlugSet(shows);
+      return data.shows || data;
     } catch { /* try next */ }
   }
   console.warn('::warning::shows.json not found locally — slug-collision guard disabled this run.');
-  return new Set();
+  return [];
 }
 
 async function main() {
-  const existingSlugs = loadExistingShowSlugs();
+  const shows = loadExistingShows();
+  // MARKET-SCOPED (off-broadway/regional only), not the full catalog: this
+  // pipeline only ever discovers OB/regional candidates, so a same-titled
+  // Broadway/West End show must never gate a pre-fetch skip. Still title-only
+  // (no venue at this stage — see the pre-fetch gate below) — the residual
+  // same-market cross-venue risk is documented there and at
+  // findKnownObShow/pruneUnmatchedAudit in the lib (P1 task #1246, 2026-08-11).
+  const existingSlugs = collisionSlugSet(obRegionalShows(shows));
+
+  // Prune staged candidates whose show has since landed in shows.json through
+  // ANY path — not just this script's own promotion flow. The daily CI
+  // promotion (promote-ob-venue-candidates.js --regional-only) explicitly
+  // skips every non-regional candidate untouched, so nothing else ever
+  // dedupes an OB candidate against shows.json on the scheduled path. Without
+  // this sweep, a staged "Dad Don't Read This" or "Rosie O'Donnell: Common
+  // Knowledge" — both already-closed shows in shows.json when this was added
+  // 2026-08-11 — sits in staging (and the health-check "OB Discovery — Action
+  // Needed" digest) forever. See pruneStagedCandidates() for the full story.
+  // This read-modify-write joins the existing race surface on this same file
+  // (promote-ob-venue-candidates.js's own rewriteStaging()) — tracked as its
+  // own problem at task #999 (OB discovery S5: ob-venue-candidates.json
+  // concurrency), not solved here.
+  const stagingBefore = loadStaging();
+  const { kept: stagingKept, pruned: stagingPruned } = pruneStagedCandidates(stagingBefore, shows);
+  if (stagingPruned.length > 0) {
+    console.log(`Pruning ${stagingPruned.length} staged candidate(s) already in shows.json:`);
+    for (const p of stagingPruned) console.log(`  - ${p.title} @ ${p.venue || '?'} (${p.source || '?'})`);
+    if (!dryRun) writeStaging(stagingKept);
+  }
+
   // URLs already staged → don't re-fetch (idempotency without a bespoke cache).
-  const stagedUrls = new Set(loadStaging().map(c => c.sourceUrl).filter(Boolean));
+  const stagedUrls = new Set(stagingKept.map(c => c.sourceUrl).filter(Boolean));
 
   const records = [];
   if (onlySource !== 'bww') {
@@ -88,7 +116,7 @@ async function main() {
 
   if (records.length === 0) {
     console.log('No unmatched audit entries to process.');
-    return finish([], []);
+    return finish([], [], stagingPruned);
   }
   console.log(`Loaded ${records.length} unmatched audit entries (PV + BWW).`);
 
@@ -110,7 +138,7 @@ async function main() {
 
     // Cheap pre-filter: classify without HTML first to catch infrastructure /
     // low-confidence without spending a fetch.
-    const pre = classifyCandidate({ source, record, html: null, existingSlugs });
+    const pre = classifyCandidate({ source, record, html: null, shows });
     if (pre.status === 'reject' && pre.reason !== 'fetch-failed') {
       rejected.push({ url: record.url, slug: record.slug, source, reason: pre.reason, detail: pre.detail });
       continue;
@@ -119,6 +147,19 @@ async function main() {
     // Pre-fetch shows.json check: if the title already maps to an existing
     // show slug, the URL is a leftover for an already-promoted show — skip the
     // fetch entirely. (ship-check P0: stops promoted shows re-fetching weekly.)
+    //
+    // TITLE-ONLY, deliberately (P1 task #1246, 2026-08-11): the audit record
+    // has no venue pre-fetch, so this can't use the fully venue-scoped
+    // findKnownObShow() the way classifyCandidate() does below once HTML is
+    // in hand. existingSlugs is already MARKET-SCOPED (off-broadway/regional
+    // only, built above), closing the cross-market half of the blind spot; a
+    // new OB show that merely shares a title with an unrelated, different-
+    // venue OB/regional show is the residual risk (documented at
+    // findKnownObShow / pruneUnmatchedAudit in the lib). A hit here means the
+    // fetch is skipped and the record stays in the audit file for a future
+    // run to re-evaluate — it is not deleted — so the fix is bounded to a
+    // deferred rather than a lost discovery unless pruneUnmatchedAudit's own
+    // (also market-scoped, not venue-scoped) sweep removes it first.
     const refTitle = referenceTitle(source, record);
     if (slugCollidesWith(refTitle, existingSlugs)) {
       rejected.push({ url: record.url, slug: record.slug, source, reason: 'already-in-shows', detail: refTitle });
@@ -141,7 +182,7 @@ async function main() {
       fetches++;
     }
 
-    const r = classifyCandidate({ source, record, html, existingSlugs });
+    const r = classifyCandidate({ source, record, html, shows });
     if (r.status === 'accept') {
       accepted.push(r.candidate);
       console.log(`  [accept] ${r.candidate.title} @ ${r.candidate.venue} (${source})`);
@@ -151,10 +192,10 @@ async function main() {
     }
   }
 
-  return finish(accepted, rejected);
+  return finish(accepted, rejected, stagingPruned);
 }
 
-async function finish(accepted, rejected) {
+async function finish(accepted, rejected, prunedStaged = []) {
   console.log('');
   console.log(`Summary: ${accepted.length} accepted / ${rejected.length} rejected.`);
   const byReason = {};
@@ -184,11 +225,15 @@ async function finish(accepted, rejected) {
   }
 
   // Always refresh the rejection log (so stale entries don't linger).
+  // prunedStaged carries a durable record of pruneStagedCandidates()'s deletes
+  // from data/audit/ob-venue-candidates.json — without it, that write has no
+  // audit trail at all (ship-check review 2026-08-11).
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
   const out = {
     generatedAt: new Date().toISOString(),
-    counts: { accepted: accepted.length, rejected: rejected.length, byReason },
+    counts: { accepted: accepted.length, rejected: rejected.length, prunedStaged: prunedStaged.length, byReason },
     rejected,
+    prunedStaged,
   };
   const tmp = REJECTIONS_FILE + '.tmp.' + process.pid;
   fs.writeFileSync(tmp, JSON.stringify(out, null, 2));

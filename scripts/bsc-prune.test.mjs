@@ -206,6 +206,11 @@ function harness(entries, { dryRun = false } = {}) {
     appendLedgerEntryFn: (e) => { const w = { ts: '2026-08-02T15:00:00.000Z', ...e }; appended.push(w); return w; },
     parkCardFn: (v) => parked.push(v),
     dryRun,
+    // Fixed clock, well within HISTORICAL_EXCLUSION_GRACE_MS of the fixture
+    // epochs below (2026-08-01/02) — sweepVanished's real-clock default
+    // would otherwise make these tests drift/fail once wall-clock time
+    // outruns the fixtures' grace window (card #801 follow-on catch).
+    now: Date.parse('2026-08-02T16:00:00.000Z'),
   };
   return { appended, parked, deps };
 }
@@ -391,15 +396,19 @@ test('sweepVanished: a NEW restart incident (different refs) starts its own fres
 
 test('sweepVanished: a single genuinely-closed tab among many open ones still parks normally', () => {
   // 1 vanished out of 5 open launches — below both RESTART_MIN_COUNT's
-  // practical trigger and RESTART_FRACTION — must park as before.
+  // practical trigger and RESTART_FRACTION — must park as before. Decoy
+  // taskIds start at 12 (not 2) so none collides with LAUNCHED_LONG's
+  // taskId '5' — a real collision here used to trip the per-task
+  // supersession guard (card #801 follow-on: task 5's own decoy launch
+  // looked like a newer open launch superseding itself).
   const entries = [EPOCH_ENTRY, LAUNCHED_LONG];
-  for (let i = 2; i <= 5; i++) {
+  for (let i = 12; i <= 15; i++) {
     entries.push({ event: 'launch', taskId: String(i), subject: `Still-open task number ${i} long subject`, workspaceRef: `workspace:${i}`, ts: '2026-08-02T10:00:00.000Z' });
   }
   const { appended, parked, deps } = harness(entries);
-  // workspace:1 (LAUNCHED_LONG) vanishes with no title match; workspace:2-5
+  // workspace:1 (LAUNCHED_LONG) vanishes with no title match; workspace:12-15
   // (the other 4 tracked launches) are still live and listed.
-  sweepVanished({ all: [ws(2), ws(3), ws(4), ws(5)], ...deps });
+  sweepVanished({ all: [ws(12), ws(13), ws(14), ws(15)], ...deps });
   assert.equal(appended.length, 1);
   assert.equal(appended[0].event, 'vanished');
   assert.equal(appended[0].taskId, '5');

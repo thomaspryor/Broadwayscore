@@ -1,27 +1,27 @@
 {
   "consecutiveBelowCaptureFloor": 0,
-  "lastRunAt": "2026-08-04T12:37:52.533Z",
+  "lastRunAt": "2026-08-10T13:33:57.899Z",
   "lastSummary": {
     "recent": {
       "days": 7,
       "flagHealthy": true,
       "arms": {
         "control": {
-          "exposed": 52,
-          "shown": 2,
-          "dismissed": 2,
+          "exposed": 44,
+          "shown": 1,
+          "dismissed": 1,
           "captured": 0
         },
         "cold-start": {
-          "exposed": 47,
+          "exposed": 54,
           "shown": 0,
           "dismissed": 2,
           "captured": 0
         },
         "unexposed": {
-          "exposed": 94,
-          "shown": 55,
-          "dismissed": 39,
+          "exposed": 96,
+          "shown": 61,
+          "dismissed": 35,
           "captured": 0
         }
       },
@@ -35,26 +35,26 @@
       "flagHealthy": true,
       "arms": {
         "control": {
-          "exposed": 55,
-          "shown": 1,
-          "dismissed": 0,
+          "exposed": 54,
+          "shown": 0,
+          "dismissed": 1,
           "captured": 0
         },
         "cold-start": {
-          "exposed": 43,
+          "exposed": 45,
           "shown": 0,
           "dismissed": 0,
           "captured": 0
         },
         "unexposed": {
           "exposed": 99,
-          "shown": 54,
-          "dismissed": 45,
+          "shown": 58,
+          "dismissed": 41,
           "captured": 0
         }
       },
       "flagHealthProblem": null,
-      "effectiveDays": 14.53,
+      "effectiveDays": 20.57,
       "experimentStart": "2026-07-21",
       "totalCapturesPerWeek": 0
     }

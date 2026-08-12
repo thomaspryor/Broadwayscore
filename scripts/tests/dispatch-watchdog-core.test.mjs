@@ -27,6 +27,30 @@ test('ledger-confirmed dead launch with open task is retryable', () => {
   assert.equal(plan.toDispatch[0].taskId, '10');
 });
 
+test('#1154: an owner-judgment card that died is NEVER retried (retry bypasses actionable())', () => {
+  // The Sarah check-in shape: launched once, session died, then re-dispatched
+  // by dead-session recovery — which goes through `bsc-next --id` and so skips
+  // the pick filter entirely. The P0/P1 backlog sweep alone does not cover it.
+  const marked = [String(12), {
+    id: '12',
+    subject: 'Sarah check-in: growth plan progress and metrics report',
+    status: 'in_progress',
+    description: '[notion:abc-12] P2 Later · Not started · Admin\nDue 2026-05-23. Ask Sarah for status.\n\nVERIFY: owner-judgment (owner must read the report)',
+  }];
+  const entries = [
+    { ts: T(60), event: 'launch', taskId: '12', subject: 'Sarah check-in', workspaceRef: 'workspace:7' },
+    { ts: T(30), event: 'dead', taskId: '12', workspaceRef: 'workspace:7' },
+  ];
+  const plan = core.planSweep(entries, new Map([marked]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 0, 'owner-judgment card must not be retryable');
+  assert.equal(plan.toDispatch.filter(d => d.taskId === '12').length, 0, 'and must never be dispatched');
+
+  // Control: identical ledger, identical Admin category, marker removed -> retried.
+  const control = [String(12), { ...marked[1], description: marked[1].description.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing') }];
+  const plan2 = core.planSweep(entries, new Map([control]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan2.retryable.length, 1, 'without the marker the same card IS retryable');
+});
+
 test('vanished (owner-closed) is never retried — terminal reason matters', () => {
   const entries = [
     { ts: T(60), event: 'launch', taskId: '11', subject: 's', workspaceRef: 'workspace:6' },
@@ -53,6 +77,41 @@ test('open launch with open task is in flight; not re-dispatched', () => {
   assert.equal(plan.inFlight.length, 1);
   assert.equal(plan.inFlight[0].listed, true);
   assert.equal(plan.toDispatch.length, 0);
+});
+
+// Card #1233: 2 infra-only deaths (paired unverified launch — cmux's terminal
+// surface never rendered) must NOT park a task; the substantive cap only
+// counts substantive deaths. But a task that fails to even boot
+// INFRA_DEAD_ATTEMPT_LIMIT times in a row (cmux itself looks wedged) still
+// must park eventually — and the parked item must carry reason:'infra' with
+// deaths reflecting the INFRA count, not 0, or the owner-facing message in
+// dispatch-watchdog.js reads "parked after 0 dead dispatch attempts" (ship-
+// check catch on the first cut of this fix).
+test('2 infra-only deaths do not park; INFRA_DEAD_ATTEMPT_LIMIT infra deaths in a row park with reason:infra and a non-zero death count', () => {
+  // Shape-1 classification (dispatch-attempts.js foldAttempts) only checks
+  // that the paired launch is unverified AND within PAIR_WINDOW_MS of the
+  // dead row — not which one was written first. Real bsc-next writes 'dead'
+  // then the paired 'launch' ~1-2ms later; this fixture writes launch then
+  // dead ~50ms later, which is equally a valid shape-1 pair for
+  // classification purposes AND satisfies lastTerminalEventForTask's
+  // separate, pre-existing requirement that a task's terminal event land
+  // at-or-after its last launch (unrelated to card #1233 — every OTHER
+  // passing test in this file already relies on launch-before-dead
+  // ordering for exactly this reason).
+  const infraPair = (ref, launchM, deadM) => ([
+    { ts: T(launchM), event: 'launch', taskId: '15', subject: 's', workspaceRef: ref, unverified: true },
+    { ts: T(deadM), event: 'dead', taskId: '15', workspaceRef: ref, failureReason: 'command injection never ran' },
+  ]);
+  const twoInfra = [...infraPair('workspace:20', 90, 89.9999), ...infraPair('workspace:21', 80, 79.9999)];
+  const planTwo = core.planSweep(twoInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(planTwo.toPark.length, 0, '2 infra deaths must not park');
+
+  const tenInfra = [];
+  for (let i = 0; i < 10; i++) tenInfra.push(...infraPair(`workspace:${30 + i}`, 90 - i, 90 - i - 0.0001));
+  const planTen = core.planSweep(tenInfra, new Map([task(15, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(planTen.toPark.length, 1, '10 infra deaths in a row must still park (wedged-host ceiling)');
+  assert.equal(planTen.toPark[0].reason, 'infra');
+  assert.equal(planTen.toPark[0].deaths, 10, 'deaths must reflect the infra count, never 0, for the owner-facing message');
 });
 
 test('DEAD_ATTEMPT_LIMIT deaths -> park once; parked card never re-parks or re-dispatches across 100 sweeps (pre-mortem P0)', () => {

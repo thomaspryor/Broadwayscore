@@ -247,8 +247,28 @@ flush() {
   # ENTIRE nightly GC run, which is exactly the silent-failure shape that let
   # disk hit 921MB free with zero warning. Bound it, and on timeout default to
   # "unmerged" (never treat an inconclusive check as license to delete).
-  local cherry_raw cherry_status unmerged
-  if [ -n "$TIMEOUT_BIN" ]; then
+  #
+  # FAST PATH FIRST (2026-08-09). `git cherry` computes a patch-id for EVERY
+  # commit, so it is the expensive way to answer "is this branch already in
+  # main" — and under load it mostly does not answer at all: on the 08-09 run,
+  # 678 of 759 KEEP decisions were cherry timeouts (exit 124), not merge
+  # determinations. The safety default below then kept everything, so the GC
+  # reported a clean run while deciding almost nothing. That is the
+  # conservative-default-fires-on-the-common-case shape
+  # (memory/feedback_conservative_default_can_be_common_case.md).
+  #
+  # `git merge-base --is-ancestor` is a graph walk: it answers the ordinary
+  # merged case (fast-forward / plain merge) in milliseconds and does not time
+  # out. When it says yes, the branch is definitively contained in origin/main
+  # and no patch-id work is needed. Only when it says no do we still owe the
+  # expensive check, because that is the squash-merge case cherry exists to
+  # catch (squashed commits are absent from history but present as patches).
+  local cherry_raw cherry_status unmerged head_sha
+  head_sha=$(git rev-parse "$branch" 2>/dev/null)
+  if [ -n "$head_sha" ] && git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null; then
+    cherry_raw=""      # definitively contained in origin/main
+    cherry_status=0
+  elif [ -n "$TIMEOUT_BIN" ]; then
     cherry_raw=$("$TIMEOUT_BIN" 15s git cherry origin/main "$branch" 2>/dev/null)
     cherry_status=$?
   else

@@ -565,7 +565,13 @@ async function createCard(args) {
   // Collect per-field overflow so we can write body sections after create.
   const overflow = {};
   if (args.notes) {
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(args.notes);
+    // Hoist a RECHECK-AFTER stamp to the front — same reason as the Outcome
+    // field below: the property is truncated to a ~1752-char preview before
+    // overflowing to the page body, and stuck-work.js's classifier only ever
+    // reads the raw property (task #802 fixed this for Outcome; Notes had
+    // the identical bug, found via card #1136's OWNER card).
+    const notesText = hoistRecheckAfterStamp(args.notes);
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
     properties.Notes = propertyValue;
     if (bodyText) overflow.notes = bodyText;
   }
@@ -804,7 +810,9 @@ async function updateCard(args) {
   const overflow = {};
 
   if (args.notes) {
-    const { propertyValue, bodyText } = buildRichTextWithOverflow(args.notes);
+    // Same hoist as createCard above — see that comment for why.
+    const notesText = hoistRecheckAfterStamp(args.notes);
+    const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
     properties.Notes = propertyValue;
     if (bodyText) overflow.notes = bodyText;
   }

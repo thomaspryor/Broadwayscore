@@ -111,6 +111,63 @@ function retriesInLast24h(entries) {
   return entries.filter(e => e.event === ledger.JOB_EVENTS.RETRIED && Date.parse(e.ts) > cutoff).length;
 }
 
+// ── Timed-out job resume candidates (task #1184 S1) ─────────────────────────
+// A job-failed entry with stage 'timeout' now carries sessionId + cwd
+// (bsc-runner keeps the worktree on timeout for exactly this). Those are
+// resumable: the transcript is on disk, the WIP is in the kept worktree.
+// Pure + exported for tests. Caps:
+//  - per-job: one resume ever (a RETRIED entry for the jobId, same rule as
+//    the orphan path)
+//  - per-task: MAX_RESUME_PER_TASK total RETRIED entries — a card that can't
+//    finish in (1 + N) × 120 min is not time-starved, it's a bad brief; more
+//    sessions won't fix it and attempt-memory should park it instead.
+//  - lookback 24h: older timeouts predate today's queue state; their
+//    worktrees belong to worktree-gc, not resurrection.
+const MAX_RESUME_PER_TASK = 2;
+const RESUME_LOOKBACK_MS = 24 * 3600 * 1000;
+
+function collectTimeoutResumeCandidates(entries, { nowMs, lookbackMs = RESUME_LOOKBACK_MS, maxResumePerTask = MAX_RESUME_PER_TASK } = {}) {
+  if (!Number.isFinite(nowMs)) throw new Error('collectTimeoutResumeCandidates requires nowMs');
+  const retriedJobIds = new Set(entries.filter(e => e.event === ledger.JOB_EVENTS.RETRIED).map(e => e.jobId));
+  const retriesByTask = new Map();
+  for (const e of entries) {
+    if (e.event !== ledger.JOB_EVENTS.RETRIED) continue;
+    const id = String(e.taskId);
+    retriesByTask.set(id, (retriesByTask.get(id) || 0) + 1);
+  }
+  const out = [];
+  for (const job of ledger.foldJobs(entries).values()) {
+    if (job.event !== ledger.JOB_EVENTS.FAILED || job.stage !== 'timeout') continue;
+    if (!job.sessionId || !job.cwd) continue; // pre-#1184 entries: unresumable
+    if (retriedJobIds.has(job.jobId)) continue;
+    if ((retriesByTask.get(String(job.taskId)) || 0) >= maxResumePerTask) continue;
+    const ts = Date.parse(job.ts || '');
+    if (!Number.isFinite(ts) || nowMs - ts > lookbackMs) continue;
+    out.push(job);
+  }
+  return out.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+}
+
+// Detached on purpose — a resume runs on the full job budget (2h), and this
+// tick fires every 5 min under launchd, which skips overlapping runs: an
+// inline await here would silently disable orphan detection for the duration
+// (same reasoning as digest-autofix.js's dispatchDetached). The resume child
+// re-acquires the task lease itself (runJob), so a duplicate spawn against a
+// task whose resume is already running is refused at the lease, not here.
+function spawnDetachedResume(job) {
+  const { LOG_ROOT } = require('./lib/bsc-runner.js');
+  const logPath = path.join(LOG_ROOT, `resume-${job.taskId}-${Date.now()}.log`);
+  const logFd = fs.openSync(logPath, 'a');
+  const args = [path.join(REPO, 'scripts', 'resume-headless-job.js'),
+    '--task', String(job.taskId), '--session', String(job.sessionId), '--cwd', String(job.cwd)];
+  if (job.model) args.push('--model', String(job.model));
+  const child = require('child_process').spawn('node', args,
+    { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
+  child.unref();
+  fs.closeSync(logFd);
+  return logPath;
+}
+
 function sleepMs(ms) { spawnSync('sleep', [String(ms / 1000)]); }
 
 // Pure argv builder for the redispatch child process (extracted so the
@@ -234,9 +291,18 @@ function reconcileTaskSessions({ dryRun = false, deps = {} } = {}) {
     // stealing cmux focus (wakeFn) and spamming the digest for no gain. It
     // genuinely needs a human (or --force) now; surface that once per tick,
     // not retry it.
-    if (ledger.deadAttemptsForTask(task.id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
-      reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail: `#${task.id} has already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs investigation or --force, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: count only SUBSTANTIVE deaths toward the recurrence cap
+      // — a task whose only failures are cmux's terminal surface never
+      // rendering isn't the thing that needs investigating.
+      const cap = ledger.dispatchCapDecision(task.id, entries);
+      if (cap.blocked) {
+        const detail = cap.reason === 'infra'
+          ? `#${task.id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs investigation or --force, not another automatic retry`
+          : `#${task.id} has already died ${cap.substantive.length}x — needs investigation or --force, not another automatic retry`;
+        reportFn({ kind: 'task-redispatch-blocked', taskId: task.id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       reportFn({ kind: 'task-redispatch-throttled', taskId: task.id, detail: `#${task.id} deferred — this tick's redispatch budget (${MAX_REDISPATCH_PER_TICK}) is spent; will retry next tick` });
@@ -337,12 +403,19 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
       reportFn({ kind: 'task-stall-exhausted', taskId: id, detail: `#${id} has already been stall-redispatched ${markers.length}x and is stalled AGAIN — a session keeps ending without completing it; needs a human look, no further automatic sessions` });
       continue;
     }
-    if (ledger.deadAttemptsForTask(id, entries).length >= ledger.DEAD_ATTEMPT_LIMIT) {
-      // Marker stamped: this verdict is stable, so surface it once per stall,
-      // not every 5-minute tick.
-      appendLedgerFn({ event: STALL_EVENT, taskId: id });
-      reportFn({ kind: 'task-stall-blocked', taskId: id, detail: `#${id} already died ${ledger.DEAD_ATTEMPT_LIMIT}+ times — needs a human look, not another automatic retry` });
-      continue;
+    {
+      // Card #1233: same substantive-only cap as the redispatch guard above.
+      const cap = ledger.dispatchCapDecision(id, entries);
+      if (cap.blocked) {
+        // Marker stamped: this verdict is stable, so surface it once per
+        // stall, not every 5-minute tick.
+        appendLedgerFn({ event: STALL_EVENT, taskId: id });
+        const detail = cap.reason === 'infra'
+          ? `#${id}'s cmux launch has failed to start ${cap.infra.length}x in a row (cmux itself looks wedged) — needs a human look, not another automatic retry`
+          : `#${id} already died ${cap.substantive.length}+ times — needs a human look, not another automatic retry`;
+        reportFn({ kind: 'task-stall-blocked', taskId: id, detail });
+        continue;
+      }
     }
     if (dispatchBudget <= 0) {
       // NO marker on throttle: the budget is per-tick, so the next tick must
@@ -370,6 +443,172 @@ function reconcileStalledTasks({ dryRun = false, deps = {} } = {}) {
   }
 
   return { checked: tasks.length, stalled, redispatched };
+}
+
+// ── Untracked in_progress zombie sweep (task #1184 S2) ──────────────────────
+// reconcileStalledTasks above deliberately skips in_progress tasks with NO
+// ledger history ("a hand-claimed interactive session is invisible to us and
+// not ours to declare dead"). That left a permanent blind spot the health
+// check reports daily as "Stuck work: orphaned in-progress cards" (72 on
+// 2026-08-09): a card claimed by an interactive session whose tab is long
+// gone stays in_progress forever — and digest-autofix's planAutofix reads
+// its health row as "being fixed right now" and never dispatches a fix.
+// This sweep owns exactly that complementary shape. It does NOT dispatch:
+// it flips the task back to pending (every bsc-next guard still decides
+// dispatchability later), corrects the mirrored Notion card, and leaves a
+// note the next owner/session sees. Guards, in order, are in the loop below.
+const UNTRACKED_SWEEP_STATE_PATH = path.join(REPO, 'data', 'audit', 'untracked-sweep-state.json');
+const UNTRACKED_SWEEP_INTERVAL_MS = 6 * 3600 * 1000;   // Notion fetches cost quota — no need for 5-min cadence on 48h-stale cards
+const UNTRACKED_IDLE_MS = 48 * 3600 * 1000;            // same bar as the health check's "orphaned in-progress" row
+const MAX_UNTRACKED_FLIPS_PER_SWEEP = 10;              // 72-at-once reads as a board wipe (plan-review user-impact finding)
+const UNTRACKED_MARKER = '[zombie-sweep ';
+// Distinct from UNTRACKED_MARKER (task #1272, ship-check Codex finding): the
+// outcome-park branch below never flips local status, so without its own
+// idempotency stamp the sweep would re-fetch, re-park, and re-report the
+// SAME card every idle window forever — an ever-growing Outcome history and
+// a recurring digest nag, not a one-time correction.
+const OUTCOME_PARK_MARKER = '[outcome-park ';
+
+function notionIdOfTask(task) {
+  if (task && task.metadata && task.metadata.notionCard) return String(task.metadata.notionCard);
+  const m = /\[notion:([0-9a-f-]{16,})\]/i.exec(String((task && task.description) || ''));
+  return m ? m[1] : null;
+}
+
+function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
+  const {
+    loadTasksFn = bscNext.loadTasks,
+    tasksDir = bscNext.TASKS_DIR,
+    readLedgerEntriesFn = ledger.readEntries,
+    listWorkspacesFn = cmuxws.listWorkspaces,
+    readLeaseFn = readLease,
+    fetchCardFn = (notionId) => {
+      const r = spawnSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', notionId], { encoding: 'utf8', timeout: 60_000 });
+      if (r.status !== 0) return null;
+      try { return JSON.parse(r.stdout); } catch { return null; }
+    },
+    flipFn = (task, note) => {
+      const file = path.join(tasksDir, `${task.id}.json`);
+      const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+      // Check-then-act guard (ship-check Codex finding): a session can claim
+      // or complete this task between the sweep's snapshot and this write —
+      // the re-read is the last word, never the stale snapshot.
+      if (t.status !== 'in_progress') return;
+      t.status = 'pending';
+      t.owner = null;
+      t.description = note + (t.description || '');
+      fs.writeFileSync(file, JSON.stringify(t, null, 2));
+    },
+    // Stamps OUTCOME_PARK_MARKER without touching status/owner — the park
+    // only ever changes the NOTION side, so this exists purely to make the
+    // sweep idempotent (same check-then-act shape as flipFn above).
+    markOutcomeParkedFn = (task, note) => {
+      const file = path.join(tasksDir, `${task.id}.json`);
+      const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+      if (t.status !== 'in_progress') return;
+      t.description = note + (t.description || '');
+      fs.writeFileSync(file, JSON.stringify(t, null, 2));
+    },
+    correctCardFn = (notionId, note, status = 'Not started') => {
+      const r = spawnSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'update', notionId,
+        '--status', status, '--outcome', note], { encoding: 'utf8', timeout: 60_000 });
+      return r.status === 0;
+    },
+    reportFn = report,
+    nowFn = Date.now,
+    statePath = UNTRACKED_SWEEP_STATE_PATH,
+  } = deps;
+
+  // Cadence gate: at most one sweep per interval (state survives dry-runs
+  // being skipped — dry-run never stamps).
+  let state = null;
+  try { state = JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { /* first run */ }
+  if (state && Number.isFinite(Date.parse(state.lastRunTs)) && nowFn() - Date.parse(state.lastRunTs) < UNTRACKED_SWEEP_INTERVAL_MS) {
+    return { ran: false, checked: 0, flipped: [], skipped: [] };
+  }
+
+  const tasks = loadTasksFn(tasksDir).filter(t => t.status === 'in_progress');
+  const entries = readLedgerEntriesFn();
+  const trackedIds = new Set(entries.filter(e => e.taskId != null).map(e => String(e.taskId)));
+  let workspaces = [];
+  try { workspaces = listWorkspacesFn() || []; } catch { /* cmux down — title guard degrades to skip-none */ }
+
+  const flipped = [];
+  const skipped = [];
+  let checked = 0;
+  for (const task of tasks) {
+    if (flipped.length >= MAX_UNTRACKED_FLIPS_PER_SWEEP) break;
+    const id = String(task.id);
+    if (trackedIds.has(id)) continue;                       // ledger-tracked — the other sweeps own it
+    if (task.metadata && task.metadata.recheckAfter) continue; // RECHECK-AFTER parked by process rule, not stuck
+    if (String(task.description || '').includes(UNTRACKED_MARKER)) continue; // already swept once — idempotent
+    if (String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue; // already parked — idempotent
+    const lease = readLeaseFn(id);
+    if (lease && pidLooksLikeClaude(lease.pid)) { skipped.push({ id, why: 'live-lease' }); continue; }
+    const liveTab = workspaces.find(w => ledger.titleMatchesSubject(w.title, task.subject));
+    if (liveTab) { skipped.push({ id, why: `live-tab ${liveTab.ref}` }); continue; }
+    const notionId = notionIdOfTask(task);
+    if (!notionId) { skipped.push({ id, why: 'no-notion-id' }); continue; } // no timestamp source — too blind to flip
+    checked++;
+    const card = fetchCardFn(notionId);
+    if (!card || !card.lastEditedAt) { skipped.push({ id, why: 'card-fetch-failed' }); continue; }
+    const idleMs = nowFn() - Date.parse(card.lastEditedAt);
+    if (!Number.isFinite(idleMs) || idleMs < UNTRACKED_IDLE_MS) continue;   // recently touched — someone may be on it
+
+    const days = Math.round(idleMs / 86400e3);
+
+    // Outcome already filled (task #1272, the #383 class): this card records
+    // COMPLETED work, so flipping it to Not started makes it re-eligible for
+    // dispatch and just redoes finished work (card #383: reopened by this
+    // exact branch on 2026-07-24, redispatched 2026-08-11). Park it in
+    // Notion instead (status Paused, same convention as bsc-prune's
+    // tab-close park) for a human yes/no. The LOCAL task is deliberately
+    // left in_progress — it keeps surfacing in the daily "stuck work:
+    // orphaned in-progress cards" digest row (#801) instead of silently
+    // re-entering the auto-dispatch pool; bsc-next.js's staleOutcomeGuard is
+    // the actual dispatch-time backstop regardless of local status.
+    if (String(card.outcome || '').trim()) {
+      skipped.push({ id, why: 'has-completed-outcome' });
+      reportFn({ kind: 'zombie-outcome-needs-review', taskId: id, detail: `in_progress task #${id} "${task.subject}" sat In progress ${days}d with no live session, but its Notion card already has a filled Outcome — parking for human review instead of auto-reopening (task #1272, the #383 class).` });
+      if (dryRun) continue;
+      let parked = false;
+      try {
+        parked = correctCardFn(notionId, `Auto-parked ${new Date().toISOString().slice(0, 10)} by bsc-reconcile zombie sweep: card sat In progress ${days}d with no live session, but already has a completed Outcome — needs a human yes/no, not an automatic reopen (task #1272). Resume dispatch with \`node scripts/bsc-next.js --id ${id} --force\` once reviewed.`, 'Paused');
+      } catch (e) {
+        reportFn({ kind: 'zombie-outcome-park-failed', taskId: id, detail: `card correction threw for #${id}: ${e.message}` });
+        continue;
+      }
+      // ship-check Codex finding: correctCardFn returning false (a failed
+      // Notion write) was previously indistinguishable from success — the
+      // digest said "parked" while the card stayed In progress. Only stamp
+      // the local idempotency marker on a CONFIRMED write, so a failed park
+      // is retried on the next sweep instead of being silently abandoned.
+      if (!parked) {
+        reportFn({ kind: 'zombie-outcome-park-failed', taskId: id, detail: `Notion update to Paused failed for #${id} — card status unchanged, will retry next sweep` });
+        continue;
+      }
+      const parkNote = `${OUTCOME_PARK_MARKER}${new Date().toISOString().slice(0, 10)}] parked — Notion card set to Paused, needs a human yes/no on the recorded Outcome (task #1272).\n\n`;
+      try { markOutcomeParkedFn(task, parkNote); } catch (e) { reportFn({ kind: 'zombie-outcome-park-marker-failed', taskId: id, detail: `local marker write failed: ${e.message}` }); }
+      continue;
+    }
+
+    reportFn({ kind: 'zombie-flip', taskId: id, detail: `in_progress task #${id} "${task.subject}" — no ledger history, no live lease/tab, card idle ${days}d → flipped back to pending` });
+    if (dryRun) { flipped.push(id); continue; }
+    const note = `${UNTRACKED_MARKER}${new Date().toISOString().slice(0, 10)}] reopened — sat In progress ${days}d with no live session, workspace, or dispatch record (owning session likely died; task #1184 S2). Re-eligible for dispatch.\n\n`;
+    try { flipFn(task, note); } catch (e) { reportFn({ kind: 'zombie-flip-failed', taskId: id, detail: `local flip failed: ${e.message}` }); continue; }
+    flipped.push(id);
+    try {
+      if (card.status === 'In progress') correctCardFn(notionId, `Auto-corrected ${new Date().toISOString().slice(0, 10)} by bsc-reconcile zombie sweep: card sat In progress ${days}d with no live session (task #1184 S2) — back to Not started, re-eligible for dispatch.`);
+    } catch { /* card correction is best-effort; local flip is authoritative */ }
+  }
+
+  if (!dryRun) {
+    try {
+      fs.mkdirSync(path.dirname(statePath), { recursive: true });
+      fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: new Date(nowFn()).toISOString(), flipped, skipped: skipped.length }, null, 2));
+    } catch { /* state write must never fail the sweep */ }
+  }
+  return { ran: true, checked, flipped, skipped };
 }
 
 // ── Flagless-resume sweep (task #985) ───────────────────────────────────────
@@ -620,10 +859,33 @@ async function main() {
         resumeSessionId: sessionId,
         prompt: 'Your previous headless run was interrupted (process died). Continue exactly where you left off and finish the task.',
         model: job.model || undefined,
-        // Short leash: a retry blocking this tick for the full 30-min default
+        // Short leash: a retry blocking this tick for the full job default
         // would stall orphan detection (launchd skips overlapping runs).
         timeoutMs: 10 * 60 * 1000,
       });
+    }
+  }
+
+  // Timed-out job resume (task #1184 S1) — same env gate and 24h retry budget
+  // as the orphan path above, but spawned DETACHED (a resume runs on the full
+  // 2h job budget; awaiting it here would block this 5-min tick for hours).
+  if (process.env.BSC_RECONCILE_RETRY === '1' && !DRY) {
+    const entriesNow = ledger.readEntries();
+    const dayCount = retriesInLast24h(entriesNow);
+    let budget = Math.min(MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY - dayCount);
+    for (const job of collectTimeoutResumeCandidates(entriesNow, { nowMs: Date.now() })) {
+      if (budget <= 0) break;
+      if (!fs.existsSync(job.cwd)) continue; // worktree already GC'd — unresumable
+      const lease = readLease(job.taskId);
+      if (lease && pidLooksLikeClaude(lease.pid)) continue; // something live holds this task
+      budget--;
+      // RETRIED before spawn (terminal for the old jobId) — the same
+      // ordering rule every two-write path in dispatch-ledger.js follows: a
+      // concurrent sweep between the append and the spawn must see the old
+      // job as reconciled, never as a fresh orphan.
+      ledger.appendEntry({ event: ledger.JOB_EVENTS.RETRIED, taskId: job.taskId, jobId: job.jobId, sessionId: job.sessionId });
+      const logPath = spawnDetachedResume(job);
+      report({ kind: 'timeout-resume', taskId: job.taskId, jobId: job.jobId, detail: `resuming timed-out session ${job.sessionId} for task #${job.taskId} in ${job.cwd} (detached; log: ${logPath})` });
     }
   }
 
@@ -658,6 +920,16 @@ async function main() {
     console.error(`[bsc-reconcile] task-session sweep crashed (non-fatal): ${e.message}`);
   }
 
+  // Task #1184 S2: untracked-zombie sweep, same best-effort isolation — a
+  // crash here must never take down the stalled-task sweep below (or vice
+  // versa), so each gets its own try.
+  try {
+    const zombieSweep = sweepUntrackedInProgress({ dryRun: DRY });
+    if (zombieSweep.ran) console.log(`[bsc-reconcile] zombies checked=${zombieSweep.checked} flipped=${zombieSweep.flipped.length} skipped=${zombieSweep.skipped.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] zombie sweep crashed (non-fatal): ${e.message}`);
+  }
+
   // Owner mandate 2026-08-03: stalled-task sweep, same best-effort isolation.
   try {
     const stallSweep = reconcileStalledTasks({ dryRun: DRY });
@@ -690,4 +962,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH };

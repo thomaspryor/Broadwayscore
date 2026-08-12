@@ -24,12 +24,18 @@ const {
   cleanCandidateTitle,
   classifyCandidate,
   slugCollidesWith,
+  collisionSlugSet,
+  obRegionalShows,
+  venuesMatch,
+  findKnownObShow,
   pruneUnmatchedAudit,
+  pruneStagedCandidates,
   referenceTitle,
 } = require('./aggregator-candidate-extract.js');
 
 const html = (name) => fs.readFileSync(path.join(FIX, name), 'utf8');
 const NO_SLUGS = new Set();
+const NO_SHOWS = [];
 
 test('infrastructure slugs are rejected', () => {
   assert.ok(isInfrastructureSlug('site-map'));
@@ -83,7 +89,7 @@ test('acceptance #1: Dad Dont Read This → accept w/ St. Luke\'s Theatre', () =
     source: 'bww-roundup',
     record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', firstSeen: '2026-05-16T00:00:00Z' },
     html: html('bww-dad-dont-read-this.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(r.status, 'accept');
   assert.equal(r.candidate.title, "Dad Don't Read This");
@@ -98,7 +104,7 @@ test('acceptance #2: CELEBRITY AUTOPBIOGRAPHY → typo bucket (not silent drop)'
     source: 'bww-roundup',
     record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway', slug: 'Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway' },
     html: html('bww-celebrity-autopbiography.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(r.status, 'reject');
   assert.equal(r.reason, 'typo-detected');
@@ -109,7 +115,7 @@ test('acceptance #6: historical backtest — Broken Snow / Bedlam / Heated Rival
     source: 'playbill-verdict',
     record: { url: 'https://playbill.com/article/broken-snow', slug: 'broken-snow', title: 'Broken Snow' },
     html: html('pv-broken-snow.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(brokenSnow.status, 'accept');
   assert.equal(brokenSnow.candidate.venue, 'Theatre 71');
@@ -118,7 +124,7 @@ test('acceptance #6: historical backtest — Broken Snow / Bedlam / Heated Rival
     source: 'bww-roundup',
     record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-BEDLAMS-OTHELLO-At-The-West-End-Theatre-20260520', slug: 'Review-Roundup-BEDLAMS-OTHELLO-At-The-West-End-Theatre-20260520' },
     html: html('bww-bedlam-othello.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(bedlam.status, 'accept');
   assert.equal(bedlam.candidate.title, "Bedlam's Othello");
@@ -128,7 +134,7 @@ test('acceptance #6: historical backtest — Broken Snow / Bedlam / Heated Rival
     source: 'bww-roundup',
     record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526', slug: 'Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526' },
     html: html('bww-heated-rivalry.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(heated.status, 'accept', 'venue from body prose');
   assert.equal(heated.candidate.venue, '6th Floor Theater');
@@ -139,21 +145,53 @@ test('bot-shell article is rejected even with a venue-shaped headline', () => {
     source: 'playbill-verdict',
     record: { url: 'https://playbill.com/article/some-show', slug: 'some-show', title: 'Some Show' },
     html: html('bot-shell-no-date.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(r.status, 'reject');
   assert.equal(r.reason, 'bot-shell');
 });
 
-test('slug-collision guard rejects a title already in shows.json', () => {
+test('slug-collision guard rejects a title already in shows.json at the SAME venue', () => {
   const r = classifyCandidate({
     source: 'bww-roundup',
     record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' },
     html: html('bww-dad-dont-read-this.html'),
-    existingSlugs: new Set(['dad-dont-read-this']),
+    shows: [
+      { id: 'dad-dont-read-this-off-broadway-2026', category: 'off-broadway', title: "Dad Don't Read This", venue: "St. Luke's Theatre" },
+    ],
   });
   assert.equal(r.status, 'reject');
   assert.equal(r.reason, 'slug-collision');
+});
+
+// P1 task #1246, 2026-08-11: the 4th slugCollidesWith call site follow-up to
+// the P0 fixed in pruneStagedCandidates (task #101) — classifyCandidate is
+// the ONE call site with venue in hand (fetched HTML), so it must be fully
+// venue-scoped, not just title-scoped like the two pre-fetch gates.
+test('slug-collision guard does NOT reject a same-titled show at a DIFFERENT venue', () => {
+  const r = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' },
+    html: html('bww-dad-dont-read-this.html'),
+    // An unrelated closed OB show happens to share the title, at a different venue.
+    shows: [
+      { id: 'dad-dont-read-this-off-broadway-2019', category: 'off-broadway', title: "Dad Don't Read This", venue: 'Some Other Theatre' },
+    ],
+  });
+  assert.equal(r.status, 'accept');
+  assert.equal(r.candidate.venue, "St. Luke's Theatre");
+});
+
+test('slug-collision guard does NOT reject a same-titled BROADWAY/West-End show — only off-broadway/regional namesakes count', () => {
+  const r = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' },
+    html: html('bww-dad-dont-read-this.html'),
+    shows: [
+      { id: 'dad-dont-read-this-broadway-2010', category: 'broadway', title: "Dad Don't Read This", venue: "St. Luke's Theatre" },
+    ],
+  });
+  assert.equal(r.status, 'accept');
 });
 
 test('title containing " at " is not truncated (ship-check P1)', () => {
@@ -256,12 +294,130 @@ test('pruneUnmatchedAudit tolerates junk input + empty slug set', () => {
   assert.deepEqual(r.kept.map(e => e.slug), ['real-show']);
 });
 
+test('obRegionalShows keeps only off-broadway/regional shows, tolerates junk', () => {
+  const shows = [
+    { id: 'a', category: 'broadway', title: 'A' },
+    { id: 'b', category: 'off-broadway', title: 'B' },
+    { id: 'c', category: 'regional', title: 'C' },
+    { id: 'd', category: 'west-end', title: 'D' },
+    null,
+    'junk',
+  ];
+  assert.deepEqual(obRegionalShows(shows).map(s => s.id), ['b', 'c']);
+  assert.deepEqual(obRegionalShows(null), []);
+  assert.deepEqual(obRegionalShows(undefined), []);
+});
+
+test('venuesMatch does NOT collapse two unrelated venues that merely share a leading word (ship-check finding, task #1246, 2026-08-11)', () => {
+  // title-match.js's canonicalVenue() falls back to the lowercased FIRST
+  // WORD for any venue outside VENUE_ALIASES — "The Duke on 42nd Street" and
+  // "The Public Theater" both reduce to "the". venuesMatch must not inherit
+  // that: it's the one thing standing between a title collision and a
+  // silent reject/prune, so a false MATCH here reintroduces the exact P0
+  // findKnownObShow exists to prevent.
+  assert.equal(venuesMatch('The Duke on 42nd Street', 'The Public Theater'), false);
+  assert.equal(venuesMatch('The Tank', 'The Connelly'), false);
+  assert.equal(venuesMatch('Studio Theatre', 'Studio 54'), false);
+  // Trivial formatting differences must still match (whitespace, Theatre vs
+  // Theater) — this is what normalizeVenueName's exact-string comparison
+  // (not first-word) buys over a naive strict === would.
+  assert.equal(venuesMatch("St. Luke's Theatre", "St. Luke's Theater"), true);
+  assert.equal(venuesMatch('  The Duke on 42nd Street  ', 'The Duke on 42nd Street'), true);
+  // Identical strings and null/empty inputs.
+  assert.equal(venuesMatch('Signature Center', 'Signature Center'), true);
+  assert.equal(venuesMatch('', 'Signature Center'), false);
+  assert.equal(venuesMatch(null, null), false);
+});
+
+test('findKnownObShow requires BOTH title and venue to match, and only off-broadway/regional', () => {
+  const shows = [
+    { id: 'match', category: 'off-broadway', title: 'Hamlet', venue: "St. Luke's Theatre" },
+    { id: 'diff-venue', category: 'regional', title: 'Hamlet', venue: 'Some Other Theatre' },
+    { id: 'broadway-namesake', category: 'broadway', title: 'Hamlet', venue: "St. Luke's Theatre" },
+  ];
+  assert.equal(findKnownObShow('Hamlet', "St. Luke's Theatre", shows).id, 'match');
+  assert.equal(findKnownObShow('Hamlet', 'A Totally Unrelated Venue', shows), null);
+  assert.equal(findKnownObShow('', "St. Luke's Theatre", shows), null, 'no title → no match');
+  assert.equal(findKnownObShow('Hamlet', '', shows), null, 'no venue → no match');
+  assert.equal(findKnownObShow('Hamlet', "St. Luke's Theatre", null), null, 'junk shows tolerated');
+});
+
+// The actual composition the 3 pre-fetch/prune call sites use (P1 task
+// #1246, 2026-08-11): market-scope the shows list BEFORE building the slug
+// set, so a Broadway/West-End namesake can never gate a title-only decision.
+test('collisionSlugSet(obRegionalShows(shows)) excludes a broadway namesake but keeps the OB show', () => {
+  const shows = [
+    { id: 'chess-broadway-2003', category: 'broadway', slug: 'chess-broadway-2003', title: 'Chess' },
+    { id: 'chess-off-broadway-2026', category: 'off-broadway', slug: 'chess-off-broadway-2026', title: 'Chess' },
+  ];
+  const scoped = collisionSlugSet(obRegionalShows(shows));
+  // Both index the same title-derived slug "chess" (collisionSlugSet indexes
+  // by title as well as by the show's own slug), so the OB show alone is
+  // enough for the collision to still register — the point is that removing
+  // the Broadway entry does not defeat the still-legitimate OB collision.
+  assert.equal(slugCollidesWith('Chess', scoped), true);
+  // With NO off-broadway/regional namesake at all, a Broadway-only catalog
+  // must never gate the pre-fetch/prune decision.
+  const broadwayOnly = [{ id: 'chess-broadway-2003', category: 'broadway', slug: 'chess-broadway-2003', title: 'Chess' }];
+  assert.equal(slugCollidesWith('Chess', collisionSlugSet(obRegionalShows(broadwayOnly))), false);
+});
+
+test('pruneStagedCandidates drops staged candidates already in shows.json at the SAME venue (2026-08-11 regression: Dad Dont Read This)', () => {
+  const staged = [
+    { title: "Dad Don't Read This", venue: "St. Luke's Theatre", source: 'bww-roundup' },
+    { title: 'Brand New Unstaged Show', venue: 'Some Theatre', source: 'playbill-verdict' },
+  ];
+  const shows = [
+    { id: 'dad-dont-read-this-off-broadway-2026', category: 'off-broadway', title: "Dad Don't Read This", venue: "St. Luke's Theatre" },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 1);
+  assert.equal(pruned[0].title, "Dad Don't Read This");
+  assert.equal(pruned[0].matchedShowId, 'dad-dont-read-this-off-broadway-2026');
+  assert.deepEqual(kept.map(c => c.title), ['Brand New Unstaged Show']);
+});
+
+test('pruneStagedCandidates does NOT prune a same-title candidate at a DIFFERENT venue (ship-check P0 2026-08-11: title-only match would erase a real new production)', () => {
+  const staged = [
+    { title: 'Hamlet', venue: 'A New Off-Broadway Space', source: 'bww-roundup' },
+  ];
+  // shows.json has an unrelated, long-closed "Hamlet" at a different venue —
+  // same title slug, but a title-only prune would wrongly delete the NEW
+  // Hamlet's discovery signal. Venue must also match.
+  const shows = [
+    { id: 'hamlet-2009', category: 'off-broadway', title: 'Hamlet', venue: 'Some Other Theatre' },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 0);
+  assert.deepEqual(kept.map(c => c.title), ['Hamlet']);
+});
+
+test('pruneStagedCandidates only matches off-broadway/regional shows, never a broadway/west-end namesake', () => {
+  const staged = [
+    { title: 'Chess', venue: 'A New Off-Broadway Space', source: 'bww-roundup' },
+  ];
+  const shows = [
+    { id: 'chess-2003', category: 'broadway', title: 'Chess', venue: 'A New Off-Broadway Space' },
+  ];
+  const { kept, pruned } = pruneStagedCandidates(staged, shows);
+  assert.equal(pruned.length, 0);
+  assert.deepEqual(kept.map(c => c.title), ['Chess']);
+});
+
+test('pruneStagedCandidates tolerates junk input + missing shows', () => {
+  assert.deepEqual(pruneStagedCandidates(null, []), { kept: [], pruned: [] });
+  assert.deepEqual(pruneStagedCandidates([null, 'x', 42], []), { kept: [], pruned: [] });
+  const r = pruneStagedCandidates([{ title: 'Real Show', venue: 'X' }], undefined);
+  assert.equal(r.pruned.length, 0);
+  assert.deepEqual(r.kept.map(c => c.title), ['Real Show']);
+});
+
 test('low-confidence PV entries are not new candidates', () => {
   const r = classifyCandidate({
     source: 'playbill-verdict',
     record: { url: 'https://playbill.com/article/x', slug: 'x', title: 'X', reason: 'low-confidence' },
     html: html('pv-broken-snow.html'),
-    existingSlugs: NO_SLUGS,
+    shows: NO_SHOWS,
   });
   assert.equal(r.status, 'reject');
   assert.equal(r.reason, 'low-confidence-existing-match');

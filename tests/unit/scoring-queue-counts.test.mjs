@@ -24,7 +24,7 @@ const {
   isActionableEmergencyRetry,
   countScoringQueues,
 } = require('../../scripts/lib/scoring-queue-counts.js');
-const { selectScorableText, DEFAULT_MIN_TEXT_LENGTH } = require('../../scripts/lib/scorable-text.js');
+const { selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH } = require('../../scripts/lib/scorable-text.js');
 const { stampTerminalScoringFailure } = require('../../scripts/lib/rescore-lifecycle.js');
 
 // Read the scorer's own floor out of index.ts rather than restating it, so the
@@ -304,5 +304,27 @@ describe('countScoringQueues — the cascade reaches Phase 4', () => {
     const counts = countScoringQueues(tmpDir);
     assert.equal(counts.malformed, 1);
     assert.equal(counts.scanned, 1);
+  });
+});
+
+// Theatre Record capsule predicate (2026-08-10, trainspotting daily-mail).
+// TR-sourced fullText in the 100-999 char band is a complete print capsule,
+// exempt from the validator's 1000-char body gate at the scorer call sites
+// and un-stamped by isBlockedFromRescore(). Boundaries are load-bearing:
+// <100 falls through to the excerpt path, >=1000 passes the gate anyway.
+describe('isCapsuleReview', () => {
+  test('true only for theatre-record fullText in [100, 1000)', () => {
+    const tr = (len) => ({ source: 'theatre-record', fullText: 'x'.repeat(len) });
+    assert.equal(isCapsuleReview(tr(99)), false, '99 chars: excerpt-path territory');
+    assert.equal(isCapsuleReview(tr(100)), true, '100 chars: capsule floor');
+    assert.equal(isCapsuleReview(tr(999)), true, '999 chars: capsule ceiling');
+    assert.equal(isCapsuleReview(tr(1000)), false, '1000 chars: passes the gate normally');
+  });
+
+  test('false without the theatre-record source — partial scrapes stay gated', () => {
+    assert.equal(isCapsuleReview({ fullText: 'x'.repeat(500) }), false);
+    assert.equal(isCapsuleReview({ source: 'scrapingbee', fullText: 'x'.repeat(500) }), false);
+    assert.equal(isCapsuleReview({ source: 'theatre-record', fullText: null }), false);
+    assert.equal(isCapsuleReview(null), false);
   });
 });

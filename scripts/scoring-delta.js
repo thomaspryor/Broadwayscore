@@ -45,6 +45,10 @@ const { execSync } = require('child_process');
 // map (both replay sides read the same map); per-side guard code is loaded by
 // loadBaselineGuards/loadWorkingTreeGuards below.
 const { earliestShowDate } = require('./lib/date-guard');
+// Working-tree copies: pure classification/parsing helpers, not on the
+// scoring-logic watchlist — same rationale as earliestShowDate above.
+const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { parseDate } = require('./lib/date-utils');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -414,9 +418,55 @@ function loadWorkingTreeScoring() {
  * captures the path that the Giant/temporal incident flowed through.
  */
 function decideInclusion(review, show, guards) {
-  // 1. Already-flagged top-level exclusions — present in both versions identically
-  if (review.wrongShow === true) return { included: false, reason: 'wrongShow' };
-  if (review.wrongProduction === true) return { included: false, reason: 'wrongProduction' };
+  // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
+  // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
+  // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
+  // shouldAutoClearWrongProduction — scripts/lib/wrong-production-autoclear.js) strip
+  // the flag BEFORE this check runs. Replay those same predicates here, under
+  // whichever guards module the caller passed (baseline or working-tree), so a
+  // predicate change flips this decision exactly like it flips the rebuild's
+  // (task #1163 — this replay previously modeled the flags as static/identical
+  // on both sides, so it could never surface a regression in the auto-clear logic
+  // itself). NOTE: this covers only the 3 named predicates in
+  // wrong-production-autoclear.js keyed purely off the review + show — it does
+  // NOT cover the priorRuns/tourLegs/URL-year variants (need per-file
+  // provenance not modeled here) OR the UK/dual-market wrongProduction
+  // auto-clear that's inlined directly in rebuild-all-reviews.js:2464-2534
+  // (never extracted to a named, replayable predicate — tracked as its own
+  // follow-up, task #1189, since fixing it touches production rebuild logic
+  // and needs real-data verification per CLAUDE.md rule 12.7).
+  const autoClear = guards.__priorRunLib || {};
+
+  let wrongShowCleared = false;
+  if (review.wrongShow === true) {
+    if (typeof autoClear.shouldAutoClearWrongShowUkUrl === 'function') {
+      let dateMismatchOver90d = false;
+      if (review.publishDate && show?.earliestDate) {
+        const reviewDate = parseDate(review.publishDate);
+        const preWindowDays = guards.__dateGuard?.PRE_WINDOW_DAYS ?? 60;
+        if (reviewDate && !isNaN(reviewDate.getTime())
+            && (new Date(show.earliestDate).getTime() - reviewDate.getTime()) > preWindowDays * 86400000) {
+          dateMismatchOver90d = true;
+        }
+      }
+      wrongShowCleared = autoClear.shouldAutoClearWrongShowUkUrl(review, {
+        isLondonMarketShow: isLondonMarket(show?.category),
+        isUkOutletUrl: !!(review.url && isUkOutletUrl(review.url)),
+        dateMismatchOver90d,
+      });
+    }
+    if (!wrongShowCleared && typeof autoClear.shouldAutoClearWrongShow === 'function') {
+      wrongShowCleared = autoClear.shouldAutoClearWrongShow(review);
+    }
+  }
+
+  let wrongProductionCleared = false;
+  if (review.wrongProduction === true && typeof autoClear.shouldAutoClearWrongProduction === 'function') {
+    wrongProductionCleared = autoClear.shouldAutoClearWrongProduction(review);
+  }
+
+  if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
+  if (review.wrongProduction === true && !wrongProductionCleared) return { included: false, reason: 'wrongProduction' };
   if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
   if (review.isRoundupArticle) {
     const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
@@ -651,6 +701,15 @@ function main() {
         // toString() doesn't capture the source of a function it CALLS, so an
         // edit only inside isWithinTourLeg would otherwise go undetected here.
         && (baseline.__priorRunLib?.isWithinTourLeg?.toString() || '') === (working.__priorRunLib?.isWithinTourLeg?.toString() || '')
+        // wrongShow/wrongProduction auto-clear predicates (task #1163). The rebuild
+        // strips these flags via shouldAutoClearWrongShow/-UkUrl/-WrongProduction
+        // BEFORE the flag-present check ever runs — without comparing them here, a
+        // change to ONLY these predicates left every other compared function
+        // byte-identical, so guardsIdentical stayed true and Phase A was skipped
+        // even though real inclusion decisions had silently flipped.
+        && (baseline.__priorRunLib?.shouldAutoClearWrongShow?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongShow?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongShowUkUrl?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongShowUkUrl?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProduction?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProduction?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
@@ -1013,10 +1072,14 @@ function main() {
   process.exit((totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
-try {
-  main();
-} catch (e) {
-  console.error(`[scoring-delta] fatal: ${e.message}`);
-  console.error(e.stack);
-  process.exit(1);
+module.exports = { decideInclusion };
+
+if (require.main === module) {
+  try {
+    main();
+  } catch (e) {
+    console.error(`[scoring-delta] fatal: ${e.message}`);
+    console.error(e.stack);
+    process.exit(1);
+  }
 }

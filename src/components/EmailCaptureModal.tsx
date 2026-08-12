@@ -12,18 +12,14 @@ import { captureEvent } from '@/lib/posthog-events';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
+import { getTriggerCopy, COPY_VERSION, type GateTrigger } from '@/lib/gate-logic';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
-export type GateTrigger =
-  | 'csv_download'
-  | 'json_download'
-  | 'page_view_limit'
-  | 'exit_intent'
-  | 'scroll_depth'
-  | 'return_visitor'
-  | 'recapture'; // Re-engagement of pre-fix modal submissions (Jan 29 – Mar 12, 2026)
+// Re-exported for existing importers (ProGateContext.tsx et al.) — the type
+// itself now lives in gate-logic.ts alongside getTriggerCopy (task #586).
+export type { GateTrigger };
 
 interface EmailCaptureModalProps {
   isOpen: boolean;
@@ -58,43 +54,6 @@ const ROLE_OPTIONS = [
   { value: 'other', label: 'Other' },
 ];
 
-function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string; subheading: string } {
-  const market = isWE ? 'West End' : 'Broadway';
-  const copies: Record<GateTrigger, { heading: string; subheading: string }> = {
-    csv_download: {
-      heading: 'CSV Export Coming Soon',
-      subheading: 'Be first to access Pro features including data exports, alerts, and historical data.',
-    },
-    json_download: {
-      heading: 'API Access Coming Soon',
-      subheading: 'Get early access to our data API for integrations and analysis.',
-    },
-    page_view_limit: {
-      heading: 'Want to see more?',
-      subheading: `Enter your email for full access to ${market} investment data.`,
-    },
-    exit_intent: {
-      heading: 'Know the score before you book',
-      subheading: 'One short email on each opening night: the CriticScore and the critics\u2019 verdict.',
-    },
-    scroll_depth: {
-      heading: 'Know the score before you book',
-      subheading: 'One short email on each opening night: the CriticScore and the critics\u2019 verdict.',
-    },
-    return_visitor: {
-      heading: `Never miss a new ${market} show`,
-      subheading: isWE
-        ? 'We\u2019ll email you when new West End shows get their reviews, plus what\u2019s closing soon.'
-        : 'We\u2019ll email you the CriticScore when new shows open, plus what\u2019s closing soon.',
-    },
-    recapture: {
-      heading: 'Confirm your email',
-      subheading: 'We updated how we send opening night scores. Enter your email once more to stay on the list.',
-    },
-  };
-  return copies[trigger];
-}
-
 export default function EmailCaptureModal({
   isOpen,
   onClose,
@@ -125,8 +84,8 @@ export default function EmailCaptureModal({
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
-      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
-      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
+      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
+      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
     }
     // analyticsProps is set by ProGateContext before isOpen flips; identity may
     // change per fire but only isOpen/trigger should re-emit the event.
@@ -195,6 +154,7 @@ export default function EmailCaptureModal({
         role: userData.role || 'none',
         trigger,
         is_return_visitor: trigger === 'return_visitor',
+        copyVersion: COPY_VERSION,
         ...analyticsProps,
       };
       track('email_captured', captureProps);
@@ -240,6 +200,11 @@ export default function EmailCaptureModal({
           <p className="text-gray-400">
             {copy.subheading}
           </p>
+          {copy.example && (
+            <p className="mt-3 inline-block px-3 py-1.5 bg-surface border border-white/10 rounded-lg text-sm text-gray-300">
+              {copy.example}
+            </p>
+          )}
         </div>
 
         {/* Form */}
@@ -324,7 +289,7 @@ export default function EmailCaptureModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-6 px-6 py-3 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-surface-raised"
+            className="w-full mt-6 px-6 py-4 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-base font-bold rounded-lg shadow-lg shadow-brand/20 transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-surface-raised"
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">
@@ -346,10 +311,13 @@ export default function EmailCaptureModal({
               : 'Join thousands of theater fans \u00B7 No spam, unsubscribe anytime.'}
           </p>
           {!blocking && (
+            // Deliberately subordinate to the submit button (task #586, 2026-08-10
+            // audit: 68% dismiss vs 0.6% conversion) — no underline until hover,
+            // smaller and dimmer than the body copy above it, no default button chrome.
             <button
               type="button"
               onClick={onClose}
-              className="block mx-auto mt-3 text-sm text-gray-400 underline underline-offset-4 hover:text-gray-300 transition-colors"
+              className="block mx-auto mt-3 text-xs text-gray-500 hover:text-gray-300 hover:underline underline-offset-4 transition-colors"
             >
               Maybe later
             </button>

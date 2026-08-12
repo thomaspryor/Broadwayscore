@@ -3,52 +3,56 @@
   "showId": "the-play-that-goes-wrong-west-end-2021",
   "showTitle": "The Play That Goes Wrong",
   "market": "West End",
-  "fetchedAt": "2026-08-03T07:47:30.179Z",
+  "fetchedAt": "2026-08-10T07:00:28.065Z",
   "tier": "Hidden",
-  "volume": 0,
-  "effectiveVolume": 0,
+  "volume": 1,
+  "effectiveVolume": 0.3,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 1
+    },
+    "overall": 1,
+    "classified": 1
   },
-  "positivePct": null,
-  "opinionSample": 0,
+  "positivePct": 0,
+  "opinionSample": 1,
   "weekOverWeekPct": null,
   "baselineMultiple": null,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 0
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "GMG's 2026 lineup Don't get me wrong, I'm sure both shows GMG picked for the rest of 2026 are quality productions,…",
+      "platform": "reddit",
+      "author": "u/Holiday_Scar_7499",
+      "url": "https://www.reddit.com/r/TeatroPH/comments/1vhvzse/gmgs_2026_lineup/"
+    }
+  ],
   "counters": {
-    "reddit": null,
+    "reddit": 1,
     "bluesky": 0,
     "x": 0,
-    "wikipedia": 2107
+    "wikipedia": 2358
   },
   "wikipediaTitle": "The Play That Goes Wrong",
   "baseline": {
-    "mean": 0,
-    "weeksOfHistory": 4
+    "mean": 0.2,
+    "weeksOfHistory": 5
   },
   "rawCounts": {
-    "reddit": 0,
+    "reddit": 1,
     "bluesky": 0
   },
-  "errors": [
-    {
-      "platform": "reddit",
-      "error": "all providers down (see log)"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 49,
-    "total": 52,
-    "text": "49/52 West End"
+    "position": 29,
+    "total": 50,
+    "text": "29/50 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.15
 }

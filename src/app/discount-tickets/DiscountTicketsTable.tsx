@@ -4,7 +4,7 @@ import { Fragment, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ScoreBadge } from '@/components/show-cards';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
 import { formatTicketPrice } from '@/lib/formatting';
 
 type SortDirection = 'asc' | 'desc';
@@ -12,6 +12,7 @@ type SortColumn = 'show' | 'lottery' | 'rush' | 'sro' | 'score';
 type TicketMarket = 'broadway' | 'west-end';
 
 export interface DiscountShowRow {
+  id: string;
   slug: string;
   title: string;
   score: number | null;
@@ -73,7 +74,7 @@ function ExternalLinkIcon() {
   );
 }
 
-function PriceCell({ price, url, platform, color, bgColor, market }: { price: number; url?: string; platform?: string; color: string; bgColor: string; market: TicketMarket }) {
+function PriceCell({ price, url, platform, color, bgColor, market, showId, showName, showStatus }: { price: number; url?: string; platform?: string; color: string; bgColor: string; market: TicketMarket; showId: string; showName: string; showStatus?: string }) {
   const badge = (
     <span className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${bgColor} ${color}`}>
       {formatTicketPrice(price, market)}
@@ -84,7 +85,13 @@ function PriceCell({ price, url, platform, color, bgColor, market }: { price: nu
   if (url) {
     const { url: href, isAffiliate } = buildAffiliateUrl(ensureHttps(url)!, platform || '', 'discount-tickets');
     return (
-      <a href={href} target="_blank" rel={affiliateRel(isAffiliate)} className="hover:brightness-125 transition-all">
+      <a
+        href={href}
+        target="_blank"
+        rel={affiliateRel(isAffiliate)}
+        className="hover:brightness-125 transition-all"
+        onClick={() => trackTicketClick({ showId, showName, platform: platform || '', pageType: 'discount-tickets', showStatus, isAffiliate })}
+      >
         {badge}
       </a>
     );
@@ -131,18 +138,21 @@ function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMark
               {row.lottery.instructions && (
                 <p className="text-gray-400 text-xs leading-relaxed">{row.lottery.instructions}</p>
               )}
-              {row.lottery.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Enter on {row.lottery.platform || 'website'}
-                  <ActionLinkIcon />
-                </a>
-              )}
+              {row.lottery.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(row.lottery.url)!, row.lottery.platform || '', 'lottery');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium text-xs mt-2 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: row.id, showName: row.title, platform: row.lottery!.platform || '', pageType: 'lottery', isAffiliate }); }}
+                  >
+                    Enter on {row.lottery.platform || 'website'}
+                    <ActionLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           )}
 
@@ -164,18 +174,21 @@ function DetailPanel({ row, market }: { row: DiscountShowRow; market: TicketMark
               {row.rush.instructions && (
                 <p className="text-gray-400 text-xs leading-relaxed">{row.rush.instructions}</p>
               )}
-              {row.rush.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Get on {row.rush.platform || 'website'}
-                  <ActionLinkIcon />
-                </a>
-              )}
+              {row.rush.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(row.rush.url)!, row.rush.platform || '', 'rush');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium text-xs mt-2 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: row.id, showName: row.title, platform: row.rush!.platform || '', pageType: 'rush', isAffiliate }); }}
+                  >
+                    Get on {row.rush.platform || 'website'}
+                    <ActionLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           )}
 
@@ -336,6 +349,8 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           color="text-purple-300"
                           bgColor="bg-purple-500/15 border-purple-500/30"
                           market={market}
+                          showId={row.id}
+                          showName={row.title}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>
@@ -350,6 +365,8 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           color="text-emerald-300"
                           bgColor="bg-emerald-500/15 border-emerald-500/30"
                           market={market}
+                          showId={row.id}
+                          showName={row.title}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>
@@ -363,6 +380,8 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                           color="text-gray-300"
                           bgColor="bg-gray-500/15 border-white/15"
                           market={market}
+                          showId={row.id}
+                          showName={row.title}
                         />
                       ) : (
                         <span className="text-gray-600">—</span>

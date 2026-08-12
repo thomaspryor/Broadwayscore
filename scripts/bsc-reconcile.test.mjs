@@ -541,3 +541,201 @@ test('reconcileFlaglessSessions: never revives (or even attempts) the currently-
   assert.deepEqual(r.revived, []);
   assert.deepEqual(h.revived, []);
 });
+
+// ── collectTimeoutResumeCandidates (task #1184 S1) ─────────────────────────
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const { collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, sweepUntrackedInProgress } = require('./bsc-reconcile.js');
+
+const T1184_NOW = Date.parse('2026-08-10T12:00:00.000Z');
+const tsAgo = (h) => new Date(T1184_NOW - h * 3600e3).toISOString();
+const spawned = (taskId, jobId, h = 2) => ({ event: 'job-spawned', taskId: String(taskId), jobId, ts: tsAgo(h) });
+const timedOut = (taskId, jobId, h = 1, extra = {}) => ({
+  event: 'job-failed', stage: 'timeout', taskId: String(taskId), jobId,
+  sessionId: `sess-${jobId}`, cwd: `/tmp/wt-${jobId}`, ts: tsAgo(h), ...extra,
+});
+
+test('collectTimeoutResumeCandidates: a recent timeout with sessionId+cwd is resumable', () => {
+  const out = collectTimeoutResumeCandidates([spawned(7, 'j1'), timedOut(7, 'j1')], { nowMs: T1184_NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].jobId, 'j1');
+  assert.equal(out[0].sessionId, 'sess-j1');
+});
+
+test('collectTimeoutResumeCandidates: pre-#1184 entries (no sessionId/cwd) are unresumable', () => {
+  const bare = { event: 'job-failed', stage: 'timeout', taskId: '7', jobId: 'j1', ts: tsAgo(1) };
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1'), bare], { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: one resume per job — a RETRIED jobId never re-resumes', () => {
+  const entries = [spawned(7, 'j1'), timedOut(7, 'j1'),
+    { event: 'job-retried', taskId: '7', jobId: 'j1', ts: tsAgo(0.5) }];
+  assert.equal(collectTimeoutResumeCandidates(entries, { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: per-task resume cap — a card that keeps timing out parks', () => {
+  const entries = [];
+  for (let i = 0; i < MAX_RESUME_PER_TASK; i++) {
+    entries.push({ event: 'job-retried', taskId: '7', jobId: `old-${i}`, ts: tsAgo(10 + i) });
+  }
+  entries.push(spawned(7, 'jN'), timedOut(7, 'jN'));
+  assert.equal(collectTimeoutResumeCandidates(entries, { nowMs: T1184_NOW }).length, 0,
+    `task with ${MAX_RESUME_PER_TASK} prior resumes must not get another`);
+});
+
+test('collectTimeoutResumeCandidates: stale timeouts (outside lookback) are worktree-gc territory', () => {
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1', 50), timedOut(7, 'j1', 49)], { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: non-timeout failures are never resumed', () => {
+  const err = { ...timedOut(7, 'j1'), stage: 'implementer-error' };
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1'), err], { nowMs: T1184_NOW }).length, 0);
+});
+
+// ── sweepUntrackedInProgress (task #1184 S2) ───────────────────────────────
+// The complementary shape reconcileStalledTasks deliberately skips: an
+// in_progress task with NO ledger history whose interactive session died.
+function zombieHarness({ tasks, entries = [], workspaces = [], cards = {}, stateAge = null }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'zombie-sweep-'));
+  const statePath = path.join(dir, 'state.json');
+  if (stateAge != null) fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: tsAgo(stateAge) }));
+  const flips = [];
+  const cardCorrections = [];
+  const reports = [];
+  const outcomeParkMarks = [];
+  return {
+    flips, cardCorrections, reports, outcomeParkMarks, statePath,
+    deps: {
+      loadTasksFn: () => tasks,
+      tasksDir: dir,
+      readLedgerEntriesFn: () => entries,
+      listWorkspacesFn: () => workspaces,
+      readLeaseFn: () => null,
+      fetchCardFn: (nid) => cards[nid] || null,
+      flipFn: (task) => flips.push(String(task.id)),
+      correctCardFn: (nid) => { cardCorrections.push(nid); return true; },
+      markOutcomeParkedFn: (task) => outcomeParkMarks.push(String(task.id)),
+      reportFn: (l) => reports.push(l),
+      nowFn: () => T1184_NOW,
+      statePath,
+    },
+  };
+}
+const zTask = (id, over = {}) => ({
+  id: String(id), status: 'in_progress', subject: `Some long zombie card subject for #${id}`,
+  description: `[notion:aaaa${id}aaa-1111-2222-3333-444444444444] P1 Next`, metadata: {}, ...over,
+});
+
+test('zombie sweep: flips an idle untracked in_progress task and corrects its card', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, ['9']);
+  assert.deepEqual(h.cardCorrections, [nid]);
+});
+
+test('zombie sweep: never touches ledger-tracked, recheck-parked, tab-matched, or recently-edited tasks', () => {
+  const nid = (id) => `aaaa${id}aaa-1111-2222-3333-444444444444`;
+  const h = zombieHarness({
+    tasks: [
+      zTask(1),                                                       // ledger-tracked
+      zTask(2, { metadata: { recheckAfter: '2026-08-20' } }),          // RECHECK-AFTER parked
+      zTask(3),                                                       // live tab titled like the subject
+      zTask(4),                                                       // card edited 1h ago
+    ],
+    entries: [{ event: 'launch', taskId: '1', ts: tsAgo(100) }],
+    workspaces: [{ ref: 'workspace:5', title: '🤖 Some long zombie card subject for #3' }],
+    cards: { [nid(3)]: { status: 'In progress', lastEditedAt: tsAgo(72) }, [nid(4)]: { status: 'In progress', lastEditedAt: tsAgo(1) } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, [], `nothing should flip; got ${h.flips}`);
+});
+
+test('zombie sweep: cadence gate — a recent prior run skips entirely (no Notion fetches)', () => {
+  const h = zombieHarness({ tasks: [zTask(9)], stateAge: 1, cards: {} });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, false);
+});
+
+test('zombie sweep: dry-run reports but never flips or stamps state', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ dryRun: true, deps: h.deps });
+  assert.equal(r.flipped.length, 1, 'dry-run still REPORTS the would-be flip');
+  assert.deepEqual(h.flips, [], 'no local write');
+  assert.ok(!fs.existsSync(h.statePath), 'dry-run must not stamp the cadence state');
+});
+
+// ── Outcome-filled card: park, don't reopen (task #1272, the #383 class) ────
+test('zombie sweep: a card with a filled Outcome is parked (Paused), never flipped to pending/Not-started', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9)],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'FINDINGS.md written, 12 screenshots.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, [], 'must never locally flip a done-but-unclosed card back to pending');
+  assert.deepEqual(h.cardCorrections, [nid], 'still corrects the Notion card (to Paused, not Not started)');
+  assert.deepEqual(r.flipped, [], 'not counted as a flip');
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: outcome-filled card parks with status Paused (not Not started) and a distinct note', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const statuses = [];
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = (id, note, status) => { statuses.push({ id, note, status }); return true; };
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(statuses.length, 1);
+  assert.equal(statuses[0].status, 'Paused');
+  assert.match(statuses[0].note, /#1272/);
+});
+
+test('zombie sweep: outcome-filled card reports zombie-outcome-needs-review, not zombie-flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.ok(h.reports.some(r => r.kind === 'zombie-outcome-needs-review' && r.taskId === '9'));
+  assert.ok(!h.reports.some(r => r.kind === 'zombie-flip'));
+});
+
+test('zombie sweep: dry-run on an outcome-filled card reports but never calls correctCardFn', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  const r = sweepUntrackedInProgress({ dryRun: true, deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.deepEqual(h.flips, []);
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: a successful park stamps the local idempotency marker (ship-check Codex finding — otherwise re-parks forever)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, ['9']);
+});
+
+test('zombie sweep: a card already carrying the outcome-park marker is skipped entirely (idempotent — no re-fetch, no re-report)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9, { description: '[outcome-park 2026-08-01] parked — Notion card set to Paused.\n\n' + zTask(9).description })],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.equal(r.checked, 0, 'must not even fetch the card for an already-parked task');
+});
+
+test('zombie sweep: a failed Notion park is reported honestly and never stamps the local marker (retried next sweep)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = () => false; // Notion write failed
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, [], 'no local marker on a failed park — must retry, not silently give up');
+  assert.ok(h.reports.some(rep => rep.kind === 'zombie-outcome-park-failed' && rep.taskId === '9'));
+  assert.deepEqual(r.flipped, []);
+});

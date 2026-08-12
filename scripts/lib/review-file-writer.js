@@ -36,7 +36,7 @@ const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
-const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, isWrongShowUnknownLocked } = require('./review-guards');
 const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
@@ -44,6 +44,7 @@ const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./aggregator-domains');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -215,6 +216,23 @@ function _getShowTitle(showId) {
   return _showTitleCache[showId] || null;
 }
 
+// ─── Lazy-loaded full show object map for Guard J (unknown-critic wrongProduction) ───
+let _showByIdCache = null;
+function _getShowById(showId) {
+  if (!_showByIdCache) {
+    try {
+      const shows = require(SHOWS_PATH).shows;
+      _showByIdCache = {};
+      for (const s of shows) {
+        if (s.id) _showByIdCache[s.id] = s;
+      }
+    } catch {
+      _showByIdCache = {};
+    }
+  }
+  return _showByIdCache[showId] || null;
+}
+
 /**
  * Create or merge a review file with consistent guards.
  *
@@ -249,6 +267,47 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (Apr 2026). That created a duplicate file and a cross-market validation failure.
   if (input.url) {
     const urlResolved = resolveOutletFromUrl(input.url);
+    // NEVER refine ONTO an aggregator outlet (2026-08-09). An aggregator's domain
+    // hosts ROUNDUP pages citing many outlets, so "the URL is on this domain" is
+    // never evidence that the aggregator wrote this particular review. Refining
+    // here would rewrite a real outlet's id to the aggregator's, which both
+    // destroys the attribution AND launders the contamination past the
+    // aggregator-URL write guard below: that guard permits an aggregator URL when
+    // outletId IS the aggregator, so a Guardian review on a westendtheatre.com
+    // roundup URL would be silently rewritten to `westendtheatre` and written as
+    // the aggregator's own review.
+    //
+    // Keyed on the resolved OUTLET being an aggregator, not on AGGREGATOR_DOMAINS,
+    // deliberately: the domain set carries westendtheatre.co.uk while every one of
+    // the 395 corpus files uses westendtheatre.com (see the TLD note in
+    // aggregator-domains.js). Checking the outlet catches both spellings and any
+    // future aggregator domain that reaches the registry before that set.
+    //
+    // Genuine aggregator writes are unaffected: all four laundering display names
+    // ("Did They Like It", "WestEndTheatre.com", "Theatre Reviews Limited",
+    // "London Box Office") already normalize to their own outletId, so
+    // urlResolved.outletId === outletId and this block never runs for them.
+    const refiningOntoAggregator = urlResolved
+      && shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId);
+    if (refiningOntoAggregator) {
+      // Refuse the WRITE, not just the refinement (code review on 2c679ad4bb1).
+      // Keeping the name-derived outlet leaves a real outletId on an aggregator
+      // URL — which IS the zero-tolerance aggregator_url_mismatch. The guard
+      // below can't save us: validateUrlDomain only rejects when the outlet has
+      // a registered `domain`, and 361 of the 1043 registry outlets have none,
+      // while shouldSkipAggregatorUrlWrite short-circuits on an aggregator
+      // source or any stored score. So the refusal alone would have converted a
+      // clean (but mis-attributed) write into one that reds the trunk. The
+      // corpus already holds 7 files of this shape on stagedoor.com.
+      //
+      // Dropping the write loses a star-stub in the scored case — but that stub
+      // was previously credited to the WRONG outlet, so nothing correct is lost.
+      // Once the validator gains the star-stub carve-out the write guard already
+      // has (card "P1: aggregator guard misses westendtheatre.com"), this can be
+      // relaxed to allow scored stubs to keep their true outlet.
+      console.warn(`  ⛔ Refusing aggregator-URL write for ${showId}: outlet "${outletId}" on roundup domain ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — not this outlet's review`);
+      return { action: 'skipped', reason: 'aggregator-url-refinement-refused' };
+    }
     if (urlResolved && urlResolved.outletId !== outletId) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
@@ -290,6 +349,51 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (isSuspiciousOutletId(outletId)) {
     console.warn(`  ⚠️  Skipping suspicious outlet ID: "${outletId}" (likely sentence fragment from roundup parsing)`);
     return { action: 'skipped', reason: 'suspicious-outlet-id' };
+  }
+
+  // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
+  // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
+  // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file
+  // written that way is the zero-tolerance `aggregator_url_mismatch` error in
+  // validate-review-texts.js, and it reddens the trunk the moment an auto-clear
+  // promotes it into the validated population (see lib/aggregator-url-latent.js).
+  //
+  // This guard already existed — but only inside gather-reviews.js createReviewFile,
+  // one writer out of the ~20 that reach review-texts through this function. The
+  // gap-audit ingest path (audit-show-review-gap.js → ingest-review-from-url.js →
+  // here) had none, so it wrote five theatre.reviews roundups as "theatre" outlet
+  // reviews and the newest held main red. Hoisting the SAME predicate to the shared
+  // chokepoint is what makes the fix cover every caller rather than the two we
+  // happened to read. shouldSkipAggregatorUrlWrite is deliberately narrow: it lets
+  // aggregator-SOURCE writes through (they legitimately carry the roundup URL) and
+  // lets any write carrying a real star/score through (star-stubs).
+  //
+  // Verified against the full 42,252-file corpus before landing: it matches exactly
+  // the 5 contaminated files and zero legitimate ones.
+  if (shouldSkipAggregatorUrlWrite(
+    { source: input.source, url: input.url, originalScore: fields.originalScore, aggregatorStars: fields.aggregatorStars },
+    outletId,
+  )) {
+    console.warn(`  ⚠️  Skipping aggregator-URL write: outletId "${outletId}" with aggregator URL ${input.url} (roundup page, not this outlet's review)`);
+    return { action: 'skipped', reason: 'aggregator-url-mismatch' };
+  }
+
+  // --- Guard: tour/regional review contamination (task #1150, 2026-08-09) ---
+  // Regional BWW city subdirectories and local-paper tour-stop write-ups are not
+  // reviews of THIS production — they're a different regional/touring mounting
+  // getting filed under the original show's directory. This guard already
+  // existed, but only inside gather-reviews.js's own createReviewFile — every
+  // other writer reaching review-texts through this shared function had no
+  // equivalent check. Hoisted after fixing two pre-existing false-positive bugs
+  // in isLikelyTourReview itself (regional-category shows and BWW topic
+  // verticals bwwopera/bwwdance/bwwtv were being misclassified as tour
+  // contamination — see review-guards.js). Verified against the full
+  // 42,251-file corpus after the fix: 201 matches, 1 plausible true positive
+  // (a Dallas tour-stop review under a Broadway show entry), zero remaining
+  // false positives.
+  if (isLikelyTourReview(input.url, showId)) {
+    console.warn(`  ⚠️  Skipping tour/regional review: ${input.url} for ${showId}`);
+    return { action: 'skipped', reason: 'tour-review' };
   }
 
   // --- Guard: unregistered outlet + empty stub (2026-05-25) ---
@@ -529,6 +633,54 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 
   // Guard H (URL/outlet rejection) merged into Guard A above via classifyMarketRouting.
 
+  // --- Guard J: unknown-critic wrongProduction via URL date (task #1150, 2026-08-09) ---
+  // When a review has no named critic, extract the publish date from the URL
+  // path and flag wrongProduction if it falls outside the show's window — the
+  // same URL-date fallback other guards apply, but scoped (inside the helper
+  // itself) to Unknown/Staff bylines only, since named critics legitimately
+  // carry pre-transfer/out-of-town coverage a bare date can't distinguish from
+  // a different production. This guard already existed only in gather-reviews.js
+  // (called right before its own write); every other writer reaching
+  // review-texts through this function had no equivalent. Flag-not-skip, same
+  // as Guard A's wrongProduction stamp below — the file is still written, just
+  // excluded from scoring until reviewed. Runs before the create-vs-merge
+  // fork below (mirrors gather's placement); on a merge, the default field
+  // merge only fills wrongProduction if the existing file doesn't already
+  // have it, so an existing human/CV verdict is never clobbered.
+  // Corpus-scanned against the full 42,251-file review-texts corpus (task
+  // #1150): 2 unknown-critic files match this predicate, 1 "legit" (a 2013
+  // file, low-stakes) — matches gather's own existing behavior on identical
+  // inputs today, so hoisting introduces no new false-positive class. Called
+  // unconditionally — the helper self-gates on criticName internally, so no
+  // outer Unknown check is needed here.
+  if (!fields.wrongProduction) {
+    const wpReason = getWrongProductionReasonForUnknownCritic(
+      { url: input.url, criticName },
+      _getShowById(showId),
+    );
+    if (wpReason) {
+      // Same human-clear guard as the classifyMarketRouting flag stamp above —
+      // `!existing.wrongProduction` in the merge loop is `true` for an explicit
+      // `wrongProduction: false`, so stamping here unconditionally would clobber
+      // a verified-correct human decision.
+      const showDirForWpCheck = path.join(reviewTextsDir, showId);
+      const existingForWpCheck = findExistingReviewFile(showDirForWpCheck, outletId, null, input.url);
+      const existingWpData = existingForWpCheck && existingForWpCheck.data;
+      const humanClearedWp = existingWpData && (
+        existingWpData.humanReviewedWrongProduction === false ||
+        existingWpData.wrongProductionManualClear === true ||
+        existingWpData.wrongProduction === false
+      );
+      if (humanClearedWp) {
+        console.warn(`  ⏭️  Skipping unknown-critic wrongProduction stamp for ${showId}/${outletId}: human override in place`);
+      } else {
+        fields.wrongProduction = true;
+        fields.wrongProductionReason = wpReason;
+        console.warn(`  ⚠️  ${wpReason} (${showId}/${outletId})`);
+      }
+    }
+  }
+
   const showDir = path.join(reviewTextsDir, showId);
 
   // --- Try to find existing file ---
@@ -633,7 +785,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
  * @private
  */
 function _mergeIntoExisting(filepath, existing, ctx) {
-  const { showId, input, fields, dryRun, onMerge } = ctx;
+  const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
@@ -706,12 +858,30 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
 
+  // wrongShow-unknown URL lock (task #1150, 2026-08-09; DoaS Apr 9-10 #13). When
+  // an existing wrongShow=true file's critic AND the incoming critic both
+  // normalize to unknown/unnamed, outlet+"unknown" is too weak an identity
+  // match to justify reassigning the URL — an Unknown-byline discovery loop
+  // (RSS, SERP) can otherwise repeatedly overwrite a flagged file's URL with
+  // another wrong one. This guard already existed only in gather-reviews.js's
+  // own merge logic; every other writer reaching review-texts through this
+  // function had no equivalent. Named-critic URL upgrades are unaffected —
+  // only the both-unknown case is locked, and only the URL field (other
+  // fields still merge normally below). Corpus-scanned (task #1150): 260
+  // existing wrongShow=true + unknown-critic files in the corpus — informational
+  // only, since this guard only affects a FUTURE merge attempt onto one of
+  // those files, not any existing state retroactively.
+  const urlLocked = existing.wrongShow === true && isWrongShowUnknownLocked(existing, { criticName });
+  if (urlLocked) {
+    console.warn(`  ⊘ wrongShow lock: refusing to reassign URL on ${filepath} (both critics unknown)`);
+  }
+
   // URL upgrade — pass the show title so the cross-show guard can reject a
   // candidate URL that belongs to a different show (combined-roundup contamination).
-  if (input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId) })) {
+  if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId) })) {
     changed = true;
   }
-  if (input.url && !existing.url &&
+  if (!urlLocked && input.url && !existing.url &&
       !slugLooksLikeDifferentShow(input.url, { showTitle: _getShowTitle(showId) })) {
     existing.url = input.url;
     changed = true;

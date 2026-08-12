@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-02T14:36:38.342Z",
-  "totalFindings": 4,
+  "generatedAt": "2026-08-09T14:17:26.833Z",
+  "totalFindings": 2,
   "findings": [
     {
       "currentShowId": "oh-mary-2024",
@@ -15,31 +15,6 @@
       "reviewFile": "data/review-texts/oh-mary-2024/njcom--christopher-kelly.json",
       "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-hi",
       "reason": "publish-date"
-    },
-    {
-      "currentShowId": "stranger-things-the-first-shadow-west-end-2023",
-      "suggestedShowId": "stranger-things-2024",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:400",
-        "days-from-closer:95"
-      ],
-      "reviewFile": "data/review-texts/stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/kyoto-review-sohoplace-rs",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "giant-2026",
-      "suggestedShowId": "giant-royal-court-off-west-end-2024",
-      "confidence": "medium",
-      "signals": [
-        "venue-slug-match",
-        "duplicate-in-suggested-dir"
-      ],
-      "reviewFile": "data/review-texts/giant-2026/times-uk--clive-davis.json",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow",
-      "reason": "venue"
     },
     {
       "currentShowId": "giant-west-end-2025",

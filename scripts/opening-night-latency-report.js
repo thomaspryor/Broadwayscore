@@ -14,6 +14,9 @@
 
 const fs = require('fs');
 const path = require('path');
+// Shared with the time-to-publish SLA so both answer "which rebuild folded this
+// review in" the same way — see scripts/lib/time-to-publish-sla.js.
+const { firstAtOrAfter } = require('./lib/time-to-publish-sla');
 
 const STAGE_ORDER = ['review-first-seen', 'review-text-collected', 'scored', 'rebuilt', 'deployed-live'];
 const STAGE_GAP_LABELS = [
@@ -70,14 +73,31 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
   // Group by (showId, reviewKey) — reviewKey null means summary rows (e.g. rebuilt per show)
   const byShowReview = new Map();
   const showMeta = new Map();
+  // Every per-show rebuild instant, ascending, so we can answer "which rebuild
+  // folded THIS review in" — showMeta only keeps the latest.
+  const rebuildAtsByShow = new Map();
 
   for (const e of entries) {
-    if (showFilter && e.showId !== showFilter) continue;
+    // A showId-less deployed-live line is global (update-deploy-watermark.yml
+    // has always emitted it that way), so --show=ID must not filter it out or a
+    // scoped report loses its deploy terminal.
+    const isGlobalLine = !e.showId && !e.reviewKey;
+    if (showFilter && !isGlobalLine && e.showId !== showFilter) continue;
 
-    // Track show-level rebuilt summary lines separately
+    // Track show-level rebuilt summary lines separately. Since 2026-08-08
+    // (task #388) rebuild-all-reviews also emits ONE showId-less 'rebuilt' line
+    // per run for run-level visibility; it is recorded under '__global' for the
+    // header but is NEVER used as a per-show terminal, because it does not say
+    // which shows the rebuild covered. Per-show lines are the only coverage
+    // signal — see the matching comment in scripts/lib/opening-night-sla.js.
     if (e.stage === 'rebuilt' && !e.reviewKey) {
-      const prev = showMeta.get(e.showId) || {};
-      showMeta.set(e.showId, { ...prev, rebuiltAt: e.at, reviewCount: e.metadata?.reviewCount });
+      const key = e.showId || '__global';
+      const prev = showMeta.get(key) || {};
+      showMeta.set(key, { ...prev, rebuiltAt: e.at, reviewCount: e.metadata?.reviewCount });
+      if (e.showId) {
+        if (!rebuildAtsByShow.has(e.showId)) rebuildAtsByShow.set(e.showId, []);
+        rebuildAtsByShow.get(e.showId).push(e.at);
+      }
       continue;
     }
     if (e.stage === 'deployed-live' && !e.reviewKey) {
@@ -99,6 +119,7 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
 
   // Resolve deployed-live from global (no-reviewKey) entries
   const globalDeploy = showMeta.get('__global');
+  for (const list of rebuildAtsByShow.values()) list.sort();
 
   // Group reviews by showId
   const byShow = new Map();
@@ -121,6 +142,18 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
       const s = rv.stages;
       const firstSeen = s['review-first-seen'];
       const deployed = s['deployed-live'] || deployedAt;
+
+      // 'rebuilt' is never stamped per-reviewKey, so the scored-to-rebuilt and
+      // rebuilt-to-deployed medians below were always empty. Resolve this
+      // review's rebuild as the first rebuild OF THIS SHOW at or after it was
+      // ready — that run is what folded it into reviews.json. Stays null when
+      // the show has no rebuild line at all, which is the honest answer: the
+      // show had nothing in reviews.json for the review to be folded into.
+      if (!s['rebuilt']) {
+        const readyAt = s['scored'] || firstSeen;
+        const covering = firstAtOrAfter(rebuildAtsByShow.get(showId), readyAt);
+        if (covering) s['rebuilt'] = covering;
+      }
 
       const e2e = firstSeen && deployed
         ? new Date(deployed) - new Date(firstSeen)

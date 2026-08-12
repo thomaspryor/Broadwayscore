@@ -52,13 +52,33 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: `All ${reviews.length} BWW review(s) have matching URL dates` };
   }
 
+  const message = problems.map(p =>
+    `BWW review URL dated ${p.urlDate} is ${p.diffDays}d from openingDate ${p.openingDate} but not flagged wrongProduction: ${p.url}`
+  ).join('\n');
+
   return {
     ok: false,
     severity: 'error',
-    message: problems.map(p =>
-      `BWW review URL dated ${p.urlDate} is ${p.diffDays}d from openingDate ${p.openingDate} but not flagged wrongProduction: ${p.url}`
-    ).join('\n'),
-    details: { problems },
+    message,
+    details: {
+      problems,
+      // Self-declared remediation (task #389). kind:'alert' deliberately — a
+      // wrong-production verdict mutates the scored corpus, and auto-writing
+      // wrongProduction from a URL-date heuristic alone is the exact class of
+      // false positive tracked by task #24 (misparsed publishDate) and #1108
+      // (noteless flags auto-cleared on merge). So this escalates to the owner
+      // rather than editing review files; ingest-time quarantine is task #832's
+      // job, not the checklist's.
+      remediation: {
+        kind: 'alert',
+        key: `wrong-production-bww:${show.id}`,
+        conditionKey: `opening-night-wrong-production-bww-${show.id}`,
+        title: `Wrong-production BWW review on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${problems.length} BWW review(s) dated >30d from openingDate, unflagged`,
+      },
+    },
   };
 }
 

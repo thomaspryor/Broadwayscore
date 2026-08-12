@@ -123,9 +123,21 @@ const MANUAL_CV_FIELDS = [
 // to the wrong top-level field would make the skip a no-op.
 // NOTE: this nested per-subfield restore is the -X theirs path only. The action.yml
 // push restore protects the WHOLE contentVerification object (it is in
-// PROTECTED_FIELDS) and has no CV-clear breadcrumb, so a breadcrumb-less reset that
-// deletes the whole object (review-normalization URL-replace ~line 619) can still
-// rehydrate it wholesale — tracked as a separate card (breadcrumb-less reset class).
+// PROTECTED_FIELDS) at the flat top level, not per sub-key. A breadcrumb-less
+// reset that deletes the whole object (e.g. sweep-revival-wrong-production.js's
+// case C) can still get rehydrated wholesale there. Task #97 audit considered a
+// 'contentVerification' CLEAR_BREADCRUMBS entry gated on the union of the
+// governing top-level predicates (mirroring CV_FIELD_TO_TOPLEVEL below) but
+// rejected it on adversarial review (codex, 2026-08-10): those predicates check
+// CURRENT record state, not whether they were the reason contentVerification
+// specifically went empty — a file with e.g. a YEARS-old humanReviewedWrongProduction:
+// false would permanently suppress restoring contentVerification even for an
+// unrelated FUTURE bug that wipes it. Left as a documented gap, not a card, per
+// CLAUDE.md §16: fixing it needs a real per-clear-event breadcrumb (a "this
+// clear happened HERE" stamp, not "was ever cleared"), which is more invasive
+// than the size of the residual risk (this only loses an audit/staleness
+// signal, not a user-facing score/exclusion — see contentVerification's
+// consumer at rebuild-all-reviews.js ~1671, which no-ops on a falsy cv).
 const CV_FIELD_TO_TOPLEVEL = {
   wrongProduction: 'wrongProduction',
   wrongArticle: 'wrongShow',

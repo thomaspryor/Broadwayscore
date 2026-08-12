@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { isRejectedNonReview } = require('./lib/review-guards');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -115,8 +116,12 @@ function countReviewTexts() {
                       (outletId && knownOutlets.has(outletId.replace(/-/g, ' '))) ||
                       (outlet && knownOutlets.has(outlet.replace(/-/g, ' ')));
 
-      // Skip files already flagged as excluded - they won't affect scoring
-      const isExcluded = data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl;
+      // Skip files already flagged as excluded - they won't affect scoring.
+      // isRejectedNonReview also catches non-review junk (ticket-vendor/venue/
+      // aggregator pages, rejected/garbage fetches) the narrow flag list above
+      // misses — see review-guards.js for the exact criteria it checks.
+      const isExcluded = data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl ||
+        isRejectedNonReview(data);
 
       if (!isKnown && !isExcluded && (outletId || outlet)) {
         unknownOutlets++;

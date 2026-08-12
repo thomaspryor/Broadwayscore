@@ -28,6 +28,13 @@ yarn-error.log*
 
 # local env files
 .env*.local
+# Timestamped .env backups. Sessions routinely copy .env before editing it
+# (`cp .env .env.bak-YYYYMMDD-reason`) — three such files existed untracked and
+# UNIGNORED on 2026-08-09, each a full copy of every live credential. `.env` on
+# line 115 does not cover them, so a single `git add -A` would have committed
+# real keys to a repo. Ignore the whole family, not just the exact name.
+.env.bak*
+.env.backup*
 
 # vercel
 .vercel
@@ -235,6 +242,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # docs/experiments/README.md's setup contract) and must be committed for
 # other sessions to find them — not scratch/local like the rest of /docs/.
 !/docs/experiments/
+# Task #1218's hit/miss audit of the review process itself — acceptance
+# criteria requires it committed (not scratch), so future sessions/audits
+# can find it without depending on one machine's claude-outputs copy.
+!/docs/review-effectiveness-audit.md
 /memory/
 /data/deep-research/
 /data/theater-research/
@@ -314,6 +325,17 @@ tmp/
 /data/audit/backlog-drain-metric.json
 /data/audit/backlog-drain-logs/
 /data/audit/job-leases/
+# Digest-autofix S6 daily canary (task #1225) — Mac-local, same reasoning as
+# backlog-drain-ledger.jsonl above (producer + consumer both run on this Mac).
+# canary-*.marker is DELIBERATELY NOT listed here: close-time-verify.js checks
+# a card's acceptance command against a fresh checkout of origin/main (see
+# scripts/lib/acceptance-check-core.js), never the dispatched session's own
+# ephemeral, isolated job worktree — so the marker file the canary card asks
+# a session to create MUST be committed+pushed to be checkable at all
+# (Codex adversarial review, task #1225: a gitignored marker can never be
+# seen by that check, so a genuinely successful canary would self-report
+# FAILED every single day).
+/data/audit/autofix-canary-ledger.jsonl
 /data/audit/reconcile-report.jsonl
 supabase/.temp/
 

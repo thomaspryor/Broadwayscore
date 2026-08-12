@@ -486,3 +486,127 @@ test('tier3: refused unverifiable scripts/ paths would ALSO produce no checks (c
     assert.equal(checks.length, 0, `${p} unexpectedly produced a check — gate may be over-restrictive`);
   }
 });
+
+// ── VERIFY: owner-judgment is a dispatch-time exclusion (task #1154) ────────
+//
+// The Sarah check-in card (Notion 369637c5-416f-8168-8bde-fa2996a5436e) was
+// auto-dispatched twice — 2026-08-06 and 2026-08-09 — through the P0/P1
+// backlog sweep in dispatch-watchdog-core.js, which gates on
+// isExcludedCategory(). Every heuristic missed it independently: category
+// "Admin" is not in EXCLUDED_CATEGORIES, tags social-media/auto-enriched are
+// not in DENY_TAGS, and the subject does not lead with a human-action verb.
+// The one signal that DID say "a human must do this" — the
+// "VERIFY: owner-judgment" marker in its notes — was consulted only by the
+// verify gate, where it ARMS a dispatch.
+
+// Verbatim from the real card. If these fixtures start passing without the
+// marker check, the card's shape changed — the bug did not.
+const SARAH_SUBJECT = 'Sarah check-in: growth plan progress and metrics report';
+const SARAH_CATEGORY = 'Admin';
+const SARAH_TAGS = ['social-media', 'auto-enriched'];
+const SARAH_NOTES = "RECHECK-AFTER: 2026-08-16\n\nDue 2026-05-23. Ask Sarah for status on the growth plan items and last week's metrics across Twitter, Instagram, Bluesky, Threads, Facebook. Pull from Buffer or platform insights. Compare to prior two-week baseline. Identify what's working and what to adjust. Email sarahjaeleiber@gmail.com.\n\nVERIFY: owner-judgment (personal check-in with Sarah Jae — owner must read/verify the report)";
+
+function sarahMirror() {
+  return {
+    id: '382',
+    subject: SARAH_SUBJECT,
+    status: 'pending',
+    description: [
+      `[notion:369637c5-416f-8168-8bde-fa2996a5436e] P2 Later · Not started · ${SARAH_CATEGORY}`,
+      'https://app.notion.com/p/x',
+      SARAH_NOTES.replace(/\s+/g, ' ').trim().slice(0, 400),
+    ].join('\n'),
+  };
+}
+
+test('#1154: the real Sarah check-in card is excluded from the default pick', () => {
+  const task = sarahMirror();
+  // Every other heuristic genuinely passes it — that is why the marker check
+  // has to exist rather than being redundant belt-and-braces.
+  assert.equal(categoryOf(task), 'admin');
+  assert.equal(EXCLUDED_CATEGORIES.has('admin'), false);
+  assert.equal(SARAH_TAGS.some(t => DENY_TAGS.has(t)), false);
+  assert.equal(isExcludedCategory(task), true);
+});
+
+test('#1154: the same card is ineligible at card level, with a reason naming the marker', () => {
+  const r = isCardEligible({ name: SARAH_SUBJECT, category: SARAH_CATEGORY, tags: SARAH_TAGS, notes: SARAH_NOTES });
+  assert.equal(r.eligible, false);
+  assert.match(r.reason, /owner-judgment/i);
+  // Strip only the marker and the very same card is eligible again — proof the
+  // exclusion comes from the marker, not from something else in the fixture.
+  const withoutMarker = isCardEligible({
+    name: SARAH_SUBJECT,
+    category: SARAH_CATEGORY,
+    tags: SARAH_TAGS,
+    notes: SARAH_NOTES.replace(/VERIFY:\s*owner-judgment/i, 'VERIFY: nothing'),
+  });
+  assert.equal(withoutMarker.eligible, true);
+});
+
+test('#1154: marker matches case- and spacing-insensitively, anywhere in the text', () => {
+  for (const notes of ['verify:owner-judgment', 'VERIFY:   Owner-Judgment', 'blah\n\nVERIFY: owner-judgment\n\nmore']) {
+    assert.equal(isCardEligible({ name: 'Refactor the widget', category: 'Engineering', notes }).eligible, false, notes);
+    assert.equal(isExcludedCategory({
+      subject: 'Refactor the widget',
+      description: `[notion:x] P1 Next · Not started · Engineering\n${notes}`,
+    }), true, notes);
+  }
+});
+
+test('#1154: cards WITHOUT the marker keep their existing behaviour exactly', () => {
+  const eng = { subject: 'Fix the byline dedup', description: '[notion:x] P1 Next · Not started · Engineering\nsome notes' };
+  assert.equal(isExcludedCategory(eng), false);
+  assert.equal(isCardEligible({ name: 'Fix the byline dedup', category: 'Engineering', notes: 'some notes' }).eligible, true);
+  // Pre-existing exclusions still fire for their OWN reasons, not the marker's.
+  assert.match(isCardEligible({ name: 'x', category: 'Marketing' }).reason, /human territory/);
+  assert.match(isCardEligible({ name: 'x', category: 'Engineering', tags: ['email'] }).reason, /deny-tag/);
+  assert.match(isCardEligible({ name: 'Email volunteers', category: 'Admin' }).reason, /human action/);
+});
+
+test('#1154: absent/null notes and descriptions never throw and never exclude', () => {
+  assert.equal(isCardEligible({ name: 'Fix the widget', category: 'Engineering' }).eligible, true);
+  assert.equal(isCardEligible({ name: 'Fix the widget', category: 'Engineering', notes: null }).eligible, true);
+  assert.equal(isExcludedCategory({ subject: 'Fix the widget' }), false);
+  assert.equal(isExcludedCategory({ subject: 'Fix the widget', description: null }), false);
+});
+
+test('#1154: the marker regex has exactly one definition, in a dependency-free leaf', () => {
+  // Three layers need it — verify-gate ARMS on it, headless-dispatchability
+  // BLOCKS on it, this module EXCLUDES on it — and two of them had their own
+  // handwritten copy before the leaf module existed.
+  const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
+  const { OWNER_JUDGMENT_RE: fromVerifyGate } = require('./verify-gate.js');
+  const { OWNER_DECISION_RES } = require('./headless-dispatchability.js');
+  assert.equal(fromVerifyGate, OWNER_JUDGMENT_RE, 'verify-gate.js re-declared the regex instead of importing it');
+  assert.ok(Array.isArray(OWNER_DECISION_RES) && OWNER_DECISION_RES.includes(OWNER_JUDGMENT_RE),
+    'headless-dispatchability.js OWNER_DECISION_RES no longer uses the shared regex object');
+  // Leaf by construction: loading it must not pull in anything that could
+  // require back into this file. That cycle (verify-gate -> triage-core ->
+  // here) is what would leave isSafeCheckCommand undefined inside
+  // evaluateVerifiability for autonomous-shadow-run.js's require order.
+  // Checked against the loaded module record, not the source text — a source
+  // grep also matches the word "require()" in the file's own prose.
+  const leafPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'owner-judgment-marker.js');
+  delete require.cache[leafPath];
+  require(leafPath);
+  assert.deepEqual(require.cache[leafPath].children.map(c => c.filename), [],
+    'owner-judgment-marker.js must stay dependency-free');
+});
+
+test('#1154: the require cycle stays broken in BOTH module load orders', () => {
+  // autonomous-shadow-run.js requires triage-core before eligibility; other
+  // callers do the reverse. Under a cycle one of these orders hands a module a
+  // half-built exports object and the failure is silent + permanent.
+  for (const order of [
+    ['./autonomous-triage-core.js', './verify-gate.js', './autonomous-eligibility.js'],
+    ['./autonomous-eligibility.js', './verify-gate.js', './autonomous-triage-core.js'],
+  ]) {
+    for (const m of order) delete require.cache[require.resolve(m)];
+    for (const m of order) require(m);
+    const vg = require('./verify-gate.js');
+    assert.equal(typeof vg.isSafeCheckCommand, 'function', `isSafeCheckCommand undefined under order ${order.join(' -> ')}`);
+    assert.equal(typeof require('./autonomous-triage-core.js').isSafeCheckCommand, 'function', order.join(' -> '));
+    assert.equal(vg.evaluateVerifiability('VERIFY: owner-judgment').ownerJudgment, true, order.join(' -> '));
+  }
+});

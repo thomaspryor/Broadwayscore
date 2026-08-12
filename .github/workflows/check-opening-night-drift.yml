@@ -135,7 +135,7 @@ jobs:
               const r = JSON.parse(require('fs').readFileSync('/tmp/drift-results.json','utf8'));
               const alerts = r.filter(x => x.alert);
               console.log(alerts.map(x =>
-                \`**\${x.title}** (\${x.showId}): local=\${x.local}, agg=\${x.aggregate}, live=\${x.live ?? 'n/a'}, drift=\${x.drift}\`
+                \`**\${x.title}** (\${x.showId}): local=\${x.local}, agg=\${x.aggregate}, live=\${x.liveRcMissing ? 'RC-MISSING (live page lost its review count)' : x.live ?? 'n/a'}, drift=\${x.effectiveDrift ?? x.drift}\`
               ).join('\n'));
             " 2>/dev/null || echo "(parse error)")
             echo "alert_shows<<EOF" >> "$GITHUB_OUTPUT"

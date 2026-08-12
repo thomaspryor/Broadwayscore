@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { foldAttempts, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 
 // Hardcoded (not path.join(__dirname, '..', '..')) on purpose: both callers
 // of this module (bsc-next.js, bsc-prune.js) are interactive tools an owner
@@ -95,12 +96,177 @@ function successionDepthForTask(taskId, entries) {
   return depth;
 }
 
+// Shared "did this one event, by itself, fail to do the work" predicate —
+// deadAttemptsForTask, isLatestDispatchDead (card #1144) and anything else
+// this ledger grows must all agree on what DEAD means, or a task can pass one
+// check and fail the other for the same underlying state. JOB_EVENTS is
+// declared later in this file (below), but that's fine — this function body
+// only reads JOB_EVENTS.* when CALLED, by which point the whole module has
+// finished loading (same lazy-reference shape the original inline Set here
+// already relied on).
+function isDeadlikeEvent(event) {
+  return event === 'dead' || event === JOB_EVENTS.FAILED || event === JOB_EVENTS.ORPHANED;
+}
+
 function deadAttemptsForTask(taskId, entries) {
   // Failed/orphaned headless jobs count as dead attempts too — this is the
   // "one ledger, one guard" promise: a task cannot burn unlimited headless
   // jobs just because its deaths use the job-* vocabulary (Opus ship-check P1).
-  const DEADLIKE = new Set(['dead', JOB_EVENTS.FAILED, JOB_EVENTS.ORPHANED]);
-  return entries.filter(e => DEADLIKE.has(e.event) && String(e.taskId) === String(taskId));
+  return entries.filter(e => isDeadlikeEvent(e.event) && String(e.taskId) === String(taskId));
+}
+
+// ── INFRA vs SUBSTANTIVE dead attempts (card #1233) ─────────────────────────
+// deadAttemptsForTask above (and DEAD_ATTEMPT_LIMIT below) treat every dead
+// attempt as equal evidence about the TASK. dispatch-health.js's own
+// measurement (card #1199) put the true cmux dead-launch rate at ~21% —
+// almost entirely "the terminal surface never rendered, so the injected
+// command never ran" (INFRA, nothing about the task) rather than "the
+// session booted and then died" (SUBSTANTIVE, a real signal). At a 21%
+// per-attempt infra rate, a perfectly healthy task draws two infra deaths in
+// a row ~4.5% of the time and was getting permanently parked by
+// deadDispatchGuard with advice ("shrink the scope") that has nothing to do
+// with why it died.
+//
+// dispatch-attempts.js's foldAttempts (moved out of dispatch-health.js for
+// exactly this — see that file's header) already computes the INFRA/
+// SUBSTANTIVE split per launch attempt: a folded attempt with dead:true and
+// unverified:true is the shape-1 pair (dead row + its own unverified launch
+// row, written ~1-2ms apart — the wrapper process never appeared); dead:true
+// with unverified:false is a shape-2 breadcrumb (a verified launch, found
+// dead later by a sweep — the session ran before dying/going idle).
+// classifyDeadAttemptsForTask reuses THAT classification rather than
+// re-deriving the pairing window itself, matching this file's own
+// "isDeadlikeEvent ... must all agree on what DEAD means" doctrine above.
+//
+// Grouped by (taskId, workspaceRef) rather than matched by raw dead-row
+// timestamp: foldAttempts already does the hard part (claiming each dead row
+// against exactly one attempt, handling recycled-ref ambiguity with its own
+// last-match-at-or-before rule and excluding remap-superseded attempts) —
+// re-deriving that matching a second time here previously risked
+// mismatching a dead row against an unrelated attempt on a reused ref
+// (caught in this card's own plan review). Scoping candidates to this task's
+// own workspaceRef collapses that ambiguity to "exactly one candidate" in
+// every real case; if a ref is somehow reused twice for the SAME task with
+// two different outcomes (candidates.length !== 1), or the dead row can't be
+// matched to any folded attempt at all (e.g. a rotated/truncated ledger),
+// this fails CLOSED to SUBSTANTIVE — never silently drops a death, and never
+// risks misreading an unclassifiable one as a free infra retry.
+function classifyDeadAttemptsForTask(taskId, entries) {
+  const all = deadAttemptsForTask(taskId, entries);
+  if (!all.length) return { substantive: [], infra: [] };
+  // job-*-class deaths (job-failed/job-orphaned) have no workspaceRef and
+  // only ever fire after job-spawned already ran — the wrapper unambiguously
+  // executed, so these are always substantive.
+  const jobDeaths = all.filter(e => e.event !== 'dead');
+  const workspaceDeaths = all.filter(e => e.event === 'dead');
+  if (!workspaceDeaths.length) return { substantive: jobDeaths, infra: [] };
+
+  const { attempts } = foldAttempts(entries);
+  const candidatesByRef = new Map();
+  for (const a of attempts) {
+    if (!a.dead || !a.workspaceRef || String(a.taskId) !== String(taskId)) continue;
+    if (!candidatesByRef.has(a.workspaceRef)) candidatesByRef.set(a.workspaceRef, []);
+    candidatesByRef.get(a.workspaceRef).push(a);
+  }
+
+  const substantive = [...jobDeaths];
+  const infra = [];
+  for (const e of workspaceDeaths) {
+    const matches = candidatesByRef.get(e.workspaceRef) || [];
+    if (matches.length !== 1) { substantive.push(e); continue; } // fail closed
+    const match = matches[0];
+    // unverified:true alone is not sufficient: foldAttempts also marks a
+    // shape-3 launch (#705 slow-boot — wrapper was STILL RUNNING at write
+    // time, so unverified but no immediate dead pair) as dead+unverified if
+    // an UNRELATED sweep later finds it idle and attaches a breadcrumb via
+    // its shape-2 last-match-at-or-before fallback — that breadcrumb can
+    // land minutes, hours, or days later. That is not "the terminal surface
+    // never rendered"; the wrapper was observed running, so it belongs in
+    // SUBSTANTIVE. Verified against the real ledger (2026-08-11): 2 of 56
+    // dead+unverified attempts have a >PAIR_WINDOW_MS gap to their dead row
+    // (up to ~9 days) — without this second check those wrongly read as free
+    // infra retries. Require the SAME proximity foldAttempts itself uses to
+    // call something a genuine shape-1 pair.
+    const deadTs = Date.parse(e.ts || '');
+    const isInfra = match.unverified && Number.isFinite(deadTs) && Math.abs(match.ts - deadTs) <= PAIR_WINDOW_MS;
+    (isInfra ? infra : substantive).push(e);
+  }
+  return { substantive, infra };
+}
+
+function substantiveDeadAttemptsForTask(taskId, entries) {
+  return classifyDeadAttemptsForTask(taskId, entries).substantive;
+}
+
+// A genuinely wedged host (cmux itself broken, not any one task) must still
+// stop retrying eventually instead of hammering a dead launcher forever, even
+// though infra deaths no longer count toward DEAD_ATTEMPT_LIMIT. At the
+// measured ~21% true infra rate, INFRA_DEAD_ATTEMPT_LIMIT consecutive infra
+// deaths with zero successes in between is astronomically unlikely
+// (0.21^10 ≈ 1.7e-7) for a task that isn't actually wedged — this is a
+// circuit breaker, not a normal-operation ceiling.
+const INFRA_DEAD_ATTEMPT_LIMIT = 10;
+
+// The single decision every DEAD_ATTEMPT_LIMIT enforcement site in this
+// codebase should compute from, so the substantive/infra split (and the
+// infra ceiling) can't drift between bsc-next.js, bsc-prune.js,
+// bsc-reconcile.js and dispatch-watchdog-core.js. Callers own their own
+// message wording; this owns only the counts and the blocked/reason verdict.
+function dispatchCapDecision(taskId, entries) {
+  const { substantive, infra } = classifyDeadAttemptsForTask(taskId, entries);
+  if (substantive.length >= DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'substantive', substantive, infra };
+  if (infra.length >= INFRA_DEAD_ATTEMPT_LIMIT) return { blocked: true, reason: 'infra', substantive, infra };
+  return { blocked: false, reason: null, substantive, infra };
+}
+
+// Events that represent one dispatch ATTEMPT for a task, across both the
+// cmux-tab path (bsc-next.js's 'launch'/'dead') and the --headless path
+// (bsc-runner.js's job-* vocabulary). Other ledger events ('prune',
+// 'vanish-epoch', 'vanished', 'prune-closed', 'remapped', 'restart-hold')
+// describe what happened to a WORKSPACE/CARD after a launch, not a fresh
+// attempt, and are deliberately excluded from this set.
+function isAttemptEvent(event) {
+  return event === 'launch' || isDeadlikeEvent(event)
+    || event === JOB_EVENTS.SPAWNED || event === JOB_EVENTS.DONE || event === JOB_EVENTS.RETRIED;
+}
+
+// The most recent dispatch-attempt entry for a task, or null if it was never
+// dispatched through bsc-next/bsc-runner (manual/owner-typed work this has no
+// opinion on). Walks entries in FILE ORDER and lets the last match win —
+// appendEntry always appends, so the ledger is already chronological — rather
+// than re-sorting by `ts` the way a first draft of this did: readEntries()
+// already tolerates corrupt/partial lines, and a ts-sort trusts a field that
+// can be missing or malformed on exactly those lines. Matches this file's own
+// lastByRef/foldJobs/openTaskWorkspaceLaunches convention (last-in-array
+// wins), not a new one (Opus second-opinion review, card #1144).
+function latestAttemptForTask(taskId, entries) {
+  let latest = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (String(e.taskId) !== String(taskId)) continue;
+    if (!isAttemptEvent(e.event)) continue;
+    latest = e;
+  }
+  return latest;
+}
+
+// True when the task's MOST RECENT dispatch attempt never actually ran.
+// Card #1144: bsc-next's failedLaunchEntries() writes a 'dead' entry
+// immediately followed by an unverified:true 'launch' entry for the SAME
+// failed attempt (see that function's header) — the 'launch' entry lands
+// last in file order, so it (not 'dead') is what latestAttemptForTask
+// returns; the unverified:true check below is what still recognizes it as
+// dead. A plain verified 'launch' (no unverified flag), or a live/finished
+// job event (job-spawned/job-done/job-retried), as the latest attempt is NOT
+// dead — a later successful redispatch always supersedes earlier deaths, so
+// a task that died once and was then legitimately redispatched is never
+// blocked forever. No attempt recorded at all → NOT dead.
+function isLatestDispatchDead(taskId, entries) {
+  const latest = latestAttemptForTask(taskId, entries);
+  if (!latest) return false;
+  if (isDeadlikeEvent(latest.event)) return true;
+  if (latest.event === 'launch' && latest.unverified === true) return true;
+  return false;
 }
 
 // LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
@@ -243,25 +409,72 @@ function vanishEpochEntry() {
   return { event: 'vanish-epoch', taskId: 'epoch' };
 }
 
+// How long the pre-epoch exclusion below holds. The epoch's job is a ONE-TIME
+// guard against the first sweep after rollout mass-parking ~150 historical
+// tabs that had already closed normally before #578 existed to record a
+// terminal event for them. That job is done the moment the first sweep
+// completes. A permanent (unbounded) exclusion instead makes epochTs a dead
+// line in the sand: ANY task launched before it can never be parked again,
+// however long its tab has been gone — card #801's root cause (health check
+// "Stuck work: orphaned in-progress cards" never clearing; #434/#752/#758/#832
+// were still "in flight" 6-14 days after their pre-epoch launch, ledger-wise
+// immortal). 72h comfortably exceeds a normal session's runtime, so it never
+// races a legitimately-long session, while still letting truly-dead pre-epoch
+// history rejoin the same re-validate/ratio-guard/renumber protections every
+// post-epoch launch already relies on.
+const HISTORICAL_EXCLUSION_GRACE_MS = 72 * 60 * 60 * 1000;
+
 // `liveRefs`: Set of workspace refs cmux currently lists. Returns the NEW
 // 'vanished' breadcrumbs to append — one per launched-but-absent workspace.
 // Idempotent: a ref only ever contributes one breadcrumb, because the
 // breadcrumb itself is a terminal event for the next sweep.
-function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null } = {}) {
+//
+// `now` (ms epoch) is required, matching this file's own detectLauncherOutage
+// and dispatch-watchdog-core.js's planSweep — a silent default would let a
+// caller forget it and keep getting the (soon-to-be-legacy) permanent-
+// exclusion behavior with no signal, masking exactly the bug class this
+// grace window exists to fix.
+function vanishedBreadcrumbs(liveRefs, entries, { epochTs = null, now } = {}) {
   if (!(liveRefs instanceof Set)) {
     throw new Error('vanishedBreadcrumbs requires a Set of live workspace refs');
   }
+  if (!Number.isFinite(now)) throw new Error('vanishedBreadcrumbs requires now (ms epoch)');
   // Fail closed on both "no epoch recorded" and "cmux listed nothing". An
   // empty listing is indistinguishable from cmux being restarted, crashed, or
   // mid-reinstall — and that is precisely the moment when every ref on the
   // machine looks vanished at once.
   if (!epochTs || liveRefs.size === 0) return [];
+  // NaN epochMs (malformed epoch entry) must fail CLOSED — never let a bad
+  // timestamp accidentally expire the grace and mass-park pre-epoch history.
+  const epochMs = Date.parse(epochTs);
+  const graceExpired = Number.isFinite(epochMs) && (now - epochMs) >= HISTORICAL_EXCLUSION_GRACE_MS;
+
+  // Per-task liveness view: if a DIFFERENT, still-open launch for the same
+  // taskId is CURRENTLY LIVE (in liveRefs), any other ref for that task is
+  // superseded, not vanished — parking it would flip the Notion card to
+  // Paused while a newer session is actively working the task under its own
+  // ref. vanishedBreadcrumbs iterates per-REF (below), so without this a
+  // stale pre-epoch ref surviving the grace above could independently
+  // "vanish" even though the task moved on (ship-check catch, card #801).
+  //
+  // Requiring liveRefs.has() (not just "no terminal event yet") matters: a
+  // newer launch that's ALSO absent from liveRefs is exactly as dead as the
+  // one being considered — treating its mere existence as "superseding"
+  // would suppress the older ref (which may carry the notionId Notion needs
+  // to update) while the newer ref becomes its own candidate and, lacking a
+  // notionId, parks in the ledger only — silently reproducing the exact
+  // "Notion card stuck forever" bug this fix exists to close (Codex
+  // adversarial review catch, card #801 ship-check).
+  const openByTask = openTaskWorkspaceLaunches(entries);
 
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   const out = [];
   for (const [ref, launch] of lastByRef(entries, e => e.event === 'launch')) {
     if (liveRefs.has(ref)) continue;                       // still on screen
-    if (!launch.ts || launch.ts < epochTs) continue;       // pre-epoch history is not ours to park
+    if (!launch.ts) continue;
+    if (launch.ts < epochTs && !graceExpired) continue;    // pre-epoch history is not ours to park (yet)
+    const openElsewhere = openByTask.get(String(launch.taskId));
+    if (openElsewhere && openElsewhere.workspaceRef !== ref && liveRefs.has(openElsewhere.workspaceRef)) continue; // superseded by a newer LIVE launch
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;            // already reconciled
     out.push({
@@ -421,12 +634,23 @@ function remapEntries({ taskId, subject, oldRef, newRef, notionId = null, model 
 // Denominator for looksLikeRestart: how many workspace-shaped launches the
 // ledger currently believes are still open (post-epoch, no terminal event
 // yet) — regardless of whether cmux's live listing still contains them.
-function openWorkspaceLaunchCount(entries, { epochTs } = {}) {
+// `now` (ms epoch) must apply the SAME pre-epoch grace as vanishedBreadcrumbs
+// — this count is the denominator looksLikeRestart() compares candidates
+// against (bsc-prune.js), so counting a different population than
+// vanishedBreadcrumbs' candidates (e.g. still excluding pre-epoch launches
+// here while they've become eligible candidates there) would distort the
+// mass-restart ratio (ship-check catch, card #801: Codex adversarial
+// review flagged the two functions drifting out of sync).
+function openWorkspaceLaunchCount(entries, { epochTs, now } = {}) {
   if (!epochTs) return 0;
+  if (!Number.isFinite(now)) throw new Error('openWorkspaceLaunchCount requires now (ms epoch)');
+  const epochMs = Date.parse(epochTs);
+  const graceExpired = Number.isFinite(epochMs) && (now - epochMs) >= HISTORICAL_EXCLUSION_GRACE_MS;
   const lastTerminal = lastByRef(entries, e => TERMINAL_LAUNCH_EVENTS.has(e.event));
   let n = 0;
   for (const [ref, launch] of lastByRef(entries, e => e.event === 'launch')) {
-    if (!launch.ts || launch.ts < epochTs) continue;
+    if (!launch.ts) continue;
+    if (launch.ts < epochTs && !graceExpired) continue;
     const term = lastTerminal.get(ref);
     if (term && term.ts >= launch.ts) continue;
     n++;
@@ -613,11 +837,56 @@ function openJobs(entries) {
   return [...foldJobs(entries).values()].filter(j => !TERMINAL_JOB_EVENTS.has(j.event));
 }
 
+// Task #1184 S1: a timed-out job the reconciler resumes ends 'job-retried'
+// (terminal for the OLD jobId) while a SUCCESSOR job continues the same card.
+// Every reader that scores a dispatch by its job's terminal event must follow
+// the chain, or a live/successful resume reads as a failure (ship-check Codex
+// finding: digest-autofix and backlog-drain each scored resumed jobs
+// card-fail). ONE shared implementation here so the two readers cannot drift.
+//
+// Attribution is CAUSAL when possible: bsc-runner stamps the successor's
+// job-spawned entry with resumeOfSession (the session id it continued),
+// matched against the RETRIED entry's own sessionId — a manual `bsc-next
+// --headless` job spawned in the gap can never be credited as the resume
+// (Codex finding: time-ordering alone is not causal). Fallback for entries
+// predating the stamp: earliest spawn AFTER the retry that is itself marked
+// `resumed`. A chain ending at RETRIED (successor not spawned yet, or resume
+// child died pre-spawn) is returned as-is — callers treat it as in-flight
+// within their own orphan bound.
+function followRetryChain(entries, taskId, firstJobId) {
+  const taskEntries = (entries || []).filter(e => e && String(e.taskId) === String(taskId));
+  const jobs = foldJobs(taskEntries);
+  const spawns = taskEntries.filter(e => e.event === JOB_EVENTS.SPAWNED)
+    .sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  let job = jobs.get(firstJobId) || null;
+  const visited = new Set();
+  while (job && job.event === JOB_EVENTS.RETRIED && !visited.has(job.jobId)) {
+    visited.add(job.jobId);
+    const causal = spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId
+      && s.resumeOfSession && job.sessionId && s.resumeOfSession === job.sessionId);
+    const retriedMs = Date.parse(job.ts || '') || 0;
+    const next = causal || spawns.find(s => !visited.has(s.jobId) && s.jobId !== job.jobId
+      && s.resumed === true && (Date.parse(s.ts || '') || 0) >= retriedMs - 5000);
+    if (!next) break;
+    job = jobs.get(next.jobId) || null;
+  }
+  return job;
+}
+
 module.exports = {
-  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
+  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
+  // isInfraDeadEntry/deadDispatchCapStatus were card #1233's v1 API. The v2
+  // implementation (ba2a4f22d3f) replaced both with classifyDeadAttemptsForTask
+  // + dispatchCapDecision and deleted their definitions, but two racing
+  // sessions on the same card left the v1 names in this list: require() then
+  // threw ReferenceError and EVERY consumer (backlog-drain, bsc-runner,
+  // bsc-next, dispatch-watchdog, the S6 canary) died on load. Do not re-add
+  // them when resolving a merge from an older branch.
+  classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
+  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
   titleMatchesSubject, findRenumberedWorkspace, openWorkspaceLaunchCount,

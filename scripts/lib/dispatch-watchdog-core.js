@@ -30,8 +30,8 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, DEAD_ATTEMPT_LIMIT,
-  openTaskWorkspaceLaunches, deadAttemptsForTask, parkedTasks,
+  TERMINAL_LAUNCH_EVENTS,
+  openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
@@ -202,11 +202,33 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;
     if (open.has(id)) continue;                    // a newer launch is running
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    // Human-territory cards are excluded here too, not just in the P0/P1
+    // backlog sweep below (ship-check catch on task #1154). Retry only needs a
+    // PRIOR dead launch to fire, so without this a card that was dispatched
+    // once — before the marker existed, or by an explicit owner --id — gets
+    // re-launched unattended forever by dead-session recovery. That is exactly
+    // the Sarah check-in shape: launched 2026-07-25, then re-dispatched twice
+    // more by the watchdog. Retry goes through `bsc-next --id`, which skips
+    // actionable()'s filter entirely, so this is the only place to stop it.
+    if (isExcludedCategory(task)) continue;
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
-    const deaths = deadAttemptsForTask(id, entries).length;
-    const item = { taskId: id, subject: task.subject, deaths };
-    if (deaths >= DEAD_ATTEMPT_LIMIT) toPark.push(item);
+    // Card #1233: substantive deaths only count toward the park threshold —
+    // cmux's terminal-surface-never-rendered failures are free retries here
+    // too, bounded instead by dispatchCapDecision's own infra ceiling.
+    // `reason` rides along on the item so every downstream consumer (the
+    // digest line below, and the owner-paged message in dispatch-watchdog.js)
+    // can tell an infra park apart from a substantive one — `deaths` alone
+    // would read as "parked after 0 dead dispatch attempts" for a task
+    // parked purely on the infra ceiling, since cap.substantive.length is 0
+    // in that case (ship-check catch).
+    const cap = dispatchCapDecision(id, entries);
+    const item = {
+      taskId: id, subject: task.subject,
+      deaths: cap.reason === 'infra' ? cap.infra.length : cap.substantive.length,
+      reason: cap.reason,
+    };
+    if (cap.blocked) toPark.push(item);
     else retryable.push(item);
   }
   retryable.sort((a, b) => parseInt(a.taskId, 10) - parseInt(b.taskId, 10));
@@ -220,7 +242,7 @@ function planSweep(entries, tasks, opts) {
     if (isExcludedCategory(task)) continue;        // human-territory cards
     const id = String(task.id);
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
-    if (deadAttemptsForTask(id, entries).length >= DEAD_ATTEMPT_LIMIT) continue;
+    if (dispatchCapDecision(id, entries).blocked) continue;
     p01Queue.push({ taskId: id, subject: task.subject, priority: pri });
   }
   p01Queue.sort((a, b) => (a.priority < b.priority ? -1 : a.priority > b.priority ? 1 :
@@ -317,7 +339,7 @@ function renderNarrative(plan) {
   if (plan.toPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length) {
     lines.push('');
     lines.push('Needs you:');
-    for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.deaths} dead attempts, parked (won't retry)`);
+    for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.reason === 'infra' ? `${p.deaths} infra dead-launches in a row (cmux itself looks wedged)` : `${p.deaths} dead attempts`}, parked (won't retry)`);
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
   }

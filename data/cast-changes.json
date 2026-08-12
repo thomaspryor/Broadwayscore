@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-05",
+  "lastUpdated": "2026-08-10",
   "shows": {
     "just-in-time-2025": {
       "currentCast": [
@@ -24,26 +24,12 @@
           "since": "2025-05-30"
         },
         {
-          "name": "Sadie Dickerson",
-          "role": "Sandra Dee",
-          "since": "2025-09-16"
-        },
-        {
           "name": "Sarah Hyland",
           "role": "Connie Francis",
           "since": "2025-10-08"
         }
       ],
       "upcoming": [
-        {
-          "type": "departure",
-          "name": "Sadie Dickerson",
-          "role": "Sandra Dee",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/just-in-time-broadway-circle-in-the-square-theatre-2025",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
         {
           "type": "departure",
           "name": "Sarah Hyland",
@@ -124,17 +110,40 @@
           "sourceUrl": "https://playbill.com/production/just-in-time-broadway-circle-in-the-square-theatre-2025",
           "sourceType": "playbill-cast",
           "addedDate": "2026-07-28"
+        },
+        {
+          "type": "note",
+          "name": "TBA",
+          "role": "Bobby Darin",
+          "note": "Production has not announced who will star as Darin between Groff and Jordan's runs.",
+          "sourceUrl": "https://playbill.com/article/jeremy-jordan-will-be-broadways-next-bobby-darin-in-just-in-time",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
         }
       ],
-      "history": []
+      "history": [
+        {
+          "name": "Sadie Dickerson",
+          "role": "Sandra Dee",
+          "since": "2025-09-16",
+          "until": "2026-04-19",
+          "note": "Succeeded by Carrie St. Louis beginning April 21.",
+          "sourceUrl": "https://playbill.com/article/matthew-morrison-is-bobby-darin-in-just-in-time-on-broadway-beginning-april-1",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Matthew Morrison",
+          "role": "Bobby Darin",
+          "since": "2026-04-01",
+          "until": "2026-04-19",
+          "note": "Glee star joins for a limited run through April 19.",
+          "sourceUrl": "https://playbill.com/article/matthew-morrison-is-bobby-darin-in-just-in-time-on-broadway-beginning-april-1",
+          "sourceType": "playbill"
+        }
+      ]
     },
     "the-great-gatsby-2024": {
       "currentCast": [
-        {
-          "name": "Reeve Carney",
-          "role": "Jay Gatsby",
-          "since": "2026-03-30"
-        },
         {
           "name": "Corbin Bleu",
           "role": "Nick Carraway",
@@ -151,11 +160,6 @@
           "since": "2026-05-11"
         },
         {
-          "name": "Eva Noblezada",
-          "role": "Daisy Buchanan",
-          "since": "2026-03-04"
-        },
-        {
           "name": "Linedy Genao",
           "role": "Myrtle Wilson",
           "since": "2025-03-31"
@@ -166,9 +170,14 @@
           "since": "2025-03-31"
         },
         {
-          "name": "Aisha Jackson",
+          "name": "China Anne McClain",
           "role": "Daisy Buchanan",
-          "since": "2025-06-16"
+          "since": "2026-08-03"
+        },
+        {
+          "name": "Jeremy Jordan",
+          "role": "Jay Gatsby",
+          "since": "2025-11-10"
         }
       ],
       "upcoming": [
@@ -195,15 +204,6 @@
           "type": "departure",
           "name": "Austin Colby",
           "role": "Tom Buchanan",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Aisha Jackson",
-          "role": "Daisy Buchanan",
           "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
           "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
           "sourceType": "playbill-cast",
@@ -390,24 +390,6 @@
           "addedDate": "2026-07-25"
         },
         {
-          "type": "departure",
-          "name": "Reeve Carney",
-          "role": "Jay Gatsby",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-28"
-        },
-        {
-          "type": "departure",
-          "name": "Eva Noblezada",
-          "role": "Daisy Buchanan",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-28"
-        },
-        {
           "type": "arrival",
           "name": "Ryan McCartan",
           "role": "Unknown",
@@ -460,6 +442,15 @@
           "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Jeremy Jordan",
+          "role": "Jay Gatsby",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/the-great-gatsby-broadway-broadway-theatre-2024",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
         }
       ],
       "history": [
@@ -469,6 +460,51 @@
           "until": "2026-07-26",
           "note": "Original cast member; will have played over 900 performances. Successor TBA.",
           "sourceUrl": "https://playbill.com/article/samantha-pauly-sets-final-performance-in-broadways-the-great-gatsby",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Aisha Jackson",
+          "role": "Daisy Buchanan",
+          "since": "2025-06-16",
+          "until": "2026-02-01",
+          "note": "Final performance as Daisy Buchanan; Eva Noblezada to succeed her.",
+          "sourceUrl": "https://playbill.com/article/eva-noblezada-will-return-to-broadways-the-great-gatsby-in-february-reeve-carney-joins-cast-in-march",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Reeve Carney",
+          "role": "Jay Gatsby",
+          "since": "2026-03-30",
+          "until": "2026-07-26",
+          "note": "Final performance as Jay Gatsby",
+          "sourceUrl": "https://playbill.com/article/china-anne-mcclain-will-make-broadway-debut-in-the-great-gatsby-ryan-mccartan-sets-return",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Eva Noblezada",
+          "role": "Daisy Buchanan",
+          "since": "2026-03-04",
+          "until": "2026-07-26",
+          "note": "Final performance as Daisy Buchanan",
+          "sourceUrl": "https://playbill.com/article/china-anne-mcclain-will-make-broadway-debut-in-the-great-gatsby-ryan-mccartan-sets-return",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Senzel Ahmady",
+          "role": "Daisy Buchanan",
+          "since": "2026-07-27",
+          "until": "2026-08-02",
+          "note": "Broadway debut; national tour star filling interim week July 27–Aug 2",
+          "sourceUrl": "https://playbill.com/article/china-anne-mcclain-will-make-broadway-debut-in-the-great-gatsby-ryan-mccartan-sets-return",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Ryan McCartan",
+          "role": "Jay Gatsby",
+          "since": "2026-07-27",
+          "until": "2025-11-09",
+          "note": "Final performance as Jay Gatsby; successor to be announced later.",
+          "sourceUrl": "https://playbill.com/article/ryan-mccartan-sets-final-performance-in-broadways-the-great-gatsby",
           "sourceType": "playbill"
         }
       ]
@@ -533,14 +569,19 @@
           "since": "2023-04-10"
         },
         {
-          "name": "Nik Walker",
-          "role": "Billy Flynn",
-          "since": "2026-05-04"
-        },
-        {
           "name": "Krysta Rodriguez",
           "role": "Roxie Hart",
           "since": "2026-06-15"
+        },
+        {
+          "name": "Eddie Cooper",
+          "role": "Amos Hart",
+          "since": "2026-07-20"
+        },
+        {
+          "name": "Rachel Schur",
+          "role": "Roxie Hart",
+          "since": "2026-05-04"
         }
       ],
       "upcoming": [
@@ -640,15 +681,6 @@
           "type": "departure",
           "name": "Charity Angél Dawson",
           "role": "Matron \"Mama\" Morton",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Nik Walker",
-          "role": "Billy Flynn",
           "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
           "sourceUrl": "https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074",
           "sourceType": "playbill-cast",
@@ -806,9 +838,73 @@
           "sourceUrl": "https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Rachel Schur",
+          "role": "Roxie Hart",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
         }
       ],
-      "history": []
+      "history": [
+        {
+          "name": "Nik Walker",
+          "role": "Billy Flynn",
+          "since": "2026-05-04",
+          "until": "2026-06-21",
+          "note": "Succeeded by Matteo Lane, who debuted June 22.",
+          "sourceUrl": "https://playbill.com/article/watch-matteo-lane-and-krysta-rodriguez-take-bows-in-broadways-chicago",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Derek Hough",
+          "role": "Emcee/Opening Monologue",
+          "since": "2026-07-20",
+          "until": "2026-07-20",
+          "note": "One-night-only debut delivering Chicago's opening monologue at 7 PM performance.",
+          "sourceUrl": "https://playbill.com/article/mark-ballas-returns-to-broadways-chicago-july-20-eddie-cooper-joins-cast",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Matteo Lane",
+          "role": "Billy Flynn",
+          "since": "2026-06-22",
+          "until": "2026-07-19",
+          "note": "Broadway debut; limited engagement through July 19.",
+          "sourceUrl": "https://playbill.com/article/watch-matteo-lane-and-krysta-rodriguez-take-bows-in-broadways-chicago",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Mark Ballas",
+          "role": "Billy Flynn",
+          "since": "2026-07-20",
+          "until": "2026-05-03",
+          "note": "Ballas departing as Billy Flynn ahead of Nik Walker's arrival May 4.",
+          "sourceUrl": "https://playbill.com/article/nik-walker-will-join-broadway-cast-of-chicago",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Robyn Hurder",
+          "role": "Velma Kelly",
+          "since": "2025-12-15",
+          "until": "2026-01-11",
+          "note": "Returns to Chicago for limited engagement as Velma Kelly through January 11, 2026.",
+          "sourceUrl": "https://playbill.com/article/smash-star-robyn-hurder-sets-return-to-broadways-chicago",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Whitney Leavitt",
+          "role": "Roxie Hart",
+          "since": "2026-02-02",
+          "until": "2026-03-15",
+          "note": "Broadway debut; 6-week limited engagement at Ambassador Theatre",
+          "sourceUrl": "https://www.broadwayworld.com/article/Whitney-Leavitt-Will-Join-the-Broadway-Cast-of-CHICAGO-20251201",
+          "sourceType": "broadwayworld"
+        }
+      ]
     },
     "wicked-2003": {
       "currentCast": [
@@ -1307,6 +1403,48 @@
           "sourceUrl": "https://playbill.com/production/six-the-musicallena-horne-theatre-2021-2022",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Jasmine Forsberg",
+          "role": "Jane Seymour",
+          "date": "2026-08-16",
+          "note": "Final performance August 16; succeeded by Natalie Paris.",
+          "sourceUrl": "https://playbill.com/article/original-queens-natalie-paris-and-aimie-atkinson-to-join-six-on-broadway",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Abigail Barlow",
+          "role": "Katherine Howard",
+          "date": "2026-08-16",
+          "note": "Final performance August 16; succeeded by Aimie Atkinson.",
+          "sourceUrl": "https://playbill.com/article/original-queens-natalie-paris-and-aimie-atkinson-to-join-six-on-broadway",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Natalie Paris",
+          "role": "Jane Seymour",
+          "date": "2026-08-17",
+          "endDate": "2026-12-13",
+          "note": "Original UK Jane Seymour; Broadway debut; limited run through December 13.",
+          "sourceUrl": "https://playbill.com/article/original-queens-natalie-paris-and-aimie-atkinson-to-join-six-on-broadway",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Aimie Atkinson",
+          "role": "Katherine Howard",
+          "date": "2026-08-17",
+          "endDate": "2026-10-31",
+          "note": "Original UK Katherine Howard; Broadway debut; final performance matinee October 31.",
+          "sourceUrl": "https://playbill.com/article/original-queens-natalie-paris-and-aimie-atkinson-to-join-six-on-broadway",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
         }
       ],
       "history": []
@@ -1321,11 +1459,6 @@
           "name": "Chris Renfro",
           "role": "Mary's Teacher",
           "since": "2025-01-21"
-        },
-        {
-          "name": "Tituss Burgess",
-          "role": "Mary Todd Lincoln",
-          "since": "2025-01-01"
         },
         {
           "name": "Betty Gilpin",
@@ -1366,16 +1499,6 @@
           "name": "Barrett Foa",
           "role": "Mary's Tutor",
           "since": "2026-07-06"
-        },
-        {
-          "name": "Maya Rudolph",
-          "role": "Mary",
-          "since": "2026-04-01"
-        },
-        {
-          "name": "Tony Macht",
-          "role": "Mary's Husband's Assistant",
-          "since": "2025-11-18"
         }
       ],
       "upcoming": [
@@ -1428,9 +1551,9 @@
           "type": "note",
           "name": "Oh, Mary!",
           "role": "Mary Todd Lincoln",
-          "date": "2026-09-12",
-          "note": "Casting after Stalter's final bow (Sept 12) to be announced",
-          "sourceUrl": "https://playbill.com/article/ryo-kamibayashi-barrett-foa-will-join-meg-stalter-on-broadway-in-oh-mary",
+          "date": "2026-12-06",
+          "note": "Casting for after Bowen Yang's final bow is to be announced.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
           "sourceType": "playbill",
           "addedDate": "2026-06-17"
         },
@@ -1509,15 +1632,6 @@
         },
         {
           "type": "departure",
-          "name": "Tony Macht",
-          "role": "Mary's Husband's Assistant",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/oh-mary-broadway-lyceum-theatre-2024",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
           "name": "Hannah Solow",
           "role": "Mary",
           "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
@@ -1533,9 +1647,107 @@
           "sourceUrl": "https://playbill.com/production/oh-mary-broadway-lyceum-theatre-2024",
           "sourceType": "playbill-cast",
           "addedDate": "2026-08-04"
+        },
+        {
+          "type": "departure",
+          "name": "Meg Stalter",
+          "role": "Mary Todd Lincoln",
+          "date": "2026-09-12",
+          "note": "Final performance as title star after run beginning July 6.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Bowen Yang",
+          "role": "Mary Todd Lincoln",
+          "date": "2026-09-15",
+          "endDate": "2026-12-06",
+          "note": "12-week engagement as next title star at Lyceum Theatre; Broadway debut.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Ryo Kamibayashi",
+          "role": "Mary's Husband's Assistant",
+          "date": "2026-09-13",
+          "note": "Final bow in the play September 13.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Tony Macht",
+          "role": "Mary's Husband's Assistant",
+          "date": "2026-09-15",
+          "endDate": "2026-12-06",
+          "note": "Original cast member re-joining the company alongside Bowen Yang.",
+          "sourceUrl": "https://playbill.com/article/bowen-yang-will-be-broadways-next-oh-mary",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "note",
+          "name": "Mary Todd Lincoln",
+          "role": "Mary Todd Lincoln",
+          "date": "2026-09-13",
+          "note": "Casting after Stalter's final bow to be announced",
+          "sourceUrl": "https://playbill.com/article/ryo-kamibayashi-barrett-foa-will-join-meg-stalter-on-broadway-in-oh-mary",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
         }
       ],
-      "history": []
+      "history": [
+        {
+          "name": "Tony Macht",
+          "role": "Mary's Husband's Assistant",
+          "since": "2025-11-18",
+          "until": "2025-09-28",
+          "note": "Original cast member continuing until September 28",
+          "sourceUrl": "https://playbill.com/article/get-ready-to-say-goodbye-to-oh-mary-s-original-cast",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Maya Rudolph",
+          "role": "Mary",
+          "since": "2026-04-01",
+          "until": "2026-07-05",
+          "note": "Final performance before Meg Stalter takes over July 6",
+          "sourceUrl": "https://playbill.com/article/ryo-kamibayashi-barrett-foa-will-join-meg-stalter-on-broadway-in-oh-mary",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Bianca Leigh",
+          "role": "Mary's Chaperone",
+          "since": "2026-04-28",
+          "until": "2026-06-20",
+          "note": "Returning original cast member for 8-week limited engagement opposite Maya Rudolph",
+          "sourceUrl": "https://playbill.com/article/phillip-james-brannon-cheyenne-jackson-bianca-leigh-set-returns-in-oh-mary-on-broadway",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Cheyenne Jackson",
+          "role": "Mary's Teacher",
+          "since": "2026-04-28",
+          "until": "2026-06-20",
+          "note": "Returning past star for 8-week limited engagement opposite Maya Rudolph",
+          "sourceUrl": "https://playbill.com/article/phillip-james-brannon-cheyenne-jackson-bianca-leigh-set-returns-in-oh-mary-on-broadway",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Tituss Burgess",
+          "role": "Mary Todd Lincoln",
+          "since": "2025-01-01",
+          "until": "2025-08-02",
+          "note": "Current star departing alongside original cast members",
+          "sourceUrl": "https://playbill.com/article/get-ready-to-say-goodbye-to-oh-mary-s-original-cast",
+          "sourceType": "playbill"
+        }
+      ]
     },
     "operation-mincemeat-2025": {
       "currentCast": [
@@ -1949,6 +2161,11 @@
           "name": "Sherie Rene Scott",
           "role": "Magenta",
           "since": "2026-06-26"
+        },
+        {
+          "name": "Valentina",
+          "role": "Columbia",
+          "since": "2026-07-21"
         }
       ],
       "upcoming": [
@@ -1956,8 +2173,8 @@
           "type": "closure",
           "name": "The Rocky Horror Show",
           "role": "Production",
-          "date": "2027-01-08",
-          "note": "Production closes 2027-01-08 (date reconciled to broadway.com-audited closingDate).",
+          "date": "2027-01-13",
+          "note": "Production closes 2027-01-13 (date reconciled to broadway.com-audited closingDate).",
           "sourceUrl": "https://playbill.com/article/meet-rocky-horror-shows-broadway-creatures-of-the-night",
           "sourceType": "playbill",
           "addedDate": "2026-01-28"
@@ -2033,6 +2250,76 @@
           "sourceUrl": "https://playbill.com/production/the-rocky-horror-show-broadway-studio-54-2026",
           "sourceType": "playbill-cast",
           "addedDate": "2026-07-25"
+        },
+        {
+          "type": "departure",
+          "name": "Stephanie Hsu",
+          "role": "Janet",
+          "date": "2026-08-23",
+          "note": "Final bow as Janet; succeeded by Lorna Courtney",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Andrew Durand",
+          "role": "Brad",
+          "date": "2026-08-23",
+          "note": "Final bow as Brad; succeeded by Kevin McHale",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Lorna Courtney",
+          "role": "Janet",
+          "date": "2026-08-25",
+          "note": "Joins as Janet, succeeding Stephanie Hsu",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Kevin McHale",
+          "role": "Brad",
+          "date": "2026-08-25",
+          "note": "Joins as Brad, succeeding Andrew Durand",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Luke Evans",
+          "role": "Frank-N-Furter",
+          "date": "2026-08-23",
+          "note": "Final bow as Frank-N-Furter; succeeded by Jake Shears Sept 11",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Paul Soileau",
+          "role": "Frank-N-Furter",
+          "date": "2026-08-24",
+          "note": "Covers Frank-N-Furter between Luke Evans and Jake Shears' runs",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Jake Shears",
+          "role": "Frank-N-Furter",
+          "date": "2026-09-11",
+          "note": "Returns to Broadway as Frank-N-Furter, succeeding Luke Evans",
+          "sourceUrl": "https://playbill.com/article/jake-shears-lorna-courtney-kevin-mchale-will-time-warp-into-broadways-the-rocky-horror-show",
+          "sourceType": "playbill",
+          "addedDate": "2026-08-08"
         }
       ],
       "history": []
@@ -3110,15 +3397,6 @@
         },
         {
           "type": "departure",
-          "name": "Shaina Taub",
-          "role": "Emma Goldman",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/ragtime-broadway-vivian-beaumont-theater-2025",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-11"
-        },
-        {
-          "type": "departure",
           "name": "Jordan Chin",
           "role": "Unknown",
           "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
@@ -3884,9 +4162,6 @@
           "date": "2026-08-04",
           "endDate": "2026-08-22",
           "dates": [
-            "2026-08-05",
-            "2026-08-06",
-            "2026-08-07",
             "2026-08-08",
             "2026-08-09",
             "2026-08-10",
@@ -4847,16 +5122,6 @@
           "since": "2026-04-05"
         },
         {
-          "name": "Jessie Shelton",
-          "role": "Fate",
-          "since": "2026-04-28"
-        },
-        {
-          "name": "Kay Trinidad",
-          "role": "Fate",
-          "since": "2026-04-28"
-        },
-        {
           "name": "Emily Afton",
           "role": "Unknown",
           "since": "2026-04-05"
@@ -4887,11 +5152,6 @@
           "since": "2025-09-02"
         },
         {
-          "name": "Jewelle Blackman",
-          "role": "Fates",
-          "since": "2026-04-28"
-        },
-        {
           "name": "Brandon Cameron",
           "role": "Orpheus",
           "since": "2026-06-09"
@@ -4915,6 +5175,31 @@
           "name": "Khori Michelle Petinaud",
           "role": "The Fates",
           "since": "2026-07-21"
+        },
+        {
+          "name": "Joshua Colley",
+          "role": "Orpheus",
+          "since": "2026-03-03"
+        },
+        {
+          "name": "Morgan Dudley",
+          "role": "Eurydice",
+          "since": "2025-09-02"
+        },
+        {
+          "name": "Kurt Elling",
+          "role": "Hermes",
+          "since": "2025-09-02"
+        },
+        {
+          "name": "Paulo Szot",
+          "role": "Hades",
+          "since": "2025-09-02"
+        },
+        {
+          "name": "Jack Wolfe",
+          "role": "Orpheus",
+          "since": "2025-09-02"
         }
       ],
       "upcoming": [
@@ -4931,24 +5216,6 @@
           "type": "departure",
           "name": "Shea Renne",
           "role": "Unknown",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Jessie Shelton",
-          "role": "Fate",
-          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
-          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
-          "sourceType": "playbill-cast",
-          "addedDate": "2026-07-25"
-        },
-        {
-          "type": "departure",
-          "name": "Kay Trinidad",
-          "role": "Fate",
           "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
           "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
           "sourceType": "playbill-cast",
@@ -4980,9 +5247,132 @@
           "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
           "sourceType": "playbill-cast",
           "addedDate": "2026-07-25"
+        },
+        {
+          "type": "arrival",
+          "name": "Jasmin Savoy Brown",
+          "role": "Eurydice",
+          "date": "2026-09-01",
+          "note": "Television and film star joining Broadway cast",
+          "sourceUrl": "https://www.broadwayworld.com/article/Norbert-Leo-Butz-Amber-Iman-and-More-Will-Join-the-Cast-of-HADESTOWN-20260729",
+          "sourceType": "broadwayworld",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Norbert Leo Butz",
+          "role": "Hermes",
+          "date": "2026-09-01",
+          "note": "Two-time Tony Award winner joining Broadway cast",
+          "sourceUrl": "https://www.broadwayworld.com/article/Norbert-Leo-Butz-Amber-Iman-and-More-Will-Join-the-Cast-of-HADESTOWN-20260729",
+          "sourceType": "broadwayworld",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Amber Iman",
+          "role": "Persephone",
+          "date": "2026-09-01",
+          "note": "Tony Award nominee joining Broadway cast",
+          "sourceUrl": "https://www.broadwayworld.com/article/Norbert-Leo-Butz-Amber-Iman-and-More-Will-Join-the-Cast-of-HADESTOWN-20260729",
+          "sourceType": "broadwayworld",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Kayko",
+          "role": "Orpheus",
+          "date": "2026-09-01",
+          "note": "Pop-rock musician and songwriter joining Broadway cast",
+          "sourceUrl": "https://www.broadwayworld.com/article/Norbert-Leo-Butz-Amber-Iman-and-More-Will-Join-the-Cast-of-HADESTOWN-20260729",
+          "sourceType": "broadwayworld",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "arrival",
+          "name": "Geno Segers",
+          "role": "Hades",
+          "date": "2026-09-01",
+          "note": "Disney XD actor joining Broadway cast",
+          "sourceUrl": "https://www.broadwayworld.com/article/Norbert-Leo-Butz-Amber-Iman-and-More-Will-Join-the-Cast-of-HADESTOWN-20260729",
+          "sourceType": "broadwayworld",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Joshua Colley",
+          "role": "Orpheus",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Morgan Dudley",
+          "role": "Eurydice",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Kurt Elling",
+          "role": "Hermes",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Paulo Szot",
+          "role": "Hades",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
+        },
+        {
+          "type": "departure",
+          "name": "Jack Wolfe",
+          "role": "Orpheus",
+          "note": "[AUTO-FLAGGED] Not found on Playbill current cast — verify",
+          "sourceUrl": "https://playbill.com/production/hadestownwalter-kerr-theatre-2018-2019",
+          "sourceType": "playbill-cast",
+          "addedDate": "2026-08-08"
         }
       ],
-      "history": []
+      "history": [
+        {
+          "name": "Jessie Shelton",
+          "role": "Fate",
+          "since": "2026-04-28",
+          "until": "2026-07-19",
+          "note": "Took final bow July 19",
+          "sourceUrl": "https://playbill.com/article/broadways-hadestown-welcomes-3-new-fates-starting-july-21",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Kay Trinidad",
+          "role": "Fate",
+          "since": "2026-04-28",
+          "until": "2026-07-19",
+          "note": "Took final bow July 19",
+          "sourceUrl": "https://playbill.com/article/broadways-hadestown-welcomes-3-new-fates-starting-july-21",
+          "sourceType": "playbill"
+        },
+        {
+          "name": "Jewelle Blackman",
+          "role": "Fates",
+          "since": "2026-04-28",
+          "until": "2026-07-19",
+          "note": "Took final bow July 19",
+          "sourceUrl": "https://playbill.com/article/broadways-hadestown-welcomes-3-new-fates-starting-july-21",
+          "sourceType": "playbill"
+        }
+      ]
     },
     "harry-potter-2021": {
       "currentCast": [

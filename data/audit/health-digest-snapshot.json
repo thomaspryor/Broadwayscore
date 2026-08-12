@@ -1,16 +1,12 @@
 {
-  "generatedAt": "2026-08-07T08:02:23.932Z",
-  "subject": "BSC URGENT (day 7): 2 unresolved errors",
-  "bannerText": "2 errors, 20 warnings",
-  "consecutiveErrorDays": 7,
+  "generatedAt": "2026-08-11T07:57:56.315Z",
+  "subject": "BSC URGENT (day 15): 1 unresolved error",
+  "bannerText": "1 error, 25 warnings",
+  "consecutiveErrorDays": 15,
   "errors": [
     {
       "name": "Credits: ScrapingDog",
-      "message": "2969k credits left (74%) · 344k/day burn · renews in 27d · exhausts in ~9d (BEFORE renewal)"
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 4 times in the last 24h — likely broken, not transient."
+      "message": "2701k credits left (68%) · 186k/day burn · renews in 23d · exhausts in ~15d (BEFORE renewal)"
     }
   ],
   "warns": [
@@ -20,23 +16,35 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 19554 vs baseline 19558"
+      "message": "Reviews dropped: 19707 vs baseline 19714"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: take-me-out-2022 Theater Life 2/5 stars→40 vs LLM 84, gap 45)"
     },
     {
       "name": "Quality: corpus drift",
-      "message": "10 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+      "message": "9 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), cast-changes.json integrity — full --strict (gate = cross-show conflict / spike), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "message": "4 unregistered host(s) name-match a registered outlet (e.g. reviewsgate.co.uk → reviewsgate) — probable domain move dropping reviews via domain-mismatch"
+    },
+    {
+      "name": "Revenue: affiliate health",
+      "message": "1 anomaly: Bot click divergence [shadow burn-in]"
     },
     {
       "name": "Coverage: SERP census recall",
-      "message": "Review coverage not judgeable yet: only 0 prior run(s) on record (need 2) — no baseline to judge against yet"
+      "message": "Review coverage not judgeable yet: only 1 prior run(s) on record (need 2) — no baseline to judge against yet"
     },
     {
       "name": "Coverage: adversarial probe",
-      "message": "The naive search found 6 review URL(s) this pipeline hasn't discovered yet: hit-machine-off-west-end-2026, why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026, tender-off-west-end-2026, disruption-off-broadway-2026"
+      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: the-family-album-regional-2026, the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
     },
     {
       "name": "SEO: health",
-      "message": "1 SEO warning(s): Lighthouse score below 70 on /show/hamilton: 69/100 (lab only — field CWV healthy)"
+      "message": "1 SEO warning(s): /: simulated-test score dropped to 72 (was 95)"
     },
     {
       "name": "Cron failed: Test Suite",
@@ -44,11 +52,15 @@
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "7 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Digest v2 S0: make the Fix-button tap trustworthy — implemen (6d, stamp overdue 4d); Closing a cmux tab parks its card instead of silently re-dis (4d, stamp overdue 4d); P1: capture ALL scraping spend — Browserbase chokepoint + cr (4d, stamp overdue 4d) (14 awaiting recheck, earliest due 2026-08-05; 8 parked via tab-close, oldest 2026-08-03 — resume: node scripts/bsc-next.js --id 951 --force — not counted)"
+      "message": "3 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: Scraping v2: verify T4 saving holds for 7 billed days (RECHE (9d, stamp overdue 3d); Scraping v2: T4 was a yield regression — reviews.php is not  (9d, stamp overdue 3d); Generalize recover-serp-text.js urlless sweep beyond Telegra (6d, stamp overdue 3d) (14 awaiting recheck, earliest due 2026-08-09; 60 parked via tab-close, oldest 2026-08-08 — resume: node scripts/bsc-next.js --id 830 --force — not counted)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "65 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (15d); Trainspotting: only 4 reviews on site + email said 7 (invest (15d); Silent-gap 120d sweep remainder: 16 stranded T1/T2 reviews ( (14d)"
+      "message": "42 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (19d); Trainspotting: only 4 reviews on site + email said 7 (invest (19d); cmux-launch: adopt a late-alive workspace instead of close-a (18d)"
+    },
+    {
+      "name": "Stuck work: paused P2/other cards",
+      "message": "1 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging)"
     },
     {
       "name": "Infra-review: gate telemetry",
@@ -59,12 +71,16 @@
       "message": "No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here."
     },
     {
+      "name": "Autofix: jobs actually succeeding",
+      "message": "Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. It is untracked, so CI never sees it — this row cannot judge the loop from this environment."
+    },
+    {
       "name": "Feedback: needs-manual-review backlog",
-      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 6d). Newest: #504 Bug Diagnosis: User reports that Gotta Dance (Off-Broadway) has an inc"
+      "message": "3 open user-feedback issue(s) awaiting manual review (oldest 10d). Newest: #566 Bug Diagnosis: A review for 'Two Strangers (Carry a Cake Across New Yo"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
-      "message": "9 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+      "message": "11 open Off-Broadway show(s) look closed per the weekly detector. First: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
     },
     {
       "name": "Workflow coverage: never-run",
@@ -72,11 +88,11 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "4 discovered review(s) not reaching the composite score (2 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
+      "message": "3 discovered review(s) not reaching the composite score (1 T1). First: trainspotting-the-musical-west-end-2026 — broadwayworld (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "11 aggregator-reviewed show(s) not in the catalogue. First: \"We’ve Been Here Before\" (nyt-theater)"
+      "message": "11 aggregator-reviewed show(s) not in the catalogue. First: \"Game of Thrones: The Mad King\" (wet-roundup)"
     },
     {
       "name": "Data: undispatchable backlog cards",
@@ -85,49 +101,43 @@
   ],
   "queued": [
     {
-      "title": "Scraping spend over budget: browserbase $6.9 > $4 (69 sessions); brightdata $5.34 > $2.5 (1414 serp + 2148 unlocker reqs); scrapingdog 52125 credits > 45000",
-      "description": "Day 2026-08-05. 2026-08-05 · Browserbase: $6.9 (69 sessions) · 2026-08-05 · Bright Data: $5.34 (1414 serp / 2148 unlocker) · ScrapingBee: 21400 credits (21400 this cycle) · ScrapingDog: 52125 credits (983562 this cycle) · Browserbase attribution: 6% attributed — top: collect-review-texts.js 4 · Bright Data attribution: 30% attributed — top: opening-night-poller.js 780, audit-show-review-gap.js 205, ingest-review-from-url.js 52, enrich-stubhub-prices.js 18, collect-review-texts.js 3 · ScrapingBee attribution: 1% attributed — top: opening-night-poller.js 75, audit-show-review-gap.js 46, ingest-review-from-url.js 44, enrich-stubhub-prices.js 2, auto-fix-show-data.js 1 · ScrapingDog attribution: 8% attributed — top: audit-show-review-gap.js 1422, opening-night-poller.js 1216, collect-review-texts.js 935, ingest-review-from-url.js 203, detect-revivals-ibdb.js 108. Verification streak reset to 0.",
+      "title": "Scoring Audit has stopped updating (190 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-02-01 and 2026-08-10.)",
       "severity": "error",
       "url": null
     },
     {
       "title": "Deployed coverage — the site is serving stale coverage",
-      "description": "2/154 show(s) differ between internal state and what prod serves.\nscore-drift: 2\nThe Enormous Crocodile: score-drift\nThe Car Man: score-drift",
+      "description": "1/148 show(s) differ between internal state and what prod serves.\nscore-drift: 1\nAvenue Q: score-drift",
       "severity": "error",
       "url": null
     },
     {
-      "title": "Feedback: 1 of 1 needs you",
-      "description": "1 message from users came in. 1 of them stalled and needs a person.\n\n3 Summers of Lincoln (Regional) — The site deliberately did not act on this: show \"3 Summers of Lincoln\" (regional) already in catalog as 3-summers-of-lincoln-regional-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Stage West, Stage and Cinema, and Vanguard Culture’s to 3 Summers of Lincoln’s scorecard, please\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/552",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nTwo Strangers (Regional) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please correct Two Strangers (Carry a Cake Across New York)’s is from the Boston Flobe is the right paper but wrong critic, Don Aucion didn’t review it, Terry Byrne did.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/566",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31413897112"
+    },
+    {
+      "title": "Feedback: 1 of 2 needs you",
+      "description": "2 messages from users came in. 1 of them stalled and needs a person.\n\n3 Summers of Lincoln (Regional) — The site deliberately did not act on this: show \"3 Summers of Lincoln\" (regional) already in catalog as 3-summers-of-lincoln-regional-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add Vanguard Culture’s review from David Coddon to the Scorecard page for 3 Summers of Lincoln.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/567\n\n3 Summers of Lincoln (Regional) — A review on the 3 Summers of Lincoln page is misattributed — David Coddon's review is credited to Vanguard Culture but should be attributed to Stage West.. You will get another email when it is live on the site.\n  They wrote: \"Update: David Coddon’s review is Stage West’s not Vanguard Culture’s\"",
       "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31111698535"
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31427249280"
     },
     {
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-      "description": "main test.yml is STILL red after 29 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "description": "main test.yml is STILL red after 18 consecutive pushes — the auto-dispatch card filed at the 2nd failure has not resolved it. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
       "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31129924024"
-    },
-    {
-      "title": "Feedback: 1 of 1 needs you",
-      "description": "1 message from users came in. 1 of them stalled and needs a person.\n\nTwo Strangers/Outsiders/3 Summersmof Lincoln — The site deliberately did not act on this: show \"Two Strangers/Outsiders/3 Summersmof Lincoln\" already in catalog as two-strangers-bway-2025; ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Please add the Audience Grade for all Two Strangers and The Outsiders respectively under Transferred to Broadway alongside Lincoln’s Audience Grade under its page from Recent Tryouts.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/553",
-      "severity": "error",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31133806584"
-    },
-    {
-      "title": "T1 Coverage Scoreboard",
-      "description": "broadway: 80.1% (452/564)\noff-broadway: 48.7% (155/318)\nwest-end: 70.2% (403/574)\n\nOldest gaps:\n1536 — guardian (357h)\n1536 — independent (357h)\nA Midsummer Night's Dream - Globe — financialtimes (357h)\nA Midsummer Night's Dream - Globe — telegraph (357h)\nA Midsummer Night's Dream — financialtimes (357h)\n… 202 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nAladdin — ew (357h)\nThe Book of Mormon — usatoday (357h)\nHeathers The Musical — dailybeast (357h)\nHeathers The Musical — ew (357h)\nSpamalot — dailybeast (357h)\n… 4 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31437562216"
     },
     {
       "title": "T1 Coverage — new gaps past 24h",
-      "description": "12 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+      "description": "14 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
       "severity": "error",
       "url": null
     }
   ],
   "autoFixedCount": 1,
-  "passedCount": 53,
-  "totalCount": 78
+  "passedCount": 52,
+  "totalCount": 82
 }

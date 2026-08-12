@@ -1,7 +1,26 @@
 'use strict';
 
+const { MIN_SCORED_REVIEWS, isConsensusEligible } = require('../critic-consensus-eligibility');
+
 const name = 'critics-take-present';
 const description = 'Composite score exists but Critics Take (critic-consensus.json) is missing or empty';
+
+/**
+ * Scored reviews as this check can see them: reviews.json entries, the same
+ * source and the same exclusions t1-outlets-scored.check.js uses. Deliberately
+ * NOT the review-text files the generator scans — opening-night-checklist.yml
+ * checks out core-data only, so data/review-texts/ does not exist in that job
+ * and a disk count would be zero for every show.
+ *
+ * @param {Array<Object>} reviews - context.reviewsDoc[show.id]
+ * @returns {number}
+ */
+function countScoredReviews(reviews) {
+  return (reviews || []).filter(r => {
+    if (r.wrongProduction === true || r.wrongShow === true) return false;
+    return r.assignedScore != null || r.compositeScore != null;
+  }).length;
+}
 
 /**
  * @param {Object} show
@@ -13,6 +32,22 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: 'No compositeScore yet — Critics Take not required' };
   }
 
+  // A show can carry a composite off a single review, but
+  // generate-critic-consensus.js refuses to write a consensus below
+  // MIN_SCORED_REVIEWS. Flagging one of those shows produced an endless
+  // detect -> dispatch -> generator-skips -> detect loop (task #389:
+  // death-note-the-musical-west-end-2026, 5 dispatches + 23 escalations).
+  // The threshold is imported, never re-typed, so lowering it in the generator
+  // moves this check with it.
+  const scoredCount = countScoredReviews(context.reviewsDoc[show.id]);
+  if (!isConsensusEligible(scoredCount)) {
+    return {
+      ok: true,
+      severity: 'ok',
+      message: `Only ${scoredCount} scored review(s) — below the ${MIN_SCORED_REVIEWS} generate-critic-consensus.js requires, so no Critics Take is expected`,
+    };
+  }
+
   const entry = context.criticConsensusDoc[show.id];
   // critic-consensus.json uses 'text' field for the consensus blurb
   const hasText = entry && typeof entry.text === 'string' && entry.text.trim().length > 0;
@@ -22,7 +57,22 @@ function run(show, context) {
       ok: false,
       severity: 'warning',
       message: `Composite score exists (${show.compositeScore}) but Critics Take is missing; run: node scripts/generate-critic-consensus.js --show=${show.id}`,
-      details: { compositeScore: show.compositeScore, entry: entry || null },
+      details: {
+        compositeScore: show.compositeScore,
+        entry: entry || null,
+        // Self-declared remediation (task #389). The checklist runner collects
+        // details.remediation from every result — it does NOT switch on check
+        // name — so a new check opts into auto-remediation by emitting this
+        // field, exactly like details.missingReviews already works for the BWW
+        // RR stub path (opening-night-checklist.js remediateMissingReviews).
+        remediation: {
+          kind: 'workflow',
+          key: `critic-consensus:${show.id}`,
+          workflow: 'update-critic-consensus.yml',
+          inputs: { show: show.id, force: 'true' },
+          reason: `composite ${show.compositeScore} with no Critics Take`,
+        },
+      },
     };
   }
 
@@ -33,4 +83,4 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run };
+module.exports = { name, description, run, countScoredReviews };

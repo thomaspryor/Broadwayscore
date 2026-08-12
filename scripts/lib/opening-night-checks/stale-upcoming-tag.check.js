@@ -15,11 +15,29 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: `No stale 'upcoming' tag (status=${show.status})` };
   }
 
+  const message = `${show.id} is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=${show.id} --apply`;
+
   return {
     ok: false,
     severity: 'warning',
-    message: `${show.id} is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=${show.id} --apply`,
-    details: { showId: show.id, tags: show.tags },
+    message,
+    details: {
+      showId: show.id,
+      tags: show.tags,
+      // Self-declared remediation (task #1132, extending #389). kind:'alert', not
+      // 'workflow' — fix-stale-upcoming-tags.js has no workflow_dispatch wrapper,
+      // and a tag-only fix on the shows.json write-guard path doesn't warrant
+      // standing up new CI just to auto-run it (owner review gate, rule 18).
+      remediation: {
+        kind: 'alert',
+        key: `stale-upcoming-tag:${show.id}`,
+        conditionKey: `opening-night-stale-upcoming-tag-${show.id}`,
+        title: `Stale 'upcoming' tag on ${show.title || show.id}`,
+        description: message,
+        severity: 'warning',
+        reason: 'status=open with tags still including upcoming',
+      },
+    },
   };
 }
 

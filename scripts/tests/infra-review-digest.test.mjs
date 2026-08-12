@@ -63,6 +63,21 @@ test('fixture ledger with known counts computes matching totals', () => {
   assert.equal(row.coveredByVerdict, 3);
   assert.deepEqual(row.byReviewer, { 'plan-review': 2, 'second-opinion': 1 });
   assert.equal(row.status, 'pass');
+  assert.equal(row.restructureEscalations, 0);
+});
+
+test('restructure-flag notes are counted, plain notes are not (task #1218)', () => {
+  const planVerdicts = [
+    planVerdict({ note: 'restructure-flag: adopted — shrank ramp from 5 shows to 2 by hand' }),
+    planVerdict({ note: 'restructure-flag: dismissed — owner confirmed 5-show gate is fine here' }),
+    planVerdict({ note: 'unrelated note about test.yml path additions' }),
+    planVerdict({}),
+  ];
+
+  const row = computeInfraReviewDigest({ gateEvents: [], planVerdicts, now: NOW });
+
+  assert.equal(row.coveredByVerdict, 4);
+  assert.equal(row.restructureEscalations, 2);
 });
 
 test('bypasses exceeding real reviews flips severity to warn', () => {

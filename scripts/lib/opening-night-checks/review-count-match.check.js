@@ -117,6 +117,10 @@ function run(show, context) {
   }
 
   const severity = gap >= ERROR_THRESHOLD ? 'error' : 'warning';
+  // Stays print-only (task #1132, extending #389): this check's "fix" is a
+  // read-only diagnostic pipe (grep EXCLUSION), not an idempotent action — the
+  // real remediation depends on the per-file reason above (re-run collection,
+  // clear a bad flag, or accept the exclusion), which only a human can decide.
   const cmd = `node scripts/rebuild-all-reviews.js --show=${show.id} --verbose 2>&1 | grep EXCLUSION`;
   const reasonSummary = Object.entries(reasons)
     .map(([r, c]) => `${r}=${c}`)

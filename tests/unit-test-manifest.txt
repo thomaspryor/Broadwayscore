@@ -6,6 +6,7 @@ scripts/audit-deployed-coverage.test.mjs
 scripts/audit-digest-clip-safety.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-opening-night-coverage.test.mjs
+scripts/audit-outlet-stub-rate.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
@@ -17,6 +18,7 @@ scripts/autonomous-run.test.mjs
 scripts/autonomous-triage.test.mjs
 scripts/backfill-cast.test.mjs
 scripts/backfill-first-seen.test.mjs
+scripts/backlog-drain.test.mjs
 scripts/bsc-conductor.test.mjs
 scripts/bsc-next-ci-red-claim.test.mjs
 scripts/bsc-next.test.mjs
@@ -41,8 +43,14 @@ scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
+scripts/newsletter/newsworthiness.test.mjs
+scripts/newsletter/section-credential-guard.test.mjs
+scripts/newsletter/we-openings-section.test.mjs
+scripts/notion-action-poll.test.mjs
 scripts/notion-tasks-sync.test.mjs
+scripts/opening-night-checklist.test.mjs
 scripts/produce-coverage-digest-snapshot.test.mjs
+scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/tests/agent-auth-preflight.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
@@ -140,6 +148,7 @@ tests/unit/content-quality-nyt-bot-stub.test.mjs
 tests/unit/content-quality-nyt-verify-access-stub.test.mjs
 tests/unit/content-quality-paywall-subscriber.test.mjs
 tests/unit/content-quality-wrong-production-autocleared.test.mjs
+tests/unit/content-quality-wsj-capsule-review.test.mjs
 tests/unit/content-quality-wsj-paywall-gate.test.mjs
 tests/unit/content-request-routing.test.mjs
 tests/unit/core-data-public-stage-exclusions.test.mjs
@@ -148,6 +157,7 @@ tests/unit/corpus-determinism.test.mjs
 tests/unit/corpus-scan-guard.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/creative-team-validator.test.mjs
+tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
@@ -174,6 +184,7 @@ tests/unit/domain-tier-skip.test.mjs
 tests/unit/dtli-slug-discover.test.mjs
 tests/unit/duplicate-cycle.test.mjs
 tests/unit/duplicate-dispatch-guard.test.mjs
+tests/unit/duplicate-flag-inheritance.test.mjs
 tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
 tests/unit/ensemble.test.mjs
@@ -189,6 +200,7 @@ tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
 tests/unit/flagged-recovery.test.mjs
+tests/unit/found-outlet-ids-skip-not-a-review.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
 tests/unit/gather-reviews-collision.test.mjs
@@ -229,6 +241,7 @@ tests/unit/late-star-anchor.test.mjs
 tests/unit/lbo-first-party-downgrade.test.mjs
 tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
+tests/unit/live-rc-missing-drift.test.mjs
 tests/unit/lint-committed-pii.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
@@ -253,6 +266,7 @@ tests/unit/multi-show-splitter.test.mjs
 tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
+tests/unit/nonreview-cv-precedence.test.mjs
 tests/unit/nypost-inline-star-recovery.test.mjs
 tests/unit/nyt-review-extraction.test.mjs
 tests/unit/nytheater-openings.test.mjs
@@ -388,12 +402,14 @@ tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
+tests/unit/stage-pagesonstages-extractor.test.mjs
 tests/unit/star-anchored-ensemble-wiring.test.mjs
 tests/unit/star-band-mapping.test.mjs
 tests/unit/star-rating-outlet-aware.test.mjs
 tests/unit/stateless-candidates.test.mjs
 tests/unit/strip-stale-single-model-scores-locked.test.mjs
 tests/unit/stuck-rescore-flag.test.mjs
+tests/unit/supabase-schema-expectations.test.mjs
 tests/unit/sync-changed-files.test.mjs
 tests/unit/syndication-pairs-shared.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
@@ -404,6 +420,7 @@ tests/unit/theaterlife-byline.test.mjs
 tests/unit/theatermania-extractor.test.mjs
 tests/unit/theatr-skip-shows.test.mjs
 tests/unit/theatrely-extractor.test.mjs
+tests/unit/time-to-publish-sla.test.mjs
 tests/unit/title-tokens-diacritics.test.mjs
 tests/unit/todaytix-runtime.test.mjs
 tests/unit/tony-attribution-canary.test.mjs

@@ -38,6 +38,7 @@ const https = require('https');
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
 const { getMarketMinReviews } = require('./lib/min-reviews');
+const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const {
   TOKENS,
   esc,
@@ -62,6 +63,7 @@ const AUDIENCE_PATH = path.join(DATA_DIR, 'audience-buzz.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
+const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const SITE_URL = 'https://broadwayscorecard.com';
 
 // RULE 17 (email broadcast safety): transactional send to ONE explicit
@@ -205,6 +207,10 @@ function isBroadcastEligible(show, importantSet) {
 // Data assembly
 // ---------------------------------------------------------------------------
 
+// Populated in main() before buildRows() runs; computeCriticScore() closes
+// over it (mirrors the pattern in generate-mobile-data.js).
+let outletRegistry = {};
+
 function buildShowReviewMap(reviews) {
   const map = new Map();
   for (const r of reviews) {
@@ -215,19 +221,15 @@ function buildShowReviewMap(reviews) {
   return map;
 }
 
-function computeCriticScore(showReviews, market) {
-  let weightedSum = 0;
-  let weightSum = 0;
-  const weights = { 1: 1.0, 2: 0.75, 3: 0.35 };
-  for (const r of showReviews) {
-    if (typeof r.assignedScore !== 'number') continue;
-    const tier = getTier(r.outletId, { showCategory: market }) || 3;
-    const w = weights[tier] || 0.35;
-    weightedSum += r.assignedScore * w;
-    weightSum += w;
-  }
-  if (weightSum === 0) return null;
-  return Math.round(weightedSum / weightSum);
+// Delegates to the canonical scorer (scripts/lib/compute-critic-score.js) —
+// the same one that produces the `cs` field on public/data/shows/{id}.json,
+// i.e. the live site's number. A prior local reimplementation here skipped
+// per-critic outlet-weight normalization, so a show with multiple bylines at
+// one outlet (e.g. two Theater Scene critics) double-counted that outlet's
+// tier weight and inflated the digest's score above the live site's.
+function computeCriticScore(showReviews, market, showType) {
+  const result = canonicalComputeCriticScore(showReviews, outletRegistry, market, showType);
+  return result ? Math.round(result.s) : null;
 }
 
 function scoreQualifies(showReviews, market) {
@@ -286,7 +288,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       // Below it the row renders "TBD" — the review-progress line still shows
       // the running count, so the owner sees momentum without a premature verdict.
       const score = reviews.length >= minReviewsToShowScore(market)
-        ? computeCriticScore(reviews, market)
+        ? computeCriticScore(reviews, market, s.type)
         : null;
       const q = scoreQualifies(reviews, market);
       const audience = getAudience(audienceBuzz, s.id);
@@ -818,6 +820,8 @@ async function main() {
   const sent = loadJSON(SENT_PATH);
   const importantSet = loadImportantList();
   const excludedMap = loadExcludedMap();
+  const registryData = loadJSON(OUTLET_REGISTRY_PATH);
+  outletRegistry = registryData?.outlets || {};
 
   const showList = shows.shows || shows;
   const reviewList = (reviews && (reviews.reviews || reviews)) || [];
@@ -863,7 +867,18 @@ async function main() {
 // Exported for unit tests (tests/unit/opening-digest-gates.test.mjs + the
 // subject↔classifier parity test in scheduled-email-count-rules.test.mjs).
 // The display gates are the load-bearing trust logic — test the real fns.
-module.exports = { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS, buildSubject, buildDigestLead };
+// computeCriticScore/setOutletRegistryForTest exist so the digest-score
+// parity test (#1245: The Pass showed 73 in the email vs 70 on site) can
+// drive the real function instead of a reimplementation.
+module.exports = {
+  minReviewsToShowScore,
+  getAudience,
+  MIN_AUDIENCE_REVIEWS,
+  buildSubject,
+  buildDigestLead,
+  computeCriticScore,
+  setOutletRegistryForTest: (r) => { outletRegistry = r; },
+};
 
 if (require.main === module) {
   main().catch(err => {

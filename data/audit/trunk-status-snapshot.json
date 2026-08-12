@@ -1,28 +1,22 @@
 {
-  "generatedAt": "2026-08-07T08:02:41.312Z",
+  "generatedAt": "2026-08-11T07:58:23.245Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "b9efb687419a371ffb963627faaac2dff50538a2",
+  "latestRunHeadSha": "7b4b168562d7a8514d541cd42a933ddb83b6d969",
   "state": "RED",
-  "consecutiveFailures": 66,
-  "redSince": "2026-08-05T14:09:09Z",
-  "redForHours": 41.89230888888889,
+  "consecutiveFailures": 41,
+  "redSince": "2026-08-09T23:39:28Z",
+  "redForHours": 32.31534583333333,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-08-04T23:54:19Z",
-  "latestFailedRunId": "31157109910",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31157109910",
-  "decidedRuns": 86,
+  "lastSuccessAt": "2026-08-09T23:31:44Z",
+  "latestFailedRunId": "31467850649",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/31467850649",
+  "decidedRuns": 87,
   "failingJobs": [
     {
       "name": "Unit Tests",
       "steps": [
         "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit review contamination"
       ]
     },
     {
@@ -34,10 +28,10 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/wrong-production-setters-honor-manual-clear.test.mjs",
+      "path": "tests/unit/review-guards.test.mjs",
       "job": "Unit Tests",
       "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 16 - no NEW setter outside the known list — alert if grep finds one"
+      "evidence": "not ok 2 - contentTier=invalid + fresh wrongProductionAutoCleared → includable"
     }
   ],
   "topFailingJob": "Unit Tests"

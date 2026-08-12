@@ -22,6 +22,7 @@
 
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName } = require('./review-normalization');
+const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -177,6 +178,18 @@ function getCvStyle(outletId) {
  * girl-interrupted backfill 2026-06-21). Plain TLDs use parts[-2]
  * (ctvoice.com -> "ctvoice", 1minutecritic.com -> "1minutecritic").
  *
+ * AGGREGATOR HOSTS RETURN null (2026-08-09). An aggregator domain is never an
+ * outlet — its pages are roundups that cite other outlets' reviews. Minting a
+ * provisional slug from one produces a phantom outlet AND a review-text file
+ * whose url is on an aggregator domain while its outletId is not an aggregator:
+ * exactly the `aggregator_url_mismatch` zero-tolerance error in
+ * validate-review-texts.js. theatre.reviews split to parts ["theatre","reviews"],
+ * so the registrable label was the generic word "theatre" — five
+ * `theatre--paul-lewis.json` roundup files reached the corpus that way and the
+ * newest one held the trunk red (Test Suite, 27 failures 08-07 → 08-09).
+ * Returning null routes these URLs down the caller's existing "no usable outlet"
+ * branch, which skips the ingest instead of inventing one.
+ *
  * @param {string} host - hostname (with or without leading www.)
  * @returns {string|null} provisional slug, or null if no usable label
  */
@@ -199,6 +212,10 @@ const PROVISIONAL_MULTIPART_SUFFIXES = [
 function provisionalOutletIdFromHost(host) {
   if (!host || typeof host !== 'string') return null;
   const h = host.replace(/^www\./, '').toLowerCase().trim();
+  // Aggregators are not outlets — see the header note. Required import: a
+  // silently-empty set here would make this guard vacuous, so aggregator-domains.js
+  // throws at load if its sets are empty.
+  if (AGGREGATOR_DOMAINS.has(h)) return null;
   const parts = h.split('.').filter(Boolean);
   if (parts.length < 2) return null;
   let label;
@@ -216,10 +233,78 @@ function provisionalOutletIdFromHost(host) {
   return slug || null;
 }
 
+/**
+ * Is this candidate URL the SAME outlet's review we already hold for this show,
+ * published on a different registered host?
+ *
+ * The false-gap this closes (The Pass, 2026-08-03 newsletter): one-minute-critic
+ * moved to Substack, so the SERP census surfaced
+ *   https://1minutecritic.substack.com/p/pass-la-mama-review-2026
+ * while we already held the same review at
+ *   https://1minutecritic.com/the-pass-la-mama-review-2026/
+ * The census counted it as a missing review. That phantom gap is one of the two
+ * that made the newsletter gate drop the show from the issue entirely.
+ *
+ * The rule is deliberately narrow, because a wrong dedupe HIDES a real review —
+ * strictly worse than the phantom gap it removes. All four must hold:
+ *   1. the candidate's host differs from the held URL's host (same host + same
+ *      outlet is the ordinary exact/normalized-URL path, handled by the caller);
+ *   2. BOTH hosts resolve to the same outletId through the registry's
+ *      domain/domainAliases map — an outlet that declares both hosts;
+ *   3. neither host is AMBIGUOUS (claimed by 2+ outlets). buildDomainMap keeps
+ *      an explicit ambiguous set precisely so a contested host can never be
+ *      silently attributed to one arbitrary outlet and used to hide a gap;
+ *   4. the held URL is one the caller vouches for (it passes only covered files).
+ *
+ * Deliberately NOT used: path or slug similarity. The two real URLs above share
+ * no path (`/the-pass-la-mama-review-2026/` vs `/p/pass-la-mama-review-2026`),
+ * so a path-equality rule would not even fire on its own motivating case, and a
+ * fuzzy-similarity rule would start suppressing genuine second reviews.
+ *
+ * Known and accepted limit: an outlet that publishes TWO different reviews of
+ * one show across its two registered hosts dedupes to one. That is rare, and the
+ * caller records every dedupe (see result.dedupedVariants in
+ * audit-show-review-gap.js) so the filtering is visible rather than silent.
+ *
+ * Pure (registry maps injected) per CLAUDE.md §15.
+ *
+ * @param {object} params
+ * @param {string} params.candidateUrl
+ * @param {string[]} params.heldUrls          URLs of covered files already held for this show
+ * @param {Record<string,string>} params.domainToOutlet  host -> outletId (unambiguous only)
+ * @param {Set<string>} [params.ambiguous]    hosts claimed by 2+ outlets
+ * @param {(u: string) => string|null} params.hostOf     host extractor (registrable-host aware)
+ * @returns {{dup: boolean, matchedUrl: string|null, outletId: string|null, reason: string|null}}
+ */
+function sameOutletUrlVariant({ candidateUrl, heldUrls, domainToOutlet, ambiguous, hostOf }) {
+  const miss = { dup: false, matchedUrl: null, outletId: null, reason: null };
+  if (!candidateUrl || typeof hostOf !== 'function') return miss;
+  const map = domainToOutlet || {};
+  const amb = ambiguous || new Set();
+  const candHost = hostOf(candidateUrl);
+  if (!candHost || amb.has(candHost)) return miss;
+  const candOutlet = map[candHost];
+  if (!candOutlet) return miss;
+  for (const held of (heldUrls || [])) {
+    const heldHost = hostOf(held);
+    if (!heldHost || heldHost === candHost) continue;
+    if (amb.has(heldHost)) continue;
+    if (map[heldHost] !== candOutlet) continue;
+    return {
+      dup: true,
+      matchedUrl: held,
+      outletId: candOutlet,
+      reason: `same outlet "${candOutlet}" already held at ${heldHost}; ${candHost} is a registered alias of it`,
+    };
+  }
+  return miss;
+}
+
 module.exports = {
   resolveCanonicalOutletId,
   getCvStyle,
   provisionalOutletIdFromHost,
+  sameOutletUrlVariant,
   // exposed for tests
   _buildDomainMap: buildDomainMap,
   _parseDomain: parseDomain,

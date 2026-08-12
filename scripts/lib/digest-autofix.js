@@ -214,6 +214,39 @@ function buildCardNotes(row) {
   ].join('\n');
 }
 
+// File one Notion card. Extracted (task #1225) so the digest-autofix canary
+// (scripts/lib/autofix-canary.js) reuses the EXACT same create call instead
+// of a second copy that would drift the next time this one is fixed
+// (CLAUDE.md §15). Callers that file several cards in one pass (runAutofix
+// below) call this per-row, then ONE syncTasks() at the end — deliberately
+// NOT folded into a single fileCardAndSync helper, since batching the sync
+// after N creates (not N syncs) is the whole point of that shape.
+function fileCard(title, notes, { log = () => {} } = {}) {
+  try {
+    execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', title,
+      '--priority', 'P1', '--status', 'Not started',
+      '--notes', notes,
+    ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
+    log(`[digest-autofix] filed card: ${title}`);
+    return true;
+  } catch (err) {
+    log(`[digest-autofix] WARN card create failed for "${title}": ${String(err.message).slice(0, 120)}`);
+    return false;
+  }
+}
+
+// Pull newly filed cards into the shared task list so they get task numbers.
+function syncTasks({ log = () => {} } = {}) {
+  try {
+    execFileSync('node', [path.join(REPO, 'scripts', 'notion-tasks-sync.js'), 'pull'],
+      { cwd: REPO, encoding: 'utf8', timeout: 120000 });
+    return true;
+  } catch (err) {
+    log(`[digest-autofix] WARN tasks-sync pull failed (cards stay queued for the drain): ${String(err.message).slice(0, 120)}`);
+    return false;
+  }
+}
+
 // Detached headless dispatch — byte-for-byte the backlog drain's pattern
 // (stdio to a log file so a refusal is debuggable, unref so the digest exits).
 // `model`, when set, escalates the dispatch past bsc-next's own resolution
@@ -278,9 +311,11 @@ function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
     .filter(e => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED && String(e.taskId) === String(taskId) && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
   if (!spawns.length) return null;
-  const jobId = spawns[0].jobId;
-  const jobs = dispatchLedger.foldJobs(dispatchLedgerEntries.filter(e => e.jobId === jobId));
-  return jobs.get(jobId) || null;
+  // Task #1184 S1: follow job-retried chains (shared, causal implementation —
+  // see dispatch-ledger.followRetryChain's header) so a live resume is never
+  // scored card-fail. A chain ending at RETRIED (successor not spawned yet)
+  // is handled by the caller as still-in-flight, with its own orphan bound.
+  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
 }
 
 // Resolves prior 'auto-dispatch' breadcrumbs (this module's own ledger) into
@@ -303,6 +338,19 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       newEntries.push({
         event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
+      });
+      resolvedKeys.add(key);
+      continue;
+    }
+    if (job.event === dispatchLedger.JOB_EVENTS.RETRIED) {
+      // Chain ends at a retry whose successor hasn't spawned yet: treat as
+      // still running inside the same orphan bound the no-spawn case uses —
+      // past it, the resume child died before spawning and the attempt fails.
+      const ageH = (now.getTime() - new Date(job.ts || 0).getTime()) / 3600e3;
+      if (ageH < ORPHAN_TIMEOUT_H) continue;
+      newEntries.push({
+        event: 'card-fail', cardId: String(d.taskId), contentHash: d.contentHash,
+        note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       resolvedKeys.add(key);
       continue;
@@ -355,34 +403,21 @@ function runAutofix({
   let filedAny = false;
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    try {
-      // P1, not P2: notion-tasks-sync pull mirrors ONLY P0/P1 cards into the
-      // shared task list — a P2 card never gets a task number, so it can
-      // never dispatch and gets re-filed as a duplicate every morning
-      // (live-run finding 2026-08-02). P1 also matches the owner rule that
-      // P0/P1 auto-dispatch at creation.
-      execFileSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'create', row.title,
-        '--priority', 'P1', '--status', 'Not started',
-        '--notes', buildCardNotes(row),
-      ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
+    // P1, not P2: notion-tasks-sync pull mirrors ONLY P0/P1 cards into the
+    // shared task list — a P2 card never gets a task number, so it can
+    // never dispatch and gets re-filed as a duplicate every morning
+    // (live-run finding 2026-08-02). P1 also matches the owner rule that
+    // P0/P1 auto-dispatch at creation.
+    if (fileCard(row.title, buildCardNotes(row), { log })) {
       row.state = 'card-filed';
       filedAny = true;
-      log(`[digest-autofix] filed card: ${row.title}`);
-    } catch (err) {
+    } else {
       row.state = 'card-failed';
-      log(`[digest-autofix] WARN card create failed for "${row.title}": ${String(err.message).slice(0, 120)}`);
     }
   }
 
   // 2. Sync newly filed cards into the shared task list so they get numbers.
-  if (filedAny) {
-    try {
-      execFileSync('node', [path.join(REPO, 'scripts', 'notion-tasks-sync.js'), 'pull'],
-        { cwd: REPO, encoding: 'utf8', timeout: 120000 });
-    } catch (err) {
-      log(`[digest-autofix] WARN tasks-sync pull failed (cards stay queued for the drain): ${String(err.message).slice(0, 120)}`);
-    }
-  }
+  if (filedAny) syncTasks({ log });
 
   // 3. Re-resolve task ids. Rows whose card just got filed pick up their
   //    fresh task id here.
@@ -464,4 +499,5 @@ function runAutofix({
 module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, findMyJob, readJsonlLedger, appendJsonlLedger,
+  fileCard, syncTasks, dispatchDetached,
 };

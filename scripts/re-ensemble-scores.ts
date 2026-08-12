@@ -192,6 +192,11 @@ async function main() {
             if (result.ensembleVersion) {
               data.ensembleData.ensembleVersion = result.ensembleVersion;
             }
+            // Propagate emergency flag (task #1122, same gap class as #384's ensembleVersion fix) —
+            // score excluded from compositeScore until human review clears it.
+            if (result.singleModelEmergency) {
+              data.ensembleData.singleModelEmergency = true;
+            }
 
             data.rescoreReason = 're-ensemble-v2-decluster';
 

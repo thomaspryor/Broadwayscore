@@ -434,15 +434,23 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
   const guarded = [];
   const revivable = [];
   for (const r of revive) {
-    const priorDeaths = dispatchLedger.deadAttemptsForTask(r.taskId, freshEntries);
-    (priorDeaths.length >= dispatchLedger.DEAD_ATTEMPT_LIMIT ? guarded : revivable).push({ ...r, deaths: priorDeaths.length });
+    // Card #1233: this path bypasses bsc-next's deadDispatchGuard entirely
+    // (headless dispatch never reaches it — see the comment above), so it
+    // needs its own correct infra-vs-substantive cap, not just a count of
+    // every dead-class entry.
+    const cap = dispatchLedger.dispatchCapDecision(r.taskId, freshEntries);
+    (cap.blocked ? guarded : revivable).push({
+      ...r,
+      deaths: cap.reason === 'infra' ? cap.infra.length : cap.substantive.length,
+      reason: cap.reason,
+    });
   }
   const toRevive = revivable.slice(0, REVIVE_CAP_PER_TICK);
   const deferred = revivable.slice(REVIVE_CAP_PER_TICK);
 
   if (dryRun) {
     corpses.forEach(c => console.log(`[dry-run][zombie-sweep] would close corpse ${c.ref} "${c.title}" (${c.reason})`));
-    guarded.forEach(g => console.log(`[dry-run][zombie-sweep] would close guarded husk ${g.ref} task #${g.taskId} (died ${g.deaths}x, no re-dispatch)`));
+    guarded.forEach(g => console.log(`[dry-run][zombie-sweep] would close guarded husk ${g.ref} task #${g.taskId} (${g.reason === 'infra' ? `failed to boot ${g.deaths}x in a row` : `died ${g.deaths}x`}, no re-dispatch)`));
     toRevive.forEach(r => console.log(`[dry-run][zombie-sweep] would close + re-dispatch headless ${r.ref} task #${r.taskId}`));
     return;
   }
@@ -456,7 +464,7 @@ function sweepZombieTabs({ all, idle, dryRun, closeWorkspaceFn, appendLedgerEntr
 
   const guardedClosed = [];
   for (const g of guarded) {
-    console.log(`[zombie-sweep] task #${g.taskId} has died ${g.deaths}x — closing husk ${g.ref} but NOT re-dispatching (deadDispatchGuard threshold); paged to digest`);
+    console.log(`[zombie-sweep] task #${g.taskId} has ${g.reason === 'infra' ? `failed to boot ${g.deaths}x in a row` : `died ${g.deaths}x`} — closing husk ${g.ref} but NOT re-dispatching (deadDispatchGuard threshold); paged to digest`);
     try { closeWorkspaceFn(g.ref); } catch (e) { console.error(`[zombie-sweep] WARN close failed for ${g.ref}: ${e.message}`); continue; }
     guardedClosed.push(g);
   }
@@ -516,7 +524,7 @@ function pageZombieSweep({ corpses, revive, guarded = [] }) {
       // Guard-threshold closes are the one bucket that NEEDS a human — a
       // task that keeps dying with no more automatic retries (QA catch:
       // these were console-only before). Warning severity, not info.
-      ...guarded.map(g => ({ ref: g.ref, taskId: g.taskId, severity: 'warning', line: `closed ${g.ref} for task #${g.taskId} which has died ${g.deaths}x — automatic revival stopped (deadDispatchGuard threshold). Investigate, then re-dispatch with: node scripts/bsc-next.js --id ${g.taskId} --force` })),
+      ...guarded.map(g => ({ ref: g.ref, taskId: g.taskId, severity: 'warning', line: `closed ${g.ref} for task #${g.taskId} which has ${g.reason === 'infra' ? `failed to boot ${g.deaths}x in a row (cmux itself looks wedged)` : `died ${g.deaths}x`} — automatic revival stopped (deadDispatchGuard threshold). Investigate, then re-dispatch with: node scripts/bsc-next.js --id ${g.taskId} --force` })),
     ];
     for (const e of events) {
       routeAlert({
@@ -533,7 +541,7 @@ function pageZombieSweep({ corpses, revive, guarded = [] }) {
 
 // Task #578: reconcile launches whose workspace the owner CLOSED. Split out
 // of main() so the epoch/park rules are testable without a live cmux.
-function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn }) {
+function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, parkCardFn, now = Date.now() }) {
   let entries;
   try { entries = readLedgerEntriesFn(); } catch { entries = []; }
 
@@ -558,7 +566,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   }
 
   const liveRefs = new Set(all.map(w => w.ref));
-  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs });
+  const candidates = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs, now });
   if (!candidates.length) return;
 
   // Task #883: a cmux restart renumbers every open workspace ref at once, so
@@ -612,7 +620,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
   // still stabilizing, never that many individual owner closes landing in
   // one 5-minute tick. Ratio uses the ORIGINAL candidate count (not the
   // post-remap remainder) — that's the true churn magnitude for this sweep.
-  const totalOpen = dispatchLedger.openWorkspaceLaunchCount(entries, { epochTs });
+  const totalOpen = dispatchLedger.openWorkspaceLaunchCount(entries, { epochTs, now });
   if (dispatchLedger.looksLikeRestart(candidates.length, totalOpen)) {
     // Bounded hold (ship-check P0 catch, 2026-08-03): a GENUINE mass-close
     // (the owner closes 3+ tabs in one pass, none renumbered) never shrinks
@@ -658,7 +666,7 @@ function sweepVanished({ all, dryRun, readLedgerEntriesFn, appendLedgerEntryFn, 
     try {
       const fresh = readLedgerEntriesFn();
       stillVanished = dispatchLedger
-        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs })
+        .vanishedBreadcrumbs(liveRefs, fresh, { epochTs, now })
         .some(f => f.workspaceRef === v.workspaceRef);
     } catch (e) {
       console.error(`[bsc-prune] WARN re-validate failed for ${v.workspaceRef}, skipping park: ${e.message}`);

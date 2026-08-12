@@ -65,11 +65,31 @@ function run(show, context, snapshotFile = DEFAULT_SNAPSHOT_FILE) {
   const reviewDelta = (today.reviewCount ?? 0) - (yesterday.reviewCount ?? 0);
 
   if (Math.abs(scoreDelta) > JUMP_THRESHOLD && reviewDelta === 0) {
+    const message = `Composite jumped ${scoreDelta > 0 ? '+' : ''}${scoreDelta} pts (${yesterday.compositeScore}→${today.compositeScore}) with 0 new reviews — investigate rescore / content change`;
     return {
       ok: false,
       severity: 'warning',
-      message: `Composite jumped ${scoreDelta > 0 ? '+' : ''}${scoreDelta} pts (${yesterday.compositeScore}→${today.compositeScore}) with 0 new reviews — investigate rescore / content change`,
-      details: { scoreDelta, reviewDelta, today, yesterday },
+      message,
+      details: {
+        scoreDelta,
+        reviewDelta,
+        today,
+        yesterday,
+        // Self-declared remediation (task #389). This one MATTERS: severity is
+        // 'warning', and opening-night-sla-dispatch.js only surfaces shows with
+        // summary.errors > 0 — so before this field existed, an unexplained
+        // score jump was detected and then reached nobody. kind:'alert' routes
+        // it to the morning digest.
+        remediation: {
+          kind: 'alert',
+          key: `score-jump:${show.id}`,
+          conditionKey: `opening-night-score-jump-${show.id}`,
+          title: `Unexplained score jump on ${show.title || show.id}`,
+          description: message,
+          severity: 'warning',
+          reason: `${scoreDelta > 0 ? '+' : ''}${scoreDelta} pts with 0 new reviews`,
+        },
+      },
     };
   }
 

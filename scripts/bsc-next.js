@@ -146,6 +146,10 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS } = require('./lib/headless-dispatchability.js');
+// Stale-outcome guard (task #1272, the #383 class): RECHECK-AFTER is a
+// legitimate, structured "revisit me" signal (CLAUDE.md Session Discipline),
+// distinct from the silent staleness this guard exists to catch.
+const { parseRecheckAfterFromCard } = require('./lib/recheck-stamp.js');
 
 // CI-red claim auto-invocation (task #598): the ledger built by task #584
 // (evaluateCiRedClaim, enforced at the push-gate hook) stayed empty in
@@ -222,10 +226,17 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
 // completedLaunchGuard's carve-outs.
 function deadDispatchGuard(task, ledgerEntries, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  const dead = dispatchLedger.deadAttemptsForTask(task.id, ledgerEntries);
-  if (dead.length < dispatchLedger.DEAD_ATTEMPT_LIMIT) return null;
-  const refs = dead.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
-  return `task #${task.id} has died ${dead.length}x already without finishing (dead workspaces: ${refs}). ` +
+  const cap = dispatchLedger.dispatchCapDecision(task.id, ledgerEntries);
+  if (!cap.blocked) return null;
+  if (cap.reason === 'infra') {
+    const refs = cap.infra.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+    return `task #${task.id}'s cmux launch has failed to even start ${cap.infra.length}x in a row (dead workspaces: ${refs}) — ` +
+      `every one of those is 'terminal surface never rendered', not a task failure. That many in a row with zero ` +
+      `successful boots suggests cmux itself is wedged right now, not bad luck on this card. Bring cmux to the ` +
+      `foreground (or restart it) before dispatching anything else. Re-run with --force to try again anyway.`;
+  }
+  const refs = cap.substantive.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
+  return `task #${task.id} has died ${cap.substantive.length}x already without finishing (dead workspaces: ${refs}). ` +
     `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
     `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
     `handling — see task #289). Re-run with --force to dispatch anyway.`;
@@ -250,6 +261,37 @@ function parkedGuard(task, ledgerEntries, opts) {
     `${String(parked.ts || '').slice(0, 10)} without being marked done. Closing a tab means "stop working ` +
     `this card", so nothing re-dispatches it on its own.\n` +
     `  To resume it: node scripts/bsc-next.js --id ${task.id} --force`;
+}
+
+// Stale-outcome guard (task #1272, the #383 class): a card whose Notion
+// Outcome PROPERTY already records completed work, with no acceptance
+// criteria to verify a NEW attempt against, is DONE-BUT-NEVER-CLOSED —
+// dispatching it redoes finished work instead of closing the card. Outcome
+// is a separate Notion property from Notes (notion-brain.js: `outcome:
+// getRichTextValue(p.Outcome)`), so this fires even when card.notes itself
+// is truncated/unavailable — unlike the verify-gate block in main(), which
+// only REFUSES when the full card (specifically .notes) is in hand. That gap
+// is exactly what let #383 slip through as an "unarmed" WARN instead of a
+// refusal: its Outcome was filled, but nothing downstream of the WARN branch
+// ever looks at card.outcome. A RECHECK-AFTER stamp (CLAUDE.md Session
+// Discipline) is a legitimate, structured "revisit me" signal, not silent
+// staleness, and is exempted. --force / --allow-unverifiable bypass it,
+// matching the sibling guards' and the verify-gate's own override
+// conventions.
+function staleOutcomeGuard(task, card, opts) {
+  if (opts.force || opts['allow-unverifiable'] || opts['dry-run'] || opts['print-prompt']) return null;
+  const outcome = card && String(card.outcome || '').trim();
+  if (!outcome) return null;
+  if (evaluateVerifiability((card && card.notes) || '').armed) return null;
+  if (parseRecheckAfterFromCard(card)) return null;
+  const pid = notionIdOf(task);
+  return `[bsc-next] REFUSING to dispatch #${task.id}: its Notion card already has a filled Outcome (recorded ` +
+    `completed work) and no acceptance criteria to verify a new attempt against. This looks like the #383 class ` +
+    `(done-but-never-closed), not a fresh dispatch.\n` +
+    `  Fix one of:\n` +
+    `    1. Close the card as Done if the recorded Outcome is sufficient: node scripts/notion-brain.js update ${pid} --status Done\n` +
+    `    2. Add a backticked safe-form command to the card's "## Acceptance criteria" stating what's still missing.\n` +
+    `    3. Re-run with --force (or --allow-unverifiable) to dispatch anyway (recorded in the ledger).`;
 }
 
 // Pure composition of the self-heal + refusal check (no I/O — main() does the
@@ -906,6 +948,9 @@ function main(argv = process.argv.slice(2), deps = {}) {
   // unarmed. A card whose outcome genuinely cannot be machine-checked declares
   // it with "VERIFY: owner-judgment" in its notes; --allow-unverifiable is the
   // explicit, ledger-visible per-dispatch override.
+  const staleOutcomeErr = staleOutcomeGuard(task, card, args);
+  if (staleOutcomeErr) { console.error(staleOutcomeErr); process.exit(1); }
+
   const gateNotes = (card && card.notes) || task.description || '';
   const gate = evaluateVerifiability(gateNotes);
   const verifyGate = { cmd: gate.cmd, reason: gate.reason };
@@ -1163,4 +1208,4 @@ function main(argv = process.argv.slice(2), deps = {}) {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock };
+module.exports = { parseArgs, loadTasks, TASKS_DIR, actionable, pickTask, completedLaunchGuard, deadDispatchGuard, checkDeadDispatch, findLiveWorkspaceForTask, notionIdOf, buildSeed, launchCmux, parkedGuard, staleOutcomeGuard, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES, main, USAGE, successionRefusal, buildSuccessionSeed, runSuccessionDispatch, runAmend, acquireSuccessionLock, releaseSuccessionLock };

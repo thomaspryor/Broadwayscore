@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-08-11T07:58:31.984Z",
+  "scope": "2 opening window(s): death-note-the-musical-west-end-2026 (2026-08-11), isla-off-broadway-2026 (2026-08-08)",
+  "degraded": null,
+  "windows": [
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "openingDate": "2026-08-11",
+      "from": "2026-08-10T00:00:00.000Z",
+      "to": "2026-08-15T23:59:59.999Z"
+    },
+    {
+      "showId": "isla-off-broadway-2026",
+      "openingDate": "2026-08-08",
+      "from": "2026-08-07T00:00:00.000Z",
+      "to": "2026-08-12T23:59:59.999Z"
+    }
+  ],
+  "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
+  "logEntryCount": 192107,
+  "logOldestEntryAt": "2026-08-06T08:07:06.168Z",
+  "publishTimesLoaded": 0,
+  "verdict": {
+    "verdict": "insufficient-data",
+    "pass": false,
+    "evaluated": 0,
+    "inFlight": 0,
+    "compliant": 0,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
+    "targetMinutes": 15,
+    "targetPct": 90,
+    "minSample": 5,
+    "breaches": [],
+    "byBasis": {}
+  },
+  "records": []
+}

@@ -40,7 +40,7 @@ function inWindow(ts, now, windowMs) {
  * @returns {{name:string, status:'pass'|'warn', message:string, hint?:string,
  *            gatedEdits:number, critical:number, shared:number, blocked:number,
  *            bypassed:number, failOpened:number, coveredByVerdict:number,
- *            byReviewer:Object<string,number>}}
+ *            byReviewer:Object<string,number>, restructureEscalations:number}}
  */
 function computeInfraReviewDigest({
   gateEvents = [],
@@ -66,6 +66,14 @@ function computeInfraReviewDigest({
     byReviewer[key] = (byReviewer[key] || 0) + 1;
   }
   const coveredByVerdict = verdicts.length;
+
+  // Task #1218: plan-review.md's "restructure-the-ramp" escalation and
+  // second-opinion.md's "Part 0 framing" check both stamp a fired escalation
+  // as `note: "restructure-flag: <adopted|dismissed> — <one line>"` (a prefix
+  // on the existing note field, not a new schema field — a solo boolean can't
+  // distinguish "the plan's scope actually shrank" from "the question got
+  // asked and dismissed," which is the exact failure this card exists to fix).
+  const restructureEscalations = verdicts.filter((v) => /^restructure-flag:/.test(v.note || '')).length;
 
   // The incentive-failure signal the /plan-review reviewers predicted before
   // the gate shipped: if sessions are bypassing more than they are actually
@@ -99,6 +107,7 @@ function computeInfraReviewDigest({
     failOpened: failOpened.length,
     coveredByVerdict,
     byReviewer,
+    restructureEscalations,
   };
 }
 

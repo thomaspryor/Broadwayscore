@@ -2,11 +2,13 @@
 
 import type { ShowLotteryRush } from '@/lib/data-types';
 import { ensureHttps } from '@/lib/url-utils';
-import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
 import { getCurrencySymbol } from '@/lib/market-utils';
 
 interface LotteryRushCardProps {
   data: ShowLotteryRush;
+  showId: string;
+  showName: string;
   showStatus: string;
   showCategory?: string;
 }
@@ -54,7 +56,7 @@ function ExternalLinkIcon() {
 
 
 
-export default function LotteryRushCard({ data, showStatus, showCategory }: LotteryRushCardProps) {
+export default function LotteryRushCard({ data, showId, showName, showStatus, showCategory }: LotteryRushCardProps) {
   const currency = getCurrencySymbol(showCategory);
   // Don't show for closed shows
   if (showStatus === 'closed') return null;
@@ -95,17 +97,21 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
               </div>
               )}
               {data.lottery.instructions && <p className="text-gray-400">{data.lottery.instructions}</p>}
-              {data.lottery.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition-colors mt-1"
-                >
-                  {data.lottery.platform ? `Enter on ${data.lottery.platform}` : 'Enter lottery'}
-                  <ExternalLinkIcon />
-                </a>
-              )}
+              {data.lottery.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(data.lottery.url)!, data.lottery.platform || '', 'lottery');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-purple-400 hover:text-purple-300 font-medium transition-colors mt-1"
+                    onClick={() => trackTicketClick({ showId, showName, platform: data.lottery!.platform || '', pageType: 'lottery', showStatus, isAffiliate })}
+                  >
+                    {data.lottery.platform ? `Enter on ${data.lottery.platform}` : 'Enter lottery'}
+                    <ExternalLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -122,17 +128,21 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
             </div>
             <div className="space-y-2 text-sm">
               {data.specialLottery.instructions && <p className="text-gray-400">{data.specialLottery.instructions}</p>}
-              {data.specialLottery.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors mt-1"
-                >
-                  {data.specialLottery.platform ? `Enter on ${data.specialLottery.platform}` : 'Enter lottery'}
-                  <ExternalLinkIcon />
-                </a>
-              )}
+              {data.specialLottery.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(data.specialLottery.url)!, data.specialLottery.platform || '', 'lottery');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition-colors mt-1"
+                    onClick={() => trackTicketClick({ showId, showName, platform: data.specialLottery!.platform || '', pageType: 'lottery', showStatus, isAffiliate })}
+                  >
+                    {data.specialLottery.platform ? `Enter on ${data.specialLottery.platform}` : 'Enter lottery'}
+                    <ExternalLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -163,17 +173,21 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
                 </div>
               )}
               {data.rush.instructions && <p className="text-gray-400">{data.rush.instructions}</p>}
-              {data.rush.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors mt-1"
-                >
-                  {data.rush.platform ? `Get on ${data.rush.platform}` : 'More info'}
-                  <ExternalLinkIcon />
-                </a>
-              )}
+              {data.rush.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(data.rush.url)!, data.rush.platform || '', 'rush');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium transition-colors mt-1"
+                    onClick={() => trackTicketClick({ showId, showName, platform: data.rush!.platform || '', pageType: 'rush', showStatus, isAffiliate })}
+                  >
+                    {data.rush.platform ? `Get on ${data.rush.platform}` : 'More info'}
+                    <ExternalLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -196,17 +210,21 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
               </div>
               )}
               {data.digitalRush.instructions && <p className="text-gray-400">{data.digitalRush.instructions}</p>}
-              {data.digitalRush.url && (
-                <a
-                  href={buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush').url}
-                  target="_blank"
-                  rel={affiliateRel(buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush').isAffiliate)}
-                  className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium transition-colors mt-1"
-                >
-                  {data.digitalRush.platform ? `Get on ${data.digitalRush.platform}` : 'Get rush tickets'}
-                  <ExternalLinkIcon />
-                </a>
-              )}
+              {data.digitalRush.url && (() => {
+                const { url, isAffiliate } = buildAffiliateUrl(ensureHttps(data.digitalRush.url)!, data.digitalRush.platform || '', 'rush');
+                return (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel={affiliateRel(isAffiliate)}
+                    className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium transition-colors mt-1"
+                    onClick={() => trackTicketClick({ showId, showName, platform: data.digitalRush!.platform || '', pageType: 'rush', showStatus, isAffiliate })}
+                  >
+                    {data.digitalRush.platform ? `Get on ${data.digitalRush.platform}` : 'Get rush tickets'}
+                    <ExternalLinkIcon />
+                  </a>
+                );
+              })()}
             </div>
           </div>
         )}

@@ -43,8 +43,8 @@ const {
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
-const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
+const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -59,12 +59,17 @@ const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearWrongProductionUrlYear,
+  hasEnsembleConsensus,
+  isTextStaleRelativeToUrlRewrite,
+  shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  shouldAutoClearWrongProductionUkDualMarket,
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
@@ -2102,6 +2107,10 @@ showDirs.forEach(showId => {
         const refPath = path.join(showDir, data.duplicateOf);
         let refAlsoDupe = false;
         let refExcluded = false;
+        // Task #1256 — set only inside the try block below (stays null on a
+        // missing/corrupt refPath, matching refAlsoDupe/refExcluded's own
+        // catch-path defaults: a stale pointer must not exclude this file).
+        let refInheritedFlag = null;
         let isCircular = false;
         let circularSameText = false;
         // N-node cycle detection (Notion #967, write-time cousin of #941): the
@@ -2162,12 +2171,42 @@ showDirs.forEach(showId => {
             if (preWindow.exclude) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
+          // Task #1256 — duplicate-of-flagged-twin inheritance. refExcluded
+          // above treats ANY exclusion reason on the reference as a recovery
+          // signal (see the block comment above this try). That's wrong when
+          // the reference is excluded because its OWN CONTENT is flagged
+          // wrong (wrongShow/wrongProduction/isNonReview) — this file is
+          // often just a second copy of that same bad content under a
+          // different filename (confirmed live on The Play That Goes Wrong
+          // West End 2021). duplicateOfInheritedFlag narrows the recovery:
+          // it returns non-null only for those content-wrongness reasons,
+          // and respects data.duplicateOfFlagInheritanceCleared as an
+          // explicit human override for the legitimate-divergent-content case.
+          refInheritedFlag = duplicateOfInheritedFlag(data, refData, showById[showId], refPath);
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
         if (!refAlsoDupe && !refExcluded) {
           logExclusion("skippedDuplicateOf", showId, file, data);
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
+          return;
+        }
+        // ship-check finding: a mutual circular pair (A<->B) with CONFIRMED
+        // different text is the exact case circularSameText/oneHopTiebreakExclude
+        // below exists to protect (duplicateOf wrongly set on two legitimately
+        // separate reviews) — B independently carrying wrongShow for reasons
+        // unrelated to A must not exclude A here. Only apply inheritance when
+        // NOT circular (the ordinary A->B pointer, where a non-circular
+        // duplicateOf has always meant "same content" — the ungated
+        // `!refAlsoDupe && !refExcluded` skip above makes that same assumption
+        // with no fingerprint check), or when circular AND content is
+        // CONFIRMED the same. An unconfirmed circular pair (missing fullText
+        // on either side) also skips inheritance here — conservative, matches
+        // this block's existing bias toward not dropping possibly-legitimate
+        // reviews on uncertain evidence.
+        if (refInheritedFlag && !(isCircular && !circularSameText)) {
+          logExclusion("skippedDuplicateOfInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateOf, inheritedReason: refInheritedFlag });
+          stats.skippedDuplicateOfInheritedFlag = (stats.skippedDuplicateOfInheritedFlag || 0) + 1;
           return;
         }
         // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A AND texts match,
@@ -2199,6 +2238,12 @@ showDirs.forEach(showId => {
         let staleFlag = false;
         let isCircular = false;
         let circularSameText = false;
+        // Task #1256 — same inheritance rule as the duplicateOf block above,
+        // ported here (ship-check finding: this sibling field had the
+        // identical unpatched "any exclusion reason on the reference =
+        // recovery" bug). Set only inside the try block; stays null on a
+        // missing/corrupt refPath.
+        let refInheritedFlag = null;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
@@ -2235,6 +2280,7 @@ showDirs.forEach(showId => {
               staleFlag = true;
             }
           }
+          refInheritedFlag = duplicateOfInheritedFlag(data, refData, showById[showId], refPath);
         } catch {
           refAlsoDupe = true; // Reference file missing — stale flag
         }
@@ -2244,6 +2290,16 @@ showDirs.forEach(showId => {
         } else if (!refAlsoDupe && !refWouldBeExcluded) {
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
+          return;
+        } else if (refInheritedFlag && !(isCircular && !circularSameText)) {
+          // Same content-wrongness-vs-structural-exclusion distinction as the
+          // duplicateOf block above. staleFlag already handles "content
+          // genuinely diverged" for the non-circular case here (unlike plain
+          // duplicateOf, which has no fingerprint check at all) — reaching
+          // this branch means content still matches (or comparison wasn't
+          // possible), so inheriting the twin's content-wrongness flag is safe.
+          logExclusion("skippedDuplicateTextInheritedFlag", showId, file, data, { inheritedFrom: data.duplicateTextOf, inheritedReason: refInheritedFlag });
+          stats.skippedDuplicateTextInheritedFlag = (stats.skippedDuplicateTextInheritedFlag || 0) + 1;
           return;
         } else if (isCircular && circularSameText && !refWouldBeExcluded && file > data.duplicateTextOf) {
           // Circular tiebreaker — only when texts truly match (avoid dropping legitimate separate critics)
@@ -2259,21 +2315,24 @@ showDirs.forEach(showId => {
       // Auto-clear wrongProduction on WE/OB files set by the URL-year standalone guard
       // These are false positives — WE/OB shows transfer from other venues, so URL years mismatch legitimately
       // Note: uses showCat (outer scope, line 1334) because showCategory is declared later in this callback
-      // GUARD: Respect manual reasons, high-confidence CV wrongProduction, and CV wrongArticle
-      // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
+      // Delegates to the named predicate (task #1193) — was inline-only and untested/unreplayed
+      // by scoring-delta.js; shouldAutoClearWrongProductionUrlYear existed but was dead code.
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
           && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
         // Shared with the UK-URL auto-clear below — includes the high-confidence
         // non-review articleType block (Times Sam Ryder interview, 2026-07-08).
         const wpCvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
-        const wpHasManualReason = !!data.wrongProductionReason;
         // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
         // aggregate/listing page is not a dated review, so a URL-year mismatch on
         // it is not a clearable false positive (cousin of the theo-bosanquet
         // /shows/ stub, 2026-07-05).
         const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
           || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
-        if (!wpCvBlocksClear && !wpHasManualReason && !wpIsShowListingUrl) {
+        if (shouldAutoClearWrongProductionUrlYear(data, {
+          isLondonOrOffBroadway: isLondonMarket(showCat) || showCat === 'off-broadway',
+          cvBlocksClear: wpCvBlocksClear,
+          isShowListingUrl: wpIsShowListingUrl,
+        })) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -2477,56 +2536,66 @@ showDirs.forEach(showId => {
             isDateMismatch = true;
           }
         }
+        // Everything below is skipped entirely for structural-flag/date-mismatch
+        // files — preserves the original short-circuit (matters because the try
+        // block below parses data.url with `new URL()`, which throws on malformed
+        // URLs; no need to pay that cost or risk on a file that can't clear anyway).
         if (!isStructuralFlag && !isDateMismatch) {
           // Compute outlet early for wrongProduction override check
           const earlyRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
           const earlyCanonicalOutlet = normalizeOutletCanonical(earlyRawOutlet);
           const outletIsDualOrUk = DUAL_MARKET_OUTLETS.has(earlyCanonicalOutlet)
             || outletRegionMap[earlyCanonicalOutlet] === 'london' || outletRegionMap[earlyRawOutlet] === 'london';
+          // Registry region 'london' is as strong a signal as a UK URL: the cross-market
+          // flagger only fires when region !== 'london', so a london-region outlet carrying
+          // this flag means the region was backfilled AFTER flagging (or the flag is a
+          // dangling remnant of an interrupted clear). UK blogs on .com domains
+          // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
+          // so without this the flag can never self-heal. Dual-market outlets are
+          // deliberately NOT included — their wrongProduction flags can be genuine
+          // same-title other-market reviews.
+          const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
+            || outletRegionMap[earlyRawOutlet] === 'london';
           try {
             const hostname = new URL(data.url).hostname || '';
             // Use venue-classification's isUkOutletUrl for consistency (handles US outlet exclusions)
-            const { isUkOutletUrl: _isUkUrl } = require('./lib/venue-classification');
-            const isUkUrl = _isUkUrl(data.url);
-            if (isUkUrl || outletIsDualOrUk) {
-              // UK/dual-market outlet + London URL → clear false positive
-              // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
-              // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set.
-              // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
-              // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
-              // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
-              const cvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
-              const hasManualReason = !!data.wrongProductionReason;
-              // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
-              // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
-              // URL on it is not evidence of THIS production. Auto-clearing wp
-              // here re-scored a Birmingham-Rep whatsonstage /shows/ aggregate
-              // stub (4/5) on the Regent's Park Midsummer (2026-07-05). Reviews
-              // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
-              const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
-                || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
-              // Registry region 'london' is as strong a signal as a UK URL: the cross-market
-              // flagger only fires when region !== 'london', so a london-region outlet carrying
-              // this flag means the region was backfilled AFTER flagging (or the flag is a
-              // dangling remnant of an interrupted clear). UK blogs on .com domains
-              // (liamodell.com, jonathanbaz.com, timeout.com/london) never satisfy isUkUrl,
-              // so without this the flag can never self-heal. Dual-market outlets are
-              // deliberately NOT included — their wrongProduction flags can be genuine
-              // same-title other-market reviews.
-              const outletIsLondonRegion = outletRegionMap[earlyCanonicalOutlet] === 'london'
-                || outletRegionMap[earlyRawOutlet] === 'london';
-              if ((isUkUrl || outletIsLondonRegion) && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
-                delete data.wrongProduction;
-                delete data.wrongProductionNote;
-                data.wrongProductionAutoCleared = isUkUrl
-                  ? `rebuild: UK URL on London show (${hostname})`
-                  : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
-                // At-stamp required: the push-time restore only honors FRESH
-                // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
-                data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
-                try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
-                stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
-              }
+            const isUkUrl = isUkOutletUrl(data.url);
+            // BUT: Do NOT auto-clear if contentVerification explicitly confirmed wrongProduction
+            // (e.g., touring/outdoor production reviewed by UK outlet) or if manual reason is set.
+            // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
+            // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
+            // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
+            const cvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
+            // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
+            // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
+            // URL on it is not evidence of THIS production. Auto-clearing wp
+            // here re-scored a Birmingham-Rep whatsonstage /shows/ aggregate
+            // stub (4/5) on the Regent's Park Midsummer (2026-07-05). Reviews
+            // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
+            const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
+              || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
+            // shouldAutoClearWrongProductionUkDualMarket also checks ensemble
+            // consensus + URL-rewrite staleness internally (#1156/#1162) — no
+            // ctx needed for those since they only read `data`.
+            if (shouldAutoClearWrongProductionUkDualMarket(data, {
+              isLondonMarketShow: isLondonMarket(showCat),
+              isUkUrl,
+              outletIsDualOrUk,
+              outletIsLondonRegion,
+              isDateMismatch,
+              isShowListingUrl,
+              cvBlocksClear,
+            })) {
+              delete data.wrongProduction;
+              delete data.wrongProductionNote;
+              data.wrongProductionAutoCleared = isUkUrl
+                ? `rebuild: UK URL on London show (${hostname})`
+                : `rebuild: registry region 'london' outlet on London show (${earlyCanonicalOutlet})`;
+              // At-stamp required: the push-time restore only honors FRESH
+              // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
+              data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+              try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+              stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
             }
           } catch {}
         }
@@ -2586,14 +2655,19 @@ showDirs.forEach(showId => {
 
       // Skip wrong-show reviews (review content is for a different show)
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
-      // the wrongShow flag is almost certainly a false positive from LLM classification.
-      // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
-      // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
-      // AND: Do NOT auto-clear if the review date is more than PRE_WINDOW_DAYS before the show — that's a prior production.
-      // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
-      // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
-      const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
-      const wsHasManualReason = !!data.wrongShowReason;
+      // the wrongShow flag is often a false positive from LLM classification —
+      // UK outlets reviewing London shows rarely cover anything else.
+      //
+      // The policy lives in shouldAutoClearWrongShowUkUrl (wrong-production-autoclear.js),
+      // NOT inline here. Until 2026-08-09 this file carried a hand-written copy of it while
+      // the lib function had 8 unit tests and ZERO production callers — so those tests proved
+      // nothing about what actually ran, and the guard added to one copy could never reach the
+      // other. That is the same two-copies-of-one-policy trap this tracker keeps finding
+      // (memory: includability predicates must be canonical). Calling the lib is what makes its
+      // new ensemble guard live: a unanimous ensemble wrong_show verdict now outranks the
+      // domain heuristic instead of the other way round (tracker #2 / task #1146).
+      // Also do NOT auto-clear when the fetched text predates a later URL correction
+      // (origin/main, task #1146) — the same class, arriving from the other side of this merge.
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
@@ -2601,7 +2675,11 @@ showDirs.forEach(showId => {
           wsDateMismatch = true;
         }
       }
-      if (data.wrongShow === true && isLondonMarket(showCat) && isUkOutletUrl(data.url) && !isWrongArticle && !wsHasManualReason && !wsDateMismatch) {
+      if (shouldAutoClearWrongShowUkUrl(data, {
+        isLondonMarketShow: isLondonMarket(showCat),
+        isUkOutletUrl: isUkOutletUrl(data.url),
+        dateMismatchOver90d: wsDateMismatch,
+      })) {
         delete data.wrongShow;
         delete data.wrongShowNote;
         data.wrongShowAutoCleared = `rebuild: UK/major outlet URL on London show`;
@@ -2978,8 +3056,14 @@ showDirs.forEach(showId => {
         }
       }
 
-      // Skip non-reviews (profiles, interviews, previews, features, news articles)
-      if (data.isNonReview === true || data.nonReviewFlag === true || data.nonReviewContent === true) {
+      // Skip non-reviews (profiles, interviews, previews, features, news articles).
+      // isNonReviewDemotedByFreshCV (#1255): a stale isNonReview flag (mostly
+      // gemini classify-non-reviews.js) can be outranked by a LATER, high-
+      // confidence contentVerification pass that affirms articleType='review'
+      // — this inline check is the actual scoring-corpus enforcement (it does
+      // NOT delegate to isIncludableForRebuild), so the demotion has to be
+      // applied here too, not just in review-guards.js/is-scoreable.js.
+      if ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) || data.nonReviewFlag === true || data.nonReviewContent === true) {
         logExclusion("skippedNonReview", showId, file, data);
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
@@ -5421,11 +5505,50 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   }
 }
 
+// Per-show 'rebuilt' terminals, but only for shows the SLA could be watching
+// (changed 2026-08-08, task #388). The old loop emitted one line for every show
+// with reviews — ~1,210 per run, ~60 runs/day — which was 256,240 of the
+// 256,864 lines in data/audit/stage-latency.jsonl (99.87%). That blew the log's
+// 40 MB rotation cap every ~3.5 days and rotated away the review-level history
+// the time-to-publish SLA has to read, so the card's own acceptance criterion
+// ("90% of reviews in the last two opening weekends") could never be evaluated.
+//
+// The scoping rule is readTrackedShowIds(): a show with a review-level stage
+// event in the last 21 days. For every such show the terminal is emitted
+// exactly as before, so scripts/lib/opening-night-sla.js clears and pages
+// identically. Shows outside the set have no in-flight review for the SLA to
+// clear, so their line carried no information.
+//
+// It must stay a PER-SHOW line. Collapsing this to one global line looked
+// equivalent — every run is a full corpus rebuild — but it is not: showCounts
+// is built from allReviews, so a show whose only review is unscored or excluded
+// has never appeared here, and its stuck review correctly kept paging. A global
+// line would clear it. That is not hypothetical: at the time of this change 2
+// of the 13 shows with review-first-seen events in the log
+// (entangled-12-scenes…, the-peculiar-patriot-off-broadway-2026) had never
+// appeared in a single 'rebuilt' line. The one global line below is emitted for
+// run-level visibility and the latency report's timing, and is deliberately NOT
+// treated as a per-show terminal by any consumer.
 try {
   const showCounts = allReviews.reduce((acc, r) => { acc[r.showId] = (acc[r.showId] || 0) + 1; return acc; }, {});
-  for (const [showId, reviewCount] of Object.entries(showCounts)) {
-    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount } });
+  const tracked = readTrackedShowIds();
+  // The which-shows decision lives in the lib so it is unit-tested (rule 15) —
+  // inline, an inverted condition here would either flood the log again or
+  // emit terminals for nobody, and no test would fail.
+  const terminalShowIds = selectTerminalShowIds(Object.keys(showCounts), tracked);
+  for (const showId of terminalShowIds) {
+    emitStage({ showId, stage: 'rebuilt', metadata: { reviewCount: showCounts[showId] } });
   }
+  const emitted = terminalShowIds.length;
+  emitStage({
+    stage: 'rebuilt',
+    metadata: {
+      scope: 'all-shows',
+      showCount: Object.keys(showCounts).length,
+      reviewCount: allReviews.length,
+      perShowTerminalsEmitted: emitted,
+    },
+  });
 } catch (e) { process.stderr.write(`[stage-latency] rebuild emit failed: ${e.message}\n`); }
 
 console.log('\n=== DONE ===');

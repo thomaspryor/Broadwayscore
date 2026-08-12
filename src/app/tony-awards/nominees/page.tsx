@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
+import { getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
@@ -43,6 +44,16 @@ function formatCeremonyDate(iso: string): string {
 // --- Page ---
 
 export default function TonyNomineesPage() {
+  // Official Tony nominees for the season aren't announced until ~May — before
+  // that, getNomineesByCategory() falls back to "all eligible shows so far"
+  // (often just 1-2 shows early in the season), which this page would render
+  // under "Nominations Center" framing with fake 100% "predicted winner" odds.
+  // Redirect to the predictions page, which already lists the season's
+  // eligible/announced shows without claiming they're official nominees.
+  if (!hasNominationsBeenAnnounced(season)) {
+    redirect(`/tony-awards/predictions/${season.label}`);
+  }
+
   const categories = getNomineesByCategory(season);
   const totalCategories = categories.filter(c => c.shows.length > 0).length;
 
@@ -129,8 +140,12 @@ export default function TonyNomineesPage() {
           </div>
         )}
 
-        {/* Link to winners page — visible near ceremony */}
-        {new Date() >= new Date('2026-05-23T00:00:00Z') && (
+        {/* Link to winners page — visible near ceremony. Pinned to ceremonyYear 2026:
+            /tony-awards/winners-2026 is hand-built for that ceremony and there is no
+            dynamic winners/[season] route, so on the old date-only gate the 2027
+            Nominations Center would link to the 2026 winners page. Same fix already
+            applied on predictions/[season] and the hub. See tony-nominees-premature. */}
+        {season.ceremonyYear === 2026 && new Date() >= new Date('2026-05-23T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
             <span className="text-gray-300">See who we think wins each of the 26 categories.</span>
             <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
@@ -139,9 +154,11 @@ export default function TonyNomineesPage() {
           </div>
         )}
 
-        {/* Category sections */}
+        {/* Category sections. Passing SHOW_OUR_PICK (the raw flag) is safe here only
+            because this page returns early above unless hasNominationsBeenAnnounced(season)
+            — by this line the season has a real nominee field, not a one-show placeholder. */}
         {categories.map(cat => (
-          <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} ceremonyDate={ceremonyDate} />
+          <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} ceremonyDate={ceremonyDate} showOurPick={SHOW_OUR_PICK} />
         ))}
 
         {/* Legend */}

@@ -15,25 +15,26 @@
 //     - Lede contains em dash
 //     - Too few sections fired / no opening section
 //     - Missing preheader
-//     - Featured opening whose gap audit shows uncollected reviews — SWAPPED
-//       with the next eligible opening and named in the report (never hard-
-//       blocks; Coverage Verdict S3, task #905, supersedes task #823's hard
-//       fail). `--ack-gap=<showId>` persists a one-show waiver in the
-//       t1-scoreboard ack store; `NEWSLETTER_ALLOW_GAPS=1` waives every gap
-//       for this run only.
+//     - Featured opening whose gap audit shows uncollected reviews — reported
+//       as "INCLUDED WITH GAP" and left in the issue. This script CANNOT drop
+//       an opening (owner decision 2026-08-09, superseding task #905's swap and
+//       task #823's hard fail): the swap deleted three real openings from the
+//       2026-08-03 issue, two of them over gaps that did not exist.
+//       `--ack-gap=<showId>` and `NEWSLETTER_ALLOW_GAPS=1` now only mark a gap
+//       as already-known in the banner; neither changes whether a show is sent.
 //
 // Runs AFTER generate.mjs, BEFORE send-test.mjs in newsletter-draft.yml.
 //
-// `--fixture=NAME` runs ONLY the coverage-gap swap check against a built-in
-// synthetic edition (no real draft files needed) — for verifying the swap
-// logic in CI/local without a live newsletter run. `--fixture=gapped` is the
-// only fixture today: two openings, one gapped, one clean.
+// `--fixture=NAME` runs ONLY the coverage-gap disclosure check against a
+// built-in synthetic edition (no real draft files needed), and asserts the
+// no-drop invariant — exits non-zero if any opening went missing. For verifying
+// the logic in CI/local without a live newsletter run. `--fixture=gapped` is
+// the only fixture today: two openings, one gapped, one clean.
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { execFileSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
@@ -45,9 +46,13 @@ const {
   countEmptyImgSrc,
   extractSiteImageUrls,
   completenessFindings,
-  gapSwapDecisions,
+  gapDisclosureDecisions,
+  openingsPreserved,
 } = require_('../lib/newsletter-preflight.js');
+const { renderInvariantFailures } = require_('../lib/newsletter-render-invariants.js');
 const { loadAcks, isAcked, addAck, saveAcks, cellKey } = require_('../lib/t1-scoreboard.js');
+const { resolveNewsletterEdition } = require_('../lib/email-templates.js');
+const { hasNoAccessSection, noAccessSections } = await import('./section-credential-guard.mjs');
 
 const NEWSLETTER_GAP_NS = 'newsletter-gap'; // namespaced "outletId" in the shared ack store — see t1-scoreboard.js
 
@@ -85,15 +90,22 @@ if (fixtureArg) {
   const { openingShows, checkpoint } = build();
   const acks = loadAcks();
   const ackedShowIds = new Set(openingShows.filter((s) => isAcked(cellKey(s.id, NEWSLETTER_GAP_NS), acks)).map((s) => s.id));
-  const { swaps, notes } = gapSwapDecisions(openingShows, checkpoint, Date.now(), {
+  const { gapped, notes } = gapDisclosureDecisions(openingShows, checkpoint, Date.now(), {
     ackedShowIds,
     allowGaps: process.env.NEWSLETTER_ALLOW_GAPS === '1',
   });
   console.log(`\n=== Pre-send report (fixture: ${name}) ===`);
-  if (swaps.length === 0 && notes.length === 0) console.log('No coverage gaps among featured openings.');
-  for (const s of swaps) console.log(`SWAP: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}`);
+  if (gapped.length === 0) console.log('No coverage gaps among featured openings.');
+  for (const g of gapped) {
+    console.log(`INCLUDED-with-gap: "${g.title}" (${g.id}) — ${g.uncollected} uncollected review(s), show stays in the issue.`);
+  }
   for (const n of notes) console.log(`NOTE: ${n}`);
-  process.exit(0);
+  // The invariant, printed so the fixture run is self-verifying: every opening
+  // that went in comes out. Nothing here can swap or exclude.
+  const check = openingsPreserved(openingShows, openingShows);
+  console.log(`Openings in: ${openingShows.length} | out: ${openingShows.length} | dropped: ${check.droppedIds.length}`);
+  console.log(check.ok ? 'NO-DROP INVARIANT: OK' : `NO-DROP INVARIANT: VIOLATED (${check.droppedIds.join(', ')})`);
+  process.exit(check.ok ? 0 : 1);
 }
 
 const weekStart = positionalArgs[0] || (() => {
@@ -117,89 +129,83 @@ let meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 
 const repoRoot = path.join(__dirname, '..', '..');
 
-// ── Coverage-gap swap: apply BEFORE any other check runs, so every check
-// below sees the swapped draft, not the gapped one (Coverage Verdict S3,
-// task #905, supersedes task #823's hard fail). A swap is "applied" — not
-// just reported — when generate.mjs exposes an editorial lead override for
-// the gapped show's market (NEWSLETTER_OB_LEAD / NEWSLETTER_WE_LEAD): this
-// script re-invokes generate.mjs with that override AND
-// NEWSLETTER_EXCLUDE_SHOWS=<gapped ids> so the gapped show is actually
-// dropped from the openings section, not just demoted below the lead — a
-// gapped show left in the list still renders its (incomplete) score to
-// every subscriber, which is the exact thing this gate exists to prevent.
-// Broadway has no lead override today, so a Broadway-market gap stays
-// report-only — the note below says so honestly instead of pointing at a
-// "re-run refresh-drafts.sh" step that doesn't apply anything.
-// A SINGLE regeneration pass covers every market: generate.mjs is invoked
-// once with every gapped show's id in NEWSLETTER_EXCLUDE_SHOWS and every
-// market's lead env var set together (NEWSLETTER_OB_LEAD/WE_LEAD don't
-// conflict with each other — each only affects its own section). Doing this
-// per-category in a loop (one execFileSync call per market) was a real bug:
-// each subsequent regeneration call starts generate.mjs fresh, so a LATER
-// category's call would silently drop an EARLIER category's exclusions/lead
-// — the earlier swap was still logged as "applied" even though the final
-// draft no longer reflected it (Codex adversarial finding, 2026-08-03).
-// Grouped by ENV VAR, not category — west-end and off-west-end share
-// NEWSLETTER_WE_LEAD, so if both need a swap in the same run only the first
-// wins the lead slot (both still get excluded either way, so neither shows
-// its incomplete score). Capped at one regeneration pass — a swap target
-// that ALSO turns out to be gapped is reported, not chased (avoids infinite
-// regenerate loops).
-const LEAD_ENV_BY_CATEGORY = {
-  'off-broadway': 'NEWSLETTER_OB_LEAD',
-  'west-end': 'NEWSLETTER_WE_LEAD',
-  'off-west-end': 'NEWSLETTER_WE_LEAD',
-};
-const appliedSwapNotes = [];
-const unswappableNotes = [];
+// Failures raised before the main hardFailures array exists (the coverage-swap
+// block below runs first so every later check sees the swapped draft). Folded
+// into hardFailures at its declaration.
+const hardFailuresEarly = [];
+
+// ── Edition sanity, BEFORE anything regenerates or reads this draft ──────────
+// The draft on disk must be the edition this invocation is checking. A west-end
+// run over a leftover broadway draft (stale NEWSLETTER_OUT_DIR, a failed earlier
+// run, a workflow that generated under the wrong edition) would otherwise sail
+// through every check below and only blow up two steps later at send-test.mjs's
+// identical guard — or, with the coverage-swap pin above, be silently carried
+// forward into a regenerated draft. Fail here, where the message can name the
+// mismatch. Only checked when the caller declared an edition; an unset
+// NEWSLETTER_EDITION means "whatever is on disk", the historical behaviour.
+if (process.env.NEWSLETTER_EDITION) {
+  const wantEdition = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION);
+  const haveEdition = meta.edition || 'broadway';
+  if (haveEdition !== wantEdition) {
+    hardFailuresEarly.push(`Draft on disk is the "${haveEdition}" edition but NEWSLETTER_EDITION=${wantEdition} — ${htmlPath} is stale or was generated under the wrong edition. Re-run generate.mjs under this edition first.`);
+  }
+}
+
+// ── Coverage gaps: REPORT, never remove (owner decision 2026-08-09) ──────────
+// What used to live here: a "swap" that re-invoked generate.mjs with
+// NEWSLETTER_EXCLUDE_SHOWS=<gapped ids> plus a market lead override, physically
+// removing the gapped opening from the edition. On 2026-08-03 that deleted
+// THREE openings from one issue, and two of the three were triggered by gaps
+// that did not exist (ticket-seller URLs and a duplicate-URL variant — issue
+// #4). A subscriber could not tell an opening was missing; the incomplete score
+// the gate feared was replaced by an invisible absence, which is worse.
+//
+// Owner: "include ALL shows that opened that week AND collect all reviews. It
+// is not one or the other." So the whole regeneration mechanism is deleted, not
+// disabled — with it gone there is no code path in this script that can drop an
+// opening. The gap becomes a loud banner line plus a ::warning:: annotation, and
+// the show ships. NEWSLETTER_EXCLUDE_SHOWS still exists in generate.mjs for a
+// deliberate human editorial call; nothing automated sets it any more.
+const openingsBefore = Array.isArray(meta.openingShows) ? meta.openingShows.slice() : [];
+const coverageGapNotes = [];
 if (Array.isArray(meta.openingShows)) {
   let gapCheckpointEarly = {};
   try { gapCheckpointEarly = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/gap-audit-checkpoint.json'), 'utf8')); } catch { /* no-op — reported as soft below */ }
   const acksEarly = loadAcks();
   const ackedShowIdsEarly = new Set(meta.openingShows.filter((s) => s && s.id && isAcked(cellKey(s.id, NEWSLETTER_GAP_NS), acksEarly)).map((s) => s.id));
   const allowGapsEarly = process.env.NEWSLETTER_ALLOW_GAPS === '1';
-  const { swaps: swapsNeeded } = gapSwapDecisions(meta.openingShows, gapCheckpointEarly, Date.now(), { ackedShowIds: ackedShowIdsEarly, allowGaps: allowGapsEarly });
-
-  const swapsByEnvVar = new Map(); // envVar -> { leadId, entries: [] }
-  const excludeIds = [];
-  const applicableSwaps = [];
-  for (const s of swapsNeeded) {
-    const fromShow = meta.openingShows.find((os) => os && os.id === s.from.id);
-    const category = fromShow ? (fromShow.category || 'broadway') : 'broadway';
-    const envVar = LEAD_ENV_BY_CATEGORY[category];
-    if (!envVar) {
-      unswappableNotes.push(`COVERAGE SWAP NEEDED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. No editorial lead override exists for this market (${category}) — swap manually in the draft, or waive with --ack-gap=${s.from.id}.`);
-      continue;
-    }
-    excludeIds.push(s.from.id);
-    applicableSwaps.push(s);
-    if (!swapsByEnvVar.has(envVar)) swapsByEnvVar.set(envVar, { leadId: s.to.id, entries: [] });
-    swapsByEnvVar.get(envVar).entries.push(s);
-  }
-  if (applicableSwaps.length) {
-    const regenEnv = { ...process.env, NEWSLETTER_EXCLUDE_SHOWS: excludeIds.join(',') };
-    for (const [envVar, group] of swapsByEnvVar) regenEnv[envVar] = group.leadId;
-    try {
-      execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
-        cwd: repoRoot,
-        env: regenEnv,
-        stdio: 'pipe',
-      });
-      html = fs.readFileSync(htmlPath, 'utf8');
-      meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-      for (const s of applicableSwaps) {
-        appliedSwapNotes.push(`COVERAGE SWAP APPLIED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — ${s.reason}. Draft regenerated with ${s.from.id} excluded.`);
-      }
-    } catch (e) {
-      for (const s of applicableSwaps) {
-        unswappableNotes.push(`COVERAGE SWAP FAILED: "${s.from.title}" (${s.from.id}) → "${s.to.title}" (${s.to.id}) — regeneration errored (${e.message.slice(0, 150)}). Swap manually, or waive with --ack-gap=${s.from.id}.`);
-      }
-    }
-  }
+  const { notes } = gapDisclosureDecisions(meta.openingShows, gapCheckpointEarly, Date.now(), {
+    ackedShowIds: ackedShowIdsEarly,
+    allowGaps: allowGapsEarly,
+  });
+  coverageGapNotes.push(...notes);
 }
 
-const hardFailures = [];  // stop the workflow entirely
-const softIssues = [...appliedSwapNotes, ...unswappableNotes];    // inject into draft banner so owner sees them
+// The no-drop invariant, checked against the draft this script is about to
+// bless rather than asserted in a comment. Fail-open by design (see
+// openingsPreserved's header): a throw here would kill the send, which is a
+// worse failure than the one being guarded.
+const preserved = openingsPreserved(openingsBefore, meta.openingShows);
+if (!preserved.ok) {
+  console.error(`::error::pre-send-check dropped opening(s) ${preserved.droppedIds.join(', ')} — no code path here may remove an opening (owner decision 2026-08-09). This is a bug in pre-send-check.mjs, not a coverage decision.`);
+}
+
+const hardFailures = [...hardFailuresEarly];  // stop the workflow entirely
+const softIssues = [...coverageGapNotes];     // inject into draft banner so owner sees them
+
+// ── HARD: no-access sections (card #1158) ─────────────────────────────────────
+// generate.mjs reclassifies a credential-backed section's skip from 'no-data'
+// to 'no-access: <var> missing' when its required env var is absent (see
+// section-credential-guard.mjs). That is a fetch that never ran, not an empty
+// week — a dev machine missing GA4_PROPERTY_ID silently deleted "Trending
+// This Week" from a subscriber-facing draft on 2026-08-09 and nothing caught
+// it. Refuse to PATCH the Resend draft in that state; NEWSLETTER_ALLOW_NO_ACCESS=1
+// is the explicit, opt-in override (mirrors NEWSLETTER_ALLOW_GAPS).
+if (Array.isArray(meta.sections) && hasNoAccessSection(meta.sections)) {
+  for (const s of noAccessSections(meta.sections)) {
+    hardFailures.push(`Section "${s.name}" skipped for ${s.skipReason} — the draft is missing real data, not just an empty week. Run from an environment with the credential (see refresh-drafts.sh usage comment), or set NEWSLETTER_ALLOW_NO_ACCESS=1 to send without it.`);
+  }
+}
 
 // ── HARD: unsubscribe placeholder ────────────────────────────────────────────
 if (!html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}')) {
@@ -292,6 +298,16 @@ if (!Array.isArray(meta.openingShows)) {
   for (const v of phantomImageViolations(meta.openingShows, rel => {
     try { return fs.statSync(path.join(repoRoot, rel)).size > 0; } catch { return false; }
   })) hardFailures.push(v);
+
+  // ── HARD: does the rendered email actually CONTAIN the openings it claims?
+  // 2026-08-09: the coverage-gap swap deleted featured openings from the HTML
+  // while meta.openingShows still listed them, and every check here passed
+  // because none of them compared the manifest to the render. A session then
+  // "verified" the draft by grepping for a show title, found it in the lede,
+  // and reported success while the show was absent from the openings block.
+  // The owner caught it by eye. This closes that gap at the gate, so no human
+  // or agent eyeball is load-bearing on send day.
+  for (const v of renderInvariantFailures({ html, meta })) hardFailures.push(v);
 
   // ── SOFT: review completeness — unverified (stale/no-data) entries only.
   // Gap entries were already swapped or reported above, BEFORE this draft was

@@ -89,6 +89,60 @@ test('blastRadiusCheck ignores added and removed shows (not state changes)', () 
   assert.strictEqual(r2.ok, true);
 });
 
+test('blastRadiusCheck does not refuse on a small absolute change (2026-08-09 gap-audit regression)', () => {
+  // The exact production numbers that reddened "Audit Aggregator Review Gap"
+  // 13 times in 3 days: a time-budget-partial run audited 22 shows, 2 of them
+  // genuinely changed coverage state, and 2/22 = 9.1% tripped the 5% threshold.
+  // The audit rolled back its freshness stamps and exited 1 — hourly.
+  const prev = state(22, 'complete');
+  const next = { ...prev };
+  next['show-0'] = 'incomplete';
+  next['show-1'] = 'incomplete';
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap' });
+  assert.strictEqual(r.compared, 22);
+  assert.strictEqual(r.changed, 2);
+  assert.ok(r.changedPct > 5, 'precondition: this case IS over the percentage threshold');
+  assert.strictEqual(r.ok, true, '2 changed shows must never read as a broken input');
+  assert.match(r.reason, /too few to be a broken input/);
+});
+
+test('blastRadiusCheck still catches the outage it exists for on the same small batch', () => {
+  // Dead SERP provider / empty census on that same 22-show partial run: the
+  // whole batch flips, which clears both the percentage AND the absolute floor.
+  const prev = state(22, 'complete');
+  const next = state(22, 'unknown');
+  const r = blastRadiusCheck(prev, next, { env: {}, label: 'review-gap' });
+  assert.strictEqual(r.ok, false);
+  assert.strictEqual(r.changed, 22);
+  assert.match(r.reason, /blast radius 100\.0%/);
+});
+
+test('blastRadiusCheck: minChanged is the binding constraint exactly at the boundary', () => {
+  const prev = state(40, 'complete');
+  const mutate = (n) => {
+    const next = { ...prev };
+    for (let i = 0; i < n; i++) next[`show-${i}`] = 'incomplete';
+    return next;
+  };
+  // 4/40 = 10% — over the 5% threshold, under the 5-show floor → allowed.
+  const under = blastRadiusCheck(prev, mutate(4), { env: {} });
+  assert.strictEqual(under.ok, true);
+  assert.strictEqual(under.changed, 4);
+  // 5/40 = 12.5% — clears both → refused.
+  const at = blastRadiusCheck(prev, mutate(5), { env: {} });
+  assert.strictEqual(at.ok, false);
+  assert.strictEqual(at.changed, 5);
+});
+
+test('blastRadiusCheck: minChanged is configurable and 0 restores pure-percentage behaviour', () => {
+  const prev = state(22, 'complete');
+  const next = { ...prev };
+  next['show-0'] = 'incomplete';
+  next['show-1'] = 'incomplete';
+  const r = blastRadiusCheck(prev, next, { env: {}, minChanged: 0 });
+  assert.strictEqual(r.ok, false, 'minChanged:0 must reproduce the old percentage-only gate');
+});
+
 test('both env overrides force the write through', () => {
   const prev = state(100, 'complete');
   const next = state(100, 'incomplete'); // 100% change

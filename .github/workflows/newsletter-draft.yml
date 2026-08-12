@@ -106,6 +106,36 @@ jobs:
     # the dedup-state commit.
     timeout-minutes: 25
 
+    # Job-level so EVERY step that touches the draft shares one generator
+    # environment. This block used to be copy-pasted into the generate and
+    # regression-test steps and OMITTED from the pre-send-check step — which
+    # also re-invokes generate.mjs (its coverage-swap regeneration). With
+    # NEWSLETTER_EDITION missing there, the west-end runs on 2026-08-08 and
+    # 2026-07-25 regenerated as the Broadway edition, failed send-test.mjs's
+    # edition guard, and died before ever creating the Resend broadcast draft:
+    # no West End newsletter reached Resend at all. The scripts now pin the
+    # edition themselves (scripts/lib/newsletter-regen-guard.js enforces it),
+    # so this hoist is defense in depth — plus it's what finally gets the GA
+    # creds and the owner's editorial leads through to the regen, which
+    # previously silently lost the Trending This Week section.
+    # A step-level env key of the same name still wins, so per-step overrides
+    # (NEWSLETTER_ALLOW_GAPS, the send-test-only vars) stay where they are.
+    env:
+      # CI lacks ~/Documents/claude-outputs — write to the repo workspace
+      # instead. Every script in the chain picks up the same path.
+      NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+      NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
+      NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
+      # GA4 creds for the Trending This Week section. Without these,
+      # popular-pages.mjs returns null and the section silently no-ops.
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+      LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
+      SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
+      NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
+      NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
+      NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -162,28 +192,12 @@ jobs:
           echo "Generating newsletter for week starting $ws"
 
       - name: Generate newsletter HTML + meta.json
-        env:
-          # CI lacks ~/Documents/claude-outputs — write to repo workspace
-          # instead. send-test.mjs picks up the same path automatically.
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          # GA4 creds for the Trending This Week section. Without these,
-          # popular-pages.mjs returns null and the section silently no-ops.
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
-          LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
-          SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
-          NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
-          NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
-          NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
-          NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
-          NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Pre-send check (HTML invariants, UTMs, subject, lede, images, completeness)
         env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
           # Owner escape hatch for the review-completeness HARD gate (task #823):
           # set repo variable NEWSLETTER_ALLOW_GAPS=1 (Settings → Variables) or
           # pass the allowGaps dispatch input to downgrade gap failures to the
@@ -197,28 +211,10 @@ jobs:
       # ~533px, so iOS Gmail zoomed everything out (2026-07-12). Renders the
       # generated HTML at 375px and blocks if it can't fit.
       - name: Mobile overflow gate
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Regression test (catches silent section drops)
-        env:
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          # Subprocess re-runs generate.mjs — pass the same GA creds AND the
-          # editorial overrides so the regenerated meta matches the just-sent
-          # draft. Without these the regression step would overwrite the
-          # override-driven subject/lede/ordering (and Trending-less meta) on
-          # top of the freshly-written one and corrupt the audit trail.
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
-          LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
-          SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
-          NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
-          NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
-          NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
-          NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
-          NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
         run: |
           # Skip regression test if no fixture exists for this week yet —
           # the fixture system is per-week and a fresh weekly run is the
@@ -230,11 +226,9 @@ jobs:
       - name: Send [DRAFT] preview to owner
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
           NEWSLETTER_SLUG: A-${{ steps.week.outputs.weekStart }}
           NEWSLETTER_TEST_RECIPIENT: ${{ secrets.OWNER_EMAIL }}
           NEWSLETTER_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
-          NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
         run: |
           node scripts/newsletter/send-test.mjs
 
@@ -249,8 +243,6 @@ jobs:
         if: ${{ github.event.inputs.skipBroadcastDraft != 'true' }}
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
         # Audience FOLLOWS the edition; only "test" is honored as an override.
         # workflow_dispatch always submits the choice default ("general"), so a
         # human dispatching edition=west-end while leaving audience untouched

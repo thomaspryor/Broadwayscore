@@ -137,6 +137,16 @@ test('pruneDone: does NOT close when the second independent signal says alive, e
     ],
     claudeAliveIn: () => false, // primary registry: both look dead
     terminalSurfaceAliveIn: ref => ref === 'workspace:1', // surface registry disagrees on workspace:1
+    // Seam added 2026-08-09. Without it this test read the REAL cmux socket for
+    // the fake refs below, so its result depended on whether cmux was installed:
+    // on CI (no cmux) claudeMidTurnIn throws and pruneDone's documented
+    // "any error defaults isRunning to true" fail-safe skipped workspace:1 —
+    // the behaviour under test. On a developer machine with cmux running it
+    // returned false for the nonexistent ref, workspace:1 read as live-and-idle,
+    // and pruneDone closed it, failing the assertion for an environmental
+    // reason. Injecting the throw pins the fail-safe path explicitly and makes
+    // the test deterministic in both environments; the assertions are unchanged.
+    claudeMidTurnIn: () => { throw new Error('no cmux socket'); },
     closeWorkspace: ref => calls.push(ref),
   });
   assert.deepEqual(calls, ['workspace:2']);

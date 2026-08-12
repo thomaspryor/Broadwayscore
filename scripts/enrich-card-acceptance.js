@@ -4,11 +4,18 @@
  * backlog cards the verify-gate refuses to dispatch (task #646).
  *
  * For each card audit-card-verifiability.js flagged as refused:
- *   - Human-only cards (isCardEligible() says no — marketing/partnerships
- *     category, human-action title, or a deny-tagged domain) get
- *     `VERIFY: owner-judgment` appended. No LLM call, no fake test — the
- *     deterministic predicate the autonomous loop already trusts for
- *     "is this a human task" makes the call, not a model guess.
+ *   - Human-territory cards (isCardEligible() says no with
+ *     kind:'human-territory' — marketing/partnerships category, human-action
+ *     title, or the 'owner-action' deny-tag) get `VERIFY: owner-judgment`
+ *     appended. No LLM call, no fake test — the deterministic predicate the
+ *     autonomous loop already trusts for "does this need the OWNER" makes the
+ *     call, not a model guess.
+ *   - A technical deny-tag rejection (kind:'deny-tag' — email/commercial/
+ *     scoring/ios-app) is NOT human-territory: it only means the unattended
+ *     LOOP shouldn't self-pick that domain, so it falls through to the same
+ *     LLM-drafted path as an eligible card (task #1186 — the bare marker used
+ *     to get stamped here too, and after #1154 made it a universal dispatch
+ *     exclusion, that starved otherwise-normal technical cards of dispatch).
  *   - Everything else gets ONE cheap Haiku call asked to draft an
  *     "## Acceptance criteria" section naming a safe-form command
  *     (scripts/lib/verify-gate.js SAFE_CHECK_FORMS). The drafted command is
@@ -226,7 +233,16 @@ async function enrichOneCard(card, opts = {}) {
   }
 
   const eligibility = isCardEligible({ name: card.name, category: card.category, tags: card.tags });
-  if (!eligibility.eligible) {
+  // Only a genuinely human-territory rejection (category/title/owner-action —
+  // see isCardEligible's `kind` docstring) gets the hard-blocking marker.
+  // A technical deny-tag rejection (email/commercial/scoring/ios-app) means
+  // the AUTONOMOUS LOOP shouldn't self-pick this domain, not that the card
+  // needs an owner to judge it — since #1154 made the marker a universal
+  // dispatch exclusion (not just a self-pick exclusion), stamping it here too
+  // starved otherwise-normal technical cards of P1 auto-dispatch and manual
+  // `bsc-next --id` (task #1186). Those fall through to the same
+  // LLM-drafted-acceptance-criteria path as an eligible card, below.
+  if (!eligibility.eligible && eligibility.kind === 'human-territory') {
     const newNotes = `${card.notes || ''}\n\nVERIFY: owner-judgment`.trim();
     if (!opts.dryRun) {
       logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath);

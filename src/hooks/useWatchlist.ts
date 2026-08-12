@@ -123,7 +123,12 @@ export function useWatchlist(userId: string | null) {
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = [
-          { id: crypto.randomUUID(), user_id: userId, show_id: showId, planned_date: null, created_at: new Date().toISOString() },
+          {
+            id: crypto.randomUUID(), user_id: userId, show_id: showId,
+            // A freshly added show has no date and therefore no time yet.
+            planned_date: null, time_slot: null, curtain_time: null,
+            created_at: new Date().toISOString(),
+          },
           ...prev,
         ];
         broadcastWatchlist(userId, next);
@@ -161,15 +166,31 @@ export function useWatchlist(userId: string | null) {
     }
   }, [userId]);
 
-  const updatePlannedDate = useCallback(async (showId: string, plannedDate: string | null): Promise<void> => {
+  /**
+   * The single write path for everything describing WHEN a planned show is:
+   * date, time slot, and curtain time together in one PATCH.
+   *
+   * One call rather than a date write plus a separate time write, because each
+   * write here also invalidates the module cache and broadcasts the new list to
+   * every other mounted instance. Two sequential writes would broadcast twice,
+   * and a failure between them would leave the My Shows card and the show page
+   * disagreeing about the same entry until a refetch. The database enforces the
+   * matching rule (curtain_time requires a time_slot), so the fields have to
+   * travel together anyway.
+   */
+  const updatePerformance = useCallback(async (
+    showId: string,
+    fields: Partial<Pick<WatchlistEntry, 'planned_date' | 'time_slot' | 'curtain_time'>>,
+  ): Promise<void> => {
     if (!userId) return;
+    if (Object.keys(fields).length === 0) return;
 
     setError(null);
     try {
       const { data, error: err } = await supabaseRestUpdate(
         'watchlist',
         `user_id=eq.${userId}&show_id=eq.${showId}`,
-        { planned_date: plannedDate },
+        fields,
       );
       if (err) throw new Error(err.message);
       // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
@@ -177,22 +198,37 @@ export function useWatchlist(userId: string | null) {
       // Same guard as the review-edit path in ShowHeroRedesign.handleSaveReview.
       if (!data) throw new Error('This show is no longer on your watchlist.');
 
-      // Later fresh mounts must refetch, not read a cache with the stale date.
+      // Later fresh mounts must refetch, not read a cache with stale values.
       invalidateWatchlistCache();
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
         const next = prev.map(w =>
-          w.show_id === showId ? { ...w, planned_date: plannedDate } : w
+          w.show_id === showId ? { ...w, ...fields } : w
         );
         broadcastWatchlist(userId, next);
         return next;
       });
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to update date';
+      const msg = e instanceof Error ? e.message : 'Failed to update this show';
       setError(msg);
       throw new Error(msg);
     }
   }, [userId]);
+
+  /**
+   * Date-only convenience wrapper. Delegates rather than issuing its own PATCH
+   * so there is exactly one place that knows how to write a watchlist row —
+   * two copies would drift on the cache/broadcast handling, which is precisely
+   * the bug that made this refactor necessary.
+   *
+   * Clearing the date also clears the time: a curtain time with no date is not
+   * something the UI can render or the user can act on.
+   */
+  const updatePlannedDate = useCallback(async (showId: string, plannedDate: string | null): Promise<void> => {
+    return plannedDate === null
+      ? updatePerformance(showId, { planned_date: null, time_slot: null, curtain_time: null })
+      : updatePerformance(showId, { planned_date: plannedDate });
+  }, [updatePerformance]);
 
   return {
     watchlist,
@@ -203,5 +239,6 @@ export function useWatchlist(userId: string | null) {
     addToWatchlist,
     removeFromWatchlist,
     updatePlannedDate,
+    updatePerformance,
   };
 }

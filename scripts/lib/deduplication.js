@@ -726,5 +726,6 @@ module.exports = {
   findSameTitleTwinIfNoOpeningDate,
   isLongClosedTwin,
   isSubtitleVariantOf,
+  aliasCanonical,
   KNOWN_DUPLICATES
 };

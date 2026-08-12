@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-07T14:50:22.556Z",
+  "generatedAt": "2026-08-11T18:14:21.750Z",
   "counts": {
     "accepted": 0,
-    "rejected": 10,
+    "rejected": 14,
+    "prunedStaged": 0,
     "byReason": {
-      "low-confidence-existing-match": 5,
-      "bot-shell": 3,
-      "placeholder-venue-no-theater": 2
+      "low-confidence-existing-match": 7,
+      "fetch-failed": 7
     }
   },
   "rejected": [
@@ -44,31 +44,56 @@
       "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
       "slug": "did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "fetch-failed"
     },
     {
       "url": "https://playbill.com/article/were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "slug": "were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "fetch-failed"
     },
     {
       "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "slug": "reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
       "source": "playbill-verdict",
-      "reason": "bot-shell"
+      "reason": "fetch-failed"
+    },
+    {
+      "url": "https://playbill.com/article/what-do-reviews-say-about-londons-new-cats-revival",
+      "slug": "what-do-reviews-say-about-londons-new-cats-revival",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
+      "slug": "reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
       "slug": "Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
       "source": "bww-roundup",
-      "reason": "placeholder-venue-no-theater"
+      "reason": "fetch-failed"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
       "slug": "Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727",
       "source": "bww-roundup",
-      "reason": "placeholder-venue-no-theater"
+      "reason": "fetch-failed"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807",
+      "slug": "Review-Roundup-Did-CATS-Make-The-Critics-Purr-With-Delight-20260807",
+      "source": "bww-roundup",
+      "reason": "fetch-failed"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810",
+      "slug": "Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810",
+      "source": "bww-roundup",
+      "reason": "fetch-failed"
     }
-  ]
+  ],
+  "prunedStaged": []
 }

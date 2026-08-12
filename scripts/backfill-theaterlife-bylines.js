@@ -154,6 +154,7 @@ function renameOntoCritic(srcPath, dstPath, data, critic, recovered) {
   delete newData.extractedByline;
   delete newData.expectedCritic;
   delete newData.fullTextWrongAuthor;
+  delete newData.fullTextWrongAuthorAt;
   delete newData._authorMismatch;
   return safeRenameReview(srcPath, dstPath, { newData });
 }

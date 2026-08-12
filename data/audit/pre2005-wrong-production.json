@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-08-07T15:55:53.011Z",
+    "generatedAt": "2026-08-12T01:39:41.744Z",
     "description": "Pre-2005 wrong-production audit results",
     "totalFlagged": 87,
-    "highConfidence": 6,
-    "mediumConfidence": 81,
+    "highConfidence": 7,
+    "mediumConfidence": 80,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 37
   },
   "results": [
     {
@@ -116,21 +116,6 @@
         "publishDate 2014 is 11 years after original opening 2003"
       ],
       "textSnippet": "Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too m"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "wbur--sean-burns.json",
-      "outlet": "WBUR",
-      "criticName": "Sean Burns",
-      "publishDate": "2025-11-18",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2025 is 22 years after original opening 2003"
-      ],
-      "textSnippet": "It’s not easy being green. When we last saw Cynthia Erivo’s ostracized outcast Elphaba, she’d discovered that Jeff Goldblum’s Wizard of Oz wasn’t so wonderful after all, and that the man behind the cu"
     },
     {
       "showId": "the-lion-king-1997",
@@ -968,6 +953,24 @@
         "revival text signals: revival, new revival"
       ],
       "textSnippet": "  A bright and beckoning path cuts through the fairy-tale thicket of whimsy and woe that is ”Into the Woods,” the musical by Stephen Sondheim and James Lapine that opened last night in a new revival a"
+    },
+    {
+      "showId": "into-the-woods-1997",
+      "showTitle": "Into the Woods",
+      "showYear": 1997,
+      "file": "playbill--unknown.json",
+      "outlet": "Playbill",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "into-the-woods-2022",
+      "signals": [
+        "revival cast/director match for into-the-woods-2022: Sara Bareilles, Lear deBessonet, director: Lear deBessonet",
+        "year 1987 in text matches revival into-the-woods-1987",
+        "year 2002 in text matches revival into-the-woods-2002",
+        "modern references: covid"
+      ],
+      "textSnippet": "The Hedwig and the Angry Inch Tony winner has stepped in for the previously announced Christian Borle.\n\nTony-winning TV and stage star Neil Patrick Harris has joined the cast of the upcoming New York "
     },
     {
       "showId": "into-the-woods-1997",

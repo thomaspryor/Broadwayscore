@@ -18,6 +18,14 @@
          scripts/autonomous-run.js's implementer in production) — NOT
          CLAUDE_CODE_OAUTH_TOKEN (broken/vestigial path, see task #457).
 
+         claude-token-not-required: authenticates via ANTHROPIC_API_KEY, not
+         the static token — ~/.config/claude/check-token.sh + update-token.sh
+         discovery skip this job on purpose (task #1128: the mention of
+         CLAUDE_CODE_OAUTH_TOKEN two lines up in this very comment was, before
+         that fix, enough plain-text-grep evidence for discovery to believe
+         this job already carried the token, hiding it from both the
+         "covered" and "needs healing" views).
+
          Install:  cp scripts/launchd/com.broadwayscore.newsletter-sunday-review.plist ~/Library/LaunchAgents/
                    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.newsletter-sunday-review.plist
          Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.newsletter-sunday-review

@@ -130,7 +130,7 @@ test('end-to-end: a vanished breadcrumb from vanishedBreadcrumbs() is visible in
     { event: 'launch', taskId: 601, subject: 'Fix the thing', workspaceRef: 'workspace:12', ts: '2026-08-01T00:00:00.000Z' },
   ];
   const epochTs = dispatchLedger.vanishEpoch(entries);
-  const breadcrumbs = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs })
+  const breadcrumbs = dispatchLedger.vanishedBreadcrumbs(liveRefs, entries, { epochTs, now: Date.parse('2026-08-01T01:00:00.000Z') })
     .map(b => ({ ...b, ts: '2026-08-01T01:00:00.000Z' }));
   assert.equal(breadcrumbs.length, 1);
   entries = entries.concat(breadcrumbs);

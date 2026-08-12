@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-import { buildAffiliateUrl, affiliateRel } from '@/lib/affiliate-utils';
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
 
 // Re-export affiliate helpers so existing consumers don't break
 export { isAffiliateEnabled, isAffiliatePartner } from '@/lib/affiliate-utils';
@@ -80,24 +80,10 @@ export default function TicketLink({
     // PostHog SDK batches capture() on a 30s timer. With target="_blank", the page
     // doesn't unload and the batch never flushes. sendBeacon fires immediately and
     // survives tab focus changes.
-    try {
-      const phKey = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
-      const distinctId = window.posthog?.get_distinct_id?.() ?? 'anonymous';
-      navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
-        api_key: phKey,
-        event: 'ticket_click',
-        properties: {
-          distinct_id: distinctId,
-          $current_url: window.location.href,
-          show_id: showId, show_name: showName, platform,
-          show_status: showStatus ?? null,
-          page_type: pageType, is_affiliate: isAffiliate,
-          link_position: linkPosition, total_links: totalLinks,
-          ab_variant: abVariant ?? null,
-        },
-        timestamp: new Date().toISOString(),
-      }));
-    } catch { /* tracking not critical */ }
+    trackTicketClick({
+      showId, showName, platform, pageType, showStatus, isAffiliate,
+      linkPosition, totalLinks, abVariant,
+    });
 
     if (typeof window.gtag !== 'function') return;
 

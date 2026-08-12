@@ -153,14 +153,32 @@ function addedLinesSurvived(addedLines, baseContent, finalContent) {
  * 'ambiguous' bucket (survived/reverted/unchanged are already decided by the
  * cheap blob comparison). Downgrades 'ambiguous' to 'reverted' when our own
  * added content demonstrably did not make it into the final file.
+ *
+ * 'superseded' (Opening Night Poller incident, Aug 7-9 2026 — 6 runs red):
+ * when sibling pipelines (Collect Review Texts / Gather Review Data / the
+ * poller) collect the SAME review, the loser's rebase integrates the sibling's
+ * already-pushed version of the file, so the loser's exact added lines are
+ * absent from its own rebased tree — and the added-lines downgrade above
+ * declared 'reverted' deterministically on every retry (the push itself had
+ * landed; runs 31221911308/31334956731 et al. went red 5x each for nothing).
+ * The distinguisher is `pushedBlob` — the file's content in the commit WE
+ * JUST PUSHED. If origin's final content is exactly what our own resolution
+ * pushed (pushedBlob === finalBlob) and it is NOT the pre-edit base (that
+ * case stays 'reverted' via the cheap classifier — the true #619 signature),
+ * then nothing clobbered us after the push: our own rebase chose a concurrent
+ * fresh version over ours. Callers warn loudly but must not fail. Both nulls
+ * guard: a file DELETED at final (finalBlob null) with an unresolvable
+ * pushed-sha (pushedBlob null) must not satisfy null === null.
  * @param {{baseBlob: string|null, localBlob: string|null, finalBlob: string|null,
+ *           pushedBlob?: string|null,
  *           addedLines?: string[], baseContent?: string|null, finalContent?: string|null}} entry
- * @returns {'survived'|'unchanged'|'reverted'|'ambiguous'}
+ * @returns {'survived'|'unchanged'|'reverted'|'ambiguous'|'superseded'}
  */
 function classifyFileSurvivalDeep(entry) {
   const base = classifyFileSurvival(entry);
   if (base !== 'ambiguous') return base;
   if (addedLinesSurvived(entry.addedLines, entry.baseContent, entry.finalContent)) return 'ambiguous';
+  if (entry.pushedBlob != null && entry.finalBlob != null && entry.pushedBlob === entry.finalBlob) return 'superseded';
   return 'reverted';
 }
 
@@ -187,7 +205,12 @@ module.exports = {
 
 // ── CLI ───────────────────────────────────────────────────────────────────
 // Usage: node push-content-survival.js --before-sha=<sha> --base-sha=<sha>
-//          --check-ref=<ref> [--path-prefix=<prefix>]
+//          --check-ref=<ref> [--path-prefix=<prefix>] [--pushed-sha=<sha>]
+//
+// --pushed-sha (optional): the commit the caller just pushed (post-conflict-
+// resolution HEAD, or the Git Data API fallback's new SHA). Enables the
+// 'superseded' classification — see classifyFileSurvivalDeep. Absent: exact
+// pre-existing behavior.
 //
 // Exit codes: 0 = OK (nothing reverted), 1 = at least one file REVERTED,
 // 2 = invalid args / git failure (fail-open — caller should treat as "skip",
@@ -211,6 +234,7 @@ if (require.main === module) {
   const baseSha = arg('base-sha');
   const checkRef = arg('check-ref');
   const pathPrefix = arg('path-prefix') || '';
+  const pushedSha = arg('pushed-sha');
 
   if (!beforeSha || !baseSha || !checkRef) {
     console.log('SKIP (missing --before-sha/--base-sha/--check-ref)');
@@ -269,17 +293,34 @@ if (require.main === module) {
     e.addedLines = extractAddedLines(patch);
     e.baseContent = e.baseBlob ? gitTry(['show', e.baseBlob]) : null;
     e.finalContent = e.finalBlob ? gitTry(['show', e.finalBlob]) : null;
+    e.pushedBlob = pushedSha ? gitTry(['rev-parse', `${pushedSha}:${e.file}`]) : null;
   }
 
   const classified = entries.map((e) => ({ file: e.file, status: classifyFileSurvivalDeep(e) }));
   const reverted = classified.filter((c) => c.status === 'reverted');
   const ambiguous = classified.filter((c) => c.status === 'ambiguous');
+  const superseded = classified.filter((c) => c.status === 'superseded');
   const revertedFromAmbiguous = new Set(
     entries.filter((e) => classifyFileSurvival(e) === 'ambiguous' && classifyFileSurvivalDeep(e) === 'reverted').map((e) => e.file)
   );
 
   for (const c of ambiguous) {
     console.log(`[content-survival] AMBIGUOUS (likely legitimate concurrent merge, our own added lines confirmed present): ${c.file}`);
+  }
+  for (const c of superseded) {
+    console.log(`[content-survival] SUPERSEDED: ${c.file} — our own conflict resolution integrated a concurrent fresh version of this file instead of ours (sibling-pipeline collision, e.g. two collectors pushing the same review). What we pushed IS what's on ${checkRef}; nothing clobbered us post-push. Not failing — but our version of this file was not the one that won.`);
+    // Inventory exactly which of our added lines did NOT land (adversarial
+    // review finding: without this, content our commit uniquely carried —
+    // beyond what the winning version also had — would vanish with only a
+    // generic warning). Capped so a large collected fullText doesn't flood
+    // the job log; the file path + count is enough to re-collect.
+    const e = entries.find((en) => en.file === c.file);
+    const lost = (e && e.addedLines) || [];
+    for (const line of lost.slice(0, 5)) {
+      console.log(`[content-survival]   lost line: ${line.length > 200 ? line.slice(0, 200) + '…' : line}`);
+    }
+    if (lost.length > 5) console.log(`[content-survival]   … and ${lost.length - 5} more added line(s) not in the winning version`);
+    console.log(`::warning::content-survival: ${c.file} superseded — ${lost.length} of our added line(s) are not in the version that won (integrated during our own conflict resolution; nothing clobbered post-push). If this file's content matters beyond what siblings collect, re-collect it.`);
   }
 
   if (reverted.length > 0) {
@@ -296,6 +337,8 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  console.log(`OK — ${classified.length - ambiguous.length}/${classified.length} modified file(s) confirmed surviving on ${checkRef}`);
+  const confirmed = classified.length - ambiguous.length - superseded.length;
+  const supersededNote = superseded.length > 0 ? `, ${superseded.length} superseded (see warnings above)` : '';
+  console.log(`OK — ${confirmed}/${classified.length} modified file(s) confirmed surviving on ${checkRef}${supersededNote}`);
   process.exit(0);
 }
