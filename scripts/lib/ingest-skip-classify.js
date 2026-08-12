@@ -193,7 +193,7 @@ function describeSkip(showId, url, { reason, detail }) {
   if (reason === 'aggregator-url-refinement-refused') {
     return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
       + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
-      + `If this was a legitimate aggregator star-stub, its stars are lost until the validator gains the star-stub carve-out the write guard already has.`;
+      + `A legitimate aggregator star-stub (aggregatorStars/originalScore present) is NOT refused — it lands under its true outlet instead (task #1325); this refusal only fires when there is no score to preserve.`;
   }
   return `${showId}: ${url} skipped as ${reason}${detail ? ` (${detail})` : ''}.`;
 }
