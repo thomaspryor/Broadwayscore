@@ -47,6 +47,7 @@ const MIRROR_DIR =
   process.env.LINEAR_IMPORT_MIRROR_DIR || path.join(os.homedir(), '.claude/tasks/broadwayscore');
 const MAPPING_PATH = path.join(REPO_ROOT, 'data/linear-import-mapping.json');
 const SNAPSHOT_PATH = path.join(REPO_ROOT, 'data/audit/linear-notion-snapshot.json');
+const MUTATION_LOG_PATH = path.join(REPO_ROOT, 'data/audit/linear-reconcile-mutations.jsonl');
 
 const WORKSTREAM_PROJECTS = [
   'Coverage pipeline',
@@ -69,9 +70,25 @@ function loadMapping() {
   }
 }
 
+// Write to a temp file and rename. A plain writeFileSync truncates in place,
+// so a kill mid-write leaves invalid JSON — and loadMapping() swallows the
+// parse error as {}, which would make the next run re-create every issue whose
+// title it does not happen to observe. rename() is atomic on the same
+// filesystem, so the file is either the old mapping or the new one.
 function saveMapping(mapping) {
   fs.mkdirSync(path.dirname(MAPPING_PATH), { recursive: true });
-  fs.writeFileSync(MAPPING_PATH, JSON.stringify(mapping, null, 2) + '\n');
+  const tmp = `${MAPPING_PATH}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(mapping, null, 2) + '\n');
+  fs.renameSync(tmp, MAPPING_PATH);
+}
+
+// Every board mutation, appended before it is applied: the issue, the field,
+// and the value it held BEFORE. --reconcile --apply moves issues between
+// projects and sets state=Done, and without this there is no record of what to
+// put back — rollback would mean reconstructing the prior board by hand.
+function logMutation(entry) {
+  fs.mkdirSync(path.dirname(MUTATION_LOG_PATH), { recursive: true });
+  fs.appendFileSync(MUTATION_LOG_PATH, JSON.stringify(entry) + '\n');
 }
 
 function readMirrorTasks() {
@@ -271,6 +288,11 @@ async function runReconcile({ classified, mapping, apply }) {
   // live board stops offering it. Nothing is deleted.
   for (const { task, c, issue } of r.notCurated) {
     if (issue.project !== ARCHIVE_PROJECT || issue.state !== 'Done') {
+      logMutation({
+        identifier: issue.identifier, taskId: task.id, action: 'retire', reason: c.skip,
+        fromProject: issue.project, fromState: issue.state,
+        toProject: ARCHIVE_PROJECT, toState: 'Done',
+      });
       await linear.updateIssue(issue.id, {
         projectId: projects[ARCHIVE_PROJECT].id,
         stateId: stateByName.get('Done'),
@@ -283,10 +305,33 @@ async function runReconcile({ classified, mapping, apply }) {
       recorded++;
     }
   }
+  let revived = 0;
   for (const { task, c, issue } of r.mapped) {
     if (issue.project !== c.project) {
+      logMutation({
+        identifier: issue.identifier, taskId: task.id, action: 'reproject', reason: c.archivedForStaleness ? 'idle' : 'route',
+        fromProject: issue.project, toProject: c.project,
+      });
       await linear.updateIssue(issue.id, { projectId: projects[c.project].id });
       moved++;
+    }
+    // A card THIS tool retired, whose Notion page has since reopened, comes
+    // back as curated-in — but it is still sitting at Done, invisible in every
+    // active board view. Nothing else puts it back, so reconcile has to.
+    //
+    // Gated on retiredReason on purpose: an issue the OWNER marked Done in
+    // Linear must stay Done. Reviving anything merely because the mirror still
+    // says pending would mean the tool reopens work the owner just closed.
+    const wasRetiredByUs = mapping[task.id] && mapping[task.id].retiredReason;
+    if (wasRetiredByUs && issue.state === 'Done' && c.stateName !== 'Done') {
+      logMutation({
+        identifier: issue.identifier, taskId: task.id, action: 'revive', reason: 'curated-in but Done',
+        fromState: issue.state, toState: c.stateName,
+      });
+      await linear.updateIssue(issue.id, { stateId: stateByName.get(c.stateName) });
+      delete mapping[task.id].retiredReason;
+      saveMapping(mapping);
+      revived++;
     }
     if (!mapping[task.id] || !mapping[task.id].identifier) {
       mapping[task.id] = { linearId: issue.id, identifier: issue.identifier, title: issue.title, project: c.project };
@@ -295,8 +340,9 @@ async function runReconcile({ classified, mapping, apply }) {
     }
   }
   console.log(JSON.stringify({
-    reconcile: true, applied: true, moved, retired, recorded,
+    reconcile: true, applied: true, moved, retired, revived, recorded,
     missing: r.missing.length, mappingTotal: Object.keys(mapping).length,
+    mutationLog: MUTATION_LOG_PATH,
   }, null, 2));
 }
 
