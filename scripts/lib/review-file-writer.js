@@ -302,9 +302,11 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       //
       // Dropping the write loses a star-stub in the scored case — but that stub
       // was previously credited to the WRONG outlet, so nothing correct is lost.
-      // Once the validator gains the star-stub carve-out the write guard already
-      // has (card "P1: aggregator guard misses westendtheatre.com"), this can be
-      // relaxed to allow scored stubs to keep their true outlet.
+      // Task #1194 (closed 2026-08-12) gave the validator that same star-stub
+      // carve-out (hasAggregatorUrlMismatch in aggregator-url-latent.js), so this
+      // refusal COULD now be relaxed to let scored stubs keep their true outlet
+      // instead of being dropped — tracked separately (follow-up card) since it's
+      // a distinct behavior change to this write chokepoint, not a validator fix.
       console.warn(`  ⛔ Refusing aggregator-URL write for ${showId}: outlet "${outletId}" on roundup domain ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — not this outlet's review`);
       return { action: 'skipped', reason: 'aggregator-url-refinement-refused' };
     }
