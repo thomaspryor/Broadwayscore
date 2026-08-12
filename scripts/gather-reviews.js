@@ -3878,7 +3878,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   console.log('\n  === Show Score ===');
   let showScoreResult = await searchShowScore(show);
   if (showScoreResult && showScoreResult.html) {
-    const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+    // skipLlm: the LLM tiebreaker was rejecting genuinely correct Show Score
+    // pages (see page-validator.js / scrape-show-score-audience.js fix) —
+    // keeps the deterministic year-mismatch + short-title-partial-match
+    // guards, drops only the flaky LLM step.
+    const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
     if (!ssValidation.valid) {
       console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${ssValidation.reason}`);
       showScoreResult = null;
