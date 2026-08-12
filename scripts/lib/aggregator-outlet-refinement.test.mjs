@@ -242,3 +242,57 @@ test('the refusal is classified as a CONFLICT skip, not an expected rejection', 
   assert.ok(!/skipped as aggregator-url-refinement-refused/.test(msg),
     'must have a bespoke message, not the generic fallback');
 });
+
+// ------------------------------------------------------- source-aware exemption
+// The refusal above only ever looked at the resolved outlet, never at
+// input.source — unlike shouldSkipAggregatorUrlWrite() (aggregator-domains.js),
+// which checks isAggregatorReviewSource(source) FIRST and exempts any
+// aggregator-sourced write before it ever looks at score. A genuine
+// aggregator-source citation of a real outlet's article (source='westendtheatre',
+// outletId='guardian', URL on westendtheatre.com, no extractable score) was
+// refused here before it ever reached that source-aware guard (task #1335,
+// found during #1325's /ship-check).
+test('createOrMergeReviewFile: an aggregator-SOURCE write on an aggregator URL is not refused, even without a score', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  // from-the-fourth-row carries no registered domain in outlet-registry.json, so
+  // this exercises the write chokepoint end-to-end without also tripping the
+  // separate domain-validation guard further down (a domain-registered outlet
+  // like 'guardian' would fail there for an unrelated reason, muddying what
+  // this test is meant to pin).
+  const result = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row',
+    outlet: 'From the Fourth Row',
+    criticName: 'Pat Reviewer',
+    url: 'https://westendtheatre.co.uk/some-roundup/',
+    source: 'westendtheatre',
+    fields: { fullText: 'x'.repeat(400) },
+  }, { dryRun: true }));
+  assert.notEqual(result.reason, 'aggregator-url-refinement-refused',
+    `aggregator-sourced write must not hit this refusal, got ${JSON.stringify(result)}`);
+  assert.equal(result.action, 'new', `expected the aggregator-source write to land, got ${JSON.stringify(result)}`);
+  assert.match(result.filepath, /from-the-fourth-row/, 'must file under the TRUE outlet, not the aggregator');
+});
+
+test('createOrMergeReviewFile: a non-aggregator-source write on an aggregator URL is still refused (regression fence)', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  const result = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row',
+    outlet: 'From the Fourth Row',
+    criticName: 'Pat Reviewer',
+    url: 'https://westendtheatre.co.uk/some-roundup/',
+    source: 'serp-discovery',
+    fields: { fullText: 'x'.repeat(400) },
+  }, { dryRun: true }));
+  assert.equal(result.action, 'skipped');
+  assert.equal(result.reason, 'aggregator-url-refinement-refused');
+});
