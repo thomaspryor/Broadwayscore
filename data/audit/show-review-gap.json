@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-08-12T08:23:16.992Z",
+  "generatedAt": "2026-08-12T10:04:38.359Z",
   "windowDays": 1095,
-  "targets": 42,
-  "auditedThisRun": 22,
-  "carriedForward": 204,
+  "targets": 26,
+  "auditedThisRun": 20,
+  "carriedForward": 206,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 175,
-    "totalMissing": 1091,
+    "totalMissing": 1088,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 1192,
+    "totalFlaggedMisses": 1193,
     "totalRecoverable": 28,
-    "totalRecovered": 6
+    "totalRecovered": 7
   },
   "results": [
     {
@@ -1738,7 +1738,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -4342,7 +4342,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "avenue-q-west-end-2026",
@@ -7796,7 +7796,7 @@
       ],
       "dirFiles": 26,
       "dirClean": 21,
-      "inReviewsJson": 19,
+      "inReviewsJson": 20,
       "missing": [],
       "dirOnly": [
         {
@@ -7844,9 +7844,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 384,
+        "count": 383,
         "byReason": {
-          "aggregator-internal-nav": 265,
+          "aggregator-internal-nav": 264,
           "not-http-url": 80,
           "non-review-host": 36,
           "non-review-path": 3
@@ -7928,7 +7928,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -8320,18 +8320,18 @@
         "https://www.timeout.com/london/kids/brainiac-live",
         "https://www.chelmsfordtheatre.co.uk/events/brainiac-live",
         "https://www.primarytimes.co.uk/west_london/news/2026/07/brainiac-live-is-back-for-2026-",
+        "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/",
         "https://www.pinkprincetheatre.com/post/review-brainiac-live-garrick-theatre",
         "https://www.allthatdazzles.co.uk/post/review-brainiac-live-garrick-theatre",
-        "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
         "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
         "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
         "https://www.londontheatre.co.uk/reviews/review-brainiac-live-at-the-garrick-theatre",
         "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
-        "https://fairypoweredproductions.com/brainiac-live-review-2/",
         "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
-        "https://www.groupline.com/shows/brainiac-live-tickets"
+        "https://fairypoweredproductions.com/brainiac-live-review-2/",
+        "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729"
       ],
-      "dirFiles": 17,
+      "dirFiles": 18,
       "dirClean": 10,
       "inReviewsJson": 9,
       "missing": [
@@ -8356,12 +8356,6 @@
         {
           "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/",
           "host": "eastendkids.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.groupline.com/shows/brainiac-live-tickets",
-          "host": "groupline.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -8417,6 +8411,24 @@
               "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.timeout.com/london/kids/brainiac-live"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/"
             }
           ],
           "serpCensus": true
@@ -8495,7 +8507,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -8505,7 +8517,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -8564,7 +8576,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189725/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~171566/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://minitravellers.co.uk/review-brainiac-live-at-garrick-theatre-london/",
@@ -8600,19 +8612,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189737/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
-        },
-        {
-          "url": "https://www.groupline.com/shows/brainiac-live-tickets",
-          "host": "groupline.com",
-          "outletId": "groupline",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "⚠️  Scrapingdog pace (~171591/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         }
       ],
       "ingestSkippedByCap": [],
@@ -8648,13 +8648,6 @@
             "url": "https://eastendkids.co.uk/brainiac-live-at-marylebone-theatre-review/"
           },
           {
-            "outletId": "groupline.com",
-            "outlet": "groupline.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.groupline.com/shows/brainiac-live-tickets"
-          },
-          {
             "outletId": "westendtheatre",
             "outlet": "westendtheatre",
             "critic": "Unknown",
@@ -8667,6 +8660,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/kids/brainiac-live"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/"
           },
           {
             "outletId": "londontheatre1",
@@ -8697,12 +8697,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-06T11:25:09.578Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/brainiac-live-review-at-the-garrick-theatre-london--explosive-school-holiday-fun",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -8711,6 +8705,12 @@
           {
             "url": "https://fairypoweredproductions.com/brainiac-live-review-2/",
             "outletId": "fairypoweredproductions.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-06T11:25:09.578Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-BRAINIAC-LIVE-Garrick-Theatre-20260729",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
@@ -8743,13 +8743,6 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
-            "url": "https://www.groupline.com/shows/brainiac-live-tickets",
-            "outletId": "groupline.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T19:59:44.428Z"
-          },
-          {
             "url": "https://www.westendtheatre.com/345190/news/brainiac-live-is-back-in-the-west-end-for-the-2026-summer-holidays/",
             "outletId": "westendtheatre",
             "state": "GAP",
@@ -8764,6 +8757,13 @@
             "firstSeenAt": "2026-08-06T11:25:09.578Z"
           },
           {
+            "url": "https://theatreweekly.com/brainiac-live-returns-to-the-west-end-for-explosive-summer-season/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-12T10:04:38.359Z"
+          },
+          {
             "url": "https://www.londontheatre1.com/reviews/brainiac-live-at-the-garrick-theatre-review/",
             "outletId": "londontheatre1",
             "state": "GAP",
@@ -8774,7 +8774,7 @@
         "liveCount": 6,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -18445,6 +18445,20 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.whatsonstage.com/news/death-note-the-musical-review-a-triumphant-fantastical-manga-thriller_1729216/",
+          "host": "whatsonstage.com",
+          "file": "whatsonstage--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "spawnSync node ETIMEDOUT",
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -18453,7 +18467,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-12T08:23:16.992Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -22459,7 +22473,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "dukes-off-broadway-2026",
@@ -35788,7 +35802,7 @@
         "liveCount": 0,
         "candidateCount": 30
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
@@ -37180,7 +37194,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "high-noon-west-end-2025",
@@ -37371,7 +37385,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
@@ -45802,7 +45816,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "la-llamada-off-broadway-2024",
@@ -49004,9 +49018,9 @@
       "candidatesRejected": {
         "count": 407,
         "byReason": {
+          "aggregator-internal-nav": 304,
           "not-http-url": 65,
           "non-review-host": 35,
-          "aggregator-internal-nav": 304,
           "non-review-path": 3
         }
       },
@@ -49157,7 +49171,7 @@
         "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "masticate-off-broadway-2026",
@@ -53533,7 +53547,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -53851,7 +53865,7 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
@@ -71846,11 +71860,6 @@
       "inReviewsJson": 36,
       "missing": [
         {
-          "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
-          "host": "dailymail.com",
-          "knownOutletId": null
-        },
-        {
           "url": "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/",
           "host": "nypost.com",
           "knownOutletId": "nypost"
@@ -71982,28 +71991,24 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 300,
+        "count": 298,
         "byReason": {
-          "aggregator-internal-nav": 221,
+          "aggregator-internal-nav": 219,
           "not-http-url": 61,
           "non-review-host": 15,
           "non-review-path": 3
         }
       },
-      "dedupedVariants": [],
-      "ingestResults": [
+      "dedupedVariants": [
         {
           "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
           "host": "dailymail.com",
-          "outletId": "dailymail",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189677/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
-        },
+          "matchedUrl": "https://www.dailymail.co.uk/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
+          "outletId": "daily-mail",
+          "reason": "same outlet \"daily-mail\" already held at dailymail.co.uk; dailymail.com is a registered alias of it"
+        }
+      ],
+      "ingestResults": [
         {
           "url": "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/",
           "host": "nypost.com",
@@ -72021,13 +72026,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "dailymail.com",
-            "outlet": "dailymail.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html"
-          },
           {
             "outletId": "nypost",
             "outlet": "nypost",
@@ -72051,6 +72049,12 @@
             "firstSeenAt": "2026-08-03T15:54:33.136Z"
           },
           {
+            "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
+            "outletId": "dailymail.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:54:33.136Z"
+          },
+          {
             "url": "https://www.timeout.com/london/news/review-sinatra-the-musical-at-the-aldwych-theatre-062426",
             "outletId": "timeout.com",
             "state": "live",
@@ -72069,13 +72073,6 @@
             "firstSeenAt": "2026-08-03T15:54:33.136Z"
           },
           {
-            "url": "https://www.dailymail.com/tvshowbiz/article-15927453/PATRICK-MARMIONs-night-review-intoxicating-voice-like-double-whiskey-you-never-skin-airbrushed-Sinatra.html",
-            "outletId": "dailymail.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:54:33.136Z"
-          },
-          {
             "url": "https://nypost.com/2026/07/16/entertainment/frank-sinatra-bio-musical-in-london-is-an-insult-and-not-ready-for-broadway/",
             "outletId": "nypost",
             "state": "GAP",
@@ -72083,10 +72080,10 @@
             "firstSeenAt": "2026-08-03T15:54:33.136Z"
           }
         ],
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "small-off-broadway-2026",
@@ -84655,7 +84652,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -91060,7 +91057,7 @@
       ],
       "dirFiles": 48,
       "dirClean": 17,
-      "inReviewsJson": 20,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
@@ -91196,7 +91193,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
@@ -92128,7 +92125,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
@@ -92554,7 +92551,7 @@
       ],
       "dirFiles": 32,
       "dirClean": 24,
-      "inReviewsJson": 23,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
@@ -92598,11 +92595,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 400,
+        "count": 398,
         "byReason": {
+          "aggregator-internal-nav": 265,
           "not-http-url": 93,
           "non-review-host": 37,
-          "aggregator-internal-nav": 267,
           "non-review-path": 3
         }
       },
@@ -92706,7 +92703,7 @@
         "liveCount": 14,
         "candidateCount": 14
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
@@ -92719,15 +92716,15 @@
         "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
         "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
         "https://www.broadwayworld.com/translate/nl/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+        "https://www.broadwayworld.com/translate/sv/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
         "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
         "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
         "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
-        "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
         "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
+        "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
         "https://discovernearme.co.uk/things-to-do/kew/the-wind-in-the-willows-evt-theatreonkew-658b3ef53a607efb",
-        "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
         "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
-        "https://www.yourlocalguardian.co.uk/news/14597474.wind-in-the-willows-leads-interactive-outdoor-theatre-at-kew-gardens-this-summer/"
+        "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269"
       ],
       "dirFiles": 5,
       "dirClean": 2,
@@ -92746,20 +92743,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
-          "host": "timeandleisure.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
           "host": "primarytimes.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
-          "host": "gigantic.com",
+          "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
+          "host": "timeandleisure.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -92770,8 +92761,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.yourlocalguardian.co.uk/news/14597474.wind-in-the-willows-leads-interactive-outdoor-theatre-at-kew-gardens-this-summer/",
-          "host": "yourlocalguardian.co.uk",
+          "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
+          "host": "gigantic.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -92865,7 +92856,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -92874,8 +92865,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -92885,7 +92876,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -92895,7 +92886,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -92923,7 +92914,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189164/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~171462/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew",
@@ -92935,19 +92926,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189164/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
-        },
-        {
-          "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
-          "host": "timeandleisure.co.uk",
-          "outletId": "timeandleisure",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189167/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~171463/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
           "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
@@ -92959,31 +92938,38 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189169/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~171464/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
         },
         {
-          "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
-          "host": "gigantic.com",
-          "outletId": "gigantic",
+          "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
+          "host": "timeandleisure.co.uk",
+          "outletId": "timeandleisure",
           "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog pace (~189169/day) projects exhaustion in ~14d, before the 23d-out renewal — still u"
+          "reason": "⚠️  Scrapingdog pace (~171464/day) projects exhaustion in ~15d, before the 22d-out renewal — still u"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect"
-        },
-        {
-          "url": "https://www.yourlocalguardian.co.uk/news/14597474.wind-in-the-willows-leads-interactive-outdoor-theatre-at-kew-gardens-this-summer/",
-          "host": "yourlocalguardian.co.uk",
-          "outletId": "yourlocalguardian"
+          "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
+          "host": "gigantic.com",
+          "outletId": "gigantic"
         }
       ],
       "censusVerdict": {
@@ -93004,13 +92990,6 @@
             "url": "https://shakespeareaustralia.com.au/productions/the-wind-in-the-willows-kew"
           },
           {
-            "outletId": "timeandleisure.co.uk",
-            "outlet": "timeandleisure.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/"
-          },
-          {
             "outletId": "primarytimes.co.uk",
             "outlet": "primarytimes.co.uk",
             "critic": "Unknown",
@@ -93018,11 +92997,11 @@
             "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109"
           },
           {
-            "outletId": "gigantic.com",
-            "outlet": "gigantic.com",
+            "outletId": "timeandleisure.co.uk",
+            "outlet": "timeandleisure.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269"
+            "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/"
           },
           {
             "outletId": "londontheatredirect",
@@ -93032,11 +93011,11 @@
             "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words"
           },
           {
-            "outletId": "yourlocalguardian.co.uk",
-            "outlet": "yourlocalguardian.co.uk",
+            "outletId": "gigantic.com",
+            "outlet": "gigantic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.yourlocalguardian.co.uk/news/14597474.wind-in-the-willows-leads-interactive-outdoor-theatre-at-kew-gardens-this-summer/"
+            "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269"
           },
           {
             "outletId": "timeout-london",
@@ -93074,6 +93053,12 @@
             "firstSeenAt": "2026-08-08T06:43:20.310Z"
           },
           {
+            "url": "https://www.broadwayworld.com/translate/sv/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-12T10:04:38.359Z"
+          },
+          {
             "url": "https://www.ticketline.co.uk/the-wind-in-the-willows---theatre-on-kew-1",
             "outletId": "ticketline.co.uk",
             "state": "GAP",
@@ -93088,13 +93073,6 @@
             "firstSeenAt": "2026-08-03T15:26:22.639Z"
           },
           {
-            "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
-            "outletId": "timeandleisure.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T15:26:22.639Z"
-          },
-          {
             "url": "https://www.primarytimes.co.uk/se_london/listings/theatre-on-kew-the-wind-in-the-willows-586109",
             "outletId": "primarytimes.co.uk",
             "state": "GAP",
@@ -93102,11 +93080,11 @@
             "firstSeenAt": "2026-08-03T15:26:22.639Z"
           },
           {
-            "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
-            "outletId": "gigantic.com",
+            "url": "https://timeandleisure.co.uk/event/the-wind-in-the-willows-kew-gardens/",
+            "outletId": "timeandleisure.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-11T18:43:14.820Z"
+            "firstSeenAt": "2026-08-03T15:26:22.639Z"
           },
           {
             "url": "https://www.londontheatredirect.com/news/review-the-wind-in-the-willows-in-exactly-250-words",
@@ -93116,8 +93094,8 @@
             "firstSeenAt": "2026-08-11T05:11:59.987Z"
           },
           {
-            "url": "https://www.yourlocalguardian.co.uk/news/14597474.wind-in-the-willows-leads-interactive-outdoor-theatre-at-kew-gardens-this-summer/",
-            "outletId": "yourlocalguardian.co.uk",
+            "url": "https://www.gigantic.com/the-wind-in-the-willows-tickets-ltd/1269",
+            "outletId": "gigantic.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-11T18:43:14.820Z"
@@ -93138,9 +93116,9 @@
           }
         ],
         "liveCount": 2,
-        "candidateCount": 11
+        "candidateCount": 10
       },
-      "computedAt": "2026-08-11T18:43:14.820Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "three-houses-off-broadway-2026",
@@ -95527,7 +95505,7 @@
           "dirFlags": [
             {
               "file": "inquirer--toby-zinman.json",
-              "flag": "wrongProduction",
+              "flag": "wrongShow",
               "urlInDir": "http://www.philly.com/arts/theater/to-kill-a-mockingbird-shubert-theatre-broadway-jeff-daniels-aaron-sorkin-harper-lee-20181217.html"
             }
           ],
@@ -95766,9 +95744,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 910,
+        "count": 908,
         "byReason": {
-          "aggregator-internal-nav": 600,
+          "aggregator-internal-nav": 598,
           "not-http-url": 233,
           "non-review-host": 71,
           "non-review-path": 6
@@ -97141,7 +97119,7 @@
         "liveCount": 4,
         "candidateCount": 67
       },
-      "computedAt": "2026-08-11T19:59:44.428Z"
+      "computedAt": "2026-08-12T10:04:38.359Z"
     },
     {
       "showId": "trainspotting-the-musical-west-end-2026",
