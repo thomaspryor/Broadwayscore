@@ -24,11 +24,12 @@ const path = require('path');
 
 const {
   resolveDailyCreditCeiling,
+  resolveOpeningWindowReservePerShowCredits,
   shouldTripBreaker,
   computeTodayCredits,
   isBreakerActive,
 } = require('./lib/scrapingdog-caps');
-const { utcDay, breakerAlertSeverity } = require('./lib/brightdata-caps');
+const { utcDay, breakerAlertSeverity, effectiveCeilingForOpeningWindow } = require('./lib/brightdata-caps');
 const { fetchSdAccount } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
 const { countShowsInOpeningWindow } = require('./lib/opening-night-selection');
@@ -42,9 +43,10 @@ if (hasHelpFlag(process.argv.slice(2))) {
   node scripts/check-sd-breaker.js --dry-run    print verdict only (no writes, no alerts)
 
 Env:
-  SCRAPINGDOG_API_KEY   required; without it the check no-ops
-  SD_BREAKER_CEILING    daily credit ceiling (default 45000)
-  SD_BREAKER_STATE_PATH override the state file location (tests)
+  SCRAPINGDOG_API_KEY                        required; without it the check no-ops
+  SD_BREAKER_CEILING                         daily credit ceiling (default 45000)
+  SD_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS per-show ceiling reserve for opening-window shows (default 3000)
+  SD_BREAKER_STATE_PATH                      override the state file location (tests)
 `);
   process.exit(0);
 }
@@ -86,6 +88,19 @@ async function main() {
   const prevState = loadState();
   const wasActive = isBreakerActive(prevState, day);
 
+  // #1330 (mirrors #1315's BD fix): shows within [today-1, today+3] get an
+  // absolute credit reserve carved out of the bulk (non-exempt) ceiling — a
+  // DIFFERENT, wider window than the severity check below (which asks "is a
+  // poller hammering this provider tonight"). Exempt opening-night callers
+  // never consult the breaker at all (scrapingdog-caps.js consultScrapingdog),
+  // so this only throttles the routine sweeps that were starving them.
+  const reserveShows = countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
+  const effectiveCeiling = effectiveCeilingForOpeningWindow({
+    ceiling,
+    openingWindowShows: reserveShows,
+    reservePerShow: resolveOpeningWindowReservePerShowCredits(),
+  });
+
   const account = await fetchSdAccount(apiKey);
   const cycleUsed = account ? account.cycleUsed : null;
 
@@ -95,7 +110,8 @@ async function main() {
     prevState: prevState && prevState.day ? prevState : null,
   });
 
-  console.log(`scrapingdog: ${dayCredits == null ? `${status} (cycle ${cycleUsed ?? 'unknown'})` : `${dayCredits} credits today`} — ceiling ${ceiling}`);
+  console.log(`scrapingdog: ${dayCredits == null ? `${status} (cycle ${cycleUsed ?? 'unknown'})` : `${dayCredits} credits today`} — ceiling ${ceiling}`
+    + `${effectiveCeiling !== ceiling ? ` (ceiling ${ceiling}→${effectiveCeiling}: ${reserveShows} show(s) in the budget-reservation window)` : ''}`);
 
   if (status === 'unknown') {
     // Billing unreachable — leave any existing trip in place rather than
@@ -105,7 +121,7 @@ async function main() {
     return;
   }
 
-  const verdict = shouldTripBreaker({ dayCredits, ceiling });
+  const verdict = shouldTripBreaker({ dayCredits, ceiling: effectiveCeiling });
   console.log(`  ${verdict.reason}${verdict.tripped ? ' → TRIPPED' : ''}`);
 
   // Preserve the ORIGINAL trip timestamp across hourly re-checks of the same
@@ -118,7 +134,7 @@ async function main() {
   const state = {
     ...newState,
     trippedAt,
-    ceiling,
+    ceiling: effectiveCeiling,
     dayCredits,
     status,
     updatedAt: new Date().toISOString(),
@@ -145,14 +161,14 @@ async function main() {
 
   if (!verdict.tripped) {
     const resolved = resolveCondition(conditionKey);
-    console.log(`Breaker cleared (${dayCredits}/${ceiling})${resolved ? ' — open incident resolved' : ''}`);
+    console.log(`Breaker cleared (${dayCredits}/${effectiveCeiling})${resolved ? ' — open incident resolved' : ''}`);
     return;
   }
 
   const severity = breakerAlertSeverity({ tripped: true, openingWindowShows });
-  const title = `Scrapingdog daily breaker TRIPPED: ${dayCredits}/${ceiling} credits`;
+  const title = `Scrapingdog daily breaker TRIPPED: ${dayCredits}/${effectiveCeiling} credits`;
   const description = [
-    `Scrapingdog billed ${dayCredits} credits today against a ceiling of ${ceiling}.`,
+    `Scrapingdog billed ${dayCredits} credits today against a ceiling of ${effectiveCeiling}.`,
     'Bulk Scrapingdog calls are now skipped for the rest of the UTC day (falling through to Bright Data/ScrapingBee); opening-night flows keep their own exemption.',
     openingWindowShows > 0
       ? `${openingWindowShows} show(s) are in an active opening window — bulk review collection for them is capped.`

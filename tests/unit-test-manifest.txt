@@ -203,6 +203,7 @@ tests/unit/fix-shared-ibdb-urls.test.mjs
 tests/unit/flag-wrong-production-by-date-locked.test.mjs
 tests/unit/flagged-recovery-persist.test.mjs
 tests/unit/flagged-recovery.test.mjs
+tests/unit/found-outlet-ids-skip-blocked-url.test.mjs
 tests/unit/found-outlet-ids-skip-not-a-review.test.mjs
 tests/unit/gap-audit-coverage-canonical.test.mjs
 tests/unit/gap-ingest-policy.test.mjs
@@ -388,6 +389,7 @@ tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
+tests/unit/sd-opening-window-budget-reserve.test.mjs
 tests/unit/season-stats-enhancement-filter.test.mjs
 tests/unit/self-contradictory-clear.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
