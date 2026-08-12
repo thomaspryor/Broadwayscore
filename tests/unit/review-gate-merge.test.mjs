@@ -325,6 +325,57 @@ test('ACCEPTANCE 4: an empty/garbage command FAILS OPEN', () => {
   }
 });
 
+// ── the ledger ancestor scan (shared with the push gate) ───────────────────
+
+test('a ledger head whose object no longer exists is a non-match, not a crash', (t) => {
+  // Guards the ancestorSet() change in queryPushAllowed, which BOTH gates use.
+  // Measured on the real repo 2026-08-12: 1044 of 1079 recorded heads were
+  // objects that no longer exist (worktree branches deleted and pruned), and
+  // `merge-base --is-ancestor` cost ~589ms EACH to fail on them — a ~10.6
+  // minute scan. Replacing it with one `git rev-list` set must keep the answer
+  // identical: a head that isn't a real object is simply not an ancestor.
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  makeBranch(repo, 'worktree-big', 60);
+  mkdirSync(join(repo, '.claude'), { recursive: true });
+  writeFileSync(join(repo, LEDGER_REL_PATH), JSON.stringify({
+    ts: new Date().toISOString(), reviewer: 'ship-check', result: 'pass',
+    branch: 'gone', head: 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+    diffHash: 'notarealhash1234', gatedLines: 10,
+  }) + '\n');
+  const r = queryMergeAllowed({ repoRoot: repo, ledgerRoot: repo, sources: ['worktree-big'] });
+  assert.equal(r.allowed, false, 'a phantom head must not satisfy the gate');
+  assert.match(r.reason, /no review verdict/,
+    'a non-existent head is not an ancestor, so it cannot even register as a STALE verdict');
+});
+
+test('a real ancestor head still matches through the rev-list set', (t) => {
+  // The other half of the equivalence: the fast path must still FIND verdicts.
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  makeBranch(repo, 'worktree-big', 60);
+  const rec = recordVerdict({ repoRoot: repo, ledgerRoot: repo, reviewer: 'ship-check', result: 'pass', ref: 'worktree-big' });
+  // Add a few more gated lines so the exact-hash arm can't be what saves it —
+  // this must pass via the ancestor/fixup-drift arm specifically. Check the
+  // branch out BEFORE writing: makeBranch leaves the tree on main, where
+  // scripts/feature.js does not exist, so writing it there first would make
+  // the checkout refuse to clobber an untracked file.
+  git(repo, 'checkout', '-q', 'worktree-big');
+  writeFileSync(join(repo, 'scripts/feature.js'),
+    Array.from({ length: 70 }, (_, i) => `console.log(${i}); // fixup`).join('\n') + '\n');
+  // `git add scripts/feature.js`, NOT `git add -A`: the ledger this test just
+  // wrote lives at .claude/review-verdicts.jsonl and is UNTRACKED, so `-A`
+  // would commit it onto the branch and the checkout back to main would then
+  // delete it — the verdict would silently vanish and this test would "fail"
+  // for a reason that has nothing to do with the gate.
+  git(repo, 'add', 'scripts/feature.js');
+  git(repo, 'commit', '-q', '-m', 'review fixups');
+  git(repo, 'checkout', '-q', 'main');
+  const r = queryMergeAllowed({ repoRoot: repo, ledgerRoot: repo, sources: ['worktree-big'] });
+  assert.equal(r.allowed, true, `fixup drift after ${rec.entry.head.slice(0, 8)} must still be recognised`);
+  assert.equal(r.evaluated[0].via, 'fixup-drift');
+});
+
 test('queryMergeAllowed never throws on a malformed sources argument', () => {
   for (const sources of [null, undefined, 'not-an-array', []]) {
     const r = queryMergeAllowed({ repoRoot: process.cwd(), sources });

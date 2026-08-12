@@ -152,8 +152,13 @@ fi
 # ── Decide ──────────────────────────────────────────────────────────────────
 RESULT=$(node "$GATE" --query=merge-gate --repo="$EVAL_ROOT" --ledger-root="$CANONICAL_ROOT" --command="$command" 2>/dev/null)
 [ -z "$RESULT" ] && exit 0                       # lib error — fail open
-ALLOWED=$(echo "$RESULT" | jq -r '.allowed // empty' 2>/dev/null)
-[ -z "$ALLOWED" ] && exit 0                      # unparseable — fail open
+# `.allowed | tostring`, NOT `.allowed // empty`: jq's `//` treats `false` as
+# ABSENT, so the alternative-operator form collapsed every genuine block into
+# the empty string and the gate failed open 100% of the time. Caught by the
+# acceptance harness on 2026-08-12 — the gate looked installed and healthy and
+# blocked nothing. `tostring` yields "false"/"true"/"null", so a missing or
+# unparseable field lands on "null" and still fails open, deliberately.
+ALLOWED=$(echo "$RESULT" | jq -r '.allowed | tostring' 2>/dev/null)
 [ "$ALLOWED" != "false" ] && exit 0
 
 log_bypass() {

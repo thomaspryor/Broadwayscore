@@ -335,6 +335,39 @@ function isAncestor(repoRoot, maybeAncestor, ref) {
   }
 }
 
+// One-shot ancestor set for `ref`, replacing a per-entry `merge-base
+// --is-ancestor` spawn in the ledger scan below.
+//
+// WHY (measured on the real repo, 2026-08-12, task #1304): the ledger had 1148
+// strong pass verdicts / 1079 distinct heads, and only 35 of those heads still
+// EXIST as objects here — the rest were recorded from worktrees whose branches
+// have since been deleted and pruned. `merge-base --is-ancestor` costs ~33ms on
+// a live object but ~589ms on a missing one (git searches every packfile before
+// giving up), so the scan cost ~10.6 MINUTES, essentially all of it spent
+// failing to find objects that are gone. The drift diffs everyone would suspect
+// were 44ms each, ~1.5s total. `git rev-list <ref>` builds the entire ancestor
+// set in 38ms (1658 commits).
+//
+// Semantics are IDENTICAL, not merely close: `merge-base --is-ancestor X ref`
+// is true exactly when X is reachable from ref (ref itself included), which is
+// exactly `git rev-list ref` membership. A commit that exists but is unreachable
+// is absent from the set and false either way; a missing object is absent from
+// the set and made the spawn throw, also false. So no verdict that used to
+// match stops matching — this is a pure cost fix with no behaviour change and,
+// in particular, no new way to block.
+//
+// Returns null when rev-list fails, so the caller falls back to the spawn rather
+// than silently treating every verdict as non-ancestor (which WOULD change
+// behaviour, in the blocking direction).
+function ancestorSet(repoRoot, ref) {
+  try {
+    const out = git(repoRoot, ['rev-list', ref]);
+    return new Set(out.split('\n').filter(Boolean));
+  } catch {
+    return null;
+  }
+}
+
 // ── ledger ───────────────────────────────────────────────────────────────────
 
 export function readLedger(ledgerRoot) {
@@ -471,6 +504,12 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
 
   const currentHash = computeDiffHash(repoRoot, base, ref);
   const entries = readLedger(ledgerRoot).filter(e => e && e.result === 'pass');
+  // Built once, used for every entry's ancestor test — see ancestorSet() for
+  // why the per-entry spawn made this scan take ~10 minutes.
+  const ancestors = ancestorSet(repoRoot, ref === 'WORKTREE' ? 'HEAD' : ref);
+  const isAncestorOfRef = (head) => (
+    ancestors ? ancestors.has(head) : isAncestor(repoRoot, head, ref === 'WORKTREE' ? 'HEAD' : ref)
+  );
   let nearest = null;
   for (let i = entries.length - 1; i >= 0; i--) {
     const e = entries[i];
@@ -487,7 +526,7 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
         gatedLines: stats.totalLines, diffHash: currentHash,
       };
     }
-    if (e.head && isAncestor(repoRoot, e.head, ref === 'WORKTREE' ? 'HEAD' : ref)) {
+    if (e.head && isAncestorOfRef(e.head)) {
       // Drift = gated changes since the reviewed head, restricted to files this
       // push actually changes. verdict.head..ref also spans the OTHER parent of
       // any merge (e.g. main merged into the branch after review) — those files
