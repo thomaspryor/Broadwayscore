@@ -164,10 +164,15 @@ function findSourceFile(showId, outletId, criticName) {
           // a missed syndication detection is far safer than a wrong one.
           // Mirrors review-guards.js explainExclusion's exclusion signals for
           // this file (not the full predicate — that needs show context this
-          // lookup doesn't have). isNotReview and isSyndicatedDuplicate added
-          // after adversarial review found this list incomplete (card #190).
+          // lookup doesn't have). isNotReview added after adversarial review
+          // found this list incomplete (card #190). isSyndicatedDuplicate is
+          // deliberately NOT here: unlike the others, it doesn't mean "unreliable
+          // content" — it means "already-detected duplicate," and the caller's
+          // own already-flagged check (below) needs to be able to find these
+          // files to report them, or every re-run silently undercounts its own
+          // "already flagged" summary (code-review finding, card #190 follow-up).
           if (data.wrongProduction || data.wrongShow || data.isNonReview || data.isNotReview ||
-              data.isSyndicatedDuplicate || data.contentTier === 'invalid') continue;
+              data.contentTier === 'invalid') continue;
           return { path: filePath, filename: file, data };
         }
       } catch { /* skip corrupt files */ }
