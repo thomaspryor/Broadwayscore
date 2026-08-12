@@ -15,7 +15,6 @@
  *      own --headless path (a detached subprocess, never a copy of its
  *      dispatch/verify-gate/duplicate-guard logic — see the header note on
  *      why this is a subprocess rather than a require()'d main() call).
-const { gitSafeJobId } = require('./lib/bsc-runner.js'); // job branches use the SANITIZED id (linear: ids carry a git-illegal colon)
  *   4. Always recomputes and writes the digest metric snapshot
  *      (data/audit/backlog-drain-metric.json), registered in
  *      scripts/lib/digest-snapshots.js so send-morning-digest.js renders it.
@@ -44,6 +43,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync, spawn } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { gitSafeJobId } = require('./lib/bsc-runner.js'); // job branches use the SANITIZED id (linear: ids carry a git-illegal colon)
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const LIST_ID = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
