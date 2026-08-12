@@ -33,6 +33,7 @@ require('./lib/load-env').loadEnv();
 
 const { BRAIN_DATABASE_ID: DATABASE_ID } = require('./lib/notion-constants');
 const { hoistRecheckAfterStamp } = require('./lib/recheck-stamp');
+const { resolveDisposition } = require('./lib/card-disposition');
 
 if (!process.env.NOTION_API_KEY) {
   console.error('Error: NOTION_API_KEY not set. Add it to .env or environment.');
@@ -499,6 +500,19 @@ async function createCard(args) {
     process.exit(1);
   }
 
+  // Disposition gate (task #1310) — checked BEFORE the notes-quality gate
+  // below so a caller with perfectly good notes still can't file a card
+  // without deciding, right here, whether it's being worked now or why not.
+  // No bypass: --force below only ever waived the notes-quality bar, never
+  // this one — the whole point of this gate is that there is no default.
+  const disposition = resolveDisposition({ dispatch: args.dispatch, park: args.park });
+  if (!disposition.ok) {
+    console.error(`\n❌ REJECTED (${disposition.reason}) — "${title}"\n`);
+    console.error(disposition.message);
+    console.error('');
+    process.exit(2);
+  }
+
   // Enforce card context quality — reject sparse cards at the CLI level.
   // See memory/feedback_notion_card_context.md for the rule rationale.
   const validation = validateCardNotes({
@@ -526,10 +540,15 @@ async function createCard(args) {
     Name: { title: [{ text: { content: title } }] },
   };
 
+  // Status is disposition-driven, not defaulted (task #1310): dispatch means
+  // work starts now ('In progress'); park means it explicitly does not
+  // ('Paused' — distinct from 'In progress' so a parked card never reads as
+  // actively worked). --status still overrides both for callers that need a
+  // specific value (e.g. update-time Done), same as before.
   if (args.status) {
     properties.Status = { status: { name: args.status } };
   } else {
-    properties.Status = { status: { name: 'In progress' } };
+    properties.Status = { status: { name: disposition.mode === 'dispatch' ? 'In progress' : 'Paused' } };
   }
 
   if (args.priority) {
@@ -564,13 +583,18 @@ async function createCard(args) {
 
   // Collect per-field overflow so we can write body sections after create.
   const overflow = {};
-  if (args.notes) {
+  if (args.notes || disposition.mode === 'park') {
+    // Park reason goes at the very front of Notes — "why is nothing
+    // happening on this" must be answerable from the card without opening
+    // Outcome or digging through prose (task #1310).
+    const withParkReason =
+      disposition.mode === 'park' ? `PARKED: ${disposition.reason}\n\n${args.notes || ''}`.trim() : args.notes;
     // Hoist a RECHECK-AFTER stamp to the front — same reason as the Outcome
     // field below: the property is truncated to a ~1752-char preview before
     // overflowing to the page body, and stuck-work.js's classifier only ever
     // reads the raw property (task #802 fixed this for Outcome; Notes had
     // the identical bug, found via card #1136's OWNER card).
-    const notesText = hoistRecheckAfterStamp(args.notes);
+    const notesText = hoistRecheckAfterStamp(withParkReason);
     const { propertyValue, bodyText } = buildRichTextWithOverflow(notesText);
     properties.Notes = propertyValue;
     if (bodyText) overflow.notes = bodyText;
@@ -605,7 +629,66 @@ async function createCard(args) {
   // stdin's session_id — so the sentinel existed but under the wrong name.
   console.error(`__NOTION_CARD_ID__=${page.id}`);
 
+  if (disposition.mode === 'dispatch') {
+    dispatchCreatedCard({ pageId: page.id, title });
+  } else {
+    console.error(`PARKED: "${title}" — ${disposition.reason}`);
+  }
+
   return card;
+}
+
+// Runs the 3-command dispatch chain the owner used to have to do by hand
+// (pull → find task id → bsc-next --id N) as one step of `create --dispatch`
+// (task #1310: "One command, not three"). A card created with --dispatch but
+// left undispatched by a chain failure would be exactly the silent-third-
+// state this gate exists to prevent, so a failure here is loud (non-zero
+// exit), even though the card itself was already created successfully.
+function dispatchCreatedCard({ pageId, title }) {
+  const path = require('path');
+  const { execFileSync } = require('child_process');
+  const os = require('os');
+  const scriptDir = __dirname;
+
+  try {
+    execFileSync('node', [path.join(scriptDir, 'notion-tasks-sync.js'), 'pull'], {
+      cwd: path.join(scriptDir, '..'),
+      encoding: 'utf8',
+      timeout: 120000,
+    });
+  } catch (err) {
+    console.error(`\n❌ DISPATCH FAILED — "${title}" (${pageId}): notion-tasks-sync pull failed: ${err.message.slice(0, 300)}`);
+    console.error(`Card was created but is NOT dispatched. Resume manually: node scripts/bsc-next.js --id <task#> (find it via notion-tasks-sync.js status).`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const { readMap } = require('./notion-tasks-sync');
+  const listId = process.env.CLAUDE_CODE_TASK_LIST_ID || 'broadwayscore';
+  const tasksDir = path.join(os.homedir(), '.claude', 'tasks', listId);
+  const map = readMap(tasksDir);
+  const entry = map[pageId];
+  if (!entry || !entry.taskId) {
+    console.error(`\n❌ DISPATCH FAILED — "${title}" (${pageId}): pulled OK but no mirror task id found for this card.`);
+    console.error(`Card was created but is NOT dispatched. Run: node scripts/notion-tasks-sync.js status`);
+    process.exitCode = 1;
+    return;
+  }
+
+  try {
+    execFileSync('node', [path.join(scriptDir, 'bsc-next.js'), '--id', String(entry.taskId)], {
+      cwd: path.join(scriptDir, '..'),
+      encoding: 'utf8',
+      timeout: 60000,
+    });
+  } catch (err) {
+    console.error(`\n❌ DISPATCH FAILED — "${title}" (${pageId}, task #${entry.taskId}): bsc-next failed: ${err.message.slice(0, 300)}`);
+    console.error(`Card was created but is NOT dispatched. Resume manually: node scripts/bsc-next.js --id ${entry.taskId}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  console.error(`DISPATCHED: task #${entry.taskId} ("${title}")`);
 }
 
 // ── close-time acceptance verify (task #1003) ───────────────────────────────

@@ -29,7 +29,7 @@ function truncate(str, max) {
  * @param {string} opts.planReason - plan.reason from the LLM's canCreatePlan:false response
  * @param {number|string} opts.issueNumber
  * @param {string} [opts.issueUrl]
- * @returns {{title: string, priority: string, status: string, action: string, notes: string}}
+ * @returns {{title: string, priority: string, status: string, action: string, notes: string, parkReason: string}}
  */
 function buildEscalationCard({ diagnosis = {}, planReason = '', issueNumber, issueUrl } = {}) {
   if (!issueNumber) throw new Error('buildEscalationCard requires issueNumber');
@@ -58,7 +58,14 @@ function buildEscalationCard({ diagnosis = {}, planReason = '', issueNumber, iss
     'VERIFY: owner-judgment (the fix itself varies per-issue and has no single re-runnable command; a fresh session judges "closed with a real fix" against the issue thread).',
   ].join('\n');
 
-  return { title, priority: 'P1', status: 'Not started', action: 'Investigate', notes };
+  // task #1310: escalation runs on a GitHub Actions runner with no cmux/
+  // bsc-next — this is always a park, never a dispatch. The Mac-side
+  // P0/P1-auto-dispatch-at-creation loop is what actually picks it up.
+  const parkReason =
+    `CI-side auto-escalation (no cmux/bsc-next on this runner) for feedback #${issueNumber}; ` +
+    `the Mac-side P0/P1 auto-dispatch-at-creation loop picks it up on its next pull.`;
+
+  return { title, priority: 'P1', status: 'Not started', action: 'Investigate', notes, parkReason };
 }
 
 module.exports = { buildEscalationCard };

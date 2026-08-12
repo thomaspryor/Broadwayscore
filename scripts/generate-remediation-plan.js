@@ -123,7 +123,7 @@ function escalatePlanRefusal({ diagnosis, planReason, issueNumber, issueUrl }) {
     execFileSync('node', [
       path.join(scriptsDir, 'notion-brain.js'), 'create', card.title,
       '--priority', card.priority, '--status', card.status, '--action', card.action,
-      '--notes', card.notes,
+      '--notes', card.notes, '--park', card.parkReason,
     ], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
   } catch (err) {
     console.error('escalatePlanRefusal: notion-brain create failed:', err.message);

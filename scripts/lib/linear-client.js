@@ -25,7 +25,12 @@ async function graphql(query, variables) {
   });
   const json = await res.json();
   if (json.errors && json.errors.length) {
-    throw new Error(`Linear GraphQL error: ${json.errors.map((e) => e.message).join('; ')}`);
+    const err = new Error(`Linear GraphQL error: ${json.errors.map((e) => e.message).join('; ')}`);
+    // Raw errors attached (not just flattened into the message) so callers that
+    // need to branch on a specific error code — e.g. USAGE_LIMIT_EXCEEDED, the
+    // free-tier 250-issue cap — don't have to string-match the human message.
+    err.linearErrors = json.errors;
+    throw err;
   }
   return json.data;
 }
