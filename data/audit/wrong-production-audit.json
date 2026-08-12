@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T19:12:23.723Z",
+  "timestamp": "2026-08-12T19:59:33.196Z",
   "stats": {
-    "totalReviews": 42115,
-    "alreadyFlagged": 18283,
+    "totalReviews": 42116,
+    "alreadyFlagged": 18284,
     "dateGuardCatches": 138,
     "directorMismatch": 963,
-    "tvFilmSignals": 1189,
-    "londonSignals": 860,
+    "tvFilmSignals": 1188,
+    "londonSignals": 859,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3557
+    "noPublishDate": 3560
   },
   "findings": [
     {
@@ -6214,24 +6214,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "file": "west-end-best-friend--unknown.json",
-      "publishDate": "2026-07-28",
-      "url": "https://www.westendbestfriend.co.uk/news/death-note-adds-an-extra-performance-and-gives-an-exclusive-first-listen",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
