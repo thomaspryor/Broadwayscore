@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-08-12T17:55:53.853Z",
+  "timestamp": "2026-08-12T18:41:09.674Z",
   "stats": {
-    "totalReviews": 42109,
-    "alreadyFlagged": 18325,
-    "dateGuardCatches": 135,
-    "directorMismatch": 962,
+    "totalReviews": 42113,
+    "alreadyFlagged": 18281,
+    "dateGuardCatches": 138,
+    "directorMismatch": 963,
     "tvFilmSignals": 1187,
     "londonSignals": 857,
     "offBroadwaySignals": 481,
     "yearMismatch": 88,
-    "noPublishDate": 3544
+    "noPublishDate": 3561
   },
   "findings": [
     {
@@ -6555,6 +6555,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -17598,6 +17612,17 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "timeout-london--tom-wicker.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 579d before show (2022-10-16 vs 2024-05-17)"
         }
       ]
     },
@@ -28714,6 +28739,17 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1427d before show (2022-07-29 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "i-paper--sam-marlowe.json",
       "score": 80,
       "publishDate": "2022-04-01",
@@ -34641,7 +34677,8 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "publishDate": null,
+      "score": 64,
+      "publishDate": "2026-08-12",
       "url": "https://theartsdesk.com/theatre/death-note-musical-barbican-review-book-kills-people-and-scuppers-show",
       "findings": [
         {
@@ -34764,6 +34801,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "theatreandtonic--unknown.json",
+      "score": 95,
       "publishDate": "2026-08-12",
       "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
       "findings": [
@@ -44309,6 +44347,17 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 34d before show (2026-06-24 vs 2026-07-28)"
+        }
+      ]
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "file": "londontheatre1--terry-eastham.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
         }
       ]
     },

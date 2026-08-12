@@ -134,11 +134,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-08-12T18:30:51.466Z",
+      "lastSeen": "2026-08-12T18:43:01.697Z",
       "lastNotifiedAt": "2026-08-12T15:00:21.002Z",
       "notifyCount": 27,
       "cardId": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -726,6 +726,28 @@
       "firstSeen": "2026-08-12T14:11:05.654Z",
       "lastSeen": "2026-08-12T14:11:05.654Z",
       "lastNotifiedAt": "2026-08-12T14:11:05.654Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "bd-circuit-breaker-web_unlocker2": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2304/2250 reqs)",
+      "firstSeen": "2026-08-12T18:43:27.704Z",
+      "lastSeen": "2026-08-12T18:43:27.704Z",
+      "lastNotifiedAt": "2026-08-12T18:43:27.704Z",
+      "notifyCount": 1,
+      "cardId": null
+    },
+    "bd-circuit-breaker-serp_api1": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (3783/2250 reqs)",
+      "firstSeen": "2026-08-12T18:43:27.740Z",
+      "lastSeen": "2026-08-12T18:43:27.740Z",
+      "lastNotifiedAt": "2026-08-12T18:43:27.740Z",
       "notifyCount": 1,
       "cardId": null
     }
