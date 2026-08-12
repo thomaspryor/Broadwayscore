@@ -50,5 +50,13 @@
   "scripts/evaluate-brightdata-serp.js": {
     "reason": "explicit provider bake-off/comparison eval tool (ScrapingBee vs Bright Data SERP quality) — by design calls both SERP endpoints directly to compare raw results, same category as scrapingdog-bakeoff.js",
     "addedAt": "2026-08-04"
+  },
+  "scripts/scrape-show-score-audience.js": {
+    "reason": "task #5/#66: Show Score is a React SPA and this call depends on ScrapingBee's wait=3000 hydration param — fetchPage()'s Scrapingdog/Bright Data tiers have no equivalent settle-time option, so routing through them risked silently under-counting audience scores. premium_proxy=true was dropped (render_js=true alone is the cheapest tier that still gets the wait param); its own Bright Data leg is part of the same documented 3-tier fallback chain (ScrapingBee -> Playwright -> Bright Data), not a stray call",
+    "addedAt": "2026-08-12"
+  },
+  "scripts/sweep-we-aggregators.js": {
+    "reason": "task #5/#66: West End aggregator sweep depends on ScrapingBee's country_code=gb geo-pinning to reach UK-only outlets — fetchPage()'s Scrapingdog/Bright Data tiers have no equivalent. premium_proxy=true was dropped (render_js=true alone already cheaper than Bright Data). Second call site is a non-premium SB fallback for a WAF-blocked WordPress JSON endpoint, unrelated to premium proxy",
+    "addedAt": "2026-08-12"
   }
 }

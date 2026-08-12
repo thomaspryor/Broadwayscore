@@ -67,13 +67,17 @@ const NOISE_RULES = [
         'dispatch dead',
         'duplicate-dispatch',
         'session/pm system',
-        'push-with-retry',
         'cmux ',
         '2-death dispatch cap',
         'dispatch outcomes:',
         'dispatch ledger',
         'linear migration',
       ];
+      // NOT 'push-with-retry': the migration retires the dispatcher, not git.
+      // push-with-retry.sh is the shared push primitive every data workflow
+      // depends on, and its two open cards are production bugs where a push
+      // reported success while nothing reached origin (#959, #1279). Excluding
+      // them as "fleet" drops real data-loss work on the floor.
       return kws.some((k) => low.includes(k));
     },
   },
@@ -105,16 +109,35 @@ const PROJECT_RULES = [
       /opening.night|t1\/t2|silent gap|review stuck|\bserp\b|\bcensus\b|opening-night/i.test(s),
   },
   {
+    // Distribution keywords must carry distribution INTENT. The first draft of
+    // this rule used a bare /reddit/, which pulled the audience-buzz
+    // "cross-production Reddit contamination" data-quality sweep into
+    // Marketing; a bare /post\b/ (tried and rejected) matched "post-rebase".
+    // Verified against the real 200-card mirror, not reasoned about.
     name: 'Marketing/distribution',
     test: (s) =>
-      /reddit|newsletter|social pulse|instagram|threads\b|linkedin|forbes|pitch kit|distribution|outreach|volunteers|producer|mentor/i.test(
+      /\br\/[a-z]|reddit (post|launch|distribution|rollout)|\bon reddit\b|newsletter subscriber|instagram|threads\b|linkedin|social media|starter posts|forbes|pitch kit|\bseo\b|search console|outreach|volunteers|cross-promo|\bmentor\b/i.test(
+        s
+      ),
+  },
+  {
+    // User-facing site work. Without this stream it all lands in the
+    // Infrastructure catch-all, which is how that project ended up holding
+    // 122 of 257 issues on the first import — a dumping ground, not a stream.
+    // (?<!clear_) keeps CLEAR_BREADCRUMBS (a scoring-flag audit constant) out.
+    name: 'Site & product',
+    test: (s) =>
+      /show hero|show page|homepage|browse page|watchlist|\bdiary\b|(?<!clear_)breadcrumb|hoverratestars|stats engine|show stats|tag conflict|redesign/i.test(
         s
       ),
   },
   {
     name: 'Scoring quality',
     test: (s) =>
-      /scor(e|ing)|review.?guard|wrongproduction|wrongshow|duplicate.?of|anchored|ensemble|llm.?scor|content.quality|rebuild-all-reviews/i.test(
+      // contamination/audience-buzz added 2026-08-12: the audience-buzz
+      // title-collision sweep is corpus data quality, and without them it fell
+      // through every rule into the Infrastructure catch-all.
+      /scor(e|ing)|review.?guard|wrongproduction|wrongshow|duplicate.?of|anchored|ensemble|llm.?scor|content.quality|rebuild-all-reviews|contamination|audience.?buzz/i.test(
         s
       ),
   },
@@ -135,7 +158,35 @@ function classifyProject(subject) {
   return 'Infrastructure'; // catch-all: CI, hooks, health-checks, misc plumbing
 }
 
+// Idle cutoff, in days since the Notion card was last edited, past which a
+// PENDING card routes to Archive instead of its workstream.
+//
+// The card's original rule was "pending P2-Later, 30+ days idle". Measured
+// against the live mirror on 2026-08-12 that matches ZERO records: the mirror
+// holds only 14 P2s (it syncs P0/P1 + in-progress) and none of them are stale,
+// so the rule could never move the 259-item import toward the plan's 120-150
+// target. Idle time across ALL pending priorities is the signal that actually
+// exists in the data. 12 days is where the distribution splits: 64 cards share
+// a single bulk-edit date at exactly 12d, and everything fresher is genuinely
+// active work. Nothing is deleted — Archive is one filter away.
+const ARCHIVE_IDLE_DAYS = 12;
+
+/**
+ * @param {string} localStatus  mirror status ('pending' | 'in_progress' | ...)
+ * @param {number|null} ageDays days since the Notion card was last edited
+ * @param {number} [idleDays]   cutoff, defaults to ARCHIVE_IDLE_DAYS
+ * @returns {boolean} true when this card belongs in Archive, not a workstream
+ */
+function isIdleArchive(localStatus, ageDays, idleDays = ARCHIVE_IDLE_DAYS) {
+  // in_progress is live work by definition — someone is holding it right now,
+  // and a stale Notion edit time says nothing about that.
+  if (localStatus !== 'pending') return false;
+  return typeof ageDays === 'number' && ageDays >= idleDays;
+}
+
 module.exports = {
+  ARCHIVE_IDLE_DAYS,
+  isIdleArchive,
   extractNotionId,
   extractPriorityTag,
   mapPriorityToLinear,

@@ -71,6 +71,51 @@ async function listAllIssueTitles(teamId) {
   return titles;
 }
 
+// Fuller read than listAllIssueTitles: --reconcile has to compare each issue's
+// CURRENT project/state against what the curation says it should be, so title
+// alone is not enough.
+async function listIssues(teamId) {
+  const issues = [];
+  let after = null;
+  for (;;) {
+    const data = await graphql(
+      `query($teamId: String!, $after: String) {
+        team(id: $teamId) {
+          issues(first: 100, after: $after) {
+            nodes { id identifier title url project { name } state { name } }
+            pageInfo { hasNextPage endCursor }
+          }
+        }
+      }`,
+      { teamId, after }
+    );
+    const { nodes, pageInfo } = data.team.issues;
+    for (const n of nodes) {
+      issues.push({
+        id: n.id,
+        identifier: n.identifier,
+        title: n.title,
+        url: n.url,
+        project: n.project ? n.project.name : null,
+        state: n.state ? n.state.name : null,
+      });
+    }
+    if (!pageInfo.hasNextPage) break;
+    after = pageInfo.endCursor;
+  }
+  return issues;
+}
+
+async function updateIssue(id, input) {
+  const data = await graphql(
+    `mutation($id: String!, $input: IssueUpdateInput!) {
+      issueUpdate(id: $id, input: $input) { success }
+    }`,
+    { id, input }
+  );
+  if (!data.issueUpdate.success) throw new Error(`issueUpdate failed for ${id}`);
+}
+
 async function listProjects() {
   const data = await graphql(`query { projects(first: 100) { nodes { id name } } }`);
   return data.projects.nodes;
@@ -103,6 +148,8 @@ module.exports = {
   graphql,
   getTeam,
   listAllIssueTitles,
+  listIssues,
+  updateIssue,
   listProjects,
   createProject,
   createIssue,

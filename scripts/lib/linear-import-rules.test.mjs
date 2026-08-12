@@ -7,6 +7,7 @@ import {
   mapStatusToLinearState,
   classifyNoise,
   classifyProject,
+  isIdleArchive,
 } from './linear-import-rules.js';
 
 test('extractNotionId finds the tag anywhere in the description, not just line 1', () => {
@@ -107,5 +108,66 @@ test('classifyProject routes to the most specific matching workstream', () => {
   assert.equal(
     classifyProject('Local pre-push hook does not check the CLAUDE.md byte cap'),
     'Infrastructure'
+  );
+});
+
+// --- regressions found by running the classifier over the real 200-card
+// mirror on 2026-08-12, not by reasoning about the patterns ---
+
+test('isIdleArchive routes idle PENDING cards only', () => {
+  assert.equal(isIdleArchive('pending', 40), true);
+  assert.equal(isIdleArchive('pending', 12), true); // cutoff is inclusive
+  assert.equal(isIdleArchive('pending', 11), false);
+  assert.equal(isIdleArchive('pending', null), false); // unknown age is not idle
+  // in_progress is live work by definition — someone is holding it right now,
+  // and a stale Notion edit time says nothing about that.
+  assert.equal(isIdleArchive('in_progress', 40), false);
+});
+
+test('distribution keywords need distribution intent, not a substring match', () => {
+  // "cross-producti(on Reddit) contamination" is a data-quality sweep — the
+  // first draft's bare /reddit/ filed it under Marketing.
+  assert.equal(
+    classifyProject(
+      'Audience-buzz title-collision sweep (revival/year cross-production Reddit contamination)'
+    ),
+    'Scoring quality'
+  );
+  // Real distribution work still lands there.
+  assert.equal(classifyProject('Post Schmigadoon! opening on Reddit'), 'Marketing/distribution');
+  assert.equal(
+    classifyProject('r/offbroadway: dedicated Off-Broadway launch post'),
+    'Marketing/distribution'
+  );
+});
+
+test('user-facing site work gets its own stream, not the Infrastructure catch-all', () => {
+  assert.equal(
+    classifyProject('Show hero (redesign): tier label wraps mid-word at 360-414px'),
+    'Site & product'
+  );
+  assert.equal(
+    classifyProject('Breadcrumb href routes concerts/operas to a genre browse page'),
+    'Site & product'
+  );
+  // CLEAR_BREADCRUMBS is a scoring-flag audit constant, not site navigation.
+  assert.notEqual(
+    classifyProject('CI gate: catch missing CLEAR_BREADCRUMBS entries for force:true clears'),
+    'Site & product'
+  );
+});
+
+test('push-with-retry cards are production bugs, not fleet self-reference', () => {
+  // The migration retires the dispatcher, not git. Both of these are real
+  // data-loss bugs where a push reported success and nothing reached origin.
+  assert.equal(classifyNoise('push-with-retry exit-0 false success recurred 2026-08-03'), null);
+  assert.equal(
+    classifyNoise('P0: merge-worktree-to-main.sh printed "→ pushed" but nothing reached origin'),
+    null
+  );
+  // Genuine fleet cards still match.
+  assert.equal(
+    classifyNoise('Session-system v2 subtraction V1: queue-first migration'),
+    'fleet_selfref'
   );
 });

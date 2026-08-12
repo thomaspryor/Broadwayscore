@@ -3,13 +3,15 @@
     "linearId": "e8f97be8-6764-4d59-bf4c-b87ab671b2c8",
     "identifier": "BRO-11",
     "title": "Multi-session task orchestration: shared task list + Notion-Tasks bridge",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "3": {
     "linearId": "b7a12310-c1c4-46e0-aeb5-687f40efde8b",
     "identifier": "BRO-12",
     "title": "Close the stale-checkout race: post-rebase cross-show ownership validation in push-review-texts",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "7": {
     "linearId": "52a297f9-348c-4f07-a7b1-ca88e4dad91a",
@@ -87,13 +89,15 @@
     "linearId": "922ef7a9-838d-43e9-9df6-3e23a7b7f5ed",
     "identifier": "BRO-25",
     "title": "Byline recovery: outlet--unknown entries in reviews.json where a named sibling file exists",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "37": {
     "linearId": "ac63615a-47ed-4999-9f37-b58a45dd3c62",
     "identifier": "BRO-26",
     "title": "Dead CI check: core-data-pairing never worked - redesign and audit 50 flagged workflows",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "42": {
     "linearId": "5d28220c-ebb5-4019-938a-707533ea68bc",
@@ -105,7 +109,8 @@
     "linearId": "db9a767d-cb85-453f-b68b-7f56753c964c",
     "identifier": "BRO-28",
     "title": "Commercial Scorecard: plan v2 (approved) + first fixes shipped",
-    "project": "Commercial"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "53": {
     "linearId": "59b165a2-5281-4042-817a-870f92554c69",
@@ -131,6 +136,13 @@
     "title": "Route 39 direct-ScrapingBee scripts through fetchPage() (complete SD migration)",
     "project": "Infrastructure"
   },
+  "72": {
+    "linearId": "81f1b94c-7cea-4663-b8ea-d0914c7abe2c",
+    "identifier": "BRO-6",
+    "title": "Fix provisionalOutletIdFromHost garbage slugs (.co.uk, *.wordpress.com)",
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
   "73": {
     "linearId": "d549d732-866d-43e1-90ee-f653edea398e",
     "identifier": "BRO-33",
@@ -147,7 +159,8 @@
     "linearId": "51f6bd2f-b551-4266-a426-39a8f12f88ad",
     "identifier": "BRO-35",
     "title": "Lint Workflows red: notion-action-poll.js writes review-texts without safeWriteReview",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "95": {
     "linearId": "3713cb6d-ed1c-4233-9ddc-22facc43fc20",
@@ -341,11 +354,24 @@
     "title": "LLM fallback should fire on PARTIAL extraction, not just zero — resilience to format changes",
     "project": "Infrastructure"
   },
+  "150": {
+    "linearId": "7739730e-77f2-427a-8d24-27139f3f5157",
+    "identifier": "BRO-7",
+    "title": "Fix: getFoundOutletIds should skip rejectionReason=not_a_review files",
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
   "169": {
     "linearId": "fe92b500-6875-48fa-9ebb-13c3d2525d7d",
     "identifier": "BRO-68",
     "title": "Unparsed explicit ratings: auto-dispatch recover-explicit-ratings workflow",
     "project": "Infrastructure"
+  },
+  "188": {
+    "linearId": "7162e15a-e274-4d7c-b256-93b353110f94",
+    "identifier": "BRO-5",
+    "title": "Show hero (redesign): tier label wraps mid-word at 360-414px (\"Mixe d\", \"Shruggin g\")",
+    "project": "Site & product"
   },
   "190": {
     "linearId": "99299afa-7cb4-4aa6-bd52-2fa4023941a3",
@@ -369,7 +395,8 @@
     "linearId": "24f17d8d-66e9-4e0e-9296-891df09c8365",
     "identifier": "BRO-72",
     "title": "Commercial model accuracy + Reddit-source reliability (5-sprint plan)",
-    "project": "Commercial"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "236": {
     "linearId": "68eb3f83-6441-4e9d-8961-297d8ed33274",
@@ -382,6 +409,12 @@
     "identifier": "BRO-74",
     "title": "C2 multi-critic URL dedup: 7 cases of same-URL double-counting",
     "project": "Infrastructure"
+  },
+  "242": {
+    "linearId": "d2fc9084-f0e3-431d-b932-9993b1ec3599",
+    "identifier": "BRO-8",
+    "title": "Drift detector: handle 'rc field not found' in live JSON as real drift signal",
+    "project": "Archive"
   },
   "243": {
     "linearId": "eb65d041-578c-4bca-9d9b-9b9d22792592",
@@ -567,13 +600,15 @@
     "linearId": "f51c6b22-1b01-42bf-a69a-31691dd82d3d",
     "identifier": "BRO-105",
     "title": "Health-digest warning triage: 3 real breakages fixed (JSON-LD P0 leak, cast-changes abort, superseded-cron false warnings)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "445": {
     "linearId": "5a25ae25-9224-4c02-b14e-11119b9f7274",
     "identifier": "BRO-106",
     "title": "Follow-up #438: Theatremonkey missing fetch timeout + run-budget lint job-vs-step blind spot",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "449": {
     "linearId": "88a7e438-dfac-4977-a419-f74faa74673f",
@@ -597,7 +632,8 @@
     "linearId": "a3d1c5cc-4000-4974-b5ec-23ce43dd6f8c",
     "identifier": "BRO-110",
     "title": "Fix tokenless opening-night-monitor launchd job + self-healing token coverage",
-    "project": "Opening night"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "483": {
     "linearId": "97abff13-dfd1-4af5-8259-348232fa18bc",
@@ -633,6 +669,13 @@
     "linearId": "a6e0bf4a-7059-4365-bbb0-0de0a47f3933",
     "identifier": "BRO-116",
     "title": "Fix 101 baselined scripts with unconditional core-data writes on --help (highest-risk #498 subset)",
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
+  "537": {
+    "linearId": "983efffa-2b43-4bda-a945-c991f7b63742",
+    "identifier": "BRO-257",
+    "title": "alert-digest-queue.json now has 2 committer workflows — push-with-retry keep-local can lose or resurrect a queued line",
     "project": "Infrastructure"
   },
   "552": {
@@ -807,13 +850,15 @@
     "linearId": "1de4a1d7-217b-494a-9e7d-6e6825bf7b26",
     "identifier": "BRO-145",
     "title": "iOS show screen: card parity design proposals vs mobile web",
-    "project": "iOS"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "942": {
     "linearId": "290ab9aa-3282-496d-a8fb-93c4c007406b",
     "identifier": "BRO-146",
     "title": "Zombie-tab sweep: bsc-prune auto-closes dead 🤖 corpse/never-booted tabs (#900 follow-up)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "943": {
     "linearId": "c3852284-660a-4d1b-89ae-a6aa3b993935",
@@ -825,19 +870,22 @@
     "linearId": "bd622571-be5d-42c6-899b-79c114ad0f7f",
     "identifier": "BRO-148",
     "title": "classify-checkpoint concurrency fix session (task #925)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "953": {
     "linearId": "6bec5842-cc87-4718-adaf-2a2b751c340b",
     "identifier": "BRO-149",
     "title": "Fix Variety url_mismatch false-positive blocking extraction (task #6)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "957": {
     "linearId": "823256f8-d1e0-4a3a-8fb2-242cda3508a9",
     "identifier": "BRO-150",
     "title": "Extract shared show-date-line helper (legacy + redesign heroes)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "958": {
     "linearId": "455a260c-d80f-4ea0-a784-01ac358e04f0",
@@ -845,17 +893,25 @@
     "title": "Audit top url-mismatch-suspects.json hosts for Variety-class fixable permalink drift",
     "project": "Infrastructure"
   },
+  "959": {
+    "linearId": "531aad71-f232-41ec-9d69-517b24ba5229",
+    "identifier": "BRO-258",
+    "title": "push-with-retry exit-0 false success recurred 2026-08-03 AFTER #833 completed — content never reached origin",
+    "project": "Infrastructure"
+  },
   "963": {
     "linearId": "859c0825-ac43-4b63-81b2-13665802d2c0",
     "identifier": "BRO-152",
     "title": "P1: token-cost hunt round 2 — task-store archive fix + audit (#955)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "966": {
     "linearId": "92ac163e-e9ae-4a52-96a5-63fb4404cbcf",
     "identifier": "BRO-153",
     "title": "Affiliate links lack rel=sponsored/nofollow (session)",
-    "project": "Commercial"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "970": {
     "linearId": "ce62f5d7-76ab-44d6-a430-44dbd99bae89",
@@ -873,7 +929,8 @@
     "linearId": "de455184-39b0-4673-a73b-d1744c94667d",
     "identifier": "BRO-156",
     "title": "Critic misattribution: Plays International reviews credited to Maryam Philpott (Louise Penn report)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "992": {
     "linearId": "e11d5624-b9f2-49a4-8cd1-2298a562e600",
@@ -903,7 +960,8 @@
     "linearId": "1fd87f9c-2b52-40ac-97ff-06cfcb4b22b7",
     "identifier": "BRO-161",
     "title": "Audit T1/T2 criticName/outlet mismatches among fullText-present reviews (task #991)",
-    "project": "Opening night"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1007": {
     "linearId": "52c4102a-7fd6-4e02-ab77-048f8332c212",
@@ -927,7 +985,8 @@
     "linearId": "58e07396-d68c-44f5-b068-bd91c53a152b",
     "identifier": "BRO-165",
     "title": "Missing reviews: NYSM Live / Dinosaur World / Crocodile — cross-market US-outlet FP class (task #817)",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1018": {
     "linearId": "1cd131e4-0d5e-4f29-8fc6-f6a3b5078d58",
@@ -951,7 +1010,8 @@
     "linearId": "f177f3be-d64e-484c-a4c2-0f7974cbdad6",
     "identifier": "BRO-169",
     "title": "Contradictory crossOutletVerified+wrongAttribution state: 3 files silently excluded despite verified fix",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1040": {
     "linearId": "66610486-944d-4280-9fb4-2675f8cc4bac",
@@ -1053,7 +1113,8 @@
     "linearId": "c8008f8c-4489-4b55-8711-283c5efd4632",
     "identifier": "BRO-186",
     "title": "Vacuous-gate class: 4 corpus audits now fail loud on missing review-texts",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1073": {
     "linearId": "8dc1f165-d9a3-466b-864b-79488c4e13a6",
@@ -1065,31 +1126,36 @@
     "linearId": "220deed3-7c38-44a2-a141-cdff1aaaa7f0",
     "identifier": "BRO-188",
     "title": "Audit: OWE opening review collection (first live test of #1073 overhaul)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1088": {
     "linearId": "cbbd0d0c-2a97-40c2-85cf-2121c8dcbd5f",
     "identifier": "BRO-189",
     "title": "P1: local Claude OAuth token revocation detector",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1090": {
     "linearId": "4dd874a3-e3f6-46b2-8899-0d42e5ae9dae",
     "identifier": "BRO-190",
     "title": "Fix: main red — CLEAR_BREADCRUMBS key wrongShowAutoClearedAt missing from PROTECTED_FIELDS (task #1080)",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1091": {
     "linearId": "f26f5892-1827-4bfb-8196-57f1ae372fee",
     "identifier": "BRO-191",
     "title": "P1: lint-committed-pii.js — block submitter PII in committed data/audit files",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1102": {
     "linearId": "13f357b4-bbad-4fb5-b6bf-4f66cddac4a2",
     "identifier": "BRO-192",
     "title": "Infra: dispatched-work ownership — crowned OWNER watchdog + CLOSE-ME gate on in-flight dispatches",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1105": {
     "linearId": "ddd40e27-834e-45e7-847d-13dd0a048086",
@@ -1113,7 +1179,8 @@
     "linearId": "a5d91a48-2a00-4e4a-871b-a5010355e914",
     "identifier": "BRO-196",
     "title": "Ensemble Phase B: weight calibration + Gemini EMA calibration script",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1123": {
     "linearId": "ba981e02-9c8b-463d-b9ee-6c300960d76b",
@@ -1125,7 +1192,8 @@
     "linearId": "873b9b27-7137-4bc5-a1b0-64306440b87b",
     "identifier": "BRO-198",
     "title": "Auth outage: revoked setup-token (daily ACTION emails) + Gmail app passwords wiped by password change",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1142": {
     "linearId": "f4f23e47-b7e7-4d90-83dd-15c326a814fa",
@@ -1137,7 +1205,8 @@
     "linearId": "fc3ac596-e027-42f9-b485-631dbee2ea8d",
     "identifier": "BRO-200",
     "title": "Newsletter send-day 2026-08-03: verify ALL reviews collected+scored for BW+WE opening shows",
-    "project": "Marketing/distribution"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1145": {
     "linearId": "b4a8be61-7c48-4d00-b18a-c0a9a7f06a5e",
@@ -1173,13 +1242,15 @@
     "linearId": "8c16cd1a-e597-40e1-b67a-d7fcda3acaa9",
     "identifier": "BRO-206",
     "title": "P1: newsletter no-data vs no-access section classification (card #1158)",
-    "project": "Marketing/distribution"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1160": {
     "linearId": "180443e8-15bc-42c8-8f7a-29e86bd4b5c6",
     "identifier": "BRO-207",
     "title": "Wire reconcile-dead-completions.js into a schedule + correct pushed Notion card status",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1161": {
     "linearId": "81321f82-ea16-44e2-9d98-f7c7fe911bd8",
@@ -1191,7 +1262,8 @@
     "linearId": "05c0f110-0feb-404e-ba03-3046e64d6fa3",
     "identifier": "BRO-209",
     "title": "P1: scoring-delta.js's mandated inclusion replay has zero coverage of wrongShow/wrongProduction auto-clear predicates",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1164": {
     "linearId": "fe15b360-0396-4670-ba2a-0d0be2f99fd3",
@@ -1209,6 +1281,12 @@
     "linearId": "401b82ca-c52a-4af0-9412-331daeabb5ef",
     "identifier": "BRO-212",
     "title": "Fix: BSC Daily: Workflow repeat-failure: Test Suite",
+    "project": "Infrastructure"
+  },
+  "1167": {
+    "linearId": "02b3eff0-a6e0-4fad-b592-9c2453ac8834",
+    "identifier": "BRO-259",
+    "title": "push-with-retry.sh abort-restore still drops commits under extreme concurrency (recurrence of #769, closed prematurely)",
     "project": "Infrastructure"
   },
   "1170": {
@@ -1275,7 +1353,8 @@
     "linearId": "058ceb3b-da9c-423a-9dd8-5619df62c217",
     "identifier": "BRO-223",
     "title": "P1: UK/dual-market wrongProduction auto-clear (rebuild-all-reviews.js:2464-2534) is inline, not replayed by scoring-delta.js",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1194": {
     "linearId": "cc292107-6242-454f-9485-48cca6143e0d",
@@ -1311,7 +1390,8 @@
     "linearId": "10fb32cd-b548-4f3e-a313-b783a466a125",
     "identifier": "BRO-229",
     "title": "Cats (Regent's Park OWE): pre-newsletter review audit — Telegraph T1 recovered, Alley Cats TV review excluded",
-    "project": "Marketing/distribution"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1220": {
     "linearId": "428fc0ba-96e1-4ed0-a925-647d6f31bb44",
@@ -1335,7 +1415,8 @@
     "linearId": "ef30bd4f-1f35-4936-9d6f-54250b3ec98f",
     "identifier": "BRO-233",
     "title": "P1: TR extraction false-rejects real T1/T2 reviews — title-mention wrong-show guard fails on common-word titles (Barcelona: 6/20 lost)",
-    "project": "Opening night"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1230": {
     "linearId": "3b5cc367-c1b1-4909-bbf0-0913979c2e9e",
@@ -1365,19 +1446,29 @@
     "linearId": "d9c06917-d0ef-44d4-ab6d-8febe6490c5b",
     "identifier": "BRO-238",
     "title": "WE historical pilot S1/S2: drive smoke-test scoring to composites, WET star/URL merge, season discovery tooling",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
+  "1250": {
+    "linearId": "7846d475-4fc6-46f6-b341-f33586473476",
+    "identifier": "BRO-260",
+    "title": "Evaluate session/PM system performance + recommend replacement (Linear?)",
+    "project": "Archive",
+    "retiredReason": "noise:fleet_selfref"
   },
   "1253": {
     "linearId": "81c094d3-9f5c-4863-8575-3e1e9fb3face",
     "identifier": "BRO-239",
     "title": "Autofix v2 follow-through: S6 canary landing, #94 strand, owner billing/queue Q&A",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1257": {
     "linearId": "7aaa8622-ee6d-4b22-9a3a-8a32484f6526",
     "identifier": "BRO-240",
     "title": "ScrapingDog daily circuit breaker (card #1252)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1258": {
     "linearId": "290ae22d-fd44-4da1-93ac-ffc6d4bd52ef",
@@ -1407,13 +1498,15 @@
     "linearId": "2fccdb38-dab7-4e87-bb71-0c87501cb401",
     "identifier": "BRO-245",
     "title": "Generalize outlet stub-rate monitor to invalid-tier extraction failures",
-    "project": "Coverage pipeline"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1264": {
     "linearId": "b4ea2760-5b0b-44d6-9467-c5b867d64654",
     "identifier": "BRO-246",
     "title": "Digest-autofix S6: daily end-to-end canary + throughput row",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1269": {
     "linearId": "6cc27a94-89cf-4027-acf4-f60055ffae0d",
@@ -1425,13 +1518,15 @@
     "linearId": "efe96716-7f8a-49ba-884e-103cd94a4431",
     "identifier": "BRO-248",
     "title": "Fix stuck-rescore breadcrumb restore-resurrection (task #1259)",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1274": {
     "linearId": "69749063-755b-40cb-ae93-1a022069fc01",
     "identifier": "BRO-249",
     "title": "WE historical pilot S1/S2 — session tracking (see main card 3b9637c5)",
-    "project": "Infrastructure"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1275": {
     "linearId": "1d23dd6f-1375-45e2-b741-1a187a18cd5c",
@@ -1443,13 +1538,15 @@
     "linearId": "abf528a9-7230-4565-a5b7-b9c919c364c6",
     "identifier": "BRO-251",
     "title": "iOS: wide-catalog search for watchlist/diary adds (owner request)",
-    "project": "iOS"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1277": {
     "linearId": "3524fde9-0696-40ab-996a-b3471fd83467",
     "identifier": "BRO-252",
     "title": "P1: duplicate-of-flagged-twin has no detector (task #1256)",
-    "project": "Scoring quality"
+    "project": "Archive",
+    "retiredReason": "notion_done"
   },
   "1279": {
     "linearId": "cfcae07a-919f-40da-bbbd-4e2b98a00d48",
@@ -1468,5 +1565,18 @@
     "identifier": "BRO-255",
     "title": "Pull-quote-extraction step clobbers aggregatorStars via lost-update race (found during #1249)",
     "project": "Coverage pipeline"
+  },
+  "1283": {
+    "linearId": "db12c5a9-dfe2-4396-ab16-3bc4a323fc91",
+    "identifier": "BRO-261",
+    "title": "Linear migration Day 1: project structure + curated backlog import (owner approved Option A 2026-08-11)",
+    "project": "Archive",
+    "retiredReason": "noise:fleet_selfref"
+  },
+  "1285": {
+    "linearId": "3b467306-7df9-4f7c-b5ae-7f9d7358719f",
+    "identifier": "BRO-262",
+    "title": "Show Score audience scraper: LLM page-validator rejects valid pages, 0% success",
+    "project": "Scoring quality"
   }
 }

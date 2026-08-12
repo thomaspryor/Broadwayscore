@@ -15,7 +15,6 @@
 import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as https from 'https';
 import * as cheerio from 'cheerio';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
@@ -80,76 +79,6 @@ function loadGrosses(): GrossesData {
       shows: {}
     };
   }
-}
-
-// ScrapingBee CSS extraction for cumulative page
-async function scrapePageWithScrapingBee(url: string): Promise<ScrapedRow[]> {
-  const key = process.env.SCRAPINGBEE_API_KEY;
-  if (!key) {
-    console.log('  SCRAPINGBEE_API_KEY not set, skipping');
-    return [];
-  }
-
-  const extractRules = {
-    rows: {
-      selector: 'table tr',
-      type: 'list',
-      output: {
-        show: 'td:first-child a',  // Show name from anchor (without theater)
-        cells: { selector: 'td', type: 'list', output: 'text' }
-      }
-    }
-  };
-
-  const params = new URLSearchParams({
-    api_key: key,
-    url: url,
-    premium_proxy: 'true',
-    extract_rules: JSON.stringify(extractRules),
-    wait: '5000',
-  });
-
-  const apiUrl = `https://app.scrapingbee.com/api/v1/?${params.toString()}`;
-
-  return new Promise<ScrapedRow[]>((resolve, reject) => {
-    https.get(apiUrl, { timeout: 90000 }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`ScrapingBee returned ${res.statusCode}: ${data.slice(0, 200)}`));
-          return;
-        }
-        try {
-          const parsed = JSON.parse(data);
-          const rows: ScrapedRow[] = [];
-
-          for (const row of (parsed.rows || [])) {
-            const cells = row.cells || [];
-            // Columns: Show+Theater (0) | Gross (1) | Avg. Tix (2) | Seats Sold (3) | Total Perf. (4)
-            // Verified main + ?year=YYYY pages 2026-05-16; previously 7 cols (Previews+RegularShows split out).
-            if (cells.length < 5) continue;
-
-            // Use the anchor tag text (clean show name without theater)
-            const showTitle = (row.show || '').trim();
-            if (!showTitle || showTitle === 'Show' || !(cells[1] || '').includes('$')) continue;
-
-            rows.push({
-              showTitle,
-              gross: (cells[1] || '').trim(),
-              attendance: (cells[3] || '').trim(),
-              performances: (cells[4] || '').trim(),
-            });
-          }
-
-          resolve(rows);
-        } catch (e: any) {
-          reject(new Error(`ScrapingBee parse error: ${e.message}`));
-        }
-      });
-    }).on('error', reject)
-      .on('timeout', () => reject(new Error('ScrapingBee timeout')));
-  });
 }
 
 // Parse the cumulative-grosses table from raw HTML (BD/Scrapingdog tier).
@@ -299,19 +228,23 @@ async function scrapeAllTime(): Promise<void> {
       let rows: ScrapedRow[] = [];
       let scrapeSource = 'unknown';
 
-      // Tier 1: ScrapingBee CSS extraction
+      // Tier 1: Bright Data (proxied — survives a BWW-side block of the CI IP).
+      // Previously tried ScrapingBee's CSS-extraction feature first with
+      // premium_proxy=true (10cr, $2.48/1k) — more expensive than Bright
+      // Data ($1.50/1k), and parseAllTimeHtml() below already parses the
+      // same table from raw HTML, so the SB-specific extraction added cost
+      // without adding capability (task #5).
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {
-          console.log(`\n--- ${label} [Tier 1: ScrapingBee] (attempt ${attempt}/${MAX_RETRIES}) ---`);
-          rows = await scrapePageWithScrapingBee(url);
+          console.log(`\n--- ${label} [Tier 1: Bright Data] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+          rows = await fetchAllTimeHtmlProvider(url, fetchWithBrightData);
           if (rows.length > 0) {
-            scrapeSource = 'scrapingbee-css';
-            console.log(`  Found ${rows.length} shows via ScrapingBee`);
+            scrapeSource = 'brightdata';
             break;
           }
-          console.log('  [ScrapingBee] Empty result');
+          console.log('  [BrightData] Empty result');
         } catch (error: any) {
-          console.log(`  [ScrapingBee] ${error.message}`);
+          console.log(`  [BrightData] ${error.message}`);
         }
         if (attempt < MAX_RETRIES) {
           console.log(`  Retrying in ${3 * attempt}s...`);
@@ -319,32 +252,11 @@ async function scrapeAllTime(): Promise<void> {
         }
       }
 
-      // Tier 2: Bright Data (proxied — survives a BWW-side block of the CI IP)
+      // Tier 2: Scrapingdog (proxied, cheaper than BD for a static page)
       if (rows.length === 0) {
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
           try {
-            console.log(`\n--- ${label} [Tier 2: Bright Data] (attempt ${attempt}/${MAX_RETRIES}) ---`);
-            rows = await fetchAllTimeHtmlProvider(url, fetchWithBrightData);
-            if (rows.length > 0) {
-              scrapeSource = 'brightdata';
-              break;
-            }
-            console.log('  [BrightData] Empty result');
-          } catch (error: any) {
-            console.log(`  [BrightData] ${error.message}`);
-          }
-          if (attempt < MAX_RETRIES) {
-            console.log(`  Retrying in ${3 * attempt}s...`);
-            await new Promise(resolve => setTimeout(resolve, 3000 * attempt));
-          }
-        }
-      }
-
-      // Tier 3: Scrapingdog (proxied, cheaper than BD for a static page)
-      if (rows.length === 0) {
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-          try {
-            console.log(`\n--- ${label} [Tier 3: Scrapingdog] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            console.log(`\n--- ${label} [Tier 2: Scrapingdog] (attempt ${attempt}/${MAX_RETRIES}) ---`);
             rows = await fetchAllTimeHtmlProvider(url, (u: string) => fetchWithScrapingdog(u, { renderJs: false }));
             if (rows.length > 0) {
               scrapeSource = 'scrapingdog';
@@ -361,12 +273,12 @@ async function scrapeAllTime(): Promise<void> {
         }
       }
 
-      // Tier 4: Playwright (last resort, no proxy)
+      // Tier 3: Playwright (last resort, no proxy)
       if (rows.length === 0) {
         const page = await context.newPage();
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
           try {
-            console.log(`\n--- ${label} [Tier 4: Playwright] (attempt ${attempt}/${MAX_RETRIES}) ---`);
+            console.log(`\n--- ${label} [Tier 3: Playwright] (attempt ${attempt}/${MAX_RETRIES}) ---`);
             rows = await scrapePage(page, url);
             if (rows.length > 0) {
               scrapeSource = 'playwright';

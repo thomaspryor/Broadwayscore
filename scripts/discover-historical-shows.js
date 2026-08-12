@@ -22,7 +22,6 @@
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
-const https = require('https');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
@@ -31,6 +30,7 @@ const { writeClosingDate } = require('./lib/closing-date-guard');
 const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
+const { fetchPage } = require('./lib/scraper');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -48,8 +48,6 @@ Usage:
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
-
-const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // IBDB season IDs are NOT sequential — they have gaps (COVID years, etc.)
 // This mapping is extracted from the season dropdown on any IBDB season page.
@@ -165,35 +163,14 @@ function parseIBDBDateString(dateStr) {
 }
 
 /**
- * Fetch IBDB season page HTML via ScrapingBee premium proxy
+ * Fetch IBDB season page HTML via the shared fetchPage() fallback chain.
+ * ibdb.com is a public, simple-HTML, no-anti-bot site (scraper.js tries free
+ * Playwright first for it) — a direct ScrapingBee premium_proxy=true call
+ * here paid $2.48/1k for a page that doesn't need proxying at all (task #5).
  */
-function fetchIBDBSeasonPage(url) {
-  return new Promise((resolve, reject) => {
-    if (!SCRAPINGBEE_API_KEY) {
-      reject(new Error('SCRAPINGBEE_API_KEY not set'));
-      return;
-    }
-
-    const apiUrl = new URL('https://app.scrapingbee.com/api/v1');
-    apiUrl.searchParams.set('api_key', SCRAPINGBEE_API_KEY);
-    apiUrl.searchParams.set('url', url);
-    apiUrl.searchParams.set('premium_proxy', 'true');
-
-    const req = https.get(apiUrl.toString(), (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          resolve(data);
-        } else {
-          reject(new Error(`ScrapingBee returned ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
+async function fetchIBDBSeasonPage(url) {
+  const result = await fetchPage(url);
+  return result.content;
 }
 
 /**
