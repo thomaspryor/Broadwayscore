@@ -3,10 +3,20 @@
  *
  * THE CLASS THIS PREVENTS
  * On 2026-08-10 the owner reported a near-identical morning digest for the 13th
- * day running. Root cause: the local `claude` CLI was logged out, so every
- * headless auto-fix job started, produced ZERO bytes, and was killed by its own
- * timeout. Cards stayed `in_progress` forever and the same ~31 issues re-reported
- * every morning under a banner promising they were being handled.
+ * day running: headless auto-fix jobs were dying with empty logs (a single
+ * `exit=null TIMEOUT` line), cards stayed `in_progress` forever, and the same
+ * ~31 issues re-reported every morning under a banner promising they were being
+ * handled.
+ *
+ * DO NOT diagnose that by running `claude -p` or `claude auth status`. Corrected
+ * 2026-08-11: the fleet does NOT use the CLI's stored login — claude-cli.js
+ * injects ANTHROPIC_API_KEY / CLAUDE_CODE_OAUTH_TOKEN from .env into every
+ * spawned job (resolveAuthEnv + strippedEnv), because under launchd process.env
+ * carries only the plist's block. A bare probe from an interactive shell reports
+ * "Not logged in" while the fleet is demonstrably completing cards. That false
+ * reading was escalated to the owner as a total outage twice in one session, and
+ * cost him two unnecessary re-logins on earlier sessions' advice. The real
+ * diagnostics are the job logs under ~/Library/Logs/bsc-jobs/ and the .env keys.
  *
  * Nothing caught it, because the one check that looks like it should —
  * "Alert Router: dispatch deadman" — counts DISPATCH ATTEMPTS, not outcomes. A
@@ -101,7 +111,7 @@ function assessAutofixEffectiveness(rows, opts = {}) {
       rate: attempts ? 0 : null,
       status: 'error',
       message: `Auto-fix loop is DEAD: ${dispatched} job(s) launched in the last ${windowDays}d, ${attempts} reported back, 0 succeeded. `
-        + `Run \`claude -p "hi"\` on the dispatch host — "Not logged in" means every job dies instantly on auth (2026-08-10 incident).${undatedNote}`,
+        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${undatedNote}`,
     };
   }
 
@@ -121,7 +131,7 @@ function assessAutofixEffectiveness(rows, opts = {}) {
       rate,
       status: 'error',
       message: `Auto-fix loop is DEAD: 0 of ${attempts} job(s) succeeded in the last ${windowDays}d. `
-        + `Run \`claude -p "hi"\` on the dispatch host — "Not logged in" means every job dies on auth (2026-08-10 incident).${undatedNote}`,
+        + `Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN.${undatedNote}`,
     };
   }
   if (rate < WARN_BELOW_RATE) {

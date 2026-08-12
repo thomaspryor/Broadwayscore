@@ -1040,7 +1040,15 @@ function detectAnomalies(currentMetrics, history) {
   return issues;
 }
 
-function detectCWVAnomalies(currentCWV, history) {
+// `today` (YYYY-MM-DD) is injectable purely so tests can pin the CWV
+// acknowledgment window. The acks in seo-cwv-ack.js expire by design, so a test
+// that exercises "an acknowledged regression downgrades to warning" against the
+// real clock silently flips to failing on the ack's expiry date — a
+// calendar-triggered CI failure with no commit behind it (the exact class that
+// held main red for 8 days in Aug 2026; found by
+// scripts/audit-time-bomb-tests.js six days before this one was due to fire on
+// 2026-08-18). Production callers omit it and get today's real date.
+function detectCWVAnomalies(currentCWV, history, today) {
   const issues = [];
   if (!currentCWV || currentCWV.length === 0) return issues;
 
@@ -1067,7 +1075,7 @@ function detectCWVAnomalies(currentCWV, history) {
   // Origin-level breaches are reported against the origin, so the acknowledgment
   // registry is consulted at origin scope too — a url-scoped ack (#368's /west-end
   // entry) deliberately does NOT silence a site-wide number it never described.
-  const originAck = (metric) => findCWVFieldAcknowledgment(SITE_HOST, metric);
+  const originAck = (metric) => findCWVFieldAcknowledgment(SITE_HOST, metric, today);
   // Every message leads with its scope — "SITE-WIDE:" or the page path — so the
   // owner can triage "the whole site got slower for real visitors" (serious) from
   // "one page scored badly on a simulated test" (usually ignorable) without
@@ -1107,7 +1115,7 @@ function detectCWVAnomalies(currentCWV, history) {
     const isOrigin = current.fieldScope === 'origin';
     // Field-metric breaches for origin-scoped URLs were already emitted once above.
     if (!isOrigin && current.lcp && current.lcp > CWV_ABSOLUTE.lcp) {
-      const ack = findCWVFieldAcknowledgment(current.url, 'lcp');
+      const ack = findCWVFieldAcknowledgment(current.url, 'lcp', today);
       issues.push({
         type: 'cwv_lcp_absolute',
         severity: 'warning',
@@ -1134,7 +1142,7 @@ function detectCWVAnomalies(currentCWV, history) {
       // Only consult the url-scoped ack when the number really is this page's.
       // Appending "acknowledged: fix shipped on /west-end" to a message that just
       // said the value is NOT /west-end's reads as the system contradicting itself.
-      const ack = fieldUnhealthy && !isOrigin ? findCWVFieldAcknowledgment(current.url, 'lcp') : null;
+      const ack = fieldUnhealthy && !isOrigin ? findCWVFieldAcknowledgment(current.url, 'lcp', today) : null;
       // When the field number is the origin's, it says nothing about THIS page, so it
       // cannot escalate this page — the single origin-scoped anomaly above owns that
       // escalation. Naming the scope also stops the next reader from chasing a
