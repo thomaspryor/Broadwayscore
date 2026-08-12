@@ -53,7 +53,7 @@ describe('isInOpeningWindow', () => {
     assert.strictEqual(isInOpeningWindow({ id: 'no-date-show' }, new Date('2026-08-12T00:00:00Z')), true);
   });
 
-  it('defaults to always-aggressive when openingDate is unparseable', () => {
-    assert.strictEqual(isInOpeningWindow({ openingDate: 'not-a-date' }, new Date('2026-08-12T00:00:00Z')), true);
+  it('fails closed (normal backoff applies) when openingDate is present but unparseable — a data-quality bug should not silently disable backoff forever', () => {
+    assert.strictEqual(isInOpeningWindow({ openingDate: 'not-a-date' }, new Date('2026-08-12T00:00:00Z')), false);
   });
 });

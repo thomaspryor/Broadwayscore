@@ -17,13 +17,18 @@ const WINDOW_AFTER_MS = 3 * ONE_DAY_MS;
 
 /**
  * Whether `show` is inside its opening-window backoff carve-out at `now`.
- * No openingDate means we can't bound the window — treat as always-aggressive
- * (matches the pre-#1314 behavior for shows lacking a known opening date).
+ * A MISSING openingDate means we can't bound the window — treat as
+ * always-aggressive (matches the pre-#1314 behavior for shows lacking a
+ * known opening date). A PRESENT but unparseable openingDate fails closed
+ * (not in window, normal backoff applies) — also matching pre-#1314
+ * behavior, where NaN date-math made the old hoursSinceOpening comparison
+ * false. Fail-open here would let a data-quality bug (garbage openingDate)
+ * silently disable backoff forever instead of surfacing as a data problem.
  */
 function isInOpeningWindow(show, now = new Date()) {
   if (!show || !show.openingDate) return true;
   const opening = new Date(show.openingDate).getTime();
-  if (Number.isNaN(opening)) return true;
+  if (Number.isNaN(opening)) return false;
   const nowMs = now instanceof Date ? now.getTime() : now;
   return nowMs >= opening - WINDOW_BEFORE_MS && nowMs <= opening + WINDOW_AFTER_MS;
 }
