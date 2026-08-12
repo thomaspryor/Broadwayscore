@@ -174,11 +174,24 @@ test('main(): a FAILED cmux launch does NOT call appendCiRedClaim (no phantom cl
 // call (or, for --exec/--headless, after their own respective guards).
 test('bsc-next.js: recordCiRedClaim() is only called after each branch\'s dispatch is confirmed, never before a refusal guard', () => {
   const src = fs.readFileSync(new URL('./bsc-next.js', import.meta.url), 'utf8');
-  const deadDispatchGuardIdx = src.indexOf('checkDeadDispatch(task, workspaces');
-  const duplicateGuardIdx = src.indexOf('findLiveWorkspaceForTask(task, workspaces');
-  const launchCmuxCallIdx = src.indexOf('const res = launchCmuxFn(');
+  // Anchor every lookup to START inside main()'s own body. Two of these
+  // strings are not unique to main(): runSuccessionDispatchLocked() has its
+  // own earlier `const res = launchCmuxFn(...)` + `if (res.ok) {` (a
+  // DIFFERENT dispatch path with its own guards, see runSuccessionDispatch's
+  // header), and — since findLiveWorkspaceForTask/checkDeadDispatch/
+  // deadDispatchGuard/parkedGuard/staleOutcomeGuard/notionIdOf moved to
+  // scripts/lib/dispatch-guards.js (task #1303 plan review) — this file no
+  // longer contains their FUNCTION DEFINITIONS at all, only call sites, so an
+  // unanchored indexOf now lands on main()'s own call directly. Anchoring
+  // explicitly (rather than relying on "whatever text happens to come first
+  // in the file") makes that independent of both facts.
+  const mainStartIdx = src.indexOf('function main(argv = process.argv.slice(2), deps = {}) {');
+  assert.ok(mainStartIdx > 0, 'main() signature not found — source shape changed');
+  const deadDispatchGuardIdx = src.indexOf('checkDeadDispatch(task, workspaces', mainStartIdx);
+  const duplicateGuardIdx = src.indexOf('findLiveWorkspaceForTask(task, workspaces', mainStartIdx);
+  const launchCmuxCallIdx = src.indexOf('const res = launchCmuxFn(', mainStartIdx);
   const resOkIdx = src.indexOf('if (res.ok) {', launchCmuxCallIdx);
-  assert.ok(deadDispatchGuardIdx > 0 && duplicateGuardIdx > 0 && launchCmuxCallIdx > 0 && resOkIdx > 0, 'expected guard/launch anchors not found — source shape changed');
+  assert.ok(deadDispatchGuardIdx > mainStartIdx && duplicateGuardIdx > mainStartIdx && launchCmuxCallIdx > mainStartIdx && resOkIdx > mainStartIdx, 'expected guard/launch anchors not found inside main() — source shape changed');
 
   const cmuxRecordIdx = src.indexOf('recordCiRedClaim();', resOkIdx);
   assert.ok(cmuxRecordIdx > resOkIdx, 'cmux path: recordCiRedClaim() must be inside the res.ok success branch');

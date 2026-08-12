@@ -31,6 +31,7 @@ const { parseBwwGrossesRow } = require('./lib/parse-bww-grosses-row');
 // BD/SD route through proxy IPs that aren't in that blocklist, so they
 // belong ahead of Playwright, not just as review-text tiers.
 const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -39,6 +40,13 @@ const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const MIN_SHOWS = 20;
+
+// Verified live 2026-08-12: .table-header .cell = Show/Theater, Gross, Gross/Prev week,
+// Gross Diff., Avg. Tix/Top Tix, Attend./Capacity, Perf./Prev., Cap %/This Wk, Cap %/Last Wk, Diff. %
+const TABLE_SCHEMA = {
+  minCells: 10,
+  expectedHeaders: ['Show', 'Gross', 'Avg. Tix', 'Attend', 'Perf', 'Cap %'],
+};
 
 // Long-running shows expected in every weekly scrape. Soft-warn (not hard-fail)
 // so the pipeline doesn't break when a show closes — but surfaces the gap loudly.
@@ -357,6 +365,18 @@ function parseHtmlRows(html: string): { rows: BWWRowData[]; weekEnding: string |
   const $ = cheerio.load(html);
   const weekEnding = extractWeekEndingFromTitle($('title').first().text() || '');
 
+  // Header schema check BEFORE processing rows — see table-schema-assertion.js.
+  const headerCells = $('.table-header .cell').map((_i, el) => $(el).text().trim()).get();
+  try {
+    assertTableSchema([headerCells], TABLE_SCHEMA);
+  } catch (err) {
+    if (err instanceof TableSchemaError) {
+      console.error(`::error::scrape-grosses: ${err.message}`);
+      return { rows: [], weekEnding };
+    }
+    throw err;
+  }
+
   const rows: BWWRowData[] = [];
   $('.all-gross-data .row').each((_i, rowEl) => {
     const cells: string[] = [];
@@ -416,6 +436,20 @@ async function fetchWithPlaywright(): Promise<ScrapeResult | null> {
     if (!weekEnding) {
       console.warn('  ⚠ Could not extract week ending from page title');
       return null;
+    }
+
+    // Header schema check BEFORE processing rows — see table-schema-assertion.js.
+    const headerCells = await page.$$eval('.table-header .cell', cells =>
+      cells.map(c => c.textContent?.trim() || '')
+    );
+    try {
+      assertTableSchema([headerCells], TABLE_SCHEMA);
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.error(`::error::scrape-grosses: ${err.message}`);
+        return { rows: [], weekEnding, source: 'playwright' };
+      }
+      throw err;
     }
 
     // Extract cell text arrays from all rows (normalize to same format as ScrapingBee)
