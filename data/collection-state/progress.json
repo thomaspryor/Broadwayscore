@@ -94,7 +94,9 @@
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "cinderella-west-end-2026/london-box-office--stuart-king.json",
     "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-    "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json"
   ],
   "failed": [
     "death-note-the-musical-west-end-2026/barbican--unknown.json",
@@ -1823,7 +1825,15 @@
     "the-jungle-book-west-end-2026/chicagotribune--unknown.json",
     "the-snowman-west-end-2026/manchester-evening-news--emma-gill.json",
     "the-snowman-west-end-2026/timeout-london--caroline-mcginn.json",
-    "the-snowman-west-end-2026/express-uk--neil-norman.json"
+    "the-snowman-west-end-2026/express-uk--neil-norman.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1878,12 +1888,15 @@
       "the-lion-king-1997/timeout--adam-feldman.json",
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "cinderella-west-end-2026/london-box-office--stuart-king.json"
+      "cinderella-west-end-2026/london-box-office--stuart-king.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [
       "the-importance-of-being-oscar-off-west-end-2026/times-uk--clive-davis.json",
@@ -1941,7 +1954,7 @@
     ]
   },
   "startTime": "2026-08-12T05:07:25.885Z",
-  "lastProcessed": "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-08-12T05:41:32.904Z",
@@ -1984,6 +1997,12 @@
       "event": "bb-session",
       "session": "6b9cbfd9",
       "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-08-12T09:16:51.706Z",
+      "event": "bb-session",
+      "session": "5ab927e9",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
     }
   ]
 }
