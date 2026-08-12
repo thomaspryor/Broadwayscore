@@ -220,6 +220,29 @@ jobs:
         timeout-minutes: 4
         run: node scripts/time-to-publish-sla.js --windows=2 --alert
 
+      # Linear issue-cap monitor + Done auto-archive (BRO-285, task #1313).
+      # The free tier hard-caps the workspace at 250 unarchived issues; at the
+      # cap, issueCreate fails and the Linear-side intake front door jams
+      # (Phase 2 of the new-system plan routes alerts through it). Archive
+      # first (Done/Canceled >= 48h, audit-logged), then check the count.
+      # continue-on-error: a breach surfaces as a DIGEST row via --alert's
+      # routeAlert (ACTION-only bar, 7d cooldown), never a job failure — this
+      # workflow is severity:critical and a real-time email for a slow-moving
+      # backlog condition would be alert noise.
+      - name: Linear issue-cap monitor + Done auto-archive
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          # || true: archive-done exits 1 on ANY per-issue archive failure —
+          # under bash -e that would skip the cap check exactly when a flaky
+          # Linear API leaves the count elevated. The cap check is the
+          # monitor; it must run regardless of the archiver's exit.
+          node scripts/linear-archive-done.js || true
+          node scripts/check-linear-cap.js --alert
+
       - name: Commit health check + triage data
         if: always()
         run: |
@@ -253,6 +276,10 @@ jobs:
           git add data/audit/affiliate-health.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # Linear auto-archive audit log (BRO-285) — single writer (this
+          # cron); without this the local record of what was archived never
+          # leaves the runner.
+          git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
           # Trunk status (task #1003) — same reason as health-digest-snapshot
           # above: the Mac Studio renders the morning digest and runs the
           # close gate, so the snapshot has to leave the runner.
