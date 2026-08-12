@@ -172,36 +172,19 @@ function httpsRequest(url, options = {}) {
 }
 
 /**
- * Fetch HTML via the shared fetchPage() fallback chain, with retry. Routed
- * off a direct ScrapingBee call (task #66) — fetchPage() already tries
- * Scrapingdog/Bright Data/Playwright ahead of ScrapingBee, so this keeps the
- * retry/backoff wrapper but no longer hardcodes a single provider.
+ * Fetch HTML via the shared fetchPage() fallback chain. Routed off a direct
+ * ScrapingBee call (task #66). No outer retry loop: fetchPage() already
+ * sweeps Scrapingdog/Bright Data/ScrapingBee/Playwright per call (each tier
+ * with its own internal retry), so wrapping it in another multi-attempt
+ * loop just re-runs that whole sweep 2-3x per URL — the exact "missing
+ * pages cost 15s each for nothing" problem the old single-provider retry
+ * loop was written to avoid, except now for every failure, not just 4xx
+ * (fetchPage()'s thrown error carries no statusCode, so 4xx can no longer
+ * be distinguished from a transient failure to skip retrying it).
  */
 async function fetchViaScrapingBee(url, options = {}) {
-  const maxRetries = options.maxRetries ?? 2;  // nullish: allow an explicit 0 (no retries)
-
-  let lastError;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const result = await fetchPage(url, { renderJs: !!options.renderJs });
-      return result.content;
-    } catch (e) {
-      lastError = e;
-      // Don't retry on 4xx — the URL doesn't exist or we're forbidden,
-      // retrying just burns the 60-min step budget. Each ~180-show run
-      // tries multiple URL variants per show; missing pages used to cost
-      // 15s each (5s + 10s backoff) for nothing.
-      if (e.statusCode >= 400 && e.statusCode < 500) {
-        throw e;
-      }
-      if (attempt < maxRetries) {
-        const delay = 5000 * (attempt + 1);
-        if (verbose) console.log(`    Retry ${attempt + 1}/${maxRetries} after ${delay / 1000}s: ${e.message}`);
-        await sleep(delay);
-      }
-    }
-  }
-  throw lastError;
+  const result = await fetchPage(url, { renderJs: !!options.renderJs });
+  return result.content;
 }
 
 /**
