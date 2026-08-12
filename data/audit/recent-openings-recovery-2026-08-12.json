@@ -94,7 +94,7 @@
       "showId": "hungry-women-off-broadway-2026",
       "title": "Hungry Women",
       "before": { "reviewCount": 5, "t1Count": 0, "backoffConsecutiveNoOp": 73 },
-      "after": { "reviewCount": 7, "t1Count": 0, "note": "pending final CI rebuild confirmation — see below" },
+      "after": { "reviewCount": 7, "t1Count": 0, "outlets": "New York Theatre Guide:74, Off Off Online:76, Pages on Stages:73, Talkin' Broadway:76, Theater Scene:75, This Week in New York:59, La Voce di New York:63", "verified": "confirmed live in origin/main reviews.json after 3 rebuild-reviews.yml + 2 llm-ensemble-score.yml runs" },
       "actions": [
         "Reset poller-backoff consecutiveNoOp 73->0, nextRunAfter->0 (committed+pushed)",
         "Audited 14 existing review-texts files vs 5 scored — found 2 real, on-target reviews that were wrongly excluded",
