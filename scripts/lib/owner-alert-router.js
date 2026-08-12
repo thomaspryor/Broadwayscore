@@ -252,42 +252,54 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
   }
 }
 
-// Files a Notion Action Queue card via the CLI (never MCP — see CLAUDE.md).
-// Returns { ok, cardId } — never throws; a dispatch failure degrades to a
-// logged warning rather than crashing the caller's own check/pipeline.
+// Files a LINEAR issue via the linear-brain.js CLI (BRO-286 Phase 2 intake
+// repoint — this was the Notion Action Queue card path until 2026-08-12; all
+// Linear creation still flows through the single createLinearIssue()
+// chokepoint linear-brain.js wraps, CI-gated by
+// audit-linear-issuecreate-chokepoint.js).
+// Returns { ok, cardId: null, linearIdentifier } — never throws; a dispatch
+// failure degrades to a logged warning rather than crashing the caller's own
+// check/pipeline. cardId is kept in the shape (always null on this path) so
+// existing consumers reading .cardId see a stable field, and the ledger's
+// linearIdentifier field (introduced by rail 2) now also carries the FILED
+// tracker, not just deduped ones.
 function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey }) {
   const notes = buildCardNotes({ description, hint, fields, conditionKey });
-  const resolvedPriority = priority || (severity === 'critical' || severity === 'error' ? 'P1 Next' : 'P2 Later');
-  const resolvedTags = ['alert-router', ...(tags || [])].join(',');
+  // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
+  // map error-class severities to High, everything else Medium — Urgent is
+  // reserved for humans. (`priority`, when a caller passes one, is the OLD
+  // Notion string form — ignored deliberately rather than half-translated;
+  // severity is the honest signal.)
+  const linearPriority = (severity === 'critical' || severity === 'error') ? 2 : 3;
   const args = [
-    path.join(__dirname, '..', 'notion-brain.js'),
+    path.join(__dirname, '..', 'linear-brain.js'),
     'create', title,
-    '--status', 'Not started',
-    '--action', cardAction || 'Investigate',
-    '--priority', resolvedPriority,
-    '--category', category || 'Infra',
-    '--tags', resolvedTags,
     '--notes', notes,
-    // task #1310: no default disposition. An alert-filed card isn't being
-    // worked the instant it's created — the Action Queue poller (cardAction
-    // above) or the P0/P1 auto-dispatch rule picks it up next pass — so this
-    // is a park, not a dispatch. State the reason on the card itself.
-    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); the Action Queue poller / P0-P1 auto-dispatch rule picks it up on its next pass.`,
+    '--priority', String(linearPriority),
+    // task #1310: no default disposition. An alert-filed issue isn't being
+    // worked the instant it's created — the Phase-2 drain/auditor picks
+    // parked issues up on its next pass — so this is a park, not a dispatch.
+    '--park', `Auto-filed by owner-alert-router (condition: ${conditionKey}); parked for triage. The Linear-side drain (Phase 2 follow-up, in build) will dispatch machine-verifiable parked issues; until it ships these surface via the digest.`,
   ];
   try {
-    // 15s: a single Notion page-create call. Callers that dispatch many
+    // 15s: a single Linear issue-creation call. Callers that dispatch many
     // conditions in a loop (e.g. health-check.js) cap total dispatches per
     // run separately — this timeout only bounds one call's worst case.
     const out = execFileSync('node', args, { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
-    const parsed = JSON.parse(out);
+    // linear-brain.js prints the issue JSON then a human PARKED:/DISPATCHED:
+    // line — parse the identifier (e.g. "BRO-287") out of the JSON block.
+    // Field is `.identifier`, NOT `.id` (`.id` is the opaque UUID).
+    const m = out.match(/"identifier":\s*"([A-Z]+-\d+)"/);
+    const linearIdentifier = m ? m[1] : null;
     logDispatchAttempt({ conditionKey, title, ok: true });
-    return { ok: true, cardId: parsed.id || null };
+    return { ok: true, cardId: null, linearIdentifier };
   } catch (err) {
     // Log the REAL error verbatim — this is the exact spot the npm-ci incident
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem. err.message
-    // from execFileSync includes stderr, so it carries whatever notion-brain.js
-    // actually printed (e.g. "Cannot find module '@notionhq/client'").
-    console.error(`[alert-router] card dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
+    // from execFileSync includes stderr, so it carries whatever linear-brain.js
+    // actually printed (e.g. "LINEAR_API_KEY not set" or the loud
+    // USAGE_LIMIT_EXCEEDED cap message from linear-issue-create.js).
+    console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
     return { ok: false, error: err.message };
   }
@@ -522,6 +534,9 @@ async function routeAlert(opts) {
   if (effectiveDisposition === 'auto') {
     const dispatch = dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey });
     result.cardId = dispatch.cardId || null;
+    // BRO-286: the filed tracker is a Linear issue — surface WHERE it lives
+    // so consumers (health-check's digest line) tell the truth.
+    result.linearIdentifier = dispatch.linearIdentifier || null;
     result.dispatchOk = dispatch.ok;
     // Propagate the real dispatch error (not just the ok/fail boolean) so
     // callers — the E2E canary, health-check.js's dispatchedCards mapping —
@@ -556,6 +571,9 @@ async function routeAlert(opts) {
     lastNotifiedAt: now,
     notifyCount: (existing?.notifyCount || 0) + 1,
     cardId: result.cardId !== undefined ? result.cardId : (existing?.cardId || null),
+    // Filed-tracker identity survives in the ledger so the cooldown
+    // short-circuit (top of function) keeps reporting it on silent refires.
+    linearIdentifier: result.linearIdentifier !== undefined ? result.linearIdentifier : (existing?.linearIdentifier || null),
   };
   persistLedger(ledger);
   return result;

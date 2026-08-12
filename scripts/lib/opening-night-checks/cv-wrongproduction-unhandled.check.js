@@ -86,13 +86,33 @@ function run(show, context) {
     };
   }
 
+  const message = violations.map(v =>
+    `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED with CV.wrongProduction=true (${v.cvConfidence} confidence) and no clear flag; reasoning: ${v.cvReasoning || '(none)'} — ${v.url}`
+  ).join('\n');
+
   return {
     ok: false,
     severity: 'error',
-    message: violations.map(v =>
-      `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED with CV.wrongProduction=true (${v.cvConfidence} confidence) and no clear flag; reasoning: ${v.cvReasoning || '(none)'} — ${v.url}`
-    ).join('\n'),
-    details: { violations, showId: show.id, requiredClearFlags: CLEAR_FLAGS },
+    message,
+    details: {
+      violations,
+      showId: show.id,
+      requiredClearFlags: CLEAR_FLAGS,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: this IS the juan-a-ramirez bypass class — a
+      // heuristic auto-clearing or auto-excluding a wrongProduction review
+      // is exactly the risk this check exists to catch, so a human must
+      // judge each violation.
+      remediation: {
+        kind: 'alert',
+        key: `cv-wrongproduction-unhandled:${show.id}`,
+        conditionKey: `opening-night-cv-wrongproduction-unhandled-${show.id}`,
+        title: `Unhandled CV.wrongProduction on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${violations.length} shipped review(s) with CV.wrongProduction=true and no clear flag`,
+      },
+    },
   };
 }
 

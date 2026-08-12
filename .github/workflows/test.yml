@@ -1755,6 +1755,7 @@ on:
       # Autopilot v5 headless runner (task #459) — colocated tests in the main
       # unit batch; path-listed so a solo edit triggers CI.
       - 'scripts/lib/bsc-runner.js'
+      - 'scripts/lib/bsc-runner.test.mjs'
       - 'scripts/lib/claude-cli.js'
       - 'scripts/bsc-reconcile.js'
       - 'scripts/bsc-reconcile.test.mjs'
@@ -4449,6 +4450,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
           SHOULD_ESCALATE: ${{ steps.streak.outputs.should_escalate }}
           STREAK: ${{ steps.streak.outputs.streak }}

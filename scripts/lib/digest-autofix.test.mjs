@@ -359,3 +359,111 @@ test('runAutofix: reconciles a prior dispatch into card-pass via the shared disp
   assert.ok(resolved, 'expected the prior dispatch to resolve to card-pass');
   assert.equal(resolved.cardId, '504');
 });
+
+// ── BRO-286: Linear repoint (fileCard → linear-brain, linear-id dispatch) ──
+//
+// digest-autofix.js destructures { spawn, execFileSync } at module load, so
+// patching child_process AFTER require is a no-op (learned the hard way: the
+// first version of these tests hit the REAL Linear API and filed BRO-289/290/
+// 291, archived 2026-08-12). The stubs must be installed FIRST and the module
+// re-required fresh — same pattern owner-alert-router.test.mjs uses.
+
+const childProcess = require('node:child_process');
+const digestAutofixPath = require.resolve('./digest-autofix.js');
+
+function withChildProcessStubs({ execFileSyncImpl, spawnImpl }, fn) {
+  const origExec = childProcess.execFileSync;
+  const origSpawn = childProcess.spawn;
+  const calls = { execFileSync: [], spawn: [] };
+  if (execFileSyncImpl) {
+    childProcess.execFileSync = (...args) => { calls.execFileSync.push(args); return execFileSyncImpl(...args); };
+  }
+  if (spawnImpl) {
+    childProcess.spawn = (...args) => { calls.spawn.push(args); return spawnImpl(...args); };
+  }
+  delete require.cache[digestAutofixPath];
+  const mod = require('./digest-autofix.js');
+  try { return fn(calls, mod); } finally {
+    childProcess.execFileSync = origExec;
+    childProcess.spawn = origSpawn;
+    // Leave a clean, unstubbed copy in the cache for later tests.
+    delete require.cache[digestAutofixPath];
+    require('./digest-autofix.js');
+  }
+}
+
+const LINEAR_BRAIN_OUT = JSON.stringify({ id: 'uuid-x', identifier: 'BRO-123', title: 't' }, null, 2) + '\nPARKED: BRO-123';
+
+test('fileCard: dedups via linear-brain find, then files via create --park, returning {ok, identifier} (BRO-286)', () => {
+  // No existing issue → find returns null → create files BRO-123.
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => (argv.includes('find') ? 'null' : LINEAR_BRAIN_OUT) }, (calls, mod) => {
+    const res = mod.fileCard('Canary title', 'notes body', { log: () => {} });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-123' });
+    assert.equal(calls.execFileSync.length, 2, 'find then create');
+    const findArgv = calls.execFileSync[0][1];
+    assert.ok(String(findArgv[0]).endsWith('linear-brain.js') && findArgv.includes('find'));
+    assert.ok(findArgv.includes('--exact-title'), 'dedup must match the exact title — substring matching misroutes rows onto wrong issues (verify-pass P2)');
+    const argv = calls.execFileSync[1][1];
+    assert.ok(String(argv[0]).endsWith('linear-brain.js'), `expected linear-brain.js, got ${argv[0]}`);
+    assert.ok(argv.includes('--park'), 'digest-autofix filings are parked; dispatchDetached is the real dispatch');
+    assert.ok(!String(argv[0]).includes('notion-brain'), 'must not file Notion cards anymore');
+  });
+});
+
+test('fileCard: reattaches to an EXISTING open issue instead of filing a daily duplicate (BRO-286 merge-review P0)', () => {
+  withChildProcessStubs({ execFileSyncImpl: (cmd, argv) => {
+    if (argv.includes('find')) return JSON.stringify({ identifier: 'BRO-77', title: 'Cron failed: X', url: 'u' }, null, 2);
+    throw new Error('create must NOT be called when an open issue already matches');
+  } }, (calls, mod) => {
+    const res = mod.fileCard('Cron failed: X', 'notes', { log: () => {} });
+    assert.deepEqual(res, { ok: true, identifier: 'BRO-77', existing: true });
+    assert.equal(calls.execFileSync.length, 1, 'find only — no create');
+  });
+});
+
+test('fileCard: returns {ok:false} when the CLI throws, and when the output has no identifier', () => {
+  withChildProcessStubs({ execFileSyncImpl: () => { throw new Error('LINEAR_API_KEY not set'); } }, (calls, mod) => {
+    assert.deepEqual(mod.fileCard('t', 'n', { log: () => {} }), { ok: false, identifier: null });
+  });
+  withChildProcessStubs({ execFileSyncImpl: () => 'garbage output' }, (calls, mod) => {
+    assert.deepEqual(mod.fileCard('t', 'n', { log: () => {} }), { ok: false, identifier: null });
+  });
+});
+
+test('runAutofix: a needs-card row is filed to Linear, threaded as linear:BRO-N, and dispatched with that id — no task-mirror round trip (BRO-286)', () => {
+  withChildProcessStubs({ execFileSyncImpl: () => LINEAR_BRAIN_OUT }, (calls, mod) => {
+    const dispatchCalls = [];
+    const ledgerPath = path.join(os.tmpdir(), `da-bro286-${Date.now()}.jsonl`);
+    const plan = [{ name: 'Cron failed: Test Thing', title: 'Cron failed: Test Thing', message: 'boom', state: 'needs-card', taskId: null, conditionKey: 'k:bro286' }];
+    mod.runAutofix({
+      plan, dryRun: false,
+      // Empty task mirror: proves the row does NOT depend on matchOpenTask/sync.
+      loadTasksFn: () => [],
+      ledgerPath, dispatchLedgerEntriesFn: () => [],
+      dispatchFn: (...args) => dispatchCalls.push(args),
+    });
+    assert.equal(plan[0].taskId, 'linear:BRO-123');
+    assert.equal(plan[0].state, 'dispatched');
+    assert.equal(dispatchCalls.length, 1);
+    assert.equal(dispatchCalls[0][0], 'linear:BRO-123');
+  });
+});
+
+test('dispatchDetached: linear ids spawn linear-next.js, numeric ids spawn bsc-next.js, junk throws (BRO-286)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null);
+    const [, linArgs] = calls.spawn[0];
+    assert.ok(String(linArgs[3]).endsWith('linear-next.js'), `expected linear-next.js positional arg, got ${linArgs[3]}`);
+    assert.match(linArgs[1], /--id BRO-9 --headless/);
+
+    mod.dispatchDetached(7, () => {}, 0, null);
+    const [, numArgs] = calls.spawn[1];
+    assert.ok(String(numArgs[3]).endsWith('bsc-next.js'), `expected bsc-next.js positional arg, got ${numArgs[3]}`);
+    assert.match(numArgs[1], /--id 7 --headless/);
+  });
+  // Validation throws BEFORE any spawn — safe to exercise on the clean module.
+  const clean = require('./digest-autofix.js');
+  assert.throws(() => clean.dispatchDetached('BRO-9', () => {}, 0, null), /invalid taskId/);
+  assert.throws(() => clean.dispatchDetached('linear:$(rm -rf x)', () => {}, 0, null), /invalid taskId/);
+});

@@ -29,8 +29,14 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
+  node scripts/linear-brain.js find "search term"
 
-  --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+  create: --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+  find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
+          title or body contains the term, or null. Sync-callable dedup seam
+          for digest-autofix's fileCard (BRO-286) — filing the same
+          persistent health row daily would otherwise mint one duplicate
+          issue per day and reset attempt-memory each time.
 `;
 
 function parseArgs(argv) {
@@ -60,6 +66,37 @@ async function main() {
   }
   const args = parseArgs(argv);
   const command = args._positional[0];
+
+  if (command === 'find') {
+    const term = args._positional[1];
+    if (!term) {
+      console.error('Usage: linear-brain find "search term" [--exact-title]');
+      process.exit(1);
+    }
+    // Read-only. Two modes (verify-pass P2, 2026-08-12):
+    //  --exact-title: issue.title === term over the paginated open-issue list
+    //    — the dedup mode digest-autofix's fileCard needs. Substring matching
+    //    here misrouted: a hand-filed issue QUOTING a row title in its body,
+    //    or a superset title ("Cron failed: X (WE)" vs "Cron failed: X"),
+    //    would reattach the row to the wrong issue and silently never file.
+    //  default: searchIssues' first title/body substring match — the
+    //    conditionKey-marker semantics the alert-router dedupe uses.
+    const linearClient = require('./lib/linear-client');
+    try {
+      let match;
+      if (args['exact-title']) {
+        const open = await linearClient.listOpenIssues();
+        match = open.find((i) => i && i.title === term) || null;
+      } else {
+        match = await linearClient.searchIssues(term);
+      }
+      console.log(match ? JSON.stringify({ identifier: match.identifier, title: match.title, url: match.url }, null, 2) : 'null');
+    } catch (err) {
+      console.error(`\n❌ ${err.message}\n`);
+      process.exit(2);
+    }
+    return;
+  }
 
   if (command !== 'create') {
     console.error(USAGE);

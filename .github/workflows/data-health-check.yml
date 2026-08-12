@@ -110,6 +110,7 @@ jobs:
           # Also used by owner-alert-router.js (#279): humanAction items file
           # Action Queue cards instead of a raw paste-prompt in the email.
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included
@@ -131,6 +132,7 @@ jobs:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/e2e-canary-alert-chain.js
 
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):

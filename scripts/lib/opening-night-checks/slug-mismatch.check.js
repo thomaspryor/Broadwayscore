@@ -127,13 +127,31 @@ function run(show, context) {
     };
   }
 
+  const message = mismatches.map(m =>
+    `Review URL for ${m.outletId}/${m.criticName} does not mention show slug (checked: ${acceptSlugs.join(', ')}): ${m.url}`
+  ).join('\n');
+
   return {
     ok: false,
     severity: 'error',
-    message: mismatches.map(m =>
-      `Review URL for ${m.outletId}/${m.criticName} does not mention show slug (checked: ${acceptSlugs.join(', ')}): ${m.url}`
-    ).join('\n'),
-    details: { mismatches, acceptSlugs, showId: show.id },
+    message,
+    details: {
+      mismatches,
+      acceptSlugs,
+      showId: show.id,
+      // Self-declared remediation (task #389 pattern, extended for BRO-219).
+      // alert, not workflow: cross-show URL contamination needs a human to
+      // confirm before excluding or reattributing the review.
+      remediation: {
+        kind: 'alert',
+        key: `slug-mismatch:${show.id}`,
+        conditionKey: `opening-night-slug-mismatch-${show.id}`,
+        title: `Review URL cross-show mismatch on ${show.title || show.id}`,
+        description: message,
+        severity: 'error',
+        reason: `${mismatches.length} review URL(s) never mention the show slug`,
+      },
+    },
   };
 }
 

@@ -152,8 +152,14 @@ function buildBudgetPreamble(timeoutMs) {
 }
 
 async function runJob(opts) {
-  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, graceMs, resumeSessionId } = opts;
-  if (process.env.BSC_RUNNER_DISABLED === '1') {
+  const { taskId, subject = '', prompt, model, isolate = true, timeoutMs = DEFAULT_JOB_TIMEOUT_MS, graceMs, resumeSessionId, killSwitchEnv = 'BSC_RUNNER_DISABLED' } = opts;
+  // Each DISPATCHER is governed by its own kill switch at the runner level
+  // (BRO-286): bsc-next-path callers keep the default; linear-next.js passes
+  // killSwitchEnv:'LINEAR_NEXT_DISABLED'. Without this, the morning-digest
+  // plist's BSC_RUNNER_DISABLED=1 (set only to keep the retired Notion-side
+  // auto-fix loop off, task #1311) leaks into child spawns and would
+  // silently kill the NEW Linear dispatch path too.
+  if (process.env[killSwitchEnv] === '1') {
     return { ok: false, jobId: null, stage: 'runner-disabled', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
   if (!taskId || !prompt) throw new Error('runJob requires taskId and prompt');
