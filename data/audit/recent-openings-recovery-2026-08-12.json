@@ -1,0 +1,134 @@
+{
+  "auditDate": "2026-08-12",
+  "task": "#1342 Death Note-class recovery sweep",
+  "notionCard": "https://app.notion.com/p/Death-Note-class-recovery-sweep-7-recent-openings-with-starved-collection-4-zero-review-OB-shows--3ba637c5416f81049b81ccccb4b5687d",
+  "shows": [
+    {
+      "showId": "isla-off-broadway-2026",
+      "title": "ISLA",
+      "before": { "reviewCount": 0, "backoffConsecutiveNoOp": 22 },
+      "after": { "reviewCount": 0, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Reset poller-backoff consecutiveNoOp 22->0, nextRunAfter->0 (committed+pushed)",
+        "Ran gather-reviews.js full pipeline (aggregators + SERP) — no new content found",
+        "Audited 3 existing review-texts files: picture-this-post (wrongProduction, actually a preview article), show-score (not_a_review, no critic section yet), theatre-reviews-limited (wrong_show, unrelated tag page) — all exclusions correct",
+        "Checked _pending/ — empty, no no-byline strand",
+        "heal-duplicate-of-direction.js --show=isla-off-broadway-2026: 0 flips",
+        "WebSearch SERP check: no critic reviews found for ISLA at WP Theater as of 2026-08-12 (show runs through 08-29)"
+      ],
+      "remainingGaps": "No published critic reviews found anywhere (SERP + all aggregators). Legitimate 'no coverage yet' — small off-Broadway premiere, still running through Aug 29, may pick up coverage later. Poller backoff reset so future runs will retry.",
+      "evidence": "WebSearch 2026-08-12: no theatre-review-site results for 'ISLA off-broadway WP Theater review'; only listing/ticketing pages found."
+    },
+    {
+      "showId": "masticate-off-broadway-2026",
+      "title": "Masticate",
+      "before": { "reviewCount": 0, "backoffConsecutiveNoOp": 29 },
+      "after": { "reviewCount": 0, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Reset poller-backoff consecutiveNoOp 29->0, nextRunAfter->0 (committed+pushed)",
+        "Ran gather-reviews.js — DTLI lookup timed out (3 URL-guess variants x 30s Playwright fallback) before reaching outlet SERP stage; no content recovered",
+        "review-texts/ directory is empty — zero prior discovery attempts left any trace",
+        "_pending/ contains only generic RSS-discovery candidates shared across shows, all correctly rejected as url-token-mismatch (e.g. nytimes file is actually a Bowen Yang/Oh Mary article)",
+        "WebSearch SERP check: no reviews found for 'Masticate' at The Players Theatre"
+      ],
+      "remainingGaps": "No published critic reviews found. Very small production (The Players Theatre), plausibly genuinely under-the-radar. Poller backoff reset so future automated runs will retry; a follow-up gather-reviews.js run with a longer timeout (>150s) than used in this session would let DTLI/SERP stages complete.",
+      "evidence": "WebSearch 2026-08-12: no critic-review results; review-texts/_pending both empty of real candidates."
+    },
+    {
+      "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "title": "Matilda The Musical (Theatre Row)",
+      "before": { "reviewCount": 0, "backoffConsecutiveNoOp": 0 },
+      "after": { "reviewCount": 0, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Ran gather-reviews.js full pipeline — no new content found (DTLI 404s across 3 URL guesses, timed out before SERP stage)",
+        "Audited 2 existing review-texts files: telegraph and times-square-chronicles both flagged wrongProduction by the 'dateless revival guard' — CORRECTLY excluded, both URLs are about the famous West End/Broadway Matilda musical (title collision), not this small KOTA Productions Theatre Row mounting",
+        "_pending/ contains only generic mismatched candidates (nytimes/variety/hollywood-reporter files shared across unrelated shows, all url-token-mismatch)",
+        "heal-duplicate-of-direction.js: 0 flips",
+        "WebSearch SERP check: no professional critic reviews found for the Theatre Row production specifically"
+      ],
+      "remainingGaps": "No published critic reviews found for this specific small-cast Theatre Row production. Title collision with the famous Matilda the Musical means SERP/aggregator discovery is noisy — the two prior review-texts hits were both about the wrong (famous) production and correctly excluded. No backoff to reset (was already 0). Genuinely no coverage yet.",
+      "evidence": "WebSearch 2026-08-12 + review-texts audit: both prior candidate files are about the RSC/West End Matilda, not the Theatre Row indie production."
+    },
+    {
+      "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "title": "We've Been Here Before: A One-Woman Musical",
+      "before": { "reviewCount": 0, "backoffConsecutiveNoOp": 28 },
+      "after": { "reviewCount": 0, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Reset poller-backoff consecutiveNoOp 28->0, nextRunAfter->0 (committed+pushed)",
+        "Audited 3 existing review-texts files: nytimes (URL is an unrelated Game of Thrones/RSC article — phantom/garbage SERP match, correctly a no-score stub), show-score (not_a_review, no critic section), theatrely (correctly flagged — it's a July 9 pre-opening announcement/preview piece, not a review, caught by the date guard)",
+        "_pending/ contains only generic mismatched candidates shared across shows",
+        "WebSearch SERP check: found only announcement/preview coverage (TheaterMania casting news, Playbill, BroadwayWorld video teaser) — no critic reviews of the actual performance"
+      ],
+      "remainingGaps": "No published critic reviews found despite notable attachments (Ben Folds). Show runs Aug 4-17 2026 — may still pick up press before closing. Poller backoff reset for continued automated retry.",
+      "evidence": "WebSearch 2026-08-12: all results are pre-opening announcement/casting pieces, not reviews; review-texts audit confirms same."
+    },
+    {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "title": "Horrible Histories: Barmy Britain - The Best Bits",
+      "before": { "reviewCount": 2, "backoffConsecutiveNoOp": 0 },
+      "after": { "reviewCount": 2, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Audited 9 existing review-texts files. 2 scored (London Theatre Reviews 88, LondonTheatre1 88, both dated correctly Aug 2026). Remaining 7 correctly excluded: 3 files (broadwayworld, everything-theatre, west-end-best-friend) are dated Aug 2025 — reviews of the SAME 'Best Bits' compilation's PRIOR YEAR run at the same venue (Apollo Theatre); 2 files (london-box-office x2) are dated 2018/2019 for a different edition ('Horrible Histories 4'); timeout-london is a March 2026 pre-opening tour-announcement piece; londontheatredirect is a ticket page (not_a_review)",
+        "heal-duplicate-of-direction.js: 0 flips",
+        "WebSearch confirmed: 'Horrible Histories: Barmy Britain – The Best Bits returns to the West End for summer 2026' — i.e. this IS a returning production of the identical compilation"
+      ],
+      "remainingGaps": "HIGH-VALUE FOLLOW-UP: the show has no priorRuns declared in shows.json, so the pre-opening date guard correctly (per current rules) excludes last year's (2025) reviews of the same recurring 'Best Bits' show at the same venue. If the owner confirms this is genuinely the same mounting returning (not a re-edited selection), declaring priorRuns={venue: Apollo Theatre, dates: 2025-07-30 to 2025-08-31} would likely recover 3 more reviews (BroadwayWorld T2, Everything Theatre T3, West End Best Friend T3/T4) without any script changes — the priorRuns mechanism already exists (see feedback_returning_production_priorRuns.md). Left undone in this session because show-identity classification (same mounting vs. re-edited show) is a judgment call outside this session's scope.",
+      "evidence": "westendtheatre.com news article confirming the 2026 run is a return of the same 'Best Bits' compilation; review-texts audit of all 9 files."
+    },
+    {
+      "showId": "brainiac-live-west-end-2026",
+      "title": "Brainiac Live",
+      "before": { "reviewCount": 9, "backoffConsecutiveNoOp": 54 },
+      "after": { "reviewCount": 9, "backoffConsecutiveNoOp": 0 },
+      "actions": [
+        "Reset poller-backoff consecutiveNoOp 54->0, nextRunAfter->0 (committed+pushed)",
+        "Audited all 18 existing review-texts files (9 scored, 9 excluded). Confirmed the Stage entry (contentTier=stub) IS scored via aggregatorStars fallback (assignedScore=80 from '4/5 stars') — the 'known thestage gap' flagged in the card is a false alarm, not an actual scoring gap (matches memory: paywalled star outlets score via fallback, not a real gap)",
+        "Audited the 9 excluded files: 1 (misfiled as 'telegraph' outlet) is actually a Daily Echo review of a DIFFERENT tour stop (Mayflower Studios, Southampton) — correctly excluded as wrongProduction (genuinely a different venue/date, not the Garrick Theatre West End run); 3 (westendtheatre, theatre-weekly, londontheatre1 x2) are March 2026 pre-opening tour-announcement articles, correctly excluded by date guard; 3 (groupline, westendtheatre--west-end-theatre, chelmsfordtheatre) are ticket/listing pages, not_a_review",
+        "heal-duplicate-of-direction.js: 0 flips"
+      ],
+      "remainingGaps": "None recoverable — all 9 exclusions are correct (wrong venue/tour-stop, pre-opening announcements, or ticket pages). This is a family/kids show with genuinely thin critic-tier coverage (0 true T1, 1 T2 via star-fallback, 7 T3/T4 blogs) — not a pipeline bug. Card #839 (T1/T2 silent gap — theatre-weekly) references a March 2026 announcement piece, not an actual missed review; worth a quick re-check on that card given this finding.",
+      "evidence": "Per-file audit of all 18 review-texts/ entries with URL/date verification."
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
+      "title": "Hungry Women",
+      "before": { "reviewCount": 5, "t1Count": 0, "backoffConsecutiveNoOp": 73 },
+      "after": { "reviewCount": 7, "t1Count": 0, "note": "pending final CI rebuild confirmation — see below" },
+      "actions": [
+        "Reset poller-backoff consecutiveNoOp 73->0, nextRunAfter->0 (committed+pushed)",
+        "Audited 14 existing review-texts files vs 5 scored — found 2 real, on-target reviews that were wrongly excluded",
+        "BUG #1 (fixed): this-week-in-new-york (twi-ny.com) review was flagged wrongProduction because its own LLM-scoring date-fallback misparsed the site's visible date format '25 Jul/26' (meaning July 25, 2026) as 2025-07-25 — a full year off, triggering the 342-day pre-opening guard. Verified via direct HTML fetch: twi-ny.com has zero date meta/JSON-LD, so date extraction fell through to an LLM-scoring fallback step that misread the ambiguous format. Corrected via ingest-manual-review.js (--publish-date=2026-07-25, --score=59, --force-clear-stale-flag), which also fixed a resulting wrong-direction duplicateOf stamp via heal-duplicate-of-direction.js --fix.",
+        "BUG #2 (fixed): lavocedinewyork.com (La Voce di New York) had a real, on-target 2026-08-08 review of this exact show, but article-extractor.js had no pattern for this outlet's Jannah/JNews WordPress theme (no stable DOM class), so extraction returned ~117 chars and it silently saved as a stub, never reaching the corpus. Added a new extractLaVoceBody() pattern that reads the JSON-LD Article.articleBody field directly (verified against 2 live URLs: this Hungry Women review + an unrelated Blackout Songs review, both extracted cleanly). Committed to scripts/lib/article-extractor.js (worktree death-note-recovery-1342, merged to main, commit a459256e1dc), then used ingest-review-from-url.js to add the review.",
+        "Both fixes pushed to data/review-texts (private repo, commit a51afe4d064) after carefully separating from ~90 files of unrelated pre-existing drift already dirty in that repo at session start (stashed, not touched, not lost)",
+        "Triggered 2 rebuild-reviews.yml runs (first ran on stale checkout before both fixes landed; second — run 31646933406 — dispatched after both pushes)",
+        "CAUGHT AND DISCARDED a stray local full-corpus rebuild: gather-reviews.js's internal pipeline ran rebuild-all-reviews.js locally against the shared ~/broadway-scorecard-data clone (writing local diffs for dozens of unrelated shows) — discarded via git checkout before any commit/push, per the 'never rebuild-all-reviews.js locally' rule",
+        "Remaining 7 excluded files (broadwaypodcastnetwork, iloveny: not_a_review; melissamaney, sohoplayhouse, broadwayworld: truncated <1000 chars, all listing/ticket pages; new-york-sun: stub, likely paywalled; show-score: wrongShow+not_a_review; theatrely: wrongProduction, correctly — it's a 2-show roundup article bundling Hungry Women with The Pass) — all correctly excluded"
+      ],
+      "remainingGaps": "Real fix delivered — 2 legitimate reviews recovered (This Week in New York T3, La Voce di New York T3), bringing the show to 7 total. Still 0 true T1/T2 (New York Theatre Guide/Off Off Online/Pages on Stages/Talkin' Broadway/Theater Scene/This Week in New York/La Voce di New York are all T3-tier). No further recoverable reviews found in review-texts or _pending. The new-york-sun stub is worth a follow-up if NY Sun coverage matters (likely paywalled — check with a dedicated extractor pattern in a future session).",
+      "evidence": "Full per-file review-texts audit (14 files), live HTML verification of twi-ny.com date-metadata absence, 2-URL verification of the new La Voce extractor pattern, git history of both fixes."
+    }
+  ],
+  "codeChanges": [
+    {
+      "file": "scripts/lib/article-extractor.js",
+      "change": "Added extractLaVoceBody() — JSON-LD articleBody extractor for lavocedinewyork.com, wired into extractArticleText()",
+      "commit": "a459256e1dc (merged to main from worktree death-note-recovery-1342)",
+      "verification": "Tested against 2 live URLs (Hungry Women + Blackout Songs reviews), both extracted 3900+ chars cleanly. node --check + eslint clean. tsc --noEmit pre-existing worktree data-symlink errors unrelated to this change."
+    }
+  ],
+  "dataChanges": [
+    "5 poller-backoff files reset (isla, masticate, weve-been-here-before, brainiac-live, hungry-women) — committed to Broadwayscore main",
+    "Hungry Women: corrected this-week-in-new-york publishDate/score, healed wrong-direction duplicateOf, added la-voce-di-new-york review — committed to broadway-review-texts (private repo) main"
+  ],
+  "summaryCounts": {
+    "showsWithZeroReviewsBefore": 4,
+    "showsStillZeroAfter": 4,
+    "showsWithRecoveredReviews": 1,
+    "reviewsRecovered": 2,
+    "codeFixesShipped": 1,
+    "dateParsingBugsFixed": 1,
+    "wrongDirectionDuplicateOfFixed": 1,
+    "highValueFollowUpsIdentified": 1
+  }
+}
