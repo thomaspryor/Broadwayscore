@@ -307,10 +307,20 @@ async function runReconcile({ classified, mapping, apply }) {
       });
       retired++;
     }
+    // retiredReason is the provenance the revive path gates on, so it has to be
+    // stamped on EVERY retire — including a task whose mapping row already
+    // carries an identifier from an earlier run. Writing it only when the row
+    // was missing (the first version of this) meant an already-mapped issue
+    // could be retired and then never revived when its Notion card reopened:
+    // the revive check would see no retiredReason and leave it at Done forever.
     if (!mapping[task.id] || !mapping[task.id].identifier) {
       mapping[task.id] = { linearId: issue.id, identifier: issue.identifier, title: issue.title, project: ARCHIVE_PROJECT, retiredReason: c.skip };
       saveMapping(mapping);
       recorded++;
+    } else if (mapping[task.id].retiredReason !== c.skip) {
+      mapping[task.id].retiredReason = c.skip;
+      mapping[task.id].project = ARCHIVE_PROJECT;
+      saveMapping(mapping);
     }
   }
   let revived = 0;
