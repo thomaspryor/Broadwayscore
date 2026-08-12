@@ -385,7 +385,9 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
       Array.from(table.querySelectorAll('th')).map(th => th.textContent?.trim() || '')
     );
     try {
-      assertTableSchema([allHeaderCells], { minCells: 1 });
+      // 'Best Play' has been awarded every ceremony since START_YEAR (2005) —
+      // a stable anchor label, unlike the many categories that skip years.
+      assertTableSchema([allHeaderCells], { minCells: 1, expectedHeaders: ['Best Play'] });
     } catch (err) {
       if (err instanceof TableSchemaError) {
         console.error(`::error::scrape-tony-awards: ${err.message}`);

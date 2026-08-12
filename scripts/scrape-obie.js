@@ -114,23 +114,21 @@ async function main() {
   for (const t of tables) {
     const headerCells = Array.from(t.querySelectorAll('tr')[0]?.querySelectorAll('th, td') || [])
       .map((c) => (c.textContent || '').trim());
-    const headers = headerCells.map((c) => c.toLowerCase());
-    if (!headers.includes('year') || !headers.some((h) => h.includes('recipient'))) continue;
 
-    const yearIdx = headers.indexOf('year');
-    const recIdx = headers.findIndex((h) => h.includes('recipient'));
-
-    // Found the right table by header content — assert its column count hasn't
-    // drifted before trusting cells[yearIdx]/[recIdx] below (task #1331).
+    // Identify AND schema-guard this table in one call (task #1331) — a prior
+    // version derived minCells from indices found in this same headerCells
+    // array, which is tautological (can never fail). Fixed expectedHeaders
+    // here actually gates on the labels this table must carry.
     try {
-      assertTableSchema([headerCells], { minCells: Math.max(yearIdx, recIdx) + 1 });
+      assertTableSchema([headerCells], { minCells: 2, expectedHeaders: ['Year', 'Recipient'] });
     } catch (err) {
-      if (err instanceof TableSchemaError) {
-        console.error(`::error::scrape-obie: ${err.message}`);
-        continue;
-      }
+      if (err instanceof TableSchemaError) continue; // not the table we want
       throw err;
     }
+
+    const headers = headerCells.map((c) => c.toLowerCase());
+    const yearIdx = headers.indexOf('year');
+    const recIdx = headers.findIndex((h) => h.includes('recipient'));
 
     for (const row of t.querySelectorAll('tr')) {
       const cells = Array.from(row.querySelectorAll('td'));
