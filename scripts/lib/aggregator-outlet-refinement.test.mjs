@@ -194,7 +194,7 @@ test('createOrMergeReviewFile: a scored stub for a DOMAIN-REGISTERED outlet also
     console.warn = () => {};
     try { return fn(); } finally { console.warn = w; }
   };
-  const scored = quiet(() => createOrMergeReviewFile('a-midsummer-nights-dream-globe-west-end-2026', {
+  const scored = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
     outletId: 'guardian',
     outlet: 'The Guardian',
     criticName: 'Kate Wyver',
