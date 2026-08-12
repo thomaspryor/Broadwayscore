@@ -167,6 +167,33 @@ test('deadDispatchGuard allows dispatch under the limit, and ignores deaths for 
   assert.equal(deadDispatchGuard(task, [], {}), null);
 });
 
+// Card #1233: the dead-launch rate is ~21% infra (cmux's terminal surface
+// never rendered), and a task shouldn't get the "investigate the scope"
+// refusal for dying that way twice. deadDispatchGuard must let it through.
+test('deadDispatchGuard does NOT refuse a task whose 2 deaths are both infra (paired unverified launch)', () => {
+  const task = TASKS[0]; // id '1'
+  const infraOnly = [
+    { ts: '2026-08-10T10:00:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:301', failureReason: 'command injection never ran' },
+    { ts: '2026-08-10T10:00:00.002Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:301', unverified: true },
+    { ts: '2026-08-10T11:00:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:302', failureReason: 'command injection never ran' },
+    { ts: '2026-08-10T11:00:00.002Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:302', unverified: true },
+  ];
+  assert.equal(deadDispatchGuard(task, infraOnly, {}), null);
+});
+
+test('deadDispatchGuard still refuses a task whose 2 deaths are substantive (verified launch, later found dead)', () => {
+  const task = TASKS[0]; // id '1'
+  const substantiveOnly = [
+    { ts: '2026-08-10T09:00:00.000Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:401' },
+    { ts: '2026-08-10T11:30:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:401', failureReason: 'workspace idle, never booted' },
+    { ts: '2026-08-10T12:00:00.000Z', event: 'launch', taskId: '1', workspaceRef: 'workspace:402' },
+    { ts: '2026-08-10T14:30:00.000Z', event: 'dead', taskId: '1', workspaceRef: 'workspace:402', failureReason: 'workspace idle, never booted' },
+  ];
+  const msg = deadDispatchGuard(task, substantiveOnly, {});
+  assert.match(msg, /died 2x already/);
+  assert.match(msg, /workspace:401, workspace:402/);
+});
+
 // Ship-check adversarial finding (2026-07-22): a 'dead' breadcrumb written
 // ONLY by bsc-prune.js's own sweep would miss a same-SESSION burst — the
 // actual #297 incident shape (3 dispatches in one sitting, no sweep in
@@ -549,6 +576,51 @@ test('parkedGuard: --force / --dry-run / --print-prompt all bypass', () => {
 test('parkedGuard: a later launch clears the park (force IS the unpark)', () => {
   const entries = [PARK, { event: 'launch', taskId: '42', workspaceRef: 'workspace:9', ts: '2026-08-02T11:00:00.000Z' }];
   assert.equal(parkedGuard({ id: '42' }, entries, {}), null);
+});
+
+// ── Stale-outcome guard (task #1272, the #383 class) ────────────────────────
+const { staleOutcomeGuard } = require('./bsc-next.js');
+const OUTCOME_TASK = { id: '383', subject: 'Pull design and UX inspo from TodayTix predictions site', description: '[notion:369637c5-416f-8183-8dca-e32d05c59dcc] P0 Now' };
+
+test('staleOutcomeGuard: refuses a card with a filled Outcome and no acceptance criteria', () => {
+  const refusal = staleOutcomeGuard(OUTCOME_TASK, { outcome: 'FINDINGS.md written, 12 screenshots.', notes: 'Pull design inspo from TodayTix.' }, {});
+  assert.match(refusal, /#383/);
+  assert.match(refusal, /#383 class/);
+  assert.match(refusal, /--status Done/);
+  assert.match(refusal, /369637c5-416f-8183-8dca-e32d05c59dcc/, 'must name the actual notion id, not a placeholder');
+});
+
+test('staleOutcomeGuard: silent when Outcome is empty', () => {
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, { outcome: '', notes: 'no criteria here' }, {}), null);
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, { outcome: '   ', notes: 'whitespace-only outcome' }, {}), null);
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, null, {}), null);
+});
+
+test('staleOutcomeGuard: silent when the card has real acceptance criteria (a fresh, verifiable re-attempt)', () => {
+  const card = { outcome: 'Shipped in a prior pass.', notes: '## Acceptance criteria\n`node --test scripts/lib/foo.test.mjs`' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: silent when the card declares VERIFY: owner-judgment', () => {
+  const card = { outcome: 'Shipped in a prior pass.', notes: 'VERIFY: owner-judgment — only the owner can judge this.' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: silent on a RECHECK-AFTER-stamped card (legitimate scheduled recheck, not silent staleness)', () => {
+  const card = { outcome: 'RECHECK-AFTER: 2026-08-20\nDeployed; verifying it holds after a day of traffic.', notes: 'no acceptance criteria' };
+  assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, {}), null);
+});
+
+test('staleOutcomeGuard: fires even when notes are unavailable — the exact #383 gap (Outcome is a separate property from Notes)', () => {
+  const refusal = staleOutcomeGuard(OUTCOME_TASK, { outcome: 'FINDINGS.md written, 12 screenshots.', notes: '' }, {});
+  assert.match(refusal, /REFUSING/);
+});
+
+test('staleOutcomeGuard: --force / --allow-unverifiable / --dry-run / --print-prompt all bypass', () => {
+  const card = { outcome: 'FINDINGS.md written.', notes: '' };
+  for (const flag of ['force', 'allow-unverifiable', 'dry-run', 'print-prompt']) {
+    assert.equal(staleOutcomeGuard(OUTCOME_TASK, card, { [flag]: true }), null, `${flag} must bypass`);
+  }
 });
 
 // ── Card #854: archive/ lookup, live-dir-only loadTasks ─────────────────────

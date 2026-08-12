@@ -1759,6 +1759,14 @@ on:
       # triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/dispatch-ledger.js'
       - 'scripts/lib/dispatch-ledger.test.mjs'
+      # Shared attempt-fold primitive (card #1233): extracted out of
+      # dispatch-health.js so dispatch-ledger.js's INFRA-vs-SUBSTANTIVE dead
+      # cap could reuse it without dispatch-ledger.js depending on its own
+      # narrower digest consumer. No dedicated test file — exercised via the
+      # dispatch-ledger.test.mjs and dispatch-health.test.mjs suites above;
+      # path-listed so a solo edit still triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/dispatch-attempts.js'
       # Dead-dispatch completion guard (card #1144): a task whose latest
       # dispatch is journaled dead must not be marked completed. Colocated
       # test runs in the lib-test glob; path-listed so a solo edit triggers
