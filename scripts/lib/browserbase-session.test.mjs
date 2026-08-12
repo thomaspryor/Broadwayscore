@@ -47,6 +47,10 @@ test('createBbSession rejects when the live daily session count is at/over the c
   _resetDayCapCacheForTests();
   const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  // No shows in the opening window — isolates this test from #1333's reserve
+  // logic (and from real data/shows.json content, which changes daily and
+  // would otherwise make this test's pass/fail depend on live production data).
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 10);
   try {
     await assert.rejects(
@@ -55,6 +59,7 @@ test('createBbSession rejects when the live daily session count is at/over the c
     );
     assert.equal(liveMock.mock.callCount(), 1);
   } finally {
+    windowMock.mock.restore();
     liveMock.mock.restore();
     if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
     else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
@@ -65,6 +70,7 @@ test('createBbSession proceeds past the day-cap check when the live count is und
   _resetDayCapCacheForTests();
   const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 9);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
     ok: true,
@@ -77,6 +83,7 @@ test('createBbSession proceeds past the day-cap check when the live count is und
     assert.equal(liveMock.mock.callCount(), 1);
   } finally {
     fetchMock.mock.restore();
+    windowMock.mock.restore();
     liveMock.mock.restore();
     if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
     else process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = prevMax;
@@ -85,6 +92,7 @@ test('createBbSession proceeds past the day-cap check when the live count is und
 
 test('createBbSession does not block on a null live count (network hiccup treated as unknown, not zero)', async () => {
   _resetDayCapCacheForTests();
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => null);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
     ok: true,
@@ -96,6 +104,7 @@ test('createBbSession does not block on a null live count (network hiccup treate
     assert.equal(result.id, 'sess_456');
   } finally {
     fetchMock.mock.restore();
+    windowMock.mock.restore();
     liveMock.mock.restore();
   }
 });
@@ -108,6 +117,7 @@ test('createBbSession caches the live count briefly so back-to-back calls do not
   _resetDayCapCacheForTests();
   const prevMax = process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
   process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY = '10';
+  const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => 0);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => 3);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
     ok: true,
@@ -121,6 +131,7 @@ test('createBbSession caches the live count briefly so back-to-back calls do not
     assert.equal(liveMock.mock.callCount(), 1, 'three rapid calls should share one cached live-count fetch');
   } finally {
     fetchMock.mock.restore();
+    windowMock.mock.restore();
     liveMock.mock.restore();
     _resetDayCapCacheForTests();
     if (prevMax === undefined) delete process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY;
