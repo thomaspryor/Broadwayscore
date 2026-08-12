@@ -51,14 +51,18 @@ function isUsageLimitExceeded(err) {
 //                would itself be a new silent-third-state wearing a
 //                different label.
 function pickStateForMode(states, mode) {
-  const byType = (type) => (states || []).find((s) => s && s.type === type);
+  // getTeam() returns the raw GraphQL connection shape ({ nodes: [...] }),
+  // not a bare array — normalize both so this works with either. Shipped
+  // broken (states.find is not a function) on every create until 2026-08-12.
+  const list = Array.isArray(states) ? states : (states && states.nodes) || [];
+  const byType = (type) => list.find((s) => s && s.type === type);
   if (mode === 'park') {
     const state = byType('backlog') || byType('unstarted');
     if (!state) {
       throw new Error(
         `linear-issue-create: no 'backlog' or 'unstarted' workflow state found on this team — cannot ` +
         `file a parked issue that doesn't read as in-progress. States seen: ${
-          (states || []).map((s) => `${s.name}(${s.type})`).join(', ') || '(none)'
+          list.map((s) => `${s.name}(${s.type})`).join(', ') || '(none)'
         }`
       );
     }
@@ -68,7 +72,7 @@ function pickStateForMode(states, mode) {
   if (!state) {
     throw new Error(
       `linear-issue-create: no 'unstarted' workflow state found on this team for --dispatch. ` +
-      `States seen: ${(states || []).map((s) => `${s.name}(${s.type})`).join(', ') || '(none)'}`
+      `States seen: ${list.map((s) => `${s.name}(${s.type})`).join(', ') || '(none)'}`
     );
   }
   return state;
