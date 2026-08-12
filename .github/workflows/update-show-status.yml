@@ -758,12 +758,20 @@ jobs:
           # "concurrent-CI data race" (issue #9) Express was built to eliminate.
           # new_slugs-only entries (shows discovered already open/closed — bulk
           # backfill, not a live opening-night event) still need the legacy chain.
+          #
+          # EXPRESS_AUTOFIRE_DISABLED kill switch: when set, "Trigger Opening Night
+          # Express" below won't fire, so the exclusion must NOT happen either —
+          # otherwise a killed Express leaves transitioned shows with zero automated
+          # gather/collect coverage at all (found in /ship-check review, task #1349).
+          EXPRESS_DISABLED="${{ vars.EXPRESS_AUTOFIRE_DISABLED }}"
           legacy_gather_targets=""
           for slug in $(echo "$all_slugs" | tr ',' '\n'); do
             [ -z "$slug" ] && continue
-            case ",$opened_slugs," in
-              *",$slug,"*) continue ;;
-            esac
+            if [ "$EXPRESS_DISABLED" != "true" ]; then
+              case ",$opened_slugs," in
+                *",$slug,"*) continue ;;
+              esac
+            fi
             [ -n "$legacy_gather_targets" ] && legacy_gather_targets="$legacy_gather_targets,$slug" || legacy_gather_targets="$slug"
           done
           echo "legacy_gather_targets=$legacy_gather_targets" >> $GITHUB_OUTPUT
@@ -1251,20 +1259,33 @@ jobs:
               console.log('Deep Research trigger failed:', e.message);
             }
 
-      # Opening Night Poller's auto-dispatch was retired here (task #1349) when
-      # Opening Night Express started auto-firing on the same signal below.
-      # Poller's ENTIRE automated purpose (per its own header comment: "NO CRON —
-      # only dispatched by update-show-status.yml when a show transitions to
-      # open") is now superseded by Express, which runs the same discovery
-      # (scripts/gather-reviews.js) plus collect+score+rebuild+push+deploy inline
-      # in one job. Auto-dispatching both was found to be UNSAFE, not just
-      # redundant: Express's own "cancel competing orchestrator/poller runs" step
-      # only cancels poller's run — it can't recall the downstream workflows
-      # poller's job may have already dispatched in the few seconds before that
-      # cancellation lands, so the two pipelines could still write review data
-      # for the same show concurrently (the exact race Express exists to
-      # eliminate). Poller remains available for manual/targeted
-      # `gh workflow run opening-night-poller.yml -f show_id=...` use.
+      # Opening Night Poller's auto-dispatch only fires when Express's auto-fire is
+      # killed (task #1349). Poller's ENTIRE automated purpose (per its own header
+      # comment: "NO CRON — only dispatched by update-show-status.yml when a show
+      # transitions to open") is superseded by Express when Express is enabled, so
+      # dispatching both would be UNSAFE, not just redundant: Express's own "cancel
+      # competing orchestrator/poller runs" step only cancels poller's run — it
+      # can't recall the downstream workflows poller's job may have already
+      # dispatched in the few seconds before that cancellation lands. When Express
+      # IS killed, there's no Express run to race, so poller reverts to its
+      # pre-#1349 role as the standalone opening-night discovery trigger.
+      - name: Trigger Opening Night Poller for opened shows (Express-disabled fallback)
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'opening-night-poller.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Triggered Opening Night Poller for opened shows (Express auto-fire disabled)');
+            } catch (e) {
+              console.log('Opening Night Poller trigger failed:', e.message);
+            }
 
       - name: Trigger Opening Night Express for opened shows
         # Kill switch independent of reverting this file: gh variable set EXPRESS_AUTOFIRE_DISABLED --body true
@@ -1272,11 +1293,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            // One dispatch per true previews->open transition this run. Express's
-            // own concurrency group (opening-night-express, global — see
-            // opening-night-express.yml) queues these instead of running them
-            // concurrently, so a multi-show opening night can't have two Express
-            // runs racing on the shared ORCHESTRATOR_PAUSED lease at once.
+            // One dispatch per true previews->open transition this run. Each show
+            // gets its own Express concurrency group (opening-night-express-<show_id>
+            // — see opening-night-express.yml), so multiple same-day openings all
+            // run rather than a shared group silently dropping all but the last.
             const shows = require('./data/shows.json').shows;
             const slugs = '${{ needs.update-shows.outputs.opened_slugs }}'.split(',').filter(Boolean);
             for (const slug of slugs) {
