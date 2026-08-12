@@ -876,10 +876,9 @@ function followRetryChain(entries, taskId, firstJobId) {
 module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
-  appendEntry, readEntries, deadAttemptsForTask, isInfraDeadEntry, deadDispatchCapStatus, launchByRef, deadBreadcrumbs,
+  appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   failedLaunchEntries, foldJobs, openJobs,
-  classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask,
-  INFRA_DEAD_ATTEMPT_LIMIT, dispatchCapDecision,
+  classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, followRetryChain,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
