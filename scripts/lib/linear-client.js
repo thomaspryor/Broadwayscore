@@ -167,7 +167,7 @@ async function archiveIssue(id) {
     }`,
     { id }
   );
-  if (!data.issueArchive.success) throw new Error(`issueArchive failed for ${id}`);
+  if (!data.issueArchive || !data.issueArchive.success) throw new Error(`issueArchive failed for ${id}`);
   return data.issueArchive;
 }
 

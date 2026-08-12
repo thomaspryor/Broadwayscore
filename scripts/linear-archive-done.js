@@ -4,10 +4,13 @@
  * ARCHIVE_AGE_HOURS, to keep the workspace under the free-tier 250-unarchived
  * -issue cap (BRO-285, scripts/check-linear-cap.js is the companion monitor).
  *
- * Every archive is logged to data/audit/linear-archive-done.jsonl BEFORE the
- * mutation is applied, mirroring scripts/linear-import.js's logMutation()
- * convention — archiving is reversible in Linear's UI, but there's otherwise
- * no local record of what was archived or when.
+ * Every archive attempt is logged to data/audit/linear-archive-done.jsonl
+ * AFTER the mutation attempt resolves, recording what actually happened
+ * (outcome: archived|failed) rather than what was about to be attempted —
+ * archiving is reversible in Linear's UI, but there's otherwise no local
+ * record of what was archived or when. A process kill between a successful
+ * archiveIssue() and its logArchive() loses that one audit line (the issue
+ * IS archived on Linear's side) — acceptable for a reversible mutation.
  *
  * All Linear API access goes through scripts/lib/linear-client.js — a raw
  * GraphQL mutation call or a direct reference to Linear's API host anywhere
