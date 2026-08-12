@@ -225,9 +225,9 @@ test('merge-gate BLOCKS a compound merge+push — the exact hole a 2026-08-12 P0
   assertBlocked(r, 'compound merge+push');
 });
 
-test('merge-gate: the same bare "git merge <probe>" run FROM the main checkout also BLOCKS (control for the non-main cases below)', skipNoNonmain, () => {
+test('merge-gate: the same bare "git merge <probe>" run FROM the main checkout also BLOCKS (control for the non-main cases below)', skipNoNonmain, (t) => {
   const onMain = gitOut(CANONICAL_ROOT, ['branch', '--show-current']) === 'main';
-  if (!onMain) return; // CANONICAL_ROOT is not literally on `main` right now (e.g. detached-HEAD PR checkout) — nothing to assert
+  if (!onMain) { t.skip('CANONICAL_ROOT is not literally checked out to `main` right now (e.g. detached-HEAD PR checkout in CI) — nothing to assert'); return; }
   const r = runHook(MERGE_HOOK, { command: `git merge ${PROBE_BRANCH} --no-edit`, cwd: CANONICAL_ROOT });
   assertBlocked(r, 'bare merge from main checkout');
 });
@@ -343,9 +343,9 @@ test('push-gate BLOCKS the compound merge+push (defense in depth alongside the m
   assertBlocked(r, 'compound merge+push via push gate');
 });
 
-test('push-gate: the same bare "git push" run FROM the main checkout also BLOCKS when gated diff is unreviewed', skipNoNonmain, () => {
+test('push-gate: the same bare "git push" run FROM the main checkout also BLOCKS when gated diff is unreviewed', skipNoNonmain, (t) => {
   const onMain = gitOut(CANONICAL_ROOT, ['branch', '--show-current']) === 'main';
-  if (!onMain) return;
+  if (!onMain) { t.skip('CANONICAL_ROOT is not literally checked out to `main` right now (e.g. detached-HEAD PR checkout in CI) — nothing to assert'); return; }
   // Push gate resolves a bare push's destination from the CURRENT BRANCH tip,
   // not an arbitrary probe ref, so this exercises the real ambient-main path
   // rather than reusing PROBE_BRANCH (which the bare form can't reference).
