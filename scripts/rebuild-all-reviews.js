@@ -1974,8 +1974,16 @@ showDirs.forEach(showId => {
   // safe here specifically because this never touches the source file, so the
   // name+URL collision that gate exists to prevent can't happen. See
   // recoverDisplayBylinesForShow's doc comment in byline-recovery.js.
+  // Deterministic order matters here: recoverDisplayBylinesForShow's collision
+  // guard decides which of two colliding recoveries survives based on the order
+  // it sees them in, and bylineRecoveryRecords is otherwise built straight from
+  // fs.readdirSync — unordered and OS-dependent (code-review finding, card #190
+  // follow-up). Sort a copy by filename so the same show dir always resolves
+  // the same way regardless of platform or readdir order.
   const recoveredNameByFile = new Map(
-    recoverDisplayBylinesForShow(bylineRecoveryRecords).map((r) => [r.file, r.recoveredName])
+    recoverDisplayBylinesForShow(
+      [...bylineRecoveryRecords].sort((a, b) => a.file.localeCompare(b.file))
+    ).map((r) => [r.file, r.recoveredName])
   );
 
   // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)

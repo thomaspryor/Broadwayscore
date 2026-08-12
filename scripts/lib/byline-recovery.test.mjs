@@ -191,6 +191,24 @@ test('recoverDisplayBylinesForShow catches a same-outlet-different-URL collision
     { file: 'wsj--charles-isherwood-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
   ]);
   assert.equal(out.length, 1, 'only the first-processed recovery is kept; the second is held back as a same-name/same-outlet collision');
+  assert.equal(out[0].file, 'wsj--unknown.json', 'the FIRST record in input order wins the collision, not just "some" record — the caller (rebuild-all-reviews.js) relies on this to be deterministic, so it sorts its input by filename before calling');
+});
+
+test('recoverDisplayBylinesForShow is order-dependent on its input — proves callers MUST pass a deterministically-sorted array (code-review finding, card #190 follow-up)', () => {
+  // Same fixture as above, but with the colliding pair's file order reversed.
+  // This function makes no attempt to normalize input order itself — it always
+  // keeps whichever record it sees first. That's fine as an internal contract,
+  // but only if every caller sorts its input the same way every time; this test
+  // documents the contract so a future caller that forgets to sort fails loudly
+  // via a flaky/inconsistent result, not silently.
+  const out = recoverDisplayBylinesForShow([
+    { file: 'wsj--unknown-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Unknown', fullText: 'By Charles Isherwood.' },
+    { file: 'wsj--charles-isherwood-2.json', outletId: 'wsj', url: 'https://wsj.com/b', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+    { file: 'wsj--unknown.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Unknown', fullText: 'By Charles Isherwood.' },
+    { file: 'wsj--charles-isherwood.json', outletId: 'wsj', url: 'https://wsj.com/a', criticName: 'Charles Isherwood', fullText: 'By Charles Isherwood.', flagged: true },
+  ]);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].file, 'wsj--unknown-2.json', 'reversing input order flips the winner — confirms the function is order-dependent, so callers own sorting for determinism');
 });
 
 test('resolveCriticName prefers the recovered name only when the normalized byline is missing or Unknown (#190)', () => {
