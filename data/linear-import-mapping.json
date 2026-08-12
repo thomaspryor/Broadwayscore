@@ -131,6 +131,13 @@
     "title": "Route 39 direct-ScrapingBee scripts through fetchPage() (complete SD migration)",
     "project": "Infrastructure"
   },
+  "72": {
+    "linearId": "81f1b94c-7cea-4663-b8ea-d0914c7abe2c",
+    "identifier": "BRO-6",
+    "title": "Fix provisionalOutletIdFromHost garbage slugs (.co.uk, *.wordpress.com)",
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
   "73": {
     "linearId": "d549d732-866d-43e1-90ee-f653edea398e",
     "identifier": "BRO-33",
@@ -341,11 +348,24 @@
     "title": "LLM fallback should fire on PARTIAL extraction, not just zero — resilience to format changes",
     "project": "Infrastructure"
   },
+  "150": {
+    "linearId": "7739730e-77f2-427a-8d24-27139f3f5157",
+    "identifier": "BRO-7",
+    "title": "Fix: getFoundOutletIds should skip rejectionReason=not_a_review files",
+    "project": "Archive",
+    "retiredReason": "notion_done"
+  },
   "169": {
     "linearId": "fe92b500-6875-48fa-9ebb-13c3d2525d7d",
     "identifier": "BRO-68",
     "title": "Unparsed explicit ratings: auto-dispatch recover-explicit-ratings workflow",
     "project": "Infrastructure"
+  },
+  "188": {
+    "linearId": "7162e15a-e274-4d7c-b256-93b353110f94",
+    "identifier": "BRO-5",
+    "title": "Show hero (redesign): tier label wraps mid-word at 360-414px (\"Mixe d\", \"Shruggin g\")",
+    "project": "Site & product"
   },
   "190": {
     "linearId": "99299afa-7cb4-4aa6-bd52-2fa4023941a3",
@@ -382,6 +402,12 @@
     "identifier": "BRO-74",
     "title": "C2 multi-critic URL dedup: 7 cases of same-URL double-counting",
     "project": "Infrastructure"
+  },
+  "242": {
+    "linearId": "d2fc9084-f0e3-431d-b932-9993b1ec3599",
+    "identifier": "BRO-8",
+    "title": "Drift detector: handle 'rc field not found' in live JSON as real drift signal",
+    "project": "Archive"
   },
   "243": {
     "linearId": "eb65d041-578c-4bca-9d9b-9b9d22792592",
@@ -635,6 +661,12 @@
     "title": "Fix 101 baselined scripts with unconditional core-data writes on --help (highest-risk #498 subset)",
     "project": "Infrastructure"
   },
+  "537": {
+    "linearId": "983efffa-2b43-4bda-a945-c991f7b63742",
+    "identifier": "BRO-257",
+    "title": "alert-digest-queue.json now has 2 committer workflows — push-with-retry keep-local can lose or resurrect a queued line",
+    "project": "Infrastructure"
+  },
   "552": {
     "linearId": "687feccb-55dd-42d7-bf80-52b606a6b7a6",
     "identifier": "BRO-117",
@@ -843,6 +875,12 @@
     "linearId": "455a260c-d80f-4ea0-a784-01ac358e04f0",
     "identifier": "BRO-151",
     "title": "Audit top url-mismatch-suspects.json hosts for Variety-class fixable permalink drift",
+    "project": "Infrastructure"
+  },
+  "959": {
+    "linearId": "531aad71-f232-41ec-9d69-517b24ba5229",
+    "identifier": "BRO-258",
+    "title": "push-with-retry exit-0 false success recurred 2026-08-03 AFTER #833 completed — content never reached origin",
     "project": "Infrastructure"
   },
   "963": {
@@ -1211,6 +1249,12 @@
     "title": "Fix: BSC Daily: Workflow repeat-failure: Test Suite",
     "project": "Infrastructure"
   },
+  "1167": {
+    "linearId": "02b3eff0-a6e0-4fad-b592-9c2453ac8834",
+    "identifier": "BRO-259",
+    "title": "push-with-retry.sh abort-restore still drops commits under extreme concurrency (recurrence of #769, closed prematurely)",
+    "project": "Infrastructure"
+  },
   "1170": {
     "linearId": "c94fc7a4-25aa-4cb9-8497-368f989745be",
     "identifier": "BRO-213",
@@ -1367,6 +1411,13 @@
     "title": "WE historical pilot S1/S2: drive smoke-test scoring to composites, WET star/URL merge, season discovery tooling",
     "project": "Scoring quality"
   },
+  "1250": {
+    "linearId": "7846d475-4fc6-46f6-b341-f33586473476",
+    "identifier": "BRO-260",
+    "title": "Evaluate session/PM system performance + recommend replacement (Linear?)",
+    "project": "Archive",
+    "retiredReason": "noise:fleet_selfref"
+  },
   "1253": {
     "linearId": "81c094d3-9f5c-4863-8575-3e1e9fb3face",
     "identifier": "BRO-239",
@@ -1468,5 +1519,18 @@
     "identifier": "BRO-255",
     "title": "Pull-quote-extraction step clobbers aggregatorStars via lost-update race (found during #1249)",
     "project": "Coverage pipeline"
+  },
+  "1283": {
+    "linearId": "db12c5a9-dfe2-4396-ab16-3bc4a323fc91",
+    "identifier": "BRO-261",
+    "title": "Linear migration Day 1: project structure + curated backlog import (owner approved Option A 2026-08-11)",
+    "project": "Archive",
+    "retiredReason": "noise:fleet_selfref"
+  },
+  "1285": {
+    "linearId": "3b467306-7df9-4f7c-b5ae-7f9d7358719f",
+    "identifier": "BRO-262",
+    "title": "Show Score audience scraper: LLM page-validator rejects valid pages, 0% success",
+    "project": "Scoring quality"
   }
 }

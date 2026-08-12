@@ -38,6 +38,7 @@ const {
   mapStatusToLinearState,
   classifyNoise,
   classifyProject,
+  isIdleArchive,
 } = require('./lib/linear-import-rules');
 const linear = require('./lib/linear-client');
 
@@ -45,6 +46,7 @@ const REPO_ROOT = path.join(__dirname, '..');
 const MIRROR_DIR =
   process.env.LINEAR_IMPORT_MIRROR_DIR || path.join(os.homedir(), '.claude/tasks/broadwayscore');
 const MAPPING_PATH = path.join(REPO_ROOT, 'data/linear-import-mapping.json');
+const SNAPSHOT_PATH = path.join(REPO_ROOT, 'data/audit/linear-notion-snapshot.json');
 
 const WORKSTREAM_PROJECTS = [
   'Coverage pipeline',
@@ -53,6 +55,7 @@ const WORKSTREAM_PROJECTS = [
   'Commercial',
   'iOS',
   'Marketing/distribution',
+  'Site & product',
   'Infrastructure',
 ];
 const ARCHIVE_PROJECT = 'Archive';
@@ -90,65 +93,103 @@ function readMirrorTasks() {
   return tasks;
 }
 
-// Returns a Set of Notion page IDs that are P2-Later, "Not started", and have
-// not been edited in 30+ days — the population step 2 of the card routes to
-// the Archive project. Queried live because local mirror file mtimes reflect
-// the last mirror resync, not the underlying Notion edit time (verified
-// against the mirror on 2026-08-11 — every file had the same resync mtime).
-function getStalePendingP2NotionIds() {
-  let out;
-  try {
-    out = execFileSync(
-      'node',
-      [
-        path.join(REPO_ROOT, 'scripts/notion-brain.js'),
-        'list',
-        '--priority',
-        'P2 Later',
-        '--status',
-        'Not started',
-        '--stale-days',
-        '30',
-        '--limit',
-        '500',
-      ],
-      { cwd: REPO_ROOT, encoding: 'utf8', timeout: 30_000 }
-    );
-  } catch (err) {
-    console.error(`notion-brain.js list failed, treating stale-P2 set as empty: ${err.message}`);
-    return new Set();
+// Notion state the curation needs, keyed by page id: which cards are already
+// Done, and how many days since each open card was last edited.
+//
+// Read from a committed FILE snapshot rather than queried live, for two
+// reasons. (1) Determinism: the card's acceptance criterion is that two
+// consecutive --dry-runs print identical counts, which a live query cannot
+// promise. (2) Auditability: the snapshot is the evidence for every
+// archive/skip decision this run made. Refresh it explicitly with
+// --refresh-snapshot. Mirror file mtimes are NOT a substitute — they all
+// reflect the last mirror resync, not the underlying Notion edit time.
+function refreshNotionSnapshot(mirrorTasks) {
+  const referenced = new Set();
+  for (const t of mirrorTasks) {
+    const id = extractNotionId(t.description || '');
+    if (id) referenced.add(id);
   }
-  let rows;
-  try {
-    rows = JSON.parse(out);
-  } catch {
-    return new Set();
+  const doneIds = [];
+  const openAgeDays = {};
+  for (const status of ['Done', 'Not started', 'In progress', 'Paused']) {
+    let rows;
+    try {
+      const out = execFileSync(
+        'node',
+        [path.join(REPO_ROOT, 'scripts/notion-brain.js'), 'list', '--status', status, '--limit', '5000'],
+        { cwd: REPO_ROOT, encoding: 'utf8', timeout: 300_000, maxBuffer: 256 * 1024 * 1024 }
+      );
+      rows = JSON.parse(out);
+    } catch (err) {
+      throw new Error(`notion-brain.js list --status "${status}" failed: ${err.message}`);
+    }
+    for (const r of rows) {
+      if (!referenced.has(r.id)) continue;
+      if (status === 'Done') doneIds.push(r.id);
+      else openAgeDays[r.id] = r.ageDays;
+    }
   }
-  return new Set(rows.map((r) => r.id));
+  const snapshot = {
+    generatedAt: new Date().toISOString().slice(0, 10),
+    source: 'scripts/notion-brain.js list --status <s>',
+    referencedByMirror: referenced.size,
+    doneIds: doneIds.sort(),
+    openAgeDays: Object.fromEntries(Object.entries(openAgeDays).sort(([a], [b]) => a.localeCompare(b))),
+  };
+  fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
+  fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + '\n');
+  return snapshot;
 }
 
-function classifyTask(task, stalePendingP2Ids) {
+function loadNotionSnapshot() {
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(SNAPSHOT_PATH, 'utf8'));
+  } catch {
+    throw new Error(
+      `no Notion snapshot at ${SNAPSHOT_PATH} — run: node scripts/linear-import.js --refresh-snapshot`
+    );
+  }
+  return {
+    generatedAt: raw.generatedAt,
+    doneIds: new Set(raw.doneIds || []),
+    ageDays: new Map(Object.entries(raw.openAgeDays || {})),
+  };
+}
+
+function classifyTask(task, notionState) {
   const subject = (task.subject || '').trim();
   if (!subject) return { skip: 'blank_title' };
   if (task.status === 'completed') return { skip: 'completed' };
 
+  const notionId = extractNotionId(task.description || '');
+
+  // Notion stays authoritative until Day 3, and the mirror lags it: ~50 records
+  // sit pending/in_progress locally while their card is already Done. Importing
+  // those recreates the dispatch-waste class task #1272 measured (work handed
+  // out that was already finished), so the card's status outranks the mirror's.
+  // Checked BEFORE the noise rules so the skip reason names the real cause.
+  if (notionId && notionState.doneIds.has(notionId)) return { skip: 'notion_done' };
+
   const noise = classifyNoise(subject);
   if (noise) return { skip: `noise:${noise}` };
 
-  const notionId = extractNotionId(task.description || '');
   const priorityTag = extractPriorityTag(task.description || '');
-  const isStaleP2 =
-    task.status === 'pending' && priorityTag === 'P2 Later' && notionId && stalePendingP2Ids.has(notionId);
+  const ageDays = notionId && notionState.ageDays.has(notionId) ? notionState.ageDays.get(notionId) : null;
+  const idle = isIdleArchive(task.status, ageDays);
 
   return {
     skip: null,
     subject,
     notionId,
     priorityTag,
-    linearPriority: mapPriorityToLinear(priorityTag),
+    ageDays,
+    // An archived issue drops to Low so an "all High priority" board view stays
+    // a view of live work. The original priority survives in the issue body.
+    linearPriority: idle ? 4 : mapPriorityToLinear(priorityTag),
     stateName: mapStatusToLinearState(task.status),
-    project: isStaleP2 ? ARCHIVE_PROJECT : classifyProject(subject),
-    archivedForStaleness: isStaleP2,
+    project: idle ? ARCHIVE_PROJECT : classifyProject(subject),
+    archivedForStaleness: idle,
   };
 }
 
@@ -167,24 +208,138 @@ async function ensureProjects(teamId) {
   return projects;
 }
 
+/**
+ * Diff the curation against issues that already exist in BRO, keyed by title.
+ *
+ * Not hypothetical: two workspaces were dispatched on this same migration card
+ * (#1281's duplicate-dispatch class) and the other one's import landed first,
+ * so the importer has to be able to CONVERGE a populated board. Without this,
+ * the only way to apply a curation correction to 250 already-created issues is
+ * to delete and re-import.
+ *
+ * @param {Array} classified  [{task, c}] where c is classifyTask's output
+ * @param {Map} byTitle       title -> {id, identifier, project, state, url}
+ */
+function reconcile(classified, byTitle) {
+  const out = { mapped: [], missing: [], notCurated: [], reproject: [] };
+  for (const { task, c } of classified) {
+    const issue = byTitle.get((task.subject || '').trim());
+    if (c.skip) {
+      // 'completed' is a local-only state — it says nothing about whether the
+      // card belongs on the board, so it never drives a Linear change.
+      if (issue && c.skip !== 'completed') out.notCurated.push({ task, c, issue });
+      continue;
+    }
+    if (!issue) { out.missing.push({ task, c }); continue; }
+    out.mapped.push({ task, c, issue });
+    if (issue.project !== c.project) out.reproject.push({ task, c, issue });
+  }
+  return out;
+}
+
+async function runReconcile({ classified, mapping, apply }) {
+  const team = await linear.getTeam();
+  const stateByName = new Map(team.states.nodes.map((s) => [s.name, s.id]));
+  const projects = await ensureProjects(team.id);
+  const issues = await linear.listIssues(team.id);
+  const byTitle = new Map(issues.map((i) => [i.title, i]));
+  const r = reconcile(classified, byTitle);
+
+  const notCuratedBy = {};
+  for (const n of r.notCurated) notCuratedBy[n.c.skip] = (notCuratedBy[n.c.skip] || 0) + 1;
+  console.error(
+    `reconcile vs ${issues.length} issues in ${linear.TEAM_KEY}: matched ${r.mapped.length} · ` +
+      `missing ${r.missing.length} · not-curated-in ${r.notCurated.length} ${JSON.stringify(notCuratedBy)} · ` +
+      `wrong project ${r.reproject.length}`
+  );
+  for (const m of r.missing) console.error(`  missing: #${m.task.id} ${m.c.project} | ${m.task.subject.slice(0, 70)}`);
+
+  if (!apply) {
+    console.log(JSON.stringify({
+      reconcile: true, applied: false, issues: issues.length,
+      matched: r.mapped.length, missing: r.missing.length,
+      notCurated: r.notCurated.length, notCuratedBy, reproject: r.reproject.length,
+    }, null, 2));
+    return;
+  }
+
+  let moved = 0;
+  let retired = 0;
+  let recorded = 0;
+  // A card whose Notion page is already Done, or that the curation excludes as
+  // noise/fleet, is finished or deleted work: park it in Archive at Done so the
+  // live board stops offering it. Nothing is deleted.
+  for (const { task, c, issue } of r.notCurated) {
+    if (issue.project !== ARCHIVE_PROJECT || issue.state !== 'Done') {
+      await linear.updateIssue(issue.id, {
+        projectId: projects[ARCHIVE_PROJECT].id,
+        stateId: stateByName.get('Done'),
+      });
+      retired++;
+    }
+    if (!mapping[task.id] || !mapping[task.id].identifier) {
+      mapping[task.id] = { linearId: issue.id, identifier: issue.identifier, title: issue.title, project: ARCHIVE_PROJECT, retiredReason: c.skip };
+      saveMapping(mapping);
+      recorded++;
+    }
+  }
+  for (const { task, c, issue } of r.mapped) {
+    if (issue.project !== c.project) {
+      await linear.updateIssue(issue.id, { projectId: projects[c.project].id });
+      moved++;
+    }
+    if (!mapping[task.id] || !mapping[task.id].identifier) {
+      mapping[task.id] = { linearId: issue.id, identifier: issue.identifier, title: issue.title, project: c.project };
+      saveMapping(mapping);
+      recorded++;
+    }
+  }
+  console.log(JSON.stringify({
+    reconcile: true, applied: true, moved, retired, recorded,
+    missing: r.missing.length, mappingTotal: Object.keys(mapping).length,
+  }, null, 2));
+}
+
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
+  const wantReconcile = process.argv.includes('--reconcile');
+  const apply = process.argv.includes('--apply');
 
   const mirrorTasks = readMirrorTasks();
+
+  if (process.argv.includes('--refresh-snapshot')) {
+    const snap = refreshNotionSnapshot(mirrorTasks);
+    console.log(JSON.stringify({
+      snapshot: SNAPSHOT_PATH, generatedAt: snap.generatedAt,
+      referencedByMirror: snap.referencedByMirror,
+      done: snap.doneIds.length, open: Object.keys(snap.openAgeDays).length,
+    }, null, 2));
+    return;
+  }
+
   const mapping = loadMapping();
-  const stalePendingP2Ids = getStalePendingP2NotionIds();
+  const notionState = loadNotionSnapshot();
+
+  // Classify EVERY record first (independent of the mapping), because
+  // --reconcile needs the full curation to diff against the board, not just
+  // the not-yet-imported tail.
+  const classified = mirrorTasks.map((task) => ({ task, c: classifyTask(task, notionState) }));
+
+  if (wantReconcile) {
+    await runReconcile({ classified, mapping, apply });
+    return;
+  }
 
   const skipCounts = {};
   const byProject = {};
   const candidates = [];
   let alreadyImported = 0;
 
-  for (const task of mirrorTasks) {
+  for (const { task, c } of classified) {
     if (mapping[task.id]) {
       alreadyImported++;
       continue;
     }
-    const c = classifyTask(task, stalePendingP2Ids);
     if (c.skip) {
       skipCounts[c.skip] = (skipCounts[c.skip] || 0) + 1;
       continue;
@@ -195,6 +350,7 @@ async function main() {
 
   const summary = {
     mirrorRecords: mirrorTasks.length,
+    notionSnapshot: notionState.generatedAt,
     alreadyImported,
     skipped: skipCounts,
     skippedTotal: Object.values(skipCounts).reduce((a, b) => a + b, 0),
@@ -258,4 +414,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { readMirrorTasks, classifyTask, MIRROR_DIR, MAPPING_PATH };
+module.exports = { readMirrorTasks, classifyTask, reconcile, MIRROR_DIR, MAPPING_PATH, SNAPSHOT_PATH };
