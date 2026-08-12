@@ -41,6 +41,20 @@ const {
   isIdleArchive,
 } = require('./lib/linear-import-rules');
 const linear = require('./lib/linear-client');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `linear-import.js — additive, resumable import of the local task mirror into Linear team BRO.
+
+Usage:
+  node scripts/linear-import.js --dry-run           print counts, no writes
+  node scripts/linear-import.js                     real run, resumable
+  node scripts/linear-import.js --reconcile         report mapping drift (no writes)
+  node scripts/linear-import.js --reconcile --apply apply the reconcile plan
+  node scripts/linear-import.js --refresh-snapshot  refresh the local task snapshot
+
+Never touches Notion or the local mirror — this script only ever creates in Linear.
+Idempotency key: data/linear-import-mapping.json (a run skips anything already mapped).
+Curation rules: scripts/lib/linear-import-rules.js`;
 
 const REPO_ROOT = path.join(__dirname, '..');
 const MIRROR_DIR =
@@ -357,6 +371,13 @@ async function runReconcile({ classified, mapping, apply }) {
 }
 
 async function main() {
+  // --help/-h checked BEFORE execFileSync/network/mapping writes (task #498
+  // help-flag safety class; test.yml's "Audit — help-flag safety" step enforces
+  // it and was failing Lint Workflows on main until this was added).
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   const dryRun = process.argv.includes('--dry-run');
   const wantReconcile = process.argv.includes('--reconcile');
   const apply = process.argv.includes('--apply');
