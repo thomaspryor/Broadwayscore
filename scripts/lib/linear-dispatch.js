@@ -67,15 +67,17 @@ function buildIssueQuery() {
 // open BRO issues, first:100 above covers it in one request with no
 // pagination) a live round trip costs nothing meaningful and is trivially
 // correct — no mirror to go stale, no sync cron to keep alive, no drift
-// between "what --list shows" and "what's actually on the board". Revisit
-// this the moment open-issue count exceeds ~100 (this query would start
-// silently truncating — see buildOpenIssuesQuery's `first: 100`) or a caller
-// needs --list to be fast enough to run in a tight loop (a live GraphQL
-// round trip every call does not scale to that).
+// between "what --list shows" and "what's actually on the board". Paginated
+// ($after cursor + pageInfo, consumed by linear-client.js's cursor loop) so
+// crossing 100 open issues degrades to extra round trips, never silent
+// truncation. Revisit the live-fetch choice itself only if a caller needs
+// --list fast enough to run in a tight loop (a live GraphQL round trip every
+// call does not scale to that).
 function buildOpenIssuesQuery() {
-  return `query($teamKey: String!) {
+  return `query($teamKey: String!, $after: String) {
     issues(
       first: 100
+      after: $after
       filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
       orderBy: updatedAt
     ) {
@@ -88,6 +90,7 @@ function buildOpenIssuesQuery() {
         state { name type }
         labels(first: 10) { nodes { name } }
       }
+      pageInfo { hasNextPage endCursor }
     }
   }`;
 }
@@ -262,11 +265,15 @@ function hasLiveLedgerEntry(taskId, entries) {
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
 // field on the shared one) so a --list regression can never be caused by a
-// change that only rail 2 needed, and vice versa.
+// change that only rail 2 needed, and vice versa. Paginated ($after +
+// pageInfo) like buildOpenIssuesQuery: the workspace already holds 200+
+// issues, so a single first:100 page would silently miss dedupe matches —
+// exactly the double-file this query exists to prevent.
 function buildOpenIssuesWithDescriptionsQuery() {
-  return `query($teamKey: String!) {
+  return `query($teamKey: String!, $after: String) {
     issues(
       first: 100
+      after: $after
       filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }
     ) {
       nodes {
@@ -276,6 +283,7 @@ function buildOpenIssuesWithDescriptionsQuery() {
         url
         state { name type }
       }
+      pageInfo { hasNextPage endCursor }
     }
   }`;
 }

@@ -190,6 +190,42 @@ test('routeAlert: a Linear-deduped condition still gets ledger-cooldown protecti
   }
 });
 
+test('routeAlert: rail-2 dedupe preserves a previously-filed open card\'s cardId — a Linear match means "no NEW tracker", not "the old card vanished"', async () => {
+  let searchCalls = 0;
+  const { router, restore } = loadRouterWithFakes({
+    // 1st call: no Linear match → files the Notion card. 2nd call (cooldown
+    // expired via cooldownHours:0): Linear now tracks it → rail-2 short-circuit.
+    linearSearchIssuesImpl: async () => (++searchCalls === 1 ? null : { identifier: 'BRO-780', title: 'Now tracked' }),
+  });
+  try {
+    const first = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    assert.equal(first.cardId, 'fake-card-id');
+    const second = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    assert.equal(second.action, 'silent');
+    assert.equal(second.cardId, 'fake-card-id', 'rail-2 must not clobber the real open card reference with null');
+    assert.equal(second.linearIdentifier, 'BRO-780');
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:cardid-preserved'].cardId, 'fake-card-id');
+    assert.equal(ledger.conditions['test:cardid-preserved'].linearIdentifier, 'BRO-780');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: the cooldown short-circuit carries linearIdentifier on every silent refire — digest consumers stay truthful past the first call', async () => {
+  const { router, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-779', title: 'Already tracked' }),
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
+    const second = await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(second.action, 'silent');
+    assert.equal(second.linearIdentifier, 'BRO-779', 'the 2nd+ silent call must surface WHERE the tracker lives, not just that it exists');
+  } finally {
+    restore();
+  }
+});
+
 test('routeAlert: a Linear API failure FAILS OPEN — files the card as before, logs the fallback, never suppresses the alert', async () => {
   const { router, calls, restore } = loadRouterWithFakes({
     linearSearchIssuesImpl: async () => { throw new Error('LINEAR_API_KEY not set in .env or environment'); },

@@ -466,7 +466,10 @@ async function routeAlert(opts) {
     existing.lastSeen = now;
     existing.silentRefires = (existing.silentRefires || 0) + 1;
     persistLedger(ledger);
-    return { action: 'silent', conditionKey, cardId: existing.cardId || null };
+    // linearIdentifier survives the cooldown path so consumers (health-check's
+    // digest line) keep telling the truth about WHERE the tracker lives on
+    // every silent refire, not just the first rail-2 short-circuit.
+    return { action: 'silent', conditionKey, cardId: existing.cardId || null, linearIdentifier: existing.linearIdentifier || null };
   }
 
   // Page-worthy gate (card #611): 'human' only actually pages if conditionKey
@@ -501,11 +504,13 @@ async function routeAlert(opts) {
         lastSeen: now,
         lastNotifiedAt: now,
         notifyCount: (existing?.notifyCount || 0) + 1,
-        cardId: null,
+        // A previously-filed open Notion card keeps its reference — the Linear
+        // match means "don't file ANOTHER tracker", not "the old card vanished".
+        cardId: existing?.cardId || null,
         linearIdentifier: linearDup.identifier,
       };
       persistLedger(ledger);
-      return { action: 'silent', conditionKey, cardId: null, linearIdentifier: linearDup.identifier };
+      return { action: 'silent', conditionKey, cardId: existing?.cardId || null, linearIdentifier: linearDup.identifier };
     }
   }
 
