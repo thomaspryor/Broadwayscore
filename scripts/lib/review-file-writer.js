@@ -44,7 +44,7 @@ const { sanitizeCriticName } = require('./byline-normalization');
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
-const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./aggregator-domains');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, isAggregatorReviewSource } = require('./aggregator-domains');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -287,8 +287,17 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // ("Did They Like It", "WestEndTheatre.com", "Theatre Reviews Limited",
     // "London Box Office") already normalize to their own outletId, so
     // urlResolved.outletId === outletId and this block never runs for them.
-    const refiningOntoAggregator = urlResolved
+    const urlResolvesToAggregator = urlResolved
       && shouldRefuseAggregatorOutletRefinement(urlResolved.outletId, outletId);
+    // An aggregator-SOURCE write (source='westendtheatre', 'dtli', etc.) legitimately
+    // carries the roundup's own URL even when citing a real outlet's article — that's
+    // the exact shape shouldSkipAggregatorUrlWrite() (below) already exempts by
+    // checking isAggregatorReviewSource(source) FIRST, before ever looking at score.
+    // This refusal previously had no equivalent exemption, so a genuine
+    // aggregator-source citation with no extractable score (no aggregatorStars/
+    // originalScore) was refused here before it ever reached that source-aware
+    // guard (task #1335, found during #1325's /ship-check).
+    const refiningOntoAggregator = urlResolvesToAggregator && !isAggregatorReviewSource(input.source);
     if (refiningOntoAggregator) {
       // Refuse the WRITE, not just the refinement (code review on 2c679ad4bb1).
       // Keeping the name-derived outlet leaves a real outletId on an aggregator
@@ -310,7 +319,13 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       console.warn(`  ⛔ Refusing aggregator-URL write for ${showId}: outlet "${outletId}" on roundup domain ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — not this outlet's review`);
       return { action: 'skipped', reason: 'aggregator-url-refinement-refused' };
     }
-    if (urlResolved && urlResolved.outletId !== outletId) {
+    if (urlResolvesToAggregator) {
+      // Exempted by isAggregatorReviewSource above: keep the name-derived outletId
+      // as-is and skip the general refinement logic below entirely — the Case 2
+      // cross-domain branch would otherwise immediately reassign outletId to the
+      // aggregator, exactly the laundering this whole block exists to prevent.
+      console.warn(`  ⚠️  Keeping true outlet "${outletId}" on aggregator URL ${input.url} (URL resolves to aggregator "${urlResolved.outletId}") — aggregator-source write, not refining/refusing`);
+    } else if (urlResolved && urlResolved.outletId !== outletId) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
