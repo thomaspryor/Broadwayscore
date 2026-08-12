@@ -99,6 +99,23 @@ test('quality check does not fire for a flagged new write (clean-source gate)', 
   ), true);
 });
 
+test('quality check is gated on the substance floor — a short named/anchored new write does NOT out-rank a substantive collider', () => {
+  // A 300-char stub carrying a byline must not claim canonical status over a
+  // genuinely substantive Unknown-byline review just because it also passes
+  // shouldFlipDuplicateDirection — the substance floor applies first.
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(300), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), true);
+});
+
+test('mutual anchored-but-Unknown siblings still defer to collider (historical behavior)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED }
+  ), true);
+});
+
 // --- shouldMarkPostCorrectionDuplicate: the urlCorrectedFrom branch that used
 // to be a blanket skip (the-enormous-crocodile london-theatre--unknown weekly
 // oscillation, 2026-08-01) ---

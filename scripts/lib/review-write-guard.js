@@ -1350,8 +1350,12 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // the same named/anchored-beats-Unknown quality signal the retro-heal audit
   // uses: newData is the would-be "loser" (about to point duplicateOf at
   // colliderData, the would-be "winner"); if newData is provably better, keep
-  // it primary instead.
-  if (shouldFlipDuplicateDirection(newData, colliderData)) return false;
+  // it primary instead. Gated on BOTH bodies clearing the substance floor —
+  // without this, a short named/anchored stub could out-rank a genuinely
+  // substantive Unknown-byline collider, inverting the "below the substance
+  // floor, don't claim canonical" rule this function enforces everywhere else.
+  if (newLen >= SUBSTANTIVE_BODY_CHARS && colLen >= SUBSTANTIVE_BODY_CHARS
+      && shouldFlipDuplicateDirection(newData, colliderData)) return false;
   return true;
 }
 
