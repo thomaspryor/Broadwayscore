@@ -13,11 +13,26 @@
  *
  * Co-maintain these sets with AGGREGATOR_SCORE_SOURCES in review-normalization.js.
  *
- * NOTE (2026-06-21): the live West End aggregator is westendtheatre.COM, but this
- * set carries westendtheatre.co.uk to stay byte-identical with the historical
- * validate-review-texts.js sets (parity). Adding .com here would make the
- * validator flag existing WET star-stubs (real outletId + westendtheatre.com url
- * + stored stars) as aggregator_url_mismatch ERRORs and could turn main red — a
+ * TLD PARITY (task #1194, closed 2026-08-12): the live West End aggregator is
+ * westendtheatre.COM — every corpus file uses it — but this set carried only
+ * westendtheatre.co.uk for over a month (2026-06-21 NOTE, preserved below) because
+ * arming the .com domain used to turn every real-outlet star-stub sourced from a WET
+ * roundup into an aggregator_url_mismatch ERROR. That is fixed now:
+ * hasAggregatorUrlMismatch() in aggregator-url-latent.js carves out any real-outlet
+ * file that carries a score FROM the roundup (aggregatorStars/originalScore) — the
+ * documented, intended shape (2026-06-22 12-WET-false-positive incident) — so only an
+ * unscored real-outlet URL on an aggregator domain still trips the guard. Both TLDs
+ * are listed below on that basis; theatrereviews.com (live TR domain, 175 corpus
+ * files, all already filed under the aggregator's own outletId) was added on the same
+ * pass since parity-testing it cost nothing extra.
+ * See scripts/lib/aggregator-domain-tld-parity.test.mjs, which fails loudly if the
+ * corpus starts using a TLD this set doesn't carry.
+ *
+ * ORIGINAL NOTE (2026-06-21, preserved for history): the live West End aggregator is
+ * westendtheatre.COM, but this set carries westendtheatre.co.uk to stay byte-identical
+ * with the historical validate-review-texts.js sets (parity). Adding .com here would
+ * make the validator flag existing WET star-stubs (real outletId + westendtheatre.com
+ * url + stored stars) as aggregator_url_mismatch ERRORs and could turn main red — a
  * separate decision, deliberately out of scope for this guard.
  */
 
@@ -26,8 +41,8 @@ const { normalizeOutlet } = require('./review-normalization');
 // Known aggregator domains (hostname with leading www. stripped, lowercased).
 const AGGREGATOR_DOMAINS = new Set([
   'show-score.com', 'showscore.com',
-  'westendtheatre.co.uk',
-  'theatrereviews.wordpress.com', 'theatre.reviews',
+  'westendtheatre.co.uk', 'westendtheatre.com',
+  'theatrereviews.wordpress.com', 'theatre.reviews', 'theatrereviews.com',
   'didtheylikeit.com',
   'londonboxoffice.co.uk',
   'nyctheatre.com',
