@@ -236,6 +236,7 @@ async function runJob(opts) {
 }
 
 module.exports = {
+  gitSafeJobId,
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
