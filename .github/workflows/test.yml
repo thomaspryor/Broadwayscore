@@ -96,6 +96,13 @@ on:
       # in the tests/unit node --test invocation (that batch is NOT globbed);
       # these libs are path-listed so a solo edit triggers CI.
       - 'tests/unit/sibling-matchers-diacritics.test.mjs'
+      # cmux launch guard (task #1306): pure decision fn for the
+      # ~/.claude/hooks/cmux-launch-guard.sh PreToolUse hook that blocks
+      # hand-rolled cmux new-workspace launches of claude missing
+      # --dangerously-skip-permissions. tests/unit/*.test.mjs is already
+      # globbed; scripts/lib/*.js needs explicit listing per this repo's
+      # convention (no scripts/lib/** broad glob) so a solo edit triggers CI.
+      - 'scripts/lib/cmux-launch-guard.js'
       - 'scripts/lib/title-match.js'
       - 'scripts/lib/rss-discovery.js'
       - 'scripts/lib/omc-discovery.js'
