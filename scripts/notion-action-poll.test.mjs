@@ -35,9 +35,28 @@ test('notion-action-poll.js is either exempt-listed or safeWriteReview-wired —
 });
 
 test('lint-write-routing.sh review-texts exits 0 (the actual CI gate)', () => {
-  const output = execFileSync('bash', ['scripts/lint-write-routing.sh', 'review-texts'], {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-  });
+  // execFileSync THROWS on a non-zero exit and its default error message is
+  // just "Command failed: bash scripts/lint-write-routing.sh review-texts" —
+  // the script's own stdout/stderr (which names the offending file, or says
+  // "missing allowlist file") is discarded. That made a CI-only failure of
+  // this test undiagnosable from the CI log: on 2026-08-12 it failed on the
+  // runner while passing locally, and the log carried no reason at all.
+  // Capture both streams and put them in the assertion message so the next
+  // failure explains itself.
+  let output;
+  try {
+    output = execFileSync('bash', ['scripts/lint-write-routing.sh', 'review-texts'], {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch (err) {
+    const stdout = err.stdout || '';
+    const stderr = err.stderr || '';
+    assert.fail(
+      `lint-write-routing.sh review-texts exited ${err.status ?? `(signal ${err.signal})`}\n` +
+        `--- stdout ---\n${stdout}\n--- stderr ---\n${stderr}`
+    );
+  }
   assert.ok(!output.includes('notion-action-poll.js'), `guard still flags notion-action-poll.js:\n${output}`);
 });
