@@ -143,6 +143,39 @@ function planPull(cards, existingMap) {
   return plan;
 }
 
+// Card #1351: decide which "unchanged" cards (status/fmt already match — see
+// planPull above) still need recreating because their live mirror file
+// vanished independently of any Notion change — task-store-archive.js's new
+// pending population can now archive an untouched pending task even while
+// its Notion card sits unchanged at "Not started". Before that population
+// existed, "unchanged" truly meant "nothing to do": only completed/dead-
+// in_progress tasks could be archived, and neither needs a live mirror to
+// stay actionable (see readTask's docstring). Ship-check adversarial catch,
+// 2026-08-12.
+//
+// Pure aside from the injected `ownershipCheck(taskId, pageId, liveOnly)` —
+// same shape as calling taskBelongsTo(dir, taskId, pageId, {liveOnly}) — so
+// the decision is unit-testable without a real directory. Returns
+// { toRecreate:[{card, hasPriorOwnership}], stillUnchanged:[pageId] };
+// hasPriorOwnership tells the caller whether it's safe to carry the old
+// task's blocks/blockedBy forward (the liveOnly miss alone doesn't
+// distinguish "archived" from "id reused by an unrelated task" — copying a
+// stranger's blocks/blockedBy would be wrong).
+function planSelfHeal(unchangedPageIds, map, cardsById, ownershipCheck) {
+  const toRecreate = [];
+  const stillUnchanged = [];
+  for (const pageId of unchangedPageIds) {
+    const entry = map[pageId];
+    const card = cardsById.get(pageId);
+    if (entry && card && !ownershipCheck(entry.taskId, pageId, true)) {
+      toRecreate.push({ card, taskId: entry.taskId, hasPriorOwnership: ownershipCheck(entry.taskId, pageId, false) });
+    } else {
+      stillUnchanged.push(pageId);
+    }
+  }
+  return { toRecreate, stillUnchanged };
+}
+
 // ── filesystem helpers ─────────────────────────────────────────────────────
 function tasksRoot(args) {
   return args['tasks-dir'] || path.join(os.homedir(), '.claude', 'tasks');
@@ -343,15 +376,22 @@ function cmdPull(args) {
   if (!release) { console.error('[sync] another pull holds the lock; skipping'); return { skipped: true }; }
   try {
     const cards = fetchCards(statuses, priorities, limit).slice(0, limit);
+    const cardsById = new Map(cards.map((c) => [c.id, c]));
     const map = readMap(dir);
     const plan = planPull(cards, map);
     let id = nextId(dir);
     const created = [], updated = [];
     // A card whose mapped file was clobbered/reused by a live session is
     // re-created under a fresh free id, so we never rewrite a stranger's task.
-    const doCreate = (card) => {
+    // priorTask (optional): a task whose blocks/blockedBy should carry
+    // forward into the fresh id instead of doCreate's blank defaults — used
+    // by the self-heal loop below when the prior copy is confirmed to
+    // belong to this same card (see its own comment for why that check
+    // matters).
+    const doCreate = (card, priorTask) => {
       id = dry ? id : allocateFreeId(dir, id);
       const task = mapCardToTask(card, id);
+      if (priorTask) { task.blocks = priorTask.blocks || []; task.blockedBy = priorTask.blockedBy || []; }
       if (!dry) writeTask(dir, task);
       map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
       created.push({ taskId: task.id, name: card.name });
@@ -371,10 +411,27 @@ function cmdPull(args) {
       map[card.id].fmt = MIRROR_FMT;
       updated.push({ taskId, name: card.name });
     }
+
+    // Card #1351: self-heal "unchanged" cards whose live mirror vanished
+    // independently (see planSelfHeal's docstring above planPull). The
+    // ownership check runs even in --dry-run (unlike the toUpdate-miss
+    // check above) so a preview run actually reports the recreation that's
+    // about to happen — --dry-run is how an operator would confirm this
+    // exact bug is fixed, and hiding it behind `!dry` would defeat that.
+    // Only the resulting doCreate's writes stay dry-gated internally.
+    const { toRecreate, stillUnchanged } = planSelfHeal(
+      plan.unchanged, map, cardsById,
+      (taskId, pageId, liveOnly) => taskBelongsTo(dir, taskId, pageId, { liveOnly }),
+    );
+    for (const { card, taskId, hasPriorOwnership } of toRecreate) {
+      const priorTask = hasPriorOwnership ? readTask(dir, taskId) : null;
+      doCreate(card, priorTask);
+    }
+
     if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
 
-    const summary = { listId: listId(args), dir, created, updated, unchanged: plan.unchanged.length, dry };
-    console.error(`[sync] pull: ${created.length} created, ${updated.length} updated, ${plan.unchanged.length} unchanged (list=${listId(args)}${dry ? ', DRY RUN' : ''})`);
+    const summary = { listId: listId(args), dir, created, updated, unchanged: stillUnchanged.length, dry };
+    console.error(`[sync] pull: ${created.length} created, ${updated.length} updated, ${stillUnchanged.length} unchanged (list=${listId(args)}${dry ? ', DRY RUN' : ''})`);
     for (const c of created) console.error(`  + #${c.taskId} ${c.name}`);
     for (const u of updated) console.error(`  ~ #${u.taskId} ${u.name}`);
     return summary;
@@ -456,4 +513,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, planPull, planSelfHeal, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, mapPath };

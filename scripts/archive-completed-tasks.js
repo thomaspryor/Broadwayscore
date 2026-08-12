@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
  * archive-completed-tasks — rerunnable prune of the shared task store: moves
- * tasks completed >24h ago, AND in_progress tasks untouched >7d (orphans —
- * the dispatching session died without ever flipping status), out of
- * ~/.claude/tasks/<list>/ into a sibling archive/ subdirectory. Card #854:
+ * tasks completed >24h ago, in_progress tasks untouched >7d (orphans — the
+ * dispatching session died without ever flipping status), pending tasks
+ * untouched >30d, and "BSC Daily:"-titled pending tasks untouched >7d, out
+ * of ~/.claude/tasks/<list>/ into a sibling archive/ subdirectory. Card #854:
  * the live directory is serialized into the harness's injected task-list
  * reminder on every TaskList-adjacent nudge (~860 lines observed 2026-08-02,
  * avg 16x/session per the 5-day audit) — archiving is the direct lever.
@@ -11,7 +12,9 @@
  * in_progress-orphan population — this script had never been scheduled
  * anywhere (no cron/launchd), so it only ever ran once (S1); see
  * com.broadwayscore.task-store-archive.plist for the daily schedule now
- * wired for it.
+ * wired for it. Card #1351 added the pending and BSC-Daily populations —
+ * pending tasks previously never aged out at all (389 open cards, 0
+ * archivable, on 2026-08-12).
  *
  * Safe to rerun: each run only touches tasks newly crossing a threshold.
  * See scripts/lib/task-store-archive.js for the id-collision safety
@@ -26,9 +29,11 @@
 const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectArchivable, loadTasksWithMtime, archiveCompletedTasks } = require('./lib/task-store-archive.js');
+const {
+  selectArchivable, loadTasksWithMtime, archiveCompletedTasks, BSC_DAILY_TITLE_RE,
+} = require('./lib/task-store-archive.js');
 
-const USAGE = `archive-completed-tasks — move tasks completed >24h ago, or in_progress >7d untouched, to archive/.
+const USAGE = `archive-completed-tasks — move tasks completed >24h ago, in_progress >7d untouched, pending >30d untouched, or 'BSC Daily:' pending >7d untouched, to archive/.
 
 Usage:
   node scripts/archive-completed-tasks.js             archive now
@@ -50,10 +55,13 @@ function main() {
     const tasks = loadTasksWithMtime(dir);
     const ids = selectArchivable(tasks, { now: Date.now() });
     const byId = new Map(tasks.map((t) => [t.id, t]));
+    const isBscDaily = (t) => typeof t?.subject === 'string' && BSC_DAILY_TITLE_RE.test(t.subject);
     const completedCount = ids.filter((id) => byId.get(id)?.status === 'completed').length;
-    const staleInProgressCount = ids.length - completedCount;
+    const staleInProgressCount = ids.filter((id) => byId.get(id)?.status === 'in_progress').length;
+    const bscDailyCount = ids.filter((id) => byId.get(id)?.status === 'pending' && isBscDaily(byId.get(id))).length;
+    const stalePendingCount = ids.length - completedCount - staleInProgressCount - bscDailyCount;
     console.log(`[archive-completed-tasks] DRY RUN — dir=${dir}`);
-    console.log(`  ${ids.length} of ${tasks.length} task(s) would archive (${completedCount} completed, ${staleInProgressCount} stale in_progress): ${ids.join(', ') || '(none)'}`);
+    console.log(`  ${ids.length} of ${tasks.length} task(s) would archive (${completedCount} completed, ${staleInProgressCount} stale in_progress, ${stalePendingCount} stale pending, ${bscDailyCount} stale BSC Daily): ${ids.join(', ') || '(none)'}`);
     return;
   }
 
