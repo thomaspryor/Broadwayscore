@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { MIRROR_FMT, mapStatus, mapCardToTask, planPull, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
+const { MIRROR_FMT, mapStatus, mapCardToTask, planPull, planSelfHeal, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm, acquireLock } = require('./notion-tasks-sync.js');
 
 function tmpDir() { return fs.mkdtempSync(path.join(os.tmpdir(), 'nts-')); }
 
@@ -267,4 +267,55 @@ test('planPull + readLiveTask/taskBelongsTo(liveOnly): a reopened card whose mir
   //   mapped.status = mergeStatus('completed', 'pending'); // -> 'completed' (sticky)
   //   writeTask(dir, {...mapped, status: 'completed'});    // resurrected, stuck forever
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('#1351: planSelfHeal recreates an "unchanged" card whose live mirror was archived (pending-population gap)', () => {
+  const pageId = 'p-1';
+  const map = { [pageId]: { taskId: '5' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Still-open backlog card', status: 'Not started' }]]);
+  // liveOnly miss (archived away), but the non-liveOnly check confirms the
+  // archived copy still belongs to this card — matches the real
+  // taskBelongsTo(dir, taskId, pageId, {liveOnly}) contract.
+  const ownershipCheck = (taskId, checkedPageId, liveOnly) => {
+    assert.equal(taskId, '5');
+    assert.equal(checkedPageId, pageId);
+    return liveOnly ? false : true;
+  };
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(stillUnchanged, []);
+  assert.equal(toRecreate.length, 1);
+  assert.equal(toRecreate[0].taskId, '5');
+  assert.equal(toRecreate[0].hasPriorOwnership, true);
+  assert.equal(toRecreate[0].card.id, pageId);
+});
+
+test('#1351: planSelfHeal leaves a genuinely unchanged card alone (live file still present)', () => {
+  const pageId = 'p-2';
+  const map = { [pageId]: { taskId: '6' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Live card', status: 'Not started' }]]);
+  const ownershipCheck = () => true; // liveOnly check passes — file is still live
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(toRecreate, []);
+  assert.deepEqual(stillUnchanged, [pageId]);
+});
+
+test('#1351: planSelfHeal does not claim prior ownership when the id was reused by an unrelated task', () => {
+  const pageId = 'p-3';
+  const map = { [pageId]: { taskId: '7' } };
+  const cardsById = new Map([[pageId, { id: pageId, name: 'Orphaned mirror entry', status: 'Not started' }]]);
+  // Neither the live nor the archive copy at id 7 belongs to this page —
+  // it was reused by a completely different card. Must recreate at a fresh
+  // id WITHOUT claiming prior ownership (no blocks/blockedBy carry-over).
+  const ownershipCheck = () => false;
+  const { toRecreate, stillUnchanged } = planSelfHeal([pageId], map, cardsById, ownershipCheck);
+  assert.deepEqual(stillUnchanged, []);
+  assert.equal(toRecreate.length, 1);
+  assert.equal(toRecreate[0].hasPriorOwnership, false);
+});
+
+test('#1351: planSelfHeal skips a page id with no map entry or no matching fetched card', () => {
+  const cardsById = new Map(); // card no longer in the fetched set (e.g. archived in Notion too)
+  const { toRecreate, stillUnchanged } = planSelfHeal(['ghost-page'], { 'ghost-page': { taskId: '8' } }, cardsById, () => false);
+  assert.deepEqual(toRecreate, []);
+  assert.deepEqual(stillUnchanged, ['ghost-page']);
 });
