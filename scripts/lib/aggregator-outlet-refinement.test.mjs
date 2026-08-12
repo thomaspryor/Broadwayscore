@@ -136,6 +136,95 @@ test('normalizes the URL-resolved outlet too, not just the current one', () => {
   assert.equal(shouldRefuseAggregatorOutletRefinement('DTLI', 'guardian'), true);
 });
 
+// ------------------------------------------------------- write-chokepoint relax
+// Task #1194 (closed 2026-08-12) gave the validator a carve-out for a real-outlet
+// file that carries a score sourced FROM the roundup (aggregatorStars/originalScore)
+// — see hasAggregatorUrlMismatch() in aggregator-url-latent.js. Before this, the
+// write-time refusal above dropped that case outright: a scored star-stub landing
+// on an aggregator roundup URL never even reached the corpus, because the
+// validator would have flagged it as aggregator_url_mismatch. Now that the
+// validator carve-out exists, createOrMergeReviewFile can let the scored case land
+// under its TRUE (name-derived) outlet instead of dropping it — unscored writes
+// stay refused, since those are the real contamination class (nothing worth
+// preserving under the wrong outlet).
+test('createOrMergeReviewFile: a scored star-stub keeps its true outlet instead of being dropped', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  // from-the-fourth-row carries no registered domain in outlet-registry.json, so
+  // this exercises the write chokepoint end-to-end (past validateUrlDomain too),
+  // not just the refinement predicate.
+  const scored = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row',
+    outlet: 'From the Fourth Row',
+    criticName: 'Pat Reviewer',
+    url: 'https://westendtheatre.co.uk/some-roundup/',
+    source: 'serp-discovery',
+    fields: { aggregatorStars: '5/5' },
+  }, { dryRun: true }));
+  assert.equal(scored.action, 'new', `expected the scored star-stub to land, got ${JSON.stringify(scored)}`);
+  assert.match(scored.filepath, /from-the-fourth-row/, 'must file under the TRUE outlet, not the aggregator');
+  assert.ok(!/westendtheatre/.test(scored.filepath), 'must never file under the aggregator outlet');
+
+  const scoredViaOriginalScore = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row',
+    outlet: 'From the Fourth Row',
+    criticName: 'Pat Reviewer',
+    url: 'https://www.stagedoor.com/shows/some-show',
+    source: 'serp-discovery',
+    fields: { originalScore: '4/5' },
+  }, { dryRun: true }));
+  assert.equal(scoredViaOriginalScore.action, 'new',
+    `originalScore must also count as a preservable score, got ${JSON.stringify(scoredViaOriginalScore)}`);
+});
+
+test('createOrMergeReviewFile: a scored stub for a DOMAIN-REGISTERED outlet also lands (not just domainless ones)', () => {
+  // Regression fence: an earlier version of this fix only unblocked the early
+  // refusal but left the downstream "Guard: domain validation" check (which
+  // compares outletId's REGISTERED domain against the URL host) re-refusing the
+  // exact same write for any outlet that HAS a registered domain — i.e. most of
+  // the real corpus target population (guardian→theguardian.com,
+  // telegraph→telegraph.co.uk, etc. all mismatch westendtheatre.com by design).
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  const scored = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'guardian',
+    outlet: 'The Guardian',
+    criticName: 'Kate Wyver',
+    url: 'https://www.westendtheatre.com/295880/news/reviews/some-review/',
+    source: 'westendtheatre',
+    fields: { aggregatorStars: '4/5 stars' },
+  }, { dryRun: true }));
+  assert.equal(scored.action, 'new', `expected the scored star-stub to land, got ${JSON.stringify(scored)}`);
+  assert.match(scored.filepath, /\/guardian--/, 'must file under the TRUE (domain-registered) outlet');
+});
+
+test('createOrMergeReviewFile: an unscored write on an aggregator URL is still refused', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const quiet = (fn) => {
+    const w = console.warn;
+    console.warn = () => {};
+    try { return fn(); } finally { console.warn = w; }
+  };
+  const unscored = quiet(() => createOrMergeReviewFile('grace-pervades-west-end-2026', {
+    outletId: 'from-the-fourth-row',
+    outlet: 'From the Fourth Row',
+    criticName: 'Pat Reviewer',
+    url: 'https://westendtheatre.co.uk/some-roundup/',
+    source: 'serp-discovery',
+    fields: { fullText: 'x'.repeat(400) },
+  }, { dryRun: true }));
+  assert.equal(unscored.action, 'skipped');
+  assert.equal(unscored.reason, 'aggregator-url-refinement-refused');
+});
+
 test('the refusal is classified as a CONFLICT skip, not an expected rejection', () => {
   // The writer returns {action:'skipped', reason:'aggregator-url-refinement-refused'}.
   // Every skip reason review-file-writer.js emits must be classified — an

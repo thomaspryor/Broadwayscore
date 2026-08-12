@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { writePrecursorJson, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 const PAGE = 'New_York_Drama_Critics%27_Circle';
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
@@ -132,10 +133,21 @@ async function main() {
   // pass is a no-op, but the code path stays here for future use.
   const tables = Array.from(doc.querySelectorAll('table.wikitable'));
   for (const t of tables) {
-    const headerText = Array.from(t.querySelectorAll('tr')[0]?.children || [])
-      .map((c) => (c.textContent || '').trim().toLowerCase())
-      .join('|');
+    const headerCells = Array.from(t.querySelectorAll('tr')[0]?.children || [])
+      .map((c) => (c.textContent || '').trim());
+    const headerText = headerCells.map((c) => c.toLowerCase()).join('|');
     if (!/nominated for|category/i.test(headerText) || !/year/i.test(headerText)) continue;
+    // Found the right table by header content — assert its column count hasn't
+    // drifted before trusting the fixed cells[0]/[1]/[3] indices below (task #1331).
+    try {
+      assertTableSchema([headerCells], { minCells: 4 });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.error(`::error::scrape-nydcc: ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
     for (const row of t.querySelectorAll('tr')) {
       const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
       if (cells.length < 4) continue;

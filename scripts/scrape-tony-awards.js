@@ -22,6 +22,7 @@ const path = require('path');
 const { JSDOM } = require('jsdom');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
 
 /**
  * Get ordinal suffix for a number (1st, 2nd, 3rd, 4th, 11th, 12th, 13th, 21st, etc.)
@@ -374,6 +375,26 @@ async function scrapeTonyYear(year, ceremonyNum, wikiPage) {
 
     // Find wikitables - the main nominations table is usually the first one
     const tables = doc.querySelectorAll('table.wikitable');
+
+    // Schema guard BEFORE row processing (task #1331): the loop below matches
+    // TH category headers by content, not fixed index, so it's resilient to
+    // column reordering — but if Wikipedia dropped TH-based category headers
+    // entirely, colIndex matching would silently find 0 nominations every
+    // year instead of failing loud.
+    const allHeaderCells = Array.from(tables).flatMap(table =>
+      Array.from(table.querySelectorAll('th')).map(th => th.textContent?.trim() || '')
+    );
+    try {
+      // 'Best Play' has been awarded every ceremony since START_YEAR (2005) —
+      // a stable anchor label, unlike the many categories that skip years.
+      assertTableSchema([allHeaderCells], { minCells: 1, expectedHeaders: ['Best Play'] });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.error(`::error::scrape-tony-awards: ${err.message}`);
+        return [];
+      }
+      throw err;
+    }
 
     for (const table of tables) {
       const rows = table.querySelectorAll('tr');

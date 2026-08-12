@@ -30,7 +30,7 @@
  * copy to drift.
  */
 
-const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS } = require('./aggregator-domains');
+const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS, hasPreservableAggregatorScore } = require('./aggregator-domains');
 const { normalizeOutlet } = require('./review-normalization');
 
 if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_IDS || AGGREGATOR_OUTLET_IDS.size === 0) {
@@ -121,8 +121,7 @@ function hasAggregatorUrlMismatch(data) {
   }
   const outletId = resolveOutletId(data.outletId);
   if (!AGGREGATOR_DOMAINS.has(hostname) || AGGREGATOR_OUTLET_IDS.has(outletId)) return false;
-  const hasScore = data.originalScore != null || data.aggregatorStars != null;
-  return !hasScore;
+  return !hasPreservableAggregatorScore(data);
 }
 
 /**
