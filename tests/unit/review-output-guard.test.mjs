@@ -90,4 +90,44 @@ describe('isUsableReviewOutput', () => {
     assert.equal(checkReviewOutput('codex\ntokens used').kind, 'marker');
     assert.equal(checkReviewOutput('No issues found.').kind, 'ok');
   });
+
+  test('rejects a SECOND live refusal (reproduced while testing this fix, 2026-08-12) with different wording, preceded by long tool-output noise', () => {
+    const refusal = [
+      "I'll inspect the real guard, its callers, and existing tests before producing an adversarial findings-only review.",
+      'exec',
+      "/bin/zsh -lc 'npm run data:check' in /Users/tompryor/Broadwayscore/.claude/worktrees/1320-review-refusal-guard",
+      ' exited 1 in 6009ms:',
+      '',
+      '> broadway-scorecard@0.1.0 data:check',
+      '> node scripts/check-data-health.js --fix',
+      '',
+      'Attempting to pull core data from private repo...',
+      '=== Broadway Scorecard Local Data Setup ===',
+      '',
+      'Using token (REVIEW_TEXTS_TOKEN/GH_TOKEN) for authentication...',
+      '',
+      '--- Core Data (from broadway-scorecard-data) ---',
+      'Updating existing core-data clone at /Users/tompryor/broadway-scorecard-data...',
+      'ERROR: Failed to update existing /Users/tompryor/broadway-scorecard-data — delete it and re-run.',
+      'Auto-fix failed: Command failed: bash "/Users/tompryor/Broadwayscore/.claude/worktrees/1320-review-refusal-guard/scripts/setup-local-data.sh"',
+      '❌ MISSING: shows.json, reviews.json, grosses.json, grosses-history.json, commercial.json, audience-buzz.json, critic-consensus.json, critic-registry.json',
+      '  Fix: ./scripts/setup-local-data.sh  (or: node scripts/check-data-health.js --fix)',
+      '',
+      '- Blocked: `npm run data:check` failed because core data files are missing (`shows.json`, `reviews.json`, and others). Repository instructions require stopping rather than reviewing without data. I can\'t provide the requested actual-file, path:line-backed pre-ship findings until the data preflight succeeds.',
+    ].join('\n');
+    const result = checkReviewOutput(refusal);
+    assert.equal(result.usable, false);
+    assert.equal(result.kind, 'refused');
+  });
+
+  test('an IP:port mention does not count as a path:line citation (gpt-5.4-mini ship-check catch)', () => {
+    const refusal = [
+      'Blocked: `npm run data:check` failed because core data files are missing.',
+      'The dev server that would have been used for context was at 127.0.0.1:3456.',
+      'Repository instructions require stopping rather than reviewing without data.',
+    ].join('\n');
+    const result = checkReviewOutput(refusal);
+    assert.equal(result.usable, false);
+    assert.equal(result.kind, 'refused');
+  });
 });

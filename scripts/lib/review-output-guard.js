@@ -21,6 +21,19 @@
  * and printed CODEX_USABLE — indistinguishable from a genuine clean review.
  * All of these must be reported as a coverage FAILURE, never folded into a
  * quiet single-model degrade.
+ *
+ * Reproduced a SECOND time (same session, same day) while testing this very
+ * fix: Codex ran `npm run data:check` as its own preflight, hit missing core
+ * data in a fresh worktree, and refused again — with different wording
+ * ("Blocked: ... Repository instructions require stopping rather than
+ * reviewing without data...") preceded by ~1500 chars of npm log output. A
+ * fixed short phrase list and a front-loaded scan window both missed it: the
+ * exact wording drifts every run, and the refusal sentence lands wherever
+ * the model chooses to stop narrating tool output, not necessarily up top.
+ * So detection scans the FULL text (no window) and layers a repo-specific
+ * signal (the data-preflight failure this codebase's own CLAUDE.md mandates
+ * Codex run before reviewing) alongside the generic refusal phrases, since
+ * that specific trigger recurs deterministically regardless of phrasing.
  */
 
 'use strict';
@@ -45,18 +58,22 @@ const HOOK_LOG_RE = /^hook: /;
 // synopsis-validation.js's REFUSAL_PATTERNS (an LLM refuses generation
 // instead of generating), mirrored here for review declines. Anchored
 // phrases, not a loose keyword scan, so ordinary review prose ("this design
-// blocks the happy path") doesn't trip the gate. Drawn from the observed
-// refusal (task #1320) plus adjacent phrasings reviewers are likely to use,
-// since wording will drift over time.
+// blocks the happy path") doesn't trip the gate. Deliberately generous: two
+// independent live refusals (same day, task #1320) used entirely different
+// wording, so this list trades some over-matching for fewer misses — the
+// path:line tiebreaker below is what keeps genuine reviews safe.
 const REFUSAL_PATTERNS = [
   /\bmust stop\b/i,
-  /\bblocked by\b/i,
+  /\brequires? stopping\b/i,
+  /\bblocked\b/i,
   /\bcannot review\b/i,
-  /\bcan't review\b/i,
-  /\brather than review\b/i,
+  /\bcan'?t (?:review|provide)\b/i,
+  /\brather than review(?:ing)?\b/i,
+  /\bstopping rather than\b/i,
   /\bper repo instructions\b/i,
+  /\brepository instructions\b/i,
   /\bdeclin(?:e|ed|ing) to review\b/i,
-  /\bwithout reviewing\b/i,
+  /\bwithout review(?:ing)?\b/i,
   /\bunable to review\b/i,
   /\bI'm unable to\b/i,
   /\bI am unable to\b/i,
@@ -65,7 +82,14 @@ const REFUSAL_PATTERNS = [
   /\bnot able to review\b/i,
   /\bmust decline\b/i,
   /\brefus(?:e|ed|ing) to review\b/i,
+  /\buntil (?:the )?(?:data )?preflight (?:succeeds|passes|resolves)\b/i,
 ];
+
+// Repo-specific signal: this codebase's CLAUDE.md mandates `npm run
+// data:check` before reviewing (rule 3), so a missing-core-data preflight
+// failure is a deterministic, recurring refusal trigger independent of how
+// the model happens to phrase its decline that run.
+const DATA_PREFLIGHT_CONTEXT_RE = /\b(npm run data:check|data preflight|core data (?:files?|is missing|are missing))\b/i;
 
 // A path:line citation ("src/lib/scoring.ts:42") is the positive signal a
 // real finding almost always carries — both ship-check.md's and
@@ -74,12 +98,12 @@ const REFUSAL_PATTERNS = [
 // tiebreaker, not the primary gate: a pure "require path:line" rule would
 // misclassify a real zero-findings review like "No issues found." (no
 // citation, not a refusal) as unusable.
-const PATH_LINE_RE = /[\w./-]+\.\w{1,10}:\d+/;
-
-// How far into the (chrome-stripped) text to look for refusal phrasing.
-// Refusals front-load the decline; a genuine review that discusses being
-// "blocked by CI" deep in its findings shouldn't be misread as a refusal.
-const REFUSAL_WINDOW_CHARS = 500;
+// Extension whitelist (not a bare `\w{1,10}`): an unrestricted extension
+// group also matches non-citation shapes like an IP:port ("127.0.0.1:3456"
+// — "1" reads as a 1-char "extension") that can appear in ordinary log
+// noise ahead of a refusal, which would wrongly flip a real refusal to
+// usable via this same tiebreaker (gpt-5.4-mini ship-check catch, #1320).
+const PATH_LINE_RE = /\b[\w./-]+\.(?:m?js|[jt]sx?|cjs|py|rb|go|java|kt|swift|md|mdx|json|ya?ml|sh|css|scss|html?|vue|php|c|cc|cpp|h|hpp|rs)\b:\d+/i;
 
 /**
  * @param {unknown} text - raw (post-awk-filter) reviewer output
@@ -106,15 +130,18 @@ function checkReviewOutput(text) {
   }
 
   const meaningfulText = meaningfulLines.join('\n');
-  const refusalWindow = meaningfulText.slice(0, REFUSAL_WINDOW_CHARS);
-  const looksLikeRefusal = REFUSAL_PATTERNS.some((pattern) => pattern.test(refusalWindow));
+  const matchedPattern = REFUSAL_PATTERNS.find((pattern) => pattern.test(meaningfulText));
+  const looksLikeRefusal = Boolean(matchedPattern) || DATA_PREFLIGHT_CONTEXT_RE.test(meaningfulText);
   const hasPathLineCitation = PATH_LINE_RE.test(meaningfulText);
 
   if (looksLikeRefusal && !hasPathLineCitation) {
+    const refusalLine = meaningfulLines.find(
+      (line) => (matchedPattern && matchedPattern.test(line)) || DATA_PREFLIGHT_CONTEXT_RE.test(line),
+    ) || meaningfulLines[0];
     return {
       usable: false,
       kind: 'refused',
-      reason: `refused: ${meaningfulLines[0].slice(0, 200)}`,
+      reason: `refused: ${refusalLine.slice(0, 200)}`,
     };
   }
 
