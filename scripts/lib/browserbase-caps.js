@@ -5,6 +5,10 @@
  * unit-tested with concrete inputs instead of mocking the entire collector.
  * Production code requires this module — change the function, test fails.
  *
+ * DEFAULT_EXEMPT_SCRIPTS is required from brightdata-caps.js at module
+ * top-level (not lazily inside resolveExemptScripts) — matches
+ * scrapingdog-caps.js's own top-level `const { ... } = require('./brightdata-caps')`.
+ *
  * The caps exist to prevent runaway Browserbase spend. February 2026 saw
  * 12,876 sessions in one week ($1,287) before any caps existed. April 2026
  * (the peak opening-night month) had max 275 sessions/day. The default
@@ -12,6 +16,9 @@
  * opening-night activity is preserved while runaway scripts get clipped at
  * $25/day = $750/mo max.
  */
+'use strict';
+
+const { DEFAULT_EXEMPT_SCRIPTS: BD_DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata-caps');
 
 /**
  * THE daily-ceiling default. Both enforcement points — collect-review-texts.js
@@ -86,7 +93,7 @@ function resolveOpeningWindowReservePerShow(env = process.env) {
  */
 function resolveExemptScripts(env = process.env) {
   const raw = (env.BROWSERBASE_EXEMPT_SCRIPTS || '').trim();
-  if (!raw) return require('./brightdata-caps').DEFAULT_EXEMPT_SCRIPTS.slice();
+  if (!raw) return BD_DEFAULT_EXEMPT_SCRIPTS.slice();
   return raw.split(',').map((s) => s.trim()).filter(Boolean);
 }
 
