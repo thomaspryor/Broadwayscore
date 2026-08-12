@@ -21,6 +21,30 @@
 'use strict';
 
 const https = require('https');
+const path = require('path');
+const { countShowsInOpeningWindow } = require('./opening-night-selection');
+
+const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+
+// Task #1315, card-specified window: [today-1, today+3]. NOT the same
+// question as countShowsInOpeningWindow's own default (lookbackDays 3, used
+// for breaker ALERT SEVERITY — "is a poller hammering this provider
+// tonight"). This window answers "does BD need a reservation for this show
+// right now" — mostly forward-looking (protects the 3 days BEFORE a show
+// opens, so day-of budget is never starved by the time it does) plus ONE
+// trailing day, which is what actually caught the incident this task fixes:
+// Death Note opened 2026-08-11, and check-opening-night-readiness.js ran (and
+// its 4 missed reviews published) the next day, 2026-08-12 — exactly
+// today-1. It is deliberately narrower than the 3-day trailing lookback used
+// for severity: reviews arriving 2-3+ days after opening are a distinct,
+// slower-moving coverage-gap problem (T1/T2 stuck-review alerts), not the
+// acute same-day-starvation this reservation targets.
+const RESERVE_WINDOW_OPTS = { lookbackDays: 1, lookAheadHours: 72 };
+
+/** Shows currently within the reservation window, reading live shows.json. */
+function countOpeningWindowShows(showsPath = DEFAULT_SHOWS_PATH, now = new Date()) {
+  return countShowsInOpeningWindow(showsPath, { ...RESERVE_WINDOW_OPTS, now });
+}
 
 // Per-show resource consumption defaults. See memory/opening-night-budget-tuning.md.
 const DEFAULT_PER_SHOW = Object.freeze({
@@ -164,9 +188,18 @@ async function fetchScrapingBeeRemaining() {
  * deliberate for a PRE-FLIGHT: the question it answers is "can tonight's shift
  * actually get its requests through", and a bulk backfill that already spent
  * the day's budget is exactly the situation the owner needs flagged before the
- * shift starts, even though enforcement itself keeps the two pools separate.
+ * shift starts — but see `applyOpeningWindowReserve` below (task #1315): a
+ * show in its own opening window still gets its reservation floor reported as
+ * available even when routine/bulk spend has driven the raw total past the
+ * cap, matching the real exemption brightdata-caps.js already enforces at the
+ * request chokepoint.
+ *
+ * @param {object} [caps]
+ * @param {object} [opts]
+ * @param {number} [opts.openingWindowReserve] - requests guaranteed regardless
+ *   of aggregate daily spend (see applyOpeningWindowReserve)
  */
-async function fetchBrightDataRemaining(caps = DEFAULT_CAPS) {
+async function fetchBrightDataRemaining(caps = DEFAULT_CAPS, opts = {}) {
   const token = process.env.BRIGHTDATA_TOKEN;
   if (!token) return { remaining: null, reason: 'no-token' };
   const { fetchBdZoneCostDay } = require('./provider-billing');
@@ -181,7 +214,30 @@ async function fetchBrightDataRemaining(caps = DEFAULT_CAPS) {
   if (results.some((r) => r == null)) return { remaining: null, reason: 'api-error' };
   const used = results.reduce((sum, r) => sum + r.reqs, 0);
   const max = caps.brightdata.dailyCap;
-  return { remaining: Math.max(0, max - used), used, max };
+  const reserve = opts.openingWindowReserve || 0;
+  const remaining = applyOpeningWindowReserve({ used, max, reserve });
+  return { remaining, used, max, reserve };
+}
+
+/**
+ * Pure reservation math (task #1315), extracted so it's testable without a
+ * BRIGHTDATA_TOKEN/network round-trip: `fetchBrightDataRemaining` returns
+ * early with remaining:null when no token is set, which would otherwise make
+ * the reservation floor untestable outside a live-credentialed environment.
+ *
+ * `reserve` is a floor, not an addition: it guarantees an opening-window show
+ * is never reported as having less than its reservation, regardless of how
+ * much routine/bulk traffic has consumed of the raw daily cap — mirroring the
+ * real exemption at the request chokepoint (brightdata-caps.js
+ * consultBrightData never checks the breaker for exempt callers at all).
+ *
+ * @param {{used: number, max: number, reserve: number}} params
+ * @returns {number}
+ */
+function applyOpeningWindowReserve({ used, max, reserve }) {
+  const base = Math.max(0, max - used);
+  const r = Number.isFinite(reserve) && reserve > 0 ? reserve : 0;
+  return r > 0 ? Math.max(r, base) : base;
 }
 
 async function fetchGhaMinutesRemaining() {
@@ -216,11 +272,27 @@ async function fetchGhaMinutesRemaining() {
 /**
  * Fetch live availability for resources we can query. Resources without a
  * live API return remaining: null and the cap is used as the comparison.
+ *
+ * @param {object} [opts]
+ * @param {number} [opts.openingWindowReserve] - explicit BD reserve (requests).
+ *   Takes priority when present (tests). Otherwise `opts.openingWindowShows *
+ *   perShow.brightdata` if `openingWindowShows` is given, else auto-detected
+ *   from live shows.json — so EVERY real caller (this function called bare,
+ *   or checkBudget() calling it without an injected liveUsage) gets the
+ *   reservation without having to know it exists (task #1315).
+ * @param {number} [opts.openingWindowShows] - override the auto-detected count
+ * @param {object} [opts.perShow] - per-show estimate defaults (for the reserve calc)
  */
-async function fetchLiveUsage() {
+async function fetchLiveUsage(opts = {}) {
+  const perShow = opts.perShow || DEFAULT_PER_SHOW;
+  const reserve = Object.prototype.hasOwnProperty.call(opts, 'openingWindowReserve')
+    ? opts.openingWindowReserve
+    : (Object.prototype.hasOwnProperty.call(opts, 'openingWindowShows')
+      ? opts.openingWindowShows
+      : countOpeningWindowShows()) * (perShow.brightdata || DEFAULT_PER_SHOW.brightdata);
   const [sb, bd, gha] = await Promise.all([
     fetchScrapingBeeRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
-    fetchBrightDataRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
+    fetchBrightDataRemaining(DEFAULT_CAPS, { openingWindowReserve: reserve }).catch(() => ({ remaining: null, reason: 'threw' })),
     fetchGhaMinutesRemaining().catch(() => ({ remaining: null, reason: 'threw' })),
   ]);
   return {
@@ -248,10 +320,14 @@ async function fetchLiveUsage() {
  * @param {object} [opts.liveUsage] — inject for tests; if absent, fetched live
  * @param {object} [opts.perShow]
  * @param {object} [opts.caps]
+ * @param {number} [opts.openingWindowShows] - override the opening-window show
+ *   count used for the BD reservation (tests); auto-detected otherwise
+ * @param {number} [opts.openingWindowReserve] - override the BD reservation
+ *   directly (requests), taking priority over openingWindowShows (tests)
  */
 async function checkBudget(numShows, opts = {}) {
   const { liveUsage, perShow = DEFAULT_PER_SHOW, caps = DEFAULT_CAPS } = opts;
-  const usage = liveUsage || await fetchLiveUsage();
+  const usage = liveUsage || await fetchLiveUsage(opts);
   const estimate = estimateBudget(numShows, perShow, caps);
 
   const blockers = [];
@@ -329,6 +405,9 @@ module.exports = {
   fetchScrapingBeeRemaining,
   fetchBrightDataRemaining,
   fetchGhaMinutesRemaining,
+  applyOpeningWindowReserve,
+  countOpeningWindowShows,
+  RESERVE_WINDOW_OPTS,
   DEFAULT_PER_SHOW,
   DEFAULT_CAPS,
 };
