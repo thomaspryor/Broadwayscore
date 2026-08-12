@@ -1950,7 +1950,13 @@ showDirs.forEach(showId => {
         url: d.url,
         criticName: d.criticName,
         fullText: d.fullText,
-        flagged: !isIncludableForRebuild(d, showById[showId]),
+        // filePath is required here: omitting it makes isIncludableForRebuild
+        // treat EVERY duplicateOf file as excluded (explainExclusion's
+        // conservative no-filePath fallback), which would wrongly mark a real,
+        // currently-scored duplicateOf-cycle-recovered file "flagged" — hiding
+        // it from the gate-5 collision check below and letting a recovered name
+        // collide with it undetected (adversarial review finding, card #190).
+        flagged: !isIncludableForRebuild(d, showById[showId], path.join(showDir, f)),
       });
     } catch { /* defaults are conservative */ }
     sortMeta.set(f, meta);

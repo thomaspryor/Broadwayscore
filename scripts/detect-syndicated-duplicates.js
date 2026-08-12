@@ -162,7 +162,12 @@ function findSourceFile(showId, outletId, criticName) {
           // (a silent review-loss on the next rebuild — the same failure class
           // this whole recovery feature exists to fix). Skip flagged matches;
           // a missed syndication detection is far safer than a wrong one.
-          if (data.wrongProduction || data.wrongShow || data.isNonReview || data.contentTier === 'invalid') continue;
+          // Mirrors review-guards.js explainExclusion's exclusion signals for
+          // this file (not the full predicate — that needs show context this
+          // lookup doesn't have). isNotReview and isSyndicatedDuplicate added
+          // after adversarial review found this list incomplete (card #190).
+          if (data.wrongProduction || data.wrongShow || data.isNonReview || data.isNotReview ||
+              data.isSyndicatedDuplicate || data.contentTier === 'invalid') continue;
           return { path: filePath, filename: file, data };
         }
       } catch { /* skip corrupt files */ }
