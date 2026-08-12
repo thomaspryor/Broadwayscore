@@ -90,7 +90,17 @@ function main() {
       hits.push({ showId, file, flags });
       if (fix) {
         remediateStaleFlagAfterUrlCorrection(data);
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        // Deliberately a plain write, not safeWriteReview(): the disk record
+        // IS the stale bug state this remediation exists to fix, and
+        // isIntentionalClear()'s "same-era committed value is never
+        // suppressed" rule (review-write-guard.js _urlChangeCleared) treats
+        // that stale committed value as authoritative and restores it —
+        // verified empirically, routing through the guard silently undid the
+        // clear. Listed in .review-write-guard-exempt.txt so the
+        // write-routing lint records this as a reviewed exemption rather
+        // than a pass-by-accident (the lint's import check is textual and
+        // "safeWriteReview" appears in this very comment).
+        fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
       }
     }
   }
