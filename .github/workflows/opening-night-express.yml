@@ -8,7 +8,12 @@ name: Opening Night Express
 # The existing opening-night-orchestrator.yml will be paused for the duration.
 # When Express completes, the orchestrator resumes on its next cron.
 #
-# DISCARD PLAN: Delete this file. No other files are modified. Existing pipeline is unchanged.
+# AUTO-FIRE (task #1349): update-show-status.yml's daily transition check dispatches
+# this workflow automatically for every real previews->open show, and reroutes its
+# gather-reviews.yml/collect-review-texts.yml dispatches + retires its
+# opening-night-poller.yml auto-dispatch for those shows to avoid double-processing
+# the same review data. Reverting Express now means undoing those too — it is no
+# longer a drop-in-delete file. Kill switch: `gh variable set EXPRESS_AUTOFIRE_DISABLED --body true`.
 #
 # Usage:
 #   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway
@@ -62,7 +67,15 @@ permissions:
   contents: write
   actions: write
 
-# One Express run per show at a time. cancel-in-progress:false queues instead of cancels.
+# One Express run per show at a time. cancel-in-progress:false queues instead of
+# cancels. Per-show (not a single global group): GitHub Actions concurrency only
+# holds ONE pending run per group — a 3rd+ dispatch into an already-running +
+# already-pending group cancels the pending one outright, it does not extend the
+# queue. A shared group would silently drop every show but the last on a
+# multi-show opening night (caught in /ship-check review, task #1349). Per-show
+# groups mean every dispatched show actually runs. ORCHESTRATOR_PAUSED below is
+# therefore reference-counted (not a single value) so concurrent same-day runs
+# don't clobber each other's pause — see "Set/Clear ORCHESTRATOR_PAUSED".
 concurrency:
   group: opening-night-express-${{ inputs.show_id }}
   cancel-in-progress: false
@@ -110,18 +123,41 @@ jobs:
           # doesn't exist (404), gh prints the error JSON to stdout and `||echo ""` runs INSIDE the
           # subshell, appending instead of replacing. Capture exit code then reset CURRENT="" on
           # failure so a missing variable correctly classifies as 'empty' instead of 'other'.
+          #
+          # runIds is a reference count, not a single value: auto-fire (task #1349) can start
+          # several Express runs the same day (one per opened show, each its own concurrency
+          # group). Without a count, whichever run finished first would clear the lease while a
+          # sibling run for a DIFFERENT show was still mid-write, un-suppressing the orchestrator
+          # for it. Adding our run_id here and only deleting the variable once the array is empty
+          # (see "Clear ORCHESTRATOR_PAUSED") keeps the pause active as long as ANY Express run
+          # holds it. This has the same read-modify-write race as any unlocked GH variable — two
+          # runs starting in the same instant could both read an empty/stale array and each write
+          # a 1-element result, dropping one id. Accepted: the race window is sub-second and the
+          # 90-min auto-expire in the orchestrator's own read path is the backstop either way.
           CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || CURRENT=""
-          IS_EXPRESS=$(CURRENT="$CURRENT" node -e "
+          PARSE_RESULT=$(CURRENT="$CURRENT" RUN_ID="${{ github.run_id }}" node -e "
             const raw = process.env.CURRENT || '';
-            if (!raw) { console.log('empty'); process.exit(0); }
-            try { const p = JSON.parse(raw); console.log(p && p.value === 'express' ? 'express' : 'other'); }
-            catch (e) { console.log(raw === 'express' ? 'express' : 'other'); }
-          " 2>/dev/null || echo "other")
-          if [ "$IS_EXPRESS" = "other" ]; then
+            const runId = process.env.RUN_ID;
+            if (!raw) {
+              console.log(JSON.stringify({ kind: 'empty', body: { value: 'express', setAt: new Date().toISOString(), runIds: [runId] } }));
+              process.exit(0);
+            }
+            let p;
+            try { p = JSON.parse(raw); } catch (e) { p = null; }
+            if (!p || p.value !== 'express') {
+              console.log(JSON.stringify({ kind: 'other' }));
+              process.exit(0);
+            }
+            const runIds = Array.isArray(p.runIds) ? p.runIds.slice() : (p.runId ? [p.runId] : []);
+            if (!runIds.includes(runId)) runIds.push(runId);
+            console.log(JSON.stringify({ kind: 'express', body: { value: 'express', setAt: p.setAt || new Date().toISOString(), runIds } }));
+          " 2>/dev/null || echo '{"kind":"other"}')
+          KIND=$(echo "$PARSE_RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).kind))")
+          if [ "$KIND" = "other" ]; then
             echo "::error::ORCHESTRATOR_PAUSED already set by non-express pause (value=$CURRENT) — aborting"
             exit 1
           fi
-          LEASE_BODY=$(node -e "console.log(JSON.stringify({value:'express',setAt:new Date().toISOString(),runId:'${{ github.run_id }}'}))")
+          LEASE_BODY=$(echo "$PARSE_RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.stringify(JSON.parse(d).body)))")
           if gh variable set ORCHESTRATOR_PAUSED --body "$LEASE_BODY"; then
             echo "ORCHESTRATOR_PAUSED=$LEASE_BODY"
             echo "  (new orchestrator crons will yield; lease auto-expires after 90min)"
@@ -441,24 +477,34 @@ jobs:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # See "Set ORCHESTRATOR_PAUSED" for why we capture exit code instead of `|| echo ""`
-          # inside the subshell (404 error body would otherwise leak through).
+          # inside the subshell (404 error body would otherwise leak through), and for why this
+          # removes our run_id from a shared runIds array instead of unconditionally deleting the
+          # variable — a sibling Express run for a different show may still hold the lease.
           CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED \
             --jq '.value' 2>/dev/null) || CURRENT=""
-          DECISION=$(CURRENT="$CURRENT" node -e "
+          RESULT=$(CURRENT="$CURRENT" RUN_ID="${{ github.run_id }}" node -e "
             const raw = process.env.CURRENT || '';
-            if (!raw) { console.log('empty'); process.exit(0); }
-            try {
-              const p = JSON.parse(raw);
-              console.log(p && p.value === 'express' ? 'express' : 'other');
-            } catch (e) {
-              console.log(raw === 'express' ? 'express' : 'other');
-            }
-          " 2>/dev/null || echo "other")
-          case "$DECISION" in
-            express)
+            const runId = process.env.RUN_ID;
+            if (!raw) { console.log(JSON.stringify({ kind: 'empty' })); process.exit(0); }
+            let p;
+            try { p = JSON.parse(raw); } catch (e) { p = null; }
+            if (!p || p.value !== 'express') { console.log(JSON.stringify({ kind: 'other' })); process.exit(0); }
+            const runIds = (Array.isArray(p.runIds) ? p.runIds.slice() : (p.runId ? [p.runId] : [])).filter(id => id !== runId);
+            if (runIds.length === 0) { console.log(JSON.stringify({ kind: 'last' })); process.exit(0); }
+            console.log(JSON.stringify({ kind: 'remaining', body: { value: 'express', setAt: p.setAt, runIds } }));
+          " 2>/dev/null || echo '{"kind":"other"}')
+          KIND=$(echo "$RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).kind))")
+          case "$KIND" in
+            last)
               gh variable delete ORCHESTRATOR_PAUSED \
                 && echo "ORCHESTRATOR_PAUSED cleared — orchestrator crons may resume" \
                 || echo "::warning::Could not clear ORCHESTRATOR_PAUSED — run: gh variable delete ORCHESTRATOR_PAUSED"
+              ;;
+            remaining)
+              BODY=$(echo "$RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.stringify(JSON.parse(d).body)))")
+              gh variable set ORCHESTRATOR_PAUSED --body "$BODY" \
+                && echo "ORCHESTRATOR_PAUSED still held by other Express run(s): $BODY" \
+                || echo "::warning::Could not update ORCHESTRATOR_PAUSED runIds — run: gh variable delete ORCHESTRATOR_PAUSED"
               ;;
             other)
               echo "ORCHESTRATOR_PAUSED=$CURRENT (manual pause — not clearing)"
