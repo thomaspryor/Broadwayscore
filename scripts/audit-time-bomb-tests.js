@@ -26,6 +26,24 @@
  * time bombs, so the output stays actionable on a repo whose suite is not
  * currently green.
  *
+ * FAILING LOUD RATHER THAN SILENT (second-opinion review finding)
+ * The dangerous failure mode for a differ like this is the shifted run dying
+ * early: a partial `shifted` set makes (shifted \ baseline) shrink, and a naive
+ * implementation then prints "no time bombs" precisely when it checked almost
+ * nothing. So both runs are compared on node:test's own `# tests` total, and a
+ * shifted run that executed materially fewer tests than baseline is a hard
+ * error (exit 2), never a pass. An audit that could not run must fail, not
+ * report clean — the same philosophy check-corpus-drift.yml states.
+ *
+ * KEYED BY FILE, NOT BARE NAME (second-opinion review finding)
+ * Test titles are not unique across the manifest — e.g. "two child processes
+ * racing to save both land without corrupting the file" exists verbatim in
+ * audience-buzz-write-guard, commercial-write-guard, json-write-guard and
+ * shows-write-guard. Subtracting bare names would let a genuine new bomb in one
+ * file be swallowed by an unrelated same-named baseline failure in another, so
+ * failures are keyed `<file>::<name>` using the `location:` that node:test emits
+ * in each failure's YAML block.
+ *
  * Usage:
  *   node scripts/audit-time-bomb-tests.js                 # default +30d
  *   node scripts/audit-time-bomb-tests.js --days=90
@@ -36,6 +54,26 @@
  *   const daysAgoISO = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
  *   wrongProductionAutoClearedAt: daysAgoISO(1),
  * NOT by widening the production window to accommodate the literal.
+ *
+ * EXEMPTING A FILE
+ * Put `// timebomb-audit-exempt: <reason>` at the top of the test file itself —
+ * the same in-the-offending-file convention as `// hygiene-help-flag-ok:` used
+ * by audit-help-flag-safety.js. Keeping the marker with the test means a rename
+ * can't silently orphan it and the exemption is visible in any diff that touches
+ * the test. Reserve it for tests that are legitimately clock-coupled (see the
+ * filesystem-mtime note below), not for tests that are merely inconvenient.
+ *
+ * KNOWN LIMITATION — filesystem mtime is NOT shifted.
+ * clock-shift.mjs moves Date.now() inside the process; it cannot move the
+ * filesystem clock. Code measuring freshness as
+ * `Date.now() - fs.statSync(p).mtimeMs` therefore sees every file as SHIFT_DAYS
+ * old under the shifted run and reports "expired" — a false positive, because in
+ * production both readings come from the same real clock. Confirmed instances:
+ *   scripts/lib/ttl-cache.js:52                   Date.now() - stat.mtimeMs > ttlMs
+ *   scripts/lib/infra-gate-registration-check.js  checkGuardHeartbeat via statSync
+ * The better long-term fix is to give those an injectable clock (the way
+ * detectCWVAnomalies now takes `today`) so they can be tested honestly, rather
+ * than exempting their tests forever.
  */
 
 const { spawnSync } = require('child_process');
@@ -45,40 +83,11 @@ const path = require('path');
 const REPO_ROOT = path.join(__dirname, '..');
 const MANIFEST = path.join(REPO_ROOT, 'tests', 'unit-test-manifest.txt');
 const PRELOAD = path.join(REPO_ROOT, 'tests', 'helpers', 'clock-shift.mjs');
+const EXEMPT_MARKER = 'timebomb-audit-exempt:';
 
-// KNOWN LIMITATION — filesystem mtime is NOT shifted.
-//
-// clock-shift.mjs moves Date.now() inside the process; it cannot move the
-// filesystem clock. Any code that measures freshness as
-// `Date.now() - fs.statSync(p).mtimeMs` therefore sees every file as
-// SHIFT_DAYS old under the shifted run and reports "expired" — a false
-// positive, because in production both readings come from the same real clock.
-//
-// Two confirmed instances of that pattern in this repo:
-//   scripts/lib/ttl-cache.js:52                  Date.now() - stat.mtimeMs > ttlMs
-//   scripts/lib/infra-gate-registration-check.js checkGuardHeartbeat via statSync
-//
-// Their tests are exempted below by exact name. Every entry is a test the
-// detector can no longer protect, so keep the list short and give each a
-// reason. Before adding one, confirm the failure really is the mtime artifact
-// (read the code for a statSync/mtime comparison) — do NOT exempt a test just
-// because it is inconvenient.
-const ALLOWLIST = new Map([
-  // scripts/lib/ttl-cache.js + serp-cache.js — disk-backed caches keyed on file mtime.
-  ['warm hit returns cached value', 'ttl-cache: mtime vs shifted Date.now'],
-  ['entries expire after ttlMs', 'ttl-cache: mtime vs shifted Date.now'],
-  ['empty array IS cached (valid "no results" answer)', 'ttl-cache: mtime vs shifted Date.now'],
-  ['empty array/object IS cached (a negative result is a valid answer)', 'ttl-cache: mtime vs shifted Date.now'],
-  ['opts distinguish otherwise-identical keys', 'ttl-cache: mtime vs shifted Date.now'],
-  ['whitespace and case normalized in key', 'ttl-cache: mtime vs shifted Date.now'],
-  ['stats track hits/misses/writes', 'ttl-cache: mtime vs shifted Date.now'],
-  ['stats track hits/misses/writes independently per instance', 'ttl-cache: mtime vs shifted Date.now'],
-  // scripts/lib/infra-gate-registration-check.js — heartbeat freshness from statSync.
-  [
-    'checkGuardHeartbeat PASSES when the job is loaded and the heartbeat is fresh',
-    'heartbeat: statSync mtime vs shifted Date.now',
-  ],
-]);
+// A shifted run that executed fewer than this fraction of baseline's tests is
+// treated as "did not really run" rather than "found nothing".
+const MIN_SHIFTED_TEST_RATIO = 0.95;
 
 function parseArgs(argv) {
   const opts = { days: 30, json: false, strict: false };
@@ -109,12 +118,44 @@ function readManifest() {
 }
 
 /**
- * Run the suite and return the set of failing test names.
+ * Files carrying the in-file exemption marker, keyed by manifest-relative path.
  *
- * node:test's TAP output prints `not ok <n> - <name>` for each failure,
- * including parent suites. Parent-suite lines are harmless here: a suite only
- * appears in the diff if one of its children newly failed, and it names the
- * right file either way.
+ * The marker must appear on a genuine comment line (`//` or a `*` continuation
+ * inside a block comment). Matching the bare substring anywhere would let a
+ * fixture string, a doc example, or a test asserting ON this marker exempt its
+ * whole file by accident.
+ */
+function readExemptFiles(files) {
+  const exempt = new Map();
+  for (const rel of files) {
+    let src;
+    try {
+      src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+    } catch (err) {
+      // A manifest entry we cannot read is a real problem elsewhere (the
+      // manifest-integrity test covers existence); say so rather than silently
+      // treating the file as un-exempt.
+      console.error(`  warning: could not read ${rel} for exemption marker (${err.code || err.message})`);
+      continue;
+    }
+    const line = src
+      .split('\n')
+      .find((l) => /^\s*(\/\/|\*)/.test(l) && l.includes(EXEMPT_MARKER));
+    if (line) {
+      exempt.set(rel, line.slice(line.indexOf(EXEMPT_MARKER) + EXEMPT_MARKER.length).trim());
+    }
+  }
+  return exempt;
+}
+
+/**
+ * Run the suite and return { failures, totals, status, sawTap }.
+ *
+ * node:test's TAP reporter prints `not ok <n> - <name>` per failure, followed by
+ * a YAML block whose `location:` gives the absolute file path. Failures are
+ * keyed `<repo-relative path>::<name>` so identical titles in different files stay
+ * distinct. Parent-suite `not ok` lines inherit the same location as their
+ * child, which is fine — they name the right file either way.
  */
 function runSuite(files, shiftDays) {
   const args = [];
@@ -124,7 +165,7 @@ function runSuite(files, shiftDays) {
   const res = spawnSync(process.execPath, args, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
-    maxBuffer: 256 * 1024 * 1024,
+    maxBuffer: 512 * 1024 * 1024,
     env: {
       ...process.env,
       BSC_CLOCK_SHIFT_DAYS: String(shiftDays || 0),
@@ -135,16 +176,61 @@ function runSuite(files, shiftDays) {
   });
 
   if (res.error) {
-    console.error(`Failed to spawn test run: ${res.error.message}`);
+    console.error(`Failed to spawn test run (shift ${shiftDays}d): ${res.error.message}`);
     process.exit(2);
   }
 
-  const failing = new Set();
+  const failures = new Map(); // key -> { file, name }
+  const totals = { tests: null, fail: null };
+  let pending = null;
+  let sawTap = false;
+  let unlocated = 0;
+
   for (const line of (res.stdout || '').split('\n')) {
-    const m = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
-    if (m) failing.add(m[1]);
+    const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
+    if (notOk) {
+      sawTap = true;
+      pending = notOk[1];
+      continue;
+    }
+    if (pending) {
+      const loc = /^\s*location:\s*'(.+?)'\s*$/.exec(line);
+      if (loc) {
+        // Repo-RELATIVE path, not basename: tests/a/foo.test.mjs and
+        // tests/b/foo.test.mjs are different files and must not share a key,
+        // which is the whole point of scoping failures by file.
+        const abs = String(loc[1]).replace(/:\d+:\d+$/, '');
+        const file = path.relative(REPO_ROOT, abs) || abs;
+        failures.set(`${file}::${pending}`, { file, name: pending });
+        pending = null;
+        continue;
+      }
+      // Next failure started before we saw a location. Fall back to a
+      // name-only key: it must match across the two runs to cancel correctly,
+      // so it cannot be made unique per occurrence. That means two unlocated
+      // failures sharing a title DO collapse — hence the count is surfaced
+      // below rather than hidden.
+      if (/^\s*not ok |^\s*ok \d+ /.test(line)) {
+        failures.set(`?::${pending}`, { file: '?', name: pending });
+        unlocated++;
+        pending = null;
+      }
+    }
+    const t = /^# tests (\d+)$/.exec(line);
+    if (t) {
+      totals.tests = Number(t[1]);
+      sawTap = true;
+      continue;
+    }
+    const f = /^# fail (\d+)$/.exec(line);
+    if (f) totals.fail = Number(f[1]);
   }
-  return failing;
+  if (pending) {
+    failures.set(`?::${pending}`, { file: '?', name: pending });
+    unlocated++;
+  }
+
+  return { failures, totals, status: res.status, sawTap, unlocated };
 }
 
 function main() {
@@ -159,20 +245,58 @@ function main() {
     console.error('Manifest is empty — refusing to report "no time bombs".');
     process.exit(2);
   }
+  const exemptFiles = readExemptFiles(files);
 
   if (!opts.json) {
-    console.log(`Time-bomb audit: ${files.length} test files, clock shift +${opts.days}d\n`);
-    console.log('  [1/2] baseline run (current clock)...');
+    console.log(`Time-bomb audit: ${files.length} test files, clock shift +${opts.days}d`);
+    if (exemptFiles.size) console.log(`  ${exemptFiles.size} file(s) carry an in-file exemption marker`);
+    console.log('\n  [1/2] baseline run (current clock)...');
   }
-  const baseline = runSuite(files, 0);
+  const base = runSuite(files, 0);
 
   if (!opts.json) console.log(`  [2/2] shifted run (+${opts.days}d)...`);
   const shifted = runSuite(files, opts.days);
 
-  const bombs = [...shifted]
-    .filter((name) => !baseline.has(name))
-    .filter((name) => !ALLOWLIST.has(name))
-    .sort();
+  // Fail loud rather than reporting a clean sheet off a run that died early.
+  const problems = [];
+  if (!base.sawTap) problems.push('baseline run produced no TAP output at all');
+  if (!shifted.sawTap) problems.push('shifted run produced no TAP output at all');
+  // status === null means killed by a signal (OOM, timeout). A plain non-zero
+  // exit is EXPECTED here — node --test exits 1 whenever any test fails, and
+  // this repo's suite is not currently green — so only the signal case is a
+  // reliable "the run was destroyed" signal.
+  if (base.status === null) problems.push('baseline run was killed by a signal (OOM/timeout?)');
+  if (shifted.status === null) problems.push('shifted run was killed by a signal (OOM/timeout?)');
+  if (base.totals.tests == null) problems.push('baseline run never printed a "# tests" total');
+  if (shifted.totals.tests == null) problems.push('shifted run never printed a "# tests" total');
+  if (
+    base.totals.tests != null &&
+    shifted.totals.tests != null &&
+    shifted.totals.tests < base.totals.tests * MIN_SHIFTED_TEST_RATIO
+  ) {
+    problems.push(
+      `shifted run executed ${shifted.totals.tests} tests vs baseline ${base.totals.tests} ` +
+        `(<${Math.round(MIN_SHIFTED_TEST_RATIO * 100)}%) — it died early, so "no findings" would be meaningless`
+    );
+  }
+  if (problems.length) {
+    console.error('TIME-BOMB AUDIT COULD NOT RUN RELIABLY:');
+    for (const p of problems) console.error(`  - ${p}`);
+    console.error(`  baseline exit=${base.status}  shifted exit=${shifted.status}`);
+    process.exit(2);
+  }
+
+  const exempted = [];
+  const bombs = [];
+  for (const [key, { file, name }] of shifted.failures) {
+    if (base.failures.has(key)) continue;
+    if (exemptFiles.has(file)) {
+      exempted.push({ file, name, reason: exemptFiles.get(file) });
+      continue;
+    }
+    bombs.push({ file, name });
+  }
+  bombs.sort((a, b) => (a.file + a.name).localeCompare(b.file + b.name));
 
   if (opts.json) {
     console.log(
@@ -180,9 +304,9 @@ function main() {
         {
           shiftDays: opts.days,
           filesChecked: files.length,
-          baselineFailures: baseline.size,
-          shiftedFailures: shifted.size,
-          exempt: [...ALLOWLIST.keys()].filter((n) => shifted.has(n)),
+          baseline: { tests: base.totals.tests, fail: base.totals.fail, unlocatedFailures: base.unlocated },
+          shifted: { tests: shifted.totals.tests, fail: shifted.totals.fail, unlocatedFailures: shifted.unlocated },
+          exempted,
           timeBombs: bombs,
         },
         null,
@@ -191,13 +315,22 @@ function main() {
     );
   } else {
     console.log(
-      `\nBaseline failures: ${baseline.size}   Shifted failures: ${shifted.size}\n`
+      `\nBaseline: ${base.totals.fail} failing of ${base.totals.tests}   ` +
+        `Shifted: ${shifted.totals.fail} failing of ${shifted.totals.tests}` +
+        (exempted.length ? `   (${exempted.length} exempted)` : '') +
+        '\n'
     );
+    if (shifted.unlocated || base.unlocated) {
+      console.log(
+        `  note: ${base.unlocated} baseline / ${shifted.unlocated} shifted failure(s) had no location: line,\n` +
+          '        so they are matched by test NAME only — same-titled ones collapse and could mask a finding.\n'
+      );
+    }
     if (bombs.length === 0) {
       console.log(`PASS — no test changes outcome when the clock moves +${opts.days}d.`);
     } else {
       console.log(`FOUND ${bombs.length} time-bomb test(s) — pass now, fail at +${opts.days}d:\n`);
-      for (const b of bombs) console.log(`  ✗ ${b}`);
+      for (const b of bombs) console.log(`  ✗ ${b.file} — ${b.name}`);
       console.log(
         '\nFix: make the stamp relative to run time (daysAgoISO(1)), not a hardcoded literal.'
       );

@@ -25,7 +25,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
+const { resolveOutletFromUrl, clearDomainCache } = require('../../scripts/lib/review-normalization.js');
 
 describe('Domain-to-outlet resolution precedence', () => {
   test('theguardian.com → guardian (not observer)', () => {
@@ -56,6 +56,61 @@ describe('Domain-to-outlet resolution precedence', () => {
     const result = resolveOutletFromUrl('https://variety.com/2026/legit/news/death-of-a-salesman-review-1236711360/');
     assert.ok(result, 'should resolve');
     assert.strictEqual(result.outletId, 'variety');
+  });
+});
+
+describe('same-brand-word-across-TLDs base collisions (task #1254 class, BRO-247)', () => {
+  // buildDomainToOutletIndex used to register every outlet under a bare
+  // domainBase (TLD stripped) AND warn on every build when two legitimately
+  // distinct outlets shared a brand word across TLDs — the exact
+  // "Domain collision on \"dancemagazine\": keeping dance-magazine, ignoring
+  // dance-informa-uk" noise. Such a bare base is genuinely ambiguous: each
+  // outlet already resolves by its own full host. The fix leaves the base
+  // unmapped and silent, while genuine same-full-host edition splits
+  // (telegraph.co.uk) keep the eponymous rule.
+
+  // Cross-TLD pairs: distinct outlets sharing a brand word but differing in host.
+  const CROSS_TLD = [
+    { base: 'dancemagazine', a: ['https://dancemagazine.com/x', 'dance-magazine'], b: ['https://dancemagazine.co.uk/x', 'dance-informa-uk'] },
+    { base: 'independent', a: ['https://independent.com/x', 'santa-barbara-independent'], b: ['https://www.independent.co.uk/x', 'independent'] },
+    { base: 'boston', a: ['https://boston.com/x', 'boston-com'], b: ['https://boston.edgemedianetwork.com/x', 'edge-boston'] },
+  ];
+
+  test('the bare brand base resolves to NO outlet (genuinely ambiguous)', () => {
+    for (const { base } of CROSS_TLD) {
+      const result = resolveOutletFromUrl(`https://${base}/x`);
+      assert.strictEqual(result, null, `bare base "${base}" must not resolve to an arbitrary outlet`);
+    }
+  });
+
+  test('each outlet still resolves via its own full host (unchanged)', () => {
+    for (const { a, b } of CROSS_TLD) {
+      assert.strictEqual(resolveOutletFromUrl(a[0])?.outletId, a[1], `${a[0]} should resolve to ${a[1]}`);
+      assert.strictEqual(resolveOutletFromUrl(b[0])?.outletId, b[1], `${b[0]} should resolve to ${b[1]}`);
+    }
+  });
+
+  test('building the index emits NO collision warning for the cross-TLD class', () => {
+    clearDomainCache();
+    const warnings = [];
+    const orig = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      resolveOutletFromUrl('https://nytimes.com/x'); // forces a fresh index build
+    } finally {
+      console.warn = orig;
+    }
+    for (const { base } of CROSS_TLD) {
+      const noisy = warnings.filter((w) => w.includes('Domain collision') && w.includes(`"${base}"`));
+      assert.deepStrictEqual(noisy, [], `no collision warning expected for cross-TLD base "${base}", got: ${JSON.stringify(noisy)}`);
+    }
+  });
+
+  test('genuine same-full-host edition split keeps its bare base (telegraph → telegraph)', () => {
+    // telegraph.co.uk is shared by telegraph AND sunday-telegraph (one host),
+    // so the eponymous rule still applies and the base stays mapped.
+    assert.strictEqual(resolveOutletFromUrl('https://telegraph/x')?.outletId, 'telegraph');
+    assert.strictEqual(resolveOutletFromUrl('https://www.telegraph.co.uk/x')?.outletId, 'telegraph');
   });
 });
 
