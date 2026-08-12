@@ -17,11 +17,17 @@
 // Ported from a scratchpad acceptance harness that proved 16/16 against the
 // live gate before this task promoted it into the repo.
 //
-// Hook resolution: prefers $HOME/.claude/hooks/<name>.sh (the registered
-// hook on a local Claude Code machine) and falls back to the project copy at
-// <repo>/.claude/hooks/<name>.sh (identical content, committed so cloud
-// sandboxes and CI — which have no ~/.claude — still exercise the real
-// script). Both hooks resolve their lib from the CANONICAL repo root
+// Hook resolution: prefers $HOME/.claude/hooks/<name>.sh (the hook actually
+// REGISTERED and firing for real PreToolUse events on a local Claude Code
+// machine — matching the proven scratchpad harness this file ports) and
+// falls back to the project copy at <repo>/.claude/hooks/<name>.sh (committed
+// so cloud sandboxes and CI — which have no ~/.claude — still exercise a real
+// copy of the script). The two are MEANT to be kept byte-identical, but
+// nothing enforces that automatically, so on a dev machine where the $HOME
+// copy has drifted stale, this suite validates the currently-registered
+// (possibly older) hook, not necessarily HEAD's committed one — CI is
+// unaffected (no ~/.claude there). Both hooks resolve their lib from the
+// CANONICAL repo root
 // (scripts/lib/review-gate.mjs relative to the git-common-dir parent) and
 // exit 0 (fail open) if it's absent, so this suite only produces meaningful
 // BLOCKED assertions when run inside a real checkout of this repo — which
@@ -40,6 +46,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { canonicalRoot } from '../lib/review-gate.mjs';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const REAL_HOME = os.homedir();
@@ -56,18 +63,12 @@ function gitOk(cwd, args) {
   return git(cwd, args).status === 0;
 }
 
-function resolveCanonicalRoot(repoRoot) {
-  const commonDir = gitOut(repoRoot, ['rev-parse', '--git-common-dir']);
-  if (!commonDir) return repoRoot;
-  const abs = path.isAbsolute(commonDir) ? commonDir : path.join(repoRoot, commonDir);
-  return path.dirname(abs);
-}
-
-// The main-worktree root (shared ledger + canonical scripts/lib) — same
-// resolution the hooks themselves perform. When this file runs from a linked
-// worktree (the project's own worktree-first workflow) CANONICAL_ROOT is the
-// shared checkout; in a plain CI clone it's REPO_ROOT itself.
-const CANONICAL_ROOT = resolveCanonicalRoot(REPO_ROOT);
+// The main-worktree root (shared ledger + canonical scripts/lib) — the SAME
+// canonicalRoot() the hooks themselves call via review-gate.mjs (CLAUDE.md
+// rule 15: require the real function, don't reimplement it). When this file
+// runs from a linked worktree (the project's own worktree-first workflow)
+// CANONICAL_ROOT is the shared checkout; in a plain CI clone it's REPO_ROOT.
+const CANONICAL_ROOT = canonicalRoot(REPO_ROOT);
 
 function resolveHookPath(basename) {
   const userHook = path.join(REAL_HOME, '.claude', 'hooks', basename);
@@ -136,6 +137,13 @@ before(() => {
 
   if (!hasGates) return; // nothing else to build if the hooks themselves aren't present
 
+  // ── a wholly unrelated git repo, to prove cross-repo `cd`s are left alone.
+  // Built here (before the originAvailable gate below) because it needs
+  // nothing from origin — gating it on origin availability would silently
+  // degrade the "unrelated repo" test into a meaningless `cd undefined`.
+  unrelatedRepo = makeTmpDir('unrelated-repo');
+  git(unrelatedRepo, ['init', '-q']);
+
   originAvailable = gitOk(CANONICAL_ROOT, ['fetch', 'origin', 'main', '-q']) && gitOk(CANONICAL_ROOT, ['rev-parse', '--verify', '--quiet', 'origin/main']);
   if (!originAvailable) return;
 
@@ -180,10 +188,6 @@ before(() => {
   if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '-b', NONMAIN_BRANCH, nonmainWorktree, 'origin/main'])) {
     nonmainWorktree = null;
   }
-
-  // ── a wholly unrelated git repo, to prove cross-repo `cd`s are left alone.
-  unrelatedRepo = makeTmpDir('unrelated-repo');
-  git(unrelatedRepo, ['init', '-q']);
 });
 
 after(() => {
@@ -310,6 +314,16 @@ test('merge-gate fails open: an unresolvable source ref never blocks', skipNoGat
 // treats the JSON boolean `false` as absent, so the gate failed open on
 // EVERY genuine block. Patch a temp copy of the live hook back to the buggy
 // form and prove the assertions above would have caught it. ──────────────
+//
+// The patched copy is a standalone temp file, not the file registered at
+// $HOME/.claude/hooks/pre-merge-review-gate.sh — so the hook's own "project
+// copy only" self-skip preamble (BASH_SOURCE[0] != the $HOME path) would
+// otherwise exit 0 before ever reaching the patched line, making this
+// assertion pass for the WRONG reason on any machine where the real hook is
+// installed (code-review finding, task #1316). HOME is overridden to an
+// empty temp dir for just this subprocess so `[ -f "$HOME/.claude/hooks/..."
+// ]` is false and the preamble does not fire — the patched copy runs its own
+// full logic, including the vulnerable line under test.
 
 test('regression pin: reverting the jq `.allowed | tostring` fix to `.allowed // empty` silently fails open (the exact 2026-08-12 P0)', skipNoProbe, () => {
   const original = fs.readFileSync(MERGE_HOOK, 'utf8');
@@ -317,12 +331,41 @@ test('regression pin: reverting the jq `.allowed | tostring` fix to `.allowed //
   assert.ok(original.includes(needle), 'the live hook no longer contains the expected tostring line — update this pin to match its current form');
   const broken = original.replace(needle, "ALLOWED=$(echo \"$RESULT\" | jq -r '.allowed // empty' 2>/dev/null)");
   const tdir = makeTmpDir('broken-hook');
+  const fakeHome = path.join(tdir, 'fake-home'); // deliberately has no .claude/hooks/ — defeats the self-skip preamble
+  fs.mkdirSync(fakeHome, { recursive: true });
   const brokenPath = path.join(tdir, 'pre-merge-review-gate-broken.sh');
   fs.writeFileSync(brokenPath, broken);
   fs.chmodSync(brokenPath, 0o755);
   try {
-    const r = runHook(brokenPath, { command: `git checkout main && git merge ${PROBE_BRANCH} --no-edit` });
+    const r = runHook(brokenPath, {
+      command: `git checkout main && git merge ${PROBE_BRANCH} --no-edit`,
+      env: { HOME: fakeHome },
+    });
     assert.equal(r.status, 0, 'the broken hook should fail OPEN on a command the real hook blocks — proving this suite has teeth');
+  } finally {
+    fs.rmSync(tdir, { recursive: true, force: true });
+  }
+});
+
+// Companion sanity check: with the SAME fakeHome/self-skip-defeat plumbing,
+// the UNPATCHED hook (copied byte-for-byte, no jq change) must still BLOCK —
+// otherwise the negative control above would pass merely because fakeHome
+// broke something else entirely (e.g. CANONICAL_ROOT resolution), not
+// because of the reverted jq line specifically.
+test('regression pin sanity: the fakeHome plumbing alone does not change the verdict — an unpatched copy still BLOCKS', skipNoProbe, () => {
+  const original = fs.readFileSync(MERGE_HOOK, 'utf8');
+  const tdir = makeTmpDir('unpatched-hook');
+  const fakeHome = path.join(tdir, 'fake-home');
+  fs.mkdirSync(fakeHome, { recursive: true });
+  const copyPath = path.join(tdir, 'pre-merge-review-gate-copy.sh');
+  fs.writeFileSync(copyPath, original);
+  fs.chmodSync(copyPath, 0o755);
+  try {
+    const r = runHook(copyPath, {
+      command: `git checkout main && git merge ${PROBE_BRANCH} --no-edit`,
+      env: { HOME: fakeHome },
+    });
+    assertBlocked(r, 'unpatched copy under fakeHome');
   } finally {
     fs.rmSync(tdir, { recursive: true, force: true });
   }
