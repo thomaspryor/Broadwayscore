@@ -50,7 +50,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
-const { recoverDisplayBylinesForShow } = require('./lib/byline-recovery');
+const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -4167,14 +4167,11 @@ showDirs.forEach(showId => {
         // above from ALL siblings including excluded ones). Display-only — never
         // written back to the source JSON file.
         criticName: (() => {
-          const normalized = normalizeCriticName(data.criticName);
-          const isUnknown = !normalized || /^unknown$/i.test(normalized.trim());
-          const recovered = isUnknown && recoveredNameByFile.get(file);
-          if (recovered) {
+          const resolved = resolveCriticName(normalizeCriticName(data.criticName), recoveredNameByFile.get(file));
+          if (resolved.recovered) {
             stats.bylineRecoveredFromSibling = (stats.bylineRecoveredFromSibling || 0) + 1;
-            return recovered;
           }
-          return normalized || null;
+          return resolved.name;
         })(),
         url: data.url || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {

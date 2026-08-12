@@ -323,10 +323,30 @@ function recoverDisplayBylinesForShow(records) {
   return out;
 }
 
+/**
+ * Resolves the criticName to emit for a review record, preferring a
+ * same-URL sibling's recovered name when the record's own byline is
+ * missing/"Unknown" (card #190). Pure — the caller decides how to log the
+ * recovery (e.g. incrementing a stats counter).
+ *
+ * @param {string|null|undefined} normalizedCriticName - already-normalized via normalizeCriticName()
+ * @param {string|null|undefined} recoveredName - recoveredNameByFile.get(file) result, or undefined
+ * @returns {{name: string|null, recovered: boolean}}
+ */
+function resolveCriticName(normalizedCriticName, recoveredName) {
+  const trimmed = (normalizedCriticName || '').trim();
+  const isUnknown = !trimmed || /^unknown$/i.test(trimmed);
+  if (isUnknown && recoveredName) {
+    return { name: recoveredName, recovered: true };
+  }
+  return { name: trimmed || null, recovered: false };
+}
+
 module.exports = {
   isPlausiblePersonName,
   pickRecoveredName,
   recoverBylineForEntry,
+  resolveCriticName,
   recoverBylinesForShow,
   recoverDisplayBylinesForShow,
   nameCorroboratedBy,
