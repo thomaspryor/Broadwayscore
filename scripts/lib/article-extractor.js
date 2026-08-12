@@ -199,6 +199,33 @@ function extractLsaBody(html) {
   return body.length >= 300 ? body : null;
 }
 
+/**
+ * La Voce di New York (lavocedinewyork.com) — Jannah/JNews WordPress theme.
+ * No DOM class is stable across templates (verified: no entry-content,
+ * post-content, or jeg_inner_content wrapper on live pages), so every
+ * generic pattern returned ~117 chars of nav/meta chrome and the review
+ * saved as a silent stub (Hungry Women twi-ny/lavoce recovery, #1342). The
+ * page DOES embed the full body in a JSON-LD Article entity's articleBody
+ * field. Parse that block directly instead of regexing the HTML — safer
+ * than a DOM guess since it's the site's own structured data. Verified
+ * against 2 live reviews (Hungry Women 4098 chars, Blackout Songs 3900+
+ * chars) — both matched cleanly with zero related-article bleed.
+ */
+function extractLaVoceBody(html) {
+  for (const m of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    let parsed;
+    try { parsed = JSON.parse(m[1].trim()); } catch { continue; }
+    const list = Array.isArray(parsed) ? parsed : [parsed];
+    for (const entity of list) {
+      if (entity && typeof entity.articleBody === 'string' && entity.articleBody.length >= 300) {
+        const text = stripHtml(entity.articleBody);
+        if (text.length >= 300) return text;
+      }
+    }
+  }
+  return null;
+}
+
 // L&SA signs every review with a trailing "--David Barbour" sign-off. Its
 // <meta name="author"> is the publisher ("PLASA Media Inc - Lighting & Sound
 // America"), so a meta-first byline extractor mis-attributes every L&SA review
@@ -430,6 +457,13 @@ function extractArticleText(html, hostname) {
   if (host.includes('variety.com')) {
     const varietyText = extractVarietyBody(html);
     if (varietyText && varietyText.length >= 300) return varietyText;
+  }
+
+  // La Voce di New York: no stable DOM wrapper across templates; pull the
+  // JSON-LD articleBody instead (see extractLaVoceBody above).
+  if (host.includes('lavocedinewyork.com')) {
+    const laVoceText = extractLaVoceBody(html);
+    if (laVoceText && laVoceText.length >= 300) return laVoceText;
   }
 
   // The Stage: requires subscriber auth; body lives in <p> across multiple
