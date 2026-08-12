@@ -103,17 +103,26 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). Defaults to whatever model `~/.codex/config.toml` is set to.
 
-     **Step 2 — validate the output before trusting it** (task #1081 — `codex exec` can exit 0 with zero bytes of output while the CLI reports READY; exit code and CLI presence do not prove the reviewer said anything). Run this immediately after Step 1, in the same shell so `$PLAN_REVIEW_CODEX_OUT` is still set:
+     **Step 2 — validate the output before trusting it** (task #1081 — `codex exec` can exit 0 with zero bytes of output while the CLI reports READY; exit code and CLI presence do not prove the reviewer said anything. Task #1320 — a well-formed REFUSAL is long non-empty prose and must not be mistaken for a genuine zero-findings review). Run this immediately after Step 1, in the same shell so `$PLAN_REVIEW_CODEX_OUT` is still set:
      ```bash
-     node -e "
-       const { isUsableReviewOutput } = require('./scripts/lib/review-output-guard.js');
+     CODEX_CHECK=$(node -e "
+       const { checkReviewOutput } = require('./scripts/lib/review-output-guard.js');
        const fs = require('fs');
        const text = fs.readFileSync(process.env.PLAN_REVIEW_CODEX_OUT, 'utf-8');
-       process.exit(isUsableReviewOutput(text) ? 0 : 1);
-     " && echo CODEX_USABLE || echo CODEX_EMPTY
+       const { usable, kind, reason } = checkReviewOutput(text);
+       console.log(kind);
+       console.log(reason);
+       process.exit(usable ? 0 : 1);
+     ")
+     CODEX_STATUS=$?
+     CODEX_KIND=$(echo "$CODEX_CHECK" | head -1)
+     CODEX_REASON=$(echo "$CODEX_CHECK" | tail -n +2)
+     if [ "$CODEX_STATUS" -eq 0 ]; then echo CODEX_USABLE
+     elif [ "$CODEX_KIND" = "refused" ]; then echo "CODEX_REFUSED: $CODEX_REASON"
+     else echo "CODEX_EMPTY: $CODEX_REASON"; fi
      rm -f "$PLAN_REVIEW_CODEX_OUT"
      ```
-     If `CODEX_EMPTY`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output (distinct from "not installed").
+     If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
    - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent. Record which reviewer actually ran in the coverage banner (Phase 3).
 
 2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "general-purpose" and this prompt:
@@ -269,7 +278,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
 ### Phase 3: Present results
 
-**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini`; don't fold it into a bare "reviewed" line, since an empty-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
+**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review — task #1320), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review — fell back to gpt-5.4-mini`; don't fold either into a bare "reviewed" line, since an empty/refused-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
 
 Show all six critiques clearly with headers:
 - **Codex (Production & Architecture)**

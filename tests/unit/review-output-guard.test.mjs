@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { isUsableReviewOutput } = require('../../scripts/lib/review-output-guard.js');
+const { isUsableReviewOutput, checkReviewOutput } = require('../../scripts/lib/review-output-guard.js');
 
 describe('isUsableReviewOutput', () => {
   test('rejects the empty string (the observed 0-byte codex exec case)', () => {
@@ -55,5 +55,39 @@ describe('isUsableReviewOutput', () => {
 
   test('accepts short but substantive single-line output', () => {
     assert.equal(isUsableReviewOutput('No issues found.'), true);
+  });
+
+  test('rejects the exact refusal observed live 2026-08-12 (task #1320)', () => {
+    const refusal = [
+      'Blocked by required data preflight: `npm run data:check` reports missing',
+      'core data files and its auto-fix failed. Per repo instructions, I must',
+      'stop rather than review without data.',
+    ].join('\n');
+    assert.equal(isUsableReviewOutput(refusal), false);
+    const result = checkReviewOutput(refusal);
+    assert.equal(result.usable, false);
+    assert.equal(result.kind, 'refused');
+    assert.match(result.reason, /^refused:/);
+  });
+
+  test('accepts genuine review text with path:line citations even when it uses refusal-adjacent wording', () => {
+    const real = [
+      '1. src/lib/scoring.ts:42 — this assumes reviews are pre-sorted; they are not.',
+      '2. This change should be blocked by CI until the migration test passes.',
+    ].join('\n');
+    assert.equal(isUsableReviewOutput(real), true);
+    assert.equal(checkReviewOutput(real).kind, 'ok');
+  });
+
+  test('known tradeoff: a refusal that happens to cite a path:line is still treated as usable (positive signal wins)', () => {
+    const refusalWithCitation = 'Blocked by required data preflight: data/shows.json:1 is missing. Per repo instructions, I must stop rather than review without data.';
+    assert.equal(isUsableReviewOutput(refusalWithCitation), true);
+  });
+
+  test('checkReviewOutput reports a distinct kind per rejection reason', () => {
+    assert.equal(checkReviewOutput('').kind, 'empty');
+    assert.equal(checkReviewOutput(null).kind, 'non-string');
+    assert.equal(checkReviewOutput('codex\ntokens used').kind, 'marker');
+    assert.equal(checkReviewOutput('No issues found.').kind, 'ok');
   });
 });
